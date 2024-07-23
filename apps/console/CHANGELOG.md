@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.21.17
+
+### Patch Changes
+
+- [#6657](https://github.com/wso2/identity-apps/pull/6657) [`041570b16ae55ca07f9650d4fe0d2710e989abc2`](https://github.com/wso2/identity-apps/commit/041570b16ae55ca07f9650d4fe0d2710e989abc2) Thanks [@brionmario](https://github.com/brionmario)! - Fix build artifact issues after `nx` 17 upgrade
+
 ## 2.21.16
 
 ### Patch Changes
