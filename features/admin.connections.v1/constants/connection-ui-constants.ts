@@ -91,8 +91,38 @@ export class ConnectionUIConstants {
         OTP_LENGTH_MIN_LENGTH: number;
         OTP_LENGTH_MIN_VALUE: number;
     } = {
-
             EXPIRY_TIME_MAX_LENGTH: 10000,
+            EXPIRY_TIME_MAX_VALUE: 1440,
+            EXPIRY_TIME_MIN_LENGTH: 1,
+            EXPIRY_TIME_MIN_VALUE: 1,
+            OTP_LENGTH_MAX_LENGTH: 2,
+            OTP_LENGTH_MAX_VALUE: 10,
+            OTP_LENGTH_MIN_LENGTH: 1,
+            OTP_LENGTH_MIN_VALUE: 4
+        };
+
+    /**
+     * SMS OTP Authenticator Settings Form element constraints.
+     */
+    public static readonly SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
+            EXPIRY_TIME_MAX_LENGTH: number;
+            EXPIRY_TIME_MAX_VALUE: number;
+            EXPIRY_TIME_MIN_LENGTH: number;
+            EXPIRY_TIME_MIN_VALUE: number;
+            OTP_LENGTH_MAX_LENGTH: number;
+            OTP_LENGTH_MAX_VALUE: number;
+            OTP_LENGTH_MIN_LENGTH: number;
+            OTP_LENGTH_MIN_VALUE: number;
+            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: number;
+            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: number;
+            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: number;
+            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: number;
+        } = {
+            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: 10000,
+            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: 100,
+            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: 1,
+            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: 0,
+            EXPIRY_TIME_MAX_LENGTH: 4,
             EXPIRY_TIME_MAX_VALUE: 1440,
             EXPIRY_TIME_MIN_LENGTH: 1,
             EXPIRY_TIME_MIN_VALUE: 1,
