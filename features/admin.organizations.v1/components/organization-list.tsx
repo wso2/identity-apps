@@ -60,6 +60,7 @@ import { OrganizationManagementConstants } from "../constants";
 import useOrganizationSwitch from "../hooks/use-organization-switch";
 import { GenericOrganization, OrganizationInterface, OrganizationListInterface } from "../models";
 import "./organization-list.scss";
+import classNames from "classnames";
 
 /**
  *
@@ -288,6 +289,13 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
      * @returns
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
+        // Get the class names for the status icon in the list.
+        const getClassNamesForStatusIcon = (status: string): string => classNames({
+            "active": status === "ACTIVE",
+            "inactive": status !== "ACTIVE",
+            "organization-active-icon": true
+        });
+
         return [
             {
                 allowToggleVisibility: false,
@@ -314,7 +322,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                             { organization.id === OrganizationManagementConstants.SUPER_ORGANIZATION_ID
                                && (< Header.Content >
                                    <Icon
-                                       className="organization-active-icon organization-active-icon-active"
+                                       className="organization-active-icon active"
                                        size="small"
                                        name="circle"
                                    />
@@ -325,11 +333,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                     trigger={
                                         (<Icon
                                             data-componentid={ `${ componentId }-org-status-icon` }
-                                            className={ "organization-active-icon "
-                                                + (organization.status === "ACTIVE"
-                                                    ? "organization-active-icon-active"
-                                                    : "organization-active-icon-inactive")
-                                            }
+                                            className={ getClassNamesForStatusIcon(organization.status) }
                                             size="small"
                                             name="circle"
                                         />)

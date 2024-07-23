@@ -22,12 +22,12 @@ $organization-active-icon-inactive-color: #eb4f63;
 .organization-active-icon {
     margin-right: 0.5rem !important;
     margin-left: 0 !important;
-}
 
-.organization-active-icon-active {
-    color: $organization-active-icon-active-color
-}
+    &.active {
+        color: $organization-active-icon-active-color
+    }
 
-.organization-active-icon-inactive {
-    color: $organization-active-icon-inactive-color
+    &.inactive {
+        color: $organization-active-icon-inactive-color
+    }
 }
