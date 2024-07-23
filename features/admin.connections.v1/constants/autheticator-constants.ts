@@ -79,33 +79,6 @@ export class AuthenticatorManagementConstants {
     public static readonly DELETING_FORBIDDEN_IDPS: string[] = [];
 
     /**
-     * Apple Authenticator Settings Form element constraints.
-     */
-    public static readonly APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
-        ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: number,
-        ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: number,
-        KEY_ID_MAX_LENGTH: number,
-        KEY_ID_MIN_LENGTH: number,
-        PRIVATE_KEY_MAX_LENGTH: number,
-        PRIVATE_KEY_MIN_LENGTH: number,
-        SECRET_VALIDITY_PERIOD_MAX_LENGTH: number,
-        SECRET_VALIDITY_PERIOD_MIN_LENGTH: number,
-        TEAM_ID_MAX_LENGTH: number,
-        TEAM_ID_MIN_LENGTH: number
-    } = {
-            ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: 1000,
-            ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: 0,
-            KEY_ID_MAX_LENGTH: 10,
-            KEY_ID_MIN_LENGTH: 10,
-            PRIVATE_KEY_MAX_LENGTH: 1000,
-            PRIVATE_KEY_MIN_LENGTH: 100,
-            SECRET_VALIDITY_PERIOD_MAX_LENGTH: 8,
-            SECRET_VALIDITY_PERIOD_MIN_LENGTH: 2,
-            TEAM_ID_MAX_LENGTH: 10,
-            TEAM_ID_MIN_LENGTH: 10
-        };
-
-    /**
      * Google Authenticator Settings Form element constraints.
      */
     public static readonly GOOGLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: Record<string, number> = {

@@ -378,11 +378,11 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                 }
                 value={ formFields?.TeamId?.value }
                 maxLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.TEAM_ID_MAX_LENGTH as number
                 }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.TEAM_ID_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -414,11 +414,11 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                 }
                 value={ formFields?.KeyId?.value }
                 maxLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.KEY_ID_MAX_LENGTH as number
                 }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.KEY_ID_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -451,11 +451,11 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                 }
                 value={ formFields?.PrivateKey?.value }
                 maxLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.PRIVATE_KEY_MAX_LENGTH as number
                 }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.PRIVATE_KEY_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -487,12 +487,12 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                 }
                 value={ formFields?.SecretValidityPeriod?.value }
                 maxLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
                         .SECRET_VALIDITY_PERIOD_MAX_LENGTH as number
                 }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
                         .SECRET_VALIDITY_PERIOD_MIN_LENGTH as number
                 }
@@ -558,12 +558,12 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
                 }
                 value={ formFields?.AdditionalQueryParams?.value }
                 maxLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
                         .ADDITIONAL_QUERY_PARAMS_MAX_LENGTH as number
                 }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
                         .ADDITIONAL_QUERY_PARAMS_MIN_LENGTH as number
                 }
