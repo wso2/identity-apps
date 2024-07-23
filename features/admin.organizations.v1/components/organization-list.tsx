@@ -17,9 +17,8 @@
  */
 
 import { BasicUserInfo } from "@asgardeo/auth-react";
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import {
     AppConstants,
     AppState,
@@ -30,7 +29,7 @@ import {
 } from "@wso2is/admin.core.v1";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -49,17 +48,19 @@ import {
     TableColumnInterface
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { deleteOrganization, useGetOrganizationBreadCrumb } from "../api";
+import { deleteOrganization } from "../api";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
 import useOrganizationSwitch from "../hooks/use-organization-switch";
 import { GenericOrganization, OrganizationInterface, OrganizationListInterface } from "../models";
+import "./organization-list.scss";
 
 /**
  *
@@ -161,35 +162,15 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
     const { onSignIn } = useSignIn();
 
-    const { switchOrganization, switchOrganizationInLegacyMode } = useOrganizationSwitch();
+    const { switchOrganization } = useOrganizationSwitch();
 
-    const { legacyAuthzRuntime }  = useAuthorization();
-
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const isFirstLevelOrg: boolean = useSelector(
-        (state: AppState) => state?.organization?.isFirstLevelOrganization
-    );
-    const tenantDomain: string = useSelector(
-        (state: AppState) => state?.auth?.tenantDomain
-    );
 
+    const hasOrganizationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.organizations?.scopes?.update);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingOrganization, setDeletingOrganization ] = useState<OrganizationInterface>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-
-    const shouldSendRequest: boolean = useMemo(() => {
-        return (
-            isFirstLevelOrg ||
-            window[ "AppUtils" ].getConfig().organizationName ||
-            tenantDomain === AppConstants.getSuperTenant()
-        );
-    }, [ isFirstLevelOrg, tenantDomain ]);
-
-    const { data: breadcrumbList, mutate: mutateOrganizationBreadCrumbFetchRequest } = useGetOrganizationBreadCrumb(
-        shouldSendRequest
-    );
 
     /**
      * Redirects to the organizations edit page when the edit button is clicked.
@@ -288,11 +269,6 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     const handleOrganizationSwitch = async (
         organization: GenericOrganization
     ): Promise<void> => {
-        if (legacyAuthzRuntime) {
-            switchOrganizationInLegacyMode(breadcrumbList, organization);
-
-            return;
-        }
 
         let response: BasicUserInfo = null;
 
@@ -301,7 +277,6 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
             await onSignIn(response, () => null, () => null, () => null);
 
             onListMutate();
-            mutateOrganizationBreadCrumbFetchRequest();
             history.push(AppConstants.getPaths().get("GETTING_STARTED"));
         } catch(e) {
             // TODO: Handle error
@@ -314,6 +289,13 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
      * @returns
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
+        // Get the class names for the status icon in the list.
+        const getClassNamesForStatusIcon = (status: string): string => classNames({
+            "active": status === "ACTIVE",
+            "inactive": status !== "ACTIVE",
+            "organization-active-icon": true
+        });
+
         return [
             {
                 allowToggleVisibility: false,
@@ -340,10 +322,9 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                             { organization.id === OrganizationManagementConstants.SUPER_ORGANIZATION_ID
                                && (< Header.Content >
                                    <Icon
-                                       className="mr-2 ml-0 vertical-aligned-baseline"
+                                       className="organization-active-icon active"
                                        size="small"
                                        name="circle"
-                                       color="green"
                                    />
                                </Header.Content>)
                             }
@@ -352,10 +333,9 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                     trigger={
                                         (<Icon
                                             data-componentid={ `${ componentId }-org-status-icon` }
-                                            className="mr-2 ml-0 vertical-aligned-baseline"
+                                            className={ getClassNamesForStatusIcon(organization.status) }
                                             size="small"
                                             name="circle"
-                                            color={ organization.status === "ACTIVE" ? "green" : "orange" }
                                         />)
                                     }
                                     content={
@@ -456,11 +436,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         }
                     });
 
-                    return !hasRequiredScopes(
-                        featureConfig?.organizations,
-                        featureConfig?.organizations?.scopes?.update,
-                        allowedScopes
-                    ) || !isAuthorized
+                    return !hasOrganizationUpdatePermissions || !isAuthorized
                         ? "eye"
                         : "pencil alternate";
                 },
@@ -476,11 +452,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         }
                     });
 
-                    return !hasRequiredScopes(
-                        featureConfig?.organizations,
-                        featureConfig?.organizations?.scopes?.update,
-                        allowedScopes
-                    ) || !isAuthorized
+                    return !hasOrganizationUpdatePermissions || !isAuthorized
                         ? t("common:view")
                         : t("common:edit");
                 },
@@ -498,11 +470,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         }
                     });
 
-                    return !hasRequiredScopes(
-                        featureConfig?.organizations,
-                        featureConfig?.organizations?.scopes?.delete,
-                        allowedScopes
-                    ) || !isAuthorized;
+                    return !hasOrganizationUpdatePermissions || !isAuthorized;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, organization: OrganizationInterface): void => {

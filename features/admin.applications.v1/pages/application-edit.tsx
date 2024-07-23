@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,17 +19,13 @@
 import {
     AppConstants,
     AppState,
-    AppUtils,
     FeatureConfigInterface,
-    PortalDocumentationStructureInterface,
-    history,
-    setHelpPanelDocsContentURL,
-    toggleHelpPanelVisibility
+    history
 } from "@wso2is/admin.core.v1";
 import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
 import { IdentityProviderConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
@@ -38,9 +34,6 @@ import {
     Popup,
     TabPageLayout
 } from "@wso2is/react-components";
-import cloneDeep from "lodash-es/cloneDeep";
-import get from "lodash-es/get";
-import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -62,6 +55,7 @@ import {
 } from "../models";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
+import "./application-edit.scss";
 
 /**
  * Proptypes for the applications edit page component.
@@ -86,7 +80,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     } = props;
 
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
-    const applicationHelpShownStatusKey: string = "isApplicationHelpShown";
 
     const { t } = useTranslation();
 
@@ -95,8 +88,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const appDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const helpPanelDocStructure: PortalDocumentationStructureInterface = useSelector(
-        (state: AppState) => state.helpPanel.docStructure);
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -205,44 +196,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     }, [ appDescElement, isApplicationRequestLoading ]);
 
     /**
-     * Get whether to show the help panel
-     * Help panel only shows for the first time
-     */
-    const showHelpPanel = (): boolean => {
-
-        const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
-
-        return !isEmpty(userPreferences) &&
-            !userPreferences.identityAppsSettings?.devPortal?.[ applicationHelpShownStatusKey ];
-    };
-
-    /**
-     * Set status of first time help panel is shown
-     */
-    const setHelpPanelShown = (): void => {
-        const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
-
-        if (isEmpty(userPreferences) || !userPreferences?.identityAppsSettings?.devPortal) {
-            return;
-        }
-
-        const newPref: StorageIdentityAppsSettingsInterface = cloneDeep(userPreferences);
-
-        newPref.identityAppsSettings.devPortal[ applicationHelpShownStatusKey ] = true;
-        AppUtils.setUserPreferences(newPref);
-    };
-
-    /**
      * Fetch the application details on initial component load.
      */
     useEffect(() => {
         const path: string[] = history.location.pathname?.split("/");
         const id: string = path[ path?.length - 1 ];
-
-        if (showHelpPanel()) {
-            dispatch(toggleHelpPanelVisibility(true));
-            setHelpPanelShown();
-        }
 
         setApplicationId(id);
     }, []);
@@ -351,28 +309,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             history.push(AppConstants.getPaths().get("PAGE_NOT_FOUND"));
         }
     }, [ featureConfig ]);
-
-    /**
-     * Set the default doc content URL for the tab.
-     */
-    useEffect(() => {
-        if (!applicationTemplate) {
-            return;
-        }
-
-        const editApplicationDocs: PortalDocumentationStructureInterface[] = get(helpPanelDocStructure,
-            ApplicationManagementConstants.EDIT_APPLICATIONS_DOCS_KEY);
-
-        if (!editApplicationDocs) {
-            return;
-        }
-
-        dispatch(
-            setHelpPanelDocsContentURL(editApplicationDocs[
-                ApplicationManagementConstants.APPLICATION_TEMPLATE_DOC_MAPPING
-                    .get(applicationTemplate.id)]?.[ApplicationManagementConstants.APPLICATION_DOCS_OVERVIEW])
-        );
-    }, [ applicationTemplate, helpPanelDocStructure ]);
 
     const determineApplicationTemplate = () => {
 
@@ -590,6 +526,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 <>
                     {
                         applicationConfig.editApplication.getActions(
+                            application?.id,
                             inboundProtocolConfigs?.oidc?.clientId,
                             tenantDomain,
                             componentId

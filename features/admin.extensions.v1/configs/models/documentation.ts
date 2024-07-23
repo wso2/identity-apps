@@ -68,6 +68,14 @@ interface ApplicationsDocumentationLinksInterface {
         }
     }
     learnMore: string;
+    applicationsSettings: {
+        dcr: {
+            learnMore: string;
+            authenticationRequired: {
+                learnMore: string;
+            },
+        }
+    },
     editApplication: {
         asgardeoTryitApplication: {
             general: {
@@ -78,6 +86,11 @@ interface ApplicationsDocumentationLinksInterface {
             manageOIDCScopes: string;
         },
         common: {
+            advanced: {
+                trustedApps: {
+                    learnMore: string
+                }
+            },
             signInMethod: {
                 learnMore: string;
                 conditionalAuthenticaion: {
@@ -188,6 +201,12 @@ interface ApplicationsDocumentationLinksInterface {
         }
         mobileApplication: {
             learnMore: string;
+        },
+        m2mApplication: {
+            learnMore: string
+        },
+        customApplication: {
+            learnMore: string
         }
     }
     managementApplication: {

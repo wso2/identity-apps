@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1/constants/connection-constants";
 import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { SupportedAuthenticators } from "@wso2is/admin.identity-providers.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { DocumentationConstants } from "./documentation-constants";
 import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } from "../models";
 
 /**
@@ -73,27 +73,8 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_NATIVE_AUTHENTICATION", "applications.native.authentication")
         .set("APPLICATION_MYACCOUNT_SAAS_SETTINGS", "applications.myaccount.saasMyaccountSettings")
         .set("APPLICATION_ADD_MANAGEMENT_APPLICATIONS", "applications.add.managementApplications")
-
-    /**
-     * Key for the `Edit Application` tag in the docs structure object.
-     */
-    public static readonly EDIT_APPLICATIONS_DOCS_KEY: string = `${
-        DocumentationConstants.PORTAL_DOCS_KEY }.Applications["Edit Application"]`;
-
-    /**
-     * Key for the application samples tag in the docs structure object.
-     */
-    public static readonly APPLICATION_SAMPLES_DOCS_KEY: string = "Quick Starts[\"Choose a Sample Type\"]";
-
-    /**
-     * Key for the application docs tag in the docs structure object.
-     */
-    public static readonly APPLICATION_DOCS_KEY: string = "[\"Developer Portal\"].Applications[\"Edit Application\"]";
-
-    /**
-     * Key for the overview tag in the docs structure object.
-     */
-    public static readonly APPLICATION_DOCS_OVERVIEW: string = "Overview";
+        .set("APPLICATIONS_SETTINGS", "applications.settings")
+        .set("TRUSTED_APPS", "applications.trustedApps");
 
     /**
      * Key for the URL search param for application state.
@@ -109,6 +90,11 @@ export class ApplicationManagementConstants {
      * Value for protocol tab navigation.
      */
     public static readonly IS_PROTOCOL: string = "isProtocol";
+
+    /**
+     * Value for protocol tab navigation.
+     */
+    public static readonly IS_ROLES: string = "isRoles";
 
     /**
      * Key for the URL search param for application readonly state.
@@ -139,10 +125,11 @@ export class ApplicationManagementConstants {
      * Value for protocol tab url.
      */
     public static readonly PROTOCOL_TAB_URL_FRAG: string = "protocol";
+
     /**
      * Value for application roles tab url.
      */
-    public static readonly ROLES_TAB_URL_FRAG: string = "5";
+    public static readonly ROLES_TAB_URL_FRAG: string = "application-roles";
 
     /**
      * Role callback redirect type
@@ -202,6 +189,11 @@ export class ApplicationManagementConstants {
     public static readonly DEVICE_GRANT: string = "urn:ietf:params:oauth:grant-type:device_code";
     public static readonly OAUTH2_TOKEN_EXCHANGE: string = "urn:ietf:params:oauth:grant-type:token-exchange";
     public static readonly ACCOUNT_SWITCH_GRANT: string = "account_switch";
+    public static readonly CODE_TOKEN: string = "code token";
+    public static readonly CODE_IDTOKEN: string = "code id_token";
+    public static readonly CODE_IDTOKEN_TOKEN: string = "code id_token token";
+    public static readonly  HYBRID_FLOW_ENABLE_CONFIG:string = "enable-hybrid-flow";
+    public static readonly HYBRID_FLOW_RESPONSE_TYPE: string = "hybridFlowResponseType";
 
     /**
      * List of available grant types.
@@ -394,7 +386,7 @@ export class ApplicationManagementConstants {
         IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR,
         IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_NAME,
-        IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID,
+        ConnectionManagementConstants.SAML_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.SAML_AUTHENTICATOR_NAME
     ];
 
@@ -443,16 +435,16 @@ export class ApplicationManagementConstants {
         APP_NAME_MAX_LENGTH: number,
         APP_NAME_PATTERN: RegExp
     } = {
-        ACCESS_URL_ALLOWED_PLACEHOLDERS: [
-            "\\${UserTenantHint}",
-            "\\${organizationIdHint}"
-        ],
-        ACCESS_URL_MAX_LENGTH: 200,
-        ACCESS_URL_MIN_LENGTH: 3,
-        APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),
-        APP_NAME_MAX_LENGTH: 50,
-        APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
-    };
+            ACCESS_URL_ALLOWED_PLACEHOLDERS: [
+                "\\${UserTenantHint}",
+                "\\${organizationIdHint}"
+            ],
+            ACCESS_URL_MAX_LENGTH: 200,
+            ACCESS_URL_MIN_LENGTH: 3,
+            APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),
+            APP_NAME_MAX_LENGTH: 50,
+            APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
+        };
 
     public static readonly CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY: string = "isConditionalAuthTourViewed";
 

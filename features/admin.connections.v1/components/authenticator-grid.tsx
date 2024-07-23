@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,6 +26,7 @@ import {
 } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -51,7 +52,6 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { getAuthenticatorList } from "./common";
 import {
     deleteConnection,
     getConnectedApps
@@ -367,7 +367,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                         | AuthenticatorInterface, index: number) => {
 
                         const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
-                            getAuthenticatorList(), authenticator.id);
+                            AuthenticatorMeta.getAuthenticators(), authenticator.id);
 
                         const isIdP: boolean = ConnectionsManagementUtils
                             .isConnectorIdentityProvider(authenticator);
@@ -413,7 +413,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                             .includes(authenticator.name)
                                     }
                                     isResourceComingSoon={ authenticatorConfig?.isComingSoon }
-                                    comingSoonRibbonLabel={ t("common:comingSoon") }
+                                    comingSoonRibbonLabel={ t(FeatureStatusLabel.COMING_SOON) }
                                     resourceName={
                                         isIdP
                                             ? authenticator.name

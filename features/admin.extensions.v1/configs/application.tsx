@@ -33,7 +33,6 @@ import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/clai
 import { EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { ApplicationRoles } from "@wso2is/admin.roles.v2/components/application-roles";
-import { LegacyModeInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import {
     Code,
@@ -107,11 +106,13 @@ export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
         showEnableAuthorization: true,
         showFapiFeatureStatusChip: false,
+        showHybridFlowFeatureStatusChip: false,
         showMtlsAliases: false,
         showMyAccount: true,
-        showMyAccountStatus: false,
+        showMyAccountStatus: true,
         showReturnAuthenticatedIdPs: true,
-        showSaaS: true
+        showSaaS: true,
+        showTrustedAppConsentWarning: false
     },
     allowedGrantTypes: {
         // single page app template
@@ -206,28 +207,29 @@ export const applicationConfig: ApplicationConfig = {
     },
     editApplication: {
         extendTabs: false,
-        getActions: (clientId: string, tenant: string, testId: string) => {
+        getActions: (applicationId: string, clientId: string, tenant: string, testId: string) => {
 
             const asgardeoLoginPlaygroundURL: string = window[ "AppUtils" ]?.getConfig()?.extensions?.asgardeoTryItURL;
 
-            return (
-                clientId === getTryItClientId(tenant)
-                    ? (
-                        <PrimaryButton
-                            data-tourid="button"
-                            onClick={ (): void => {
-                                EventPublisher.getInstance().publish("tryit-try-login", {
-                                    "client-id": clientId
-                                });
-                                window.open(asgardeoLoginPlaygroundURL+"?client_id="+clientId+"&org="+tenant);
-                            } }
-                            data-testid={ `${ testId }-playground-button` }
-                        >
-                            Try Login
-                            <Icon name="arrow right"/>
-                        </PrimaryButton>
-                    ): null
-            );
+            if (clientId === getTryItClientId(tenant)) {
+                return (
+                    <PrimaryButton
+                        data-tourid="button"
+                        onClick={ (): void => {
+                            EventPublisher.getInstance().publish("tryit-try-login", {
+                                "client-id": clientId
+                            });
+                            window.open(asgardeoLoginPlaygroundURL+"?client_id="+clientId+"&org="+tenant);
+                        } }
+                        data-testid={ `${ testId }-playground-button` }
+                    >
+                        Try Login
+                        <Icon name="arrow right"/>
+                    </PrimaryButton>
+                );
+            }
+
+            return null;
         },
         getOveriddenTab: (clientId: string, tabName: ApplicationTabTypes,
             defaultComponent: ReactElement, appName: string, appId: string, tenantDomain: string) => {
@@ -403,12 +405,9 @@ export const applicationConfig: ApplicationConfig = {
 
             const tabExtensions: ResourceTabPaneInterface[] = [];
 
-            const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
-
             // Enable the API authorization tab for supported templates when the api resources config is enabled.
             if (
                 apiResourceFeatureEnabled && !application?.advancedConfigurations?.fragment &&
-                legacyMode?.apiResourcesV2 &&
                 (
                     application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
                     || application?.templateId === MobileAppTemplate?.id
@@ -441,7 +440,6 @@ export const applicationConfig: ApplicationConfig = {
 
             // Enable the roles tab for supported templates when the api resources config is enabled.
             if (apiResourceFeatureEnabled
-                && !legacyMode?.rolesV1
                 && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
                     applicationRoles?.enabled)
                 && (
@@ -692,8 +690,8 @@ export const applicationConfig: ApplicationConfig = {
             },
             react: {
                 links: {
-                    authClientConfig: "",
-                    secureRoute: "",
+                    reactClientConfig: "",
+                    routingOptions: "",
                     useContextDocumentation: ""
                 },
                 npmInstallCommand: "",

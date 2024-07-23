@@ -24,8 +24,10 @@ import {
     ApplicationTemplateInterface
 } from "@wso2is/admin.applications.v1/models";
 import {
-    IdentityProviderTemplateCategoryInterface,
-    IdentityProviderTemplateGroupInterface,
+    ConnectionTemplateCategoryInterface,
+    ConnectionTemplateGroupInterface
+} from "@wso2is/admin.connections.v1/models/connection";
+import {
     IdentityProviderTemplateListItemInterface
 } from "@wso2is/admin.identity-providers.v1/models";
 import isObject from "lodash-es/isObject";
@@ -136,16 +138,16 @@ export class ExtensionsManager {
         // If categories exists, try to resolve the category config by lazy loading the resource etc.
         if (config.categories && Array.isArray(config.categories) && config.categories.length > 0) {
             config.categories = config.categories
-                .map((category: TemplateConfigInterface<IdentityProviderTemplateCategoryInterface>) => {
+                .map((category: TemplateConfigInterface<ConnectionTemplateCategoryInterface>) => {
                     return ExtensionsManager
-                        .lazyLoadTemplateResources<IdentityProviderTemplateCategoryInterface>(category);
+                        .lazyLoadTemplateResources<ConnectionTemplateCategoryInterface>(category);
                 });
         }
 
         // If groups exists, try to resolve the group config by lazy loading the resource etc.
         if (config.groups && Array.isArray(config.groups) && config.groups.length > 0) {
             config.groups = config.groups
-                .map((group: TemplateConfigInterface<IdentityProviderTemplateGroupInterface>) => {
+                .map((group: TemplateConfigInterface<ConnectionTemplateGroupInterface>) => {
                     return ExtensionsManager.
                         lazyLoadTemplateResources<IdentityProviderTemplateListItemInterface>(group);
                 });

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,12 +19,6 @@
 /**
  * Export the components.
  */
-export * from "./components/authenticators/email-otp/quick-start";
-export * from "./components/authenticators/fido/quick-start";
-export * from "./components/authenticators/magic-link/quick-start";
-export * from "./components/authenticators/sms-otp/quick-start";
-export * from "./components/authenticators/totp/quick-start";
-
 export * from "./components/create/add-connection-wizard";
 export * from "./components/create/authenticator-create-wizard-factory";
 export * from "./components/create/enterprise-connection-create-wizard";
@@ -42,7 +36,6 @@ export * from "./components/wizards/steps/authenticator-template-selection";
 export * from "./components/wizards/steps/shared-steps/wizard-summary";
 
 export * from "./components/authenticator-grid";
-export * from "./components/common";
 
 /**
  * Export the configs.

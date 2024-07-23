@@ -50,6 +50,7 @@ export class AuthenticatorManagementConstants {
     public static readonly SAML_AUTHENTICATOR_ID: string = "U0FNTFNTT0F1dGhlbnRpY2F0b3I";
     public static readonly PASSIVE_STS_AUTHENTICATOR_ID: string = "UGFzc2l2ZVNUU0F1dGhlbnRpY2F0b3I";
     public static readonly ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: string = "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg";
+    public static readonly IPROOV_AUTHENTICATOR_ID: string = "SXByb292QXV0aGVudGljYXRvcg";
 
     public static readonly PASSIVE_STS_AUTHENTICATOR_NAME: string = "PassiveSTSAuthenticator";
     public static readonly SAML_AUTHENTICATOR_NAME: string = "SAMLSSOAuthenticator";
@@ -57,6 +58,7 @@ export class AuthenticatorManagementConstants {
     public static readonly LEGACY_EMAIL_OTP_AUTHENTICATOR_NAME: string = "EmailOTP";
     public static readonly SMS_OTP_AUTHENTICATOR_NAME: string = "SMSOTP";
     public static readonly ORGANIZATION_SSO_AUTHENTICATOR_NAME: string = "OrganizationAuthenticator";
+    public static readonly ORGANIZATION_AUTHENTICATOR: string = "SSO";
 
     // Federated Authenticators
     public static readonly IPROOV_AUTHENTICATOR_NAME: string = "IproovAuthenticator";
@@ -70,7 +72,7 @@ export class AuthenticatorManagementConstants {
     /**
 	 * UUID of the Multi-Factor Authenticators governance connector category.
 	 */
-	public static readonly MFA_CONNECTOR_CATEGORY_ID: string = "TXVsdGkgRmFjdG9yIEF1dGhlbnRpY2F0b3Jz";
+    public static readonly MFA_CONNECTOR_CATEGORY_ID: string = "TXVsdGkgRmFjdG9yIEF1dGhlbnRpY2F0b3Jz";
 
     /**
      * Set of internal idps which are forbidden from deleting.
@@ -115,15 +117,15 @@ export class AuthenticatorManagementConstants {
         OTP_LENGTH_MIN_VALUE: number;
     } = {
 
-        EXPIRY_TIME_MAX_LENGTH: 10000,
-        EXPIRY_TIME_MAX_VALUE: 1440,
-        EXPIRY_TIME_MIN_LENGTH: 1,
-        EXPIRY_TIME_MIN_VALUE: 1,
-        OTP_LENGTH_MAX_LENGTH: 2,
-        OTP_LENGTH_MAX_VALUE: 10,
-        OTP_LENGTH_MIN_LENGTH: 1,
-        OTP_LENGTH_MIN_VALUE: 4
-    };
+            EXPIRY_TIME_MAX_LENGTH: 10000,
+            EXPIRY_TIME_MAX_VALUE: 1440,
+            EXPIRY_TIME_MIN_LENGTH: 1,
+            EXPIRY_TIME_MIN_VALUE: 1,
+            OTP_LENGTH_MAX_LENGTH: 2,
+            OTP_LENGTH_MAX_VALUE: 10,
+            OTP_LENGTH_MIN_LENGTH: 1,
+            OTP_LENGTH_MIN_VALUE: 4
+        };
 
     public static readonly SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
         EXPIRY_TIME_MAX_LENGTH: number;
@@ -140,19 +142,19 @@ export class AuthenticatorManagementConstants {
         ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: number;
     } = {
 
-        ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: 10000,
-        ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: 100,
-        ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: 1,
-        ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: 0,
-        EXPIRY_TIME_MAX_LENGTH: 4,
-        EXPIRY_TIME_MAX_VALUE: 1440,
-        EXPIRY_TIME_MIN_LENGTH: 1,
-        EXPIRY_TIME_MIN_VALUE: 1,
-        OTP_LENGTH_MAX_LENGTH: 2,
-        OTP_LENGTH_MAX_VALUE: 10,
-        OTP_LENGTH_MIN_LENGTH: 1,
-        OTP_LENGTH_MIN_VALUE: 4
-    };
+            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: 10000,
+            ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: 100,
+            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH: 1,
+            ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: 0,
+            EXPIRY_TIME_MAX_LENGTH: 4,
+            EXPIRY_TIME_MAX_VALUE: 1440,
+            EXPIRY_TIME_MIN_LENGTH: 1,
+            EXPIRY_TIME_MIN_VALUE: 1,
+            OTP_LENGTH_MAX_LENGTH: 2,
+            OTP_LENGTH_MAX_VALUE: 10,
+            OTP_LENGTH_MIN_LENGTH: 1,
+            OTP_LENGTH_MIN_VALUE: 4
+        };
 
     /**
      * Apple Authenticator Settings Form element constraints.
@@ -169,17 +171,17 @@ export class AuthenticatorManagementConstants {
         TEAM_ID_MAX_LENGTH: number,
         TEAM_ID_MIN_LENGTH: number
     } = {
-        ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: 1000,
-        ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: 0,
-        KEY_ID_MAX_LENGTH: 10,
-        KEY_ID_MIN_LENGTH: 10,
-        PRIVATE_KEY_MAX_LENGTH: 1000,
-        PRIVATE_KEY_MIN_LENGTH: 100,
-        SECRET_VALIDITY_PERIOD_MAX_LENGTH: 8,
-        SECRET_VALIDITY_PERIOD_MIN_LENGTH: 2,
-        TEAM_ID_MAX_LENGTH: 10,
-        TEAM_ID_MIN_LENGTH: 10
-    };
+            ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: 1000,
+            ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: 0,
+            KEY_ID_MAX_LENGTH: 10,
+            KEY_ID_MIN_LENGTH: 10,
+            PRIVATE_KEY_MAX_LENGTH: 1000,
+            PRIVATE_KEY_MIN_LENGTH: 100,
+            SECRET_VALIDITY_PERIOD_MAX_LENGTH: 8,
+            SECRET_VALIDITY_PERIOD_MIN_LENGTH: 2,
+            TEAM_ID_MAX_LENGTH: 10,
+            TEAM_ID_MIN_LENGTH: 10
+        };
 
     /**
      * Google Authenticator Settings Form element constraints.
@@ -360,15 +362,15 @@ export class AuthenticatorManagementConstants {
         SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS: IdentityAppsError;
         SMS_NOTIFICATION_SENDER_DELETION_ERROR_CONNECTED_APPS: IdentityAppsError;
     } = {
-        SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS: new IdentityAppsError(
-            "NSM-65015",
-            "Failed to delete SMS notification sender due to the existence of active subscriptions"
-        ),
-        SMS_NOTIFICATION_SENDER_DELETION_ERROR_CONNECTED_APPS: new IdentityAppsError(
-            "NSM-60008",
-            "There are applications using this connection."
-        )
-    }
+            SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS: new IdentityAppsError(
+                "NSM-65015",
+                "Failed to delete SMS notification sender due to the existence of active subscriptions"
+            ),
+            SMS_NOTIFICATION_SENDER_DELETION_ERROR_CONNECTED_APPS: new IdentityAppsError(
+                "NSM-60008",
+                "There are applications using this connection."
+            )
+        };
 
     public static readonly DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID: string = "c2NpbQ";
 }

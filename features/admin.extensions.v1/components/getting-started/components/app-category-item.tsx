@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,6 +21,7 @@ import { GenericIcon, GenericIconProps, Text } from "@wso2is/react-components";
 import React, { CSSProperties, FC, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { DynamicTile } from "./dynamic-tile";
+import FeatureStatusLabel from "../../feature-gate/models/feature-gate";
 
 export type CategoryItemPropsInterface = {
     categoryName: string;
@@ -90,7 +91,7 @@ export const CategoryItem: FC<CategoryItemPropsInterface> = (
                             comingSoon
                                 ? (
                                     <div className="coming-soon-ribbon">
-                                        { t("common:comingSoon") }
+                                        { t(FeatureStatusLabel.COMING_SOON) }
                                     </div>
                                 )
                                 : null

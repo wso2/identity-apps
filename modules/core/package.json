@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/core",
-    "version": "2.0.48",
+    "version": "2.0.57",
     "description": "Commonly used configs, schemas, utilities and low level services for WSO2 Identity Server frontend apps",
     "keywords": [
         "WSO2",
@@ -78,13 +78,14 @@
         "lint:autofix": "pnpm lint:all -- --fix",
         "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
         "test": "jest --passWithNoTests",
+        "test:coverage": "jest --passWithNoTests --coverage --collect-coverage",
         "test:watch": "pnpm test -- --watch",
         "typecheck": "pnpm compile"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@asgardeo/auth-react": "^4.0.4",
+        "@asgardeo/auth-react": "^5.0.3",
         "@braintree/sanitize-url": "^5.0.0",
         "@types/jest": "^29.5.12",
         "axios": "^0.21.1",
@@ -110,15 +111,14 @@
         "@types/react": "^18.0.18",
         "@types/react-notification-system": "0.2.39",
         "@types/ua-parser-js": "0.7.36",
-        "@typescript-eslint/eslint-plugin": "^4.32.0",
-        "@typescript-eslint/parser": "^4.32.0",
-        "eslint": "^7.20.0",
+        "@typescript-eslint/eslint-plugin": "^6.5.0",
+        "@typescript-eslint/parser": "^6.5.0",
+        "eslint": "8.46.0",
         "eslint-plugin-import": "^2.20.2",
-        "eslint-plugin-react": "^7.18.3",
+        "eslint-plugin-react": "^7.30.0",
         "eslint-plugin-react-hooks": "^4.0.0",
         "rimraf": "^3.0.2",
         "ts-jest": "^29.1.2",
-        "ts-node": "^10.8.1",
         "typescript": "^4.6.4"
     }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,6 @@
  */
 
 import { LegacyModeInterface, ProductVersionConfigInterface } from "./core";
-import { DocumentationProviders, DocumentationStructureFileTypes } from "./documentation";
 import { GravatarConfig } from "./profile";
 
 /**
@@ -108,10 +107,6 @@ export interface CommonDeploymentConfigInterface<T = Record<string, unknown>, S 
      * ex: `https://localhost:9001/t/wso2.com/console`
      */
     clientOriginWithTenant: string;
-    /**
-     * Portal Documentation configs.
-     */
-    documentation?: DocumentationInterface;
     /**
      * Identity SDK configurations.
      */
@@ -305,40 +300,6 @@ export interface AnnouncementBannerInterface {
      * Message to be displayed.
      */
     message: string;
-}
-
-/**
- * Portal documentation configs interface.
- */
-export interface DocumentationInterface {
-    /**
-     * Endpoint base URL.
-     */
-    baseURL: string;
-    /**
-     * Content base URL.
-     */
-    contentBaseURL: string;
-    /**
-     * Github API options.
-     */
-    githubOptions: GithubDocumentationOptionsInterface;
-    /**
-     * URL prefix for image assets.
-     */
-    imagePrefixURL: string;
-    /**
-     * Content provider.
-     */
-    provider: DocumentationProviders;
-    /**
-     * Structure file type.
-     */
-    structureFileType: DocumentationStructureFileTypes;
-    /**
-     * Structure file URL.
-     */
-    structureFileURL: string;
 }
 
 /**

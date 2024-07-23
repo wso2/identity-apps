@@ -17,8 +17,9 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants";
 import {
+    AppConstants,
     AppState,
     CORSOriginsListInterface,
     EventPublisher,
@@ -41,13 +42,14 @@ import {
     CopyInputField,
     DangerZone,
     DangerZoneGroup,
+    Link,
     ResourceTab,
     ResourceTabPaneInterface
 } from "@wso2is/react-components";
 import Axios, { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FormEvent, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, Form, Grid, Menu, TabProps } from "semantic-ui-react";
@@ -193,23 +195,21 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(undefined);
     const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
     const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
-    const { legacyAuthzRuntime } = useAuthorization();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const isFragmentApp: boolean = application?.advancedConfigurations?.fragment || false;
     const hiddenAuthenticators: string[] = [ ...(UIConfig?.hiddenAuthenticators ?? []) ];
-    const disabledApplicationFeatures: string[] = useSelector((state: AppState) =>
-        state.config.ui.features.applications?.disabledFeatures);
-    const isMyAccountSimplifiedSettingsEnabled: boolean =
-        ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID === application?.clientId
-        && !disabledApplicationFeatures?.includes("applications.myaccount.simplifiedSettings");
+    const isMyAccount: boolean =
+        ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID === application?.clientId;
     const applicationsUpdateScopes: string[] = featureConfig?.applications?.scopes?.update;
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const [ isDisableInProgress, setIsDisableInProgress ] = useState<boolean>(false);
     const [ enableStatus, setEnableStatus ] = useState<boolean>(false);
     const [ showDisableConfirmationModal, setShowDisableConfirmationModal ] = useState<boolean>(false);
+    const brandingDisabledFeatures: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.branding?.disabledFeatures);
 
     /**
      * Called when an application updates.
@@ -242,17 +242,21 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
 
         if (featureConfig) {
-            if (!legacyAuthzRuntime && isMyAccountSimplifiedSettingsEnabled) {
+            if (isMyAccount) {
                 panes.push({
                     componentId: "overview",
                     menuItem: t("applications:myaccount.overview.tabName"),
                     render: MyAccountOverviewTabPane
                 });
             }
-            if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))
-                && !isSubOrganization()
-                && (legacyAuthzRuntime || !isMyAccountSimplifiedSettingsEnabled)) {
+            if (
+                isFeatureEnabled(featureConfig?.applications,
+                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))
+                && (isSubOrganization() ?
+                    !brandingDisabledFeatures.includes(
+                        BrandingPreferencesConstants.APP_WISE_BRANDING_FEATURE_TAG): true)
+                && !isMyAccount
+            ) {
                 if (applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
@@ -281,7 +285,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))
                 && !isFragmentApp
-                && (legacyAuthzRuntime || !isMyAccountSimplifiedSettingsEnabled)
+                && !isMyAccount
             ) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
@@ -299,8 +303,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))
                 && !isFragmentApp
                 && !isM2MApplication
-                && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
-                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
+                && (
+                    UIConfig?.legacyMode?.applicationSystemAppsSettings ||
+                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                )
+            ) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
                     inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.USER_ATTRIBUTES, tenantDomain) &&
@@ -343,8 +350,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))
                 && !isFragmentApp
                 && !isM2MApplication
-                && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
-                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
+                && (
+                    UIConfig?.legacyMode?.applicationSystemAppsSettings ||
+                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                )) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
                     inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROVISIONING, tenantDomain) &&
@@ -358,8 +367,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))
                 && !isFragmentApp
                 && !isM2MApplication
-                && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
-                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
+                && (
+                    UIConfig?.legacyMode?.applicationSystemAppsSettings ||
+                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                )
+            ) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
@@ -390,7 +402,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         ApplicationTabTypes.INFO,
                         tenantDomain
                     ) &&
-                    UIConfig?.legacyMode?.organizations &&
                     panes.push({
                         componentId: "shared-access",
                         menuItem: t("applications:edit.sections.sharedAccess.tabName"),
@@ -400,7 +411,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
                  && !isFragmentApp
-                 && (legacyAuthzRuntime || !isMyAccountSimplifiedSettingsEnabled)) {
+                 && !isMyAccount) {
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
@@ -497,7 +508,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         setDefaultActiveIndex(defaultTabIndex);
 
         if(isEmpty(window.location.hash)){
-
             if(urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY) ===
                 ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE) {
                 // When application selection is done through the strong authentication flow.
@@ -519,6 +529,17 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
                 if(protocolTabIndex !== -1) {
                     handleActiveTabIndexChange(protocolTabIndex);
+                }
+
+                return;
+            } else if (urlSearchParams.get(ApplicationManagementConstants.IS_ROLES) === "true") {
+                const rolesTabIndex: number = renderedTabPanes?.findIndex(
+                    (element: {"componentId": string}) =>
+                        element.componentId === ApplicationManagementConstants.ROLES_TAB_URL_FRAG
+                );
+
+                if (rolesTabIndex !== -1) {
+                    handleActiveTabIndexChange(rolesTabIndex);
                 }
 
                 return;
@@ -1028,7 +1049,32 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 >
                     { enableStatus
                         ? t("applications:confirmations.enableApplication.content")
-                        : t("applications:confirmations.disableApplication.content") }
+                        : (
+                            <>
+                                <Trans
+                                    i18nKey={ "applications:confirmations.disableApplication.content.0" }
+                                >
+                                    This may prevent consumers from accessing the application,
+                                    but it can be resolved by re-enabling the application.
+                                </Trans>
+                                <br /><br />
+                                <Trans
+                                    i18nKey={ "applications:confirmations.disableApplication.content.1" }
+                                >
+                                            Ensure that the references to the application in
+                                    <Link
+                                        data-componentid={ `${componentId}-link-email-templates-page` }
+                                        onClick={
+                                            () => history.push(AppConstants.getPaths().get("EMAIL_MANAGEMENT"))
+                                        }
+                                        external={ false }
+                                    >
+                                        email templates
+                                    </Link> and other relevant locations are updated to reflect the application
+                                    status accordingly.
+                                </Trans>
+                            </>
+                        ) }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         </>
@@ -1049,6 +1095,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
                 template={ template }
+                isBrandingSectionHidden={ brandingDisabledFeatures.includes(BrandingPreferencesConstants.
+                    APP_WISE_BRANDING_FEATURE_TAG) }
                 readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
                     "APPLICATION_EDIT_GENERAL_SETTINGS", application) }
                 data-componentid={ `${ componentId }-general-settings` }

@@ -199,17 +199,21 @@ export const applications: ApplicationsNS = {
         },
         disableApplication: {
             header: "Are you sure?",
-            content: "This may cause the consumers being unable to access the application. This is temporary and" +
-            "reversible by enabling the application.",
+            content: {
+                0: "This may prevent consumers from accessing the application, but it can be resolved by " +
+                "re-enabling the application.",
+                1: "Ensure that the references to the application in <1>email templates</1> " +
+                "and other relevant locations are updated to reflect the application status accordingly."
+            },
             message: "If you disable this application, consumers will not be able to access the application. "+
-            "And the application may loose access to user data. Please proceed with caution.",
+            "The application also will loose access to user data. Please proceed with caution.",
             assertionHint: "Please confirm your action."
         },
         enableApplication: {
             header: "Are you sure?",
             content: "This may lead to consumers accessing the application. This action is reversible.",
             message: "If you enable this application, consumers will have the access to the application. "+
-            "And the application can gain access to user data. Please proceed with caution.",
+            "The application also will gain access to user data. Please proceed with caution.",
             assertionHint: "Please confirm your action."
         },
         deleteOutboundProvisioningIDP: {
@@ -1109,18 +1113,57 @@ export const applications: ApplicationsNS = {
             sections: {
                 applicationNativeAuthentication: {
                     heading: "App-Native Authentication",
-                    alerts: {
-                        clientAttestation: "For client attestation to work, the app-native authentication API must be enabled."
-                    },
                     fields: {
                         enableAPIBasedAuthentication: {
                             hint: "Select to authorize application to perform browserless, in-app authentication via app-native authentication API.",
                             label: "Enable app-native authentication API"
-                        },
+                        }
+                    }
+                },
+                clientAttestation: {
+                    heading: "Client Attestation",
+                    alerts: {
+                        clientAttestationAlert: "For client attestation to work, the app-native authentication API must be enabled."
+                    },
+                    fields: {
                         enableClientAttestation: {
-                            hint: "Select to verify the integrity of the application by calling the attestation service of the hosting platform.",
+                            hint: "Select to verify the integrity of the application by calling the attestation service of the hosting platform. To enable this you will be required to setup <1>Platform Settings</1>.",
                             label: "Enable client attestation"
                         },
+                        androidAttestationServiceCredentials: {
+                            hint: "Provide the Google service account credentials in the JSON format for Android applications. This will be used to access the  Google Play Integrity Service.",
+                            label: "Service account credentials",
+                            placeholder: "Content of the JSON key file for the Google service account credentials",
+                            validations: {
+                                empty: "Google service account credentials are required for client attestation.",
+                                invalid: "Invalid Google service account credentials"
+                            }
+                        }
+                    }
+                },
+                trustedApps: {
+                    heading: "Trusted App Settings",
+                    alerts: {
+                        trustedAppSettingsAlert: "Enabling this feature will publish details under <1>Platform Settings</1> to a public endpoint accessible to all Asgardeo organizations. Consequently, other organizations can view information about your application and its associated organization. This option is not applicable if you are using custom domains.",
+                        link: "Read for more."
+                    },
+                    fields: {
+                        enableFIDOTrustedApps: {
+                            hint: "Select to trust the app for user login with passkey. Provide the details of the application under <1>Platform Settings</1>.",
+                            label: "Add as a FIDO trusted app"
+                        }
+                    },
+                    modal: {
+                        assertionHint : "I understand and wish to proceed.",
+                        header: "Are you sure?",
+                        message: "For validation purposes, the details available under Platform Settings will be listed on a public endpoint shared across all organizations.",
+                        content: ""
+                    }
+                },
+                platformSettings: {
+                    heading: "Platform Settings",
+                    subTitle: "The following platform specific configurations are needed when enabling client-attestation or trusted app related features.",
+                    fields: {
                         android: {
                             heading: "Android",
                             fields: {
@@ -1129,16 +1172,20 @@ export const applications: ApplicationsNS = {
                                     label: "Package name",
                                     placeholder: "com.example.myapp",
                                     validations: {
-                                        empty: "Application package name is required for client attestation."
+                                        emptyForAttestation: "Application package name is required for client attestation.",
+                                        emptyForFIDO: "Application package name is required for FIDO trusted apps."
                                     }
                                 },
-                                androidAttestationServiceCredentials: {
-                                    hint: "Provide the Google service account credentials in the JSON format. This will be used to access the  Google Play Integrity Service.",
-                                    label: "Service account credentials",
-                                    placeholder: "Content of the JSON key file for the Google service account credentials",
+                                keyHashes: {
+                                    hint: "The SHA256 fingerprints related to the signing certificate of your application.",
+                                    label: "Key Hashes",
+                                    placeholder: "D4:B9:A3",
                                     validations: {
-                                        empty: "Google service account credentials are required for client attestation."
-                                    }
+                                        invalidOrEmpty: "A valid key hash is required for FIDO trusted apps.",
+                                        duplicate: "Same key hashes added."
+                                    },
+                                    tooltip: "Add Thumbprint"
+
                                 }
                             }
                         },
@@ -1208,7 +1255,45 @@ export const applications: ApplicationsNS = {
                 }
             }
         },
+
+        applicationsSettings: {
+            fields: {
+                dcrEndpoint: {
+                    label: "DCR Endpoint",
+                    hint: "The DCR endpoint allows OAuth clients to be registered as applications in an authorization server."
+                },
+                ssaJwks: {
+                    label: "JWKS endpoint to validate SSA",
+                    placeholder: "https://example.com/samplejwks.jwks",
+                    hint: "The JWKS url will be used to validate the software statement assertion (SSA) coming in DCR create request.",
+                    validations: {
+                        empty: "JWKS URL is required to validate SSA"
+                    }
+                },
+                mandateSSA: {
+                    label: "Mandate SSA Validation",
+                    hint: "When checked, SSA validation is mandated, and software_statement parameter is required for the DCR create request."
+                },
+                authenticationRequired: {
+                    label: "Require Authentication",
+                    hint: "When checked, authentication will be required for DCR create endpoint. If unchecked authentication is not needed to invoke DCR create endpoint."
+                },
+                enforceFapi: {
+                    label: "Enforce FAPI Conformance",
+                    hint: "When checked, an application which is created through DCR endpoint will be a FAPI compliant application."
+                }
+            }
+        },
         generalDetails: {
+            sections: {
+                branding: {
+                    title: "Branding"
+                }
+            },
+            brandingLink: {
+                hint: "This will take you to the Branding page where you can customize consumer-facing user interfaces of the application such as the logo, colors, fonts.",
+                label: "Go to Application Branding"
+            },
             fields: {
                 accessUrl: {
                     hint: "The landing page URL for this application. It will be used in the application" +
@@ -1382,6 +1467,18 @@ export const applications: ApplicationsNS = {
                     label: "Public client",
                     validations: {
                         empty: "This is a required field."
+                    }
+                },
+                hybridFlow: {
+                    hybridFlowResponseType: {
+                        children: {
+                            code_token: {
+                                hint: "This response type is not recommended."
+                            },
+                            code_idtoken_token: {
+                                hint: "This response type is not recommended."
+                            }
+                        }
                     }
                 }
             },
@@ -1600,6 +1697,11 @@ export const applications: ApplicationsNS = {
                             label: "Client authentication method",
                             placeholder: "Select method"
                         },
+                        reusePvtKeyJwt: {
+                            hint: "If enabled, the JWT can be reused again within its expiration period. " +
+                                "JTI (JWT ID) is a claim that provides a unique identifier for the JWT.",
+                            label: "Private Key JWT Reuse Enabled"
+                        },
                         signingAlgorithm: {
                             hint: "The dropdown contains the supported client assertion signing" +
                                 " algorithms.",
@@ -1671,6 +1773,28 @@ export const applications: ApplicationsNS = {
                     },
                     heading: "Refresh Token"
                 },
+                subjectToken: {
+                    fields: {
+                        enable: {
+                            hint: "If enabled, this application can be used in the user impersonation flows.",
+                            label: "Enable subject token response type",
+                            validations: {
+                                empty: "This is a required field."
+                            }
+                        },
+                        expiry: {
+                            hint: "Specify the validity period of the <1>subject_token</1> in seconds.",
+                            label: "Subject token expiry time",
+                            placeholder: "Enter the subject token expiry time",
+                            validations: {
+                                empty: "Please fill the subject token expiry time",
+                                invalid: "Subject token expiry time should be in seconds. " +
+                                    "Decimal points and negative numbers are not allowed."
+                            }
+                        }
+                    },
+                    heading: "Subject Token"
+                },
                 requestObjectSignature: {
                     description: "{{productName}} supports receiving an OIDC authentication request as " +
                         "a request object that is passed in a single, self-contained <1>request</1> " +
@@ -1693,6 +1817,29 @@ export const applications: ApplicationsNS = {
                         }
                     },
                     heading: "Scope validators"
+                },
+                hybridFlow: {
+                    heading: "Hybrid Flow",
+                    enable: {
+                        label: "Enable Hybrid Flow"
+                    },
+                    hybridFlowResponseType: {
+                        label: "Allowed response types",
+                        fields: {
+                            children: {
+                                code_token: {
+                                    label: "code token"
+                                },
+                                code_idtoken: {
+                                    label: "code id_token"
+                                },
+                                code_idtoken_token: {
+                                    label: "code id_token token"
+                                }
+                            },
+                            hint: "Select the allowed hybrid flow response type."
+                        }
+                    }
                 }
             }
         },

@@ -20,14 +20,11 @@ import AuthenticationFlowBuilder
     from "@wso2is/admin.authentication-flow-builder.v1/components/authentication-flow-builder";
 import AuthenticationFlowProvider
     from "@wso2is/admin.authentication-flow-builder.v1/providers/authentication-flow-provider";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import { AuthenticatorCreateWizardFactory } from "@wso2is/admin.connections.v1";
 import { ConnectionsManagementUtils }
     from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import {
-    AuthenticatorCreateWizardFactory
-} from "@wso2is/admin.identity-providers.v1/components/wizards/authenticator-create-wizard-factory";
 import {
     IdentityProviderManagementConstants
 } from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
@@ -156,7 +153,6 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
     const { t } = useTranslation();
     const { UIConfig } = useUIConfig();
     const dispatch: Dispatch = useDispatch();
-    const { legacyAuthzRuntime } = useAuthorization();
 
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
     const isApplicationShared: boolean = application?.advancedConfigurations?.additionalSpProperties?.find(
@@ -279,11 +275,8 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
                 setMicrosoftAuthenticators(microsoft);
                 setAppleAuthenticators(apple);
 
-                // If the current runtime is legacy (old) runtime, add the organization sso
-                // authenticator to the connections list.
-                if (legacyAuthzRuntime) {
-                    response[1].push(OrganizationUtils.getOrganizationAuthenticator());
-                }
+                // Add the organization sso authenticator to the connections list.
+                response[1].push(OrganizationUtils.getOrganizationAuthenticator());
 
                 setAuthenticators(response);
 
@@ -866,7 +859,8 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
 
         return (
             <AuthenticatorCreateWizardFactory
-                open={ showIDPCreateWizard }
+                isModalOpen={ showIDPCreateWizard }
+                handleModalVisibility={ (isOpen: boolean) => setShowIDPCreateWizard(isOpen) }
                 type={ idpTemplateTypeToTrigger }
                 selectedTemplate={ selectedIDPTemplate }
                 onIDPCreate={ () => {
@@ -904,6 +898,59 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
         );
     };
 
+    const renderLegacyAuthenticationFlowBuilder = (): ReactElement => {
+        if (isLoading || isAuthenticatorsFetchRequestLoading) {
+            return (
+                <ContentLoader inline="centered" active />
+            );
+        }
+
+        if (!readOnly && !loginFlow && isDefaultFlowConfiguration()) {
+            return (
+                <SignInMethodLanding
+                    readOnly={ readOnly }
+                    clientId={ clientId }
+                    onLoginFlowSelect={ (type: LoginFlowTypes) => {
+                        handleLoginFlowSelect(
+                            type,
+                            googleAuthenticators,
+                            gitHubAuthenticators,
+                            facebookAuthenticators,
+                            microsoftAuthenticators,
+                            appleAuthenticators
+                        );
+                    } }
+                    data-componentid={ `${componentId}-landing` }
+                />
+            );
+        }
+
+        return (
+            <SignInMethodCustomization
+                appId={ appId }
+                applicationName={ application?.name }
+                isApplicationShared={ isApplicationShared }
+                authenticators={ authenticators }
+                clientId={ clientId }
+                authenticationSequence={ moderatedAuthenticationSequence }
+                onIDPCreateWizardTrigger={ (type: string, cb: () => void, template: any) => {
+                    setSelectedIDPTemplate(template);
+                    setIDPCreateWizardTriggerOrigin("EXTERNAL");
+                    setIDPTemplateTypeToTrigger(type);
+                    setShowMissingSocialAuthenticatorModal(false);
+                    setShowIDPCreateWizard(true);
+                    broadcastIDPCreateSuccessMessage = cb;
+                } }
+                onUpdate={ onUpdate }
+                onReset={ handleLoginFlowReset }
+                data-componentid={ componentId }
+                isLoading={ isAuthenticatorsFetchRequestLoading }
+                setIsLoading={ setIsAuthenticatorsFetchRequestLoading }
+                readOnly={ readOnly }
+            />
+        );
+    };
+
     return (
         <AuthenticationFlowProvider
             application={ cloneDeep(application) }
@@ -917,54 +964,7 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
             authenticationSequence={ moderatedAuthenticationSequence }
         >
             <AuthenticationFlowBuilder
-                legacyBuilder={ (
-                    <>
-                        { !(isLoading || isAuthenticatorsFetchRequestLoading) ? (
-                            !readOnly && !loginFlow && isDefaultFlowConfiguration() ? (
-                                <SignInMethodLanding
-                                    readOnly={ readOnly }
-                                    clientId={ clientId }
-                                    onLoginFlowSelect={ (type: LoginFlowTypes) => {
-                                        handleLoginFlowSelect(
-                                            type,
-                                            googleAuthenticators,
-                                            gitHubAuthenticators,
-                                            facebookAuthenticators,
-                                            microsoftAuthenticators,
-                                            appleAuthenticators
-                                        );
-                                    } }
-                                    data-componentid={ `${componentId}-landing` }
-                                />
-                            ) : (
-                                <SignInMethodCustomization
-                                    appId={ appId }
-                                    applicationName={ application?.name }
-                                    isApplicationShared={ isApplicationShared }
-                                    authenticators={ authenticators }
-                                    clientId={ clientId }
-                                    authenticationSequence={ moderatedAuthenticationSequence }
-                                    onIDPCreateWizardTrigger={ (type: string, cb: () => void, template: any) => {
-                                        setSelectedIDPTemplate(template);
-                                        setIDPCreateWizardTriggerOrigin("EXTERNAL");
-                                        setIDPTemplateTypeToTrigger(type);
-                                        setShowMissingSocialAuthenticatorModal(false);
-                                        setShowIDPCreateWizard(true);
-                                        broadcastIDPCreateSuccessMessage = cb;
-                                    } }
-                                    onUpdate={ onUpdate }
-                                    onReset={ handleLoginFlowReset }
-                                    data-componentid={ componentId }
-                                    isLoading={ isAuthenticatorsFetchRequestLoading }
-                                    setIsLoading={ setIsAuthenticatorsFetchRequestLoading }
-                                    readOnly={ readOnly }
-                                />
-                            )
-                        ) : (
-                            <ContentLoader inline="centered" active />
-                        ) }
-                    </>
-                ) }
+                legacyBuilder={ renderLegacyAuthenticationFlowBuilder() }
                 onIDPCreateWizardTrigger={ (type: string, cb: () => void, template: any) => {
                     setSelectedIDPTemplate(template);
                     setIDPCreateWizardTriggerOrigin("EXTERNAL");

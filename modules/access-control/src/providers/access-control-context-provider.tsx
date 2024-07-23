@@ -24,7 +24,6 @@ import AccessControlContext from "../context/access-control-context";
  */
 export interface AccessControlContextInterface {
     allowedScopes: string;
-    isLegacyRuntimeEnabled: boolean;
     organizationType: string;
 }
 
@@ -42,7 +41,6 @@ const AccessControlContextProvider: FunctionComponent<PropsWithChildren<AccessCo
     const {
         allowedScopes,
         children,
-        isLegacyRuntimeEnabled,
         organizationType
     } = props;
 
@@ -50,7 +48,6 @@ const AccessControlContextProvider: FunctionComponent<PropsWithChildren<AccessCo
         <AccessControlContext.Provider
             value={ {
                 allowedScopes,
-                isLegacyRuntimeEnabled,
                 organizationType
             } }
         >

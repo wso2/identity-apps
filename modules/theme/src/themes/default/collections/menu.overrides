@@ -59,7 +59,7 @@
             height: auto;
         }
         &.has-feature-announcement {
-            display: block; 
+            display: block;
             height: auto;
             border-bottom: 0px;
         }
@@ -917,28 +917,6 @@
                     .text {
                         color: @primaryColor;
                     }
-                }
-            }
-            &.custom-dropdown {
-                max-height: 200px;
-                max-width: 156px;
-
-                .item {
-                    height: 43px;
-
-                    .theme-icon {
-                        padding-right: 0;
-                        padding-left: 0;
-                        background: 0 0!important;
-                    }
-
-                    .icon:hover {
-                        cursor: pointer;
-                    }
-                }
-                .item:hover {
-                    background: 0 0!important;
-                    cursor: default;
                 }
             }
         }

@@ -128,9 +128,6 @@
             {% endfor %}
         {% endif %}
     },
-    {% if legacy_authz_runtime.enable is defined %}
-        "legacyAuthzRuntime": {{ legacy_authz_runtime.enable }},
-    {% endif %}
     {% if tenant_context is defined %}
     "tenantContext": {
         "enableTenantQualifiedUrls": {{ tenant_context.enable_tenant_qualified_urls | default(true) }},

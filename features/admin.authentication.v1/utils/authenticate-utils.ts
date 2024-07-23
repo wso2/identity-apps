@@ -17,7 +17,6 @@
  */
 
 import { AuthParams, AuthReactConfig, ResponseMode, SPAUtils, Storage } from "@asgardeo/auth-react";
-import isLegacyAuthzRuntime from "@wso2is/admin.authorization.v1/utils/get-legacy-authz-runtime";
 import { Config } from "@wso2is/admin.core.v1";
 import { TokenConstants } from "@wso2is/core/constants";
 import { UserAgentParser } from "@wso2is/core/helpers";
@@ -43,11 +42,7 @@ export class AuthenticateUtils {
     private constructor() {}
 
     public static getInitializeConfig = (): AuthReactConfig => {
-        let baseUrl: string = window["AppUtils"]?.getConfig()?.serverOriginWithTenant;
-
-        if (isLegacyAuthzRuntime()) {
-            baseUrl = window[ "AppUtils" ]?.getConfig()?.idpConfigs?.serverOrigin;
-        }
+        const baseUrl: string = window["AppUtils"]?.getConfig()?.serverOriginWithTenant;
 
         return {
             baseUrl,

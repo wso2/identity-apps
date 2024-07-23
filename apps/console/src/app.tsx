@@ -18,10 +18,9 @@
 
 import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import { EventPublisher, PreLoader } from "@wso2is/admin.core.v1";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components";
-import { Config, DocumentationLinks, getBaseRoutes } from "@wso2is/admin.core.v1/configs";
+import { Config, DocumentationLinks } from "@wso2is/admin.core.v1/configs";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { history } from "@wso2is/admin.core.v1/helpers";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
@@ -64,6 +63,7 @@ import { Redirect, Route, RouteComponentProps, Router, Switch } from "react-rout
 import { Dispatch } from "redux";
 import "moment/locale/si";
 import "moment/locale/fr";
+import { getBaseRoutes } from "./configs/routes";
 
 /**
  * Main App component.
@@ -78,8 +78,6 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const { trySignInSilently, getDecodedIDToken, signOut } = useAuthContext();
-
-    const { legacyAuthzRuntime }  = useAuthorization();
 
     const { setResourceEndpoints } = useResourceEndpoints();
 
@@ -322,7 +320,6 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                             <AccessControlProvider
                                 allowedScopes={ allowedScopes }
                                 features={ featureGateConfigData }
-                                isLegacyRuntimeEnabled={ legacyAuthzRuntime }
                                 organizationType={ organizationType }
                             >
                                 <SessionManagementProvider

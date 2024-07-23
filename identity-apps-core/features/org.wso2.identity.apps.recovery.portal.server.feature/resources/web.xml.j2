@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  ~ Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2021-2024, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
   ~
   ~ WSO2 Inc. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -194,10 +194,14 @@
         <jsp-file>/challenge-question-view.jsp</jsp-file>
     </servlet>
 
-
     <servlet>
         <servlet-name>confirmrecovery.do</servlet-name>
         <jsp-file>/password-recovery-confirm.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
+        <servlet-name>passwordrecoveryotp.do</servlet-name>
+        <jsp-file>/password-recovery-otp.jsp</jsp-file>
     </servlet>
 
     <servlet>
@@ -250,6 +254,17 @@
         <jsp-file>/accept-invitation.jsp</jsp-file>
     </servlet>
 
+    {% for custom_servlet in accountrecoveryendpoint.servlet %}
+    <servlet>
+        <servlet-name>{{custom_servlet.name}}</servlet-name>
+        <jsp-file>{{custom_servlet.jsp}}</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>{{custom_servlet.name}}</servlet-name>
+        <url-pattern>{{custom_servlet.url}}</url-pattern>
+    </servlet-mapping>
+    {% endfor %}
+
     <servlet-mapping>
         <servlet-name>recoveraccountrouter.do</servlet-name>
         <url-pattern>/recoveraccountrouter.do</url-pattern>
@@ -280,10 +295,14 @@
         <url-pattern>/viewsecurityquestions.do</url-pattern>
     </servlet-mapping>
 
-
     <servlet-mapping>
         <servlet-name>confirmrecovery.do</servlet-name>
         <url-pattern>/confirmrecovery.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>passwordrecoveryotp.do</servlet-name>
+        <url-pattern>/passwordrecoveryotp.do</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,13 +19,15 @@
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
 import {
     BrandingPreferenceInterface,
     BrandingPreferenceThemeInterface,
     BrandingSubFeatures,
     PredefinedThemes,
-    PreviewScreenType
+    PreviewScreenType,
+    PreviewScreenVariationType
 } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FormPropsInterface } from "@wso2is/form";
@@ -55,8 +57,9 @@ import {
 } from "./general";
 import { BrandingPreferencePreview } from "./preview";
 import ScreenDropdown from "./screen-dropdown";
+import ScreenVariationDropdown from "./screen-variation-dropdown";
 import { StickyTabPaneActionPanel } from "./sticky-tab-pane-action-panel";
-import { BrandingPreferencesConstants } from "../constants";
+import { BrandingModes, BrandingPreferencesConstants } from "../constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import useBrandingPreference from "../hooks/use-branding-preference";
 import { BrandingPreferenceMeta } from "../meta";
@@ -139,10 +142,13 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
     const {
         activeCustomTextConfigurationMode,
         resetAllCustomTextPreference,
+        brandingMode,
+        resetSelectedPreviewScreenVariations,
         selectedLocale,
         selectedScreen,
         getScreens,
         onSelectedPreviewScreenChange,
+        onSelectedPreviewScreenVariationChange,
         activeTab,
         updateActiveTab,
         isCustomTextConfigured,
@@ -372,7 +378,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
 
     const TextPreferenceTabPane = (): ReactElement => (
         <ResourceTab.Pane className="text-tab" attached="bottom" data-componentid="branding-preference-text-tab">
-            <CustomText readOnly={ readOnly } />
+            <CustomText readOnly={ readOnly || brandingMode === BrandingModes.APPLICATION } />
             <StickyTabPaneActionPanel
                 formRef={ formRef }
                 saveButton={ {
@@ -447,14 +453,24 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
         panes.push({
             "data-tabid": BrandingPreferencesConstants.TABS.TEXT_TAB_ID,
             menuItem: (
-                <Menu.Item key="text">
+                <Menu.Item
+                    key="text"
+                    disabled={ brandingMode === BrandingModes.APPLICATION }
+                >
                     { t("branding:tabs.text.label") }
-                    { isSAASDeployment && (
+                    { isSAASDeployment && brandingMode !== BrandingModes.APPLICATION && (
                         <Chip
                             size="small"
                             sx={ { marginLeft: 1 } }
-                            label={ t("common:beta").toUpperCase() }
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-chip-beta"
+                        />
+                    ) }
+                    { brandingMode === BrandingModes.APPLICATION && (
+                        <Chip
+                            size="small"
+                            sx={ { marginLeft: 1 } }
+                            label={ t(FeatureStatusLabel.COMING_SOON) }
                         />
                     ) }
                 </Menu.Item>
@@ -516,6 +532,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                     ) => {
                         activeTabMetadata && updateActiveTab(activeTabMetadata["data-tabid"]);
                         setBrandingPreferenceForPreview(moderateValuesForPreview(brandingPreference));
+                        resetSelectedPreviewScreenVariations();
                     } }
                     panes={ resolveTabPanes() }
                     data-componentid={ `${componentId}-forms` }
@@ -539,6 +556,16 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                                                     screens={ getScreens(BrandingSubFeatures.DESIGN) }
                                                     onChange={ (screen: PreviewScreenType) => {
                                                         onSelectedPreviewScreenChange(screen);
+                                                    } }
+                                                />
+                                            </div>
+                                        ) }
+                                        { activeTab === BrandingPreferencesConstants.TABS.TEXT_TAB_ID && (
+                                            <div className="preview-screen-selection">
+                                                <ScreenVariationDropdown
+                                                    selectedScreen= { selectedScreen }
+                                                    onChange={ (variation: PreviewScreenVariationType) => {
+                                                        onSelectedPreviewScreenVariationChange(variation);
                                                     } }
                                                 />
                                             </div>

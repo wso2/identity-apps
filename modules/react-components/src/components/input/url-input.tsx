@@ -42,6 +42,8 @@ export interface URLInputPropsInterface extends IdentifiableComponentInterface, 
     hint?: ReactNode;
     showError?: boolean;
     setShowError?: any;
+    clearError?: boolean;
+    setClearError?: (clearError: boolean) => void;
     required?: boolean;
     disabled?: boolean;
     hideComponent?: boolean;
@@ -187,6 +189,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         labelEnabled,
         showError,
         setShowError,
+        clearError,
+        setClearError,
         urlState,
         setURLState,
         validation,
@@ -472,6 +476,13 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
             setShowError(false);
         }
     }, [ showError ]);
+
+    useEffect(() => {
+        if (clearError) {
+            setValidURL(true);
+            setClearError(false);
+        }
+    }, [ clearError ]);
 
     useEffect(() => {
         if (hideComponent) {

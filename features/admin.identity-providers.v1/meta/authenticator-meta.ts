@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
+import { AuthenticatorLabels, ConnectionManagementConstants } from "@wso2is/admin.connections.v1";
 import get from "lodash-es/get";
 import { ReactNode } from "react";
 import { getAuthenticatorIcons } from "../configs/ui";
 import { IdentityProviderManagementConstants } from "../constants";
-import { AuthenticatorCategories, AuthenticatorLabels, FederatedAuthenticatorInterface } from "../models";
+import { AuthenticatorCategories } from "../models";
 
 export class AuthenticatorMeta {
 
@@ -60,7 +60,7 @@ export class AuthenticatorMeta {
                 "existing Twitter accounts.",
             [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "Authenticate users with " +
                 "Enterprise OIDC connections.",
-            [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "Authenticate users with " +
+            [ ConnectionManagementConstants.SAML_AUTHENTICATOR_ID ]: "Authenticate users with " +
                 "Enterprise SAML connections.",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Email users a one-time passcode to " +
                 "log in passwordless.",
@@ -82,75 +82,6 @@ export class AuthenticatorMeta {
     }
 
     /**
-     * Get Authenticator Labels.
-     *
-     * @param authenticatorId - Authenticator ID.
-     *
-     * @returns Authenticator labels.
-     */
-    public static getAuthenticatorLabels(authenticator: FederatedAuthenticatorInterface): string[] {
-
-        const authenticatorId: string = authenticator?.authenticatorId;
-
-        const authenticatorLabels: string[] = get({
-            [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: [ AuthenticatorLabels.HANDLERS ],
-            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: identityProviderConfig.fidoTags,
-            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.MULTI_FACTOR
-            ],
-            [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
-            ],
-            [ IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
-            ],
-            [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
-            ],
-            [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
-            ],
-            [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.OIDC
-            ],
-            [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SAML
-            ],
-            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.MULTI_FACTOR
-            ],
-            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.MULTI_FACTOR
-            ],
-            [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.PASSWORDLESS
-            ],
-            [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
-            ],
-            [ IdentityProviderManagementConstants.HYPR_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.PASSWORDLESS
-            ],
-            [ IdentityProviderManagementConstants.IPROOV_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.PASSWORDLESS
-            ],
-            [ IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.HANDLERS
-            ]
-        }, authenticatorId);
-
-        if (authenticator?.tags?.includes(AuthenticatorLabels.API_AUTHENTICATION)) {
-            if (authenticatorLabels) {
-                return [ ...authenticatorLabels, AuthenticatorLabels.API_AUTHENTICATION ];
-            } else {
-                return [ AuthenticatorLabels.API_AUTHENTICATION ];
-            }
-        }
-
-        return authenticatorLabels;
-    }
-
-    /**
      * Get Authenticator Type display name.
      *
      * @param type - Type.
@@ -160,15 +91,20 @@ export class AuthenticatorMeta {
     public static getAuthenticatorTypeDisplayName(type: AuthenticatorCategories): string {
 
         return get({
-            [ AuthenticatorCategories.ENTERPRISE ]: "applications:edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
+            [ AuthenticatorCategories.ENTERPRISE ]: "applications:edit.sections." +
+                "signOnMethod.sections.authenticationFlow.sections.stepBased." +
                 "addAuthenticatorModal.content.authenticatorGroups.enterprise.heading",
-            [ AuthenticatorCategories.LOCAL ]: "applications:edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
+            [ AuthenticatorCategories.LOCAL ]: "applications:edit.sections." +
+                "signOnMethod.sections.authenticationFlow.sections.stepBased." +
                 "addAuthenticatorModal.content.authenticatorGroups.basic.heading",
-            [ AuthenticatorCategories.SECOND_FACTOR ]: "applications:edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
+            [ AuthenticatorCategories.SECOND_FACTOR ]: "applications:edit.sections." +
+                "signOnMethod.sections.authenticationFlow.sections.stepBased." +
                 "addAuthenticatorModal.content.authenticatorGroups.mfa.heading",
-            [ AuthenticatorCategories.SOCIAL ]: "applications:edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
+            [ AuthenticatorCategories.SOCIAL ]: "applications:edit.sections." +
+                "signOnMethod.sections.authenticationFlow.sections.stepBased." +
                 "addAuthenticatorModal.content.authenticatorGroups.social.heading",
-            [ AuthenticatorCategories.RECOVERY ]: "applications:edit.sections.signOnMethod.sections.authenticationFlow.sections.stepBased." +
+            [ AuthenticatorCategories.RECOVERY ]: "applications:edit.sections." +
+            "signOnMethod.sections.authenticationFlow.sections.stepBased." +
                 "addAuthenticatorModal.content.authenticatorGroups.backupCodes.heading"
         }, type);
     }
@@ -222,7 +158,7 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: "Facebook",
             [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: "Twitter",
             [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "OIDC",
-            [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "SAML",
+            [ ConnectionManagementConstants.SAML_AUTHENTICATOR_ID ]: "SAML",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Predefined",
             [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined",
             [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: "Apple",
@@ -272,7 +208,7 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: "facebook",
             [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: "twitter",
             [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "enterprise-oidc",
-            [ IdentityProviderManagementConstants.SAML_AUTHENTICATOR_ID ]: "enterprise-saml",
+            [ ConnectionManagementConstants.SAML_AUTHENTICATOR_ID ]: "enterprise-saml",
             [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: "apple"
         }, authenticatorId);
     }

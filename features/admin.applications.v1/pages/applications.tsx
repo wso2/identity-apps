@@ -17,8 +17,6 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
-import isLegacyAuthzRuntime from "@wso2is/admin.authorization.v1/utils/get-legacy-authz-runtime";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -34,7 +32,7 @@ import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import {
@@ -71,7 +69,8 @@ import {
     List,
     PaginationProps
 } from "semantic-ui-react";
-import { useApplicationList, useMyAccountApplicationData, useMyAccountStatus } from "../api";
+import { useApplicationList, useMyAccountApplicationData } from "../api";
+import { useGetApplication } from "../api/use-get-application";
 import { ApplicationList } from "../components/application-list";
 import { MinimalAppCreateWizard } from "../components/wizard/minimal-application-create-wizard";
 import { ApplicationManagementConstants } from "../constants";
@@ -105,7 +104,7 @@ const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
 /**
  * Props for the Applications page.
  */
-type ApplicationsPageInterface = TestableComponentInterface;
+type ApplicationsPageInterface = TestableComponentInterface & IdentifiableComponentInterface;
 
 /**
  * Applications page.
@@ -120,8 +119,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const {
         [ "data-testid" ]: testId
     } = props;
-
-    const { legacyAuthzRuntime } = useAuthorization();
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
@@ -150,8 +147,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     // Note: If we are providing strong auth for applications use this state to handle it.
     const [ strongAuth, _setStrongAuth ] = useState<boolean>(undefined);
     const [ filteredApplicationList, setFilteredApplicationList ] = useState<ApplicationListInterface>(null);
+    const [ myAccountAppId, setMyAccountAppId ] = useState<string>(null);
 
-    const { isSubOrganization, organizationType } = useGetCurrentOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -168,43 +166,54 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         error: myAccountApplicationDataFetchRequestError
     } = useMyAccountApplicationData("advancedConfigurations,templateId,clientId,issuer");
 
-    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
-
     const {
-        data: myAccountStatus,
-        isLoading: isMyAccountStatusLoading,
-        error: myAccountStatusFetchRequestError
-    } = useMyAccountStatus(!isSubOrg && applicationConfig?.advancedConfigurations?.showMyAccountStatus);
+        data: myAccountApplication,
+        isLoading: isMyAccountApplicationGetRequestLoading,
+        error: myAccountApplicationGetRequestError
+    } = useGetApplication(myAccountAppId , !!myAccountAppId);
+
+    /**
+     * Set the application id for My Account.
+     */
+    useEffect(() => {
+        if (myAccountApplicationData?.applications?.length === 1) {
+            myAccountApplicationData.applications.forEach((
+                item: ApplicationListItemInterface
+            ) => {
+                setMyAccountAppId(item?.id);
+            });
+        }
+    }, [ myAccountApplicationData ]);
 
     /**
      * Sets the initial spinner.
      * TODO: Remove this once the loaders are finalized.
      */
     useEffect(() => {
-        if (isApplicationListFetchRequestLoading === false && isMyAccountStatusLoading === false
-            && !isMyAccountApplicationDataFetchRequestLoading) {
-            let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
+        let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
 
-            if (myAccountStatus) {
-                const enableProperty: string = myAccountStatus["value"];
-
-                if (enableProperty && enableProperty === "false") {
-                    status = false;
-                }
+        if (
+            !isApplicationListFetchRequestLoading
+                && !isMyAccountApplicationGetRequestLoading
+                && !isMyAccountApplicationDataFetchRequestLoading
+        ) {
+            if (myAccountApplication) {
+                status = myAccountApplication?.applicationEnabled;
             }
-            setMyAccountStatus(status);
         }
+
+        setMyAccountStatus(status);
     }, [
         isApplicationListFetchRequestLoading,
-        isMyAccountStatusLoading,
-        isMyAccountApplicationDataFetchRequestLoading
+        isMyAccountApplicationGetRequestLoading,
+        isMyAccountApplicationDataFetchRequestLoading,
+        myAccountAppId
     ]);
 
     /**
      * Handles the application list fetch request error.
      */
     useEffect(() => {
-
         if (!applicationListFetchRequestError) {
             return;
         }
@@ -235,7 +244,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * Handles the my account application fetch request error.
      */
     useEffect(() => {
-
         if (!myAccountApplicationDataFetchRequestError) {
             return;
         }
@@ -261,22 +269,22 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     }, [ myAccountApplicationDataFetchRequestError ]);
 
     /**
-     * Handles the application list fetch request error.
+     * Handles the My Account application data fetch request error.
      */
     useEffect(() => {
-
-        if (!myAccountStatusFetchRequestError) {
+        if (!myAccountApplicationGetRequestError) {
             return;
         }
 
-        if (myAccountStatusFetchRequestError.response
-            && myAccountStatusFetchRequestError.response.data
-            && myAccountStatusFetchRequestError.response.data.description) {
-            if (myAccountStatusFetchRequestError.response.status === 404) {
+        if (
+            myAccountApplicationGetRequestError?.response?.data?.description
+        ) {
+            if (myAccountApplicationGetRequestError.response?.status === 404) {
                 return;
             }
+
             dispatch(addAlert({
-                description: myAccountStatusFetchRequestError.response.data.description ??
+                description: myAccountApplicationGetRequestError.response.data.description ??
                     t("applications:myaccount.fetchMyAccountStatus.error.description"),
                 level: AlertLevels.ERROR,
                 message: t("applications:myaccount.fetchMyAccountStatus.error.message")
@@ -292,7 +300,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             message: t("applications:myaccount.fetchMyAccountStatus" +
                 ".genericError.message")
         }));
-    }, [ myAccountStatusFetchRequestError ]);
+    }, [ myAccountApplicationGetRequestError ]);
 
     /**
      * Filter out the system apps from the application list.
@@ -310,13 +318,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
                     !ApplicationManagementConstants.SYSTEM_APPS.includes(item.name)
                     && !ApplicationManagementConstants.DEFAULT_APPS.includes(item.name)
-                );
-            }
-
-            // Remove the M2M application from the application list if the legacy authz runtime is enabled.
-            if (isLegacyAuthzRuntime()) {
-                appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
-                    item.templateId !== ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
                 );
             }
 
@@ -443,8 +444,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         if (
             !applicationConfig.advancedConfigurations.showMyAccount
             || UIConfig?.legacyMode?.applicationListSystemApps
-            // Disable the myaccount navigation box for suborgs in legacyauthz runtime.
-            || (isLegacyAuthzRuntime() && isSubOrganization())
         ) {
             return null;
         }
@@ -549,26 +548,60 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         );
     };
 
+    const handleSettingsButton = () => {
+        history.push(AppConstants.getPaths().get("APPLICATIONS_SETTINGS"));
+    };
+
     return (
         <PageLayout
             pageTitle="Applications"
             action={ (organizationType !== OrganizationType.SUBORGANIZATION &&
-                filteredApplicationList?.totalResults > 0) && (
-                <Show
-                    when={ featureConfig?.applications?.scopes?.create }
-                >
-                    <PrimaryButton
-                        onClick={ (): void => {
-                            eventPublisher.publish("application-click-new-application-button");
-                            history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
-                        } }
-                        data-testid={ `${ testId }-list-layout-add-button` }
-                    >
-                        <Icon name="add" />
-                        { t("applications:list.actions.add") }
-                    </PrimaryButton>
-                </Show>
-            ) }
+                filteredApplicationList?.totalResults > 0) ? (
+                    <>
+                        <Show when={ featureConfig?.applications?.scopes?.create }>
+                            {
+                                !applicationDisabledFeatures?.includes(
+                                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATIONS_SETTINGS")
+                                ) &&
+                                (<Button
+                                    data-componentid={ "applications-settings-button" }
+                                    icon="setting"
+                                    onClick={ handleSettingsButton }
+                                >
+                                </Button>)
+                            }
+                        </Show>
+                        <Show
+                            when={ featureConfig?.applications?.scopes?.create }
+                        >
+                            <PrimaryButton
+                                onClick={ (): void => {
+                                    eventPublisher.publish("application-click-new-application-button");
+                                    history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                                } }
+                                data-testid={ `${ testId }-list-layout-add-button` }
+                            >
+                                <Icon name="add" />
+                                { t("applications:list.actions.add") }
+                            </PrimaryButton>
+                        </Show>
+                    </>
+                ) : (
+                    <Show when={ featureConfig?.applications?.scopes?.create }>
+                        {
+                            !applicationDisabledFeatures?.includes(
+                                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATIONS_SETTINGS")
+                            ) &&
+                            (<Button
+                                data-componentid={ "applications-settings-button" }
+                                icon="setting"
+                                onClick={ handleSettingsButton }
+                            >
+                            </Button>)
+                        }
+                    </Show>
+
+                ) }
             title={ t("console:develop.pages.applications.title") }
             description={ organizationType !== OrganizationType.SUBORGANIZATION
                 ? (
@@ -596,13 +629,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             data-testid={ `${ testId }-page-layout` }
         >
             {
-                (
-                    legacyAuthzRuntime
-                    || (
-                        !isMyAccountApplicationDataFetchRequestLoading
-                        && myAccountApplicationData?.applications?.length !== 0
-                    )
-                ) && renderTenantedMyAccountLink()
+                !isMyAccountApplicationDataFetchRequestLoading
+                    && myAccountApplicationData?.applications?.length !== 0
+                    && renderTenantedMyAccountLink()
             }
             <ListLayout
                 advancedSearch={ (
@@ -759,6 +788,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
  * Default props for the component.
  */
 ApplicationsPage.defaultProps = {
+    "data-componentid": "applications",
     "data-testid": "applications"
 };
 

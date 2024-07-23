@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,9 +27,6 @@ import {
     AuthenticatorExtensionsConfigInterface,
     identityProviderConfig
 } from "@wso2is/admin.extensions.v1/configs";
-import {
-    EditMultiFactorAuthenticator
-} from "@wso2is/admin.identity-providers.v1/components/edit-multi-factor-authenticator";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -71,6 +68,7 @@ import {
     getConnectionTemplates
 } from "../api/connections";
 import { EditConnection } from "../components/edit/connection-edit";
+import { EditMultiFactorAuthenticator } from "../components/edit/edit-multi-factor-authenticator";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { useSetConnectionTemplates } from "../hooks/use-connection-templates";
@@ -241,8 +239,8 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         const path: string[] = location.pathname.split("/");
         const id: string = path[ path.length - 1 ];
 
-        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(identityProviderConfig
-            .authenticators, id);
+        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
+            AuthenticatorMeta.getAuthenticators(), id);
 
         if (authenticatorConfig?.isEnabled) {
             getMultiFactorAuthenticator(id, authenticatorConfig?.useAuthenticatorsAPI);
@@ -447,7 +445,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
          * @param cb - Callback.
          * @returns Promise containing authenticator details.
          */
-        const getAuthenticatorDetails = <T extends unknown>(cb: (id: string) => Promise<T>) => {
+        const getAuthenticatorDetails = <T,>(cb: (id: string) => Promise<T>) => {
 
             cb(id)
                 .then((response: T) => {
@@ -527,8 +525,9 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return;
         }
 
-        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(identityProviderConfig
-            .authenticators, id);
+
+        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
+            AuthenticatorMeta.getAuthenticators(), id);
 
         getMultiFactorAuthenticator(id, authenticatorConfig?.useAuthenticatorsAPI);
     };
@@ -664,11 +663,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                     }
                 </Fragment>
             );
-        }
-
-        if (connector.id === AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID) {
-            connector.displayName = identityProviderConfig.getOverriddenAuthenticatorDisplayName(
-                connector.id, connector.displayName);
         }
 
         return connector.friendlyName || connector.displayName || connector.name;

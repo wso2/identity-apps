@@ -17,6 +17,7 @@
  */
 import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "@wso2is/admin.core.v1";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import {
     ConnectorPropertyInterface,
@@ -222,7 +223,10 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 {
                     "op": "add",
                     "value": {
-                        [ProfileConstants.SCIM2_WSO2_USER_SCHEMA]: {
+                        [ SCIMConfigs?.scimEnterpriseUserClaimUri?.forcePasswordReset?.
+                            startsWith(ProfileConstants.SCIM2_ENT_USER_SCHEMA)
+                            ? ProfileConstants.SCIM2_ENT_USER_SCHEMA
+                            : ProfileConstants.SCIM2_WSO2_USER_SCHEMA ]: {
                             "forcePasswordReset": true
                         }
                     }

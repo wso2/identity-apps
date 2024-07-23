@@ -2460,6 +2460,26 @@ export interface ConsoleNS {
                 title: string;
                 subTitle: string;
             };
+            applicationsSettings: {
+                backButton: string;
+                title: string;
+                subTitle: string;
+                learnMore: string;
+                notifications: {
+                    error: {
+                        description: string;
+                        message: string;
+                    };
+                    genericError: {
+                        description: string;
+                        message: string;
+                    };
+                    success: {
+                        description: string;
+                        message: string;
+                    };
+                };
+            };
             authenticationProvider: {
                 title: string;
                 subTitle: string;
@@ -7784,39 +7804,6 @@ export interface ConsoleNS {
                 description: string;
                 goBackToApplication: string;
                 goBackToValidationConfig: string;
-            };
-            jwtPrivateKeyConfiguration: {
-                fetchValidationConfigData: {
-                    error: {
-                        description: string;
-                        message: string;
-                    };
-                    genericError: {
-                        description: string;
-                        message: string;
-                    };
-                };
-                notifications: {
-                    error: {
-                        description: string;
-                        message: string;
-                    };
-                    genericError: {
-                        description: string;
-                        message: string;
-                    };
-                    success: {
-                        description: string;
-                        message: string;
-                    };
-                };
-                pageTitle: string;
-                description: string;
-                goBackToApplication: string;
-                goBackToAccountSecurityConfig: string;
-                messageInfo: string;
-                tokenReuseEnabled: string;
-                tokenReuseDisabled: string;
             };
             insights: {
                 pageTitle: string;

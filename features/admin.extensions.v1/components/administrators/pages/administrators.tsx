@@ -17,7 +17,7 @@
  */
 
 import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import { useApplicationList } from "@wso2is/admin.applications.v1/api";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -89,13 +89,11 @@ import {
     TabProps
 } from "semantic-ui-react";
 import { administratorConfig } from "../../../configs/administrator";
-import { SCIMConfigs } from "../../../configs/scim";
 import { FeatureGateConstants } from "../../feature-gate/constants/feature-gate";
 import { TenantInfo } from "../../tenants/models";
 import { getAssociationType } from "../../tenants/utils/tenants";
 import { getAgentConnections } from "../../user-stores/api";
 import { AgentConnectionInterface } from "../../user-stores/models";
-import { useOrganizationConfig } from "../api";
 import { GuestUsersList, OnboardedGuestUsersList } from "../components";
 import {
     ADVANCED_USER_MGT,
@@ -104,6 +102,7 @@ import {
     UserAccountTypes
 } from "../constants";
 import { UseOrganizationConfigType } from "../models/organization";
+import { isAdminUser, isOwner } from "../utils/administrators";
 import { AddAdministratorWizard } from "../wizard";
 
 /**
@@ -149,9 +148,8 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(
         FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
-    const { legacyAuthzRuntime }  = useAuthorization();
-    const useOrgConfig: UseOrganizationConfigType = legacyAuthzRuntime
-        ? useOrganizationConfig : useOrganizationConfigV2;
+
+    const useOrgConfig: UseOrganizationConfigType = useOrganizationConfigV2;
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -261,6 +259,12 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         administratorConfig.enableAdminInvite
     );
 
+    const { data: consoleApplicationFilter } = useApplicationList(null, null, null, "name eq Console");
+
+    const consoleId: string = useMemo(() => (
+        consoleApplicationFilter?.applications[0]?.id
+    ), [ consoleApplicationFilter ]);
+
     const {
         data: serverConfigs,
         error: serverConfigsFetchRequestError
@@ -295,7 +299,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
             setInvitationStatusOption(InvitationStatus.ACCEPTED);
             setIsInvitationStatusOptionChanged(true);
         };
-    }, []);
+    }, [ consoleId ]);
 
     useEffect(() => {
         setIsEnterpriseLoginEnabled(OrganizationConfig?.isEnterpriseLoginEnabled);
@@ -592,19 +596,6 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         const clonedUserList: UserListInterface = cloneDeep(usersList);
         const processedUserList: UserBasicInterface[] = [];
 
-        /**
-         * Checks whether administrator role is present in the user.
-         */
-        const isAdminUser = (user: UserBasicInterface): boolean => {
-            return user?.roles?.some((role: UserRoleInterface) =>
-                role.display === administratorConfig.adminRoleName
-            );
-        };
-
-        const isOwner = (user: UserBasicInterface):boolean => {
-            return (user[ SCIMConfigs.scim.enterpriseSchema ]?.userAccountType === UserAccountTypes.OWNER);
-        };
-
         clonedUserList.Resources = clonedUserList?.Resources?.map((resource: UserBasicInterface) => {
             // Filter out users belong to groups named "Administrator"
             if (!isAdminUser(resource)) {
@@ -745,46 +736,49 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
      * Fetches the admin role id from database.
      */
     const getAdminRoleId = () => {
-        const searchData:SearchRoleInterface = {
-            filter: "displayName eq " + administratorConfig.adminRoleName,
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:SearchRequest" ],
-            startIndex: 0
-        };
+        if (consoleId) {
+            const searchData:SearchRoleInterface = {
+                filter: "displayName eq " + administratorConfig.adminRoleName +
+                    " and audience.value eq " + consoleId,
+                schemas: [ "urn:ietf:params:scim:api:messages:2.0:SearchRequest" ],
+                startIndex: 0
+            };
 
-        searchRoleList(searchData)
-            .then((response: AxiosResponse) => {
-                if (response?.data?.Resources.length > 0) {
-                    let adminId: string = response?.data?.Resources[0]?.id;
+            searchRoleList(searchData)
+                .then((response: AxiosResponse) => {
+                    if (response?.data?.Resources.length > 0) {
+                        let adminId: string = response?.data?.Resources[0]?.id;
 
-                    if (!legacyAuthzRuntime && response?.data?.Resources?.length > 1) {
-                        const filteredRoleList: RolesV2Interface[] = response?.data?.Resources?.filter(
-                            (role: RolesV2Interface) => role?.audience?.type === RoleAudienceTypes.APPLICATION);
+                        if (response?.data?.Resources?.length > 1) {
+                            const filteredRoleList: RolesV2Interface[] = response?.data?.Resources?.filter(
+                                (role: RolesV2Interface) => role?.audience?.type === RoleAudienceTypes.APPLICATION);
 
-                        if (filteredRoleList?.length > 0) {
-                            adminId = filteredRoleList[0]?.id;
+                            if (filteredRoleList?.length > 0) {
+                                adminId = filteredRoleList[0]?.id;
+                            }
                         }
+
+                        setAdminRoleId(adminId);
                     }
+                }).catch((error: IdentityAppsApiException) => {
+                    if (error.response && error.response.data && error.response.data.description) {
+                        dispatch(addAlert({
+                            description: error.response.data.description,
+                            level: AlertLevels.ERROR,
+                            message: t("users:notifications.getAdminRole.error.message")
+                        }));
 
-                    setAdminRoleId(adminId);
-                }
-            }).catch((error: IdentityAppsApiException) => {
-                if (error.response && error.response.data && error.response.data.description) {
+                        return;
+                    }
                     dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: t("users:notifications.getAdminRole.error.message")
-                    }));
-
-                    return;
-                }
-                dispatch(addAlert({
-                    description: t("users:notifications.getAdminRole." +
+                        description: t("users:notifications.getAdminRole." +
                         "genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("users:notifications.getAdminRole.genericError" +
+                        level: AlertLevels.ERROR,
+                        message: t("users:notifications.getAdminRole.genericError" +
                         ".message")
-                }));
-            });
+                    }));
+                });
+        }
     };
 
     /**

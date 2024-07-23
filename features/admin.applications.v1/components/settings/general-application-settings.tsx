@@ -17,7 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { AppState, FeatureConfigInterface, UIConfigInterface } from "@wso2is/admin.core.v1";
+import { AppConstants, AppState, FeatureConfigInterface, UIConfigInterface, history } from "@wso2is/admin.core.v1";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
@@ -27,7 +27,8 @@ import {
     ContentLoader,
     DangerZone,
     DangerZoneGroup,
-    EmphasizedSegment
+    EmphasizedSegment,
+    Link
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FormEvent, FunctionComponent, ReactElement, useState } from "react";
@@ -104,7 +105,11 @@ interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfi
     /**
      * Application.
      */
-    application?: ApplicationInterface
+    application?: ApplicationInterface;
+    /**
+     * Is branding section hidden.
+     */
+    isBrandingSectionHidden?: boolean;
 }
 
 /**
@@ -124,7 +129,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         description,
         discoverability,
         featureConfig,
-        hiddenFields,
         imageUrl,
         accessUrl,
         isLoading,
@@ -133,6 +137,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         readOnly,
         isManagementApp,
         application,
+        isBrandingSectionHidden,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -375,7 +380,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             onSubmit={ handleFormSubmit }
                             imageUrl={ imageUrl }
                             accessUrl={ accessUrl }
-                            hiddenFields={ hiddenFields }
                             readOnly={
                                 readOnly
                                 || !hasRequiredScopes(
@@ -386,6 +390,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             hasRequiredScope={ hasRequiredScopes(
                                 featureConfig?.applications, featureConfig?.applications?.scopes?.update,
                                 allowedScopes) }
+                            isBrandingSectionHidden={ isBrandingSectionHidden }
                             data-testid={ `${ componentId }-form` }
                             isSubmitting={ isSubmitting }
                             isManagementApp={ isManagementApp }
@@ -517,7 +522,33 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         >
                             { enableStatus
                                 ? t("applications:confirmations.enableApplication.content")
-                                : t("applications:confirmations.disableApplication.content") }
+                                : (
+                                    <>
+                                        <Trans
+                                            i18nKey={ "applications:confirmations.disableApplication.content.0" }
+                                        >
+                                        This may prevent consumers from accessing the application,
+                                        but it can be resolved by re-enabling the application.
+                                        </Trans>
+                                        <br /><br />
+                                        <Trans
+                                            i18nKey={ "applications:confirmations.disableApplication.content.1" }
+                                        >
+                                            Ensure that the references to the application in
+                                            <Link
+                                                data-componentid={ `${componentId}-link-email-templates-page` }
+                                                onClick={
+                                                    () => history.push(AppConstants.getPaths().get("EMAIL_MANAGEMENT"))
+                                                }
+                                                external={ false }
+                                            >
+                                                email templates
+                                            </Link> and other relevant locations are updated to reflect the
+                                            application status accordingly.
+                                        </Trans>
+                                    </>
+                                )
+                            }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 </>

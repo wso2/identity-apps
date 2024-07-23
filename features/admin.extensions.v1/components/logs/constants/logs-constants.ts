@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -145,4 +145,7 @@ export class LogsConstants {
             value: -1
         }
     ];
+
+    public static readonly END_TIME_GREATER_THAN_START_TIME_ERROR_CODE: string = "LM-10008";
+    public static readonly START_TIME_GREATER_THAN_CURRENT_TIME_ERROR_CODE: string = "LM-10009";
 }

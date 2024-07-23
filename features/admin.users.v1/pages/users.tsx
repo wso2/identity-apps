@@ -18,7 +18,6 @@
 
 import Chip from "@oxygen-ui/react/Chip";
 import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -35,7 +34,6 @@ import {
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
-import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     ConnectorPropertyInterface,
@@ -130,7 +128,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const { t } = useTranslation();
 
     const dispatch: Dispatch<any> = useDispatch();
-    const { legacyAuthzRuntime }  = useAuthorization();
+
     const showStatusLabelForNewAuthzRuntimeFeatures: boolean =
         window["AppUtils"]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures;
 
@@ -512,12 +510,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             return resource;
         });
 
-        if (legacyAuthzRuntime) {
-            clonedUserList.Resources = clonedUserList?.Resources?.filter((resource: UserBasicInterface) =>
-                !resource[SCIMConfigs?.scim?.enterpriseSchema]?.managedOrg);
-        }
-
-
         return moderateUsersList(clonedUserList, modifiedLimit, TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET);
     };
 
@@ -771,11 +763,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 text: <>
                     { t("parentOrgInvitations:addUserWizard.heading") }
                     { showStatusLabelForNewAuthzRuntimeFeatures
-                      && !legacyAuthzRuntime
                       && (
                           <Chip
                               size="small"
-                              label={ t(FeatureStatusLabel.NEW).toUpperCase() }
+                              label={ t(FeatureStatusLabel.NEW) }
                               className="oxygen-chip-new"
                           />
                       ) }

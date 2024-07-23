@@ -18,7 +18,7 @@
 
 import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1/constants/autheticator-constants";
 import { AppState, EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
-import { applicationConfig, identityProviderConfig } from "@wso2is/admin.extensions.v1";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import {
     IdentityProviderManagementConstants
 } from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
@@ -165,11 +165,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         const recoveryAuth: GenericAuthenticatorInterface[] = [];
 
         localAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
-            if (authenticator.id === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID) {
-                authenticator.displayName = identityProviderConfig.getOverriddenAuthenticatorDisplayName(
-                    authenticator.id, authenticator.displayName);
-            }
-
             if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
                 recoveryAuth.push(authenticator);
             } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.id)) {
@@ -184,7 +179,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 .includes(authenticator.defaultAuthenticator.authenticatorId)) {
 
                 filteredSocialAuthenticators.push(authenticator);
-            } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.defaultAuthenticator.authenticatorId)) {
+            } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS
+                .includes(authenticator.defaultAuthenticator.authenticatorId)) {
                 secondFactorAuth.push(authenticator);
             } else {
                 filteredEnterpriseAuthenticators.push(authenticator);

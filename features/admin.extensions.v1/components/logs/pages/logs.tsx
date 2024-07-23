@@ -98,7 +98,7 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (
                     { t("extensions:develop.monitor.logs.tabs.audit") }
                     <Chip
                         size="small"
-                        label={ t("common:beta").toUpperCase() }
+                        label={ t("common:beta") }
                         className="oxygen-chip-beta"
                     />
                 </MenuItem>

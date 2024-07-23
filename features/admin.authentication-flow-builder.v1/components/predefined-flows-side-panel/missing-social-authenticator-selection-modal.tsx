@@ -16,11 +16,9 @@
  * under the License.
  */
 
+import { AuthenticatorCreateWizardFactory } from "@wso2is/admin.connections.v1";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import {
-    AuthenticatorCreateWizardFactory
-} from "@wso2is/admin.identity-providers.v1/components/wizards/authenticator-create-wizard-factory";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code, ConfirmationModal, ConfirmationModalPropsInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
@@ -94,7 +92,8 @@ const MissingSocialAuthenticatorSelectionModal: FunctionComponent<
 
         return (
             <AuthenticatorCreateWizardFactory
-                open={ showAuthenticatorCreateWizard }
+                isModalOpen={ showAuthenticatorCreateWizard }
+                handleModalVisibility={ (isOpen: boolean) => setShowAuthenticatorCreateWizard(isOpen) }
                 type={ authenticatorCategoryTemplate }
                 selectedTemplate={ null }
                 onIDPCreate={ () => {

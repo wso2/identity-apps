@@ -18,12 +18,10 @@
 
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import {
     SharedUserStoreUtils,
     UIConstants,
     UserBasicInterface,
-    UserRoleInterface,
     getUsersList
 } from "@wso2is/admin.core.v1";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils";
@@ -55,6 +53,7 @@ import { administratorConfig } from "../../../../configs/administrator";
 import { SCIMConfigs } from "../../../../configs/scim";
 import { AdminAccountTypes } from "../../constants";
 import { InternalAdminFormDataInterface } from "../../models";
+import { isAdminUser, isCollaboratorUser } from "../../utils/administrators";
 
 /**
  * Proptypes for the add admin user basic component.
@@ -82,8 +81,6 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
         [ "data-componentid"]: componentId
     } = props;
 
-    const { legacyAuthzRuntime } = useAuthorization();
-
     const [ userRoleOptions, setUserRoleList ] = useState([]);
     const [ rolesList, setRolesList ] = useState<RolesInterface[]>([]);
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
@@ -105,18 +102,13 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
         null,
         null,
         null,
-        `name eq ${ApplicationManagementConstants.CONSOLE_APP_NAME}`,
-        !legacyAuthzRuntime
+        `name eq ${ApplicationManagementConstants.CONSOLE_APP_NAME}`
     );
 
     /**
      * Build the roles filter to search for roles specific to the console application.
      */
     const roleSearchFilter: string = useMemo(() => {
-        if (legacyAuthzRuntime) {
-            return null;
-        }
-
         if (applicationListData?.applications && applicationListData?.applications?.length > 0) {
             return `audience.value eq ${applicationListData?.applications[0]?.id}`;
         }
@@ -131,7 +123,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
-        if (!legacyAuthzRuntime && !roleSearchFilter) {
+        if (!roleSearchFilter) {
             return;
         }
 
@@ -158,7 +150,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                 .then((response: AxiosResponse) => {
                     setRolesList(response.data.Resources);
                     response.data.Resources.map((role: RolesInterface, index: number) => {
-                        if ((!legacyAuthzRuntime || role.meta?.systemRole) &&
+                        if ((role.meta?.systemRole) &&
                             role.displayName !== "system" &&
                             role.displayName !== "everyone" &&
                             role.displayName !== "selfsignup" &&
@@ -224,10 +216,12 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
 
         getUsersList(limit, offset, filter, attribute, userStore)
             .then((response: UserListInterface) => {
-                // Exclude JIT users and internal admin users.
+                // Exclude JIT users, internal admin users and collaborators.
                 const responseUsers: UserBasicInterface[] = response?.Resources?.filter(
                     (user: UserBasicInterface) =>
-                        !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId && !isAdminUser(user));
+                        !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId &&
+                    !isAdminUser(user) &&
+                    !isCollaboratorUser(user));
 
                 if (responseUsers) {
                     responseUsers.sort((userObject: UserBasicInterface, comparedUserObject: UserBasicInterface) =>
@@ -242,11 +236,6 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
             .finally(() => {
                 setUserListRequestLoading(false);
             });
-    };
-
-    // Checks whether administrator role is present in the user.
-    const isAdminUser = (user: UserBasicInterface): boolean => {
-        return user.roles.some((role: UserRoleInterface) => role.display === administratorConfig.adminRoleName);
     };
 
     const getFormValues = (values: Map<string, FormValue>): void => {
@@ -413,71 +402,74 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
             submitState={ triggerSubmit }
         >
             {
-                isUserRoleOptionsRequestLoading ? (
-                    <ContentLoader/>
-                ) : (
-                    <Grid>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                                <Field
-                                    data-componentid={ `${ componentId }-external-form-email-input` }
-                                    label={ t(
-                                        "user:forms.addUserForm.inputs.email.label"
-                                    ) }
-                                    name="email"
-                                    placeholder={ t(
-                                        "user:forms.addUserForm.inputs." +
-                                        "email.placeholder"
-                                    ) }
-                                    required={ true }
-                                    requiredErrorMessage={ t(
-                                        "user:forms.addUserForm.inputs.email.validations.empty"
-                                    ) }
-                                    validation={ (value: string, validation: Validation) => {
-                                        // Check whether username is a valid email.
-                                        // check username validity against userstore regex
-                                        if (value && (!FormValidation.email(value) || !SharedUserStoreUtils
-                                            .validateInputAgainstRegEx(value, window["AppUtils"].getConfig().extensions
-                                                .collaboratorUsernameRegex))) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
-                                        }
-                                    } }
-                                    type="email"
-                                    tabIndex={ 5 }
-                                    maxLength={ 50 }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                                <Field
-                                    data-componentid={ `${ componentId }-external-form-role-dropdown` }
-                                    type="dropdown"
-                                    label={ "Role" }
-                                    name="role"
-                                    children={ userRoleOptions }
-                                    requiredErrorMessage={ t(
-                                        "user:forms.addUserForm.inputs.domain.validations.empty"
-                                    ) }
-                                    required={ true }
-                                    value={ userRoleOptions[0]?.value }
-                                    tabIndex={ 1 }
-                                />
-                                <Hint>
-                                    { "Select a role to assign to the user." +
-                                        " The access level of the user is determined by the role." }
-                                    <DocumentationLink
-                                        link={ getLink("manage.users.newCollaboratorUser.learnMore") }
-                                    >
-                                        { t("extensions:common.learnMore") }
-                                    </DocumentationLink>
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Divider hidden/>
-                    </Grid>
-                )
+                (isUserRoleOptionsRequestLoading ||
+                    !userRoleOptions ||
+                    userRoleOptions?.length <= 0
+                ) ? (
+                        <ContentLoader/>
+                    ) : (
+                        <Grid>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                                    <Field
+                                        data-componentid={ `${ componentId }-external-form-email-input` }
+                                        label={ t(
+                                            "user:forms.addUserForm.inputs.email.label"
+                                        ) }
+                                        name="email"
+                                        placeholder={ t(
+                                            "user:forms.addUserForm.inputs." +
+                                            "email.placeholder"
+                                        ) }
+                                        required={ true }
+                                        requiredErrorMessage={ t(
+                                            "user:forms.addUserForm.inputs.email.validations.empty"
+                                        ) }
+                                        validation={ (value: string, validation: Validation) => {
+                                            // Check whether username is a valid email.
+                                            // check username validity against userstore regex
+                                            if (value && (!FormValidation.email(value) || !SharedUserStoreUtils
+                                                .validateInputAgainstRegEx(value, window["AppUtils"]
+                                                    .getConfig().extensions.collaboratorUsernameRegex))) {
+                                                validation.isValid = false;
+                                                validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
+                                            }
+                                        } }
+                                        type="email"
+                                        tabIndex={ 5 }
+                                        maxLength={ 50 }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                                    <Field
+                                        data-componentid={ `${ componentId }-external-form-role-dropdown` }
+                                        type="dropdown"
+                                        label={ "Role" }
+                                        name="role"
+                                        children={ userRoleOptions }
+                                        requiredErrorMessage={ t(
+                                            "user:forms.addUserForm.inputs.domain.validations.empty"
+                                        ) }
+                                        required={ true }
+                                        value={ userRoleOptions[0]?.value }
+                                        tabIndex={ 1 }
+                                    />
+                                    <Hint>
+                                        { "Select a role to assign to the user." +
+                                            " The access level of the user is determined by the role." }
+                                        <DocumentationLink
+                                            link={ getLink("manage.users.newCollaboratorUser.learnMore") }
+                                        >
+                                            { t("extensions:common.learnMore") }
+                                        </DocumentationLink>
+                                    </Hint>
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Divider hidden/>
+                        </Grid>
+                    )
             }
         </Forms>
     );

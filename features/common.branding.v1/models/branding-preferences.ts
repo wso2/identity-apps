@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -547,7 +547,8 @@ export enum BrandingPreferenceTypes {
     /**
      * Branding Preference for the Organization.
      */
-    ORG = "ORG"
+    ORG = "ORG",
+    APP = "APP"
 }
 
 /**
@@ -574,6 +575,16 @@ export enum PreviewScreenType {
     PASSWORD_RECOVERY = "password-recovery",
     PASSWORD_RESET = "password-reset",
     PASSWORD_RESET_SUCCESS = "password-reset-success"
+}
+
+/**
+ * Enum for preview screen variation types
+ */
+export enum PreviewScreenVariationType {
+    BASE = "base",
+    SMS_OTP = "sms-otp",
+    EMAIL_LINK = "email-link",
+    MULTI = "multi"
 }
 
 /**

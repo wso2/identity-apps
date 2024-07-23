@@ -1,6 +1,6 @@
 {
+    "name": "myaccount",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "root": "apps/myaccount",
     "sourceRoot": "apps/myaccount/src",
     "projectType": "application",
     "generators": {},
@@ -30,7 +30,7 @@
             }
         },
         "build-base": {
-            "executor": "@nrwl/web:webpack",
+            "executor": "@nx/webpack:webpack",
             "outputs": [
                 "{options.outputPath}"
             ],
@@ -110,7 +110,6 @@
                 "parallel": false
             }
         },
-
         "clean": {
             "executor": "nx:run-commands",
             "options": {
@@ -138,7 +137,7 @@
             }
         },
         "serve-base": {
-            "executor": "@nrwl/web:dev-server",
+            "executor": "@nx/webpack:dev-server",
             "defaultConfiguration": "development",
             "options": {
                 "buildTarget": "myaccount:build-base",
@@ -181,6 +180,14 @@
             "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm test",
+                "cwd": "apps/myaccount",
+                "parallel": false
+            }
+        },
+        "test-coverage": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm test:coverage",
                 "cwd": "apps/myaccount",
                 "parallel": false
             }

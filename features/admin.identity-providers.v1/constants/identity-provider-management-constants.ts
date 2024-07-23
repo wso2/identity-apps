@@ -21,7 +21,6 @@ import SweIdpTemplate from "@wso2is/admin.extensions.v1/identity-provider-templa
 import TrustedTokenIssuerTemplate from
     "@wso2is/admin.extensions.v1/identity-provider-templates/templates/trusted-token-issuer/trusted-token-issuer.json";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { DocumentationConstants } from "./documentation-constants";
 import AppleIdPTemplate from "../data/identity-provider-templates/templates/apple/apple.json";
 import EnterpriseIdPTemplate from
     "../data/identity-provider-templates/templates/enterprise-identity-provider/enterprise-identity-provider.json";
@@ -51,18 +50,6 @@ export class IdentityProviderManagementConstants {
      * Identifier for the local IDP.
      */
     public static readonly LOCAL_IDP_IDENTIFIER: string = "LOCAL";
-
-    /**
-     * Doc key for the IDP overview page.
-     */
-    public static readonly IDP_OVERVIEW_DOCS_KEY: string = `${
-        DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Overview"]`;
-
-    /**
-     * Doc key for the IDP edit page.
-     */
-    public static readonly IDP_EDIT_OVERVIEW_DOCS_KEY: string = `${
-        DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Edit Identity Provider"]["Overview"]`;
 
     /**
      * Set of internal idps which are forbidden from deleting.
@@ -379,12 +366,6 @@ export class IdentityProviderManagementConstants {
     public static readonly DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY: IdentityProviderTemplateLoadingStrategies =
         IdentityProviderTemplateLoadingStrategies.LOCAL;
 
-    /**
-     * Doc key for the IDP create page.
-    **/
-    public static readonly IDP_TEMPLATES_CREATE_DOCS_KEY: string = `${
-        DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Create New Identity Provider"]`;
-
     public static readonly IDENTITY_PROVIDER_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while fetching connection template.";
 
@@ -482,7 +463,6 @@ export class IdentityProviderManagementConstants {
 
     // Known IS Predefined/Protocols authenticator IDs
     public static readonly OIDC_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
-    public static readonly SAML_AUTHENTICATOR_ID: string = "U0FNTFNTT0F1dGhlbnRpY2F0b3I";
     public static readonly PASSIVE_STS_AUTHENTICATOR_ID: string = "UGFzc2l2ZVNUU0F1dGhlbnRpY2F0b3I";
     public static readonly ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: string = "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg";
 
@@ -549,11 +529,11 @@ export class IdentityProviderManagementConstants {
 
     // Authenticator Endpoints
     public static readonly MICROSOFT_AUTHENTICATION_ENDPOINT_URL: string =
-    "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
+        "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
 
     // Token Endpoints
     public static readonly MICROSOFT_TOKEN_ENDPOINT_URL: string =
-    "https://login.microsoftonline.com/common/oauth2/v2.0/token";
+        "https://login.microsoftonline.com/common/oauth2/v2.0/token";
 
     // Keys for the initial values of SMS OTP Authenticator
     public static readonly AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY: string = "SmsOTP_ExpiryTime";
@@ -566,19 +546,19 @@ export class IdentityProviderManagementConstants {
         "idp:notifications.apiLimitReachedError.error.description",
         "idp:notifications.apiLimitReachedError.error.message",
         "cec1f247-32fd-4624-9915-f469195a53ac"
-    )
+    );
 
     /**
      * AuthenticationProvider Connections create limit reached error.
     **/
-     public static readonly ERROR_CREATE_LIMIT_REACHED_IDP: IdentityAppsError = new IdentityAppsError(
-         "IDP-60035",
-         "authenticationProvider:notifications.apiLimitReachedError.error.description",
-         "authenticationProvider:notifications.apiLimitReachedError.error.message",
-         "cec1f247-32fd-4624-9915-f469195a53ac"
-     )
+    public static readonly ERROR_CREATE_LIMIT_REACHED_IDP: IdentityAppsError = new IdentityAppsError(
+        "IDP-60035",
+        "authenticationProvider:notifications.apiLimitReachedError.error.description",
+        "authenticationProvider:notifications.apiLimitReachedError.error.message",
+        "cec1f247-32fd-4624-9915-f469195a53ac"
+    );
 
-     public static readonly SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP: boolean = false;
+    public static readonly SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP: boolean = false;
 
     /**
      * Name of the FIDO connector configuration.

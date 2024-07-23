@@ -24,14 +24,13 @@ import {
 import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.branding.v1/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
+import { ConnectionResourceEndpointsInterface } from "@wso2is/admin.connections.v1";
 import { ConsoleSettingsResourceEndpointsInterface } from "@wso2is/admin.console-settings.v1/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "@wso2is/admin.groups.v1";
-import { IDPResourceEndpointsInterface } from "@wso2is/admin.identity-providers.v1/models/endpoints";
 import { IdentityProviderTemplateLoadingStrategies }
     from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { ScopesResourceEndpointsInterface } from "@wso2is/admin.oidc-scopes.v1";
 import { OrganizationResourceEndpointsInterface } from "@wso2is/admin.organizations.v1/models";
-import { JWTAuthenticationServiceEndpointsInterface } from "@wso2is/admin.private-key-jwt.v1/models";
 import { RolesResourceEndpointsInterface } from "@wso2is/admin.roles.v2/models/endpoints";
 import { SecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "@wso2is/admin.server-configurations.v1";
@@ -463,6 +462,14 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Configurations for IDP templates.
      */
     connectionTemplates?: any;
+    /**
+     * Config if beta tag should be displayed for sms otp for password recovery feature.
+     */
+    showSmsOtpPwdRecoveryFeatureStatusChip?: boolean;
+    /**
+     * Config to check whether consent is required for trusted apps.
+     */
+    isTrustedAppConsentRequired?: boolean;
 }
 
 /**
@@ -520,13 +527,12 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     UserstoreResourceEndpointsInterface,
     RolesResourceEndpointsInterface,
     ApplicationsResourceEndpointsInterface,
-    IDPResourceEndpointsInterface,
+    ConnectionResourceEndpointsInterface,
     ScopesResourceEndpointsInterface,
     SecretsManagementEndpoints,
     OrganizationResourceEndpointsInterface,
     TenantResourceEndpointsInterface,
     ValidationServiceEndpointsInterface,
-    JWTAuthenticationServiceEndpointsInterface,
     BrandingPreferenceResourceEndpointsInterface,
     ConsoleSettingsResourceEndpointsInterface {
 

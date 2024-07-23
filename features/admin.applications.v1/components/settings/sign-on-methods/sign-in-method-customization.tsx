@@ -18,16 +18,15 @@
 
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
+import { getMultiFactorAuthenticatorDetails } from "@wso2is/admin.connections.v1/api/authenticators";
 import {
     AppConstants,
     AppState,
-    ConfigReducerStateInterface,
     EventPublisher,
     FeatureConfigInterface,
     history
 } from "@wso2is/admin.core.v1";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
-import { getMultiFactorAuthenticatorDetails } from "@wso2is/admin.identity-providers.v1/api";
 import {
     IdentityProviderManagementConstants
 } from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
@@ -37,10 +36,8 @@ import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface
 } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms } from "@wso2is/forms";
 import {
     Code,
     DocumentationLink,
@@ -52,17 +49,17 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosError } from "axios";
 import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Grid, Icon  } from "semantic-ui-react";
+import { Divider, Icon  } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
-import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
+import { updateAuthenticationSequence } from "../../../api";
 import {
     AdaptiveAuthTemplateInterface,
     AuthenticationSequenceInterface,
@@ -72,6 +69,7 @@ import {
 } from "../../../models";
 import { AdaptiveScriptUtils } from "../../../utils/adaptive-script-utils";
 import { ConnectionsJITUPConflictWithMFAReturnValue, SignInMethodUtils } from "../../../utils/sign-in-method-utils";
+
 import "./sign-in-method-customization.scss";
 
 /**
@@ -162,7 +160,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
     const { isSystemApplication } = useAuthenticationFlow();
 
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const orgType: OrganizationType = useSelector((state: AppState) =>
         state?.organization?.organizationType);
 
@@ -170,8 +167,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const { isAdaptiveAuthenticationAvailable } = useGlobalVariables();
     const [ updateTrigger, setUpdateTrigger ] = useState<boolean>(false);
     const [ adaptiveScript, setAdaptiveScript ] = useState<string | string[]>(undefined);
-    const [ requestPathAuthenticators, setRequestPathAuthenticators ] = useState<any>(undefined);
-    const [ selectedRequestPathAuthenticators, setSelectedRequestPathAuthenticators ] = useState<any>(undefined);
     const [ steps, setSteps ] = useState<number>(1);
     const [ isDefaultScript, setIsDefaultScript ] = useState<boolean>(false);
     const [ isButtonDisabled, setIsButtonDisabled ] = useState<boolean>(false);
@@ -219,15 +214,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
         setUpdateTrigger(false);
     }, [ updateTrigger ]);
-
-    /**
-     * Fetch data on component load
-     */
-    useEffect(() => {
-        if (readOnly) return;
-
-        fetchRequestPathAuthenticators();
-    }, []);
 
     useEffect(() => {
         if (readOnly) return;
@@ -284,7 +270,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         if (template.code) {
             newSequence = {
                 ...newSequence,
-                requestPathAuthenticators: selectedRequestPathAuthenticators,
                 script: JSON.stringify(template.code)
             };
         }
@@ -329,7 +314,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             requestBody = {
                 authenticationSequence: {
                     ...DefaultFlowConfigurationSequenceTemplate,
-                    requestPathAuthenticators: selectedRequestPathAuthenticators,
                     script: ""
                 }
             };
@@ -337,7 +321,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             requestBody = {
                 authenticationSequence: {
                     ...sequence,
-                    requestPathAuthenticators: selectedRequestPathAuthenticators,
                     script: adaptiveScript
                 }
             };
@@ -413,35 +396,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             });
     };
 
-    const fetchRequestPathAuthenticators = (): void => {
-        getRequestPathAuthenticators()
-            .then((response: AxiosResponse) => {
-                setRequestPathAuthenticators(response);
-            })
-            .catch((error: IdentityAppsApiException) => {
-                if (error.response && error.response.data && error.response.data.detail) {
-                    dispatch(addAlert({
-                        description: t("applications:edit.sections.signOnMethod.sections." +
-                            "requestPathAuthenticators.notifications.getRequestPathAuthenticators.error.description",
-                        { description: error.response.data.description }),
-                        level: AlertLevels.ERROR,
-                        message: t("applications:edit.sections.signOnMethod.sections." +
-                            "requestPathAuthenticators.notifications.getRequestPathAuthenticators.error.message")
-                    }));
-                } else {
-                    // Generic error message
-                    dispatch(addAlert({
-                        description: t("applications:edit.sections.signOnMethod.sections." +
-                            "requestPathAuthenticators.notifications.getRequestPathAuthenticators.genericError." +
-                            "description"),
-                        level: AlertLevels.ERROR,
-                        message: t("applications:edit.sections.signOnMethod.sections." +
-                            "requestPathAuthenticators.notifications.getRequestPathAuthenticators.genericError.message")
-                    }));
-                }
-            });
-    };
-
     /**
      * Handles adaptive script change event.
      *
@@ -492,46 +446,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
         setUpdateTrigger(true);
     };
-
-    const showRequestPathAuthenticators: ReactElement = (
-        <>
-            <Heading as="h4">{ t("applications:edit.sections.signOnMethod.sections." +
-                "requestPathAuthenticators.title") }</Heading>
-            <Hint>{ t("applications:edit.sections.signOnMethod.sections." +
-                "requestPathAuthenticators.subTitle") }</Hint>
-            <Forms>
-                <Grid>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                name="requestPathAuthenticators"
-                                label=""
-                                type="checkbox"
-                                required={ false }
-                                value={ authenticationSequence?.requestPathAuthenticators }
-                                requiredErrorMessage=""
-                                children={
-                                    requestPathAuthenticators?.map((authenticator: GenericAuthenticatorInterface) => {
-                                        return {
-                                            label: authenticator.displayName,
-                                            value: authenticator.name
-                                        };
-                                    })
-                                }
-                                listen={
-                                    (values: Map<string, FormValue>) => {
-                                        setSelectedRequestPathAuthenticators(values.get("requestPathAuthenticators"));
-                                    }
-                                }
-                                readOnly={ readOnly }
-                                data-componentid={ `${ componentId }-request-path-authenticators` }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Forms>
-        </>
-    );
 
     /**
      * Handles the update button disable state.
@@ -905,11 +819,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                         data-componentid={ `${ componentId }-script-based-flow` }
                     />
                 )
-            }
-            {
-                (config?.ui?.legacyMode?.applicationRequestPathAuthentication && requestPathAuthenticators)
-                    ? showRequestPathAuthenticators
-                    : null
             }
             { renderUpdateButton() }
         </div>

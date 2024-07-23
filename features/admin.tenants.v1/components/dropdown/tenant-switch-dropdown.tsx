@@ -19,6 +19,7 @@
 import { PlusIcon } from "@oxygen-ui/react-icons";
 import { Show } from "@wso2is/access-control";
 import { AppState, FeatureConfigInterface, getMiscellaneousIcons } from "@wso2is/admin.core.v1";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import OrganizationSwitcherList from
     "@wso2is/admin.organizations.v1/components/organization-switch/organization-switch-list";
 import { OrganizationManagementConstants } from "@wso2is/admin.organizations.v1/constants";
@@ -246,7 +247,7 @@ const TenantSwitchDropdown: FunctionComponent<TenantSwitchDropdownInterface> = (
                                                 data-componentid={ `${ componentId }-new-button` }
                                             >
                                                 <PlusIcon fill="black" />
-                                                { t("common:new") }
+                                                { t(FeatureStatusLabel.NEW) }
                                             </Button>
                                         </Show>
                                     </Grid.Column>

@@ -24,17 +24,6 @@
         "displayName": "Develop",
         "path": "/applications"
     },
-    "documentation": {
-        "baseURL": "https://api.github.com",
-        "contentBaseURL": "https://api.github.com/repos/wso2/docs-is/contents/en/docs",
-        "githubOptions": {
-            "branch": "new_restructure"
-        },
-        "imagePrefixURL": "https://github.com/wso2/docs-is/raw/new_restructure/en/docs/",
-        "provider": "GITHUB",
-        "structureFileType": "YAML",
-        "structureFileURL": "https://api.github.com/repos/wso2/docs-is/contents/en/mkdocs.yml"
-    },
     "extensions": {
         "defaultBrandedLoginScreenCopyright": "${copyright} ${year} WSO2 LLC.",
         "emailTemplates": [
@@ -144,9 +133,6 @@
         "serverOrigin": "https://localhost:9443",
         "storage": "webWorker"
     },
-    "isSaas": false,
-    "legacyAuthzRuntime": false,
-    "legacyMode": false,
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
     "routePaths": {
@@ -307,8 +293,7 @@
                 "disabledFeatures": [
                     "applications.loginFlow.ai",
                     "applications.loginFlow.legacyEditor",
-                    "applications.myaccount.saasMyaccountSettings",
-                    "applications.myaccount.simplifiedSettings"
+                    "applications.myaccount.saasMyaccountSettings"
                 ],
                 "enabled": true,
                 "scopes": {
@@ -1156,23 +1141,12 @@
         "isRequestPathAuthenticationEnabled": false,
         "isSAASDeployment": false,
         "isSignatureValidationCertificateAliasEnabled": false,
+        "isTrustedAppConsentRequired": false,
         "isXacmlConnectorEnabled": false,
         "legacyMode": {
-            "apiResourcesV1": false,
-            "apiResourcesV2": true,
             "applicationListSystemApps": false,
-            "applicationOIDCSubjectIdentifier": true,
-            "applicationRequestPathAuthentication": false,
             "applicationSystemAppsSettings": false,
-            "backupCodesForSubOrganizations": true,
-            "certificates": false,
-            "consoleFeatureScopeCheck": true,
-            "loginAndRegistrationEmailDomainDiscovery": true,
-            "organizations": true,
-            "roleMapping": false,
-            "rolesV1": false,
-            "saasApplications": false,
-            "secretsManagement": false
+            "roleMapping": false
         },
         "listAllAttributeDialects": true,
         "privacyPolicyConfigs": {},
@@ -1182,6 +1156,7 @@
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,
+        "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "showStatusLabelForNewAuthzRuntimeFeatures": false,
         "systemAppsIdentifiers": [
             "Console",

@@ -34,11 +34,13 @@ export interface ApplicationConfig {
     advancedConfigurations: {
         showEnableAuthorization: boolean;
         showFapiFeatureStatusChip: boolean;
+        showHybridFlowFeatureStatusChip: boolean;
         showMtlsAliases: boolean;
         showMyAccount: boolean;
         showMyAccountStatus: boolean;
         showSaaS: boolean;
         showReturnAuthenticatedIdPs: boolean;
+        showTrustedAppConsentWarning: boolean;
     };
     allowedGrantTypes: Record<string, string[]>,
     generalSettings: {
@@ -86,6 +88,7 @@ export interface ApplicationConfig {
         getTabPanelReadOnlyStatus: (tabPanelName: string, application: ApplicationInterface) => boolean;
         isTabEnabledForApp: (clientId: string, tabType: ApplicationTabTypes, tenantDomain: string) => boolean;
         getActions: (
+            applicationId: string,
             clientId: string,
             tenant: string,
             testId: string
