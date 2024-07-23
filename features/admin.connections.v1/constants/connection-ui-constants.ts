@@ -166,4 +166,27 @@ export class ConnectionUIConstants {
         ADDITIONAL_QUERY_PARAMS_MAX_LENGTH: 1000,
         ADDITIONAL_QUERY_PARAMS_MIN_LENGTH: 0
     };
+
+    /**
+     * Map of Apple authenticator secret regenerative fields.
+     */
+    private static readonly APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY: Record<string, string> = {
+        CLIENT_ID: "ClientId",
+        KEY_ID: "KeyId",
+        PRIVATE_KEY: "PrivateKey",
+        SECRET_VALIDITY_PERIOD: "SecretValidityPeriod",
+        TEAM_ID: "TeamId"
+    };
+
+    /**
+     * Secret regenerative fields of Apple authenticator.
+     * Upon updating the value of any of these fields, a new client secret should be generated.
+     */
+    public static readonly APPLE_AUTHENTICATOR_SECRET_REGENERATIVE_FIELDS: string[] = [
+        this.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.CLIENT_ID,
+        this.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.KEY_ID,
+        this.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.PRIVATE_KEY,
+        this.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.SECRET_VALIDITY_PERIOD,
+        this.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.TEAM_ID
+    ];
 }

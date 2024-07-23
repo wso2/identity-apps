@@ -25,6 +25,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
 import { AuthenticatorManagementConstants } from "../../../../constants/autheticator-constants";
 import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
+import { FederatedAuthenticatorConstants } from "../../../../constants/federated-authenticator-constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormFieldInterface,
@@ -245,7 +246,7 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
 
                 // Check if the client secret should be regenerated.
                 if (!regenerateSecret
-                    && AuthenticatorManagementConstants
+                    && ConnectionUIConstants
                         .APPLE_AUTHENTICATOR_SECRET_REGENERATIVE_FIELDS.indexOf(key) !== -1
                     && originalValues[key]
                     && value !== originalValues[key]) {
@@ -276,26 +277,26 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
      */
     const resolveScopeMetadata = (scope: string): ScopeMetaInterface => {
 
-        if (scope === AuthenticatorManagementConstants.APPLE_SCOPE_DICTIONARY.EMAIL) {
+        if (scope === FederatedAuthenticatorConstants.APPLE_SCOPE_DICTIONARY.EMAIL) {
             return {
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.apple.scopes.list.email.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { AuthenticatorManagementConstants.APPLE_SCOPE_DICTIONARY.EMAIL }
+                        { FederatedAuthenticatorConstants.APPLE_SCOPE_DICTIONARY.EMAIL }
                     </Code>
                 ),
                 icon: "envelope outline"
             };
         }
 
-        if (scope === AuthenticatorManagementConstants.APPLE_SCOPE_DICTIONARY.NAME) {
+        if (scope === FederatedAuthenticatorConstants.APPLE_SCOPE_DICTIONARY.NAME) {
             return {
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.apple.scopes.list.name.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { AuthenticatorManagementConstants.APPLE_SCOPE_DICTIONARY.NAME }
+                        { FederatedAuthenticatorConstants.APPLE_SCOPE_DICTIONARY.NAME }
                     </Code>
                 ),
                 icon: "user outline"

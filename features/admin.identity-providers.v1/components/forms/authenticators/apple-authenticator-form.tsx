@@ -246,7 +246,7 @@ export const AppleAuthenticatorForm: FunctionComponent<AppleAuthenticatorFormPro
 
                 // Check if the client secret should be regenerated.
                 if (!regenerateSecret
-                    && IdentityProviderManagementConstants
+                    && ConnectionUIConstants
                         .APPLE_AUTHENTICATOR_SECRET_REGENERATIVE_FIELDS.indexOf(key) !== -1
                     && originalValues[key]
                     && value !== originalValues[key]) {
