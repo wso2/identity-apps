@@ -302,8 +302,8 @@ module.exports = {
                     {
                         importNames: [ "hasRequiredScopes" ],
                         message: "Please use \"import { useRequiredScopes } from '@wso2is/access-control'\" instead. " +
-                            "Refer https://github.com/wso2/identity-apps/blob/master/docs/write-code/PERFORMANCE.md" +
-                            "#use-userequiredscopes-hook-instead-of-hasrequiredscopes-function" ,
+                            "Refer documentation: https://github.com/wso2/identity-apps/blob/master/docs/write-code/" +
+                            "PERFORMANCE.md#use-userequiredscopes-hook-instead-of-hasrequiredscopes-function",
                         name: "@wso2is/core/helpers"
                     }
                 ],
