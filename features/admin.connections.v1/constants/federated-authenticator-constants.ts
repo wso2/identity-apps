@@ -26,6 +26,28 @@ export class FederatedAuthenticatorConstants {
      */
     private constructor() { }
 
+    public static readonly AUTHENTICATOR_IDS: {
+        APPLE_AUTHENTICATOR_ID: string;
+        FACEBOOK_AUTHENTICATOR_ID: string;
+        GITHUB_AUTHENTICATOR_ID: string;
+        GOOGLE_OIDC_AUTHENTICATOR_ID: string;
+        HYPR_AUTHENTICATOR_ID: string;
+        MICROSOFT_AUTHENTICATOR_ID: string;
+        ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: string;
+        SIWE_AUTHENTICATOR_ID: string;
+        TWITTER_AUTHENTICATOR_ID: string;
+    } = {
+            APPLE_AUTHENTICATOR_ID: "QXBwbGVPSURDQXV0aGVudGljYXRvcg",
+            FACEBOOK_AUTHENTICATOR_ID: "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
+            GITHUB_AUTHENTICATOR_ID: "R2l0aHViQXV0aGVudGljYXRvcg",
+            GOOGLE_OIDC_AUTHENTICATOR_ID: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
+            HYPR_AUTHENTICATOR_ID: "SFlQUkF1dGhlbnRpY2F0b3I",
+            MICROSOFT_AUTHENTICATOR_ID: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
+            ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg",
+            SIWE_AUTHENTICATOR_ID: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
+            TWITTER_AUTHENTICATOR_ID: "VHdpdHRlckF1dGhlbnRpY2F0b3I"
+        };
+
     /**
      * Google One Tap enabling request parameter.
      */

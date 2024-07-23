@@ -72,6 +72,7 @@ import { EditMultiFactorAuthenticator } from "../components/edit/edit-multi-fact
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { CommonAuthenticatorManagementConstants } from "../constants/common-authenticator-constants";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
+import { FederatedAuthenticatorConstants } from "../constants/federated-authenticator-constants";
 import { useSetConnectionTemplates } from "../hooks/use-connection-templates";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
@@ -322,7 +323,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                 templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.SAML;
             } else if (authenticatorId === ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID) {
                 templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GITHUB;
-            } else if (authenticatorId === ConnectionManagementConstants.APPLE_AUTHENTICATOR_ID) {
+            } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID) {
                 templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE;
             }
         }

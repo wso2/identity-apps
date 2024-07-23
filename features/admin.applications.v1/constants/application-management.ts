@@ -17,6 +17,9 @@
  */
 
 import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1/constants/connection-constants";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { SupportedAuthenticators } from "@wso2is/admin.identity-providers.v1/models";
@@ -366,7 +369,7 @@ export class ApplicationManagementConstants {
 
     // Known social authenticators.
     public static readonly SOCIAL_AUTHENTICATORS: string[] = [
-        IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME,

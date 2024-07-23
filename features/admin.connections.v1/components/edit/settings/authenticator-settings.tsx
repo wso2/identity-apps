@@ -56,6 +56,7 @@ import { getConnectionIcons } from "../../../configs/ui";
 import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
 import { CommonAuthenticatorManagementConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
+import { FederatedAuthenticatorConstants } from "../../../constants/federated-authenticator-constants";
 import {
     AuthenticatorSettingsFormModes,
     FederatedAuthenticatorMetaDataInterface
@@ -124,7 +125,7 @@ const commonAuthenticators: string[] = [
     ConnectionManagementConstants.MS_LIVE_AUTHENTICATOR_ID,
     ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
     ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID,
-    ConnectionManagementConstants.APPLE_AUTHENTICATOR_ID,
+    FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID,
     CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
     ConnectionManagementConstants.SAML_AUTHENTICATOR_ID,
     ConnectionManagementConstants.OIDC_AUTHENTICATOR_ID

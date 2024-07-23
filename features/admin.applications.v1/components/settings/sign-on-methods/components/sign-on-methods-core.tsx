@@ -24,6 +24,9 @@ import { AuthenticatorCreateWizardFactory } from "@wso2is/admin.connections.v1";
 import {
     CommonAuthenticatorManagementConstants
 } from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { ConnectionsManagementUtils }
     from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
@@ -266,7 +269,7 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
 
                         microsoft.push(authenticator);
                     } else if (authenticator.defaultAuthenticator.authenticatorId
-                        === IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID) {
+                        === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID) {
 
                         apple.push(authenticator);
                     }

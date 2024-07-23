@@ -24,6 +24,9 @@ import {
     CommonAuthenticatorManagementConstants
 } from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
 import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
+import {
     IdentityProviderManagementConstants
 } from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models";
@@ -110,7 +113,7 @@ const PredefinedSocialFlowHandlerModalFactory: FunctionComponent<
                 IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_DISPLAY_NAME
             );
         } else if (selectedSequence.id === "AppleSocialLoginSequence") {
-            authenticatorId = IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID;
+            authenticatorId = FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID;
             authenticatorName = IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_NAME;
             setAuthenticatorCategoryTemplate(CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE);
             setAuthenticatorCategoryDisplayName(IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_DISPLAY_NAME);

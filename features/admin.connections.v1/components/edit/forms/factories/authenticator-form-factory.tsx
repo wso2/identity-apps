@@ -22,6 +22,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { AuthenticatorManagementConstants } from "../../../../constants/autheticator-constants";
 import { CommonAuthenticatorManagementConstants } from "../../../../constants/common-authenticator-constants";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
+import { FederatedAuthenticatorConstants } from "../../../../constants/federated-authenticator-constants";
 import {
     AuthenticatorSettingsFormModes
 } from "../../../../models/authenticators";
@@ -326,7 +327,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
 
             break;
 
-        case ConnectionManagementConstants.APPLE_AUTHENTICATOR_ID:
+        case FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID:
             return (
                 <AppleAuthenticatorForm
                     mode={ mode }

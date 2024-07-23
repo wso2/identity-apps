@@ -17,6 +17,9 @@
  */
 
 import { AuthenticatorLabels, ConnectionManagementConstants } from "@wso2is/admin.connections.v1";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import get from "lodash-es/get";
 import { ReactNode } from "react";
 import { getAuthenticatorIcons } from "../configs/ui";
@@ -70,7 +73,7 @@ export class AuthenticatorMeta {
                 "SMS one-time passcode.",
             [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: "Email users a magic link to " +
                 "log in passwordless",
-            [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: "Login users with " +
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID ]: "Login users with " +
             "their Apple IDs.",
             [ IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID ]: "Two-factor authentication " +
             "recovery option.",
@@ -161,7 +164,7 @@ export class AuthenticatorMeta {
             [ ConnectionManagementConstants.SAML_AUTHENTICATOR_ID ]: "SAML",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Predefined",
             [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined",
-            [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: "Apple",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID ]: "Apple",
             [ IdentityProviderManagementConstants.HYPR_AUTHENTICATOR_ID ]: "HYPR"
         }, authenticatorId);
     }
@@ -209,7 +212,7 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: "twitter",
             [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "enterprise-oidc",
             [ ConnectionManagementConstants.SAML_AUTHENTICATOR_ID ]: "enterprise-saml",
-            [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: "apple"
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID ]: "apple"
         }, authenticatorId);
     }
 }

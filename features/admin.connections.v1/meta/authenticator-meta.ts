@@ -21,6 +21,7 @@ import { ReactNode, lazy } from "react";
 import { getConnectionIcons } from "../configs/ui";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
+import { FederatedAuthenticatorConstants } from "../constants/federated-authenticator-constants";
 import { LocalAuthenticatorConstants } from "../constants/local-authenticator-constants";
 import { AuthenticatorCategories, AuthenticatorLabels } from "../models/authenticators";
 import { FederatedAuthenticatorInterface } from "../models/connection";
@@ -119,7 +120,7 @@ export class AuthenticatorMeta {
             [ AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.PASSWORDLESS
             ],
-            [ ConnectionManagementConstants.APPLE_AUTHENTICATOR_ID ]: [
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
             ],
             [ ConnectionManagementConstants.HYPR_AUTHENTICATOR_ID ]: [

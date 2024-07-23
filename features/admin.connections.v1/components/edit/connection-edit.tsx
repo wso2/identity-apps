@@ -360,8 +360,9 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     );
 
     useEffect(() => {
-        setIsTrustedTokenIssuer(type === "trusted-token-issuer");
-        setIsExpertMode(type === "expert-mode-idp");
+        setIsTrustedTokenIssuer(type === CommonAuthenticatorManagementConstants
+            .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER);
+        setIsExpertMode(type === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE);
     }, [ type ]);
 
     useEffect(() => {
