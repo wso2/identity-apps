@@ -48,4 +48,12 @@ export class FederatedAuthenticatorConstants {
         OPENID: "openid",
         PROFILE: "profile"
     };
+
+    /**
+     * GitHub Scope mappings.
+     */
+    public static readonly GITHUB_SCOPE_DICTIONARY: Record<string, string> = {
+        USER_EMAIL: "user:email",
+        USER_READ: "read:user"
+    };
 }

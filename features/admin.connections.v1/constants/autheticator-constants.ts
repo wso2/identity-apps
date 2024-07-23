@@ -79,14 +79,6 @@ export class AuthenticatorManagementConstants {
     public static readonly DELETING_FORBIDDEN_IDPS: string[] = [];
 
     /**
-     * GitHub Scope mappings.
-     */
-    public static readonly GITHUB_SCOPE_DICTIONARY: Record<string, string> = {
-        USER_EMAIL: "user:email",
-        USER_READ: "read:user"
-    };
-
-    /**
      * Facebook Scope mappings.
      */
     public static readonly FACEBOOK_SCOPE_DICTIONARY: Record<string, string> = {

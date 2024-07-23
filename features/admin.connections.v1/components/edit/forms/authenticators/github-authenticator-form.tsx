@@ -23,8 +23,8 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
-import { AuthenticatorManagementConstants } from "../../../../constants/autheticator-constants";
 import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
+import { FederatedAuthenticatorConstants } from "../../../../constants/federated-authenticator-constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormFieldInterface,
@@ -249,24 +249,24 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
      */
     const resolveScopeMetadata = (scope: string): ScopeMetaInterface => {
 
-        if (scope === AuthenticatorManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_READ) {
+        if (scope === FederatedAuthenticatorConstants.GITHUB_SCOPE_DICTIONARY.USER_READ) {
             return {
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.github.scopes.list.profile.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { AuthenticatorManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_READ }
+                        { FederatedAuthenticatorConstants.GITHUB_SCOPE_DICTIONARY.USER_READ }
                     </Code>
                 ),
                 icon: "user outline"
             };
-        } else if (scope === AuthenticatorManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_EMAIL) {
+        } else if (scope === FederatedAuthenticatorConstants.GITHUB_SCOPE_DICTIONARY.USER_EMAIL) {
             return {
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.github.scopes.list.email.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { AuthenticatorManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_EMAIL }
+                        { FederatedAuthenticatorConstants.GITHUB_SCOPE_DICTIONARY.USER_EMAIL }
                     </Code>
                 ),
                 icon: "envelope outline"
