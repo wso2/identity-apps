@@ -17,17 +17,13 @@
  */
 
 import SIWEIdPTemplate from "@wso2is/admin.extensions.v1/identity-provider-templates/templates/swe/swe.json";
-import { I18n } from "@wso2is/i18n";
 import groupBy from "lodash-es/groupBy";
 import { getConnectionTemplatesConfig } from "../configs/templates";
-import { getConnectionCapabilityIcons } from "../configs/ui";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
 import {
     ConnectionTemplateCategoryInterface,
     ConnectionTemplateGroupInterface,
     ConnectionTemplateInterface,
-    SupportedServices,
-    SupportedServicesInterface,
     TemplateConfigInterface
 } from "../models/connection";
 
@@ -54,7 +50,7 @@ export class ConnectionTemplateManagementUtils {
         templates: ConnectionTemplateInterface[]
     ): Promise<ConnectionTemplateInterface[]> => {
 
-        return ConnectionTemplateManagementUtils.groupConnectionTemplates(templates)
+        return this.groupConnectionTemplates(templates)
             .then((groupedTemplate: ConnectionTemplateInterface[]) => {
                 templates = ConnectionTemplateManagementUtils
                     .sortConnectionTemplates(groupedTemplate);
@@ -64,42 +60,12 @@ export class ConnectionTemplateManagementUtils {
     };
 
     /**
-     * Build supported services from the given service identifiers.
-     *
-     * @param serviceIdentifiers - Set of service identifiers.
-     */
-    public static buildSupportedServices = (serviceIdentifiers: string[]): SupportedServicesInterface[] => {
-        return serviceIdentifiers?.map((serviceIdentifier: string): SupportedServicesInterface => {
-            switch (serviceIdentifier) {
-                case SupportedServices.AUTHENTICATION:
-                    return {
-                        displayName: I18n.instance.t(
-                            "console:develop.pages.authenticationProviderTemplate.supportServices." +
-                                "authenticationDisplayName"
-                        ),
-                        logo: getConnectionCapabilityIcons()[SupportedServices.AUTHENTICATION],
-                        name: SupportedServices.AUTHENTICATION
-                    };
-                case SupportedServices.PROVISIONING:
-                    return {
-                        displayName: I18n.instance.t(
-                            "console:develop.pages.authenticationProviderTemplate.supportServices." +
-                                "provisioningDisplayName"
-                        ),
-                        logo: getConnectionCapabilityIcons()[SupportedServices.PROVISIONING],
-                        name: SupportedServices.PROVISIONING
-                    };
-            }
-        });
-    };
-
-    /**
      * Sort the IDP templates based on display order.
      *
      * @param templates - App templates.
      * @returns Sorted connection templates.
      */
-    public static sortConnectionTemplates(
+    private static sortConnectionTemplates(
         templates: ConnectionTemplateInterface[]): ConnectionTemplateInterface[] {
 
         const identityProviderTemplates: ConnectionTemplateInterface[] = [ ...templates ];
@@ -146,7 +112,7 @@ export class ConnectionTemplateManagementUtils {
      * Group the identity provider templates.
      * @param templates - Templates list to be grouped.
      */
-    public static async groupConnectionTemplates(
+    private static async groupConnectionTemplates(
         templates: ConnectionTemplateInterface[]
     ): Promise<ConnectionTemplateInterface[]> {
 
@@ -202,7 +168,7 @@ export class ConnectionTemplateManagementUtils {
      * Once called it will return the available groups from the
      * {@link getConnectionTemplatesConfig}
      */
-    public static async loadLocalFileBasedIdentityProviderTemplateGroups():
+    private static async loadLocalFileBasedIdentityProviderTemplateGroups():
         Promise<(ConnectionTemplateGroupInterface |
             Promise<ConnectionTemplateGroupInterface>)[]> {
 

@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.95
+
+### Patch Changes
+
+- [#6637](https://github.com/wso2/identity-apps/pull/6637) [`196e3426e7f99b6741e5aada839d2ee3000f005a`](https://github.com/wso2/identity-apps/commit/196e3426e7f99b6741e5aada839d2ee3000f005a) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with unreadble text in cookie banner
+
 ## 2.0.94
 
 ### Patch Changes

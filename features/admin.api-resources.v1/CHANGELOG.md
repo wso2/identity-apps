@@ -1,5 +1,23 @@
 # @wso2is/admin.api-resources.v1
 
+## 2.20.80
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.23.10
+  - @wso2is/admin.extensions.v1@2.21.50
+
+## 2.20.79
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.23.9
+  - @wso2is/admin.extensions.v1@2.21.49
+  - @wso2is/react-components@2.2.24
+  - @wso2is/form@2.0.83
+
 ## 2.20.78
 
 ### Patch Changes
