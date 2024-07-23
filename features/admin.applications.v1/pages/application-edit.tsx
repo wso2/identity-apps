@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 import {
     AppConstants,
     AppState,
@@ -55,8 +56,6 @@ import {
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 import "./application-edit.scss";
-// eslint-disable-next-line import/order
-import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 
 /**
  * Proptypes for the applications edit page component.

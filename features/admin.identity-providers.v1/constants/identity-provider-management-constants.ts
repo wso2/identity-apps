@@ -17,32 +17,11 @@
  */
 
 import { authenticatorConfig } from "@wso2is/admin.extensions.v1/configs/authenticator";
-import SweIdpTemplate from "@wso2is/admin.extensions.v1/identity-provider-templates/templates/swe/swe.json";
-import TrustedTokenIssuerTemplate from
-    "@wso2is/admin.extensions.v1/identity-provider-templates/templates/trusted-token-issuer/trusted-token-issuer.json";
-import AppleIdPTemplate from "../data/identity-provider-templates/templates/apple/apple.json";
-import EnterpriseIdPTemplate from
-    "../data/identity-provider-templates/templates/enterprise-identity-provider/enterprise-identity-provider.json";
-import ExpertModeIdPTemplate from "../data/identity-provider-templates/templates/expert-mode/expert-mode.json";
-import FacebookIdPTemplate from "../data/identity-provider-templates/templates/facebook/facebook.json";
-import GitHubIdPTemplate from "../data/identity-provider-templates/templates/github/github.json";
-import GoogleIdPTemplate from "../data/identity-provider-templates/templates/google/google.json";
-import HYPRIdPTemplate from "../data/identity-provider-templates/templates/hypr/hypr.json";
-import IProovIdPTemplate from "../data/identity-provider-templates/templates/iproov/iproov.json";
-import MicrosoftIDPTemplate from "../data/identity-provider-templates/templates/microsoft/microsoft.json";
-import EnterpriseOIDCIdPTemplate from
-    "../data/identity-provider-templates/templates/oidc-identity-provider/enterprise-oidc-identity-provider.json";
-// eslint-disable-next-line max-len
-import EnterpriseOrganizationIdPTemplate from "../data/identity-provider-templates/templates/organization-enterprise-identity-provider/organization-enterprise-identity-provider.json";
-import EnterpriseSAMLIdPTemplate from
-    "../data/identity-provider-templates/templates/saml-identity-provider/enterprise-saml-identity-provider.json";
 
 /**
  * Class containing identity provider management constants.
  */
 export class IdentityProviderManagementConstants {
-
-
 
     /**
      * Authenticator Settings Form element constraints.
