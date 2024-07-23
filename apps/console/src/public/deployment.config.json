@@ -1137,6 +1137,7 @@
         "isHeaderAvatarLabelAllowed": false,
         "isLeftNavigationCategorized": true,
         "isMarketingConsentBannerEnabled": false,
+        "isMultipleEmailsAndMobileNumbersEnabled": false,
         "isPasswordInputValidationEnabled": true,
         "isRequestPathAuthenticationEnabled": false,
         "isSAASDeployment": false,

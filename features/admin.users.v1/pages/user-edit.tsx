@@ -31,7 +31,10 @@ import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { getIdPIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
 import { useGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
-import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "@wso2is/admin.server-configurations.v1/models";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface
+} from "@wso2is/admin.server-configurations.v1/models";
 import {
     getUserNameWithoutDomain,
     hasRequiredScopes,
@@ -106,6 +109,11 @@ const UserEditPage = (): ReactElement => {
         data: originalUserOnboardingConnectorData
     } = useGovernanceConnectors(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID);
 
+    // Get other settings governance connector data.
+    const {
+        data: otherSettingsConnectorData
+    } = useGovernanceConnectors(ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID);
+
     const user: ProfileInfoInterface = useMemo(() =>
         originalUserDetails || emptyProfileInfo(), [ originalUserDetails ]);
 
@@ -141,8 +149,23 @@ const UserEditPage = (): ReactElement => {
             });
         }
 
+        if (otherSettingsConnectorData) {
+            otherSettingsConnectorData.map((connector: GovernanceConnectorInterface) => {
+                if (connector.id === ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID) {
+                    connector.properties.map((property: ConnectorPropertyInterface) => {
+                        if (property.name === ServerConfigurationsConstants.ENABLE_EMAIL_VERIFICATION
+                            || property.name === ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION
+                            || property.name ===
+                            ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER
+                        ) {
+                            properties.push(property);
+                        }
+                    });
+                }
+            });
+        }
         setConnectorProperties(properties);
-    }, [ originalAccountManagementConnectorData, originalUserOnboardingConnectorData ]);
+    }, [ originalAccountManagementConnectorData, originalUserOnboardingConnectorData, otherSettingsConnectorData ]);
 
     useEffect(() => {
         setReadOnlyUserStoresLoading(true);
