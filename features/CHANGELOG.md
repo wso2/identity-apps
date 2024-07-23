@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.21.42
+
+### Patch Changes
+
+- [#6640](https://github.com/wso2/identity-apps/pull/6640) [`6eea3816bd7cabfbf2137a9a8390ef72d8fe7b9d`](https://github.com/wso2/identity-apps/commit/6eea3816bd7cabfbf2137a9a8390ef72d8fe7b9d) Thanks [@Achintha444](https://github.com/Achintha444)! - Remove the unnecessary header text in the organization section.
+
 ## 2.21.41
 
 ### Patch Changes
