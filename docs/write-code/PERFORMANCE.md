@@ -185,10 +185,10 @@ The `useRequiredScopes` hook is a more optimized way to check for required scope
 ```typescript
 import { useRequiredScopes } from "@wso2is/access-control";
 
-const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+const applicationFeatureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features.applications);
 
 const hasUsersUpdatePermissions: boolean = useRequiredScopes(
-    featureConfig?.users?.scopes?.update
+    applicationFeatureConfig?.scopes?.update
 );
 
 if (hasUsersUpdatePermissions) {
@@ -207,3 +207,5 @@ if (hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update
     // Do something when the user has the required permissions
 }
 ```
+
+If you need to check for scopes outside of a React component, you can use the `hasRequiredScopes` function.
