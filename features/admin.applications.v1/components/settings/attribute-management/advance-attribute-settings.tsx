@@ -320,10 +320,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
      * @returns The hidden status.
      */
     const resolveSubjectAttributeHiddenStatus = (): boolean => {
-        return (
-            !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute ||
+        return !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute ||
             (onlyOIDCConfigured && !showSubjectAttribute)
-        );
+        ;
     };
 
     const validateLinkedAccountCheckboxHandler = (value: boolean) => {
