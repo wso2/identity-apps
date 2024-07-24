@@ -94,7 +94,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
 
     // Check if the user has the required scopes to update the application.
-    const hasUsersUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
+    const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
 
     const [ applicationId, setApplicationId ] = useState<string>(undefined);
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
@@ -426,7 +426,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
         return urlSearchParams.get(ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY) === "true"
             || application?.access === ApplicationAccessTypes.READ
-            || !hasUsersUpdatePermissions;
+            || !hasApplicationUpdatePermissions;
     };
 
     /**
