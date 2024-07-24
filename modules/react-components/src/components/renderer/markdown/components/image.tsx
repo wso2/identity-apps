@@ -34,6 +34,11 @@ interface MarkdownImageProps extends MarkdownCustomComponentPropsInterface<"img"
          * Flag to determine whether the image should get the full width.
          */
         fullWidth?: boolean;
+        /**
+         * Indicates whether the border should be enabled or disabled.
+         * Default is enabled.
+         */
+        border?: boolean;
     };
 }
 
@@ -52,6 +57,7 @@ const MarkdownImage: FunctionComponent<MarkdownImageProps> = ({
     const classes: string = classNames(
         "markdown-image",
         {
+            "bordered": dataConfig?.border === false ? false : true,
             "full-width": dataConfig?.fullWidth
         }
     );
