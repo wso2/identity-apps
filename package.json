@@ -164,7 +164,6 @@
         "nx": "17.0.0",
         "nyc": "^15.1.0",
         "postcss-loader": "^3.0.0",
-        "prettier": "^1.19.1",
         "process": "^0.11.10",
         "prop-types": "^15.7.2",
         "raw-loader": "^4.0.2",
