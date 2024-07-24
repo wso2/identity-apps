@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,7 +20,9 @@ import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/iden
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { AuthenticatorManagementConstants } from "../../../../constants/autheticator-constants";
+import { CommonAuthenticatorManagementConstants } from "../../../../constants/common-authenticator-constants";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
+import { FederatedAuthenticatorConstants } from "../../../../constants/federated-authenticator-constants";
 import {
     AuthenticatorSettingsFormModes
 } from "../../../../models/authenticators";
@@ -152,7 +154,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
     }
 
     // Render the form dynamically for federated authenticators in custom connector.
-    if (templateId === ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID) {
+    if (templateId === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE) {
         return (
             <CommonAuthenticatorForm
                 mode={ mode }
@@ -255,7 +257,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                 />
             );
         case ConnectionManagementConstants.MICROSOFT_AUTHENTICATOR_ID:
-            if (templateId === ConnectionManagementConstants.IDP_TEMPLATE_IDS.MICROSOFT){
+            if (templateId === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.MICROSOFT){
                 return(
                     <MicrosoftAuthenticatorForm
                         mode={ mode }
@@ -288,7 +290,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
             }
 
         case ConnectionManagementConstants.SIWE_AUTHENTICATOR_ID:
-            if (templateId === ConnectionManagementConstants.IDP_TEMPLATE_IDS.SWE) {
+            if (templateId === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.SWE) {
                 return (
                     <SIWEAuthenticatorForm
                         data-componentid={ testId }
@@ -307,7 +309,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
             break;
 
         case ConnectionManagementConstants.HYPR_AUTHENTICATOR_ID:
-            if (templateId === ConnectionManagementConstants.IDP_TEMPLATE_IDS.HYPR) {
+            if (templateId === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.HYPR) {
                 return (
                     <CommonAuthenticatorForm
                         mode={ mode }
@@ -325,7 +327,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
 
             break;
 
-        case ConnectionManagementConstants.APPLE_AUTHENTICATOR_ID:
+        case FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID:
             return (
                 <AppleAuthenticatorForm
                     mode={ mode }

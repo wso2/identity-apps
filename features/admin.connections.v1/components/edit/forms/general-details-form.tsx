@@ -18,7 +18,6 @@
 
 import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
-import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment, Heading } from "@wso2is/react-components";
@@ -28,7 +27,9 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
+import { CommonAuthenticatorManagementConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
+import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import {
     ConnectionInterface,
     ConnectionListResponseInterface,
@@ -306,8 +307,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     />
                     {
                         (identityProviderConfig?.editIdentityProvider?.showIssuerSettings ||
-                            templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
-                            || templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE)
+                            templateType === CommonAuthenticatorManagementConstants
+                                .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ||
+                            templateType === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE)
                             && !isIDPOrganizationSSO() && !isIDPIproov()
                             && (
                                 <Field.Input
@@ -319,8 +321,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     hint={ t("authenticationProvider:forms." +
                                         "generalDetails.issuer.hint") }
                                     required={
-                                        templateType === IdentityProviderManagementConstants
-                                            .IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                                        templateType === CommonAuthenticatorManagementConstants
+                                            .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
                                     }
                                     placeholder={
                                         editingIDP?.idpIssuerName ??
@@ -338,7 +340,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     }
                     {
                         (identityProviderConfig?.editIdentityProvider?.showIssuerSettings ||
-                            templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER)
+                            templateType === CommonAuthenticatorManagementConstants
+                                .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER)
                             && !isIDPOrganizationSSO() && !isIDPIproov()
                             && (
                                 <Field.Input
@@ -393,11 +396,11 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             value={ editingIDP.image }
                             data-testid={ `${ testId }-idp-image` }
                             maxLength={
-                                ConnectionManagementConstants
+                                ConnectionUIConstants
                                     .GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MAX_LENGTH as number
                             }
                             minLength={
-                                ConnectionManagementConstants
+                                ConnectionUIConstants
                                     .GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MIN_LENGTH as number
                             }
                             hint={ t("authenticationProvider:forms." +

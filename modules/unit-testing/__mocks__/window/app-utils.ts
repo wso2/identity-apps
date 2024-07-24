@@ -105,7 +105,6 @@ interface CustomWindow extends Window {
                 appTitle: "Console | WSO2 Identity Server",
                 appName: "Console",
                 applicationTemplateLoadingStrategy: "LOCAL",
-                identityProviderTemplateLoadingStrategy: "LOCAL",
                 appLogoPath: "/assets/images/branding/logo.svg",
                 features: {
                     applications: {

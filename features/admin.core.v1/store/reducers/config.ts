@@ -223,7 +223,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             hiddenConnectionTemplates: [],
             hiddenUserStores: [],
             i18nConfigs: null,
-            identityProviderTemplateLoadingStrategy: null,
             identityProviderTemplates: {
                 apple: {
                     enabled: false

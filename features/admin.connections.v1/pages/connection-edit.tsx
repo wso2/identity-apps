@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import {
     AppConstants,
     AppState,
@@ -28,7 +29,6 @@ import {
     identityProviderConfig
 } from "@wso2is/admin.extensions.v1/configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -49,7 +49,6 @@ import React, {
     ReactElement,
     ReactNode,
     useEffect,
-    useMemo,
     useRef,
     useState
 } from "react";
@@ -70,7 +69,9 @@ import {
 import { EditConnection } from "../components/edit/connection-edit";
 import { EditMultiFactorAuthenticator } from "../components/edit/edit-multi-factor-authenticator";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
+import { CommonAuthenticatorManagementConstants } from "../constants/common-authenticator-constants";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
+import { FederatedAuthenticatorConstants } from "../constants/federated-authenticator-constants";
 import { useSetConnectionTemplates } from "../hooks/use-connection-templates";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
@@ -137,7 +138,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         setConnectorDetailFetchRequestLoading
     ] = useState<boolean>(undefined);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
     const [ tabIdentifier, setTabIdentifier ] = useState<string>();
@@ -148,10 +148,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         setConnectorMetaDataFetchRequestLoading
     ] = useState<boolean>(undefined);
 
-    const isReadOnly: boolean = useMemo(() => (
-        !hasRequiredScopes(
-            featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update, allowedScopes)
-    ), [ featureConfig, allowedScopes ]);
+    const isReadOnly: boolean = !(useRequiredScopes(featureConfig?.identityProviders?.scopes?.update));
     const { getLink } = useDocumentation();
 
     /**
@@ -301,7 +298,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         }
 
         if (!connector.templateId) {
-            connector.templateId = ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID;
+            connector.templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE;
         }
 
         let template: ConnectionTemplateInterface = {};
@@ -312,22 +309,22 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                 ?.federatedAuthenticators?.defaultAuthenticatorId;
 
             if (authenticatorId === ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_ID) {
-                templateId = ConnectionManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK;
+                templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK;
             } else if (authenticatorId === ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
-                templateId = ConnectionManagementConstants.IDP_TEMPLATE_IDS.GOOGLE;
+                templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE;
             } else if (authenticatorId === ConnectionManagementConstants.OIDC_AUTHENTICATOR_ID) {
-                templateId = ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC;
+                templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.OIDC;
             } else if (authenticatorId === ConnectionManagementConstants.SAML_AUTHENTICATOR_ID) {
-                templateId = ConnectionManagementConstants.IDP_TEMPLATE_IDS.SAML;
+                templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.SAML;
             } else if (authenticatorId === ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID) {
-                templateId = ConnectionManagementConstants.IDP_TEMPLATE_IDS.GITHUB;
-            } else if (authenticatorId === ConnectionManagementConstants.APPLE_AUTHENTICATOR_ID) {
-                templateId = ConnectionManagementConstants.IDP_TEMPLATE_IDS.APPLE;
+                templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GITHUB;
+            } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID) {
+                templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE;
             }
         }
 
-        if (templateId === ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC ||
-            templateId === ConnectionManagementConstants.IDP_TEMPLATE_IDS.SAML) {
+        if (templateId === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.OIDC ||
+            templateId === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.SAML) {
 
             const groupedTemplates: ConnectionTemplateInterface = UIConfig?.connectionTemplates
                 .find((template: ConnectionTemplateInterface) => {
@@ -353,10 +350,12 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return;
         }
 
-        if (identityProviderTemplate?.id === ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID ||
-            identityProviderTemplate?.id === ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID ||
-            identityProviderTemplate?.id === ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC ||
-            identityProviderTemplate?.id === ConnectionManagementConstants.IDP_TEMPLATE_IDS.SAML) {
+        if (identityProviderTemplate?.id
+                === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ||
+            identityProviderTemplate?.id
+                === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE ||
+            identityProviderTemplate?.id === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.OIDC ||
+            identityProviderTemplate?.id === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.SAML) {
 
             return;
         }
