@@ -71,34 +71,39 @@ export const ApplicationTabComponentsFilter: FunctionComponent<
         return componentList;
     }, [ templateMetadata, tabId ]);
 
-    return (
-        isTemplateMetadataRequestLoading || !hiddenComponents
-            ? (
+    const renderTabContents = (): ReactElement => {
+        if (isTemplateMetadataRequestLoading || !hiddenComponents) {
+            return (
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <ContentLoader inline="centered" active/>
                     </Grid.Column>
                 </Grid.Row>
-            )
-            : hiddenComponents?.length === 0
-                ? (
-                    <>
-                        { children }
-                    </>
-                ) : (
-                    <>
-                        {
-                            React.Children.map(children, (child: ReactNode) => {
-                                const componentId: string = child?.["props"]?.["data-componentid"];
+            );
+        } else if (hiddenComponents?.length === 0) {
+            return (
+                <>
+                    { children }
+                </>
+            );
+        } else {
+            return (
+                <>
+                    {
+                        React.Children.map(children, (child: ReactNode) => {
+                            const componentId: string = child?.["props"]?.["data-componentid"];
 
-                                if (componentId && hiddenComponents?.includes(componentId)) {
-                                    return null;
-                                }
+                            if (componentId && hiddenComponents?.includes(componentId)) {
+                                return null;
+                            }
 
-                                return child;
-                            })
-                        }
-                    </>
-                )
-    );
+                            return child;
+                        })
+                    }
+                </>
+            );
+        }
+    };
+
+    return renderTabContents();
 };
