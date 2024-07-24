@@ -16,17 +16,17 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { SignOnMethods } from "@wso2is/admin.applications.v1/components/settings/sign-on-methods/sign-on-methods";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import "./console-login-flow.scss";
 import AILoginFlowProvider from "@wso2is/admin.login-flow.ai.v1/providers/ai-login-flow-provider";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { AuthenticatorManagementConstants } from "../../../admin.connections.v1";
 import useConsoleSettings from "../../hooks/use-console-settings";
+import "./console-login-flow.scss";
 
 /**
  * Props interface of {@link ConsoleLoginFlow}
@@ -51,8 +51,7 @@ const ConsoleLoginFlow: FunctionComponent<ConsoleLoginFlowPropsInterface> = (
         AuthenticatorManagementConstants.ORGANIZATION_AUTHENTICATOR
     ];
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+    const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state.config?.ui?.features?.applications;
     });
 
@@ -62,9 +61,7 @@ const ConsoleLoginFlow: FunctionComponent<ConsoleLoginFlowPropsInterface> = (
         mutateConsoleConfigurations
     } = useConsoleSettings();
 
-    const isReadOnly: boolean = useMemo(() => {
-        return !hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes);
-    }, [ featureConfig ]);
+    const isReadOnly: boolean = !(useRequiredScopes(applicationsFeatureConfig?.scopes?.update));
 
     return (
         <AILoginFlowProvider>

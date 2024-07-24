@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import {
     AppConstants,
     AppState,
@@ -28,7 +29,6 @@ import {
     identityProviderConfig
 } from "@wso2is/admin.extensions.v1/configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -49,7 +49,6 @@ import React, {
     ReactElement,
     ReactNode,
     useEffect,
-    useMemo,
     useRef,
     useState
 } from "react";
@@ -139,7 +138,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         setConnectorDetailFetchRequestLoading
     ] = useState<boolean>(undefined);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
     const [ tabIdentifier, setTabIdentifier ] = useState<string>();
@@ -150,10 +148,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         setConnectorMetaDataFetchRequestLoading
     ] = useState<boolean>(undefined);
 
-    const isReadOnly: boolean = useMemo(() => (
-        !hasRequiredScopes(
-            featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update, allowedScopes)
-    ), [ featureConfig, allowedScopes ]);
+    const isReadOnly: boolean = !(useRequiredScopes(featureConfig?.identityProviders?.scopes?.update));
     const { getLink } = useDocumentation();
 
     /**
