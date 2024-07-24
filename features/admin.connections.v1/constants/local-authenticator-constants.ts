@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,4 +16,20 @@
  * under the License.
  */
 
-export * from "./identity-provider-management-constants";
+/**
+ * This class contains the constants for the Local Authenticators.
+ */
+export class LocalAuthenticatorConstants {
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     */
+    private constructor() { }
+
+    /**
+     * Identifier for the local IDP.
+     */
+    public static readonly LOCAL_IDP_IDENTIFIER: string = "LOCAL";
+
+    public static readonly BASIC_AUTHENTICATOR_ID: string = "QmFzaWNBdXRoZW50aWNhdG9y";
+}

@@ -17,6 +17,9 @@
  */
 
 import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import MicrosoftIDPTemplate from
     "@wso2is/admin.identity-providers.v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
@@ -256,7 +259,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     />
                 );
             }
-        case IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID:
+        case FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID:
             return (
                 <AppleAuthenticatorForm
                     mode={ mode }

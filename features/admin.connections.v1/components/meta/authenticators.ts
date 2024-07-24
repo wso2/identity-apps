@@ -19,6 +19,7 @@
 import { getConnectionIcons } from "../../configs/ui";
 import { AuthenticatorManagementConstants } from "../../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
+import { FederatedAuthenticatorConstants } from "../../constants/federated-authenticator-constants";
 import { AuthenticatorMeta } from "../../meta/authenticator-meta";
 import { FederatedAuthenticatorMetaDataInterface } from "../../models/authenticators";
 
@@ -109,7 +110,7 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
             name: AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: ConnectionManagementConstants.APPLE_AUTHENTICATOR_ID,
+            authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID,
             description: "Login users with their Apple IDs.",
             displayName: "Apple",
             icon: getConnectionIcons().apple,

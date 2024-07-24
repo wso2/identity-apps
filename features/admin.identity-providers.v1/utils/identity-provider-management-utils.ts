@@ -17,6 +17,7 @@
  */
 
 import { getConnections } from "@wso2is/admin.connections.v1/api/connections";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import axios, { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
@@ -150,7 +151,7 @@ export class IdentityProviderManagementUtils {
                         description: AuthenticatorMeta.getAuthenticatorDescription(authenticator.id),
                         displayName: authenticator.displayName,
                         id: authenticator.id,
-                        idp: IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER,
+                        idp: LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER,
                         image: AuthenticatorMeta.getAuthenticatorIcon(authenticator.id),
                         isEnabled: authenticator.isEnabled,
                         name: authenticator.name
