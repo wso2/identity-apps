@@ -204,7 +204,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
         let tabIndex: number;
 
         // Verify if the hash contains the redirecting tab's ID or index.
-        if (hashComponents?.length == 2) {
+        if (hashComponents?.length === 2) {
             const hashTabValue: string = hashComponents[1];
 
             const hashTabIndex: number = parseInt(hashTabValue);
