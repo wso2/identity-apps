@@ -16,10 +16,7 @@
  * under the License.
  */
 
-import {
-    AppConstants,
-    history
-} from "@wso2is/admin.core.v1";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
