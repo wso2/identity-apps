@@ -17,7 +17,7 @@
  */
 
 import { CustomInitializeFunction } from
-    "@wso2is/admin.template-core.v1/components/forms/handlers/initialize/use-initialize-handlers";
+    "@wso2is/admin.template-core.v1/hooks/use-initialize-handlers";
 import {
     DynamicFieldHandlerInterface,
     DynamicFieldInterface

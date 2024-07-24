@@ -17,13 +17,13 @@
  */
 
 import get from "lodash-es/get";
-import extractTemplatedFields from "./extract-templated-fields";
 import {
     CommonInitializeHandlers,
     DynamicFieldHandlerInterface,
     DynamicFieldInterface,
     FieldHandlerTypes
-} from "../../../../models/dynamic-fields";
+} from "../models/dynamic-fields";
+import extractTemplatedFields from "../utils/extract-templated-fields";
 
 /**
  * Function definition for custom initialize handler.

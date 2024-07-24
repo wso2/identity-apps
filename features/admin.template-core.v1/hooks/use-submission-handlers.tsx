@@ -17,16 +17,16 @@
  */
 
 import get from "lodash-es/get";
-import disableProperty from "./disable-property";
-import templatedProperty from "./templated-property";
-import uniqueIDGenerator from "./unique-id-generator";
 import useDependentProperty from "./use-dependent-property";
 import {
     CommonSubmissionHandlers,
     DynamicFieldHandlerInterface,
     DynamicFieldInterface,
     FieldHandlerTypes
-} from "../../../../models/dynamic-fields";
+} from "../models/dynamic-fields";
+import disableProperty from "../utils/disable-property";
+import templatedProperty from "../utils/templated-property";
+import uniqueIDGenerator from "../utils/unique-id-generator";
 
 /**
  * Function definition for custom submission handler.

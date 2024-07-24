@@ -17,7 +17,7 @@
  */
 
 import { CustomSubmissionFunction } from
-    "@wso2is/admin.template-core.v1/components/forms/handlers/submission/use-submission-handlers";
+    "@wso2is/admin.template-core.v1/hooks/use-submission-handlers";
 import {
     DynamicFieldHandlerInterface,
     DynamicFieldInterface

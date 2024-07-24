@@ -17,7 +17,7 @@
  */
 
 import { CustomValidationsFunction } from
-    "@wso2is/admin.template-core.v1/components/forms/handlers/validation/use-validation-handlers";
+    "@wso2is/admin.template-core.v1/hooks/use-validation-handlers";
 import {
     DynamicFieldHandlerInterface,
     DynamicFieldInterface

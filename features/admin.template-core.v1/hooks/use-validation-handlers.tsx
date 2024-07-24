@@ -19,14 +19,14 @@
 import get from "lodash-es/get";
 import set from "lodash-es/set";
 import { useTranslation } from "react-i18next";
-import requiredField from "./required-field";
-import validateURL from "./url-validation";
 import {
     CommonValidationHandlers,
     DynamicFieldHandlerInterface,
     DynamicFieldInterface,
     FieldHandlerTypes
-} from "../../../../models/dynamic-fields";
+} from "../models/dynamic-fields";
+import requiredField from "../utils/required-field";
+import validateURL from "../utils/url-validation";
 
 /**
  * Function definition for custom validations.

@@ -39,9 +39,9 @@ import React, { ChangeEvent, FunctionComponent, MouseEvent, ReactElement, useEff
 import { useTranslation } from "react-i18next";
 import { Grid, ModalProps } from "semantic-ui-react";
 import { FormDynamicField } from "./form-dynamic-field";
-import useInitializeHandlers, { CustomInitializeFunction } from "./forms/handlers/initialize/use-initialize-handlers";
-import useSubmissionHandlers, { CustomSubmissionFunction } from "./forms/handlers/submission/use-submission-handlers";
-import useValidationHandlers, { CustomValidationsFunction } from "./forms/handlers/validation/use-validation-handlers";
+import useInitializeHandlers, { CustomInitializeFunction } from "../hooks/use-initialize-handlers";
+import useSubmissionHandlers, { CustomSubmissionFunction } from "../hooks/use-submission-handlers";
+import useValidationHandlers, { CustomValidationsFunction } from "../hooks/use-validation-handlers";
 import { DynamicFieldInterface, DynamicFormInterface } from "../models/dynamic-fields";
 import "./resource-create-wizard.scss";
 
