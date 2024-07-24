@@ -325,7 +325,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
             activeIndex={ activeIndex }
             data-componentid={ componentId }
             data-testid={ testId }
-            tabIdentifierURLFrag = { tabIdentifierURLFrag }
+            tabIdentifierURLFrag={ tabIdentifierURLFrag }
             { ...rest }
         />
     );
