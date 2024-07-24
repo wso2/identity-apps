@@ -1,5 +1,14 @@
 # @wso2is/admin.sms-providers.v1
 
+## 2.20.86
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.connections.v1@2.21.16
+  - @wso2is/admin.core.v1@2.23.16
+  - @wso2is/admin.extensions.v1@2.21.56
+
 ## 2.20.85
 
 ### Patch Changes
