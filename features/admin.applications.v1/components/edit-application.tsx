@@ -22,7 +22,7 @@ import { ApplicationMarkdownGuide } from "@wso2is/admin.application-templates.v1
 import useApplicationTemplateMetadata from
     "@wso2is/admin.application-templates.v1/hooks/use-application-template-metadata";
 import {
-    ApplicationEditTabContentTypes,
+    ApplicationEditTabContentType,
     ApplicationEditTabMetadataInterface
 } from "@wso2is/admin.application-templates.v1/models/templates";
 import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants";
@@ -1034,7 +1034,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         extensionTemplateMetadata?.edit?.tabs?.forEach((tab: ApplicationEditTabMetadataInterface) => {
             switch (tab?.contentType) {
-                case ApplicationEditTabContentTypes.GUIDE:
+                case ApplicationEditTabContentType.GUIDE:
                     if (tab?.guide) {
                         filteredTabs.push({
                             componentId: tab?.id,
@@ -1045,7 +1045,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     }
 
                     break;
-                case ApplicationEditTabContentTypes.FORM:
+                case ApplicationEditTabContentType.FORM:
                     if (tab?.form) {
                         filteredTabs.push({
                             componentId: tab?.id,

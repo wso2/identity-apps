@@ -79,7 +79,7 @@ export interface ApplicationTemplateMetadataInterface {
 /**
  * Possible Content Types for application editing tabs.
  */
-export enum ApplicationEditTabContentTypes {
+export enum ApplicationEditTabContentType {
     FORM = "form",
     GUIDE = "guide"
 }
@@ -99,7 +99,7 @@ export interface ApplicationEditTabMetadataInterface {
     /**
      * Content Types for current tab.
      */
-    contentType?: ApplicationEditTabContentTypes;
+    contentType?: ApplicationEditTabContentType;
     /**
      * Dynamic input fields which should be rendered in the current tab.
      */
