@@ -33,7 +33,6 @@ import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/clai
 import { EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { ApplicationRoles } from "@wso2is/admin.roles.v2/components/application-roles";
-import { LegacyModeInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import {
     Code,
@@ -407,12 +406,9 @@ export const applicationConfig: ApplicationConfig = {
 
             const tabExtensions: ResourceTabPaneInterface[] = [];
 
-            const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
-
             // Enable the API authorization tab for supported templates when the api resources config is enabled.
             if (
                 apiResourceFeatureEnabled && !application?.advancedConfigurations?.fragment &&
-                legacyMode?.apiResourcesV2 &&
                 (
                     application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
                     || application?.templateId === MobileAppTemplate?.id
@@ -446,7 +442,6 @@ export const applicationConfig: ApplicationConfig = {
 
             // Enable the roles tab for supported templates when the api resources config is enabled.
             if (apiResourceFeatureEnabled
-                && !legacyMode?.rolesV1
                 && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
                     applicationRoles?.enabled)
                 && (

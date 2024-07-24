@@ -322,7 +322,6 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     const resolveSubjectAttributeHiddenStatus = (): boolean => {
         return (
             !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute ||
-            (onlyOIDCConfigured && !UIConfig?.legacyMode?.applicationOIDCSubjectIdentifier) ||
             (onlyOIDCConfigured && !showSubjectAttribute)
         );
     };
@@ -506,6 +505,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                                 options={ dropDownOptions }
                                                 readOnly={ readOnly }
                                                 data-testid={ `${ componentId }-subject-attribute-dropdown` }
+                                                data-componentid={ `${ componentId }-subject-attribute-dropdown` }
                                                 listen={ subjectAttributeChangeListener }
                                                 enableReinitialize={ true }
                                                 hint={ resolveSubjectAttributeHint() }

@@ -34,7 +34,6 @@ import { getScopesResourceEndpoints } from "@wso2is/admin.oidc-scopes.v1";
 import { getInsightsResourceEndpoints } from "@wso2is/admin.org-insights.v1/config/org-insights";
 import { getOrganizationsResourceEndpoints } from "@wso2is/admin.organizations.v1/configs";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
-import { getJWTAuthenticationServiceEndpoints } from "@wso2is/admin.private-key-jwt.v1/configs";
 import { getRemoteFetchConfigResourceEndpoints } from "@wso2is/admin.remote-repository-configuration.v1";
 import { getRolesResourceEndpoints } from "@wso2is/admin.roles.v2/configs/endpoints";
 import { getSecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/configs/endpoints";
@@ -168,7 +167,6 @@ export class Config {
                 I18nConstants.EXTENSIONS_NAMESPACE,
                 I18nConstants.USERSTORES_NAMESPACE,
                 I18nConstants.VALIDATION_NAMESPACE,
-                I18nConstants.JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE,
                 I18nConstants.IMPERSONATION_CONFIGURATION_NAMESPACE,
                 I18nConstants.TRANSFER_LIST_NAMESPACE,
                 I18nConstants.USER_NAMESPACE,
@@ -254,7 +252,6 @@ export class Config {
             ...getScopesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getGroupsResourceEndpoints(this.resolveServerHost()),
             ...getValidationServiceEndpoints(this.resolveServerHost()),
-            ...getJWTAuthenticationServiceEndpoints(this.resolveServerHost()),
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtendedFeatureResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig()),

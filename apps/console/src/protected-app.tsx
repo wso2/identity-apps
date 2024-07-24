@@ -165,6 +165,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 redirectUrl.searchParams.set("fidp", __experimental__platformIdP.homeRealmId);
 
                 window.location.href = redirectUrl.href;
+
+                return;
             }
 
             const getOrganizationName = () => {

@@ -146,7 +146,6 @@ module.exports = {
                 // Refer: https://github.com/wso2/product-is/issues/20659
                 "@typescript-eslint/no-extra-semi": 0,
                 "@typescript-eslint/no-inferrable-types": "off",
-                "@typescript-eslint/no-unsafe-optional-chaining": "off",
                 "@typescript-eslint/no-unused-vars": [
                     "warn",
                     {
@@ -188,6 +187,7 @@ module.exports = {
                 // `no-undef` is discouraged in Typescript projects.
                 // https://github.com/typescript-eslint/typescript-eslint/issues/2477#issuecomment-686892459
                 "no-undef": 0,
+                "no-unsafe-optional-chaining": "off",
                 "no-use-before-define": "off",
                 "padding-line-between-statements": "off"
             },
@@ -224,7 +224,6 @@ module.exports = {
     ],
     root: true,
     rules: {
-        "@typescript-eslint/no-unsafe-optional-chaining": "off",
         "array-bracket-spacing": [ 1, "always" ],
         "comma-dangle": [ "warn", "never" ],
         "eol-last": "error",
@@ -299,6 +298,13 @@ module.exports = {
                     {
                         message: "Please use import foo from '@oxygen-ui/react/foo' instead.",
                         name: "@oxygen-ui/react"
+                    },
+                    {
+                        importNames: [ "hasRequiredScopes" ],
+                        message: "Please use \"import { useRequiredScopes } from '@wso2is/access-control'\" instead. " +
+                            "Refer documentation: https://github.com/wso2/identity-apps/blob/master/docs/write-code/" +
+                            "PERFORMANCE.md#use-userequiredscopes-hook-instead-of-hasrequiredscopes-function",
+                        name: "@wso2is/core/helpers"
                     }
                 ],
                 patterns: [
@@ -319,6 +325,7 @@ module.exports = {
         ],
         "no-trailing-spaces": "warn",
         "no-unreachable": "error",
+        "no-unsafe-optional-chaining": "off",
         "object-curly-spacing": [ "warn", "always" ],
         "padding-line-between-statements": [ ...LINE_PADDING_RULES ],
         quotes: [ "warn", "double" ],

@@ -584,7 +584,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
         if (rule.test.toString().includes("svg") && rule.test instanceof RegExp) {
             rule.use instanceof Array &&
                 rule.use.forEach((item: RuleSetUseItem) => {
-                    if (typeof item !== "string" && (item as any).loader.includes("url-loader")) {
+                    if (
+                        typeof item !== "string" &&
+                        ((item as any).loader.includes("url-loader") || (item as any).loader.includes("file-loader"))
+                    ) {
                         (item as any).options.name = isProduction
                             ? `${RELATIVE_PATHS.staticMedia}/[contenthash].[ext]`
                             : `${RELATIVE_PATHS.staticMedia}/[path][name].[ext]`;

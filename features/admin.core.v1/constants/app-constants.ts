@@ -380,10 +380,6 @@ export class AppConstants {
             [ "USERNAME_VALIDATION_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-username-validation` ],
             [ "ALTERNATIVE_LOGIN_IDENTIFIER_EDIT",
                 `${AppConstants.getAdminViewBasePath()}/edit-alternative-login-identifier` ],
-            [
-                "PRIVATE_KEY_JWT_CONFIG_EDIT",
-                `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration`
-            ],
             [ "INSIGHTS", `${AppConstants.getAdminViewBasePath()}/insights` ],
             [ "REMOTE_LOGGING", `${AppConstants.getAdminViewBasePath()}/server/logs` ],
             [ "SESSION_MANAGEMENT",
@@ -489,7 +485,7 @@ export class AppConstants {
     public static readonly ORGANIZATION_ONLY_ROUTES: string[] = [
         "roles",
         ...(this.getAdministratorsFeatureConfig()?.enabled ? [ "consoleSettings" ] : [])
-    ]
+    ];
 
     /**
      * Route ids that are enabled in only for super admins.
@@ -499,7 +495,7 @@ export class AppConstants {
         "remote-logging",
         "internal-notification-sending",
         "server"
-    ]
+    ];
 
     /**
      * Route id of the console settings page.

@@ -35,12 +35,10 @@ import {
     AuthenticatorInterface
 } from "@wso2is/admin.applications.v1/models/application";
 import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import {
     IdentityProviderManagementConstants
 } from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils/organization";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
@@ -196,10 +194,6 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
     const { t } = useTranslation();
 
     const { updateVisualEditorFlowNodeMeta } = useAuthenticationFlow();
-
-    const { isSubOrganization } = useGetCurrentOrganizationType();
-
-    const { UIConfig } = useUIConfig();
 
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
@@ -509,13 +503,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                     IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR
                 ].includes(option.authenticator)
             ) {
-                // Disabling backup codes option for suborganization users until the IS7 migration is completed.
-                if (
-                    !isSubOrganization()
-                    || (isSubOrganization() && UIConfig?.legacyMode?.backupCodesForSubOrganizations)
-                ) {
-                    shouldShowBackupCodesEnableCheck = true;
-                }
+                shouldShowBackupCodesEnableCheck = true;
             }
         });
 

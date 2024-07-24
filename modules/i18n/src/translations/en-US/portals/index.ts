@@ -21,7 +21,6 @@ export * from "./console";
 export * from "./myaccount";
 export * from "./userstores";
 export * from "./validation";
-export * from "./jwt-private-key-configuration";
 export * from "./transfer-list";
 export * from "./user";
 export * from "./users";

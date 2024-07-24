@@ -28,7 +28,7 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
-import { ConfirmationModal, DocumentationLink, GenericIcon, Heading, URLInput, useDocumentation  }
+import { ConfirmationModal, DocumentationLink, GenericIcon, Heading, Hint, URLInput, useDocumentation  }
     from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -40,7 +40,7 @@ import React, {
     useRef,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../constants";
@@ -283,6 +283,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
             } else {
                 setClearThumbprinstError(true);
             }
+        } else {
+            setClearThumbprinstError(true);
         }
 
         return errors;
@@ -316,19 +318,6 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                     appleAppId: config?.trustedAppConfiguration?.appleAppId || config?.attestationMetaData?.appleAppId
                 } }
             >
-                <Field.CheckboxLegacy
-                    ariaLabel="Saas application"
-                    name="saas"
-                    label={ t("applications:forms.advancedConfig.fields.saas.label") }
-                    required={ false }
-                    value={ config?.saas ? [ "saas" ] : [] }
-                    readOnly={ readOnly }
-                    data-testid={ `${ testId }-sass-checkbox` }
-                    data-componentid={ `${ testId }-sass-checkbox` }
-                    hint={ t("applications:forms.advancedConfig.fields.saas.hint") }
-                    hidden={ !UIConfig?.legacyMode?.saasApplications ||
-                        !applicationConfig.advancedConfigurations.showSaaS }
-                />
                 <Field.CheckboxLegacy
                     ariaLabel="Skip consent login"
                     name="skipConsentLogin"
@@ -484,9 +473,18 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                         data-testid={ `${ testId }-enable-client-attestation` }
                                         data-componentid={ `${ testId }-enable-api-based-authentication` }
                                         disabled={ isClientAttestationUIDisabled }
-                                        hint={ t("applications:forms.advancedConfig." +
-                                            "sections.clientAttestation.fields." +
-                                            "enableClientAttestation.hint") }
+                                        hint={ (
+                                            <Trans
+                                                i18nKey={
+                                                    "applications:forms.advancedConfig.sections.clientAttestation." +
+                                                    "fields.enableClientAttestation.hint"
+                                                }
+                                            >
+                                                Select to verify the integrity of the application by calling the
+                                                 attestation service of the hosting platform. To enable this you will
+                                                 be required to setup <strong>Platform Settings</strong>.
+                                            </Trans>
+                                        ) }
                                     />
                                 </Grid.Column>
                             </Grid.Row>
@@ -576,15 +574,38 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                         }
                                         listen={ handleFIDOActivation }
                                         data-componentid={ `${ componentId }-enable-fido-trusted-apps` }
-                                        hint={ t("applications:forms.advancedConfig.sections." +
-                                            "trustedApps.fields.enableFIDOTrustedApps.hint") }
+                                        hint={ (
+                                            <Trans
+                                                i18nKey={
+                                                    "applications:forms.advancedConfig.sections." +
+                                                    "trustedApps.fields.enableFIDOTrustedApps.hint"
+                                                }
+                                            >
+                                                Select to trust the app for user login with passkey.
+                                                 Provide the details of the application under
+                                                <strong> Platform Settings</strong>.
+                                            </Trans>
+                                        ) }
                                     />
                                     {
                                         (applicationConfig.advancedConfigurations.showTrustedAppConsentWarning) && (
                                             <Alert severity="warning" className="fido-enabled-warn-alert">
                                                 <>
-                                                    { t("applications:forms.advancedConfig." +
-                                                    "sections.trustedApps.alerts.trustedAppSettingsAlert") }
+                                                    {
+                                                        <Trans
+                                                            i18nKey={
+                                                                "applications:forms.advancedConfig." +
+                                                                "sections.trustedApps.alerts.trustedAppSettingsAlert"
+                                                            }
+                                                        >
+                                                            Enabling this feature will publish details under
+                                                            <strong> Platform Settings</strong> to a public endpoint
+                                                             accessible to all Asgardeo organizations. Consequently,
+                                                             other organizations can view information about your
+                                                             application and its associated organization. This option
+                                                             is not applicable if you are using custom domains.
+                                                        </Trans>
+                                                    }
                                                     <DocumentationLink
                                                         link={ getLink("develop.applications.editApplication." +
                                                     "common.advanced.trustedApps.learnMore") }
@@ -602,10 +623,9 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 }
                 {
                     (
-                        !isPlatformSettingsUiDisabled &&
-                        (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
+                        template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
                         template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
-                        template?.id === ApplicationManagementConstants.MOBILE)
+                        template?.id === ApplicationManagementConstants.MOBILE
                     ) && (
                         <Grid>
                             <Grid.Row columns={ 1 }>
@@ -650,10 +670,6 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                             "advancedConfig." +
                                             "sections.platformSettings.fields." +
                                             "android.fields.androidPackageName.placeholder") }
-                                        hint={ t("applications:forms." +
-                                            "advancedConfig." +
-                                            "sections.platformSettings.fields." +
-                                            "android.fields.androidPackageName.hint") }
                                         maxLength={ 200 }
                                         minLength={ 3 }
                                         width={ 16 }
@@ -662,11 +678,16 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                         }
                                         disabled={ isPlatformSettingsUiDisabled }
                                     />
+                                    <Hint disabled={ isPlatformSettingsUiDisabled }>
+                                        { t("applications:forms.advancedConfig." +
+                                            "sections.platformSettings.fields." +
+                                            "android.fields.androidPackageName.hint") }
+                                    </Hint>
                                 </Grid.Column>
                             </Grid.Row>
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    { isFIDOTrustedAppsEnabled && (
+                            { isTrustedAppsFeatureEnabled && (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <URLInput
                                             isAllowEnabled={ false }
                                             onlyOrigin={ false }
@@ -695,9 +716,6 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                             setShowError={ setShowThumbprinstError }
                                             clearError={ clearThumbprintsError }
                                             setClearError={ setClearThumbprinstError }
-                                            hint={ t("applications:forms." +
-                                                "advancedConfig.sections.platformSettings.fields." +
-                                                "android.fields.keyHashes.hint") }
                                             readOnly={ readOnly }
                                             addURLTooltip={ t("applications:forms." +
                                                 "advancedConfig.sections.platformSettings.fields." +
@@ -708,11 +726,20 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                             showPredictions={ false }
                                             showLessContent={ t("common:showLess") }
                                             showMoreContent={ t("common:showMore") }
-                                            disabled={ isPlatformSettingsUiDisabled }
+                                            data-componentid={
+                                                `${ componentId }-platform-settings-android-thumbprints`
+                                            }
+                                            disabled={ isPlatformSettingsUiDisabled || !isFIDOTrustedAppsEnabled }
                                             skipInternalValidation
-                                        />) }
-                                </Grid.Column>
-                            </Grid.Row>
+                                        />
+                                        <Hint disabled={ isPlatformSettingsUiDisabled || !isFIDOTrustedAppsEnabled }>
+                                            { t("applications:forms." +
+                                                "advancedConfig.sections.platformSettings.fields." +
+                                                "android.fields.keyHashes.hint") }
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            ) }
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column>
                                     <Heading as="h5" bold="500">
@@ -736,8 +763,6 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                             "fields.apple.fields.appleAppId.placeholder") }
                                         value={ (config?.attestationMetaData?.appleAppId ||
                                             config?.trustedAppConfiguration?.appleAppId) ?? "" }
-                                        hint={ t("applications:forms.advancedConfig.sections.platformSettings.fields." +
-                                            "apple.fields.appleAppId.hint") }
                                         maxLength={ 200 }
                                         minLength={ 3 }
                                         width={ 16 }
@@ -745,6 +770,10 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                         disabled={ isPlatformSettingsUiDisabled }
                                         readOnly={ readOnly }
                                     />
+                                    <Hint disabled={ isPlatformSettingsUiDisabled }>
+                                        { t("applications:forms.advancedConfig.sections.platformSettings.fields." +
+                                            "apple.fields.appleAppId.hint") }
+                                    </Hint>
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>

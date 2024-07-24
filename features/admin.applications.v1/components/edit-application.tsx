@@ -27,11 +27,13 @@ import {
 } from "@wso2is/admin.application-templates.v1/models/templates";
 import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants";
 import {
+    AppConstants,
     AppState,
     CORSOriginsListInterface,
     EventPublisher,
     FeatureConfigInterface,
-    getCORSOrigins
+    getCORSOrigins,
+    history
 } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
@@ -48,6 +50,7 @@ import {
     CopyInputField,
     DangerZone,
     DangerZoneGroup,
+    Link,
     ResourceTab,
     ResourceTabPaneInterface,
     TAB_URL_HASH_FRAGMENT
@@ -56,7 +59,7 @@ import Axios, { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FormEvent, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, Form, Grid, Menu, TabProps } from "semantic-ui-react";
@@ -495,7 +498,32 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 >
                     { enableStatus
                         ? t("applications:confirmations.enableApplication.content")
-                        : t("applications:confirmations.disableApplication.content") }
+                        : (
+                            <>
+                                <Trans
+                                    i18nKey={ "applications:confirmations.disableApplication.content.0" }
+                                >
+                                    This may prevent consumers from accessing the application,
+                                    but it can be resolved by re-enabling the application.
+                                </Trans>
+                                <br /><br />
+                                <Trans
+                                    i18nKey={ "applications:confirmations.disableApplication.content.1" }
+                                >
+                                            Ensure that the references to the application in
+                                    <Link
+                                        data-componentid={ `${componentId}-link-email-templates-page` }
+                                        onClick={
+                                            () => history.push(AppConstants.getPaths().get("EMAIL_MANAGEMENT"))
+                                        }
+                                        external={ false }
+                                    >
+                                        email templates
+                                    </Link> and other relevant locations are updated to reflect the application
+                                    status accordingly.
+                                </Trans>
+                            </>
+                        ) }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         </>
@@ -881,7 +909,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         ApplicationTabTypes.INFO,
                         tenantDomain
                     ) &&
-                    UIConfig?.legacyMode?.organizations &&
                     panes.push({
                         componentId: "shared-access",
                         "data-tabid": ApplicationTabIDs.SHARED_ACCESS,
