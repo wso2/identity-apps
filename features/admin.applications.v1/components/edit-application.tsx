@@ -816,7 +816,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 && !isFragmentApp
                 && !isM2MApplication
                 && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
-                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
+                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)
+            ) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
                     inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.USER_ATTRIBUTES, tenantDomain) &&
