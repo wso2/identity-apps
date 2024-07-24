@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.0.59
+
+### Patch Changes
+
+- [#6639](https://github.com/wso2/identity-apps/pull/6639) [`ee0dc227a7e86ad7356ec222c1284e66d634d935`](https://github.com/wso2/identity-apps/commit/ee0dc227a7e86ad7356ec222c1284e66d634d935) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove unused config `identityProviderTemplateLoadingStrategy`
+
 ## 2.0.58
 
 ### Patch Changes
