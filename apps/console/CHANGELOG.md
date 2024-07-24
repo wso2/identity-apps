@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.21.21
+
+### Patch Changes
+
+- [#6668](https://github.com/wso2/identity-apps/pull/6668) [`af59e849f2c6c583c5c60ae9297269ac6c474c9a`](https://github.com/wso2/identity-apps/commit/af59e849f2c6c583c5c60ae9297269ac6c474c9a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Dynamically populate legacy mode configs
+
 ## 2.21.20
 
 ### Patch Changes
