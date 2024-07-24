@@ -427,7 +427,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 !disabledFeatures?.includes(
                                     "applications.attributes.alternativeSubjectIdentifier")
                                 || !disabledFeatures?.includes("applications.attributes.subjectType")
-                            ) && applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute && (
+                            ) && applicationConfig?.attributeSettings?.advancedAttributeSettings
+                                ?.showSubjectAttribute && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Divider />
@@ -647,8 +648,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     </Grid.Column>
                                 </Grid.Row>
                             ) }
-                            { applicationConfig.attributeSettings.advancedAttributeSettings
-                                .isLinkedAccountsEnabled(applicationTemplateId) &&
+                            { applicationConfig?.attributeSettings?.advancedAttributeSettings
+                                ?.isLinkedAccountsEnabled(applicationTemplateId) &&
                                 (<Grid.Row
                                     columns={ 1 }
                                     data-componentid="application-edit-user-attributes-linked-accounts"
@@ -669,10 +670,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 </Grid.Row>)
                             }
                             {
-                                applicationConfig.attributeSettings.advancedAttributeSettings
-                                    .isLinkedAccountsEnabled(applicationTemplateId) &&
-                                applicationConfig.attributeSettings.advancedAttributeSettings
-                                    .showValidateLinkedLocalAccount && (
+                                applicationConfig?.attributeSettings?.advancedAttributeSettings
+                                    ?.isLinkedAccountsEnabled(applicationTemplateId) &&
+                                applicationConfig?.attributeSettings?.advancedAttributeSettings
+                                    ?.showValidateLinkedLocalAccount && (
                                     <Grid.Row
                                         columns={ 1 }
                                         data-componentid=
@@ -704,10 +705,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     </Grid.Row>
                                 )
                             }
-                            { applicationConfig.attributeSettings.advancedAttributeSettings
-                                .isLinkedAccountsEnabled(applicationTemplateId) &&
-                                applicationConfig.attributeSettings.advancedAttributeSettings
-                                    .showMandateLinkedLocalAccount ? (<div className="ml-3">
+                            { applicationConfig?.attributeSettings?.advancedAttributeSettings
+                                ?.isLinkedAccountsEnabled(applicationTemplateId) &&
+                                applicationConfig?.attributeSettings?.advancedAttributeSettings
+                                    ?.showMandateLinkedLocalAccount ? (<div className="ml-3">
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                             <Field.CheckboxLegacy
@@ -736,8 +737,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 : null
                             }
                             {
-                                applicationConfig.attributeSettings.advancedAttributeSettings
-                                    .showRoleAttribute &&
+                                applicationConfig?.attributeSettings?.advancedAttributeSettings
+                                    ?.showRoleAttribute &&
                                 UIConfig?.legacyMode?.roleMapping && (
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -751,7 +752,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 )
                             }
                             {
-                                applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute
+                                applicationConfig?.attributeSettings?.advancedAttributeSettings?.showRoleAttribute
                                     && UIConfig?.legacyMode?.roleMapping && (
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -777,8 +778,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 )
                             }
                             {
-                                applicationConfig.attributeSettings.advancedAttributeSettings
-                                    .showIncludeUserstoreDomainRole
+                                applicationConfig?.attributeSettings?.advancedAttributeSettings
+                                    ?.showIncludeUserstoreDomainRole
                                     && UIConfig?.legacyMode?.roleMapping && (
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
