@@ -40,9 +40,9 @@ import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import useInitializeHandlers from "./forms/handlers/initialize/use-custom-initialize-handlers";
-import useSubmissionHandlers from "./forms/handlers/submission/use-custom-submission-handlers";
-import useValidationHandlers from "./forms/handlers/validation/use-custom-validation-handlers";
+import useInitializeHandlers from "../hooks/use-custom-initialize-handlers";
+import useSubmissionHandlers from "../hooks/use-custom-submission-handlers";
+import useValidationHandlers from "../hooks/use-custom-validation-handlers";
 import useApplicationTemplate from "../hooks/use-application-template";
 import { ApplicationEditTabMetadataInterface } from "../models/templates";
 

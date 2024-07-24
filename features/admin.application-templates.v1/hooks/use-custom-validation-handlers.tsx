@@ -24,7 +24,7 @@ import {
 } from "@wso2is/admin.template-core.v1/models/dynamic-fields";
 import get from "lodash-es/get";
 import useApplicationNameValidation from "./use-application-name-validation";
-import { ApplicationTemplateValidationHandlers } from "../../../../models/dynamic-fields";
+import { ApplicationTemplateValidationHandlers } from "../models/dynamic-fields";
 
 /**
  * Hook for custom validation handlers.

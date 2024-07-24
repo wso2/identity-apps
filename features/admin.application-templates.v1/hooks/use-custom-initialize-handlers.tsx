@@ -16,45 +16,52 @@
  * under the License.
  */
 
-import { CustomSubmissionFunction } from
-    "@wso2is/admin.template-core.v1/hooks/use-submission-handlers";
+import { CustomInitializeFunction } from
+    "@wso2is/admin.template-core.v1/hooks/use-initialize-handlers";
 import {
     DynamicFieldHandlerInterface,
     DynamicFieldInterface
 } from "@wso2is/admin.template-core.v1/models/dynamic-fields";
-import buildCallBackUrlsWithRegExp from "./build-callback-urls-with-regexp";
-import { ApplicationTemplateSubmissionHandlers } from "../../../../models/dynamic-fields";
+import get from "lodash-es/get";
+import useUniqueApplicationName from "./use-unique-application-name";
+import { ApplicationTemplateInitializeHandlers } from "../models/dynamic-fields";
 
 /**
- * Hook for custom submission handlers.
+ * Hook for custom initialize handlers.
  *
- * @returns Custom submission handler functions.
+ * @returns Custom initialize functions.
  */
-const useSubmissionHandlers = (): { customSubmissionHandlers: CustomSubmissionFunction } => {
+const useInitializeHandlers = (): { customInitializers: CustomInitializeFunction } => {
+
+    const { generateUniqueApplicationName } = useUniqueApplicationName();
 
     /**
-     * Custom submission handler functions to modify the fields.
+     * Custom initializer functions to initialize the field based on the handler.
      *
-     * @param formValues - The form values to be handled by submission handlers.
+     * @param formValues - The form values to be initialized.
      * @param field - Metadata of the form field.
      * @param handler - Handler definition.
      * @param templatePayload - Template payload values.
      */
-    const customSubmissionHandlers = async (
+    const customInitializers = async (
         formValues: Record<string, unknown>,
         field: DynamicFieldInterface,
         handler: DynamicFieldHandlerInterface,
-        _templatePayload: Record<string, unknown>
+        templatePayload: Record<string, unknown>
     ): Promise<void> => {
         switch (handler?.name) {
-            case ApplicationTemplateSubmissionHandlers.BUILD_CALLBACK_URLS_WITH_REGEXP:
-                buildCallBackUrlsWithRegExp(formValues, field?.name);
+            case ApplicationTemplateInitializeHandlers.UNIQUE_APPLICATION_NAME:
+                await generateUniqueApplicationName(
+                    get(templatePayload, field?.name)?.toString()?.trim(),
+                    formValues,
+                    field?.name
+                );
 
                 break;
         }
     };
 
-    return { customSubmissionHandlers };
+    return { customInitializers };
 };
 
-export default useSubmissionHandlers;
+export default useInitializeHandlers;
