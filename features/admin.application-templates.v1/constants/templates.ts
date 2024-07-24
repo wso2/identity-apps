@@ -50,7 +50,7 @@ export class ApplicationTemplateConstants {
         [ AuthProtocolTypes.WS_FEDERATION ]: string;
         [ AuthProtocolTypes.WS_TRUST ]: string;
     } = {
-            [ AuthProtocolTypes.WS_FEDERATION ]: "passiveSts",
-            [ AuthProtocolTypes.WS_TRUST ]: "wsTrust"
-        };
+        [ AuthProtocolTypes.WS_FEDERATION ]: "passiveSts",
+        [ AuthProtocolTypes.WS_TRUST ]: "wsTrust"
+    };
 }

@@ -38,12 +38,12 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { ModalProps } from "semantic-ui-react";
-import useInitializeHandlers from "../hooks/use-custom-initialize-handlers";
-import useSubmissionHandlers from "../hooks/use-custom-submission-handlers";
-import useValidationHandlers from "../hooks/use-custom-validation-handlers";
 import { ApplicationTemplateConstants } from "../constants/templates";
 import useApplicationTemplate from "../hooks/use-application-template";
 import useApplicationTemplateMetadata from "../hooks/use-application-template-metadata";
+import useInitializeHandlers from "../hooks/use-custom-initialize-handlers";
+import useSubmissionHandlers from "../hooks/use-custom-submission-handlers";
+import useValidationHandlers from "../hooks/use-custom-validation-handlers";
 
 /**
  * Prop types of the `ApplicationCreateWizard` component.
