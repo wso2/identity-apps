@@ -112,7 +112,7 @@ export const TemplateDynamicForm: FunctionComponent<TemplateDynamicFormPropsInte
     const { UIConfig } = useUIConfig();
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ formInitialValues, setFormInitialValues ] = useState<{ [key: string]: any }>(null);
+    const [ formInitialValues, setFormInitialValues ] = useState<{ [key: string]: unknown }>(null);
 
     /**
      * Moderate the initially provided data for the form.
