@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.21.44
+
+### Patch Changes
+
+- [#6664](https://github.com/wso2/identity-apps/pull/6664) [`c27108d3ba5f9f35e73034f3dde412de46edf73d`](https://github.com/wso2/identity-apps/commit/c27108d3ba5f9f35e73034f3dde412de46edf73d) Thanks [@Achintha444](https://github.com/Achintha444)! - change the design of the tick in the login flow editor
+
 ## 2.21.43
 
 ### Patch Changes
