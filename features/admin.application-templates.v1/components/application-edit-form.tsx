@@ -40,10 +40,12 @@ import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { AuthProtocolTypes } from "../../admin.connections.v1";
+import { ApplicationTemplateConstants } from "../constants/templates";
+import useApplicationTemplate from "../hooks/use-application-template";
 import useInitializeHandlers from "../hooks/use-custom-initialize-handlers";
 import useSubmissionHandlers from "../hooks/use-custom-submission-handlers";
 import useValidationHandlers from "../hooks/use-custom-validation-handlers";
-import useApplicationTemplate from "../hooks/use-application-template";
 import { ApplicationEditTabMetadataInterface } from "../models/templates";
 
 /**
@@ -125,9 +127,11 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
         let protocolKeyName: string = protocolName;
 
         if (SupportedAuthProtocolTypes.WS_FEDERATION === protocolKeyName) {
-            protocolKeyName = "passiveSts";
+            protocolKeyName = ApplicationTemplateConstants.APPLICATION_INBOUND_PROTOCOL_KEYS[
+                AuthProtocolTypes.WS_FEDERATION ];
         } else if (SupportedAuthProtocolTypes.WS_TRUST === protocolKeyName) {
-            protocolKeyName = "wsTrust";
+            protocolKeyName = ApplicationTemplateConstants.APPLICATION_INBOUND_PROTOCOL_KEYS[
+                AuthProtocolTypes.WS_TRUST ];
         }
 
         if (SupportedAuthProtocolTypes.SAML === protocolKeyName) {
@@ -155,9 +159,11 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
         let protocolKeyName: string = protocolName;
 
         if (SupportedAuthProtocolTypes.WS_FEDERATION === protocolKeyName) {
-            protocolKeyName = "passiveSts";
+            protocolKeyName = ApplicationTemplateConstants.APPLICATION_INBOUND_PROTOCOL_KEYS[
+                AuthProtocolTypes.WS_FEDERATION ];
         } else if (SupportedAuthProtocolTypes.WS_TRUST === protocolKeyName) {
-            protocolKeyName = "wsTrust";
+            protocolKeyName = ApplicationTemplateConstants.APPLICATION_INBOUND_PROTOCOL_KEYS[
+                AuthProtocolTypes.WS_TRUST ];
         }
 
         const editPaths: string[] = tab?.form?.fields?.map((field: DynamicFieldInterface) => field?.name);

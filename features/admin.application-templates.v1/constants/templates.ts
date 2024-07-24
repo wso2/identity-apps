@@ -17,6 +17,7 @@
  */
 
 import { ExtensionTemplateCategoryInterface } from "@wso2is/admin.template-core.v1/models/templates";
+import { AuthProtocolTypes } from "../../admin.connections.v1";
 
 /**
  * Class containing application templates management constants.
@@ -44,4 +45,12 @@ export class ApplicationTemplateConstants {
     public static readonly CUSTOM_PROTOCOL_APPLICATION_TEMPLATE_ID: string = "custom-protocol-application";
 
     public static readonly APPLICATION_CREATE_WIZARD_SHARING_FIELD_NAME: string = "isApplicationSharable";
+
+    public static readonly APPLICATION_INBOUND_PROTOCOL_KEYS: {
+        [ AuthProtocolTypes.WS_FEDERATION ]: string;
+        [ AuthProtocolTypes.WS_TRUST ]: string;
+    } = {
+            [ AuthProtocolTypes.WS_FEDERATION ]: "passiveSts",
+            [ AuthProtocolTypes.WS_TRUST ]: "wsTrust"
+        };
 }

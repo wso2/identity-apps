@@ -32,6 +32,8 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import set from "lodash-es/set";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
+import { AuthProtocolTypes } from "../../admin.connections.v1";
+import { ApplicationTemplateConstants } from "../constants/templates";
 
 /**
  * Prop types of the `ApplicationMarkdownGuide` component.
@@ -154,9 +156,11 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
         let protocolKeyName: string = protocolName;
 
         if (SupportedAuthProtocolTypes.WS_FEDERATION === protocolKeyName) {
-            protocolKeyName = "passiveSts";
+            protocolKeyName = ApplicationTemplateConstants.APPLICATION_INBOUND_PROTOCOL_KEYS[
+                AuthProtocolTypes.WS_FEDERATION ];
         } else if (SupportedAuthProtocolTypes.WS_TRUST === protocolKeyName) {
-            protocolKeyName = "wsTrust";
+            protocolKeyName = ApplicationTemplateConstants.APPLICATION_INBOUND_PROTOCOL_KEYS[
+                AuthProtocolTypes.WS_TRUST ];
         }
 
         const markdownDataObject: MarkdownGuideDataInterface = {};
