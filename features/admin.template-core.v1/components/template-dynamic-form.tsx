@@ -16,9 +16,8 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1";
+import { useRequiredScopes } from "@wso2is/access-control";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalForm, FormRenderProps, MutableState, Tools } from "@wso2is/form";
 import {
@@ -32,7 +31,6 @@ import has from "lodash-es/has";
 import pick from "lodash-es/pick";
 import set from "lodash-es/set";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { FormDynamicField } from "./form-dynamic-field";
 import useInitializeHandlers, { CustomInitializeFunction } from "../hooks/use-initialize-handlers";
@@ -110,7 +108,10 @@ export const TemplateDynamicForm: FunctionComponent<TemplateDynamicFormPropsInte
     const { submission } = useSubmissionHandlers(customSubmissionHandlers);
 
     const { UIConfig } = useUIConfig();
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    // Check if the user has the required scopes to update the application.
+    const hasApplicationUpdatePermissions: boolean = useRequiredScopes(
+        UIConfig?.features?.applications?.scopes?.update);
+
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ formInitialValues, setFormInitialValues ] = useState<{ [key: string]: unknown }>(null);
 
@@ -214,12 +215,7 @@ export const TemplateDynamicForm: FunctionComponent<TemplateDynamicFormPropsInte
                                                                     field={ field }
                                                                     form={ formState }
                                                                     readOnly={ readOnly
-                                                                        || !hasRequiredScopes(
-                                                                            UIConfig?.features?.applications,
-                                                                            UIConfig?.features
-                                                                                ?.applications?.scopes?.update,
-                                                                            allowedScopes
-                                                                        )
+                                                                        || !hasApplicationUpdatePermissions
                                                                     }
                                                                 />
                                                             </Grid.Column>

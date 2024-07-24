@@ -17,7 +17,7 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { ConsoleSettingsModes } from "@wso2is/admin.console-settings.v1/models/ui";
 import {
     AppConstants,
@@ -34,7 +34,7 @@ import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useExtensionTemplates from "@wso2is/admin.template-core.v1/hooks/use-extension-templates";
 import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -163,7 +163,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         (state: AppState) => state.application.templates);
     const groupedApplicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state?.application?.groupedTemplates);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
 
@@ -172,6 +171,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         templates: extensionApplicationTemplates,
         isExtensionTemplatesRequestLoading: isExtensionApplicationTemplatesRequestLoading
     } = useExtensionTemplates();
+    // Check if the user has the required scopes to update the application.
+    const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
+    // Check if the user has the required scopes to delete the application.
+    const hasApplicationDeletePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.delete);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);
@@ -518,8 +521,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
                 icon: (app: ApplicationListItemInterface): SemanticICONS => {
                     return app?.access === ApplicationAccessTypes.READ
-                        || !hasRequiredScopes(featureConfig?.applications,
-                            featureConfig?.applications?.scopes?.update, allowedScopes)
+                        || !hasApplicationUpdatePermissions
                         ? "eye"
                         : "pencil alternate";
                 },
@@ -527,8 +529,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     handleApplicationEdit(app.id, app.access, app.name),
                 popupText: (app: ApplicationListItemInterface): string => {
                     return app?.access === ApplicationAccessTypes.READ
-                        || !hasRequiredScopes(featureConfig?.applications,
-                            featureConfig?.applications?.scopes?.update, allowedScopes)
+                        || !hasApplicationUpdatePermissions
                         ? t("common:view")
                         : t("common:edit");
                 },
@@ -537,13 +538,11 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             {
                 "data-testid": `${ testId }-item-delete-button`,
                 hidden: (app: ApplicationListItemInterface) => {
-                    const hasScopes: boolean = !hasRequiredScopes(featureConfig?.applications,
-                        featureConfig?.applications?.scopes?.delete, allowedScopes);
                     const isSuperTenant: boolean = (tenantDomain === AppConstants.getSuperTenant());
                     const isSystemApp: boolean = isSuperTenant && (UIConfig.systemAppsIdentifiers.includes(app?.name));
                     const isFragmentApp: boolean = app.advancedConfigurations?.fragment || false;
 
-                    return hasScopes ||
+                    return !hasApplicationDeletePermissions ||
                         isSystemApp ||
                         (app?.access === ApplicationAccessTypes.READ) ||
                         !applicationConfig.editApplication.showDeleteButton(app) ||
