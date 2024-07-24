@@ -111,7 +111,7 @@ export const TemplateDynamicForm: FunctionComponent<TemplateDynamicFormPropsInte
 
     const { UIConfig } = useUIConfig();
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const [ isSubmitting, setIsSubmitting ] = useState(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ formInitialValues, setFormInitialValues ] = useState<{ [key: string]: any }>(null);
 
     /**
