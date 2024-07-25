@@ -63,6 +63,7 @@ import {
     OrganizationListInterface,
     OrganizationResponseInterface
 } from "../models";
+import MetaAttributeAutoCompleteComponent from "../components/meta-attribute-auto-complete-component";
 
 const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -71,6 +72,21 @@ const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
         value: "name"
     }
 ];
+
+/**
+ * Filter attribute field identifier.
+ */
+const FILTER_ATTRIBUTE_FIELD_IDENTIFIER: string = "filterAttribute";
+
+/**
+ * Filter condition field identifier.
+ */
+const FILTER_CONDITION_FIELD_IDENTIFIER: string = "filterCondition";
+
+/**
+ * Filter value field identifier.
+ */
+const FILTER_VALUES_FIELD_IDENTIFIER: string = "filterValues";
 
 /**
  * Props for the Organizations page.
@@ -119,6 +135,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const [ authorizedListPrevCursor, setAuthorizedListPrevCursor ] = useState<string>("");
     const [ authorizedListNextCursor, setAuthorizedListNextCursor ] = useState<string>("");
     const [ activePage, setActivePage ] = useState<number>(1);
+    const [ shouldShowMetaAttributeComponent, setShouldShowMetaAttributeComponent ] = useState<boolean>(false);
+    const [ selectedMetaAttribute, setSelectedMetaAttribute ] = useState<string>("");
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -369,6 +387,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         ) => void = useCallback((query: string): void => {
             resetPagination();
             setSearchQuery(query);
+            setShouldShowMetaAttributeComponent(false);
         }, [ resetPagination, setSearchQuery ]);
 
     /**
@@ -471,6 +490,31 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         setOrganizations(newOrganizations);
     };
 
+    const handleFilterAttributeOptionsChange = (values: any): void => {
+        if (values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER) === "attributes") {
+            setShouldShowMetaAttributeComponent(true);
+        } else {
+            setShouldShowMetaAttributeComponent(false);
+        }
+    };
+    
+    const handleAdvancedSearchClose = () => {
+        setShouldShowMetaAttributeComponent(false);
+    };
+
+    const getQuery = (values: any): string => {
+        if (shouldShowMetaAttributeComponent && selectedMetaAttribute) {
+            return values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER) 
+            + "." 
+            + selectedMetaAttribute
+            + " " 
+            + values.get(FILTER_CONDITION_FIELD_IDENTIFIER) 
+            + " " 
+            + values.get(FILTER_VALUES_FIELD_IDENTIFIER);
+        }
+        return null
+    };    
+
     return (
         <>
             <PageLayout
@@ -561,12 +605,20 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 <ListLayout
                     advancedSearch={
                         (<AdvancedSearchWithBasicFilters
+                            onClose={ handleAdvancedSearchClose }
                             onFilter={ handleOrganizationFilter }
+                            onFilterAttributeOptionsChange={ handleFilterAttributeOptionsChange }
+                            getQuery= { getQuery }
                             filterAttributeOptions={ [
                                 {
                                     key: 0,
                                     text: t("common:name"),
                                     value: "name"
+                                },
+                                {
+                                    key: 1,
+                                    text: t("common:metaAttributes"),
+                                    value: "attributes"
                                 }
                             ] }
                             filterAttributePlaceholder={ t(
@@ -587,7 +639,13 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             defaultSearchAttribute="name"
                             defaultSearchOperator="co"
                             data-componentid={ `${ testId }-list-advanced-search` }
-                        />)
+                        >
+                            { shouldShowMetaAttributeComponent && 
+                            <MetaAttributeAutoCompleteComponent 
+                                onMetaAttributeChange={setSelectedMetaAttribute}
+                            /> }
+                        </AdvancedSearchWithBasicFilters>
+                        )
                     }
                     currentListSize={ organizationList?.organizations?.length }
                     listItemLimit={ listItemLimit }

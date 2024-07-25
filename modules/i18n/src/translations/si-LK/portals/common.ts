@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -114,6 +114,7 @@ export const common: CommonNS = {
     logout: "වරන්න",
     maxValidation: "මෙම අගය {{max}} ට වඩා අඩු හෝ සමාන විය යුතුය.",
     maximize: "උපරිම කරන්න",
+    metaAttributes: "මෙටා ගුණාංග",
     minValidation: "මෙම අගය {{min}} ට වඩා වැඩි හෝ සමාන විය යුතුය.",
     minimize: "අවම කරන්න",
     more: "තව",

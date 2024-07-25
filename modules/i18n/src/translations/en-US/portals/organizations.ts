@@ -29,10 +29,14 @@ export const organizations: organizationsNS = {
                 },
                 filterValue: {
                     placeholder: "Enter value to search"
+                },
+                filterMetaAttribute: {
+                    label: "Filter meta attribute",
+                    placeholder: "Search by meta attribute name"
                 }
             }
         },
-        placeholder: "Search by Name"
+        placeholder: "Search organizations by name, or meta attribute"
     },
     confirmations: {
         deleteOrganization: {
@@ -259,7 +263,17 @@ export const organizations: organizationsNS = {
                 description: "Successfully updated the organization attributes",
                 message: "Organization attributes updated successfully"
             }
-        }
+        },
+        getMetaAttributesList: {
+            error: {
+                description: "{{description}}",
+                message: "Error while getting the organization's meta attribute list"
+            },
+            genericError: {
+                description: "An error occurred while getting the organization's meta attribute list",
+                message: "Something went wrong"
+            }
+        },
     },
     placeholders: {
         emptyList: {
