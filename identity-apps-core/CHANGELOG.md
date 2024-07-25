@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.4.20
+
+### Patch Changes
+
+- [#6671](https://github.com/wso2/identity-apps/pull/6671) [`384436ac76b22a6900164e2a1f6e0024e85d9fad`](https://github.com/wso2/identity-apps/commit/384436ac76b22a6900164e2a1f6e0024e85d9fad) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Sanitize request params in org_name.jsp.
+
 ## 2.4.19
 
 ### Patch Changes
