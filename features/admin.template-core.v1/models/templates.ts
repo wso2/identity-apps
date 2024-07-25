@@ -25,6 +25,10 @@ export interface ExtensionTemplateCommonInterface {
      */
     id: string;
     /**
+     * Version of the template.
+     */
+    version?: string;
+    /**
      * Name of the template.
      */
     name: string;

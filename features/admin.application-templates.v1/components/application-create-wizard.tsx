@@ -109,6 +109,26 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     }, [ templateMetadata, isApplicationSharable ]);
 
     /**
+     * Prepare initial values for the resource create wizard.
+     */
+    const formInitialValues: Record<string, unknown> = useMemo(() => {
+        if (templateData?.payload) {
+            const clonedPayload: MainApplicationInterface = cloneDeep(templateData?.payload);
+
+            if (!clonedPayload?.templateId) {
+                clonedPayload.templateId = templateData?.id;
+            }
+            if (!clonedPayload?.templateVersion && templateData?.version) {
+                clonedPayload.templateVersion = templateData?.version;
+            }
+
+            return clonedPayload  as unknown as Record<string, unknown>;
+        }
+
+        return null;
+    }, [ templateData ]);
+
+    /**
      * After the application is created, the user will be redirected to the
      * edit page using this function.
      *
@@ -259,7 +279,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             customSubmissionHandlers={ customSubmissionHandlers }
             form={ formDefinition }
             guide={ templateMetadata?.create?.guide }
-            initialFormValues={ templateData?.payload as unknown as Record<string, unknown> }
+            initialFormValues={ formInitialValues }
             templateId={ templateData?.id }
             templateName={ templateData?.name }
             templateDescription={ templateData?.description }

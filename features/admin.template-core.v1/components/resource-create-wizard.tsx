@@ -168,10 +168,13 @@ export const ResourceCreateWizard: FunctionComponent<ResourceCreateWizardPropsIn
             await initialize(initialValues, form?.fields, templatePayload);
 
             /**
-             * Template ID must be submitted when creating the application.
+             * Template ID and Template Version must be submitted when creating the application.
              */
             if (!initialValues?.templateId) {
                 initialValues.templateId = initialFormValues?.templateId;
+            }
+            if (!initialValues?.templateVersion && initialFormValues?.templateVersion) {
+                initialValues.templateVersion = initialFormValues?.templateVersion;
             }
 
             setFormInitialValues(initialValues);
