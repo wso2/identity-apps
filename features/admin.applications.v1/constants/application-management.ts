@@ -371,9 +371,9 @@ export class ApplicationManagementConstants {
     public static readonly SOCIAL_AUTHENTICATORS: string[] = [
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID,
         FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.APPLE_AUTHENTICATOR_NAME,
-        IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID,
         FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.GOOGLE_OIDC_AUTHENTICATOR_NAME,
-        IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID,
         FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.FACEBOOK_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_ID,
         FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.MICROSOFT_AUTHENTICATOR_NAME,
@@ -388,10 +388,10 @@ export class ApplicationManagementConstants {
         ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
         ...ApplicationManagementConstants.SOCIAL_AUTHENTICATORS,
         IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR,
-        IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.OIDC_AUTHENTICATOR_NAME,
         ConnectionManagementConstants.SAML_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.SAML_AUTHENTICATOR_NAME
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.SAML_AUTHENTICATOR_NAME
     ];
 
     // Authenticators that can handle Email OTP.

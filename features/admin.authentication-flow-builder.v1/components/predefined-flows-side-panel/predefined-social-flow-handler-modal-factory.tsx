@@ -94,7 +94,7 @@ const PredefinedSocialFlowHandlerModalFactory: FunctionComponent<
         let authenticatorName: string = null;
 
         if (selectedSequence.id === "GoogleSocialLoginSequence") {
-            authenticatorId = IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID;
+            authenticatorId = FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID;
             authenticatorName = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.GOOGLE_OIDC_AUTHENTICATOR_NAME;
             setAuthenticatorCategoryTemplate(CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE);
             setAuthenticatorCategoryDisplayName(
@@ -107,7 +107,7 @@ const PredefinedSocialFlowHandlerModalFactory: FunctionComponent<
             setAuthenticatorCategoryDisplayName(FederatedAuthenticatorConstants
                 .AUTHENTICATOR_DISPLAY_NAMES.GITHUB_AUTHENTICATOR_DISPLAY_NAME);
         } else if (selectedSequence.id === "FacebookSocialLoginSequence") {
-            authenticatorId = IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID;
+            authenticatorId = FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID;
             authenticatorName = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.FACEBOOK_AUTHENTICATOR_NAME;
             setAuthenticatorCategoryTemplate(CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK);
             setAuthenticatorCategoryDisplayName(FederatedAuthenticatorConstants

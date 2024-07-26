@@ -252,7 +252,7 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
 
                 response[1].filter((authenticator: GenericAuthenticatorInterface) => {
                     if (authenticator.defaultAuthenticator.authenticatorId
-                        === IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
+                        === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID) {
 
                         google.push(authenticator);
                     } else if (authenticator.defaultAuthenticator.authenticatorId
@@ -260,7 +260,7 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
 
                         gitHub.push(authenticator);
                     } else if (authenticator.defaultAuthenticator.authenticatorId
-                        === IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID) {
+                        === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID) {
 
                         facebook.push(authenticator);
                     } else if (authenticator.defaultAuthenticator.authenticatorId

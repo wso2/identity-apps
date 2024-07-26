@@ -33,6 +33,7 @@ export class FederatedAuthenticatorConstants {
         GOOGLE_OIDC_AUTHENTICATOR_ID: string;
         HYPR_AUTHENTICATOR_ID: string;
         MICROSOFT_AUTHENTICATOR_ID: string;
+        OIDC_AUTHENTICATOR_ID: string;
         ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: string;
         SIWE_AUTHENTICATOR_ID: string;
         TWITTER_AUTHENTICATOR_ID: string;
@@ -43,6 +44,7 @@ export class FederatedAuthenticatorConstants {
             GOOGLE_OIDC_AUTHENTICATOR_ID: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
             HYPR_AUTHENTICATOR_ID: "SFlQUkF1dGhlbnRpY2F0b3I",
             MICROSOFT_AUTHENTICATOR_ID: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
+            OIDC_AUTHENTICATOR_ID: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
             ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg",
             SIWE_AUTHENTICATOR_ID: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
             TWITTER_AUTHENTICATOR_ID: "VHdpdHRlckF1dGhlbnRpY2F0b3I"
@@ -55,12 +57,16 @@ export class FederatedAuthenticatorConstants {
         GOOGLE_OIDC_AUTHENTICATOR_NAME: string;
         MICROSOFT_AUTHENTICATOR_NAME: string;
         TWITTER_AUTHENTICATOR_NAME: string;
+        SAML_AUTHENTICATOR_NAME: string;
+        OIDC_AUTHENTICATOR_NAME: string;
     } = {
             APPLE_AUTHENTICATOR_NAME: "AppleOIDCAuthenticator",
             FACEBOOK_AUTHENTICATOR_NAME: "FacebookAuthenticator",
             GITHUB_AUTHENTICATOR_NAME: "GithubAuthenticator",
             GOOGLE_OIDC_AUTHENTICATOR_NAME: "GoogleOIDCAuthenticator",
             MICROSOFT_AUTHENTICATOR_NAME: "MicrosoftAuthenticator",
+            OIDC_AUTHENTICATOR_NAME: "OpenIDConnectAuthenticator",
+            SAML_AUTHENTICATOR_NAME: "SAMLSSOAuthenticator",
             TWITTER_AUTHENTICATOR_NAME: "TwitterAuthenticator"
         };
 

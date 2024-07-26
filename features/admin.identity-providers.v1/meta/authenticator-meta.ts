@@ -53,15 +53,15 @@ export class AuthenticatorMeta {
                 "FIDO security key or biometrics.",
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
                 "Time-Based One Time passcode.",
-            [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Login users with " +
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Login users with " +
                 "existing Google accounts.",
             [ IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID ]: "Login users with " +
                 "existing GitHub accounts.",
-            [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: "Login users with " +
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID ]: "Login users with " +
                 "existing Facebook accounts.",
             [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: "Login users with " +
                 "existing Twitter accounts.",
-            [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "Authenticate users with " +
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID ]: "Authenticate users with " +
                 "Enterprise OIDC connections.",
             [ ConnectionManagementConstants.SAML_AUTHENTICATOR_ID ]: "Authenticate users with " +
                 "Enterprise SAML connections.",
@@ -156,11 +156,11 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Predefined",
             [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: "Predefined",
             [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "Predefined",
-            [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Google",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Google",
             [ IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID ]: "GitHub",
-            [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: "Facebook",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID ]: "Facebook",
             [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: "Twitter",
-            [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "OIDC",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID ]: "OIDC",
             [ ConnectionManagementConstants.SAML_AUTHENTICATOR_ID ]: "SAML",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Predefined",
             [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined",
@@ -206,11 +206,11 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "sms-otp",
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "email-otp",
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "identifier-first",
-            [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "google",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "google",
             [ IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID ]: "github",
-            [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: "facebook",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID ]: "facebook",
             [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: "twitter",
-            [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "enterprise-oidc",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID ]: "enterprise-oidc",
             [ ConnectionManagementConstants.SAML_AUTHENTICATOR_ID ]: "enterprise-saml",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID ]: "apple"
         }, authenticatorId);
