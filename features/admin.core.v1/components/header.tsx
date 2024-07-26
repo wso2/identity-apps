@@ -60,6 +60,8 @@ import { ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
 import { CommonUtils, EventPublisher } from "../utils";
 import "./header.scss";
+import Divider from "@oxygen-ui/react/Divider";
+import Typography from "@oxygen-ui/react/Typography";
 
 /**
  * Dashboard layout Prop types.
@@ -177,8 +179,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                 { I18n.instance.t("extensions:common.help.docSiteLink") as ReactNode }
             </Button>
         ),
-        (window["AppUtils"].getConfig().extensions.community ||
-            window["AppUtils"].getConfig().extensions.helpCenterUrl) && (
+        (
+        // (window["AppUtils"].getConfig().extensions.community ||
+        //     window["AppUtils"].getConfig().extensions.helpCenterUrl) && (
             <>
                 <Button
                     color="inherit"
@@ -198,57 +201,72 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                     transformOrigin={ { horizontal: "right", vertical: "top" } }
                     onClose={ onCloseHelpMenu }
                 >
-                    { window["AppUtils"].getConfig().extensions.community && (
-                        <MenuItem
-                            className="get-help-dropdown-item"
-                            onClick={ () => {
-                                window.open(window["AppUtils"].getConfig().extensions.community, "_blank", "noopener");
-                            } }
-                        >
-                            <>
-                                <ListItemIcon>
-                                    <GenericIcon
-                                        className="spaced-right"
-                                        transparent
-                                        fill="white"
-                                        size="x22"
-                                        icon={ CommunityIcon }
-                                    />
-                                </ListItemIcon>
-                                { I18n.instance.t("extensions:common.help.communityLink") }
-                            </>
-                        </MenuItem>
-                    ) }
-                    { window["AppUtils"].getConfig().extensions.helpCenterUrl && (
-                        <MenuItem
-                            className="get-help-dropdown-item"
-                            onClick={ () => {
-                                window.open(
-                                    window["AppUtils"].getConfig().extensions.helpCenterUrl,
-                                    "_blank",
-                                    "noopener"
-                                );
-                            } }
-                        >
-                            <>
-                                <ListItemIcon>
-                                    <GenericIcon
-                                        className="spaced-right"
-                                        transparent
-                                        fill="white"
-                                        size="x22"
-                                        icon={ ContactSupportIcon }
-                                    />
-                                </ListItemIcon>
-                                { I18n.instance.t("extensions:common.help.helpCenterLink") }
-                                <Chip
-                                    icon={ <DiamondIcon /> }
-                                    label={ t(FeatureStatusLabel.PREMIUM) }
-                                    className="oxygen-menu-item-chip oxygen-chip-premium"
+                    <MenuItem
+                        className="get-help-dropdown-item"
+                        onClick={ () => {
+                            window.open(
+                                window["AppUtils"].getConfig().extensions.helpCenterUrl,
+                                "_blank",
+                                "noopener"
+                            );
+                        } }
+                    >
+                        <>
+                            <ListItemIcon>
+                                <GenericIcon
+                                    className="spaced-right"
+                                    transparent
+                                    fill="white"
+                                    size="x22"
+                                    icon={ ContactSupportIcon }
                                 />
-                            </>
-                        </MenuItem>
-                    ) }
+                            </ListItemIcon>
+                            <ListItemText
+                                primary={
+                                    (
+                                        <span className="contact-support-title">
+                                            { t("extensions:common.help.helpCenterLink") }
+                                            <Chip
+                                                icon={ <DiamondIcon /> }
+                                                label={ t(FeatureStatusLabel.PREMIUM) }
+                                                className="oxygen-menu-item-chip oxygen-chip-premium"
+                                            />
+                                        </span>
+                                    )
+                                }
+                                secondary={
+                                    (
+                                        <Typography className="contact-support-subtitle" variant="inherit">
+                                            Talk to the Asgardeo team for personalized assistance.
+                                        </Typography>
+                                    )
+                                }
+                            />
+
+                        </>
+                    </MenuItem>
+                    <Divider className="get-help-dropdown-divider" />
+                    <MenuItem
+                        className="get-help-dropdown-item"
+                        onClick={ () => {
+                            window.open(window["AppUtils"].getConfig().extensions.community, "_blank", "noopener");
+                        } }
+                    >
+                        <>
+                            <ListItemIcon>
+                                <GenericIcon
+                                    className="spaced-right"
+                                    transparent
+                                    fill="white"
+                                    size="x22"
+                                    icon={ CommunityIcon }
+                                />
+                            </ListItemIcon>
+                            { I18n.instance.t("extensions:common.help.communityLink") }
+                        </>
+                    </MenuItem>
+
+
                 </Menu>
             </>
         ),

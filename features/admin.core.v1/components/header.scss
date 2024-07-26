@@ -16,14 +16,16 @@
  * under the License.
  */
 
-// Header upgrade button styles
-// TODO: These values need to be changed to get from oxygen once the new version is released.
+// --- Upgrade button styles ---
 
-$header-upgrade-btn-background: linear-gradient(93deg, #ddb7380a 50%, #cba8370a 88.67%, #bd9b2c0a 112.88%);
+// Header upgrade button styles
+$header-upgrade-btn-background: linear-gradient(93deg, #ddb7380d 50%, #cba8370d 88.67%, #bd9b2c0d 112.88%);
 $header-upgrade-btn-font-weight: 700;
 $header-upgrade-btn-line-height: 20px;
-$header-upgrade-btn-border-color: #e0b834;
+$header-upgrade-btn-border-color: #E0B834;
+$header-upgrade-btn-border-color-hover: #FBCB30;
 $header-upgrade-btn-border: 1px solid $header-upgrade-btn-border-color;
+$header-upgrade-btn-border-hover: 1px solid $header-upgrade-btn-border-color-hover;
 $header-upgrade-btn-text-color: linear-gradient(93deg, #DDB638 50%, #CBA837 88.67%, #BD9B2C 112.88%);
 $header-upgrade-btn-text-fill-color: transparent;
 
@@ -52,14 +54,14 @@ $header-upgrade-btn-text-fill-color: transparent;
         background-image: $header-upgrade-btn-text-color;
         background-blend-mode: darken;
         color: $header-upgrade-btn-text-fill-color;
-        transition: all 0.3s ease-in-out;
+        transition: background-position .2s,outline-width .2s;
         transition-delay: 0s;
     }
 }
 
 .header-upgrade-btn:hover {
     background-image: $header-upgrade-btn-text-color;
-    border: 1px solid #FBCB30;
+    border: $header-upgrade-btn-border-hover;
 
     .oxygen-icon {
         fill: var(--oxygen-palette-primary-contrastText);
@@ -72,4 +74,31 @@ $header-upgrade-btn-text-fill-color: transparent;
     .header-upgrade-btn-text {
         color: var(--oxygen-palette-primary-contrastText);
     }
+}
+
+// ------------------------
+
+// --- Get help dropdown item styles ---
+
+// Get help dropdown item styles
+$get-help-dropdown-item-contact-support-background-hover: linear-gradient(93deg, rgba(203, 168, 55, 0.10) 50%, rgba(135, 103, 0, 0.10) 112.88%);
+
+.get-help-dropdown-divider {
+    border-color: #E1E1E152;
+    margin-bottom: 7px !important;
+}
+
+.get-help-dropdown-item:hover {
+    background: $get-help-dropdown-item-contact-support-background-hover;
+}
+
+.contact-support-title {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.contact-support-subtitle {
+    max-width: 170px;
+    text-wrap: wrap;
 }
