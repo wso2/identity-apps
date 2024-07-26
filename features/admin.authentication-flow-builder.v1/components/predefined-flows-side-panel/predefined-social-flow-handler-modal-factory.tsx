@@ -95,28 +95,30 @@ const PredefinedSocialFlowHandlerModalFactory: FunctionComponent<
 
         if (selectedSequence.id === "GoogleSocialLoginSequence") {
             authenticatorId = IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID;
-            authenticatorName = IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME;
+            authenticatorName = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.GOOGLE_OIDC_AUTHENTICATOR_NAME;
             setAuthenticatorCategoryTemplate(CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE);
             setAuthenticatorCategoryDisplayName(
-                IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME
+                FederatedAuthenticatorConstants.AUTHENTICATOR_DISPLAY_NAMES.GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME
             );
         } else if (selectedSequence.id === "GithubSocialLoginSequence") {
             authenticatorId = IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID;
-            authenticatorName = IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_NAME;
+            authenticatorName = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.GITHUB_AUTHENTICATOR_NAME;
             setAuthenticatorCategoryTemplate(CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GITHUB);
-            setAuthenticatorCategoryDisplayName(IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_DISPLAY_NAME);
+            setAuthenticatorCategoryDisplayName(FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.GITHUB_AUTHENTICATOR_DISPLAY_NAME);
         } else if (selectedSequence.id === "FacebookSocialLoginSequence") {
             authenticatorId = IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID;
-            authenticatorName = IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_NAME;
+            authenticatorName = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.FACEBOOK_AUTHENTICATOR_NAME;
             setAuthenticatorCategoryTemplate(CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK);
-            setAuthenticatorCategoryDisplayName(
-                IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_DISPLAY_NAME
+            setAuthenticatorCategoryDisplayName(FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.FACEBOOK_AUTHENTICATOR_DISPLAY_NAME
             );
         } else if (selectedSequence.id === "AppleSocialLoginSequence") {
             authenticatorId = FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID;
-            authenticatorName = IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_NAME;
+            authenticatorName = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.APPLE_AUTHENTICATOR_NAME;
             setAuthenticatorCategoryTemplate(CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE);
-            setAuthenticatorCategoryDisplayName(IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_DISPLAY_NAME);
+            setAuthenticatorCategoryDisplayName(FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.APPLE_AUTHENTICATOR_DISPLAY_NAME);
         }
 
         const filtered: GenericAuthenticatorInterface[] = authenticators?.social?.filter(

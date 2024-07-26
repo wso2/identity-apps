@@ -18,6 +18,7 @@
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { store } from "@wso2is/admin.core.v1";
 import useRequest, {
     RequestConfigInterface,
@@ -27,7 +28,6 @@ import useRequest, {
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { IdentityProviderManagementConstants } from "../constants";
 import { FIDOConfigsInterface, FIDOConnectorConfigsInterface } from "../models";
 
 /**
@@ -55,7 +55,7 @@ export const useFIDOConnectorConfigs = <Data = FIDOConnectorConfigsInterface, Er
         },
         method: HttpMethods.GET,
         url: `${store?.getState()?.config?.endpoints?.fidoConfigs}/${
-            IdentityProviderManagementConstants.FIDO_CONNECTOR_CONFIG_NAME}`
+            LocalAuthenticatorConstants.FIDO_CONNECTOR_CONFIG_NAME}`
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);

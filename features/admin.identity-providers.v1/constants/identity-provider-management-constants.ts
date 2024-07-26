@@ -24,8 +24,6 @@ import { authenticatorConfig } from "@wso2is/admin.extensions.v1/configs/authent
  */
 export class IdentityProviderManagementConstants {
 
-    public static readonly FIDO_TRUSTED_APPS_SHA_SEPARATOR: string = "|";
-
     public static readonly SESSION_EXECUTOR_AUTHENTICATOR: string = "SessionExecutor";
     public static readonly TOTP_AUTHENTICATOR: string = "totp";
     public static readonly IPROOV_AUTHENTICATOR: string = "IproovAuthenticator";
@@ -71,34 +69,9 @@ export class IdentityProviderManagementConstants {
     public static readonly SAML_AUTHENTICATOR_NAME: string = "SAMLSSOAuthenticator";
     public static readonly OIDC_AUTHENTICATOR_NAME: string = "OpenIDConnectAuthenticator";
 
-    // Known Social/Enterprise authenticator names;
-    public static readonly GOOGLE_OIDC_AUTHENTICATOR_NAME: string = "GoogleOIDCAuthenticator";
-    public static readonly FACEBOOK_AUTHENTICATOR_NAME: string = "FacebookAuthenticator";
-    public static readonly GITHUB_AUTHENTICATOR_NAME: string = "GithubAuthenticator";
-    public static readonly TWITTER_AUTHENTICATOR_NAME: string = "TwitterAuthenticator";
-    public static readonly MICROSOFT_AUTHENTICATOR_NAME: string = "MicrosoftAuthenticator";
-    public static readonly APPLE_AUTHENTICATOR_NAME: string = "AppleOIDCAuthenticator";
-
-    // Known Social authenticator display names;
-    public static readonly GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME: string = "Google";
-    public static readonly FACEBOOK_AUTHENTICATOR_DISPLAY_NAME: string = "Facebook";
-    public static readonly GITHUB_AUTHENTICATOR_DISPLAY_NAME: string = "GitHub";
-    public static readonly MICROSOFT_AUTHENTICATOR_DISPLAY_NAME: string = "Microsoft";
-    public static readonly APPLE_AUTHENTICATOR_DISPLAY_NAME: string = "Apple";
-
     // Keys for the initial values of Email OTP Authenticator
     public static readonly AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY: string = "EmailOTP_ExpiryTime";
 
     // Keys for the initial values of SMS OTP Authenticator
     public static readonly AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY: string = "SmsOTP_ExpiryTime";
-
-    /**
-     * Name of the FIDO connector configuration.
-     */
-    public static readonly FIDO_CONNECTOR_CONFIG_NAME: string = "fido-connector";
-
-    /**
-     * Attribute key for the trusted origins in the FIDO connector configuration.
-     */
-    public static readonly FIDO_TRUSTED_ORIGINS_ATTRIBUTE_KEY: string = "FIDO2TrustedOrigins";
 }

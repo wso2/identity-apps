@@ -605,19 +605,19 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
 
         if (loginType === LoginFlowTypes.GOOGLE_LOGIN) {
             modifiedSequenceTemplate = cloneDeep(GoogleLoginSequenceTemplate);
-            authenticatorType = IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME;
+            authenticatorType = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.GOOGLE_OIDC_AUTHENTICATOR_NAME;
         } else if (loginType === LoginFlowTypes.GITHUB_LOGIN) {
             modifiedSequenceTemplate = cloneDeep(GitHubLoginSequenceTemplate);
-            authenticatorType = IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_NAME;
+            authenticatorType = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.GITHUB_AUTHENTICATOR_NAME;
         } else if (loginType === LoginFlowTypes.FACEBOOK_LOGIN) {
             modifiedSequenceTemplate = cloneDeep(FacebookLoginSequenceTemplate);
-            authenticatorType = IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_NAME;
+            authenticatorType = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.FACEBOOK_AUTHENTICATOR_NAME;
         } else if (loginType === LoginFlowTypes.MICROSOFT_LOGIN) {
             modifiedSequenceTemplate = cloneDeep(MicrosoftLoginSequenceTemplate);
-            authenticatorType = IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_NAME;
+            authenticatorType = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.MICROSOFT_AUTHENTICATOR_NAME;
         } else if (loginType === LoginFlowTypes.APPLE_LOGIN) {
             modifiedSequenceTemplate = cloneDeep(AppleLoginSequenceTemplate);
-            authenticatorType = IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_NAME;
+            authenticatorType = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.APPLE_AUTHENTICATOR_NAME;
         }
         modifiedSequenceTemplate.steps[0].options.forEach((option: AuthenticatorInterface) => {
             if (option.authenticator === authenticatorType) {
@@ -640,19 +640,24 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
 
         if (socialDisclaimerModalType === LoginFlowTypes.GOOGLE_LOGIN) {
             idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE;
-            authenticatorName = IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.GITHUB_LOGIN) {
             idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GITHUB;
-            authenticatorName = IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_DISPLAY_NAME;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.GITHUB_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.FACEBOOK_LOGIN) {
             idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK;
-            authenticatorName = IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_DISPLAY_NAME;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.FACEBOOK_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.MICROSOFT_LOGIN) {
             idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.MICROSOFT;
-            authenticatorName = IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_DISPLAY_NAME;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.MICROSOFT_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.APPLE_LOGIN) {
             idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE;
-            authenticatorName = IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_DISPLAY_NAME;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.APPLE_AUTHENTICATOR_DISPLAY_NAME;
         } else {
             return null;
         }
@@ -732,19 +737,24 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
 
         if (socialDisclaimerModalType === LoginFlowTypes.GOOGLE_LOGIN) {
             authenticators = [ ...googleAuthenticators ];
-            authenticatorName = IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.GITHUB_LOGIN) {
             authenticators = [ ...gitHubAuthenticators ];
-            authenticatorName = IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_DISPLAY_NAME;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.GITHUB_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.FACEBOOK_LOGIN) {
             authenticators = [ ...facebookAuthenticators ];
-            authenticatorName = IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_DISPLAY_NAME;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.FACEBOOK_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.MICROSOFT_LOGIN) {
             authenticators = [ ...microsoftAuthenticators ];
-            authenticatorName = IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_DISPLAY_NAME;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.MICROSOFT_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.APPLE_LOGIN) {
             authenticators = [ ...appleAuthenticators ];
-            authenticatorName = IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_DISPLAY_NAME;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.APPLE_AUTHENTICATOR_DISPLAY_NAME;
         } else {
             return null;
         }

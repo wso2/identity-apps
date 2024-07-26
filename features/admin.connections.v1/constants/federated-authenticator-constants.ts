@@ -48,6 +48,36 @@ export class FederatedAuthenticatorConstants {
             TWITTER_AUTHENTICATOR_ID: "VHdpdHRlckF1dGhlbnRpY2F0b3I"
         };
 
+    public static readonly AUTHENTICATOR_NAMES: {
+        APPLE_AUTHENTICATOR_NAME: string;
+        FACEBOOK_AUTHENTICATOR_NAME: string;
+        GITHUB_AUTHENTICATOR_NAME: string;
+        GOOGLE_OIDC_AUTHENTICATOR_NAME: string;
+        MICROSOFT_AUTHENTICATOR_NAME: string;
+        TWITTER_AUTHENTICATOR_NAME: string;
+    } = {
+            APPLE_AUTHENTICATOR_NAME: "AppleOIDCAuthenticator",
+            FACEBOOK_AUTHENTICATOR_NAME: "FacebookAuthenticator",
+            GITHUB_AUTHENTICATOR_NAME: "GithubAuthenticator",
+            GOOGLE_OIDC_AUTHENTICATOR_NAME: "GoogleOIDCAuthenticator",
+            MICROSOFT_AUTHENTICATOR_NAME: "MicrosoftAuthenticator",
+            TWITTER_AUTHENTICATOR_NAME: "TwitterAuthenticator"
+        };
+
+    public static readonly AUTHENTICATOR_DISPLAY_NAMES: {
+        APPLE_AUTHENTICATOR_DISPLAY_NAME: string;
+        FACEBOOK_AUTHENTICATOR_DISPLAY_NAME: string;
+        GITHUB_AUTHENTICATOR_DISPLAY_NAME: string;
+        GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME: string;
+        MICROSOFT_AUTHENTICATOR_DISPLAY_NAME: string;
+    } = {
+            APPLE_AUTHENTICATOR_DISPLAY_NAME: "Apple",
+            FACEBOOK_AUTHENTICATOR_DISPLAY_NAME: "Facebook",
+            GITHUB_AUTHENTICATOR_DISPLAY_NAME: "GitHub",
+            GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME: "Google",
+            MICROSOFT_AUTHENTICATOR_DISPLAY_NAME: "Microsoft"
+        };
+
     /**
      * Google One Tap enabling request parameter.
      */

@@ -370,17 +370,17 @@ export class ApplicationManagementConstants {
     // Known social authenticators.
     public static readonly SOCIAL_AUTHENTICATORS: string[] = [
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.APPLE_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.GOOGLE_OIDC_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.FACEBOOK_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.MICROSOFT_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.TWITTER_AUTHENTICATOR_NAME,
         IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_NAME
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.GITHUB_AUTHENTICATOR_NAME
     ];
 
     // Authenticators that can handle TOTP.
