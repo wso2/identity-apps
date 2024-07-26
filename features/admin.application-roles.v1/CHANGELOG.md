@@ -1,5 +1,23 @@
 # @wso2is/admin.application-roles.v1
 
+## 2.21.31
+
+### Patch Changes
+
+- [#6676](https://github.com/wso2/identity-apps/pull/6676) [`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da) Thanks [@Achintha444](https://github.com/Achintha444)! - Update oxygen-ui to `1.13.3`
+
+- Updated dependencies [[`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da)]:
+  - @wso2is/admin.identity-providers.v1@2.21.19
+  - @wso2is/admin.applications.v1@2.22.19
+  - @wso2is/admin.connections.v1@2.21.19
+  - @wso2is/admin.extensions.v1@2.21.59
+  - @wso2is/admin.userstores.v1@2.20.89
+  - @wso2is/admin.groups.v1@2.20.89
+  - @wso2is/react-components@2.2.27
+  - @wso2is/admin.core.v1@2.23.19
+  - @wso2is/access-control@3.0.20
+  - @wso2is/core@2.0.60
+
 ## 2.21.30
 
 ### Patch Changes

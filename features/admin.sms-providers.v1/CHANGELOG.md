@@ -1,5 +1,25 @@
 # @wso2is/admin.sms-providers.v1
 
+## 2.20.89
+
+### Patch Changes
+
+- [#6676](https://github.com/wso2/identity-apps/pull/6676) [`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da) Thanks [@Achintha444](https://github.com/Achintha444)! - Update oxygen-ui to `1.13.3`
+
+- Updated dependencies [[`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da)]:
+  - @wso2is/admin.connections.v1@2.21.19
+  - @wso2is/admin.extensions.v1@2.21.59
+  - @wso2is/react-components@2.2.27
+  - @wso2is/admin.core.v1@2.23.19
+  - @wso2is/access-control@3.0.20
+  - @wso2is/dynamic-forms@2.0.85
+  - @wso2is/validation@2.0.9
+  - @wso2is/forms@2.0.50
+  - @wso2is/theme@2.0.97
+  - @wso2is/core@2.0.60
+  - @wso2is/form@2.0.86
+  - @wso2is/i18n@2.5.15
+
 ## 2.20.88
 
 ### Patch Changes
