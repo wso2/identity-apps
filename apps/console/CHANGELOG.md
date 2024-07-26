@@ -1,5 +1,58 @@
 # @wso2is/console
 
+## 2.21.23
+
+### Patch Changes
+
+- [#6676](https://github.com/wso2/identity-apps/pull/6676) [`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da) Thanks [@Achintha444](https://github.com/Achintha444)! - Update oxygen-ui to `1.13.3`
+
+- Updated dependencies [[`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da)]:
+  - @wso2is/admin.identity-verification-providers.v1@2.20.89
+  - @wso2is/admin.remote-repository-configuration.v1@2.20.89
+  - @wso2is/admin.organization-discovery.v1@2.20.89
+  - @wso2is/admin.server-configurations.v1@2.21.31
+  - @wso2is/admin.saml2-configuration.v1@2.20.89
+  - @wso2is/admin.wsfed-configuration.v1@2.20.89
+  - @wso2is/admin.session-management.v1@2.20.89
+  - @wso2is/admin.workflow-approvals.v1@2.20.89
+  - @wso2is/admin.console-settings.v1@2.20.89
+  - @wso2is/admin.email-management.v1@2.20.89
+  - @wso2is/admin.email-providers.v1@2.20.89
+  - @wso2is/admin.private-key-jwt.v1@2.20.89
+  - @wso2is/admin.authentication.v1@2.20.89
+  - @wso2is/admin.api-resources.v1@2.20.89
+  - @wso2is/admin.api-resources.v2@2.20.89
+  - @wso2is/admin.authorization.v1@2.20.39
+  - @wso2is/admin.email-and-sms.v1@2.20.89
+  - @wso2is/admin.impersonation.v1@1.1.31
+  - @wso2is/admin.organizations.v1@2.20.89
+  - @wso2is/admin.sms-providers.v1@2.20.89
+  - @wso2is/admin.applications.v1@2.22.19
+  - @wso2is/admin.certificates.v1@2.20.89
+  - @wso2is/admin.org-insights.v1@2.20.89
+  - @wso2is/admin.connections.v1@2.21.19
+  - @wso2is/admin.oidc-scopes.v1@2.20.89
+  - @wso2is/admin.extensions.v1@2.21.59
+  - @wso2is/admin.validation.v1@2.20.89
+  - @wso2is/admin.branding.v1@2.20.89
+  - @wso2is/admin.secrets.v1@2.20.89
+  - @wso2is/admin.claims.v1@2.20.89
+  - @wso2is/admin.groups.v1@2.20.89
+  - @wso2is/admin.server.v1@2.20.89
+  - @wso2is/react-components@2.2.27
+  - @wso2is/admin.roles.v1@2.20.89
+  - @wso2is/admin.roles.v2@2.20.89
+  - @wso2is/admin.users.v1@2.20.89
+  - @wso2is/admin.core.v1@2.23.19
+  - @wso2is/access-control@3.0.20
+  - @wso2is/dynamic-forms@2.0.85
+  - @wso2is/validation@2.0.9
+  - @wso2is/forms@2.0.50
+  - @wso2is/theme@2.0.97
+  - @wso2is/core@2.0.60
+  - @wso2is/form@2.0.86
+  - @wso2is/i18n@2.5.15
+
 ## 2.21.22
 
 ### Patch Changes
