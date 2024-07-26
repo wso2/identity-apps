@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
 import { AppState, FeatureConfigInterface, history, store } from "@wso2is/admin.core.v1";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
@@ -35,7 +36,7 @@ import { UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-m
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes, isFeatureEnabled, resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
+import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -70,8 +71,6 @@ const AdministratorEditPage = (): ReactElement => {
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-
     const [ user, setUserProfile ] = useState<ProfileInfoInterface>(emptyProfileInfo);
     const [ isUserDetailsRequestLoading, setIsUserDetailsRequestLoading ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
@@ -82,6 +81,9 @@ const AdministratorEditPage = (): ReactElement => {
     const [ isReadOnly, setReadOnly ] = useState<boolean>(true);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isDisplayNameEnabled, setIsDisplayNameEnabled ] = useState<boolean>(undefined);
+
+    const hasUserReadPermissions: boolean = useRequiredScopes(featureConfig?.users?.scopes?.read);
+    const hasUserUpdatePermissions: boolean = useRequiredScopes(featureConfig?.users?.scopes?.update);
 
     useEffect(() => {
         if (!user) {
@@ -94,7 +96,7 @@ const AdministratorEditPage = (): ReactElement => {
 
         if (!isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
             || readOnlyUserStoresList?.includes(userStore?.toString())
-            || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+            || !hasUserUpdatePermissions
         ) {
             setReadOnly(true);
         }
@@ -139,8 +141,7 @@ const AdministratorEditPage = (): ReactElement => {
             return;
         }
 
-        if (hasRequiredScopes(featureConfig?.guestUser,
-            featureConfig?.guestUser?.scopes?.read, allowedScopes)) {
+        if (hasUserReadPermissions) {
             getAdminUser();
         }
         setIsDisplayNameEnabled(
@@ -175,6 +176,9 @@ const AdministratorEditPage = (): ReactElement => {
         getServerConfigs()
             .then((response: ServerConfigurationsInterface) => {
                 setRealmConfigs(response?.realmConfig);
+            })
+            .catch((_error: unknown) => {
+                setRealmConfigs(null);
             });
     };
 
