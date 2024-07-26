@@ -24,41 +24,6 @@ import { authenticatorConfig } from "@wso2is/admin.extensions.v1/configs/authent
  */
 export class IdentityProviderManagementConstants {
 
-    public static readonly IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
-        "invalid status code while fetching connection templates list.";
-
-    public static readonly IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR: string = "An error occurred while fetching " +
-        "the required connection templates list.";
-
-    public static readonly LOCAL_AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
-        "status code while fetching local authenticators.";
-
-    public static readonly LOCAL_AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the local" +
-        "authenticators.";
-
-    public static readonly AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
-        "status code while fetching the authenticators.";
-
-    public static readonly AUTHENTICATORS_FETCH_ERROR: string = "An error occurred while fetching the " +
-        "authenticators.";
-
-    public static readonly COMBINED_AUTHENTICATOR_FETCH_ERROR: string = "An error occurred while fetching the local" +
-        "and federated authenticators.";
-
-    public static readonly FIDO_AUTHENTICATOR_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
-        "invalid status code while updating the Passkey connector configs.";
-
-    public static readonly FIDO_AUTHENTICATOR_CONFIG_UPDATE_ERROR: string = "An error occurred while updating the " +
-        "Passkey connector configs.";
-
-    public static readonly FIDO_CONNECTOR_CONFIGS_NOT_CONFIGURED_ERROR_CODE: string = "CONFIGM_00017";
-
-    public static readonly FIDO_TRUSTED_APPS_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
-        "invalid status code while updating the Passkey trusted apps.";
-
-    public static readonly FIDO_TRUSTED_APPS_UPDATE_ERROR: string = "An error occurred while updating the " +
-        "Passkey trusted apps.";
-
     public static readonly FIDO_TRUSTED_APPS_SHA_SEPARATOR: string = "|";
 
     public static readonly SESSION_EXECUTOR_AUTHENTICATOR: string = "SessionExecutor";

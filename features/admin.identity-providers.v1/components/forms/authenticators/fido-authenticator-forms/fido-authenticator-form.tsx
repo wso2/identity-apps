@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -126,7 +127,7 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
         }
 
         if (fidoConnectorConfigFetchError?.response?.data?.code ===
-            IdentityProviderManagementConstants.FIDO_CONNECTOR_CONFIGS_NOT_CONFIGURED_ERROR_CODE) {
+            ConnectionUIConstants.ERROR_CODES.FIDO_CONNECTOR_CONFIGS_NOT_CONFIGURED_ERROR_CODE) {
             return;
         }
 

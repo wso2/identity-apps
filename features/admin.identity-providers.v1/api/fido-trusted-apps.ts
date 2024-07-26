@@ -17,6 +17,7 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 import { store } from "@wso2is/admin.core.v1";
 import useRequest, {
     RequestConfigInterface,
@@ -26,7 +27,6 @@ import useRequest, {
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { IdentityProviderManagementConstants } from "../constants";
 import { FIDOTrustedAppsResponseInterface } from "../models";
 
 /**
@@ -91,7 +91,7 @@ export const updateFidoTrustedApps = (
         .then((response: AxiosResponse) => {
             if (response?.status !== 200) {
                 throw new IdentityAppsApiException(
-                    IdentityProviderManagementConstants.FIDO_TRUSTED_APPS_UPDATE_INVALID_STATUS_CODE_ERROR,
+                    ConnectionUIConstants.ERROR_MESSAGES.FIDO_TRUSTED_APPS_UPDATE_INVALID_STATUS_CODE_ERROR,
                     null,
                     response?.status,
                     response?.request,
@@ -100,7 +100,7 @@ export const updateFidoTrustedApps = (
             }
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                IdentityProviderManagementConstants.FIDO_TRUSTED_APPS_UPDATE_ERROR,
+                ConnectionUIConstants.ERROR_MESSAGES.FIDO_TRUSTED_APPS_UPDATE_ERROR,
                 error?.stack,
                 error?.response?.data?.code,
                 error?.request,
