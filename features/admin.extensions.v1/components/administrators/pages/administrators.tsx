@@ -163,14 +163,13 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
     const [ searchInternalAdminQuery, setSearchInternalAdminQuery ] = useState<string>("");
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    const [ listItemAdditionalLimit, setListItemAdditionalLimit ] = useState<number>(0);
+    const [ currentActivePage, setCurrentActivePage ] = useState<number>(0);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-
     const [ showExtenalAdminWizard, setShowExtenalAdminWizard ] = useState<boolean>(false);
     const [ rolesList ] = useState([]);
-
     const [ invitationStatusOption, setInvitationStatusOption ] = useState<string>(InvitationStatus.ACCEPTED);
     const [ isInvitationStatusOptionChanged, setIsInvitationStatusOptionChanged ] = useState<boolean>(false);
-
     const [ paginatedGuestList, setPaginateGuestList ] = useState<UserInviteInterface[]>([]);
     const [ finalGuestList, setFinalGuestList ] = useState<UserInviteInterface[]>([]);
     const [ filterGuestList, setFilterGuestList ] = useState<UserInviteInterface[]>([]);
@@ -212,7 +211,9 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const modifiedLimit: number = listItemLimit + TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET;
+    const modifiedLimit: number = useMemo(() => {
+        return listItemLimit + TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET;
+    }, [ listItemLimit ]);
     // Excluding groups and roles from getUserList API call to improve performance.
     const excludedAttributes: string = UserManagementConstants.GROUPS_ATTRIBUTE;
 
@@ -237,8 +238,8 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         error: adminUserListFetchRequestError,
         mutate: mutateAdminUserListFetchRequest
     } = useUsersList(
-        modifiedLimit,
-        listOffset + 1,
+        modifiedLimit + listItemAdditionalLimit,
+        listOffset + TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET,
         (
             searchQuery === ""
                 ? null
@@ -654,7 +655,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         const moderateUsersList = (list: UserListInterface, requestedLimit: number,
             popCount: number = 1): UserListInterface => {
 
-            const moderated: UserListInterface = list;
+            const moderated: UserListInterface = cloneDeep(list);
 
             if (moderated.Resources?.length === requestedLimit) {
                 moderated.Resources?.splice(-1, popCount);
@@ -669,7 +670,23 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         clonedUserList.Resources = processedUserList.concat(clonedUserList.Resources)
             .filter((user: UserBasicInterface) => user != null);
 
-        return moderateUsersList(clonedUserList, modifiedLimit, TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET);
+        const clonedUserListDeficit: number = usersList?.Resources?.length -
+            clonedUserList.Resources?.length - listItemAdditionalLimit;
+
+        let moderatedUsersList: UserListInterface = {};
+
+        // Check if clonedUserList length is less than the requested limit.
+        // If so, fetch the next page.
+        if (clonedUserListDeficit > 0 && usersList?.itemsPerPage >= modifiedLimit) {
+            // Fetch the next page.
+            setListItemAdditionalLimit(clonedUserListDeficit);
+            moderatedUsersList = moderateUsersList(
+                clonedUserList, modifiedLimit - clonedUserListDeficit, TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET);
+        } else {
+            moderatedUsersList = moderateUsersList(clonedUserList, modifiedLimit, TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET);
+        }
+
+        return moderatedUsersList;
     };
 
     const getUserStoreList = (): void => {
@@ -819,6 +836,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         setListOffset(0);
         setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
         setUserStoreChanged(true);
+        setListItemAdditionalLimit(0);
     };
 
     const adminUserList: UserListInterface = useMemo(() => {
@@ -826,11 +844,24 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
     }, [ originalAdminUserList ]);
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
-        setListOffset((data.activePage as number - 1) * listItemLimit);
+        const dataActivePage: number = data.activePage as number;
+        // If currentActivePage is greater than the data.activePage, it means the user is going back.
+
+        if (currentActivePage > dataActivePage) {
+            // When going back, we need to do not need to offset for the additional items.
+            setListOffset((dataActivePage - 1) * listItemLimit);
+        } else {
+            // When going forward, we need to offset for the additional items requested if any.
+            setListOffset(((dataActivePage - 1) * listItemLimit) + listItemAdditionalLimit);
+        }
+
+        setCurrentActivePage(dataActivePage);
+        setListItemAdditionalLimit(0);
     };
 
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps)
         : void => {
+        setListItemAdditionalLimit(0);
         setListItemLimit(data.value as number);
     };
 
