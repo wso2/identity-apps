@@ -16,7 +16,13 @@
  * under the License.
  */
 
-import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
+import {
+    FeatureAccessConfigInterface,
+    FeatureStatus,
+    Show,
+    useCheckFeatureStatus,
+    useRequiredScopes
+} from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api";
 import {
     AdvancedSearchWithBasicFilters,
@@ -148,15 +154,19 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(
         FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
-
     const useOrgConfig: UseOrganizationConfigType = useOrganizationConfigV2;
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const tenantedConsoleUrl: string = useSelector((state: AppState) => state?.config?.deployment?.clientHost);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
     const currentOrganization: string =  useSelector((state: AppState) => state?.config?.deployment?.tenant);
     const authUserTenants: TenantInfo[] = useSelector((state: AppState) => state?.auth?.tenants);
+    const guestUserFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state.config.ui.features.guestUser);
+
+    const hasGuestUserCreatePermissions: boolean = useRequiredScopes(
+        guestUserFeatureConfig?.scopes?.create
+    );
 
     const [ isGuestUsersNextPageAvailable, setIsGuestUsersNextPageAvailable ] = useState<boolean>(undefined);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
@@ -1079,7 +1089,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         }
     ];
 
-    if (hasRequiredScopes(featureConfig?.guestUser, featureConfig?.guestUser?.scopes?.create, allowedScopes)) {
+    if (hasGuestUserCreatePermissions) {
         addUserOptions.push();
     }
 
