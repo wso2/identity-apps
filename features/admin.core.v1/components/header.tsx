@@ -101,7 +101,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
     const userOrganizationID: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
 
     const hasOrganizationReadPermission: boolean =useRequiredScopes(organizationFeatureConfig?.scopes?.read);
-    const hasGettingStartedFeaturePermission: boolean = useRequiredScopes(
+    const hasGettingStartedViewPermission: boolean = useRequiredScopes(
         gettingStartedFeatureConfig?.scopes?.feature
     );
 
@@ -214,7 +214,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                                     window.open(
                                         window["AppUtils"].getConfig().extensions.helpCenterUrl,
                                         "_blank",
-                                        "noopener"
+                                        "noopener noreferrer"
                                     );
                                 } }
                             >
@@ -335,7 +335,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                     mobile: <LOGO_IMAGE />
                 },
                 onClick: () =>
-                    hasGettingStartedFeaturePermission &&
+                    hasGettingStartedViewPermission &&
                     history.push(config.deployment.appHomePath),
                 title: config.ui.appName
             } }

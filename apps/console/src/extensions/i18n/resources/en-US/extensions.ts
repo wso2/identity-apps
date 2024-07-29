@@ -33,7 +33,7 @@ export const extensions: Extensions = {
             docSiteLink: "Documentation",
             helpCenterLink: {
                 title: "Contact Support",
-                subtitle: "Talk to the Asgardeo team to obtain personalized assistance."
+                subtitle: "Talk to the {{ productName }} team to obtain personalized assistance."
             },
             helpDropdownLink: "Get Help"
         },
