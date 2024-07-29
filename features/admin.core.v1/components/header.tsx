@@ -16,9 +16,11 @@
  * under the License.
  */
 
+import { DiamondIcon } from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
+import Divider from "@oxygen-ui/react/Divider";
 import OxygenHeader from "@oxygen-ui/react/Header";
 import Image from "@oxygen-ui/react/Image";
 import Link from "@oxygen-ui/react/Link";
@@ -26,8 +28,8 @@ import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
-import { DiamondIcon } from "@oxygen-ui/react-icons";
-import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
+import Typography from "@oxygen-ui/react/Typography";
+import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
@@ -38,8 +40,9 @@ import {
 } from "@wso2is/admin.extensions.v1/components/subscription/models/subscription";
 import { OrganizationSwitchBreadcrumb } from "@wso2is/admin.organizations.v1/components/organization-switch";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { hasRequiredScopes, resolveAppLogoFilePath } from "@wso2is/core/helpers";
+import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface } from "@wso2is/core/src/models";
 import { StringUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import { GenericIcon, useDocumentation } from "@wso2is/react-components";
@@ -56,12 +59,10 @@ import { ReactComponent as BillingPortalIcon } from "../../themes/wso2is/assets/
 import { AppConstants, OrganizationType } from "../constants";
 import { history } from "../helpers";
 import useGlobalVariables from "../hooks/use-global-variables";
-import { ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
+import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
 import { CommonUtils, EventPublisher } from "../utils";
 import "./header.scss";
-import Divider from "@oxygen-ui/react/Divider";
-import Typography from "@oxygen-ui/react/Typography";
 
 /**
  * Dashboard layout Prop types.
@@ -92,9 +93,18 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
         (state: AppState) => state.config.deployment.accountApp.tenantQualifiedPath
     );
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
-    const feature: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const organizationFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state.config.ui.features.organizations);
+    const gettingStartedFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state.config.ui.features.gettingStarted);
     const scopes: string = useSelector((state: AppState) => state.auth.allowedScopes);
     const userOrganizationID: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
+
+
+    const hasOrganizationReadPermission: boolean =useRequiredScopes(organizationFeatureConfig?.scopes?.read);
+    const hasGettingStartedFeaturePermission: boolean = useRequiredScopes(
+        gettingStartedFeatureConfig?.scopes?.feature
+    );
 
     const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
     const { tierName }: TenantTierRequestResponse = useContext(SubscriptionContext);
@@ -139,16 +149,13 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
      *  - the organization management feature is enabled by the backend
      *  - the user is logged in to a non-super-tenant account
      */
-    const isOrgSwitcherEnabled: boolean = useMemo(() => {
-        return (
-            isOrganizationManagementEnabled &&
-            (organizationType === OrganizationType.SUPER_ORGANIZATION ||
-                organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
-                organizationType === OrganizationType.SUBORGANIZATION ||
-                organizationConfigs.showSwitcherInTenants) &&
-            hasRequiredScopes(feature?.organizations, feature?.organizations?.scopes?.read, scopes, organizationType)
-        );
-    }, [ tenantDomain, feature.organizations, organizationType, scopes ]);
+    const isOrgSwitcherEnabled: boolean = useMemo(() => (
+        isOrganizationManagementEnabled &&
+        (organizationType === OrganizationType.SUPER_ORGANIZATION ||
+            organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+            organizationType === OrganizationType.SUBORGANIZATION ||
+            organizationConfigs.showSwitcherInTenants) && hasOrganizationReadPermission
+    ), [ tenantDomain, hasOrganizationReadPermission, organizationType, scopes ]);
 
     const resolveUsername = (): string => {
         if (profileInfo?.name?.givenName) {
@@ -329,7 +336,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                     mobile: <LOGO_IMAGE />
                 },
                 onClick: () =>
-                    hasRequiredScopes(feature?.gettingStarted, feature?.gettingStarted?.scopes?.feature, scopes) &&
+                    hasGettingStartedFeaturePermission &&
                     history.push(config.deployment.appHomePath),
                 title: config.ui.appName
             } }
