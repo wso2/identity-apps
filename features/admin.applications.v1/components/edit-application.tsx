@@ -201,7 +201,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const isFragmentApp: boolean = application?.advancedConfigurations?.fragment || false;
     const hiddenAuthenticators: string[] = [ ...(UIConfig?.hiddenAuthenticators ?? []) ];
     const isMyAccount: boolean =
-        ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID === application?.clientId;
+        ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID === application?.clientId ||
+        ApplicationManagementConstants.MY_ACCOUNT_APP_NAME === application?.name;
     const applicationsUpdateScopes: string[] = featureConfig?.applications?.scopes?.update;
 
     const { isSubOrganization } = useGetCurrentOrganizationType();

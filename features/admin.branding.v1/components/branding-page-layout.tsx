@@ -401,17 +401,15 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                         )
                     }
                 </motion.div>
-                <motion.div layout>
-                    {
-                        !brandingDisabledFeatures?.includes(AI_BRANDING_FEATURE_ID) &&
-                        !isSubOrganization() && (
-                            <BrandingAIBanner
-                                readonly={ brandingMode === BrandingModes.APPLICATION && !selectedApplication }
-                            />
-                        )
-                    }
-                    <BrandingCore />
-                </motion.div>
+                {
+                    !brandingDisabledFeatures?.includes(AI_BRANDING_FEATURE_ID) &&
+                    !isSubOrganization() && (
+                        <BrandingAIBanner
+                            readonly={ brandingMode === BrandingModes.APPLICATION && !selectedApplication }
+                        />
+                    )
+                }
+                <BrandingCore />
             </LayoutGroup>
         </PageLayout>
     );
