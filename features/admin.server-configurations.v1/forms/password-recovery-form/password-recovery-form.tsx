@@ -38,6 +38,7 @@ import { GovernanceConnectorConstants } from "../../constants/governance-connect
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
 import { ConnectorPropertyInterface } from "../../models/governance-connectors";
 import "./password-recovery-form.scss";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 
 const FORM_ID: string = "governance-connectors-password-recovery-form";
 
@@ -421,7 +422,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     {
                         showSmsOtpPwdRecoveryFeatureStatusChip &&
                         (<Chip
-                            label="BETA"
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-menu-item-chip oxygen-chip-beta" />)
                     }
                 </Heading>
@@ -488,7 +489,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     {
                         showSmsOtpPwdRecoveryFeatureStatusChip &&
                         (<Chip
-                            label="BETA"
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-menu-item-chip oxygen-chip-beta" />)
                     }
                 </Heading>
@@ -594,7 +595,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     {
                         showSmsOtpPwdRecoveryFeatureStatusChip &&
                         (<Chip
-                            label="BETA"
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-menu-item-chip oxygen-chip-beta" />)
                     }
                 </Heading>

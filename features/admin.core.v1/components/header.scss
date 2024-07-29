@@ -76,29 +76,34 @@ $header-upgrade-btn-text-fill-color: transparent;
     }
 }
 
-// ------------------------
-
 // --- Get help dropdown item styles ---
 
 // Get help dropdown item styles
-$get-help-dropdown-item-contact-support-background-hover: linear-gradient(93deg, rgba(203, 168, 55, 0.10) 50%, rgba(135, 103, 0, 0.10) 112.88%);
+$contact-support-dropdown-item-contact-support-background-hover: linear-gradient(93deg, rgba(203, 168, 55, 0.10) 50%, rgba(135, 103, 0, 0.10) 112.88%);
+$get-help-dropdown-divider-border-color: #E1E1E152;
 
 .get-help-dropdown-divider {
-    border-color: #E1E1E152;
+    border-color: $get-help-dropdown-divider-border-color;
     margin-bottom: 7px !important;
 }
 
-.get-help-dropdown-item:hover {
-    background: $get-help-dropdown-item-contact-support-background-hover;
+.contact-support-dropdown-item:hover {
+    background: $contact-support-dropdown-item-contact-support-background-hover;
 }
 
 .contact-support-title {
     display: flex;
     align-items: center;
     flex-direction: row;
+
+    .oxygen-chip-premium {
+        margin-left: 6px;
+    }
 }
 
 .contact-support-subtitle {
-    max-width: 170px;
+    max-width: 213px;
     text-wrap: wrap;
+    line-height: 16px;
+    margin-top: 4px !important;
 }

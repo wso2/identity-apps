@@ -31,7 +31,10 @@ export const extensions: Extensions = {
         help: {
             communityLink: "Ask the Community",
             docSiteLink: "Documentation",
-            helpCenterLink: "Contact Support",
+            helpCenterLink: {
+                title: "Contact Support",
+                subtitle: "Talk to the Asgardeo team to obtain personalized assistance."
+            },
             helpDropdownLink: "Get Help"
         },
         learnMore: "Learn More",
