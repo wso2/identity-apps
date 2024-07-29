@@ -60,6 +60,29 @@ export class LocalAuthenticatorConstants {
             X509_CERTIFICATE_AUTHENTICATOR_ID: "eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg"
         };
 
+    /**
+     * Authenticator names for the local authenticators.
+     */
+    public static readonly AUTHENTICATOR_NAMES: {
+        BACKUP_CODE_AUTHENTICATOR_NAME: string;
+        BASIC_AUTHENTICATOR_NAME: string;
+        EMAIL_OTP_AUTHENTICATOR_NAME: string;
+        FIDO_AUTHENTICATOR_NAME: string;
+        IDENTIFIER_FIRST_AUTHENTICATOR_NAME: string;
+        MAGIC_LINK_AUTHENTICATOR_NAME: string;
+        SMS_OTP_AUTHENTICATOR_NAME: string;
+        TOTP_AUTHENTICATOR_NAME: string;
+    } = {
+            BACKUP_CODE_AUTHENTICATOR_NAME: "backup-code-authenticator",
+            BASIC_AUTHENTICATOR_NAME: "BasicAuthenticator",
+            EMAIL_OTP_AUTHENTICATOR_NAME: "email-otp-authenticator",
+            FIDO_AUTHENTICATOR_NAME: "FIDOAuthenticator",
+            IDENTIFIER_FIRST_AUTHENTICATOR_NAME: "IdentifierExecutor",
+            MAGIC_LINK_AUTHENTICATOR_NAME: "MagicLinkAuthenticator",
+            SMS_OTP_AUTHENTICATOR_NAME: "sms-otp-authenticator",
+            TOTP_AUTHENTICATOR_NAME: "totp"
+        };
+
     // FIDO authenticator constants.
     /**
      * Separator for the FIDO trusted apps.

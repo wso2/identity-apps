@@ -165,7 +165,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
 
         step.options.map((option: AuthenticatorInterface) => {
             if ([ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-                IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR,
+                LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME,
                 IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR ]
                 .includes(option.authenticator)) {
                 setShowSubjectIdentifierCheckbox(false);
@@ -179,7 +179,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                 [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
                     IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
                     IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME
                 ].includes(option.authenticator)
             ) {
                 isBackupCodeSupportedAuthenticator = true;
@@ -206,7 +206,8 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
             let isBackupCodesEnabled: boolean = false;
 
             step.options.map((option: AuthenticatorInterface, optionIndex: number) => {
-                if (option.authenticator === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+                if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .BACKUP_CODE_AUTHENTICATOR_NAME) {
                     isBackupCodesEnabled = true;
                     setBackupCodeIndex(optionIndex);
                 }

@@ -27,6 +27,7 @@ import {
 import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { ConnectionsManagementUtils }
     from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
@@ -821,8 +822,8 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
                         {
                             authenticators
                                 .filter((authenticator: GenericAuthenticatorInterface) => {
-                                    return authenticator.name !== IdentityProviderManagementConstants
-                                        .BACKUP_CODE_AUTHENTICATOR;
+                                    return authenticator.name !== LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                                        .BACKUP_CODE_AUTHENTICATOR_NAME;
                                 })
                                 .map((authenticator: GenericAuthenticatorInterface, index: number) => (
                                     <LabeledCard

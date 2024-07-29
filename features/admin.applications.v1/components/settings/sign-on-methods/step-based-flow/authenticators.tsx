@@ -148,7 +148,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             );
         }
 
-        if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+        if (authenticator.name === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME) {
             // If there is only one step in the flow, backup code authenticator shouldn't be allowed.
             if (currentStep === 0) {
                 return false;
@@ -240,7 +240,8 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     ) }
                 </>
             );
-        } else if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+        } else if (authenticator.name === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+            .BACKUP_CODE_AUTHENTICATOR_NAME) {
             return (
                 <>
                     { currentStep === 0 ? (

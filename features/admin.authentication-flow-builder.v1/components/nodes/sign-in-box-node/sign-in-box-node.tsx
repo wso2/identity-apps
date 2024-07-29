@@ -206,7 +206,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
      * No need to show Basic Auth, Identifier first, Backup Code authenticator .etc, as a Sign In option button.
      */
     const getAuthenticatorsToNotShowAsOptions: string[] = useMemo(
-        () => [ IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR ],
+        () => [ LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME ],
         []
     );
 
@@ -464,7 +464,8 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
         let isBackupCodesEnabled: boolean = false;
 
         authenticationSequence?.steps?.[stepIndex]?.options.map((option: AuthenticatorInterface) => {
-            if (option.authenticator === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+            if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                .BACKUP_CODE_AUTHENTICATOR_NAME) {
                 isBackupCodesEnabled = true;
             }
         });
@@ -485,7 +486,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             if (
                 [
                     IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME,
                     IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR
                 ].includes(option.authenticator)
             ) {
@@ -501,7 +502,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                     IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
                     IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
                     IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME
                 ].includes(option.authenticator)
             ) {
                 shouldShowBackupCodesEnableCheck = true;
@@ -626,12 +627,14 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                             if (e.target.checked) {
                                 onSignInOptionAdd(e, {
                                     stepIndex,
-                                    toAdd: IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR
+                                    toAdd: LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                                        .BACKUP_CODE_AUTHENTICATOR_NAME
                                 });
                             } else {
                                 onSignInOptionRemove(e, {
                                     stepIndex,
-                                    toRemove: IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR
+                                    toRemove: LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                                        .BACKUP_CODE_AUTHENTICATOR_NAME
                                 });
                             }
                         } }

@@ -17,6 +17,7 @@
  */
 
 import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1/constants/autheticator-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AppState, EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import {
@@ -165,7 +166,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         const recoveryAuth: GenericAuthenticatorInterface[] = [];
 
         localAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
-            if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+            if (authenticator.name === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME) {
                 recoveryAuth.push(authenticator);
             } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.id)) {
                 secondFactorAuth.push(authenticator);
@@ -451,12 +452,13 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
             // check whether the current step has the backup code authenticator
             if(SignInMethodUtils.hasSpecificAuthenticatorInCurrentStep(
-                IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR, stepIndex, steps
+                LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME, stepIndex, steps
             )) {
                 // if there is only one 2FA in the step, prompt delete confirmation modal
                 if(SignInMethodUtils.countTwoFactorAuthenticatorsInCurrentStep(stepIndex, steps) < 2) {
                     currentStep.options.map((option: AuthenticatorInterface, optionIndex: number) => {
-                        if (option.authenticator === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+                        if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                            .BACKUP_CODE_AUTHENTICATOR_NAME) {
                             setBackupCodeRemoveIndex(optionIndex);
                         }
                     });
