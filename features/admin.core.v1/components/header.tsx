@@ -110,6 +110,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
 
     const { organizationType } = useGetCurrentOrganizationType();
 
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
+
     const [ anchorHelpMenu, setAnchorHelpMenu ] = useState<null | HTMLElement>(null);
 
     const openHelpMenu: boolean = Boolean(anchorHelpMenu);
@@ -244,7 +246,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                                         secondary={
                                             (
                                                 <Typography className="contact-support-subtitle" variant="inherit">
-                                                    { t("extensions:common.help.helpCenterLink.subtitle") }
+                                                    { t("extensions:common.help.helpCenterLink.subtitle",
+                                                        { productName }) }
                                                 </Typography>
                                             )
                                         }
