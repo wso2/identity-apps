@@ -32,6 +32,7 @@ export class FederatedAuthenticatorConstants {
         GITHUB_AUTHENTICATOR_ID: string;
         GOOGLE_OIDC_AUTHENTICATOR_ID: string;
         HYPR_AUTHENTICATOR_ID: string;
+        IPROOV_AUTHENTICATOR_ID: string;
         MICROSOFT_AUTHENTICATOR_ID: string;
         OIDC_AUTHENTICATOR_ID: string;
         ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: string;
@@ -43,6 +44,7 @@ export class FederatedAuthenticatorConstants {
             GITHUB_AUTHENTICATOR_ID: "R2l0aHViQXV0aGVudGljYXRvcg",
             GOOGLE_OIDC_AUTHENTICATOR_ID: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
             HYPR_AUTHENTICATOR_ID: "SFlQUkF1dGhlbnRpY2F0b3I",
+            IPROOV_AUTHENTICATOR_ID: "SXByb292QXV0aGVudGljYXRvcg",
             MICROSOFT_AUTHENTICATOR_ID: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
             OIDC_AUTHENTICATOR_ID: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
             ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg",

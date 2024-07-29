@@ -264,7 +264,7 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
 
                         facebook.push(authenticator);
                     } else if (authenticator.defaultAuthenticator.authenticatorId
-                        === IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_ID &&
+                        === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.MICROSOFT_AUTHENTICATOR_ID &&
                         authenticator.description === MicrosoftIDPTemplate.description) {
 
                         microsoft.push(authenticator);

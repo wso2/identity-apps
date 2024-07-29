@@ -165,7 +165,7 @@ export class AuthenticatorMeta {
             [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Predefined",
             [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID ]: "Apple",
-            [ IdentityProviderManagementConstants.HYPR_AUTHENTICATOR_ID ]: "HYPR"
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.HYPR_AUTHENTICATOR_ID ]: "HYPR"
         }, authenticatorId);
     }
 
