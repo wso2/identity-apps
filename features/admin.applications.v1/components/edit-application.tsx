@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants";
 import {
     AppConstants,
@@ -33,7 +33,7 @@ import { MyAccountOverview } from "@wso2is/admin.extensions.v1/configs/component
 import AILoginFlowProvider from "@wso2is/admin.login-flow.ai.v1/providers/ai-login-flow-provider";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -211,6 +211,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ showDisableConfirmationModal, setShowDisableConfirmationModal ] = useState<boolean>(false);
     const brandingDisabledFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.branding?.disabledFeatures);
+
+    const hasApplicationsUpdatePermissions: boolean = useRequiredScopes(
+        featureConfig?.applications?.scopes?.update
+    );
 
     /**
      * Called when an application updates.
@@ -393,8 +397,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     && !isM2MApplication
                     && applicationConfig.editApplication.showApplicationShare
                     && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
-                    && hasRequiredScopes(featureConfig?.applications,
-                        featureConfig?.applications?.scopes?.update, allowedScopes)
+                    && hasApplicationsUpdatePermissions
                     && orgType !== OrganizationType.SUBORGANIZATION
                     && !ApplicationManagementConstants.SYSTEM_APPS.includes(application?.clientId)) {
                 applicationConfig.editApplication.
