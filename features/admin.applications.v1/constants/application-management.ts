@@ -345,7 +345,7 @@ export class ApplicationManagementConstants {
     // Authenticators that are only handlers.
     public static readonly HANDLER_AUTHENTICATORS: string[] = [
         ApplicationManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
+        LocalAuthenticatorConstants.AUTHENTICATOR_IDS.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
     ];
 
     // First factor authenticators.
@@ -353,7 +353,7 @@ export class ApplicationManagementConstants {
         IdentityProviderManagementConstants.BASIC_AUTHENTICATOR,
         IdentityProviderManagementConstants.FIDO_AUTHENTICATOR,
         IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID,
+        LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR,
         IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
         IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID
@@ -362,7 +362,7 @@ export class ApplicationManagementConstants {
     // Second factor authenticators.
     public static readonly SECOND_FACTOR_AUTHENTICATORS: string[] = [
         IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
+        LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.IPROOV_AUTHENTICATOR,
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.IPROOV_AUTHENTICATOR_ID
     ];
@@ -416,7 +416,7 @@ export class ApplicationManagementConstants {
         IdentityProviderManagementConstants.BASIC_AUTHENTICATOR,
         IdentityProviderManagementConstants.FIDO_AUTHENTICATOR,
         IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID
+        LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID
     ];
 
     /**

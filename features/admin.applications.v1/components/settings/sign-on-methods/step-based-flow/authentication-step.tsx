@@ -224,7 +224,8 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         // if the backup codes checkbox is checked, add the backup code authenticator to the step.
         // else remove the backup code authenticator from the step.
         if(!isBackupCodesEnabled) {
-            updateAuthenticationStep(stepIndex, IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID);
+            updateAuthenticationStep(stepIndex, LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .BACKUP_CODE_AUTHENTICATOR_ID);
         } else {
             onStepOptionDelete(stepIndex, backupCodeIndex);
         }
@@ -322,7 +323,8 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                             className="authenticator-item-wrapper"
                             data-componentid={ `${ componentId }-option` }
                             hidden={
-                                authenticator?.id === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID
+                                authenticator?.id === LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                                    .BACKUP_CODE_AUTHENTICATOR_ID
                             }
                         >
                             <Card fluid className="basic-card authenticator-card">

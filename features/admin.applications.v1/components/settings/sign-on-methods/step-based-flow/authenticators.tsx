@@ -163,7 +163,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         }
 
         if ([
-            IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
+            LocalAuthenticatorConstants.AUTHENTICATOR_IDS.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
             LocalAuthenticatorConstants.AUTHENTICATOR_IDS.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
             return SignInMethodUtils.isFirstFactorValid(currentStep, authenticationSteps);
         }
@@ -281,7 +281,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                 </Fragment>
             );
         } else if ([
-            IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
+            LocalAuthenticatorConstants.AUTHENTICATOR_IDS.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
             LocalAuthenticatorConstants.AUTHENTICATOR_IDS.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
             return (
                 <Fragment>
@@ -392,7 +392,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         <Fragment data-testid={ testId }>
             { heading && <Heading as="h6">{ heading }</Heading> }
             { authenticators.map((authenticator: GenericAuthenticatorInterface, index: number) => (
-                authenticator.id === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID ?
+                authenticator.id === LocalAuthenticatorConstants.AUTHENTICATOR_IDS.BACKUP_CODE_AUTHENTICATOR_ID ?
                     null :
                     (<Popup
                         hoverable

@@ -28,6 +28,7 @@ export class FederatedAuthenticatorConstants {
 
     public static readonly AUTHENTICATOR_IDS: {
         APPLE_AUTHENTICATOR_ID: string;
+        EMAIL_OTP_AUTHENTICATOR_ID: string;
         FACEBOOK_AUTHENTICATOR_ID: string;
         GITHUB_AUTHENTICATOR_ID: string;
         GOOGLE_OIDC_AUTHENTICATOR_ID: string;
@@ -40,6 +41,7 @@ export class FederatedAuthenticatorConstants {
         TWITTER_AUTHENTICATOR_ID: string;
     } = {
             APPLE_AUTHENTICATOR_ID: "QXBwbGVPSURDQXV0aGVudGljYXRvcg",
+            EMAIL_OTP_AUTHENTICATOR_ID: "RW1haWxPVFA",
             FACEBOOK_AUTHENTICATOR_ID: "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
             GITHUB_AUTHENTICATOR_ID: "R2l0aHViQXV0aGVudGljYXRvcg",
             GOOGLE_OIDC_AUTHENTICATOR_ID: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",

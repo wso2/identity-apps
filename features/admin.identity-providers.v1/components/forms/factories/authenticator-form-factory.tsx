@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,7 @@ import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1";
 import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import MicrosoftIDPTemplate from
     "@wso2is/admin.identity-providers.v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
@@ -173,7 +174,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-        case IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID:
+        case LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID:
             return (
                 <EmailOTPAuthenticatorForm
                     mode={ mode }
@@ -202,7 +203,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-        case IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID:
+        case LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID:
             return (
                 <FIDOAuthenticatorForm
                     mode={ mode }

@@ -17,6 +17,7 @@
  */
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1/constants/connection-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
 import {
@@ -292,7 +293,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             ) }
                             { !hiddenOptions?.includes(LoginFlowTypes.EMAIL_OTP) &&
                                 !hiddenAuthenticators?.includes(
-                                    IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID
+                                    LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID
                                 ) && (
                                 <InfoCard
                                     fluid
