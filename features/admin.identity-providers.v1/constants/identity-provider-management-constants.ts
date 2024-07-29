@@ -38,7 +38,6 @@ export class IdentityProviderManagementConstants {
     public static readonly MAGIC_LINK_AUTHENTICATOR: string = "MagicLinkAuthenticator";
 
     // Known Local Authenticator IDS.
-    public static readonly JWT_BASIC_AUTHENTICATOR_ID: string = "SldUQmFzaWNBdXRoZW50aWNhdG9y";
     public static readonly SMS_OTP_AUTHENTICATOR_ID: string = authenticatorConfig?.overriddenAuthenticatorIds?.
         SMS_OTP_AUTHENTICATOR_ID ?? "U01TT1RQ";
 

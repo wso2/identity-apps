@@ -134,7 +134,8 @@ export class AuthenticatorMeta {
         const icon: ReactNode = get({
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.identifierFirst,
-            [ IdentityProviderManagementConstants.JWT_BASIC_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.jwtBasic,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .JWT_BASIC_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.jwtBasic,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.fido,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .X509_CERTIFICATE_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.x509,

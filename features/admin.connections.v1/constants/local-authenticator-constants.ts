@@ -41,6 +41,7 @@ export class LocalAuthenticatorConstants {
         EMAIL_OTP_AUTHENTICATOR_ID: string;
         FIDO_AUTHENTICATOR_ID: string;
         IDENTIFIER_FIRST_AUTHENTICATOR_ID: string;
+        JWT_BASIC_AUTHENTICATOR_ID: string;
         MAGIC_LINK_AUTHENTICATOR_ID: string;
         TOTP_AUTHENTICATOR_ID: string;
         X509_CERTIFICATE_AUTHENTICATOR_ID: string;
@@ -51,6 +52,7 @@ export class LocalAuthenticatorConstants {
             EMAIL_OTP_AUTHENTICATOR_ID: "ZW1haWwtb3RwLWF1dGhlbnRpY2F0b3I",
             FIDO_AUTHENTICATOR_ID: "RklET0F1dGhlbnRpY2F0b3I",
             IDENTIFIER_FIRST_AUTHENTICATOR_ID: "SWRlbnRpZmllckV4ZWN1dG9y",
+            JWT_BASIC_AUTHENTICATOR_ID: "SldUQmFzaWNBdXRoZW50aWNhdG9y",
             MAGIC_LINK_AUTHENTICATOR_ID: "TWFnaWNMaW5rQXV0aGVudGljYXRvcg",
             TOTP_AUTHENTICATOR_ID: "dG90cA",
             X509_CERTIFICATE_AUTHENTICATOR_ID: "eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg"
