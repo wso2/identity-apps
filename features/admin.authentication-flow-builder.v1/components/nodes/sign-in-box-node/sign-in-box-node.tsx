@@ -241,8 +241,10 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                 basicSignInOption = IdentityProviderManagementConstants.BASIC_AUTHENTICATOR;
             } else if (option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR) {
                 basicSignInOption = IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR;
-            } else if (option.authenticator === IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) {
-                basicSignInOption = IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR;
+            } else if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME) {
+                basicSignInOption = LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME;
             }
 
             if (filteredOptions.length === 1) {
@@ -427,7 +429,8 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             );
         }
 
-        if (activeBasicSignInOption === IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) {
+        if (activeBasicSignInOption === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+            .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME) {
             return (
                 <>
                     <ActiveSessionsLimitFragment
@@ -487,7 +490,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                 [
                     IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
                     LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME,
-                    IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME
                 ].includes(option.authenticator)
             ) {
                 shouldShowSubjectIdentifierCheck = false;
@@ -553,7 +556,8 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                                 ) }
                                 {
                                     (getBasicSignInOption() !==
-                                        IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR)
+                                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                                        .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME)
                                     &&
                                     (<Button
                                         fullWidth

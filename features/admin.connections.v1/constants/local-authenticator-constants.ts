@@ -64,6 +64,7 @@ export class LocalAuthenticatorConstants {
      * Authenticator names for the local authenticators.
      */
     public static readonly AUTHENTICATOR_NAMES: {
+        ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME: string;
         BACKUP_CODE_AUTHENTICATOR_NAME: string;
         BASIC_AUTHENTICATOR_NAME: string;
         EMAIL_OTP_AUTHENTICATOR_NAME: string;
@@ -73,6 +74,7 @@ export class LocalAuthenticatorConstants {
         SMS_OTP_AUTHENTICATOR_NAME: string;
         TOTP_AUTHENTICATOR_NAME: string;
     } = {
+            ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME: "SessionExecutor",
             BACKUP_CODE_AUTHENTICATOR_NAME: "backup-code-authenticator",
             BASIC_AUTHENTICATOR_NAME: "BasicAuthenticator",
             EMAIL_OTP_AUTHENTICATOR_NAME: "email-otp-authenticator",

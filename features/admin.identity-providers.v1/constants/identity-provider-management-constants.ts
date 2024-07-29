@@ -24,7 +24,7 @@ import { authenticatorConfig } from "@wso2is/admin.extensions.v1/configs/authent
  */
 export class IdentityProviderManagementConstants {
 
-    public static readonly SESSION_EXECUTOR_AUTHENTICATOR: string = "SessionExecutor";
+    // public static readonly SESSION_EXECUTOR_AUTHENTICATOR: string = "SessionExecutor";
     public static readonly TOTP_AUTHENTICATOR: string = "totp";
     public static readonly IPROOV_AUTHENTICATOR: string = "IproovAuthenticator";
     public static readonly EMAIL_OTP_AUTHENTICATOR: string = "email-otp-authenticator";
@@ -33,9 +33,6 @@ export class IdentityProviderManagementConstants {
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR: string = "IdentifierExecutor";
     public static readonly SMS_OTP_AUTHENTICATOR: string = authenticatorConfig?.overriddenAuthenticatorNames?.
         SMS_OTP_AUTHENTICATOR ?? "sms-otp";
-
-    // public static readonly BACKUP_CODE_AUTHENTICATOR: string = "backup-code-authenticator";
-    public static readonly MAGIC_LINK_AUTHENTICATOR: string = "MagicLinkAuthenticator";
 
     // Keys for the initial values of Email OTP Authenticator
     public static readonly AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY: string = "EmailOTP_ExpiryTime";

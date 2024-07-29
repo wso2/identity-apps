@@ -26,9 +26,6 @@ import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
-import {
     AuthenticatorCategories,
     GenericAuthenticatorInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
@@ -168,7 +165,8 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             return SignInMethodUtils.isFirstFactorValid(currentStep, authenticationSteps);
         }
 
-        if (authenticator.name === IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) {
+        if (authenticator.name === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+            .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME) {
             if (authenticationSteps[currentStep]?.options?.length !== 0) {
                 return false;
             }
@@ -298,7 +296,8 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     </Text>
                 </Fragment>
             );
-        } else if (authenticator.name === IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) {
+        } else if (authenticator.name === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+            .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME) {
             return (
                 <Fragment>
                     { InfoLabel }

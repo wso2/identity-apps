@@ -387,7 +387,7 @@ export class ApplicationManagementConstants {
     public static readonly TOTP_HANDLERS: string[] = [
         ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
         ...ApplicationManagementConstants.SOCIAL_AUTHENTICATORS,
-        IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR,
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.MAGIC_LINK_AUTHENTICATOR_NAME,
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID,
         FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.OIDC_AUTHENTICATOR_NAME,
         ConnectionManagementConstants.SAML_AUTHENTICATOR_ID,

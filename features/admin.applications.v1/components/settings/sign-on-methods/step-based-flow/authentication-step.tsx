@@ -166,7 +166,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         step.options.map((option: AuthenticatorInterface) => {
             if ([ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
                 LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME,
-                IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR ]
+                LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME ]
                 .includes(option.authenticator)) {
                 setShowSubjectIdentifierCheckbox(false);
             } else {

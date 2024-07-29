@@ -263,7 +263,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             ) }
                             { !hiddenOptions?.includes(LoginFlowTypes.MAGIC_LINK) &&
                                 !hiddenAuthenticators?.includes(
-                                    IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
+                                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.MAGIC_LINK_AUTHENTICATOR_NAME
                                 ) && (
                                 <InfoCard
                                     fluid
