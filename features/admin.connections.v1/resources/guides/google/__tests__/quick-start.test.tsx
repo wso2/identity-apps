@@ -17,8 +17,8 @@
  */
 
 import "@testing-library/jest-dom";
+import { fireEvent, render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
-import { fireEvent, render, screen } from "../../../../../test-configs/utils";
 import GoogleQuickStart from "../quick-start";
 
 describe("Google connection quick start works as expected", () => {
