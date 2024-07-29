@@ -61,7 +61,6 @@ import {
 } from "@wso2is/admin.userstores.v1/constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { MultiValueAttributeInterface } from "@wso2is/core/src/models";
 import { addAlert } from "@wso2is/core/store";
