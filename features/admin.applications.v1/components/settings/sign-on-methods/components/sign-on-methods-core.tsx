@@ -256,7 +256,7 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
 
                         google.push(authenticator);
                     } else if (authenticator.defaultAuthenticator.authenticatorId
-                        === IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID) {
+                        === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID) {
 
                         gitHub.push(authenticator);
                     } else if (authenticator.defaultAuthenticator.authenticatorId

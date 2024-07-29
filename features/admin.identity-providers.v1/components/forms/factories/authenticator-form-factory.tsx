@@ -158,7 +158,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-        case IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID:
+        case FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID:
             return (
                 <GithubAuthenticatorForm
                     mode={ mode }

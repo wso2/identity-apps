@@ -26,9 +26,6 @@ import {
 import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
-import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ConfirmationModalPropsInterface } from "@wso2is/react-components";
@@ -101,7 +98,7 @@ const PredefinedSocialFlowHandlerModalFactory: FunctionComponent<
                 FederatedAuthenticatorConstants.AUTHENTICATOR_DISPLAY_NAMES.GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME
             );
         } else if (selectedSequence.id === "GithubSocialLoginSequence") {
-            authenticatorId = IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID;
+            authenticatorId = FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID;
             authenticatorName = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.GITHUB_AUTHENTICATOR_NAME;
             setAuthenticatorCategoryTemplate(CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GITHUB);
             setAuthenticatorCategoryDisplayName(FederatedAuthenticatorConstants
