@@ -77,7 +77,7 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
                         >
                             Choose the { hasApplicationReadPermissions ? (
                                 <Link
-                                    data-componentid="google-idp-quick-start-application-selection-modal"
+                                    data-componentid={ testId + "-select-application-link" }
                                     external={ false }
                                     onClick={ () => setShowApplicationModal(true) }
                                 >
