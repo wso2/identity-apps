@@ -1,5 +1,19 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.21.34
+
+### Patch Changes
+
+- [#6680](https://github.com/wso2/identity-apps/pull/6680) [`f30d2e0962fb1ee35063f9baf2f80490d6ff62e4`](https://github.com/wso2/identity-apps/commit/f30d2e0962fb1ee35063f9baf2f80490d6ff62e4) Thanks [@Achintha444](https://github.com/Achintha444)! - Change the order of the menu items in Get Help
+
+- Updated dependencies [[`f30d2e0962fb1ee35063f9baf2f80490d6ff62e4`](https://github.com/wso2/identity-apps/commit/f30d2e0962fb1ee35063f9baf2f80490d6ff62e4)]:
+  - @wso2is/admin.server-configurations.v1@2.21.34
+  - @wso2is/admin.core.v1@2.23.22
+  - @wso2is/admin.extensions.v1@2.21.62
+  - @wso2is/admin.identity-providers.v1@2.21.22
+  - @wso2is/admin.users.v1@2.20.92
+  - @wso2is/admin.validation.v1@2.20.92
+
 ## 2.21.33
 
 ### Patch Changes
