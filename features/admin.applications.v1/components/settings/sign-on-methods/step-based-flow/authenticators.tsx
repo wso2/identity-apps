@@ -18,6 +18,7 @@
 
 import Chip from "@oxygen-ui/react/Chip";
 import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AuthenticatorMeta } from "@wso2is/admin.connections.v1/meta/authenticator-meta";
 import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { AppState } from "@wso2is/admin.core.v1";
@@ -163,7 +164,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 
         if ([
             IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
-            IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
+            LocalAuthenticatorConstants.AUTHENTICATOR_IDS.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
             return SignInMethodUtils.isFirstFactorValid(currentStep, authenticationSteps);
         }
 
@@ -281,7 +282,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             );
         } else if ([
             IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
-            IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
+            LocalAuthenticatorConstants.AUTHENTICATOR_IDS.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
             return (
                 <Fragment>
                     { InfoLabel }

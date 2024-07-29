@@ -31,7 +31,18 @@ export class LocalAuthenticatorConstants {
      */
     public static readonly LOCAL_IDP_IDENTIFIER: string = "LOCAL";
 
-    public static readonly BASIC_AUTHENTICATOR_ID: string = "QmFzaWNBdXRoZW50aWNhdG9y";
+    /**
+     * Authenticator IDs for the local authenticators.
+     */
+    public static readonly AUTHENTICATOR_IDS: {
+        BASIC_AUTHENTICATOR_ID: string;
+        IDENTIFIER_FIRST_AUTHENTICATOR_ID: string;
+        MAGIC_LINK_AUTHENTICATOR_ID: string;
+    } = {
+            BASIC_AUTHENTICATOR_ID: "QmFzaWNBdXRoZW50aWNhdG9y",
+            IDENTIFIER_FIRST_AUTHENTICATOR_ID: "Qml0cmljdF9hdXRoZW50aWNhdG9y",
+            MAGIC_LINK_AUTHENTICATOR_ID: "TWFnaWNMaW5rQXV0aGVudGljYXRvcg"
+        };
 
     // FIDO authenticator constants.
     /**
