@@ -100,7 +100,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
     const scopes: string = useSelector((state: AppState) => state.auth.allowedScopes);
     const userOrganizationID: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
 
-
     const hasOrganizationReadPermission: boolean =useRequiredScopes(organizationFeatureConfig?.scopes?.read);
     const hasGettingStartedFeaturePermission: boolean = useRequiredScopes(
         gettingStartedFeatureConfig?.scopes?.feature
