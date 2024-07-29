@@ -43,6 +43,7 @@ export class LocalAuthenticatorConstants {
         IDENTIFIER_FIRST_AUTHENTICATOR_ID: string;
         JWT_BASIC_AUTHENTICATOR_ID: string;
         MAGIC_LINK_AUTHENTICATOR_ID: string;
+        SMS_OTP_AUTHENTICATOR_ID: string;
         TOTP_AUTHENTICATOR_ID: string;
         X509_CERTIFICATE_AUTHENTICATOR_ID: string;
     } = {
@@ -54,6 +55,7 @@ export class LocalAuthenticatorConstants {
             IDENTIFIER_FIRST_AUTHENTICATOR_ID: "SWRlbnRpZmllckV4ZWN1dG9y",
             JWT_BASIC_AUTHENTICATOR_ID: "SldUQmFzaWNBdXRoZW50aWNhdG9y",
             MAGIC_LINK_AUTHENTICATOR_ID: "TWFnaWNMaW5rQXV0aGVudGljYXRvcg",
+            SMS_OTP_AUTHENTICATOR_ID: "c21zLW90cC1hdXRoZW50aWNhdG9y",
             TOTP_AUTHENTICATOR_ID: "dG90cA",
             X509_CERTIFICATE_AUTHENTICATOR_ID: "eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg"
         };

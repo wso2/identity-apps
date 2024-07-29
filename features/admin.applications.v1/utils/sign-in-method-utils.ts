@@ -210,7 +210,7 @@ export class SignInMethodUtils {
         }
 
         // If the adding authenticator is SMS OTP, evaluate if there are valid handlers in previous steps.
-        if (authenticatorId === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID) {
+        if (authenticatorId === LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID) {
             return this.hasSpecificFactorsInSteps(ApplicationManagementConstants.SMS_OTP_HANDLERS, leftSideSteps);
         }
 

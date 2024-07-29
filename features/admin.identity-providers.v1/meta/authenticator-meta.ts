@@ -75,7 +75,8 @@ export class AuthenticatorMeta {
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
                 .EMAIL_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication " +
                 "using one-time passcode sent via email.",
-            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .SMS_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
                 "SMS one-time passcode.",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .MAGIC_LINK_AUTHENTICATOR_ID ]: "Email users a magic link to " +
@@ -145,7 +146,7 @@ export class AuthenticatorMeta {
                 .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.sessionExecutor,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .EMAIL_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.emailOTP,
-            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.smsOTP,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.smsOTP,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .MAGIC_LINK_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.magicLink,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
@@ -176,7 +177,7 @@ export class AuthenticatorMeta {
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID ]: "OIDC",
             [ ConnectionManagementConstants.SAML_AUTHENTICATOR_ID ]: "SAML",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID ]: "Predefined",
-            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID ]: "Apple",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.HYPR_AUTHENTICATOR_ID ]: "HYPR"
         }, authenticatorId);
@@ -216,7 +217,7 @@ export class AuthenticatorMeta {
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.BASIC_AUTHENTICATOR_ID ]: "username-and-password",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID ]: "fido",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID ]: "totp",
-            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "sms-otp",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: "sms-otp",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID ]: "email-otp",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "identifier-first",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "google",

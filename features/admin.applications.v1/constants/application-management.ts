@@ -356,7 +356,7 @@ export class ApplicationManagementConstants {
         LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID,
         IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR,
         IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID
+        LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID
     ];
 
     // Second factor authenticators.

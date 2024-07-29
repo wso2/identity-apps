@@ -26,7 +26,6 @@ import MicrosoftIDPTemplate from
     "@wso2is/admin.identity-providers.v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     AuthenticatorSettingsFormModes,
     FederatedAuthenticatorListItemInterface,
@@ -189,7 +188,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-        case IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID:
+        case LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID:
             return (
                 <SMSOTPAuthenticatorForm
                     initialValues={ initialValues }

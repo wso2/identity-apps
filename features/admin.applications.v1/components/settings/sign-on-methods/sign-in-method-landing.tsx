@@ -323,7 +323,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             ) }
                             { !hiddenOptions?.includes(LoginFlowTypes.SMS_OTP) &&
                                 !hiddenAuthenticators?.includes(
-                                    IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID
+                                    LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID
                                 ) && (
                                 <InfoCard
                                     fluid

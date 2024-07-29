@@ -38,8 +38,8 @@ export class IdentityProviderManagementConstants {
     public static readonly MAGIC_LINK_AUTHENTICATOR: string = "MagicLinkAuthenticator";
 
     // Known Local Authenticator IDS.
-    public static readonly SMS_OTP_AUTHENTICATOR_ID: string = authenticatorConfig?.overriddenAuthenticatorIds?.
-        SMS_OTP_AUTHENTICATOR_ID ?? "U01TT1RQ";
+    // public static readonly SMS_OTP_AUTHENTICATOR_ID: string = authenticatorConfig?.overriddenAuthenticatorIds?.
+    //     SMS_OTP_AUTHENTICATOR_ID ?? "U01TT1RQ";
 
     // Keys for the initial values of Email OTP Authenticator
     public static readonly AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY: string = "EmailOTP_ExpiryTime";
