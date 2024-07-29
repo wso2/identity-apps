@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import {
     VerticalStepper,
     VerticalStepperStepInterface
@@ -23,10 +24,9 @@ import {
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import ApplicationSelectionModal from "@wso2is/admin.extensions.v1/components/shared/application-selection-modal";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
@@ -58,12 +58,8 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
     const [ showApplicationModal, setShowApplicationModal ] = useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
-    const isApplicationReadAccessAllowed: boolean = useMemo(() => (
-        hasRequiredScopes(
-            featureConfig?.applications, featureConfig?.applications?.scopes?.read, allowedScopes)
-    ), [ featureConfig, allowedScopes ]);
+    const hasApplicationReadPermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.read);
 
     /**
      * Vertical Stepper steps.
@@ -79,7 +75,7 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
                                 "extensions:develop.identityProviders.google.quickStart.steps.selectApplication.content"
                             }
                         >
-                            Choose the { isApplicationReadAccessAllowed ? (
+                            Choose the { hasApplicationReadPermissions ? (
                                 <Link
                                     data-componentid="google-idp-quick-start-application-selection-modal"
                                     external={ false }
@@ -155,10 +151,10 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
                         open={ showApplicationModal }
                         onClose={ () => setShowApplicationModal(false) }
                         heading={
-                            t("extensions:develop.identityProviders.github.quickStart.addLoginModal.heading")
+                            t("extensions:develop.identityProviders.google.quickStart.addLoginModal.heading")
                         }
                         subHeading={
-                            t("extensions:develop.identityProviders.github.quickStart.addLoginModal.subHeading")
+                            t("extensions:develop.identityProviders.google.quickStart.addLoginModal.subHeading")
                         }
                     />
                 )
