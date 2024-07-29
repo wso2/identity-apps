@@ -1,5 +1,22 @@
 # @wso2is/react-components
 
+## 2.2.27
+
+### Patch Changes
+
+- [#6676](https://github.com/wso2/identity-apps/pull/6676) [`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da) Thanks [@Achintha444](https://github.com/Achintha444)! - Update oxygen-ui to `1.13.3`
+
+- Updated dependencies [[`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da)]:
+  - @wso2is/theme@2.0.97
+  - @wso2is/core@2.0.60
+
+## 2.2.26
+
+### Patch Changes
+
+- Updated dependencies [[`ee0dc227a7e86ad7356ec222c1284e66d634d935`](https://github.com/wso2/identity-apps/commit/ee0dc227a7e86ad7356ec222c1284e66d634d935)]:
+  - @wso2is/core@2.0.59
+
 ## 2.2.25
 
 ### Patch Changes

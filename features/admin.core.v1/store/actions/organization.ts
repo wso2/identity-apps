@@ -126,5 +126,7 @@ export const getServerConfigurations = () => (dispatch: Dispatch): void => {
             const adminUser: string = response?.realmConfig.adminUser;
 
             dispatch(setSuperAdmin(adminUser));
+        }).catch((_error: unknown) => {
+            setSuperAdmin(null);
         });
 };

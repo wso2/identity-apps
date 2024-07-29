@@ -1,5 +1,35 @@
 # @wso2is/features
 
+## 2.21.46
+
+### Patch Changes
+
+- [#6676](https://github.com/wso2/identity-apps/pull/6676) [`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da) Thanks [@Achintha444](https://github.com/Achintha444)! - Update oxygen-ui to `1.13.3`
+
+- Updated dependencies [[`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da)]:
+  - @wso2is/react-components@2.2.27
+  - @wso2is/access-control@3.0.20
+  - @wso2is/dynamic-forms@2.0.85
+  - @wso2is/validation@2.0.9
+  - @wso2is/forms@2.0.50
+  - @wso2is/theme@2.0.97
+  - @wso2is/core@2.0.60
+  - @wso2is/form@2.0.86
+  - @wso2is/i18n@2.5.15
+
+## 2.21.45
+
+### Patch Changes
+
+- Updated dependencies [[`ee0dc227a7e86ad7356ec222c1284e66d634d935`](https://github.com/wso2/identity-apps/commit/ee0dc227a7e86ad7356ec222c1284e66d634d935)]:
+  - @wso2is/core@2.0.59
+  - @wso2is/access-control@3.0.19
+  - @wso2is/dynamic-forms@2.0.84
+  - @wso2is/form@2.0.85
+  - @wso2is/forms@2.0.49
+  - @wso2is/i18n@2.5.14
+  - @wso2is/react-components@2.2.26
+
 ## 2.21.44
 
 ### Patch Changes

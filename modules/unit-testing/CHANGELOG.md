@@ -1,5 +1,17 @@
 # @wso2is/unit-testing
 
+## 0.1.8
+
+### Patch Changes
+
+- [#6676](https://github.com/wso2/identity-apps/pull/6676) [`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da) Thanks [@Achintha444](https://github.com/Achintha444)! - Update oxygen-ui to `1.13.3`
+
+## 0.1.7
+
+### Patch Changes
+
+- [#6639](https://github.com/wso2/identity-apps/pull/6639) [`ee0dc227a7e86ad7356ec222c1284e66d634d935`](https://github.com/wso2/identity-apps/commit/ee0dc227a7e86ad7356ec222c1284e66d634d935) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove unused config `identityProviderTemplateLoadingStrategy`
+
 ## 0.1.6
 
 ### Patch Changes
