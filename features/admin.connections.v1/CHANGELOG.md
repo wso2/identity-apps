@@ -1,5 +1,23 @@
 # @wso2is/admin.connections.v1
 
+## 2.21.21
+
+### Patch Changes
+
+- [#6473](https://github.com/wso2/identity-apps/pull/6473) [`b1b54acfd683976df10605e757785e8b492d5f8b`](https://github.com/wso2/identity-apps/commit/b1b54acfd683976df10605e757785e8b492d5f8b) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Use reusable application selection modal in google and swe connection quickstarts
+
+- Updated dependencies [[`b1b54acfd683976df10605e757785e8b492d5f8b`](https://github.com/wso2/identity-apps/commit/b1b54acfd683976df10605e757785e8b492d5f8b)]:
+  - @wso2is/admin.connections.v1@2.21.21
+  - @wso2is/admin.applications.v1@2.22.21
+  - @wso2is/admin.core.v1@2.23.21
+  - @wso2is/admin.extensions.v1@2.21.61
+  - @wso2is/admin.identity-providers.v1@2.21.21
+  - @wso2is/admin.organizations.v1@2.20.91
+  - @wso2is/admin.roles.v2@2.20.91
+  - @wso2is/admin.console-settings.v1@2.20.91
+  - @wso2is/admin.claims.v1@2.20.91
+  - @wso2is/admin.userstores.v1@2.20.91
+
 ## 2.21.20
 
 ### Patch Changes
