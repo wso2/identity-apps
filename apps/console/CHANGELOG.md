@@ -1,5 +1,48 @@
 # @wso2is/console
 
+## 2.21.27
+
+### Patch Changes
+
+- [#6683](https://github.com/wso2/identity-apps/pull/6683) [`d742d26e18b04f96ec63d9bf54361a537402a3dc`](https://github.com/wso2/identity-apps/commit/d742d26e18b04f96ec63d9bf54361a537402a3dc) Thanks [@Achintha444](https://github.com/Achintha444)! - fix product name not displaying in the get help dropdown
+
+- Updated dependencies [[`d742d26e18b04f96ec63d9bf54361a537402a3dc`](https://github.com/wso2/identity-apps/commit/d742d26e18b04f96ec63d9bf54361a537402a3dc)]:
+  - @wso2is/admin.core.v1@2.23.23
+  - @wso2is/admin.api-resources.v1@2.20.93
+  - @wso2is/admin.api-resources.v2@2.20.93
+  - @wso2is/admin.applications.v1@2.22.23
+  - @wso2is/admin.authentication.v1@2.20.93
+  - @wso2is/admin.branding.v1@2.20.93
+  - @wso2is/admin.certificates.v1@2.20.93
+  - @wso2is/admin.claims.v1@2.20.93
+  - @wso2is/admin.connections.v1@2.21.23
+  - @wso2is/admin.console-settings.v1@2.20.93
+  - @wso2is/admin.email-and-sms.v1@2.20.93
+  - @wso2is/admin.email-management.v1@2.20.93
+  - @wso2is/admin.email-providers.v1@2.20.93
+  - @wso2is/admin.extensions.v1@2.21.63
+  - @wso2is/admin.groups.v1@2.20.93
+  - @wso2is/admin.identity-verification-providers.v1@2.20.93
+  - @wso2is/admin.impersonation.v1@1.1.35
+  - @wso2is/admin.oidc-scopes.v1@2.20.93
+  - @wso2is/admin.org-insights.v1@2.20.93
+  - @wso2is/admin.organization-discovery.v1@2.20.93
+  - @wso2is/admin.organizations.v1@2.20.93
+  - @wso2is/admin.private-key-jwt.v1@2.20.93
+  - @wso2is/admin.remote-repository-configuration.v1@2.20.93
+  - @wso2is/admin.roles.v1@2.20.93
+  - @wso2is/admin.roles.v2@2.20.93
+  - @wso2is/admin.saml2-configuration.v1@2.20.93
+  - @wso2is/admin.secrets.v1@2.20.93
+  - @wso2is/admin.server-configurations.v1@2.21.35
+  - @wso2is/admin.server.v1@2.20.93
+  - @wso2is/admin.session-management.v1@2.20.93
+  - @wso2is/admin.sms-providers.v1@2.20.93
+  - @wso2is/admin.users.v1@2.20.93
+  - @wso2is/admin.validation.v1@2.20.93
+  - @wso2is/admin.workflow-approvals.v1@2.20.93
+  - @wso2is/admin.wsfed-configuration.v1@2.20.93
+
 ## 2.21.26
 
 ### Patch Changes

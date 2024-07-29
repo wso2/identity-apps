@@ -1,5 +1,12 @@
 # @wso2is/admin.wsfed-configuration.v1
 
+## 2.20.93
+
+### Patch Changes
+
+- Updated dependencies [[`d742d26e18b04f96ec63d9bf54361a537402a3dc`](https://github.com/wso2/identity-apps/commit/d742d26e18b04f96ec63d9bf54361a537402a3dc)]:
+  - @wso2is/admin.core.v1@2.23.23
+
 ## 2.20.92
 
 ### Patch Changes
