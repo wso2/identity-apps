@@ -20,9 +20,6 @@ import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1/cons
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
-import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { Heading, InfoCard, useMediaContext } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -234,7 +231,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             </Heading>
                             { !hiddenOptions?.includes(LoginFlowTypes.FIDO_LOGIN) &&
                                 !hiddenAuthenticators?.includes(
-                                    IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
+                                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.FIDO_AUTHENTICATOR_NAME
                                 ) && (
                                 <InfoCard
                                     fluid

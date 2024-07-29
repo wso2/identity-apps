@@ -448,8 +448,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         }
 
         // check whether the authenticator to be deleted is a 2FA
-        if (currentAuthenticator === IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ||
-            currentAuthenticator === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR ||
+        if (currentAuthenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME ||
+            currentAuthenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME ||
             currentAuthenticator === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR ) {
 
             // check whether the current step has the backup code authenticator
@@ -488,8 +488,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 [ ...ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS ], rightSideSteps);
             const noOfSecondFactorsOnRightRequiringHandlers: number = SignInMethodUtils.countSpecificFactorInSteps(
                 [
-                    IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME
                 ], rightSideSteps);
             const onlySecondFactorsRequiringHandlersOnRight: boolean = noOfSecondFactorsOnRight
                 === noOfSecondFactorsOnRightRequiringHandlers;
@@ -644,7 +644,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         const containSecondFactorOnRight: boolean = SignInMethodUtils.hasSpecificFactorsInSteps(
             ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps);
         const noOfTOTPOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
-            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ], rightSideSteps);
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME ], rightSideSteps);
         const noOfFactorsOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
             ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps)
             + SignInMethodUtils.countSpecificFactorInSteps(

@@ -164,7 +164,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         let isBackupCodeSupportedAuthenticator: boolean = false;
 
         step.options.map((option: AuthenticatorInterface) => {
-            if ([ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
+            if ([ LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
                 LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME,
                 LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME ]
                 .includes(option.authenticator)) {
@@ -176,8 +176,8 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
             // if the authenticator is TOTP, Email OTP, SMS OTP or Backup Code,
             // show the backup codes enable checkbox.
             if(
-                [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
+                [ LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME,
                     IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
                     LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME
                 ].includes(option.authenticator)

@@ -24,11 +24,7 @@ import { authenticatorConfig } from "@wso2is/admin.extensions.v1/configs/authent
  */
 export class IdentityProviderManagementConstants {
 
-    // public static readonly SESSION_EXECUTOR_AUTHENTICATOR: string = "SessionExecutor";
-    public static readonly TOTP_AUTHENTICATOR: string = "totp";
     public static readonly IPROOV_AUTHENTICATOR: string = "IproovAuthenticator";
-    public static readonly EMAIL_OTP_AUTHENTICATOR: string = "email-otp-authenticator";
-    public static readonly FIDO_AUTHENTICATOR: string = "FIDOAuthenticator";
     public static readonly BASIC_AUTHENTICATOR: string = "BasicAuthenticator";
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR: string = "IdentifierExecutor";
     public static readonly SMS_OTP_AUTHENTICATOR: string = authenticatorConfig?.overriddenAuthenticatorNames?.

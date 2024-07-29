@@ -419,8 +419,10 @@ export class SignInMethodUtils {
     ): number {
         const secondFactor: AuthenticatorInterface[] = authenticationSteps[currentStep].options.filter(
             (authenticator: AuthenticatorInterface) =>
-                authenticator.authenticator === IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ||
-                authenticator.authenticator === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR ||
+                authenticator.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .TOTP_AUTHENTICATOR_NAME ||
+                authenticator.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .EMAIL_OTP_AUTHENTICATOR_NAME ||
                 authenticator.authenticator === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR
         );
 

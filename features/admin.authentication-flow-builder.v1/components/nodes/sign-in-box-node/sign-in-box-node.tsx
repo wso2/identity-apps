@@ -248,10 +248,11 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             }
 
             if (filteredOptions.length === 1) {
-                if (option.authenticator === IdentityProviderManagementConstants.TOTP_AUTHENTICATOR) {
-                    basicSignInOption = IdentityProviderManagementConstants.TOTP_AUTHENTICATOR;
-                } else if (option.authenticator === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR) {
-                    basicSignInOption = IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR;
+                if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME) {
+                    basicSignInOption = LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME;
+                } else if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .EMAIL_OTP_AUTHENTICATOR_NAME) {
+                    basicSignInOption = LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME;
                 } else if (option.authenticator === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR) {
                     basicSignInOption = IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR;
                 }
@@ -390,7 +391,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             );
         }
 
-        if (activeBasicSignInOption === IdentityProviderManagementConstants.TOTP_AUTHENTICATOR) {
+        if (activeBasicSignInOption === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME) {
             return (
                 <TOTPFragment
                     onOptionRemove={ (e: MouseEvent<HTMLButtonElement>, { toRemove }: { toRemove: string }) => {
@@ -403,7 +404,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             );
         }
 
-        if (activeBasicSignInOption === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR) {
+        if (activeBasicSignInOption === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME) {
             return (
                 <EmailOTPFragment
                     onOptionRemove={ (e: MouseEvent<HTMLButtonElement>, { toRemove }: { toRemove: string }) => {
@@ -488,7 +489,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
         authenticationSequence?.steps?.[stepIndex]?.options?.map((option: AuthenticatorInterface) => {
             if (
                 [
-                    IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
                     LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME,
                     LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME
                 ].includes(option.authenticator)
@@ -502,8 +503,8 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             // show the backup codes enable checkbox.
             if (
                 [
-                    IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME,
                     IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
                     LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME
                 ].includes(option.authenticator)

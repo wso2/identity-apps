@@ -466,7 +466,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             rightSideSteps
         );
         const noOfTOTPOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
-            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ],
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME ],
             rightSideSteps
         );
         const noOfFactorsOnRight: number =
@@ -548,8 +548,10 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
 
         // If the authenticator to be deleted is a 2FA.
         if (
-            currentAuthenticator?.authenticator === IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ||
-            currentAuthenticator?.authenticator === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR ||
+            currentAuthenticator?.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                .TOTP_AUTHENTICATOR_NAME ||
+            currentAuthenticator?.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                .EMAIL_OTP_AUTHENTICATOR_NAME ||
             currentAuthenticator?.authenticator === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR
         ) {
             // Check whether the current step has the backup code authenticator
@@ -587,8 +589,8 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             );
             const noOfSecondFactorsOnRightRequiringHandlers: number = SignInMethodUtils.countSpecificFactorInSteps(
                 [
-                    IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME
                 ],
                 rightSideSteps
             );
