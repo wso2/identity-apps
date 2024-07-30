@@ -46,10 +46,10 @@ import {
     OutboundProvisioningSettings
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
-import { AuthenticatorManagementConstants } from "../../constants/autheticator-constants";
 import { CommonAuthenticatorManagementConstants } from "../../constants/common-authenticator-constants";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
+import { FederatedAuthenticatorConstants } from "../../constants/federated-authenticator-constants";
 import {
     ConnectionAdvanceInterface,
     ConnectionInterface,
@@ -173,9 +173,9 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     const isOrganizationEnterpriseAuthenticator: boolean = identityProvider.federatedAuthenticators
         .defaultAuthenticatorId === ConnectionManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
     const isEnterpriseConnection: boolean = identityProvider?.federatedAuthenticators
-        .defaultAuthenticatorId === AuthenticatorManagementConstants.SAML_AUTHENTICATOR_ID ||
+        .defaultAuthenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ||
         identityProvider?.federatedAuthenticators
-            .defaultAuthenticatorId === AuthenticatorManagementConstants.OIDC_AUTHENTICATOR_ID;
+            .defaultAuthenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID;
 
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 

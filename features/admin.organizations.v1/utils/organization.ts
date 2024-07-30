@@ -17,6 +17,9 @@
  */
 
 import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1/constants/autheticator-constants";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { store } from "@wso2is/admin.core.v1/store";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models";
 import { OrganizationManagementConstants, OrganizationType } from "../constants/organization-constants";
@@ -57,14 +60,16 @@ export class OrganizationUtils {
         return {
             authenticators: [
                 {
-                    authenticatorId: AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID,
+                    authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+                        .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID,
                     isEnabled: true,
                     name: AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME,
                     tags: [ "APIAuth" ]
                 }
             ],
             defaultAuthenticator: {
-                authenticatorId: AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID,
+                authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+                    .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID,
                 isEnabled: true,
                 name: AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME,
                 tags: [ "APIAuth" ]

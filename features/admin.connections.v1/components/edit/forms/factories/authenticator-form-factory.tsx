@@ -19,10 +19,10 @@
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { AuthenticatorManagementConstants } from "../../../../constants/autheticator-constants";
 import { CommonAuthenticatorManagementConstants } from "../../../../constants/common-authenticator-constants";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import { FederatedAuthenticatorConstants } from "../../../../constants/federated-authenticator-constants";
+import { LocalAuthenticatorConstants } from "../../../../constants/local-authenticator-constants";
 import {
     AuthenticatorSettingsFormModes
 } from "../../../../models/authenticators";
@@ -217,7 +217,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-        case AuthenticatorManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID:
+        case LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID:
             return (
                 <EmailOTPAuthenticatorForm
                     mode={ mode }
@@ -232,7 +232,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-        case AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID:
+        case LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID:
             return (
                 <SMSOTPAuthenticatorForm
                     initialValues={ initialValues }
@@ -246,7 +246,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-        case AuthenticatorManagementConstants.SAML_AUTHENTICATOR_ID:
+        case FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID:
             return (
                 <SamlAuthenticatorSettingsForm
                     mode={ mode }

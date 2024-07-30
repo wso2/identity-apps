@@ -37,7 +37,9 @@ export class FederatedAuthenticatorConstants {
         MICROSOFT_AUTHENTICATOR_ID: string;
         OIDC_AUTHENTICATOR_ID: string;
         ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: string;
+        SAML_AUTHENTICATOR_ID: string;
         SIWE_AUTHENTICATOR_ID: string;
+        SMS_OTP_AUTHENTICATOR_ID: string;
         TWITTER_AUTHENTICATOR_ID: string;
     } = {
             APPLE_AUTHENTICATOR_ID: "QXBwbGVPSURDQXV0aGVudGljYXRvcg",
@@ -50,7 +52,9 @@ export class FederatedAuthenticatorConstants {
             MICROSOFT_AUTHENTICATOR_ID: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
             OIDC_AUTHENTICATOR_ID: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
             ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg",
+            SAML_AUTHENTICATOR_ID: "U0FNTFNTT0F1dGhlbnRpY2F0b3I",
             SIWE_AUTHENTICATOR_ID: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
+            SMS_OTP_AUTHENTICATOR_ID: "U01TT1RQ",
             TWITTER_AUTHENTICATOR_ID: "VHdpdHRlckF1dGhlbnRpY2F0b3I"
         };
 

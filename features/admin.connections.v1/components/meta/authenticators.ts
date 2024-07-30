@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,7 @@ import { getConnectionIcons } from "../../configs/ui";
 import { AuthenticatorManagementConstants } from "../../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
 import { FederatedAuthenticatorConstants } from "../../constants/federated-authenticator-constants";
+import { LocalAuthenticatorConstants } from "../../constants/local-authenticator-constants";
 import { AuthenticatorMeta } from "../../meta/authenticator-meta";
 import { FederatedAuthenticatorMetaDataInterface } from "../../models/authenticators";
 
@@ -66,7 +67,7 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
             name: ConnectionManagementConstants.MS_LIVE_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: AuthenticatorManagementConstants.PASSIVE_STS_AUTHENTICATOR_ID,
+            authenticatorId: LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PASSIVE_STS_AUTHENTICATOR_ID,
             description: "Login users with WS Federation.",
             displayName: "WS-Federation",
             icon: getConnectionIcons().wsFed,
@@ -80,31 +81,33 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
             name: ConnectionManagementConstants.IWA_KERBEROS_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: AuthenticatorManagementConstants.SAML_AUTHENTICATOR_ID,
+            authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID,
             description: "Login users with their accounts using SAML protocol.",
             displayName: "SAML",
             icon: getConnectionIcons().saml,
             name: AuthenticatorManagementConstants.SAML_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: AuthenticatorManagementConstants.OIDC_AUTHENTICATOR_ID,
+            authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID,
             description: "Login users with their accounts using OpenID Connect protocol.",
             displayName: "OpenID Connect",
             icon: getConnectionIcons().oidc,
             name: AuthenticatorManagementConstants.OIDC_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: AuthenticatorManagementConstants.LEGACY_EMAIL_OTP_AUTHENTICATOR_ID,
+            authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID,
             description: AuthenticatorMeta
-                .getAuthenticatorDescription(AuthenticatorManagementConstants.LEGACY_EMAIL_OTP_AUTHENTICATOR_ID),
+                .getAuthenticatorDescription(FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+                    .EMAIL_OTP_AUTHENTICATOR_ID),
             displayName: "Email OTP",
             icon: getConnectionIcons().emailOTP,
             name: AuthenticatorManagementConstants.LEGACY_EMAIL_OTP_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: AuthenticatorManagementConstants.LEGACY_SMS_OTP_AUTHENTICATOR_ID,
+            authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID,
             description: AuthenticatorMeta
-                .getAuthenticatorDescription(AuthenticatorManagementConstants.LEGACY_SMS_OTP_AUTHENTICATOR_ID),
+                .getAuthenticatorDescription(FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+                    .SMS_OTP_AUTHENTICATOR_ID),
             displayName: "SMS OTP",
             icon: getConnectionIcons().smsOTP,
             name: AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_NAME

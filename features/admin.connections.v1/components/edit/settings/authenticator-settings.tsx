@@ -53,7 +53,6 @@ import {
     updateFederatedAuthenticators
 } from "../../../api/authenticators";
 import { getConnectionIcons } from "../../../configs/ui";
-import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
 import { CommonAuthenticatorManagementConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
 import { FederatedAuthenticatorConstants } from "../../../constants/federated-authenticator-constants";
@@ -217,10 +216,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 // Filter out legacy SMS and Email OTP authenticators.
                 const filteredAuthenticators: FederatedAuthenticatorMetaInterface[] = response.filter(
                     (authenticator: FederatedAuthenticatorMetaInterface) => {
-                        return authenticator.authenticatorId !== AuthenticatorManagementConstants
-                            .LEGACY_SMS_OTP_AUTHENTICATOR_ID &&
-                            authenticator.authenticatorId !== AuthenticatorManagementConstants
-                                .LEGACY_EMAIL_OTP_AUTHENTICATOR_ID;
+                        return authenticator.authenticatorId !== FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+                            .SMS_OTP_AUTHENTICATOR_ID &&
+                            authenticator.authenticatorId !== FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+                                .EMAIL_OTP_AUTHENTICATOR_ID;
                     }
                 );
 

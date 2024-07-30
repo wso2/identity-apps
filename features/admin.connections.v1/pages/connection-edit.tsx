@@ -68,7 +68,6 @@ import {
 } from "../api/connections";
 import { EditConnection } from "../components/edit/connection-edit";
 import { EditMultiFactorAuthenticator } from "../components/edit/edit-multi-factor-authenticator";
-import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { CommonAuthenticatorManagementConstants } from "../constants/common-authenticator-constants";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { FederatedAuthenticatorConstants } from "../constants/federated-authenticator-constants";
@@ -776,13 +775,13 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                                 (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
                                     ? undefined
                                     : (connector?.federatedAuthenticators?.defaultAuthenticatorId
-                                        === AuthenticatorManagementConstants.SAML_AUTHENTICATOR_ID)
+                                        === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID)
                             }
                             isOidc={
                                 (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
                                     ? undefined
                                     : (connector.federatedAuthenticators.defaultAuthenticatorId
-                                        === AuthenticatorManagementConstants.OIDC_AUTHENTICATOR_ID)
+                                        === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID)
                             }
                             data-testid={ testId }
                             template={ identityProviderTemplate }

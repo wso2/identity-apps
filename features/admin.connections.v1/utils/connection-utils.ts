@@ -26,9 +26,9 @@ import { AxiosError } from "axios";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import { getConnections } from "../api/connections";
-import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { CommonAuthenticatorManagementConstants } from "../constants/common-authenticator-constants";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
+import { FederatedAuthenticatorConstants } from "../constants/federated-authenticator-constants";
 import { MultiFactorAuthenticatorInterface } from "../models/authenticators";
 import {
     ConnectionInterface,
@@ -96,13 +96,13 @@ export class ConnectionsManagementUtils {
     /**
      * Utility method to check if the connector is Organization SSO.
      *
-     * @param name - Connector name.
+     * @param id - Connector id.
      *
      * @returns Whether the connector is Organization SSO.
      */
     public static isOrganizationSSOConnection(id: string): boolean {
 
-        return id === AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
+        return id === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
     }
 
     /**

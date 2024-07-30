@@ -358,8 +358,8 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                         floated="left"
                                         icon={
                                             authenticator.idp === AuthenticatorCategories.LOCAL ||
-                                            authenticator.defaultAuthenticator?.authenticatorId ===
-                                            AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
+                                            ConnectionsManagementUtils.isOrganizationSSOConnection(
+                                                authenticator.defaultAuthenticator?.authenticatorId)
                                                 ? authenticator.image
                                                 : ConnectionsManagementUtils
                                                     .resolveConnectionResourcePath(
