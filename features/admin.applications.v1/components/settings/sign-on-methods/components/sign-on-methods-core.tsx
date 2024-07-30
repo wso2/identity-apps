@@ -32,9 +32,6 @@ import { ConnectionsManagementUtils }
     from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import MicrosoftIDPTemplate
     from
     "@wso2is/admin.identity-providers.v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
@@ -327,7 +324,7 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
         }
 
         const isBasicStep: boolean = authenticationSequence.steps[0].options[0].authenticator
-            === IdentityProviderManagementConstants.BASIC_AUTHENTICATOR;
+            === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME;
         const isBasicScript: boolean = !authenticationSequence.script
             ||AdaptiveScriptUtils.isDefaultScript(authenticationSequence.script, authenticationSequence.steps?.length);
 

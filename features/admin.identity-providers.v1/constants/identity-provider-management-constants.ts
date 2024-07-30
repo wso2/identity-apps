@@ -24,14 +24,6 @@ import { authenticatorConfig } from "@wso2is/admin.extensions.v1/configs/authent
  */
 export class IdentityProviderManagementConstants {
 
-    public static readonly IPROOV_AUTHENTICATOR: string = "IproovAuthenticator";
-    public static readonly BASIC_AUTHENTICATOR: string = "BasicAuthenticator";
     public static readonly SMS_OTP_AUTHENTICATOR: string = authenticatorConfig?.overriddenAuthenticatorNames?.
         SMS_OTP_AUTHENTICATOR ?? "sms-otp";
-
-    // Keys for the initial values of Email OTP Authenticator
-    public static readonly AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY: string = "EmailOTP_ExpiryTime";
-
-    // Keys for the initial values of SMS OTP Authenticator
-    public static readonly AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY: string = "SmsOTP_ExpiryTime";
 }

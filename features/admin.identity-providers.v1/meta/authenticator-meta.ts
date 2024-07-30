@@ -24,7 +24,6 @@ import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/consta
 import get from "lodash-es/get";
 import { ReactNode } from "react";
 import { getAuthenticatorIcons } from "../configs/ui";
-import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorCategories } from "../models";
 
 export class AuthenticatorMeta {
@@ -213,7 +212,7 @@ export class AuthenticatorMeta {
     public static getAuthenticatorTemplateName(authenticatorId: string): string {
 
         return get({
-            [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR ]: "username-and-password",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME ]: "username-and-password",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.BASIC_AUTHENTICATOR_ID ]: "username-and-password",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID ]: "fido",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID ]: "totp",

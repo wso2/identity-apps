@@ -237,8 +237,8 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
         );
 
         filteredOptions?.forEach((option: AuthenticatorInterface) => {
-            if (option.authenticator === IdentityProviderManagementConstants.BASIC_AUTHENTICATOR) {
-                basicSignInOption = IdentityProviderManagementConstants.BASIC_AUTHENTICATOR;
+            if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME) {
+                basicSignInOption = LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME;
             } else if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
                 .IDENTIFIER_FIRST_AUTHENTICATOR_NAME) {
                 basicSignInOption = LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME;
@@ -340,7 +340,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
     const generateBasicSignInOption = (): ReactElement => {
         const activeBasicSignInOption: string = getBasicSignInOption();
 
-        if (activeBasicSignInOption === IdentityProviderManagementConstants.BASIC_AUTHENTICATOR) {
+        if (activeBasicSignInOption === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME) {
             return (
                 <>
                     <BasicAuthFragment

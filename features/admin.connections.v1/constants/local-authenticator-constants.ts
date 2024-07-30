@@ -100,4 +100,16 @@ export class LocalAuthenticatorConstants {
      * Attribute key for the trusted origins in the FIDO connector configuration.
      */
     public static readonly FIDO_TRUSTED_ORIGINS_ATTRIBUTE_KEY: string = "FIDO2TrustedOrigins";
+
+    // Email OTP authenticator constants.
+    /**
+     * Attribute key for Email OTP Authenticator expiry time.
+     */
+    public static readonly AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY: string = "EmailOTP_ExpiryTime";
+
+    // SMS OTP authenticator constants.
+    /**
+     * Attribute key for SMS OTP Authenticator expiry time.
+     */
+    public static readonly AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY: string = "SmsOTP_ExpiryTime";
 }

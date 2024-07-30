@@ -231,7 +231,7 @@ export class SignInMethodUtils {
             (authenticator: AuthenticatorInterface) =>
                 authenticator.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
                     .IDENTIFIER_FIRST_AUTHENTICATOR_NAME ||
-                authenticator.authenticator === IdentityProviderManagementConstants.BASIC_AUTHENTICATOR
+                authenticator.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME
         );
 
         return !firstFactor;

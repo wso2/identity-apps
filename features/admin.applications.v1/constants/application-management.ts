@@ -350,7 +350,7 @@ export class ApplicationManagementConstants {
 
     // First factor authenticators.
     public static readonly FIRST_FACTOR_AUTHENTICATORS: string[] = [
-        IdentityProviderManagementConstants.BASIC_AUTHENTICATOR,
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.FIDO_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID,
@@ -363,7 +363,7 @@ export class ApplicationManagementConstants {
     public static readonly SECOND_FACTOR_AUTHENTICATORS: string[] = [
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.IPROOV_AUTHENTICATOR,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.IPROOV_AUTHENTICATOR_NAME,
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.IPROOV_AUTHENTICATOR_ID
     ];
 
@@ -413,7 +413,7 @@ export class ApplicationManagementConstants {
 
     // Authenticators that can handle Active Sessions Limit.
     public static readonly ACTIVE_SESSIONS_LIMIT_HANDLERS: string[] = [
-        IdentityProviderManagementConstants.BASIC_AUTHENTICATOR,
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.FIDO_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID

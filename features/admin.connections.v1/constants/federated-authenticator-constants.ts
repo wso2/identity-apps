@@ -59,6 +59,7 @@ export class FederatedAuthenticatorConstants {
         FACEBOOK_AUTHENTICATOR_NAME: string;
         GITHUB_AUTHENTICATOR_NAME: string;
         GOOGLE_OIDC_AUTHENTICATOR_NAME: string;
+        IPROOV_AUTHENTICATOR_NAME: string;
         MICROSOFT_AUTHENTICATOR_NAME: string;
         TWITTER_AUTHENTICATOR_NAME: string;
         SAML_AUTHENTICATOR_NAME: string;
@@ -68,6 +69,7 @@ export class FederatedAuthenticatorConstants {
             FACEBOOK_AUTHENTICATOR_NAME: "FacebookAuthenticator",
             GITHUB_AUTHENTICATOR_NAME: "GithubAuthenticator",
             GOOGLE_OIDC_AUTHENTICATOR_NAME: "GoogleOIDCAuthenticator",
+            IPROOV_AUTHENTICATOR_NAME: "IproovAuthenticator",
             MICROSOFT_AUTHENTICATOR_NAME: "MicrosoftAuthenticator",
             OIDC_AUTHENTICATOR_NAME: "OpenIDConnectAuthenticator",
             SAML_AUTHENTICATOR_NAME: "SAMLSSOAuthenticator",
