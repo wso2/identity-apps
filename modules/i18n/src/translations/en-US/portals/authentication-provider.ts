@@ -402,68 +402,6 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     validations: {
                         invalid: "The entered trusted origin is invalid."
                     }
-                },
-                trustedApps: {
-                    heading: "Passkey Trusted Apps",
-                    subHeading: "Apps from which FIDO-based authentication requests are initiated and need to be trusted by the server.",
-                    removeTrustedAppPopOver: "Remove the Trusted App",
-                    buttons: {
-                        addButton: "App",
-                        emptySearchButton: "View all API resources"
-                    },
-                    search: "Search apps by package name or app ID",
-                    placeHolderTexts: {
-                        emptyText: "There are no added Passkey Trusted Apps",
-                        errorText: {
-                            subtitles: {
-                                0: "An error occurred while retrieving the trusted apps.",
-                                1: "Please try again."
-                            },
-                            title: "Something went wrong"
-                        },
-                        emptySearch: {
-                            title: "No results found",
-                            subTitle: {
-                                0: "We couldn't find the trusted apps you searched for.",
-                                1: "Please try using a different parameter."
-                            }
-                        }
-                    },
-                    types: {
-                        android: "Android",
-                        ios: "iOS"
-                    },
-                    wizard: {
-                        title: "New Passkey Trusted App",
-                        subTitle: "Add a new Android or iOS app as a passkey trusted app.",
-                        fields: {
-                            appName: {
-                                label: "App Package Name or App ID",
-                                placeholder: "Enter the package name or ID of the application",
-                                validations: {
-                                    required: "App package name or app ID is required",
-                                    duplicate: "This trusted app is already added"
-                                }
-                            },
-                            appType: {
-                                label: "Application Type"
-                            }
-                        },
-                        buttons: {
-                            finish: "Finish",
-                            cancel: "Cancel"
-                        }
-                    }
-                },
-                trustedAppSHAValues: {
-                    hint: "The SHA256 fingerprints related to the signing certificate of your application.",
-                    label: "Key Hashes",
-                    add: "Add Key Hash",
-                    placeholder: "D4:B9:A3:...",
-                    validations: {
-                        invalid: "The entered SHA256 fingerprint is invalid.",
-                        duplicate: "This key hash is already added"
-                    }
                 }
             },
             github: {
