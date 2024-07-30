@@ -111,4 +111,4 @@ const Heading3: FunctionComponent<Heading3Props> = ({
     );
 };
 
-export { Heading3 as h3 };
+export default Heading3;

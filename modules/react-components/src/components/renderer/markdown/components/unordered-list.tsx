@@ -43,4 +43,4 @@ const UnorderedList: FunctionComponent<
     );
 };
 
-export { UnorderedList as ul };
+export default UnorderedList;

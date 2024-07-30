@@ -43,4 +43,4 @@ const OrderedList: FunctionComponent<
     );
 };
 
-export { OrderedList as ol };
+export default OrderedList;

@@ -168,4 +168,4 @@ const MarkdownLink: FunctionComponent<MarkdownLinkProps> = ({
     );
 };
 
-export { MarkdownLink as a };
+export default MarkdownLink;

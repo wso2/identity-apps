@@ -43,4 +43,4 @@ const ListItem: FunctionComponent<
     );
 };
 
-export { ListItem as li };
+export default ListItem;

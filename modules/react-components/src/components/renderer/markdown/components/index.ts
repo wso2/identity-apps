@@ -16,21 +16,21 @@
  * under the License.
  */
 
-export * from "./markdown-link";
-export * from "./blockquote";
-export * from "./paragraph";
-export * from "./heading1";
-export * from "./heading2";
-export * from "./heading3";
-export * from "./heading4";
-export * from "./heading5";
-export * from "./heading6";
-export * from "./code";
-export * from "./italic";
-export * from "./divider";
-export * from "./unordered-list";
-export * from "./ordered-list";
-export * from "./list-item";
-export * from "./strong";
-export * from "./pre";
-export * from "./image";
+export { default as a } from "./markdown-link";
+export { default as blockquote }from "./blockquote";
+export { default as p } from "./paragraph";
+export { default as h1 } from "./heading1";
+export { default as h2 } from "./heading2";
+export { default as h3 } from "./heading3";
+export { default as h4 } from "./heading4";
+export { default as h5 } from "./heading5";
+export { default as h6 } from "./heading6";
+export { default as code } from "./code";
+export { default as em } from "./italic";
+export { default as hr } from "./divider";
+export { default as ul } from "./unordered-list";
+export { default as ol } from "./ordered-list";
+export { default as li } from "./list-item";
+export { default as strong } from "./strong";
+export { default as pre } from "./pre";
+export { default as img } from "./image";

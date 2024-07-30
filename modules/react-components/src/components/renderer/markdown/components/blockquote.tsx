@@ -111,4 +111,4 @@ const Blockquote: FunctionComponent<BlockquoteProps> = ({
     );
 };
 
-export { Blockquote as blockquote };
+export default Blockquote;

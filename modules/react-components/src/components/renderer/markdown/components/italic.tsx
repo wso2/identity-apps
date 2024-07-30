@@ -40,4 +40,4 @@ const MarkdownEM: FunctionComponent<
     );
 };
 
-export { MarkdownEM as em };
+export default MarkdownEM;

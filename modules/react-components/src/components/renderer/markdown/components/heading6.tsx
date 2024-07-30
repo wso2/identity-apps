@@ -50,4 +50,4 @@ const Heading6: FunctionComponent<
     );
 };
 
-export { Heading6 as h6 };
+export default Heading6;

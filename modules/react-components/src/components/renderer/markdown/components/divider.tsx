@@ -36,4 +36,4 @@ const MarkdownDivider: FunctionComponent<
     );
 };
 
-export { MarkdownDivider as hr };
+export default MarkdownDivider;

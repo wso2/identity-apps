@@ -111,4 +111,4 @@ const Heading2: FunctionComponent<Heading2Props> = ({
     );
 };
 
-export { Heading2 as h2 };
+export default Heading2;

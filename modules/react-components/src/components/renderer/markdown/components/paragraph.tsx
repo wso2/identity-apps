@@ -50,4 +50,4 @@ const Paragraph: FunctionComponent<
     );
 };
 
-export { Paragraph as p };
+export default Paragraph;

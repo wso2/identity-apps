@@ -40,4 +40,4 @@ const MarkdownCode: FunctionComponent<
     );
 };
 
-export { MarkdownCode as code };
+export default MarkdownCode;

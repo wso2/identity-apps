@@ -111,4 +111,4 @@ const Heading4: FunctionComponent<Heading4Props> = ({
     );
 };
 
-export { Heading4 as h4 };
+export default Heading4;

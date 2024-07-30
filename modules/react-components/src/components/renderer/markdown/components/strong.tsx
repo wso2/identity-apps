@@ -40,4 +40,4 @@ const Strong: FunctionComponent<
     );
 };
 
-export { Strong as strong };
+export default Strong;

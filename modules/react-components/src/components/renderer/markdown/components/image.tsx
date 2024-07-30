@@ -73,4 +73,4 @@ const MarkdownImage: FunctionComponent<MarkdownImageProps> = ({
     );
 };
 
-export { MarkdownImage as img };
+export default MarkdownImage;

@@ -72,4 +72,4 @@ const MarkdownPre: FunctionComponent<MarkdownPreProps> = ({
     );
 };
 
-export { MarkdownPre as pre };
+export default MarkdownPre;
