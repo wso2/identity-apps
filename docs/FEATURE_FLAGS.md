@@ -24,8 +24,6 @@ of a new "filter by metadata attribute" input field in organizations page.
 The deployment configuration in each React app includes a section for feature flags. Go to the file and locate the relevant
 feature config object for your feature.
 
-Eg: 
-
 deployment.config.json:
 
 ```js
@@ -57,7 +55,7 @@ Select a unique and descriptive identifier for your feature. For our example, we
 
 4. Update the Disabled Features Array
    
-Add your feature identifier to the disabledFeatures array in your configuration.
+Add your feature identifier to the `disabledFeatures` array in your configuration.
 
 Updated deployment.config.json:
 
@@ -90,7 +88,7 @@ Updated deployment.config.json:
 
 Finally, use the feature flag to conditionally show/hide UI elements or run specific logic in your React components.
 
-Example App.js:
+Example:
 
 ```js
 import { isFeatureEnabled } from "@wso2is/core/helpers"
@@ -102,7 +100,7 @@ const App = () => {
   return (
     <div>
       <h1>Organizations</h1>
-      {isFeatureEnabled('organizations.filterByMetadataAttributes') && (
+      {isFeatureEnabled("organizations.filterByMetadataAttributes") && (
         <Select>
           <label>Select metadata attribute</label>
         </Select>
