@@ -100,7 +100,7 @@ const App = () => {
   return (
     <div>
       <h1>Organizations</h1>
-      {isFeatureEnabled("organizations.filterByMetadataAttributes") && (
+      {isFeatureEnabled(organizationFeatureConfig, "organizations.filterByMetadataAttributes") && (
         <Select>
           <label>Select metadata attribute</label>
         </Select>
