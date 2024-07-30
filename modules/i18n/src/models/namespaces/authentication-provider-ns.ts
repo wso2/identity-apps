@@ -1437,16 +1437,6 @@ export interface AuthenticationProviderNS {
                 description: string;
             };
         };
-        getFIDOTrustedApps: {
-            error: {
-                message: string;
-                description: string;
-            };
-            genericError: {
-                message: string;
-                description: string;
-            };
-        };
         getIDP: {
             error: {
                 message: string;
@@ -1746,20 +1736,6 @@ export interface AuthenticationProviderNS {
             };
         };
         updateFIDOConnectorConfigs: {
-            error: {
-                message: string;
-                description: string;
-            };
-            genericError: {
-                message: string;
-                description: string;
-            };
-            success: {
-                message: string;
-                description: string;
-            };
-        };
-        updateFIDOTrustedApps: {
             error: {
                 message: string;
                 description: string;

@@ -1280,16 +1280,6 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 message: "Retrieval Error"
             }
         },
-        getFIDOTrustedApps: {
-            error: {
-                description: "{{ description }}",
-                message: "Retrieval Error"
-            },
-            genericError: {
-                description: "An error occurred while retrieving Passkey trusted apps.",
-                message: "Retrieval Error"
-            }
-        },
         getIDP: {
             error: {
                 description: "{{ description }}",
@@ -1469,20 +1459,6 @@ export const authenticationProvider:AuthenticationProviderNS = {
             },
             success: {
                 description: "Successfully updated the Passkey connector.",
-                message: "Update successful"
-            }
-        },
-        updateFIDOTrustedApps: {
-            error: {
-                description: "{{ description }}",
-                message: "Update error"
-            },
-            genericError: {
-                description: "An error occurred while updating Passkey Trusted Apps.",
-                message: "Update error"
-            },
-            success: {
-                description: "Successfully updated the Passkey Trusted Apps.",
                 message: "Update successful"
             }
         },
