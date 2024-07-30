@@ -229,7 +229,8 @@ export class SignInMethodUtils {
     public static isFirstFactorValid(currentStep: number, authenticationSteps: AuthenticationStepInterface[]): boolean {
         const firstFactor: AuthenticatorInterface = authenticationSteps[currentStep]?.options?.find(
             (authenticator: AuthenticatorInterface) =>
-                authenticator.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR ||
+                authenticator.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .IDENTIFIER_FIRST_AUTHENTICATOR_NAME ||
                 authenticator.authenticator === IdentityProviderManagementConstants.BASIC_AUTHENTICATOR
         );
 

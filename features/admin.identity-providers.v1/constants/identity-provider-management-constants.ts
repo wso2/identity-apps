@@ -26,7 +26,6 @@ export class IdentityProviderManagementConstants {
 
     public static readonly IPROOV_AUTHENTICATOR: string = "IproovAuthenticator";
     public static readonly BASIC_AUTHENTICATOR: string = "BasicAuthenticator";
-    public static readonly IDENTIFIER_FIRST_AUTHENTICATOR: string = "IdentifierExecutor";
     public static readonly SMS_OTP_AUTHENTICATOR: string = authenticatorConfig?.overriddenAuthenticatorNames?.
         SMS_OTP_AUTHENTICATOR ?? "sms-otp";
 

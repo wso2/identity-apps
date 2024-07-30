@@ -245,7 +245,8 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         let toDisable: boolean = false;
 
         step.options.map((option: AuthenticatorInterface) => {
-            if (option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+            if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                .IDENTIFIER_FIRST_AUTHENTICATOR_NAME
                 && !isConditionalAuthenticationEnabled) {
 
                 toDisable = true;
@@ -267,7 +268,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
     const isAttributeStepCheckboxDisabledOnIDF = (): boolean => {
 
         return step.options.some((option: AuthenticatorInterface) =>
-            option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+            option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME
                 && !isConditionalAuthenticationEnabled
         );
     };

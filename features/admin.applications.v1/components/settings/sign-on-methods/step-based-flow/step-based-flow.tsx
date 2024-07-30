@@ -495,7 +495,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 === noOfSecondFactorsOnRightRequiringHandlers;
             const isDeletingOptionFirstFactor: boolean = [
                 ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
-                IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+                LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME
             ]
                 .includes(deletingOption.authenticator);
             const isDeletingOptionSecondFactorHandler: boolean = [
@@ -716,7 +716,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const handleIdentifierFirstInStep = (options: AuthenticatorInterface[]): boolean =>
         options.some(
             (option: AuthenticatorInterface) =>
-                option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+                option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .IDENTIFIER_FIRST_AUTHENTICATOR_NAME
         );
 
     /**
@@ -769,10 +770,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         }
 
         // Don't allow identifier first being the only authenticator in the flow.
-        if ( steps.length === 1
+        if (steps.length === 1
             && steps[ 0 ].options.length === 1
             && steps[ 0 ].options[ 0 ].authenticator
-                === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR ) {
+                === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME) {
             dispatch(
                 addAlert({
                     description: t(

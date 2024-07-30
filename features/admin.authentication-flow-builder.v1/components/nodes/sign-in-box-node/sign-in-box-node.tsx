@@ -239,8 +239,9 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
         filteredOptions?.forEach((option: AuthenticatorInterface) => {
             if (option.authenticator === IdentityProviderManagementConstants.BASIC_AUTHENTICATOR) {
                 basicSignInOption = IdentityProviderManagementConstants.BASIC_AUTHENTICATOR;
-            } else if (option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR) {
-                basicSignInOption = IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR;
+            } else if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                .IDENTIFIER_FIRST_AUTHENTICATOR_NAME) {
+                basicSignInOption = LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME;
             } else if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
                 .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME) {
                 basicSignInOption = LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
@@ -365,7 +366,8 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             );
         }
 
-        if (activeBasicSignInOption === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR) {
+        if (activeBasicSignInOption === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+            .IDENTIFIER_FIRST_AUTHENTICATOR_NAME) {
             return (
                 <>
                     <IdentifierFirstFragment
