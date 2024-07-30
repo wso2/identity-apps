@@ -25,6 +25,8 @@ import {
     getUsersList
 } from "@wso2is/admin.core.v1";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils";
+import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { getRolesList } from "@wso2is/admin.roles.v2/api";
 import { UserInviteInterface, UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
@@ -49,8 +51,6 @@ import kebabCase from "lodash-es/kebabCase";
 import React, { FormEvent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, DropdownProps, Grid, Header } from "semantic-ui-react";
-import { administratorConfig } from "../../../../configs/administrator";
-import { SCIMConfigs } from "../../../../configs/scim";
 import { AdminAccountTypes } from "../../constants";
 import { InternalAdminFormDataInterface } from "../../models";
 import { isAdminUser, isCollaboratorUser } from "../../utils/administrators";

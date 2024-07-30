@@ -16,12 +16,25 @@
  * under the License.
  */
 
-export * from "./extensions-manager";
-export * from "./models";
-export * from "./configs";
+declare module "*.json" {
+    const value: any;
 
-export { useGetAllFeatures } from "./components/feature-gate/api/feature-gate";
-export { featureGateConfig } from "./configs/feature-gate";
-export { TenantTier } from "./components/subscription/models/subscription";
-export { default as useTenantTier } from "./components/subscription/api/subscription";
-export { SubscriptionProvider } from "./components/subscription/providers/subscription-provider";
+    export default value;
+}
+
+declare module "*.svg" {
+    import React = require("react");
+
+    export const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    const src: string;
+
+    export default src;
+}
+
+declare module "*.png" {
+    const content: string;
+
+    export default content;
+}
+
+declare module "*.md";

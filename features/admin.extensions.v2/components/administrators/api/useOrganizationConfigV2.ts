@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { OrganizationInterface } from "@wso2is/admin.administrators.v1/models/organization";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
@@ -23,7 +24,6 @@ import useRequest, {
     SWRConfig
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
-import { OrganizationInterface } from "@wso2is/admin.extensions.v1/components/administrators/models";
 import { HttpMethods } from "@wso2is/core/models";
 
 /**

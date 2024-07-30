@@ -36,6 +36,12 @@ import {
     history,
     store
 } from "@wso2is/admin.core.v1";
+import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
+import { TenantInfo } from "@wso2is/admin.extensions.v1/components/tenants/models/tenant";
+import { getAssociationType } from "@wso2is/admin.extensions.v1/components/tenants/utils/tenants";
+import { getAgentConnections } from "@wso2is/admin.extensions.v1/components/user-stores/api/remote-user-stores";
+import { AgentConnectionInterface } from "@wso2is/admin.extensions.v1/components/user-stores/models/remote-user-stores";
+import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import {
     useOrganizationConfigV2
 } from "@wso2is/admin.extensions.v2/components/administrators/api/useOrganizationConfigV2";
@@ -93,12 +99,6 @@ import {
     PaginationProps,
     TabProps
 } from "semantic-ui-react";
-import { administratorConfig } from "../../../configs/administrator";
-import { FeatureGateConstants } from "../../feature-gate/constants/feature-gate";
-import { TenantInfo } from "../../tenants/models";
-import { getAssociationType } from "../../tenants/utils/tenants";
-import { getAgentConnections } from "../../user-stores/api";
-import { AgentConnectionInterface } from "../../user-stores/models";
 import { GuestUsersList, OnboardedGuestUsersList } from "../components";
 import {
     ADVANCED_USER_MGT,

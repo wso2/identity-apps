@@ -16,6 +16,7 @@
  * under the License.
  */
 
+export * from "./admin.administrators.v1/public-api";
 export * from "./admin.api-resources.v2/public-api";
 export * from "./admin.application-roles.v1/public-api";
 export * from "./admin.applications.v1/public-api";
