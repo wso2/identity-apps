@@ -25,6 +25,8 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "@wso2is/admin.core.v1";
+import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
@@ -62,8 +64,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
-import { SCIMConfigs } from "../../../../configs/scim";
-import { FeatureGateConstants } from "../../../feature-gate/constants/feature-gate";
 import {
     AdminAccountTypes,
     AdministratorConstants,

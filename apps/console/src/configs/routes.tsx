@@ -68,12 +68,51 @@ import FullScreenLayout from "../layouts/full-screen-layout";
  */
 
 export const getAppViewRoutes = (): RouteInterface[] => {
-
     const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
     const showStatusLabelForNewAuthzRuntimeFeatures: boolean =
         window["AppUtils"]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures;
 
     const defaultRoutes: RouteInterface[] = [
+        {
+            category: "extensions:manage.sidePanel.categories.userManagement",
+            children: [
+                {
+                    component: lazy(() => import("@wso2is/admin.administrators.v1/pages/administrator-edit")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "collaborator-user-edit",
+                    name: "Collaborator Users Edit",
+                    path: AppConstants.getPaths().get("ADMINISTRATOR_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.administrators.v1/pages/administrator-settings")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "administrator-settings-edit",
+                    name: "administrator-settings-edit",
+                    path: AppConstants.getPaths().get("ADMINISTRATOR_SETTINGS"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("@wso2is/admin.administrators.v1/pages/administrators")),
+            exact: true,
+            icon: {
+                icon: getSidePanelIcons().administrators
+            },
+            id: "administrators",
+            name: "Administrators",
+            order: 5,
+            path: AppConstants.getPaths().get("ADMINISTRATORS"),
+            protected: true,
+            showOnSidePanel: true
+        },
         {
             category: "console:develop.features.sidePanel.categories.application",
             children: [

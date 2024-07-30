@@ -18,6 +18,8 @@
 
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { ConnectorPropertyInterface, RealmConfigInterface } from "@wso2is/admin.server-configurations.v1/models";
 import { UserProfile } from "@wso2is/admin.users.v1/components/user-profile";
 import { UserRolesList } from "@wso2is/admin.users.v1/components/user-roles-list";
@@ -34,8 +36,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { administratorConfig } from "../../../../configs/administrator";
-import { SCIMConfigs } from "../../../../configs/scim";
 import { AdminAccountTypes } from "../../constants";
 
 interface EditGuestUserPropsInterface extends SBACInterface<FeatureConfigInterface> {

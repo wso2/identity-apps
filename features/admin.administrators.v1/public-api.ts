@@ -16,4 +16,5 @@
  * under the License.
  */
 
-export * from "./pages";
+export { CONSUMER_USERSTORE } from "./constants/users";
+export { default as AdministratorsPage } from "./pages/administrators";
