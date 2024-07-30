@@ -119,6 +119,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
+    const [ isRedirectingToTenantCreation, setRedirectingToTenantCreation ] = useState<boolean>(false);
 
     useEffect(() => {
         dispatch(
@@ -261,6 +262,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 history.push(location);
             } else {
                 // If there is no assocation, the user should be redirected to creation flow.
+                setRedirectingToTenantCreation(true);
                 history.push({
                     pathname: AppConstants.getPaths().get(
                         "CREATE_TENANT"
@@ -375,12 +377,12 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, [ state.isAuthenticated ]);
 
     useEffect(() => {
-        if (!state.isAuthenticated) {
+        if (!state.isAuthenticated || isRedirectingToTenantCreation) {
             return;
         }
 
         filterRoutes(() => setRoutesFiltered(true), isFirstLevelOrg);
-    }, [ filterRoutes, state.isAuthenticated, isFirstLevelOrg ]);
+    }, [ filterRoutes, state.isAuthenticated, isFirstLevelOrg, isRedirectingToTenantCreation ]);
 
     return (
         <SecureApp
