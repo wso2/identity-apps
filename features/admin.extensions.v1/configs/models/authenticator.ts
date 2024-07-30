@@ -19,8 +19,5 @@
 import { ReactElement } from "react";
 
 export interface AuthenticatorConfig {
-    overriddenAuthenticatorNames: {
-        SMS_OTP_AUTHENTICATOR: string;
-    }
     externalResourceButton: ReactElement;
 }

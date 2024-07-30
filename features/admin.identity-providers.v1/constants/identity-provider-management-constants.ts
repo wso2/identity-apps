@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { authenticatorConfig } from "@wso2is/admin.extensions.v1/configs/authenticator";
 
 /**
  * Class containing identity provider management constants.
@@ -24,6 +23,4 @@ import { authenticatorConfig } from "@wso2is/admin.extensions.v1/configs/authent
  */
 export class IdentityProviderManagementConstants {
 
-    public static readonly SMS_OTP_AUTHENTICATOR: string = authenticatorConfig?.overriddenAuthenticatorNames?.
-        SMS_OTP_AUTHENTICATOR ?? "sms-otp";
 }

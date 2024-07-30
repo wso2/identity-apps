@@ -18,9 +18,6 @@
 
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
-import {
     GenericAuthenticatorInterface,
     ProvisioningInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
@@ -424,7 +421,8 @@ export class SignInMethodUtils {
                     .TOTP_AUTHENTICATOR_NAME ||
                 authenticator.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
                     .EMAIL_OTP_AUTHENTICATOR_NAME ||
-                authenticator.authenticator === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR
+                authenticator.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .SMS_OTP_AUTHENTICATOR_NAME
         );
 
         return secondFactor.length;

@@ -36,9 +36,6 @@ import {
 } from "@wso2is/admin.applications.v1/models/application";
 import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
-import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils/organization";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -254,8 +251,9 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                 } else if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
                     .EMAIL_OTP_AUTHENTICATOR_NAME) {
                     basicSignInOption = LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME;
-                } else if (option.authenticator === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR) {
-                    basicSignInOption = IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR;
+                } else if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .SMS_OTP_AUTHENTICATOR_NAME) {
+                    basicSignInOption = LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.SMS_OTP_AUTHENTICATOR_NAME;
                 }
             }
         });
@@ -419,7 +417,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             );
         }
 
-        if (activeBasicSignInOption === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR) {
+        if (activeBasicSignInOption === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.SMS_OTP_AUTHENTICATOR_NAME) {
             return (
                 <SMSOTPFragment
                     onOptionRemove={ (e: MouseEvent<HTMLButtonElement>, { toRemove }: { toRemove: string }) => {
@@ -507,7 +505,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                 [
                     LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
                     LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME,
-                    IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.SMS_OTP_AUTHENTICATOR_NAME,
                     LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME
                 ].includes(option.authenticator)
             ) {

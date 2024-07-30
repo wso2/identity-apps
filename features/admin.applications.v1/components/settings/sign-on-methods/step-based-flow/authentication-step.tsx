@@ -24,9 +24,6 @@ import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/c
 import { getGeneralIcons } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
-import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
@@ -178,7 +175,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
             if(
                 [ LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
                     LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME,
-                    IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.SMS_OTP_AUTHENTICATOR_NAME,
                     LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME
                 ].includes(option.authenticator)
             ) {

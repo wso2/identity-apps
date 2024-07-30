@@ -37,9 +37,6 @@ import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
-import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
     SupportedAuthenticators
@@ -552,7 +549,8 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
                 .TOTP_AUTHENTICATOR_NAME ||
             currentAuthenticator?.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
                 .EMAIL_OTP_AUTHENTICATOR_NAME ||
-            currentAuthenticator?.authenticator === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR
+            currentAuthenticator?.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                .SMS_OTP_AUTHENTICATOR_NAME
         ) {
             // Check whether the current step has the backup code authenticator
             if (SignInMethodUtils.hasSpecificAuthenticatorInCurrentStep(

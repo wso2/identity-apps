@@ -22,9 +22,6 @@ import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/consta
 import { AppState, EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
-import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
     SupportedAuthenticators
@@ -450,7 +447,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         // check whether the authenticator to be deleted is a 2FA
         if (currentAuthenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME ||
             currentAuthenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME ||
-            currentAuthenticator === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR ) {
+            currentAuthenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.SMS_OTP_AUTHENTICATOR_NAME ) {
 
             // check whether the current step has the backup code authenticator
             if(SignInMethodUtils.hasSpecificAuthenticatorInCurrentStep(

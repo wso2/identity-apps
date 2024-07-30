@@ -19,8 +19,5 @@
 import { AuthenticatorConfig } from "./models";
 
 export const authenticatorConfig : AuthenticatorConfig = {
-    externalResourceButton: null,
-    overriddenAuthenticatorNames: {
-        SMS_OTP_AUTHENTICATOR: "sms-otp-authenticator"
-    }
+    externalResourceButton: null
 };
