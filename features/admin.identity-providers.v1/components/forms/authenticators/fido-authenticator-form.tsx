@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
+import { updateFidoConfigs, useFIDOConnectorConfigs } from "@wso2is/admin.identity-providers.v1/api/fido-configs";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
@@ -24,7 +24,6 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { DocumentationLink, Message, URLInput, useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
-import { updateFidoConfigs, useFIDOConnectorConfigs } from "@wso2is/admin.identity-providers.v1/api/fido-configs";
 import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
