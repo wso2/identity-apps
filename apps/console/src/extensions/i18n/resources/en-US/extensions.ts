@@ -3685,7 +3685,7 @@ export const extensions: Extensions = {
                                 validations: {
                                     empty: "Password recovery OTP length cannot be empty.",
                                     maxLengthReached:
-                                        "Password recovery OTP length should be between 6 and 10 characters."
+                                        "Password recovery OTP length should be between 4 and 10 characters."
                                 }
                             },
                             enableEmailBasedRecovery: {
