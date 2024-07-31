@@ -16,12 +16,17 @@
  * under the License.
  */
 
+import Autocomplete, {
+    AutocompleteRenderGetTagProps,
+    AutocompleteRenderInputParams
+} from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
 import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { getSharedOrganizations } from "@wso2is/admin.organizations.v1/api";
+import { getAllExternalClaims } from "@wso2is/admin.claims.v1/api";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationInterface, OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -44,6 +49,8 @@ import {
     Text,
     URLInput
 } from "@wso2is/react-components";
+import TextField from "@oxygen-ui/react/TextField";
+import { AutoCompleteRenderOption } from "./../auto-complete-render-option";
 import { FormValidation } from "@wso2is/validation";
 import { AxiosResponse } from "axios";
 import get from "lodash-es/get";
@@ -54,13 +61,16 @@ import React, {
     ChangeEvent,
     Fragment,
     FunctionComponent,
+    HTMLAttributes,
     MouseEvent,
     MutableRefObject,
     ReactElement,
+    SyntheticEvent,
     useEffect,
     useRef,
     useState
 } from "react";
+import { ExternalClaim } from "@wso2is/core/models";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -241,6 +251,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         isRefreshTokenWithoutAllowedGrantType,
         setRefreshTokenWithoutAlllowdGrantType
     ] = useState<boolean>(false);
+    const [ activeOption, setActiveOption ] = useState<ExternalClaim>(undefined);
+    const [ selectedJwtAccessTokenAttributes, setSelectedJwtAccessTokenAttributes ] = useState<ExternalClaim[]>(undefined);
+    const [ jwtAccessTokenAttributes, setJwtAccessTokenAttributes ] = useState<ExternalClaim[]>([]);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const clientSecret: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
@@ -417,6 +430,28 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
         );
     }, [ application ]);
+
+    useEffect(() => {
+        getAllExternalClaims("aHR0cDovL3dzbzIub3JnL29pZGMvY2xhaW0", null)
+            .then((response: ExternalClaim[]) => {
+                console.log("External claims response: ", response);
+                setJwtAccessTokenAttributes(response);
+            })
+            .catch(() => {
+                console.log("Error while fetching external claims");
+            });
+    }, []);
+
+    useEffect(() => {
+        if (!initialValues.accessToken.jwtAccessTokenClaims) {
+            return;
+        }
+        const selectedClaims = initialValues.accessToken.jwtAccessTokenClaims
+        .map((claim: string) => jwtAccessTokenAttributes.find((claimObj: ExternalClaim) => claimObj.claimURI === claim))
+        .filter((claimObj: ExternalClaim | undefined) => claimObj !== undefined);
+
+        setSelectedJwtAccessTokenAttributes(selectedClaims);
+    }, [jwtAccessTokenAttributes]);
 
     useEffect(() => {
         const isSharedWithAll: additionalSpProperty[] = application?.advancedConfigurations
@@ -1162,7 +1197,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     revokeTokensWhenIDPSessionTerminated: values.get("RevokeAccessToken")?.length > 0,
                     type: values.get("type"),
                     userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds")),
-                    validateTokenBinding: values.get("ValidateTokenBinding")?.length > 0
+                    validateTokenBinding: values.get("ValidateTokenBinding")?.length > 0,
+                    jwtAccessTokenClaims: selectedJwtAccessTokenAttributes.map((claim: ExternalClaim) => claim.claimURI)
                 },
                 grantTypes: values.get("grant"),
                 idToken: {
@@ -2482,6 +2518,75 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 readOnly={ readOnly }
                                 data-testid={ `${ testId }-access-token-type-radio-group` }
                             />
+                        { initialValues.accessToken.type === "JWT" ? (
+                        <Grid.Row>
+                            <Grid.Column width={ 16 }>
+                                <p>
+                                    JWT Access Token Attributes
+                                </p>
+                            </Grid.Column>
+                            <Grid.Column width={ 8 }>
+                                <Autocomplete className="jwt-attributes-dropdown"
+                                    disablePortal
+                                    multiple
+                                    disableCloseOnSelect
+                                    loading={ isLoading }
+                                    options={ jwtAccessTokenAttributes }
+                                    value={ selectedJwtAccessTokenAttributes ?? [] }
+                                    disabled = { false }
+                                    data-componentid={ `${ componentId }-assigned-jwt-attribute-list` }
+                                    getOptionLabel={
+                                        (claim: ExternalClaim) => claim.claimURI
+                                    }
+                                    renderInput={ (params: AutocompleteRenderInputParams) => (
+                                        <TextField className="jwt-attributes-dropdown-input"
+                                            { ...params }
+                                            placeholder={ !false && t("extensions:develop.applications.edit." +
+                                            "sections.rolesV2.searchPlaceholder") }
+                                        />
+                                    ) }
+                                    onChange={ (event: SyntheticEvent, claims: ExternalClaim[]) => {
+                                        setIsFormStale(true);
+                                        setSelectedJwtAccessTokenAttributes(claims);
+                                    } }
+                                    isOptionEqualToValue={
+                                        (option: ExternalClaim, value: ExternalClaim) =>
+                                            option.id === value.id
+                                    }
+                                    renderTags={ (
+                                        value: ExternalClaim[],
+                                        getTagProps: AutocompleteRenderGetTagProps
+                                    ) => value.map((option: ExternalClaim, index: number) => (
+                                        <Chip
+                                            { ...getTagProps({ index }) }
+                                            key={ index }
+                                            label={ option.claimURI }
+                                            activeOption={ activeOption }
+                                            setActiveOption={ setActiveOption }
+                                            variant={
+                                                jwtAccessTokenAttributes?.find(
+                                                    (claim: ExternalClaim) => claim.id === option.id
+                                                )
+                                                    ? "solid"
+                                                    : "outlined"
+                                            }
+                                        />
+                                    )) }
+                                    renderOption={ (
+                                        props: HTMLAttributes<HTMLLIElement>,
+                                        option: ExternalClaim,
+                                        { selected }: { selected: boolean }
+                                    ) => (
+                                        <AutoCompleteRenderOption
+                                            selected={ selected }
+                                            displayName={ option.claimURI }
+                                            renderOptionProps={ props }
+                                        />
+                                    ) }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) : null }
                         </Grid.Column>
                     </Grid.Row>
                 )
