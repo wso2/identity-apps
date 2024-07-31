@@ -197,4 +197,39 @@ export class ConnectionUIConstants {
         this.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.SECRET_VALIDITY_PERIOD,
         this.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.TEAM_ID
     ];
+
+    /* eslint-disable max-len */
+    // TODO: These error messages need to be localized.
+    public static readonly ERROR_MESSAGES: {
+        AUTHENTICATORS_FETCH_ERROR: string;
+        AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: string;
+        COMBINED_AUTHENTICATOR_FETCH_ERROR: string;
+        FIDO_AUTHENTICATOR_CONFIG_UPDATE_ERROR: string;
+        FIDO_AUTHENTICATOR_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR: string;
+        FIDO_TRUSTED_APPS_UPDATE_ERROR: string;
+        FIDO_TRUSTED_APPS_UPDATE_INVALID_STATUS_CODE_ERROR: string;
+        IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR: string;
+        IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR: string;
+        LOCAL_AUTHENTICATORS_FETCH_ERROR: string;
+        LOCAL_AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: string;
+    } = {
+            AUTHENTICATORS_FETCH_ERROR: "An error occurred while fetching the authenticators.",
+            AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while fetching the authenticators.",
+            COMBINED_AUTHENTICATOR_FETCH_ERROR: "An error occurred while fetching the local and federated authenticators.",
+            FIDO_AUTHENTICATOR_CONFIG_UPDATE_ERROR: "An error occurred while updating the Passkey connector configs.",
+            FIDO_AUTHENTICATOR_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while updating the Passkey connector configs.",
+            FIDO_TRUSTED_APPS_UPDATE_ERROR: "An error occurred while updating the Passkey trusted apps.",
+            FIDO_TRUSTED_APPS_UPDATE_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while updating the Passkey trusted apps.",
+            IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR: "An error occurred while fetching the required connection templates list.",
+            IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while fetching connection templates list.",
+            LOCAL_AUTHENTICATORS_FETCH_ERROR: "An error occurred while fetching the local authenticators.",
+            LOCAL_AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while fetching local authenticators."
+        };
+    /* eslint-enable max-len */
+
+    public static readonly ERROR_CODES: {
+        FIDO_CONNECTOR_CONFIGS_NOT_CONFIGURED_ERROR_CODE: string;
+    } = {
+            FIDO_CONNECTOR_CONFIGS_NOT_CONFIGURED_ERROR_CODE: "CONFIGM_00017"
+        };
 }

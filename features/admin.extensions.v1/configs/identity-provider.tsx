@@ -23,7 +23,7 @@ import {
 import {
     CommonAuthenticatorManagementConstants
 } from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
-import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { IdentityProviderTabTypes } from "@wso2is/admin.identity-providers.v1/models";
 import { I18n } from "@wso2is/i18n";
 import { ResourceTabPaneInterface } from "@wso2is/react-components";
@@ -72,7 +72,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
                 );
             }
 
-            if( type === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ) {
+            if( type === LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ) {
                 return (
                     <SmsOTPAuthenticator
                         initialValues={ initialValues }
