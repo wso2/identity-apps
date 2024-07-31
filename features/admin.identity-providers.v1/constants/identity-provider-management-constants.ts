@@ -53,14 +53,6 @@ export class IdentityProviderManagementConstants {
 
     public static readonly FIDO_CONNECTOR_CONFIGS_NOT_CONFIGURED_ERROR_CODE: string = "CONFIGM_00017";
 
-    public static readonly FIDO_TRUSTED_APPS_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
-        "invalid status code while updating the Passkey trusted apps.";
-
-    public static readonly FIDO_TRUSTED_APPS_UPDATE_ERROR: string = "An error occurred while updating the " +
-        "Passkey trusted apps.";
-
-    public static readonly FIDO_TRUSTED_APPS_SHA_SEPARATOR: string = "|";
-
     public static readonly SESSION_EXECUTOR_AUTHENTICATOR: string = "SessionExecutor";
     public static readonly TOTP_AUTHENTICATOR: string = "totp";
     public static readonly IPROOV_AUTHENTICATOR: string = "IproovAuthenticator";

@@ -108,7 +108,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             extensions: "",
             externalClaims: "",
             fidoConfigs: "",
-            fidoTrustedApps: "",
             getSecret: "",
             getSecretList: "",
             getSecretType: "",

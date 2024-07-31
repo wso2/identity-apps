@@ -36,7 +36,6 @@ export interface ExtendedSamlConfigInterface {
 
 export interface IdentityProviderConfig {
     editIdentityProvider: {
-        enableFIDOTrustedAppsConfiguration: boolean;
         showAdvancedSettings: boolean;
         showIssuerSettings: boolean;
         showJitProvisioning: boolean;

@@ -35,7 +35,6 @@ import SIWEIdPTemplate from "../identity-provider-templates/templates/swe/swe.js
 
 export const identityProviderConfig: IdentityProviderConfig = {
     editIdentityProvider: {
-        enableFIDOTrustedAppsConfiguration: false,
         getOverriddenAuthenticatorForm: (
             type: string,
             templateId: string,
