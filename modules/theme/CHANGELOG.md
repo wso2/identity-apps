@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.98
+
+### Patch Changes
+
+- [#6692](https://github.com/wso2/identity-apps/pull/6692) [`d9615827f6e7c2f087c1debdb377e02e66ac4e62`](https://github.com/wso2/identity-apps/commit/d9615827f6e7c2f087c1debdb377e02e66ac4e62) Thanks [@brionmario](https://github.com/brionmario)! - Move `administrators` to a new feature
+
 ## 2.0.97
 
 ### Patch Changes

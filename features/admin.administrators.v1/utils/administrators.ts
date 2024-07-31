@@ -19,8 +19,8 @@ import {
     UserBasicInterface,
     UserRoleInterface
 } from "@wso2is/admin.core.v1";
-import { administratorConfig } from "../../../configs/administrator";
-import { SCIMConfigs } from "../../../configs/scim";
+import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { UserAccountTypes } from "../constants";
 
 /**

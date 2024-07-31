@@ -476,7 +476,9 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                             return screen !== PreviewScreenType.COMMON;
                         });
 
-                        meta.push(PreviewScreenType.MY_ACCOUNT);
+                        if (brandingMode === BrandingModes.ORGANIZATION) {
+                            meta.push(PreviewScreenType.MY_ACCOUNT);
+                        }
                         meta.push(PreviewScreenType.EMAIL_TEMPLATE);
                     }
 

@@ -21,6 +21,7 @@ import {
     AppConstants,
     history
 } from "@wso2is/admin.core.v1";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     PasswordRecoveryConfigurationFormPropsInterface,
@@ -428,7 +429,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     {
                         showSmsOtpPwdRecoveryFeatureStatusChip &&
                         (<Chip
-                            label="BETA"
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-menu-item-chip oxygen-chip-beta" />)
                     }
                 </Heading>
@@ -520,7 +521,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     {
                         showSmsOtpPwdRecoveryFeatureStatusChip &&
                         (<Chip
-                            label="BETA"
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-menu-item-chip oxygen-chip-beta" />)
                     }
                 </Heading>
@@ -626,7 +627,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     {
                         showSmsOtpPwdRecoveryFeatureStatusChip &&
                         (<Chip
-                            label="BETA"
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-menu-item-chip oxygen-chip-beta" />)
                     }
                 </Heading>

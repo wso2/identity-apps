@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,9 +18,7 @@
 
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import Typography from "@oxygen-ui/react/Typography";
-import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { MouseEvent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -118,7 +116,8 @@ const ActiveSessionsLimitFragment = (props: ActiveSessionsLimitFragmentPropsInte
             <BasicSignInOptionControls
                 onOptionRemove={ (event: MouseEvent<HTMLButtonElement>) => {
                     onOptionRemove(event, {
-                        toRemove: IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR
+                        toRemove: LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                            .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME
                     });
                 } }
                 optionRemoveTooltipContent={ t("authenticationFlow:nodes.signIn.controls.optionRemoveTooltipContent") }
