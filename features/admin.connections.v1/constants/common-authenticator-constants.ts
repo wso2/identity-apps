@@ -62,4 +62,14 @@ export class CommonAuthenticatorManagementConstants {
             SWE: "swe-idp",
             TRUSTED_TOKEN_ISSUER: "trusted-token-issuer"
         };
+
+    /**
+	 * UUID of the Multi-Factor Authenticators governance connector category.
+	 */
+    public static readonly MFA_CONNECTOR_CATEGORY_ID: string = "TXVsdGkgRmFjdG9yIEF1dGhlbnRpY2F0b3Jz";
+
+    /**
+     * ID of the deprecated SCIM1 provisioning connector.
+     */
+    public static readonly DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID: string = "c2NpbQ";
 }

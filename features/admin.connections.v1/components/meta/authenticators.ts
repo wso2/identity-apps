@@ -17,7 +17,6 @@
  */
 
 import { getConnectionIcons } from "../../configs/ui";
-import { AuthenticatorManagementConstants } from "../../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
 import { FederatedAuthenticatorConstants } from "../../constants/federated-authenticator-constants";
 import { LocalAuthenticatorConstants } from "../../constants/local-authenticator-constants";
@@ -71,7 +70,7 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
             description: "Login users with WS Federation.",
             displayName: "WS-Federation",
             icon: getConnectionIcons().wsFed,
-            name: AuthenticatorManagementConstants.PASSIVE_STS_AUTHENTICATOR_NAME
+            name: LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.PASSIVE_STS_AUTHENTICATOR_NAME
         },
         {
             authenticatorId: ConnectionManagementConstants.IWA_KERBEROS_AUTHENTICATOR_ID,
@@ -85,14 +84,14 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
             description: "Login users with their accounts using SAML protocol.",
             displayName: "SAML",
             icon: getConnectionIcons().saml,
-            name: AuthenticatorManagementConstants.SAML_AUTHENTICATOR_NAME
+            name: FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.SAML_AUTHENTICATOR_NAME
         },
         {
             authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID,
             description: "Login users with their accounts using OpenID Connect protocol.",
             displayName: "OpenID Connect",
             icon: getConnectionIcons().oidc,
-            name: AuthenticatorManagementConstants.OIDC_AUTHENTICATOR_NAME
+            name: FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.OIDC_AUTHENTICATOR_NAME
         },
         {
             authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID,
@@ -101,7 +100,7 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
                     .EMAIL_OTP_AUTHENTICATOR_ID),
             displayName: "Email OTP",
             icon: getConnectionIcons().emailOTP,
-            name: AuthenticatorManagementConstants.LEGACY_EMAIL_OTP_AUTHENTICATOR_NAME
+            name: FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME
         },
         {
             authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID,
@@ -110,7 +109,7 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
                     .SMS_OTP_AUTHENTICATOR_ID),
             displayName: "SMS OTP",
             icon: getConnectionIcons().smsOTP,
-            name: AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_NAME
+            name: FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.SMS_OTP_AUTHENTICATOR_NAME
         },
         {
             authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID,

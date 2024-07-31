@@ -73,6 +73,7 @@ export class LocalAuthenticatorConstants {
         FIDO_AUTHENTICATOR_NAME: string;
         IDENTIFIER_FIRST_AUTHENTICATOR_NAME: string;
         MAGIC_LINK_AUTHENTICATOR_NAME: string;
+        PASSIVE_STS_AUTHENTICATOR_NAME: string;
         SMS_OTP_AUTHENTICATOR_NAME: string;
         TOTP_AUTHENTICATOR_NAME: string;
     } = {
@@ -83,6 +84,7 @@ export class LocalAuthenticatorConstants {
             FIDO_AUTHENTICATOR_NAME: "FIDOAuthenticator",
             IDENTIFIER_FIRST_AUTHENTICATOR_NAME: "IdentifierExecutor",
             MAGIC_LINK_AUTHENTICATOR_NAME: "MagicLinkAuthenticator",
+            PASSIVE_STS_AUTHENTICATOR_NAME: "PassiveSTSAuthenticator",
             SMS_OTP_AUTHENTICATOR_NAME: "sms-otp-authenticator",
             TOTP_AUTHENTICATOR_NAME: "totp"
         };
@@ -107,11 +109,11 @@ export class LocalAuthenticatorConstants {
     /**
      * Attribute key for Email OTP Authenticator expiry time.
      */
-    public static readonly AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY: string = "EmailOTP_ExpiryTime";
+    public static readonly MODERATED_EMAIL_OTP_EXPIRY_TIME_KEY: string = "EmailOTP_ExpiryTime";
 
     // SMS OTP authenticator constants.
     /**
      * Attribute key for SMS OTP Authenticator expiry time.
      */
-    public static readonly AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY: string = "SmsOTP_ExpiryTime";
+    public static readonly MODERATED_SMS_OTP_EXPIRY_TIME_KEY: string = "SmsOTP_ExpiryTime";
 }

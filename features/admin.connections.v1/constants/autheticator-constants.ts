@@ -29,27 +29,8 @@ export class AuthenticatorManagementConstants {
      */
     private constructor() { }
 
-    public static readonly PASSIVE_STS_AUTHENTICATOR_NAME: string = "PassiveSTSAuthenticator";
-    public static readonly SAML_AUTHENTICATOR_NAME: string = "SAMLSSOAuthenticator";
-    public static readonly OIDC_AUTHENTICATOR_NAME: string = "OpenIDConnectAuthenticator";
-    public static readonly LEGACY_EMAIL_OTP_AUTHENTICATOR_NAME: string = "EmailOTP";
-    public static readonly SMS_OTP_AUTHENTICATOR_NAME: string = "SMSOTP";
     public static readonly ORGANIZATION_SSO_AUTHENTICATOR_NAME: string = "OrganizationAuthenticator";
     public static readonly ORGANIZATION_AUTHENTICATOR: string = "SSO";
-
-    // Federated Authenticators
-    public static readonly IPROOV_AUTHENTICATOR_NAME: string = "IproovAuthenticator";
-
-    // Keys for the initial values of SMS OTP Authenticator
-    public static readonly AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY: string = "SmsOTP_ExpiryTime";
-
-    // Keys for the initial values of Email OTP Authenticator
-    public static readonly AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY: string = "EmailOTP_ExpiryTime";
-
-    /**
-	 * UUID of the Multi-Factor Authenticators governance connector category.
-	 */
-    public static readonly MFA_CONNECTOR_CATEGORY_ID: string = "TXVsdGkgRmFjdG9yIEF1dGhlbnRpY2F0b3Jz";
 
     /**
      * Set of internal idps which are forbidden from deleting.
@@ -79,6 +60,4 @@ export class AuthenticatorManagementConstants {
                 "There are applications using this connection."
             )
         };
-
-    public static readonly DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID: string = "c2NpbQ";
 }

@@ -60,6 +60,7 @@ export class FederatedAuthenticatorConstants {
 
     public static readonly AUTHENTICATOR_NAMES: {
         APPLE_AUTHENTICATOR_NAME: string;
+        EMAIL_OTP_AUTHENTICATOR_NAME: string;
         FACEBOOK_AUTHENTICATOR_NAME: string;
         GITHUB_AUTHENTICATOR_NAME: string;
         GOOGLE_OIDC_AUTHENTICATOR_NAME: string;
@@ -67,9 +68,11 @@ export class FederatedAuthenticatorConstants {
         MICROSOFT_AUTHENTICATOR_NAME: string;
         TWITTER_AUTHENTICATOR_NAME: string;
         SAML_AUTHENTICATOR_NAME: string;
+        SMS_OTP_AUTHENTICATOR_NAME: string;
         OIDC_AUTHENTICATOR_NAME: string;
     } = {
             APPLE_AUTHENTICATOR_NAME: "AppleOIDCAuthenticator",
+            EMAIL_OTP_AUTHENTICATOR_NAME: "EmailOTP",
             FACEBOOK_AUTHENTICATOR_NAME: "FacebookAuthenticator",
             GITHUB_AUTHENTICATOR_NAME: "GithubAuthenticator",
             GOOGLE_OIDC_AUTHENTICATOR_NAME: "GoogleOIDCAuthenticator",
@@ -77,6 +80,7 @@ export class FederatedAuthenticatorConstants {
             MICROSOFT_AUTHENTICATOR_NAME: "MicrosoftAuthenticator",
             OIDC_AUTHENTICATOR_NAME: "OpenIDConnectAuthenticator",
             SAML_AUTHENTICATOR_NAME: "SAMLSSOAuthenticator",
+            SMS_OTP_AUTHENTICATOR_NAME: "SMSOTP",
             TWITTER_AUTHENTICATOR_NAME: "TwitterAuthenticator"
         };
 

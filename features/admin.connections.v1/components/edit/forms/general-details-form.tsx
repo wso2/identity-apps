@@ -30,6 +30,7 @@ import { AuthenticatorManagementConstants } from "../../../constants/autheticato
 import { CommonAuthenticatorManagementConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
 import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
+import { FederatedAuthenticatorConstants } from "../../../constants/federated-authenticator-constants";
 import {
     ConnectionInterface,
     ConnectionListResponseInterface,
@@ -270,7 +271,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const isIDPIproov = (): boolean => {
         return !!editingIDP?.federatedAuthenticators?.authenticators.find(
             (authenticator: FederatedAuthenticatorListItemInterface) => {
-                return authenticator?.name === AuthenticatorManagementConstants.IPROOV_AUTHENTICATOR_NAME;
+                return authenticator?.name === FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .IPROOV_AUTHENTICATOR_NAME;
             }
         );
     };
