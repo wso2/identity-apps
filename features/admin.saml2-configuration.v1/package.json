@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.saml2-configuration.v1",
-    "version": "2.20.95",
+    "version": "2.20.96",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -21,7 +21,7 @@
         "@oxygen-ui/react": "^1.13.3",
         "@oxygen-ui/react-icons": "^1.13.3",
         "@wso2is/access-control": "^3.0.20",
-        "@wso2is/admin.core.v1": "^2.23.25",
+        "@wso2is/admin.core.v1": "^2.23.26",
         "@wso2is/core": "^2.0.60",
         "@wso2is/dynamic-forms": "^2.0.86",
         "@wso2is/form": "^2.0.87",
