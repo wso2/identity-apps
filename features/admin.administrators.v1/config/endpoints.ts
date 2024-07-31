@@ -16,16 +16,15 @@
  * under the License.
  */
 
-import { ExtendedFeatureResourceEndpointsInterfaceV2 } from "./models/endpoint";
+import { AdministratorsResourceEndpointsInterface } from "../models/endpoint";
 
 /**
- * Get the resource endpoints for the extended features.
+ * Get the resource endpoints for the Administrators feature.
  *
  * @param serverHost - Server Host.
- * @returns Interface for the resource endpoints of extended features.
+ * @returns Interface for the resource endpoints of Administrators feature.
  */
-export const getExtendedFeatureResourceEndpointsV2 = (serverHost: string):
-    ExtendedFeatureResourceEndpointsInterfaceV2 => {
+export const getAdministratorsResourceEndpoints = (serverHost: string): AdministratorsResourceEndpointsInterface => {
     return {
         organizationEndpointV2: `${ serverHost }/api/asgardeo-enterprise-login/v2/business-user-login/{organization}`,
         organizationPatchEndpointV2: `${ serverHost }/api/asgardeo-enterprise-login/v2/business-user-login`
