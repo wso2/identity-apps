@@ -1518,6 +1518,12 @@ export const applications: ApplicationsNS = {
                                 empty: "Please fill the audience",
                                 invalid: "Please avoid special characters like commas (,)"
                             }
+                        },
+                        jwtAccessTokenAttributes: {
+                            hint : "",
+                            label: "JWT Access Token Attributes",
+                            description: "Define the attributes that should be included in the JWT access token.",
+                            placeholder: "Search by attribute name",
                         }
                     },
                     heading: "Access Token",

@@ -107,6 +107,7 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { ApplicationCertificateWrapper } from "../settings/certificate";
+import "./inbound-oidc-form.scss";
 
 /**
  * Proptypes for the inbound OIDC form component.
@@ -2520,13 +2521,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             />
                         { initialValues.accessToken.type === "JWT" ? (
                         <Grid.Row>
-                            <Grid.Column width={ 16 }>
-                                <p>
-                                    JWT Access Token Attributes
-                                </p>
+                            <Grid.Column width={ 8 } className="jwt-attributes-dropdown-label-column">
+                                <span>
+                                { t("applications:forms.inboundOIDC.sections" +
+                                    ".accessToken.fields.jwtAccessTokenAttributes.label") }
+                                </span>
                             </Grid.Column>
                             <Grid.Column width={ 8 }>
-                                <Autocomplete className="jwt-attributes-dropdown"
+                                <Autocomplete
                                     disablePortal
                                     multiple
                                     disableCloseOnSelect
@@ -2541,8 +2543,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     renderInput={ (params: AutocompleteRenderInputParams) => (
                                         <TextField className="jwt-attributes-dropdown-input"
                                             { ...params }
-                                            placeholder={ !false && t("extensions:develop.applications.edit." +
-                                            "sections.rolesV2.searchPlaceholder") }
+                                            placeholder={ !false && t("applications:forms.inboundOIDC.sections" +
+                                            ".accessToken.fields.jwtAccessTokenAttributes.placeholder") }
                                         />
                                     ) }
                                     onChange={ (event: SyntheticEvent, claims: ExternalClaim[]) => {
@@ -2584,6 +2586,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         />
                                     ) }
                                 />
+                                <Hint>
+                                    <Trans
+                                        values={ { productName: config.ui.productName } }
+                                        i18nKey={
+                                            "applications:forms.inboundOIDC.sections." +
+                                            "jwtAccessTokenAttributes.description"
+                                        }
+                                    >
+                                    Define the attributes that should be included in the <Code withBackground>JWT access token</Code>
+                                    </Trans>
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
                     ) : null }

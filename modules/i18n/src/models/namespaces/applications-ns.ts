@@ -1269,6 +1269,12 @@ export interface ApplicationsNS {
                                 invalid: string;
                             };
                         };
+                        jwtAccessTokenAttributes: {
+                            hint: string;
+                            label:string;
+                            description: string;
+                            placeholder: string;
+                        };
                     };
                 };
                 idToken: {
