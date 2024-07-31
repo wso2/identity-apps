@@ -32,12 +32,6 @@ export class AuthenticatorManagementConstants {
     public static readonly ORGANIZATION_SSO_AUTHENTICATOR_NAME: string = "OrganizationAuthenticator";
     public static readonly ORGANIZATION_AUTHENTICATOR: string = "SSO";
 
-    /**
-     * Set of internal idps which are forbidden from deleting.
-     * // TODO: Remove this once validating is available from the backend level.
-     */
-    public static readonly DELETING_FORBIDDEN_IDPS: string[] = [];
-
     public static readonly ERROR_IN_CREATING_SMS_NOTIFICATION_SENDER: string = "An error occurred while adding SMS " +
         "Notification Sender";
 
@@ -49,15 +43,10 @@ export class AuthenticatorManagementConstants {
 
     public static ErrorMessages: {
         SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS: IdentityAppsError;
-        SMS_NOTIFICATION_SENDER_DELETION_ERROR_CONNECTED_APPS: IdentityAppsError;
     } = {
             SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS: new IdentityAppsError(
                 "NSM-65015",
                 "Failed to delete SMS notification sender due to the existence of active subscriptions"
-            ),
-            SMS_NOTIFICATION_SENDER_DELETION_ERROR_CONNECTED_APPS: new IdentityAppsError(
-                "NSM-60008",
-                "There are applications using this connection."
             )
         };
 }

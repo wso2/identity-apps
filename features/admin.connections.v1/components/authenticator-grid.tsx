@@ -409,8 +409,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     showResourceDelete={
                                         hasRequiredScopes(featureConfig?.identityProviders,
                                             featureConfig?.identityProviders?.scopes?.delete, allowedScopes) &&
-                                        isIdPDeletable && !AuthenticatorManagementConstants.DELETING_FORBIDDEN_IDPS
-                                            .includes(authenticator.name)
+                                        isIdPDeletable
                                     }
                                     isResourceComingSoon={ authenticatorConfig?.isComingSoon }
                                     comingSoonRibbonLabel={ t(FeatureStatusLabel.COMING_SOON) }
