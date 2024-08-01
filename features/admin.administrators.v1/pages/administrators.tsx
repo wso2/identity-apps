@@ -42,9 +42,6 @@ import { getAssociationType } from "@wso2is/admin.extensions.v1/components/tenan
 import { getAgentConnections } from "@wso2is/admin.extensions.v1/components/user-stores/api/remote-user-stores";
 import { AgentConnectionInterface } from "@wso2is/admin.extensions.v1/components/user-stores/models/remote-user-stores";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
-import {
-    useOrganizationConfigV2
-} from "@wso2is/admin.extensions.v2/components/administrators/api/useOrganizationConfigV2";
 import { getRoleById, searchRoleList } from "@wso2is/admin.roles.v2/api/roles";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants";
 import { RolesV2Interface, SearchRoleInterface } from "@wso2is/admin.roles.v2/models/roles";
@@ -99,6 +96,7 @@ import {
     PaginationProps,
     TabProps
 } from "semantic-ui-react";
+import { useOrganizationConfigV2 } from "../api/useOrganizationConfigV2";
 import { GuestUsersList, OnboardedGuestUsersList } from "../components";
 import {
     ADVANCED_USER_MGT,
