@@ -113,13 +113,3 @@ export class AdministratorConstants {
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("ADVANCED_USER_MGT", "advancedUserManagement");
 }
-
-/**
- * Enum for admin account types.
- *
- * @readonly
- */
-export enum AdminAccountTypes {
-    INTERNAL = "internal",
-    EXTERNAL = "external"
-}

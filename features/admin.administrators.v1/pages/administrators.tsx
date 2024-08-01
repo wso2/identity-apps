@@ -48,7 +48,11 @@ import { RolesV2Interface, SearchRoleInterface } from "@wso2is/admin.roles.v2/mo
 import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { useInvitedUsersList, useUsersList } from "@wso2is/admin.users.v1/api";
 import { AddUserWizard } from "@wso2is/admin.users.v1/components/wizard/add-user-wizard";
-import { UserAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
+import {
+    AdminAccountTypes,
+    UserAccountTypes,
+    UserManagementConstants
+} from "@wso2is/admin.users.v1/constants/user-management-constants";
 import {
     InternalAdminUserListInterface,
     InvitationStatus,
@@ -98,7 +102,7 @@ import {
 } from "semantic-ui-react";
 import { useOrganizationConfigV2 } from "../api/useOrganizationConfigV2";
 import { GuestUsersList, OnboardedGuestUsersList } from "../components";
-import { AdminAccountTypes, AdministratorConstants } from "../constants";
+import { AdministratorConstants } from "../constants";
 import { UseOrganizationConfigType } from "../models/organization";
 import { isAdminUser, isOwner } from "../utils/administrators";
 import { AddAdministratorWizard } from "../wizard";
