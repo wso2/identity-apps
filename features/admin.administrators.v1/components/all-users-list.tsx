@@ -22,6 +22,9 @@ import {
     UIConstants,
     getEmptyPlaceholderIllustrations, history
 } from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
+import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { UserBasicInterface, UserListInterface } from "@wso2is/admin.users.v1/models";
@@ -47,9 +50,6 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } f
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, ListItemProps, SemanticICONS } from "semantic-ui-react";
-import { userstoresConfig } from "../../../configs";
-import { administratorConfig } from "../../../configs/administrator";
-import { SCIMConfigs } from "../../../configs/scim";
 import { AdministratorConstants, UserAccountTypes } from "../constants";
 
 /**

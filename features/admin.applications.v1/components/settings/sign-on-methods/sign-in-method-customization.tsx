@@ -19,6 +19,7 @@
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
 import { getMultiFactorAuthenticatorDetails } from "@wso2is/admin.connections.v1/api/authenticators";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import {
     AppConstants,
     AppState,
@@ -27,9 +28,6 @@ import {
     history
 } from "@wso2is/admin.core.v1";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
-import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import {
@@ -608,7 +606,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             (step: AuthenticationStepInterface) =>
                 !!step?.options.find(
                     (authenticator: AuthenticatorInterface) =>
-                        authenticator?.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
+                        authenticator?.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                            .FIDO_AUTHENTICATOR_NAME
                 )
         );
 
@@ -616,7 +615,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             if (isPasskeyProgressiveEnrollmentEnabled) {
                 const isPasskeyIncludedAsAFirstFatorOption: boolean = !!authenticationSequence?.steps[0]?.options.find(
                     (authenticator: AuthenticatorInterface) =>
-                        authenticator?.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
+                        authenticator?.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                            .FIDO_AUTHENTICATOR_NAME
                 );
 
                 if (isPasskeyIncludedAsAFirstFatorOption) {

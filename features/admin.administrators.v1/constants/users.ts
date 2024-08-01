@@ -105,7 +105,7 @@ export class AdministratorConstants {
         PASSWORD_MIN_LENGTH: 8,
         PASSWORD_NUMERIC: /[0-9]/g,
         PASSWORD_UPPER_CASE: /[A-Z]/g
-    }
+    };
 }
 
 /**

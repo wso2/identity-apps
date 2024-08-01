@@ -19,6 +19,8 @@
 import { useRequiredScopes } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
 import { AppState, FeatureConfigInterface, history, store } from "@wso2is/admin.core.v1";
+import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import { UserStoreUtils } from "@wso2is/admin.extensions.v1/utils/user-store-utils";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import {
     ServerConfigurationsInterface,
@@ -52,8 +54,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { Icon } from "semantic-ui-react";
-import { administratorConfig } from "../../../configs/administrator";
-import { UserStoreUtils } from "../../../utils/user-store-utils";
 import { EditGuestUser } from "../components";
 import { AdministratorConstants } from "../constants";
 

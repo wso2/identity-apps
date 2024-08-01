@@ -42,6 +42,7 @@ module.exports = [
         cache: false,
         input: [
             "./index.ts",
+            "./admin.administrators.v1/public-api.ts",
             "./admin.api-resources.v2/public-api.ts",
             "./admin.application-roles.v1/public-api.ts",
             "./admin.applications.v1/public-api.ts",

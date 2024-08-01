@@ -28,24 +28,66 @@ export class FederatedAuthenticatorConstants {
 
     public static readonly AUTHENTICATOR_IDS: {
         APPLE_AUTHENTICATOR_ID: string;
+        EMAIL_OTP_AUTHENTICATOR_ID: string;
         FACEBOOK_AUTHENTICATOR_ID: string;
         GITHUB_AUTHENTICATOR_ID: string;
         GOOGLE_OIDC_AUTHENTICATOR_ID: string;
         HYPR_AUTHENTICATOR_ID: string;
+        IPROOV_AUTHENTICATOR_ID: string;
         MICROSOFT_AUTHENTICATOR_ID: string;
+        OIDC_AUTHENTICATOR_ID: string;
         ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: string;
         SIWE_AUTHENTICATOR_ID: string;
         TWITTER_AUTHENTICATOR_ID: string;
     } = {
             APPLE_AUTHENTICATOR_ID: "QXBwbGVPSURDQXV0aGVudGljYXRvcg",
+            EMAIL_OTP_AUTHENTICATOR_ID: "RW1haWxPVFA",
             FACEBOOK_AUTHENTICATOR_ID: "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
             GITHUB_AUTHENTICATOR_ID: "R2l0aHViQXV0aGVudGljYXRvcg",
             GOOGLE_OIDC_AUTHENTICATOR_ID: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
             HYPR_AUTHENTICATOR_ID: "SFlQUkF1dGhlbnRpY2F0b3I",
+            IPROOV_AUTHENTICATOR_ID: "SXByb292QXV0aGVudGljYXRvcg",
             MICROSOFT_AUTHENTICATOR_ID: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
+            OIDC_AUTHENTICATOR_ID: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
             ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg",
             SIWE_AUTHENTICATOR_ID: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
             TWITTER_AUTHENTICATOR_ID: "VHdpdHRlckF1dGhlbnRpY2F0b3I"
+        };
+
+    public static readonly AUTHENTICATOR_NAMES: {
+        APPLE_AUTHENTICATOR_NAME: string;
+        FACEBOOK_AUTHENTICATOR_NAME: string;
+        GITHUB_AUTHENTICATOR_NAME: string;
+        GOOGLE_OIDC_AUTHENTICATOR_NAME: string;
+        IPROOV_AUTHENTICATOR_NAME: string;
+        MICROSOFT_AUTHENTICATOR_NAME: string;
+        TWITTER_AUTHENTICATOR_NAME: string;
+        SAML_AUTHENTICATOR_NAME: string;
+        OIDC_AUTHENTICATOR_NAME: string;
+    } = {
+            APPLE_AUTHENTICATOR_NAME: "AppleOIDCAuthenticator",
+            FACEBOOK_AUTHENTICATOR_NAME: "FacebookAuthenticator",
+            GITHUB_AUTHENTICATOR_NAME: "GithubAuthenticator",
+            GOOGLE_OIDC_AUTHENTICATOR_NAME: "GoogleOIDCAuthenticator",
+            IPROOV_AUTHENTICATOR_NAME: "IproovAuthenticator",
+            MICROSOFT_AUTHENTICATOR_NAME: "MicrosoftAuthenticator",
+            OIDC_AUTHENTICATOR_NAME: "OpenIDConnectAuthenticator",
+            SAML_AUTHENTICATOR_NAME: "SAMLSSOAuthenticator",
+            TWITTER_AUTHENTICATOR_NAME: "TwitterAuthenticator"
+        };
+
+    public static readonly AUTHENTICATOR_DISPLAY_NAMES: {
+        APPLE_AUTHENTICATOR_DISPLAY_NAME: string;
+        FACEBOOK_AUTHENTICATOR_DISPLAY_NAME: string;
+        GITHUB_AUTHENTICATOR_DISPLAY_NAME: string;
+        GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME: string;
+        MICROSOFT_AUTHENTICATOR_DISPLAY_NAME: string;
+    } = {
+            APPLE_AUTHENTICATOR_DISPLAY_NAME: "Apple",
+            FACEBOOK_AUTHENTICATOR_DISPLAY_NAME: "Facebook",
+            GITHUB_AUTHENTICATOR_DISPLAY_NAME: "GitHub",
+            GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME: "Google",
+            MICROSOFT_AUTHENTICATOR_DISPLAY_NAME: "Microsoft"
         };
 
     /**
