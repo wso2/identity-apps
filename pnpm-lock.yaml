@@ -14832,7 +14832,7 @@ importers:
         specifier: ^2.21.26
         version: link:../admin.identity-providers.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.20.89
+        specifier: ^2.20.96
         version: link:../admin.organizations.v1
       '@wso2is/admin.server-configurations.v1':
         specifier: ^2.21.38
@@ -23841,8 +23841,8 @@ packages:
     engines: {node: '>=12.0.0'}
     peerDependencies:
       '@types/react': 18.0.18
-      react: ^17.0.0 || ^18.0.0
-      react-dom: ^17.0.0 || ^18.0.0
+      react: 18.3.1
+      react-dom: 18.3.1
     peerDependenciesMeta:
       '@types/react':
         optional: true
