@@ -26,6 +26,7 @@ import { sendInvite, useUsersList } from "@wso2is/admin.users.v1/api";
 import { getUserWizardStepIcons } from "@wso2is/admin.users.v1/configs/ui";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { UserInviteInterface } from "@wso2is/admin.users.v1/models";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -51,7 +52,7 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import {
     AddAdminUserBasic
 } from "./steps/admin-user-basic";
-import { AdminAccountTypes, PRIMARY_USERSTORE } from "../constants";
+import { AdminAccountTypes } from "../constants";
 import { InternalAdminFormDataInterface } from "../models";
 import { isAdminUser } from "../utils/administrators";
 

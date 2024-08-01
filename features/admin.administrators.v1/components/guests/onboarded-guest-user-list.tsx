@@ -67,7 +67,6 @@ import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-r
 import {
     AdminAccountTypes,
     AdministratorConstants,
-    GUEST_ADMIN_ASSOCIATION_TYPE,
     UserAccountTypes
 } from "../../constants";
 
@@ -536,7 +535,7 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                     || (adminType === AdminAccountTypes.EXTERNAL
                     && (getUserNameWithoutDomain(user?.userName) === realmConfigs?.adminUser
                     || authenticatedUser?.includes(getUserNameWithoutDomain(user?.userName))))
-                    || associationType === GUEST_ADMIN_ASSOCIATION_TYPE;
+                    || associationType === UserManagementConstants.GUEST_ADMIN_ASSOCIATION_TYPE;
             },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, user: UserBasicInterface | UserRoleInterface): void => {

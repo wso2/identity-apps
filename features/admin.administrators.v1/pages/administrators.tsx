@@ -99,7 +99,6 @@ import {
 import { useOrganizationConfigV2 } from "../api/useOrganizationConfigV2";
 import { GuestUsersList, OnboardedGuestUsersList } from "../components";
 import {
-    ADVANCED_USER_MGT,
     AdminAccountTypes,
     AdministratorConstants,
     UserAccountTypes
@@ -936,7 +935,9 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
     const checkAdvancedUserManagementStatus = ():void => {
         const disabledUserFeatures: string[] = featureConfig.users.disabledFeatures;
 
-        setAdvancedUserManagementDisabled(disabledUserFeatures?.includes(ADVANCED_USER_MGT));
+        setAdvancedUserManagementDisabled(
+            disabledUserFeatures?.includes(AdministratorConstants.FEATURE_DICTIONARY.get("ADVANCED_USER_MGT"))
+        );
     };
 
     const getInternalAdmins = (): void => {

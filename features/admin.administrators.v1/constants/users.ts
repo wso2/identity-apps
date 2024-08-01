@@ -106,6 +106,12 @@ export class AdministratorConstants {
         PASSWORD_NUMERIC: /[0-9]/g,
         PASSWORD_UPPER_CASE: /[A-Z]/g
     };
+
+    /**
+     * Set of keys used to enable/disable features.
+     */
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("ADVANCED_USER_MGT", "advancedUserManagement");
 }
 
 /**
@@ -131,28 +137,3 @@ export enum AdminAccountTypes {
     INTERNAL = "internal",
     EXTERNAL = "external"
 }
-
-/**
- * Username of the admin user.
- */
-export const ADMIN_USER_NAME: string = "admin";
-
-/**
- * Name of the consumer userstore.
- */
-export const CONSUMER_USERSTORE: string = "DEFAULT";
-
-/**
- * Name of the primary userstore.
- */
-export const PRIMARY_USERSTORE: string = "PRIMARY";
-
-/**
- * Name of the advanced user management feature.
- */
-export const ADVANCED_USER_MGT: string = "advancedUserManagement";
-
-/**
- * Association type of invited admin users.
- */
-export const GUEST_ADMIN_ASSOCIATION_TYPE: string = "GUEST";
