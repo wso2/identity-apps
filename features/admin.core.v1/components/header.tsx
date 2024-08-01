@@ -28,7 +28,7 @@ import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Typography from "@oxygen-ui/react/Typography";
-import { DiamondIcon, TalkingHeadsetIcon, DiscordIcon, StackOverflowIcon } from "@oxygen-ui/react-icons";
+import { DiamondIcon, DiscordIcon, StackOverflowIcon, TalkingHeadsetIcon } from "@oxygen-ui/react-icons";
 import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
@@ -45,7 +45,7 @@ import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/co
 import { FeatureAccessConfigInterface } from "@wso2is/core/src/models";
 import { StringUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
-import { GenericIcon, useDocumentation } from "@wso2is/react-components";
+import { useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, useContext, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -253,7 +253,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                             className="get-help-dropdown-item"
                             onClick={ () => {
                                 window.open(window["AppUtils"].getConfig().extensions.getHelp.communityLinks.discord
-                                , "_blank", "noopener");
+                                    , "_blank", "noopener");
                             } }
                         >
                             <>
