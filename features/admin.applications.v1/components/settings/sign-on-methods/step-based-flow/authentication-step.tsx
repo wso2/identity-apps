@@ -17,7 +17,9 @@
  */
 
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
-import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AuthenticatorCategories } from "@wso2is/admin.connections.v1/models/authenticators";
 import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
@@ -290,7 +292,8 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                 authenticator = authenticators.find((item: GenericAuthenticatorInterface) =>
                     item.defaultAuthenticator.name === option.authenticator
                 );
-            } else if (option?.authenticator === AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME) {
+            } else if (option?.authenticator === FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES
+                .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME) {
                 authenticator = authenticators?.find((item: GenericAuthenticatorInterface) =>
                     item?.id === OrganizationUtils.getOrganizationAuthenticator().id
                 );

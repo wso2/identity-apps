@@ -17,7 +17,6 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1/constants/autheticator-constants";
 import {
     AppConstants,
     AppState,
@@ -299,10 +298,10 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             try {
                 await deleteSMSProviders();
             } catch (error: any) {
-                const errorType : string = error.code === AuthenticatorManagementConstants.ErrorMessages
-                    .SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS.getErrorCode() ? "activeSubs" :
-                    ( error.code === AuthenticatorManagementConstants.ErrorMessages
-                        .SMS_NOTIFICATION_SENDER_DELETION_ERROR_CONNECTED_APPS.getErrorCode() ? "connectedApps"
+                const errorType : string = error.code === SMSProviderConstants
+                    .SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS ? "activeSubs" :
+                    ( error.code === SMSProviderConstants
+                        .SMS_PROVIDER_CONFIG_UNABLE_TO_DISABLE_ERROR_CODE ? "connectedApps"
                         : "generic" );
 
                 dispatch(addAlert({

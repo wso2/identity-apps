@@ -70,6 +70,7 @@ export class FederatedAuthenticatorConstants {
         SAML_AUTHENTICATOR_NAME: string;
         SMS_OTP_AUTHENTICATOR_NAME: string;
         OIDC_AUTHENTICATOR_NAME: string;
+        ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME: string;
     } = {
             APPLE_AUTHENTICATOR_NAME: "AppleOIDCAuthenticator",
             EMAIL_OTP_AUTHENTICATOR_NAME: "EmailOTP",
@@ -79,6 +80,7 @@ export class FederatedAuthenticatorConstants {
             IPROOV_AUTHENTICATOR_NAME: "IproovAuthenticator",
             MICROSOFT_AUTHENTICATOR_NAME: "MicrosoftAuthenticator",
             OIDC_AUTHENTICATOR_NAME: "OpenIDConnectAuthenticator",
+            ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME: "OrganizationAuthenticator",
             SAML_AUTHENTICATOR_NAME: "SAMLSSOAuthenticator",
             SMS_OTP_AUTHENTICATOR_NAME: "SMSOTP",
             TWITTER_AUTHENTICATOR_NAME: "TwitterAuthenticator"
@@ -149,4 +151,12 @@ export class FederatedAuthenticatorConstants {
      * Key of the Apple client secret regenerate attribute.
      */
     public static readonly APPLE_SECRET_REGENERATE_ATTRIBUTE_KEY: string = "RegenerateClientSecret";
+
+    /**
+     * @deprecated Use `ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME` from
+     * `FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES` instead.
+     * Hardcoded name for SSO authenticator.
+     * TODO: This should be removed once the `getOrganizationAuthenticator()` util function is cleaned up.
+     */
+    public static readonly ORGANIZATION_AUTHENTICATOR: string = "SSO";
 }

@@ -47,7 +47,6 @@ export * from "./configs/ui";
 /**
  * Export the constants.
  */
-export * from "./constants/autheticator-constants";
 export * from "./constants/connection-constants";
 
 /**

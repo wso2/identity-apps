@@ -57,7 +57,6 @@ import {
     getConnectedApps
 } from "../api/connections";
 import { getConnectionIcons } from "../configs/ui";
-import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
     AuthenticatorExtensionsConfigInterface,

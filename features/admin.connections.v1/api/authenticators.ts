@@ -26,8 +26,8 @@ import useRequest, {
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
+import { I18n } from "@wso2is/i18n";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import {
     ConnectionManagementConstants
 } from "../constants/connection-constants";
@@ -369,7 +369,9 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    AuthenticatorManagementConstants.ERROR_IN_FETCHING_FEDERATED_AUTHENTICATOR_META_DATA,
+                    I18n.instance.t(
+                        "authenticationProvider:notifications.getFederatedAuthenticatorMetadata" +
+                        ".genericError.description"),
                     null,
                     response.status,
                     response.request,
@@ -380,8 +382,8 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
             return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                error.response?.data?.message ?? AuthenticatorManagementConstants
-                    .ERROR_IN_FETCHING_FEDERATED_AUTHENTICATOR_META_DATA,
+                error.response?.data?.message ?? I18n.instance.t(
+                    "authenticationProvider:notifications.getFederatedAuthenticatorMetadata.genericError.description"),
                 error.stack,
                 error.response?.data?.code,
                 error.request,

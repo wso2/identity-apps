@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1/constants/autheticator-constants";
 import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
@@ -63,7 +62,8 @@ export class OrganizationUtils {
                     authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
                         .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID,
                     isEnabled: true,
-                    name: AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME,
+                    name: FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES
+                        .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME,
                     tags: [ "APIAuth" ]
                 }
             ],
@@ -71,7 +71,8 @@ export class OrganizationUtils {
                 authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
                     .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID,
                 isEnabled: true,
-                name: AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME,
+                name: FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME,
                 tags: [ "APIAuth" ]
             },
             description: "Identity provider for Organization SSO.",
