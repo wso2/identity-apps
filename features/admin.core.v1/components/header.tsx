@@ -28,7 +28,7 @@ import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Typography from "@oxygen-ui/react/Typography";
-import { DiamondIcon } from "@oxygen-ui/react-icons";
+import { DiamondIcon, TalkingHeadsetIcon, DiscordIcon, StackOverflowIcon } from "@oxygen-ui/react-icons";
 import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
@@ -52,8 +52,6 @@ import { useSelector } from "react-redux";
 import { ReactComponent as LogoutIcon } from "../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../themes/default/assets/images/icons/user-icon.svg";
 import { ReactComponent as AskHelpIcon } from "../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
-import { ReactComponent as CommunityIcon } from "../../themes/wso2is/assets/images/icons/community-icon.svg";
-import { ReactComponent as ContactSupportIcon } from "../../themes/wso2is/assets/images/icons/contact-support-icon.svg";
 import { ReactComponent as DocsIcon } from "../../themes/wso2is/assets/images/icons/docs-icon.svg";
 import { ReactComponent as BillingPortalIcon } from "../../themes/wso2is/assets/images/icons/dollar-icon.svg";
 import { AppConstants, OrganizationType } from "../constants";
@@ -187,8 +185,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                 { I18n.instance.t("extensions:common.help.docSiteLink") as ReactNode }
             </Button>
         ),
-        (window["AppUtils"].getConfig().extensions.community ||
-            window["AppUtils"].getConfig().extensions.helpCenterUrl) && (
+        (window["AppUtils"].getConfig().extensions.getHelp) && (
             <>
                 <Button
                     color="inherit"
@@ -208,27 +205,21 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                     transformOrigin={ { horizontal: "right", vertical: "top" } }
                     onClose={ onCloseHelpMenu }
                 >
-                    { window["AppUtils"].getConfig().extensions.helpCenterUrl && (
+                    { window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL && (
                         <>
                             <MenuItem
                                 className="get-help-dropdown-item contact-support-dropdown-item"
                                 onClick={ () => {
                                     window.open(
-                                        window["AppUtils"].getConfig().extensions.helpCenterUrl,
+                                        window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL,
                                         "_blank",
                                         "noopener noreferrer"
                                     );
                                 } }
                             >
                                 <>
-                                    <ListItemIcon>
-                                        <GenericIcon
-                                            className="spaced-right"
-                                            transparent
-                                            fill="white"
-                                            size="x22"
-                                            icon={ ContactSupportIcon }
-                                        />
+                                    <ListItemIcon className="contact-support-icon get-help-icon">
+                                        <TalkingHeadsetIcon />
                                     </ListItemIcon>
                                     <ListItemText
                                         primary={
@@ -257,24 +248,36 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                             <Divider className="get-help-dropdown-divider" />
                         </>
                     ) }
-                    { window["AppUtils"].getConfig().extensions.community && (
+                    { window["AppUtils"].getConfig().extensions.getHelp.communityLinks.discord && (
                         <MenuItem
                             className="get-help-dropdown-item"
                             onClick={ () => {
-                                window.open(window["AppUtils"].getConfig().extensions.community, "_blank", "noopener");
+                                window.open(window["AppUtils"].getConfig().extensions.getHelp.communityLinks.discord
+                                , "_blank", "noopener");
                             } }
                         >
                             <>
-                                <ListItemIcon>
-                                    <GenericIcon
-                                        className="spaced-right"
-                                        transparent
-                                        fill="white"
-                                        size="x22"
-                                        icon={ CommunityIcon }
-                                    />
+                                <ListItemIcon className="get-help-icon">
+                                    <DiscordIcon />
                                 </ListItemIcon>
-                                { I18n.instance.t("extensions:common.help.communityLink") }
+                                <ListItemText primary=  { t("extensions:common.help.communityLinks.discord") } />
+                            </>
+                        </MenuItem>
+                    ) }
+                    { window["AppUtils"].getConfig().extensions.getHelp.communityLinks.stackOverflow && (
+                        <MenuItem
+                            className="get-help-dropdown-item"
+                            onClick={ () => {
+                                window.open(window["AppUtils"].getConfig()
+                                    .extensions.getHelp.communityLinks.stackOverflow
+                                , "_blank", "noopener");
+                            } }
+                        >
+                            <>
+                                <ListItemIcon className="get-help-icon">
+                                    <StackOverflowIcon />
+                                </ListItemIcon>
+                                <ListItemText primary=  { t("extensions:common.help.communityLinks.stackOverflow") } />
                             </>
                         </MenuItem>
                     ) }
