@@ -75,7 +75,6 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
     const [ isUpperCaseEnabled, setIsUpperCaseEnabled ] = useState<boolean>(false);
     const [ isLowerCaseEnabled, setIsLowerCaseEnabled ] = useState<boolean>(false);
     const [ isNumericEnabled, setIsNumericEnabled ] = useState<boolean>(false);
-    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const showSmsOtpPwdRecoveryFeatureStatusChip: boolean =
         useSelector((state: AppState) => state?.config?.ui?.showSmsOtpPwdRecoveryFeatureStatusChip);
@@ -434,29 +433,27 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     }
                 </Heading>
                 {
-                    !isSubOrganization() && (
-                        <Message info>
-                            <Icon name="info circle" />
-                            <Trans
-                                i18nKey={
-                                    "authenticationProvider:forms.authenticatorSettings" +
-                                    ".smsOTP.hint"
-                                }
-                            >
-                                Ensure that an
-                                <Link
-                                    external={ false }
-                                    onClick={ () => {
-                                        history.push(
-                                            AppConstants.getPaths().get("SMS_PROVIDER")
-                                        );
-                                    } }
-                                >SMS Provider
-                                </Link>
-                                &nbsp;is configured for the OTP feature to work properly.
-                            </Trans>
-                        </Message>
-                    )
+                    <Message info>
+                        <Icon name="info circle" />
+                        <Trans
+                            i18nKey={
+                                "authenticationProvider:forms.authenticatorSettings" +
+                                ".smsOTP.hint"
+                            }
+                        >
+                            Ensure that an
+                            <Link
+                                external={ false }
+                                onClick={ () => {
+                                    history.push(
+                                        AppConstants.getPaths().get("SMS_PROVIDER")
+                                    );
+                                } }
+                            >SMS Provider
+                            </Link>
+                            &nbsp;is configured for the OTP feature to work properly.
+                        </Trans>
+                    </Message>
                 }
                 <Field.Checkbox
                     ariaLabel="enableSMSBasedRecovery"
