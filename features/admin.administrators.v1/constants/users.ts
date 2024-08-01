@@ -115,20 +115,6 @@ export class AdministratorConstants {
 }
 
 /**
- * Enum for user account types.
- *
- * @readonly
- */
-export enum UserAccountTypes {
-    OWNER = "Owner",
-    ADMINISTRATOR = "Administrator",
-    ADMIN = "admin",
-    USER = "User",
-    CUSTOMER = "Customer",
-    COLLABORATOR = "Collaborator"
-}
-
-/**
  * Enum for admin account types.
  *
  * @readonly

@@ -31,7 +31,7 @@ import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
 import { deleteGuestUser } from "@wso2is/admin.users.v1/api";
-import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
+import { UserAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import {
     InternalAdminUserListInterface,
     UserBasicInterface,
@@ -64,11 +64,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
-import {
-    AdminAccountTypes,
-    AdministratorConstants,
-    UserAccountTypes
-} from "../../constants";
+import { AdminAccountTypes, AdministratorConstants } from "../../constants";
 
 /**
  * Prop types for the onboarded collaborator users list component.
