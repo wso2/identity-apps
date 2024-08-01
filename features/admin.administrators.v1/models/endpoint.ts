@@ -17,9 +17,9 @@
  */
 
 /**
- * Interface for the resource endpoints of extended features.
+ * Interface for the Administrators resource endpoints.
  */
-export interface ExtendedFeatureResourceEndpointsInterfaceV2 {
+export interface AdministratorsResourceEndpointsInterface {
     /**
      * Resource endpoint to fetch business user login configuration.
      */
