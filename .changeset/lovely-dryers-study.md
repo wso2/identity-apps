@@ -3,4 +3,4 @@
 "@wso2is/admin.extensions.v1": patch
 ---
 
-Impersonation Off
+Dynamically on/off Impersonation
