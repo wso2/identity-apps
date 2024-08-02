@@ -346,7 +346,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         return state.config?.ui?.features?.applications;
     });
 
-    const IsHybridFlowValidationEnabled: boolean = useMemo(() => {
+    const IsHybridFlowAppLevelConfigEnabled: boolean = useMemo(() => {
         const disabledFeatures: string[] = featureConfig?.disabledFeatures;
 
         return !disabledFeatures.includes("applications.hybridFlow");
@@ -547,7 +547,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     useEffect(() => {
         setHybridFlowEnableConfig(false);
         if (selectedGrantTypes?.includes(ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
-            && IsHybridFlowValidationEnabled) {
+            && IsHybridFlowAppLevelConfigEnabled) {
             setHybridFlowEnableConfig(true);
         }
     }, [ selectedGrantTypes, isGrantChanged ]);
