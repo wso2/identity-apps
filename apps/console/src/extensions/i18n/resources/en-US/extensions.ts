@@ -3697,7 +3697,7 @@ export const extensions: Extensions = {
                             }
                         },
                         smsProviderWarning:
-                            "Ensure that an <1>SMS Provider</1> is configured for the OTP feature to work properly1."
+                            "Ensure that an <1>SMS Provider</1> is configured for the OTP feature to work properly."
                     },
                     recoveryOptionSubHeadingEmailLink: "Email Link",
                     recoveryOptionSubHeadingSMS: "SMS OTP",
