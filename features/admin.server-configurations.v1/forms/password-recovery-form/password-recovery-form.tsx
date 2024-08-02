@@ -436,8 +436,8 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                         <Icon name="info circle" />
                         <Trans
                             i18nKey={
-                                "authenticationProvider:forms.authenticatorSettings" +
-                                ".smsOTP.hint"
+                                "extensions:manage.serverConfigurations.accountRecovery." +
+                                "passwordRecovery.form.smsProviderWarning"
                             }
                         >
                             Ensure that an

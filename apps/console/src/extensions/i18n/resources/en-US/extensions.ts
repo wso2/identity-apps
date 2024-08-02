@@ -3695,7 +3695,9 @@ export const extensions: Extensions = {
                                 hint: "This specifies whether to send an recovery link to the email address.",
                                 label: "Enable email link based recovery"
                             }
-                        }
+                        },
+                        smsProviderWarning:
+                            "Ensure that an <1>SMS Provider</1> is configured for the OTP feature to work properly1."
                     },
                     recoveryOptionSubHeadingEmailLink: "Email Link",
                     recoveryOptionSubHeadingSMS: "SMS OTP",
