@@ -47,7 +47,6 @@ import {
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 import { CommonAuthenticatorManagementConstants } from "../../constants/common-authenticator-constants";
-import { ConnectionManagementConstants } from "../../constants/connection-constants";
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import { FederatedAuthenticatorConstants } from "../../constants/federated-authenticator-constants";
 import {
@@ -171,7 +170,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     const hasApplicationReadPermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.read);
 
     const isOrganizationEnterpriseAuthenticator: boolean = identityProvider.federatedAuthenticators
-        .defaultAuthenticatorId === ConnectionManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
+        .defaultAuthenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+        .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
     const isEnterpriseConnection: boolean = identityProvider?.federatedAuthenticators
         .defaultAuthenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ||
         identityProvider?.federatedAuthenticators
@@ -251,7 +251,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                     ))
                 }
                 isRoleMappingsEnabled={
-                    isSaml || ConnectionManagementConstants
+                    isSaml || FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
                         .SAML_AUTHENTICATOR_ID !== identityProvider.federatedAuthenticators.defaultAuthenticatorId
                 }
                 data-testid={ `${ testId }-attribute-settings` }

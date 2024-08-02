@@ -19,7 +19,6 @@
 import get from "lodash-es/get";
 import { ReactNode, lazy } from "react";
 import { getConnectionIcons } from "../configs/ui";
-import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { FederatedAuthenticatorConstants } from "../constants/federated-authenticator-constants";
 import { LocalAuthenticatorConstants } from "../constants/local-authenticator-constants";
 import { AuthenticatorCategories, AuthenticatorLabels } from "../models/authenticators";
@@ -119,7 +118,7 @@ export class AuthenticatorMeta {
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.OIDC
             ],
-            [ ConnectionManagementConstants.SAML_AUTHENTICATOR_ID ]: [
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SAML
             ],
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID ]: [

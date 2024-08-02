@@ -27,7 +27,6 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { CommonAuthenticatorManagementConstants } from "../../../constants/common-authenticator-constants";
-import { ConnectionManagementConstants } from "../../../constants/connection-constants";
 import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import { FederatedAuthenticatorConstants } from "../../../constants/federated-authenticator-constants";
 import {
@@ -301,7 +300,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         validation={ (value: string) => idpNameValidation(value) }
                         value={ editingIDP.name }
                         maxLength={ IDP_NAME_MAX_LENGTH }
-                        minLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.min }
+                        minLength={ ConnectionUIConstants.IDP_NAME_LENGTH.min }
                         data-testid={ `${ testId }-idp-name` }
                         hint={ t("authenticationProvider:forms." +
                             "generalDetails.name.hint") }
@@ -333,8 +332,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     }
                                     validation={ (value: string) => issuerValidation(value) }
                                     value={ editingIDP.idpIssuerName }
-                                    maxLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.max }
-                                    minLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.min }
+                                    maxLength={ ConnectionUIConstants.IDP_NAME_LENGTH.max }
+                                    minLength={ ConnectionUIConstants.IDP_NAME_LENGTH.min }
                                     data-testid={ `${ testId }-issuer` }
                                     readOnly={ isReadOnly }
                                 />
@@ -361,8 +360,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                         "generalDetails.alias.hint", { productName: config.ui.productName }) }
                                     validation={ (value: string) => aliasValidation(value) }
                                     value={ editingIDP.alias }
-                                    maxLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.max }
-                                    minLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.min }
+                                    maxLength={ ConnectionUIConstants.IDP_NAME_LENGTH.max }
+                                    minLength={ ConnectionUIConstants.IDP_NAME_LENGTH.min }
                                     data-testid={ `${ testId }-alias` }
                                     readOnly={ isReadOnly }
                                 />
@@ -378,8 +377,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             "generalDetails.description.placeholder") }
                         value={ editingIDP.description }
                         data-testid={ `${ testId }-idp-description` }
-                        maxLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.max }
-                        minLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.min }
+                        maxLength={ ConnectionUIConstants.IDP_NAME_LENGTH.max }
+                        minLength={ ConnectionUIConstants.IDP_NAME_LENGTH.min }
                         hint={ t("authenticationProvider:forms." +
                             "generalDetails.description.hint") }
                         readOnly={ isReadOnly }

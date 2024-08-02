@@ -232,4 +232,54 @@ export class ConnectionUIConstants {
     } = {
             FIDO_CONNECTOR_CONFIGS_NOT_CONFIGURED_ERROR_CODE: "CONFIGM_00017"
         };
+
+    public static readonly IDP_NAME_LENGTH: {
+        min: number;
+        max: number;
+    } = {
+            max: 120,
+            min: 3
+        };
+
+    public static readonly JWKS_URL_LENGTH: {
+        min: number;
+        max: number;
+    } = {
+            max: 2048,
+            min: 0
+        };
+
+    public static readonly GROUP_CLAIM_LENGTH: {
+        min: number;
+        max: number;
+    } = {
+            max: 100,
+            min: 1
+        };
+
+    /**
+     * Set of Connection setup guide links.
+     */
+    public static readonly DOC_LINK_DICTIONARY: Map<string, string> = new Map<string, string>([
+        [ "apple-idp", "develop.connections.newConnection.apple.learnMore" ],
+        [ "enterprise-protocols", "develop.connections.newConnection.learnMore" ],
+        [ "facebook-idp", "develop.connections.newConnection.facebook.learnMore" ],
+        [ "github-idp", "develop.connections.newConnection.github.learnMore" ],
+        [ "google-idp", "develop.connections.newConnection.google.learnMore" ],
+        [ "hypr-idp", "develop.connections.newConnection.hypr.learnMore" ],
+        [ "microsoft-idp", "develop.connections.newConnection.microsoft.learnMore" ],
+        [ "enterprise-oidc-idp", "develop.connections.newConnection.enterprise.oidcLearnMore.learnMore" ],
+        [ "enterprise-saml-idp", "develop.connections.newConnection.enterprise.samlLearnMore.learnMore" ],
+        [ "swe-idp", "develop.connections.newConnection.siwe.learnMore" ],
+        [ "trusted-token-issuer", "develop.connections.newConnection.trustedTokenIssuer.learnMore" ]
+    ]);
+
+    /**
+     * Set of connection template group Ids.
+     */
+    public static readonly CONNECTION_TEMPLATE_GROUPS: {
+        ENTERPRISE_PROTOCOLS: string;
+    } = {
+            ENTERPRISE_PROTOCOLS: "enterprise-protocols"
+        };
 }

@@ -69,7 +69,6 @@ import {
 import { EditConnection } from "../components/edit/connection-edit";
 import { EditMultiFactorAuthenticator } from "../components/edit/edit-multi-factor-authenticator";
 import { CommonAuthenticatorManagementConstants } from "../constants/common-authenticator-constants";
-import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { FederatedAuthenticatorConstants } from "../constants/federated-authenticator-constants";
 import { useSetConnectionTemplates } from "../hooks/use-connection-templates";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
@@ -312,9 +311,9 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
                 .GOOGLE_OIDC_AUTHENTICATOR_ID) {
                 templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE;
-            } else if (authenticatorId === ConnectionManagementConstants.OIDC_AUTHENTICATOR_ID) {
+            } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID) {
                 templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.OIDC;
-            } else if (authenticatorId === ConnectionManagementConstants.SAML_AUTHENTICATOR_ID) {
+            } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID) {
                 templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.SAML;
             } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID) {
                 templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GITHUB;

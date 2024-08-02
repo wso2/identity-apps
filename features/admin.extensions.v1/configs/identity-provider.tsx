@@ -16,13 +16,16 @@
  * under the License.
  */
 
-import { ConnectionManagementConstants, ConnectionTabTypes } from "@wso2is/admin.connections.v1";
+import { ConnectionTabTypes } from "@wso2is/admin.connections.v1";
 import {
     SmsOTPAuthenticator
 } from "@wso2is/admin.connections.v1/components/authenticators/sms-otp/sms-otp-authenticator";
 import {
     CommonAuthenticatorManagementConstants
 } from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { IdentityProviderTabTypes } from "@wso2is/admin.identity-providers.v1/models";
 import { I18n } from "@wso2is/i18n";
@@ -229,7 +232,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
     utils: {
         hideIdentityClaimAttributes(authenticatorId: string): boolean {
             const identityClaimsHiddenAuthenticators: Set<string> = new Set([
-                ConnectionManagementConstants.SAML_AUTHENTICATOR_ID
+                FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID
             ]);
 
             return identityClaimsHiddenAuthenticators.has(authenticatorId);

@@ -73,12 +73,16 @@ export class FederatedAuthenticatorConstants {
         GITHUB_AUTHENTICATOR_NAME: string;
         GOOGLE_OIDC_AUTHENTICATOR_NAME: string;
         IPROOV_AUTHENTICATOR_NAME: string;
+        IWA_KERBEROS_AUTHENTICATOR_NAME: string;
         MICROSOFT_AUTHENTICATOR_NAME: string;
+        MS_LIVE_AUTHENTICATOR_NAME: string;
         TWITTER_AUTHENTICATOR_NAME: string;
         SAML_AUTHENTICATOR_NAME: string;
         SMS_OTP_AUTHENTICATOR_NAME: string;
+        OFFICE_365_AUTHENTICATOR_NAME: string;
         OIDC_AUTHENTICATOR_NAME: string;
         ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME: string;
+        YAHOO_AUTHENTICATOR_NAME: string;
     } = {
             APPLE_AUTHENTICATOR_NAME: "AppleOIDCAuthenticator",
             EMAIL_OTP_AUTHENTICATOR_NAME: "EmailOTP",
@@ -86,12 +90,16 @@ export class FederatedAuthenticatorConstants {
             GITHUB_AUTHENTICATOR_NAME: "GithubAuthenticator",
             GOOGLE_OIDC_AUTHENTICATOR_NAME: "GoogleOIDCAuthenticator",
             IPROOV_AUTHENTICATOR_NAME: "IproovAuthenticator",
+            IWA_KERBEROS_AUTHENTICATOR_NAME: "IWAKerberosAuthenticator",
             MICROSOFT_AUTHENTICATOR_NAME: "MicrosoftAuthenticator",
+            MS_LIVE_AUTHENTICATOR_NAME: "MicrosoftWindowsLiveAuthenticator",
+            OFFICE_365_AUTHENTICATOR_NAME: "Office365Authenticator",
             OIDC_AUTHENTICATOR_NAME: "OpenIDConnectAuthenticator",
             ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME: "OrganizationAuthenticator",
             SAML_AUTHENTICATOR_NAME: "SAMLSSOAuthenticator",
             SMS_OTP_AUTHENTICATOR_NAME: "SMSOTP",
-            TWITTER_AUTHENTICATOR_NAME: "TwitterAuthenticator"
+            TWITTER_AUTHENTICATOR_NAME: "TwitterAuthenticator",
+            YAHOO_AUTHENTICATOR_NAME: "YahooOAuth2Authenticator"
         };
 
     public static readonly AUTHENTICATOR_DISPLAY_NAMES: {

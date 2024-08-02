@@ -46,7 +46,7 @@ import { EmptyCertificatesPlaceholder } from "./empty-certificates-placeholder";
 import { IdpCertificatesList } from "./idp-cetificates-list";
 import { updateIDPCertificate } from "../../../../api/connections";
 import { CommonAuthenticatorManagementConstants } from "../../../../constants/common-authenticator-constants";
-import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
+import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
 import { CertificatePatchRequestInterface, ConnectionInterface } from "../../../../models/connection";
 
 /**
@@ -293,8 +293,8 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 } }
                 listen={ (value: string) => setJwksValue(value) }
                 placeholder="https://{ oauth-provider-url }/oauth/jwks"
-                maxLength={ ConnectionManagementConstants.JWKS_URL_LENGTH.max }
-                minLength={ ConnectionManagementConstants.JWKS_URL_LENGTH.min }
+                maxLength={ ConnectionUIConstants.JWKS_URL_LENGTH.max }
+                minLength={ ConnectionUIConstants.JWKS_URL_LENGTH.min }
                 name="jwks_endpoint"
                 disabled={ isReadOnly }
             />

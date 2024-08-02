@@ -17,7 +17,6 @@
  */
 
 import { getConnectionIcons } from "../../configs/ui";
-import { ConnectionManagementConstants } from "../../constants/connection-constants";
 import { FederatedAuthenticatorConstants } from "../../constants/federated-authenticator-constants";
 import { LocalAuthenticatorConstants } from "../../constants/local-authenticator-constants";
 import { AuthenticatorMeta } from "../../meta/authenticator-meta";
@@ -35,35 +34,35 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
             description: "Seamless integration with Office 365.",
             displayName: "Office 365",
             icon: getConnectionIcons().office365,
-            name: ConnectionManagementConstants.OFFICE_365_AUTHENTICATOR_NAME
+            name: FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.OFFICE_365_AUTHENTICATOR_NAME
         },
         {
             authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.TWITTER_AUTHENTICATOR_ID,
             description: "Login users with existing Twitter accounts.",
             displayName: "Twitter",
             icon: getConnectionIcons().twitter,
-            name: ConnectionManagementConstants.TWITTER_AUTHENTICATOR_NAME
+            name: FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.TWITTER_AUTHENTICATOR_NAME
         },
         {
             authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID,
             description: "Login users with existing Facebook accounts.",
             displayName: "Facebook",
             icon: getConnectionIcons().facebook,
-            name: ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_NAME
+            name: FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.FACEBOOK_AUTHENTICATOR_NAME
         },
         {
             authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID,
             description: "Login users with existing Google accounts.",
             displayName: "Google",
             icon: getConnectionIcons().google,
-            name: ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME
+            name: FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.GOOGLE_OIDC_AUTHENTICATOR_NAME
         },
         {
             authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.MS_LIVE_AUTHENTICATOR_ID,
             description: "Login users with their Microsoft Live accounts.",
             displayName: "Microsoft Windows Live",
             icon: getConnectionIcons().microsoft,
-            name: ConnectionManagementConstants.MS_LIVE_AUTHENTICATOR_NAME
+            name: FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.MS_LIVE_AUTHENTICATOR_NAME
         },
         {
             authenticatorId: LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PASSIVE_STS_AUTHENTICATOR_ID,
@@ -77,7 +76,7 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
             description: "Login users to Microsoft Windows servers.",
             displayName: "IWA Kerberos",
             icon: getConnectionIcons().iwaKerberos,
-            name: ConnectionManagementConstants.IWA_KERBEROS_AUTHENTICATOR_NAME
+            name: FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.IWA_KERBEROS_AUTHENTICATOR_NAME
         },
         {
             authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID,
@@ -116,7 +115,7 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
             description: "Login users with their Apple IDs.",
             displayName: "Apple",
             icon: getConnectionIcons().apple,
-            name: ConnectionManagementConstants.APPLE_AUTHENTICATOR_NAME
+            name: FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.APPLE_AUTHENTICATOR_NAME
         }
     ];
 };
@@ -133,14 +132,14 @@ const getKnownExternalConnectorMetadata = (): FederatedAuthenticatorMetaDataInte
             description: "Login users with their Yahoo accounts.",
             displayName: "Yahoo",
             icon: getConnectionIcons().yahoo,
-            name: ConnectionManagementConstants.YAHOO_AUTHENTICATOR_NAME
+            name: FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.YAHOO_AUTHENTICATOR_NAME
         },
         {
             authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID,
             description: "Login users with existing GitHub accounts",
             displayName: "GitHub",
             icon: getConnectionIcons()?.githubAuthenticator,
-            name: ConnectionManagementConstants.GITHUB_AUTHENTICATOR_NAME
+            name: FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.GITHUB_AUTHENTICATOR_NAME
         }
     ];
 };

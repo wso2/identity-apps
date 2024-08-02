@@ -27,7 +27,7 @@ import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import { getConnections } from "../api/connections";
 import { CommonAuthenticatorManagementConstants } from "../constants/common-authenticator-constants";
-import { ConnectionManagementConstants } from "../constants/connection-constants";
+import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import { FederatedAuthenticatorConstants } from "../constants/federated-authenticator-constants";
 import { MultiFactorAuthenticatorInterface } from "../models/authenticators";
 import {
@@ -252,7 +252,7 @@ export class ConnectionsManagementUtils {
      */
     public static resolveConnectionDocLink(id: string): string {
 
-        return ConnectionManagementConstants.DOC_LINK_DICTIONARY.get(id);
+        return ConnectionUIConstants.DOC_LINK_DICTIONARY.get(id);
     }
 
     /**

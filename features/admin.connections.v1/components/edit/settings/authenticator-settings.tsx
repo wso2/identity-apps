@@ -126,8 +126,8 @@ const commonAuthenticators: string[] = [
     FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID,
     FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID,
     CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
-    ConnectionManagementConstants.SAML_AUTHENTICATOR_ID,
-    ConnectionManagementConstants.OIDC_AUTHENTICATOR_ID
+    FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID,
+    FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID
 ];
 
 /**
@@ -659,7 +659,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
         moderatedManualModeOptions = moderatedManualModeOptions?.filter((a: FederatedAuthenticatorMetaDataInterface) =>
             !availableAuthenticatorIDs.includes(a?.authenticatorId) &&
-            a?.authenticatorId !== ConnectionManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID);
+            a?.authenticatorId !== FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+                .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID);
 
         setAvailableManualModeOptions(moderatedManualModeOptions);
         setAvailableTemplates(filteredTemplates);
@@ -930,7 +931,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
             // TODO: Need to update below values in the OIDC authenticator metadata API
             // Set additional meta data if the authenticator is OIDC
-            if (authenticator.id === ConnectionManagementConstants.OIDC_AUTHENTICATOR_ID) {
+            if (authenticator.id === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID) {
                 authenticator.meta.properties.map((prop: CommonPluggableComponentMetaPropertyInterface) => {
                     if (prop.key === "ClientId") {
                         prop.displayName = "Client ID";
