@@ -18,6 +18,8 @@
 
 /* eslint-disable sort-keys */
 
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { store } from "@wso2is/admin.core.v1/store";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
@@ -30,6 +32,7 @@ import {
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import React, { ReactElement, ReactNode } from "react";
 import { TFunction } from "react-i18next";
 import { Card, Divider, Grid, Header } from "semantic-ui-react";
@@ -51,7 +54,12 @@ import {
 import { generatePasswordHistoryCount } from "../components/password-history-count/components";
 import { updatePasswordPolicyProperties } from "../components/password-policies/api/password-policies";
 
-export const serverConfigurationConfig: ServerConfigurationConfig = {
+const featureConfig: FeatureConfigInterface = store?.getState()?.config?.ui?.features;
+
+const isImpersonationConnectorEnabled: boolean =
+    isFeatureEnabled(featureConfig?.loginAndRegistration,"connectors.impersonation");
+
+const serverConfigurationConfig: ServerConfigurationConfig = {
     autoEnableConnectorToggleProperty: false,
     backButtonDisabledConnectorIDs: [
         ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
@@ -380,3 +388,9 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     usePasswordExpiry: useGetPasswordExpiryProperties,
     usePasswordHistory: useGetPasswordHistoryCount
 };
+
+if (isImpersonationConnectorEnabled) {
+    serverConfigurationConfig.connectorsToHide.push(ServerConfigurationsConstants.IMPERSONATION);
+}
+
+export { serverConfigurationConfig };
