@@ -19,6 +19,7 @@
 import Divider from "@oxygen-ui/react/Divider";
 import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { getApplicationDetails } from "@wso2is/admin.applications.v1/api";
 import { AppState, EventPublisher, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import {
@@ -27,7 +28,6 @@ import {
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -165,8 +165,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     const [ isConnectedAppsLoading, setIsConnectedAppsLoading ] = useState<boolean>(true);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
+
+    const hasConnectionUpdatePermission: boolean = useRequiredScopes(featureConfig?.identityProviders?.scopes?.update);
+    const hasConnectionDeletePermission: boolean = useRequiredScopes(featureConfig?.identityProviders?.scopes?.delete);
 
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
@@ -185,8 +187,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      * @returns If Read Only or not.
      */
     const resolveReadOnlyState = (): boolean => {
-        return !hasRequiredScopes(featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update,
-            allowedScopes);
+        return !hasConnectionUpdatePermission;
     };
 
     /**
@@ -406,8 +407,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     showActions={ true }
                                     showResourceEdit={ true }
                                     showResourceDelete={
-                                        hasRequiredScopes(featureConfig?.identityProviders,
-                                            featureConfig?.identityProviders?.scopes?.delete, allowedScopes) &&
+                                        hasConnectionDeletePermission &&
                                         isIdPDeletable
                                     }
                                     isResourceComingSoon={ authenticatorConfig?.isComingSoon }
