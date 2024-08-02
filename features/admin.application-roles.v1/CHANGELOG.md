@@ -1,5 +1,21 @@
 # @wso2is/admin.application-roles.v1
 
+## 2.21.40
+
+### Patch Changes
+
+- [#6704](https://github.com/wso2/identity-apps/pull/6704) [`70fa1786a5edbaa9f0cdddc17e4f18a8fcf1a8e7`](https://github.com/wso2/identity-apps/commit/70fa1786a5edbaa9f0cdddc17e4f18a8fcf1a8e7) Thanks [@brionmario](https://github.com/brionmario)! - Remove `@wso2is/admin.parent-roles.v1` and move content inside `@wso2is/admin.application-roles.v1`
+
+- Updated dependencies [[`198c2432e6eacdc2bcf1bb9e7432ea7d700f7534`](https://github.com/wso2/identity-apps/commit/198c2432e6eacdc2bcf1bb9e7432ea7d700f7534)]:
+  - @wso2is/react-components@2.2.29
+  - @wso2is/admin.core.v1@2.23.28
+  - @wso2is/admin.applications.v1@2.22.28
+  - @wso2is/admin.connections.v1@2.21.28
+  - @wso2is/admin.extensions.v1@2.21.68
+  - @wso2is/admin.groups.v1@2.20.98
+  - @wso2is/admin.identity-providers.v1@2.21.28
+  - @wso2is/admin.userstores.v1@2.20.98
+
 ## 2.21.39
 
 ### Patch Changes

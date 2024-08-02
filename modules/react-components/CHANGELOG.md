@@ -1,5 +1,11 @@
 # @wso2is/react-components
 
+## 2.2.29
+
+### Patch Changes
+
+- [#6702](https://github.com/wso2/identity-apps/pull/6702) [`198c2432e6eacdc2bcf1bb9e7432ea7d700f7534`](https://github.com/wso2/identity-apps/commit/198c2432e6eacdc2bcf1bb9e7432ea7d700f7534) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prevent showing search bar in list layout when the data retrieval is in progress
+
 ## 2.2.28
 
 ### Patch Changes

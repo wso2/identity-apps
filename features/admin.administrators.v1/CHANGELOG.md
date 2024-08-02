@@ -1,5 +1,23 @@
 # @wso2is/admin.administrators.v1
 
+## 2.21.68
+
+### Patch Changes
+
+- [#6701](https://github.com/wso2/identity-apps/pull/6701) [`191f55bc3ec97b2a8836b0f8701ca0cf3c1a64ed`](https://github.com/wso2/identity-apps/commit/191f55bc3ec97b2a8836b0f8701ca0cf3c1a64ed) Thanks [@brionmario](https://github.com/brionmario)! - Refactor duplicate enums and constants
+
+- Updated dependencies [[`198c2432e6eacdc2bcf1bb9e7432ea7d700f7534`](https://github.com/wso2/identity-apps/commit/198c2432e6eacdc2bcf1bb9e7432ea7d700f7534)]:
+  - @wso2is/react-components@2.2.29
+  - @wso2is/admin.core.v1@2.23.28
+  - @wso2is/admin.applications.v1@2.22.28
+  - @wso2is/admin.extensions.v1@2.21.68
+  - @wso2is/admin.roles.v2@2.20.98
+  - @wso2is/admin.server-configurations.v1@2.21.40
+  - @wso2is/admin.users.v1@2.20.98
+  - @wso2is/admin.userstores.v1@2.20.98
+  - @wso2is/form@2.0.88
+  - @wso2is/admin.authentication.v1@2.20.98
+
 ## 2.21.67
 
 ### Patch Changes
