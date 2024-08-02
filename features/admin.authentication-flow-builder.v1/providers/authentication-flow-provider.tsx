@@ -28,6 +28,7 @@ import {
 import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
 import { SignInMethodUtils } from "@wso2is/admin.applications.v1/utils/sign-in-method-utils";
 import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1/constants/autheticator-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AuthenticatorMeta } from "@wso2is/admin.connections.v1/meta/authenticator-meta";
 import { ConnectionInterface } from "@wso2is/admin.connections.v1/models/connection";
 import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
@@ -35,9 +36,6 @@ import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
-import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
@@ -195,7 +193,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         const moderatedLocalAuthenticators: GenericAuthenticatorInterface[] = [];
 
         localAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
-            if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+            if (authenticator.name === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME) {
                 recoveryAuthenticators.push(authenticator);
             } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.id)) {
                 secondFactorAuthenticators.push(authenticator);
@@ -465,7 +463,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             rightSideSteps
         );
         const noOfTOTPOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
-            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ],
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME ],
             rightSideSteps
         );
         const noOfFactorsOnRight: number =
@@ -547,18 +545,22 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
 
         // If the authenticator to be deleted is a 2FA.
         if (
-            currentAuthenticator?.authenticator === IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ||
-            currentAuthenticator?.authenticator === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR ||
-            currentAuthenticator?.authenticator === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR
+            currentAuthenticator?.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                .TOTP_AUTHENTICATOR_NAME ||
+            currentAuthenticator?.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                .EMAIL_OTP_AUTHENTICATOR_NAME ||
+            currentAuthenticator?.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                .SMS_OTP_AUTHENTICATOR_NAME
         ) {
             // Check whether the current step has the backup code authenticator
             if (SignInMethodUtils.hasSpecificAuthenticatorInCurrentStep(
-                IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR, stepIndex, steps
+                LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME, stepIndex, steps
             )) {
                 // if there is only one 2FA in the step, prompt delete confirmation modal
                 if (SignInMethodUtils.countTwoFactorAuthenticatorsInCurrentStep(stepIndex, steps) < 2) {
                     currentStep.options.map((option: AuthenticatorInterface, optionIndex: number) => {
-                        if (option.authenticator === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+                        if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                            .BACKUP_CODE_AUTHENTICATOR_NAME) {
                             backupCodeAuthenticatorIndex = optionIndex;
                         }
                     });
@@ -585,8 +587,8 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             );
             const noOfSecondFactorsOnRightRequiringHandlers: number = SignInMethodUtils.countSpecificFactorInSteps(
                 [
-                    IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME
                 ],
                 rightSideSteps
             );
@@ -594,7 +596,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
                 noOfSecondFactorsOnRight === noOfSecondFactorsOnRightRequiringHandlers;
             const isDeletingOptionFirstFactor: boolean = [
                 ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
-                IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+                LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME
             ].includes(deletingOption.authenticator);
             const isDeletingOptionSecondFactorHandler: boolean = [
                 ...ApplicationManagementConstants.TOTP_HANDLERS,

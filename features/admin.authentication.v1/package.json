@@ -1,18 +1,19 @@
 {
     "private": true,
     "name": "@wso2is/admin.authentication.v1",
-    "version": "2.20.87",
+    "version": "2.20.98",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/core": "^2.0.59",
-        "@wso2is/i18n": "^2.5.14",
-        "@wso2is/admin.authorization.v1": "^2.20.38",
-        "@wso2is/admin.core.v1": "^2.23.17",
-        "@wso2is/admin.extensions.v1": "^2.21.57",
-        "@wso2is/admin.organizations.v1": "^2.20.87",
-        "@wso2is/admin.users.v1": "^2.20.87",
+        "@wso2is/core": "^2.0.60",
+        "@wso2is/i18n": "^2.5.15",
+        "@wso2is/admin.authorization.v1": "^2.20.41",
+        "@wso2is/admin.core.v1": "^2.23.28",
+        "@wso2is/admin.extensions.v1": "^2.21.68",
+        "@wso2is/admin.organizations.v1": "^2.20.98",
+        "@wso2is/admin.users.v1": "^2.20.98",
+        "@wso2is/admin.userstores.v1": "^2.20.98",
         "axios": "^0.19.2",
         "lodash-es": "^4.17.21",
         "react-redux": "^7.2.9",
@@ -39,7 +40,7 @@
         "rollup-plugin-svg": "^2.0.0"
     },
     "peerDependencies": {
-        "@asgardeo/auth-react": "^5.0.3",
+        "@asgardeo/auth-react": "^5.1.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^4.3.1"

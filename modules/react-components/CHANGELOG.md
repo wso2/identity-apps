@@ -1,5 +1,28 @@
 # @wso2is/react-components
 
+## 2.2.29
+
+### Patch Changes
+
+- [#6702](https://github.com/wso2/identity-apps/pull/6702) [`198c2432e6eacdc2bcf1bb9e7432ea7d700f7534`](https://github.com/wso2/identity-apps/commit/198c2432e6eacdc2bcf1bb9e7432ea7d700f7534) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prevent showing search bar in list layout when the data retrieval is in progress
+
+## 2.2.28
+
+### Patch Changes
+
+- Updated dependencies [[`d9615827f6e7c2f087c1debdb377e02e66ac4e62`](https://github.com/wso2/identity-apps/commit/d9615827f6e7c2f087c1debdb377e02e66ac4e62)]:
+  - @wso2is/theme@2.0.98
+
+## 2.2.27
+
+### Patch Changes
+
+- [#6676](https://github.com/wso2/identity-apps/pull/6676) [`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da) Thanks [@Achintha444](https://github.com/Achintha444)! - Update oxygen-ui to `1.13.3`
+
+- Updated dependencies [[`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da)]:
+  - @wso2is/theme@2.0.97
+  - @wso2is/core@2.0.60
+
 ## 2.2.26
 
 ### Patch Changes

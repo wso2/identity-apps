@@ -16,18 +16,16 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1/constants/autheticator-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AppState, EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
-import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface,
     SupportedAuthenticators
 } from "@wso2is/admin.identity-providers.v1/models";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, GenericIcon, Popup } from "@wso2is/react-components";
@@ -143,8 +141,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+
+    const hasConnectionsCreatePermissions: boolean = useRequiredScopes(
+        featureConfig?.identityProviders?.scopes?.create);
 
     /**
      * Separates out the different authenticators to their relevant categories.
@@ -165,7 +165,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         const recoveryAuth: GenericAuthenticatorInterface[] = [];
 
         localAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
-            if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+            if (authenticator.name === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME) {
                 recoveryAuth.push(authenticator);
             } else if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticator.id)) {
                 secondFactorAuth.push(authenticator);
@@ -445,18 +445,19 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         }
 
         // check whether the authenticator to be deleted is a 2FA
-        if (currentAuthenticator === IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ||
-            currentAuthenticator === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR ||
-            currentAuthenticator === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR ) {
+        if (currentAuthenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME ||
+            currentAuthenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME ||
+            currentAuthenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.SMS_OTP_AUTHENTICATOR_NAME ) {
 
             // check whether the current step has the backup code authenticator
             if(SignInMethodUtils.hasSpecificAuthenticatorInCurrentStep(
-                IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR, stepIndex, steps
+                LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME, stepIndex, steps
             )) {
                 // if there is only one 2FA in the step, prompt delete confirmation modal
                 if(SignInMethodUtils.countTwoFactorAuthenticatorsInCurrentStep(stepIndex, steps) < 2) {
                     currentStep.options.map((option: AuthenticatorInterface, optionIndex: number) => {
-                        if (option.authenticator === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+                        if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                            .BACKUP_CODE_AUTHENTICATOR_NAME) {
                             setBackupCodeRemoveIndex(optionIndex);
                         }
                     });
@@ -484,14 +485,14 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 [ ...ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS ], rightSideSteps);
             const noOfSecondFactorsOnRightRequiringHandlers: number = SignInMethodUtils.countSpecificFactorInSteps(
                 [
-                    IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME
                 ], rightSideSteps);
             const onlySecondFactorsRequiringHandlersOnRight: boolean = noOfSecondFactorsOnRight
                 === noOfSecondFactorsOnRightRequiringHandlers;
             const isDeletingOptionFirstFactor: boolean = [
                 ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
-                IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+                LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME
             ]
                 .includes(deletingOption.authenticator);
             const isDeletingOptionSecondFactorHandler: boolean = [
@@ -640,7 +641,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         const containSecondFactorOnRight: boolean = SignInMethodUtils.hasSpecificFactorsInSteps(
             ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps);
         const noOfTOTPOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
-            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ], rightSideSteps);
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME ], rightSideSteps);
         const noOfFactorsOnRight: number = SignInMethodUtils.countSpecificFactorInSteps(
             ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS, rightSideSteps)
             + SignInMethodUtils.countSpecificFactorInSteps(
@@ -712,7 +713,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     const handleIdentifierFirstInStep = (options: AuthenticatorInterface[]): boolean =>
         options.some(
             (option: AuthenticatorInterface) =>
-                option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+                option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .IDENTIFIER_FIRST_AUTHENTICATOR_NAME
         );
 
     /**
@@ -765,10 +767,10 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         }
 
         // Don't allow identifier first being the only authenticator in the flow.
-        if ( steps.length === 1
+        if (steps.length === 1
             && steps[ 0 ].options.length === 1
             && steps[ 0 ].options[ 0 ].authenticator
-                === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR ) {
+                === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME) {
             dispatch(
                 addAlert({
                     description: t(
@@ -858,8 +860,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         return (
             <AddAuthenticatorModal
                 authenticationSteps={ authenticationSteps }
-                allowSocialLoginAddition={ hasRequiredScopes(featureConfig?.identityProviders,
-                    featureConfig?.identityProviders?.scopes?.create, allowedScopes) }
+                allowSocialLoginAddition={ hasConnectionsCreatePermissions }
                 currentStep={ authenticatorAddStep }
                 open={ showAuthenticatorAddModal }
                 onModalSubmit={ (authenticators: GenericAuthenticatorInterface[]) => {

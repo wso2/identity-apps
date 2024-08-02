@@ -17,6 +17,7 @@
  */
 
 import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import {
     AppConstants,
     history
@@ -31,7 +32,6 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Label, Message } from "semantic-ui-react";
-import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     CommonAuthenticatorFormFieldInterface,
     CommonAuthenticatorFormFieldMetaInterface,
@@ -198,7 +198,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             const moderatedName: string = value.name.replace(/\./g, "_");
 
             // Converting expiry time from seconds to minutes
-            if(moderatedName === IdentityProviderManagementConstants.AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY){
+            if(moderatedName === LocalAuthenticatorConstants.AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY){
                 const expiryTimeInMinutes: number = Math.round(parseInt(value.value,10) / 60);
 
                 resolvedInitialValues = {
@@ -252,7 +252,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             if (name !== undefined) {
                 const moderatedName: string = name.replace(/_/g, ".");
 
-                if (name === IdentityProviderManagementConstants.AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY){
+                if (name === LocalAuthenticatorConstants.AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY){
                     const timeInSeconds: number = value * 60;
 
                     properties.push({

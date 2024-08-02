@@ -60,7 +60,8 @@ import * as LayoutDesignExtensions from "./layout-design-extensions";
 import { LayoutSwatchAdapter } from "./layout-swatch";
 import { ThemeSwatchAdapter, ThemeSwatchUIConfigsInterface } from "./theme-swatch";
 import { useLayout } from "../../api";
-import { BrandingPreferencesConstants } from "../../constants";
+import { BrandingModes, BrandingPreferencesConstants } from "../../constants";
+import useBrandingPreference from "../../hooks/use-branding-preference";
 import { BrandingPreferenceMeta, PredefinedLayouts } from "../../meta";
 
 /**
@@ -193,6 +194,10 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
         data: customLayoutBlob,
         isLoading: customLayoutLoading
     } = useLayout(PredefinedLayouts.CUSTOM, tenantDomain, commonConfig?.checkCustomLayoutExistanceBeforeEnabling);
+
+    const {
+        brandingMode
+    } = useBrandingPreference();
 
     /**
      * Set the internal initial theme state.
@@ -606,204 +611,219 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
             </Grid.Row>
 
             { /* My Account Logo */ }
-            <Grid.Row columns={ 1 }>
-                <Grid.Column>
-                    <Divider horizontal>
-                        <Heading as="h5">
-                            { t("extensions:develop.branding.forms.design.theme.images.myAccountLogo.heading") }
-                        </Heading>
-                    </Divider>
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column>
-                    <ImagePreview
-                        label={ t("extensions:develop.branding.forms.design.theme.images.myAccountLogo.preview") }
-                        style={
-                            layout.activeLayout !== PredefinedLayouts.CUSTOM
-                                ? {
-                                    background: theme[ theme?.activeTheme ]?.colors?.background?.surface?.inverted
-                                }
-                                : null
-                        }
-                        data-componentid={ `${componentId}-myaccount-logo-image-preview` }
-                    >
-                        <ProductBrand
-                            appName={ theme[theme.activeTheme].images?.myAccountLogo?.title }
-                            style={ { marginTop: 0 } }
-                            logo={ (
-                                <Logo
-                                    className="portal-logo"
-                                    image={
-                                        theme[
-                                            theme.activeTheme
-                                        ].images?.myAccountLogo?.imgURL
-                                        || BrandingPreferenceMeta.getBrandingPreferenceInternalFallbacks(
-                                            themeName
-                                        ).theme[theme.activeTheme].images?.myAccountLogo?.imgURL
+            {
+                brandingMode === BrandingModes.ORGANIZATION && (
+                    <>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column>
+                                <Divider horizontal>
+                                    <Heading as="h5">
+                                        { t("extensions:develop.branding.forms.design." +
+                                            "theme.images.myAccountLogo.heading") }
+                                    </Heading>
+                                </Divider>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column>
+                                <ImagePreview
+                                    label={ t("extensions:develop.branding.forms.design.theme." +
+                                            "images.myAccountLogo.preview") }
+                                    style={
+                                        layout.activeLayout !== PredefinedLayouts.CUSTOM
+                                            ? {
+                                                background: theme[ theme?.activeTheme ]?.
+                                                    colors?.background?.surface?.inverted
+                                            }
+                                            : null
                                     }
+                                    data-componentid={ `${componentId}-myaccount-logo-image-preview` }
+                                >
+                                    <ProductBrand
+                                        appName={ theme[theme.activeTheme].images?.myAccountLogo?.title }
+                                        style={ { marginTop: 0 } }
+                                        logo={ (
+                                            <Logo
+                                                className="portal-logo"
+                                                image={
+                                                    theme[
+                                                        theme.activeTheme
+                                                    ].images?.myAccountLogo?.imgURL
+                                                    || BrandingPreferenceMeta.getBrandingPreferenceInternalFallbacks(
+                                                        themeName
+                                                    ).theme[theme.activeTheme].images?.myAccountLogo?.imgURL
+                                                }
+                                            />
+                                        ) }
+                                    />
+                                </ImagePreview>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column>
+                                <Field.Input
+                                    ariaLabel="Branding preference My Account Logo URL"
+                                    inputType="url"
+                                    name={ `theme.${theme.activeTheme}.images.myAccountLogo.imgURL` }
+                                    label={
+                                        t("extensions:develop.branding.forms.design.theme.images." +
+                                        "myAccountLogo.fields.url.label")
+                                    }
+                                    placeholder={
+                                        t("extensions:develop.branding.forms.design.theme"
+                                        + ".images.myAccountLogo.fields.url.placeholder")
+                                    }
+                                    hint={ (
+                                        <Trans
+                                            i18nKey={
+                                                "extensions:develop.branding.forms.design.theme"
+                                                + ".images.myAccountLogo.fields.url.hint"
+                                            }
+                                            tOptions={ {
+                                                productName
+                                            } }
+                                        >
+                                            Use an image that’s atleast <Code>
+                                            250x50 pixels</Code> for better results. If not set,
+                                            { productName } defaults will be used.
+                                        </Trans>
+                                    ) }
+                                    required={ false }
+                                    value={ initialValues.theme[theme.activeTheme].images?.myAccountLogo?.imgURL }
+                                    readOnly={ readOnly }
+                                    maxLength={
+                                        BrandingPreferencesConstants
+                                            .DESIGN_FORM_FIELD_CONSTRAINTS
+                                            .MYACCOUNT_LOGO_URL_MAX_LENGTH
+                                    }
+                                    minLength={
+                                        BrandingPreferencesConstants
+                                            .DESIGN_FORM_FIELD_CONSTRAINTS
+                                            .MYACCOUNT_LOGO_URL_MIN_LENGTH
+                                    }
+                                    width={ 16 }
+                                    data-componentid={ `${componentId}-myaccount-logo-url` }
+                                    listen={ (value: string) => {
+                                        setTheme({
+                                            ...theme,
+                                            [theme.activeTheme]: {
+                                                ...theme[theme.activeTheme],
+                                                images: {
+                                                    ...theme[theme.activeTheme].images,
+                                                    myAccountLogo: {
+                                                        ...theme[theme.activeTheme].images.myAccountLogo,
+                                                        imgURL: value
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    } }
                                 />
-                            ) }
-                        />
-                    </ImagePreview>
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column>
-                    <Field.Input
-                        ariaLabel="Branding preference My Account Logo URL"
-                        inputType="url"
-                        name={ `theme.${theme.activeTheme}.images.myAccountLogo.imgURL` }
-                        label={
-                            t("extensions:develop.branding.forms.design.theme.images.myAccountLogo.fields.url.label")
-                        }
-                        placeholder={
-                            t("extensions:develop.branding.forms.design.theme"
-                            + ".images.myAccountLogo.fields.url.placeholder")
-                        }
-                        hint={ (
-                            <Trans
-                                i18nKey={
-                                    "extensions:develop.branding.forms.design.theme"
-                                    + ".images.myAccountLogo.fields.url.hint"
-                                }
-                                tOptions={ {
-                                    productName
-                                } }
-                            >
-                                Use an image that’s atleast <Code>250x50 pixels</Code> for better results. If not set,
-                                { productName } defaults will be used.
-                            </Trans>
-                        ) }
-                        required={ false }
-                        value={ initialValues.theme[theme.activeTheme].images?.myAccountLogo?.imgURL }
-                        readOnly={ readOnly }
-                        maxLength={
-                            BrandingPreferencesConstants
-                                .DESIGN_FORM_FIELD_CONSTRAINTS
-                                .MYACCOUNT_LOGO_URL_MAX_LENGTH
-                        }
-                        minLength={
-                            BrandingPreferencesConstants
-                                .DESIGN_FORM_FIELD_CONSTRAINTS
-                                .MYACCOUNT_LOGO_URL_MIN_LENGTH
-                        }
-                        width={ 16 }
-                        data-componentid={ `${componentId}-myaccount-logo-url` }
-                        listen={ (value: string) => {
-                            setTheme({
-                                ...theme,
-                                [theme.activeTheme]: {
-                                    ...theme[theme.activeTheme],
-                                    images: {
-                                        ...theme[theme.activeTheme].images,
-                                        myAccountLogo: {
-                                            ...theme[theme.activeTheme].images.myAccountLogo,
-                                            imgURL: value
-                                        }
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column>
+                                <Field.Input
+                                    ariaLabel="Branding preference myaccount logo alt text"
+                                    inputType="default"
+                                    name={ `theme.${theme.activeTheme}.images.myAccountLogo.altText` }
+                                    label={
+                                        t("extensions:develop.branding.forms.design.theme.images." +
+                                            "myAccountLogo.fields.alt.label")
                                     }
-                                }
-                            });
-                        } }
-                    />
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column>
-                    <Field.Input
-                        ariaLabel="Branding preference myaccount logo alt text"
-                        inputType="default"
-                        name={ `theme.${theme.activeTheme}.images.myAccountLogo.altText` }
-                        label={
-                            t("extensions:develop.branding.forms.design.theme.images.myAccountLogo.fields.alt.label")
-                        }
-                        placeholder={
-                            t("extensions:develop.branding.forms.design.theme"
-                            + ".images.myAccountLogo.fields.alt.placeholder")
-                        }
-                        hint={
-                            t("extensions:develop.branding.forms.design.theme"
-                            + ".images.myAccountLogo.fields.alt.hint", { productName })
-                        }
-                        required={ false }
-                        value={ initialValues.theme[theme.activeTheme].images?.myAccountLogo?.altText }
-                        readOnly={ readOnly }
-                        maxLength={
-                            BrandingPreferencesConstants
-                                .DESIGN_FORM_FIELD_CONSTRAINTS
-                                .MYACCOUNT_LOGO_ALT_TEXT_MAX_LENGTH
-                        }
-                        minLength={
-                            BrandingPreferencesConstants
-                                .DESIGN_FORM_FIELD_CONSTRAINTS
-                                .MYACCOUNT_LOGO_ALT_TEXT_MIN_LENGTH
-                        }
-                        width={ 16 }
-                        data-componentid={ `${componentId}-myaccount-logo-alt-text` }
-                        listen={ (value: string) => {
-                            setTheme({
-                                ...theme,
-                                [theme.activeTheme]: {
-                                    ...theme[theme.activeTheme],
-                                    images: {
-                                        ...theme[theme.activeTheme].images,
-                                        myAccountLogo: {
-                                            ...theme[theme.activeTheme].images.myAccountLogo,
-                                            altText: value
-                                        }
+                                    placeholder={
+                                        t("extensions:develop.branding.forms.design.theme"
+                                        + ".images.myAccountLogo.fields.alt.placeholder")
                                     }
-                                }
-                            });
-                        } }
-                    />
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column>
-                    <Field.Input
-                        ariaLabel="Branding preference myaccount logo title"
-                        inputType="default"
-                        name={ `theme.${theme.activeTheme}.images.myAccountLogo.title` }
-                        label={
-                            t("extensions:develop.branding.forms.design.theme.images.myAccountLogo.fields.title.label")
-                        }
-                        placeholder={
-                            t("extensions:develop.branding.forms.design.theme"
-                            + ".images.myAccountLogo.fields.title.placeholder")
-                        }
-                        hint={
-                            t("extensions:develop.branding.forms.design.theme"
-                            + ".images.myAccountLogo.fields.title.hint", { productName })
-                        }
-                        required={ false }
-                        value={ initialValues.theme[theme.activeTheme].images?.myAccountLogo?.title }
-                        readOnly={ readOnly }
-                        maxLength={
-                            BrandingPreferencesConstants.DESIGN_FORM_FIELD_CONSTRAINTS.MYACCOUNT_LOGO_TITLE_MAX_LENGTH
-                        }
-                        minLength={
-                            BrandingPreferencesConstants.DESIGN_FORM_FIELD_CONSTRAINTS.MYACCOUNT_LOGO_TITLE_MIN_LENGTH
-                        }
-                        width={ 16 }
-                        data-componentid={ `${componentId}-myaccount-logo-title` }
-                        listen={ (value: string) => {
-                            setTheme({
-                                ...theme,
-                                [theme.activeTheme]: {
-                                    ...theme[theme.activeTheme],
-                                    images: {
-                                        ...theme[theme.activeTheme].images,
-                                        myAccountLogo: {
-                                            ...theme[theme.activeTheme].images.myAccountLogo,
-                                            title: value
-                                        }
+                                    hint={
+                                        t("extensions:develop.branding.forms.design.theme"
+                                        + ".images.myAccountLogo.fields.alt.hint", { productName })
                                     }
-                                }
-                            });
-                        } }
-                    />
-                </Grid.Column>
-            </Grid.Row>
+                                    required={ false }
+                                    value={ initialValues.theme[theme.activeTheme].images?.myAccountLogo?.altText }
+                                    readOnly={ readOnly }
+                                    maxLength={
+                                        BrandingPreferencesConstants
+                                            .DESIGN_FORM_FIELD_CONSTRAINTS
+                                            .MYACCOUNT_LOGO_ALT_TEXT_MAX_LENGTH
+                                    }
+                                    minLength={
+                                        BrandingPreferencesConstants
+                                            .DESIGN_FORM_FIELD_CONSTRAINTS
+                                            .MYACCOUNT_LOGO_ALT_TEXT_MIN_LENGTH
+                                    }
+                                    width={ 16 }
+                                    data-componentid={ `${componentId}-myaccount-logo-alt-text` }
+                                    listen={ (value: string) => {
+                                        setTheme({
+                                            ...theme,
+                                            [theme.activeTheme]: {
+                                                ...theme[theme.activeTheme],
+                                                images: {
+                                                    ...theme[theme.activeTheme].images,
+                                                    myAccountLogo: {
+                                                        ...theme[theme.activeTheme].images.myAccountLogo,
+                                                        altText: value
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    } }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column>
+                                <Field.Input
+                                    ariaLabel="Branding preference myaccount logo title"
+                                    inputType="default"
+                                    name={ `theme.${theme.activeTheme}.images.myAccountLogo.title` }
+                                    label={
+                                        t("extensions:develop.branding.forms.design.theme.images." +
+                                            "myAccountLogo.fields.title.label")
+                                    }
+                                    placeholder={
+                                        t("extensions:develop.branding.forms.design.theme"
+                                        + ".images.myAccountLogo.fields.title.placeholder")
+                                    }
+                                    hint={
+                                        t("extensions:develop.branding.forms.design.theme"
+                                        + ".images.myAccountLogo.fields.title.hint", { productName })
+                                    }
+                                    required={ false }
+                                    value={ initialValues.theme[theme.activeTheme].images?.myAccountLogo?.title }
+                                    readOnly={ readOnly }
+                                    maxLength={
+                                        BrandingPreferencesConstants.DESIGN_FORM_FIELD_CONSTRAINTS.
+                                            MYACCOUNT_LOGO_TITLE_MAX_LENGTH
+                                    }
+                                    minLength={
+                                        BrandingPreferencesConstants.DESIGN_FORM_FIELD_CONSTRAINTS.
+                                            MYACCOUNT_LOGO_TITLE_MIN_LENGTH
+                                    }
+                                    width={ 16 }
+                                    data-componentid={ `${componentId}-myaccount-logo-title` }
+                                    listen={ (value: string) => {
+                                        setTheme({
+                                            ...theme,
+                                            [theme.activeTheme]: {
+                                                ...theme[theme.activeTheme],
+                                                images: {
+                                                    ...theme[theme.activeTheme].images,
+                                                    myAccountLogo: {
+                                                        ...theme[theme.activeTheme].images.myAccountLogo,
+                                                        title: value
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    } }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </>
+                )
+            }
 
             { /* Layout Design Image Extension Fields. */ }
             { LayoutDesignExtensions[layoutDesignExtensionsName] &&

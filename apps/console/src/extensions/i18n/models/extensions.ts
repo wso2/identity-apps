@@ -25,7 +25,10 @@ export interface Extensions {
         help: {
             communityLink: string;
             docSiteLink: string;
-            helpCenterLink: string;
+            helpCenterLink: {
+                title: string;
+                subtitle: string;
+            };
             helpDropdownLink: string;
         };
         learnMore: string;

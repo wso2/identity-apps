@@ -16,6 +16,7 @@
  * under the License.
  */
 
+export * from "./admin.administrators.v1/public-api";
 export * from "./admin.api-resources.v2/public-api";
 export * from "./admin.application-roles.v1/public-api";
 export * from "./admin.application-templates.v1/public-api";
@@ -40,7 +41,6 @@ export * from "./admin.oidc-scopes.v1/public-api";
 export * from "./admin.org-insights.v1/public-api";
 export * from "./admin.organization-discovery.v1/public-api";
 export * from "./admin.organizations.v1/public-api";
-export * from "./admin.parent-roles.v1/public-api";
 export * from "./admin.private-key-jwt.v1/public-api";
 export * from "./admin.provisioning.v1/public-api";
 export * from "./admin.remote-repository-configuration.v1/public-api";

@@ -18,15 +18,13 @@
 
 import Chip from "@oxygen-ui/react/Chip";
 import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AuthenticatorMeta } from "@wso2is/admin.connections.v1/meta/authenticator-meta";
 import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { AppState } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
-import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import {
     AuthenticatorCategories,
     GenericAuthenticatorInterface
@@ -147,7 +145,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             );
         }
 
-        if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+        if (authenticator.name === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME) {
             // If there is only one step in the flow, backup code authenticator shouldn't be allowed.
             if (currentStep === 0) {
                 return false;
@@ -162,12 +160,13 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         }
 
         if ([
-            IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
-            IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
+            LocalAuthenticatorConstants.AUTHENTICATOR_IDS.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
+            LocalAuthenticatorConstants.AUTHENTICATOR_IDS.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
             return SignInMethodUtils.isFirstFactorValid(currentStep, authenticationSteps);
         }
 
-        if (authenticator.name === IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) {
+        if (authenticator.name === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+            .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME) {
             if (authenticationSteps[currentStep]?.options?.length !== 0) {
                 return false;
             }
@@ -239,7 +238,8 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     ) }
                 </>
             );
-        } else if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+        } else if (authenticator.name === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+            .BACKUP_CODE_AUTHENTICATOR_NAME) {
             return (
                 <>
                     { currentStep === 0 ? (
@@ -280,8 +280,8 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                 </Fragment>
             );
         } else if ([
-            IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
-            IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
+            LocalAuthenticatorConstants.AUTHENTICATOR_IDS.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
+            LocalAuthenticatorConstants.AUTHENTICATOR_IDS.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
             return (
                 <Fragment>
                     { InfoLabel }
@@ -296,7 +296,8 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     </Text>
                 </Fragment>
             );
-        } else if (authenticator.name === IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) {
+        } else if (authenticator.name === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+            .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME) {
             return (
                 <Fragment>
                     { InfoLabel }
@@ -391,7 +392,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         <Fragment data-testid={ testId }>
             { heading && <Heading as="h6">{ heading }</Heading> }
             { authenticators.map((authenticator: GenericAuthenticatorInterface, index: number) => (
-                authenticator.id === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID ?
+                authenticator.id === LocalAuthenticatorConstants.AUTHENTICATOR_IDS.BACKUP_CODE_AUTHENTICATOR_ID ?
                     null :
                     (<Popup
                         hoverable

@@ -33,10 +33,8 @@ import {
     AuthenticatorInterface
 } from "@wso2is/admin.applications.v1/models/application";
 import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -307,7 +305,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         if ( steps.length === 1
             && steps[ 0 ].options.length === 1
             && steps[ 0 ].options[ 0 ].authenticator
-                === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR ) {
+                === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME) {
             dispatch(
                 addAlert({
                     description: t(
@@ -360,7 +358,8 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
     const handleIdentifierFirstInStep = (options: AuthenticatorInterface[]): boolean =>
         options.some(
             (option: AuthenticatorInterface) =>
-                option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+                option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .IDENTIFIER_FIRST_AUTHENTICATOR_NAME
         );
 
     return (

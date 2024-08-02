@@ -1,5 +1,30 @@
 # @wso2is/form
 
+## 2.0.88
+
+### Patch Changes
+
+- Updated dependencies [[`198c2432e6eacdc2bcf1bb9e7432ea7d700f7534`](https://github.com/wso2/identity-apps/commit/198c2432e6eacdc2bcf1bb9e7432ea7d700f7534)]:
+  - @wso2is/react-components@2.2.29
+
+## 2.0.87
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.2.28
+
+## 2.0.86
+
+### Patch Changes
+
+- [#6676](https://github.com/wso2/identity-apps/pull/6676) [`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da) Thanks [@Achintha444](https://github.com/Achintha444)! - Update oxygen-ui to `1.13.3`
+
+- Updated dependencies [[`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da)]:
+  - @wso2is/react-components@2.2.27
+  - @wso2is/validation@2.0.9
+  - @wso2is/core@2.0.60
+
 ## 2.0.85
 
 ### Patch Changes
