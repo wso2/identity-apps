@@ -26,7 +26,7 @@ import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
-import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
+import { UserAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserBasicInterface, UserListInterface } from "@wso2is/admin.users.v1/models";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled, resolveUserstore } from "@wso2is/core/helpers";
@@ -50,7 +50,7 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } f
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, ListItemProps, SemanticICONS } from "semantic-ui-react";
-import { AdministratorConstants, UserAccountTypes } from "../constants";
+import { AdministratorConstants } from "../constants";
 
 /**
  * Prop types for the all users list component.
