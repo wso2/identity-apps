@@ -1,4 +1,4 @@
-<!-- PLEASE NOTE THAT IT'S MANDATORY TO FILL IN THE PULL REQUEST TEMPLATE WHEN SUBMITTING PULL REQUESTS. PULL REQUESTS WITH INCOMPLETE INFORMATION WILL BE AUTOMATICALLY CLOSED. -->
+<!-- PLEASE NOTE THAT IT'S MANDATORY TO FILL IN THE PULL REQUEST TEMPLATE WHEN SUBMITTING PULL REQUESTS. DO NOT ERASE THE PR TEMPLATE. -->
 
 ### Purpose
 <!-- Describe the problem, feature, improvement or the change introduces by the PR briefly. Add screenshots/GIFs if UI/UX changes are introduced. -->
@@ -6,11 +6,11 @@
 $subject
 
 ### Related Issues
-<!-- Mention the PUBLIC issue/s related to the pull request -->
+<!-- Mention the **PUBLIC** issue/s related to the pull request -->
 - N/A
 
 ### Related PRs
-<!-- Mention the related PUBLIC pull requests -->
+<!-- Mention the related **PUBLIC** pull requests -->
 - N/A
 
 ### Checklist
