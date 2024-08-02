@@ -56,8 +56,8 @@ import { updatePasswordPolicyProperties } from "../components/password-policies/
 
 const featureConfig: FeatureConfigInterface = store?.getState()?.config?.ui?.features;
 
-const isImpersonationConnectorEnabled: boolean =
-    isFeatureEnabled(featureConfig?.loginAndRegistration,"connectors.impersonation");
+const isImpersonationConnectorDisabled: boolean =
+    !isFeatureEnabled(featureConfig?.loginAndRegistration,"connectors.impersonation");
 
 const serverConfigurationConfig: ServerConfigurationConfig = {
     autoEnableConnectorToggleProperty: false,
@@ -389,7 +389,7 @@ const serverConfigurationConfig: ServerConfigurationConfig = {
     usePasswordHistory: useGetPasswordHistoryCount
 };
 
-if (isImpersonationConnectorEnabled) {
+if (isImpersonationConnectorDisabled) {
     serverConfigurationConfig.connectorsToHide.push(ServerConfigurationsConstants.IMPERSONATION);
 }
 
