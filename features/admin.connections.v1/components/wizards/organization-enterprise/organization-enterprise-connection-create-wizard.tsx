@@ -40,7 +40,7 @@ import {
 import { createConnection } from "../../../api/connections";
 import { getConnectionIcons } from "../../../configs/ui";
 import { CommonAuthenticatorManagementConstants } from "../../../constants/common-authenticator-constants";
-import { ConnectionManagementConstants } from "../../../constants/connection-constants";
+import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import {
     ConnectionInterface,
     GenericConnectionCreateWizardPropsInterface,
@@ -164,7 +164,7 @@ export const OrganizationEnterpriseConnectionCreateWizard: FunctionComponent<
                 onIDPCreate();
             })
             .catch((error: AxiosError) => {
-                const identityAppsError: IdentityAppsError = ConnectionManagementConstants.ERROR_CREATE_LIMIT_REACHED;
+                const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
 
                 if (error.response.status === 403 &&
                     error?.response?.data?.code ===

@@ -45,11 +45,6 @@ export * from "./configs/templates";
 export * from "./configs/ui";
 
 /**
- * Export the constants.
- */
-export * from "./constants/connection-constants";
-
-/**
  * Export the models.
  */
 export * from "./models/authenticators";

@@ -47,7 +47,7 @@ import { Grid } from "semantic-ui-react";
 import CreateConnectionWizardHelp from "./create-wizard-help";
 import { createConnection, useGetConnectionMetaData } from "../../api/connections";
 import { CommonAuthenticatorManagementConstants } from "../../constants/common-authenticator-constants";
-import { ConnectionManagementConstants } from "../../constants/connection-constants";
+import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import {
     ConnectionInterface,
     GenericConnectionCreateWizardPropsInterface,
@@ -205,7 +205,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
             })
             .catch((error: AxiosError) => {
 
-                const identityAppsError: IdentityAppsError = ConnectionManagementConstants.ERROR_CREATE_LIMIT_REACHED;
+                const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
 
                 if (error?.response?.status === 403 &&
                 error?.response?.data?.code ===

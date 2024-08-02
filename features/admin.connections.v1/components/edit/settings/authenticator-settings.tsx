@@ -54,7 +54,7 @@ import {
 } from "../../../api/authenticators";
 import { getConnectionIcons } from "../../../configs/ui";
 import { CommonAuthenticatorManagementConstants } from "../../../constants/common-authenticator-constants";
-import { ConnectionManagementConstants } from "../../../constants/connection-constants";
+import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import { FederatedAuthenticatorConstants } from "../../../constants/federated-authenticator-constants";
 import {
     AuthenticatorSettingsFormModes,
@@ -810,7 +810,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                 <PrimaryButton
                                     onClick={ handleAddAuthenticator }
                                     disabled={
-                                        ConnectionManagementConstants.SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP
+                                        ConnectionUIConstants.SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP
                                             ? isEmpty(availableTemplates) && isEmpty(availableManualModeOptions)
                                             : isEmpty(availableManualModeOptions)
                                     }
@@ -1146,7 +1146,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                             //    Should we show the Facebook OIDC Authenticator?
                             // 2. Once the Authenticator is added, there's no way of figuring out
                             //    if the Authenticator is predefined or not in the edit view.
-                            ConnectionManagementConstants
+                            ConnectionUIConstants
                                 .SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP && availableTemplates
                         }
                         idpId={ identityProvider.id }

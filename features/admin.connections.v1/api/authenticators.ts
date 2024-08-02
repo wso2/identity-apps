@@ -28,9 +28,6 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import {
-    ConnectionManagementConstants
-} from "../constants/connection-constants";
 import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import {
     AuthenticatorInterface,
@@ -209,7 +206,7 @@ export const updateMultiFactorAuthenticatorDetails = (
         .then((response: AxiosResponse<MultiFactorAuthenticatorInterface>) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    ConnectionManagementConstants.MULTI_FACTOR_AUTHENTICATOR_UPDATE_INVALID_STATUS_CODE_ERROR,
+                    ConnectionUIConstants.ERROR_MESSAGES.MULTI_FACTOR_AUTHENTICATOR_UPDATE_INVALID_STATUS_CODE_ERROR,
                     null,
                     response.status,
                     response.request,
@@ -220,7 +217,7 @@ export const updateMultiFactorAuthenticatorDetails = (
             return Promise.resolve(response.data);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                ConnectionManagementConstants.MULTI_FACTOR_AUTHENTICATOR_UPDATE_ERROR,
+                ConnectionUIConstants.ERROR_MESSAGES.MULTI_FACTOR_AUTHENTICATOR_UPDATE_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -251,7 +248,7 @@ export const getLocalAuthenticator = (id: string): Promise<AuthenticatorInterfac
         .then((response: AxiosResponse<AuthenticatorInterface>) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    ConnectionManagementConstants.LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR,
+                    ConnectionUIConstants.ERROR_MESSAGES.LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR,
                     null,
                     response.status,
                     response.request,
@@ -262,7 +259,7 @@ export const getLocalAuthenticator = (id: string): Promise<AuthenticatorInterfac
             return Promise.resolve(response.data);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                ConnectionManagementConstants.LOCAL_AUTHENTICATOR_FETCH_ERROR,
+                ConnectionUIConstants.ERROR_MESSAGES.LOCAL_AUTHENTICATOR_FETCH_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -293,7 +290,7 @@ export const getMultiFactorAuthenticatorDetails = (id: string): Promise<MultiFac
         .then((response: AxiosResponse<MultiFactorAuthenticatorInterface>) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    ConnectionManagementConstants.MULTI_FACTOR_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR,
+                    ConnectionUIConstants.ERROR_MESSAGES.MULTI_FACTOR_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR,
                     null,
                     response.status,
                     response.request,
@@ -304,7 +301,7 @@ export const getMultiFactorAuthenticatorDetails = (id: string): Promise<MultiFac
             return Promise.resolve(response.data);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                ConnectionManagementConstants.MULTI_FACTOR_AUTHENTICATOR_FETCH_ERROR,
+                ConnectionUIConstants.ERROR_MESSAGES.MULTI_FACTOR_AUTHENTICATOR_FETCH_ERROR,
                 error.stack,
                 error.code,
                 error.request,

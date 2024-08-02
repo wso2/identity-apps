@@ -46,7 +46,6 @@ import {
     AuthenticatorCreateWizardFactory
 } from "../components/create/authenticator-create-wizard-factory";
 import { CommonAuthenticatorManagementConstants } from "../constants/common-authenticator-constants";
-import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import {
     ConnectionTemplateInterface,
@@ -368,8 +367,8 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                         ) => {
                             // if the template is "organization-enterprise-idp",
                             // then prevent rendering it.
-                            if (template.id === ConnectionManagementConstants
-                                .ORG_ENTERPRISE_CONNECTION_ID) {
+                            if (template.id === CommonAuthenticatorManagementConstants
+                                .CONNECTION_TEMPLATE_IDS.ORGANIZATION_ENTERPRISE_IDP) {
 
                                 return null;
                             }

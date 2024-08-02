@@ -27,7 +27,7 @@ import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpo
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { ConnectionManagementConstants } from "../constants/connection-constants";
+import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import { NotificationSenderSMSInterface } from "../models/authenticators";
 import {
     ApplicationBasicInterface,
@@ -172,7 +172,7 @@ export const getConnections = (
         .then((response: AxiosResponse) => {
             if (response?.status !== 200) {
                 throw new IdentityAppsApiException(
-                    ConnectionManagementConstants.CONNECTIONS_FETCH_INVALID_STATUS_CODE_ERROR,
+                    ConnectionUIConstants.ERROR_MESSAGES.CONNECTIONS_FETCH_INVALID_STATUS_CODE_ERROR,
                     null,
                     response?.status,
                     response?.request,
@@ -183,7 +183,7 @@ export const getConnections = (
             return Promise.resolve(response?.data as ConnectionListResponseInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                ConnectionManagementConstants.CONNECTIONS_FETCH_ERROR,
+                ConnectionUIConstants.ERROR_MESSAGES.CONNECTIONS_FETCH_ERROR,
                 error?.stack,
                 error?.response?.data?.code,
                 error?.request,
@@ -699,7 +699,7 @@ export const updateJITProvisioningConfigs = (
             return Promise.resolve(response.data as ConnectionInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                ConnectionManagementConstants.CONNECTION_JIT_PROVISIONING_UPDATE_ERROR,
+                ConnectionUIConstants.ERROR_MESSAGES.CONNECTION_JIT_PROVISIONING_UPDATE_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -981,7 +981,7 @@ export const updateIDPCertificate = <T = Record<string, unknown>>(
             return Promise.resolve(response.data as ConnectionInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                ConnectionManagementConstants.CONNECTION_CERTIFICATE_UPDATE_ERROR,
+                ConnectionUIConstants.ERROR_MESSAGES.CONNECTION_CERTIFICATE_UPDATE_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -1021,7 +1021,7 @@ export const updateClaimsConfigs = (
             return Promise.resolve(response.data as ConnectionInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                ConnectionManagementConstants.CONNECTION_CLAIMS_UPDATE_ERROR,
+                ConnectionUIConstants.ERROR_MESSAGES.CONNECTION_CLAIMS_UPDATE_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -1062,7 +1062,7 @@ export const updateImplicitAssociationConfig = (
             return Promise.resolve(response.data as ConnectionInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                ConnectionManagementConstants.CONNECTION_IMPLICIT_ASSOCIATION_UPDATE_ERROR,
+                ConnectionUIConstants.ERROR_MESSAGES.CONNECTION_IMPLICIT_ASSOCIATION_UPDATE_ERROR,
                 error.stack,
                 error.code,
                 error.request,

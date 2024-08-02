@@ -25,7 +25,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
-import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
+import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
 import { AuthenticatorSettingsFormModes } from "../../../../models/authenticators";
 import {
     CommonPluggableComponentFormPropsInterface,
@@ -71,7 +71,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         dynamicValues?.properties?.map(
             (prop: CommonPluggableComponentPropertyInterface) =>
             {
-                if (prop?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY) {
+                if (prop?.key === ConnectionUIConstants.GOOGLE_PRIVATE_KEY) {
                     setPrivateKeyValue(prop?.value);
                 }
             }
@@ -81,7 +81,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     const interpretValueByType = (value: FormValue, key: string, type: string) => {
         switch (type?.toUpperCase()) {
             case CommonConstants.BOOLEAN: {
-                if (key === ConnectionManagementConstants.USER_ID_IN_CLAIMS) {
+                if (key === ConnectionUIConstants.USER_ID_IN_CLAIMS) {
                     return value;
                 } else {
                     return value?.includes(key);
@@ -125,15 +125,15 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             if (
                 (
                     // Check whether the values has the google private key.
-                    !values.has(ConnectionManagementConstants.GOOGLE_PRIVATE_KEY)
+                    !values.has(ConnectionUIConstants.GOOGLE_PRIVATE_KEY)
                     // Check whether the property values list does not have the google private key-value pair.
                     && !properties?.find(
                         (item: CommonPluggableComponentPropertyInterface) =>
-                            (item?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY))
+                            (item?.key === ConnectionUIConstants.GOOGLE_PRIVATE_KEY))
                     // Check whether the properties key-value pair has the value undefined.
                     && properties?.find(
                         (item: CommonPluggableComponentPropertyInterface) => (
-                            item?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY
+                            item?.key === ConnectionUIConstants.GOOGLE_PRIVATE_KEY
                             && item?.value !== undefined
                         )
                     )
@@ -141,12 +141,12 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                     // // Check whether the properties key-value pair has an already added google private key.
                     !properties?.find(
                         (item: CommonPluggableComponentPropertyInterface) =>
-                            (item?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY))
+                            (item?.key === ConnectionUIConstants.GOOGLE_PRIVATE_KEY))
                         && privateKeyValue !== undefined
                 )
             ){
                 properties.push({
-                    key: ConnectionManagementConstants.GOOGLE_PRIVATE_KEY,
+                    key: ConnectionUIConstants.GOOGLE_PRIVATE_KEY,
                     value: privateKeyValue
                 });
             }
@@ -248,7 +248,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                     </Grid.Column>
                 </Grid.Row>
             );
-        } else if (eachPropertyMeta?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY) {
+        } else if (eachPropertyMeta?.key === ConnectionUIConstants.GOOGLE_PRIVATE_KEY) {
             return (
                 (<Grid.Row key={ eachPropertyMeta?.displayOrder }>
                     <Grid.Column computer={ 16 }>
