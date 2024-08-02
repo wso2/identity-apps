@@ -1,5 +1,52 @@
 # @wso2is/console
 
+## 2.21.32
+
+### Patch Changes
+
+- Updated dependencies [[`191f55bc3ec97b2a8836b0f8701ca0cf3c1a64ed`](https://github.com/wso2/identity-apps/commit/191f55bc3ec97b2a8836b0f8701ca0cf3c1a64ed), [`198c2432e6eacdc2bcf1bb9e7432ea7d700f7534`](https://github.com/wso2/identity-apps/commit/198c2432e6eacdc2bcf1bb9e7432ea7d700f7534)]:
+  - @wso2is/admin.administrators.v1@2.21.68
+  - @wso2is/react-components@2.2.29
+  - @wso2is/admin.core.v1@2.23.28
+  - @wso2is/admin.api-resources.v1@2.20.98
+  - @wso2is/admin.api-resources.v2@2.20.98
+  - @wso2is/admin.applications.v1@2.22.28
+  - @wso2is/admin.authorization.v1@2.20.41
+  - @wso2is/admin.branding.v1@2.20.98
+  - @wso2is/admin.certificates.v1@2.20.98
+  - @wso2is/admin.claims.v1@2.20.98
+  - @wso2is/admin.connections.v1@2.21.28
+  - @wso2is/admin.console-settings.v1@2.20.98
+  - @wso2is/admin.email-and-sms.v1@2.20.98
+  - @wso2is/admin.email-management.v1@2.20.98
+  - @wso2is/admin.email-providers.v1@2.20.98
+  - @wso2is/admin.extensions.v1@2.21.68
+  - @wso2is/admin.groups.v1@2.20.98
+  - @wso2is/admin.identity-verification-providers.v1@2.20.98
+  - @wso2is/admin.impersonation.v1@1.1.40
+  - @wso2is/admin.oidc-scopes.v1@2.20.98
+  - @wso2is/admin.org-insights.v1@2.20.98
+  - @wso2is/admin.organization-discovery.v1@2.20.98
+  - @wso2is/admin.organizations.v1@2.20.98
+  - @wso2is/admin.private-key-jwt.v1@2.20.98
+  - @wso2is/admin.remote-repository-configuration.v1@2.20.98
+  - @wso2is/admin.roles.v1@2.20.98
+  - @wso2is/admin.roles.v2@2.20.98
+  - @wso2is/admin.saml2-configuration.v1@2.20.98
+  - @wso2is/admin.secrets.v1@2.20.98
+  - @wso2is/admin.server-configurations.v1@2.21.40
+  - @wso2is/admin.server.v1@2.20.98
+  - @wso2is/admin.session-management.v1@2.20.98
+  - @wso2is/admin.sms-providers.v1@2.20.98
+  - @wso2is/admin.users.v1@2.20.98
+  - @wso2is/admin.userstores.v1@2.20.98
+  - @wso2is/admin.validation.v1@2.20.98
+  - @wso2is/admin.workflow-approvals.v1@2.20.98
+  - @wso2is/admin.wsfed-configuration.v1@2.20.98
+  - @wso2is/dynamic-forms@2.0.87
+  - @wso2is/form@2.0.88
+  - @wso2is/admin.authentication.v1@2.20.98
+
 ## 2.21.31
 
 ### Patch Changes
