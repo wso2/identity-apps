@@ -72,4 +72,18 @@ export class CommonAuthenticatorManagementConstants {
      * ID of the deprecated SCIM1 provisioning connector.
      */
     public static readonly DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID: string = "c2NpbQ";
+
+    /**
+     * Local Server host.
+     */
+    public static readonly LOCAL_SERVER_URL: string = "localhost";
+
+    public static readonly ERROR_CODES: {
+        CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE: string
+    } = {
+            CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE: "IDP-65004"
+        };
+
+    public static readonly PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY: string = "displayName";
+    public static readonly PROVISIONING_CONNECTOR_GOOGLE: string = "googleapps";
 }

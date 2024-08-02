@@ -16,7 +16,9 @@
  * under the License.
  */
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
-import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1/constants/connection-constants";
+import {
+    CommonAuthenticatorManagementConstants
+} from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
@@ -475,7 +477,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             disabledHint={ t("console:develop.pages." +
                                                 "authenticationProviderTemplate.disabledHint.apple") }
                                             disabled={ new URL(deploymentConfig?.serverOrigin)?.
-                                                hostname === ConnectionManagementConstants.LOCAL_SERVER_URL }
+                                                hostname === CommonAuthenticatorManagementConstants.LOCAL_SERVER_URL }
                                         />
                                     ) }
                                 </>

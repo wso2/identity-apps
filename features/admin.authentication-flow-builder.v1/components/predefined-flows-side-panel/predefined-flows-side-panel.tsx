@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -34,7 +34,9 @@ import {
     AuthenticatorInterface
 } from "@wso2is/admin.applications.v1/models/application";
 import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
-import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1/constants/connection-constants";
+import {
+    CommonAuthenticatorManagementConstants
+} from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
 import { getAuthenticatorIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
@@ -315,8 +317,8 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                     <Box className="predefined-flow-category-items">
                         { Object.entries(sequenceCategory).map(([ sequenceId, sequence ]: [string, any]) => {
                             if (sequenceId === APPLE_LOGIN_SEQUENCE
-                                && new URL(deploymentConfig?.serverOrigin)?.hostname === ConnectionManagementConstants.
-                                    LOCAL_SERVER_URL) {
+                                && new URL(deploymentConfig?.serverOrigin)?.hostname
+                                    === CommonAuthenticatorManagementConstants.LOCAL_SERVER_URL) {
                                 return null;
                             }
 

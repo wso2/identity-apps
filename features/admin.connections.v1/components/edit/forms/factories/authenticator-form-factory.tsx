@@ -20,7 +20,6 @@ import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/iden
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { CommonAuthenticatorManagementConstants } from "../../../../constants/common-authenticator-constants";
-import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import { FederatedAuthenticatorConstants } from "../../../../constants/federated-authenticator-constants";
 import { LocalAuthenticatorConstants } from "../../../../constants/local-authenticator-constants";
 import {
@@ -172,7 +171,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
     }
 
     switch (type) {
-        case ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID:
+        case FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID:
             return (
                 <GoogleAuthenticatorForm
                     mode={ mode }
@@ -187,7 +186,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-        case ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_ID:
+        case FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID:
             return (
                 <FacebookAuthenticatorForm
                     mode={ mode }
@@ -202,7 +201,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-        case ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID:
+        case FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID:
             return (
                 <GithubAuthenticatorForm
                     mode={ mode }
@@ -256,7 +255,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-        case ConnectionManagementConstants.MICROSOFT_AUTHENTICATOR_ID:
+        case FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.MICROSOFT_AUTHENTICATOR_ID:
             if (templateId === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.MICROSOFT){
                 return(
                     <MicrosoftAuthenticatorForm
@@ -289,7 +288,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                 );
             }
 
-        case ConnectionManagementConstants.SIWE_AUTHENTICATOR_ID:
+        case FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SIWE_AUTHENTICATOR_ID:
             if (templateId === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.SWE) {
                 return (
                     <SIWEAuthenticatorForm
@@ -308,7 +307,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
 
             break;
 
-        case ConnectionManagementConstants.HYPR_AUTHENTICATOR_ID:
+        case FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.HYPR_AUTHENTICATOR_ID:
             if (templateId === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.HYPR) {
                 return (
                     <CommonAuthenticatorForm

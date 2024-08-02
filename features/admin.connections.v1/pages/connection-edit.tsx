@@ -307,15 +307,16 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             const authenticatorId: string = (connector as ConnectionInterface)
                 ?.federatedAuthenticators?.defaultAuthenticatorId;
 
-            if (authenticatorId === ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_ID) {
+            if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID) {
                 templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK;
-            } else if (authenticatorId === ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
+            } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+                .GOOGLE_OIDC_AUTHENTICATOR_ID) {
                 templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE;
             } else if (authenticatorId === ConnectionManagementConstants.OIDC_AUTHENTICATOR_ID) {
                 templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.OIDC;
             } else if (authenticatorId === ConnectionManagementConstants.SAML_AUTHENTICATOR_ID) {
                 templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.SAML;
-            } else if (authenticatorId === ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID) {
+            } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID) {
                 templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GITHUB;
             } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID) {
                 templateId = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE;

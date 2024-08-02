@@ -104,16 +104,16 @@ export class AuthenticatorMeta {
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.MULTI_FACTOR
             ],
-            [ ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: [
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
             ],
-            [ ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID ]: [
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
             ],
-            [ ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: [
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
             ],
-            [ ConnectionManagementConstants.TWITTER_AUTHENTICATOR_ID ]: [
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.TWITTER_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
             ],
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID ]: [
@@ -134,7 +134,7 @@ export class AuthenticatorMeta {
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
             ],
-            [ ConnectionManagementConstants.HYPR_AUTHENTICATOR_ID ]: [
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.HYPR_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.PASSWORDLESS
             ],
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.IPROOV_AUTHENTICATOR_ID ]: [

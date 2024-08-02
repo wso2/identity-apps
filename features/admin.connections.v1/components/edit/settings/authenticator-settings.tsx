@@ -120,10 +120,10 @@ const AUTHORIZED_REDIRECT_URLS: string[] = [ "callbackUrl", "callBackUrl" ];
  * The set of authenticator templates in the Create New Connection Wizard.
  */
 const commonAuthenticators: string[] = [
-    ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID,
-    ConnectionManagementConstants.MS_LIVE_AUTHENTICATOR_ID,
-    ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
-    ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID,
+    FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID,
+    FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.MS_LIVE_AUTHENTICATOR_ID,
+    FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID,
+    FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID,
     FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID,
     CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
     ConnectionManagementConstants.SAML_AUTHENTICATOR_ID,
@@ -275,7 +275,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         // to disable a Google authenticator in expert mode.
         if (!isActiveTemplateExpertMode) {
             // Special checks on Google IDP
-            if (values.authenticatorId === ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
+            if (values.authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+                .GOOGLE_OIDC_AUTHENTICATOR_ID) {
                 // Enable/disable the Google authenticator based on client id and secret
                 const props: CommonPluggableComponentPropertyInterface[] = values.properties;
                 let isEnabled: boolean = true;
@@ -854,8 +855,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                                 authenticator={ authenticator }
                                                                 metadata={ authenticator.meta }
                                                                 showCustomProperties={
-                                                                    authenticator.id !== ConnectionManagementConstants
-                                                                        .GITHUB_AUTHENTICATOR_ID
+                                                                    authenticator.id !== FederatedAuthenticatorConstants
+                                                                        .AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID
                                                                 }
                                                                 initialValues={ authenticator.data }
                                                                 onSubmit={ handleAuthenticatorConfigFormSubmit }

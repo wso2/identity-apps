@@ -18,7 +18,6 @@
 
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import {
-    ConnectionManagementConstants,
     ConnectionTemplateInterface
 } from "@wso2is/admin.connections.v1";
 import { useGetConnectionTemplates } from "@wso2is/admin.connections.v1/api/use-get-connection-templates";
@@ -531,7 +530,8 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                             // Disable the Apple template in localhost as it's not supported.
                             if (template.id === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE &&
                                                     new URL(deploymentConfig?.serverOrigin)?.
-                                                        hostname === ConnectionManagementConstants.LOCAL_SERVER_URL) {
+                                                        hostname === CommonAuthenticatorManagementConstants
+                                                        .LOCAL_SERVER_URL) {
                                 isTemplateDisabled = true;
                                 disabledHint = t("console:develop.pages." +
                                                     "authenticationProviderTemplate.disabledHint.apple");

@@ -64,13 +64,13 @@ export class ConnectionsManagementUtils {
         connection?.provisioning?.outboundConnectors?.connectors[ 0 ];
 
         const isGoogleConnector: boolean = get(connector,
-            ConnectionManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME) ===
-            ConnectionManagementConstants.PROVISIONING_CONNECTOR_GOOGLE;
+            CommonAuthenticatorManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY) ===
+            CommonAuthenticatorManagementConstants.PROVISIONING_CONNECTOR_GOOGLE;
 
         // If the outbound connector is Google, remove the displayName from the connector.
         if (connector && isGoogleConnector) {
             delete connector[
-                ConnectionManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME
+                CommonAuthenticatorManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY
             ];
         }
 
@@ -343,7 +343,8 @@ export const handleConnectionDeleteError = (error: AxiosError): void => {
         error.response &&
         error.response.data &&
         error.response.data.code &&
-        error.response.data.code === ConnectionManagementConstants.CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE
+        error.response.data.code === CommonAuthenticatorManagementConstants.ERROR_CODES
+            .CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE
     ) {
         store.dispatch(
             addAlert({

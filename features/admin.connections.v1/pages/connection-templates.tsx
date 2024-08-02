@@ -380,7 +380,8 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                             // Disable the Apple template in localhost as it's not supported.
                             if (template.id === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE &&
                                                     new URL(deploymentConfig?.serverOrigin)?.
-                                                        hostname === ConnectionManagementConstants.LOCAL_SERVER_URL) {
+                                                        hostname === CommonAuthenticatorManagementConstants
+                                                        .LOCAL_SERVER_URL) {
                                 isTemplateDisabled = true;
                                 disabledHint = t("console:develop.pages." +
                                     "authenticationProviderTemplate.disabledHint.apple");
