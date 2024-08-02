@@ -28,7 +28,7 @@ import {
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { DocumentationLink, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
@@ -433,7 +433,17 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 }
                 pageTitle={ t("pages:organizations.title") }
                 title={ t("pages:organizations.title") }
-                description={ t("pages:organizations.subTitle") }
+                description={ (
+                    <>
+                        { t("pages:organizations.subTitle") }
+                        <DocumentationLink
+                            link="manage.organizations.learnMore"
+                            isLinkRef
+                        >
+                            { t("extensions:common.learnMore") }
+                        </DocumentationLink>
+                    </>
+                ) }
                 data-componentid={ `${ testId }-page-layout` }
             >
                 <ListLayout
