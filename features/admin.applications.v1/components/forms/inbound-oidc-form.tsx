@@ -27,7 +27,9 @@ import { getSharedOrganizations } from "@wso2is/admin.organizations.v1/api";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationInterface, OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface,
+    FeatureAccessConfigInterface
+ } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { CheckboxChild, Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
@@ -61,7 +63,8 @@ import React, {
     ReactElement,
     useEffect,
     useRef,
-    useState
+    useState,
+    useMemo
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -339,6 +342,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE: string = "supportPlainTransformAlgorithm";
     const JWT: string = "JWT";
 
+    const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+        return state.config?.ui?.features?.applications;
+    });
+
+    const IsHybridFlowValidationEnabled: boolean = useMemo(() => {
+        const disabledFeatures: string[] = featureConfig?.disabledFeatures;
+
+        return !disabledFeatures.includes("applications.hybridFlow");
+    }, [ featureConfig ]);
+
     /**
      * The listener handler for the enable PKCE toggle form field. This function
      * check if the "mandatory" value is present in the values array under "PKCE"
@@ -533,7 +546,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     useEffect(() => {
         setHybridFlowEnableConfig(false);
-        if (selectedGrantTypes?.includes(ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)) {
+        if (selectedGrantTypes?.includes(ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
+            && IsHybridFlowValidationEnabled) {
             setHybridFlowEnableConfig(true);
         }
     }, [ selectedGrantTypes, isGrantChanged ]);
