@@ -191,7 +191,6 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
      */
     const validateForm = (values: PasswordRecoveryFormValuesInterface):
         PasswordRecoveryFormErrorValidationsInterface => {
-
         const errors: PasswordRecoveryFormErrorValidationsInterface = {
             expiryTime: undefined,
             maxFailedAttemptCount: undefined,
