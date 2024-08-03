@@ -16,6 +16,7 @@
         "@oxygen-ui/react": "^1.13.2",
         "@oxygen-ui/react-icons": "^1.13.2",
         "@wso2is/access-control": "^3.0.18",
+        "@wso2is/admin.actions.v1": "^1.0.0",
         "@wso2is/admin.api-resources.v1": "^2.20.85",
         "@wso2is/admin.api-resources.v2": "^2.20.85",
         "@wso2is/admin.applications.v1": "^2.22.15",
