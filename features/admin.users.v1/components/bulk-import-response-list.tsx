@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { AlertTitle } from "@mui/material";
 import Alert from "@oxygen-ui/react/Alert";
+import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Tab from "@oxygen-ui/react/Tab";
 import Tabs from "@oxygen-ui/react/Tabs";
 import Typography from "@oxygen-ui/react/Typography";
@@ -59,10 +59,6 @@ interface BulkImportResponseListProps {
     successAlert?: ReactElement;
 }
 
-const ALL_STATUS: string = "ALL";
-
-type FilterStatus = BulkUserImportStatus | typeof ALL_STATUS;
-
 /**
  * Users info page.
  *
@@ -84,7 +80,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
 
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
-    const [ selectedStatus, setSelectedStatus ] = useState<FilterStatus>(ALL_STATUS);
+    const [ selectedStatus, setSelectedStatus ] = useState<BulkUserImportStatus>(BulkUserImportStatus.ALL);
     const [ filteredResponseList, setFilteredResponseList ] = useState<BulkUserImportOperationResponse[]>([]);
     const [ responseOperationType, setResponseOperationType ] =
         useState<BulkImportResponseOperationTypes>(BulkImportResponseOperationTypes.USER_CREATION);
@@ -99,7 +95,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
     const listItemLimit: number = UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT;
 
     const statusOptions: DropdownItemProps[] = [
-        { key: 0, text: "All", value: ALL_STATUS },
+        { key: 0, text: "All", value: BulkUserImportStatus.ALL },
         {
             key: 1,
             text: t("user:modals.bulkImportUserWizard.wizardSummary.tableStatus.success"),
@@ -139,7 +135,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
      */
     useEffect(() => {
         handleSearchQueryClear();
-        setSelectedStatus(ALL_STATUS);
+        setSelectedStatus(BulkUserImportStatus.ALL);
         filterResponseListByOperationType();
     }, [ responseOperationType ]);
 
@@ -238,7 +234,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
 
             filteredList = filteredList.filter((item: BulkUserImportOperationResponse) => {
                 if (
-                    selectedStatus !== ALL_STATUS
+                    selectedStatus !== BulkUserImportStatus.ALL
                     && item.statusCode !== selectedStatus
                 ) return false;
 
@@ -257,7 +253,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
             });
         }
 
-        if (selectedStatus !== ALL_STATUS) {
+        if (selectedStatus !== BulkUserImportStatus.ALL) {
             filteredList = filteredList.filter((item: BulkUserImportOperationResponse) => {
                 return item.statusCode === selectedStatus && item.operationType === responseOperationType;
             });
@@ -283,7 +279,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
     };
 
     const handleStatusDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
-        const newStatus: FilterStatus = data.value as FilterStatus;
+        const newStatus: BulkUserImportStatus = data.value as BulkUserImportStatus;
 
         setSelectedStatus(newStatus);
         setTriggerClearQuery(!triggerClearQuery);

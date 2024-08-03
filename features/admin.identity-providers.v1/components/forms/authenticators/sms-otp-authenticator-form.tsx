@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import {
     AppConstants,
     history
@@ -30,7 +32,6 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Label, Message } from "semantic-ui-react";
-import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     CommonAuthenticatorFormFieldInterface,
     CommonAuthenticatorFormFieldMetaInterface,
@@ -197,7 +198,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             const moderatedName: string = value.name.replace(/\./g, "_");
 
             // Converting expiry time from seconds to minutes
-            if(moderatedName === IdentityProviderManagementConstants.AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY){
+            if(moderatedName === LocalAuthenticatorConstants.AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY){
                 const expiryTimeInMinutes: number = Math.round(parseInt(value.value,10) / 60);
 
                 resolvedInitialValues = {
@@ -251,7 +252,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             if (name !== undefined) {
                 const moderatedName: string = name.replace(/_/g, ".");
 
-                if (name === IdentityProviderManagementConstants.AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY){
+                if (name === LocalAuthenticatorConstants.AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY){
                     const timeInSeconds: number = value * 60;
 
                     properties.push({
@@ -299,9 +300,9 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             // Check for invalid input.
             errors.SmsOTP_ExpiryTime = t("authenticationProvider:forms" +
                 ".authenticatorSettings.smsOTP.expiryTime.validations.invalid");
-        } else if ((values.SmsOTP_ExpiryTime < IdentityProviderManagementConstants
+        } else if ((values.SmsOTP_ExpiryTime < ConnectionUIConstants
             .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE)
-        || (values.SmsOTP_ExpiryTime > IdentityProviderManagementConstants
+        || (values.SmsOTP_ExpiryTime > ConnectionUIConstants
             .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_VALUE)) {
             // Check for invalid range.
             errors.SmsOTP_ExpiryTime = t("authenticationProvider:forms" +
@@ -316,9 +317,9 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             // Check for invalid input.
             errors.SmsOTP_OTPLength = t("authenticationProvider:forms" +
                 ".authenticatorSettings.smsOTP.tokenLength.validations.invalid");
-        } else if ((parseInt(values.SmsOTP_OTPLength, 10) < IdentityProviderManagementConstants
+        } else if ((parseInt(values.SmsOTP_OTPLength, 10) < ConnectionUIConstants
             .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MIN_VALUE)
-            || (parseInt(values.SmsOTP_OTPLength, 10) > IdentityProviderManagementConstants
+            || (parseInt(values.SmsOTP_OTPLength, 10) > ConnectionUIConstants
                 .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MAX_VALUE)) {
             // Check for invalid range.
             errors.SmsOTP_OTPLength = t("authenticationProvider:forms" +
@@ -333,9 +334,9 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             // Check for invalid input.
             errors.SmsOTP_ResendAttemptsCount = t("authenticationProvider:forms" +
                 ".authenticatorSettings.smsOTP.allowedResendAttemptCount.validations.invalid");
-        } else if (values.SmsOTP_ResendAttemptsCount < IdentityProviderManagementConstants
+        } else if (values.SmsOTP_ResendAttemptsCount < ConnectionUIConstants
             .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE
-            || (values.SmsOTP_ResendAttemptsCount > IdentityProviderManagementConstants
+            || (values.SmsOTP_ResendAttemptsCount > ConnectionUIConstants
                 .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE)) {
             // Check for invalid range.
             errors.SmsOTP_ResendAttemptsCount = t("authenticationProvider:forms" +
@@ -406,15 +407,15 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 required={ true }
                 readOnly={ readOnly }
                 min={
-                    IdentityProviderManagementConstants
+                    ConnectionUIConstants
                         .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE
                 }
                 maxLength={
-                    IdentityProviderManagementConstants
+                    ConnectionUIConstants
                         .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_LENGTH
                 }
                 minLength={
-                    IdentityProviderManagementConstants
+                    ConnectionUIConstants
                         .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_LENGTH
                 }
                 width={ 12 }
@@ -477,11 +478,11 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 required={ true }
                 readOnly={ readOnly }
                 maxLength={
-                    IdentityProviderManagementConstants
+                    ConnectionUIConstants
                         .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MAX_LENGTH
                 }
                 minLength={
-                    IdentityProviderManagementConstants
+                    ConnectionUIConstants
                         .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MIN_LENGTH
                 }
                 width={ 12 }

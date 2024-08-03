@@ -566,22 +566,6 @@ export interface GenericConnectionCreateWizardPropsInterface {
     connectionNamesList?: string[];
 }
 
-/**
- * Enum for Connection template loading strategies.
- *
- * @readonly
- */
-export enum ConnectionTemplateLoadingStrategies {
-    /**
-     * App will resort to in-app templates.
-     */
-    LOCAL = "LOCAL",
-    /**
-     * App will fetch templates from the template management REST API.
-     */
-    REMOTE = "REMOTE"
-}
-
 export interface TemplateConfigInterface<T = Record<string, unknown>> {
     content?: TemplateContentInterface;
     enabled: boolean;

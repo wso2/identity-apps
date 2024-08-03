@@ -185,7 +185,7 @@ The `useRequiredScopes` hook is a more optimized way to check for required scope
 ```typescript
 import { useRequiredScopes } from "@wso2is/access-control";
 
-const applicationFeatureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features.applications);
+const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => state.config.ui.features.applications);
 
 const hasUsersUpdatePermissions: boolean = useRequiredScopes(
     applicationFeatureConfig?.scopes?.update

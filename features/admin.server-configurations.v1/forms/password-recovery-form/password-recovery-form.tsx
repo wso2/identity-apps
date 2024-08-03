@@ -17,6 +17,7 @@
  */
 
 import Chip from "@oxygen-ui/react/Chip";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import {
     PasswordRecoveryConfigurationFormPropsInterface,
     PasswordRecoveryFormConstants,
@@ -32,7 +33,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider, Label } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
 import { AppState } from "../../../admin.core.v1";
 import { GovernanceConnectorConstants } from "../../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
@@ -421,7 +422,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     {
                         showSmsOtpPwdRecoveryFeatureStatusChip &&
                         (<Chip
-                            label="BETA"
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-menu-item-chip oxygen-chip-beta" />)
                     }
                 </Heading>
@@ -488,7 +489,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     {
                         showSmsOtpPwdRecoveryFeatureStatusChip &&
                         (<Chip
-                            label="BETA"
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-menu-item-chip oxygen-chip-beta" />)
                     }
                 </Heading>
@@ -594,7 +595,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     {
                         showSmsOtpPwdRecoveryFeatureStatusChip &&
                         (<Chip
-                            label="BETA"
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-menu-item-chip oxygen-chip-beta" />)
                     }
                 </Heading>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1";
 import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
@@ -24,7 +25,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
-import { IdentityProviderConstants } from "../../../constants/identity-provider-constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonPluggableComponentFormPropsInterface,
@@ -109,7 +109,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     const interpretValueByType = (value: FormValue, key: string, type: string) => {
         switch (type?.toUpperCase()) {
             case CommonConstants.BOOLEAN: {
-                if (key === IdentityProviderConstants.USER_ID_IN_CLAIMS) {
+                if (key === ConnectionManagementConstants.USER_ID_IN_CLAIMS) {
                     return value;
                 } else {
                     return value?.includes(key);

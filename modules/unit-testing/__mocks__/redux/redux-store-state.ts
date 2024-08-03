@@ -174,7 +174,6 @@ const ReduxStoreStateMock: any = {
             appCopyright: "WSO2 Identity Server © 2021",
             appName: "Console",
             applicationTemplateLoadingStrategy: "LOCAL",
-            identityProviderTemplateLoadingStrategy: "LOCAL",
             appTitle: "Console | WSO2 Identity Server",
             features: {
                 applications: {

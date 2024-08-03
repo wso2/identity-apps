@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1";
 import { AppState } from "@wso2is/admin.core.v1";
 import { getOrganizationRoles } from "@wso2is/admin.organizations.v1/api";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -32,7 +33,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { IdentityProviderConstants } from "../../../constants";
 import { IdentityProviderRoleMappingInterface } from "../../../models";
 import { handleGetRoleListError } from "../../utils";
 
@@ -134,7 +134,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
      */
     const resolveRoleName = (role: string): string => {
         if (role.split("/").length === 1) {
-            return `${ IdentityProviderConstants.INTERNAL_DOMAIN }${ role }`;
+            return `${ ConnectionManagementConstants.INTERNAL_DOMAIN }${ role }`;
         }
 
         return role;
@@ -151,7 +151,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
         const roleParts: string[] = role.split("/");
 
         if (roleParts.length > 1) {
-            if (roleParts[ 0 ] === IdentityProviderConstants.INTERNAL_DOMAIN.slice(0, -1)) {
+            if (roleParts[ 0 ] === ConnectionManagementConstants.INTERNAL_DOMAIN.slice(0, -1)) {
                 return roleParts[ 1 ];
             }
         }

@@ -24,7 +24,6 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
-import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
@@ -32,6 +31,7 @@ import { AuthenticatorManagementConstants } from "../constants/autheticator-cons
 import {
     ConnectionManagementConstants
 } from "../constants/connection-constants";
+import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import {
     AuthenticatorInterface,
     AuthenticatorTypes,
@@ -117,7 +117,7 @@ export const getAuthenticators = (filter?: string, type?: AuthenticatorTypes): P
         .then((response: AxiosResponse<AuthenticatorInterface[]>) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    IdentityProviderManagementConstants.AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR,
+                    ConnectionUIConstants.ERROR_MESSAGES.AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR,
                     null,
                     response.status,
                     response.request,
@@ -140,7 +140,7 @@ export const getAuthenticators = (filter?: string, type?: AuthenticatorTypes): P
             return Promise.resolve(response.data);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                IdentityProviderManagementConstants.AUTHENTICATORS_FETCH_ERROR,
+                ConnectionUIConstants.ERROR_MESSAGES.AUTHENTICATORS_FETCH_ERROR,
                 error.stack,
                 error.code,
                 error.request,

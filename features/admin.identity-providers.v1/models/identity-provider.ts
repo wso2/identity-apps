@@ -221,22 +221,6 @@ export interface IdentityProviderTemplateListItemInterface extends IdentityProvi
 }
 
 /**
- * Enum for IDP template loading strategies.
- *
- * @readonly
- */
-export enum IdentityProviderTemplateLoadingStrategies {
-    /**
-     * App will resort to in-app templates.
-     */
-    LOCAL = "LOCAL",
-    /**
-     * App will fetch templates from the template management REST API.
-     */
-    REMOTE = "REMOTE"
-}
-
-/**
  * Enum for the supported authenticator types.
  *
  * @readonly

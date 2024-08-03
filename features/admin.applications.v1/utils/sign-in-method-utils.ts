@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,9 +16,7 @@
  * under the License.
  */
 
-import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import {
     GenericAuthenticatorInterface,
     ProvisioningInterface
@@ -139,27 +137,27 @@ export class SignInMethodUtils {
       *
       * @returns boolean
       */
-      public static checkImmediateStepHavingSpecificFactors = (factors: string[],
-          steps: AuthenticationStepInterface[]): boolean => {
+    public static checkImmediateStepHavingSpecificFactors = (factors: string[],
+        steps: AuthenticationStepInterface[]): boolean => {
 
-          let isFound: boolean = false;
+        let isFound: boolean = false;
 
-          for (const [ , step ] of steps.entries()) {
-              for (const option of step.options) {
-                  if (factors.includes(option.authenticator)) {
-                      isFound = true;
+        for (const [ , step ] of steps.entries()) {
+            for (const option of step.options) {
+                if (factors.includes(option.authenticator)) {
+                    isFound = true;
 
-                      break;
-                  }
-              }
+                    break;
+                }
+            }
 
-              if (isFound) {
-                  break;
-              }
-          }
+            if (isFound) {
+                break;
+            }
+        }
 
-          return isFound;
-      };
+        return isFound;
+    };
 
     /**
      * Counts the occurrence of a specific factors in the passed in steps.
@@ -199,17 +197,17 @@ export class SignInMethodUtils {
         const [ leftSideSteps ]: AuthenticationStepInterface[][] = this.getLeftAndRightSideSteps(addingStep, steps);
 
         // If the adding authenticator is TOTP, evaluate if there are valid TOTP handlers in previous steps.
-        if (authenticatorId === IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID) {
+        if (authenticatorId === LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID) {
             return this.hasSpecificFactorsInSteps(ApplicationManagementConstants.TOTP_HANDLERS, leftSideSteps);
         }
 
         // If the adding authenticator is Email OTP, evaluate if there are valid handlers in previous steps.
-        if (authenticatorId === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID) {
+        if (authenticatorId === LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID) {
             return this.hasSpecificFactorsInSteps(ApplicationManagementConstants.EMAIL_OTP_HANDLERS, leftSideSteps);
         }
 
         // If the adding authenticator is SMS OTP, evaluate if there are valid handlers in previous steps.
-        if (authenticatorId === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID) {
+        if (authenticatorId === LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID) {
             return this.hasSpecificFactorsInSteps(ApplicationManagementConstants.SMS_OTP_HANDLERS, leftSideSteps);
         }
 
@@ -228,8 +226,9 @@ export class SignInMethodUtils {
     public static isFirstFactorValid(currentStep: number, authenticationSteps: AuthenticationStepInterface[]): boolean {
         const firstFactor: AuthenticatorInterface = authenticationSteps[currentStep]?.options?.find(
             (authenticator: AuthenticatorInterface) =>
-                authenticator.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR ||
-                authenticator.authenticator === IdentityProviderManagementConstants.BASIC_AUTHENTICATOR
+                authenticator.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .IDENTIFIER_FIRST_AUTHENTICATOR_NAME ||
+                authenticator.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME
         );
 
         return !firstFactor;
@@ -418,9 +417,12 @@ export class SignInMethodUtils {
     ): number {
         const secondFactor: AuthenticatorInterface[] = authenticationSteps[currentStep].options.filter(
             (authenticator: AuthenticatorInterface) =>
-                authenticator.authenticator === IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ||
-                authenticator.authenticator === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR ||
-                authenticator.authenticator === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR
+                authenticator.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .TOTP_AUTHENTICATOR_NAME ||
+                authenticator.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .EMAIL_OTP_AUTHENTICATOR_NAME ||
+                authenticator.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .SMS_OTP_AUTHENTICATOR_NAME
         );
 
         return secondFactor.length;

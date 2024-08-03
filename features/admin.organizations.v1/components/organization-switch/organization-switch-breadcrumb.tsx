@@ -69,9 +69,9 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     const tenantDomain: string = useSelector(
         (state: AppState) => state?.auth?.tenantDomain
     );
-    const isFirstLevelOrg: boolean = useSelector(
-        (state: AppState) => state?.organization?.isFirstLevelOrganization
-    );
+
+    const organizationId: string = useSelector((state: AppState) => state?.organization?.organization?.id);
+
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     const dispatch: Dispatch = useDispatch();
@@ -84,7 +84,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
             organizationType === OrganizationType.SUBORGANIZATION ||
             tenantDomain === AppConstants.getSuperTenant()
         );
-    }, [ isFirstLevelOrg, organizationType, tenantDomain ]);
+    }, [ organizationType ]);
 
     const {
         data: breadcrumbListData,
@@ -95,6 +95,10 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     } = useGetOrganizationBreadCrumb(
         shouldSendRequest
     );
+
+    useEffect(() => {
+        mutateOrganizationBreadCrumbFetchRequest();
+    }, [ organizationId ]);
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 

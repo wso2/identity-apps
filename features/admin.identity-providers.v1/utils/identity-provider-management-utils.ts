@@ -17,11 +17,12 @@
  */
 
 import { getConnections } from "@wso2is/admin.connections.v1/api/connections";
+import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import axios, { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import { getLocalAuthenticators } from "../api";
-import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorMeta } from "../meta";
 import {
     FederatedAuthenticatorInterface,
@@ -150,7 +151,7 @@ export class IdentityProviderManagementUtils {
                         description: AuthenticatorMeta.getAuthenticatorDescription(authenticator.id),
                         displayName: authenticator.displayName,
                         id: authenticator.id,
-                        idp: IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER,
+                        idp: LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER,
                         image: AuthenticatorMeta.getAuthenticatorIcon(authenticator.id),
                         isEnabled: authenticator.isEnabled,
                         name: authenticator.name
@@ -204,7 +205,7 @@ export class IdentityProviderManagementUtils {
             }))
             .catch((error: AxiosError) => {
                 throw new IdentityAppsApiException(
-                    IdentityProviderManagementConstants.COMBINED_AUTHENTICATOR_FETCH_ERROR,
+                    ConnectionUIConstants.ERROR_MESSAGES.COMBINED_AUTHENTICATOR_FETCH_ERROR,
                     error.stack,
                     error.code,
                     error.request,

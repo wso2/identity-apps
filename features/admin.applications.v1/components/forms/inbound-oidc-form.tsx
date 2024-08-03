@@ -599,12 +599,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
     }, [ initialValues, metadata ]);
 
+    const isSubjectTokenFeatureEnabled: boolean = !disabledFeatures?.includes("applications.subjectToken");
+
     /**
      * Sets if subject token is enabled.
      */
     useEffect(() => {
         setIsSubjectTokenEnabled(initialValues?.subjectToken ? initialValues?.subjectToken?.enable : false);
-        setIsSubjectTokenFeatureAvailable(initialValues?.subjectToken ? true : false);
+        setIsSubjectTokenFeatureAvailable(isSubjectTokenFeatureEnabled ? initialValues?.subjectToken ?
+            true : false : false);
     }, [ initialValues ]);
 
     useEffect(() => {
