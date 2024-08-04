@@ -21,6 +21,7 @@ import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import TextField from "@oxygen-ui/react/TextField";
 import React, { FunctionComponent, ReactElement } from "react";
 import { FieldRenderProps } from "react-final-form";
+import "./text-field-adapter.scss";
 
 /**
  * Props for the TextFieldAdapter component.
@@ -56,6 +57,9 @@ const TextFieldAdapter: FunctionComponent<TextFieldAdapterPropsInterface> = (
         fullWidth = true,
         FormControlProps = {},
         helperText,
+        required,
+        readOnly,
+        endAdornment,
         ...rest
     } = props;
 
@@ -64,12 +68,21 @@ const TextFieldAdapter: FunctionComponent<TextFieldAdapterPropsInterface> = (
     return (
         <>
             <TextField
+                className="text-field-adapter"
                 fullWidth={ fullWidth }
                 variant="outlined"
                 error={ isError }
                 margin="dense"
                 { ...FormControlProps }
                 { ...input }
+                // TODO: Remove this once the `required` prop is supported by the Oxygen UI TextField component.
+                InputLabelProps={ {
+                    required
+                } }
+                InputProps={ {
+                    endAdornment,
+                    readOnly
+                } }
                 { ...rest }
             />
             { isError && <FormHelperText error>{ meta.error || meta.submitError }</FormHelperText> }

@@ -1,0 +1,46 @@
+{
+    "name": "features",
+    "$schema": "../node_modules/nx/schemas/project-schema.json",
+    "prefix": "@wso2is",
+    "implicitDependencies": [
+        "access-control",
+        "core",
+        "form",
+        "forms",
+        "i18n",
+        "react-components",
+        "theme",
+        "validation"
+    ],
+    "targets": {
+        "build": {
+            "executor": "nx:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm copy:themes:features",
+                        "description": "copy themes inside features from modules"
+                    }
+                ],
+                "cwd": "features",
+                "parallel": true
+            }
+        },
+        "test": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm test",
+                "cwd": "features",
+                "parallel": false
+            }
+        },
+        "test-coverage": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm test \"--\" --coverage --collect-coverage",
+                "cwd": "features",
+                "parallel": false
+            }
+        }
+    }
+}

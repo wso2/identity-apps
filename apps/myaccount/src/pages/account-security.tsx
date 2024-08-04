@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,6 +30,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteProps } from "react-router";
+import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import {
     AccountRecoveryComponent,
@@ -70,7 +71,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
@@ -81,14 +82,16 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
         return state?.config?.ui?.disableMFAForFederatedUsers;
     });
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
-    const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
+    const isReadOnlyUser: string = useSelector(
+        (state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
+    const hasLocalAccount: string = useSelector((state: AppState) => state.authenticationInformation.hasLocalAccount);
 
     const [ isNonLocalCredentialUser, setIsNonLocalCredentialUser ] = useState<boolean>(false);
     const [ userstore, setUserstore ] = useState<string>(null);
 
-    const consentControl = useRef<HTMLDivElement>(null);
-    const accountSecurity = useRef<HTMLDivElement>(null);
-    const accountActivity = useRef<HTMLDivElement>(null);
+    const consentControl: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+    const accountSecurity: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+    const accountActivity: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setTimeout(() => {
@@ -128,7 +131,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
         }
 
         // Verifies if the user is a user without local credentials.
-        const localCredentialExist = profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
+        const localCredentialExist: string = profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
             [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")];
 
         if (localCredentialExist && localCredentialExist == "false") {
@@ -210,13 +213,14 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                         </Grid.Row>
                     ) : null }
 
-                { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
-                    ((isNonLocalCredentialUser && (!disableMFAForFederatedUsers || !isSuperTenantLogin())) ||
+                { hasLocalAccount
+                    && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes)
+                    && ((isNonLocalCredentialUser && (!disableMFAForFederatedUsers || !isSuperTenantLogin())) ||
                         !isNonLocalCredentialUser) &&
                     isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA")
-                    ) && !(disableMFAforSuperTenantUser && (isSuperTenantLogin())) 
+                    ) && !(disableMFAforSuperTenantUser && (isSuperTenantLogin()))
                     ? (
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
@@ -258,8 +262,9 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                         </Grid.Row>
                     ) : null }
 
-                { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
-                    isFeatureEnabled(
+                { hasLocalAccount
+                    && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes)
+                    && isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_CONSENTS")
                     ) && commonConfig.utils.isManageConsentAllowedForUser(userstore)

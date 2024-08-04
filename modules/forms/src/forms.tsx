@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,8 +19,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Form, Ref } from "semantic-ui-react";
 import { Field, GroupFields, InnerField, InnerGroupFields } from "./components";
-import { isCheckBoxField, isDropdownField, isInputField,
-    isRadioField, isScopesField, isTextField, isToggleField } from "./helpers";
+import { isCheckBoxField, isDropdownField, isFilePickerField,
+    isInputField, isRadioField, isScopesField, isTextField, isToggleField } from "./helpers";
 import { Error, FormField, FormValue, Validation } from "./models";
 import { useNonInitialEffect } from "./utils";
 
@@ -85,8 +85,6 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
         const initialValues = useRef(new Map<string, FormValue>());
 
-        // This specifies if a form field is currently validating or not.
-        const [ isValidating, setIsValidating ] = useState(false);
         const isValidatingRef = useRef(false);
 
         // This holds all the form field components
@@ -248,8 +246,12 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             };
 
             if (
-                (isTextField(inputField) || isDropdownField(inputField) || isScopesField(inputField))
-                && inputField.validation
+                (
+                    isTextField(inputField)
+                    || isDropdownField(inputField)
+                    || isScopesField(inputField)
+                    || isFilePickerField(inputField)
+                ) && inputField.validation
                 && !(form.get(name) === null || form.get(name) === "")
             ) {
                 await inputField.validation(form.get(name) as string, validation, new Map(form));
@@ -275,14 +277,12 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             isValidatingRef.current = true;
             tempModifyingFields.set(name, false);
             tempTouchedFields.set(name, true);
-            setIsValidating(true);
             setTouchedFields(tempTouchedFields);
             await validate(name, tempRequiredFields, tempValidFields);
 
             validFieldsRef.current = new Map(tempValidFields);
             requiredFieldsRef.current = new Map(tempRequiredFields);
             isValidatingRef.current = false;
-            setIsValidating(false);
 
             setValidFields(tempValidFields);
             setRequiredFields(tempRequiredFields);
@@ -463,39 +463,38 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             locked = false;
         };
 
-        /**
-         * Checks if all the required fields are filled
-         */
-        const checkRequiredFieldsFilled = (): boolean => {
-            let requiredFilled = true;
-
-            requiredFieldsRef.current.forEach((requiredFieldParam) => {
-                if (!requiredFieldParam) {
-                    requiredFilled = false;
-                }
-            });
-
-            return requiredFilled;
-        };
-
-        /**
-         * Checks if all the fields are validated
-         */
-        const checkValidated = (): boolean => {
-            let isValidated = true;
-
-            validFieldsRef.current.forEach((validField) => {
-                if (!validField.isValid) {
-                    isValidated = false;
-                }
-            });
-
-            return isValidated;
-        };
-
         useEffect(() => {
-            if (startSubmission && !isValidatingRef.current) {
-                if (checkRequiredFieldsFilled() && checkValidated()) {
+            if (startSubmission) {
+                const requiredFields = new Map(requiredFieldsRef.current);
+                const validFields = new Map(validFieldsRef.current);
+
+                isValidatingRef.current = true;
+
+                form.forEach(async (_value, name) => {
+                    await validate(name, requiredFields, validFields);
+                });
+
+                isValidatingRef.current = false;
+
+                // Check whether all required fields are filled.
+                let areAllRequiredFieldsFilled = true;
+
+                requiredFields.forEach((requiredFieldParam) => {
+                    if (!requiredFieldParam) {
+                        areAllRequiredFieldsFilled = false;
+                    }
+                });
+
+                // Check whether all fields contain valid inputs.
+                let areAllFieldsValid = true;
+
+                validFields.forEach((validField) => {
+                    if (!validField.isValid) {
+                        areAllFieldsValid = false;
+                    }
+                });
+
+                if (areAllRequiredFieldsFilled && areAllFieldsValid) {
                     setStartSubmission(false);
                     setIsSubmitting(false);
                     onSubmit && onSubmit(form);
@@ -504,12 +503,8 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                     setIsSubmitting(true);
                     setStartSubmission(false);
                 }
-            } else {
-                if (startSubmission) {
-                    setIsSubmitting(true);
-                }
             }
-        }, [ startSubmission, isValidating ]);
+        }, [ startSubmission ]);
 
         /**
          * This validates the form and calls the `onSubmit` prop function

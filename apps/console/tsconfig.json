@@ -18,7 +18,6 @@
         "scripts",
         "**/test-configs/*",
         "jest.config.ts",
-        "**/tests/*",
         "**/__tests__/*",
         "**/__mocks__/*",
         "**/*.test.js",

@@ -1,0 +1,116 @@
+# -------------------------------------------------------------------------------------
+#
+# Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+#
+# WSO2 LLC. licenses this file to you under the Apache License,
+# Version 2.0 (the "License"); you may not use this file except
+# in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+# --------------------------------------------------------------------------------------
+
+# This workflow will initiate the process for delivering hotfixes.
+
+name: 🔥 Hotfix Branch Creation
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        type: choice
+        description: Choose to which package you would like the deliver the hotfix.
+        options:
+            - '@wso2is/console'
+            - '@wso2is/myaccount'
+            - '@wso2is/identity-apps-core'
+        required: true
+      version:
+        description: 'Enter the version that needs a hotfix (e.g. 0.1.7).'
+        required: true
+
+env:
+    GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
+
+jobs:
+  create-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout
+        id: checkout
+        uses: actions/checkout@v2.3.3
+        with:
+          fetch-depth: 0
+          token: ${{ env.GH_TOKEN }}
+
+      - name: Create the new branch for Hotfix.
+        id: create-hotfix-branch
+        run: |
+
+          # Set github profile configurations.
+          echo "Set github profile config."
+          git config user.email "iam-cloud@wso2.com"
+          git config user.name "wso2-iam-cloud-bot"
+
+          # Read the input value for the version.
+          echo "Read the input value for the version."
+          PACKAGE=${{ github.event.inputs.package }}
+          VERSION=${{ github.event.inputs.version }}
+          TAG="$PACKAGE@$VERSION"
+          echo "Required version to be fixed: ${TAG}"
+
+          # Check whether the provided version is available and stop the workflow if not.
+          echo "Check whether the provided version is available."
+          IS_TAG_EXIST=$(git tag -l ${TAG} | wc -l)
+          if [ $IS_TAG_EXIST -eq 0 ]; then
+            echo "Provided $PACKAGE version is not available!"
+            exit 1
+          fi
+
+          # Check whether the required branch is already available and stop the workflow if it is already available.
+          echo "Check whether the required branch is already there."
+          IS_BRANCH_EXIST=$(git ls-remote --heads origin hotfix-${TAG} | wc -l)
+          if [ $IS_BRANCH_EXIST -eq 1 ]; then
+            echo "Required branch already exists!"
+            exit 1
+          fi
+
+          # Create the new branch based from the given version.
+          echo "Create the new branch for the fix - hotfix-${TAG}."
+          git checkout -b hotfix-${TAG} ${TAG}
+
+          # Change the Release workflow to work with the hotfix branch.
+          echo "Changing the Release workflow to work with the hotfix branch."
+
+          # Change the branch name in the release.yml file.
+          sed -i '/branches: \[ master \]/s/master/hotfix-'"${TAG//\//\\/}"'/' .github/workflows/release-workflow.yml
+          sed -i 's/BRANCH: .*/BRANCH: hotfix-'"${TAG//\//\\/}"'/' .github/workflows/release-workflow.yml
+
+          # Disable the changesets action step.
+          sed -i "s/SHOULD_GENERATE_CHANGESET: 'true'/SHOULD_GENERATE_CHANGESET: 'false'/" .github/workflows/release-workflow.yml
+
+          # Set IS_HOTFIX to true.
+          sed -i 's/IS_HOTFIX: .*/IS_HOTFIX: '\''true'\''/' .github/workflows/release-workflow.yml
+
+          # Set PACKAGES to "[{\"name\":\"$PACKAGE\",\"version\":\"$VERSION\"}]"
+          sed -i 's|PACKAGES=.*$|PACKAGES="\"\[{\\\"name\\\":\\\"'"$PACKAGE"'\\\",\\\"version\\\":\\\"'"$VERSION"'\\\"}\]\""|' .github/workflows/release-workflow.yml
+
+          # Change the branch name in the pr-builder.yml file.
+          sed -i '/branches: \[ master \]/s/master/hotfix-'"${TAG//\//\\/}"'/' .github/workflows/pr-builder.yml
+
+          # Add only modified files, hotfix-pr-creation-template.yml file, and commit changes.
+          echo "Add only modified files."
+          git add -u
+          git add .github/workflows/release-workflow.yml
+          git status
+          echo "Commit changes and push to the new branch."
+          git commit -m "[Hotfix] [skip ci] Creating a new branch for the Hotfix delivery - hotfix-${TAG}."
+          git push origin hotfix-${TAG}

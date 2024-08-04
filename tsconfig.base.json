@@ -17,7 +17,6 @@
         "target": "es2015",
         "baseUrl": ".",
         "paths": {
-            "@wso2is/common": ["modules/common/src/index.ts"],
             "@wso2is/dynamic-forms": ["modules/dynamic-forms/src/index.ts"],
             "@wso2is/form": ["modules/form/src/index.ts"],
             "@wso2is/forms": ["modules/forms/src/index.ts"],

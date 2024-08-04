@@ -31,6 +31,10 @@ export interface DangerZoneProps extends TestableComponentInterface, Identifiabl
      */
     actionTitle: string;
     /**
+     * Button text for the danger zone.
+     */
+    buttonText?: string;
+    /**
      * Heading for the danger zone.
      */
     header: string;
@@ -90,6 +94,7 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
 
     const {
         actionTitle,
+        buttonText,
         header,
         subheader,
         onActionClick,
@@ -153,7 +158,7 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                                         onClick={ onActionClick }
                                         disabled={ isButtonDisabled }
                                     >
-                                        { actionTitle }
+                                        { buttonText ?? actionTitle }
                                     </Button>
                                 </div>
                             ) }

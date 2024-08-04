@@ -19,9 +19,9 @@
 <%@ page import="com.google.gson.Gson" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
-<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.model.AuthenticationRequestWrapper" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
-<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.template.mgt.model.Template" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.io.File" %>
@@ -41,20 +41,8 @@
 <%
     String templateId = request.getParameter("templateId");
     String promptId = request.getParameter("promptId");
-    String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
-    if (StringUtils.isBlank(authAPIURL)) {
-        authAPIURL = IdentityUtil.getServerURL("/api/identity/auth/v1.1/", true, true);
-    } else {
-        // Resolve tenant domain for the authentication API URL.
-        authAPIURL = AuthenticationEndpointUtil.resolveTenantDomain(authAPIURL);
-    }
-    if (!authAPIURL.endsWith("/")) {
-        authAPIURL += "/";
-    }
-    authAPIURL += "context/" + request.getParameter("promptId");
-    String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
-    Gson gson = new Gson();
-    Map data = gson.fromJson(contextProperties, Map.class);
+
+    Map data = ((AuthenticationRequestWrapper) request).getAuthParams();
     String templatePath = templateMap.get(templateId);
 %>
 
@@ -77,11 +65,6 @@
     <% } else { %>
         <jsp:include page="includes/header.jsp"/>
     <% } %>
-
-    <script type="text/javascript">
-        var data = JSON.parse("<%=Encode.forJavaScript(contextProperties)%>");
-        var prompt_id = "<%= Encode.forJavaScriptBlock(promptId) %>";
-    </script>
 </head>
 <body class="login-portal layout authentication-portal-layout">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >

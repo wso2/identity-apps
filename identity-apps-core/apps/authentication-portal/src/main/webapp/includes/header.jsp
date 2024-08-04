@@ -78,7 +78,7 @@
         styleFilePath = "includes/layouts/" + layout + "/styles.css";
     }
 
-    if (config.getServletContext().getResource(styleFilePath) != null) {
+    if (styleFilePath.startsWith("http") || config.getServletContext().getResource(styleFilePath) != null) {
 %>
         <link rel="stylesheet" href="<%= styleFilePath %>">
 <%

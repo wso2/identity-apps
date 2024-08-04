@@ -1,0 +1,135 @@
+# -------------------------------------------------------------------------------------
+#
+# Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+#
+# WSO2 LLC. licenses this file to you under the Apache License,
+# Version 2.0 (the "License"); you may not use this file except
+# in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+# --------------------------------------------------------------------------------------
+
+# This workflow will check if a submitted PR has changesets.
+
+name: 🦋 Check for Changeset
+
+on:
+    workflow_run:
+        workflows: ["📩 Receive PR"]
+        types:
+            - completed
+
+env:
+    GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
+
+jobs:
+    check-changeset:
+        runs-on: ubuntu-latest
+        if: >
+            github.event.workflow_run.event == 'pull_request' &&
+            github.event.workflow_run.conclusion == 'success'
+        steps:
+            - name: 📥 Download PR Number Artifact
+              uses: actions/github-script@v3.1.0
+              with:
+                script: |
+                    const artifacts = await github.actions.listWorkflowRunArtifacts({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        run_id: ${{ github.event.workflow_run.id }},
+                    });
+                    const matchArtifact = artifacts.data.artifacts.find(artifact => artifact.name === "pr-number");
+                    const download = await github.actions.downloadArtifact({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        artifact_id: matchArtifact.id,
+                        archive_format: 'zip',
+                    });
+                    const fs = require('fs');
+                    fs.writeFileSync('${{github.workspace}}/pr-number.zip', Buffer.from(download.data));
+
+            - name: 📦 Extract PR Number Artifact
+              run: unzip pr-number.zip
+
+            - name: 💬 Remove Existing Changeset Comment
+              uses: actions/github-script@v3.1.0
+              with:
+                github-token: ${{ env.GH_TOKEN }}
+                script: |
+                    const fs = require('fs');
+                    const PR_NUMBER = Number(fs.readFileSync('./PR_NUMBER', 'utf8').trim());
+                    const REPO_OWNER = context.repo.owner;
+                    const REPO_NAME = context.repo.repo;
+
+                    // Fetch all comments on the pull request.
+                    const comments = await github.issues.listComments({
+                        owner: REPO_OWNER,
+                        repo: REPO_NAME,
+                        issue_number: PR_NUMBER,
+                    });
+
+                    console.log("COMMENTS_URL: https://api.github.com/repos/" + REPO_NAME + "/issues/" + PR_NUMBER + "/comments");
+
+                    for (const comment of comments.data) {
+                        console.log("COMMENT_OWNER: " + comment.user.login);
+
+                        // Identify the changeset comment by its heading.
+                        if (comment.body.includes("🦋 Changeset detected") || comment.body.includes("⚠️ No Changeset found")) {
+                            console.log("COMMENT_ID_TO_DELETE: " + comment.id);
+
+                            // Remove the changeset comment using the comment ID.
+                            await github.issues.deleteComment({
+                                owner: REPO_OWNER,
+                                repo: REPO_NAME,
+                                comment_id: comment.id,
+                            });
+                        }
+                    }
+
+            - name: 💬 Add Changeset Comment
+              uses: actions/github-script@v3.1.0
+              with:
+                github-token: ${{ env.GH_TOKEN }}
+                script: |
+                    const fs = require('fs');
+                    const PR_NUMBER = Number(fs.readFileSync('./PR_NUMBER', 'utf8').trim());
+                    const REPO_OWNER = context.repo.owner;
+                    const REPO_NAME = context.repo.repo;
+
+                    const files = await github.pulls.listFiles({
+                        owner: REPO_OWNER,
+                        repo: REPO_NAME,
+                        pull_number: PR_NUMBER,
+                    });
+
+                    const CHANGED_FILES = files.data.map(file => file.filename);
+                    console.log("CHANGED_FILES_URL: https://api.github.com/repos/" + REPO_NAME + "/pulls/" + PR_NUMBER + "/files");
+                    console.log("CHANGED_FILES:", CHANGED_FILES);
+
+                    const CHANGES_COUNT = CHANGED_FILES.filter(filename => /^\.changeset\/.*\.md$/.test(filename)).length;
+                    console.log("CHANGES_COUNT:", CHANGES_COUNT);
+
+                    let COMMENT;
+                    if (CHANGES_COUNT > 0) {
+                        console.log("Changeset detected");
+                        COMMENT = `<h3>🦋 Changeset detected</h3><p><b>The changes in this PR will be included in the next version bump.</b></p><p>Not sure what this means? <a href="https://github.com/changesets/changesets/blob/master/docs/adding-a-changeset.md">Click here to learn what changesets are</a>.</p>`;
+                    } else {
+                        console.log("No changeset detected");
+                        COMMENT = `<h3>⚠️ No Changeset found</h3>Merging this PR will not cause a version bump for any packages. If these changes should not result in a new version, you're good to go.</p><p><b>If these changes should result in a version bump, you need to add a changeset.</b></p><p>Refer <a href="https://github.com/wso2/identity-apps/blob/master/docs/release/README.md">Release Documentation</a> to learn how to add a changeset.`;
+                    }
+
+                    await github.issues.createComment({
+                        owner: REPO_OWNER,
+                        repo: REPO_NAME,
+                        issue_number: PR_NUMBER,
+                        body: COMMENT,
+                    });

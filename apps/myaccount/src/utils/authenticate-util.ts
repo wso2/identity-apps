@@ -18,7 +18,7 @@
 
 import { AuthReactConfig, Hooks, ResponseMode, Storage, useAuthContext } from "@asgardeo/auth-react";
 import { TokenConstants } from "@wso2is/core/constants";
-import UAParser from "ua-parser-js";
+import { UserAgentParser } from "@wso2is/core/helpers";
 import { store } from "../store";
 
 /**
@@ -88,12 +88,12 @@ const resolveBaseUrls = (): string[] => {
 const resolveStorage = (): Storage => {
 
     const storageFallback: Storage =
-        new UAParser().getBrowser().name === "IE" ? Storage.SessionStorage : Storage.WebWorker;
+        new UserAgentParser().browser.name === "IE" ? Storage.SessionStorage : Storage.WebWorker;
 
     if (window["AppUtils"]?.getConfig()?.idpConfigs?.storage) {
         if (
             window["AppUtils"].getConfig().idpConfigs.storage === Storage.WebWorker &&
-            new UAParser().getBrowser().name === "IE"
+            new UserAgentParser().browser.name === "IE"
         ) {
             return Storage.SessionStorage;
         }
@@ -126,6 +126,7 @@ export const getAuthInitializeConfig = (): AuthReactConfig => {
             authorizationEndpoint: window["AppUtils"]?.getConfig().idpConfigs?.authorizeEndpointURL,
             checkSessionIframe: window["AppUtils"]?.getConfig().idpConfigs?.oidcSessionIFrameEndpointURL,
             endSessionEndpoint: window["AppUtils"]?.getConfig().idpConfigs?.logoutEndpointURL,
+            issuer: window["AppUtils"]?.getConfig()?.idpConfigs?.issuer,
             jwksUri: window["AppUtils"]?.getConfig().idpConfigs?.jwksEndpointURL,
             revocationEndpoint: window["AppUtils"]?.getConfig().idpConfigs?.tokenRevocationEndpointURL,
             tokenEndpoint: window["AppUtils"]?.getConfig().idpConfigs?.tokenEndpointURL
@@ -138,6 +139,7 @@ export const getAuthInitializeConfig = (): AuthReactConfig => {
         signInRedirectURL: window["AppUtils"]?.getConfig().loginCallbackURL,
         signOutRedirectURL: window["AppUtils"]?.getConfig().loginCallbackURL,
         storage: resolveStorage() as Storage.WebWorker,
+        validateIDTokenIssuer: window["AppUtils"]?.getConfig()?.idpConfigs?.validateIDTokenIssuer,
         ...window["AppUtils"]?.getConfig().idpConfigs
     };
 };

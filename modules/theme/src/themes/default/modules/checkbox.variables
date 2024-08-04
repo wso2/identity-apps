@@ -4,3 +4,4 @@
 
 /* Label */
 @labelFontSize: @relativeSmall;
+@checkboxBorderRadius: 3px;

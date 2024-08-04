@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,8 +24,6 @@ export class StringUtils {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
@@ -37,37 +35,41 @@ export class StringUtils {
      * can be passed in to split the string if needed. The default
      * split separator will be ",".
      *
-     * @param {string[] | string} raw - Raw input.
-     * @param {string} separator - Separator character.
-     * @param {string} splitSeparator - Character to split the string.
-     * @return {string} Modified string.
+     * @param raw - Raw input.
+     * @param separator - Separator character.
+     * @param splitSeparator - Character to split the string.
+     * @returns Modified string.
      */
-    public static constructSeparatedString(raw: string[] | string,
-                                           separator: string,
-                                           splitSeparator = ","): string {
+    public static constructSeparatedString(
+        raw: string[] | string,
+        separator: string,
+        splitSeparator: string = ","
+    ): string {
         if (raw instanceof Array) {
             return raw.join(separator + " ");
         } else if (typeof raw === "string") {
             return raw.split(splitSeparator).join(separator);
         }
+
         return raw;
     }
 
     /**
      * Transforms a string to sentence case.
      *
-     * @param {string} raw - Raw string.
-     * @return {string} Text in sentence case.
+     * @param raw - Raw string.
+     * @returns Text in sentence case.
      */
     public static toSentenceCase(raw: string): string {
-        const parts = raw.split(" ");
-        let newStr = "";
+        const parts: string[] = raw.split(" ");
+        let newStr: string = "";
 
-        parts.forEach((part, index) => {
+        parts.forEach((part: string, index: number) => {
             part = part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
 
             if (index === 0) {
                 newStr = part;
+
                 return; // forEach doesn't support `continue`.
             }
 
@@ -81,8 +83,8 @@ export class StringUtils {
      * Checks if a string is a valid JSON string.
      * Useful when trying to parse JSON to avoid errors.
      *
-     * @param {string} str - Evaluating string
-     * @return {boolean} If valid or not.
+     * @param str - Evaluating string
+     * @returns If valid or not.
      */
     public static isValidJSONString(str: string): boolean {
         try {
@@ -101,12 +103,12 @@ export class StringUtils {
      * // returns "sample-portal"
      * removeSlashesFromPath("/sample-portal/");
      *
-     * @param {string} path - Raw path.
-     * @param {boolean} leading - Leading slashes should be removed or not.
-     * @param {boolean} trailing - Trailing slashes should be removed or not.
-     * @return {string} Modified path.
+     * @param path - Raw path.
+     * @param leading - Leading slashes should be removed or not.
+     * @param trailing - Trailing slashes should be removed or not.
+     * @returns Modified path.
      */
-    public static removeSlashesFromPath(path: string, leading = true, trailing = true): string {
+    public static removeSlashesFromPath(path: string, leading: boolean = true, trailing: boolean = true): string {
         if (leading && trailing) {
             return path?.replace(/^\/+|\/+$/g, "");
         } else if (leading) {
@@ -125,8 +127,8 @@ export class StringUtils {
      * // returns "assets/img/test.jpg"
      * removeDotsAndSlashesFromRelativePath("../../assets/img/test.jpg");
      *
-     * @param {string} path - Relative path.
-     * @return {string} Modified path.
+     * @param path - Relative path.
+     * @returns Modified path.
      */
     public static removeDotsAndSlashesFromRelativePath(path: string): string {
         return path.replace(/\.\.\//g, "");

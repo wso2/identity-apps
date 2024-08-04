@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -55,6 +55,7 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
     const { t } = useTranslation();
 
     const isProfileInfoLoading: boolean = useSelector( (state: AppState) => state.loaders.isProfileInfoLoading);
+    const isProfileSchemaLoading: boolean = useSelector((state: AppState) => state?.loaders?.isProfileSchemaLoading);
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
 
     const [ userProfileName, setUserProfileName ] = useState<string>(null);
@@ -66,12 +67,12 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
      * Set user's name.
      */
     useEffect(() => {
-        if (isProfileInfoLoading === undefined) {
+        if (isProfileInfoLoading === undefined || isProfileInfoLoading || isProfileSchemaLoading) {
             return;
         }
 
-        setUserProfileName(resolveUserProfileName(profileDetails, isProfileInfoLoading));
-    }, [ isProfileInfoLoading, profileDetails ]);
+        setUserProfileName(resolveUserProfileName(profileDetails));
+    }, [ isProfileInfoLoading, isProfileSchemaLoading, profileDetails ]);
 
     /**
      * Sets user store of the user.
@@ -92,7 +93,7 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
             return;
         }
         // Verifies if the user is a user without local credentials.
-        const localCredentialExist = profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
+        const localCredentialExist: string = profileDetails?.profileInfo?.[SCIMConfigs?.scim?.customEnterpriseSchema]?.
             [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")];
 
         if (localCredentialExist && localCredentialExist == "false") {
@@ -105,7 +106,7 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
      */
     useEffect(() => {
         // Sets user's source of sign up if the user is a federated user.
-        const userSource = profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
+        const userSource: string = profileDetails?.profileInfo?.[SCIMConfigs?.scim?.customEnterpriseSchema]?.
             [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("IDP_TYPE")];
 
         if (isNonLocalCredentialUser && userSource) {
@@ -133,7 +134,7 @@ const OverviewPage: FunctionComponent<OverviewPagePropsInterface> = (
         >
             { /* Loads overview component only when user info is loaded.
                 Loads overview component based on user credential type (local/non-local).*/ }
-            { isProfileInfoLoading == false && (
+            { isProfileInfoLoading == false && !isProfileSchemaLoading && (
                 <Overview
                     userSource={ userSource }
                     enableAlternateWidgetLayout={ enableAlternateWidgetLayout }

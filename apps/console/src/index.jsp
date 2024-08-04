@@ -157,6 +157,14 @@
                 }
             };
         </script>
+
+        <!-- Start of custom stylesheets -->
+        <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.publicPath %>extensions/stylesheet.css"/>
+        <!-- End of custom stylesheets -->
+
+        <!-- Start of custom scripts added to the head -->
+        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"></script>
+        <!-- End of custom scripts added to the head -->
     </head>
     <script>
 
@@ -182,41 +190,39 @@
 
             if(!authorizationCode) {
                 function getTenantName() {
-                    const path = window.location.pathname;
-                    const pathChunks = path.split("/");
-                    const tenantPrefixIndex = pathChunks.indexOf(startupConfig.tenantPrefix);
+                    var path = window.location.pathname;
+                    var pathChunks = path.split("/");
+                    var tenantPrefixIndex = pathChunks.indexOf(startupConfig.tenantPrefix);
                     if (tenantPrefixIndex !== -1) {
                         return pathChunks[ tenantPrefixIndex + 1 ];
                     }
                     return "";
                 }
 
-                function getTenantPath() {
-                    return getTenantName() !== ""
-                        ? "/" + startupConfig.tenantPrefix + "/" + getTenantName()
+                function getTenantPath(tenantDomain) {
+                    var _tenantDomain = tenantDomain ? tenantDomain : getTenantName();
+
+                    return _tenantDomain !== ""
+                        ? "/" + startupConfig.tenantPrefix + "/" + _tenantDomain
                         : "";
                 };
 
                 function getApiPath(path) {
-                    if (startupConfig.legacyAuthzRuntime) {
-                        if (path) {
-                            return serverOrigin + path;
-                        }
-
-                        return serverOrigin;
-                    }
-
                     var tenantDomain = getTenantName();
 
                     if (!tenantDomain) {
-                        tenantDomain = startupConfig.superTenant;
+                        if (startupConfig.superTenantProxy) {
+                            tenantDomain = startupConfig.superTenantProxy;
+                        } else {
+                            tenantDomain = startupConfig.superTenant;
+                        }
                     }
 
                     if (path) {
-                        return serverOrigin + getTenantPath() + path;
+                        return serverOrigin + getTenantPath(tenantDomain) + path;
                     }
 
-                    return serverOrigin + getTenantPath();
+                    return serverOrigin + getTenantPath(tenantDomain);
                 }
 
                 /**
@@ -225,10 +231,10 @@
                  * @returns {string}
                  */
                 function getOrganizationName() {
-                    const path = window.location.pathname;
-                    const pathChunks = path.split("/");
+                    var path = window.location.pathname;
+                    var pathChunks = path.split("/");
 
-                    const orgPrefixIndex = pathChunks.indexOf(startupConfig.orgPrefix);
+                    var orgPrefixIndex = pathChunks.indexOf(startupConfig.orgPrefix);
 
                     if (orgPrefixIndex !== -1) {
                         return pathChunks[ orgPrefixIndex + 1 ];
@@ -276,6 +282,49 @@
                     return applicationDomain.replace(/\/+$/, '') + getTenantPath();
                 }
 
+                /**
+                 * Construct the auth params for organization login `authorize` requets.
+                 *
+                 * @remarks This only applies to the new authz runtime.
+                 *
+                 * @returns {string} Contructed auth params.
+                 */
+                function getAuthParamsForOrganizationLogins(orginalParams) {
+                    var authParams = Object.assign({}, orginalParams);
+
+                    if (getOrganizationPath()) {
+                        var initialUserOrgInLocalStorage = localStorage.getItem("user-org");
+                        var orgIdInLocalStorage = localStorage.getItem("org-id");
+
+                        if (orgIdInLocalStorage) {
+                            if (orgIdInLocalStorage === getOrganizationName() && initialUserOrgInLocalStorage !== "undefined") {
+                                authParams["fidp"] = "OrganizationSSO";
+                                authParams["orgId"] = getOrganizationName();
+                            }
+                        } else {
+                            authParams["fidp"] = "OrganizationSSO";
+                            authParams["orgId"] = getOrganizationName();
+                        }
+                    }
+
+                    return authParams;
+                }
+
+                /**
+                 * Retrieves the super tenant.
+                 * If a super tenant proxy is defined in the startup configuration, it is returned;
+                 * otherwise, the super tenant directly from the startup configuration is returned.
+                 *
+                 * @returns {string} The super tenant.
+                 */
+                function getSuperTenant() {
+                    if (startupConfig.superTenantProxy) {
+                        return startupConfig.superTenantProxy;
+                    }
+
+                    startupConfig.superTenant;
+                }
+
                 var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
                 var authConfig = {
@@ -298,25 +347,14 @@
                     enablePKCE: true
                 }
 
-                if (startupConfig.legacyAuthzRuntime) {
-                    authConfig.signInRedirectURL = applicationDomain.replace(/\/+$/, '') + getOrganizationPath()
-                        + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
-                    authConfig.signOutRedirectURL = applicationDomain.replace(/\/+$/, '') + getOrganizationPath();
-                    authConfig.endpoints.authorizationEndpoint = getApiPath(userTenant
-                            ? "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize" + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
-                            : "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize");
-                    authConfig.logoutEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout");
-                    authConfig.oidcSessionIFrameEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession");
-                }
-
                 var isSilentSignInDisabled = userAccessedPath.includes("disable_silent_sign_in");
                 var isTenantSwitchPath = userAccessedPath.includes("switch_tenant");
-                const promptParam = new URL(location.href).searchParams.get("prompt");
+                var promptParam = new URL(location.href).searchParams.get("prompt");
 
                 // Redirect user to the login page if the prompt parameter is set to login.
                 if (promptParam && promptParam === 'login') {
                     auth.initialize(authConfig);
-                    auth.signIn({ prompt: "login" });
+                    auth.signIn(getAuthParamsForOrganizationLogins({ prompt: "login" }));
 
                     return;
                 }
@@ -338,7 +376,7 @@
                         sessionStorage.setItem("auth_callback_url_console", authCallbackUrl);
                     }
 
-                    auth.signIn();
+                    auth.signIn(getAuthParamsForOrganizationLogins({}));
                 }
             }
         }
@@ -346,12 +384,12 @@
     <script>
         if(!authorizationCode) {
             var authSPAJS = document.createElement("script");
-            var authScriptSrc = "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename + '/auth-spa-0.3.3.min.js' : '/auth-spa-0.3.3.min.js'%>";
+            var authScriptSrc = "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename + '/auth-spa-3.0.1.min.js' : '/auth-spa-3.0.1.min.js'%>";
 
             authSPAJS.setAttribute("src", authScriptSrc);
             authSPAJS.setAttribute("async", "false");
 
-            let head = document.head;
+            var head = document.head;
             head.insertBefore(authSPAJS, head.firstElementChild);
 
             authSPAJS.addEventListener("load", authenticateWithSDK, false);
@@ -396,5 +434,9 @@
                 </div>
             </div>
         </div>
+
+        <!-- Start of custom scripts added to the body -->
+        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>extensions/body-script.js"></script>
+        <!-- End of custom scripts added to the body -->
     </body>
 </html>

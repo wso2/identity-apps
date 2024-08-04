@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,21 +35,23 @@ import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import {
     EditAvatarModal,
     LinkButton,
+    Message,
     Popup,
     PrimaryButton,
     UserAvatar,
     useMediaContext
 } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownItemProps, Form, Grid, Icon, List, Placeholder } from "semantic-ui-react";
+import { Container, DropdownItemProps, Form, Grid, Icon, List, Placeholder } from "semantic-ui-react";
 import {
     fetchPasswordValidationConfig,
+    getPreference,
     getUsernameConfiguration,
     updateProfileImageURL,
     updateProfileInfo
@@ -61,6 +63,9 @@ import {
     AlertLevels,
     AuthStateInterface, BasicProfileInterface, ConfigReducerStateInterface,
     FeatureConfigInterface,
+    PreferenceConnectorResponse,
+    PreferenceProperty,
+    PreferenceRequest,
     ProfileSchema,
     ValidationFormInterface
 } from "../../models";
@@ -103,6 +108,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
     const isReadOnlyUser: string = useSelector((state: AppState) =>
         state.authenticationInformation.profileInfo.isReadOnly);
+    const hasLocalAccount: boolean = useSelector((state: AppState) => state.authenticationInformation.hasLocalAccount);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
@@ -115,8 +121,84 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
+    const [ showEmail, setShowEmail ] = useState<boolean>(false);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
+
+    const [ isMobileVerificationEnabled, setIsMobileVerificationEnabled ] = useState<boolean>(false);
+    const [ isEmailVerificationEnabled, setIsEmailVerificationEnabled ] = useState<boolean>(false);
+
+    /**
+     * The following method gets the preference for verification on mobile and email update.
+     */
+    const getPreferences = (): void => {
+
+        const userClaimUpdateConnector: PreferenceRequest[] = [
+            {
+                "connector-name": ProfileConstants.USER_CLAIM_UPDATE_CONNECTOR,
+                properties: [
+                    ProfileConstants.ENABLE_EMAIL_VERIFICATION,
+                    ProfileConstants.ENABLE_MOBILE_VERIFICATION
+                ]
+            }
+        ];
+
+        getPreference(userClaimUpdateConnector)
+            .then((response: PreferenceConnectorResponse[]) => {
+                if (response) {
+                    const userClaimUpdateOptions: PreferenceConnectorResponse[] = response;
+                    const responseProperties: PreferenceProperty[] = userClaimUpdateOptions[0].properties;
+
+                    responseProperties.forEach((prop: PreferenceProperty) => {
+                        if (prop.name === ProfileConstants.ENABLE_EMAIL_VERIFICATION) {
+                            setIsEmailVerificationEnabled(prop.value.toLowerCase() == "true");
+                        }
+                        if (prop.name === ProfileConstants.ENABLE_MOBILE_VERIFICATION) {
+                            setIsMobileVerificationEnabled(prop.value.toLowerCase() == "true");
+                        }
+                    });
+                } else {
+                    onAlertFired({
+                        description: t(
+                            "myAccount:sections.verificationOnUpdate.preference.notifications.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "myAccount:sections.verificationOnUpdate.preference.notifications.genericError.message"
+                        )
+                    });
+                }
+            })
+            .catch((error: AxiosError) => {
+                if (error?.response?.data?.detail) {
+                    onAlertFired({
+                        description: t(
+                            "myAccount:sections.verificationOnUpdate.preference.notifications.error.description",
+                            { description: error.response.data.detail }
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t("myAccount:sections.verificationOnUpdate.preference.notifications..error.message")
+                    });
+
+                    return;
+                }
+
+                onAlertFired({
+                    description: t(
+                        "myAccount:sections.verificationOnUpdate.preference.notifications.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t("myAccount:sections.verificationOnUpdate.preference.notifications.genericError.message")
+                });
+            });
+    };
+
+    /**
+     * Load verification on update preferences.
+     */
+    useEffect(() => {
+        getPreferences();
+    }, []);
 
     /**
      * Interface for the canonical attributes.
@@ -129,7 +211,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * Set the if the email verification is pending.
      */
     useEffect(() => {
-        if (profileDetails?.profileInfo?.pendingEmails && !isEmpty(profileDetails?.profileInfo?.pendingEmails)) {
+        if (
+            isEmailVerificationEnabled
+            && profileDetails?.profileInfo?.pendingEmails
+            && !isEmpty(profileDetails?.profileInfo?.pendingEmails)
+        ) {
             setEmailPending(true);
         }
     }, [ profileDetails?.profileInfo?.pendingEmails ]);
@@ -142,6 +228,20 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             dispatch(getProfileInformation());
         }
     }, []);
+
+    /**
+     * Check if email address is displayed as a separated attribute.
+     */
+    useEffect(() => {
+        if (!isEmpty(profileInfo)) {
+            if ((commonConfig.userProfilePage.showEmail && usernameConfig?.enableValidator === "true")
+                    || getUserNameWithoutDomain(profileInfo.get("userName")) !== profileInfo.get("emails")) {
+                setShowEmail(true);
+            } else {
+                setShowEmail(false);
+            }
+        }
+    }, [ profileInfo, usernameConfig ]);
 
     /**
      * Get the configurations.
@@ -195,7 +295,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
                 if (schemaNames.length === 1) {
                     if (schemaNames[0] === "emails") {
-                        if (profileDetails?.profileInfo?.pendingEmails?.length > 0) {
+                        if (isEmailVerificationEnabled &&
+                            profileDetails?.profileInfo?.pendingEmails?.length > 0) {
                             tempProfileInfo.set(schema.name,
                                 profileDetails.profileInfo.pendingEmails[0].value as string);
                         } else {
@@ -677,6 +778,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     featureConfig?.personalInfo,
                     AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_MOBILE_VERIFICATION")
                 ) && checkSchemaType(schema.name, "mobile")
+                && isMobileVerificationEnabled
                     ? (
                         <EditSection data-testid={ `${testId}-schema-mobile-editing-section` }>
                             <p>
@@ -937,11 +1039,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
                             <List.Content>
                                 {
-                                    (
-                                        !commonConfig.userProfilePage.showEmail
-                                        ||  usernameConfig?.enableValidator === "false"
-                                    )
-                                    &&  fieldName.toLowerCase() === "username"
+                                    !showEmail && fieldName.toLowerCase() === "username"
                                         ? fieldName + " (Email)"
                                         : fieldName
                                 }
@@ -958,7 +1056,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                             : profileInfo.get(schema.name)
                                                 ? (
                                                     schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY
-                                                        .get("EMAILS") && isEmailPending
+                                                        .get("EMAILS") && isEmailPending && isEmailVerificationEnabled
                                                         ? (
                                                             <>
                                                                 <p>
@@ -1195,13 +1293,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                         content: (
                                             <Trans
                                                 i18nKey={
-                                                    "myAccount:modals.editAvatarModal.content.gravatar.errors." + 
+                                                    "myAccount:modals.editAvatarModal.content.gravatar.errors." +
                                                     "noAssociation.content"
                                                 }
                                             >
                                                 It seems like the selected email is not registered on Gravatar.
-                                                Sign up for a Gravatar account by visiting 
-                                                <a href="https://www.gravatar.com"> Gravatar Official Website</a> 
+                                                Sign up for a Gravatar account by visiting
+                                                <a href="https://www.gravatar.com"> Gravatar Official Website</a>
                                                 or use one of the following.
                                             </Trans>
                                         ),
@@ -1297,73 +1395,85 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     : null
             }
         >
-            <List
-                divided={ true }
-                verticalAlign="middle"
-                className="main-content-inner"
-                data-testid={ `${testId}-schema-list` }
-            >
-                {
-                    profileSchema && profileSchema.map((schema: ProfileSchema, index: number) => {
-                        if (!(schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("GROUPS")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_SOURCE_ID")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("IDP_TYPE")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("RESROUCE_TYPE")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EXTERNAL_ID")
-                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_DATA")
-                            || ((
-                                !commonConfig.userProfilePage.showEmail
-                                || usernameConfig?.enableValidator === "false"
-                            )
-                                && schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"))
-                        )) {
-                            return (
-                                <>
-                                    {
-                                        showMobileUpdateWizard && checkSchemaType(schema.name, "mobile")
-                                            ? (
-                                                < MobileUpdateWizard
-                                                    data-testid={ `${testId}-mobile-update-wizard` }
-                                                    onAlertFired={ onAlertFired }
-                                                    closeWizard={ () =>
-                                                        handleCloseMobileUpdateWizard()
-                                                    }
-                                                    wizardOpen={ true }
-                                                    currentMobileNumber={ profileInfo.get(schema.name) }
-                                                    isMobileRequired={ schema.required }
-                                                />
-                                            )
-                                            : null
-                                    }
-                                    {
-                                        !isEmpty(profileInfo.get(schema.name)) ||
+            {
+                hasLocalAccount
+                    ? (
+                        <List
+                            divided={ true }
+                            verticalAlign="middle"
+                            className="main-content-inner"
+                            data-testid={ `${testId}-schema-list` }
+                        >
+                            {
+                                profileSchema && profileSchema.map((schema: ProfileSchema, index: number) => {
+                                    if (!(schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("GROUPS")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("USER_SOURCE_ID")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("IDP_TYPE")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY
+                                        .get("LOCAL_CREDENTIAL_EXISTS")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("RESROUCE_TYPE")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("EXTERNAL_ID")
+                                    || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_DATA")
+                                    || (!showEmail && schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY
+                                        .get("EMAILS"))
+                                    )) {
+                                        return (
+                                            <>
+                                                {
+                                                    showMobileUpdateWizard && checkSchemaType(schema.name, "mobile")
+                                                        ? (
+                                                            < MobileUpdateWizard
+                                                                data-testid={ `${testId}-mobile-update-wizard` }
+                                                                onAlertFired={ onAlertFired }
+                                                                closeWizard={ () =>
+                                                                    handleCloseMobileUpdateWizard()
+                                                                }
+                                                                wizardOpen={ true }
+                                                                currentMobileNumber={ profileInfo.get(schema.name) }
+                                                                isMobileRequired={ schema.required }
+                                                            />
+                                                        )
+                                                        : null
+                                                }
+                                                {
+                                                    !isEmpty(profileInfo.get(schema.name)) ||
                                         (!CommonUtils.isProfileReadOnly(isReadOnlyUser)
                                             && (schema.mutability !== ProfileConstants.READONLY_SCHEMA)
                                             && hasRequiredScopes(featureConfig?.personalInfo,
                                                 featureConfig?.personalInfo?.scopes?.update, allowedScopes))
-                                            ? (
-                                                <List.Item
-                                                    key={ index }
-                                                    className="inner-list-item"
-                                                    data-testid={ `${testId}-schema-list-item` }>
-                                                    { generateSchemaForm(schema) }
-                                                </List.Item>
-                                            ) : null
+                                                        ? (
+                                                            <List.Item
+                                                                key={ index }
+                                                                className="inner-list-item"
+                                                                data-testid={ `${testId}-schema-list-item` }>
+                                                                { generateSchemaForm(schema) }
+                                                            </List.Item>
+                                                        ) : null
+                                                }
+                                            </>
+                                        );
                                     }
-                                </>
-                            );
-                        }
-                    })
-                }
-            </List>
+                                })
+                            }
+                        </List>
+                    ) : (
+                        <Container className="pl-5 pr-5 pb-4">
+                            <Message
+                                type="info"
+                                content={ "Your profile cannot be managed from this portal." +
+                                    " Please contact your administrator for more details." }
+                                data-componentid={ `${testId}-read-only-profile-banner` }
+                            />
+                        </Container>
+                    )
+            }
         </SettingsSection>
     );
 };

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023, WSO2 LLC. (http://www.wso2.com).
+ * Copyright (c) 2019-2024, WSO2 LLC. (http://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,6 @@ package org.wso2.identity.apps.common.util;
 import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.CarbonConstants;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
-import org.wso2.carbon.identity.api.resource.mgt.APIResourceMgtException;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
 import org.wso2.carbon.identity.application.common.model.AssociatedRolesConfig;
@@ -31,11 +30,13 @@ import org.wso2.carbon.identity.application.common.model.ClaimMapping;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationConfig;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
 import org.wso2.carbon.identity.application.common.model.LocalAndOutboundAuthenticationConfig;
-import org.wso2.carbon.identity.application.common.model.Scope;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
 import org.wso2.carbon.identity.application.common.model.ServiceProviderProperty;
 import org.wso2.carbon.identity.application.common.util.IdentityApplicationManagementUtil;
+import org.wso2.carbon.identity.application.mgt.ApplicationConstants;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
+import org.wso2.carbon.identity.application.mgt.ApplicationMgtUtil;
+import org.wso2.carbon.identity.core.URLBuilderException;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
 import org.wso2.carbon.identity.oauth.OAuthUtil;
@@ -43,8 +44,9 @@ import org.wso2.carbon.identity.oauth.dto.OAuthConsumerAppDTO;
 import org.wso2.carbon.identity.oauth2.OAuth2Constants;
 import org.wso2.carbon.identity.organization.management.service.constant.OrganizationManagementConstants;
 import org.wso2.carbon.identity.organization.management.service.exception.OrganizationManagementException;
+import org.wso2.carbon.identity.role.mgt.core.RoleConstants;
 import org.wso2.carbon.identity.role.v2.mgt.core.exception.IdentityRoleManagementException;
-import org.wso2.carbon.identity.role.v2.mgt.core.model.Permission;
+import org.wso2.carbon.identity.role.v2.mgt.core.model.RoleBasicInfo;
 import org.wso2.carbon.stratos.common.beans.TenantInfoBean;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
@@ -53,11 +55,13 @@ import org.wso2.carbon.user.core.common.AbstractUserStoreManager;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.identity.apps.common.internal.AppsCommonDataHolder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.wso2.carbon.identity.application.common.util.IdentityApplicationConstants.IS_SYSTEM_RESERVED_APP_FLAG;
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.GrantTypes.AUTHORIZATION_CODE;
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.GrantTypes.REFRESH_TOKEN;
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.OAuthVersions.VERSION_2;
@@ -65,13 +69,17 @@ import static org.wso2.carbon.identity.organization.management.application.const
 import static org.wso2.carbon.identity.role.v2.mgt.core.RoleConstants.ADMINISTRATOR;
 import static org.wso2.carbon.identity.role.v2.mgt.core.RoleConstants.APPLICATION;
 import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.AppPortal.CONSOLE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.CONSOLE_APP;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.CONSOLE_PORTAL_PATH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.DISPLAY_NAME_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ACCOUNT_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ORGANIZATION_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_CONFIG_TYPE;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.MYACCOUNT_APP;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.MYACCOUNT_PORTAL_PATH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.PROFILE_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.USERNAME_CLAIM_URI;
 
@@ -107,17 +115,51 @@ public class AppPortalUtils {
         oAuthConsumerAppDTO.setOAuthVersion(VERSION_2);
         oAuthConsumerAppDTO.setOauthConsumerKey(consumerKey);
         oAuthConsumerAppDTO.setOauthConsumerSecret(consumerSecret);
+        if (CONSOLE_APP.equals(applicationName) &&
+            StringUtils.isNotEmpty(IdentityUtil.getProperty(CONSOLE_PORTAL_PATH))) {
+            portalPath = IdentityUtil.getProperty(CONSOLE_PORTAL_PATH);
+        }
+        if (MYACCOUNT_APP.equals(applicationName) &&
+            StringUtils.isNotEmpty(IdentityUtil.getProperty(MYACCOUNT_PORTAL_PATH))) {
+            portalPath = IdentityUtil.getProperty(MYACCOUNT_PORTAL_PATH);
+        }
+        if (!portalPath.startsWith("/")) {
+            portalPath = "/" + portalPath;
+        }
         String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
-        if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
-            callbackUrl = callbackUrl.replace(portalPath, "/t/" + tenantDomain.trim() + portalPath);
-        } else if (CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
-            if (StringUtils.equals(CONSOLE_APP, applicationName) &&
-                AppsCommonDataHolder.getInstance().isOrganizationManagementEnabled()) {
-                callbackUrl = "regexp=(" + callbackUrl + "|" + callbackUrl.replace(portalPath, "/t/(.*)" +
-                    portalPath) + "|" + callbackUrl.replace(portalPath, "/o/(.*)" + portalPath) + ")";
+        try {
+            // Update the callback URL properly if origin is configured for the portal app.
+            callbackUrl = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(callbackUrl);
+            callbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(callbackUrl, applicationName);
+        } catch (URLBuilderException e) {
+            throw new IdentityOAuthAdminException("Server encountered an error while building callback URL with " +
+                "placeholders for the server URL", e);
+        }
+        if (CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
+            if (SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
+                if (StringUtils.equals(CONSOLE_APP, applicationName) &&
+                    AppsCommonDataHolder.getInstance().isOrganizationManagementEnabled()) {
+                    callbackUrl = "regexp=(" + callbackUrl
+                        + "|" + callbackUrl.replace(portalPath, "/t/(.*)" + portalPath)
+                        + "|" + callbackUrl.replace(portalPath, "/o/(.*)" + portalPath)
+                        + ")";
+                } else {
+                    callbackUrl = "regexp=(" + callbackUrl
+                        + "|" + callbackUrl.replace(portalPath, "/t/(.*)" + portalPath)
+                        + ")";
+                }
+            }
+        } else {
+            if (SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
+                callbackUrl = "regexp=(" + callbackUrl
+                    + "|" + callbackUrl.replace(portalPath, "/o/(.*)" + portalPath)
+                    + "|" + callbackUrl.replace(portalPath, "/t/carbon.super" + portalPath)
+                    + "|" + callbackUrl.replace(portalPath, "/t/carbon.super/o/(.*)" + portalPath)
+                    + ")";
             } else {
-                callbackUrl = "regexp=(" + callbackUrl + "|" +
-                    callbackUrl.replace(portalPath, "/t/(.*)" + portalPath) + ")";
+                callbackUrl = "regexp=(" + callbackUrl.replace(portalPath, "/t/(.*)" + portalPath)
+                    + "|" + callbackUrl.replace(portalPath, "/t/(.*)/o/(.*)" + portalPath)
+                    + ")";
             }
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
@@ -225,7 +267,7 @@ public class AppPortalUtils {
         String appId = AppsCommonDataHolder.getInstance().getApplicationManagementService()
             .createApplication(serviceProvider, tenantDomain, appOwner);
 
-        if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
+        if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME && CONSOLE_APP.equals(appName)) {
             shareApplication(tenantDomain, tenantId, appId, appName, appOwner);
         }
     }
@@ -302,6 +344,32 @@ public class AppPortalUtils {
                 AppPortalUtils.createApplication(appPortal.getName(), tenantInfoBean.getAdmin(),
                     appPortal.getDescription(), consumerKey, consumerSecret, tenantInfoBean.getTenantDomain(),
                     tenantInfoBean.getTenantId(), appPortal.getPath());
+            } else if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME &&
+                StringUtils.equalsIgnoreCase(CONSOLE_APP, appPortal.getName())) {
+                try {
+                    String userId = getUserId(tenantInfoBean.getAdmin(), tenantInfoBean.getTenantId());
+                    List<RoleBasicInfo> assignedRoles = AppsCommonDataHolder.getInstance().getRoleManagementServiceV2()
+                        .getRoleListOfUser(userId, tenantInfoBean.getTenantDomain());
+                    String audienceId = AppsCommonDataHolder.getInstance().getApplicationManagementService()
+                        .getApplicationResourceIDByInboundKey(CONSOLE.getConsumerKey(), INBOUND_AUTH2_TYPE,
+                            tenantInfoBean.getTenantDomain());
+
+                    for (RoleBasicInfo roleBasicInfo : assignedRoles) {
+                        if (ADMINISTRATOR.equalsIgnoreCase(roleBasicInfo.getName())
+                            && APPLICATION.equalsIgnoreCase(roleBasicInfo.getAudience())
+                            && audienceId.equals(roleBasicInfo.getAudienceId())) {
+                            return;
+                        }
+                    }
+                    //Assign administrator role to the admin user in case of admin username got changed.
+                    String roleId = getAdministratorRoleId(ADMINISTRATOR, APPLICATION, audienceId,
+                        tenantInfoBean.getTenantDomain());
+                    assignAdministratorRole(userId, roleId, tenantInfoBean.getTenantId(),
+                        tenantInfoBean.getTenantDomain());
+                } catch (org.wso2.carbon.user.api.UserStoreException | IdentityRoleManagementException e) {
+                    throw new IdentityApplicationManagementException("Error occured while assigning administrator " +
+                        "role to the admin user.", e);
+                }
             }
         }
     }
@@ -333,19 +401,6 @@ public class AppPortalUtils {
         return null;
     }
 
-    private static List<Permission> getAllPermissions(String tenantDomain)
-        throws IdentityApplicationManagementException {
-
-        try {
-            List<Scope> scopes = AppsCommonDataHolder.getInstance().getAPIResourceManager()
-                .getSystemAPIScopes(tenantDomain);
-            return scopes.stream().map(scope -> new Permission(scope.getName())).collect(Collectors.toList());
-        } catch (APIResourceMgtException e) {
-            throw new IdentityApplicationManagementException("Error while retrieving internal scopes for tenant " +
-                "domain : " + tenantDomain, e);
-        }
-    }
-
     private static void shareApplication(String tenantDomain, int tenantId, String appId, String appName,
                                          String appOwner)
         throws IdentityApplicationManagementException {
@@ -368,6 +423,7 @@ public class AppPortalUtils {
             PrivilegedCarbonContext privilegedCarbonContext = PrivilegedCarbonContext.getThreadLocalCarbonContext();
             privilegedCarbonContext.setTenantId(tenantId);
             privilegedCarbonContext.setTenantDomain(tenantDomain);
+            privilegedCarbonContext.setUsername(appOwner);
             IdentityApplicationManagementUtil.setAllowUpdateSystemApplicationThreadLocal(true);
             AppsCommonDataHolder.getInstance().getOrgApplicationManager()
                 .shareOrganizationApplication(organizationId, appId, true,
@@ -388,14 +444,38 @@ public class AppPortalUtils {
 
         try {
             String userID = getUserId(appOwner, tenantId);
+            String adminGroupId = getAdminGroupId(tenantId);
+            List<String> groupIds = Collections.emptyList();
+            if (StringUtils.isNotEmpty(adminGroupId)) {
+                groupIds = Collections.singletonList(adminGroupId);
+            }
             AppsCommonDataHolder.getInstance().getRoleManagementServiceV2().addRole(ADMINISTRATOR,
-                Collections.singletonList(userID), Collections.emptyList(), getAllPermissions(tenantDomain),
-                APPLICATION, appId, tenantDomain);
+                Collections.singletonList(userID), groupIds, Collections.emptyList(), APPLICATION, appId,
+                tenantDomain);
         } catch (IdentityRoleManagementException e) {
             throw new IdentityApplicationManagementException("Failed to add Administrator role for the " +
                 "console", e);
         } catch (org.wso2.carbon.user.api.UserStoreException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private static String getAdministratorRoleId(String roleName, String audience, String audienceId,
+                                                 String tenantDomain) throws IdentityRoleManagementException {
+
+            return AppsCommonDataHolder.getInstance().getRoleManagementServiceV2().getRoleIdByName(roleName, audience,
+                audienceId, tenantDomain);
+    }
+
+    private static void assignAdministratorRole(String userId, String roleId, int tenantId, String tenantDomain)
+        throws IdentityApplicationManagementException {
+
+        try {
+            AppsCommonDataHolder.getInstance().getRoleManagementServiceV2().updateUserListOfRole(roleId,
+                Collections.singletonList(userId), Collections.emptyList(), tenantDomain);
+        } catch (IdentityRoleManagementException e) {
+            throw new IdentityApplicationManagementException("Failed to assign Administrator role of the console to :" +
+                userId, e);
         }
     }
 
@@ -451,12 +531,23 @@ public class AppPortalUtils {
             serviceProvider.setAccessUrl(accessUrl);
         }
 
-        // Make system applications shareable.
-        ServiceProviderProperty spProperty = new ServiceProviderProperty();
-        spProperty.setName(SHARE_WITH_ALL_CHILDREN);
-        spProperty.setValue("true");
-        ServiceProviderProperty[] serviceProviderProperties = {spProperty};
-        serviceProvider.setSpProperties(serviceProviderProperties);
+        List<ServiceProviderProperty> serviceProviderProperties = new ArrayList<>();
+        // Mark as system reserved app.
+        ServiceProviderProperty spProperty1 = new ServiceProviderProperty();
+        spProperty1.setName(IS_SYSTEM_RESERVED_APP_FLAG);
+        spProperty1.setValue("true");
+        spProperty1.setDisplayName("Is System Reserved Application");
+        serviceProviderProperties.add(spProperty1);
+
+        // Share the console application with all child organizations.
+        if (ApplicationConstants.CONSOLE_APPLICATION_NAME.equals(serviceProvider.getApplicationName())) {
+            ServiceProviderProperty spProperty2 = new ServiceProviderProperty();
+            spProperty2.setName(SHARE_WITH_ALL_CHILDREN);
+            spProperty2.setValue("true");
+            serviceProviderProperties.add(spProperty2);
+        }
+
+        serviceProvider.setSpProperties(serviceProviderProperties.toArray(new ServiceProviderProperty[0]));
 
         // Set role audience as 'application'
         AssociatedRolesConfig associatedRolesConfig = new AssociatedRolesConfig();
@@ -505,5 +596,32 @@ public class AppPortalUtils {
 
         return new ClaimMapping[]{emailClaimMapping, displayNameClaimMapping, usernameClaimMapping,
             profileUrlClaimMapping};
+    }
+
+    private static String getAdminGroupId(int tenantID) throws IdentityApplicationManagementException {
+
+        try {
+            RealmService realmService = AppsCommonDataHolder.getInstance().getRealmService();
+            String adminGroupName = realmService.getTenantUserRealm(tenantID).getRealmConfiguration()
+                .getAdminRoleName();
+            if (adminGroupName == null) {
+                return null;
+            }
+            if (adminGroupName.startsWith(RoleConstants.INTERNAL_DOMAIN + CarbonConstants.DOMAIN_SEPARATOR)) {
+                adminGroupName = adminGroupName.replace(RoleConstants.INTERNAL_DOMAIN +
+                    CarbonConstants.DOMAIN_SEPARATOR, "");
+            }
+            try {
+                return ((AbstractUserStoreManager) realmService.getTenantUserRealm(tenantID).getUserStoreManager()).
+                    getGroupIdByGroupName(adminGroupName);
+            } catch (org.wso2.carbon.user.api.UserStoreException e) {
+                // Default admin group is not found.
+                return null;
+            }
+
+        } catch (org.wso2.carbon.user.api.UserStoreException e) {
+            throw new IdentityApplicationManagementException("Fail to resolve the admin group ID of the tenant: " +
+                tenantID, e);
+        }
     }
 }

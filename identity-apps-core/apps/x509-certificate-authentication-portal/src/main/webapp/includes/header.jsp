@@ -1,7 +1,7 @@
 <%--
-  ~ Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2020-2024, WSO2 LLC. (http://www.wso2.com).
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -16,15 +16,22 @@
   ~ under the License.
 --%>
 
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
-<%@ include file="localize.jsp" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="java.io.File" %>
 
-<jsp:directive.include file="layout-resolver.jsp"/>
+<%-- Include tenant context --%>
+<jsp:directive.include file="../tenant-resolve.jsp"/>
 
-<!-- Extract the name of the stylesheet-->
+<%-- Localization --%>
+<jsp:directive.include file="localize.jsp" />
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="branding-preferences.jsp"/>
+
+
+<%-- Extract the name of the stylesheet--%>
 <%
-    String themeName = "default";
+    String themeName = "wso2is";
     File themeDir = new File(request.getSession().getServletContext().getRealPath("/")
         + "/" + "libs/themes/" + themeName + "/");
     String[] fileNames = themeDir.list();
@@ -41,15 +48,52 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="icon" href="libs/themes/default/assets/images/favicon.ico" type="image/x-icon"/>
-<link href="libs/themes/default/<%= themeFileName %>" rel="stylesheet">
+<%-- Updates the favicon with the URL resolved in branding-preferences --%>
+<link rel="icon" href="<%= StringEscapeUtils.escapeHtml4(faviconURL) %>" type="image/x-icon"/>
 
-<!-- Layout specific style sheet -->
-<%
-    String styleFilePath = "extensions/layouts/" + layout + "/styles.css";
-    if (config.getServletContext().getResource(styleFilePath) != null) {
-%>
-    <link rel="stylesheet" href="<%= styleFilePath %>">
+<%-- Load the base theme --%>
+<link href="libs/themes/wso2is/<%= themeFileName %>" rel="stylesheet">
+
+<%-- Load Default Theme Skeleton --%>
+<jsp:include page="theme-skeleton.jsp"/>
+
+<%-- If an override stylesheet is defined in branding-preferences, applying it... --%>
+<% if (overrideStylesheet != null && !StringUtils.startsWith(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME)) { %>
+<link rel="stylesheet" href="<%= StringEscapeUtils.escapeHtml4(overrideStylesheet) %>">
 <% } %>
 
-<title><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "wso2.identity.server")%></title>
+<%-- Layout specific style sheet --%>
+<%
+    String styleFilePath = "";
+    if (StringUtils.startsWith(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME)) {
+        if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR
+                + tenantRequestingPreferences)) {
+            styleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/styles.css";
+        } else if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR
+                + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + convertApplicationName(applicationRequestingPreferences))) {
+            styleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences) + "/styles.css";
+        }
+    } else {
+        styleFilePath = "includes/layouts/" + layout + "/styles.css";
+    }
+
+    if (styleFilePath.startsWith("http") || config.getServletContext().getResource(styleFilePath) != null) {
+%>
+        <link rel="stylesheet" href="<%= styleFilePath %>">
+<%
+    }
+%>
+
+<%-- Updates the site tile with the text resolved in branding-preferences --%>
+<title><%= i18n(resourceBundle, customText, "site.title", __DEPRECATED__siteTitle) %></title>
+
+<%-- Downtime banner --%>
+<%
+    if (config.getServletContext().getResource("extensions/planned-downtime-banner.jsp") != null) {
+%>
+        <jsp:include page="/extensions/planned-downtime-banner.jsp"/>
+<%
+    }
+%>
+
+<script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>

@@ -4,13 +4,37 @@ Look through here if you come across any issue.
 
 ✨ If your issues isn't here and you were able to figure a solution, please consider contribute to the guide.
 
+* [Changesets](#changesets)
 * [Node](#node)
   * [Dev Server Failures](#dev-server-failures)
     * [File watchers exceed error](#file-watchers-exceed-error)
   * [Package Install Failures](#package-install-failures)
-    * [Global npm package install errors on Mac System](#global-npm-package-install-errors-on-mac-ystem)
+    * [Global npm package install errors on Mac System](#global-npm-package-install-errors-on-mac-system)
 * [Maven](#maven)
   * [Build Failures](#build-failures)
+
+## Changesets
+
+### Failed to find where HEAD diverged from master
+
+You may sometimes see the following error when trying to generate changeset on your feature branch.
+
+```
+❯ pnpm changeset
+🦋  error Error: Failed to find where HEAD diverged from master. Does master exist?
+```
+
+**How to fix:**
+
+1. First you need to checkout to master branch.
+`git checkout master`
+
+2. Then get the latest changes from upstream.
+`git pull upstream master`
+
+3. Rebase the feature branch on master branch, and try generating changesets again.
+`git checkout <your_feature_branch>`
+`git rebase master`
 
 ## Node
 

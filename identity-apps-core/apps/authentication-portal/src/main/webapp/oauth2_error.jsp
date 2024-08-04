@@ -69,8 +69,8 @@
     <script type="text/javascript">
         trackEvent("authentication-portal-error-oauth2", {
             "type": "error-response",
-            "error-code": "<%=errorCode%>" !== "null" ? "<%=errorCode%>" : "",
-            "error-message": "<%=error%>" !== "null" ? "<%=error%>" : ""
+            "error-code": "<%=Encode.forJavaScriptBlock(errorCode)%>" !== "null" ? "<%=Encode.forJavaScriptBlock(errorCode)%>" : "",
+            "error-message": "<%=Encode.forJavaScriptBlock(errorMsgApp)%>" !== "null" ? "<%=Encode.forJavaScriptBlock(errorMsgApp)%>" : ""
         });
     </script>
 </head>

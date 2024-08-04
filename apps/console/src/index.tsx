@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,44 +16,58 @@
  * under the License.
  */
 
-import { AuthParams, AuthProvider, ResponseMode, SPAUtils } from "@asgardeo/auth-react";
+import { AuthProvider } from "@asgardeo/auth-react";
+import { loader } from "@monaco-editor/react";
 import { ThemeProvider } from "@oxygen-ui/react/theme";
-import { AppConfigProvider } from "@wso2is/common/src/providers/app-config-provider";
-import { ContextUtils, StringUtils } from "@wso2is/core/utils";
-import axios, { AxiosResponse } from "axios";
-import * as React from "react";
-import { ReactElement } from "react";
+import { AuthenticateUtils } from "@wso2is/admin.authentication.v1";
+import { Config, PreLoader, store } from "@wso2is/admin.core.v1";
+import { UserPreferencesInterface } from "@wso2is/admin.core.v1/models/user-preferences";
+import { AppConfigProvider } from "@wso2is/admin.core.v1/providers/app-config-provider";
+import AppSettingsProvider from "@wso2is/admin.core.v1/providers/app-settings-provider";
+import GlobalVariablesProvider from "@wso2is/admin.core.v1/providers/global-variables-provider";
+import UserPreferencesProvider from "@wso2is/admin.core.v1/providers/user-preferences-provider";
+import OrganizationsProvider from "@wso2is/admin.organizations.v1/providers/organizations-provider";
+import { ContextUtils } from "@wso2is/core/utils";
+import React, { ReactElement, useEffect, useState } from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import { AsgardeoTheme } from "./branding/theme";
-import { AuthenticateUtils } from "./features/authentication";
-import { Config, PreLoader, store } from "./features/core";
-import OrganizationsProvider from "./features/organizations/providers/organizations-provider";
 import { ProtectedApp } from "./protected-app";
+import Theme from "./theme";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
-const getAuthParams = (): Promise<AuthParams> => {
-    if (!SPAUtils.hasAuthSearchParamsInURL()
-        && Config.getDeploymentConfig()?.idpConfigs?.responseMode === ResponseMode.formPost) {
+/**
+ * TODO: Use Monaco with the webpack plugin.
+ * {@link https://github.com/wso2-enterprise/asgardeo-product/issues/23937}
+ *
+ * Function to check the status of the Monaco CDN.
+ * If the CDN is not available, the default CDN will be used.
+ */
+const checkCDNStatus = async () => {
+    try {
+        const response: Response = await fetch("https://cdn.jsdelivr.net/npm/monaco-editor@0.36.1/min/vs/loader.js");
 
-        const contextPath: string = window[ "AppUtils" ].getConfig().appBase
-            ? `/${ StringUtils.removeSlashesFromPath(window[ "AppUtils" ].getConfig().appBase) }`
-            : "";
-
-        return axios.get(contextPath + "/auth").then((response: AxiosResponse ) => {
-            return Promise.resolve({
-                authorizationCode: response?.data?.authCode,
-                sessionState: response?.data?.sessionState,
-                state: response?.data?.state
+        if (response.ok) {
+            loader.config({
+                paths: {
+                    vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.36.1/min/vs"
+                }
             });
-        });
+        } else {
+            loader.config({
+                paths: {
+                    vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs"
+                }
+            });
+        }
+    } catch (error) {
+        // Use default CDN.
     }
-
-    return;
 };
+
+checkCDNStatus();
 
 /**
  * Render root component with configs.
@@ -62,9 +76,9 @@ const getAuthParams = (): Promise<AuthParams> => {
  */
 const RootWithConfig = (): ReactElement => {
 
-    const [ ready, setReady ] = React.useState(false);
+    const [ ready, setReady ] = useState(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (AuthenticateUtils.getInitializeConfig()?.baseUrl) {
             setReady(true);
 
@@ -79,23 +93,34 @@ const RootWithConfig = (): ReactElement => {
     }
 
     return (
-        <ThemeProvider theme={ AsgardeoTheme } defaultMode="light" modeStorageKey="console-oxygen-mode">
-            <Provider store={ store }>
-                <BrowserRouter>
-                    <AuthProvider
-                        config={ AuthenticateUtils.getInitializeConfig() }
-                        fallback={ <PreLoader /> }
-                        getAuthParams={ getAuthParams }
-                    >
-                        <AppConfigProvider>
-                            <OrganizationsProvider>
-                                <ProtectedApp />
-                            </OrganizationsProvider>
-                        </AppConfigProvider>
-                    </AuthProvider>
-                </BrowserRouter>
-            </Provider>
-        </ThemeProvider>
+        <GlobalVariablesProvider
+            value={ {
+                isAdaptiveAuthenticationAvailable: isAdaptiveAuthenticationAvailable,
+                isOrganizationManagementEnabled: isOrganizationManagementEnabled
+            } }
+        >
+            <AppSettingsProvider>
+                <ThemeProvider theme={ Theme } defaultMode="light" modeStorageKey="console-oxygen-mode">
+                    <Provider store={ store }>
+                        <UserPreferencesProvider<UserPreferencesInterface>>
+                            <BrowserRouter>
+                                <AuthProvider
+                                    config={ AuthenticateUtils.getInitializeConfig() }
+                                    fallback={ <PreLoader /> }
+                                    getAuthParams={ AuthenticateUtils.getAuthParams }
+                                >
+                                    <AppConfigProvider>
+                                        <OrganizationsProvider>
+                                            <ProtectedApp />
+                                        </OrganizationsProvider>
+                                    </AppConfigProvider>
+                                </AuthProvider>
+                            </BrowserRouter>
+                        </UserPreferencesProvider>
+                    </Provider>
+                </ThemeProvider>
+            </AppSettingsProvider>
+        </GlobalVariablesProvider>
     );
 };
 
@@ -103,4 +128,5 @@ const rootElement: HTMLElement = document.getElementById("root");
 
 // Moved back to the legacy mode due to unpredictable state update issue.
 // Tracked here: https://github.com/wso2/product-is/issues/14912
+// eslint-disable-next-line react/no-deprecated
 ReactDOM.render(<RootWithConfig />, rootElement);

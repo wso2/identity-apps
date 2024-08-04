@@ -1,0 +1,15 @@
+{
+    "id": "custom-protocol-application",
+    "templateId": "custom-protocol-application",
+    "name": "Custom Application",
+    "description": "Applications built using niche, legacy or custom protocols.",
+    "image": "customProtocolApp",
+    "authenticationProtocol": "",
+    "category": "DEFAULT",
+    "displayOrder": -1,
+    "self": "",
+    "subTemplates": [],
+    "subTemplatesSectionTitle": "Protocol",
+    "templateGroup": "",
+    "types": []
+}

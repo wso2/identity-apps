@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,10 @@ export interface Extensions {
         help: {
             communityLink: string;
             docSiteLink: string;
-            helpCenterLink: string;
+            helpCenterLink: {
+                title: string;
+                subtitle: string;
+            };
             helpDropdownLink: string;
         };
         learnMore: string;
@@ -150,6 +153,13 @@ export interface Extensions {
                         };
                     };
                 };
+                m2m: {
+                    customConfig: {
+                        tokenEndpoint: string;
+                        tokenRequest: string;
+                        configurations: string;
+                    };
+                }
             };
         };
         applicationRoles: {
@@ -243,6 +253,10 @@ export interface Extensions {
                 groupAttributeLabel: string;
                 groupAttributeHint: string;
                 groupAttributePlaceholder: string;
+                groupAttributeMessage1: string;
+                groupAttributeMessage2: string;
+                groupAttributeMessageOIDC: string;
+                groupAttributeMessageSAML: string;
                 notifications: {
                     fetchConfigs: Notification;
                 };
@@ -293,6 +307,18 @@ export interface Extensions {
                 };
             };
         };
+        organizationInfo: {
+            heading: string;
+            subHeading: string;
+            orgId: {
+                label: string;
+                heading: string;
+                subHeading: string;
+            };
+            notifications: {
+                getConfiguration: Notification;
+            }
+        }
     };
     develop: {
         apiResource: {
@@ -310,6 +336,10 @@ export interface Extensions {
                 title: string;
             };
             addApiResourceButton: string;
+            businessAPI: {
+                header: string;
+                description: string;
+            };
             confirmations: {
                 deleteAPIResource: {
                     assertionHint: string;
@@ -324,10 +354,14 @@ export interface Extensions {
                     message: string;
                 };
             };
-            managementAPI: {
+            consoleFeature: {
                 header: string;
                 description: string;
             }
+            managementAPI: {
+                header: string;
+                description: string;
+            };
             notifications: {
                 deleteAPIResource: {
                     unauthorizedError: {
@@ -1104,6 +1138,19 @@ export interface Extensions {
                         skipURIs: string;
                     };
                 };
+                m2m: {
+                    configurations: {
+                        clientId: {
+                            hint: string;
+                        },
+                        clientSecret: {
+                            hint: string;
+                        },
+                        tokenEndpoint: string,
+                        scopes: string,
+                        tokenRequest: string
+                    }
+                }
             };
         };
         branding: {
@@ -1127,11 +1174,13 @@ export interface Extensions {
                 header: string;
                 revertBranding: {
                     actionTitle: string;
+                    disableHint: string;
                     header: string;
                     subheader: string;
                 };
                 unpublishBranding: {
                     actionTitle: string;
+                    disableHint: string;
                     header: string;
                     subheader: string;
                 };
@@ -1647,6 +1696,16 @@ export interface Extensions {
                         message: string;
                     };
                 };
+                customTextPreferenceDelete: {
+                    genericError: {
+                        description: string;
+                        message: string;
+                    },
+                    success: {
+                        description: string;
+                        message: string;
+                    }
+                };
                 fetch: {
                     customLayoutNotFound: {
                         description: string;
@@ -1693,8 +1752,19 @@ export interface Extensions {
                 };
             };
             pageHeader: {
+                application: string;
+                applicationBrandingtitle: string;
+                applicationBrandingDescription: string;
+                applicationListWarning: string;
+                backButtonText: string;
                 description: string;
+                organization: string;
+                organizationBrandingtitle: string;
+                selectApplication: string;
                 title: string;
+            };
+            pageResolution: {
+                hint: string;
             };
             publishToggle: {
                 hint: string;
@@ -1768,6 +1838,7 @@ export interface Extensions {
             heading: string;
             subHeading: string;
             description: string;
+            note: string;
             info: string;
             updateButton: string;
             sendTestMailButton: string;
@@ -1857,170 +1928,10 @@ export interface Extensions {
                 }
             };
         };
-        emailAndSMS: {
-            heading: {
-                heading: string;
-                onlySMSProvider: string;
-                onlyEmailProvider: string;
-            },
-            title: {
-                heading: string;
-                onlySMSProvider: string;
-                onlyEmailProvider: string;
-            },
-            description: {
-                description: string;
-                onlySMSProvider: string;
-                onlyEmailProvider: string;
-            }
-        };
-        smsProviders: {
+        notificationChannel: {
             heading: string;
-            subHeading: string;
+            title: string;
             description: string;
-            info: string;
-            updateButton: string;
-            sendTestSMSButton: string;
-            goBack: string
-            confirmationModal: {
-                header: string;
-                message: string;
-                content: string;
-                assertionHint: string;
-            };
-            dangerZoneGroup: {
-                header: string;
-                revertConfig: {
-                    heading: string;
-                    subHeading: string;
-                    actionTitle: string;
-                }
-            };
-            form: {
-                twilio: {
-                    subHeading: string;
-                    accountSID: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    authToken: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    sender: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    validations: {
-                        required: string;
-                    };
-                },
-                vonage: {
-                    subHeading: string;
-                    accountSID: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    authToken: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    sender: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    validations: {
-                        required: string;
-                    };
-                },
-                custom: {
-                    subHeading: string;
-                    providerName: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    providerUrl: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    },
-                    httpMethod: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    contentType: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    headers: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    payload: {
-                        label: string;
-                        placeholder: string;
-                        hint: string;
-                    };
-                    key: {
-                        label: string,
-                        placeholder: string,
-                        hint: string
-                    },
-                    secret: {
-                        label: string,
-                        placeholder: string,
-                        hint: string
-                    },
-                    sender: {
-                        label: string,
-                        placeholder: string,
-                        hint: string
-                    }
-                    validations: {
-                        required: string;
-                        methodInvalid: string;
-                        contentTypeInvalid: string;
-                    };
-                }
-            }
-            notifications: {
-                getConfiguration: {
-                    error: {
-                        description: string;
-                        message: string;
-                    };
-                };
-                deleteConfiguration: {
-                    success: {
-                        description: string;
-                        message: string;
-                    };
-                    error: {
-                        description: string;
-                        message: string;
-                    };
-                };
-                updateConfiguration: {
-                    success: {
-                        description: string;
-                        message: string;
-                    };
-                    error: {
-                        description: string;
-                        message: string;
-                    };
-                }
-            };
         };
         identityProviders: {
             apple: {
@@ -2083,8 +1994,11 @@ export interface Extensions {
                         labelEnable: string;
                         labelDisable: string;
                     };
-                    enableRequiredNote: {
-                        message: string;
+                    choreoAsSMSProvider: {
+                        title: string;
+                        enableRequiredNote: {
+                            message: string;
+                        },
                     };
                     errorNotifications: {
                         notificationSendersRetrievalError: {
@@ -2466,6 +2380,12 @@ export interface Extensions {
             };
         };
         monitor: {
+            logs: {
+                tabs: {
+                    audit: string,
+                    diagnostic: string
+                }
+            },
             filter: {
                 advancedSearch: {
                     attributes: {
@@ -2536,6 +2456,9 @@ export interface Extensions {
                 downloadButton: {
                     label : string;
                 };
+                viewButton: {
+                    label : string;
+                };
                 delayMessage: {
                     text: string;
                 }
@@ -2544,6 +2467,17 @@ export interface Extensions {
                 toolTips: {
                     seeMore: string;
                 };
+                headers: {
+                    recordedAt: string,
+                    actionId: string,
+                    targetId: string
+                },
+                logDataviewer : {
+                    panelName: string,
+                    download: string,
+                    copy: string,
+                    close: string
+                }
             };
             notifications: {
                 genericError: {
@@ -2570,6 +2504,20 @@ export interface Extensions {
                     title: string;
                 };
                 emptyResponse: {
+                    subtitle: {
+                        0: string;
+                        1: string;
+                    };
+                    title: string;
+                };
+                startTimeGreaterThanCurrentError: {
+                    subtitle: {
+                        0: string;
+                        1: string;
+                    };
+                    title: string;
+                };
+                endTimeGreaterThanStartTimeError: {
                     subtitle: {
                         0: string;
                         1: string;
@@ -2761,10 +2709,14 @@ export interface Extensions {
                 usernameType: string;
                 usernameTypeHint: string;
                 emailType: string;
-                alphanumericType: string;
-                usernameLength: string;
-                usernameLengthMin: string;
-                usernameLengthMax: string;
+                customType: string;
+                usernameLength: {
+                    0: string;
+                    1: string;
+                    2: string;
+                };
+                usernameAlphanumeric: string;
+                usernameSpecialCharsHint: string;
             };
             alternativeLoginIdentifierPage: {
                 pageTitle: string;
@@ -3005,6 +2957,7 @@ export interface Extensions {
                                     message: string;
                                 };
                                 description: string;
+                                docsDescription: string;
                                 title: string;
                             };
                             downloadAgent: {
@@ -3065,6 +3018,7 @@ export interface Extensions {
                     };
                     validation: {
                         password: string;
+                        confirmPassword: string;
                         passwordCase: string;
                         upperCase: string;
                         lowerCase: string;
@@ -3077,8 +3031,11 @@ export interface Extensions {
                             passwordValidation: string;
                         };
                         usernameHint: string;
+                        usernameSpecialCharHint: string;
                         usernameLength: string;
                         usernameSymbols: string;
+                        usernameSpecialCharSymbols: string;
+                        usernameEmpty: string;
                     };
                     summary: {
                         invitation: string;
@@ -3127,10 +3084,24 @@ export interface Extensions {
                     form: {
                         fields: {
                             enable: FormAttributes;
+                            enableSMSBasedRecovery: FormAttributes;
+                            enableEmailBasedRecovery: FormAttributes;
                             expiryTime: FormAttributes;
                             notifySuccess: FormAttributes;
+                            maxResendCount: FormAttributes;
+                            maxFailedAttemptCount: FormAttributes;
+                            smsOtpExpiryTime: FormAttributes;
+                            passwordRecoveryOtpUseUppercase: FormAttributes;
+                            passwordRecoveryOtpUseLowercase: FormAttributes;
+                            passwordRecoveryOtpUseNumeric: FormAttributes;
+                            passwordRecoveryOtpLength: FormAttributes;
                         };
                     };
+                    recoveryOptionSubHeadingEmailLink: string;
+                    recoveryOptionSubHeadingSMS: string;
+                    recoveryOptionHeading: string;
+                    otpConfigHeading: string;
+                    failedAttemptConfigHeading: string;
                     connectorDescription: string;
                     heading: string;
                     notification: {
@@ -3155,6 +3126,7 @@ export interface Extensions {
                         subSection1: string;
                         subSection2: string;
                         subSection3: string;
+                        subSection4: string;
                     };
                     connectorDescription: string;
                     heading: string;
@@ -3171,6 +3143,7 @@ export interface Extensions {
                             accountLockTime: FormAttributes;
                             enable: FormAttributes;
                             maxFailedAttempts: FormAttributes;
+                            notifyUserOnAccountLockIncrement: FormAttributes;
                         };
                     };
                     info: string;
@@ -3253,6 +3226,12 @@ export interface Extensions {
                         success: NotificationItem;
                     };
                     subHeading: string;
+                };
+                inviteUserToSetPassword: {
+                    notification: {
+                        error: NotificationItem;
+                        success: NotificationItem;
+                    };
                 };
             };
         };
@@ -3373,6 +3352,7 @@ export interface Extensions {
                     changePasswordModal: {
                         emailUnavailableWarning: string;
                         emailResetWarning: string;
+                        passwordResetConfigDisabled: string;
                     };
                 };
             };
@@ -3446,9 +3426,18 @@ export interface Extensions {
             }
         }
         invite: {
+            assignAdminUser: {
+                confirmationModal: {
+                    assertionHint: string;
+                    header: string;
+                    message: string;
+                };
+            };
             notifications: {
                 sendInvite: {
+                    inviteAlreadyExistsError: NotificationItem;
                     limitReachError: NotificationItem;
+                    userAlreadyExistsError: NotificationItem;
                 };
             };
         };

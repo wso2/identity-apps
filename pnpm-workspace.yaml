@@ -2,4 +2,5 @@ packages:
   - "apps/*"
   - "modules/*"
   - "identity-apps-core"
-  - "tests"
+  - "features"
+  - "features/*"

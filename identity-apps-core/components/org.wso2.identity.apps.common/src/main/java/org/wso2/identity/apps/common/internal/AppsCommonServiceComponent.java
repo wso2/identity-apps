@@ -41,10 +41,12 @@ import org.wso2.carbon.identity.oauth.listener.OAuthApplicationMgtListener;
 import org.wso2.carbon.identity.organization.management.application.OrgApplicationManager;
 import org.wso2.carbon.identity.organization.management.service.OrganizationManagementInitialize;
 import org.wso2.carbon.identity.role.v2.mgt.core.RoleManagementService;
+import org.wso2.carbon.identity.role.v2.mgt.core.listener.RoleManagementListener;
 import org.wso2.carbon.stratos.common.listeners.TenantMgtListener;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.identity.apps.common.listner.AppPortalApplicationMgtListener;
 import org.wso2.identity.apps.common.listner.AppPortalOAuthAppMgtListener;
+import org.wso2.identity.apps.common.listner.AppPortalRoleManagementListener;
 import org.wso2.identity.apps.common.listner.AppPortalTenantMgtListener;
 import org.wso2.identity.apps.common.util.AppPortalUtils;
 
@@ -103,6 +105,10 @@ public class AppsCommonServiceComponent {
                 ApplicationMgtListener applicationMgtListener = new AppPortalApplicationMgtListener(true);
                 bundleContext.registerService(ApplicationMgtListener.class.getName(), applicationMgtListener, null);
                 log.debug("AppPortalApplicationMgtListener registered successfully.");
+
+                RoleManagementListener roleManagementListener = new AppPortalRoleManagementListener(true);
+                bundleContext.registerService(RoleManagementListener.class.getName(), roleManagementListener, null);
+                log.debug("AppPortalRoleManagementListener registered successfully.");
             }
 
             if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {

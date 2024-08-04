@@ -30,4 +30,5 @@
 .ui.checkbox:not(.toggle, .radio) input[type="checkbox"]:checked~label:after {
     background: @primaryColor;
     color: @white;
+    border-radius: @checkboxBorderRadius;
 }

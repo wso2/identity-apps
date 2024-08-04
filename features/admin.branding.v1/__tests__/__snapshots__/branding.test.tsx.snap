@@ -1,0 +1,266 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test if the Branding page is working as expected <BrandingPage /> matches snapshot 1`] = `
+<div>
+  <div
+    class="layout page-layout branding-page"
+    data-componentid="branding-page-layout"
+    data-testid="page-layout"
+  >
+    <div
+      class="layout-content padded"
+    >
+      <div
+        class="page-header-wrapper"
+        data-componentid="branding-page-layout-page-header"
+        data-testid="page-layout-page-header"
+      >
+        <div
+          class="page-header-inner"
+        >
+          <h1
+            class="ui left aligned header page-header no-max-width"
+            data-componentid="branding-page-layout-page-header-text-wrapper"
+            data-testid="page-layout-page-header-text-wrapper"
+          >
+            <span
+              data-componentid="branding-page-layout-page-header-title"
+              data-testid="page-layout-page-header-title"
+            >
+              <div
+                class="title-container"
+              >
+                <div
+                  class="title-container-heading"
+                >
+                  extensions:develop.branding.pageHeader.title
+                </div>
+              </div>
+            </span>
+            <div
+              class="sub header sub-header"
+              data-componentid="branding-page-layout-page-header-sub-title"
+              data-testid="page-layout-page-header-sub-title"
+            >
+              <div
+                class="with-label"
+              >
+                extensions:develop.branding.pageHeader.description
+              </div>
+            </div>
+          </h1>
+        </div>
+      </div>
+      <div
+        class="ui hidden divider"
+      />
+      <div
+        class="ui horizontal segments basic branding-preference-tab-group"
+        data-componentid="branding-preference-tabs"
+      >
+        <div
+          class="ui basic segment"
+        >
+          <div
+            class="tabs resource-tabs attached"
+            data-componentid="branding-preference-tabs-forms"
+            data-testid="resource-tabs"
+            tabidentifierurlfrag=""
+          >
+            <div
+              class="ui top attached menu"
+            >
+              <a
+                class="active item"
+              >
+                extensions:develop.branding.tabs.general.label
+              </a>
+              <a
+                class="item"
+              >
+                extensions:develop.branding.tabs.design.label
+              </a>
+              <a
+                class="item"
+              >
+                extensions:develop.branding.tabs.advance.label
+              </a>
+              <a
+                class="item"
+              >
+                console:branding.tabs.text.label
+              </a>
+            </div>
+            <div
+              class="ui bottom attached segment active tab resource-tab-pane"
+              data-componentid="branding-preference-general-tab"
+              data-testid="resource-tab-pane"
+            >
+              <div
+                class="ui basic very padded segment preference-form-container"
+                data-componentid="branding-preference-general-tab-content-container"
+              >
+                <div
+                  class="ui placeholder"
+                >
+                  <div
+                    class="line very short"
+                  />
+                  <div
+                    class="image"
+                    style="height: 38px;"
+                  />
+                  <div
+                    class="line"
+                  />
+                  <div
+                    class="line"
+                  />
+                </div>
+                <div
+                  class="ui placeholder"
+                >
+                  <div
+                    class="line very short"
+                  />
+                  <div
+                    class="image"
+                    style="height: 38px;"
+                  />
+                  <div
+                    class="line"
+                  />
+                  <div
+                    class="line"
+                  />
+                </div>
+                <div
+                  class="ui placeholder"
+                >
+                  <div
+                    class="line very short"
+                  />
+                  <div
+                    class="image"
+                    style="height: 38px;"
+                  />
+                  <div
+                    class="line"
+                  />
+                  <div
+                    class="line"
+                  />
+                </div>
+              </div>
+              <div
+                class="ui bottom attached very padded segment sticky-action-container"
+                data-componentid="sticky-tab-action-panel"
+              >
+                <button
+                  arialabel="Branding preference form save button"
+                  class="ui small primary disabled button"
+                  data-componentid="branding-preference-general-details-form-submit-button"
+                  data-testid="primary-button"
+                  disabled=""
+                  tabindex="-1"
+                >
+                  console:branding.form.actions.save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="ui basic segment preview"
+        >
+          <div
+            class="tabs resource-tabs attached"
+            data-componentid="branding-preference-tabs-preview"
+            data-testid="resource-tabs"
+            tabidentifierurlfrag=""
+          >
+            <div
+              class="ui top attached menu"
+            >
+              <div
+                class="preview-title-bar"
+                index="0"
+              >
+                <div>
+                  console:branding.tabs.preview.label
+                </div>
+                <div
+                  class="preview-screen-selection"
+                >
+                  <div
+                    class="field dropdown branding-preference-custom-text-screen-dropdown"
+                  >
+                    <label>
+                      console:brandingCustomText.screenSelectDropdown.label
+                    </label>
+                    <div
+                      aria-expanded="false"
+                      arialabel="Branding text customization screen selection"
+                      class="ui selection dropdown"
+                      data-componentid="screen-dropdown"
+                      name="screen"
+                      role="listbox"
+                      tabindex="0"
+                    >
+                      <div
+                        aria-atomic="true"
+                        aria-live="polite"
+                        class="divider text"
+                        role="alert"
+                      >
+                        console:brandingCustomText.screenSelectDropdown.placeholder
+                      </div>
+                      <i
+                        aria-hidden="true"
+                        class="dropdown icon"
+                      />
+                      <div
+                        class="menu transition"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="ui bottom attached segment active tab resource-tab-pane preview-tab"
+              data-componentid="branding-preference-preview-tab"
+              data-testid="resource-tab-pane"
+            >
+              <div
+                class="branding-preference-preview-container"
+                data-componentid="branding-preference-preview"
+              >
+                <div
+                  class="ui placeholder branding-preference-preview-loader"
+                  data-componentid="branding-preference-preview-loader"
+                >
+                  <div
+                    class="image"
+                  />
+                </div>
+                <div
+                  class="ui iframe loading responsive branding-preference-preview-iframe"
+                  data-componentid="branding-preference-preview-iframe-wrapper"
+                  style="overflow: hidden; width: 0px;"
+                >
+                  <iframe
+                    data-componentid="branding-preference-preview-iframe"
+                    id="branding-preference-preview-iframe"
+                    style="transform: scale(0.5555555555555556); transform-origin: 0 0; width: 0px;"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

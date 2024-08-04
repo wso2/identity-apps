@@ -31,7 +31,7 @@ import { QueryParameters, Scopes } from "../addons";
 import { DynamicFieldInputTypes, FieldButtonTypes } from "../models";
 
 export type TextFieldProps = Partial<Omit<OuiTextFieldProps, "type" | "onChange">> & {
-    
+
     /**
      * The name of the text field.
      */
@@ -52,17 +52,17 @@ export type TextFieldProps = Partial<Omit<OuiTextFieldProps, "type" | "onChange"
 
 export const TextFieldAdapter = (props: FieldRenderProps<OuiTextFieldProps>): ReactElement => {
 
-    const { 
-        childFieldProps, 
+    const {
+        childFieldProps,
         placeholder,
         fullWidth = true,
-        input: { name, value, onChange, onBlur, ...restInput }, 
+        input: { name, value, onChange, onBlur, ...restInput },
         meta,
-        required, 
+        required,
         parentFormProps,
         showError = showErrorOnBlur,
         helperText,
-        label 
+        label
     } = props;
 
     const { error, submitError } = meta;
@@ -70,6 +70,7 @@ export const TextFieldAdapter = (props: FieldRenderProps<OuiTextFieldProps>): Re
 
     return (
         <TextField
+            name={ name }
             variant="outlined"
             placeholder={ placeholder }
             fullWidth={ fullWidth }
@@ -106,17 +107,17 @@ export const TextFieldAdapter = (props: FieldRenderProps<OuiTextFieldProps>): Re
 
 export const PasswordFieldAdapter = (props: FieldRenderProps<OuiTextFieldProps>): ReactElement => {
 
-    const { 
-        childFieldProps, 
+    const {
+        childFieldProps,
         placeholder,
         fullWidth = true,
-        input: { name, value, onChange, onBlur, ...restInput }, 
+        input: { name, value, onChange, onBlur, ...restInput },
         meta,
-        required, 
+        required,
         parentFormProps,
         showError = showErrorOnBlur,
         helperText,
-        label 
+        label
     } = props;
 
     const { error, submitError } = meta;
@@ -125,6 +126,7 @@ export const PasswordFieldAdapter = (props: FieldRenderProps<OuiTextFieldProps>)
     return (
         <TextField
             variant="outlined"
+            type="password"
             placeholder={ placeholder }
             fullWidth={ fullWidth }
             key={ childFieldProps?.testId }
@@ -318,6 +320,7 @@ export const CheckboxAdapter = (props: CheckboxProps): ReactElement => {
             { ...filteredRest }
             label={ childFieldProps?.label }
             name={ childFieldProps?.name }
+            checked={ input.checked }
             onChange={ (event: React.FormEvent<HTMLInputElement>, { checked }:any ) => {
                 if (childFieldProps?.listen && typeof childFieldProps.listen === "function") {
                     childFieldProps.listen(checked);

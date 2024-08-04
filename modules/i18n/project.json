@@ -1,6 +1,6 @@
 {
+    "name": "i18n",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "root": "modules/i18n",
     "sourceRoot": "modules/i18n/src",
     "projectType": "library",
     "generators": {},
@@ -11,19 +11,16 @@
     ],
     "targets": {
         "build": {
-            "executor": "@nrwl/workspace:run-commands",
-            "outputs": [
-                "{options.outputPath}"
-            ],
+            "executor": "nx:run-commands",
+            "outputs": ["{workspaceRoot}/modules/i18n/dist"],
             "options": {
-                "outputPath": "modules/i18n/dist",
                 "tsconfig": "modules/i18n/tsconfig.json",
                 "command": "pnpm build",
                 "cwd": "modules/i18n"
             }
         },
         "lint": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm lint",
                 "cwd": "modules/i18n",
@@ -31,9 +28,17 @@
             }
         },
         "test": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm test",
+                "cwd": "modules/i18n",
+                "parallel": false
+            }
+        },
+        "test-coverage": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm test -- --coverage --collect-coverage",
                 "cwd": "modules/i18n",
                 "parallel": false
             }

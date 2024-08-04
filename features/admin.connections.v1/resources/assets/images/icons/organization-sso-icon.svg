@@ -1,0 +1,21 @@
+<!--
+ * Copyright (c) 2024, WSO2 Inc. (http://www.wso2.com).
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg class="icon" id="organizatio-sso" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 2C1.22386 2 1 2.22386 1 2.5V5H5V2H1.5ZM1 9.5V6H5V9.5H1ZM1 10.5V13.5C1 13.7761 1.22386 14 1.5 14H2.5C2.77614 14 3 14.2239 3 14.5C3 14.7761 2.77614 15 2.5 15H1.5C0.671573 15 0 14.3284 0 13.5V2.5C0 1.67157 0.671573 1 1.5 1H5.5H9.5C10.3284 1 11 1.67157 11 2.5V5.8C11 6.07614 10.7761 6.3 10.5 6.3C10.2943 6.3 10.1177 6.17582 10.0409 5.99835C10.0274 5.99944 10.0138 6 10 6H6V10C6 10.2761 5.77614 10.5 5.5 10.5H1ZM10 5H6V2H9.5C9.77614 2 10 2.22386 10 2.5V5ZM12.5 12.5C13.8807 12.5 15 11.3807 15 10C15 8.61929 13.8807 7.5 12.5 7.5C11.1193 7.5 10 8.61929 10 10C10 11.3807 11.1193 12.5 12.5 12.5ZM12.5 13.5C14.433 13.5 16 11.933 16 10C16 8.067 14.433 6.5 12.5 6.5C10.567 6.5 9 8.067 9 10C9 10.2444 9.02505 10.483 9.07273 10.7132L5.69497 13.8039C5.57075 13.9175 5.5 14.0782 5.5 14.2465V15.4C5.5 15.7314 5.76863 16 6.1 16H7.905C8.05707 16 8.20346 15.9423 8.31459 15.8385L8.80958 15.3761C8.93105 15.2626 9 15.1038 9 14.9376V14.7025H9.57167C9.72374 14.7025 9.87013 14.6447 9.98125 14.5409L11.3155 13.2945C11.6855 13.4275 12.0843 13.5 12.5 13.5ZM10.3888 12.7918C10.0082 12.5036 9.68843 12.1393 9.45201 11.7216L6.5 14.4227V15H7.74724L8 14.7639V14.3025C8 13.9711 8.26863 13.7025 8.6 13.7025H9.4139L10.3888 12.7918Z" fill="black"/>
+</svg>

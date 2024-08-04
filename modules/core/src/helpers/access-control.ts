@@ -55,18 +55,17 @@ export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: str
  * @param feature - `FeatureAccessConfigInterface` Evaluating feature.
  * @param scopes - `string[]` Set of scopes to check.
  * @param allowedScopes - `string` Set of allowed scopes.
- * @param organzationType - `string` Organization type. This should be equals to the `OrganizationType` enum in
+ * @param organizationType - `string` Organization type. This should be equals to the `OrganizationType` enum in
  * `modules/common/src/constants/organization-constants.ts`.
- * @param isLegacyRuntimeDisabled - `boolean` Is legacy runtime disabled. This is used to ensure backward compatibility.
  *
  * @returns `boolean` True is scopes are enough and false if not.
+ * @deprecated This function is deprecated. Use the `useRequiredScopes` hook instead.
  */
 export const hasRequiredScopes = (
-    feature: FeatureAccessConfigInterface, 
-    scopes: string[], 
-    allowedScopes: string, 
-    organzationType?: string, 
-    isLegacyRuntimeEnabled?: boolean
+    feature: FeatureAccessConfigInterface,
+    scopes: string[],
+    allowedScopes: string,
+    organizationType?: string
 ): boolean => {
     const isDefined: boolean = feature?.scopes && !isEmpty(feature.scopes) && scopes && !isEmpty(scopes);
 
@@ -75,11 +74,13 @@ export const hasRequiredScopes = (
     }
 
     // TODO: Remove these variables once the hasRequiredScopes() function is moved as a hook.
-    const windowOrgType: string = window["AppUtils"].getOrganizationType();
-    const windowLegacyAuthzRuntime: boolean = window["AppUtils"]?.getConfig()?.legacyAuthzRuntime;
+    // Use window org type if the org type is not passed as a parameter.
+    // This was added as workaround to fix the issue with the delay to update the window object.
+    // TODO: Remove the reliance on the window object to provide a consistent experience.
+    const orgType: string = organizationType ?? window["AppUtils"]?.getOrganizationType();
 
     if (scopes instanceof Array) {
-        if (!windowLegacyAuthzRuntime && windowOrgType === OrganizationType.SUBORGANIZATION) {
+        if (orgType === OrganizationType.SUBORGANIZATION) {
             /**
              * If the organization type is `SUBORGANIZATION`, the `internal_` scopes should be replaced with
              * `internal_org_` scopes.
@@ -87,6 +88,8 @@ export const hasRequiredScopes = (
             const interal: string = "internal_";
             const internalOrg: string = "internal_org_";
             const internalLogin: string = "internal_login";
+            const consolePrefix: string = "console:";
+            const consoleOrgPrefix: string = `${ consolePrefix }org:`;
 
             return scopes.every((scope: string) => {
                 // If the scope begins with `internal_`, replace it with `internal_org_`.
@@ -94,18 +97,23 @@ export const hasRequiredScopes = (
                     scope = scope.replace(interal, internalOrg);
                 }
 
-                return AuthenticateUtils.hasScope(scope, allowedScopes); 
+                // If the scope begins with `console:`, replace it with `console:org:`
+                if (scope.startsWith(consolePrefix)) {
+                    scope = scope.replace(consolePrefix, consoleOrgPrefix);
+                }
+
+                return AuthenticateUtils.hasScope(scope, allowedScopes);
             });
         }
 
-        if (isLegacyRuntimeEnabled ||
-            !organzationType ||
-            organzationType === OrganizationType.SUPER_ORGANIZATION || 
-            organzationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
-            organzationType === OrganizationType.TENANT) {
-    
+        if (
+            !organizationType ||
+            organizationType === OrganizationType.SUPER_ORGANIZATION ||
+            organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+            organizationType === OrganizationType.TENANT) {
+
             return scopes.every((scope: string) => AuthenticateUtils.hasScope(scope, allowedScopes));
-        } 
+        }
     }
 
     return true;
@@ -120,15 +128,13 @@ export const hasRequiredScopes = (
  * @param featureConfig - `FeatureAccessConfigInterface` Feature configuration.
  * @param organzationType - `string` Organization type. This should be equals to the `OrganizationType` enum in
  * `modules/common/src/constants/organization-constants.ts`.
- * @param isLegacyRuntimeDisabled - `boolean` Is legacy runtime disabled. This is used to ensure backward compatibility.
  *
  * @returns `boolean` True is access is granted, false if not.
  */
 export const isPortalAccessGranted = <T = unknown>(
-    featureConfig: T, 
-    allowedScopes: string, 
-    organzationType?: string, 
-    isLegacyRuntimeDisabled?: boolean
+    featureConfig: T,
+    allowedScopes: string,
+    organzationType?: string
 ): boolean => {
     const isDefined: boolean = featureConfig && !isEmpty(featureConfig);
 
@@ -141,11 +147,11 @@ export const isPortalAccessGranted = <T = unknown>(
     for (const value of Object.values(featureConfig)) {
         const feature: FeatureAccessConfigInterface = value;
 
-        if (hasRequiredScopes(feature, 
-            feature?.scopes?.read, 
-            allowedScopes, 
-            organzationType, 
-            isLegacyRuntimeDisabled)) {
+        if (hasRequiredScopes(feature,
+            feature?.scopes?.read,
+            allowedScopes,
+            organzationType
+        )) {
             isAllowed = true;
 
             break;

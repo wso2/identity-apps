@@ -52,7 +52,7 @@
     if (isSaaSApp) {
     	modifiedAccessUrl = IdentityManagementEndpointUtil.getUserPortalUrl(accessUrl, tenantDomain);
     }
-    User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, isSaaSApp);
+    User user = IdentityManagementServiceUtil.getInstance().resolveUser(StringEscapeUtils.unescapeJava(username), tenantDomain, isSaaSApp);
 
     String sp = request.getParameter("sp");
     String spId = "";
@@ -95,6 +95,15 @@
     appProperty.setKey("spId");
     appProperty.setValue(spId);
     properties.add(appProperty);
+    Property appSpProperty = new Property();
+    appSpProperty.setKey("sp");
+    appSpProperty.setValue(sp);
+    properties.add(appSpProperty);
+    Property appIsAccessUrlAvailableProperty = new Property();
+    appIsAccessUrlAvailableProperty.setKey("isAccessUrlAvailable");
+    appIsAccessUrlAvailableProperty.setValue(String.valueOf(StringUtils.isNotBlank(modifiedAccessUrl)));
+    properties.add(appIsAccessUrlAvailableProperty);
+ 
     recoveryInitiatingRequest.setProperties(properties);
 
     try {

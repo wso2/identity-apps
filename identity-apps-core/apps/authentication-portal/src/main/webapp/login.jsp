@@ -30,6 +30,7 @@
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ENABLE_AUTHENTICATION_WITH_REST_API" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ERROR_WHILE_BUILDING_THE_ACCOUNT_RECOVERY_ENDPOINT_URL" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
+<%@ page import="org.wso2.carbon.CarbonConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CommonDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityProviderDataRetrievalClient" %>
@@ -43,6 +44,7 @@
 <%@ page import="org.apache.commons.collections.MapUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.model.AuthenticationRequestWrapper" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%@ include file="includes/localize.jsp" %>
@@ -69,6 +71,7 @@
     private static final String GITHUB_AUTHENTICATOR = "GithubAuthenticator";
     private static final String FACEBOOK_AUTHENTICATOR = "FacebookAuthenticator";
     private static final String OIDC_AUTHENTICATOR = "OpenIDConnectAuthenticator";
+    private static final String SSO_AUTHENTICATOR_NAME = "SSO";
     private static final String MICROSOFT_IDP = "Microsoft";
     private static final String ENTERPRISE_USER_LOGIN_AUTHENTICATOR = "EnterpriseIDPAuthenticator";
     private static final String ENTERPRISE_USER_LOGIN_ORG = "EnterpriseIDP_Org";
@@ -96,6 +99,8 @@
     String userType = request.getParameter("utype");
     String consoleURL = application.getInitParameter("ConsoleURL");
 
+    String isHostedExternally = application.getInitParameter("IsHostedExternally");
+
     if ((StringUtils.equals("WSO2_LOGIN_FOR_CONSOLE",appName)
             && !StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) {
         idpAuthenticatorMapping.put(ENTERPRISE_USER_LOGIN_ORG,ENTERPRISE_USER_LOGIN_AUTHENTICATOR);
@@ -103,41 +108,44 @@
 
 
     // Redirect to business user login page for tenanted access.
+    boolean enterpriseUserloginEnabled = false;
     if (StringUtils.equals("Console",  appName)
             && !StringUtils.equals(IdentityManagementEndpointConstants.SUPER_TENANT, userTenantDomain)
             && !StringUtils.equals(null, userTenantDomain)
             && !StringUtils.equals(userType, USER_TYPE_ASGARDEO)) {
 
-        boolean enterpriseUserloginEnabled = false;
         try {
 
             // TODO: need to use the "com.wso2.identity.asgardeo.enterprise.login.EnterpriseLoginRetrievalClient" client to retrieve value.
             // EnterpriseLoginRetrievalClient enterpriseLoginRetrievalClient = new EnterpriseLoginRetrievalClient();
             // enterpriseUserloginEnabled = enterpriseLoginRetrievalClient.isEnterpriseLoginEnabled(userTenantDomain);
 
-            CommonDataRetrievalClient commonDataRetrievalClient = new CommonDataRetrievalClient();
-            enterpriseUserloginEnabled = commonDataRetrievalClient.checkBooleanProperty(ENTERPRISE_API_RELATIVE_PATH + userTenantDomain,
-                                                              null, ENTERPRISE_LOGIN_KEY, false, false);
+            if (CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME != null && CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
+                CommonDataRetrievalClient commonDataRetrievalClient = new CommonDataRetrievalClient();
+                enterpriseUserloginEnabled = commonDataRetrievalClient.checkBooleanProperty(ENTERPRISE_API_RELATIVE_PATH + userTenantDomain,
+                                                                  null, ENTERPRISE_LOGIN_KEY, false, false);
+            }
         } catch (Exception e) {
             // Ignored and send the default value.
         }
 
-        if (enterpriseUserloginEnabled) {
-            %>
-              <script type="text/javascript">
-                document.location = "<%=oauth2AuthorizeURL%>?idp=<%=ENTERPRISE_USER_LOGIN_IDP%>" +
-                        "&authenticator=<%=ENTERPRISE_USER_LOGIN_AUTHENTICATOR%>" +
-                        "&fidp=EnterpriseIDP" + "&org=<%=userTenantDomain%>" +
-                        "&code_challenge_method=<%=Encode.forUriComponent(request.getParameter("code_challenge_method"))%>" +
-                        "&code_challenge=<%=Encode.forUriComponent(request.getParameter("code_challenge"))%>" +
-                        "&response_type=<%=Encode.forUriComponent(request.getParameter("response_type"))%>" +
-                        "&client_id=<%=Encode.forUriComponent(request.getParameter("client_id"))%>" +
-                        "&scope=<%=Encode.forUriComponent(request.getParameter("scope"))%>" +
-                        "&redirect_uri=<%=Encode.forUriComponent(request.getParameter("redirect_uri"))%>" +
-                        "&response_mode=<%=Encode.forUriComponent(request.getParameter("response_mode"))%>";
-              </script>
-            <%
-        }
+    }
+
+    if (enterpriseUserloginEnabled) {
+        %>
+          <script type="text/javascript">
+            document.location = "<%=oauth2AuthorizeURL%>?idp=<%=ENTERPRISE_USER_LOGIN_IDP%>" +
+                    "&authenticator=<%=ENTERPRISE_USER_LOGIN_AUTHENTICATOR%>" +
+                    "&fidp=EnterpriseIDP" + "&org=<%=userTenantDomain%>" +
+                    "&code_challenge_method=<%=Encode.forUriComponent(request.getParameter("code_challenge_method"))%>" +
+                    "&code_challenge=<%=Encode.forUriComponent(request.getParameter("code_challenge"))%>" +
+                    "&response_type=<%=Encode.forUriComponent(request.getParameter("response_type"))%>" +
+                    "&client_id=<%=Encode.forUriComponent(request.getParameter("client_id"))%>" +
+                    "&scope=<%=Encode.forUriComponent(request.getParameter("scope"))%>" +
+                    "&redirect_uri=<%=Encode.forUriComponent(request.getParameter("redirect_uri"))%>" +
+                    "&response_mode=<%=Encode.forUriComponent(request.getParameter("response_mode"))%>";
+          </script>
+        <%
     }
 
     String errorMessage = "authentication.failed.please.retry";
@@ -174,7 +182,6 @@
     if (localAuthenticatorNames.size() > 1 || idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1) {
         String baseURL;
         // Check whether authentication endpoint is hosted externally.
-        String isHostedExternally = application.getInitParameter("IsHostedExternally");
         if (Boolean.parseBoolean(isHostedExternally)) {
             String requestURI = request.getRequestURI();
             if (StringUtils.isNotBlank(requestURI)) {
@@ -195,7 +202,17 @@
 
         // Build the query string using the parameter map since the query string can contain fewer parameters
         // due to parameter filtering.
-        String queryParamString = AuthenticationEndpointUtil.resolveQueryString(request.getParameterMap());
+        Map<String, String[]> queryParamMap = request.getParameterMap();
+        Map<String, Object> authParamMap = ((AuthenticationRequestWrapper) request).getAuthParams();
+
+        // Remove `waitingConfigs` auth param from the query map since `internalWait` prompt related auth params
+        // doesn't need to be added to the multi-option uri.
+        if (authParamMap != null && !authParamMap.isEmpty() && queryParamMap != null && !queryParamMap.isEmpty()) {
+            if (authParamMap.containsKey("waitingConfigs") && authParamMap.containsKey("waitingType")) {
+                queryParamMap.remove("waitingConfigs");
+            }
+        }
+        String queryParamString = AuthenticationEndpointUtil.resolveQueryString(queryParamMap);
         multiOptionURIParam = "&multiOptionURI=" + Encode.forUriComponent(baseURL + queryParamString);
     }
 
@@ -272,8 +289,8 @@
         loginContextRequestUrl += "&tenantDomain=" + tenantDomain;
     }
 
-    String t = request.getParameter("t");
-    String ut = request.getParameter("ut");
+    String t = Encode.forUriComponent(request.getParameter("t"));
+    String ut = Encode.forUriComponent(request.getParameter("ut"));
     if (StringUtils.isNotBlank(t)) {
         loginContextRequestUrl += "&t=" + t;
     }
@@ -322,22 +339,32 @@
     String identityMgtEndpointContextURL = application.getInitParameter("IdentityManagementEndpointContextURL");
     String accountRegistrationEndpointContextURL = application.getInitParameter("AccountRegisterEndpointURL");
     String srURLEncodedURL = "";
-    Boolean isSelfSignUpEnabledInTenant = false;
-    Boolean isUsernameRecoveryEnabledInTenant = false;
-    Boolean isPasswordRecoveryEnabledInTenant = false;
+    Boolean isSelfSignUpEnabledInTenant;
+    Boolean isUsernameRecoveryEnabledInTenant;
+    Boolean isPasswordRecoveryEnabledInTenant;
 
-    try {
-        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
-        isSelfSignUpEnabledInTenant = preferenceRetrievalClient.checkSelfRegistration(userTenant);
-        isUsernameRecoveryEnabledInTenant = preferenceRetrievalClient.checkUsernameRecovery(userTenant);
-        isPasswordRecoveryEnabledInTenant = preferenceRetrievalClient.checkPasswordRecovery(userTenant);
-    } catch (PreferenceRetrievalClientException e) {
-        request.setAttribute("error", true);
-        request.setAttribute("errorMsg", AuthenticationEndpointUtil
-                        .i18n(resourceBundle, "something.went.wrong.contact.admin"));
-        IdentityManagementEndpointUtil.addErrorInformation(request, e);
-        request.getRequestDispatcher("error.jsp").forward(request, response);
-        return;
+    // Check whether authentication endpoint is hosted externally.
+    if (Boolean.parseBoolean(isHostedExternally)) {
+        isSelfSignUpEnabledInTenant = false;
+        isUsernameRecoveryEnabledInTenant = false;
+        isPasswordRecoveryEnabledInTenant = false;
+    } else {
+        try {
+            PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+            isSelfSignUpEnabledInTenant = preferenceRetrievalClient.checkSelfRegistration(userTenant);
+            if (isSelfSignUpEnabledInTenant && StringUtils.equals("Console", appName)) {
+                isSelfSignUpEnabledInTenant = false;
+            }
+            isUsernameRecoveryEnabledInTenant = preferenceRetrievalClient.checkUsernameRecovery(userTenant);
+            isPasswordRecoveryEnabledInTenant = preferenceRetrievalClient.checkPasswordRecovery(userTenant);
+        } catch (PreferenceRetrievalClientException e) {
+            request.setAttribute("error", true);
+            request.setAttribute("errorMsg", AuthenticationEndpointUtil
+                            .i18n(resourceBundle, "something.went.wrong.contact.admin"));
+            IdentityManagementEndpointUtil.addErrorInformation(request, e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
     }
 
     if (isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences) {
@@ -358,7 +385,13 @@
             accountRegistrationEndpointContextURL = identityMgtEndpointContextURL + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
         }
         // For self sign-up build the normal callback URL.
-        String srURI = ServiceURLBuilder.create().addPath(AUTHENTICATION_ENDPOINT_LOGIN).build().getAbsolutePublicURL();
+        String srURI;
+
+        if (Boolean.parseBoolean(isHostedExternally)) {
+            srURI = application.getInitParameter("IdentityManagementEndpointLoginURL");
+        } else {
+            srURI = ServiceURLBuilder.create().addPath(AUTHENTICATION_ENDPOINT_LOGIN).build().getAbsolutePublicURL();
+        }
         String srprmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
         String srURLWithoutEncoding = srURI + "?" + srprmstr;
         srURLEncodedURL= URLEncoder.encode(srURLWithoutEncoding, UTF_8);
@@ -366,7 +399,7 @@
 %>
 
 <%
-    String insightsAppIdentifier = request.getParameter("client_id");
+    String insightsAppIdentifier = Encode.forJavaScriptBlock(request.getParameter("client_id"));
     String insightsTenantIdentifier = userTenant;
 
     if (!Boolean.parseBoolean(request.getParameter(IS_SAAS_APP))) {
@@ -534,94 +567,6 @@
                         if ((hasLocalLoginOptions && localAuthenticatorNames.size() > 1) || (!hasLocalLoginOptions)
                                 || (hasLocalLoginOptions && idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1)) {
                     %>
-                    <%
-                    String clientId = request.getParameter("client_id");
-                    String urlParameters = "";
-                    if (!isSelfSignUpEnabledInTenant
-                            && StringUtils.isNotBlank(application.getInitParameter("AccountRegisterEndpointURL"))
-                            && (StringUtils.equals("CONSOLE",clientId)
-                            || (StringUtils.equals("MY_ACCOUNT",clientId)
-                            && StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT)))
-                            && !StringUtils.equals("true", promptAccountLinking)) {
-                            String recoveryEPAvailable = application.getInitParameter("EnableRecoveryEndpoint");
-                            String enableSelfSignUpEndpoint = application.getInitParameter("EnableSelfSignUpEndpoint");
-                            Boolean isRecoveryEPAvailable = false;
-                            Boolean isSelfSignUpEPAvailable = false;
-                            String urlEncodedURL = "";
-                            if (StringUtils.isNotBlank(recoveryEPAvailable)) {
-                                isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
-                            } else {
-                                isRecoveryEPAvailable = isRecoveryEPAvailable();
-                            }
-                            if (StringUtils.isNotBlank(enableSelfSignUpEndpoint)) {
-                                isSelfSignUpEPAvailable = Boolean.valueOf(enableSelfSignUpEndpoint);
-                            } else {
-                                isSelfSignUpEPAvailable = isSelfSignUpEPAvailable();
-                            }
-                            if (isRecoveryEPAvailable || isSelfSignUpEPAvailable) {
-                                if (StringUtils.equals("business-app", insightsAppIdentifier)) {
-                                    String scheme = request.getScheme();
-                                    String serverName = request.getServerName();
-                                    int serverPort = request.getServerPort();
-                                    String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
-                                    String prmstr = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
-                                    String urlWithoutEncoding = scheme + "://" +serverName + ":" + serverPort + uri + "?" + prmstr;
-                                    urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
-                                    urlParameters = prmstr;
-                                } else {
-                                    urlParameters = "utm_source=" + insightsAppIdentifier;
-                                }
-                                if (StringUtils.isBlank(accountRegistrationEndpointContextURL)) {
-                                    accountRegistrationEndpointContextURL = identityMgtEndpointContextURL + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
-                                }
-                            }
-                        %>
-                            <div class="mt-4 mb-4">
-                                <div class="mt-3 external-link-container text-small">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "dont.have.an.account")%>
-                                    <a
-                                        onclick="handleSignupClick()"
-                                        href="<%=getRegistrationUrl(accountRegistrationEndpointContextURL, urlEncodedURL, urlParameters)%>"
-                                        target="_self"
-                                        class="clickable-link"
-                                        rel="noopener noreferrer"
-                                        data-testid="login-page-early-signup-link"
-                                        style="cursor: pointer;"
-                                    >
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "register")%>
-                                    </a>
-                                </div>
-                            </div>
-                            <% }
-                            if (!StringUtils.equals("CONSOLE",clientId)
-                                    && !StringUtils.equals("MY_ACCOUNT",clientId) && !hasLocalLoginOptions && hasFederatedOptions &&
-                                    isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences) {
-                                    urlParameters = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
-                            %>
-                                    <div class="ui horizontal divider">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%>
-                                    </div>
-                                    <div class="mt-0">
-                                    <div class="buttons">
-                                        <button
-                                            type="button"
-                                            <% if(StringUtils.isNotBlank(selfSignUpOverrideURL)) { %>
-                                            onclick="window.location.href='<%=i18nLink(userLocale, selfSignUpOverrideURL)%>';"
-                                            <% } else { %>
-                                            onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>';"
-                                            <% } %>
-                                            class="ui large fluid button secondary"
-                                            id="registerLink"
-                                            role="button"
-                                            data-testid="login-page-create-account-button"
-                                        >
-                                            Create an account
-                                        </button>
-                                    </div>
-                                </div>
-                            <%
-                            }
-                            %>
                     <% if (localAuthenticatorNames.contains(BASIC_AUTHENTICATOR) ||
                             localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)) { %>
                     <div class="ui horizontal divider">
@@ -651,6 +596,9 @@
                                         String GOOGLE_CALLBACK_URL = "";
                                         boolean GOOGLE_ONE_TAP_ENABLED = false;
 
+                                        if ("Asgardeo Platform IDP".equals(idpName)) {
+                                            idpDisplayName = "Asgardeo";
+                                        }
                                         if (idpName.endsWith(".hub")) {
                                             isHubIdp = true;
                                             idpName = idpName.substring(0, idpName.length() - 4);
@@ -717,6 +665,10 @@
                                         String EXTERNAL_CONNECTION_PREFIX = "sign in with";
                                         if (StringUtils.startsWithIgnoreCase(idpDisplayName, EXTERNAL_CONNECTION_PREFIX)) {
                                             idpDisplayName = idpDisplayName.substring(EXTERNAL_CONNECTION_PREFIX.length());
+                                        }
+                                        // If IdP name is "SSO", need to handle as special case.
+                                        if (StringUtils.equalsIgnoreCase(idpName, SSO_AUTHENTICATOR_NAME)) {
+                                            imageURL = "libs/themes/default/assets/images/identity-providers/sso.svg";
                                         }
                             %>
                                 <% if (isHubIdp) { %>
@@ -903,7 +855,11 @@
                                         if (imageURL == null || imageURL.isEmpty()) {
                                             logoPath = "libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
                                         }
-                                        
+
+                                        if ("Asgardeo Platform IDP".equals(idpName)) {
+                                            logoPath = "libs/themes/wso2is/assets/images/identity-providers/asgardeo.svg";
+                                        }
+
                                         if (!imageURL.isEmpty() && imageURL.contains("assets/images/logos/")) {
                                             String[] imageURLSegements = imageURL.split("/");
                                             String logoFileName = imageURLSegements[imageURLSegements.length - 1];
@@ -917,14 +873,14 @@
                                                 id="icon-<%=iconId%>"
                                                 type="button"
                                                 class="ui button"
-                                                data-testid='login-page-sign-in-with-<%=Encode.forHtmlContent(idpName)%>'
+                                                data-testid='login-page-sign-in-with-<%=Encode.forHtmlAttribute(idpName)%>'
                                                 onclick="handleNoDomain(this,
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
                                                 >
                                                     <img
                                                         role="presentation"
-                                                        alt="sign-in-with-<%=Encode.forHtmlContent(idpName)%> icon"
+                                                        alt="sign-in-with-<%=Encode.forHtmlAttribute(idpName)%> icon"
                                                         class="ui image"
                                                         src="<%=Encode.forHtmlAttribute(logoPath)%>">
                                                     <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpDisplayName)%></span>
@@ -1034,7 +990,10 @@
                                             src="libs/themes/default/assets/images/icons/outline-icons/clock-outline.svg"
                                             alt="TOTP Logo"
                                             role="presentation">
-                                        <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.authenticator")%></span>
+                                        <span>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp")%>
+                                        </span>
                                     </button>
                                 </div>
                             </div>
@@ -1055,7 +1014,10 @@
                                                 'sms-otp-authenticator')"
                                         >
                                         <img class="ui image" src="libs/themes/default/assets/images/icons/sms-icon.svg">
-                                        <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sms-otp-authenticator.authenticator")%></span>
+                                        <span>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sms.otp")%>
+                                        </span>
                                     </button>
                                 </div>
                             </div>
@@ -1080,7 +1042,10 @@
                                             src="libs/themes/default/assets/images/icons/solid-icons/email-solid.svg"
                                             alt="Email OTP Logo"
                                             role="presentation">
-                                        <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "email.otp.authenticator")%></span>
+                                        <span>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "email.otp")%>
+                                        </span>
                                     </button>
                                 </div>
                             </div>
@@ -1102,8 +1067,11 @@
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(ENTERPRISE_USER_LOGIN_AUTHENTICATOR))%>',
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(userTenantDomain))%>')"
                                                     >
-                                                        <img class="ui image" src="libs/themes/default/assets/images/branding/asgardeo-trifacta.svg">
-                                                        <span><%=Encode.forHtmlContent("Continue With Asgardeo")%></span>
+                                                        <img class="ui image" src="libs/themes/wso2is/assets/images/branding/asgardeo-trifacta.svg">
+                                                        <span>
+                                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue.with")%>
+                                                            <%=Encode.forHtmlContent("Asgardeo")%>
+                                                        </span>
                                                 </button>
                                             </div>
                                         </div>
@@ -1121,7 +1089,10 @@
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(userTenantDomain))%>')"
                                                     >
                                                         <img class="ui image" src="libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg">
-                                                        <span><%=Encode.forHtmlContent("Continue With Organization")%></span>
+                                                        <span>
+                                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue.with")%>
+                                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "organization")%>
+                                                        </span>
                                                 </button>
                                             </div>
                                         </div>
@@ -1130,6 +1101,100 @@
                             </div>
                         </div>
                     <% } %>
+
+                    <%
+                    String clientId = Encode.forHtmlAttribute(request.getParameter("client_id"));
+                    String urlParameters = "";
+                    if (
+                        !isSelfSignUpEnabledInTenant
+                        && StringUtils.isNotBlank(application.getInitParameter("AccountRegisterEndpointURL"))
+                        && (
+                            StringUtils.equals("CONSOLE",clientId)
+                            || (
+                                StringUtils.equals("MY_ACCOUNT",clientId)
+                                && StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT)
+                            )
+                        )
+                        && !StringUtils.equals("true", promptAccountLinking)) {
+                            String recoveryEPAvailable = application.getInitParameter("EnableRecoveryEndpoint");
+                            String enableSelfSignUpEndpoint = application.getInitParameter("EnableSelfSignUpEndpoint");
+                            Boolean isRecoveryEPAvailable = false;
+                            Boolean isSelfSignUpEPAvailable = false;
+                            String urlEncodedURL = "";
+                            if (StringUtils.isNotBlank(recoveryEPAvailable)) {
+                                isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
+                            } else {
+                                isRecoveryEPAvailable = isRecoveryEPAvailable();
+                            }
+                            if (StringUtils.isNotBlank(enableSelfSignUpEndpoint)) {
+                                isSelfSignUpEPAvailable = Boolean.valueOf(enableSelfSignUpEndpoint);
+                            } else {
+                                isSelfSignUpEPAvailable = isSelfSignUpEPAvailable();
+                            }
+                            if (isRecoveryEPAvailable || isSelfSignUpEPAvailable) {
+                                if (StringUtils.equals("business-app", insightsAppIdentifier)) {
+                                    String scheme = request.getScheme();
+                                    String serverName = request.getServerName();
+                                    int serverPort = request.getServerPort();
+                                    String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
+                                    String prmstr = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
+                                    String urlWithoutEncoding = scheme + "://" +serverName + ":" + serverPort + uri + "?" + prmstr;
+                                    urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
+                                    urlParameters = prmstr;
+                                } else {
+                                    urlParameters = "utm_source=" + insightsAppIdentifier;
+                                }
+                                if (StringUtils.isBlank(accountRegistrationEndpointContextURL)) {
+                                    accountRegistrationEndpointContextURL = identityMgtEndpointContextURL + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
+                                }
+                            }
+                        %>
+                            <div class="mt-4 mb-4">
+                                <div class="mt-3 external-link-container text-small">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "dont.have.an.account")%>
+                                    <a
+                                        onclick="handleSignupClick()"
+                                        href="<%=getRegistrationUrl(accountRegistrationEndpointContextURL, urlEncodedURL, urlParameters)%>"
+                                        target="_self"
+                                        class="clickable-link"
+                                        rel="noopener noreferrer"
+                                        data-testid="login-page-early-signup-link"
+                                        style="cursor: pointer;"
+                                    >
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "register")%>
+                                    </a>
+                                </div>
+                            </div>
+                        <% }
+                        if (
+                            !StringUtils.equals("CONSOLE",clientId)
+                            && !StringUtils.equals("MY_ACCOUNT",clientId) && !hasLocalLoginOptions && hasFederatedOptions &&
+                            isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences
+                        ) {
+                                urlParameters = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
+                        %>
+                                <div class="ui horizontal divider">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%>
+                                </div>
+                                <div class="mt-0">
+                                <div class="buttons">
+                                    <button
+                                        type="button"
+                                        <% if(StringUtils.isNotBlank(selfSignUpOverrideURL)) { %>
+                                        onclick="window.location.href='<%=i18nLink(userLocale, selfSignUpOverrideURL)%>';"
+                                        <% } else { %>
+                                        onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>';"
+                                        <% } %>
+                                        class="ui large fluid button secondary"
+                                        id="registerLink"
+                                        role="button"
+                                        data-testid="login-page-create-account-button"
+                                    >
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.an.account")%>
+                                    </button>
+                                </div>
+                            </div>
+                        <% } %>
                 </div>
             </div>
         </layout:component>

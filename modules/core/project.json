@@ -1,6 +1,6 @@
 {
+    "name": "core",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "root": "modules/core",
     "sourceRoot": "modules/core/src",
     "projectType": "library",
     "generators": {},
@@ -8,19 +8,16 @@
     "tags": [],
     "targets": {
         "build": {
-            "executor": "@nrwl/workspace:run-commands",
-            "outputs": [
-                "{options.outputPath}"
-            ],
+            "executor": "nx:run-commands",
+            "outputs": ["{workspaceRoot}/modules/core/dist"],
             "options": {
-                "outputPath": "modules/core/dist",
                 "tsconfig": "modules/core/tsconfig.json",
                 "command": "pnpm build",
                 "cwd": "modules/core"
             }
         },
         "lint": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm lint",
                 "cwd": "modules/core",
@@ -28,9 +25,17 @@
             }
         },
         "test": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm test",
+                "cwd": "modules/core",
+                "parallel": false
+            }
+        },
+        "test-coverage": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm test:coverage",
                 "cwd": "modules/core",
                 "parallel": false
             }

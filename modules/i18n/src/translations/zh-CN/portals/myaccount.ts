@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,6 +26,45 @@ import { MyAccountNS } from "../../../models";
 export const myAccount: MyAccountNS = {
     components: {
         "accountRecovery": {
+            SMSRecovery: {
+                descriptions: {
+                    add: "添加或更新恢复手机号码。",
+                    emptyMobile: "您需要配置您的手机号码才能进行 SMS-OTP 恢复。",
+                    update: "更新恢复手机号码 ({{mobile}})",
+                    view: "查看恢复手机号码 ({{mobile}})"
+                },
+                forms: {
+                    mobileResetForm: {
+                        inputs: {
+                            mobile: {
+                                label: "手机号码",
+                                placeholder: "输入恢复手机号码。",
+                                validations: {
+                                    empty: "请输入手机号码。",
+                                    invalidFormat: "手机号码格式不正确。"
+                                }
+                            }
+                        }
+                    }
+                },
+                heading: "SMS 恢复",
+                notifications: {
+                    updateMobile: {
+                        error: {
+                            description: "{{description}}",
+                            message: "更新恢复手机号码时出错。"
+                        },
+                        genericError: {
+                            description: "更新恢复手机号码时发生错误",
+                            message: "出现了一些问题"
+                        },
+                        success: {
+                            description: "用户资料中的手机号码已成功更新",
+                            message: "手机号码更新成功"
+                        }
+                    }
+                }
+            },
             "codeRecovery": {
                 "descriptions": {
                     "add": "添加或更新代码恢复选项"
@@ -872,7 +911,7 @@ export const myAccount: MyAccountNS = {
                 "descriptions": {
                     "hint": "您将收到包含一次性验证代码的短信"
                 },
-                "heading": "短信号码",
+                "heading": "手机号码",
                 "notifications": {
                     "updateMobile": {
                         "error": {
@@ -1445,6 +1484,24 @@ export const myAccount: MyAccountNS = {
                     }
                 }
             }
+        },
+        verificationOnUpdate: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "验证更新首选项时出错"
+                    },
+                    genericError: {
+                        description: "验证更新首选项时发生错误",
+                        message: "出了些问题"
+                    },
+                    success: {
+                        description: "已成功检索更新首选项的验证",
+                        message: "验证更新偏好检索成功"
+                    }
+                }
+            }
         }
     },
     "modals": {
@@ -1616,7 +1673,7 @@ export const myAccount: MyAccountNS = {
             "heading": "创建密码"
         },
         "federatedAssociations": {
-            "description": "查看与此帐户相关的其他身份提供商的帐户",
+            "description": "通过与此帐户关联的其他连接查看您的帐户",
             "heading": "链接的社会帐户"
         },
         "linkedAccounts": {

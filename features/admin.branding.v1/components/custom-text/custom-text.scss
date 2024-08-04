@@ -1,0 +1,94 @@
+.branding-preference-custom-text {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: inherit;
+
+    @media (max-width: 800px) {
+        overflow: visible;
+    }
+
+    .branding-preference-custom-text-static-header {
+        padding: 3em;
+        background: linear-gradient(180deg, #ffffff 0%, #f7f7f9 100%);
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        justify-content: flex-start;
+        gap: 20px;
+        border-bottom: 1px solid var(--oxygen-palette-divider);
+        flex-wrap: wrap;
+
+        > form {
+            flex: 1;
+        }
+
+        .branding-preference-custom-text-screen-dropdown, .branding-preference-custom-text-locale-dropdown {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+
+            > label {
+                margin: 0 0 0.28571429rem 0;
+
+                &::after {
+                    margin: -0.2em 0 0 0.2em;
+                    content: '*';
+                    color: #e53535;
+                }
+            }
+        }
+    }
+
+    .branding-preference-custom-text-content {
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: inherit;
+
+        .oxygen-tab-panel {
+            flex-grow: 1;
+            overflow: auto;
+            padding: 0;
+
+            .branding-preference-custom-text-fields {
+                padding: 3em;
+                max-width: 650px;
+
+                .oxygen-text-field {
+                    &:not(:first-child) {
+                        padding-top: 1rem;
+                    }
+
+                    &:not(:last-child) {
+                        padding-bottom: 1rem;
+                    }
+
+                    .MuiFormHelperText-root {
+                        margin-left: 0;
+
+                        .ui-hint {
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+
+                .skeletons {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+
+                    &:not(:first-child) {
+                        margin-top: 45px;
+                    }
+                }
+            }
+
+            &.json-view {
+                > .oxygen-box {
+                    display: contents;
+                }
+            }
+        }
+    }
+}

@@ -23,11 +23,11 @@ Let's see how we can configure LinkedIn connector in Console.
 
 4. Login to Console (https://localhost:9443/console)
 
-5. Navigate to `Develop > Identity Providers > New Identity Provider` and create an IdP with the `Expert Mode` IdP template.
+5. Navigate to `Connections > Create Connection` and create a Connection with the `Custom Connector` Connection template.
 
-    ![Create IdP with Expert Mode](./assets/create-idp-with-expert-mode.png)
+    ![Create Connection with Custom Connector](./assets/create-idp-with-expert-mode.png)
 
-6. Once the IdP is created, navigate to the `Settings` tab and click on `Add Authenticator` button.
+6. Once the Connection is created, navigate to the `Settings` tab and click on `New Authenticator` button.
 
 7. Select `LinkedIn` from the authenticator selection and proceed with configuration.
 

@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2024, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -19,12 +19,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.base.MultitenantConstants" %>
 <%@ page import="org.wso2.carbon.identity.base.IdentityRuntimeException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.NotificationApi" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.CodeValidationRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
 <%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
@@ -52,17 +54,44 @@
         return;
     }
 
+    String errorKey = request.getParameterMap().containsKey("errorKey") 
+    	? request.getParameter("errorKey") 
+    	: StringUtils.EMPTY;
+    errorKey = Encode.forJava(errorKey);
+    
+    if (StringUtils.isNotBlank(errorKey)) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, errorKey));
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
+
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
+    String sp = Encode.forJava(request.getParameter("sp"));
+    String spAccessUrl = "";
+    String orgId = request.getParameter("orgid");
     if (StringUtils.isBlank(callback)) {
         callback = request.getParameter("redirect_uri");
+    }
+
+    try {
+        if (StringUtils.isNotBlank(sp)) {
+            ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
+            spAccessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain,sp);
+        }
+    } catch (Exception e) {
+        // Ignored.
     }
 
     boolean passwordExpired = Boolean.parseBoolean(request.getParameter("passwordExpired"));
 
     Boolean isValidCallBackURL = false;
     try {
-        if (StringUtils.isNotBlank(callback)) {
+        if (StringUtils.isNotBlank(spAccessUrl)) {
+            // Disregard callbackURL regex validation when accessURL is configured in the application.
+            isValidCallBackURL = true;
+        } else if (StringUtils.isNotBlank(callback)) {
             PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
             isValidCallBackURL = preferenceRetrievalClient.checkIfRecoveryCallbackURLValid(tenantDomain,callback);
         }
@@ -127,6 +156,8 @@
         request.setAttribute("callback", callback);
         request.setAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN, tenantDomain);
         request.setAttribute("passwordExpired", passwordExpired);
+        request.setAttribute("sp", sp);
+        request.setAttribute("orgid", orgId);
         request.getRequestDispatcher("passwordreset.do").forward(request, response);
     } else {
         request.setAttribute("error", true);

@@ -3,7 +3,7 @@
         "apps/*",
         "identity-apps-core",
         "modules/*",
-        "tests"
+        "features"
     ],
     "version": "2.0.0"
 }

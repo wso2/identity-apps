@@ -78,6 +78,11 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("isSelfRegistrationUsernameRequestPage", true);
+%>
+
 <%
     String BASIC_AUTHENTICATOR = "BasicAuthenticator";
     String OPEN_ID_AUTHENTICATOR = "OpenIDAuthenticator";
@@ -86,6 +91,7 @@
     String FACEBOOK_AUTHENTICATOR = "FacebookAuthenticator";
     String OIDC_AUTHENTICATOR = "OpenIDConnectAuthenticator";
     String SSO_AUTHENTICATOR = "OrganizationAuthenticator";
+    String SSO_AUTHENTICATOR_NAME = "SSO";
     String commonauthURL = "../commonauth";
 
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -178,6 +184,7 @@
     boolean isLocal = false;
     boolean isFederated = false;
     boolean isBasic = false;
+    boolean isSSOLoginTheOnlyAuthenticatorConfigured = false;
     // Enable basic account creation flow if there are no authenticators configured.
     if (configuredAuthenticators == null) {
         isBasic = true;
@@ -206,6 +213,11 @@
                 }
             }
         }
+    }
+    if (isFederated && federatedAuthenticators.length() == 1) {
+        JSONObject onlyAvailableFederatedAuthenticator = (JSONObject) federatedAuthenticators.get(0);
+        String authenticatorType = (String) onlyAvailableFederatedAuthenticator.get("type");
+        isSSOLoginTheOnlyAuthenticatorConfigured = authenticatorType.equals(SSO_AUTHENTICATOR);
     }
 
     if (request.getParameter(Constants.MISSING_CLAIMS) != null) {
@@ -415,6 +427,77 @@
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection" >
+        <% if(skipSignUpEnableCheck) {%>
+            <div class="ui segment">
+                <h3 class="ui header">
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Initiate.sign.up")%>
+                </h3>
+                <div class="ui negative message" id="error-msg" hidden="hidden"></div>
+                <% if (error) { %>
+                <div class="ui negative message" id="server-error-msg">
+                    <%= IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg) %>
+                </div>
+                <% } %>
+                <div class="ui divider hidden"></div>
+                <div class="segment-form">
+                    <form class="ui large form" action="signup.do" method="post" id="register">
+                        <div class="field">
+                            <label for="username">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                    "Enter.your.username.here")%>
+                            </label>
+                            <input id="username" name="username" type="text" required
+                                <% if(skipSignUpEnableCheck) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
+                        </div>
+                        <% if (isSaaSApp) { %>
+                        <p class="ui tiny compact info message">
+                            <i class="icon info circle"></i>
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                    "If.you.specify.tenant.domain.you.registered.under.super.tenant")%>
+                        </p>
+                        <% } %>
+                        <input id="callback" name="callback" type="hidden" value="<%=callback%>"
+                               class="form-control" required>
+                        <% Map<String, String[]> requestMap = request.getParameterMap();
+                            for (Map.Entry<String, String[]> entry : requestMap.entrySet()) {
+                                String key = Encode.forHtmlAttribute(entry.getKey());
+                                String value = Encode.forHtmlAttribute(entry.getValue()[0]);
+                                if (StringUtils.equalsIgnoreCase("reCaptcha", key)) {
+                                    continue;
+                                } %>
+                        <div class="field">
+                            <input id="<%= key%>" name="<%= key%>" type="hidden"
+                                   value="<%=value%>" class="form-control">
+                        </div>
+                        <% } %>
+                        <%
+                            if (reCaptchaEnabled) {
+                                String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                        %>
+                        <div class="field">
+                            <div class="g-recaptcha"
+                                data-size="invisible"
+                                data-callback="onCompleted"
+                                data-action="register"
+                                data-sitekey="<%=Encode.forHtmlContent(reCaptchaKey)%>"
+                            >
+                            </div>
+                        </div>
+                        <% }  %>
+                        <div class="ui divider hidden"></div>
+                        <div class="align-right buttons">
+                            <button id="registrationSubmit" class="ui primary fluid large button mb-2" type="submit">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                    "Proceed.to.self.register")%>
+                            </button>
+                            <a href="javascript:goBack()" class="ui button secondary fluid large button">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        <% } else {%>
             <div class="ui segment">
                 <h3 class="ui header" data-testid="self-registration-username-request-page-header">
                     <%=i18n(recoveryResourceBundle, customText, "sign.up.heading")%>
@@ -467,6 +550,10 @@
                         String EXTERNAL_CONNECTION_PREFIX = "sign in with";
                         if (StringUtils.startsWithIgnoreCase(name, EXTERNAL_CONNECTION_PREFIX)) {
                             displayName = name.substring(EXTERNAL_CONNECTION_PREFIX.length());
+                        }
+                        // If IdP name is "SSO", need to handle as special case.
+                        if (StringUtils.equalsIgnoreCase(name, SSO_AUTHENTICATOR_NAME)) {
+                            imageURL = "libs/themes/default/assets/images/identity-providers/sso.svg";
                         }
 
                         if (StringUtils.equals(type,GOOGLE_AUTHENTICATOR)) {
@@ -578,12 +665,14 @@
                             <a href="<%= StringEscapeUtils.escapeHtml4(termsOfUseURL) %>" target="_blank"
                             data-testid="registration-form-tos-link"
                             rel="noopener noreferrer">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "toc")%></a>
+                                <%=i18n(recoveryResourceBundle, customText, "terms.of.service")%>
+                            </a>
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "and")%>
                             <a href="<%= StringEscapeUtils.escapeHtml4(privacyPolicyURL) %>" target="_blank"
                             data-testid="registration-form-privacy-link"
                             rel="noopener noreferrer">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Privacy.policy")%></a>
+                                <%=i18n(recoveryResourceBundle, customText, "privacy.policy")%>
+                            </a>
                         </p>
                         <%
                             } else if (StringUtils.isNotBlank(termsOfUseURL)) {
@@ -592,7 +681,7 @@
                             <a href="<%= StringEscapeUtils.escapeHtml4(termsOfUseURL) %>" target="_blank"
                                 data-testid="registration-form-tos-link" rel="noopener noreferrer"
                             >
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "toc")%>
+                                <%=i18n(recoveryResourceBundle, customText, "terms.of.service")%>
                             </a>
                         </p>
                         <%
@@ -602,7 +691,7 @@
                             <a href="<%= StringEscapeUtils.escapeHtml4(privacyPolicyURL) %>" target="_blank"
                                 data-testid="registration-form-privacy-link" rel="noopener noreferrer"
                             >
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Privacy.policy")%>
+                                <%=i18n(recoveryResourceBundle, customText, "privacy.policy")%>
                             </a>
                         </p>
                         <%
@@ -1092,13 +1181,13 @@
                                         <a href="<%= StringEscapeUtils.escapeHtml4(termsOfUseURL) %>" target="_blank"
                                             data-testid="registration-form-tos-link" rel="noopener noreferrer"
                                         >
-                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "toc")%>
+                                            <%=i18n(recoveryResourceBundle, customText, "terms.of.service")%>
                                         </a>
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "and")%>
                                         <a href="<%= StringEscapeUtils.escapeHtml4(privacyPolicyURL) %>" target="_blank"
                                             data-testid="registration-form-privacy-link" rel="noopener noreferrer"
                                         >
-                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Privacy.policy")%>
+                                            <%=i18n(recoveryResourceBundle, customText, "privacy.policy")%>
                                         </a>
                                     </p>
                                     <%
@@ -1109,7 +1198,7 @@
                                         <a href="<%= StringEscapeUtils.escapeHtml4(termsOfUseURL) %>" target="_blank"
                                             data-testid="registration-form-tos-link" rel="noopener noreferrer"
                                         >
-                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "toc")%>
+                                            <%=i18n(recoveryResourceBundle, customText, "terms.of.service")%>
                                         </a>
                                     </p>
                                     <%
@@ -1120,7 +1209,7 @@
                                         <a href="<%= StringEscapeUtils.escapeHtml4(privacyPolicyURL) %>" target="_blank"
                                             data-testid="registration-form-privacy-link" rel="noopener noreferrer"
                                         >
-                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Privacy.policy")%>
+                                            <%=i18n(recoveryResourceBundle, customText, "privacy.policy")%>
                                         </a>
                                     </p>
                                     <%
@@ -1184,6 +1273,7 @@
                     </form>
                 </div>
             </div>
+        <% }%>
         </layout:component>
         <layout:component componentName="ProductFooter">
             <%-- product-footer --%>
@@ -1212,6 +1302,8 @@
     <% } %>
 
     <script>
+        const ALPHANUMERIC_USERNAME_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/;
+        const USERNAME_WITH_SPECIAL_CHARS_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$&'+\\=^.{|}~-]+$/;
         var registrationDataKey = "registrationData";
         var passwordField = $("#passwordUserInput");
         var $registerForm = $("#register");
@@ -1277,13 +1369,23 @@
 
         // Prepare the alphanumeric username message text.
         var alphanumericUsernameText = $("#alphanumeric-username-msg-text");
-        alphanumericUsernameText.text(
-            "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.alphanumeric")%>"
-            + " " + (usernameConfig?.minLength ?? 3) + " "
-            + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "to")%>"
-            + " " + (usernameConfig.maxLength ?? 255) + " "
-            + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters.including.one.letter")%>"
-        );
+        if (usernameConfig.enableSpecialCharacters) {
+            alphanumericUsernameText.html(
+                "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.between")%>"
+                + " " + (usernameConfig?.minLength ?? 3) + " "
+                + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "to")%>"
+                + " " + (usernameConfig.maxLength ?? 255) + " "
+                + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters.may.contain")%>"
+            );
+        } else {
+            alphanumericUsernameText.text(
+                "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.alphanumeric")%>"
+                + " " + (usernameConfig?.minLength ?? 3) + " "
+                + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "to")%>"
+                + " " + (usernameConfig.maxLength ?? 255) + " "
+                + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters.including.one.letter")%>"
+            );
+        }
         if (!<%=isUsernameValidationEnabled%>) {
             $("#alphanumeric-username-msg").hide();
         }
@@ -1420,30 +1522,23 @@
             %>
 
             // Dynamically render the configured authenticators.
-            var hasLocal = false;
             var hasFederated = false;
             var isBasicForm = true;
+            var isSSOLoginTheOnlyAuthenticatorConfigured = <%=isSSOLoginTheOnlyAuthenticatorConfigured%>;
             try {
-                var hasLocal=JSON.parse(<%=isLocal%>);
                 var hasFederated = JSON.parse(<%=isFederated%>);
                 var isBasicForm = JSON.parse(<%=isBasic%>);
             } catch(error) {
                 // Do nothing.
             }
 
-            if (hasLocal & hasFederated) {
+            if (hasFederated & !isSSOLoginTheOnlyAuthenticatorConfigured) {
                 $("#continue-with-email").show();
-                $("#federated-authenticators").show();
-            } else if (hasFederated) {
                 $("#federated-authenticators").show();
             } else {
                 $("#continue-with-email").hide();
                 $("#federated-authenticators").hide();
-                if (hasLocal || isBasicForm) {
-                    $("#basic-form").show();
-                } else {
-                    $("#basic-form").hide();
-                }
+                $("#basic-form").show();
             }
 
             var container;
@@ -1573,21 +1668,6 @@
                             error_msg = $("#server-error-msg");
                         }
 
-                        <%
-                        if(reCaptchaEnabled) {
-                            %>
-                            var resp = $("[name='g-recaptcha-response']")[0].value;
-                            if (resp.trim() == '') {
-                                error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                    "Please.select.reCaptcha")%>");
-                                error_msg.show();
-                                $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
-                                validInput = false;
-                            }
-                            <%
-                        }
-                        %>
-
                         // If the input is not valid,
                         // This will return false and prevent form submission.
                         if (!validInput) {
@@ -1690,20 +1770,6 @@
                     $("#error-msg").hide();
                     error_msg = $("#server-error-msg");
                 }
-                <%
-                    if(reCaptchaEnabled) {
-                        %>
-                        var resp = $("[name='g-recaptcha-response']")[0].value;
-                        if (resp.trim() == '') {
-                            error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                "Please.select.reCaptcha")%>");
-                            error_msg.show();
-                            $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
-                            validInput = false;
-                        }
-                        <%
-                    }
-                %>
                 // Do the form submission if the inputs are valid.
                 if (validInput) {
                     $form.data("submitted", true);
@@ -1894,7 +1960,14 @@
                     alphanumeric_username_error_msg.show();
                     alphanumericUsernameField.addClass("error");
 
-                } else if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/.test(alphanumericUsernameUserInput.value.trim())) {
+                } else if (usernameConfig.enableSpecialCharacters
+                    && !USERNAME_WITH_SPECIAL_CHARS_REGEX.test(alphanumericUsernameUserInput.value.trim())) {
+                    alphanumeric_username_error_msg_text.text(
+                        "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "username.with.special.character.symbols")%>");
+                    alphanumeric_username_error_msg.show();
+                    alphanumericUsernameField.addClass("error");
+                } else if (!usernameConfig.enableSpecialCharacters
+                    && !ALPHANUMERIC_USERNAME_REGEX.test(alphanumericUsernameUserInput.value.trim())) {
                     alphanumeric_username_error_msg_text.text(
                         "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "username.with.symbols")%>");
                     alphanumeric_username_error_msg.show();
@@ -1937,7 +2010,7 @@
 
                     return false;
             } else {
-                var usernamePattern = /^([\u00C0-\u00FFa-zA-Z0-9_\+\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,10})$/;
+                var usernamePattern = /(^[\u00C0-\u00FFa-zA-Z0-9](?:(?![!#$'+=^_.{|}~\-&]{2})[\u00C0-\u00FF\w!#$'+=^_.{|}~\-&]){0,63}(?=[\u00C0-\u00FFa-zA-Z0-9_]).\@(?![+.\-_])(?:(?![.+\-_]{2})[\w.+\-]){0,245}(?=[\u00C0-\u00FFa-zA-Z0-9]).\.[a-zA-Z]{2,10})$/;
                 if (!usernamePattern.test(usernameUserInput.value.trim()) && (emailRequired || !isAlphanumericUsernameEnabled())) {
                     username_error_msg_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Please.enter.valid.email")%>")
                     username_error_msg.show();

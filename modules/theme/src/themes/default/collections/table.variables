@@ -35,3 +35,5 @@
 @actionsCellItemOneWidth: 47px;
 @actionsCellItemsTwoWidth: 75px;
 @actionsCellItemsThreeWidth: 100px;
+
+@approvalTasksTableeMaxWidth: 450px;

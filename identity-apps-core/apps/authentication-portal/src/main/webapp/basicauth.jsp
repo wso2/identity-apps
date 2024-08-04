@@ -267,22 +267,29 @@
         isEmailUsernameEnabled = isEmailUsernameEnabled();
     }
 
-    try {
-        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
-        isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantForTheming);
-        allowedAttributes = preferenceRetrievalClient.checkMultiAttributeLoginProperty(tenantForTheming);
-    } catch (PreferenceRetrievalClientException e) {
-        request.setAttribute("error", true);
-        request.setAttribute("errorMsg", AuthenticationEndpointUtil
-                .i18n(resourceBundle, "something.went.wrong.contact.admin"));
-        IdentityManagementEndpointUtil.addErrorInformation(request, e);
-        request.getRequestDispatcher("error.jsp").forward(request, response);
-        return;
+    if (Boolean.parseBoolean(application.getInitParameter("IsHostedExternally"))) {
+        isMultiAttributeLoginEnabledInTenant = false;
+        allowedAttributes = "";
+    } else {
+        try {
+            PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+            isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantForTheming);
+            allowedAttributes = preferenceRetrievalClient.checkMultiAttributeLoginProperty(tenantForTheming);
+        } catch (PreferenceRetrievalClientException e) {
+            request.setAttribute("error", true);
+            request.setAttribute("errorMsg", AuthenticationEndpointUtil
+                    .i18n(resourceBundle, "something.went.wrong.contact.admin"));
+            IdentityManagementEndpointUtil.addErrorInformation(request, e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
     }
 
     if (isEmailUsernameEnabled == true) {
         usernameLabel = "email.username";
-    } else if (isMultiAttributeLoginEnabledInTenant) {
+    }
+
+    if (isMultiAttributeLoginEnabledInTenant) {
         if (allowedAttributes != null) {
             usernameLabel = getUsernameLabel(resourceBundle, allowedAttributes);
             usernamePlaceHolder = "enter.your.identifier";
@@ -334,7 +341,7 @@
         }
         String url;
         if (StringUtils.isNotBlank(EndpointConfigManager.getServerOrigin())) {
-            url = EndpointConfigManager.getServerOrigin() + proxyContextPath + path;
+            url = IdentityManagementEndpointUtil.getBasePath(tenantDomain, path, false);
         } else {
             url = IdentityUtil.getServerURL(path, true, false);
         }
@@ -470,11 +477,20 @@
    <% } %>
     <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType)) { %>
             <div class="field m-0">
-                <% if (isMultiAttributeLoginEnabledInTenant) { %>
-                    <label><%=usernameLabel %></label>
-                <% } else { %>
-                    <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel)%></label>
-                <% } %>
+                <% String loginInputLabel=i18n(resourceBundle, customText, "login.identifier.input.label" , "", false); %>
+                    <% if (StringUtils.isNotBlank(loginInputLabel)) { %>
+                        <label>
+                            <%= loginInputLabel %>
+                        </label>
+                        <% } else if (isMultiAttributeLoginEnabledInTenant) { %>
+                            <label>
+                                <%= usernameLabel %>
+                            </label>
+                            <% } else { %>
+                                <label>
+                                    <%= AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel) %>
+                                </label>
+                                <% } %>
                 <div class="ui fluid left icon input">
                 <input
                     type="text"
@@ -589,7 +605,13 @@
             }
 
             // For self sign-up build the normal callback URL.
-            String srURI = ServiceURLBuilder.create().addPath(AUTHENTICATION_ENDPOINT_LOGIN).build().getAbsolutePublicURL();
+            String srURI;
+
+            if (Boolean.parseBoolean(application.getInitParameter("IsHostedExternally"))) {
+                srURI = application.getInitParameter("IdentityManagementEndpointLoginURL");
+            } else {
+                srURI = ServiceURLBuilder.create().addPath(AUTHENTICATION_ENDPOINT_LOGIN).build().getAbsolutePublicURL();
+            }
             String srprmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
             String srURLWithoutEncoding = srURI + "?" + srprmstr;
             srURLEncodedURL= URLEncoder.encode(srURLWithoutEncoding, UTF_8);
@@ -768,7 +790,7 @@
 </form>
 
 <%
-    String clientId = request.getParameter("client_id");
+    String clientId = Encode.forHtmlAttribute(request.getParameter("client_id"));
 %>
 
 <script type="text/javascript">

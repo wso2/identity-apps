@@ -68,7 +68,7 @@ if ((_a = user === null || user === void 0 ? void 0 : user.email) === null || _a
 
 :bulb: Always remember, more characters means more bytes.
 
-### Carefully adding new dependencies
+## Carefully adding new dependencies
 
 Dependencies carry a heavy wait and contribute in a significant amount for the overall bundle size. So, when adding a new
 library to the project try to answer the following questions.
@@ -105,29 +105,55 @@ We have added a script to analyze the bundle sizes of our react applications usi
 
 Use the following command to examine the footprint introduced by the prospective library.
 
-#### Analyze for Console
+### Analyze for Console
 
 :bulb: The analyzer will open in http://localhost:8889
 
+1. Navigate to `console` application directory:
+
 ```shell
 cd apps/console
-pnpm build:analyze
 ```
 
-#### Analyze for My Account
+2. Edit the `.env.local` file to enable the analyzer:
+
+```
+ENABLE_ANALYZER=true
+```
+
+3. Build Application:
+
+```shell
+pnpm build
+```
+
+### Analyze for My Account
 
 :bulb: The analyzer will open in http://localhost:8888
 
+1. Navigate to `myaccount` application directory:
+
 ```shell
 cd apps/myaccount
-pnpm build:analyze
 ```
 
-Once you execute the above command, the resulting view will look something like the following.
+2. Edit the `.env.local` file to enable the analyzer:
+
+```
+ENABLE_ANALYZER=true
+```
+
+3. Build Application:
+
+```shell
+pnpm build
+```
+
+Following these steps will enable the analyzer and result in a view that would look like the following.
 
 ![webpack-analyzer-sample](../assets/webpack-analyzer-sample.jpg)
 
-### Optimize static assets
+## Optimize static assets
 
 When adding new assets, always check the existing once in the theme and only proceed if the desired asset is not available.
 
@@ -145,3 +171,41 @@ const printAge(_name: string, age: number){
     console.log(age);
 }
 ```
+
+## Utilize React Hooks
+
+React hooks are a great way to optimize your components. Always try to use hooks like `useMemo`, `useCallback`, `useEffect` etc. to optimize your components.
+
+### Use `useRequiredScopes` hook instead of `hasRequiredScopes` function
+
+The `useRequiredScopes` hook is a more optimized way to check for required scopes in the application. Always use this custom hook instead of the `hasRequiredScopes` function.
+
+:white_check_mark: Do
+
+```typescript
+import { useRequiredScopes } from "@wso2is/access-control";
+
+const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => state.config.ui.features.applications);
+
+const hasUsersUpdatePermissions: boolean = useRequiredScopes(
+    applicationFeatureConfig?.scopes?.update
+);
+
+if (hasUsersUpdatePermissions) {
+    // Do something when the user has the required permissions
+}
+```
+
+:x: Don't
+
+```typescript
+import { hasRequiredScopes } from "@wso2is/core/helpers";
+
+const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+if (hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)) {
+    // Do something when the user has the required permissions
+}
+```
+
+If you need to check for scopes outside of a React component, you can use the `hasRequiredScopes` function.

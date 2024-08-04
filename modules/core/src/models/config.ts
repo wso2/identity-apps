@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { ClassicFeaturesInterface, ProductVersionConfigInterface } from "./core";
-import { DocumentationProviders, DocumentationStructureFileTypes } from "./documentation";
+import { LegacyModeInterface, ProductVersionConfigInterface } from "./core";
 import { GravatarConfig } from "./profile";
 
 /**
@@ -50,6 +49,21 @@ export interface CommonConfigInterface<T, S, U, V, W> {
  * Common config interface for deployment settings.
  */
 export interface CommonDeploymentConfigInterface<T = Record<string, unknown>, S = Record<string, unknown>> {
+    /**
+     * EXPERIMENTAL CONFIG -: Platform IdP configurations.
+     * @remarks
+     * If this is enabled, the sign-in logic will have a few extensions.
+     */
+    __experimental__platformIdP: {
+        /**
+         * Is the application fronted with a platform IdP.
+         */
+        enabled: true;
+        /**
+         * The Home Realm Id of the Platform IdP.
+         */
+        homeRealmId: string;
+    };
     /**
      * Base name of the application (tenant qualified).
      * ex: `/t/wos2.com/sample-portal`
@@ -89,9 +103,10 @@ export interface CommonDeploymentConfigInterface<T = Record<string, unknown>, S 
      */
     clientOrigin: string;
     /**
-     * Portal Documentation configs.
+     * Origin of the client application with the tenant domain.
+     * ex: `https://localhost:9001/t/wso2.com/console`
      */
-    documentation?: DocumentationInterface;
+    clientOriginWithTenant: string;
     /**
      * Identity SDK configurations.
      */
@@ -101,6 +116,12 @@ export interface CommonDeploymentConfigInterface<T = Record<string, unknown>, S 
      * ex: `/sample-portal/login`
      */
     loginCallbackUrl: string;
+    /**
+     * Organization prefix.
+     * ex: `o`.
+     * usage: `/${organizationPrefix}/<org_id>` - `/o/<org_id>`
+     */
+    organizationPrefix: string;
     /**
      * Host of the Identity Sever.
      * ex: https://localhost:9443
@@ -205,9 +226,9 @@ export interface CommonUIConfigInterface<T = Record<string, unknown>> {
      */
     productVersionConfig?: ProductVersionConfigInterface;
     /**
-     * Classic features
+     * Legacy mode
      */
-    classicFeatures?: ClassicFeaturesInterface;
+    legacyMode?: LegacyModeInterface;
     /**
      * Theme configs.
      */
@@ -282,40 +303,6 @@ export interface AnnouncementBannerInterface {
 }
 
 /**
- * Portal documentation configs interface.
- */
-export interface DocumentationInterface {
-    /**
-     * Endpoint base URL.
-     */
-    baseURL: string;
-    /**
-     * Content base URL.
-     */
-    contentBaseURL: string;
-    /**
-     * Github API options.
-     */
-    githubOptions: GithubDocumentationOptionsInterface;
-    /**
-     * URL prefix for image assets.
-     */
-    imagePrefixURL: string;
-    /**
-     * Content provider.
-     */
-    provider: DocumentationProviders;
-    /**
-     * Structure file type.
-     */
-    structureFileType: DocumentationStructureFileTypes;
-    /**
-     * Structure file URL.
-     */
-    structureFileURL: string;
-}
-
-/**
  * Github served documentation options interface.
  */
 export interface GithubDocumentationOptionsInterface {
@@ -348,12 +335,7 @@ export interface FeatureAccessConfigInterface {
     /**
      * Enable the tour option
      */
-    tryittourenabled?: boolean; 
-}
-
-interface DeprecatedFeature {
-    name: string;
-    deprecatedProperties: string[];
+    tryittourenabled?: boolean;
 }
 
 export interface DeprecatedFeatureInterface {

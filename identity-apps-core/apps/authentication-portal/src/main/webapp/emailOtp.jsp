@@ -34,6 +34,7 @@
 
 <%!
     private boolean isMultiAuthAvailable(String multiOptionURI) {
+
         boolean isMultiAuthAvailable = true;
         if (multiOptionURI == null || multiOptionURI.equals("null")) {
             isMultiAuthAvailable = false;
@@ -45,7 +46,7 @@
                 String authenticators = multiOptionURI.substring(authenticatorIndex + 15);
                 int authLastIndex = authenticators.indexOf("&") != -1 ? authenticators.indexOf("&") : authenticators.length();
                 authenticators = authenticators.substring(0, authLastIndex);
-                List<String> authList = new ArrayList<>(Arrays.asList(authenticators.split("%3B")));
+                List<String> authList = Arrays.asList(authenticators.split("%3B"));
                 if (authList.size() < 2) {
                     isMultiAuthAvailable = false;
                 }
@@ -175,7 +176,7 @@
                 <%
                     if ("true".equals(authenticationFailed)) {
                 %>
-                <div class="ui negative message" id="failed-msg"><%=AuthenticationEndpointUtil.i18n(resourceBundle, Encode.forJava(errorMessage))%>
+                <div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%>
                 </div>
                 <div class="ui divider hidden"></div>
                 <% } %>
@@ -209,12 +210,12 @@
                             <span id="OTPDescription" style="display: none;">Enter your OTP</span>
                             <div class="ui fluid icon input addon-wrapper">
                                 <input
-                                    type="password"
+                                    type="text"
                                     id='OTPCode'
                                     name="OTPCode"
                                     c size='30'
                                     aria-describedby="OTPDescription"/>
-                                <i id="password-eye" class="eye icon right-align password-toggle" onclick="showOTPCode()"></i>
+                                <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
                             </div>
                                 <% } else { %>
                             <div class="field">
@@ -222,12 +223,12 @@
                                     :</label>
                                 <div class="ui fluid icon input addon-wrapper">
                                     <input
-                                        type="password"
+                                        type="text"
                                         id='OTPCode'
                                         name="OTPCode"
                                         size='30'
                                         aria-describedby="OTPDescription"/>
-                                    <i id="password-eye" class="eye icon right-align password-toggle" onclick="showOTPCode()"></i>
+                                    <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
                                 </div>
                                 <% } %>
                             </div>
@@ -291,7 +292,7 @@
                 <div class="ui divider hidden"></div>
                 <%
                     String multiOptionURI = request.getParameter("multiOptionURI");
-                    if (multiOptionURI != null && AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
+                    if (multiOptionURI != null && AuthenticationEndpointUtil.isValidMultiOptionURI(multiOptionURI) &&
                     isMultiAuthAvailable(multiOptionURI)) {
                 %>
                     <a class="ui primary basic button link-button" id="goBackLink"

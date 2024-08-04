@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -54,18 +54,13 @@
                         String copyright = i18n(recoveryResourceBundle, customText, "copyright", __DEPRECATED__copyrightText);
                         if (StringUtils.isNotBlank(copyright)) {
                     %>
-                        <span class="copyright-text"><%= copyright %></span>
-                    <% } %>
-                    <%
-                        if (StringUtils.isNotBlank(copyright) && !shouldRemoveDefaultBranding) {
-                    %>
-                        <div class="powered-by-logo-divider">|</div>
+                        <span class="copyright-text line-break"><%= copyright %></span>
                     <% } %>
                     <%
                         if (!shouldRemoveDefaultBranding) {
                     %>
-                    <div class="powered-by-logo-divider">|</div>Powered by <div class="powered-by-logo" onclick="window.open('<%= StringEscapeUtils.escapeHtml4(productURL) %>', '_self', 'noopener,noreferrer,resizable')">
-                        <img width="80" height="20" src="<%= StringEscapeUtils.escapeHtml4(logoURL) %>" alt="<%= StringEscapeUtils.escapeHtml4(logoAlt) %>" />
+                    <div class="powered-by-logo-divider">|</div><%= i18n(recoveryResourceBundle, customText, "powered.by") %> <div class="powered-by-logo" onclick="window.open('<%= StringEscapeUtils.escapeHtml4(productURL) %>', '_self', 'noopener,noreferrer,resizable')">
+                        <img width="80" height="20" src="<%= StringEscapeUtils.escapeHtml4(poweredByLogoURL) %>" alt="<%= StringEscapeUtils.escapeHtml4(logoAlt) %>" />
                     </div>
                     <% } %>
                 </a>
@@ -82,7 +77,7 @@
                     rel="noopener noreferrer"
                     data-testid="login-page-privacy-policy-link"
                 >
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Privacy.policy")%>
+                    <%=i18n(recoveryResourceBundle, customText, "privacy.policy")%>
                 </a>
             <% } %>
             <%
@@ -96,15 +91,20 @@
                     rel="noopener noreferrer"
                     data-testid="login-page-privacy-policy-link"
                 >
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "toc")%>
+                    <%=i18n(recoveryResourceBundle, customText, "terms.of.service")%>
                 </a>
             <% } %>
 
                 <%
-                    List<String> langSwitcherEnabledServlets = Arrays.asList("/password-recovery.jsp", "/register.do", "/passwordreset.do", "/error.jsp");
+                    List<String> langSwitcherEnabledServlets = Arrays.asList("/password-recovery.jsp", "/register.do", "/passwordreset.do", "/error.jsp", "/self-registration-with-verification.jsp");
                     if (langSwitcherEnabledServlets.contains(request.getServletPath())) {
+                        File languageSwitcherFile = new File(getServletContext().getRealPath("extensions/language-switcher.jsp"));
+                        if (languageSwitcherFile.exists()) {
                 %>
+                        <jsp:include page="../extensions/language-switcher.jsp"/>
+                    <% } else { %>
                         <jsp:include page="language-switcher.jsp"/>
+                    <% } %>
                 <% } %>
             </div>
         </div>

@@ -20,6 +20,7 @@ import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBa
 import { I18nConstants } from "../constants";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { SCIMConfigs } from "../extensions/configs/scim";
+import { AppUtils } from "../init/app-utils";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 import { store } from "../store";
 
@@ -41,6 +42,7 @@ export class Config {
      */
     public static getDeploymentConfig(): DeploymentConfigInterface {
         return {
+            __experimental__platformIdP: window[ "AppUtils" ]?.getConfig()?.__experimental__platformIdP,
             appBaseName: window["AppUtils"]?.getConfig()?.appBaseWithTenant,
             appBaseNameWithoutTenant: window["AppUtils"]?.getConfig()?.appBase,
             appHomePath: window["AppUtils"]?.getConfig()?.routes?.home,
@@ -49,10 +51,12 @@ export class Config {
             clientHost: window["AppUtils"]?.getConfig()?.clientOriginWithTenant,
             clientID: window["AppUtils"]?.getConfig()?.clientID,
             clientOrigin: window["AppUtils"]?.getConfig()?.clientOrigin,
+            clientOriginWithTenant: window[ "AppUtils" ]?.getConfig()?.clientOriginWithTenant,
             consoleApp: window["AppUtils"]?.getConfig()?.consoleApp,
             customServerHost: window["AppUtils"]?.getConfig()?.customServerHost,
             idpConfigs: window["AppUtils"]?.getConfig()?.idpConfigs,
             loginCallbackUrl: window["AppUtils"]?.getConfig()?.loginCallbackURL,
+            organizationPrefix: window["AppUtils"]?.getConfig()?.organizationPrefix,
             serverHost: window["AppUtils"]?.getConfig()?.serverOriginWithTenant,
             serverOrigin: window["AppUtils"]?.getConfig()?.serverOrigin,
             superTenant: window["AppUtils"]?.getConfig()?.superTenant,
@@ -73,7 +77,9 @@ export class Config {
             associations: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/associations`,
             authorize: `${this.getDeploymentConfig()?.serverHost}/oauth2/authorize`,
             backupCode: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/backup-codes`,
-            brandingPreference: `${this.getDeploymentConfig()?.serverHost}/api/server/v1/branding-preference`,
+            brandingPreference: `${AppUtils.getOrganizationName()
+                ? window["AppUtils"]?.getConfig()?.serverOriginWithOrganization
+                : this.getDeploymentConfig()?.serverHost}/api/server/v1/branding-preference`,
             challengeAnswers: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/challenge-answers`,
             challenges: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/challenges`,
             consentManagement: {
@@ -123,7 +129,9 @@ export class Config {
                 this.getDeploymentConfig()?.serverHost
             }/api/identity/typingdna/v1.0/server/typingdnaConfig`,
             user: `${this.getDeploymentConfig()?.serverHost}/api/identity/user/v1.0/me`,
-            validationMgt: `${this.getDeploymentConfig()?.serverHost}/api/server/v1/validation-rules`,
+            validationMgt: `${AppUtils.getOrganizationName()
+                ? window["AppUtils"]?.getConfig()?.serverOriginWithOrganization
+                : this.getDeploymentConfig()?.serverHost}/api/server/v1/validation-rules`,
             wellKnown: `${this.getDeploymentConfig()?.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
         };
     }

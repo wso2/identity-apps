@@ -72,7 +72,7 @@ const getLicenseHeaderPattern = () => {
     const LICENSE_HEADER_DEFAULT_PATTERN = [
         "*",
         {
-            pattern: " Copyright \\(c\\) \\b(2019|202[0-3])(?:-(202[0-3]))?, WSO2 LLC. \\(https://www.wso2.com\\)\.$",
+            pattern: " Copyright \\(c\\) \\b(2019|202[0-4])(?:-(202[0-4]))?, WSO2 LLC. \\(https://www.wso2.com\\).$",
             template: " * Copyright (c) {{year}}, WSO2 LLC. (https://www.wso2.com)."
         },
         " *",
@@ -138,13 +138,13 @@ module.exports = {
             rules: {
                 "@typescript-eslint/ban-types": 1,
                 "@typescript-eslint/explicit-function-return-type": 0,
-                "@typescript-eslint/no-empty-function": [
-                    "error",
-                    {
-                        allow: [ "constructors" ]
-                    }
-                ],
+                // Temporary disable the no-empty-function rule.
+                // Refer: https://github.com/wso2/product-is/issues/20659
+                "@typescript-eslint/no-empty-function": "off",
                 "@typescript-eslint/no-explicit-any": 0,
+                // Temporary disable the `no-extra-semi` rule.
+                // Refer: https://github.com/wso2/product-is/issues/20659
+                "@typescript-eslint/no-extra-semi": 0,
                 "@typescript-eslint/no-inferrable-types": "off",
                 "@typescript-eslint/no-unused-vars": [
                     "warn",
@@ -181,9 +181,13 @@ module.exports = {
                 // In development, error level is set to `warn`. This will be overridden
                 // by the production env linting config.
                 "no-debugger": 1,
+                // Temporary disable the `no-extra-semi` rule.
+                // Refer: https://github.com/wso2/product-is/issues/20659
+                "no-extra-semi": 0,
                 // `no-undef` is discouraged in Typescript projects.
                 // https://github.com/typescript-eslint/typescript-eslint/issues/2477#issuecomment-686892459
                 "no-undef": 0,
+                "no-unsafe-optional-chaining": "off",
                 "no-use-before-define": "off",
                 "padding-line-between-statements": "off"
             },
@@ -197,7 +201,15 @@ module.exports = {
             "files": "*.json",
             "parser": "jsonc-eslint-parser",
             "rules": {
-                "header/header": "off"
+                "header/header": "off",
+                "max-len": "off",
+                "semi": "off"
+            }
+        },
+        {
+            "files": [ "*.js" ],
+            "rules": {
+                "tsdoc/syntax": "off"
             }
         }
     ],
@@ -254,6 +266,9 @@ module.exports = {
         "no-alert": 1,
         "no-console": "warn",
         "no-duplicate-imports": "warn",
+        // Temporary disable the `no-extra-semi` rule.
+        // Refer: https://github.com/wso2/product-is/issues/20659
+        "no-extra-semi": 0,
         "no-restricted-imports": [
             "error",
             {
@@ -279,13 +294,38 @@ module.exports = {
                         importNames: [ "Popup" ],
                         message: "Avoid using Popup from Semantic. Instead import it from @wso2is/react-components.",
                         name: "semantic-ui-react"
+                    },
+                    {
+                        message: "Please use import foo from '@oxygen-ui/react/foo' instead.",
+                        name: "@oxygen-ui/react"
+                    },
+                    {
+                        importNames: [ "hasRequiredScopes" ],
+                        message: "Please use \"import { useRequiredScopes } from '@wso2is/access-control'\" instead. " +
+                            "Refer documentation: https://github.com/wso2/identity-apps/blob/master/docs/write-code/" +
+                            "PERFORMANCE.md#use-userequiredscopes-hook-instead-of-hasrequiredscopes-function",
+                        name: "@wso2is/core/helpers"
                     }
                 ],
-                patterns: [ "@wso2is/**/dist/**", "lodash/**", "lodash/fp/**" ]
+                patterns: [
+                    "@wso2is/**/dist/**",
+                    "lodash/**",
+                    "lodash/fp/**",
+                    // prevents using absolute import paths such as "apps/console/src/**/*", "modules/react"
+                    // TODO: show an error message in the editor when an absolute import is used[1]. Currently
+                    // it's not working for some reason[2].
+                    //
+                    // [1] https://eslint.org/docs/latest/rules/no-restricted-imports#group
+                    // [2] https://stackoverflow.com/q/68126222/8810941
+                    "apps/**/*",
+                    "modules/**/*",
+                    "features/**/*"
+                ]
             }
         ],
         "no-trailing-spaces": "warn",
         "no-unreachable": "error",
+        "no-unsafe-optional-chaining": "off",
         "object-curly-spacing": [ "warn", "always" ],
         "padding-line-between-statements": [ ...LINE_PADDING_RULES ],
         quotes: [ "warn", "double" ],
@@ -325,6 +365,7 @@ module.exports = {
             }
         ],
         "react/no-children-prop": 0,
+        "react/no-danger": 2,
         "react/prop-types": 1,
         semi: 1,
         "sort-imports": [

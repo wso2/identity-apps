@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,7 @@ import classNames from "classnames";
 import React, { ReactElement } from "react";
 // eslint-disable-next-line no-restricted-imports
 import { Button, Divider, Form, Icon, Popup, Radio } from "semantic-ui-react";
+import { MetaFilePicker } from "./meta-file-picker";
 import { Password } from "./password";
 import { QueryParameters } from "./query-parameters";
 import { Scopes } from "./scopes";
@@ -29,6 +30,7 @@ import {
     isCustomField,
     isDivider,
     isDropdownField,
+    isFilePickerField,
     isPasswordField,
     isQueryParamsField,
     isRadioField,
@@ -430,6 +432,28 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                     <QueryParameters
                         name={ inputField.name }
                         value={ inputField.value }
+                        onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
+                            handleChange(event.target.value, inputField.name);
+                        } }
+                    />
+                </Form.Group>
+            );
+        } else if (isFilePickerField(inputField)) {
+            return (
+                <Form.Group grouped={ true }>
+                    <label>
+                        { inputField.label }
+                        {
+                            inputField.label && inputField.required
+                                ? <span className="ui text color red">*</span>
+                                : null
+                        }
+                    </label>
+                    <MetaFilePicker
+                        fileStrategy={ inputField.fileStrategy }
+                        value={ inputField.value }
+                        uploadButtonText={ inputField.uploadButtonText }
+                        dropzoneText={ inputField.dropzoneText }
                         onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
                             handleChange(event.target.value, inputField.name);
                         } }

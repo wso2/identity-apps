@@ -109,6 +109,7 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
         children,
         comingSoonRibbonLabel,
         disabled,
+        disabledHint,
         editButtonLabel,
         onClick,
         onDelete,
@@ -145,6 +146,7 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
             image={ resourceImage }
             navigationLink ={ resourceDocumentationLink }
             disabled={ isResourceComingSoon || disabled }
+            disabledHint={ disabledHint }
             showTooltips={ !(isResourceComingSoon || disabled) && showTooltips }
             onClick={ onClick }
             action={

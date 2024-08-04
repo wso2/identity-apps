@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,7 +30,7 @@ import { commonConfig } from "../extensions";
 import { SCIMConfigs } from "../extensions/configs/scim";
 import { AlertInterface, AuthStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
-import { addAlert } from "../store/actions";
+import { addAlert, getProfileInformation } from "../store/actions";
 import { CommonUtils } from "../utils";
 
 /**
@@ -64,6 +64,7 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const isReadOnlyUser: string = useSelector((state: AppState) => state
         .authenticationInformation.profileInfo.isReadOnly);
+    const hasLocalAccount: boolean = useSelector((state: AppState) => state.authenticationInformation.hasLocalAccount);
     // IDP by which the user initially signed up.
     const [ userSourceIdp, setUserSourceIdp ] = useState<string>("");
 
@@ -93,9 +94,12 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
         if (localCredentialExist && localCredentialExist == "false") {
             setIsNonLocalCredentialUser(true);
         }
-
     }, [ profileDetails?.profileInfo ]);
 
+    // Invoke me endpoint when navigate to Personal Info tab.
+    useEffect(() => {
+        dispatch(getProfileInformation(true));
+    }, []);
 
     return (
         <PageLayout
@@ -116,7 +120,9 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
             }
         >
             {
-                CommonUtils.isProfileReadOnly(isReadOnlyUser) && (
+                hasLocalAccount
+                &&  CommonUtils.isProfileReadOnly(isReadOnlyUser)
+                && (
                     <Message
                         type="info"
                         content={ t("myAccount:pages.readOnlyProfileBanner") }
@@ -142,7 +148,8 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
                     )
                 }
                 {
-                    hasRequiredScopes(accessConfig?.personalInfo,
+                    hasLocalAccount
+                    && hasRequiredScopes(accessConfig?.personalInfo,
                         accessConfig?.personalInfo?.scopes?.read, allowedScopes)
                     && isFeatureEnabled(accessConfig?.personalInfo,
                         AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_LINKED_ACCOUNTS"))
@@ -155,7 +162,8 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
                     )
                 }
                 {
-                    hasRequiredScopes(accessConfig?.personalInfo,
+                    hasLocalAccount
+                    && hasRequiredScopes(accessConfig?.personalInfo,
                         accessConfig?.personalInfo?.scopes?.read, allowedScopes)
                     && isFeatureEnabled(accessConfig?.personalInfo,
                         AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXTERNAL_LOGINS"))
@@ -171,7 +179,8 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
                     )
                 }
                 {
-                    hasRequiredScopes(accessConfig?.personalInfo,
+                    hasLocalAccount
+                    && hasRequiredScopes(accessConfig?.personalInfo,
                         accessConfig?.personalInfo?.scopes?.read, allowedScopes)
                     && isFeatureEnabled(accessConfig?.personalInfo,
                         AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXPORT_PROFILE"))

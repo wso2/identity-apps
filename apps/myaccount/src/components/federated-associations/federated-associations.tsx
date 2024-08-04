@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,7 +22,7 @@ import {
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { AppAvatar, Popup } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Modal } from "semantic-ui-react";
 import { deleteFederatedAssociation, getFederatedAssociations } from "../../api/federated-associations";
@@ -33,6 +33,8 @@ import {
     AlertLevels
 } from "../../models";
 import { FederatedAssociation } from "../../models/federated-associations";
+import ConnectionIcon from "../../themes/default/assets/images/icons/connection.svg";
+import resolveConnectionImagePath from "../../utils/resolve-connection-image-path";
 import { SettingsSection } from "../shared";
 
 /**
@@ -47,8 +49,11 @@ interface FederatedAssociationsPropsInterface extends TestableComponentInterface
 }
 
 /**
- * This renders the federated associations component
- * @param props - Props injected to the component
+ * This renders the federated associations component.
+ *
+ * @param props - Props injected to the component.
+ *
+ * @returns Federated associations component.
  */
 export const FederatedAssociations: FunctionComponent<FederatedAssociationsPropsInterface> = (
     props: FederatedAssociationsPropsInterface
@@ -73,7 +78,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     /**
      * This calls the `getFederatedAssociations` api call
      */
-    const getFederatedAssociationsList = () => {
+    const getFederatedAssociationsList = (): void => {
         getFederatedAssociations()
             .then((response: FederatedAssociation[]) => {
                 setFederatedAssociations(response);
@@ -153,7 +158,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
      * This function calls the `deleteFederatedAssociation` api call
      * @param id - ID of the association to be deleted
      */
-    const removeFederatedAssociation = (id: string) => {
+    const removeFederatedAssociation = (id: string): void => {
         deleteFederatedAssociation(id)
             .then(() => {
                 getFederatedAssociationsList();
@@ -180,9 +185,11 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     };
 
     /**
-     * Pops up a model requesting confirmation before deleting
+     * Pops up a model requesting confirmation before deleting.
+     *
+     * @returns Delete confirmation modal.
      */
-    const deleteConfirmation = (): React.ReactElement => {
+    const deleteConfirmation = (): ReactElement => {
         return (
             <Modal
                 data-testid={ `${testId}-delete-confirmation-modal` }
@@ -222,9 +229,11 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     };
 
     /**
-     * This returns the list of federated associations as a `List` component
+     * This returns the list of federated associations as a `List` component.
+     *
+     * @returns List of federated associations.
      */
-    const federatedAssociationsList = (): React.ReactElement => {
+    const federatedAssociationsList = (): ReactElement => {
         return (
             <List
                 divided
@@ -242,8 +251,15 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                                             <Grid.Column width={ 11 } className="first-column">
                                                 <div className="associations-list-avatar-wrapper">
                                                     <AppAvatar
+                                                        hoverable={ false }
+                                                        defaultIcon={ ConnectionIcon }
                                                         size="mini"
-                                                        image={ federatedAssociation.idp.imageUrl }
+                                                        image={
+                                                            resolveConnectionImagePath(
+                                                                null,
+                                                                federatedAssociation?.idp?.imageUrl
+                                                            )
+                                                        }
                                                         name={ federatedAssociation.federatedUserId }
                                                     />
                                                     <List.Content>
@@ -297,22 +313,26 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
         );
     };
 
+    if (!showExternalLogins) {
+        return null;
+    }
+
     return (
-        showExternalLogins &&
-            (<SettingsSection
-                data-testid={ `${testId}-settings-section` }
-                description={ t("myAccount:sections.federatedAssociations.description") }
-                header={ t("myAccount:sections.federatedAssociations.heading") }
-                icon={ getSettingsSectionIcons().federatedAssociations }
-                iconMini={ getSettingsSectionIcons().federatedAssociationsMini }
-                iconSize="auto"
-                iconStyle="colored"
-                iconFloated="right"
-                showActionBar={ true }
-            >
-                { deleteConfirmation() }
-                { federatedAssociationsList() }
-            </SettingsSection>)
+        <SettingsSection
+            data-testid={ `${testId}-settings-section` }
+            data-componentid={ `${testId}-settings-section` }
+            description={ t("myAccount:sections.federatedAssociations.description") }
+            header={ t("myAccount:sections.federatedAssociations.heading") }
+            icon={ getSettingsSectionIcons().federatedAssociations }
+            iconMini={ getSettingsSectionIcons().federatedAssociationsMini }
+            iconSize="auto"
+            iconStyle="colored"
+            iconFloated="right"
+            showActionBar={ true }
+        >
+            { deleteConfirmation() }
+            { federatedAssociationsList() }
+        </SettingsSection>
     );
 };
 

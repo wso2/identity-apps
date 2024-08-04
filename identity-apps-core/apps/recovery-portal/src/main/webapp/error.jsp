@@ -124,12 +124,12 @@
                         if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_INVALID_CODE.getCode()
                                 .equals(errorCode)) {
                     %>
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Invalid.reset.link")%>
+                        <%=i18n(recoveryResourceBundle, customText, "email.link.expiry.message")%>
                     <%
                         } else if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_EXPIRED_CODE.getCode()
                                 .equals(errorCode)) {
                     %>
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Invalid.reset.link")%>
+                        <%=i18n(recoveryResourceBundle, customText, "email.link.expiry.message")%>
                     <% } else { %>
                         <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
                     <% } %>
@@ -142,20 +142,16 @@
                         <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %>
                         </span>
                     </a>
-                    <%
-                        if (config.getServletContext().getResource("extensions/error-tracking-reference.jsp") != null) {
-                    %>
+                <%
+                    if (config.getServletContext().getResource("extensions/error-tracking-reference.jsp") != null) {
+                %>
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "with.tracking.reference.below")%>
-                        </p>
-                        <div class="ui divider hidden"></div>
-                        <jsp:include page="extensions/error-tracking-reference.jsp"/>
-                    <%
-                        } else {
-                    %>
-                        </p>
-                    <%
-                        }
-                    %>
+                </p>
+                <div class="ui divider hidden"></div>
+                <jsp:include page="extensions/error-tracking-reference.jsp"/>
+                <% } else { %>
+                </p>
+                <% } %>
                 <div class="ui divider hidden"></div>
                 <% if (isValidCallback) { %>
                 <div id="action-buttons" class="buttons">

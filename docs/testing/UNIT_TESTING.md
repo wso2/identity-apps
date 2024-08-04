@@ -7,41 +7,20 @@ Make sure to write unit tests when you are working on new or existing features.
 
 Tests should be properly structured. Checkout the following examples.
 
-### Example 01
+### Example
 
-Let's say that you have a component called `applications-page.tsx` at the root of `features/applications` that needs to be tested.
-
-#### Steps
-
-1. Create a `__tests__`(underscore-underscore-tests-underscore-underscore 😉) under `features/applications`.
-2. Create a file with the pattern `<FILE_NAME>.test.<FILE_EXTENSION>` inside the `__tests__` folder. (In this case `applications-page.test.tsx`).
-
->> Naming the test container folders `__tests__` This pattern seems to be the best when there)
-
-#### Folder Structure
-
-```
-features
-└── applications
-    ├── __tests__
-    |       └── applications-page.test.tsx
-    └── applications-page.tsx
-```
-
-### Example 02
-
-Let's say that you have a component called `applications-list.tsx` at the root of `features/applications/components` that needs to be tested.
+Let's say that you have a component called `applications-list.tsx` at the root of `features/admin.applications.v1/components` that needs to be tested.
 
 #### Steps
 
-1. Create a `__tests__` under `features/applications/components`.
+1. Create a `__tests__` under `features/admin.applications.v1/components`.
 2. Create a file with the pattern `<FILE_NAME>.test.<FILE_EXTENSION>` inside the `__tests__` folder. (In this case `applications-list.test.tsx`).
 
 #### Folder Structure
 
 ```bash
 features
-└── applications
+└── admin.applications.v1
     ├── __tests__
     ├── components
     |       └── __tests__
@@ -52,17 +31,16 @@ features
 
 ## Writing Tests
 
-Writing unit tests for every component that you develop is mandatory.
-Take a look at the following example test case where we test if the component that we are writing mounts and renders as expected.
+Writing unit tests for every component that you develop is mandatory. Take a look at the following example test case where we test if the component that we are writing mounts and renders as expected.
 
-⚠️ There are several ESLint plugins ([eslint-plugin-jest-dom][eslint-plugin-jest-dom], [eslint-plugin-testing-library][eslint-plugin-testing-library]) configured to make sure that developers follow the best practices.
+> ⚠️ There are several ESLint plugins ([eslint-plugin-jest-dom][eslint-plugin-jest-dom], [eslint-plugin-testing-library][eslint-plugin-testing-library]) configured to make sure that developers follow the best practices.
 Please configure ESLint in your coding environment if you haven't already done so by [following this guide][eslint-ide-plugin-setup-guide].
 
 ```tsx
-import { render, screen } from "@unit-testing";
+import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
-import { ApplicationList } from "../../../components/applications";
+import "@testing-library/jest-dom";
+import { ApplicationList } from "../components/application-list.tsx";
 
 describe("Test if the Application List is working as expected", () => {
     it("<ApplicationList /> renders without exploding", () => {
@@ -88,7 +66,7 @@ Use the [getByTestId](https://testing-library.com/docs/queries/bytestid/) method
 expect(component.getByTestId("getting-started-page-layout")).toBeInTheDocument();
 ```
 
-:no_entry: Never use any other selectors such as `id`, `classes`, etc. to identify the elements.
+> :no_entry: Never use any other selectors such as `id`, `classes`, etc. to identify the elements.
 
 If there are no `data-componentid` present in the element, extend the [IdentifiableComponentInterface](../../modules/core/src/models/core.ts) from `@wso2is/core/models` to inherit the attribute.
 
@@ -113,20 +91,13 @@ export const SampleComponent: FunctionComponent<SampleComponentInterface> = (
 
 ```
 
-:warning: Some components might have the `data-testid` already implemented using the [TestableComponentInterface](../../modules/core/src/models/core.ts).
+> :warning: Some components might have the `data-testid` already implemented using the [TestableComponentInterface](../../modules/core/src/models/core.ts).
 This interface and the data attribute since has been **deprecated**. Hence, :boom: **DO NOT USE IT** in new components. Refactor the usage where ever possible.
 
 ### Testing API Calls
 
 We have used [msw][msw] to mock the APIs. The mock implementation root for the core can be found at `<APP_ROOT>/test-configs/__mocks__/server`.
 If you need to add further endpoint mocks, add them in the `handlers.ts`.
-
-#### Extended Features
-
-The mock implementation root for the extensions can be found at `<APP_ROOT>/src/extensions/test-configs/__mocks__/server`.
-Add any extended API endpoint mocks in the `handlers.ts`.
-
-💡Checkout these references if you want to learn more about API mocking.
 
 ### Snapshot Testing
 
@@ -135,10 +106,10 @@ Snapshot tests are a very useful tool whenever you want to make sure your UI doe
 A typical snapshot test case renders a UI component, takes a snapshot, then compares it to a reference snapshot file stored alongside the test. The test will fail if the two snapshots do not match: either the change is unexpected, or the reference snapshot needs to be updated to the new version of the UI component.
 
 ```tsx
-import { render } from "@unit-testing";
+import { render } from "@wso2is/unit-testing";
 import React from "react";
-import "@testing-library/jest-dom/extend-expect";
-import { ApplicationList } from "../../../components/applications";
+import "@testing-library/jest-dom";
+import { ApplicationList } from "../components/applications";
 
 it("<ApplicationList /> matches snapshot", () => {
     const { container } = render(<ApplicationList />);
@@ -169,52 +140,27 @@ pnpm test:watch
 
 ### Run Tests for a specific test file
 
+Make sure to cd to the corresponding package directory, when running an individual spec.
+
 ```bash
-# From console root
-pnpm test ./src/features/applications/__tests__/applications-page.test.tsx
+# From features root
+npx jest features/admin.applications.v1/__tests__/applications-page.test.tsx
 ```
 
 ### Run Tests for a specific test file in watch mode
 
 ```bash
-# From console root
-pnpm test -- --watch ./src/features/applications/__tests__/applications-page.test.tsx
+# From features root
+npx jest --watch features/admin.applications.v1/__tests__/applications-page.test.tsx
 ```
 
 ### Run Tests for an individual module
 
-#### Using Lerna
-
-```bash
-# From anywhere inside the project.
-pnpm nx run forms:test
-```
-
-#### From the project root.
-
-```bash
-# Run tests for modules.
-pnpm test:unit:modules
-```
-
-```bash
-# Run tests for apps.
-pnpm test:unit:apps
-```
-
-```bash
-# Run tests for specific module. (Replace <MODULE_NAME> with something like `@wso2is/core` or `@wso2is/myaccount`)
-pnpm test:unit:<MODULE_NAME>
-```
-
-#### From inside respective module.
-
-```bash
-# From inside component ex: apps/console. Use `pnpm test:watch for watch mode.
-pnpm test
-```
+Run `pnpm test:unit` from inside a module to run all unit tests for a specific module.
 
 ## Code Coverage
+
+We use [Codecov](https://codecov.io) to track code coverage.
 
 ### Generate coverage report
 

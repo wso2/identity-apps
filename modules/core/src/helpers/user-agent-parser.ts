@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,7 +35,7 @@ export class UserAgentParser {
     /**
      * Set UA string to parse.
      *
-     * @param {string} rawString - Raw user agent string.
+     * @param rawString - Raw user agent string.
      */
     public set uaString(rawString: string) {
         UserAgentParser.parser.setUA(rawString);
@@ -44,7 +44,7 @@ export class UserAgentParser {
     /**
      * Retrieves the browser information.
      *
-     * @return {IBrowser}
+     * @returns end user's browser information
      */
     public get browser(): IBrowser {
         return UserAgentParser.parser.getBrowser();
@@ -56,17 +56,17 @@ export class UserAgentParser {
      * @remarks
      * `ua-parser-js` returns undefined for desktop device types. A workaround has been
      * implemented as a fallback. Refer [here]{@link https://github.com/faisalman/ua-parser-js/issues/16}
-     * @return {IDevice}
+     * @returns end user's device information
      */
     public get device(): IDevice {
         if (UserAgentParser.parser.getDevice() && UserAgentParser.parser.getDevice().type) {
             return UserAgentParser.parser.getDevice();
         }
 
-        const ua = UserAgentParser.parser.getUA();
+        const ua: string = UserAgentParser.parser.getUA();
 
         /* eslint-disable max-len, no-useless-escape */
-        const type = ua
+        const type: string = ua
             ? ua.match(/iPad/i) || (ua.match(/tablet/i) && !ua.match(/RX-34/i)) || ua.match(/FOLIO/i)
                 ? "tablet"
                 : ua.match(/Linux/i) &&
@@ -102,7 +102,6 @@ export class UserAgentParser {
                                                         ? "desktop"
                                                         : "mobile"
             : "";
-        /* eslint-enable max-len, no-useless-escape */
 
         return {
             model: null,
@@ -114,7 +113,7 @@ export class UserAgentParser {
     /**
      * Retrieves the engine information.
      *
-     * @return {IEngine}
+     * @returns end user's browser engine information.
      */
     public get engine(): IEngine {
         return UserAgentParser.parser.getEngine();
@@ -123,7 +122,7 @@ export class UserAgentParser {
     /**
      * Retrieves the operating system information.
      *
-     * @return {IOS}
+     * @returns end user's operating system information.
      */
     public get os(): IOS {
         return UserAgentParser.parser.getOS();

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,7 +18,22 @@
 
 import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
-import useResourceEndpoints from "@wso2is/common/src/hooks/use-resource-endpoints";
+import { EventPublisher, PreLoader } from "@wso2is/admin.core.v1";
+import { ProtectedRoute } from "@wso2is/admin.core.v1/components";
+import { Config, DocumentationLinks } from "@wso2is/admin.core.v1/configs";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { history } from "@wso2is/admin.core.v1/helpers";
+import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
+import {
+    ConfigReducerStateInterface,
+    DocumentationLinksInterface,
+    FeatureConfigInterface,
+    ServiceResourceEndpointsInterface
+} from "@wso2is/admin.core.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { commonConfig } from "@wso2is/admin.extensions.v1";
+import { useGetAllFeatures } from "@wso2is/admin.extensions.v1/components/feature-gate/api/feature-gate";
+import { featureGateConfig } from "@wso2is/admin.extensions.v1/configs/feature-gate";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
@@ -46,25 +61,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { StaticContext } from "react-router";
 import { Redirect, Route, RouteComponentProps, Router, Switch } from "react-router-dom";
 import { Dispatch } from "redux";
-import { commonConfig } from "./extensions";
-import { useGetAllFeatures } from "./extensions/components/feature-gate/api/feature-gate";
-import { featureGateConfig } from "./extensions/configs/feature-gate";
-import { AccessControlUtils } from "./features/access-control/configs/access-control";
-import { EventPublisher, PreLoader } from "./features/core";
-import { ProtectedRoute } from "./features/core/components";
-import { Config, DocumentationLinks, getBaseRoutes } from "./features/core/configs";
-import { AppConstants } from "./features/core/constants";
-import { history } from "./features/core/helpers";
-import {
-    ConfigReducerStateInterface,
-    DocumentationLinksInterface,
-    FeatureConfigInterface,
-    ServiceResourceEndpointsInterface
-} from "./features/core/models";
-import { AppState, store } from "./features/core/store";
 import "moment/locale/si";
 import "moment/locale/fr";
-import { OrganizationUtils } from "./features/organizations/utils";
+import { getBaseRoutes } from "./configs/routes";
 
 /**
  * Main App component.
@@ -76,76 +75,31 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
 
     const dispatch: Dispatch<any> = useDispatch();
 
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const { trySignInSilently, getDecodedIDToken, signOut } = useAuthContext();
+
+    const { setResourceEndpoints } = useResourceEndpoints();
+
     const userName: string = useSelector((state: AppState) => state.auth.username);
     const loginInit: boolean = useSelector((state: AppState) => state.auth.loginInit);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
     const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
     const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
-
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
-
-    const { trySignInSilently, getDecodedIDToken, signOut, state } = useAuthContext();
-    const { setResourceEndpoints } = useResourceEndpoints();
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
     const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
-    const [ orgId, setOrgId ] = useState<string>();
-    const [ featureGateConfigData, setFeatureGateConfigData ] = 
+    const [ featureGateConfigData, setFeatureGateConfigData ] =
         useState<FeatureGateInterface | null>(featureGateConfigUpdated);
 
-    const { 
+    const {
         data: allFeatures,
-        error: featureGateAPIException 
-    } = useGetAllFeatures(orgId, state.isAuthenticated);
-
-    useEffect(() => {
-        if(state.isAuthenticated) {
-            if (OrganizationUtils.isSuperOrganization(store.getState().organization.organization)
-            || store.getState().organization.isFirstLevelOrganization) {
-                getDecodedIDToken().then((response: DecodedIDTokenPayload)=>{
-                    const orgName: string = response.org_name;
-                    // Set org_name instead of org_uuid as the API expects org_name
-                    // as it resolves tenant uuid from it.
-
-                    setOrgId(orgName);
-                });
-            } else {
-                // Set the sub org id to the current organization id.
-                setOrgId(store.getState().organization.organization.id);
-            }
-        }
-    }, [ state ]);
-
-    useEffect(() => {
-        if (allFeatures instanceof IdentityAppsApiException || featureGateAPIException) {
-            return;
-        }
-
-        if (!allFeatures) {
-            return;
-        }
-
-        if (allFeatures?.length > 0) {
-            allFeatures.forEach((feature: AllFeatureInterface )=> {
-                // converting the identifier to path.
-                const path: string = feature.featureIdentifier.replace(/-/g, ".");
-                // Obtain the status and set it to the feature gate config.
-                const featureStatusPath: string = `${ path }.status`;
-    
-                set(featureGateConfigUpdated,featureStatusPath, feature.featureStatus);
-    
-                const featureTagPath: string = `${ path }.tags`;
-                
-                set(featureGateConfigUpdated,featureTagPath, feature.featureTags);
-                
-                setFeatureGateConfigData(featureGateConfigUpdated);
-            });
-        }
-    }, [ allFeatures ]);
+        error: featureGateAPIException
+    } = useGetAllFeatures();
 
     /**
      * Set the deployment configs in redux state.
@@ -262,6 +216,33 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
         eventPublisher.publish("page-visit-console-landing-page");
     }, [ uuid ]);
 
+    useEffect(() => {
+        if (allFeatures instanceof IdentityAppsApiException || featureGateAPIException) {
+            return;
+        }
+
+        if (!allFeatures) {
+            return;
+        }
+
+        if (allFeatures?.length > 0) {
+            allFeatures.forEach((feature: AllFeatureInterface )=> {
+                // converting the identifier to path.
+                const path: string = feature.featureIdentifier.replace(/-/g, ".");
+                // Obtain the status and set it to the feature gate config.
+                const featureStatusPath: string = `${ path }.status`;
+
+                set(featureGateConfigUpdated,featureStatusPath, feature.featureStatus);
+
+                const featureTagPath: string = `${ path }.tags`;
+
+                set(featureGateConfigUpdated,featureTagPath, feature.featureTags);
+
+                setFeatureGateConfigData(featureGateConfigUpdated);
+            });
+        }
+    }, [ allFeatures ]);
+
     /**
      * Set the value of Session Timed Out.
      */
@@ -339,7 +320,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                             <AccessControlProvider
                                 allowedScopes={ allowedScopes }
                                 features={ featureGateConfigData }
-                                permissions={ AccessControlUtils.getPermissions(featureConfig, allowedScopes) }
+                                organizationType={ organizationType }
                             >
                                 <SessionManagementProvider
                                     onSessionTimeoutAbort={ handleSessionTimeoutAbort }

@@ -29,6 +29,10 @@ h6.ui.header .sub.header {
   font-size: @h6SubHeaderFontSize;
 }
 
+h3.ui.header .multi-line-header {
+  white-space: normal;
+}
+
 .ui.header {
     &.page-header {
         .sub-header {
@@ -84,6 +88,7 @@ h6.ui.header .sub.header {
 .is-header {
     &.oxygen-header .oxygen-brand {
         width: auto;
+        min-width: calc(var(--oxygen-customComponents-Navbar-properties-width) - 90px);
     }
 
     &.oxygen-header .oxygen-brand-logo {
@@ -104,5 +109,6 @@ h6.ui.header .sub.header {
 
     &.oxygen-header.with-hamburger .oxygen-header-toolbar .oxygen-brand {
         margin-left: 0 !important;
+        margin-right: 18px;
     }
 }

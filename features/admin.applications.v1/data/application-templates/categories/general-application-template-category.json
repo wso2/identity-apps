@@ -1,0 +1,15 @@
+{
+    "id": "DEFAULT",
+    "displayName": "",
+    "description": "",
+    "viewConfigs": {
+        "tags": {
+            "as": "icon",
+            "sectionTitle": "E.g.,",
+            "showTagIcon": false,
+            "showTags": true,
+            "tagSize": "micro",
+            "tagsKey": "types"
+        }
+    }
+}

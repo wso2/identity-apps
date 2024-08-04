@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,7 +31,10 @@ export const extensions: Extensions = {
         help: {
             communityLink: "Ask the Community",
             docSiteLink: "Documentation",
-            helpCenterLink: "Contact Support",
+            helpCenterLink: {
+                title: "Contact Support",
+                subtitle: "Talk to the {{productName}} team to obtain personalized assistance."
+            },
             helpDropdownLink: "Get Help"
         },
         learnMore: "Learn More",
@@ -48,7 +51,7 @@ export const extensions: Extensions = {
                         view: "View Social Connections"
                     },
                     description:
-                        "Let your users log in to your applications with an Identity Provider of " + "their choice.",
+                        "Let your users log in to your applications with an Identity Provider of " + "their choice",
                     heading: "Add social login"
                 },
                 integrateApps: {
@@ -172,6 +175,13 @@ export const extensions: Extensions = {
                             idpEntityId: "IdP Entity ID",
                             idpUrl: "IdP URL"
                         }
+                    }
+                },
+                m2m: {
+                    customConfig: {
+                        tokenEndpoint: "Token Endpoint",
+                        tokenRequest: "Token Request",
+                        configurations: "Configurations"
                     }
                 }
             }
@@ -326,6 +336,12 @@ export const extensions: Extensions = {
                 groupAttributeLabel: "Group attribute",
                 groupAttributeHint: "The attribute from the connection that will be mapped to the organization's group attribute.",
                 groupAttributePlaceholder: "Enter mapped attribute",
+                groupAttributeMessage1: "Please be aware that the attribute selected in the <1>Attributes tab</1> as the group attribute is used to identify groups at the Connection.",
+                groupAttributeMessage2: "For modifications to the group attribute, please visit the <1>Attributes tab</1>.",
+                groupAttributeMessageOIDC: "Please note that OpenID Connect attribute named <1>{{attribute}}</1> will be considered as the default " +
+                    "<1>Group Attribute</1> as you have not added a custom attribute.",
+                groupAttributeMessageSAML: "Please note that <1>{{attribute}}</1> attribute will be considered as the default " +
+                    "<1>Group Attribute</1> as you have not added a custom attribute.",
                 notifications: {
                     fetchConfigs: {
                         error: {
@@ -426,13 +442,35 @@ export const extensions: Extensions = {
                     }
                 }
             }
+        },
+        organizationInfo: {
+            heading: "Organization Info",
+            subHeading: "View information related to your organization.",
+            orgId: {
+                label: "Organization ID",
+                heading: "Organization ID",
+                subHeading: "The following organization ID will be useful for you to implement and configure the Asgardeo manangement REST APIs of " +
+                    "organizations."
+            },
+            notifications: {
+                getConfiguration: {
+                    error: {
+                        description: "Error occurred while retrieving organization information",
+                        message: "An error occurred"
+                    },
+                    genericError: {
+                        description: "An error occurred while retrieving organization information.",
+                        message: "An error occurred"
+                    }
+                }
+            }
         }
     },
     develop: {
         apiResource: {
             pageHeader: {
                 description: "Create and manage the APIs used to define the API scopes/permissions that can be consumed by your applications.",
-                title: "APIs"
+                title: "API Resources"
             },
             empty: "There are no API resources available at the moment.",
             managedByChoreoText: "Managed by Choreo",
@@ -443,7 +481,7 @@ export const extensions: Extensions = {
                 },
                 title: "Something went wrong"
             },
-            addApiResourceButton: "New API",
+            addApiResourceButton: "New API Resource",
             confirmations: {
                 deleteAPIResource: {
                     assertionHint: "Please confirm your action.",
@@ -462,7 +500,15 @@ export const extensions: Extensions = {
             },
             managementAPI: {
                 header: "Management APIs",
-                description: "APIs to manage resources in your self organization"
+                description: "APIs to manage resources in your organization (root)"
+            },
+            consoleFeature: {
+                header: "Console Features",
+                description: "Permissions to manage resources in the console"
+            },
+            businessAPI: {
+                header: "Business APIs",
+                description: "Custom APIs to created by the user"
             },
             notifications: {
                 deleteAPIResource: {
@@ -558,7 +604,7 @@ export const extensions: Extensions = {
             },
             organizationAPI: {
                 header: "Organization APIs",
-                description: "APIs to manage resources your other organizations"
+                description: "APIs to manage resources in your B2B organizations"
             },
             table: {
                 name: {
@@ -700,8 +746,8 @@ export const extensions: Extensions = {
                     cancelButton: "Cancel",
                     nextButton: "Next",
                     previousButton: "Previous",
-                    submitButton: "Finish",
-                    title: "Add API",
+                    submitButton: "Create",
+                    title: "Create an API",
                     subtitle: "Create a new API",
                     steps: {
                         basic: {
@@ -953,7 +999,7 @@ export const extensions: Extensions = {
                                         rbac: {
                                             label: "Enable Role Based Access Control (RBAC)",
                                             name: "Role Based Access Control (RBAC)",
-                                            hint: "RBAC authorization policies will be enforced for this API resource. Permission to role and role to group mappings will be evaluated during the authorize call."
+                                            hint: "RBAC authorization policies will be enforced for this API resource. Permission to role and role to group/user mappings will be evaluated during the authorize call."
                                         },
                                         consent: {
                                             label: "Enable Consent Based Access Policy",
@@ -1281,6 +1327,20 @@ export const extensions: Extensions = {
                             "application that should not be secured, and do not require authentication. Multiple " +
                             "URIs can be set using <3>comma separated</3> values."
                     }
+                },
+                m2m: {
+                    configurations: {
+                        clientId: {
+                            hint: "The Client ID generated when registering the application in {{ productName }}."
+                        },
+                        clientSecret: {
+                            hint: "The Client Secret generated when registering the application in {{ productName }}."
+                        },
+                        tokenRequest: "The API request used by the application to obtain an access token from {{ productName }}.",
+                        tokenEndpoint: "The token endpoint of {{ productName }}.",
+                        scopes: "The list of authorized scopes." +
+                                "Include required scopes by authorizing APIs through the <1>API Authorization</1> tab"
+                    }
                 }
             }
         },
@@ -1311,12 +1371,14 @@ export const extensions: Extensions = {
                 header: "Danger Zone",
                 revertBranding: {
                     actionTitle: "Revert",
+                    disableHint: "Please select an application from the list above to revert the branding preferences.",
                     header: "Revert to default",
                     subheader: "Once the branding preferences are reverted, they can't be recovered and your " +
                         "users will see {{ productName }}'s default branding."
                 },
                 unpublishBranding: {
                     actionTitle: "Unpublish",
+                    disableHint: "Please select an application from the list above to unpublish the branding preferences.",
                     header: "Unpublish branding preferences",
                     subheader: "You can temporarily switch to {{ productName }}'s default branding by unpublishing. You can always switch back by saving your branding preferences again."
                 }
@@ -1859,6 +1921,16 @@ export const extensions: Extensions = {
                         message: "Reverting branding preferences"
                     }
                 },
+                customTextPreferenceDelete: {
+                    genericError: {
+                        description: "An error occurred while reverting the custom text preferences for {{ tenant }}.",
+                        message: "Couldn't revert custom text preferences"
+                    },
+                    success: {
+                        description: "Successfully reverted custom text preferences for {{ tenant }}.",
+                        message: "Revert successful"
+                    }
+                },
                 fetch: {
                     customLayoutNotFound: {
                         description: "There is no deployed custom layout for {{ tenant }}.",
@@ -1907,11 +1979,23 @@ export const extensions: Extensions = {
                 }
             },
             pageHeader: {
+                application: "Application",
+                applicationBrandingtitle: "Application Branding",
+                applicationBrandingDescription: "Customize consumer-facing user interfaces of applications.",
+                applicationListWarning: "Please select an application from the list above to customize the branding preferences.",
+                backButtonText: "Go back to Application Settings",
                 description: "Customize consumer-facing user interfaces of applications in your organization.",
+                organization: "Organization",
+                organizationBrandingtitle: "Organization Branding",
+                selectApplication: "Select Application",
                 title: "Branding"
             },
+            pageResolution: {
+                hint: "Pages in the Preview section may look different than the actual page. " +
+                    "To solve this issue please set your screen to a higher resolution."
+            },
             publishToggle: {
-                hint: "Branding preference is in the unpublished state. Your changes will not be reflected until you save & publish your prefrences again.",
+                hint: "Branding preference is in the unpublished state. Your changes will not be reflected until you save & publish your preferences again.",
                 label: "Publish",
                 enabled: "Enabled",
                 disabled: "Disabled"
@@ -1990,9 +2074,10 @@ export const extensions: Extensions = {
         },
         emailProviders: {
             configureEmailTemplates: "Configure Email Templates",
-            heading: "Custom Email Provider",
-            subHeading: "Configure a custom SMTP server to send emails to your users with your own email address.",
+            heading: "Email Provider",
+            subHeading: "Configure a SMTP server to send emails to your users with your own email address.",
             description: "Configure the email provider settings according to your SMTP server.",
+            note: "Email provider for the super organization can only be configured through <1>deployment.toml</1>",
             info: "You can customize the email content using <1>Email Templates</1>.",
             updateButton: "Update",
             sendTestMailButton: "Send Test Email",
@@ -2089,172 +2174,10 @@ export const extensions: Extensions = {
                 }
             }
         },
-        emailAndSMS: {
-            heading: {
-                heading: "Email & SMS Providers",
-                onlySMSProvider: "SMS Provider",
-                onlyEmailProvider: "Email Provider"
-            },
-            title: {
-                heading: "Email & SMS Providers",
-                onlySMSProvider: "SMS Provider",
-                onlyEmailProvider: "Email Provider"
-            },
-            description: {
-                description: "Configure the Email and SMS providers for your organization.",
-                onlySMSProvider: "Configure the SMS provider for your organization.",
-                onlyEmailProvider: "Configure the Email provider for your organization."
-            }
-        },
-        smsProviders: {
-            heading: "Custom SMS Provider",
-            subHeading: "Configure a custom SMS provider to send SMS to your users.",
-            description: "Configure the SMS provider settings according to your SMS provider.",
-            info: "You can customize the SMS content using <1>SMS Templates</1>.",
-            updateButton: "Update",
-            sendTestSMSButton: "Send Test SMS",
-            goBack: "Go back to Email & SMS",
-            confirmationModal: {
-                assertionHint: "Please confirm your action.",
-                content: "If you delete this configuration, you will not receive SMS." +
-                    "Please proceed with caution.",
-                header: "Are you sure?",
-                message: "This action is irreversible and will permanently delete the SMS provider configurations."
-            },
-            dangerZoneGroup: {
-                header: "Danger Zone",
-                revertConfig: {
-                    heading: "Delete Configurations",
-                    subHeading: "This action will delete sms provider configurations. " +
-                        "Once deleted, you will not receive SMS.",
-                    actionTitle: "Delete"
-                }
-            },
-            form: {
-                twilio: {
-                    subHeading: "Twilio Settings",
-                    accountSID: {
-                        label: "Twilio Account SID",
-                        placeholder: "Enter the Twilio account SID",
-                        hint: "Twilio account string identifier which act as username for the account"
-                    },
-                    authToken: {
-                        label: "Twilio Auth Token",
-                        placeholder: "Enter the Twilio auth token",
-                        hint: "The access token generated by the Twilio auth server "
-                    },
-                    sender: {
-                        label: "Sender",
-                        placeholder: "Enter the sender phone number",
-                        hint: "Phone number of the sender."
-                    },
-                    validations: {
-                        required: "This field cannot be empty"
-                    }
-                },
-                vonage: {
-                    subHeading: "Vonage Settings",
-                    accountSID: {
-                        label: "Vonage Account SID",
-                        placeholder: "Enter the Vonage account SID",
-                        hint: "Vonage account string identifier which act as username for the account"
-                    },
-                    authToken: {
-                        label: "Vonage Auth Token",
-                        placeholder: "Enter the Vonage auth token",
-                        hint: "The access token generated by the Vonage auth server "
-                    },
-                    sender: {
-                        label: "Sender",
-                        placeholder: "Enter the sender phone number",
-                        hint: "Phone number of the sender."
-                    },
-                    validations: {
-                        required: "This field cannot be empty"
-                    }
-                },
-                custom: {
-                    subHeading: "Custom Settings",
-                    providerName: {
-                        label: "SMS Provider Name",
-                        placeholder: "Enter the SMS provider name",
-                        hint: "The name of the SMS provider."
-                    },
-                    providerUrl: {
-                        label: "SMS Provider URL",
-                        placeholder: "Enter the sms provider URL",
-                        hint: "The URL of the SMS provider."
-                    },
-                    httpMethod: {
-                        label: "HTTP Method",
-                        placeholder: "POST",
-                        hint: "The HTTP method of the API request used for sending the SMS."
-                    },
-                    contentType: {
-                        label: "Content Type",
-                        placeholder: "JSON",
-                        hint: "The content type of the API request used for sending the SMS."
-                    },
-                    headers: {
-                        label: "Headers",
-                        placeholder: "Enter headers",
-                        hint: "Headers to be included in the send SMS API request."
-                    },
-                    payload: {
-                        label: "Payload",
-                        placeholder: "Enter the payload",
-                        hint: "Payload of the SMS API request."
-                    },
-                    key: {
-                        label: "SMS Provider Auth Key",
-                        placeholder: "Enter the SMS provider auth key",
-                        hint: "The auth key of the SMS provider."
-                    },
-                    secret: {
-                        label: "SMS Provider Auth Secret",
-                        placeholder: "Enter the SMS provider auth secret",
-                        hint: "The auth secret of the SMS provider."
-                    },
-                    sender: {
-                        label: "Sender",
-                        placeholder: "Enter the sender",
-                        hint: "The sender of the SMS."
-                    },
-                    validations: {
-                        required: "This field cannot be empty",
-                        methodInvalid: "The HTTP method is invalid",
-                        contentTypeInvalid: "The content type is invalid"
-                    }
-                }
-            },
-            notifications: {
-                getConfiguration: {
-                    error: {
-                        message: "Error Occurred",
-                        description: "Error retrieving the sms provider configurations."
-                    }
-                },
-                deleteConfiguration: {
-                    error: {
-                        message: "Error Occurred",
-                        description: "Error deleting the sms provider configurations."
-                    },
-                    success: {
-                        message: "Revert Successful",
-                        description: "Successfully reverted the sms provider configurations."
-                    }
-                },
-                updateConfiguration: {
-                    error: {
-                        message: "Error Occurred",
-                        description: "Error updating the sms provider configurations."
-                    },
-                    success: {
-                        message: "Update Successful",
-                        description: "Successfully updated the sms provider configurations."
-                    }
-                }
-            }
+        notificationChannel: {
+            heading: "SMS / Email Providers",
+            title: "SMS / Email Providers",
+            description: "Configure the SMS and Email providers for your organization."
         },
         identityProviders: {
             apple: {
@@ -2265,7 +2188,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>Apple</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>Apple</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add Apple Login",
@@ -2280,10 +2203,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectDefaultConfig: {
-                            content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add Apple login</3>" +
-                                " to configure a Apple login flow.",
-                            heading: "Select <1>Start with default configuration</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Add Sign In Option</3> button inside the login box. And select a Apple connection.",
+                            heading: "Add a <1>Apple</1> connection"
                         }
                     }
                 }
@@ -2296,7 +2217,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>Email OTP</1> to <3>Step 2</3> on the <5>Sign-in Method" +
+                            "Add <1>Email OTP</1> to <3>Step 2</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Email OTP Set Up Guide",
@@ -2312,10 +2233,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectEmailOTP: {
-                            content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add Email OTP as a second " +
-                                "factor</3> to configure a basic Email OTP flow.",
-                            heading: "Select <1>Add Email OTP as a second factor</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Username & Password + Email OTP</3> option from the Multi-factor login section to configure a basic Email OTP flow.",
+                            heading: "Select <1>Email OTP</1> option"
                         }
                     }
                 }
@@ -2323,14 +2242,16 @@ export const extensions: Extensions = {
             smsOTP: {
                 settings: {
                     smsOtpEnableDisableToggle: {
-                        labelEnable: "Enable SMS OTP",
-                        labelDisable: "Disable SMS OTP "
+                        labelEnable: "Enabled",
+                        labelDisable: "Disabled"
                     },
-                    enableRequiredNote: {
-                        message: "Asgardeo publishes events to Choreo to enable SMS OTP, where Choreo " +
-                            "webhooks will be used to integrate with multiple services to publish OTP Notifications. " +
-                            "Follow the <1>Add SMS OTP Guide</1> to configure Choreo webhooks for Asgardeo publish " +
-                            "events."
+                    choreoAsSMSProvider: {
+                        title: "Configure Choreo as SMS Provider",
+                        enableRequiredNote: {
+                            message: "Asgardeo publishes identity events to Choreo, where Choreo webhooks can be used to" +
+                            " integrate with multiple services to send SMS notifications and run custom business" +
+                            " logic. <1>Learn More</1>"
+                        }
                     },
                     errorNotifications: {
                         notificationSendersRetrievalError: {
@@ -2366,7 +2287,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>SMS OTP</1> to <3>Step 2</3> on the <5>Sign-in Method" +
+                            "Add <1>SMS OTP</1> to <3>Step 2</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "SMS OTP Set Up Guide",
@@ -2378,10 +2299,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectSMSOTP: {
-                            content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add SMS OTP as a second " +
-                                "factor</3> to configure a basic SMS OTP flow.",
-                            heading: "Select <1>Add SMS OTP as a second factor</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Username & Password + SMS OTP</3> option from the Multi-factor login section to configure a basic SMS OTP flow.",
+                            heading: "Select <1>SMS OTP</1> option"
                         }
                     }
                 }
@@ -2394,7 +2313,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>Facebook</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>Facebook</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add Facebook Login",
@@ -2409,10 +2328,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectDefaultConfig: {
-                            content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Start with default " +
-                                "configuration</3>.",
-                            heading: "Select <1>Start with default configuration</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Add Sign In Option</3> button inside the login box. And select a Facebook connection.",
+                            heading: "Add a <1>Facebook</1> connection"
                         }
                     }
                 }
@@ -2425,7 +2342,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>GitHub</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>GitHub</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add GitHub Login",
@@ -2440,10 +2357,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectDefaultConfig: {
-                            content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Start with default " +
-                                "configuration</3>.",
-                            heading: "Select <1>Start with default configuration</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Add Sign In Option</3> button inside the login box. And select a Github connection.",
+                            heading: "Add a <1>Github</1> connection"
                         }
                     }
                 }
@@ -2456,7 +2371,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>Google</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>Google</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add Google Login",
@@ -2471,10 +2386,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectDefaultConfig: {
-                            content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add Google login</3> to " +
-                                "configure a Google login flow.",
-                            heading: "Select <1>Add Google login</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Add Sign In Option</3> button inside the login box. And select a Google connection.",
+                            heading: "Add a <1>Google</1> connection"
                         }
                     }
                 }
@@ -2487,7 +2400,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>Microsoft</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>Microsoft</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add Microsoft Login",
@@ -2502,10 +2415,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectDefaultConfig: {
-                            content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Start with default " +
-                                "configuration</3>.",
-                            heading: "Select <1>Start with default configuration</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Add Sign In Option</3> button inside the login box. And select a Microsoft connection.",
+                            heading: "Add a <1>Microsoft</1> connection"
                         }
                     }
                 }
@@ -2518,7 +2429,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>HYPR</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>HYPR</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add HYPR Login",
@@ -2541,10 +2452,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectDefaultConfig: {
-                            content:
-                                "Go to the <1>Sign-in Method</1> tab and click on <3>Start with default " +
-                                "configuration</3>.",
-                            heading: "Select <1>Start with default configuration</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Add Sign In Option</3> button inside the login box. And select a HYPR connection.",
+                            heading: "Add a <1>HYPR</1> connection"
                         }
                     }
                 }
@@ -2600,7 +2509,7 @@ export const extensions: Extensions = {
                     },
                     connectApp: {
                         description:
-                            "Add <1>Sign In With Ethereum</1> authenticator to <3>Step 1</3> on the <5>Sign-in Method" +
+                            "Add <1>Sign In With Ethereum</1> authenticator to <3>Step 1</3> on the <5>Login Flow" +
                             "</5> section of your <7>application</7>."
                     },
                     heading: "Add Sign In With Ethereum",
@@ -2615,10 +2524,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectDefaultConfig: {
-                            content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Start with default " +
-                                "configuration</3>.",
-                            heading: "Select <1>Start with default configuration</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Add Sign In Option</3> button inside the login box. And select a Sign In With Ethereum connection.",
+                            heading: "Add a <1>Sign In With Ethereum</1> connection"
                         }
                     },
                     subHeading: "Sign In With Ethereum is now ready to be used as a login option for your "
@@ -2668,10 +2575,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectTOTP: {
-                            content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add OTP as a second " +
-                                "factor</3> to configure a basic TOTP flow.",
-                            heading: "Select <1>Add TOTP as a second factor</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Username & Password + TOTP</3> option from the Multi-factor login section to configure a basic TOTP flow.",
+                            heading: "Select <1>TOTP</1> option"
                         }
                     },
                     subHeading: "Follow the instructions given below to set up TOTP as a factor in your login flow."
@@ -2702,10 +2607,8 @@ export const extensions: Extensions = {
                             heading: "Select Application"
                         },
                         selectFIDO: {
-                            content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add Passkey Login</3> to configure " +
-                                " a basic passkey flow.",
-                            heading: "Select <1>Add Passkey Login</1>"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Passkey</3> option from the Passwordless login section to configure a basic Passkey flow.",
+                            heading: "Select <1>Passkey</1> option"
                         },
                         configureParameters: {
                             heading: "Configure passkey options",
@@ -2715,14 +2618,11 @@ export const extensions: Extensions = {
                                         description: "Activate this option to allow users to enroll for a " +
                                         "passkey during login.",
                                         label: "Progressive Passkey Enrollment:",
-                                        note: "If Passkey is set as a first factor, the following " +
-                                        "<1> adaptive script</1> should be added under " +
-                                        "the <3>Sign-In-Method</3> tab of the application. " +
-                                        "This script is added automatically with the template-based " +
-                                        "Passkey setup and is used to verify the user's " +
-                                        "identity before enrolling passkeys. " +
-                                        "However, if you're configuring Passkey " +
-                                        "without a template, remember to add the script manually."
+                                        note: "When the Passkey is set as a <1>first factor</1> option, " +
+                                        "users need to add an <3>adaptive script</3> to verify the user's " +
+                                        "identity prior to passkey enrollment. To include the script, users " +
+                                        "can use the <5>Passkeys Progressive Enrollment</5> template available " +
+                                        "in the <7>Sign-In-Method</7> tab of the application."
                                     },
                                     usernamelessAuthentication: {
                                         description: "Enabling this feature allows users to log in with a passkey " +
@@ -2761,9 +2661,8 @@ export const extensions: Extensions = {
                         },
                         selectMagicLink: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add Magic Link login" +
-                                "</3> to configure a basic magic-link flow.",
-                            heading: "Select <1>Add Magic Link login</1>"
+                                "Go to <1>Login Flow</1> tab and click on the <3>Magic Link</3> option from the Passwordless login section to configure a basic Magic Link flow.",
+                            heading: "Select <1>Magic Link</1> option"
                         }
                     },
                     subHeading: "Follow the instructions given below to set up magic link login in your login flow."
@@ -2771,6 +2670,12 @@ export const extensions: Extensions = {
             }
         },
         monitor: {
+            logs: {
+                tabs: {
+                    audit: "Audit",
+                    diagnostic: "Diagnostic"
+                }
+            },
             filter: {
                 advancedSearch: {
                     attributes: {
@@ -2826,7 +2731,7 @@ export const extensions: Extensions = {
                 },
                 searchBar: {
                     placeholderDiagnostic: "Search Logs by Trace ID, Action ID, Client ID, Result Message, or Result Status",
-                    placeholderAudit: "Search Logs by Action, Target ID, Initiator ID, Request ID"
+                    placeholderAudit: "Search logs that contain ..."
                 },
                 refreshMessage: {
                     text: "Last fetched logs at ",
@@ -2839,7 +2744,10 @@ export const extensions: Extensions = {
                     label: "Run Query"
                 },
                 downloadButton : {
-                    label : "Download log data"
+                    label : "Download"
+                },
+                viewButton: {
+                    label : "View"
                 },
                 delayMessage: {
                     text: "Some queries may take longer to load."
@@ -2848,6 +2756,17 @@ export const extensions: Extensions = {
             logView: {
                 toolTips: {
                     seeMore: "See more"
+                },
+                headers: {
+                    recordedAt: "Recorded Time",
+                    actionId: "Action",
+                    targetId: "Target"
+                },
+                logDataviewer : {
+                    panelName: "AuditLog Data Viewer",
+                    download: "Download",
+                    copy: "Copy",
+                    close: "Close"
                 }
             },
             notifications: {
@@ -2880,6 +2799,20 @@ export const extensions: Extensions = {
                         1: "Please try a different time range."
                     },
                     title: "No logs available"
+                },
+                startTimeGreaterThanCurrentError: {
+                    subtitle: {
+                        0: "Couldn't fetch logs.",
+                        1: "Selected start time should be before the current time."
+                    },
+                    title: "Invalid time range"
+                },
+                endTimeGreaterThanStartTimeError: {
+                    subtitle: {
+                        0: "Couldn't fetch logs.",
+                        1: "Selected start time should be before the end time."
+                    },
+                    title: "Invalid time range"
                 }
             },
             pageHeader: {
@@ -3065,12 +2998,16 @@ export const extensions: Extensions = {
                 pageTitle: "Username Validation",
                 description: "Update the username type and customize username validation rules for your users.",
                 usernameType: "Select username type",
-                usernameTypeHint: "Allow users to set an email or a combination of alphanumeric characters for the username.",
+                usernameTypeHint: "Allow users to set an email or a combination of characters for the username.",
                 emailType: "Email",
-                alphanumericType: "Alphanumeric (a-z, A-Z, 0-9)",
-                usernameLength: "Set username length",
-                usernameLengthMin: "Min",
-                usernameLengthMax: "Max"
+                customType: "Custom",
+                usernameLength: {
+                    0: "Must be between",
+                    1: "and",
+                    2: "characters."
+                },
+                usernameAlphanumeric: "Restrict to alphanumeric (a-z, A-Z, 0-9).",
+                usernameSpecialCharsHint: "Any combination of letters (a-z, A-Z), numbers (0-9), and the following characters: !@#$&'+\\=^.{|}~-."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "Alternative Login Identifiers",
@@ -3081,7 +3018,7 @@ export const extensions: Extensions = {
                     " the login flow.",
                 warning: "Ensure that each user in your organization has a unique value assigned for the selected" +
                     " login identifiers.",
-                info: "You have selected email as the username type which makes it the primary login identifier.",
+                info: "You've chosen email as your username type, and it automatically serves as a login identifier.",
                 notification: {
                     error: {
                         description: "Error updating the alternative login identifier configuration.",
@@ -3299,6 +3236,7 @@ export const extensions: Extensions = {
                         password:
                             "Your password must contain a minimum of 8 characters including at " +
                             "least one uppercase letter, one lowercase letter, and one number.",
+                        confirmPassword: "Both passwords should match",
                         passwordCase: "At least {{minUpperCase}} uppercase and {{minLowerCase}} lowercase letters",
                         upperCase: "At least {{minUpperCase}} uppercase letter(s)",
                         lowerCase: "At least {{minLowerCase}} lowercase letter(s)",
@@ -3312,8 +3250,13 @@ export const extensions: Extensions = {
                         },
                         usernameHint: "Must be an alphanumeric (a-z, A-Z, 0-9) string between {{minLength}} to " +
                             "{{maxLength}} characters including at least one letter.",
+                        usernameSpecialCharHint: "Must be {{minLength}} to {{maxLength}} characters long, " +
+                            "including at least one letter, and may contain a combination of the following " +
+                            "characters: a-z, A-Z, 0-9, !@#$&'+\\=^.{|}~-.",
                         usernameLength: "The username length should be between {{minLength}} and {{maxLength}}.",
-                        usernameSymbols: "The username should consist of alphanumeric characters (a-z, A-Z, 0-9) and must include at least one letter."
+                        usernameSymbols: "The username should consist of alphanumeric characters (a-z, A-Z, 0-9) and must include at least one letter.",
+                        usernameSpecialCharSymbols: "Please choose a valid username that adheres to the given guidelines.",
+                        usernameEmpty: "Username cannot be empty"
                     }
                 }
             },
@@ -3475,10 +3418,12 @@ export const extensions: Extensions = {
                                     message: "See the Asgardeo documentation for the complete list of user store " +
                                         "configuration properties."
                                 },
-                                description: "Configure the properties of the local user store in the " +
-                                    "deployment.toml file that is found in the user store agent " +
-                                    "distribution depending on your requirements.",
-                                title: "Configure user store properties"
+                                description: "Update the properties in the deployment.toml file located in the " +
+                                    "root directory of the user store agent to match the remote user store settings. " +
+                                    "Add additional properties according to your requirements.",
+                                docsDescription: "See the <1>Asgardeo documentation</1> for more details on " +
+                                    "configuring the user store agent. ",
+                                title: "Configure the agent"
                             },
                             downloadAgent: {
                                 content: {
@@ -3660,6 +3605,10 @@ export const extensions: Extensions = {
                                 hint: "Enabling this will let the users reset their password using an email.",
                                 label: "Enable"
                             },
+                            enableSMSBasedRecovery: {
+                                hint: "This specifies whether to send an SMS OTP to the mobile.",
+                                label: "Enable SMS based recovery"
+                            },
                             expiryTime: {
                                 hint: "Password recovery link expiry time in minutes.",
                                 label: "Recovery link expiry time",
@@ -3679,9 +3628,80 @@ export const extensions: Extensions = {
                                     "This specifies whether to notify the user via an email when password " +
                                     "recovery is successful.",
                                 label: "Notify on successful recovery"
+                            },
+                            maxResendCount: {
+                                hint: "Password recovery maximum resend count.",
+                                label: "Maximum resend attempts count",
+                                placeholder: "Enter max resend count",
+                                validations: {
+                                    invalid: "Password recovery OTP resend count should be an integer.",
+                                    empty: "Password recovery OTP resend count cannot be empty.",
+                                    range:
+                                        "Password recovery OTP resend count should be between 1 & 5.",
+                                    maxLengthReached:
+                                        "Password recovery OTP resend count should be a number with 1 digit."
+                                }
+                            },
+                            maxFailedAttemptCount: {
+                                hint: "Password recovery maximum failed attempt count.",
+                                label: "Max failed attempts count",
+                                placeholder: "Enter max failed attempts",
+                                validations: {
+                                    invalid: "Password recovery max failed attempts count should be an integer.",
+                                    empty: "Password recovery max failed attempts count cannot be empty.",
+                                    range:
+                                        "Password recovery max failed attempts count should be between 1 & 10.",
+                                    maxLengthReached:
+                                        "Password recovery max failed attempts count should be a number with less than 3 digits."
+                                }
+                            },
+                            smsOtpExpiryTime: {
+                                hint: "Password recovery OTP expiry time in minutes.",
+                                label: "Password recovery OTP expiry time",
+                                placeholder: "Enter expiry time",
+                                validations: {
+                                    invalid: "Password recovery OTP expiry time should be an integer.",
+                                    empty: "Password recovery OTP expiry time cannot be empty.",
+                                    range:
+                                        "Password recovery OTP expiry time should be between 1 minute & 1440 minutes " +
+                                        "(1 day).",
+                                    maxLengthReached:
+                                        "Password recovery OTP expiry time should be a number with 4 or less digits."
+                                }
+                            },
+                            passwordRecoveryOtpUseUppercase: {
+                                hint: "This specifies whether to use upper case characters in the password recovery otp code.",
+                                label: "Include upper case letters"
+                            },
+                            passwordRecoveryOtpUseLowercase: {
+                                hint: "This specifies whether to use lower case characters in the password recovery otp code.",
+                                label: "Include lower case letters"
+                            },
+                            passwordRecoveryOtpUseNumeric: {
+                                hint: "This specifies whether to use numeric characters in the password recovery otp code.",
+                                label: "Include numeric characters"
+                            },
+                            passwordRecoveryOtpLength: {
+                                hint: "Password recovery OTP length in characters",
+                                label: "Password recovery OTP code length",
+                                placeholder: "Enter OTP code length",
+                                validations: {
+                                    empty: "Password recovery OTP length cannot be empty.",
+                                    maxLengthReached:
+                                        "Password recovery OTP length should be between 6 and 10 characters."
+                                }
+                            },
+                            enableEmailBasedRecovery: {
+                                hint: "This specifies whether to send an recovery link to the email address.",
+                                label: "Enable email link based recovery"
                             }
                         }
                     },
+                    recoveryOptionSubHeadingEmailLink: "Email Link",
+                    recoveryOptionSubHeadingSMS: "SMS OTP",
+                    recoveryOptionHeading: "Recovery Option Selection",
+                    otpConfigHeading: "OTP Code Configuration",
+                    failedAttemptConfigHeading: "Recovery Attempts Limitation",
                     connectorDescription: "Enable self-service password recovery for users " + "on the login page.",
                     heading: "Password Recovery",
                     notification: {
@@ -3695,8 +3715,7 @@ export const extensions: Extensions = {
                         }
                     },
                     subHeading:
-                        "Enable self-service password recovery for users " +
-                        "on the login page.\nThe user will receive a password reset link via email upon request."
+                    "Enable self-service password recovery for users on the login page."
                 },
                 subHeading: "Account Recovery related settings."
             },
@@ -3716,7 +3735,8 @@ export const extensions: Extensions = {
                         heading: "This will enforce reCAPTCHA validation in respective UIs of the following flows.",
                         subSection1: "Login to business applications",
                         subSection2: "Recover the password of a user account",
-                        subSection3: "Self registration for user accounts"
+                        subSection3: "Self registration for user accounts",
+                        subSection4: "Recover the username of a user account"
                     },
                     connectorDescription: "Enable reCAPTCHA for the organization.",
                     heading: "Bot Detection",
@@ -3780,6 +3800,12 @@ export const extensions: Extensions = {
                                     range: "Max failed attempts should be between 1 & 10.",
                                     maxLengthReached: "Max failed attempts should be a number with 1 or 2 digits."
                                 }
+                            },
+                            notifyUserOnAccountLockIncrement: {
+                                hint:
+                                    "Notify user when the account lock duration is increased due to " +
+                                    "continuous failed login attempts.",
+                                label: "Notify user when lock time is increased"
                             }
                         }
                     },
@@ -3973,8 +3999,20 @@ export const extensions: Extensions = {
                     },
                     subHeading:
                         "When self registration is enabled, users can register via the " +
-                        "<1>Create an account</1> link on the application’s login page. This creates a new " +
+                        "<1>Register</1> link on the application’s login page. This creates a new " +
                         "<3>user</3> account in the organization."
+                },
+                inviteUserToSetPassword: {
+                    notification: {
+                        error: {
+                            description: "Failed to update the configuration for the Invite User to Set Password connector.",
+                            message: "Error updating configuration"
+                        },
+                        success: {
+                            description: "Successfully updated the configuration for the Invite User to Set Password connector.",
+                            message: "Update successful"
+                        }
+                    }
                 },
                 subHeading: "Self Registration related settings."
             }
@@ -4021,7 +4059,10 @@ export const extensions: Extensions = {
                         emailUnavailableWarning: "WARNING: Cannot find an email address for the user account." +
                             "Please provide an email address to proceed with inviting the user to reset the password.",
                         emailResetWarning: "An email with a link to reset the password will be sent to the provided " +
-                            "email address for the user to set their own password."
+                            "email address for the user to set their own password.",
+                        passwordResetConfigDisabled: "Password reset via recovery email is not enabled. Please make " +
+                            "sure to enable it from <1> " +
+                            " Login and Registration </1> configurations."
                     }
                 }
             },
@@ -4030,7 +4071,7 @@ export const extensions: Extensions = {
                 addCollaboratorBtn: "Add Administrator"
             },
             collaboratorAccounts: {
-                consoleInfo: "Share this link with the users who have administrative priviledges " +
+                consoleInfo: "Share this link with the users who have administrative privileges " +
                     "to allow access to Console"
             },
             list: {
@@ -4112,8 +4153,8 @@ export const extensions: Extensions = {
                     }
                 },
                 addUser: {
-                    subtitle: "Follow the steps to add a new user.",
-                    title: "Add User"
+                    subtitle: "Follow the steps to create a new user.",
+                    title: "Create User"
                 }
             }
         },
@@ -4123,11 +4164,26 @@ export const extensions: Extensions = {
             }
         },
         invite: {
+            assignAdminUser: {
+                confirmationModal: {
+                    assertionHint: "Assign Administrator role to the user.",
+                    header: "Assign Administrator Role",
+                    message: "The user already exists as a collaborator. Do you want to assign them to Administrator role?"
+                }
+            },
             notifications: {
                 sendInvite: {
+                    inviteAlreadyExistsError: {
+                        description: "The invite for the user {{userName}} already exists.",
+                        message: "Unable to send invite"
+                    },
                     limitReachError: {
                         description: "Maximum number of allowed collaborator users have been reached.",
                         message: "Error while sending the invitation"
+                    },
+                    userAlreadyExistsError: {
+                        description: "The user {{userName}} already exists.",
+                        message: "Unable to send invite"
                     }
                 }
             }

@@ -81,7 +81,7 @@
     String confirm = (String) request.getAttribute("confirm");
     String confirmLiteReg = (String) request.getAttribute("confirmLiteReg");
     String resendUsername = request.getParameter("username");
-    String sp = request.getParameter("sp");
+    String sp = Encode.forJava(request.getParameter("sp"));
     String spId = request.getParameter("spId");
     String sessionDataKey = (String) request.getAttribute("sessionDataKey");
     String applicationAccessURLWithoutEncoding = null;
@@ -124,9 +124,7 @@
     if (StringUtils.isNotBlank(spId)) {
         try {
             ApplicationDataRetrievalClient applicationDataRetrieval = new ApplicationDataRetrievalClient();
-            if (spId.equals("My_Account")) {
-                sp = "My Account";
-            } else {
+            if (!sp.equals("My Account")) {
                 sp = applicationDataRetrieval.getApplicationName(tenantDomain,spId);
             }
         } catch (Exception e) {

@@ -1,0 +1,21 @@
+.edit-role {
+    &.users {
+        .MuiAutocomplete-tag {
+            margin: 0;
+        }
+
+        .MuiFormControl-root {
+            .MuiSelect-select {
+                padding: 11.5px;
+            }
+
+            .MuiInputBase-adornedStart {
+                padding: 6px !important;
+            }
+
+            .MuiInputBase-adornedEnd {
+                padding: 9.5px;
+            }
+        }
+    }
+}

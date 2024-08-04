@@ -48,6 +48,7 @@ export interface RolesMetaInterface {
     created?: string;
     location: string;
     lastModified?: string;
+    systemRole?: boolean;
 }
 
 /**

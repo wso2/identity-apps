@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 117.5 101.9">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #feb306;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        stroke-width: 0px;
+      }
+
+      .cls-2 {
+        fill: #ff8300;
+      }
+
+      .cls-3 {
+        fill: #023047;
+      }
+    </style>
+  </defs>
+  <g id="Layer_2-2" data-name="Layer 2">
+    <path id="Path_6310" data-name="Path 6310" class="cls-1" d="M10.9,0L2,15.3h78.8l-20.2,35,8.8,15.3L107.3,0H10.9Z"/>
+    <path id="Path_6311" data-name="Path 6311" class="cls-3" d="M69.5,71.4h0l-20.2-34.8h-17.5l37.7,65.3L117.5,18.8l-8.8-15.2-39.2,67.8h0Z"/>
+    <path id="Path_6312" data-name="Path 6312" class="cls-2" d="M0,18.5l48.2,83.4h17.6L26.5,33.8h40.3l8.8-15.3H0Z"/>
+  </g>
+</svg>

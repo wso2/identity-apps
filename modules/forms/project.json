@@ -1,15 +1,15 @@
 {
+    "name": "forms",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "root": "modules/forms",
     "sourceRoot": "modules/forms/src",
     "projectType": "library",
     "generators": {},
     "prefix": "@wso2is",
     "tags": [],
-    "implicitDependencies": [ "core" ],
+    "implicitDependencies": [ "core", "react-components" ],
     "targets": {
         "build": {
-            "executor": "@nrwl/web:rollup",
+            "executor": "@nx/rollup:rollup",
             "outputs": ["{options.outputPath}"],
             "options": {
                 "outputPath": "modules/forms/dist",
@@ -17,7 +17,7 @@
                 "project": "modules/forms/package.json",
                 "entryFile": "modules/forms/src/index.ts",
                 "external": ["react/jsx-runtime"],
-                "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+                "rollupConfig": "@nx/react/plugins/bundle-rollup",
                 "compiler": "babel",
                 "format": [
                     "esm",
@@ -33,7 +33,7 @@
             }
         },
         "lint": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm lint",
                 "cwd": "modules/forms",
@@ -41,9 +41,17 @@
             }
         },
         "test": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm test",
+                "cwd": "modules/forms",
+                "parallel": false
+            }
+        },
+        "test-coverage": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm test -- --coverage --collect-coverage",
                 "cwd": "modules/forms",
                 "parallel": false
             }

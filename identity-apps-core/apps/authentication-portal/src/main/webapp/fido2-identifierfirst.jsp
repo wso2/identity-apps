@@ -21,9 +21,9 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
-<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.model.AuthenticationRequestWrapper" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
-<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
@@ -32,23 +32,34 @@
 <%@include file="includes/localize.jsp" %>
 <%@include file="includes/init-url.jsp" %>
 
-<%
-    String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
+<%!
+    private boolean isMultiAuthAvailable(String multiOptionURI) {
 
-    if (StringUtils.isBlank(authAPIURL)) {
-        authAPIURL = IdentityUtil.getServerURL("/api/identity/auth/v1.1/", true, true);
-    } else {
-        // Resolve tenant domain for the authentication API URL.
-        authAPIURL = AuthenticationEndpointUtil.resolveTenantDomain(authAPIURL);
+        boolean isMultiAuthAvailable = true;
+        if (multiOptionURI == null || multiOptionURI.equals("null")) {
+            isMultiAuthAvailable = false;
+        } else {
+            int authenticatorIndex = multiOptionURI.indexOf("authenticators=");
+            if (authenticatorIndex == -1) {
+                isMultiAuthAvailable = false;
+            } else {
+                String authenticators = multiOptionURI.substring(authenticatorIndex + 15);
+                int authLastIndex = authenticators.indexOf("&") != -1 ? authenticators.indexOf("&") : authenticators.length();
+                authenticators = authenticators.substring(0, authLastIndex);
+                List<String> authList = Arrays.asList(authenticators.split("%3B"));
+                if (authList.size() < 2) {
+                    isMultiAuthAvailable = false;
+                } else if (authList.size() == 2 && authList.contains("backup-code-authenticator%3ALOCAL")) {
+                    isMultiAuthAvailable = false;
+                }
+            }
+        }
+        return isMultiAuthAvailable;
     }
-    if (!authAPIURL.endsWith("/")) {
-        authAPIURL += "/";
-    }
-    authAPIURL += "context/" + Encode.forUriComponent(request.getParameter("sessionDataKey"));
-    String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
-    Gson gson = new Gson();
-    Map data = gson.fromJson(contextProperties, Map.class);
-    
+%>
+
+<%
+    Map data = ((AuthenticationRequestWrapper) request).getAuthParams();
     boolean enablePasskeyProgressiveEnrollment = (boolean) data.get("FIDO.EnablePasskeyProgressiveEnrollment");
 %>
 
@@ -160,6 +171,25 @@
                                 </button>
                             </div>
                         <% } %>
+                        <div class="ui divider hidden"></div>
+                        <div class="text-center mt-1">
+                            <%
+                                String multiOptionURI = request.getParameter("multiOptionURI");
+                                if (multiOptionURI != null && AuthenticationEndpointUtil.isValidMultiOptionURI(multiOptionURI) &&
+                                    isMultiAuthAvailable(multiOptionURI)) {
+                            %>
+                                <a 
+                                    class="ui primary basic button link-button" 
+                                    id="goBackLink"
+                                    href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'
+                                >
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
+                                </a>
+                            <%
+                                }
+                            %>
+                        </div>
+                        <input type="hidden" name="multiOptionURI" value='<%=Encode.forHtmlAttribute(multiOptionURI)%>'/>
                     </div>
                 </form>
             </div>
@@ -191,7 +221,7 @@
         function validateForm() {
             var username = document.getElementById('username').value;
             var usernameError = document.getElementById('usernameError');
-            
+
             if(username.trim() === "") {
                 usernameError.style.display = "block";
                 return false;

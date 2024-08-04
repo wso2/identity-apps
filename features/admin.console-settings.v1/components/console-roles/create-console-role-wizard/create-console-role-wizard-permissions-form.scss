@@ -1,0 +1,40 @@
+.create-console-role-wizard-permissions-form {
+    margin-top: 20px;
+
+    .oxygen-accordion {
+        border: 1px solid var(--oxygen-palette-divider);
+        margin: 10px 0;
+
+        .permissions-accordion-label {
+            width: 40%;
+            flex-shrink: 0;
+        }
+
+        .permissions-table {
+            .permissions-table-data-row {
+                &:last-child td, &:last-child th {
+                    border: none;
+                }
+            }
+        }
+
+        .oxygen-accordion-summary {
+            .MuiAccordionSummary-content {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                align-content: center;
+                align-items: center;
+                justify-content: flex-start;
+            }
+        }
+    }
+
+    .accordion-container {
+        .oxygen-accordion {
+            &.Mui-expanded:first-of-type {
+                margin-top: 10px;
+            }
+        }
+    }
+}

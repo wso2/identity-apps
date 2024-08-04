@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,6 +26,45 @@ import { MyAccountNS } from "../../../models";
 export const myAccount: MyAccountNS = {
     "components": {
         "accountRecovery": {
+            SMSRecovery: {
+                descriptions: {
+                    add: "再設定用の携帯電話番号を追加または更新します。",
+                    emptyMobile: "SMS-OTPの再設定を進めるには、携帯電話番号を設定する必要があります。",
+                    update: "再設定用の携帯電話番号を更新します ({{mobile}})",
+                    view: "再設定用の携帯電話番号を表示します ({{mobile}})"
+                },
+                forms: {
+                    mobileResetForm: {
+                        inputs: {
+                            mobile: {
+                                label: "携帯電話番号",
+                                placeholder: "再設定用の携帯電話番号を入力してください。",
+                                validations: {
+                                    empty: "携帯電話番号を入力してください。",
+                                    invalidFormat: "携帯電話番号の形式が正しくありません。"
+                                }
+                            }
+                        }
+                    }
+                },
+                heading: "SMS再設定",
+                notifications: {
+                    updateMobile: {
+                        error: {
+                            description: "{{description}}",
+                            message: "再設定用の携帯電話番号の更新に失敗しました。"
+                        },
+                        genericError: {
+                            description: "再設定用の携帯電話番号の更新中にエラーが発生しました",
+                            message: "問題が発生しました"
+                        },
+                        success: {
+                            description: "ユーザープロフィールの携帯電話番号が正常に更新されました",
+                            message: "携帯電話番号が正常に更新されました"
+                        }
+                    }
+                }
+            },
             "codeRecovery": {
                 "descriptions": {
                     "add": "コードリカバリオプションを追加または更新します"
@@ -872,7 +911,7 @@ export const myAccount: MyAccountNS = {
                 "descriptions": {
                     "hint": "1回限りの検証コードを含むテキストメッセージが届きます"
                 },
-                "heading": "SMS番号",
+                "heading": "Mobile number",
                 "notifications": {
                     "updateMobile": {
                         "error": {
@@ -1445,6 +1484,24 @@ export const myAccount: MyAccountNS = {
                     }
                 }
             }
+        },
+        verificationOnUpdate: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "更新設定の検証を取得中にエラーが発生しました"
+                    },
+                    genericError: {
+                        description: "更新設定の検証を取得中にエラーが発生しました",
+                        message: "何か問題が発生しました"
+                    },
+                    success: {
+                        description: "更新設定の検証を正常に取得しました",
+                        message: "更新設定の取得の検証が成功しました"
+                    }
+                }
+            }
         }
     },
     "modals": {
@@ -1616,7 +1673,7 @@ export const myAccount: MyAccountNS = {
             "heading": "パスワードを作成します"
         },
         "federatedAssociations": {
-            "description": "このアカウントにリンクされている他のIDプロバイダーからアカウントを表示します",
+            "description": "このアカウントにリンクされている他の接続からアカウントを表示する",
             "heading": "リンクされたソーシャルアカウント"
         },
         "linkedAccounts": {

@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2024, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -21,12 +21,14 @@
 <%@ page import="java.io.File" %>
 <%@ page import="org.apache.commons.collections.map.HashedMap" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.base.IdentityRuntimeException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.RecoveryApiV2" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.UserClaim" %>
 <%@ page import="org.wso2.carbon.user.core.util.UserCoreUtil" %>
@@ -46,7 +48,7 @@
 <%-- Include tenant context --%>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
-<% 
+<%
     File usernameResolverFile = new File(getServletContext().getRealPath("extensions/username-resolver.jsp"));
     if (usernameResolverFile.exists()) {
 %>
@@ -67,7 +69,9 @@
     String sessionDataKey = request.getParameter("sessionDataKey");
     String confirmationKey = request.getParameter("confirmationKey");
     String callback = request.getParameter("callback");
+    String spId = request.getParameter("spId");
     String userTenantHint = request.getParameter("t");
+    String applicationAccessUrl = "";
 
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
@@ -81,9 +85,22 @@
     // Password recovery parameters
     String recoveryOption = request.getParameter("recoveryOption");
 
+    try {
+        String sp = Encode.forJava(request.getParameter("sp"));
+        if (StringUtils.isNotBlank(sp)) {
+            ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
+            applicationAccessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
+        }
+    } catch (Exception e) {
+        // Ignored.
+    }
+
     Boolean isValidCallBackURL = false;
     try {
-        if (StringUtils.isNotBlank(callback)) {
+        if (StringUtils.isNotBlank(applicationAccessUrl)) {
+            // Disregard callbackURL regex validation when accessURL is configured in the application.
+            isValidCallBackURL = true;
+        } else if (StringUtils.isNotBlank(callback)) {
             PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
             isValidCallBackURL = preferenceRetrievalClient.checkIfRecoveryCallbackURLValid(tenantDomain,callback);
         }
@@ -208,6 +225,11 @@
                     request.getRequestDispatcher("password-recovery-with-claims-notify.jsp").forward(request,
                             response);
                     return;
+                } else if(notificationChannel.equals("SMS")) {
+                    request.setAttribute("screenValue", request.getParameter("screenValue"));
+                    request.setAttribute("resendCode", recoveryResponse.getResendCode());
+                    request.setAttribute("flowConfirmationCode", recoveryResponse.getFlowConfirmationCode());
+                    request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
                 } else {
                     request.setAttribute("error", true);
                     request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
@@ -242,12 +264,15 @@
             if (IdentityManagementEndpointConstants.PasswordRecoveryOptions.EMAIL.equals(recoveryOption)) {
                 request.setAttribute("callback", callback);
                 request.getRequestDispatcher("password-recovery-notify.jsp").forward(request, response);
-            } else if (IdentityManagementEndpointConstants.PasswordRecoveryOptions.SECURITY_QUESTIONS
+            } else if(IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP.equals(recoveryOption)) {
+                request.setAttribute("channel", IdentityManagementEndpointConstants.PasswordRecoveryOptions.SMSOTP);
+                request.getRequestDispatcher("password-recovery-otp.jsp").forward(request, response);
+            }  else if (IdentityManagementEndpointConstants.PasswordRecoveryOptions.SECURITY_QUESTIONS
                     .equals(recoveryOption)) {
                 request.setAttribute("callback", callback);
                 request.getRequestDispatcher("challenge-question-request.jsp?username=" + username).forward(request,
                         response);
-            } else {
+            }else {
                 request.setAttribute("error", true);
                 request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                         "Unknown.password.recovery.option"));
@@ -259,11 +284,3 @@
         }
     }
 %>
-<html lang="en-US">
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>

@@ -1,0 +1,15 @@
+{
+    "category": "DEFAULT",
+    "description": "Enable login for users with their accounts in your existing identity providers via standard authentication protocols.",
+    "enabled": true,
+    "displayOrder": 4,
+    "id": "enterprise-protocols",
+    "docLink": "/guides/authentication/enterprise-login/",
+    "image": "enterprise",
+    "name": "Standard-Based IdP",
+    "services": [],
+    "disabled": false,
+    "type": "ENTERPRISE",
+    "tags": [ "OIDC", "SAML" ],
+    "templateId": "enterprise-idp"
+}

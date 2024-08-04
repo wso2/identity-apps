@@ -12,6 +12,7 @@
 <%= htmlWebpackPlugin.options.importSuperTenantConstant %>
 <%= htmlWebpackPlugin.options.importStringUtils %>
 <%= htmlWebpackPlugin.options.getOrganizationManagementAvailability %>
+<%= htmlWebpackPlugin.options.getAdaptiveAuthenticationAvailability %>
 
 <%= htmlWebpackPlugin.options.cookieproEnabledFlag %>
 <%= htmlWebpackPlugin.options.cookieproInitialScriptTypeCheck %>
@@ -146,7 +147,7 @@
             var serverOriginGlobal = "<%= htmlWebpackPlugin.options.serverUrl %>";
             var superTenantGlobal = "<%= htmlWebpackPlugin.options.superTenantConstant %>";
             var tenantPrefixGlobal = "<%= htmlWebpackPlugin.options.tenantPrefix %>";
-            var isAdaptiveAuthenticationAvailable = true;
+            var isAdaptiveAuthenticationAvailable = JSON.parse("<%= htmlWebpackPlugin.options.isAdaptiveAuthenticationAvailable %>");
             var isOrganizationManagementEnabled = "<%= htmlWebpackPlugin.options.isOrganizationManagementEnabled %>" === "true";
         </script>
 
@@ -162,11 +163,23 @@
                 window.location = window.location.origin;
             }
         </script>
+
+        <!-- Start of custom stylesheets -->
+        <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.publicPath %>extensions/stylesheet.css"/>
+        <!-- End of custom stylesheets -->
+
+        <!-- Start of custom scripts added to the head -->
+        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"></script>
+        <!-- End of custom scripts added to the head -->
     </head>
     <body>
         <noscript>
             You need to enable JavaScript to run this app.
         </noscript>
         <div id="root"></div>
+
+        <!-- Start of custom scripts added to the body -->
+        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>extensions/body-script.js"></script>
+        <!-- End of custom scripts added to the body -->
     </body>
 </html>

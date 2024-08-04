@@ -584,7 +584,7 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
                     <Icon name="file"/>
                     { errorMessage }
                 </Message>)
-                
+
             }
         </React.Fragment>
     );
@@ -667,6 +667,51 @@ export class DefaultFileStrategy implements PickerStrategy<string> {
 
     async serialize(): Promise<string> {
         return Promise.resolve("");
+    }
+
+    async validate(): Promise<ValidationResult> {
+        return Promise.resolve({ valid: true });
+    }
+
+}
+
+export class P12FileStrategy implements PickerStrategy<string> {
+
+    mimeTypes: string[];
+
+    constructor() {
+        this.mimeTypes = [ ".p12" ];
+    }
+
+    async serialize(data: File | string): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
+            if (!data) {
+                reject({ valid: false });
+
+                return;
+            }
+
+            if (data instanceof File) {
+                const reader = new FileReader();
+
+                reader.readAsArrayBuffer(data);
+                reader.onload = (e) => {
+                    const binaryData: string | ArrayBuffer | null = e.target.result;
+                    // Transform the binary data to base64 encoded string.
+                    const base64String = btoa(
+                        new Uint8Array(binaryData as ArrayBufferLike)
+                            .reduce((acc, byte) => acc + String.fromCharCode(byte), ""));
+
+                    resolve(base64String);
+                };
+
+            } else {
+                reject({
+                    errorMessage: "The file is invalid",
+                    valid: false
+                });
+            }
+        });
     }
 
     async validate(): Promise<ValidationResult> {
@@ -989,19 +1034,19 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
         return new Promise<CSVResult>((resolve, reject) => {
             if (!data) {
                 reject({ valid: false });
-                
+
                 return;
             }
 
             const processCSV = (csvContent: string) => {
                 const delimiter: string = ",";
                 const lines: string[] = csvContent.split(/\r?\n/).filter(line => line.trim() !== "");
-                
+
                 const data: string[][] = lines.map(line => {
                     const cells = [];
                     let cell: string = "";
                     let insideQuotes: boolean = false;
-                    
+
                     for (const c of line) {
                         if (c === delimiter && !insideQuotes) {
                             cells.push(cell.trim());
@@ -1013,10 +1058,10 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
                             cell += c;
                         }
                     }
-            
+
                     // Add the last cell.
                     cells.push(cell.trim());
-                    
+
                     // Remove quotes and handle double quotes inside quoted fields.
                     return cells.map(cell => {
                         if (cell.startsWith("\"") && cell.endsWith("\"")) {
@@ -1026,9 +1071,9 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
                         return cell;
                     });
                 });
-            
+
                 const headers = data.shift();
-                
+
                 resolve({ headers, items: data });
             };
 
@@ -1057,7 +1102,7 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
 
                     return;
                 }
-    
+
                 // Check file size.
                 if (data.size > this.maxSize) {
                     reject({
@@ -1067,7 +1112,7 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
 
                     return;
                 }
-    
+
                 const reader = new FileReader();
 
                 reader.readAsText(data, CSVFileStrategy.ENCODING);
@@ -1083,7 +1128,7 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
 
                             return acc;
                         }, { lines: [], rowCount: 0 });
-                        const actualRowCount: number = rowCount - 1; 
+                        const actualRowCount: number = rowCount - 1;
 
                         if (actualRowCount > this.maxRowCount) {
                             reject({
@@ -1122,5 +1167,5 @@ export class CSVFileStrategy implements PickerStrategy<CSVResult> {
                 }
             }
         });
-    } 
+    }
 }

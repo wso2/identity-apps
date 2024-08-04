@@ -57,7 +57,6 @@ import { AppState } from "../../../store";
 interface BackupCodeProps extends IdentifiableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
     initBackupCodeFlow: boolean;
-    isBackupCodeForced: boolean;
     onBackupFlowCompleted: () => void;
     /**
      * This callback function handles the visibility of the
@@ -84,7 +83,6 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
         isBackupCodesConfigured,
         enabledAuthenticators,
         backupCodeAuthenticatorName,
-        isBackupCodeForced,
         isSuperTenantLogin,
         onEnabledAuthenticatorsUpdated
     } = props;
@@ -162,14 +160,14 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
 
         switch(action) {
             case EnabledAuthenticatorUpdateAction.ADD : {
-                if (isBackupCodeForced && !authenticatorsList.includes(backupCodeAuthenticatorName)) {
+                if (!authenticatorsList.includes(backupCodeAuthenticatorName)) {
                     authenticatorsList.push(backupCodeAuthenticatorName);
                 }
 
                 break;
             }
             case EnabledAuthenticatorUpdateAction.REMOVE : {
-                if (isBackupCodeForced && authenticatorsList.includes(backupCodeAuthenticatorName)) {
+                if (authenticatorsList.includes(backupCodeAuthenticatorName)) {
                     authenticatorsList.splice(authenticatorsList.indexOf(backupCodeAuthenticatorName), 1);
                 }
 

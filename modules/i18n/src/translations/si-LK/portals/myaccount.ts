@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,6 +26,45 @@ import { MyAccountNS } from "../../../models";
 export const myAccount: MyAccountNS = {
     components: {
         accountRecovery: {
+            SMSRecovery: {
+                descriptions: {
+                    add: "ප්රතිසාධන ජංගම දුරකථන අංකය එක් කරන්න හෝ යාවත්කාලීන කරන්න.",
+                    emptyMobile: "SMS-OTP ප්‍රතිසාධනය කිරීම සඳහා ඔබගේ ජංගම දුරකථන අංකය විස්තර කිරීමට අවශ්‍යි.",
+                    update: "ප්රතිසාධන ජංගම දුරකථන අංකය යාවත්කාලීන කරන්න ({{mobile}})",
+                    view: "ප්රතිසාධන ජංගම දුරකථන අංකය බලන්න ({{mobile}})"
+                },
+                forms: {
+                    mobileResetForm: {
+                        inputs: {
+                            mobile: {
+                                label: "ජංගම දුරකථන අංකය",
+                                placeholder: "ප්රතිසාධන ජංගම දුරකථන අංකය ඇතුළත් කරන්න.",
+                                validations: {
+                                    empty: "ජංගම දුරකථන අංකය ඇතුළත් කරන්න.",
+                                    invalidFormat: "ජංගම දුරකථන අංකය නිවැරදි ආකෘතියකි."
+                                }
+                            }
+                        }
+                    }
+                },
+                heading: "SMS ප්‍රතිසාධනය",
+                notifications: {
+                    updateMobile: {
+                        error: {
+                            description: "{{description}}",
+                            message: "ප්රතිසාධන ජංගම දුරකථන යාවත්කාලීන කිරීමේ දෝෂයක්."
+                        },
+                        genericError: {
+                            description: "ප්රතිසාධන ජංගම දුරකථන යාවත්කාලීන කිරීමේ දෝෂයක්",
+                            message: "දෝෂයකින් අවසන් විය"
+                        },
+                        success: {
+                            description: "පරිශීලක විස්තර පැවති අතර ජංගම දුරකථන අංකය සාර්ථකව යාවත්කාලීන කරන ලදි",
+                            message: "ජංගම දුරකථන අංකය සාර්ථකව යාවත්කාලීන විය"
+                        }
+                    }
+                }
+            },
             codeRecovery: {
                 descriptions: {
                     add: "කේත ප්\u200Dරතිසාධන විකල්ප එකතු කිරීම හෝ යාවත්කාලීන කිරීම"
@@ -900,7 +939,7 @@ export const myAccount: MyAccountNS = {
                 descriptions: {
                     hint: "සත්\u200Dයාපන කේතය අඩංගු කෙටි පණිවිඩයක් ඔබට ලැබෙනු ඇත"
                 },
-                heading: "කෙටි පණිවුඩ OTP",
+                heading: "Mobile number",
                 notifications: {
                     updateMobile: {
                         error: {
@@ -1568,6 +1607,24 @@ export const myAccount: MyAccountNS = {
                     }
                 }
             }
+        },
+        verificationOnUpdate: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "යාවත්කාලීන මනාප මත සත්‍යාපනය ලබා ගැනීමේ දෝෂයකි"
+                    },
+                    genericError: {
+                        description: "යාවත්කාලීන මනාප මත සත්‍යාපනය ලබා ගැනීමේදී දෝෂයක් සිදු විය",
+                        message: "දෝෂයක් ඇතිවිය"
+                    },
+                    success: {
+                        description: "යාවත්කාලීන මනාප මත සත්‍යාපනය සාර්ථකව ලබා ගන්නා ලදී",
+                        message: "යාවත්කාලීන මනාප ලබා ගැනීම පිළිබඳ සත්‍යාපනය සාර්ථකයි"
+                    }
+                }
+            }
         }
     },
     modals: {
@@ -1751,7 +1808,7 @@ export const myAccount: MyAccountNS = {
             heading: "මුරපදය සාදන්න"
         },
         federatedAssociations: {
-            description: "මෙම ගිණුම හා සම්බන්ධ වෙනත් අනන්‍යතා සපයන්නන්ගෙන් ඔබගේ ගිණුම් බලන්න",
+            description: "මෙම ගිණුම සමඟ සම්බන්ධ වී ඇති වෙනත් සම්බන්ධතා වලින් ඔබගේ ගිණුම් බලන්න",
             heading: "බාහිර පිවිසුම්"
         },
         linkedAccounts: {

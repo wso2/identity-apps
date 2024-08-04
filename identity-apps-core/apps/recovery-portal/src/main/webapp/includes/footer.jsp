@@ -19,13 +19,27 @@
 <script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
 <script src="libs/themes/wso2is/semantic.min.js"></script>
 
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Arrays" %>
+
+<%
+    // Determining whether the application user is going to login is Console, as the maintenance banner
+    // should only be shown in console related recovery flows.
+    List<String> downtimeBannerEnabledAppList = Arrays.asList("Console");
+    Boolean isDowntimeBannerEnabled = StringUtils.equals("true", application.getInitParameter("isDowntimeBannerEnabled"))
+        && downtimeBannerEnabledAppList.contains(Encode.forJava(request.getParameter("sp")));
+%>
+
 <script type="text/javascript">
     // Automatically shows on init if the user hasn't already acknowledged cookie usage.
     $(document).ready(function () {
-        // downtime-banner
-        var SHOW_DOWNTIME_BANNER = false;
-        
-        if (SHOW_DOWNTIME_BANNER) {
+        // downtime-banner.
+        var SHOW_DOWNTIME_BANNER = <%= isDowntimeBannerEnabled %>;
+
+        if(SHOW_DOWNTIME_BANNER) {
             $("#downtime-banner")
             .nag("show");
         }
@@ -46,7 +60,7 @@
      * Get the name of the cookie consent cookie.
      */
     function getCookieConsentCookieName() {
-  
+
         return "accepts-cookies";
     }
 
@@ -112,8 +126,13 @@
         * Ex: If sub.sample.domain.com is parsed, `domain.com` will be set as the domain.
         */
         try {
-            var url = new URL(window.location);
-            domain = url.hostname;
+            var hostnameTokens = window.location.hostname.split('.');
+
+            if (hostnameTokens.length > 1) {
+                domain = hostnameTokens.slice((hostnameTokens.length -2), hostnameTokens.length).join(".");
+            } else if (hostnameTokens.length == 1) {
+                domain = hostnameTokens[0];
+            }
         } catch(e) {
             // Couldn't parse the hostname.
         }

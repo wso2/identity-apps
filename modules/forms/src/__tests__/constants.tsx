@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -68,10 +68,7 @@ const constants = {
     TEXT_BOX_REQUIRED_MESSAGE: "Required",
     TEXT_BOX_VALIDATION_FAILED: "Validation failed",
     TEXT_BOX_VALID_MESSAGE: "Text box Validated",
-    TEXT_BOX_VALUE: "Text box value",
-    listen: jest.fn((value) => value),
-    onClick: jest.fn(),
-    onSubmit: jest.fn((value) => value)
+    TEXT_BOX_VALUE: "Text box value"
 };
 
 export default constants;

@@ -1,3 +1,7 @@
 /*******************************
         Flag Overrides
 *******************************/
+i.flag.globe:before {
+    content: "🌐︎";
+    font-style: "normal"
+}

@@ -96,12 +96,14 @@
                 </p>
                 <p class="ui portal-tagline-description" data-testid="password-recovery-support-message">
                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "for.further.assistance.write.to")%>
-                    <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>"
-                    data-testid="password-recovery-resend-support-email"
-                    target="_blank">
-                    <span class="orange-text-color button">
-                        <%= StringEscapeUtils.escapeHtml4(supportEmail) %>
-                    </span>
+                    <a
+                        href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>"
+                        data-testid="password-recovery-resend-support-email"
+                        target="_blank"
+                    >
+                        <span class="orange-text-color button">
+                            <%= StringEscapeUtils.escapeHtml4(supportEmail) %>
+                        </span>
                     </a>
                     .
                 </p>
