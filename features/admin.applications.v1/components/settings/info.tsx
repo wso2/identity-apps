@@ -100,7 +100,8 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     const [ isSAML, setIsSAML ] = useState<boolean>(false);
     const [ isWSFed, setIsWSFed ] = useState<boolean>(false);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
-    const mtlsEndpointsPresent: boolean = oidcConfigurations.mtlsTokenEndpoint !== undefined;
+    const mtlsEndpointsPresent: boolean = oidcConfigurations.mtlsTokenEndpoint !== undefined
+        && templateId !== ApplicationManagementConstants.M2M_APP_TEMPLATE_ID;
 
     useEffect(() => {
         if (inboundProtocols == undefined) {
@@ -133,7 +134,12 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     return (
         !isLoading
             ? (
-                <EmphasizedSegment loading={ isLoading } padded="very" data-testid={ componentId }>
+                <EmphasizedSegment
+                    loading={ isLoading }
+                    padded="very"
+                    data-componentid={ componentId }
+                    data-testid={ componentId }
+                >
                     <Grid className="form-container with-max-width">
                         <Grid.Row>
                             <Grid.Column>

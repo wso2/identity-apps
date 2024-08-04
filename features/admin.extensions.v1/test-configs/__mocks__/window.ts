@@ -116,7 +116,6 @@ if (commonConfig?.useExtensionTestConfig) {
                     appTitle: "Asgardeo Console",
                     appName: "Console",
                     applicationTemplateLoadingStrategy: "LOCAL",
-                    identityProviderTemplateLoadingStrategy: "LOCAL",
                     appLogoPath: "/assets/images/branding/logo.svg",
                     showAppSwitchButton: true,
                     features: {

@@ -21,13 +21,17 @@ import AuthenticationFlowBuilder
 import AuthenticationFlowProvider
     from "@wso2is/admin.authentication-flow-builder.v1/providers/authentication-flow-provider";
 import { AuthenticatorCreateWizardFactory } from "@wso2is/admin.connections.v1";
+import {
+    CommonAuthenticatorManagementConstants
+} from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { ConnectionsManagementUtils }
     from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import MicrosoftIDPTemplate
     from
     "@wso2is/admin.identity-providers.v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
@@ -246,24 +250,24 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
 
                 response[1].filter((authenticator: GenericAuthenticatorInterface) => {
                     if (authenticator.defaultAuthenticator.authenticatorId
-                        === IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
+                        === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID) {
 
                         google.push(authenticator);
                     } else if (authenticator.defaultAuthenticator.authenticatorId
-                        === IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID) {
+                        === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID) {
 
                         gitHub.push(authenticator);
                     } else if (authenticator.defaultAuthenticator.authenticatorId
-                        === IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID) {
+                        === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID) {
 
                         facebook.push(authenticator);
                     } else if (authenticator.defaultAuthenticator.authenticatorId
-                        === IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_ID &&
+                        === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.MICROSOFT_AUTHENTICATOR_ID &&
                         authenticator.description === MicrosoftIDPTemplate.description) {
 
                         microsoft.push(authenticator);
                     } else if (authenticator.defaultAuthenticator.authenticatorId
-                        === IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID) {
+                        === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID) {
 
                         apple.push(authenticator);
                     }
@@ -320,7 +324,7 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
         }
 
         const isBasicStep: boolean = authenticationSequence.steps[0].options[0].authenticator
-            === IdentityProviderManagementConstants.BASIC_AUTHENTICATOR;
+            === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME;
         const isBasicScript: boolean = !authenticationSequence.script
             ||AdaptiveScriptUtils.isDefaultScript(authenticationSequence.script, authenticationSequence.steps?.length);
 
@@ -599,19 +603,19 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
 
         if (loginType === LoginFlowTypes.GOOGLE_LOGIN) {
             modifiedSequenceTemplate = cloneDeep(GoogleLoginSequenceTemplate);
-            authenticatorType = IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME;
+            authenticatorType = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.GOOGLE_OIDC_AUTHENTICATOR_NAME;
         } else if (loginType === LoginFlowTypes.GITHUB_LOGIN) {
             modifiedSequenceTemplate = cloneDeep(GitHubLoginSequenceTemplate);
-            authenticatorType = IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_NAME;
+            authenticatorType = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.GITHUB_AUTHENTICATOR_NAME;
         } else if (loginType === LoginFlowTypes.FACEBOOK_LOGIN) {
             modifiedSequenceTemplate = cloneDeep(FacebookLoginSequenceTemplate);
-            authenticatorType = IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_NAME;
+            authenticatorType = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.FACEBOOK_AUTHENTICATOR_NAME;
         } else if (loginType === LoginFlowTypes.MICROSOFT_LOGIN) {
             modifiedSequenceTemplate = cloneDeep(MicrosoftLoginSequenceTemplate);
-            authenticatorType = IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_NAME;
+            authenticatorType = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.MICROSOFT_AUTHENTICATOR_NAME;
         } else if (loginType === LoginFlowTypes.APPLE_LOGIN) {
             modifiedSequenceTemplate = cloneDeep(AppleLoginSequenceTemplate);
-            authenticatorType = IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_NAME;
+            authenticatorType = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.APPLE_AUTHENTICATOR_NAME;
         }
         modifiedSequenceTemplate.steps[0].options.forEach((option: AuthenticatorInterface) => {
             if (option.authenticator === authenticatorType) {
@@ -633,20 +637,25 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
         let authenticatorName: string = null; // Which flow triggered the flow? i.e Google, Facebook etc.
 
         if (socialDisclaimerModalType === LoginFlowTypes.GOOGLE_LOGIN) {
-            idpTemplateTypeToTrigger = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE;
-            authenticatorName = IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME;
+            idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.GITHUB_LOGIN) {
-            idpTemplateTypeToTrigger = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB;
-            authenticatorName = IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_DISPLAY_NAME;
+            idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GITHUB;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.GITHUB_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.FACEBOOK_LOGIN) {
-            idpTemplateTypeToTrigger = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK;
-            authenticatorName = IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_DISPLAY_NAME;
+            idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.FACEBOOK_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.MICROSOFT_LOGIN) {
-            idpTemplateTypeToTrigger = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.MICROSOFT;
-            authenticatorName = IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_DISPLAY_NAME;
+            idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.MICROSOFT;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.MICROSOFT_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.APPLE_LOGIN) {
-            idpTemplateTypeToTrigger = IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.APPLE;
-            authenticatorName = IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_DISPLAY_NAME;
+            idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.APPLE_AUTHENTICATOR_DISPLAY_NAME;
         } else {
             return null;
         }
@@ -726,19 +735,24 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
 
         if (socialDisclaimerModalType === LoginFlowTypes.GOOGLE_LOGIN) {
             authenticators = [ ...googleAuthenticators ];
-            authenticatorName = IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.GITHUB_LOGIN) {
             authenticators = [ ...gitHubAuthenticators ];
-            authenticatorName = IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_DISPLAY_NAME;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.GITHUB_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.FACEBOOK_LOGIN) {
             authenticators = [ ...facebookAuthenticators ];
-            authenticatorName = IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_DISPLAY_NAME;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.FACEBOOK_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.MICROSOFT_LOGIN) {
             authenticators = [ ...microsoftAuthenticators ];
-            authenticatorName = IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_DISPLAY_NAME;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.MICROSOFT_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.APPLE_LOGIN) {
             authenticators = [ ...appleAuthenticators ];
-            authenticatorName = IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_DISPLAY_NAME;
+            authenticatorName = FederatedAuthenticatorConstants
+                .AUTHENTICATOR_DISPLAY_NAMES.APPLE_AUTHENTICATOR_DISPLAY_NAME;
         } else {
             return null;
         }
@@ -805,8 +819,8 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
                         {
                             authenticators
                                 .filter((authenticator: GenericAuthenticatorInterface) => {
-                                    return authenticator.name !== IdentityProviderManagementConstants
-                                        .BACKUP_CODE_AUTHENTICATOR;
+                                    return authenticator.name !== LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                                        .BACKUP_CODE_AUTHENTICATOR_NAME;
                                 })
                                 .map((authenticator: GenericAuthenticatorInterface, index: number) => (
                                     <LabeledCard

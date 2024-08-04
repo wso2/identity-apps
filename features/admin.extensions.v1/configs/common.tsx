@@ -37,50 +37,6 @@ export const commonConfig: CommonConfig = {
                 category: "extensions:manage.sidePanel.categories.userManagement",
                 children: [
                     {
-                        component: lazy(() =>
-                            import("../components/administrators/pages/administrator-edit")
-                        ),
-                        exact: true,
-                        icon: {
-                            icon: import("../assets/images/icons/admin-icon.svg")
-                        },
-                        id: "collaborator-user-edit",
-                        name: "Collaborator Users Edit",
-                        path: AppConstants.getPaths().get("ADMINISTRATOR_EDIT"),
-                        protected: true,
-                        showOnSidePanel: false
-                    },
-                    {
-                        component: lazy(() =>
-                            import("../components/administrators/pages/administrator-settings")
-                        ),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().childIcon
-                        },
-                        id: "administrator-settings-edit",
-                        name: "administrator-settings-edit",
-                        path: AppConstants.getPaths().get("ADMINISTRATOR_SETTINGS"),
-                        protected: true,
-                        showOnSidePanel: false
-                    }
-                ],
-                component: lazy(() => import("../components/administrators/pages/administrators")),
-                exact: true,
-                icon: {
-                    icon: import("../assets/images/icons/admin-icon.svg")
-                },
-                id: "administrators",
-                name: "Administrators",
-                order: 5,
-                path: AppConstants.getPaths().get("ADMINISTRATORS"),
-                protected: true,
-                showOnSidePanel: true
-            },
-            {
-                category: "extensions:manage.sidePanel.categories.userManagement",
-                children: [
-                    {
                         component: lazy(() => import("@wso2is/admin.userstores.v1/pages/user-stores-edit")),
                         exact: true,
                         icon: {

@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
+import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 import {
     AppConstants,
     AppState,
@@ -23,8 +25,7 @@ import {
     history
 } from "@wso2is/admin.core.v1";
 import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
-import { IdentityProviderConstants } from "@wso2is/admin.identity-providers.v1/constants";
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -87,11 +88,13 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     const appDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
+
+    // Check if the user has the required scopes to update the application.
+    const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
 
     const [ applicationId, setApplicationId ] = useState<string>(undefined);
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
@@ -337,12 +340,12 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             if (callBackRedirect === ApplicationManagementConstants.ROLE_CALLBACK_REDIRECT) {
                 history.push({
                     pathname: AppConstants.getPaths().get("ROLE_EDIT").replace(":id", callBackIdpID),
-                    state: IdentityProviderConstants.CONNECTED_APPS_TAB_ID
+                    state: ConnectionUIConstants.TabIds.CONNECTED_APPS
                 });
             } else {
                 history.push({
                     pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", callBackIdpID),
-                    state: IdentityProviderConstants.CONNECTED_APPS_TAB_ID
+                    state: ConnectionUIConstants.TabIds.CONNECTED_APPS
                 });
             }
         }
@@ -423,8 +426,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
         return urlSearchParams.get(ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY) === "true"
             || application?.access === ApplicationAccessTypes.READ
-            || !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update,
-                allowedScopes);
+            || !hasApplicationUpdatePermissions;
     };
 
     /**

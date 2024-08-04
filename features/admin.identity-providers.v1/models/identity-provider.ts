@@ -221,22 +221,6 @@ export interface IdentityProviderTemplateListItemInterface extends IdentityProvi
 }
 
 /**
- * Enum for IDP template loading strategies.
- *
- * @readonly
- */
-export enum IdentityProviderTemplateLoadingStrategies {
-    /**
-     * App will resort to in-app templates.
-     */
-    LOCAL = "LOCAL",
-    /**
-     * App will fetch templates from the template management REST API.
-     */
-    REMOTE = "REMOTE"
-}
-
-/**
  * Enum for the supported authenticator types.
  *
  * @readonly
@@ -619,24 +603,6 @@ export interface IdentityProviderFormValuesInterface {
     IdPEntityId?: string;
     SPEntityId?: string;
     SSOUrl?: string;
-}
-
-/**
- * Authenticator Labels.
- * @readonly
- */
-export enum AuthenticatorLabels {
-    SOCIAL = "Social-Login",
-    FIRST_FACTOR = "First Factor",
-    SECOND_FACTOR = "2FA",
-    MULTI_FACTOR = "MFA",
-    OIDC = "OIDC",
-    SAML = "SAML",
-    PASSWORDLESS = "Passwordless",
-    HANDLERS = "Handlers",
-    USERNAMELESS = "Usernameless",
-    PASSKEY = "Passkey",
-    API_AUTHENTICATION = "APIAuth"
 }
 
 /**

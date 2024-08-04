@@ -1129,6 +1129,14 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             delete submitValue.claimConfiguration.subject;
         }
 
+        // Stop sending tokenEndpointAllowReusePvtKeyJwt if tokenEndpointAuthMethod is not PRIVATE_KEY_JWT.
+        const PRIVATE_KEY_JWT: string = "private_key_jwt";
+
+        if (oidcSubmitValue?.clientAuthentication?.tokenEndpointAuthMethod == null
+            || oidcSubmitValue?.clientAuthentication?.tokenEndpointAuthMethod != PRIVATE_KEY_JWT) {
+            delete oidcSubmitValue?.clientAuthentication?.tokenEndpointAllowReusePvtKeyJwt;
+        }
+
         /**
          * Handles the error scenario of the claim configuration update by displaying claim configuration
          * update failure alert when alternative subject identifier is not in the requested attribute.

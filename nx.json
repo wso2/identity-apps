@@ -26,7 +26,6 @@
         }
     },
     "$schema": "./node_modules/nx/schemas/nx-schema.json",
-    "extends": "@nx/workspace/presets/npm.json",
     "workspaceLayout": {
         "appsDir": "apps",
         "libsDir": "modules"

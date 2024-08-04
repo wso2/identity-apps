@@ -80,13 +80,6 @@
     },
     {% endif %}
     "i18nResourcePath": "{{ console.i18n_resource_path }}",
-    {% if console.is_saas is defined %}
-    "isSaas": {{ console.is_saas }},
-    {% elif legacy_mode.enabled is defined %}
-    "isSaas": {{ legacy_mode.enabled }},
-    {% elif legacy_authz_runtime.enable is defined %}
-    "isSaas": {{ legacy_authz_runtime.enable }},
-    {% endif %}
     "loginCallbackPath": "{{ console.login_callback_path }}",
     "logoutCallbackPath": "{{ console.logout_callback_path }}",
     {% if console.server_origin is defined %}
@@ -164,9 +157,6 @@
     },
     {% if console.get_profile_info_from_id_token is defined %}
     "getProfileInfoFromIDToken": {{ console.get_profile_info_from_id_token }},
-    {% endif %}
-    {% if legacy_mode.enabled is defined %}
-    "legacyMode": {{ legacy_mode.enabled }},
     {% endif %}
     {% if tenant_context is defined %}
     "tenantContext": {
@@ -1831,33 +1821,14 @@
         "administratorRoleDisplayName": "{{ console.ui.administrator_role_display_name }}",
         {% endif %}
         "legacyMode": {
-            {% if legacy_mode.enable == true %}
-            "apiResourcesV1": false,
-            "apiResourcesV2": false,
-            "applicationListSystemApps": true,
-            "applicationOIDCSubjectIdentifier": true,
-            "applicationRequestPathAuthentication": true,
-            "applicationSystemAppsSettings": true,
-            "approvals": true,
-            "certificates": true,
-            "backupCodesForSubOrganizations": false,
-            "loginAndRegistrationEmailDomainDiscovery": false,
-            "organizations": false,
-            "rolesV1": true,
-            "roleMapping": true,
-            "secretsManagement": true,
-            "saasApplications": true,
-            "consoleFeatureScopeCheck": true
-            {% else %}
             {% if console.ui.legacy_mode.items() is defined %}
-            {% for key, value in console.ui.legacy_mode.items() %}
-            {% if value is string %}
-            "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
-            {% else %}
-            "{{ key }}": {{ value }}{{ "," if not loop.last }}
-            {% endif %}
-            {% endfor %}
-            {% endif %}
+                {% for key, value in console.ui.legacy_mode.items() %}
+                    {% if value is string %}
+                        "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+                    {% else %}
+                        "{{ key }}": {{ value }}{{ "," if not loop.last }}
+                    {% endif %}
+                {% endfor %}
             {% endif %}
         },
         "theme": {

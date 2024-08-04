@@ -199,8 +199,12 @@ export const applications: ApplicationsNS = {
         },
         disableApplication: {
             header: "Are you sure?",
-            content: "This may cause the consumers being unable to access the application. This is temporary and " +
-            "reversible by enabling the application.",
+            content: {
+                0: "This may prevent consumers from accessing the application, but it can be resolved by " +
+                "re-enabling the application.",
+                1: "Ensure that the references to the application in <1>email templates</1> " +
+                "and other relevant locations are updated to reflect the application status accordingly."
+            },
             message: "If you disable this application, consumers will not be able to access the application. "+
             "The application also will loose access to user data. Please proceed with caution.",
             assertionHint: "Please confirm your action."
@@ -1123,11 +1127,11 @@ export const applications: ApplicationsNS = {
                     },
                     fields: {
                         enableClientAttestation: {
-                            hint: "Select to verify the integrity of the application by calling the attestation service of the hosting platform.",
+                            hint: "Select to verify the integrity of the application by calling the attestation service of the hosting platform. To enable this you will be required to setup <1>Platform Settings</1>.",
                             label: "Enable client attestation"
                         },
                         androidAttestationServiceCredentials: {
-                            hint: "Provide the Google service account credentials in the JSON format. This will be used to access the  Google Play Integrity Service.",
+                            hint: "Provide the Google service account credentials in the JSON format for Android applications. This will be used to access the  Google Play Integrity Service.",
                             label: "Service account credentials",
                             placeholder: "Content of the JSON key file for the Google service account credentials",
                             validations: {
@@ -1140,12 +1144,12 @@ export const applications: ApplicationsNS = {
                 trustedApps: {
                     heading: "Trusted App Settings",
                     alerts: {
-                        trustedAppSettingsAlert: "Enabling this feature will publish details under Platform Settings to a public endpoint shared across all Asgardeo organizations. This means that other organizations can access details about the application and the associated organization.",
+                        trustedAppSettingsAlert: "Enabling this feature will publish details under <1>Platform Settings</1> to a public endpoint accessible to all Asgardeo organizations. Consequently, other organizations can view information about your application and its associated organization. This option is not applicable if you are using custom domains.",
                         link: "Read for more."
                     },
                     fields: {
                         enableFIDOTrustedApps: {
-                            hint: "Select to trust the app for user login with passkey. Provide the details of the application under Platform Settings.",
+                            hint: "Select to trust the app for user login with passkey. Provide the details of the application under <1>Platform Settings</1>.",
                             label: "Add as a FIDO trusted app"
                         }
                     },
@@ -1692,6 +1696,11 @@ export const applications: ApplicationsNS = {
                             hint: "The dropdown contains the supported client authentication methods.",
                             label: "Client authentication method",
                             placeholder: "Select method"
+                        },
+                        reusePvtKeyJwt: {
+                            hint: "If enabled, the JWT can be reused again within its expiration period. " +
+                                "JTI (JWT ID) is a claim that provides a unique identifier for the JWT.",
+                            label: "Private Key JWT Reuse Enabled"
                         },
                         signingAlgorithm: {
                             hint: "The dropdown contains the supported client assertion signing" +

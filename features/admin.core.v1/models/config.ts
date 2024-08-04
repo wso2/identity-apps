@@ -27,11 +27,8 @@ import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/
 import { ConnectionResourceEndpointsInterface } from "@wso2is/admin.connections.v1";
 import { ConsoleSettingsResourceEndpointsInterface } from "@wso2is/admin.console-settings.v1/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "@wso2is/admin.groups.v1";
-import { IdentityProviderTemplateLoadingStrategies }
-    from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { ScopesResourceEndpointsInterface } from "@wso2is/admin.oidc-scopes.v1";
 import { OrganizationResourceEndpointsInterface } from "@wso2is/admin.organizations.v1/models";
-import { JWTAuthenticationServiceEndpointsInterface } from "@wso2is/admin.private-key-jwt.v1/models";
 import { RolesResourceEndpointsInterface } from "@wso2is/admin.roles.v2/models/endpoints";
 import { SecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "@wso2is/admin.server-configurations.v1";
@@ -339,12 +336,6 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     identityProviderTemplates: IdentityProviderTemplatesConfigInterface;
     /**
-     * How should the IDP templates be loaded.
-     * If `LOCAL` is selected, app will resort to in-app templates.
-     * `REMOTE` will fetch templates from the template management REST API.
-     */
-    identityProviderTemplateLoadingStrategy?: IdentityProviderTemplateLoadingStrategies;
-    /**
      * Should default dialects be allowed for editing.
      */
     isDefaultDialectEditingEnabled?: boolean;
@@ -534,7 +525,6 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     OrganizationResourceEndpointsInterface,
     TenantResourceEndpointsInterface,
     ValidationServiceEndpointsInterface,
-    JWTAuthenticationServiceEndpointsInterface,
     BrandingPreferenceResourceEndpointsInterface,
     ConsoleSettingsResourceEndpointsInterface {
 

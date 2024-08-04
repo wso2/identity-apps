@@ -1,5 +1,207 @@
 # @wso2is/admin.authorization.v1
 
+## 2.20.42
+
+### Patch Changes
+
+- [#6715](https://github.com/wso2/identity-apps/pull/6715) [`afeb344ddbc6a674f342893b3f8135977e52a468`](https://github.com/wso2/identity-apps/commit/afeb344ddbc6a674f342893b3f8135977e52a468) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Bump oxygen ui version
+
+- Updated dependencies [[`afeb344ddbc6a674f342893b3f8135977e52a468`](https://github.com/wso2/identity-apps/commit/afeb344ddbc6a674f342893b3f8135977e52a468)]:
+  - @wso2is/react-components@2.2.30
+  - @wso2is/dynamic-forms@2.0.88
+  - @wso2is/form@2.0.89
+
+## 2.20.41
+
+### Patch Changes
+
+- Updated dependencies [[`198c2432e6eacdc2bcf1bb9e7432ea7d700f7534`](https://github.com/wso2/identity-apps/commit/198c2432e6eacdc2bcf1bb9e7432ea7d700f7534)]:
+  - @wso2is/react-components@2.2.29
+  - @wso2is/dynamic-forms@2.0.87
+  - @wso2is/form@2.0.88
+
+## 2.20.40
+
+### Patch Changes
+
+- [#6689](https://github.com/wso2/identity-apps/pull/6689) [`8a642b219422f09a4be1d105bcf8521cd7957128`](https://github.com/wso2/identity-apps/commit/8a642b219422f09a4be1d105bcf8521cd7957128) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Bump React SDK version
+
+- Updated dependencies [[`d9615827f6e7c2f087c1debdb377e02e66ac4e62`](https://github.com/wso2/identity-apps/commit/d9615827f6e7c2f087c1debdb377e02e66ac4e62)]:
+  - @wso2is/theme@2.0.98
+  - @wso2is/react-components@2.2.28
+  - @wso2is/dynamic-forms@2.0.86
+  - @wso2is/form@2.0.87
+
+## 2.20.39
+
+### Patch Changes
+
+- [#6676](https://github.com/wso2/identity-apps/pull/6676) [`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da) Thanks [@Achintha444](https://github.com/Achintha444)! - Update oxygen-ui to `1.13.3`
+
+- Updated dependencies [[`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da)]:
+  - @wso2is/react-components@2.2.27
+  - @wso2is/access-control@3.0.20
+  - @wso2is/dynamic-forms@2.0.85
+  - @wso2is/validation@2.0.9
+  - @wso2is/forms@2.0.50
+  - @wso2is/theme@2.0.97
+  - @wso2is/core@2.0.60
+  - @wso2is/form@2.0.86
+  - @wso2is/i18n@2.5.15
+
+## 2.20.38
+
+### Patch Changes
+
+- Updated dependencies [[`ee0dc227a7e86ad7356ec222c1284e66d634d935`](https://github.com/wso2/identity-apps/commit/ee0dc227a7e86ad7356ec222c1284e66d634d935)]:
+  - @wso2is/core@2.0.59
+  - @wso2is/access-control@3.0.19
+  - @wso2is/dynamic-forms@2.0.84
+  - @wso2is/form@2.0.85
+  - @wso2is/forms@2.0.49
+  - @wso2is/i18n@2.5.14
+  - @wso2is/react-components@2.2.26
+
+## 2.20.37
+
+### Patch Changes
+
+- [#6651](https://github.com/wso2/identity-apps/pull/6651) [`6bdf8d9c726e3ee2bf575af014098ee5768ee672`](https://github.com/wso2/identity-apps/commit/6bdf8d9c726e3ee2bf575af014098ee5768ee672) Thanks [@Achintha444](https://github.com/Achintha444)! - Update the oxygen version to 1.13.2
+
+- Updated dependencies [[`6bdf8d9c726e3ee2bf575af014098ee5768ee672`](https://github.com/wso2/identity-apps/commit/6bdf8d9c726e3ee2bf575af014098ee5768ee672)]:
+  - @wso2is/react-components@2.2.25
+  - @wso2is/access-control@3.0.18
+  - @wso2is/dynamic-forms@2.0.83
+  - @wso2is/validation@2.0.8
+  - @wso2is/forms@2.0.48
+  - @wso2is/theme@2.0.96
+  - @wso2is/core@2.0.58
+  - @wso2is/form@2.0.84
+  - @wso2is/i18n@2.5.13
+
+## 2.20.36
+
+### Patch Changes
+
+- Updated dependencies [[`9f8577942314da8308aeae398f6d7d0eaf1b93ed`](https://github.com/wso2/identity-apps/commit/9f8577942314da8308aeae398f6d7d0eaf1b93ed), [`196e3426e7f99b6741e5aada839d2ee3000f005a`](https://github.com/wso2/identity-apps/commit/196e3426e7f99b6741e5aada839d2ee3000f005a)]:
+  - @wso2is/i18n@2.5.12
+  - @wso2is/theme@2.0.95
+  - @wso2is/react-components@2.2.24
+  - @wso2is/dynamic-forms@2.0.82
+  - @wso2is/form@2.0.83
+
+## 2.20.35
+
+### Patch Changes
+
+- [#6635](https://github.com/wso2/identity-apps/pull/6635) [`411658f1efc46cf71ea40b6bae511f42891c7a43`](https://github.com/wso2/identity-apps/commit/411658f1efc46cf71ea40b6bae511f42891c7a43) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix some eslint warnings not being shown in vscode editor
+
+* [#6487](https://github.com/wso2/identity-apps/pull/6487) [`0683e51ac6194dfa54c2a5f508d0a33b487b6ebf`](https://github.com/wso2/identity-apps/commit/0683e51ac6194dfa54c2a5f508d0a33b487b6ebf) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove unnecessary legacy mode configs and its usage
+
+* Updated dependencies [[`411658f1efc46cf71ea40b6bae511f42891c7a43`](https://github.com/wso2/identity-apps/commit/411658f1efc46cf71ea40b6bae511f42891c7a43), [`0683e51ac6194dfa54c2a5f508d0a33b487b6ebf`](https://github.com/wso2/identity-apps/commit/0683e51ac6194dfa54c2a5f508d0a33b487b6ebf)]:
+  - @wso2is/react-components@2.2.23
+  - @wso2is/access-control@3.0.17
+  - @wso2is/dynamic-forms@2.0.81
+  - @wso2is/validation@2.0.7
+  - @wso2is/forms@2.0.47
+  - @wso2is/theme@2.0.94
+  - @wso2is/core@2.0.57
+  - @wso2is/form@2.0.82
+  - @wso2is/i18n@2.5.11
+
+## 2.20.34
+
+### Patch Changes
+
+- [#6632](https://github.com/wso2/identity-apps/pull/6632) [`9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a`](https://github.com/wso2/identity-apps/commit/9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a) Thanks [@Achintha444](https://github.com/Achintha444)! - Update the oxygen version to `1.13.1` to fix the issue in the design of the default Chip design.
+
+- Updated dependencies [[`9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a`](https://github.com/wso2/identity-apps/commit/9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a)]:
+  - @wso2is/react-components@2.2.22
+  - @wso2is/access-control@3.0.16
+  - @wso2is/dynamic-forms@2.0.80
+  - @wso2is/forms@2.0.46
+  - @wso2is/theme@2.0.93
+  - @wso2is/core@2.0.56
+  - @wso2is/form@2.0.81
+  - @wso2is/i18n@2.5.10
+
+## 2.20.33
+
+### Patch Changes
+
+- Updated dependencies [[`7071e4f719bbd10ae62f7bfc18fc12e6d9127bc3`](https://github.com/wso2/identity-apps/commit/7071e4f719bbd10ae62f7bfc18fc12e6d9127bc3)]:
+  - @wso2is/i18n@2.5.9
+
+## 2.20.32
+
+### Patch Changes
+
+- Updated dependencies [[`98ae1e51e5e4c1bbaf52ac814af1da1722efb596`](https://github.com/wso2/identity-apps/commit/98ae1e51e5e4c1bbaf52ac814af1da1722efb596)]:
+  - @wso2is/theme@2.0.92
+  - @wso2is/react-components@2.2.21
+  - @wso2is/dynamic-forms@2.0.79
+  - @wso2is/form@2.0.80
+
+## 2.20.31
+
+### Patch Changes
+
+- Updated dependencies [[`0981cd4b6901ae53119de1bd63f36fba79ebd533`](https://github.com/wso2/identity-apps/commit/0981cd4b6901ae53119de1bd63f36fba79ebd533)]:
+  - @wso2is/i18n@2.5.8
+
+## 2.20.30
+
+### Patch Changes
+
+- [#6617](https://github.com/wso2/identity-apps/pull/6617) [`7e3bfd46f7a76dc74727dfe23ebbca66675dff85`](https://github.com/wso2/identity-apps/commit/7e3bfd46f7a76dc74727dfe23ebbca66675dff85) Thanks [@Achintha444](https://github.com/Achintha444)! - update the design of the Chip component
+
+- Updated dependencies [[`7e3bfd46f7a76dc74727dfe23ebbca66675dff85`](https://github.com/wso2/identity-apps/commit/7e3bfd46f7a76dc74727dfe23ebbca66675dff85)]:
+  - @wso2is/react-components@2.2.20
+  - @wso2is/access-control@3.0.15
+  - @wso2is/dynamic-forms@2.0.78
+  - @wso2is/forms@2.0.45
+  - @wso2is/theme@2.0.91
+  - @wso2is/core@2.0.55
+  - @wso2is/form@2.0.79
+  - @wso2is/i18n@2.5.7
+
+## 2.20.29
+
+### Patch Changes
+
+- [#6616](https://github.com/wso2/identity-apps/pull/6616) [`768bb7367149129d198d65d69f07e6f97a6a2ed7`](https://github.com/wso2/identity-apps/commit/768bb7367149129d198d65d69f07e6f97a6a2ed7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Upgrade asgardeo react sdk version
+
+- Updated dependencies [[`768bb7367149129d198d65d69f07e6f97a6a2ed7`](https://github.com/wso2/identity-apps/commit/768bb7367149129d198d65d69f07e6f97a6a2ed7)]:
+  - @wso2is/core@2.0.54
+  - @wso2is/access-control@3.0.14
+  - @wso2is/dynamic-forms@2.0.77
+  - @wso2is/form@2.0.78
+  - @wso2is/forms@2.0.44
+  - @wso2is/i18n@2.5.6
+  - @wso2is/react-components@2.2.19
+
+## 2.20.28
+
+### Patch Changes
+
+- [#6608](https://github.com/wso2/identity-apps/pull/6608) [`5d49c2defe346f4e2a4391f20689f5039d9b6066`](https://github.com/wso2/identity-apps/commit/5d49c2defe346f4e2a4391f20689f5039d9b6066) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update asgardeo react sdk version
+
+- Updated dependencies [[`5d49c2defe346f4e2a4391f20689f5039d9b6066`](https://github.com/wso2/identity-apps/commit/5d49c2defe346f4e2a4391f20689f5039d9b6066)]:
+  - @wso2is/core@2.0.53
+  - @wso2is/access-control@3.0.13
+  - @wso2is/dynamic-forms@2.0.76
+  - @wso2is/form@2.0.77
+  - @wso2is/forms@2.0.43
+  - @wso2is/i18n@2.5.5
+  - @wso2is/react-components@2.2.18
+
+## 2.20.27
+
+### Patch Changes
+
+- Updated dependencies [[`91db151942242a5829066d4b1d42cf8ce4feafe9`](https://github.com/wso2/identity-apps/commit/91db151942242a5829066d4b1d42cf8ce4feafe9)]:
+  - @wso2is/i18n@2.5.4
+
 ## 2.20.26
 
 ### Patch Changes

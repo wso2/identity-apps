@@ -20,7 +20,11 @@ import get from "lodash-es/get";
 import { ReactNode, lazy } from "react";
 import { getConnectionIcons } from "../configs/ui";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
+import { ConnectionManagementConstants } from "../constants/connection-constants";
+import { FederatedAuthenticatorConstants } from "../constants/federated-authenticator-constants";
+import { LocalAuthenticatorConstants } from "../constants/local-authenticator-constants";
 import { AuthenticatorCategories, AuthenticatorLabels } from "../models/authenticators";
+import { FederatedAuthenticatorInterface } from "../models/connection";
 
 export class AuthenticatorMeta {
 
@@ -41,7 +45,8 @@ export class AuthenticatorMeta {
     public static getAuthenticatorDescription(authenticatorId: string): string {
 
         return get({
-            [ AuthenticatorManagementConstants.BASIC_AUTHENTICATOR_ID ]: "Login users with username and password " +
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .BASIC_AUTHENTICATOR_ID ]: "Login users with username and password " +
                 "credentials.",
             [ AuthenticatorManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Get users Identity first to " +
                 "control the authentication flow.",
@@ -77,33 +82,64 @@ export class AuthenticatorMeta {
      *
      * @returns Authenticator labels.
      */
-    public static getAuthenticatorLabels(authenticatorId: string): string[] {
+    public static getAuthenticatorLabels(authenticator: FederatedAuthenticatorInterface): string[] {
 
-        return get({
+        const authenticatorId: string = authenticator?.authenticatorId;
+
+        const authenticatorLabels: string[] = get({
             [ AuthenticatorManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: [ AuthenticatorLabels.HANDLERS ],
             [ AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.PASSWORDLESS,
-                AuthenticatorLabels.PASSKEY
+                AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.PASSKEY
             ],
             [ AuthenticatorManagementConstants.TOTP_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SECOND_FACTOR, AuthenticatorLabels.MULTI_FACTOR
             ],
+            [ ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
+            ],
+            [ ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
+            ],
+            [ ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
+            ],
+            [ ConnectionManagementConstants.TWITTER_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
+            ],
             [ AuthenticatorManagementConstants.OIDC_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.OIDC
             ],
-            [ AuthenticatorManagementConstants.SAML_AUTHENTICATOR_ID ]: [
+            [ ConnectionManagementConstants.SAML_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.SAML
             ],
             [ AuthenticatorManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: [
-                AuthenticatorLabels.MULTI_FACTOR
+                AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.MULTI_FACTOR
             ],
             [ AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.MULTI_FACTOR
             ],
             [ AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.PASSWORDLESS
+            ],
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.SOCIAL, AuthenticatorLabels.OIDC
+            ],
+            [ ConnectionManagementConstants.HYPR_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.PASSWORDLESS
+            ],
+            [ AuthenticatorManagementConstants.IPROOV_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.PASSWORDLESS
+            ],
+            [ AuthenticatorManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID ]: [
+                AuthenticatorLabels.HANDLERS
             ]
-        }, authenticatorId);
+        }, authenticatorId, []);
+
+        if (authenticator?.tags?.includes(AuthenticatorLabels.API_AUTHENTICATION)) {
+            return [ ...authenticatorLabels, AuthenticatorLabels.API_AUTHENTICATION ];
+        }
+
+        return authenticatorLabels;
     }
 
     /**
@@ -151,7 +187,7 @@ export class AuthenticatorMeta {
             [ AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID ]: getConnectionIcons()?.fido,
             [ AuthenticatorManagementConstants.X509_CERTIFICATE_AUTHENTICATOR_ID ]: getConnectionIcons()?.x509,
             [ AuthenticatorManagementConstants.TOTP_AUTHENTICATOR_ID ]: getConnectionIcons()?.totp,
-            [ AuthenticatorManagementConstants.BASIC_AUTHENTICATOR_ID ]: getConnectionIcons()?.basic,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.BASIC_AUTHENTICATOR_ID ]: getConnectionIcons()?.basic,
             [
             AuthenticatorManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
             ]: getConnectionIcons()?.sessionExecutor,
@@ -219,7 +255,7 @@ export class AuthenticatorMeta {
     public static getAuthenticatorTemplateName(authenticatorId: string): string {
 
         return get({
-            [ AuthenticatorManagementConstants.BASIC_AUTHENTICATOR_ID ]: "username-and-password",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.BASIC_AUTHENTICATOR_ID ]: "username-and-password",
             [ AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID ]: "fido",
             [ AuthenticatorManagementConstants.TOTP_AUTHENTICATOR_ID ]: "totp",
             [ AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "sms-otp",

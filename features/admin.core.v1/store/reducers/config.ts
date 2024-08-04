@@ -118,7 +118,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             guestsList: "",
             identityProviders: "",
             impersonationConfigurations: "",
-            jwtAuthenticationServiceMgt: "",
             localAuthenticators: "",
             localClaims: "",
             loginPolicies: "",
@@ -224,7 +223,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             hiddenConnectionTemplates: [],
             hiddenUserStores: [],
             i18nConfigs: null,
-            identityProviderTemplateLoadingStrategy: null,
             identityProviderTemplates: {
                 apple: {
                     enabled: false

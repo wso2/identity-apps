@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,6 +27,7 @@ import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import { getConnections } from "../api/connections";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
+import { CommonAuthenticatorManagementConstants } from "../constants/common-authenticator-constants";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { MultiFactorAuthenticatorInterface } from "../models/authenticators";
 import {
@@ -77,7 +78,7 @@ export class ConnectionsManagementUtils {
         connection.description = templateDescription;
 
         return connection;
-    }
+    };
 
     /**
      * Type-guard to check if the connector is an Identity Provider.
@@ -188,14 +189,14 @@ export class ConnectionsManagementUtils {
         const templateMapping: Map<string, Set<string>> = new Map<string, Set<string>>([
             [
                 ConnectionTabTypes.USER_ATTRIBUTES, new Set([
-                    ConnectionManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK,
-                    ConnectionManagementConstants.IDP_TEMPLATE_IDS.GOOGLE,
-                    ConnectionManagementConstants.IDP_TEMPLATE_IDS.GITHUB,
-                    ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC,
-                    ConnectionManagementConstants.IDP_TEMPLATE_IDS.MICROSOFT,
-                    ConnectionManagementConstants.IDP_TEMPLATE_IDS.HYPR,
-                    ConnectionManagementConstants.IDP_TEMPLATE_IDS.APPLE,
-                    ConnectionManagementConstants.IDP_TEMPLATE_IDS.SWE
+                    CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK,
+                    CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE,
+                    CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GITHUB,
+                    CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.OIDC,
+                    CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.MICROSOFT,
+                    CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.HYPR,
+                    CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE,
+                    CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.SWE
                 ])
             ]
         ]);

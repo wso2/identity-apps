@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppState, ConfigReducerStateInterface, EventPublisher, history } from "@wso2is/admin.core.v1";
+import { AppState, EventPublisher, history } from "@wso2is/admin.core.v1";
 import {
     getEmptyPlaceholderIllustrations
 } from "@wso2is/admin.core.v1/configs/ui";
@@ -25,9 +25,9 @@ import {
 } from "@wso2is/admin.core.v1/constants/app-constants";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-app-configs";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
-    ContentLoader,
     DocumentationLink,
     EmptyPlaceholder,
     GridLayout,
@@ -36,27 +36,22 @@ import {
     SearchWithFilterLabels,
     useDocumentation
 } from "@wso2is/react-components";
-import cloneDeep from "lodash-es/cloneDeep";
-import isEmpty from "lodash-es/isEmpty";
-import orderBy from "lodash-es/orderBy";
-import startCase from "lodash-es/startCase";
 import union from "lodash-es/union";
 import React, { FC, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { useGetConnectionTemplates } from "../api/connections";
+import { useGetConnectionTemplates } from "../api/use-get-connection-templates";
 import {
     AuthenticatorCreateWizardFactory
 } from "../components/create/authenticator-create-wizard-factory";
+import { CommonAuthenticatorManagementConstants } from "../constants/common-authenticator-constants";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
-import { useSetConnectionTemplates } from "../hooks/use-connection-templates";
+import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import {
-    ConnectionTemplateCategoryInterface,
     ConnectionTemplateInterface,
     ConnectionTemplateItemInterface
 } from "../models/connection";
-import { ConnectionTemplateManagementUtils } from "../utils/connection-template-utils";
 import {
     ConnectionsManagementUtils,
     handleGetConnectionTemplateListError,
@@ -91,7 +86,6 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
     const { deploymentConfig } = useDeploymentConfig();
     const { UIConfig } = useUIConfig();
 
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
 
     // External connection resources URL from the UI config.
@@ -99,48 +93,39 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ templateType, setTemplateType ] = useState<string>(undefined);
-    const [
-        originalCategorizedTemplates,
-        setOriginalCategorizedTemplates
-    ] = useState<ConnectionTemplateCategoryInterface[]>([]);
-    const [
-        filteredCategorizedTemplates,
-        setFilteredCategorizedTemplates
-    ] = useState<ConnectionTemplateCategoryInterface[]>([]);
-    const [
-        groupedTemplates,
-        setGroupedTemplates
-    ] = useState<ConnectionTemplateInterface[]>([]);
-    const [
-        isConnectionTemplateRequestLoading,
-        setConnectionTemplateRequestLoadingStatus
-    ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<any>(undefined);
     const [ filterTags, setFilterTags ] = useState<string[]>([]);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
-
-    const setConnectionTemplates: (templates: Record<string, any>[]) => void = useSetConnectionTemplates();
+    const [ filteredConnectionTemplates, setFilteredConnectionTemplates ] = useState<ConnectionTemplateInterface[]>([]);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const {
-        data: connectionTemplates,
+        data: fetchedConnectionTemplates,
         isLoading: isConnectionTemplatesFetchRequestLoading,
-        error: connectionTemplatesFetchRequestError
+        error: connectionTemplatesFetchRequestError,
+        isValidating: isConnectionTemplatesRequestValidating
     } = useGetConnectionTemplates(null, null, null);
 
     /**
-     * Update the internal filtered templates state when the original changes.
+     * Set the filtered connection templates to the component state
+     * and set the filter tags lit based on the fetched templates.
      */
     useEffect(() => {
+        if (fetchedConnectionTemplates?.length > 0) {
+            setFilteredConnectionTemplates(fetchedConnectionTemplates);
 
-        if (!originalCategorizedTemplates) {
-            return;
+            let _filterTagsList: string[] = [];
+
+            for (const template of fetchedConnectionTemplates) {
+                if (template.tags?.length > 0) {
+                    _filterTagsList = union(_filterTagsList, template.tags);
+                }
+            }
+            setFilterTags(_filterTagsList);
         }
 
-        setFilteredCategorizedTemplates(originalCategorizedTemplates);
-        setConnectionTemplates(originalCategorizedTemplates[ 0 ]?.templates);
-    }, [ originalCategorizedTemplates ]);
+    }, [ isConnectionTemplatesRequestValidating, connectionTemplatesFetchRequestError ]);
 
     /**
      * Handles the connection template fetch request errors.
@@ -151,86 +136,8 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
         }
 
         handleGetConnectionTemplateListError(connectionTemplatesFetchRequestError);
-        setFilteredCategorizedTemplates([]);
+        setFilteredConnectionTemplates([]);
     }, [ connectionTemplatesFetchRequestError ]);
-
-    /**
-     *  Group the connection templates.
-     */
-    useEffect(() => {
-
-        if (!connectionTemplates || !Array.isArray(connectionTemplates)
-            || !(connectionTemplates.length > 0)) {
-            return;
-        }
-
-        const connectionTemplatesClone: ConnectionTemplateInterface[] = connectionTemplates.map(
-            (template: ConnectionTemplateInterface) => {
-                if (template.id === "enterprise-oidc-idp" || template.id === "enterprise-saml-idp") {
-                    return {
-                        ...template,
-                        templateGroup: "enterprise-protocols"
-                    };
-                }
-
-                if (template.displayOrder < 0) {
-
-                    return;
-                }
-
-                // Removes hidden connections.
-                if (config?.ui?.hiddenConnectionTemplates?.includes(template.id)) {
-
-                    return;
-                }
-
-                return template;
-            }
-        );
-
-        ConnectionTemplateManagementUtils
-            .reorderConnectionTemplates(connectionTemplatesClone)
-            .then((response: ConnectionTemplateInterface[]) => {
-                setGroupedTemplates(response);
-            })
-            .finally(() => setConnectionTemplateRequestLoadingStatus(false));
-    }, [ connectionTemplates ]);
-
-    /**
-     * Categorize the connection templates.
-     */
-    useEffect(() => {
-
-        if (!groupedTemplates || !Array.isArray(groupedTemplates)
-            || !(groupedTemplates.length > 0)) {
-            return;
-        }
-
-        ConnectionTemplateManagementUtils.categorizeTemplates(groupedTemplates)
-            .then((response: ConnectionTemplateCategoryInterface[]) => {
-
-                let tags: string[] = [];
-
-                response.filter((category: ConnectionTemplateCategoryInterface) => {
-                    // Order the templates by pushing coming soon items to the end.
-                    category.templates = orderBy(category.templates, [ "comingSoon" ], [ "desc" ]);
-
-                    category.templates.filter((template: ConnectionTemplateInterface) => {
-                        if (!(template?.tags && Array.isArray(template.tags) && template.tags.length > 0)) {
-                            return;
-                        }
-
-                        tags = union(tags, template.tags);
-                    });
-                });
-
-                setFilterTags(tags);
-                setOriginalCategorizedTemplates(response);
-            })
-            .catch(() => {
-                setOriginalCategorizedTemplates([]);
-            });
-    }, [ groupedTemplates ]);
 
     /**
      * Subscribe to the URS search params to check for IDP create wizard triggers.
@@ -239,18 +146,18 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
      */
     useEffect(() => {
 
-        if (!urlSearchParams.get(ConnectionManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY)) {
+        if (!urlSearchParams.get(ConnectionUIConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY)) {
             return;
         }
 
-        if (urlSearchParams.get(ConnectionManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY)
-            === ConnectionManagementConstants.IDP_TEMPLATE_IDS.GOOGLE) {
+        if (urlSearchParams.get(ConnectionUIConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY)
+            === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE) {
 
-            handleTemplateSelection(null, ConnectionManagementConstants.IDP_TEMPLATE_IDS.GOOGLE);
+            handleTemplateSelection(null, CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE);
 
             return;
         }
-    }, [ urlSearchParams.get(ConnectionManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY) ]);
+    }, [ urlSearchParams.get(ConnectionUIConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY) ]);
 
     /**
      * Handles back button click.
@@ -271,7 +178,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
          * Find the matching template for the selected card.
          * if found then set the template to state.
          */
-        const selectedTemplate: ConnectionTemplateItemInterface = groupedTemplates?.find(
+        const selectedTemplate: ConnectionTemplateItemInterface = filteredConnectionTemplates?.find(
             ({ id: templateId }: { id: string }) => (templateId === id));
 
         if (selectedTemplate) {
@@ -295,7 +202,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
         if (id) {
             history.push({
                 pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", id),
-                search: ConnectionManagementConstants.NEW_IDP_URL_SEARCH_PARAM
+                search: ConnectionUIConstants.NEW_IDP_URL_SEARCH_PARAM
             });
 
             return;
@@ -311,46 +218,33 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
      * @param query - Search query.
      * @param filterLabels - Array of filter labels.
      *
-     * @returns ConnectionTemplateCategoryInterface[]
+     * @returns A filtered list of connection templates.
      */
-    const getSearchResults = (query: string, filterLabels: string[]): ConnectionTemplateCategoryInterface[] => {
+    const getSearchResults = (query: string, filterLabels: string[]): ConnectionTemplateInterface[] => {
+        let _filteredCategorizedTemplates: ConnectionTemplateInterface[] = [];
 
-        /**
-         * Checks if any of the filters are matching.
-         * @param template - Template object.
-         * @returns boolean
-         */
-        const isFiltersMatched = (template: ConnectionTemplateInterface): boolean => {
-
-            if (isEmpty(filterLabels)) {
-                return true;
+        if (filterLabels.length > 0) {
+            // Filter out the templates based on the selected filter labels.
+            for (const connectionTemplate of fetchedConnectionTemplates) {
+                if (connectionTemplate.tags.some((tag: string) => filterLabels.includes(tag))) {
+                    _filteredCategorizedTemplates.push(connectionTemplate);
+                }
             }
+        } else {
+            _filteredCategorizedTemplates = [ ...fetchedConnectionTemplates ];
+        }
 
-            return template.tags
-                .some((selectedLabel: string) => filterLabels.includes(selectedLabel));
-        };
+        if (query) {
+            // Filter out the templates based on the search query.
+            _filteredCategorizedTemplates = _filteredCategorizedTemplates
+                .filter((template: ConnectionTemplateInterface) => {
+                    const name: string = template.name.toLocaleLowerCase();
 
-        const templatesClone: ConnectionTemplateCategoryInterface[] = cloneDeep(originalCategorizedTemplates);
+                    return name.includes(query.toLocaleLowerCase());
+                });
+        }
 
-        templatesClone.map((category: ConnectionTemplateCategoryInterface) => {
-
-            category.templates = category.templates.filter((template: ConnectionTemplateInterface) => {
-                if (!query) {
-                    return isFiltersMatched(template);
-                }
-
-                const name: string = template.name.toLocaleLowerCase();
-
-                if (name.includes(query)
-                    || template.tags.some((tag: string) => tag.toLocaleLowerCase().includes(query)
-                        || startCase(tag).toLocaleLowerCase().includes(query))) {
-
-                    return isFiltersMatched(template);
-                }
-            });
-        });
-
-        return templatesClone;
+        return _filteredCategorizedTemplates;
     };
 
     /**
@@ -364,7 +258,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
         // Update the internal state to manage placeholders etc.
         setSearchQuery(query);
         // Filter out the templates.
-        setFilteredCategorizedTemplates(getSearchResults(query.toLocaleLowerCase(), selectedFilters));
+        setFilteredConnectionTemplates(getSearchResults(query, selectedFilters));
     };
 
     /**
@@ -378,7 +272,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
         // Update the internal state to manage placeholders etc.
         setSearchQuery(query);
         // Filter out the templates.
-        setFilteredCategorizedTemplates(getSearchResults(query, selectedFilters));
+        setFilteredConnectionTemplates(getSearchResults(query, selectedFilters));
     };
 
     /**
@@ -405,7 +299,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
         }
 
         // Edge case, templates will never be empty.
-        if (list.length === 0) {
+        if (list?.length === 0) {
             return (
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().newList }
@@ -463,94 +357,77 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                 ) }
                 isLoading={ isConnectionTemplatesFetchRequestLoading }
             >
-                {
-                    (filteredCategorizedTemplates && !isConnectionTemplateRequestLoading)
-                        ? (
-                            filteredCategorizedTemplates
-                                .map((category: ConnectionTemplateCategoryInterface, index: number) => (
-                                    <ResourceGrid
-                                        key={ index }
-                                        isEmpty={
-                                            !(category?.templates
-                                                && Array.isArray(category.templates)
-                                                && category.templates.length > 0)
-                                        }
-                                        emptyPlaceholder={ showPlaceholders(category.templates) }
-                                    >
-                                        {
-                                            category.templates.map((
-                                                template: ConnectionTemplateInterface,
-                                                templateIndex: number
-                                            ) => {
+                <ResourceGrid
+                    isEmpty={ filteredConnectionTemplates?.length === 0 }
+                    emptyPlaceholder={ showPlaceholders(filteredConnectionTemplates) }
+                >
+                    {
+                        filteredConnectionTemplates?.map((
+                            template: ConnectionTemplateInterface,
+                            templateIndex: number
+                        ) => {
+                            // if the template is "organization-enterprise-idp",
+                            // then prevent rendering it.
+                            if (template.id === ConnectionManagementConstants
+                                .ORG_ENTERPRISE_CONNECTION_ID) {
 
-                                                // if the template is "organization-enterprise-idp",
-                                                // then prevent rendering it.
-                                                if (template.id === ConnectionManagementConstants
-                                                    .ORG_ENTERPRISE_CONNECTION_ID) {
+                                return null;
+                            }
 
-                                                    return null;
-                                                }
+                            let isTemplateDisabled: boolean = template.disabled;
+                            let disabledHint: ReactNode = undefined;
 
-                                                let isTemplateDisabled: boolean = template.disabled;
-                                                let disabledHint: ReactNode = undefined;
-
-                                                // Disable the Apple template in localhost as it's not supported.
-                                                if (template.id === ConnectionManagementConstants
-                                                    .IDP_TEMPLATE_IDS.APPLE &&
+                            // Disable the Apple template in localhost as it's not supported.
+                            if (template.id === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE &&
                                                     new URL(deploymentConfig?.serverOrigin)?.
                                                         hostname === ConnectionManagementConstants.LOCAL_SERVER_URL) {
-                                                    isTemplateDisabled = true;
-                                                    disabledHint = t("console:develop.pages." +
-                                                        "authenticationProviderTemplate.disabledHint.apple");
-                                                }
+                                isTemplateDisabled = true;
+                                disabledHint = t("console:develop.pages." +
+                                    "authenticationProviderTemplate.disabledHint.apple");
+                            }
 
-                                                return (
-                                                    <ResourceGrid.Card
-                                                        key={ templateIndex }
-                                                        resourceName={
-                                                            resolveConnectionName(template?.name)
-                                                        }
-                                                        isResourceComingSoon={ template.comingSoon }
-                                                        disabled={ isTemplateDisabled }
-                                                        disabledHint={ disabledHint }
-                                                        comingSoonRibbonLabel={ t("common:comingSoon") }
-                                                        resourceDescription={
-                                                            template?.description
-                                                                ?.replaceAll("{{productName}}", productName)
-                                                        }
-                                                        showSetupGuideButton={ getLink(template.docLink) !== undefined }
-                                                        resourceDocumentationLink={
-                                                            getLink(ConnectionsManagementUtils
-                                                                .resolveConnectionDocLink(template.id))
-                                                        }
-                                                        resourceImage={
-                                                            ConnectionsManagementUtils
-                                                                .resolveConnectionResourcePath(
-                                                                    connectionResourcesUrl, template.image)
-                                                        }
-                                                        tags={ template.tags }
-                                                        showActions={ true }
-                                                        onClick={ (e: SyntheticEvent) => {
-                                                            handleTemplateSelection(e, template.id);
-                                                            setShowWizard(true);
-                                                        } }
-                                                        showTooltips={
-                                                            {
-                                                                description: true,
-                                                                header: false
-                                                            }
-                                                        }
-                                                        data-testid={ `${ componentId }-${ template.name }` }
-                                                    />
-                                                );
-                                            }
-                                            )
+                            return (
+                                <ResourceGrid.Card
+                                    key={ templateIndex }
+                                    resourceName={
+                                        resolveConnectionName(template?.name)
+                                    }
+                                    isResourceComingSoon={ template.comingSoon }
+                                    disabled={ isTemplateDisabled }
+                                    disabledHint={ disabledHint }
+                                    comingSoonRibbonLabel={ t(FeatureStatusLabel.COMING_SOON) }
+                                    resourceDescription={
+                                        template?.description
+                                            ?.replaceAll("{{productName}}", productName)
+                                    }
+                                    showSetupGuideButton={ getLink(template.docLink) !== undefined }
+                                    resourceDocumentationLink={
+                                        getLink(ConnectionsManagementUtils
+                                            .resolveConnectionDocLink(template.id))
+                                    }
+                                    resourceImage={
+                                        ConnectionsManagementUtils
+                                            .resolveConnectionResourcePath(
+                                                connectionResourcesUrl, template.image)
+                                    }
+                                    tags={ template.tags }
+                                    showActions={ true }
+                                    onClick={ (e: SyntheticEvent) => {
+                                        handleTemplateSelection(e, template.id);
+                                        setShowWizard(true);
+                                    } }
+                                    showTooltips={
+                                        {
+                                            description: true,
+                                            header: false
                                         }
-                                    </ResourceGrid>
-                                ))
-                        )
-                        : <ContentLoader dimmer/>
-                }
+                                    }
+                                    data-testid={ `${ componentId }-${ template.name }` }
+                                />
+                            );
+                        })
+                    }
+                </ResourceGrid>
             </GridLayout>
             {
                 showWizard && (

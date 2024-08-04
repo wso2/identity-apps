@@ -143,7 +143,10 @@ export interface ApplicationsNS {
         disableApplication: {
             header: string;
             message: string;
-            content: string;
+            content: {
+                0: string;
+                1: string;
+            };
             assertionHint: string;
         },
         enableApplication: {
@@ -1424,6 +1427,10 @@ export interface ApplicationsNS {
                             hint: string;
                             label: string;
                             placeholder: string;
+                        };
+                        reusePvtKeyJwt: {
+                            hint: string;
+                            label: string;
                         };
                         signingAlgorithm: {
                             hint: string;
