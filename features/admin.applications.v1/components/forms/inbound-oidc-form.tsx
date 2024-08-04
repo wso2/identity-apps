@@ -544,7 +544,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     useEffect(() => {
         setHybridFlowEnableConfig(false);
         if (selectedGrantTypes?.includes(ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
-            && isFeatureEnabled(applicationFeatureConfig, "applications.hybridFlow")) {
+            && isFeatureEnabled(applicationFeatureConfig, "applications.hybridFlow")
+        ) {
             setHybridFlowEnableConfig(true);
         }
     }, [ selectedGrantTypes, isGrantChanged ]);
