@@ -346,7 +346,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const JWT: string = "JWT";
 
     const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
-        state.config.ui.features?.applications);
+        state.config.ui.features?.applications
+    );
 
     /**
      * The listener handler for the enable PKCE toggle form field. This function
