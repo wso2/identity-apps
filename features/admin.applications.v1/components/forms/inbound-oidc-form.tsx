@@ -28,7 +28,10 @@ import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationInterface, OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface,
+import {
+    AlertLevels,
+    FeatureAccessConfigInterface,
+    IdentifiableComponentInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
