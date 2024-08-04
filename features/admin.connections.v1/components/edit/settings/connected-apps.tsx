@@ -416,8 +416,8 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 pathname: AppConstants.getPaths().get("APPLICATION_SIGN_IN_METHOD_EDIT")
                     .replace(":id", appId).replace(":tabName", tabName),
 
-                search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }=
-                ${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`,
+                search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }` +
+                    `=${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`,
 
                 state: { id: editingIDP.id, name: editingIDP.name }
             });
