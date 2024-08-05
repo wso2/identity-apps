@@ -21,7 +21,7 @@ import {
     AuthenticatorInterface
 } from "@wso2is/admin.applications.v1/models/application";
 import {
-    CommonAuthenticatorManagementConstants
+    CommonAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
 import {
     FederatedAuthenticatorConstants
@@ -93,27 +93,27 @@ const PredefinedSocialFlowHandlerModalFactory: FunctionComponent<
         if (selectedSequence.id === "GoogleSocialLoginSequence") {
             authenticatorId = FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID;
             authenticatorName = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.GOOGLE_OIDC_AUTHENTICATOR_NAME;
-            setAuthenticatorCategoryTemplate(CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE);
+            setAuthenticatorCategoryTemplate(CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE);
             setAuthenticatorCategoryDisplayName(
                 FederatedAuthenticatorConstants.AUTHENTICATOR_DISPLAY_NAMES.GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME
             );
         } else if (selectedSequence.id === "GithubSocialLoginSequence") {
             authenticatorId = FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID;
             authenticatorName = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.GITHUB_AUTHENTICATOR_NAME;
-            setAuthenticatorCategoryTemplate(CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GITHUB);
+            setAuthenticatorCategoryTemplate(CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GITHUB);
             setAuthenticatorCategoryDisplayName(FederatedAuthenticatorConstants
                 .AUTHENTICATOR_DISPLAY_NAMES.GITHUB_AUTHENTICATOR_DISPLAY_NAME);
         } else if (selectedSequence.id === "FacebookSocialLoginSequence") {
             authenticatorId = FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID;
             authenticatorName = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.FACEBOOK_AUTHENTICATOR_NAME;
-            setAuthenticatorCategoryTemplate(CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK);
+            setAuthenticatorCategoryTemplate(CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK);
             setAuthenticatorCategoryDisplayName(FederatedAuthenticatorConstants
                 .AUTHENTICATOR_DISPLAY_NAMES.FACEBOOK_AUTHENTICATOR_DISPLAY_NAME
             );
         } else if (selectedSequence.id === "AppleSocialLoginSequence") {
             authenticatorId = FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID;
             authenticatorName = FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.APPLE_AUTHENTICATOR_NAME;
-            setAuthenticatorCategoryTemplate(CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE);
+            setAuthenticatorCategoryTemplate(CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.APPLE);
             setAuthenticatorCategoryDisplayName(FederatedAuthenticatorConstants
                 .AUTHENTICATOR_DISPLAY_NAMES.APPLE_AUTHENTICATOR_DISPLAY_NAME);
         }

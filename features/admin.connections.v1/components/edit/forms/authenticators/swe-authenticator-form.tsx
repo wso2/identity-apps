@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,8 +23,8 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
-import { SIWEConstants } from "../../../../constants/connection-constants";
 import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
+import { FederatedAuthenticatorConstants } from "../../../../constants/federated-authenticator-constants";
 import {
     CommonAuthenticatorFormFieldInterface,
     CommonAuthenticatorFormFieldMetaInterface,
@@ -230,7 +230,7 @@ export const SIWEAuthenticatorForm: FunctionComponent<SIWEAuthenticatorFormProps
      */
     const resolveScopeMetadata = (scope: string): ScopeMetaInterface => {
 
-        if (scope === SIWEConstants.SIWE_SCOPE_DICTIONARY.PROFILE) {
+        if (scope === FederatedAuthenticatorConstants.SIWE_SCOPE_DICTIONARY.PROFILE) {
             return {
                 description: t("extensions:develop.identityProviders.siwe.forms.authenticatorSettings" +
                     ".scopes.list.profile.description"),
@@ -241,7 +241,7 @@ export const SIWEAuthenticatorForm: FunctionComponent<SIWEAuthenticatorFormProps
                 ),
                 icon: "user outline"
             };
-        } else if (scope === SIWEConstants.SIWE_SCOPE_DICTIONARY.OPENID) {
+        } else if (scope === FederatedAuthenticatorConstants.SIWE_SCOPE_DICTIONARY.OPENID) {
             return {
                 description: t("extensions:develop.identityProviders.siwe.forms.authenticatorSettings" +
                     ".scopes.list.openid.description"),

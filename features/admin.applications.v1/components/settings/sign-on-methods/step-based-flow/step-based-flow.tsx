@@ -17,7 +17,9 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1/constants/autheticator-constants";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AppState, EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
@@ -429,7 +431,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         // Do not allow deleting SSO authenticator if the application is shared.
         if (stepIndex === 0
-            && currentAuthenticator === AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME
+            && currentAuthenticator === FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES
+                .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME
             && isApplicationShared) {
             dispatch(
                 addAlert({

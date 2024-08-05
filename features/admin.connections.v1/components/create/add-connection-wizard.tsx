@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -46,7 +46,8 @@ import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import CreateConnectionWizardHelp from "./create-wizard-help";
 import { createConnection, useGetConnectionMetaData } from "../../api/connections";
-import { ConnectionManagementConstants } from "../../constants/connection-constants";
+import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
+import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import {
     ConnectionInterface,
     GenericConnectionCreateWizardPropsInterface,
@@ -204,7 +205,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
             })
             .catch((error: AxiosError) => {
 
-                const identityAppsError: IdentityAppsError = ConnectionManagementConstants.ERROR_CREATE_LIMIT_REACHED;
+                const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
 
                 if (error?.response?.status === 403 &&
                 error?.response?.data?.code ===
@@ -323,13 +324,13 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
         identityProvider?.provisioning?.outboundConnectors?.connectors[ 0 ];
 
         const isGoogleConnector: boolean = get(connector,
-            ConnectionManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME) ===
-            ConnectionManagementConstants.PROVISIONING_CONNECTOR_GOOGLE;
+            CommonAuthenticatorConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY) ===
+            CommonAuthenticatorConstants.PROVISIONING_CONNECTOR_GOOGLE;
 
         // If the outbound connector is Google, remove the displayName from the connector.
         if (connector && isGoogleConnector) {
             delete connector[
-                ConnectionManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME
+                CommonAuthenticatorConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY
             ];
         }
 

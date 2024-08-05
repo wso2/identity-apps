@@ -43,6 +43,7 @@ export class LocalAuthenticatorConstants {
         IDENTIFIER_FIRST_AUTHENTICATOR_ID: string;
         JWT_BASIC_AUTHENTICATOR_ID: string;
         MAGIC_LINK_AUTHENTICATOR_ID: string;
+        PASSIVE_STS_AUTHENTICATOR_ID: string;
         SMS_OTP_AUTHENTICATOR_ID: string;
         TOTP_AUTHENTICATOR_ID: string;
         X509_CERTIFICATE_AUTHENTICATOR_ID: string;
@@ -55,6 +56,7 @@ export class LocalAuthenticatorConstants {
             IDENTIFIER_FIRST_AUTHENTICATOR_ID: "SWRlbnRpZmllckV4ZWN1dG9y",
             JWT_BASIC_AUTHENTICATOR_ID: "SldUQmFzaWNBdXRoZW50aWNhdG9y",
             MAGIC_LINK_AUTHENTICATOR_ID: "TWFnaWNMaW5rQXV0aGVudGljYXRvcg",
+            PASSIVE_STS_AUTHENTICATOR_ID: "UGFzc2l2ZVNUU0F1dGhlbnRpY2F0b3I",
             SMS_OTP_AUTHENTICATOR_ID: "c21zLW90cC1hdXRoZW50aWNhdG9y",
             TOTP_AUTHENTICATOR_ID: "dG90cA",
             X509_CERTIFICATE_AUTHENTICATOR_ID: "eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg"
@@ -71,6 +73,7 @@ export class LocalAuthenticatorConstants {
         FIDO_AUTHENTICATOR_NAME: string;
         IDENTIFIER_FIRST_AUTHENTICATOR_NAME: string;
         MAGIC_LINK_AUTHENTICATOR_NAME: string;
+        PASSIVE_STS_AUTHENTICATOR_NAME: string;
         SMS_OTP_AUTHENTICATOR_NAME: string;
         TOTP_AUTHENTICATOR_NAME: string;
     } = {
@@ -81,6 +84,7 @@ export class LocalAuthenticatorConstants {
             FIDO_AUTHENTICATOR_NAME: "FIDOAuthenticator",
             IDENTIFIER_FIRST_AUTHENTICATOR_NAME: "IdentifierExecutor",
             MAGIC_LINK_AUTHENTICATOR_NAME: "MagicLinkAuthenticator",
+            PASSIVE_STS_AUTHENTICATOR_NAME: "PassiveSTSAuthenticator",
             SMS_OTP_AUTHENTICATOR_NAME: "sms-otp-authenticator",
             TOTP_AUTHENTICATOR_NAME: "totp"
         };
@@ -105,11 +109,11 @@ export class LocalAuthenticatorConstants {
     /**
      * Attribute key for Email OTP Authenticator expiry time.
      */
-    public static readonly AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY: string = "EmailOTP_ExpiryTime";
+    public static readonly MODERATED_EMAIL_OTP_EXPIRY_TIME_KEY: string = "EmailOTP_ExpiryTime";
 
     // SMS OTP authenticator constants.
     /**
      * Attribute key for SMS OTP Authenticator expiry time.
      */
-    public static readonly AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY: string = "SmsOTP_ExpiryTime";
+    public static readonly MODERATED_SMS_OTP_EXPIRY_TIME_KEY: string = "SmsOTP_ExpiryTime";
 }
