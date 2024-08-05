@@ -1,5 +1,69 @@
 # @wso2is/admin.impersonation.v1
 
+## 1.1.44
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.23.32
+  - @wso2is/admin.server-configurations.v1@2.21.44
+
+## 1.1.43
+
+### Patch Changes
+
+- [#6715](https://github.com/wso2/identity-apps/pull/6715) [`afeb344ddbc6a674f342893b3f8135977e52a468`](https://github.com/wso2/identity-apps/commit/afeb344ddbc6a674f342893b3f8135977e52a468) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Bump oxygen ui version
+
+- Updated dependencies [[`afeb344ddbc6a674f342893b3f8135977e52a468`](https://github.com/wso2/identity-apps/commit/afeb344ddbc6a674f342893b3f8135977e52a468)]:
+  - @wso2is/admin.server-configurations.v1@2.21.43
+  - @wso2is/react-components@2.2.30
+  - @wso2is/admin.core.v1@2.23.31
+  - @wso2is/dynamic-forms@2.0.88
+  - @wso2is/form@2.0.89
+
+## 1.1.42
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.23.30
+  - @wso2is/admin.server-configurations.v1@2.21.42
+
+## 1.1.41
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.23.29
+  - @wso2is/admin.server-configurations.v1@2.21.41
+
+## 1.1.40
+
+### Patch Changes
+
+- Updated dependencies [[`198c2432e6eacdc2bcf1bb9e7432ea7d700f7534`](https://github.com/wso2/identity-apps/commit/198c2432e6eacdc2bcf1bb9e7432ea7d700f7534)]:
+  - @wso2is/react-components@2.2.29
+  - @wso2is/admin.core.v1@2.23.28
+  - @wso2is/admin.server-configurations.v1@2.21.40
+  - @wso2is/dynamic-forms@2.0.87
+  - @wso2is/form@2.0.88
+
+## 1.1.39
+
+### Patch Changes
+
+- Updated dependencies [[`51f97383095dd3c797c596bb67027a35b92b15cf`](https://github.com/wso2/identity-apps/commit/51f97383095dd3c797c596bb67027a35b92b15cf)]:
+  - @wso2is/admin.core.v1@2.23.27
+  - @wso2is/admin.server-configurations.v1@2.21.39
+
+## 1.1.38
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.23.26
+  - @wso2is/admin.server-configurations.v1@2.21.38
+
 ## 1.1.37
 
 ### Patch Changes

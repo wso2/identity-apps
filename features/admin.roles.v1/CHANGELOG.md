@@ -1,5 +1,97 @@
 # @wso2is/admin.roles.v1
 
+## 2.20.102
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.23.32
+  - @wso2is/admin.organizations.v1@2.20.102
+  - @wso2is/admin.groups.v1@2.20.102
+  - @wso2is/admin.server-configurations.v1@2.21.44
+  - @wso2is/admin.users.v1@2.20.102
+  - @wso2is/admin.userstores.v1@2.20.102
+
+## 2.20.101
+
+### Patch Changes
+
+- [#6715](https://github.com/wso2/identity-apps/pull/6715) [`afeb344ddbc6a674f342893b3f8135977e52a468`](https://github.com/wso2/identity-apps/commit/afeb344ddbc6a674f342893b3f8135977e52a468) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Bump oxygen ui version
+
+- Updated dependencies [[`afeb344ddbc6a674f342893b3f8135977e52a468`](https://github.com/wso2/identity-apps/commit/afeb344ddbc6a674f342893b3f8135977e52a468)]:
+  - @wso2is/admin.server-configurations.v1@2.21.43
+  - @wso2is/admin.organizations.v1@2.20.101
+  - @wso2is/admin.userstores.v1@2.20.101
+  - @wso2is/admin.groups.v1@2.20.101
+  - @wso2is/react-components@2.2.30
+  - @wso2is/admin.users.v1@2.20.101
+  - @wso2is/admin.core.v1@2.23.31
+  - @wso2is/dynamic-forms@2.0.88
+  - @wso2is/form@2.0.89
+
+## 2.20.100
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.23.30
+  - @wso2is/admin.groups.v1@2.20.100
+  - @wso2is/admin.organizations.v1@2.20.100
+  - @wso2is/admin.server-configurations.v1@2.21.42
+  - @wso2is/admin.users.v1@2.20.100
+  - @wso2is/admin.userstores.v1@2.20.100
+
+## 2.20.99
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.23.29
+  - @wso2is/admin.organizations.v1@2.20.99
+  - @wso2is/admin.groups.v1@2.20.99
+  - @wso2is/admin.server-configurations.v1@2.21.41
+  - @wso2is/admin.users.v1@2.20.99
+  - @wso2is/admin.userstores.v1@2.20.99
+
+## 2.20.98
+
+### Patch Changes
+
+- Updated dependencies [[`198c2432e6eacdc2bcf1bb9e7432ea7d700f7534`](https://github.com/wso2/identity-apps/commit/198c2432e6eacdc2bcf1bb9e7432ea7d700f7534)]:
+  - @wso2is/react-components@2.2.29
+  - @wso2is/admin.core.v1@2.23.28
+  - @wso2is/admin.groups.v1@2.20.98
+  - @wso2is/admin.organizations.v1@2.20.98
+  - @wso2is/admin.server-configurations.v1@2.21.40
+  - @wso2is/admin.users.v1@2.20.98
+  - @wso2is/admin.userstores.v1@2.20.98
+  - @wso2is/dynamic-forms@2.0.87
+  - @wso2is/form@2.0.88
+
+## 2.20.97
+
+### Patch Changes
+
+- Updated dependencies [[`51f97383095dd3c797c596bb67027a35b92b15cf`](https://github.com/wso2/identity-apps/commit/51f97383095dd3c797c596bb67027a35b92b15cf)]:
+  - @wso2is/admin.core.v1@2.23.27
+  - @wso2is/admin.groups.v1@2.20.97
+  - @wso2is/admin.organizations.v1@2.20.97
+  - @wso2is/admin.server-configurations.v1@2.21.39
+  - @wso2is/admin.users.v1@2.20.97
+  - @wso2is/admin.userstores.v1@2.20.97
+
+## 2.20.96
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.23.26
+  - @wso2is/admin.organizations.v1@2.20.96
+  - @wso2is/admin.server-configurations.v1@2.21.38
+  - @wso2is/admin.users.v1@2.20.96
+  - @wso2is/admin.groups.v1@2.20.96
+  - @wso2is/admin.userstores.v1@2.20.96
+
 ## 2.20.95
 
 ### Patch Changes

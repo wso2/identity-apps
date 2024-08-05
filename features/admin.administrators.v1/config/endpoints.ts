@@ -16,4 +16,17 @@
  * under the License.
  */
 
-export { default as ParentRolePage } from "./parent-roles";
+import { AdministratorsResourceEndpointsInterface } from "../models/endpoint";
+
+/**
+ * Get the resource endpoints for the Administrators feature.
+ *
+ * @param serverHost - Server Host.
+ * @returns Interface for the resource endpoints of Administrators feature.
+ */
+export const getAdministratorsResourceEndpoints = (serverHost: string): AdministratorsResourceEndpointsInterface => {
+    return {
+        organizationEndpointV2: `${ serverHost }/api/asgardeo-enterprise-login/v2/business-user-login/{organization}`,
+        organizationPatchEndpointV2: `${ serverHost }/api/asgardeo-enterprise-login/v2/business-user-login`
+    };
+};

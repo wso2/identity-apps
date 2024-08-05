@@ -24,7 +24,7 @@ import { ConnectorPropertyInterface, RealmConfigInterface } from "@wso2is/admin.
 import { UserProfile } from "@wso2is/admin.users.v1/components/user-profile";
 import { UserRolesList } from "@wso2is/admin.users.v1/components/user-roles-list";
 import { UserSessions } from "@wso2is/admin.users.v1/components/user-sessions";
-import { UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
+import { AdminAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
@@ -36,7 +36,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { AdminAccountTypes } from "../../constants";
 
 interface EditGuestUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
