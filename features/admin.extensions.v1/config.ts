@@ -31,13 +31,7 @@ export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
     templateExtensions: {
         applications: {
             categories: [],
-            groups: [
-                {
-                    enabled: true,
-                    id: "web-application",
-                    resource: "./application-templates/groups/web-application-template-group.json"
-                }
-            ],
+            groups: [],
             templates: [
                 {
                     content: {
