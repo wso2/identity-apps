@@ -17,6 +17,9 @@
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+
+
+
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EncodedControl" %>
