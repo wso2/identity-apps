@@ -21,15 +21,26 @@ import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import TextField from "@oxygen-ui/react/TextField";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import classNames from "classnames";
 import debounce from "lodash-es/debounce";
-import React, { SyntheticEvent, useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+    FunctionComponent,
+    HTMLAttributes,
+    HTMLProps,
+    ReactElement,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import "./meta-attribute-auto-complete.scss";
 import { Header, Item } from "semantic-ui-react";
-import { useGetOrganizationsMetaAttributes } from "../api";
+import { useGetOrganizationsMetaAttributes } from "../api/use-get-organizations-meta-attributes";
 import { OrganizationLinkInterface } from "../models";
 
 /**
@@ -47,26 +58,40 @@ export interface MetaAttributeAutoCompleteProps extends IdentifiableComponentInt
     hasErrors?: boolean;
 }
 
+interface Params {
+    after?: string;
+    before?: string;
+    filter?: string;
+    isRoot?: boolean;
+    limit?: number;
+    recursive?: boolean;
+}
+
+type MetaAttributeOption = {
+    text: string;
+    value: string;
+};
+
 /**
- * Autocomplete component infinite scroll for the organizations' meta attributes.
+ * Autocomplete component with infinite scroll for the organizations' meta attributes.
  *
  * @param props - Props injected to the component.
  * @returns React element.
  */
-export const MetaAttributeAutoComplete: React.FunctionComponent<MetaAttributeAutoCompleteProps> = (
-    props: MetaAttributeAutoCompleteProps
-): React.ReactElement => {
-
-    const { onMetaAttributeChange, hasErrors, ["data-componentid"]: testId } = props;
+const MetaAttributeAutoComplete: FunctionComponent<MetaAttributeAutoCompleteProps> = ({
+    onMetaAttributeChange,
+    hasErrors,
+    "data-componentid": _componentId = "organization-meta-attribute"
+}: MetaAttributeAutoCompleteProps): ReactElement => {
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const [ metaAttributeListOptions, setMetaAttributeListOptions ] = useState([]);
+    const [ metaAttributeListOptions, setMetaAttributeListOptions ] = useState<MetaAttributeOption[]>([]);
     const [ inputValue, setInputValue ] = useState<string>("");
     const [ hasNextPage, setHasNextPage ] = useState(true);
     const [ cursor, setCursor ] = useState(null);
-    const [ params, setParams ] = useState({ after: undefined, filter: undefined, limit: 10 });
+    const [ params, setParams ] = useState<Params>({ after: undefined, filter: undefined, limit: 10 });
 
     const {
         data: metaAttributes,
@@ -80,12 +105,14 @@ export const MetaAttributeAutoComplete: React.FunctionComponent<MetaAttributeAut
     useEffect(() => {
         if (!metaAttributes || isMetaAttributesFetchRequestLoading || metaAttributesIsValidating) return;
 
-        const updatedSubAttributeListOptions: any = metaAttributes.attributes?.map((attribute: string) => ({
-            text: attribute,
-            value: attribute
-        })) || [];
+        const updatedSubAttributeListOptions: MetaAttributeOption[] = (
+            metaAttributes.attributes?.map((attribute: string) => ({
+                text: attribute,
+                value: attribute
+            })) || []
+        );
 
-        setMetaAttributeListOptions((prevOptions: any) => [
+        setMetaAttributeListOptions((prevOptions: MetaAttributeOption[]) => [
             ...prevOptions,
             ...updatedSubAttributeListOptions
         ]);
@@ -126,7 +153,7 @@ export const MetaAttributeAutoComplete: React.FunctionComponent<MetaAttributeAut
     const updateParams = (newCursor: string, newInputValue: string) => {
         setCursor(newCursor);
         setInputValue(newInputValue);
-        setParams((prevParams: any) => ({
+        setParams((prevParams: Params) => ({
             ...prevParams,
             after: newCursor,
             filter: newInputValue ? `${queryPrefix}${newInputValue}` : ""
@@ -135,6 +162,7 @@ export const MetaAttributeAutoComplete: React.FunctionComponent<MetaAttributeAut
 
     /**
      * Handles changes in the meta attribute input field.
+     *
      * @param _event - The change event.
      * @param data - The selected data.
      */
@@ -146,12 +174,13 @@ export const MetaAttributeAutoComplete: React.FunctionComponent<MetaAttributeAut
 
     /**
      * Handles changes in the input field.
+     *
      * @param _event - The change event.
      * @param data - The new input value.
      */
     const handleInputChange: (_event: SyntheticEvent<HTMLElement>, data: string | null) => void = useCallback(
         debounce((_event: SyntheticEvent<HTMLElement>, data: string | null) => {
-            const newInputValue: string = data && data ? data : "";
+            const newInputValue: string = data ?? "";
 
             setMetaAttributeListOptions([]);
             updateParams("", newInputValue);
@@ -160,7 +189,7 @@ export const MetaAttributeAutoComplete: React.FunctionComponent<MetaAttributeAut
     );
 
     /**
-     * Loading component for displaying a loader.
+     * Loads more meta attribute options when scrolled to the bottom.
      */
     const loadMoreOptions = () => {
         if (hasNextPage && !isMetaAttributesFetchRequestLoading && !metaAttributesIsValidating) {
@@ -183,8 +212,8 @@ export const MetaAttributeAutoComplete: React.FunctionComponent<MetaAttributeAut
     /**
      * Custom listbox component with infinite scroll.
      */
-    const customListboxComponent: any = useMemo(
-        () => (listboxProps: any) => (
+    const customListboxComponent: (listboxProps: HTMLProps<HTMLDivElement>) => JSX.Element = useMemo(
+        () => (listboxProps: HTMLProps<HTMLDivElement>) => (
             <InfiniteScroll
                 dataLength={ metaAttributeListOptions.length }
                 next={ loadMoreOptions }
@@ -204,7 +233,7 @@ export const MetaAttributeAutoComplete: React.FunctionComponent<MetaAttributeAut
      * @see {@link https://github.com/mui/material-ui/issues/40250}
      */
     return (
-        <div className={ `meta-attribute-autocomplete ${hasErrors ? "error" : ""}` }>
+        <div className={ classNames("meta-attribute-autocomplete", { "error": hasErrors }) }>
             <Autocomplete
                 disablePortal
                 fullWidth
@@ -226,13 +255,21 @@ export const MetaAttributeAutoComplete: React.FunctionComponent<MetaAttributeAut
                         ]
                     }
                 } }
-                getOptionLabel={ (attributeListOption: any) => attributeListOption.text }
-                isOptionEqualToValue={ (option: any, value: any) => option.value === value.value }
-                renderOption={ (props: any, attributeListOption: any) => (<div { ...props }>
-                    <Header.Content>
-                        { attributeListOption.text }
-                    </Header.Content>
-                </div>) }
+                getOptionLabel={ (attributeListOption: MetaAttributeOption) => attributeListOption.text }
+                isOptionEqualToValue={ (
+                    option: MetaAttributeOption,
+                    value: MetaAttributeOption
+                ) => option.value === value.value }
+                renderOption={  (
+                    props: HTMLAttributes<HTMLLIElement>,
+                    attributeListOption: MetaAttributeOption
+                ) => (
+                    <li { ...props }>
+                        <Header.Content>
+                            { attributeListOption.text }
+                        </Header.Content>
+                    </li>
+                ) }
                 options={ metaAttributeListOptions }
                 onChange={ handleMetaAttributeChange }
                 onInputChange={ handleInputChange }
@@ -254,10 +291,10 @@ export const MetaAttributeAutoComplete: React.FunctionComponent<MetaAttributeAut
                                 event.preventDefault();
                             }
                         } }
-                        data-componentid={ `${ testId }-text-field` }
+                        data-componentid={ `${ _componentId }-text-field` }
                     />
                 ) }
-                data-componentid={ `${ testId }-autocomplete` }
+                data-componentid={ `${ _componentId }-autocomplete` }
             />
             { hasErrors && (
                 <div className="ui pointing above prompt label" role="alert" aria-atomic="true">
@@ -268,9 +305,4 @@ export const MetaAttributeAutoComplete: React.FunctionComponent<MetaAttributeAut
     );
 };
 
-/**
- * Default props for the component.
- */
-MetaAttributeAutoComplete.defaultProps = {
-    "data-componentid": "organization-meta-attribute"
-};
+export default MetaAttributeAutoComplete;

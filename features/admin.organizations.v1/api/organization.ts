@@ -25,7 +25,6 @@ import {
 } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1";
 import useRequest, {
-    RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
@@ -39,7 +38,6 @@ import {
     OrganizationListInterface,
     OrganizationPatchData,
     OrganizationResponseInterface,
-    OrganizationsMetaAttributesListInterface,
     ShareApplicationRequestInterface,
     UpdateOrganizationInterface
 } from "../models";
@@ -485,56 +483,3 @@ export const unshareApplication = (
         return Promise.reject(error?.response?.data);
     });
 };
-
-/**
- * Hook to get a list of organizations' meta attributes.
- *
- * @param filter - The filter query.
- * @param limit - The maximum number of meta attributes to return.
- * @param after - The previous range of data to be returned.
- * @param before - The next range of data to be returned.
- * @param recursive - Whether we need to do a recursive search.
- * @param isRoot - Whether the organization is the root
- *
- * @returns Organizations Meta Attributes GET hook.
- */
-export const useGetOrganizationsMetaAttributes =
-    <Data = OrganizationsMetaAttributesListInterface, Error = RequestErrorInterface>(
-        filter?: string,
-        limit?: number,
-        after?: string,
-        before?: string,
-        recursive: boolean = false,
-        isRoot: boolean = false
-    ): RequestResultInterface<Data, Error> => {
-        const requestConfig: RequestConfigInterface = {
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            method: HttpMethods.GET,
-            params: {
-                after,
-                before,
-                filter,
-                limit,
-                recursive
-            },
-            url: `${isRoot
-                ? store.getState().config.endpoints.rootOrganization
-                : store.getState().config.endpoints.organizations}/organizations/meta-attributes`
-        };
-
-        const { data, error, isValidating, mutate } = useRequest<Data, Error>(
-            requestConfig,
-            { revalidateIfStale: false }
-        );
-
-        return {
-            data,
-            error,
-            isLoading: !error && !data,
-            isValidating,
-            mutate
-        };
-    };

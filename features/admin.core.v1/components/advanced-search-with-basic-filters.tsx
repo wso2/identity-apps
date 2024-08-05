@@ -19,7 +19,7 @@
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { SearchUtils } from "@wso2is/core/utils";
-import { DropdownChild, Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { DropdownChild, Field, FormValue, Forms } from "@wso2is/forms";
 import {
     AdvancedSearch,
     AdvancedSearchPropsInterface,
@@ -31,21 +31,7 @@ import React, { CSSProperties, FunctionComponent, ReactElement, ReactNode, useEf
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { getAdvancedSearchIcons } from "../configs";
-
-/**
- * Filter attribute field identifier.
- */
-const FILTER_ATTRIBUTE_FIELD_IDENTIFIER: string = "filterAttribute";
-
-/**
- * Filter condition field identifier.
- */
-const FILTER_CONDITION_FIELD_IDENTIFIER: string = "filterCondition";
-
-/**
- * Filter value field identifier.
- */
-const FILTER_VALUES_FIELD_IDENTIFIER: string = "filterValues";
+import { AdvanceSearchConstants } from "../constants/advance-search";
 
 /**
  * Prop types for the application search component.
@@ -216,22 +202,24 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
      */
     const handleFormSubmit = (values: Map<string, string | string[]>): void => {
 
-        if (onSubmitError?.()) {
+        if (onSubmitError) {
+            const shouldReturn: boolean = onSubmitError();
 
-            return;
+            if (shouldReturn) {
+                return;
+            }
         }
-
         let query: string;
         const customQuery: string = getQuery ? getQuery(values) : null;
 
         if (customQuery !== null) {
             query = customQuery;
         } else {
-            query = values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
+            query = values.get(AdvanceSearchConstants.FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
                     + " "
-                    + values.get(FILTER_CONDITION_FIELD_IDENTIFIER)
+                    + values.get(AdvanceSearchConstants.FILTER_CONDITION_FIELD_IDENTIFIER)
                     + " "
-                    + values?.get(FILTER_VALUES_FIELD_IDENTIFIER);
+                    + values?.get(AdvanceSearchConstants.FILTER_VALUES_FIELD_IDENTIFIER);
         }
         setExternalSearchQuery(query);
         onFilter(query);
@@ -382,7 +370,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                 // TODO: Enable this once default value is working properly for the dropdowns.
                                 // readOnly={ filterAttributeOptions.length === 1 }
                                 label={ t("console:common.advancedSearch.form.inputs.filterAttribute.label") }
-                                name={ FILTER_ATTRIBUTE_FIELD_IDENTIFIER }
+                                name={ AdvanceSearchConstants.FILTER_ATTRIBUTE_FIELD_IDENTIFIER }
                                 placeholder={
                                     filterAttributePlaceholder
                                         ? filterAttributePlaceholder
@@ -424,7 +412,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                     label={
                                         t("console:common.advancedSearch.form.inputs.filterCondition.label")
                                     }
-                                    name={ FILTER_CONDITION_FIELD_IDENTIFIER }
+                                    name={ AdvanceSearchConstants.FILTER_CONDITION_FIELD_IDENTIFIER }
                                     placeholder={
                                         filterConditionsPlaceholder
                                             ? filterConditionsPlaceholder
@@ -440,7 +428,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                 />
                                 <Field
                                     label={ t("console:common.advancedSearch.form.inputs.filterValue.label") }
-                                    name={ FILTER_VALUES_FIELD_IDENTIFIER }
+                                    name={ AdvanceSearchConstants.FILTER_VALUES_FIELD_IDENTIFIER }
                                     placeholder={
                                         filterValuePlaceholder
                                             ? filterValuePlaceholder

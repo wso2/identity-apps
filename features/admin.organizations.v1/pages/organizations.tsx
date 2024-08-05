@@ -25,6 +25,7 @@ import {
     FeatureConfigInterface,
     UIConstants
 } from "@wso2is/admin.core.v1";
+import { AdvanceSearchConstants } from "@wso2is/admin.core.v1/constants/advance-search";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -53,8 +54,10 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
+import { FormValue } from "../../../modules/form/src";
 import { getOrganizations, useAuthorizedOrganizationsList } from "../api";
-import { AddOrganizationModal, MetaAttributeAutoComplete, OrganizationList } from "../components";
+import { AddOrganizationModal, OrganizationList } from "../components";
+import MetaAttributeAutoComplete from "../components/meta-attribute-auto-complete";
 import {
     OrganizationInterface,
     OrganizationLinkInterface,
@@ -68,21 +71,6 @@ const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
         value: "name"
     }
 ];
-
-/**
- * Filter attribute field identifier.
- */
-const FILTER_ATTRIBUTE_FIELD_IDENTIFIER: string = "filterAttribute";
-
-/**
- * Filter condition field identifier.
- */
-const FILTER_CONDITION_FIELD_IDENTIFIER: string = "filterCondition";
-
-/**
- * Filter value field identifier.
- */
-const FILTER_VALUES_FIELD_IDENTIFIER: string = "filterValues";
 
 /**
  * Props for the Organizations page.
@@ -440,9 +428,9 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      *
      * @param values - The collection of form values.
      */
-    const handleFilterAttributeOptionsChange = (values: any): void => {
+    const handleFilterAttributeOptionsChange = (values: Map<string, FormValue>): void => {
         setHasErrors(false);
-        if (values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER) === "attributes") {
+        if (values.get(AdvanceSearchConstants.FILTER_ATTRIBUTE_FIELD_IDENTIFIER) === "attributes") {
             setShouldShowMetaAttributeComponent(true);
         } else {
             setSelectedMetaAttribute("");
@@ -475,15 +463,15 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * @param values - The collection of form values.
      * @returns The constructed search query string.
      */
-    const getQuery = (values: any): string => {
+    const getQuery = (values: Map<string, FormValue>): string => {
         if (shouldShowMetaAttributeComponent && selectedMetaAttribute) {
-            return values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
+            return values.get(AdvanceSearchConstants.FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
             + "."
             + selectedMetaAttribute
             + " "
-            + values.get(FILTER_CONDITION_FIELD_IDENTIFIER)
+            + values.get(AdvanceSearchConstants.FILTER_CONDITION_FIELD_IDENTIFIER)
             + " "
-            + values.get(FILTER_VALUES_FIELD_IDENTIFIER);
+            + values.get(AdvanceSearchConstants.FILTER_VALUES_FIELD_IDENTIFIER);
         }
 
         return null;
@@ -586,11 +574,12 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             triggerClearQuery={ triggerClearQuery }
                             data-componentid={ `${ testId }-list-advanced-search` }
                         >
-                            { shouldShowMetaAttributeComponent && isFilterByMetadataAttributesEnabled &&
-                            (<MetaAttributeAutoComplete
-                                onMetaAttributeChange={ handleMetaAttributeChange }
-                                hasErrors={ hasErrors }
-                            />) }
+                            { shouldShowMetaAttributeComponent && isFilterByMetadataAttributesEnabled && (
+                                <MetaAttributeAutoComplete
+                                    onMetaAttributeChange={ handleMetaAttributeChange }
+                                    hasErrors={ hasErrors }
+                                />
+                            ) }
                         </AdvancedSearchWithBasicFilters>
                         )
                     }
