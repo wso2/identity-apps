@@ -17,14 +17,14 @@
  */
 
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
-import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AuthenticatorCategories } from "@wso2is/admin.connections.v1/models/authenticators";
 import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { getGeneralIcons } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
 import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface
@@ -163,9 +163,9 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         let isBackupCodeSupportedAuthenticator: boolean = false;
 
         step.options.map((option: AuthenticatorInterface) => {
-            if ([ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-                IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR,
-                IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR ]
+            if ([ LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
+                LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME,
+                LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME ]
                 .includes(option.authenticator)) {
                 setShowSubjectIdentifierCheckbox(false);
             } else {
@@ -175,10 +175,10 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
             // if the authenticator is TOTP, Email OTP, SMS OTP or Backup Code,
             // show the backup codes enable checkbox.
             if(
-                [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR
+                [ LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.SMS_OTP_AUTHENTICATOR_NAME,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME
                 ].includes(option.authenticator)
             ) {
                 isBackupCodeSupportedAuthenticator = true;
@@ -205,7 +205,8 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
             let isBackupCodesEnabled: boolean = false;
 
             step.options.map((option: AuthenticatorInterface, optionIndex: number) => {
-                if (option.authenticator === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+                if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .BACKUP_CODE_AUTHENTICATOR_NAME) {
                     isBackupCodesEnabled = true;
                     setBackupCodeIndex(optionIndex);
                 }
@@ -223,7 +224,8 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         // if the backup codes checkbox is checked, add the backup code authenticator to the step.
         // else remove the backup code authenticator from the step.
         if(!isBackupCodesEnabled) {
-            updateAuthenticationStep(stepIndex, IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID);
+            updateAuthenticationStep(stepIndex, LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .BACKUP_CODE_AUTHENTICATOR_ID);
         } else {
             onStepOptionDelete(stepIndex, backupCodeIndex);
         }
@@ -242,7 +244,8 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
         let toDisable: boolean = false;
 
         step.options.map((option: AuthenticatorInterface) => {
-            if (option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+            if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                .IDENTIFIER_FIRST_AUTHENTICATOR_NAME
                 && !isConditionalAuthenticationEnabled) {
 
                 toDisable = true;
@@ -264,7 +267,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
     const isAttributeStepCheckboxDisabledOnIDF = (): boolean => {
 
         return step.options.some((option: AuthenticatorInterface) =>
-            option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+            option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME
                 && !isConditionalAuthenticationEnabled
         );
     };
@@ -285,11 +288,12 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
 
             let authenticator: GenericAuthenticatorInterface = null;
 
-            if (option.idp === IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER) {
+            if (option.idp === LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER) {
                 authenticator = authenticators.find((item: GenericAuthenticatorInterface) =>
                     item.defaultAuthenticator.name === option.authenticator
                 );
-            } else if (option?.authenticator === AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME) {
+            } else if (option?.authenticator === FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES
+                .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME) {
                 authenticator = authenticators?.find((item: GenericAuthenticatorInterface) =>
                     item?.id === OrganizationUtils.getOrganizationAuthenticator().id
                 );
@@ -321,7 +325,8 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                             className="authenticator-item-wrapper"
                             data-componentid={ `${ componentId }-option` }
                             hidden={
-                                authenticator?.id === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID
+                                authenticator?.id === LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                                    .BACKUP_CODE_AUTHENTICATOR_ID
                             }
                         >
                             <Card fluid className="basic-card authenticator-card">
@@ -356,8 +361,8 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                         floated="left"
                                         icon={
                                             authenticator.idp === AuthenticatorCategories.LOCAL ||
-                                            authenticator.defaultAuthenticator?.authenticatorId ===
-                                            AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
+                                            ConnectionsManagementUtils.isOrganizationSSOConnection(
+                                                authenticator.defaultAuthenticator?.authenticatorId)
                                                 ? authenticator.image
                                                 : ConnectionsManagementUtils
                                                     .resolveConnectionResourcePath(

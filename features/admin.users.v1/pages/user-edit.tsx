@@ -17,6 +17,7 @@
  */
 
 import Button from "@oxygen-ui/react/Button";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
 import {
     AppConstants,
@@ -31,10 +32,12 @@ import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { getIdPIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
 import { useGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
-import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "@wso2is/admin.server-configurations.v1/models";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface
+} from "@wso2is/admin.server-configurations.v1/models";
 import {
     getUserNameWithoutDomain,
-    hasRequiredScopes,
     resolveUserDisplayName,
     resolveUserEmails
 } from "@wso2is/core/helpers";
@@ -75,8 +78,11 @@ const UserEditPage = (): ReactElement => {
     const dispatch: Dispatch<any> = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
+
+    const hasUsersUpdatePermissions: boolean = useRequiredScopes(
+        featureConfig?.users?.scopes?.update
+    );
 
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
@@ -438,17 +444,12 @@ const UserEditPage = (): ReactElement => {
                 ) }
                 image={ (
                     <UserAvatar
-                        editable={
-                            hasRequiredScopes(featureConfig?.users,
-                                featureConfig?.users?.scopes?.update, allowedScopes)
-                        }
+                        editable={ hasUsersUpdatePermissions }
                         name={ resolveUserDisplayName(user) }
                         size="tiny"
                         image={ user?.profileUrl }
                         onClick={ () =>
-                            hasRequiredScopes(featureConfig?.users,
-                                featureConfig?.users?.scopes?.update, allowedScopes)
-                            && setShowEditAvatarModal(true)
+                            hasUsersUpdatePermissions && setShowEditAvatarModal(true)
                         }
                     />
                 ) }

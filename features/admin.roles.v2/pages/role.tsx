@@ -30,7 +30,7 @@ import { history } from "@wso2is/admin.core.v1/helpers";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { DocumentationLink, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -239,7 +239,18 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
             pageTitle={ t("pages:roles.title") }
             description={ isSubOrg
                 ? t("pages:roles.alternateSubTitle")
-                : t("pages:roles.subTitle") }
+                : (
+                    <>
+                        { t("pages:roles.subTitle") }
+                        <DocumentationLink
+                            link="develop.applications.roles.learnMore"
+                            isLinkRef
+                        >
+                            { t("extensions:common.learnMore") }
+                        </DocumentationLink>
+                    </>
+                )
+            }
         >
             <ListLayout
                 advancedSearch={ (

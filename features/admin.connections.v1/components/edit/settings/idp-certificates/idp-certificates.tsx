@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,6 @@ import Grid from "@oxygen-ui/react/Grid";
 import { Show } from "@wso2is/access-control";
 import { AppState, ConfigReducerStateInterface, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
-import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -46,7 +45,8 @@ import { AddIdpCertificateModal } from "./add-idp-certificate-modal";
 import { EmptyCertificatesPlaceholder } from "./empty-certificates-placeholder";
 import { IdpCertificatesList } from "./idp-cetificates-list";
 import { updateIDPCertificate } from "../../../../api/connections";
-import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
+import { CommonAuthenticatorConstants } from "../../../../constants/common-authenticator-constants";
+import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
 import { CertificatePatchRequestInterface, ConnectionInterface } from "../../../../models/connection";
 
 /**
@@ -293,8 +293,8 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 } }
                 listen={ (value: string) => setJwksValue(value) }
                 placeholder="https://{ oauth-provider-url }/oauth/jwks"
-                maxLength={ ConnectionManagementConstants.JWKS_URL_LENGTH.max }
-                minLength={ ConnectionManagementConstants.JWKS_URL_LENGTH.min }
+                maxLength={ ConnectionUIConstants.JWKS_URL_LENGTH.max }
+                minLength={ ConnectionUIConstants.JWKS_URL_LENGTH.min }
                 name="jwks_endpoint"
                 disabled={ isReadOnly }
             />
@@ -376,7 +376,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
      * @returns `true` if the IDP is a trusted token issuer and has no certificates, `false` otherwise.
      */
     const shouldShowNoCertificatesAlert = (): boolean => templateType ===
-        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER && !editingIDP?.certificate;
+        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER && !editingIDP?.certificate;
 
     if (!isJWKSEnabled && !isPEMEnabled) {
         return null;

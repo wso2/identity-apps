@@ -16,11 +16,14 @@
  * under the License.
  */
 
-import { AuthenticatorLabels, ConnectionManagementConstants } from "@wso2is/admin.connections.v1";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
+import { AuthenticatorLabels } from "@wso2is/admin.connections.v1/models/authenticators";
 import get from "lodash-es/get";
 import { ReactNode } from "react";
 import { getAuthenticatorIcons } from "../configs/ui";
-import { IdentityProviderManagementConstants } from "../constants";
 import { AuthenticatorCategories } from "../models";
 
 export class AuthenticatorMeta {
@@ -42,41 +45,51 @@ export class AuthenticatorMeta {
     public static getAuthenticatorDescription(authenticatorId: string): string {
 
         return get({
-            [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "Login users with username and password " +
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .BASIC_AUTHENTICATOR_ID ]: "Login users with username and password " +
                 "credentials.",
-            [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Get users Identity first to " +
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Get users Identity first to " +
                 "control the authentication flow.",
-            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Login users with passkey, " +
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID ]: "Login users with passkey, " +
                 "FIDO security key or biometrics.",
-            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .TOTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
                 "Time-Based One Time passcode.",
-            [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Login users with " +
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Login users with " +
                 "existing Google accounts.",
-            [ IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID ]: "Login users with " +
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID ]: "Login users with " +
                 "existing GitHub accounts.",
-            [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: "Login users with " +
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID ]: "Login users with " +
                 "existing Facebook accounts.",
-            [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: "Login users with " +
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.TWITTER_AUTHENTICATOR_ID ]: "Login users with " +
                 "existing Twitter accounts.",
-            [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "Authenticate users with " +
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID ]: "Authenticate users with " +
                 "Enterprise OIDC connections.",
-            [ ConnectionManagementConstants.SAML_AUTHENTICATOR_ID ]: "Authenticate users with " +
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ]: "Authenticate users with " +
                 "Enterprise SAML connections.",
-            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Email users a one-time passcode to " +
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .EMAIL_OTP_AUTHENTICATOR_ID ]: "Email users a one-time passcode to " +
                 "log in passwordless.",
-            [ IdentityProviderManagementConstants.LEGACY_EMAIL_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication " +
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+                .EMAIL_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication " +
                 "using one-time passcode sent via email.",
-            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .SMS_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
                 "SMS one-time passcode.",
-            [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: "Email users a magic link to " +
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .MAGIC_LINK_AUTHENTICATOR_ID ]: "Email users a magic link to " +
                 "log in passwordless",
-            [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: "Login users with " +
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID ]: "Login users with " +
             "their Apple IDs.",
-            [ IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID ]: "Two-factor authentication " +
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .BACKUP_CODE_AUTHENTICATOR_ID ]: "Two-factor authentication " +
             "recovery option.",
-            [ IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID ]: "Limit the number " +
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID ]: "Limit the number " +
             "of active user sessions.",
-            [ IdentityProviderManagementConstants.X509_CERTIFICATE_AUTHENTICATOR_ID ]: "Authenticate clients using " +
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .X509_CERTIFICATE_AUTHENTICATOR_ID ]: "Authenticate clients using " +
                 "client certificates."
         }, authenticatorId);
     }
@@ -119,21 +132,24 @@ export class AuthenticatorMeta {
     public static getAuthenticatorIcon(authenticatorId: string): any {
 
         const icon: ReactNode = get({
-            [
-            IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID
-            ]: getAuthenticatorIcons()?.identifierFirst,
-            [ IdentityProviderManagementConstants.JWT_BASIC_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.jwtBasic,
-            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.fido,
-            [ IdentityProviderManagementConstants.X509_CERTIFICATE_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.x509,
-            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.totp,
-            [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.basic,
-            [
-            IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
-            ]: getAuthenticatorIcons()?.sessionExecutor,
-            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.emailOTP,
-            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.smsOTP,
-            [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.magicLink,
-            [ IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.backupCode
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.identifierFirst,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .JWT_BASIC_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.jwtBasic,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.fido,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .X509_CERTIFICATE_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.x509,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.totp,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.BASIC_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.basic,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.sessionExecutor,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .EMAIL_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.emailOTP,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.smsOTP,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .MAGIC_LINK_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.magicLink,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .BACKUP_CODE_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.backupCode
         }, authenticatorId);
 
         return icon ?? getAuthenticatorIcons().default;
@@ -149,20 +165,20 @@ export class AuthenticatorMeta {
     public static getAuthenticatorCategory(authenticatorId: string): string {
 
         return get({
-            [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Predefined",
-            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Predefined",
-            [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: "Predefined",
-            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "Predefined",
-            [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Google",
-            [ IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID ]: "GitHub",
-            [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: "Facebook",
-            [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: "Twitter",
-            [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "OIDC",
-            [ ConnectionManagementConstants.SAML_AUTHENTICATOR_ID ]: "SAML",
-            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "Predefined",
-            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined",
-            [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: "Apple",
-            [ IdentityProviderManagementConstants.HYPR_AUTHENTICATOR_ID ]: "HYPR"
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Predefined",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID ]: "Predefined",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.MAGIC_LINK_AUTHENTICATOR_ID ]: "Predefined",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID ]: "Predefined",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Google",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID ]: "GitHub",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID ]: "Facebook",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.TWITTER_AUTHENTICATOR_ID ]: "Twitter",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID ]: "OIDC",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ]: "SAML",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID ]: "Predefined",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID ]: "Apple",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.HYPR_AUTHENTICATOR_ID ]: "HYPR"
         }, authenticatorId);
     }
 
@@ -196,20 +212,20 @@ export class AuthenticatorMeta {
     public static getAuthenticatorTemplateName(authenticatorId: string): string {
 
         return get({
-            [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR ]: "username-and-password",
-            [ IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ]: "username-and-password",
-            [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: "fido",
-            [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: "totp",
-            [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "sms-otp",
-            [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: "email-otp",
-            [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "identifier-first",
-            [ IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "google",
-            [ IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID ]: "github",
-            [ IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID ]: "facebook",
-            [ IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID ]: "twitter",
-            [ IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID ]: "enterprise-oidc",
-            [ ConnectionManagementConstants.SAML_AUTHENTICATOR_ID ]: "enterprise-saml",
-            [ IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID ]: "apple"
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME ]: "username-and-password",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.BASIC_AUTHENTICATOR_ID ]: "username-and-password",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID ]: "fido",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID ]: "totp",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: "sms-otp",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID ]: "email-otp",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "identifier-first",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "google",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID ]: "github",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID ]: "facebook",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.TWITTER_AUTHENTICATOR_ID ]: "twitter",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID ]: "enterprise-oidc",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ]: "enterprise-saml",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID ]: "apple"
         }, authenticatorId);
     }
 }

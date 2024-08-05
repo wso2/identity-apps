@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { getAdministratorsResourceEndpoints } from "@wso2is/admin.administrators.v1/config/endpoints";
 import { getAPIResourceEndpoints } from "@wso2is/admin.api-resources.v2/configs/endpoint";
 import { getApplicationsResourceEndpoints } from "@wso2is/admin.applications.v1/configs/endpoints";
 import { getBrandingResourceEndpoints } from "@wso2is/admin.branding.v1/configs/endpoints";
@@ -26,7 +27,6 @@ import { getConsoleSettingsResourceEndpoints } from "@wso2is/admin.console-setti
 import { getEmailTemplatesResourceEndpoints } from "@wso2is/admin.email-templates.v1";
 import { getFeatureGateResourceEndpoints } from "@wso2is/admin.extensions.v1/components/feature-gate/configs";
 import { getExtendedFeatureResourceEndpoints } from "@wso2is/admin.extensions.v1/configs/endpoints";
-import { getExtendedFeatureResourceEndpointsV2 } from "@wso2is/admin.extensions.v2/config/endpoints";
 import { getGroupsResourceEndpoints } from "@wso2is/admin.groups.v1";
 import { getIDVPResourceEndpoints } from "@wso2is/admin.identity-verification-providers.v1";
 import { getScopesResourceEndpoints } from "@wso2is/admin.oidc-scopes.v1";
@@ -233,6 +233,7 @@ export class Config {
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
             ...getAPIResourceEndpoints(this.resolveServerHost()),
+            ...getAdministratorsResourceEndpoints(this.resolveServerHost()),
             ...getApplicationsResourceEndpoints(this.resolveServerHost()),
             ...getApprovalsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getBrandingResourceEndpoints(this.resolveServerHost()),
@@ -251,7 +252,6 @@ export class Config {
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtendedFeatureResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig()),
-            ...getExtendedFeatureResourceEndpointsV2(this.resolveServerHost()),
             ...getOrganizationsResourceEndpoints(this.resolveServerHost(true), this.getDeploymentConfig().serverHost),
             ...getTenantResourceEndpoints(this.getDeploymentConfig().serverOrigin),
             ...getFeatureGateResourceEndpoints(this.resolveServerHostforFG(false)),
@@ -305,8 +305,6 @@ export class Config {
             hiddenConnectionTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenConnectionTemplates,
             hiddenUserStores: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenUserStores,
             i18nConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.i18nConfigs,
-            identityProviderTemplateLoadingStrategy:
-                window[ "AppUtils" ]?.getConfig()?.ui?.identityProviderTemplateLoadingStrategy,
             identityProviderTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.identityProviderTemplates,
             isClientSecretHashEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isClientSecretHashEnabled,
             isCookieConsentBannerEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isCookieConsentBannerEnabled,

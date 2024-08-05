@@ -17,7 +17,7 @@
  */
 
 import Chip from "@oxygen-ui/react/Chip";
-import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
+import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -51,7 +51,6 @@ import {
     UserStorePostData,
     UserStoreProperty
 } from "@wso2is/admin.userstores.v1/models/user-stores";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -62,6 +61,7 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
+    DocumentationLink,
     EmptyPlaceholder,
     ListLayout,
     PageLayout,
@@ -139,7 +139,16 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const { isSubOrganization, isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const hasUsersCreatePermissions: boolean = useRequiredScopes(
+        featureConfig?.users?.scopes?.create
+    );
+    const hasBulkUserImportCreatePermissions: boolean = useRequiredScopes(
+        featureConfig?.bulkUserImport?.scopes?.create
+    );
+    const hasGuestUserCreatePermissions: boolean = useRequiredScopes(
+        featureConfig?.guestUser?.scopes?.create
+    );
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -728,7 +737,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const getAddUserOptions = (): DropdownItemProps[] => {
         const dropDownOptions: DropdownItemProps[] = [];
 
-        if (hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.create, allowedScopes)) {
+        if (hasUsersCreatePermissions) {
             dropDownOptions.push({
                 "data-componentid": `${componentId}-add-user-dropdown-item`,
                 key: 1,
@@ -736,10 +745,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 value: UserAccountTypesMain.EXTERNAL
             });
         }
-        if (hasRequiredScopes(
-            featureConfig?.bulkUserImport,
-            featureConfig?.bulkUserImport?.scopes?.create,
-            allowedScopes)) {
+        if (hasBulkUserImportCreatePermissions) {
             dropDownOptions.push({
                 "data-componentid": `${testId}-bulk-import-users-dropdown-item`,
                 "data-testid": `${testId}-bulk-import-users-dropdown-item`,
@@ -750,7 +756,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         }
         if (isSubOrganization() &&
             featureConfig?.parentUserInvitation?.enabled &&
-            hasRequiredScopes(featureConfig?.guestUser, featureConfig?.guestUser?.scopes?.create, allowedScopes)) {
+            hasGuestUserCreatePermissions) {
             dropDownOptions.push({
                 className: "users-invite-parent-user",
                 "data-componentid": `${componentId}-invite-parent-user`,
@@ -982,7 +988,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     return (
         <PageLayout
             action={
-                hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.create, allowedScopes)
+                hasUsersCreatePermissions
                 && !isUserListFetchRequestLoading
                 && (!isSubOrganization() || !isParentOrgUserInviteListLoading)
                 && !isReadOnlyUserStore
@@ -990,7 +996,17 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             }
             title={ t("pages:users.title") }
             pageTitle={ t("pages:users.title") }
-            description={ t("extensions:manage.users.usersSubTitle") }
+            description={ (
+                <>
+                    { t("extensions:manage.users.usersSubTitle") }
+                    <DocumentationLink
+                        link="manage.users.learnMore"
+                        isLinkRef
+                    >
+                        { t("extensions:common.learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
             data-testid={ `${ testId }-page-layout` }
         >
             { isSubOrganization()

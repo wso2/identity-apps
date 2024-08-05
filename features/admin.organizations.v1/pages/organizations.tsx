@@ -29,7 +29,7 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { DocumentationLink, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
@@ -48,11 +48,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import {
-    Breadcrumb,
-    Divider,
     DropdownItemProps,
     DropdownProps,
-    Header,
     Icon,
     PaginationProps
 } from "semantic-ui-react";
@@ -61,8 +58,7 @@ import { AddOrganizationModal, MetaAttributeAutoComplete, OrganizationList } fro
 import {
     OrganizationInterface,
     OrganizationLinkInterface,
-    OrganizationListInterface,
-    OrganizationResponseInterface
+    OrganizationListInterface
 } from "../models";
 
 const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
@@ -104,9 +100,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
 ): ReactElement => {
     const { [ "data-componentid" ]: testId } = props;
 
-    const currentOrganization: OrganizationResponseInterface = useSelector(
-        (state: AppState) => state.organization.organization
-    );
     const featureConfig: FeatureConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features
     );
@@ -133,7 +126,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const [ isOrganizationsPrevPageAvailable, setIsOrganizationsPrevPageAvailable ] = useState<boolean>(undefined);
     const [ parent, setParent ] = useState<OrganizationInterface>(null);
     const [ organizations, setOrganizations ] = useState<OrganizationInterface[]>([]);
-    const [ organization, setOrganization ] = useState<OrganizationResponseInterface>(null);
     const [ after, setAfter ] = useState<string>("");
     const [ before, setBefore ] = useState<string>("");
     const [ authorizedListPrevCursor, setAuthorizedListPrevCursor ] = useState<string>("");
@@ -185,47 +177,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         setActivePage(1);
         triggerResetPagination(!resetPagination);
     }, [ setActivePage ]);
-
-    useEffect(() => {
-        if (!parent || isEmpty(parent)) {
-            return;
-        }
-
-        getOrganization(parent.id)
-            .then((organization: OrganizationResponseInterface) => {
-                setOrganization(organization);
-            })
-            .catch((error: any) => {
-                if (error?.description) {
-                    dispatch(
-                        addAlert({
-                            description: error.description,
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "organizations:notifications." +
-                                "fetchOrganization.error.message"
-                            )
-                        })
-                    );
-
-                    return;
-                }
-
-                dispatch(
-                    addAlert({
-                        description: t(
-                            "organizations:notifications.fetchOrganization" +
-                            ".genericError.description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "organizations:notifications." +
-                            "fetchOrganization.genericError.message"
-                        )
-                    })
-                );
-            });
-    }, [ parent, dispatch, t ]);
 
     const filterQuery: string = useMemo(() => {
         let filterQuery: string = "";
@@ -579,68 +530,19 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                     )
                 }
                 pageTitle={ t("pages:organizations.title") }
-                title={
-                    isOrganizationListRequestLoading
-                        ? null
-                        : organization
-                            ? organization.name
-                            : t("organizations:homeList.name")
-                }
-                description={
-                    (<p>
-                        { isOrganizationListRequestLoading
-                            ? null
-                            : organization
-                                ? organization.description
-                                : null }
-                    </p>)
-                }
+                title={ t("pages:organizations.title") }
+                description={ (
+                    <>
+                        { t("pages:organizations.subTitle") }
+                        <DocumentationLink
+                            link="manage.organizations.learnMore"
+                            isLinkRef
+                        >
+                            { t("extensions:common.learnMore") }
+                        </DocumentationLink>
+                    </>
+                ) }
                 data-componentid={ `${ testId }-page-layout` }
-                titleAs="h3"
-                componentAbovePageHeader={
-                    (<>
-                        <Header as="h1" data-componentid={ `${ testId }-organization-header` }>
-                            { t("pages:organizations.title") }
-                            <Header.Subheader
-                                data-componentid={ `${ testId }-sub-title` }
-                            >
-                                { t("pages:organizations.subTitle") }
-                            </Header.Subheader>
-                        </Header>
-                        <Divider hidden />
-                        { parent && organizations.length > 0 && (
-                            <Breadcrumb className="margined" data-componentid={ `${ testId }-breadcrumb` }>
-                                <Breadcrumb.Section
-                                    onClick={ () => {
-                                        handleBreadCrumbClick(null, -1);
-                                    } }
-                                >
-                                    <span data-componentid={ `${ testId }-breadcrumb-home` }>
-                                        { currentOrganization.name }
-                                    </span>
-                                </Breadcrumb.Section>
-                                { organizations?.map((organization: OrganizationInterface, index: number) => {
-                                    return (
-                                        <React.Fragment key={ index }>
-                                            <Breadcrumb.Divider icon="right chevron" />
-                                            <Breadcrumb.Section
-                                                active={ index === organizations.length - 1 }
-                                                link={ index !== organizations.length - 1 }
-                                                onClick={
-                                                    index !== organizations.length - 1
-                                                        ? () => handleBreadCrumbClick(organization, index)
-                                                        : null
-                                                }
-                                            >
-                                                { organization.name }
-                                            </Breadcrumb.Section>
-                                        </React.Fragment>
-                                    );
-                                }) }
-                            </Breadcrumb>
-                        ) }{ " " }
-                    </>)
-                }
             >
                 <ListLayout
                     advancedSearch={

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -30,7 +31,6 @@ import { Divider, Grid, Icon } from "semantic-ui-react";
 import { FIDOTrustedAppWizard } from "./fido-trusted-app-wizard";
 import { FIDOTrustedAppsList } from "./fido-trusted-apps-list";
 import { updateFidoTrustedApps, useFIDOTrustedApps } from "../../../../api/fido-trusted-apps";
-import { IdentityProviderManagementConstants } from "../../../../constants";
 import { FIDOTrustedAppTypes, FIDOTrustedAppsValuesInterface } from "../../../../models";
 
 /**
@@ -104,7 +104,7 @@ export const FIDOTrustedApps: FunctionComponent<FIDOTrustedAppsPropsInterface> =
                 fidoTrustedApps?.android?.forEach((app: string) => {
                     if (app) {
                         const appData: string[] = app?.split(
-                            IdentityProviderManagementConstants.FIDO_TRUSTED_APPS_SHA_SEPARATOR);
+                            LocalAuthenticatorConstants.FIDO_TRUSTED_APPS_SHA_SEPARATOR);
 
                         if (!trustedApps?.android?.[appData[0]]) {
                             trustedApps.android[appData[0]] = [];
@@ -189,7 +189,7 @@ export const FIDOTrustedApps: FunctionComponent<FIDOTrustedAppsPropsInterface> =
             if (FIDOTrustedApps?.android?.[appName]?.length > 0) {
                 FIDOTrustedApps?.android?.[appName]?.forEach((hash: string) => {
                     androidApps?.push(`${appName}${
-                        IdentityProviderManagementConstants.FIDO_TRUSTED_APPS_SHA_SEPARATOR
+                        LocalAuthenticatorConstants.FIDO_TRUSTED_APPS_SHA_SEPARATOR
                     }${hash}`);
                 });
             } else {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,8 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Label } from "semantic-ui-react";
-import { AuthenticatorManagementConstants } from "../../../../constants/autheticator-constants";
+import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
+import { LocalAuthenticatorConstants } from "../../../../constants/local-authenticator-constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormFieldInterface,
@@ -187,8 +188,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
             const moderatedName: string = value.name.replace(/\./g, "_");
 
             // Converting expiry time from seconds to minutes
-            if (moderatedName === AuthenticatorManagementConstants
-                .AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY) {
+            if (moderatedName === LocalAuthenticatorConstants.MODERATED_EMAIL_OTP_EXPIRY_TIME_KEY) {
                 const expiryTimeInMinutes: number = Math.round(parseInt(value.value, 10) / 60);
 
                 resolvedInitialValues = {
@@ -243,7 +243,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
 
                 const moderatedName: string = name.replace(/_/g, ".");
 
-                if (name === AuthenticatorManagementConstants.AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY) {
+                if (name === LocalAuthenticatorConstants.MODERATED_EMAIL_OTP_EXPIRY_TIME_KEY) {
                     const timeInSeconds: number = value * 60;
 
                     properties.push({
@@ -290,9 +290,9 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
             // Check for invalid input.
             errors.EmailOTP_ExpiryTime = t("authenticationProvider:forms" +
                 ".authenticatorSettings.emailOTP.expiryTime.validations.invalid");
-        } else if (( values.EmailOTP_ExpiryTime < AuthenticatorManagementConstants
+        } else if (( values.EmailOTP_ExpiryTime < ConnectionUIConstants
             .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE )
-            || ( values.EmailOTP_ExpiryTime > AuthenticatorManagementConstants
+            || ( values.EmailOTP_ExpiryTime > ConnectionUIConstants
                 .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_VALUE )) {
             // Check for invalid range.
             errors.EmailOTP_ExpiryTime = t("authenticationProvider:forms" +
@@ -307,9 +307,9 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
             // Check for invalid input.
             errors.EmailOTP_OTPLength = t("authenticationProvider:forms" +
                 ".authenticatorSettings.emailOTP.tokenLength.validations.invalid");
-        } else if ((parseInt(values.EmailOTP_OTPLength, 10) < AuthenticatorManagementConstants
+        } else if ((parseInt(values.EmailOTP_OTPLength, 10) < ConnectionUIConstants
             .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MIN_VALUE)
-            || (parseInt(values.EmailOTP_OTPLength, 10) > AuthenticatorManagementConstants
+            || (parseInt(values.EmailOTP_OTPLength, 10) > ConnectionUIConstants
                 .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MAX_VALUE)) {
             // Check for invalid range.
             errors.EmailOTP_OTPLength = t(
@@ -358,15 +358,15 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                 required={ true }
                 readOnly={ readOnly }
                 min={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE
                 }
                 maxLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_LENGTH
                 }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_LENGTH
                 }
                 width={ 12 }
@@ -430,11 +430,11 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                 required={ true }
                 readOnly={ readOnly }
                 maxLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MAX_LENGTH
                 }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.OTP_LENGTH_MIN_LENGTH
                 }
                 width={ 12 }

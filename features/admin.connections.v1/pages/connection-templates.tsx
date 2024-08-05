@@ -45,7 +45,8 @@ import { useGetConnectionTemplates } from "../api/use-get-connection-templates";
 import {
     AuthenticatorCreateWizardFactory
 } from "../components/create/authenticator-create-wizard-factory";
-import { ConnectionManagementConstants } from "../constants/connection-constants";
+import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
+import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import {
     ConnectionTemplateInterface,
     ConnectionTemplateItemInterface
@@ -144,18 +145,18 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
      */
     useEffect(() => {
 
-        if (!urlSearchParams.get(ConnectionManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY)) {
+        if (!urlSearchParams.get(ConnectionUIConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY)) {
             return;
         }
 
-        if (urlSearchParams.get(ConnectionManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY)
-            === ConnectionManagementConstants.IDP_TEMPLATE_IDS.GOOGLE) {
+        if (urlSearchParams.get(ConnectionUIConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY)
+            === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE) {
 
-            handleTemplateSelection(null, ConnectionManagementConstants.IDP_TEMPLATE_IDS.GOOGLE);
+            handleTemplateSelection(null, CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE);
 
             return;
         }
-    }, [ urlSearchParams.get(ConnectionManagementConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY) ]);
+    }, [ urlSearchParams.get(ConnectionUIConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY) ]);
 
     /**
      * Handles back button click.
@@ -200,7 +201,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
         if (id) {
             history.push({
                 pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", id),
-                search: ConnectionManagementConstants.NEW_IDP_URL_SEARCH_PARAM
+                search: ConnectionUIConstants.NEW_IDP_URL_SEARCH_PARAM
             });
 
             return;
@@ -366,8 +367,8 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                         ) => {
                             // if the template is "organization-enterprise-idp",
                             // then prevent rendering it.
-                            if (template.id === ConnectionManagementConstants
-                                .ORG_ENTERPRISE_CONNECTION_ID) {
+                            if (template.id === CommonAuthenticatorConstants
+                                .CONNECTION_TEMPLATE_IDS.ORGANIZATION_ENTERPRISE_IDP) {
 
                                 return null;
                             }
@@ -376,10 +377,10 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                             let disabledHint: ReactNode = undefined;
 
                             // Disable the Apple template in localhost as it's not supported.
-                            if (template.id === ConnectionManagementConstants
-                                .IDP_TEMPLATE_IDS.APPLE &&
+                            if (template.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.APPLE &&
                                                     new URL(deploymentConfig?.serverOrigin)?.
-                                                        hostname === ConnectionManagementConstants.LOCAL_SERVER_URL) {
+                                                        hostname === CommonAuthenticatorConstants
+                                                        .LOCAL_SERVER_URL) {
                                 isTemplateDisabled = true;
                                 disabledHint = t("console:develop.pages." +
                                     "authenticationProviderTemplate.disabledHint.apple");

@@ -17,6 +17,8 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { store } from "@wso2is/admin.core.v1";
 import useRequest, {
     RequestConfigInterface,
@@ -26,7 +28,6 @@ import useRequest, {
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { IdentityProviderManagementConstants } from "../constants";
 import { FIDOConfigsInterface, FIDOConnectorConfigsInterface } from "../models";
 
 /**
@@ -54,7 +55,7 @@ export const useFIDOConnectorConfigs = <Data = FIDOConnectorConfigsInterface, Er
         },
         method: HttpMethods.GET,
         url: `${store?.getState()?.config?.endpoints?.fidoConfigs}/${
-            IdentityProviderManagementConstants.FIDO_CONNECTOR_CONFIG_NAME}`
+            LocalAuthenticatorConstants.FIDO_CONNECTOR_CONFIG_NAME}`
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
@@ -93,7 +94,7 @@ export const updateFidoConfigs = (
         .then((response: AxiosResponse) => {
             if (response?.status !== 200) {
                 throw new IdentityAppsApiException(
-                    IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR,
+                    ConnectionUIConstants.ERROR_MESSAGES.FIDO_AUTHENTICATOR_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR,
                     null,
                     response?.status,
                     response?.request,
@@ -104,7 +105,7 @@ export const updateFidoConfigs = (
             return Promise.resolve(response.data as FIDOConnectorConfigsInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_CONFIG_UPDATE_ERROR,
+                ConnectionUIConstants.ERROR_MESSAGES.FIDO_AUTHENTICATOR_CONFIG_UPDATE_ERROR,
                 error?.stack,
                 error?.response?.data?.code,
                 error?.request,
