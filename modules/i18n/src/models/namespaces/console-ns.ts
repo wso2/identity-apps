@@ -2385,6 +2385,7 @@ export interface ConsoleNS {
                     authenticationProviders: string;
                     general: string;
                     identityVerificationProviders: string;
+                    extensions: string;
                 };
                 customize: string;
                 identityProviderEdit: string;
@@ -8217,7 +8218,10 @@ export interface ConsoleNS {
                             };
                         };
                         info: {
-                            title: string;
+                            title: {
+                                noneAuthType: string;
+                                otherAuthType: string;
+                            };
                             message: string;
                         };
                     };

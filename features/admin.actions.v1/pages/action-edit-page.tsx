@@ -75,14 +75,10 @@ export const ActionEditPage: FunctionComponent<ActionEditPageInterface> = ({
     "data-componentid": _componentId = "action-edit-page"
 }: ActionEditPageInterface): ReactElement => {
 
-    const dispatch: Dispatch = useDispatch();
     const pageContextRef: MutableRefObject<HTMLElement> = useRef(null);
-
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
-    const [ isActionRequestLoading, setActionRequestLoading ] = useState<boolean>(false);
     const [ isOpenRevertConfigModal, setOpenRevertConfigModal ] = useState<boolean>(false);
-    // const [ actionTypeApiPath, setActionTypeApiPath ] = useState<string>(null);
     const [ authType, setAuthType ] = useState<AuthenticationType>(null);
     const [ isAuthCancel, setAuthCancel ] = useState<boolean>(false);
     const [ isAuthUpdating, setIsAuthUpdating ] = useState<boolean>(false);
@@ -90,6 +86,7 @@ export const ActionEditPage: FunctionComponent<ActionEditPageInterface> = ({
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isCreating, setIsCreating ] = useState<boolean>(false);
 
+    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
@@ -119,7 +116,7 @@ export const ActionEditPage: FunctionComponent<ActionEditPageInterface> = ({
     } = useActionsDetailsByType(actionTypeApiPath);
 
 
-    const initValues: ActionConfigFormPropertyInterface = useMemo(() => {
+    const initialValues: ActionConfigFormPropertyInterface = useMemo(() => {
         if (actionData) {
             return {
                 authenticationType: actionData[0]?.endpoint?.authentication?.type.toString(),
@@ -129,9 +126,6 @@ export const ActionEditPage: FunctionComponent<ActionEditPageInterface> = ({
             };
         }
     }, [ actionData ]);
-
-    console.log("#########  ####  initValues", initValues);
-
 
     const hasActionUpdatePermissions: boolean = useRequiredScopes(featureConfig?.actions?.scopes?.update);
 
@@ -270,7 +264,7 @@ export const ActionEditPage: FunctionComponent<ActionEditPageInterface> = ({
      */
     const actionToggle = (): ReactElement => {
 
-        return !isCreating && (
+        return !isCreating && actionData?.length > 0 && (
             <>
                 <Checkbox
                     label={
@@ -294,7 +288,7 @@ export const ActionEditPage: FunctionComponent<ActionEditPageInterface> = ({
 
         if (data.checked) {
 
-            activateAction(actionTypeApiPath, initValues.id)
+            activateAction(actionTypeApiPath, initialValues.id)
                 .then(() => {
                     handleSuccess(ActionsConstants.UPDATE);
                     fetchActionConfigurations();
@@ -306,7 +300,7 @@ export const ActionEditPage: FunctionComponent<ActionEditPageInterface> = ({
                     setIsSubmitting(false);
                 });
         } else {
-            deactivateAction(actionTypeApiPath, initValues.id)
+            deactivateAction(actionTypeApiPath, initialValues.id)
                 .then(() => {
                     handleSuccess(ActionsConstants.UPDATE);
                 })
@@ -490,7 +484,7 @@ export const ActionEditPage: FunctionComponent<ActionEditPageInterface> = ({
             };
 
             setIsSubmitting(true);
-            updateAction(actionTypeApiPath, initValues.id, updatingValues)
+            updateAction(actionTypeApiPath, initialValues.id, updatingValues)
                 .then(() => {
                     handleSuccess(ActionsConstants.UPDATE);
                     setIsAuthUpdating(false);
@@ -505,7 +499,7 @@ export const ActionEditPage: FunctionComponent<ActionEditPageInterface> = ({
         }
     };
 
-    return !isActionRequestLoading && actionData ? (
+    return !isActionDataLoading && actionData ? (
         <PageLayout
             title={ resolveActionTitle(actionTypeApiPath) }
             description={ resolveActionDescription(actionTypeApiPath) }
@@ -528,14 +522,14 @@ export const ActionEditPage: FunctionComponent<ActionEditPageInterface> = ({
                                 <FinalForm
                                     onSubmit={ handleSubmit }
                                     validate={ validateForm }
-                                    initialValues={ initValues }
+                                    initialValues={ initialValues }
                                     render={ ({ handleSubmit, form }: FormRenderProps) => (
                                         <form
                                             className="action-update-form"
                                             onSubmit={ handleSubmit }
                                         >
                                             <ActionEdit
-                                                initialValues={ initValues }
+                                                initialValues={ initialValues }
                                                 onSubmit={ handleSubmit }
                                                 readOnly={ !hasActionUpdatePermissions }
                                                 actionType={ actionTypeApiPath }
@@ -551,7 +545,7 @@ export const ActionEditPage: FunctionComponent<ActionEditPageInterface> = ({
                                                 { ({ values }) => {
                                                     if (isAuthCancel) {
                                                         form.change("authenticationType",
-                                                            initValues.authenticationType);
+                                                            initialValues.authenticationType);
                                                         switch (authType) {
                                                             case AuthenticationType.BASIC:
                                                                 delete values.usernameAuthProperty;
@@ -573,7 +567,7 @@ export const ActionEditPage: FunctionComponent<ActionEditPageInterface> = ({
                                                         setAuthCancel(false);
                                                     }
 
-                                                    if (authType !== initValues.authenticationType) {
+                                                    if (authType !== initialValues.authenticationType) {
                                                         // Clear inputs of other fields.
                                                         switch (authType) {
                                                             case AuthenticationType.BASIC:
@@ -655,7 +649,7 @@ export const ActionEditPage: FunctionComponent<ActionEditPageInterface> = ({
                             onSecondaryActionClick={ (): void => setOpenRevertConfigModal(false) }
                             onPrimaryActionClick={ (): void => {
                                 setIsSubmitting(true);
-                                deleteAction(actionTypeApiPath, initValues.id)
+                                deleteAction(actionTypeApiPath, initialValues.id)
                                     .then(() => {
                                         handleSuccess(ActionsConstants.DELETE);
                                         fetchActionConfigurations();

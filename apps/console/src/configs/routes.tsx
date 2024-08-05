@@ -27,6 +27,7 @@ import {
     LightbulbOnIcon,
     LinearNodesIcon,
     NodesIcon,
+    ProgressFlowIcon,
     UserCircleDotIcon,
     UserGroupIcon
 } from "@oxygen-ui/react-icons";
@@ -1378,7 +1379,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
-            category: "extensions:manage.sidePanel.categories.settings",
+            category: "extensions:manage.sidePanel.categories.extensions",
             children: [
                 {
                     component: lazy(() =>
@@ -1443,10 +1444,10 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             ),
             exact: true,
             icon: {
-                icon: getSidePanelIcons().userStore
+                icon: <ProgressFlowIcon className="icon" fill="black" />
             },
             id: "actions",
-            name: "Actions",
+            name: "console:manage.features.actions.title",
             order: 30,
             path: AppConstants.getPaths().get("ACTIONS"),
             protected: true,

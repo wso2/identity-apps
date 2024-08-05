@@ -2573,7 +2573,8 @@ export const console: ConsoleNS = {
                     general: "General",
                     gettingStarted: "Getting Started",
                     identityProviders: "Connections",
-                    identityVerificationProviders: "Identity Verification Providers"
+                    identityVerificationProviders: "Identity Verification Providers",
+                    extensions: "Extensions"
                 },
                 customize: "Customize",
                 identityProviderEdit: "Connections Edit",
@@ -8354,7 +8355,7 @@ export const console: ConsoleNS = {
             actions: {
                 goBackActions: "Go back to Actions",
                 title: "Actions",
-                description: "Actions are executed in sequence within the Identity Server Login, Registration, Self Account Management or User Management flows at specific points (like after user logged in). Use any of such points to extend or integrate using triggering points listed here to add your action.",
+                description: "Actions are executed sequentially at specific points in the Login, Registration, Self Account Management, and User Management flows (e.g., after a user logs in). Use these points to extend or integrate by adding your actions.",
                 types: {
                     preIssueAccessToken: {
                         heading: "Pre Issue Access Token",
@@ -8527,7 +8528,10 @@ export const console: ConsoleNS = {
                             }
                         },
                         info: {
-                            title: "{{ authType }} authentication type is configured.",
+                            title: {
+                                noneAuthType: "No authentication is configured.",
+                                otherAuthType: "<strong>{{ authType }}</strong> authentication type is configured."
+                            },
                             message: "If you are changing the authentication, be aware that the authentication secrets of the external endpoint need to be updated."
                         }
                     },

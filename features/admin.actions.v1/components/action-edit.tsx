@@ -23,7 +23,6 @@ import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Divider from "@oxygen-ui/react/Divider";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
-import InputLabel from "@oxygen-ui/react/InputLabel";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalFormField, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/form";
 import { EmphasizedSegment, Heading, Hint } from "@wso2is/react-components";
@@ -140,8 +139,6 @@ export const ActionEdit: FunctionComponent<ActionEditInterface> = ({
         </InputAdornment>
     );
 
-    console.log(initialValues);
-
     /**
      * This is called when the Change Authentication button is pressed.
      */
@@ -163,8 +160,6 @@ export const ActionEdit: FunctionComponent<ActionEditInterface> = ({
     const resolveAuthentication = (): ReactElement => {
 
         const handleAuthTypeChange = (event: SelectChangeEvent) => {
-            console.log("event.target.value",event.target.value);
-            // setAuthCancel(true);
             switch (event.target.value) {
                 case AuthenticationType.NONE.toString():
                     setCurrentAuthType(AuthenticationType.NONE);
@@ -314,9 +309,9 @@ export const ActionEdit: FunctionComponent<ActionEditInterface> = ({
                                 endAdornment: renderInputAdornmentOfSecret1()
                             } }
                             label={ t("console:manage.features.actions.fields.authentication" +
-                        ".types.bearer.properties.accessToken.label") }
+                                ".types.bearer.properties.accessToken.label") }
                             placeholder={ t("console:manage.features.actions.fields.authentication" +
-                        ".types.bearer.properties.accessToken.placeholder") }
+                                ".types.bearer.properties.accessToken.placeholder") }
                             component={ TextFieldAdapter }
                             maxLength={ 100 }
                             minLength={ 0 }
@@ -447,17 +442,21 @@ export const ActionEdit: FunctionComponent<ActionEditInterface> = ({
                     { t("console:manage.features.actions.fields.authentication.label") }
                 </Heading>
                 {
-                    // isCreating ? (
-                    //     resolveAuthentication()
-                    // ): (
                     !isAuthChanging && !isCreating ? (
                         <Alert severity="info">
                             <>
-                                <AlertTitle>
-                                    {
-                                        t("console:manage.features.actions.fields.authentication.info.title",
-                                            { authType: resolveAuthTypeDisplayName() })
-                                    }
+                                <AlertTitle className="alert-title">
+                                    <Trans
+                                        i18nKey={
+                                            currentAuthType === AuthenticationType.NONE ?
+                                                t("console:manage.features.actions.fields.authentication" +
+                                                ".info.title.noneAuthType") :
+                                                t("console:manage.features.actions.fields.authentication" +
+                                                    ".info.title.otherAuthType")
+                                        }
+                                        values={ { authType: resolveAuthTypeDisplayName() } }
+                                        components={ { strong: <strong/> } }
+                                    />
                                 </AlertTitle>
                                 <Trans
                                     i18nKey={ t("console:manage.features.actions.fields.authentication.info.message") }
@@ -502,7 +501,6 @@ export const ActionEdit: FunctionComponent<ActionEditInterface> = ({
                             </div>
                         </Box>
                     )
-                // )
                 }
                 {
                     !readOnly && (

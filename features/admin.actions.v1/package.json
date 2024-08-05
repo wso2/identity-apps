@@ -7,8 +7,8 @@
     "license": "Apache-2.0",
     "dependencies": {
         "@mui/material": "^5.13.0",
-        "@oxygen-ui/react": "^1.13.3",
-        "@oxygen-ui/react-icons": "^1.13.3",
+        "@oxygen-ui/react": "^1.13.6",
+        "@oxygen-ui/react-icons": "^1.13.6",
         "@wso2is/core": "^2.0.60",
         "@wso2is/access-control": "^3.0.20",
         "@wso2is/admin.core.v1": "^2.23.30",
