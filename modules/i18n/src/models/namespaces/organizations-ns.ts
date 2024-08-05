@@ -31,6 +31,9 @@ export interface organizationsNS {
                 filterMetaAttribute: {
                     label: string;
                     placeholder: string;
+                    validations: {
+                        empty: string;
+                    };
                 };
             };
         };

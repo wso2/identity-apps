@@ -308,8 +308,9 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
 
                 if (terms.length > 2) {
                     const filterAttributeParts = terms[0].split(".");
-                    const filterAttribute = filterAttributeParts.length > 1 ? filterAttributeParts[0] : terms[0];
-                    
+                    const filterAttribute
+                        = filterAttributeParts[0] === "attributes" ? filterAttributeParts[0] : terms[0];
+
                     const attributes = filterAttributeOptions.filter((attribute) => {
                         return attribute.value === filterAttribute;
                     });

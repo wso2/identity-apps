@@ -27,12 +27,15 @@ export const organizations: organizationsNS = {
                 filterCondition: {
                     placeholder: "E.g. Starts With etc."
                 },
-                filterValue: {
-                    placeholder: "Enter value to search"
-                },
                 filterMetaAttribute: {
                     label: "Filter meta attribute",
-                    placeholder: "Search by meta attribute name"
+                    placeholder: "Search by meta attribute name",
+                    validations: {
+                        empty: "Filter meta attribute is a required field."
+                    }
+                },
+                filterValue: {
+                    placeholder: "Enter value to search"
                 }
             }
         },
@@ -226,6 +229,16 @@ export const organizations: organizationsNS = {
                 message: "Organization fetched successfully"
             }
         },
+        getMetaAttributesList: {
+            error: {
+                description: "{{description}}",
+                message: "Error while getting the organization's meta attribute list"
+            },
+            genericError: {
+                description: "An error occurred while getting the organization's meta attribute list",
+                message: "Something went wrong"
+            }
+        },
         getOrganizationList: {
             error: {
                 description: "{{description}}",
@@ -263,17 +276,7 @@ export const organizations: organizationsNS = {
                 description: "Successfully updated the organization attributes",
                 message: "Organization attributes updated successfully"
             }
-        },
-        getMetaAttributesList: {
-            error: {
-                description: "{{description}}",
-                message: "Error while getting the organization's meta attribute list"
-            },
-            genericError: {
-                description: "An error occurred while getting the organization's meta attribute list",
-                message: "Something went wrong"
-            }
-        },
+        }
     },
     placeholders: {
         emptyList: {
@@ -287,24 +290,14 @@ export const organizations: organizationsNS = {
             title: "Add a new Organization"
         }
     },
-    shareApplicationSubTitle: "Select one of the following options to share the application.",
-    shareApplicationRadio: "Share with all organizations",
     shareApplicationInfo: "Select this to share the application with all the existing organizations " +
         "and all new organizations that you create under your current organization.",
-    unshareApplicationRadio: "Do not share with any organization",
+    shareApplicationRadio: "Share with all organizations",
+    shareApplicationSubTitle: "Select one of the following options to share the application.",
     shareWithSelectedOrgsRadio: "Share with only selected organizations",
-    unshareApplicationInfo: "This will allow you to prevent sharing this application with any of the " +
-        "existing organizations or new organizations that you create under this organization " +
-        "in the future.",
     switching: {
         emptyList: "There are no organizations to show.",
         goBack: "Go back",
-        search: {
-            placeholder: "Search by Name"
-        },
-        subOrganizations: "Organizations",
-        switchLabel: "Organization",
-        switchButton: "Switch to Organization",
         notifications: {
             switchOrganization: {
                 genericError: {
@@ -312,9 +305,19 @@ export const organizations: organizationsNS = {
                     message: "Something went wrong"
                 }
             }
-        }
+        },
+        search: {
+            placeholder: "Search by Name"
+        },
+        subOrganizations: "Organizations",
+        switchButton: "Switch to Organization",
+        switchLabel: "Organization"
     },
     title: "Organizations",
+    unshareApplicationInfo: "This will allow you to prevent sharing this application with any of the " +
+        "existing organizations or new organizations that you create under this organization " +
+        "in the future.",
+    unshareApplicationRadio: "Do not share with any organization",
     view: {
         description: "View Organization"
     }

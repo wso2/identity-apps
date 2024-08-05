@@ -114,7 +114,7 @@ export const common: CommonNS = {
     logout: "වරන්න",
     maxValidation: "මෙම අගය {{max}} ට වඩා අඩු හෝ සමාන විය යුතුය.",
     maximize: "උපරිම කරන්න",
-    metaAttributes: "මෙටා ගුණාංග",
+    metaAttributes: "අතිරේක ගුණාංග",
     minValidation: "මෙම අගය {{min}} ට වඩා වැඩි හෝ සමාන විය යුතුය.",
     minimize: "අවම කරන්න",
     more: "තව",

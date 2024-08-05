@@ -25,6 +25,7 @@ import {
     FeatureConfigInterface,
     UIConstants
 } from "@wso2is/admin.core.v1";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -55,15 +56,14 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import { getOrganization, getOrganizations, useAuthorizedOrganizationsList } from "../api";
-import { AddOrganizationModal, OrganizationList } from "../components";
+import { getOrganizations, useAuthorizedOrganizationsList } from "../api";
+import { AddOrganizationModal, MetaAttributeAutoComplete, OrganizationList } from "../components";
 import {
     OrganizationInterface,
     OrganizationLinkInterface,
     OrganizationListInterface,
     OrganizationResponseInterface
 } from "../models";
-import MetaAttributeAutoCompleteComponent from "../components/meta-attribute-auto-complete-component";
 
 const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -116,6 +116,10 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const hasOrganizationListViewPermissions: boolean = useRequiredScopes(
         featureConfig?.organizations?.scopes?.read
     );
+    const isFilterByMetadataAttributesEnabled: boolean = isFeatureEnabled(
+        featureConfig.organizations,
+        "organizations.filterByMetadataAttributes"
+    );
 
     const [ organizationList, setOrganizationList ] = useState<OrganizationListInterface>(null);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
@@ -137,6 +141,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const [ activePage, setActivePage ] = useState<number>(1);
     const [ shouldShowMetaAttributeComponent, setShouldShowMetaAttributeComponent ] = useState<boolean>(false);
     const [ selectedMetaAttribute, setSelectedMetaAttribute ] = useState<string>("");
+    const [ hasErrors, setHasErrors ] = useState<boolean>(false);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -387,6 +393,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         ) => void = useCallback((query: string): void => {
             resetPagination();
             setSearchQuery(query);
+            setSelectedMetaAttribute("");
             setShouldShowMetaAttributeComponent(false);
         }, [ resetPagination, setSearchQuery ]);
 
@@ -454,23 +461,10 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
      * Handles the `onSearchQueryClear` callback action.
      */
     const handleSearchQueryClear: () => void = useCallback((): void => {
+        setTriggerClearQuery((triggerClearQuery: boolean) => !triggerClearQuery);
         setSearchQuery("");
         resetPagination();
-    }, [ setSearchQuery, resetPagination ]);
-
-    const handleBreadCrumbClick = (organization: OrganizationInterface, index: number): void => {
-        const newOrganizations: OrganizationInterface[] = [ ...organizations ];
-
-        newOrganizations.splice(index + 1);
-        setOrganizations(newOrganizations);
-
-        setParent(organization);
-        resetPagination();
-
-        if (!organization) {
-            setOrganization(null);
-        }
-    };
+    }, [ setSearchQuery, resetPagination, setTriggerClearQuery ]);
 
     const handleListItemClick = (
         _e: SyntheticEvent<Element, Event>,
@@ -490,30 +484,76 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         setOrganizations(newOrganizations);
     };
 
+    /**
+     * Handles changes in filter attribute options.
+     *
+     * @param values - The collection of form values.
+     */
     const handleFilterAttributeOptionsChange = (values: any): void => {
+        setHasErrors(false);
         if (values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER) === "attributes") {
             setShouldShowMetaAttributeComponent(true);
         } else {
+            setSelectedMetaAttribute("");
             setShouldShowMetaAttributeComponent(false);
         }
     };
-    
+
+    /**
+     * Handles changes in filter meta attribute options.
+     *
+     * @param value - The field value.
+     */
+    const handleMetaAttributeChange = (value: string) => {
+
+        setHasErrors(false);
+        setSelectedMetaAttribute(value);
+    };
+
+    /**
+     * Handles the on close of the advanced search component.
+     */
     const handleAdvancedSearchClose = () => {
+        setSelectedMetaAttribute("");
         setShouldShowMetaAttributeComponent(false);
     };
 
+    /**
+     * Constructs the custom search query.
+     *
+     * @param values - The collection of form values.
+     * @returns The constructed search query string.
+     */
     const getQuery = (values: any): string => {
         if (shouldShowMetaAttributeComponent && selectedMetaAttribute) {
-            return values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER) 
-            + "." 
+            return values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
+            + "."
             + selectedMetaAttribute
-            + " " 
-            + values.get(FILTER_CONDITION_FIELD_IDENTIFIER) 
-            + " " 
+            + " "
+            + values.get(FILTER_CONDITION_FIELD_IDENTIFIER)
+            + " "
             + values.get(FILTER_VALUES_FIELD_IDENTIFIER);
         }
-        return null
-    };    
+
+        return null;
+    };
+
+    /**
+     * Checks for submission errors in the meta attribute component.
+     *
+     * @returns A boolean indicating true if there is an error, otherwise false.
+     */
+    const handleMetaAttributeSubmitError = (): boolean => {
+
+        let hasError: boolean = false;
+
+        if (shouldShowMetaAttributeComponent && (selectedMetaAttribute === null || selectedMetaAttribute === "")) {
+            hasError = true;
+        }
+        setHasErrors(hasError);
+
+        return hasError;
+    };
 
     return (
         <>
@@ -608,18 +648,21 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             onClose={ handleAdvancedSearchClose }
                             onFilter={ handleOrganizationFilter }
                             onFilterAttributeOptionsChange={ handleFilterAttributeOptionsChange }
-                            getQuery= { getQuery }
+                            onSubmitError={ handleMetaAttributeSubmitError }
+                            getQuery={ getQuery }
                             filterAttributeOptions={ [
                                 {
                                     key: 0,
                                     text: t("common:name"),
                                     value: "name"
                                 },
-                                {
-                                    key: 1,
-                                    text: t("common:metaAttributes"),
-                                    value: "attributes"
-                                }
+                                ...(isFilterByMetadataAttributesEnabled ? [
+                                    {
+                                        key: 1,
+                                        text: t("common:metaAttributes"),
+                                        value: "attributes"
+                                    }
+                                ] : [])
                             ] }
                             filterAttributePlaceholder={ t(
                                 "organizations:advancedSearch.form" +
@@ -638,12 +681,14 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             ) }
                             defaultSearchAttribute="name"
                             defaultSearchOperator="co"
+                            triggerClearQuery={ triggerClearQuery }
                             data-componentid={ `${ testId }-list-advanced-search` }
                         >
-                            { shouldShowMetaAttributeComponent && 
-                            <MetaAttributeAutoCompleteComponent 
-                                onMetaAttributeChange={setSelectedMetaAttribute}
-                            /> }
+                            { shouldShowMetaAttributeComponent && isFilterByMetadataAttributesEnabled &&
+                            (<MetaAttributeAutoComplete
+                                onMetaAttributeChange={ handleMetaAttributeChange }
+                                hasErrors={ hasErrors }
+                            />) }
                         </AdvancedSearchWithBasicFilters>
                         )
                     }

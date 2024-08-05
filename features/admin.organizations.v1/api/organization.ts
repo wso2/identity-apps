@@ -24,7 +24,11 @@ import {
     HttpResponse
 } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1";
-import useRequest, { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import useRequest, {
+    RequestConfigInterface,
+    RequestErrorInterface,
+    RequestResultInterface
+} from "@wso2is/admin.core.v1/hooks/use-request";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
@@ -483,7 +487,7 @@ export const unshareApplication = (
 };
 
 /**
- * Get a list of organizations' meta attributes.
+ * Hook to get a list of organizations' meta attributes.
  *
  * @param filter - The filter query.
  * @param limit - The maximum number of meta attributes to return.
@@ -492,41 +496,45 @@ export const unshareApplication = (
  * @param recursive - Whether we need to do a recursive search.
  * @param isRoot - Whether the organization is the root
  *
- * @returns a promise containing the response with the meta attributes.
+ * @returns Organizations Meta Attributes GET hook.
  */
-export const getOrganizationsMetaAttributes = (
-    filter: string,
-    limit: number,
-    after: string,
-    before: string,
-    recursive: boolean = false,
-    isRoot: boolean = false
-): Promise<OrganizationsMetaAttributesListInterface> => {
-    const config: HttpRequestConfig = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        method: "GET",
-        params: {
-            after,
-            before,
-            filter,
-            limit,
-            recursive
-        },
-        url: `${ isRoot
-            ? store.getState().config.endpoints.rootOrganization
-            : store.getState().config.endpoints.organizations }/organizations/meta-attributes`
+export const useGetOrganizationsMetaAttributes =
+    <Data = OrganizationsMetaAttributesListInterface, Error = RequestErrorInterface>(
+        filter?: string,
+        limit?: number,
+        after?: string,
+        before?: string,
+        recursive: boolean = false,
+        isRoot: boolean = false
+    ): RequestResultInterface<Data, Error> => {
+        const requestConfig: RequestConfigInterface = {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            method: HttpMethods.GET,
+            params: {
+                after,
+                before,
+                filter,
+                limit,
+                recursive
+            },
+            url: `${isRoot
+                ? store.getState().config.endpoints.rootOrganization
+                : store.getState().config.endpoints.organizations}/organizations/meta-attributes`
+        };
+
+        const { data, error, isValidating, mutate } = useRequest<Data, Error>(
+            requestConfig,
+            { revalidateIfStale: false }
+        );
+
+        return {
+            data,
+            error,
+            isLoading: !error && !data,
+            isValidating,
+            mutate
+        };
     };
-    return httpClient(config)
-        .then((response: HttpResponse<OrganizationsMetaAttributesListInterface>) => {
-            if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to get organizations' meta attributes."));
-            }
-            return Promise.resolve(response?.data);
-        })
-        .catch((error: HttpError) => {
-            return Promise.reject(error?.response?.data);
-        });
-};

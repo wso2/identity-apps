@@ -20,3 +20,4 @@ export * from "./organization-list";
 export * from "./add-organization-modal";
 export * from "./organization-role-list";
 export * from "./root-only-component";
+export * from "./meta-attribute-auto-complete";

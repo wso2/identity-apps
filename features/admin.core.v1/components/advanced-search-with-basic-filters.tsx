@@ -19,7 +19,7 @@
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { SearchUtils } from "@wso2is/core/utils";
-import { DropdownChild, Field, FormValue, Forms } from "@wso2is/forms";
+import { DropdownChild, Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import {
     AdvancedSearch,
     AdvancedSearchPropsInterface,
@@ -89,6 +89,10 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
      */
     onFilterAttributeOptionsChange?: (values) => void;
     /**
+     * Callback to be triggered on submit error.
+     */
+    onSubmitError?: () => boolean;
+    /**
      * Callback to be get custom query.
      */
     getQuery?: (values) => string;
@@ -144,7 +148,7 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
      * Enable query search with shift and enter.
      */
     enableQuerySearch?: boolean;
-        /**
+    /**
      * Disable search and filter options.
      */
     disableSearchAndFilterOptions?: boolean;
@@ -184,6 +188,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         onClose,
         onFilter,
         onFilterAttributeOptionsChange,
+        onSubmitError,
         getQuery,
         placeholder,
         predefinedDefaultSearchStrategy,
@@ -202,7 +207,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
     const [ isFiltersReset, setIsFiltersReset ] = useState<boolean>(false);
     const [ externalSearchQuery, setExternalSearchQuery ] = useState<string>("");
     const sessionTimedOut: boolean = React.useContext(SessionTimedOutContext);
-    const formRef = useRef<HTMLDivElement>(null);
+    const formRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     /**
      * Handles the form submit.
@@ -210,8 +215,14 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
      * @param values - Form values.
      */
     const handleFormSubmit = (values: Map<string, string | string[]>): void => {
+
+        if (onSubmitError?.()) {
+
+            return;
+        }
+
         let query: string;
-        const customQuery = getQuery ? getQuery(values) : null;
+        const customQuery: string = getQuery ? getQuery(values) : null;
 
         if (customQuery !== null) {
             query = customQuery;
@@ -286,10 +297,14 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         }
     };
 
+    /**
+     * Adds an event listener for detecting clicks outside the form on component mount.
+     */
     useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener("mousedown", handleClickOutside);
+
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
 
@@ -351,6 +366,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                             onSubmit={ (values: Map<string, FormValue>) => handleFormSubmit(values) }
                             resetState={ isFiltersReset }
                             onChange={ () => setIsFiltersReset(false) }
+                            onSubmitError={ () => {onSubmitError?.();} }
                             ref={ formRef }
                         >
                             <Field
@@ -382,7 +398,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                 value={ defaultSearchAttribute }
                                 data-testid={ `${ testId }-filter-attribute-dropdown` }
                                 data-componentid={ `${ testId }-filter-attribute-dropdown` }
-                                listen={(values) => onFilterAttributeOptionsChange?.(values)}
+                                listen={ (values: Map<string, FormValue>) => onFilterAttributeOptionsChange?.(values) }
                             />
                             { children }
                             <Form.Group widths="equal">

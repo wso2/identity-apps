@@ -114,7 +114,7 @@ export const common: CommonNS = {
     logout: "Logout",
     maxValidation: "Este valor deve ser menor ou igual a {{max}}.",
     maximize: "Maximizar",
-    metaAttributes: "Metaatributos",  
+    metaAttributes: "Metaatributos",
     minValidation: "Este valor deve ser maior ou igual a {{min}}.",
     minimize: "Minimizar",
     more: "Mais",
