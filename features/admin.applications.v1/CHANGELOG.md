@@ -1,5 +1,31 @@
 # @wso2is/admin.applications.v1
 
+## 2.22.32
+
+### Patch Changes
+
+- [#6709](https://github.com/wso2/identity-apps/pull/6709) [`3520652d01ac8521d6685002a3c2135397580f86`](https://github.com/wso2/identity-apps/commit/3520652d01ac8521d6685002a3c2135397580f86) Thanks [@asha15](https://github.com/asha15)! - add disabledConfig support for hybrid flow config
+
+- Updated dependencies []:
+  - @wso2is/admin.authentication-flow-builder.v1@2.20.102
+  - @wso2is/admin.connections.v1@2.21.32
+  - @wso2is/admin.console-settings.v1@2.20.102
+  - @wso2is/admin.core.v1@2.23.32
+  - @wso2is/admin.extensions.v1@2.21.72
+  - @wso2is/admin.identity-providers.v1@2.21.32
+  - @wso2is/admin.login-flow.ai.v1@2.20.102
+  - @wso2is/admin.oidc-scopes.v1@2.20.102
+  - @wso2is/admin.organizations.v1@2.20.102
+  - @wso2is/admin.roles.v2@2.20.102
+  - @wso2is/admin.api-resources.v2@2.20.102
+  - @wso2is/admin.branding.v1@2.20.102
+  - @wso2is/admin.claims.v1@2.20.102
+  - @wso2is/admin.impersonation.v1@1.1.44
+  - @wso2is/admin.secrets.v1@2.20.102
+  - @wso2is/admin.server-configurations.v1@2.21.44
+  - @wso2is/admin.userstores.v1@2.20.102
+  - @wso2is/admin.wsfed-configuration.v1@2.20.102
+
 ## 2.22.31
 
 ### Patch Changes
