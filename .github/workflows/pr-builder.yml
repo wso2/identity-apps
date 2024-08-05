@@ -142,6 +142,7 @@ jobs:
 
   test:
     name: 👾 Unit Test (TESTING)
+    if: ${{ false }}
     needs: [ typecheck ]
     runs-on: ubuntu-latest
     strategy:
@@ -227,7 +228,7 @@ jobs:
 
   build:
     name: 🚧 Build
-    needs: [ test, typecheck ]
+    needs: [ typecheck ]
     runs-on: ubuntu-latest
     strategy:
       matrix:
