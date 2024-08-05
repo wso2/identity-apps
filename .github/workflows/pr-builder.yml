@@ -246,6 +246,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: 🐳 Set SHAs for Nx
+        id: set-shas
+        uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: "master"
+
       - name: ☕ Set up JDK 11
         id: jdk-setup
         uses: actions/setup-java@v3
