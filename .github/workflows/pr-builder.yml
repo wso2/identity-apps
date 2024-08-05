@@ -286,13 +286,13 @@ jobs:
 
       - name: 👷 PNPM Build
         id: build-with-pnpm
-        run: pnpm build
+        run: pnpm nx affected:build
 
-      - name: 🏗️ Maven Build identity-apps-core
-        id: build-with-maven
-        run: |
-          cd identity-apps-core
-          mvn clean install -U -Dlint.exec.skip=true -Dbootstrap.exec.skip=true
+    #   - name: 🏗️ Maven Build identity-apps-core
+    #     id: build-with-maven
+    #     run: |
+    #       cd identity-apps-core
+    #       mvn clean install -U -Dlint.exec.skip=true -Dbootstrap.exec.skip=true
 
       - name: 💾 Cache local Maven repository
         id: cache-maven-m2
