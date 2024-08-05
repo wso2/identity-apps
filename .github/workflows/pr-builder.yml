@@ -292,7 +292,7 @@ jobs:
 
       - name: 👷 PNPM Build
         id: build-with-pnpm
-        run: pnpm nx affected:build
+        run: pnpm nx affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --target=build --parallel=3
 
     #   - name: 🏗️ Maven Build identity-apps-core
     #     id: build-with-maven
