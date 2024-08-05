@@ -1,5 +1,11 @@
 # @wso2is/react-components
 
+## 2.2.31
+
+### Patch Changes
+
+- [#6707](https://github.com/wso2/identity-apps/pull/6707) [`64d1d40cf664987e22e18a3cd7983a5e845829f3`](https://github.com/wso2/identity-apps/commit/64d1d40cf664987e22e18a3cd7983a5e845829f3) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add missing learn more doc links
+
 ## 2.2.30
 
 ### Patch Changes
