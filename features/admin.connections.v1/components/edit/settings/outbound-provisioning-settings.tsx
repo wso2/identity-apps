@@ -43,7 +43,7 @@ import {
     updateOutboundProvisioningConnector,
     updateOutboundProvisioningConnectors
 } from "../../../api/connections";
-import { CommonAuthenticatorManagementConstants } from "../../../constants/common-authenticator-constants";
+import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 import { AuthenticatorSettingsFormModes } from "../../../models/authenticators";
 import {
     ConnectionInterface,
@@ -414,7 +414,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                     .filter((
                                                         connector: OutboundProvisioningConnectorWithMetaInterface
                                                     ) => connector.id !==
-                                                        CommonAuthenticatorManagementConstants
+                                                        CommonAuthenticatorConstants
                                                             .DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID)
                                                     .map((
                                                         connector: OutboundProvisioningConnectorWithMetaInterface,

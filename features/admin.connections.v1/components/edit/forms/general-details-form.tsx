@@ -26,7 +26,7 @@ import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { CommonAuthenticatorManagementConstants } from "../../../constants/common-authenticator-constants";
+import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import { FederatedAuthenticatorConstants } from "../../../constants/federated-authenticator-constants";
 import {
@@ -308,9 +308,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     />
                     {
                         (identityProviderConfig?.editIdentityProvider?.showIssuerSettings ||
-                            templateType === CommonAuthenticatorManagementConstants
+                            templateType === CommonAuthenticatorConstants
                                 .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ||
-                            templateType === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE)
+                            templateType === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE)
                             && !isIDPOrganizationSSO() && !isIDPIproov()
                             && (
                                 <Field.Input
@@ -322,7 +322,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     hint={ t("authenticationProvider:forms." +
                                         "generalDetails.issuer.hint") }
                                     required={
-                                        templateType === CommonAuthenticatorManagementConstants
+                                        templateType === CommonAuthenticatorConstants
                                             .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
                                     }
                                     placeholder={
@@ -341,7 +341,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     }
                     {
                         (identityProviderConfig?.editIdentityProvider?.showIssuerSettings ||
-                            templateType === CommonAuthenticatorManagementConstants
+                            templateType === CommonAuthenticatorConstants
                                 .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER)
                             && !isIDPOrganizationSSO() && !isIDPIproov()
                             && (

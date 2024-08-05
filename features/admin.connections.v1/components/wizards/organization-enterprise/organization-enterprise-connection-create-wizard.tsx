@@ -39,7 +39,7 @@ import {
 } from "./organization-enterprise-connection-create-wizard-content";
 import { createConnection } from "../../../api/connections";
 import { getConnectionIcons } from "../../../configs/ui";
-import { CommonAuthenticatorManagementConstants } from "../../../constants/common-authenticator-constants";
+import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import {
     ConnectionInterface,
@@ -212,13 +212,13 @@ export const OrganizationEnterpriseConnectionCreateWizard: FunctionComponent<
             identityProvider?.provisioning?.outboundConnectors?.connectors[0];
 
         const isGoogleConnector: boolean = get(connector,
-            CommonAuthenticatorManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY) ===
-            CommonAuthenticatorManagementConstants.PROVISIONING_CONNECTOR_GOOGLE;
+            CommonAuthenticatorConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY) ===
+            CommonAuthenticatorConstants.PROVISIONING_CONNECTOR_GOOGLE;
 
         // If the outbound connector is Google, remove the displayName from the connector.
         if (connector && isGoogleConnector) {
             delete connector[
-                CommonAuthenticatorManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY
+                CommonAuthenticatorConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY
             ];
         }
 

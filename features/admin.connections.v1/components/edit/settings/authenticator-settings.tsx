@@ -53,7 +53,7 @@ import {
     updateFederatedAuthenticators
 } from "../../../api/authenticators";
 import { getConnectionIcons } from "../../../configs/ui";
-import { CommonAuthenticatorManagementConstants } from "../../../constants/common-authenticator-constants";
+import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import { FederatedAuthenticatorConstants } from "../../../constants/federated-authenticator-constants";
 import {
@@ -125,7 +125,7 @@ const commonAuthenticators: string[] = [
     FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID,
     FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID,
     FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID,
-    CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
     FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID,
     FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID
 ];
@@ -190,7 +190,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
     const isActiveTemplateExpertMode: boolean = useMemo(() => {
         return identityProviderConfig?.templates?.expertMode &&
-            (identityProvider.templateId === CommonAuthenticatorManagementConstants
+            (identityProvider.templateId === CommonAuthenticatorConstants
                 .CONNECTION_TEMPLATE_IDS.EXPERT_MODE);
     }, [ identityProvider, identityProviderConfig  ]);
 

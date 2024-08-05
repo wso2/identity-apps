@@ -45,7 +45,7 @@ import { AddIdpCertificateModal } from "./add-idp-certificate-modal";
 import { EmptyCertificatesPlaceholder } from "./empty-certificates-placeholder";
 import { IdpCertificatesList } from "./idp-cetificates-list";
 import { updateIDPCertificate } from "../../../../api/connections";
-import { CommonAuthenticatorManagementConstants } from "../../../../constants/common-authenticator-constants";
+import { CommonAuthenticatorConstants } from "../../../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
 import { CertificatePatchRequestInterface, ConnectionInterface } from "../../../../models/connection";
 
@@ -376,7 +376,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
      * @returns `true` if the IDP is a trusted token issuer and has no certificates, `false` otherwise.
      */
     const shouldShowNoCertificatesAlert = (): boolean => templateType ===
-        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER && !editingIDP?.certificate;
+        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER && !editingIDP?.certificate;
 
     if (!isJWKSEnabled && !isPEMEnabled) {
         return null;

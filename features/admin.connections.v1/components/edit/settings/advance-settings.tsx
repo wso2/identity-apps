@@ -24,7 +24,7 @@ import React, { Dispatch, FunctionComponent, ReactElement, useState } from "reac
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { updateIdentityProviderDetails, updateImplicitAssociationConfig } from "../../../api/connections";
-import { CommonAuthenticatorManagementConstants } from "../../../constants/common-authenticator-constants";
+import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 import {
     ConnectionAdvanceInterface,
     ConnectionInterface,
@@ -155,7 +155,7 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
 
     return (
         <EmphasizedSegment padded="very" className="advanced-configuration-section">
-            { templateType === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ?
+            { templateType === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ?
                 (<TrustedTokenIssuerAdvanceConfigurationsForm
                     config={ implicitAssociationConfig }
                     onSubmit={ handleImplicitAssociationConfigFormSubmit }

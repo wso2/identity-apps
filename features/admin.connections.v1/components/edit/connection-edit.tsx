@@ -46,7 +46,7 @@ import {
     OutboundProvisioningSettings
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
-import { CommonAuthenticatorManagementConstants } from "../../constants/common-authenticator-constants";
+import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import { FederatedAuthenticatorConstants } from "../../constants/federated-authenticator-constants";
 import {
@@ -355,9 +355,9 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     );
 
     useEffect(() => {
-        setIsTrustedTokenIssuer(type === CommonAuthenticatorManagementConstants
+        setIsTrustedTokenIssuer(type === CommonAuthenticatorConstants
             .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER);
-        setIsExpertMode(type === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE);
+        setIsExpertMode(type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE);
     }, [ type ]);
 
     useEffect(() => {
@@ -447,9 +447,9 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         // Evaluate whether to Show/Hide `Attributes`.
         if (shouldShowTab(type, ConnectionTabTypes.USER_ATTRIBUTES)
             && !isOrganizationEnterpriseAuthenticator
-            && (type !== CommonAuthenticatorManagementConstants
+            && (type !== CommonAuthenticatorConstants
                 .CONNECTION_TEMPLATE_IDS.OIDC || isAttributesEnabledForOIDC)
-            && (type !== CommonAuthenticatorManagementConstants
+            && (type !== CommonAuthenticatorConstants
                 .CONNECTION_TEMPLATE_IDS.SAML || attributesForSamlEnabled)) {
             panes.push({
                 "data-tabid": ConnectionUIConstants.TabIds.ATTRIBUTES,

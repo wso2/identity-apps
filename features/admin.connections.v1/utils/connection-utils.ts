@@ -26,7 +26,7 @@ import { AxiosError } from "axios";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import { getConnections } from "../api/connections";
-import { CommonAuthenticatorManagementConstants } from "../constants/common-authenticator-constants";
+import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import { FederatedAuthenticatorConstants } from "../constants/federated-authenticator-constants";
 import { MultiFactorAuthenticatorInterface } from "../models/authenticators";
@@ -64,13 +64,13 @@ export class ConnectionsManagementUtils {
         connection?.provisioning?.outboundConnectors?.connectors[ 0 ];
 
         const isGoogleConnector: boolean = get(connector,
-            CommonAuthenticatorManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY) ===
-            CommonAuthenticatorManagementConstants.PROVISIONING_CONNECTOR_GOOGLE;
+            CommonAuthenticatorConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY) ===
+            CommonAuthenticatorConstants.PROVISIONING_CONNECTOR_GOOGLE;
 
         // If the outbound connector is Google, remove the displayName from the connector.
         if (connector && isGoogleConnector) {
             delete connector[
-                CommonAuthenticatorManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY
+                CommonAuthenticatorConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY
             ];
         }
 
@@ -189,14 +189,14 @@ export class ConnectionsManagementUtils {
         const templateMapping: Map<string, Set<string>> = new Map<string, Set<string>>([
             [
                 ConnectionTabTypes.USER_ATTRIBUTES, new Set([
-                    CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK,
-                    CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE,
-                    CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GITHUB,
-                    CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.OIDC,
-                    CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.MICROSOFT,
-                    CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.HYPR,
-                    CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE,
-                    CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.SWE
+                    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK,
+                    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE,
+                    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GITHUB,
+                    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OIDC,
+                    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.MICROSOFT,
+                    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.HYPR,
+                    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.APPLE,
+                    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.SWE
                 ])
             ]
         ]);
@@ -343,7 +343,7 @@ export const handleConnectionDeleteError = (error: AxiosError): void => {
         error.response &&
         error.response.data &&
         error.response.data.code &&
-        error.response.data.code === CommonAuthenticatorManagementConstants.ERROR_CODES
+        error.response.data.code === CommonAuthenticatorConstants.ERROR_CODES
             .CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE
     ) {
         store.dispatch(

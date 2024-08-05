@@ -45,7 +45,7 @@ import { useGetConnectionTemplates } from "../api/use-get-connection-templates";
 import {
     AuthenticatorCreateWizardFactory
 } from "../components/create/authenticator-create-wizard-factory";
-import { CommonAuthenticatorManagementConstants } from "../constants/common-authenticator-constants";
+import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import {
     ConnectionTemplateInterface,
@@ -150,9 +150,9 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
         }
 
         if (urlSearchParams.get(ConnectionUIConstants.IDP_CREATE_WIZARD_TRIGGER_URL_SEARCH_PARAM_KEY)
-            === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE) {
+            === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE) {
 
-            handleTemplateSelection(null, CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE);
+            handleTemplateSelection(null, CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE);
 
             return;
         }
@@ -367,7 +367,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                         ) => {
                             // if the template is "organization-enterprise-idp",
                             // then prevent rendering it.
-                            if (template.id === CommonAuthenticatorManagementConstants
+                            if (template.id === CommonAuthenticatorConstants
                                 .CONNECTION_TEMPLATE_IDS.ORGANIZATION_ENTERPRISE_IDP) {
 
                                 return null;
@@ -377,9 +377,9 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                             let disabledHint: ReactNode = undefined;
 
                             // Disable the Apple template in localhost as it's not supported.
-                            if (template.id === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE &&
+                            if (template.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.APPLE &&
                                                     new URL(deploymentConfig?.serverOrigin)?.
-                                                        hostname === CommonAuthenticatorManagementConstants
+                                                        hostname === CommonAuthenticatorConstants
                                                         .LOCAL_SERVER_URL) {
                                 isTemplateDisabled = true;
                                 disabledHint = t("console:develop.pages." +

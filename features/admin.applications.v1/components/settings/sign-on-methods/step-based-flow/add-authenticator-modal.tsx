@@ -22,7 +22,7 @@ import {
 } from "@wso2is/admin.connections.v1";
 import { useGetConnectionTemplates } from "@wso2is/admin.connections.v1/api/use-get-connection-templates";
 import {
-    CommonAuthenticatorManagementConstants
+    CommonAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
 import {
     FederatedAuthenticatorConstants
@@ -528,9 +528,9 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                             let disabledHint: ReactNode = undefined;
 
                             // Disable the Apple template in localhost as it's not supported.
-                            if (template.id === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE &&
+                            if (template.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.APPLE &&
                                                     new URL(deploymentConfig?.serverOrigin)?.
-                                                        hostname === CommonAuthenticatorManagementConstants
+                                                        hostname === CommonAuthenticatorConstants
                                                         .LOCAL_SERVER_URL) {
                                 isTemplateDisabled = true;
                                 disabledHint = t("console:develop.pages." +

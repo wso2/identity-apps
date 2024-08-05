@@ -21,7 +21,7 @@ import {
     SmsOTPAuthenticator
 } from "@wso2is/admin.connections.v1/components/authenticators/sms-otp/sms-otp-authenticator";
 import {
-    CommonAuthenticatorManagementConstants
+    CommonAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
 import {
     FederatedAuthenticatorConstants
@@ -110,66 +110,66 @@ export const identityProviderConfig: IdentityProviderConfig = {
             const templateMapping: Map<string, Set<string>> = new Map<string, Set<string>>([
                 [
                     IdentityProviderTabTypes.USER_ATTRIBUTES, new Set([
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK,
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE,
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GITHUB,
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.MICROSOFT,
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.HYPR,
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.IPROOV,
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE,
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GITHUB,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.MICROSOFT,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.HYPR,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.APPLE,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
                         SIWEIdPTemplate.templateId
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.SETTINGS, new Set([
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.ATTRIBUTES, new Set([
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.IPROOV
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.CONNECTED_APPS, new Set([
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.CONNECTED_APPS, new Set([
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.IDENTITY_PROVIDER_GROUPS, new Set([
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK,
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE,
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GITHUB,
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.MICROSOFT,
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.HYPR,
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE,
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.IPROOV
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GITHUB,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.MICROSOFT,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.HYPR,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.APPLE,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.OUTBOUND_PROVISIONING, new Set([
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.IPROOV
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.JIT_PROVISIONING, new Set([
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.IPROOV
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.ADVANCED, new Set([
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
-                        CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.IPROOV
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV
                     ])
                 ]
             ]);

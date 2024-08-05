@@ -19,7 +19,7 @@
 /**
  * This class contains the constants for the Common for Authenticators.
  */
-export class CommonAuthenticatorManagementConstants {
+export class CommonAuthenticatorConstants {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
