@@ -61,6 +61,7 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
+    DocumentationLink,
     EmptyPlaceholder,
     ListLayout,
     PageLayout,
@@ -995,7 +996,17 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             }
             title={ t("pages:users.title") }
             pageTitle={ t("pages:users.title") }
-            description={ t("extensions:manage.users.usersSubTitle") }
+            description={ (
+                <>
+                    { t("extensions:manage.users.usersSubTitle") }
+                    <DocumentationLink
+                        link="manage.users.learnMore"
+                        isLinkRef
+                    >
+                        { t("extensions:common.learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
             data-testid={ `${ testId }-page-layout` }
         >
             { isSubOrganization()

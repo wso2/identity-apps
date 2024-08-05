@@ -36,6 +36,7 @@ import { UserStorePostData } from "@wso2is/admin.userstores.v1/models/user-store
 import { AlertInterface, AlertLevels, RolesInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    DocumentationLink,
     EmptyPlaceholder,
     ListLayout,
     PageLayout,
@@ -311,7 +312,17 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             }
             title={ t("pages:groups.title") }
             pageTitle={ t("pages:groups.title") }
-            description={ t("pages:groups.subTitle") }
+            description={ (
+                <>
+                    { t("pages:groups.subTitle") }
+                    <DocumentationLink
+                        link="manage.groups.learnMore"
+                        isLinkRef
+                    >
+                        { t("extensions:common.learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
         >
             <ListLayout
                 advancedSearch={ (
