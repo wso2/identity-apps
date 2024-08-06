@@ -1,5 +1,53 @@
 # @wso2is/console
 
+## 2.21.41
+
+### Patch Changes
+
+- Updated dependencies [[`dc9ac2782b9faa497d06d376c1e1fcf63168ee85`](https://github.com/wso2/identity-apps/commit/dc9ac2782b9faa497d06d376c1e1fcf63168ee85)]:
+  - @wso2is/admin.organizations.v1@2.21.0
+  - @wso2is/react-components@2.3.0
+  - @wso2is/admin.core.v1@2.24.0
+  - @wso2is/i18n@2.5.16
+  - @wso2is/admin.applications.v1@2.22.37
+  - @wso2is/admin.authentication.v1@2.20.107
+  - @wso2is/admin.branding.v1@2.20.107
+  - @wso2is/admin.connections.v1@2.21.37
+  - @wso2is/admin.console-settings.v1@2.20.107
+  - @wso2is/admin.email-and-sms.v1@2.20.107
+  - @wso2is/admin.extensions.v1@2.21.77
+  - @wso2is/admin.groups.v1@2.20.107
+  - @wso2is/admin.organization-discovery.v1@2.20.107
+  - @wso2is/admin.roles.v1@2.20.107
+  - @wso2is/admin.roles.v2@2.20.107
+  - @wso2is/admin.users.v1@2.20.107
+  - @wso2is/admin.validation.v1@2.20.107
+  - @wso2is/admin.administrators.v1@2.21.77
+  - @wso2is/admin.api-resources.v1@2.20.107
+  - @wso2is/admin.api-resources.v2@2.20.107
+  - @wso2is/admin.authorization.v1@2.20.45
+  - @wso2is/admin.certificates.v1@2.20.107
+  - @wso2is/admin.claims.v1@2.20.107
+  - @wso2is/admin.email-management.v1@2.20.107
+  - @wso2is/admin.email-providers.v1@2.20.107
+  - @wso2is/admin.identity-verification-providers.v1@2.20.107
+  - @wso2is/admin.impersonation.v1@1.1.49
+  - @wso2is/admin.oidc-scopes.v1@2.20.107
+  - @wso2is/admin.org-insights.v1@2.20.107
+  - @wso2is/admin.private-key-jwt.v1@2.20.107
+  - @wso2is/admin.remote-repository-configuration.v1@2.20.107
+  - @wso2is/admin.saml2-configuration.v1@2.20.107
+  - @wso2is/admin.secrets.v1@2.20.107
+  - @wso2is/admin.server-configurations.v1@2.21.49
+  - @wso2is/admin.server.v1@2.20.107
+  - @wso2is/admin.session-management.v1@2.20.107
+  - @wso2is/admin.sms-providers.v1@2.20.107
+  - @wso2is/admin.userstores.v1@2.20.107
+  - @wso2is/admin.workflow-approvals.v1@2.20.107
+  - @wso2is/admin.wsfed-configuration.v1@2.20.107
+  - @wso2is/dynamic-forms@2.0.91
+  - @wso2is/form@2.0.92
+
 ## 2.21.40
 
 ### Patch Changes
