@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,19 @@
  * under the License.
  */
 
-export * from "./organization-list";
-export * from "./add-organization-modal";
-export * from "./organization-role-list";
-export * from "./root-only-component";
+export class AdvanceSearchConstants {
+    /**
+     * Filter attribute field identifier.
+     */
+    public static readonly FILTER_ATTRIBUTE_FIELD_IDENTIFIER: string = "filterAttribute";
+
+    /**
+     * Filter condition field identifier.
+     */
+    public static readonly FILTER_CONDITION_FIELD_IDENTIFIER: string = "filterCondition";
+
+    /**
+     * Filter value field identifier.
+     */
+    public static readonly FILTER_VALUES_FIELD_IDENTIFIER: string = "filterValues";
+}
