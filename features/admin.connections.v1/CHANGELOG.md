@@ -1,5 +1,24 @@
 # @wso2is/admin.connections.v1
 
+## 2.21.36
+
+### Patch Changes
+
+- Updated dependencies [[`8d2e9fced7e60158fb1fcdc35ab09bf93271d3e6`](https://github.com/wso2/identity-apps/commit/8d2e9fced7e60158fb1fcdc35ab09bf93271d3e6)]:
+  - @wso2is/react-components@2.2.32
+  - @wso2is/admin.applications.v1@2.22.36
+  - @wso2is/admin.claims.v1@2.20.106
+  - @wso2is/admin.connections.v1@2.21.36
+  - @wso2is/admin.console-settings.v1@2.20.106
+  - @wso2is/admin.core.v1@2.23.36
+  - @wso2is/admin.extensions.v1@2.21.76
+  - @wso2is/admin.identity-providers.v1@2.21.36
+  - @wso2is/admin.organizations.v1@2.20.106
+  - @wso2is/admin.roles.v2@2.20.106
+  - @wso2is/admin.userstores.v1@2.20.106
+  - @wso2is/dynamic-forms@2.0.90
+  - @wso2is/form@2.0.91
+
 ## 2.21.35
 
 ### Patch Changes
