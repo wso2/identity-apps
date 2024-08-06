@@ -47,10 +47,6 @@ const useGetBrandingPreferenceResolve = <Data = BrandingPreferenceAPIResponseInt
     ): RequestResultInterface<Data, Error> => {
     const { organizationType } = useGetCurrentOrganizationType();
 
-    const tenantDomain: string = organizationType === OrganizationType.SUBORGANIZATION
-        ? store.getState()?.organization?.organization?.id
-        : name;
-
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
@@ -59,7 +55,7 @@ const useGetBrandingPreferenceResolve = <Data = BrandingPreferenceAPIResponseInt
         method: HttpMethods.GET,
         params: {
             locale,
-            name: tenantDomain,
+            name,
             type
         },
         url: organizationType === OrganizationType.SUBORGANIZATION

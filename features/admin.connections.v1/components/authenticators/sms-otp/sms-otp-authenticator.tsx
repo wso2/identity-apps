@@ -16,15 +16,20 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import {
+    SMSOTPAuthenticatorForm
+} from "@wso2is/admin.identity-providers.v1/components/forms/authenticators/sms-otp-authenticator-form";
 import {
     CommonAuthenticatorFormInitialValuesInterface,
     CommonAuthenticatorFormMetaInterface
-} from "../../../models/authenticators";
-import {
-    SMSOTPAuthenticatorForm
-} from "../../forms/authenticators/sms-otp-authenticator-form";
+} from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement } from "react";
+import { useSelector } from "react-redux";
 
 interface SmsOTPAuthenticatorInterface extends IdentifiableComponentInterface {
     /**
@@ -74,19 +79,32 @@ export const SmsOTPAuthenticator: FunctionComponent<SmsOTPAuthenticatorInterface
         ...rest
     } = props;
 
-    const isReadOnly: boolean = true;
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config?.ui?.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const { isSubOrganization, organizationType } = useGetCurrentOrganizationType();
+
+    const isReadOnly: boolean =
+        !hasRequiredScopes(
+            featureConfig?.identityProviders,
+            featureConfig?.identityProviders?.scopes?.update,
+            allowedScopes,
+            organizationType
+        )
+        || isSubOrganization();
 
     return (
-        <SMSOTPAuthenticatorForm
-            initialValues={ initialValues }
-            metadata={ metadata }
-            onSubmit={ onSubmit }
-            readOnly = { isReadOnly }
-            triggerSubmit={ triggerSubmit }
-            enableSubmitButton={ enableSubmitButton }
-            showCustomProperties={ showCustomProperties }
-            isSubmitting={ isSubmitting }
-            { ...rest }
-        />
+        <>
+            <SMSOTPAuthenticatorForm
+                initialValues={ initialValues }
+                metadata={ metadata }
+                onSubmit={ onSubmit }
+                readOnly = { isReadOnly }
+                triggerSubmit={ triggerSubmit }
+                enableSubmitButton={ enableSubmitButton }
+                showCustomProperties={ showCustomProperties }
+                isSubmitting={ isSubmitting }
+                { ...rest }
+            />
+        </>
     );
 };

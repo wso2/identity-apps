@@ -55,10 +55,10 @@ import {
     ClaimDialect,
     ExternalClaim,
     HttpMethods,
+    IdentifiableComponentInterface,
     RolesInterface,
     SCIMResource,
-    SCIMSchemaExtension,
-    TestableComponentInterface
+    SCIMSchemaExtension
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -99,7 +99,6 @@ import {
 import {
     BulkResponseSummary,
     BulkUserImportOperationResponse,
-    BulkUserImportOperationStatus,
     MultipleInviteMode,
     SCIMBulkEndpointInterface,
     SCIMBulkOperation,
@@ -112,10 +111,9 @@ import { BulkImportResponseList } from "../bulk-import-response-list";
 /**
  * Prototypes for the BulkImportUserWizardComponent.
  */
-interface BulkImportUserInterface extends TestableComponentInterface {
+interface BulkImportUserInterface extends IdentifiableComponentInterface {
     closeWizard: () => void;
     userstore: string;
-    ["data-componentid"]?: string;
 }
 
 interface CSVAttributeMapping {
@@ -170,7 +168,11 @@ const FILE_IMPORT_TIMEOUT: number = 60000; // 1 minutes.
 export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = (
     props: BulkImportUserInterface
 ): ReactElement => {
-    const { closeWizard, userstore, ["data-componentid"]: componentId } = props;
+    const {
+        closeWizard,
+        userstore,
+        ["data-componentid"]: componentId
+    } = props;
 
     const { t } = useTranslation();
     const { isSubOrganization } = useGetCurrentOrganizationType();
@@ -1409,7 +1411,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @param statusCode - Status code from the bulk response.
      * @returns - Status message.
      */
-    const getStatusFromCode = (statusCode: number): BulkUserImportOperationStatus => {
+    const getStatusFromCode = (statusCode: number): string => {
         if (statusCode === 201 || statusCode === 200) return t(
             "user:modals.bulkImportUserWizard.wizardSummary.tableStatus.success" );
         if (statusCode === 202) return t(

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -64,23 +64,7 @@ interface CustomExtendedWindow extends Window {
                 path: "/t/testorg/develop/applications"
             },
             docSiteUrl: "https://is.docs.wso2.com/",
-            documentation: {
-                baseURL: "https://api.github.com",
-                contentBaseURL: "https://api.github.com/repos/wso2/docs-is/contents/en/docs",
-                githubOptions: {
-                    branch: "new_restructure"
-                },
-                imagePrefixURL: "https://github.com/wso2/docs-is/raw/new_restructure/en/docs/",
-                provider: "GITHUB",
-                structureFileType: "YAML",
-                structureFileURL: "https://api.github.com/repos/wso2/docs-is/contents/en/mkdocs.yml"
-            },
             extensions: {
-                applicationInsightsEnabled: false,
-                applicationInsightsCookieDomain: "",
-                applicationInsightsCookiePostfix: "",
-                applicationInsightsInstrumentationKey: "",
-                applicationInsightsProxyEndpoint: "",
                 collaboratorUsernameRegex: "^[\\u00C0-\\u00FFa-zA-Z0-9.+\\-_]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,10}$",
                 community: "https://wso2iem-en-community.insided.com/ssoproxy/login?ssoType=openidconnect&returnUrl=https://wso2iem-en-community.insided.com/asgardeo-1",
                 feedbackEndPoint: "https://dev.portal.asgardeo.io/api/cloud/v1/feedback/",
@@ -129,7 +113,6 @@ interface CustomExtendedWindow extends Window {
                 appTitle: "Asgardeo Console",
                 appName: "Console",
                 applicationTemplateLoadingStrategy: "LOCAL",
-                identityProviderTemplateLoadingStrategy: "LOCAL",
                 appLogoPath: "/assets/images/branding/logo.svg",
                 showAppSwitchButton: true,
                 features: {

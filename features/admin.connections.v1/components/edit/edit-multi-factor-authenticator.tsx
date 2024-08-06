@@ -33,7 +33,8 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, SemanticShorthandItem, TabPaneProps } from "semantic-ui-react";
 import { updateMultiFactorAuthenticatorDetails } from "../../api/authenticators";
-import { AuthenticatorManagementConstants } from "../../constants/autheticator-constants";
+import { LocalAuthenticatorConstants } from "../../constants/local-authenticator-constants";
+import { AuthenticatorMeta } from "../../meta/authenticator-meta";
 import {
     AuthenticatorInterface,
     AuthenticatorSettingsFormModes,
@@ -108,7 +109,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             return;
         }
 
-        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(identityProviderConfig.authenticators,
+        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(AuthenticatorMeta.getAuthenticators(),
             authenticator.id);
 
         if (!authenticatorConfig?.content?.quickStart) {
@@ -173,9 +174,9 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
 
     const getI18nKeyForMultiFactorAuthenticator =
         (authenticator: MultiFactorAuthenticatorInterface | AuthenticatorInterface) => {
-            if (authenticator.id === AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID) {
+            if (authenticator.id === LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID) {
                 return "updateSMSOTPAuthenticator";
-            } else if (authenticator.id === AuthenticatorManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID) {
+            } else if (authenticator.id === LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID) {
                 return "updateEmailOTPAuthenticator";
             } else {
                 return "updateGenericAuthenticator";
@@ -183,7 +184,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
         };
 
     const displayExternalResourcesButton = () => {
-        if (authenticator.id === AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID) {
+        if (authenticator.id === LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID) {
             return true;
         }
 
@@ -253,8 +254,8 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
         // If the MFA is TOTP/Magic Link skip the settings tab.
         if (
             ![
-                AuthenticatorManagementConstants.TOTP_AUTHENTICATOR_ID,
-                AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID
+                LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID,
+                LocalAuthenticatorConstants.AUTHENTICATOR_IDS.MAGIC_LINK_AUTHENTICATOR_ID
             ].includes(authenticator.id)
         ) {
             panes.push({
@@ -275,8 +276,8 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
     const resolveDefaultActiveIndex = (activeIndex: number): number => {
 
         if (![
-            AuthenticatorManagementConstants.TOTP_AUTHENTICATOR_ID,
-            AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID
+            LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID,
+            LocalAuthenticatorConstants.AUTHENTICATOR_IDS.MAGIC_LINK_AUTHENTICATOR_ID
         ].includes(authenticator.id)) {
             return activeIndex;
         }

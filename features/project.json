@@ -1,4 +1,6 @@
 {
+    "name": "features",
+    "$schema": "../node_modules/nx/schemas/project-schema.json",
     "prefix": "@wso2is",
     "implicitDependencies": [
         "access-control",
@@ -31,7 +33,14 @@
                 "cwd": "features",
                 "parallel": false
             }
+        },
+        "test-coverage": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm test \"--\" --coverage --collect-coverage",
+                "cwd": "features",
+                "parallel": false
+            }
         }
-    },
-    "name": "features"
+    }
 }

@@ -28,7 +28,6 @@
 <%@ page import="javax.servlet.http.HttpServletResponse" %>
 <%@ page import="javax.servlet.ServletException" %>
 <%@ page import="org.apache.commons.collections.map.HashedMap" %>
-<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.RecoveryApiV2" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.AccountRecoveryType" %>
@@ -129,7 +128,7 @@
     final String USERNAME_CLAIM_URI_FOR_TENANT = "http://wso2.org/claims/username";
     final RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
     
-    String username = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("username"));
+    String username = (String) request.getAttribute("username");
     if (StringUtils.isBlank(username)) {
         username = request.getParameter("username");
     }
@@ -227,6 +226,7 @@
         request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
     } else if (RecoveryStage.RESEND.equalsValue(recoveryStage)) {
         String resendCode = request.getParameter("resendCode");
+        String flowConfirmationCode = request.getParameter("flowConfirmationCode");
         // Sending resend request
         try {
             Map<String, String> requestHeaders = new HashedMap();
@@ -240,11 +240,9 @@
             
             /** Resend code re-attached to the reqeust to avoid value being missed after the page refresh that
              *  happens after the resend operation. */
-            request.setAttribute("resendCode", resendResponse.getResendCode());
+            resendCode = resendResponse.getResendCode();
+            flowConfirmationCode = resendResponse.getFlowConfirmationCode();
             request.setAttribute("resendSuccess", true);
-            request.setAttribute("flowConfirmationCode", resendResponse.getFlowConfirmationCode());
-            request.setAttribute("isMultiRecoveryOptionsAvailable",
-                request.getParameter("isMultiRecoveryOptionsAvailable"));
         } catch (ApiException e) {
             /** Status code 406 is used for invalid/expired channel id/recovery code. Other error are considered
             unexpected and redirected to the error page. */
@@ -255,8 +253,10 @@
             }
             request.setAttribute("isResendFailure","true");
             request.setAttribute("resendFailureMsg", "resend.fail.message");
-            request.setAttribute("resendCode", resendCode);
         }
+        request.setAttribute("resendCode", resendCode);
+        request.setAttribute("sp", request.getParameter("sp"));
+        request.setAttribute("flowConfirmationCode", flowConfirmationCode);
         request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
     } else if (RecoveryStage.CONFIRM.equalsValue(recoveryStage)) {
         String flowConfirmationCode = request.getParameter("flowConfirmationCode"); 
@@ -283,6 +283,9 @@
             }
             request.setAttribute("isAuthFailure","true");
             request.setAttribute("authFailureMsg", "authentication.fail.message");
+            request.setAttribute("resendCode", request.getParameter("resendCode"));
+            request.setAttribute("sp", request.getParameter("sp"));
+            request.setAttribute("flowConfirmationCode", flowConfirmationCode);
             request.getRequestDispatcher("sms-otp.jsp").forward(request, response);
             return;
         }

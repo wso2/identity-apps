@@ -16,6 +16,7 @@
  * under the License.
  */
 
+export * from "./admin.administrators.v1/public-api";
 export * from "./admin.api-resources.v2/public-api";
 export * from "./admin.application-roles.v1/public-api";
 export * from "./admin.applications.v1/public-api";
@@ -35,12 +36,10 @@ export * from "./admin.extensions.v1/public-api";
 export * from "./admin.groups.v1/public-api";
 export * from "./admin.identity-providers.v1/public-api";
 export * from "./admin.identity-verification-providers.v1/public-api";
-export * from "./admin.layouts.v1/public-api";
 export * from "./admin.oidc-scopes.v1/public-api";
 export * from "./admin.org-insights.v1/public-api";
 export * from "./admin.organization-discovery.v1/public-api";
 export * from "./admin.organizations.v1/public-api";
-export * from "./admin.parent-roles.v1/public-api";
 export * from "./admin.private-key-jwt.v1/public-api";
 export * from "./admin.provisioning.v1/public-api";
 export * from "./admin.remote-repository-configuration.v1/public-api";
@@ -53,6 +52,6 @@ export * from "./admin.tenants.v1/public-api";
 export * from "./admin.users.v1/public-api";
 export * from "./admin.userstores.v1/public-api";
 export * from "./admin.validation.v1/public-api";
-export * from "./admin.views.v1/public-api";
 export * from "./admin.workflow-approvals.v1/public-api";
 export * from "./admin.wsfed-configuration.v1/public-api";
+export * from "./admin.impersonation.v1/public-api";

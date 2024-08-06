@@ -129,6 +129,8 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
             if (loggedUserName === adminUser) {
                 setIsSuperAdmin(true);
             }
+        }).catch((_error: unknown) => {
+            setIsSuperAdmin(false);
         });
     };
 

@@ -44,6 +44,7 @@
 <%@ page import="org.apache.commons.collections.MapUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.model.AuthenticationRequestWrapper" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%@ include file="includes/localize.jsp" %>
@@ -70,6 +71,7 @@
     private static final String GITHUB_AUTHENTICATOR = "GithubAuthenticator";
     private static final String FACEBOOK_AUTHENTICATOR = "FacebookAuthenticator";
     private static final String OIDC_AUTHENTICATOR = "OpenIDConnectAuthenticator";
+    private static final String SSO_AUTHENTICATOR_NAME = "SSO";
     private static final String MICROSOFT_IDP = "Microsoft";
     private static final String ENTERPRISE_USER_LOGIN_AUTHENTICATOR = "EnterpriseIDPAuthenticator";
     private static final String ENTERPRISE_USER_LOGIN_ORG = "EnterpriseIDP_Org";
@@ -200,7 +202,17 @@
 
         // Build the query string using the parameter map since the query string can contain fewer parameters
         // due to parameter filtering.
-        String queryParamString = AuthenticationEndpointUtil.resolveQueryString(request.getParameterMap());
+        Map<String, String[]> queryParamMap = request.getParameterMap();
+        Map<String, Object> authParamMap = ((AuthenticationRequestWrapper) request).getAuthParams();
+
+        // Remove `waitingConfigs` auth param from the query map since `internalWait` prompt related auth params
+        // doesn't need to be added to the multi-option uri.
+        if (authParamMap != null && !authParamMap.isEmpty() && queryParamMap != null && !queryParamMap.isEmpty()) {
+            if (authParamMap.containsKey("waitingConfigs") && authParamMap.containsKey("waitingType")) {
+                queryParamMap.remove("waitingConfigs");
+            }
+        }
+        String queryParamString = AuthenticationEndpointUtil.resolveQueryString(queryParamMap);
         multiOptionURIParam = "&multiOptionURI=" + Encode.forUriComponent(baseURL + queryParamString);
     }
 
@@ -653,6 +665,10 @@
                                         String EXTERNAL_CONNECTION_PREFIX = "sign in with";
                                         if (StringUtils.startsWithIgnoreCase(idpDisplayName, EXTERNAL_CONNECTION_PREFIX)) {
                                             idpDisplayName = idpDisplayName.substring(EXTERNAL_CONNECTION_PREFIX.length());
+                                        }
+                                        // If IdP name is "SSO", need to handle as special case.
+                                        if (StringUtils.equalsIgnoreCase(idpName, SSO_AUTHENTICATOR_NAME)) {
+                                            imageURL = "libs/themes/default/assets/images/identity-providers/sso.svg";
                                         }
                             %>
                                 <% if (isHubIdp) { %>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -86,6 +86,11 @@ interface ApplicationsDocumentationLinksInterface {
             manageOIDCScopes: string;
         },
         common: {
+            advanced: {
+                trustedApps: {
+                    learnMore: string
+                }
+            },
             signInMethod: {
                 learnMore: string;
                 conditionalAuthenticaion: {
@@ -406,6 +411,7 @@ interface UsersDocumentationLinksInterface {
     customerAccounts: {
         learnMore: string;
     }
+    learnMore: string;
     newCollaboratorUser: {
         learnMore: string;
     }
@@ -454,6 +460,20 @@ interface EmailCustomizationLinksInterface {
             learnMore: string
         }
     }
+}
+
+/**
+ * Interface for the insights section documentation structure.
+ */
+interface InsightsDocumentationLinksInterface {
+    learnMore: string;
+}
+
+/**
+ * Interface for the logs section documentation structure.
+ */
+interface LogsDocumentationLinksInterface {
+    learnMore: string;
 }
 
 /**
@@ -515,6 +535,14 @@ export interface DocumentationLinksExtensionInterface {
          * Documentation links for groups section elements.
          */
         groups: GroupsDocumentationLinksInterface;
+        /**
+         * Documentation links for insights section elements.
+         */
+        insights: InsightsDocumentationLinksInterface;
+        /**
+         * Documentation links for logs section elements.
+         */
+        logs: LogsDocumentationLinksInterface;
         /**
          * Documentation links for organization section elements.
          */

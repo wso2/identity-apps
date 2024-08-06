@@ -71,6 +71,7 @@ export interface OIDCMetadataInterface {
     accessTokenBindingValidation?: boolean;
     revokeTokensWhenIDPSessionTerminated?: boolean;
     tokenEndpointAuthMethod?: MetadataPropertyInterface;
+    tokenEndpointAllowReusePvtKeyJwt?: boolean;
     tokenEndpointSignatureAlgorithm?: MetadataPropertyInterface;
     requestObjectSignatureAlgorithm?: MetadataPropertyInterface;
     requestObjectEncryptionMethod?: MetadataPropertyInterface;
@@ -100,6 +101,7 @@ export interface HybridFlowConfigurationInterface {
  */
 export interface ClientAuthenticationConfigurationInterface {
     tokenEndpointAuthMethod?: string;
+    tokenEndpointAllowReusePvtKeyJwt?: boolean;
     tokenEndpointAuthSigningAlg?: string;
     tlsClientAuthSubjectDn?: string;
 }
@@ -135,6 +137,14 @@ interface JWTAccessTokenConfigurationInterface {
 interface RefreshTokenConfigurationInterface {
     expiryInSeconds?: number;
     renewRefreshToken?: boolean;
+}
+
+/**
+ * Interface for Subject Token Configuration.
+ */
+interface SubjectTokenConfigurationInterface {
+    applicationSubjectTokenExpiryInSeconds?: number;
+    enable?: boolean;
 }
 
 interface IdTokenEncryptionConfigurationInterface {
@@ -180,6 +190,7 @@ export interface OIDCDataInterface {
     requestObject?: RequestObjectConfigurationInterface;
     accessToken?: AccessTokenConfigurationInterface;
     refreshToken?: RefreshTokenConfigurationInterface;
+    subjectToken?: SubjectTokenConfigurationInterface;
     idToken?: IdTokenConfigurationInterface;
     logout?: OIDCLogoutConfigurationInterface;
     validateRequestObjectSignature?: boolean;

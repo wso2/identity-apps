@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,16 +16,20 @@
  * under the License.
  */
 
-import Grid from "@oxygen-ui/react/Grid";
 import {
     VerticalStepper,
     VerticalStepperStepInterface
 } from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import ApplicationSelectionModal from "@wso2is/admin.extensions.v1/components/shared/application-selection-modal";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { Grid } from "semantic-ui-react";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
 
 /**
@@ -52,10 +56,17 @@ const MagicLinkQuickStart: FunctionComponent<MagicLinkQuickStartPropsInterface> 
 
     const [ showApplicationModal, setShowApplicationModal ] = useState<boolean>(false);
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const isApplicationReadAccessAllowed: boolean = useMemo(() => (
+        hasRequiredScopes(
+            featureConfig?.applications, featureConfig?.applications?.scopes?.read, allowedScopes)
+    ), [ featureConfig, allowedScopes ]);
+
     /**
      * Vertical Stepper steps.
-     *
-     * @returns An array of steps for the vertical stepper.
+     * @returns List of steps.
      */
     const steps: VerticalStepperStepInterface[] = [
         {
@@ -64,21 +75,19 @@ const MagicLinkQuickStart: FunctionComponent<MagicLinkQuickStartPropsInterface> 
                     <Text>
                         <Trans
                             i18nKey={
-                                "extensions:develop.identityProviders.magicLink" +
-                                ".quickStart.steps.selectApplication.content"
+                                "extensions:develop.identityProviders.magicLink.quickStart.steps.selectApplication" +
+                                ".content"
                             }
                         >
-                            Choose the <Link
-                                external={ false }
-                                onClick={ () => setShowApplicationModal(true) }>
-                                application </Link>
+                            Choose the { isApplicationReadAccessAllowed ? (
+                                <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
+                                application </Link>) : "application" }
                             for which you want to set up Magic Link login.
                         </Trans>
                     </Text>
                 </>
             ),
-            stepTitle: t("extensions:develop.identityProviders.magicLink" +
-                ".quickStart.steps.selectApplication.heading")
+            stepTitle: t("extensions:develop.identityProviders.magicLink.quickStart.steps.selectApplication.heading")
         },
         {
             stepContent: (
@@ -107,26 +116,30 @@ const MagicLinkQuickStart: FunctionComponent<MagicLinkQuickStartPropsInterface> 
 
     return (
         <>
-            <Grid container spacing={ { md: 3, xs: 2 } } columns={ { md: 12, sm: 8, xs: 4 } }>
-                <Grid md={ 12 } sm={ 8 } xs={ 4 }>
-                    <PageHeader
-                        className="mb-2"
-                        imageSpaced={ false }
-                        bottomMargin={ false }
-                        title={ t("extensions:develop.identityProviders.magicLink.quickStart.heading") }
-                    />
-                    <Heading subHeading as="h6">
-                        { t("extensions:develop.identityProviders.magicLink.quickStart.subHeading") }
-                    </Heading>
-                </Grid>
-                <Grid md={ 12 } sm={ 8 } xs={ 4 }>
-                    <VerticalStepper
-                        alwaysOpen
-                        isSidePanelOpen
-                        stepContent={ steps }
-                        isNextEnabled={ true }
-                    />
-                </Grid>
+            <Grid data-testid={ testId } className="authenticator-quickstart-content">
+                <Grid.Row textAlign="left">
+                    <Grid.Column width={ 16 }>
+                        <PageHeader
+                            className="mb-2"
+                            imageSpaced={ false }
+                            bottomMargin={ false }
+                            title={ t("extensions:develop.identityProviders.magicLink.quickStart.heading") }
+                        />
+                        <Heading subHeading as="h6">
+                            { t("extensions:develop.identityProviders.magicLink.quickStart.subHeading") }
+                        </Heading>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row textAlign="left">
+                    <Grid.Column width={ 16 }>
+                        <VerticalStepper
+                            alwaysOpen
+                            isSidePanelOpen
+                            stepContent={ steps }
+                            isNextEnabled={ true }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
             </Grid>
             {
                 showApplicationModal && (

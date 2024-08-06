@@ -16,67 +16,27 @@
  * under the License.
  */
 
-import { ConnectionManagementConstants, ConnectionTabTypes } from "@wso2is/admin.connections.v1";
-import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
-import {
-    AuthenticatorLabels,
-    IdentityProviderTabTypes
-} from "@wso2is/admin.identity-providers.v1/models";
-import { I18n } from "@wso2is/i18n";
-import { ResourceTabPaneInterface } from "@wso2is/react-components";
-import React, { ElementType, ReactElement, lazy } from "react";
-import { IdentityProviderConfig } from "./models";
+import { ConnectionTabTypes } from "@wso2is/admin.connections.v1";
 import {
     SmsOTPAuthenticator
-} from "../components/authenticators/sms-otp/sms-otp-authenticator";
+} from "@wso2is/admin.connections.v1/components/authenticators/sms-otp/sms-otp-authenticator";
+import {
+    CommonAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
+import { IdentityProviderTabTypes } from "@wso2is/admin.identity-providers.v1/models";
+import { I18n } from "@wso2is/i18n";
+import { ResourceTabPaneInterface } from "@wso2is/react-components";
+import React, { ElementType, ReactElement } from "react";
+import { IdentityProviderConfig } from "./models";
 import QuickStartTab from "../components/component-extensions/application/quick-start-tab";
 import { SIWEAuthenticatorForm } from "../identity-provider-templates/templates/swe/swe-authenticator-form";
 import SIWEIdPTemplate from "../identity-provider-templates/templates/swe/swe.json";
 
 export const identityProviderConfig: IdentityProviderConfig = {
-    // TODO: Refactor authenticators out of IdentityProviderConfigs to AuthenticatorConfig
-    authenticators: {
-        [ IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID ]: {
-            content: {
-                quickStart: lazy(() => import("../components/authenticators/email-otp/quick-start"))
-            },
-            isComingSoon: false,
-            isEnabled: true,
-            useAuthenticatorsAPI: false
-        },
-        [ IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: {
-            content: {
-                quickStart: lazy(() => import("../components/authenticators/sms-otp/quick-start"))
-            },
-            isComingSoon: false,
-            isEnabled: true,
-            useAuthenticatorsAPI: false
-        },
-        [ IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID ]: {
-            content: {
-                quickStart: lazy(() => import("../components/authenticators/totp/quick-start"))
-            },
-            isComingSoon: false,
-            isEnabled: true,
-            useAuthenticatorsAPI: true
-        },
-        [ IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID ]: {
-            content: {
-                quickStart: lazy(() => import("../components/authenticators/fido/quick-start"))
-            },
-            isComingSoon: false,
-            isEnabled: true,
-            useAuthenticatorsAPI: false
-        },
-        [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: {
-            content: {
-                quickStart: lazy(() => import("../components/authenticators/magic-link/quick-start"))
-            },
-            isComingSoon: false,
-            isEnabled: true,
-            useAuthenticatorsAPI: true
-        }
-    },
     editIdentityProvider: {
         enableFIDOTrustedAppsConfiguration: false,
         getOverriddenAuthenticatorForm: (
@@ -115,7 +75,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
                 );
             }
 
-            if( type === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID ) {
+            if( type === LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ) {
                 return (
                     <SmsOTPAuthenticator
                         initialValues={ initialValues }
@@ -150,66 +110,66 @@ export const identityProviderConfig: IdentityProviderConfig = {
             const templateMapping: Map<string, Set<string>> = new Map<string, Set<string>>([
                 [
                     IdentityProviderTabTypes.USER_ATTRIBUTES, new Set([
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.MICROSOFT,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.HYPR,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.IPROOV,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.APPLE,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GITHUB,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.MICROSOFT,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.HYPR,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.APPLE,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
                         SIWEIdPTemplate.templateId
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.SETTINGS, new Set([
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.ATTRIBUTES, new Set([
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.IPROOV
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.CONNECTED_APPS, new Set([
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.CONNECTED_APPS, new Set([
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.IDENTITY_PROVIDER_GROUPS, new Set([
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GITHUB,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.MICROSOFT,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.HYPR,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.APPLE,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.IPROOV
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GITHUB,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.MICROSOFT,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.HYPR,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.APPLE,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.OUTBOUND_PROVISIONING, new Set([
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.IPROOV
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.JIT_PROVISIONING, new Set([
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.IPROOV
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.ADVANCED, new Set([
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
-                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.IPROOV
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV
                     ])
                 ]
             ]);
@@ -237,14 +197,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
         isAssertionEncryptionEnabled: true,
         responseAuthenticationContextClassEnabled: true,
         saml2WebSSOUserIdLocationEnabled: true
-    },
-    fidoTags: [
-        AuthenticatorLabels.PASSWORDLESS,
-        AuthenticatorLabels.PASSKEY
-    ],
-    filterFidoTags: (tags: string[]): string[] => {
-        return tags.filter((tag: string) =>
-            tag === AuthenticatorLabels.PASSWORDLESS || tag === AuthenticatorLabels.PASSKEY);
     },
     jitProvisioningSettings: {
         enableAssociateLocalUserField: {
@@ -280,7 +232,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
     utils: {
         hideIdentityClaimAttributes(authenticatorId: string): boolean {
             const identityClaimsHiddenAuthenticators: Set<string> = new Set([
-                ConnectionManagementConstants.SAML_AUTHENTICATOR_ID
+                FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID
             ]);
 
             return identityClaimsHiddenAuthenticators.has(authenticatorId);

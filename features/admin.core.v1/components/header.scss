@@ -1,0 +1,109 @@
+/**
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+// --- Upgrade button styles ---
+
+// Header upgrade button styles
+$header-upgrade-btn-background: linear-gradient(93deg, #ddb7380d 50%, #cba8370d 88.67%, #bd9b2c0d 112.88%);
+$header-upgrade-btn-font-weight: 700;
+$header-upgrade-btn-line-height: 20px;
+$header-upgrade-btn-border-color: #E0B834;
+$header-upgrade-btn-border-color-hover: #FBCB30;
+$header-upgrade-btn-border: 1px solid $header-upgrade-btn-border-color;
+$header-upgrade-btn-border-hover: 1px solid $header-upgrade-btn-border-color-hover;
+$header-upgrade-btn-text-color: linear-gradient(93deg, #DDB638 50%, #CBA837 88.67%, #BD9B2C 112.88%);
+$header-upgrade-btn-text-fill-color: transparent;
+
+.header-upgrade-btn {
+    background-image: $header-upgrade-btn-background;
+    font-weight: $header-upgrade-btn-font-weight;
+    line-height: $header-upgrade-btn-line-height;
+    border: $header-upgrade-btn-border;
+    transition: background-image 0.3s ease-in-out;
+    transition-delay: 0s;
+
+    .oxygen-icon {
+        fill: $header-upgrade-btn-border-color;
+        height: 20px;
+        width: 20px;
+        path {
+            stroke: $header-upgrade-btn-border-color;
+            stroke-width: 0.5;
+            transition: all 0.3s ease-in-out;
+            transition-delay: 0s;
+        }
+    }
+
+    .header-upgrade-btn-text {
+        background-clip: text;
+        background-image: $header-upgrade-btn-text-color;
+        background-blend-mode: darken;
+        color: $header-upgrade-btn-text-fill-color;
+        transition: background-position .2s,outline-width .2s;
+        transition-delay: 0s;
+    }
+}
+
+.header-upgrade-btn:hover {
+    background-image: $header-upgrade-btn-text-color;
+    border: $header-upgrade-btn-border-hover;
+
+    .oxygen-icon {
+        fill: var(--oxygen-palette-primary-contrastText);
+        path {
+            stroke: var(--oxygen-palette-primary-contrastText);
+            stroke-width: 0.75;
+        }
+    }
+
+    .header-upgrade-btn-text {
+        color: var(--oxygen-palette-primary-contrastText);
+    }
+}
+
+// --- Get help dropdown item styles ---
+
+// Get help dropdown item styles
+$contact-support-dropdown-item-contact-support-background-hover: linear-gradient(93deg, rgba(203, 168, 55, 0.10) 50%, rgba(135, 103, 0, 0.10) 112.88%);
+$get-help-dropdown-divider-border-color: #E1E1E152;
+
+.get-help-dropdown-divider {
+    border-color: $get-help-dropdown-divider-border-color;
+    margin-bottom: 7px !important;
+}
+
+.contact-support-dropdown-item:hover {
+    background: $contact-support-dropdown-item-contact-support-background-hover;
+}
+
+.contact-support-title {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+
+    .oxygen-chip-premium {
+        margin-left: 6px;
+    }
+}
+
+.contact-support-subtitle {
+    max-width: 213px;
+    text-wrap: wrap;
+    line-height: 16px;
+    margin-top: 4px !important;
+}

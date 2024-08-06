@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -543,8 +543,6 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                                         ".scopes.label")
                                                                     }
                                                                 </Typography>
-
-
                                                                 {
                                                                     isScopeSelectDropdownReady
                                                                         ? (
@@ -711,6 +709,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                         {
                                             !m2mApplication
                                             && selectedAPIResource
+                                            && selectedPolicy
                                             && (
                                                 <Grid.Row columns={ 1 } className="pt-0">
                                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
@@ -784,7 +783,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                 floated="right"
                                 onClick={ handleFormSubmit }
                                 loading={ isSubmitting }
-                                disabled={ !selectedAPIResource }
+                                disabled={ !selectedAPIResource || !selectedPolicy }
                             >
                                 { t("extensions:develop.applications.edit.sections." +
                                         "apiAuthorization.sections.apiSubscriptions.wizards." +

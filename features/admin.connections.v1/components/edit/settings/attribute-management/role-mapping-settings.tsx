@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,6 +25,7 @@ import {
     OrganizationRoleListResponseInterface
 } from "@wso2is/admin.organizations.v1/models";
 import { getRolesList } from "@wso2is/admin.roles.v2/api/roles";
+import { INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants";
 import { RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { DynamicField, KeyValue } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
@@ -33,7 +34,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import { ConnectionRoleMappingInterface } from "../../../../models/connection";
 import { handleGetRoleListError } from "../../../../utils/connection-utils";
 
@@ -135,7 +135,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
      */
     const resolveRoleName = (role: string): string => {
         if (role.split("/").length === 1) {
-            return `${ ConnectionManagementConstants.INTERNAL_DOMAIN }${ role }`;
+            return `${ INTERNAL_DOMAIN }/${ role }`;
         }
 
         return role;
@@ -152,7 +152,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
         const roleParts: string[] = role.split("/");
 
         if (roleParts.length > 1) {
-            if (roleParts[ 0 ] === ConnectionManagementConstants.INTERNAL_DOMAIN.slice(0, -1)) {
+            if (roleParts[ 0 ] === `${ INTERNAL_DOMAIN }/`.slice(0, -1)) {
                 return roleParts[ 1 ];
             }
         }

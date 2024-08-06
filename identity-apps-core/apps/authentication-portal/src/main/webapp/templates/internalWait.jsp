@@ -58,14 +58,22 @@
     if (requestDataObject instanceof Map) {
         Map<String, Object> requestData = (Map<String, Object>) requestDataObject;
 
-        if (StringUtils.isNotBlank((String) requestData.get("type"))) {
+        if (StringUtils.isNotBlank((String) requestData.get("waitingType"))) {
+            if (WaitingMethods.contains((String) requestData.get("waitingType"))) {
+                type = Encode.forJavaScriptAttribute((String) requestData.get("waitingType"));
+            }
+        } else if (StringUtils.isNotBlank((String) requestData.get("type"))) {
             if (WaitingMethods.contains((String) requestData.get("type"))) {
                 type = Encode.forJavaScriptAttribute((String) requestData.get("type"));
             }
         }
 
         // Process the function data.
-        Map<String, Object> functionData = (Map<String, Object>) requestData.get("data");
+        Map<String, Object> functionData = (Map<String, Object>) requestData.get("waitingConfigs");
+        if (functionData == null) {
+            functionData = (Map<String, Object>) requestData.get("data");
+        }
+
 
         if (functionData != null) {
             // Set the greeting and message.

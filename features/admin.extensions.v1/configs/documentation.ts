@@ -71,6 +71,11 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         manageOIDCScopes: undefined
                     },
                     common: {
+                        advanced: {
+                            trustedApps: {
+                                learnMore: undefined
+                            }
+                        },
                         signInMethod: {
                             conditionalAuthenticaion: {
                                 ai: {
@@ -338,6 +343,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                     learnMore: undefined
                 }
             },
+            insights: {
+                learnMore: undefined
+            },
             loginSecurity: {
                 botDetection: {
                     learnMore: undefined
@@ -345,6 +353,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 loginAttempts: {
                     learnMore: undefined
                 }
+            },
+            logs: {
+                learnMore: undefined
             },
             organizations: {
                 learnMore: undefined
@@ -389,6 +400,7 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 customerAccounts: {
                     learnMore: undefined
                 },
+                learnMore: undefined,
                 newCollaboratorUser: {
                     learnMore: undefined
                 }

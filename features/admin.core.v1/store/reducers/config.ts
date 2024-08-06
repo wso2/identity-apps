@@ -67,7 +67,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 tenantQualifiedPath: ""
             },
             docSiteURL: "",
-            documentation: null,
             extensions: null,
             helpCenterURL: "",
             idpConfigs: null,
@@ -118,7 +117,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             guests: "",
             guestsList: "",
             identityProviders: "",
-            jwtAuthenticationServiceMgt: "",
+            impersonationConfigurations: "",
             localAuthenticators: "",
             localClaims: "",
             loginPolicies: "",
@@ -224,7 +223,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             hiddenConnectionTemplates: [],
             hiddenUserStores: [],
             i18nConfigs: null,
-            identityProviderTemplateLoadingStrategy: null,
             identityProviderTemplates: {
                 apple: {
                     enabled: false
@@ -263,6 +261,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isRequestPathAuthenticationEnabled: undefined,
             isSAASDeployment: undefined,
             isSignatureValidationCertificateAliasEnabled: undefined,
+            isTrustedAppConsentRequired: undefined,
             listAllAttributeDialects: undefined,
             privacyPolicyConfigs: null,
             productName: "",

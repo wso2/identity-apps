@@ -1,5 +1,165 @@
 # @wso2is/react-components
 
+## 2.2.32
+
+### Patch Changes
+
+- [#6728](https://github.com/wso2/identity-apps/pull/6728) [`8d2e9fced7e60158fb1fcdc35ab09bf93271d3e6`](https://github.com/wso2/identity-apps/commit/8d2e9fced7e60158fb1fcdc35ab09bf93271d3e6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix search query not being shown after search results are retrieved
+
+## 2.2.31
+
+### Patch Changes
+
+- [#6707](https://github.com/wso2/identity-apps/pull/6707) [`64d1d40cf664987e22e18a3cd7983a5e845829f3`](https://github.com/wso2/identity-apps/commit/64d1d40cf664987e22e18a3cd7983a5e845829f3) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add missing learn more doc links
+
+## 2.2.30
+
+### Patch Changes
+
+- [#6715](https://github.com/wso2/identity-apps/pull/6715) [`afeb344ddbc6a674f342893b3f8135977e52a468`](https://github.com/wso2/identity-apps/commit/afeb344ddbc6a674f342893b3f8135977e52a468) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Bump oxygen ui version
+
+## 2.2.29
+
+### Patch Changes
+
+- [#6702](https://github.com/wso2/identity-apps/pull/6702) [`198c2432e6eacdc2bcf1bb9e7432ea7d700f7534`](https://github.com/wso2/identity-apps/commit/198c2432e6eacdc2bcf1bb9e7432ea7d700f7534) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prevent showing search bar in list layout when the data retrieval is in progress
+
+## 2.2.28
+
+### Patch Changes
+
+- Updated dependencies [[`d9615827f6e7c2f087c1debdb377e02e66ac4e62`](https://github.com/wso2/identity-apps/commit/d9615827f6e7c2f087c1debdb377e02e66ac4e62)]:
+  - @wso2is/theme@2.0.98
+
+## 2.2.27
+
+### Patch Changes
+
+- [#6676](https://github.com/wso2/identity-apps/pull/6676) [`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da) Thanks [@Achintha444](https://github.com/Achintha444)! - Update oxygen-ui to `1.13.3`
+
+- Updated dependencies [[`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da)]:
+  - @wso2is/theme@2.0.97
+  - @wso2is/core@2.0.60
+
+## 2.2.26
+
+### Patch Changes
+
+- Updated dependencies [[`ee0dc227a7e86ad7356ec222c1284e66d634d935`](https://github.com/wso2/identity-apps/commit/ee0dc227a7e86ad7356ec222c1284e66d634d935)]:
+  - @wso2is/core@2.0.59
+
+## 2.2.25
+
+### Patch Changes
+
+- [#6651](https://github.com/wso2/identity-apps/pull/6651) [`6bdf8d9c726e3ee2bf575af014098ee5768ee672`](https://github.com/wso2/identity-apps/commit/6bdf8d9c726e3ee2bf575af014098ee5768ee672) Thanks [@Achintha444](https://github.com/Achintha444)! - Update the oxygen version to 1.13.2
+
+- Updated dependencies [[`6bdf8d9c726e3ee2bf575af014098ee5768ee672`](https://github.com/wso2/identity-apps/commit/6bdf8d9c726e3ee2bf575af014098ee5768ee672)]:
+  - @wso2is/theme@2.0.96
+  - @wso2is/core@2.0.58
+
+## 2.2.24
+
+### Patch Changes
+
+- Updated dependencies [[`196e3426e7f99b6741e5aada839d2ee3000f005a`](https://github.com/wso2/identity-apps/commit/196e3426e7f99b6741e5aada839d2ee3000f005a)]:
+  - @wso2is/theme@2.0.95
+
+## 2.2.23
+
+### Patch Changes
+
+- [#6635](https://github.com/wso2/identity-apps/pull/6635) [`411658f1efc46cf71ea40b6bae511f42891c7a43`](https://github.com/wso2/identity-apps/commit/411658f1efc46cf71ea40b6bae511f42891c7a43) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix some eslint warnings not being shown in vscode editor
+
+* [#6487](https://github.com/wso2/identity-apps/pull/6487) [`0683e51ac6194dfa54c2a5f508d0a33b487b6ebf`](https://github.com/wso2/identity-apps/commit/0683e51ac6194dfa54c2a5f508d0a33b487b6ebf) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove unnecessary legacy mode configs and its usage
+
+* Updated dependencies [[`411658f1efc46cf71ea40b6bae511f42891c7a43`](https://github.com/wso2/identity-apps/commit/411658f1efc46cf71ea40b6bae511f42891c7a43), [`0683e51ac6194dfa54c2a5f508d0a33b487b6ebf`](https://github.com/wso2/identity-apps/commit/0683e51ac6194dfa54c2a5f508d0a33b487b6ebf)]:
+  - @wso2is/theme@2.0.94
+  - @wso2is/core@2.0.57
+
+## 2.2.22
+
+### Patch Changes
+
+- [#6632](https://github.com/wso2/identity-apps/pull/6632) [`9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a`](https://github.com/wso2/identity-apps/commit/9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a) Thanks [@Achintha444](https://github.com/Achintha444)! - Update the oxygen version to `1.13.1` to fix the issue in the design of the default Chip design.
+
+- Updated dependencies [[`9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a`](https://github.com/wso2/identity-apps/commit/9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a)]:
+  - @wso2is/theme@2.0.93
+  - @wso2is/core@2.0.56
+
+## 2.2.21
+
+### Patch Changes
+
+- Updated dependencies [[`98ae1e51e5e4c1bbaf52ac814af1da1722efb596`](https://github.com/wso2/identity-apps/commit/98ae1e51e5e4c1bbaf52ac814af1da1722efb596)]:
+  - @wso2is/theme@2.0.92
+
+## 2.2.20
+
+### Patch Changes
+
+- [#6617](https://github.com/wso2/identity-apps/pull/6617) [`7e3bfd46f7a76dc74727dfe23ebbca66675dff85`](https://github.com/wso2/identity-apps/commit/7e3bfd46f7a76dc74727dfe23ebbca66675dff85) Thanks [@Achintha444](https://github.com/Achintha444)! - update the design of the Chip component
+
+- Updated dependencies [[`7e3bfd46f7a76dc74727dfe23ebbca66675dff85`](https://github.com/wso2/identity-apps/commit/7e3bfd46f7a76dc74727dfe23ebbca66675dff85)]:
+  - @wso2is/theme@2.0.91
+  - @wso2is/core@2.0.55
+
+## 2.2.19
+
+### Patch Changes
+
+- Updated dependencies [[`768bb7367149129d198d65d69f07e6f97a6a2ed7`](https://github.com/wso2/identity-apps/commit/768bb7367149129d198d65d69f07e6f97a6a2ed7)]:
+  - @wso2is/core@2.0.54
+
+## 2.2.18
+
+### Patch Changes
+
+- Updated dependencies [[`5d49c2defe346f4e2a4391f20689f5039d9b6066`](https://github.com/wso2/identity-apps/commit/5d49c2defe346f4e2a4391f20689f5039d9b6066)]:
+  - @wso2is/core@2.0.53
+
+## 2.2.17
+
+### Patch Changes
+
+- [#6587](https://github.com/wso2/identity-apps/pull/6587) [`898d86fa22f8819db0961c6de429484c097bb3ab`](https://github.com/wso2/identity-apps/commit/898d86fa22f8819db0961c6de429484c097bb3ab) Thanks [@brionmario](https://github.com/brionmario)! - [cleanup] Remove `documentation` object & related logic from Console + Other cleanup
+
+- Updated dependencies [[`898d86fa22f8819db0961c6de429484c097bb3ab`](https://github.com/wso2/identity-apps/commit/898d86fa22f8819db0961c6de429484c097bb3ab)]:
+  - @wso2is/core@2.0.52
+
+## 2.2.16
+
+### Patch Changes
+
+- Updated dependencies [[`b0e396cc7b02051c9191337dc207a851d1aea360`](https://github.com/wso2/identity-apps/commit/b0e396cc7b02051c9191337dc207a851d1aea360)]:
+  - @wso2is/theme@2.0.90
+
+## 2.2.15
+
+### Patch Changes
+
+- [#6585](https://github.com/wso2/identity-apps/pull/6585) [`6500ca1be1c4bbc939c7a0024b80f2aa5be123f1`](https://github.com/wso2/identity-apps/commit/6500ca1be1c4bbc939c7a0024b80f2aa5be123f1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update console callback URL to getting started page on error boundary being triggered
+
+## 2.2.14
+
+### Patch Changes
+
+- [#6581](https://github.com/wso2/identity-apps/pull/6581) [`7f50838d255ffeea0d8c65e1a696f6a923738146`](https://github.com/wso2/identity-apps/commit/7f50838d255ffeea0d8c65e1a696f6a923738146) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Improve android thumbprint error handling
+
+## 2.2.13
+
+### Patch Changes
+
+- Updated dependencies [[`f1d9b7ccbe14f1a42b6d3360da664acf39ba6909`](https://github.com/wso2/identity-apps/commit/f1d9b7ccbe14f1a42b6d3360da664acf39ba6909)]:
+  - @wso2is/theme@2.0.89
+
+## 2.2.12
+
+### Patch Changes
+
+- Updated dependencies [[`1201f1179cda981617c35b6d9839abe768d5a394`](https://github.com/wso2/identity-apps/commit/1201f1179cda981617c35b6d9839abe768d5a394)]:
+  - @wso2is/theme@2.0.88
+
 ## 2.2.11
 
 ### Patch Changes

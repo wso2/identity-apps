@@ -136,7 +136,7 @@ export class UserManagementConstants {
 
     // ID of the form used in the invite parent organization user component.
     public static readonly INVITE_PARENT_ORG_USER_FORM_ID: string = "invite-parent-org-user-form";
-    public static readonly USERNAME_REGEX_ERROR_CODE: string = "31301"
+    public static readonly USERNAME_REGEX_ERROR_CODE: string = "31301";
 
     // Query param to exclude roles and groups from getUserList API call.
     public static readonly GROUPS_AND_ROLES_ATTRIBUTE: string = "groups,roles";
@@ -237,6 +237,7 @@ export enum UserAddOptionTypes {
 export enum BulkUserImportStatus {
     FAILED = "FAILED",
     SUCCESS = "SUCCESS",
+    ALL = "ALL"
 }
 
 /**

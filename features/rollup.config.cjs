@@ -42,6 +42,7 @@ module.exports = [
         cache: false,
         input: [
             "./index.ts",
+            "./admin.administrators.v1/public-api.ts",
             "./admin.api-resources.v2/public-api.ts",
             "./admin.application-roles.v1/public-api.ts",
             "./admin.applications.v1/public-api.ts",
@@ -61,13 +62,12 @@ module.exports = [
             "./admin.groups.v1/public-api.ts",
             "./admin.identity-providers.v1/public-api.ts",
             "./admin.identity-verification-providers.v1/public-api.ts",
-            "./admin.layouts.v1/public-api.ts",
             "./admin.oidc-scopes.v1/public-api.ts",
             "./admin.org-insights.v1/public-api.ts",
             "./admin.organization-discovery.v1/public-api.ts",
             "./admin.organizations.v1/public-api.ts",
-            "./admin.parent-roles.v1/public-api.ts",
             "./admin.private-key-jwt.v1/public-api.ts",
+            "./admin.impersonation.v1/public-api.ts",
             "./admin.provisioning.v1/public-api.ts",
             "./admin.remote-repository-configuration.v1/public-api.ts",
             "./admin.roles.v2/public-api.ts",
@@ -79,7 +79,6 @@ module.exports = [
             "./admin.users.v1/public-api.ts",
             "./admin.userstores.v1/public-api.ts",
             "./admin.validation.v1/public-api.ts",
-            "./admin.views.v1/public-api.ts",
             "./admin.workflow-approvals.v1/public-api.ts",
             "./admin.wsfed-configuration.v1/public-api.ts"
         ],
@@ -131,12 +130,11 @@ module.exports = [
                         "./admin.identity-providers.v1": "./admin.identity-providers.v1/public-api.js",
                         "./admin.identity-verification-providers.v1":
                             "./admin.identity-verification-providers.v1/public-api.js",
-                        "./admin.layouts.v1": "./admin.layouts.v1/public-api.js",
+                        "./admin.impersonation.v1":  "./admin.impersonation.v1/public-api.js",
                         "./admin.oidc-scopes.v1": "./admin.oidc-scopes.v1/public-api.js",
                         "./admin.org-insights.v1": "./admin.org-insights.v1/public-api.js",
                         "./admin.organization-discovery.v1": "./admin.organization-discovery.v1/public-api.js",
                         "./admin.organizations.v1": "./admin.organizations.v1/public-api.js",
-                        "./admin.parent-roles.v1": "./admin.parent-roles.v1/public-api.js",
                         "./admin.private-key-jwt.v1": "./admin.private-key-jwt.v1/public-api.js",
                         "./admin.provisioning.v1": "./admin.provisioning.v1/public-api.js",
                         "./admin.remote-repository-configuration.v1":
@@ -150,7 +148,6 @@ module.exports = [
                         "./admin.users.v1": "./admin.users.v1/public-api.js",
                         "./admin.userstores.v1": "./admin.userstores.v1/public-api.js",
                         "./admin.validation.v1": "./admin.validation.v1/public-api.js",
-                        "./admin.views.v1": "./admin.views.v1/public-api.js",
                         "./admin.workflow-approvals.v1": "./admin.workflow-approvals.v1/public-api.js",
                         "./admin.wsfed-configuration.v1": "./admin.wsfed-configuration.v1/public-api.js"
                     },

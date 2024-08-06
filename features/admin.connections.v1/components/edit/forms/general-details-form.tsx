@@ -18,7 +18,6 @@
 
 import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
-import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment, Heading } from "@wso2is/react-components";
@@ -27,8 +26,9 @@ import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
-import { ConnectionManagementConstants } from "../../../constants/connection-constants";
+import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
+import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
+import { FederatedAuthenticatorConstants } from "../../../constants/federated-authenticator-constants";
 import {
     ConnectionInterface,
     ConnectionListResponseInterface,
@@ -258,7 +258,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const isIDPOrganizationSSO = (): boolean => {
         return !!editingIDP?.federatedAuthenticators?.authenticators.find(
             (authenticator: FederatedAuthenticatorListItemInterface) => {
-                return authenticator?.name === AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME;
+                return authenticator?.name === FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME;
             }
         );
     };
@@ -269,7 +270,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const isIDPIproov = (): boolean => {
         return !!editingIDP?.federatedAuthenticators?.authenticators.find(
             (authenticator: FederatedAuthenticatorListItemInterface) => {
-                return authenticator?.name === AuthenticatorManagementConstants.IPROOV_AUTHENTICATOR_NAME;
+                return authenticator?.name === FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .IPROOV_AUTHENTICATOR_NAME;
             }
         );
     };
@@ -298,7 +300,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         validation={ (value: string) => idpNameValidation(value) }
                         value={ editingIDP.name }
                         maxLength={ IDP_NAME_MAX_LENGTH }
-                        minLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.min }
+                        minLength={ ConnectionUIConstants.IDP_NAME_LENGTH.min }
                         data-testid={ `${ testId }-idp-name` }
                         hint={ t("authenticationProvider:forms." +
                             "generalDetails.name.hint") }
@@ -306,8 +308,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     />
                     {
                         (identityProviderConfig?.editIdentityProvider?.showIssuerSettings ||
-                            templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
-                            || templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.GOOGLE)
+                            templateType === CommonAuthenticatorConstants
+                                .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ||
+                            templateType === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE)
                             && !isIDPOrganizationSSO() && !isIDPIproov()
                             && (
                                 <Field.Input
@@ -319,8 +322,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     hint={ t("authenticationProvider:forms." +
                                         "generalDetails.issuer.hint") }
                                     required={
-                                        templateType === IdentityProviderManagementConstants
-                                            .IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                                        templateType === CommonAuthenticatorConstants
+                                            .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
                                     }
                                     placeholder={
                                         editingIDP?.idpIssuerName ??
@@ -329,8 +332,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     }
                                     validation={ (value: string) => issuerValidation(value) }
                                     value={ editingIDP.idpIssuerName }
-                                    maxLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.max }
-                                    minLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.min }
+                                    maxLength={ ConnectionUIConstants.IDP_NAME_LENGTH.max }
+                                    minLength={ ConnectionUIConstants.IDP_NAME_LENGTH.min }
                                     data-testid={ `${ testId }-issuer` }
                                     readOnly={ isReadOnly }
                                 />
@@ -338,7 +341,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     }
                     {
                         (identityProviderConfig?.editIdentityProvider?.showIssuerSettings ||
-                            templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER)
+                            templateType === CommonAuthenticatorConstants
+                                .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER)
                             && !isIDPOrganizationSSO() && !isIDPIproov()
                             && (
                                 <Field.Input
@@ -356,8 +360,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                         "generalDetails.alias.hint", { productName: config.ui.productName }) }
                                     validation={ (value: string) => aliasValidation(value) }
                                     value={ editingIDP.alias }
-                                    maxLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.max }
-                                    minLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.min }
+                                    maxLength={ ConnectionUIConstants.IDP_NAME_LENGTH.max }
+                                    minLength={ ConnectionUIConstants.IDP_NAME_LENGTH.min }
                                     data-testid={ `${ testId }-alias` }
                                     readOnly={ isReadOnly }
                                 />
@@ -373,8 +377,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             "generalDetails.description.placeholder") }
                         value={ editingIDP.description }
                         data-testid={ `${ testId }-idp-description` }
-                        maxLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.max }
-                        minLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.min }
+                        maxLength={ ConnectionUIConstants.IDP_NAME_LENGTH.max }
+                        minLength={ ConnectionUIConstants.IDP_NAME_LENGTH.min }
                         hint={ t("authenticationProvider:forms." +
                             "generalDetails.description.hint") }
                         readOnly={ isReadOnly }
@@ -393,11 +397,11 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             value={ editingIDP.image }
                             data-testid={ `${ testId }-idp-image` }
                             maxLength={
-                                ConnectionManagementConstants
+                                ConnectionUIConstants
                                     .GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MAX_LENGTH as number
                             }
                             minLength={
-                                ConnectionManagementConstants
+                                ConnectionUIConstants
                                     .GENERAL_FORM_CONSTRAINTS.IMAGE_URL_MIN_LENGTH as number
                             }
                             hint={ t("authenticationProvider:forms." +

@@ -32,7 +32,6 @@ import {
     HttpUtils,
     PreLoader,
     UIConfigInterface,
-    getAppViewRoutes,
     setFilteredDevelopRoutes,
     setSanitizedDevelopRoutes,
     store
@@ -40,15 +39,14 @@ import {
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { MultitenantConstants } from "@wso2is/admin.core.v1/constants/multitenant-constants";
 import { history } from "@wso2is/admin.core.v1/helpers";
-import useRoutes from "@wso2is/admin.core.v1/hooks/use-routes";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
-import { CONSUMER_USERSTORE } from "@wso2is/admin.extensions.v1/components/administrators/constants/users";
 import useTenantTier from "@wso2is/admin.extensions.v1/components/subscription/api/subscription";
 import { TenantTier } from "@wso2is/admin.extensions.v1/components/subscription/models/subscription";
 import { SubscriptionProvider }
     from "@wso2is/admin.extensions.v1/components/subscription/providers/subscription-provider";
 import useOrganizationSwitch from "@wso2is/admin.organizations.v1/hooks/use-organization-switch";
+import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {
     AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -82,6 +80,8 @@ import React, {
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import { getAppViewRoutes } from "./configs/routes";
+import useRoutes from "./hooks/use-routes";
 
 const App: LazyExoticComponent<FunctionComponent> = lazy(() => import("./app"));
 
@@ -118,6 +118,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
+    const [ isRedirectingToTenantCreation, setRedirectingToTenantCreation ] = useState<boolean>(false);
 
     useEffect(() => {
         dispatch(
@@ -235,6 +236,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 history.push(location);
             } else {
                 // If there is no assocation, the user should be redirected to creation flow.
+                setRedirectingToTenantCreation(true);
                 history.push({
                     pathname: AppConstants.getPaths().get(
                         "CREATE_TENANT"
@@ -349,12 +351,12 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, [ state.isAuthenticated ]);
 
     useEffect(() => {
-        if (!state.isAuthenticated) {
+        if (!state.isAuthenticated || isRedirectingToTenantCreation) {
             return;
         }
 
         filterRoutes(() => setRoutesFiltered(true), isFirstLevelOrg);
-    }, [ filterRoutes, state.isAuthenticated, isFirstLevelOrg ]);
+    }, [ filterRoutes, state.isAuthenticated, isFirstLevelOrg, isRedirectingToTenantCreation ]);
 
     return (
         <SecureApp

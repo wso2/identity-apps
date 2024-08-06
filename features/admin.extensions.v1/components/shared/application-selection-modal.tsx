@@ -148,11 +148,11 @@ const ApplicationSelectionModal: FunctionComponent<ApplicationSelectionModalInte
             if (!UIConfig?.legacyMode?.applicationListSystemApps) {
                 appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
                     !ApplicationManagementConstants.SYSTEM_APPS.includes(item.name)
-                    && !ApplicationManagementConstants.DEFAULT_APPS.includes(item.name)
+                        && !ApplicationManagementConstants.DEFAULT_APPS.includes(item.name)
                 );
                 appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
                 appList.totalResults = appList.totalResults -
-                    (applicationList.applications.length - appList.applications.length);
+                        (applicationList.applications.length - appList.applications.length);
             }
 
             return appList;

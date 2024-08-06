@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,7 @@
 import Divider from "@oxygen-ui/react/Divider";
 import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { getApplicationDetails } from "@wso2is/admin.applications.v1/api";
 import { AppState, EventPublisher, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import {
@@ -26,7 +27,7 @@ import {
 } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -51,13 +52,11 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { getAuthenticatorList } from "./common";
 import {
     deleteConnection,
     getConnectedApps
 } from "../api/connections";
 import { getConnectionIcons } from "../configs/ui";
-import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
     AuthenticatorExtensionsConfigInterface,
@@ -166,8 +165,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     const [ isConnectedAppsLoading, setIsConnectedAppsLoading ] = useState<boolean>(true);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
+
+    const hasConnectionUpdatePermission: boolean = useRequiredScopes(featureConfig?.identityProviders?.scopes?.update);
+    const hasConnectionDeletePermission: boolean = useRequiredScopes(featureConfig?.identityProviders?.scopes?.delete);
 
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
@@ -186,8 +187,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      * @returns If Read Only or not.
      */
     const resolveReadOnlyState = (): boolean => {
-        return !hasRequiredScopes(featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update,
-            allowedScopes);
+        return !hasConnectionUpdatePermission;
     };
 
     /**
@@ -367,7 +367,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                         | AuthenticatorInterface, index: number) => {
 
                         const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
-                            getAuthenticatorList(), authenticator.id);
+                            AuthenticatorMeta.getAuthenticators(), authenticator.id);
 
                         const isIdP: boolean = ConnectionsManagementUtils
                             .isConnectorIdentityProvider(authenticator);
@@ -407,13 +407,11 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     showActions={ true }
                                     showResourceEdit={ true }
                                     showResourceDelete={
-                                        hasRequiredScopes(featureConfig?.identityProviders,
-                                            featureConfig?.identityProviders?.scopes?.delete, allowedScopes) &&
-                                        isIdPDeletable && !AuthenticatorManagementConstants.DELETING_FORBIDDEN_IDPS
-                                            .includes(authenticator.name)
+                                        hasConnectionDeletePermission &&
+                                        isIdPDeletable
                                     }
                                     isResourceComingSoon={ authenticatorConfig?.isComingSoon }
-                                    comingSoonRibbonLabel={ t("common:comingSoon") }
+                                    comingSoonRibbonLabel={ t(FeatureStatusLabel.COMING_SOON) }
                                     resourceName={
                                         isIdP
                                             ? authenticator.name

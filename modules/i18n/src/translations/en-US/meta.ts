@@ -30,7 +30,7 @@ export const meta: LocaleMeta = {
         I18nModuleConstants.EXTENSIONS_NAMESPACE,
         I18nModuleConstants.USERSTORES_NAMESPACE,
         I18nModuleConstants.VALIDATION_NAMESPACE,
-        I18nModuleConstants.JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE,
+        I18nModuleConstants.IMPERSONATION_NAMESPACE,
         I18nModuleConstants.USER_NAMESPACE,
         I18nModuleConstants.USERS_NAMESPACE,
         I18nModuleConstants.TRANSFER_LIST_NAMESPACE,

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
+    DocumentationLink,
     PageLayout,
     ResourceTab,
     ResourceTabPaneInterface
@@ -98,7 +99,7 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (
                     { t("extensions:develop.monitor.logs.tabs.audit") }
                     <Chip
                         size="small"
-                        label={ t("common:beta").toUpperCase() }
+                        label={ t("common:beta") }
                         className="oxygen-chip-beta"
                     />
                 </MenuItem>
@@ -129,9 +130,17 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (
             <PageLayout
                 title={ t("extensions:develop.monitor.pageHeader.title") }
                 pageTitle="Logs"
-                description={
-                    t("extensions:develop.monitor.pageHeader.description")
-                }
+                description={ (
+                    <>
+                        { t("extensions:develop.monitor.pageHeader.description") }
+                        <DocumentationLink
+                            link="manage.logs.learnMore"
+                            isLinkRef
+                        >
+                            { t("extensions:common.learnMore") }
+                        </DocumentationLink>
+                    </>
+                ) }
                 data-componentid={ `${componentId}-layout` }
             >
                 { renderLogView() }

@@ -16,15 +16,15 @@
  * under the License.
  */
 
+import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
-import { render, screen } from "../../../../test-configs/utils";
 import SecretDeleteConfirmationModal, {
     SecretDeleteConfirmationModalPropsInterface
 } from "../secret-delete-confirmation-modal";
 
-describe.skip("SecretDeleteConfirmationModal", () => {
+describe("SecretDeleteConfirmationModal", () => {
     const defaultProps: SecretDeleteConfirmationModalPropsInterface = {
         deletingSecret: {
             created: "2023-08-07 16:25:27.977",
@@ -33,9 +33,8 @@ describe.skip("SecretDeleteConfirmationModal", () => {
             secretId: "342234-5f41-46c3-a646-53187e091b1e",
             secretName: "NPM_TOKEN",
             type: "ADAPTIVE_AUTH_CALL_CHOREO"
-        }
-        // unable to pass `open` prop for some reason
-        // open: true
+        },
+        open: true
     };
 
     it("renders the SecretDeleteConfirmationModal component", () => {

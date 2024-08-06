@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,11 +22,12 @@ import { useTranslation } from "react-i18next";
 import { Button, Dropdown, Form, Icon, Input, Portal, Segment } from "semantic-ui-react";
 import TimeZoneSelectorDropdown from "./time-zone-selector-dropdown";
 import { LogsConstants } from "../constants/logs-constants";
+import { getCurrentTimeZone, resolveMaxFromTime, resolveMaxToTime } from "../utils/datetime-utils";
 
 /**
  * Props interface for TimeRangeSelectorDropdown component
  */
-interface TimeRangeSelectorInterface 
+interface TimeRangeSelectorInterface
     extends IdentifiableComponentInterface {
     setFromTime: (value: string) => void;
     setToTime: (value: string) => void;
@@ -41,7 +42,8 @@ interface TimeRangeSelectorInterface
 const TimeRangeSelectorDropdown = (props: TimeRangeSelectorInterface):ReactElement => {
     const {
         ["data-componentid"]: componentId,
-        setToTime, setFromTime,
+        setToTime,
+        setFromTime,
         setTimeRange
     } = props;
 
@@ -52,7 +54,7 @@ const TimeRangeSelectorDropdown = (props: TimeRangeSelectorInterface):ReactEleme
     const [ endTime, setEndTime ] = useState<string>("");
     const [ selectedRange, setSelectedRange ] = useState<number>(0.25);
     const [ prevSelectedRange, setPrevSelectedRange ] = useState<number>(0.25);
-    const [ timeZone, setTimeZone ] = useState<string>("+0000");
+    const [ timeZone, setTimeZone ] = useState<string>(getCurrentTimeZone());
     const [ isTimeRangeDropdownOpen, setIsTimeRangeDropdownOpen ] = useState<boolean | undefined>(
         undefined
     );
@@ -61,7 +63,7 @@ const TimeRangeSelectorDropdown = (props: TimeRangeSelectorInterface):ReactEleme
 
     const currentDate: Date = new Date();
     const maxDate: Date = new Date();
-    const minDate: Date = new Date(currentDate.setDate(currentDate.getDate() - 60));
+    const minDate: Date = new Date(currentDate.setDate(currentDate.getDate() - 30));
 
     /**
      * Converts a date value to a formatted string value.
@@ -212,6 +214,7 @@ const TimeRangeSelectorDropdown = (props: TimeRangeSelectorInterface):ReactEleme
                                             <Input
                                                 className="time-input"
                                                 type="time"
+                                                max={ resolveMaxFromTime(startDate, endDate, timeZone, endTime) }
                                                 value={ startTime }
                                                 onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
                                                     setStartTime(e.target.value)
@@ -252,6 +255,7 @@ const TimeRangeSelectorDropdown = (props: TimeRangeSelectorInterface):ReactEleme
                                             <Input
                                                 className="time-input"
                                                 type="time"
+                                                max={ resolveMaxToTime(endDate, timeZone) }
                                                 value={ endTime }
                                                 onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
                                                     setEndTime(e.target.value)

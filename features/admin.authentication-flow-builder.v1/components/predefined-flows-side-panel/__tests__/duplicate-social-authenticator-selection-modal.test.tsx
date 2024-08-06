@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import { render, screen, waitFor } from "@wso2is/unit-testing/utils";
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
-import { render, screen, waitFor } from "../../../../test-configs/utils";
 import DuplicateSocialAuthenticatorSelectionModal, {
     DuplicateSocialAuthenticatorSelectionModalPropsInterface
 } from "../duplicate-social-authenticator-selection-modal";

@@ -30,18 +30,26 @@ import {
     DocumentationLink,
     useDocumentation
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import FeatureStatusLabel from "../../admin.extensions.v1/components/feature-gate/models/feature-gate";
 import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
-import useGenerateAIBrandingPreference,
-{ GenerateAIBrandingPreferenceFunc } from "../hooks/use-generate-ai-branding-preference";
+import useGenerateAIBrandingPreference, { GenerateAIBrandingPreferenceFunc }
+    from "../hooks/use-generate-ai-branding-preference";
 import { BannerState } from "../models/types";
 import "./branding-ai-banner.scss";
+
+interface BrandingAIBannerProps {
+    readonly?: boolean;
+}
 
 /**
  * Branding AI banner component.
  */
-const BrandingAIBanner: FunctionComponent = (): ReactElement => {
+const BrandingAIBanner: FunctionComponent<PropsWithChildren<BrandingAIBannerProps>> = (
+    props: PropsWithChildren<BrandingAIBannerProps>): ReactElement => {
+
+    const { readonly } = props;
 
     const { t } = useTranslation();
 
@@ -92,10 +100,11 @@ const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                     titleLabel={ (
                         <Chip
                             size="small"
-                            label={ t("common:beta").toUpperCase() }
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-chip-beta mb-1 ml-2"
                         />
                     ) }
+                    readonly={ readonly }
                 />
             </Collapse>
             <Collapse in={ bannerState === BannerState.INPUT || bannerState === BannerState.COLLAPSED }>
@@ -117,7 +126,7 @@ const BrandingAIBanner: FunctionComponent = (): ReactElement => {
                     titleLabel={ (
                         <Chip
                             size="small"
-                            label={ t("common:beta").toUpperCase() }
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-chip-beta mb-1 ml-2"
                         />
                     ) }
@@ -176,6 +185,10 @@ const BrandingAIBanner: FunctionComponent = (): ReactElement => {
             </Collapse>
         </>
     );
+};
+
+BrandingAIBanner.defaultProps = {
+    readonly: false
 };
 
 export default BrandingAIBanner;
