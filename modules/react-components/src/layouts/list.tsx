@@ -27,8 +27,7 @@ import {
     DropdownProps,
     Grid,
     Icon,
-    PaginationProps,
-    Placeholder
+    PaginationProps
 } from "semantic-ui-react";
 import { DataTable, Pagination, PaginationPropsInterface } from "../components";
 
@@ -205,92 +204,89 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         >
             {
                 showTopActionPanel && (
-                    isLoading ? (
-                        <Placeholder
-                            fluid
-                            style={ { background: "white", height: 40 } }
-                        />
-                    ) : (
-                        <>
-                            <div
-                                className="top-action-panel"
-                                data-componentid={ `${ componentId }-top-action-panel` }
-                                data-testid={ `${ testId }-top-action-panel` }
-                            >
-                                { topActionPanelExtension && (
-                                    <div className="top-action-panel-extension">
-                                        { topActionPanelExtension }
-                                    </div>
-                                ) }
-                                <Grid>
-                                    <Grid.Row>
-                                        {
-                                            !disableLeftActionPanel
-                                                ? (
-                                                    <div className={ "left-aligned actions" }>
-                                                        { advancedSearchPosition === "left" && advancedSearch }
-                                                        { leftActionPanel }
-                                                    </div>
-                                                ) : null
-                                        }
-                                        {
-                                            !disableRightActionPanel
-                                                ? (
-                                                    <div className="actions right-aligned">
-                                                        { advancedSearchPosition === "right" && advancedSearch }
-                                                        { rightActionPanel }
-                                                        {
-                                                            sortOptions &&
-                                                            sortStrategy &&
-                                                            onSortStrategyChange &&
-                                                            onSortOrderChange && (
-                                                                <div className="sort-list">
-                                                                    <Dropdown
-                                                                        onChange={ onSortStrategyChange }
-                                                                        options={ sortOptions }
-                                                                        placeholder={ "Sort by" }
-                                                                        selection
-                                                                        value={
-                                                                            sortOptions?.length === 1
-                                                                                ? sortOptions[0].value
-                                                                                : sortStrategy.value
+                    <>
+                        <div
+                            className="top-action-panel"
+                            data-componentid={ `${ componentId }-top-action-panel` }
+                            data-testid={ `${ testId }-top-action-panel` }
+                        >
+                            { topActionPanelExtension && (
+                                <div className="top-action-panel-extension">
+                                    { topActionPanelExtension }
+                                </div>
+                            ) }
+                            <Grid>
+                                <Grid.Row>
+                                    {
+                                        !disableLeftActionPanel
+                                            ? (
+                                                <div className={ "left-aligned actions" }>
+                                                    { advancedSearchPosition === "left" && advancedSearch }
+                                                    { leftActionPanel }
+                                                </div>
+                                            ) : null
+                                    }
+                                    {
+                                        !disableRightActionPanel
+                                            ? (
+                                                <div className="actions right-aligned">
+                                                    { advancedSearchPosition === "right" && advancedSearch }
+                                                    { rightActionPanel }
+                                                    {
+                                                        sortOptions && 
+                                                        sortStrategy &&
+                                                        onSortStrategyChange &&
+                                                        onSortOrderChange && (
+                                                            <div className="sort-list">
+                                                                <Dropdown
+                                                                    onChange={ onSortStrategyChange }
+                                                                    options={ sortOptions }
+                                                                    placeholder={ "Sort by" }
+                                                                    selection
+                                                                    value={
+                                                                        sortOptions?.length === 1
+                                                                            ? sortOptions[0].value
+                                                                            : sortStrategy.value
+                                                                    }
+                                                                    disabled={ sortOptions?.length === 1 }
+                                                                    data-componentid={ `${ componentId }-sort` }
+                                                                    data-testid={ `${ testId }-sort` }
+                                                                />
+                                                                <Button
+                                                                    data-tooltip={ isAscending
+                                                                        ? "Sort in the descending order"
+                                                                        : "Sort in the ascending order"
+                                                                    }
+                                                                    data-position="top right"
+                                                                    data-inverted=""
+                                                                    icon
+                                                                    onClick={ () => {
+                                                                        setIsAscending(!isAscending);
+                                                                        onSortOrderChange(!isAscending);
+                                                                    } }
+                                                                    className="left-aligned-action"
+                                                                >
+                                                                    <Icon
+                                                                        name={
+                                                                            isAscending
+                                                                                ? "sort amount down"
+                                                                                : "sort amount up"
                                                                         }
-                                                                        disabled={ sortOptions?.length === 1 }
-                                                                        data-componentid={ `${componentId}-sort` }
-                                                                        data-testid={ `${testId}-sort` }
                                                                     />
-                                                                    <Button
-                                                                        data-tooltip={ isAscending
-                                                                            ? "Sort in the descending order"
-                                                                            : "Sort in the ascending order"
-                                                                        }
-                                                                        data-position="top right"
-                                                                        data-inverted=""
-                                                                        icon
-                                                                        onClick={ () => {
-                                                                            setIsAscending(!isAscending);
-                                                                            onSortOrderChange(!isAscending);
-                                                                        } }
-                                                                        className="left-aligned-action"
-                                                                    >
-                                                                        <Icon
-                                                                            name={
-                                                                                isAscending
-                                                                                    ? "sort amount down"
-                                                                                    : "sort amount up"
-                                                                            }
-                                                                        />
-                                                                    </Button>
-                                                                </div>
-                                                            ) }
-                                                    </div>
-                                                ) : null }
-                                    </Grid.Row>
-                                </Grid>
-                            </div>
-                            <Divider hidden/>
-                        </>
-                    )) }
+                                                                </Button>
+                                                            </div>
+                                                        )
+                                                    }
+                                                </div>
+                                            ) : null
+                                    }
+                                </Grid.Row>
+                            </Grid>
+                        </div>
+                        <Divider hidden/>
+                    </>
+                )
+            }
             <div className="list-container">
                 {
                     isLoading ? (
