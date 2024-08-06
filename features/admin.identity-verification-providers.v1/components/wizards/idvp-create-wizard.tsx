@@ -437,7 +437,7 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
 
         // Update the name and description on the template with the values from the form.
         idvpTemplate.Name = values?.name ?? idvpTemplate.Name;
-        idvpTemplate.description = values?.description ?? idvpTemplate.description;
+        idvpTemplate.description = values?.description;
 
         // Update the config properties on the template with the values from the form.
         for(const configs of idvpTemplate?.configProperties) {
