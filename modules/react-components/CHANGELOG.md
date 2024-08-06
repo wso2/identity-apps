@@ -1,5 +1,11 @@
 # @wso2is/react-components
 
+## 2.2.32
+
+### Patch Changes
+
+- [#6728](https://github.com/wso2/identity-apps/pull/6728) [`8d2e9fced7e60158fb1fcdc35ab09bf93271d3e6`](https://github.com/wso2/identity-apps/commit/8d2e9fced7e60158fb1fcdc35ab09bf93271d3e6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix search query not being shown after search results are retrieved
+
 ## 2.2.31
 
 ### Patch Changes
