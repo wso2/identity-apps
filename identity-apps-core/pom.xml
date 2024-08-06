@@ -581,68 +581,6 @@
 
     <build>
         <plugins>
-            <!-- Build all npm packages (apps & modules) -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <version>1.6.0</version>
-                <artifactId>exec-maven-plugin</artifactId>
-                <inherited>false</inherited>
-                <executions>
-                    <execution>
-                        <id>npm install (initialize)</id>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <phase>initialize</phase>
-                        <configuration>
-                            <executable>pnpm</executable>
-                            <arguments>
-                                <argument>install</argument>
-                            </arguments>
-                            <skip>${bootstrap.exec.skip}</skip>
-                            <workingDirectory>${basedir}</workingDirectory>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>run-linter</id>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <phase>process-resources</phase>
-                        <configuration>
-                            <executable>pnpm</executable>
-                            <arguments>
-                                <argument>lint</argument>
-                            </arguments>
-                            <skip>${lint.exec.skip}</skip>
-                            <workingDirectory>${basedir}</workingDirectory>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>npm run build (compile)</id>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <phase>compile</phase>
-                        <configuration>
-                            <executable>pnpm</executable>
-                            <arguments>
-                                <argument>build</argument>
-                            </arguments>
-                            <workingDirectory>${basedir}</workingDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-                    <environmentVariables>
-                        <!-- The following parameters create an NPM sandbox for CI -->
-                        <NPM_CONFIG_PREFIX>${basedir}/npm</NPM_CONFIG_PREFIX>
-                        <NPM_CONFIG_CACHE>${NPM_CONFIG_PREFIX}/cache</NPM_CONFIG_CACHE>
-                        <NPM_CONFIG_TMP>${project.build.directory}/npmtmp</NPM_CONFIG_TMP>
-                    </environmentVariables>
-                </configuration>
-            </plugin>
-
             <!-- Release -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
