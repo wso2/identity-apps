@@ -1524,6 +1524,9 @@ export const applications: ApplicationsNS = {
                             label: "JWT Access Token Attributes",
                             description: "Define the attributes that should be included in the JWT access token.",
                             placeholder: "Search by attribute name",
+                            enable: {
+                                label: "Enable JWT Access Token Attributes Feature"
+                            }
                         }
                     },
                     heading: "Access Token",

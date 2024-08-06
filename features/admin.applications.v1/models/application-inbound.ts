@@ -125,9 +125,13 @@ interface AccessTokenConfigurationInterface {
     bindingType?: SupportedAccessTokenBindingTypes | string;
     revokeTokensWhenIDPSessionTerminated?: boolean;
     validateTokenBinding?: boolean;
-    jwtAccessTokenClaims?: string[];
+    jwtAccessTokenAttributesConfiguration?: JWTAccessTokenConfigurationInterface;
 }
 
+interface JWTAccessTokenConfigurationInterface {
+    enable?: boolean;
+    attributes?: string[];
+}
 interface RefreshTokenConfigurationInterface {
     expiryInSeconds?: number;
     renewRefreshToken?: boolean;

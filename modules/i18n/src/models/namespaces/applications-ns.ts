@@ -1274,6 +1274,9 @@ export interface ApplicationsNS {
                             label:string;
                             description: string;
                             placeholder: string;
+                            enable: {
+                                label: string;
+                            };
                         };
                     };
                 };
