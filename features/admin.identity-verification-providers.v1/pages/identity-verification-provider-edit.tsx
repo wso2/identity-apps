@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar,
@@ -28,7 +28,6 @@ import React, {
     FunctionComponent,
     ReactElement,
     useEffect,
-    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -95,22 +94,11 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
     } = useIDVPTemplateTypeMetadata(idvp?.Type);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const isReadOnly: boolean = useMemo(() => {
-        return !hasRequiredScopes(
-            featureConfig?.identityVerificationProviders,
-            featureConfig?.identityVerificationProviders?.scopes?.update,
-            allowedScopes
-        );
-    }, [ featureConfig, allowedScopes ]);
 
-    const isDeletePermitted: boolean = useMemo(() => {
-        return hasRequiredScopes(
-            featureConfig?.identityVerificationProviders,
-            featureConfig?.identityVerificationProviders?.scopes?.delete,
-            allowedScopes
-        );
-    }, [ featureConfig, allowedScopes ]);
+    const hasIdVPUpdatePermissions: boolean = useRequiredScopes(
+        featureConfig?.identityVerificationProviders?.scopes?.update);
+    const hasIdVPDeletePermissions: boolean = useRequiredScopes(
+        featureConfig?.identityVerificationProviders?.scopes?.delete);
 
     /**
      * Checks if the user needs to go to a specific tab index.
@@ -254,8 +242,8 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
                     onDelete={ onIdentityVerificationProviderDelete }
                     onUpdate={ onIdentityVerificationProviderUpdate }
                     data-testid={ componentId }
-                    isReadOnly={ isReadOnly }
-                    isDeletePermitted={ isDeletePermitted }
+                    isReadOnly={ !hasIdVPUpdatePermissions }
+                    isDeletePermitted={ hasIdVPDeletePermissions }
                     isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
                     tabIdentifier={ tabIdentifier }
                     uiMetaData={ uiMetaData }
