@@ -27,7 +27,7 @@ import isEmpty from "lodash-es/isEmpty";
 import { Dispatch, SetStateAction } from "react";
 import { handleUpdateIDPRoleMappingsError } from "./connection-utils";
 import { updateClaimsConfigs, updateConnectionRoleMappings } from "../api/connections";
-import { ConnectionManagementConstants } from "../constants/connection-constants";
+import { FederatedAuthenticatorConstants } from "../constants/federated-authenticator-constants";
 import {
     ConnectionClaimInterface,
     ConnectionClaimMappingInterface,
@@ -253,7 +253,7 @@ export const isLocalIdentityClaim = (claim: string): boolean => {
  */
 export const isProvisioningAttributesEnabled = (authenticatorId: string): boolean => {
     const excludedAuthenticators: Set<string> = new Set([
-        ConnectionManagementConstants.SAML_AUTHENTICATOR_ID
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID
     ]);
 
     /**

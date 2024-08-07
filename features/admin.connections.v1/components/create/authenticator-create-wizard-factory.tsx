@@ -27,7 +27,7 @@ import {
     EnterpriseConnectionCreateWizard
 } from "./enterprise-connection-create-wizard";
 import { useGetConnectionTemplate, useGetConnections } from "../../api/connections";
-import { CommonAuthenticatorManagementConstants } from "../../constants/common-authenticator-constants";
+import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
 import {
     ConnectionTemplateInterface,
     GenericConnectionCreateWizardPropsInterface,
@@ -330,7 +330,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                     />
                 );
 
-            case CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE:
+            case CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE:
                 return (
                     <ExpertModeAuthenticationProviderCreateWizard
                         title={

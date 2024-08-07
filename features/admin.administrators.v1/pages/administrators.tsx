@@ -48,7 +48,11 @@ import { RolesV2Interface, SearchRoleInterface } from "@wso2is/admin.roles.v2/mo
 import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { useInvitedUsersList, useUsersList } from "@wso2is/admin.users.v1/api";
 import { AddUserWizard } from "@wso2is/admin.users.v1/components/wizard/add-user-wizard";
-import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
+import {
+    AdminAccountTypes,
+    UserAccountTypes,
+    UserManagementConstants
+} from "@wso2is/admin.users.v1/constants/user-management-constants";
 import {
     InternalAdminUserListInterface,
     InvitationStatus,
@@ -98,12 +102,7 @@ import {
 } from "semantic-ui-react";
 import { useOrganizationConfigV2 } from "../api/useOrganizationConfigV2";
 import { GuestUsersList, OnboardedGuestUsersList } from "../components";
-import {
-    ADVANCED_USER_MGT,
-    AdminAccountTypes,
-    AdministratorConstants,
-    UserAccountTypes
-} from "../constants";
+import { AdministratorConstants } from "../constants";
 import { UseOrganizationConfigType } from "../models/organization";
 import { isAdminUser, isOwner } from "../utils/administrators";
 import { AddAdministratorWizard } from "../wizard";
@@ -936,7 +935,9 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
     const checkAdvancedUserManagementStatus = ():void => {
         const disabledUserFeatures: string[] = featureConfig.users.disabledFeatures;
 
-        setAdvancedUserManagementDisabled(disabledUserFeatures?.includes(ADVANCED_USER_MGT));
+        setAdvancedUserManagementDisabled(
+            disabledUserFeatures?.includes(AdministratorConstants.FEATURE_DICTIONARY.get("ADVANCED_USER_MGT"))
+        );
     };
 
     const getInternalAdmins = (): void => {

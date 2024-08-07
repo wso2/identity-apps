@@ -18,3 +18,4 @@
 
 export { default as ApplicationRolesPage } from "./pages/application-roles";
 export { default as ApplicationRoleEditPage } from "./pages/application-role-edit";
+export { default as ParentRolePage } from "./pages/parent-roles";

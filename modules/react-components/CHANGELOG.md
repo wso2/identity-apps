@@ -1,5 +1,35 @@
 # @wso2is/react-components
 
+## 2.3.0
+
+### Minor Changes
+
+- [#6667](https://github.com/wso2/identity-apps/pull/6667) [`dc9ac2782b9faa497d06d376c1e1fcf63168ee85`](https://github.com/wso2/identity-apps/commit/dc9ac2782b9faa497d06d376c1e1fcf63168ee85) Thanks [@HasiniSama](https://github.com/HasiniSama)! - UI support for Filtering Organizations by Metadata Attributes
+
+## 2.2.32
+
+### Patch Changes
+
+- [#6728](https://github.com/wso2/identity-apps/pull/6728) [`8d2e9fced7e60158fb1fcdc35ab09bf93271d3e6`](https://github.com/wso2/identity-apps/commit/8d2e9fced7e60158fb1fcdc35ab09bf93271d3e6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix search query not being shown after search results are retrieved
+
+## 2.2.31
+
+### Patch Changes
+
+- [#6707](https://github.com/wso2/identity-apps/pull/6707) [`64d1d40cf664987e22e18a3cd7983a5e845829f3`](https://github.com/wso2/identity-apps/commit/64d1d40cf664987e22e18a3cd7983a5e845829f3) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add missing learn more doc links
+
+## 2.2.30
+
+### Patch Changes
+
+- [#6715](https://github.com/wso2/identity-apps/pull/6715) [`afeb344ddbc6a674f342893b3f8135977e52a468`](https://github.com/wso2/identity-apps/commit/afeb344ddbc6a674f342893b3f8135977e52a468) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Bump oxygen ui version
+
+## 2.2.29
+
+### Patch Changes
+
+- [#6702](https://github.com/wso2/identity-apps/pull/6702) [`198c2432e6eacdc2bcf1bb9e7432ea7d700f7534`](https://github.com/wso2/identity-apps/commit/198c2432e6eacdc2bcf1bb9e7432ea7d700f7534) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prevent showing search bar in list layout when the data retrieval is in progress
+
 ## 2.2.28
 
 ### Patch Changes

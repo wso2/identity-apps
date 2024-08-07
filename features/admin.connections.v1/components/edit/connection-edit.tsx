@@ -46,10 +46,9 @@ import {
     OutboundProvisioningSettings
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
-import { AuthenticatorManagementConstants } from "../../constants/autheticator-constants";
-import { CommonAuthenticatorManagementConstants } from "../../constants/common-authenticator-constants";
-import { ConnectionManagementConstants } from "../../constants/connection-constants";
+import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
+import { FederatedAuthenticatorConstants } from "../../constants/federated-authenticator-constants";
 import {
     ConnectionAdvanceInterface,
     ConnectionInterface,
@@ -171,11 +170,12 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     const hasApplicationReadPermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.read);
 
     const isOrganizationEnterpriseAuthenticator: boolean = identityProvider.federatedAuthenticators
-        .defaultAuthenticatorId === ConnectionManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
+        .defaultAuthenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+        .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
     const isEnterpriseConnection: boolean = identityProvider?.federatedAuthenticators
-        .defaultAuthenticatorId === AuthenticatorManagementConstants.SAML_AUTHENTICATOR_ID ||
+        .defaultAuthenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ||
         identityProvider?.federatedAuthenticators
-            .defaultAuthenticatorId === AuthenticatorManagementConstants.OIDC_AUTHENTICATOR_ID;
+            .defaultAuthenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID;
 
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
@@ -251,7 +251,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                     ))
                 }
                 isRoleMappingsEnabled={
-                    isSaml || ConnectionManagementConstants
+                    isSaml || FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
                         .SAML_AUTHENTICATOR_ID !== identityProvider.federatedAuthenticators.defaultAuthenticatorId
                 }
                 data-testid={ `${ testId }-attribute-settings` }
@@ -355,9 +355,9 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     );
 
     useEffect(() => {
-        setIsTrustedTokenIssuer(type === CommonAuthenticatorManagementConstants
+        setIsTrustedTokenIssuer(type === CommonAuthenticatorConstants
             .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER);
-        setIsExpertMode(type === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE);
+        setIsExpertMode(type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE);
     }, [ type ]);
 
     useEffect(() => {
@@ -447,9 +447,9 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         // Evaluate whether to Show/Hide `Attributes`.
         if (shouldShowTab(type, ConnectionTabTypes.USER_ATTRIBUTES)
             && !isOrganizationEnterpriseAuthenticator
-            && (type !== CommonAuthenticatorManagementConstants
+            && (type !== CommonAuthenticatorConstants
                 .CONNECTION_TEMPLATE_IDS.OIDC || isAttributesEnabledForOIDC)
-            && (type !== CommonAuthenticatorManagementConstants
+            && (type !== CommonAuthenticatorConstants
                 .CONNECTION_TEMPLATE_IDS.SAML || attributesForSamlEnabled)) {
             panes.push({
                 "data-tabid": ConnectionUIConstants.TabIds.ATTRIBUTES,

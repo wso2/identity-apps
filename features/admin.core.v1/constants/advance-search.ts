@@ -16,4 +16,19 @@
  * under the License.
  */
 
-export { default as ParentRolePage } from "./parent-roles";
+export class AdvanceSearchConstants {
+    /**
+     * Filter attribute field identifier.
+     */
+    public static readonly FILTER_ATTRIBUTE_FIELD_IDENTIFIER: string = "filterAttribute";
+
+    /**
+     * Filter condition field identifier.
+     */
+    public static readonly FILTER_CONDITION_FIELD_IDENTIFIER: string = "filterCondition";
+
+    /**
+     * Filter value field identifier.
+     */
+    public static readonly FILTER_VALUES_FIELD_IDENTIFIER: string = "filterValues";
+}

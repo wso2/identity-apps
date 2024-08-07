@@ -1,5 +1,103 @@
 # @wso2is/admin.userstores.v1
 
+## 2.20.107
+
+### Patch Changes
+
+- Updated dependencies [[`dc9ac2782b9faa497d06d376c1e1fcf63168ee85`](https://github.com/wso2/identity-apps/commit/dc9ac2782b9faa497d06d376c1e1fcf63168ee85)]:
+  - @wso2is/react-components@2.3.0
+  - @wso2is/admin.core.v1@2.24.0
+  - @wso2is/i18n@2.5.16
+  - @wso2is/admin.extensions.v1@2.21.77
+  - @wso2is/dynamic-forms@2.0.91
+  - @wso2is/form@2.0.92
+
+## 2.20.106
+
+### Patch Changes
+
+- Updated dependencies [[`8d2e9fced7e60158fb1fcdc35ab09bf93271d3e6`](https://github.com/wso2/identity-apps/commit/8d2e9fced7e60158fb1fcdc35ab09bf93271d3e6)]:
+  - @wso2is/react-components@2.2.32
+  - @wso2is/admin.core.v1@2.23.36
+  - @wso2is/admin.extensions.v1@2.21.76
+  - @wso2is/dynamic-forms@2.0.90
+  - @wso2is/form@2.0.91
+
+## 2.20.105
+
+### Patch Changes
+
+- Updated dependencies [[`f814c6b981e11bbc2c98b04f8a123b54d087b82c`](https://github.com/wso2/identity-apps/commit/f814c6b981e11bbc2c98b04f8a123b54d087b82c)]:
+  - @wso2is/admin.extensions.v1@2.21.75
+  - @wso2is/admin.core.v1@2.23.35
+
+## 2.20.104
+
+### Patch Changes
+
+- Updated dependencies [[`64d1d40cf664987e22e18a3cd7983a5e845829f3`](https://github.com/wso2/identity-apps/commit/64d1d40cf664987e22e18a3cd7983a5e845829f3)]:
+  - @wso2is/admin.extensions.v1@2.21.74
+  - @wso2is/react-components@2.2.31
+  - @wso2is/admin.core.v1@2.23.34
+  - @wso2is/dynamic-forms@2.0.89
+  - @wso2is/form@2.0.90
+
+## 2.20.103
+
+### Patch Changes
+
+- Updated dependencies [[`b073a12775ff5acf9b2d8247e2e1b5d7bff24fd2`](https://github.com/wso2/identity-apps/commit/b073a12775ff5acf9b2d8247e2e1b5d7bff24fd2)]:
+  - @wso2is/admin.extensions.v1@2.21.73
+  - @wso2is/admin.core.v1@2.23.33
+
+## 2.20.102
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.23.32
+  - @wso2is/admin.extensions.v1@2.21.72
+
+## 2.20.101
+
+### Patch Changes
+
+- [#6715](https://github.com/wso2/identity-apps/pull/6715) [`afeb344ddbc6a674f342893b3f8135977e52a468`](https://github.com/wso2/identity-apps/commit/afeb344ddbc6a674f342893b3f8135977e52a468) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Bump oxygen ui version
+
+- Updated dependencies [[`afeb344ddbc6a674f342893b3f8135977e52a468`](https://github.com/wso2/identity-apps/commit/afeb344ddbc6a674f342893b3f8135977e52a468)]:
+  - @wso2is/admin.extensions.v1@2.21.71
+  - @wso2is/react-components@2.2.30
+  - @wso2is/admin.core.v1@2.23.31
+  - @wso2is/dynamic-forms@2.0.88
+  - @wso2is/form@2.0.89
+
+## 2.20.100
+
+### Patch Changes
+
+- Updated dependencies [[`3533ef2c2cc693af44884f32e42e506d462704aa`](https://github.com/wso2/identity-apps/commit/3533ef2c2cc693af44884f32e42e506d462704aa)]:
+  - @wso2is/admin.extensions.v1@2.21.70
+  - @wso2is/admin.core.v1@2.23.30
+
+## 2.20.99
+
+### Patch Changes
+
+- Updated dependencies [[`1f7f75c007d4c8c562c0d72d29db6760f20a15e6`](https://github.com/wso2/identity-apps/commit/1f7f75c007d4c8c562c0d72d29db6760f20a15e6)]:
+  - @wso2is/admin.extensions.v1@2.21.69
+  - @wso2is/admin.core.v1@2.23.29
+
+## 2.20.98
+
+### Patch Changes
+
+- Updated dependencies [[`198c2432e6eacdc2bcf1bb9e7432ea7d700f7534`](https://github.com/wso2/identity-apps/commit/198c2432e6eacdc2bcf1bb9e7432ea7d700f7534)]:
+  - @wso2is/react-components@2.2.29
+  - @wso2is/admin.core.v1@2.23.28
+  - @wso2is/admin.extensions.v1@2.21.68
+  - @wso2is/dynamic-forms@2.0.87
+  - @wso2is/form@2.0.88
+
 ## 2.20.97
 
 ### Patch Changes

@@ -21,7 +21,7 @@ import {
 } from "@wso2is/admin.core.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
-import { UserAccountTypes } from "../constants";
+import { UserAccountTypes } from "@wso2is/admin.users.v1/constants/user-management-constants";
 
 /**
  * Checks whether administrator role is present in the user.

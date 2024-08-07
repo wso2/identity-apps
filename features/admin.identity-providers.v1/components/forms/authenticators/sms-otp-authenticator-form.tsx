@@ -198,7 +198,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             const moderatedName: string = value.name.replace(/\./g, "_");
 
             // Converting expiry time from seconds to minutes
-            if(moderatedName === LocalAuthenticatorConstants.AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY){
+            if(moderatedName === LocalAuthenticatorConstants.MODERATED_SMS_OTP_EXPIRY_TIME_KEY){
                 const expiryTimeInMinutes: number = Math.round(parseInt(value.value,10) / 60);
 
                 resolvedInitialValues = {
@@ -252,7 +252,7 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             if (name !== undefined) {
                 const moderatedName: string = name.replace(/_/g, ".");
 
-                if (name === LocalAuthenticatorConstants.AUTHENTICATOR_INIT_VALUES_SMS_OTP_EXPIRY_TIME_KEY){
+                if (name === LocalAuthenticatorConstants.MODERATED_SMS_OTP_EXPIRY_TIME_KEY){
                     const timeInSeconds: number = value * 60;
 
                     properties.push({

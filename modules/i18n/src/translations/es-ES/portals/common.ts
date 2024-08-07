@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -114,6 +114,7 @@ export const common: CommonNS = {
     logout: "Cerrar sesión",
     maxValidation: "Este valor debe ser menor o igual a {{max}}.",
     maximize: "Maximizar",
+    metaAttributes: "Metaatributos",
     minValidation: "Este valor debe ser mayor o igual a {{min}}.",
     minimize: "Minimizar",
     more: "más",

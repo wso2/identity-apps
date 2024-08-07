@@ -44,7 +44,7 @@ import { Dispatch } from "redux";
 import { Grid, Icon, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { ShowCertificateModal } from "./show-certificate-modal";
 import { updateIDPCertificate } from "../../../../api/connections";
-import { CommonAuthenticatorManagementConstants } from "../../../../constants/common-authenticator-constants";
+import { CommonAuthenticatorConstants } from "../../../../constants/common-authenticator-constants";
 import { CertificatePatchRequestInterface, ConnectionInterface } from "../../../../models/connection";
 
 /**
@@ -146,7 +146,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
     const handleDeletePEMCertificate = async (certificateIndex: number): Promise<void> => {
         setDeletingCertificateIndex(certificateIndex);
 
-        if (templateType === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+        if (templateType === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
             && displayingCertificates.length === 1 && !currentlyEditingIdP?.certificate?.jwksUri) {
             setShowPEMCertificateDeleteConfirmationModal(true);
         } else {

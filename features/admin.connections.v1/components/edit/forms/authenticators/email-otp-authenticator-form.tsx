@@ -25,8 +25,8 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Label } from "semantic-ui-react";
-import { AuthenticatorManagementConstants } from "../../../../constants/autheticator-constants";
 import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
+import { LocalAuthenticatorConstants } from "../../../../constants/local-authenticator-constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormFieldInterface,
@@ -188,8 +188,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
             const moderatedName: string = value.name.replace(/\./g, "_");
 
             // Converting expiry time from seconds to minutes
-            if (moderatedName === AuthenticatorManagementConstants
-                .AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY) {
+            if (moderatedName === LocalAuthenticatorConstants.MODERATED_EMAIL_OTP_EXPIRY_TIME_KEY) {
                 const expiryTimeInMinutes: number = Math.round(parseInt(value.value, 10) / 60);
 
                 resolvedInitialValues = {
@@ -244,7 +243,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
 
                 const moderatedName: string = name.replace(/_/g, ".");
 
-                if (name === AuthenticatorManagementConstants.AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY) {
+                if (name === LocalAuthenticatorConstants.MODERATED_EMAIL_OTP_EXPIRY_TIME_KEY) {
                     const timeInSeconds: number = value * 60;
 
                     properties.push({

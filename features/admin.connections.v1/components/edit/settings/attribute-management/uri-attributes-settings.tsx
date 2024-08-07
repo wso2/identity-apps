@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, Hint, Message } from "@wso2is/react-components";
@@ -24,7 +25,6 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider, DropdownProps, Form, Grid } from "semantic-ui-react";
-import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import { ConnectionCommonClaimMappingInterface } from "../../../../models/connection";
 import { DropdownOptionsInterface } from "../attribute-settings";
 
@@ -104,7 +104,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
             // Find the role claim URI from the selected claim mappings.
             const roleClaim: ConnectionCommonClaimMappingInterface = selectedClaimMappings?.find(
                 (claimMapping: ConnectionCommonClaimMappingInterface) =>
-                    claimMapping?.claim?.uri === ConnectionManagementConstants.CLAIM_ROLES);
+                    claimMapping?.claim?.uri === ClaimManagementConstants.ROLES_CLAIM_URI);
 
             return roleClaim?.mappedValue;
         }
@@ -131,11 +131,11 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                             "forms.uriAttributeSettings.group.messageOIDC"
                                     }
                                     tOptions={ {
-                                        attribute: ConnectionManagementConstants.OIDC_ROLES_CLAIM
+                                        attribute: ClaimManagementConstants.ROLES_CLAIM_NAME
                                     } }
                                 >
                                     Please note that OpenID Connect attribute named
-                                    <strong>{ ConnectionManagementConstants.OIDC_ROLES_CLAIM }</strong>
+                                    <strong>{ ClaimManagementConstants.ROLES_CLAIM_NAME }</strong>
                                     will be considered as the default <strong>Group Attribute</strong>
                                     as you have not added a custom attribute mapping.
                                 </Trans>
@@ -156,10 +156,10 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                         "forms.uriAttributeSettings.group.messageSAML"
                                 }
                                 tOptions={ {
-                                    attribute: ConnectionManagementConstants.CLAIM_ROLES
+                                    attribute: ClaimManagementConstants.ROLES_CLAIM_URI
                                 } }
                             >
-                                Please note that <strong>{ ConnectionManagementConstants.CLAIM_ROLES }</strong>
+                                Please note that <strong>{ ClaimManagementConstants.ROLES_CLAIM_URI }</strong>
                                 attribute will be considered as the default <strong>Group Attribute</strong>
                                 as you have not added a custom attribute mapping.
                             </Trans>
@@ -195,12 +195,12 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                     }
                                     tOptions={ {
                                         mappedRolesClaim: mappedRolesClaim,
-                                        rolesClaim: ConnectionManagementConstants.CLAIM_ROLES
+                                        rolesClaim: ClaimManagementConstants.ROLES_CLAIM_URI
                                     } }
                                 >
                                     Please note that <strong>{ mappedRolesClaim }</strong>
                                     which is mapped to the <strong>{
-                                        ConnectionManagementConstants.CLAIM_ROLES }</strong> attribute will
+                                        ClaimManagementConstants.ROLES_CLAIM_URI }</strong> attribute will
                                     be considered as the default <strong> Group Attribute</strong> with the
                                     current configuration. You can select an attribute from the dropdown.
                                 </Trans>
@@ -243,11 +243,11 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                         "forms.uriAttributeSettings.group.messageOIDC"
                                 }
                                 tOptions={ {
-                                    attribute: ConnectionManagementConstants.OIDC_ROLES_CLAIM
+                                    attribute: ClaimManagementConstants.ROLES_CLAIM_NAME
                                 } }
                             >
                                 Please note that OpenID Connect attribute named
-                                <strong>{ ConnectionManagementConstants.OIDC_ROLES_CLAIM }</strong>
+                                <strong>{ ClaimManagementConstants.ROLES_CLAIM_NAME }</strong>
                                 will be considered as the default <strong>Group Attribute</strong>
                                 as you have not added a custom attribute mapping.
                             </Trans>
@@ -268,10 +268,10 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                     "forms.uriAttributeSettings.group.messageSAML"
                             }
                             tOptions={ {
-                                attribute: ConnectionManagementConstants.CLAIM_ROLES
+                                attribute: ClaimManagementConstants.ROLES_CLAIM_URI
                             } }
                         >
-                            Please note that <strong>{ ConnectionManagementConstants.CLAIM_ROLES }</strong>
+                            Please note that <strong>{ ClaimManagementConstants.ROLES_CLAIM_URI }</strong>
                             attribute will be considered as the default <strong>Group Attribute</strong>
                             as you have not added a custom attribute mapping.
                         </Trans>

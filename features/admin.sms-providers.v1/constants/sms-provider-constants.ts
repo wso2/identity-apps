@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,47 +30,48 @@ export class SMSProviderConstants {
     public static readonly CUSTOM_SMS_PROVIDER: string = "CustomSMSProvider";
     public static readonly CUSTOM: string = "Custom";
 
-	public static readonly SMS_PROVIDER_CONFIG_FETCH_ERROR_CODE: string = "ASG-SPC-00001";
+    public static readonly SMS_PROVIDER_CONFIG_FETCH_ERROR_CODE: string = "ASG-SPC-00001";
     public static readonly SMS_PROVIDER_CONFIG_FETCH_INVALID_STATUS_CODE_ERROR_CODE: string = "ASG-SPC-00002";
-	public static readonly SMS_PROVIDER_CONFIG_UPDATE_ERROR_CODE: string = "ASG-SP-00003";
-	public static readonly SMS_PROVIDER_CONFIG_DELETE_ERROR_CODE: string = "ASG-SP-60004";
+    public static readonly SMS_PROVIDER_CONFIG_UPDATE_ERROR_CODE: string = "ASG-SP-00003";
+    public static readonly SMS_PROVIDER_CONFIG_DELETE_ERROR_CODE: string = "ASG-SP-60004";
     public static readonly SMS_PROVIDER_CONFIG_NOT_FOUND_ERROR_CODE: string = "NSM-60006";
     public static readonly SMS_PROVIDER_CONFIG_UNABLE_TO_DISABLE_ERROR_CODE: string = "NSM-60008";
+    public static readonly SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS: string = "NSM-65015";
 
     public static readonly SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH: number = 0;
     public static readonly SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH: number = 100;
     public static readonly SMS_PROVIDER_CONFIG_TEMPLATE_FIELD_MAX_LENGTH: number = 1020;
     public static readonly SMS_REGEX: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-	public static ErrorMessages: {
+    public static ErrorMessages: {
         SMS_PROVIDER_CONFIG_FETCH_ERROR_CODE: IdentityAppsError;
         SMS_PROVIDER_CONFIG_FETCH_INVALID_STATUS_CODE_ERROR_CODE: IdentityAppsError;
         SMS_PROVIDER_CONFIG_UPDATE_ERROR_CODE: IdentityAppsError;
         SMS_PROVIDER_CONFIG_DELETE_ERROR_CODE: IdentityAppsError;
     } = {
-        SMS_PROVIDER_CONFIG_DELETE_ERROR_CODE: new IdentityAppsError(
-            SMSProviderConstants.SMS_PROVIDER_CONFIG_DELETE_ERROR_CODE,
-            "An error occurred while deleting the sms provider configurations.",
-            "Error while deleting sms provider configurations",
-            null
-        ),
-        SMS_PROVIDER_CONFIG_FETCH_ERROR_CODE: new IdentityAppsError(
-            SMSProviderConstants.SMS_PROVIDER_CONFIG_FETCH_ERROR_CODE,
-            "An error occurred while fetching the sms provider configurations.",
-            "Error while fetching the sms provider configurations",
-            null
-        ),
-        SMS_PROVIDER_CONFIG_FETCH_INVALID_STATUS_CODE_ERROR_CODE: new IdentityAppsError(
-            SMSProviderConstants.SMS_PROVIDER_CONFIG_FETCH_INVALID_STATUS_CODE_ERROR_CODE,
-            "Received an invalid status code while fetching the sms provider configurations.",
-            "Invalid Status Code while fetching the sms provider configurations",
-            null
-        ),
-        SMS_PROVIDER_CONFIG_UPDATE_ERROR_CODE: new IdentityAppsError(
-            SMSProviderConstants.SMS_PROVIDER_CONFIG_UPDATE_ERROR_CODE,
-            "An error occurred while updating the sms provider configurations.",
-            "Error while updating the sms provider configurations",
-            null
-        )
-    };
+            SMS_PROVIDER_CONFIG_DELETE_ERROR_CODE: new IdentityAppsError(
+                SMSProviderConstants.SMS_PROVIDER_CONFIG_DELETE_ERROR_CODE,
+                "An error occurred while deleting the sms provider configurations.",
+                "Error while deleting sms provider configurations",
+                null
+            ),
+            SMS_PROVIDER_CONFIG_FETCH_ERROR_CODE: new IdentityAppsError(
+                SMSProviderConstants.SMS_PROVIDER_CONFIG_FETCH_ERROR_CODE,
+                "An error occurred while fetching the sms provider configurations.",
+                "Error while fetching the sms provider configurations",
+                null
+            ),
+            SMS_PROVIDER_CONFIG_FETCH_INVALID_STATUS_CODE_ERROR_CODE: new IdentityAppsError(
+                SMSProviderConstants.SMS_PROVIDER_CONFIG_FETCH_INVALID_STATUS_CODE_ERROR_CODE,
+                "Received an invalid status code while fetching the sms provider configurations.",
+                "Invalid Status Code while fetching the sms provider configurations",
+                null
+            ),
+            SMS_PROVIDER_CONFIG_UPDATE_ERROR_CODE: new IdentityAppsError(
+                SMSProviderConstants.SMS_PROVIDER_CONFIG_UPDATE_ERROR_CODE,
+                "An error occurred while updating the sms provider configurations.",
+                "Error while updating the sms provider configurations",
+                null
+            )
+        };
 }

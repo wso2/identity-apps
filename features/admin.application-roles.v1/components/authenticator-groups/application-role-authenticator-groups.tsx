@@ -24,10 +24,12 @@ import {
 } from "@wso2is/admin.applications.v1/models";
 import {
     AuthenticatorInterface,
-    AuthenticatorManagementConstants,
     AuthenticatorTypes
 } from "@wso2is/admin.connections.v1";
 import { getAuthenticators } from "@wso2is/admin.connections.v1/api/authenticators";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { ApplicationRolesConstants } from "@wso2is/admin.extensions.v1/components/application/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -186,7 +188,8 @@ const ApplicationRoleAuthenticatorGroups = (props: ApplicationRoleAuthenticatorG
                 return federatedAuthenticator.name === attributeStepAuthenticator.idp
                     && (
                         attributeStepAuthenticator.authenticator
-                            !== AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME
+                            !== FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES
+                                .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME
                     );
             });
         });

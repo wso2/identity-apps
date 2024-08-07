@@ -269,7 +269,6 @@
                     id="usernameUserInput"
                     value=""
                     name="usernameUserInput"
-                    maxlength="50"
                     placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.your.email")%>"
                     required />
                 <i aria-hidden="true" class="envelope outline icon"></i>
@@ -282,7 +281,7 @@
             </div>
             <input id="username" name="username" type="hidden" value="">
             <input id="authType" name="authType" type="hidden" value="idf">
-        <% } else { 
+        <% } else {
             if (isMultiAttributeLoginEnabledInTenant) { %>
             <label><%=usernameLabel %></label>
             <% } else {%>
@@ -294,7 +293,6 @@
                 id="usernameUserInput"
                 value=""
                 name="usernameUserInput"
-                maxlength="50"
                 placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, usernamePlaceHolder)%>"
                 required
             />
