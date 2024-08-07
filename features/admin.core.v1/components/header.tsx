@@ -277,7 +277,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                                 <ListItemIcon className="get-help-icon">
                                     <StackOverflowIcon />
                                 </ListItemIcon>
-                                <ListItemText primary=  { t("extensions:common.help.communityLinks.stackOverflow") } />
+                                <ListItemText primary={ t("extensions:common.help.communityLinks.stackOverflow") } />
                             </>
                         </MenuItem>
                     ) }
