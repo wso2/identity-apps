@@ -260,7 +260,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                                 <ListItemIcon className="get-help-icon">
                                     <DiscordIcon />
                                 </ListItemIcon>
-                                <ListItemText primary=  { t("extensions:common.help.communityLinks.discord") } />
+                                <ListItemText primary={ t("extensions:common.help.communityLinks.discord") } />
                             </>
                         </MenuItem>
                     ) }
