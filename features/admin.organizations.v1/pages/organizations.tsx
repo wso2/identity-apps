@@ -573,6 +573,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             defaultSearchOperator="co"
                             triggerClearQuery={ triggerClearQuery }
                             data-componentid={ `${ testId }-list-advanced-search` }
+                            data-testid={ `${ testId }-list-advanced-search` }
                         >
                             { shouldShowMetaAttributeComponent && isFilterByMetadataAttributesEnabled && (
                                 <MetaAttributeAutoComplete
