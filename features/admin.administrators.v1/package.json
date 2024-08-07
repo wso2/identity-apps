@@ -30,7 +30,7 @@
         "@mui/material": "^5.13.0",
         "@mui/system": "^5.12.3",
         "@mui/utils": "^5.12.3",
-        "@oxygen-ui/react": "^1.13.5",
+        "@oxygen-ui/react": "^1.13.6",
         "@wso2is/access-control": "^3.0.18",
         "@wso2is/admin.applications.v1": "^2.22.37",
         "@wso2is/admin.authentication.v1": "workspace:^2.20.107",
