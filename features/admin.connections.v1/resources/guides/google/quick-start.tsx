@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import ApplicationSelectionModal from "@wso2is/admin.applications.v1/components/application-selection-modal";
 import { useRequiredScopes } from "@wso2is/access-control";
+import ApplicationSelectionModal from "@wso2is/admin.applications.v1/components/application-selection-modal";
 import {
     VerticalStepper,
     VerticalStepperStepInterface
