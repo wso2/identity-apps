@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
+import { ReactNode } from "react";
+
 /**
  * Different Authentication Types.
  */
@@ -47,7 +50,7 @@ enum ActionStatus {
 /**
  * Interface for the authentication type dropdown options.
  */
-export interface AuthTypeDropdownOption {
+export interface AuthenticationTypeDropdownOption {
     key: AuthenticationType;
     text: string;
     value: AuthenticationType;
@@ -74,7 +77,7 @@ export interface ActionInterface {
 /**
  *  Endpoint configuration.
  */
-export interface EndpointInterface {
+interface EndpointInterface {
     /**
      * External endpoint.
      */
@@ -88,7 +91,7 @@ export interface EndpointInterface {
 /**
  *  Endpoint authentication configuration.
  */
-export interface AuthenticationInterface {
+interface AuthenticationInterface {
     /**
      * Authentication Type.
      */
@@ -96,39 +99,25 @@ export interface AuthenticationInterface {
     /**
      * Authentication properties.
      */
-    properties: AuthPropertiesInterface;
+    properties: Partial<AuthenticationPropertiesInterface>;
 }
 
 /**
  * Authentication Properties.
  */
-export interface AuthPropertiesInterface {
+export interface AuthenticationPropertiesInterface {
     /**
      * Username auth property.
      */
-    username?: string;
+    username: string;
     /**
      * Password auth property.
      */
-    password?: string;
+    password: string;
     /**
      * Access Token auth property.
      */
-    accessToken?: string;
-    /**
-     * Header auth property.
-     */
-    header?: string;
-    /**
-     * Value auth property.
-     */
-    value?: string;
-}
-
-/**
- *  API Key Authentication Properties.
- */
-export interface ApiKeyAuthPropertiesInterface {
+    accessToken: string;
     /**
      * Header auth property.
      */
@@ -146,49 +135,29 @@ export interface ActionBasicResponseInterface {
     /**
      * ID of the Action.
      */
-    id?: string;
+    id: string;
     /**
      * Type of the Action.
      */
-    type?: ActionType;
+    type: ActionType;
     /**
      * Name of the Action.
      */
-    name?: string;
+    name: string;
     /**
      * Description of the Action.
      */
-    description?: string;
+    description: string;
     /**
      * Status of the Action.
      */
-    status?: ActionStatus;
+    status: ActionStatus;
 }
 
 /**
  *  Action Response.
  */
-export interface ActionResponseInterface {
-    /**
-     * ID of the Action.
-     */
-    id?: string;
-    /**
-     * Type of the Action.
-     */
-    type?: ActionType;
-    /**
-     * Name of the Action.
-     */
-    name?: string;
-    /**
-     * Description of the Action.
-     */
-    description?: string;
-    /**
-     * Status of the Action.
-     */
-    status?: ActionStatus;
+export interface ActionResponseInterface extends ActionBasicResponseInterface {
     /**
      * Endpoint configuration of the Action.
      */
@@ -206,17 +175,12 @@ export interface EndpointResponseInterface {
     /**
      * Authentication configurations of the Action.
      */
-    authentication: AuthenticationResponseInterface;
-}
-
-/**
- *  Endpoint authentication response.
- */
-export interface AuthenticationResponseInterface {
-    /**
-     * Authentication Type.
-     */
-    type: AuthenticationType;
+    authentication: {
+        /**
+         * Authentication Type.
+         */
+        type: AuthenticationType
+    };
 }
 
 /**
@@ -234,21 +198,7 @@ export interface ActionUpdateInterface {
     /**
      * Endpoint configuration of the Action.
      */
-    endpoint?: EndpointUpdateInterface;
-}
-
-/**
- *  Endpoint update configuration.
- */
-export interface EndpointUpdateInterface {
-    /**
-     * External endpoint.
-     */
-    uri?: string;
-    /**
-     * Authentication configurations of the Action.
-     */
-    authentication?: AuthenticationInterface;
+    endpoint?: Partial<EndpointInterface>;
 }
 
 /**
@@ -258,19 +208,19 @@ export interface ActionTypesResponseInterface {
     /**
      * Action Type.
      */
-    type?: string;
+    type: string;
     /**
      * Display Name of the Action Type.
      */
-    displayName?: string;
+    displayName: string;
     /**
      * Description of the Action Type.
      */
-    description?: string;
+    description: string;
     /**
      * Count of the configured actions per Action Type.
      */
-    count?: number;
+    count: number;
     /**
      * Uri for the given action type.
      */
@@ -307,19 +257,19 @@ export interface ActionConfigFormPropertyInterface {
     /**
      * Id of the Action.
      */
-    id?: string;
+    id: string;
     /**
      * Name of the Action.
      */
-    name?: string;
+    name: string;
     /**
      * Endpoint Uri of the Action.
      */
-    endpointUri?: string;
+    endpointUri: string;
     /**
      * Endpoint Uri of the Action.
      */
-    authenticationType?: string;
+    authenticationType: string;
     /**
      * Username property of basic authentication.
      */
@@ -340,4 +290,38 @@ export interface ActionConfigFormPropertyInterface {
      * Value property of apiKey authentication.
      */
     valueAuthProperty?: string;
+}
+
+/**
+ *  Action Type card info Interface.
+ */
+export interface ActionTypeCardInterface {
+    /**
+     * Description of the Action type.
+     */
+    description: string,
+    /**
+     * Feature status label of the Action type.
+     */
+    featureStatusLabel: FeatureStatusLabel,
+    /**
+     * Heading of the Action type.
+     */
+    heading: string,
+    /**
+     * Icon of the Action type.
+     */
+    icon: ReactNode,
+    /**
+     * Identifier of the Action type.
+     */
+    identifier: string,
+    /**
+     * Route of the Action type.
+     */
+    route: string,
+    /**
+     * Disabled status of the Action type.
+     */
+    disabled?: boolean
 }

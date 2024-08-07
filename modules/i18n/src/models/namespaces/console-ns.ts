@@ -8146,8 +8146,10 @@ export interface ConsoleNS {
                     name: {
                         label: string;
                         placeholder: string;
+                        hint: string;
                         validations: {
-                            empty: string
+                            empty: string;
+                            invalid: string;
                         };
                     };
                     endpoint: {

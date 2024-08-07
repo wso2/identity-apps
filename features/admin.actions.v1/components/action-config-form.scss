@@ -23,9 +23,15 @@
     }
 
     .box-container {
-        margin-top: 20px;
-        margin-left: 10px;
-        margin-right: 10px;
+        background-color: #f9fafb;
+        border-radius: 8px;
+        padding: 30px;
+
+        .box-field {
+            margin-top: 20px;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
     }
 
     .text-field-container {
@@ -58,5 +64,19 @@
 
     .alert-title {
         font-weight: 100;
+    }
+
+    .placeholder {
+        border-radius: 8px;
+        margin-bottom: 8px;
+
+        &.label {
+            height: 20px;
+            max-width: 100px;
+        }
+
+        &.text-field {
+            height: 40px;
+        }
     }
 }

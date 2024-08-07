@@ -16,5 +16,4 @@
  * under the License.
  */
 
-// export { default as ActionConfigurationPage } from "./pages/action-configuration";
 export { default as ActionTypesListingPage } from "./pages/actions";

@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import CardContent from "@mui/material/CardContent";
 import Avatar from "@oxygen-ui/react/Avatar";
 import Card from "@oxygen-ui/react/Card";
-import Typography from "@oxygen-ui/react/Typography";
+import CardContent from "@oxygen-ui/react/CardContent";
 import Grid from "@oxygen-ui/react/Grid";
+import Typography from "@oxygen-ui/react/Typography";
 import {
     CircleCheckFilledIcon,
     KeyFlowIcon,
@@ -28,19 +28,31 @@ import {
     ProfileFlowIcon,
     UserFlowIcon
 } from "@oxygen-ui/react-icons";
-import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
 import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import {
+    AlertInterface,
+    AlertLevels,
+    FeatureAccessConfigInterface,
+    IdentifiableComponentInterface 
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { DocumentationLink, GenericIcon, PageLayout, useDocumentation } from "@wso2is/react-components";
-import React, { FunctionComponent, MutableRefObject, ReactElement, ReactNode, useEffect, useMemo, useRef } from "react";
+import { DocumentationLink, GenericIcon, PageLayout, ResourceGrid, useDocumentation } from "@wso2is/react-components";
+import React, {
+    Fragment,
+    FunctionComponent,
+    ReactElement,
+    ReactNode,
+    useEffect,
+    useMemo
+} from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Ref } from "semantic-ui-react";
-import { useActionTypesDetails } from "../api/actions";
-import { ActionsConstants } from "../constants";
-import { ActionType, ActionTypesCountInterface } from "../models";
+import useGetActionTypes from "../api/use-get-action-types";
+import { ActionsConstants } from "../constants/actions-constants";
+import { ActionType, ActionTypeCardInterface, ActionTypesCountInterface } from "../models/actions";
 import "./actions.scss";
 
 /**
@@ -58,7 +70,9 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
     "data-componentid": _componentId = "action-types-listing-page"
 }: ActionTypesListingPageInterface): ReactElement => {
 
-    const pageContextRef: MutableRefObject<any> = useRef(null);
+    const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state.config.ui.features?.actions);
+
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const dispatch: Dispatch = useDispatch();
@@ -67,7 +81,7 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
         data: actionTypesConfigs,
         isLoading: isActionTypesConfigsLoading,
         error: actionTypesConfigsRetrievalError
-    } = useActionTypesDetails();
+    } = useGetActionTypes();
 
     const typeCounts: ActionTypesCountInterface = useMemo(() => {
         const actionTypeCounts: ActionTypesCountInterface = {};
@@ -109,7 +123,9 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
                 && actionTypesConfigsRetrievalError.response.data.description) {
                 dispatch(
                     addAlert<AlertInterface>({
-                        description: t("console:manage.features.actions.notification.error.typesFetch.description"),
+                        description: t("console:manage.features.actions.notification.error.typesFetch.description",
+                            { description: actionTypesConfigsRetrievalError.response.data.description }
+                        ),
                         level: AlertLevels.ERROR,
                         message: t("console:manage.features.actions.notification.error.typesFetch.message")
                     })
@@ -127,6 +143,23 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             }
         }
     }, [ ]);
+
+    const checkFeatureEnabledStatus = (actionType: string): boolean => {
+
+        switch (actionType) {
+            case ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH:
+                return isFeatureEnabled(actionsFeatureConfig, "actions.filterPreIssueAccessToken");
+            case ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH:
+                return isFeatureEnabled(actionsFeatureConfig, "actions.filterPreUpdatePassword");
+            case ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH:
+                return isFeatureEnabled(actionsFeatureConfig, "actions.filterPreUpdateProfile");
+            case ActionsConstants.PRE_REGISTRATION_URL_PATH:
+                return isFeatureEnabled(actionsFeatureConfig, "actions.filterPreRegistration");
+            default:
+                return false;
+        }
+    };
+
 
     const resolveActionDescription = (): ReactNode => {
 
@@ -159,19 +192,19 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
         let count: number = 0;
 
         switch (actionType) {
-            case ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_TYPE:
+            case ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH:
                 count = typeCounts?.preIssueAccessToken;
 
                 break;
-            case ActionsConstants.PRE_UPDATE_PASSWORD_TYPE:
+            case ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH:
                 count = typeCounts?.preUpdatePassword;
 
                 break;
-            case ActionsConstants.PRE_UPDATE_PROFILE_TYPE:
+            case ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH:
                 count = typeCounts?.preUpdateProfile;
 
                 break;
-            case ActionsConstants.PRE_REGISTRATION_TYPE:
+            case ActionsConstants.PRE_REGISTRATION_URL_PATH:
                 count = typeCounts?.preRegistration;
 
                 break;
@@ -197,6 +230,48 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
         );
     };
 
+    const actionTypesCardsInfo = (): ActionTypeCardInterface[] => {
+
+        return [
+            {
+                description: t("console:manage.features.actions.types.preIssueAccessToken" +
+                    ".description.shortened"),
+                disabled: false,
+                featureStatusLabel: FeatureStatusLabel.BETA,
+                heading: t("console:manage.features.actions.types.preIssueAccessToken.heading"),
+                icon: <KeyFlowIcon size="small" className="icon"/>,
+                identifier: ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH,
+                route: AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT")
+            },
+            {
+                description: t("console:manage.features.actions.types.preUpdatePassword.description.shortened"),
+                disabled: true,
+                featureStatusLabel: FeatureStatusLabel.COMING_SOON,
+                heading: t("console:manage.features.actions.types.preUpdatePassword.heading"),
+                icon: <PadlockAsteriskFlowIcon size="small" className="icon"/>,
+                identifier: ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH,
+                route: AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT")
+            },
+            {
+                description: t("console:manage.features.actions.types.preUpdateProfile.description.shortened"),
+                disabled: true,
+                featureStatusLabel: FeatureStatusLabel.COMING_SOON,
+                heading: t("console:manage.features.actions.types.preUpdateProfile.heading"),
+                icon: <ProfileFlowIcon size="small" className="icon"/>,
+                identifier: ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH,
+                route: AppConstants.getPaths().get("PRE_UPDATE_PROFILE_EDIT")
+            },
+            {
+                description: t("console:manage.features.actions.types.preRegistration.description.shortened"),
+                disabled: true,
+                featureStatusLabel: FeatureStatusLabel.COMING_SOON,
+                heading: t("console:manage.features.actions.types.preRegistration.heading"),
+                icon: <UserFlowIcon size="small" className="icon"/>,
+                identifier: ActionsConstants.PRE_REGISTRATION_URL_PATH,
+                route: AppConstants.getPaths().get("PRE_REGISTRATION_EDIT")
+            } ];
+    };
+
     return (
         <PageLayout
             pageTitle={ t("console:manage.features.actions.title") }
@@ -207,215 +282,85 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             contentTopMargin={ true }
             pageHeaderMaxWidth={ false }
         >
-
-            <Grid
-                container
-                spacing={{ xs: 2, md: 3 }}
-                className="actions-page"
-            >
-                <Grid
-                    xs={12} sm={6} md={4} lg={4}
+            <Fragment>
+                <ResourceGrid
+                    isLoading={ isActionTypesConfigsLoading }
+                    isEmpty={
+                        (!actionTypesConfigs
+                        || !Array.isArray(actionTypesConfigs)
+                        || actionTypesConfigs.length <= 0)
+                    }
+                    data-componentid={ `${ _componentId }-resource-grid` }
                 >
-                    <Card
-                        key="pre-issue-access-token"
-                        className="action-card"
-                        data-componentid="pre-issue-access-token-section"
-                        onClick={ () => history.push(AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT")) }
+                    <Grid
+                        container
+                        spacing={ { md: 3, xs: 2 } }
+                        className="actions-page"
                     >
-                        <CardContent
-                            className="action-type-header">
-                            <div>
-                                <GenericIcon
-                                    size="micro"
-                                    icon={ (
-                                        <Avatar
-                                            variant="square"
-                                            randomBackgroundColor
-                                            backgroundColorRandomizer="pre-issue-access-token"
-                                            className="action-type-icon-container"
+                        { actionTypesCardsInfo().map((cardProps: ActionTypeCardInterface) => {
+                            return checkFeatureEnabledStatus(cardProps.identifier) && (
+                                <>
+                                    <Grid
+                                        xs={ 12 }
+                                        sm={ 6 }
+                                        md={ 4 }
+                                        lg={ 4 }
+                                    >
+                                        <Card
+                                            key={ cardProps.identifier }
+                                            className={ cardProps.disabled ? "action-card disabled" : "action-card" }
+                                            data-componentid={ `${ cardProps.identifier }-action-type-card` }
+                                            onClick={ () => history.push(cardProps.route) }
                                         >
-                                            <KeyFlowIcon size="small" className="icon"/>
-                                        </Avatar>
-                                    ) }
-                                    inline
-                                    transparent
-                                    shape="square"
-                                />
-                            </div>
-                            <div>
-                                <Typography variant="h6">
-                                    { t("console:manage.features.actions.types.preIssueAccessToken.heading") }
-                                </Typography>
-                                { resolveConfiguredLabel(ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_TYPE) }
-                            </div>
-                            <div
-                                className={ "ribbon " + resolveFeatureLabelClass(FeatureStatusLabel.BETA) }
-                            >
-                                <span className="MuiChip-label">
-                                    { t(FeatureStatusLabel.BETA) }
-                                </span>
-                            </div>
-                        </CardContent>
-                        <CardContent>
-                            <Typography variant="body2" color="text.secondary">
-                                {  t("console:manage.features.actions.types.preIssueAccessToken" +
-                                        ".description.shortened") }
-                            </Typography>
-                        </CardContent>
-                    </Card>
-
-                </Grid>
-                <Grid
-                    xs={12} sm={6} md={4}
-                >
-                    <Card
-                        key="pre-update-password"
-                        data-componentid="pre-update-password-section"
-                        className="action-card disabled"
-                        onClick={ () => history.push(AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT")) }
-                    >
-                        <CardContent
-                            className="action-type-header">
-                            <div>
-                                <GenericIcon
-                                    size="micro"
-                                    icon={ (
-                                        <Avatar
-                                            variant="square"
-                                            randomBackgroundColor
-                                            backgroundColorRandomizer="pre-update-password"
-                                            className="action-type-icon-container"
-                                        >
-                                            <PadlockAsteriskFlowIcon className="icon" />
-                                        </Avatar>
-                                    ) }
-                                    inline
-                                    transparent
-                                    shape="square"
-                                />
-                            </div>
-                            <div>
-                                <Typography variant="h6">
-                                    { t("console:manage.features.actions.types.preUpdatePassword.heading") }
-                                </Typography>
-                            </div>
-                            <div
-                                className={ "ribbon " + resolveFeatureLabelClass(FeatureStatusLabel.COMING_SOON) }
-                            >
-                                <span className="MuiChip-label">
-                                    { t(FeatureStatusLabel.COMING_SOON) }
-                                </span>
-                            </div>
-                        </CardContent>
-                        <CardContent>
-                            <Typography variant="body2" color="text.secondary">
-                                { t("console:manage.features.actions.types.preUpdatePassword." +
-                                        "description.shortened") }
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid
-                    xs={12} sm={6} md={4} lg={4}
-                >
-                    <Card
-                        key="pre-update-profile"
-                        data-componentid="pre-update-profile-section"
-                        className="action-card disabled"
-                        onClick={ () => history.push(AppConstants.getPaths().get("PRE_UPDATE_PROFILE_EDIT")) }
-                    >
-                        <CardContent
-                            className="action-type-header">
-                            <div>
-                                <GenericIcon
-                                    size="micro"
-                                    icon={ (
-                                        <Avatar
-                                            variant="square"
-                                            randomBackgroundColor
-                                            backgroundColorRandomizer="pre-update-profile"
-                                            className="action-type-icon-container"
-                                        >
-                                            <ProfileFlowIcon className="icon" />
-                                        </Avatar>
-                                    ) }
-                                    inline
-                                    transparent
-                                    shape="square"
-                                />
-                            </div>
-                            <div>
-                                <Typography variant="h6">
-                                    { t("console:manage.features.actions.types.preUpdateProfile.heading") }
-                                </Typography>
-                            </div>
-                            <div
-                                className={ "ribbon " + resolveFeatureLabelClass(FeatureStatusLabel.COMING_SOON) }
-                            >
-                                <span className="MuiChip-label">
-                                    { t(FeatureStatusLabel.COMING_SOON) }
-                                </span>
-                            </div>
-                        </CardContent>
-                        <CardContent>
-                            <Typography variant="body2" color="text.secondary">
-                                { t("console:manage.features.actions.types.preUpdateProfile." +
-                                        "description.shortened") }
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>  
-                <Grid
-                    xs={12} sm={6} md={4} lg={4}
-                >
-                    <Card
-                        key="pre-update-profile"
-                        data-componentid="pre-update-profile-section"
-                        className="action-card disabled"
-                        onClick={ () => history.push(AppConstants.getPaths().get("PRE_UPDATE_PROFILE_EDIT")) }
-                    >
-                        <CardContent
-                            className="action-type-header">
-                            <div>
-                                <GenericIcon
-                                    size="micro"
-                                    icon={ (
-                                        <Avatar
-                                            variant="square"
-                                            randomBackgroundColor
-                                            backgroundColorRandomizer="pre-update-profile"
-                                            className="action-type-icon-container"
-                                        >
-                                            <ProfileFlowIcon className="icon" />
-                                        </Avatar>
-                                    ) }
-                                    inline
-                                    transparent
-                                    shape="square"
-                                />
-                            </div>
-                            <div>
-                                <Typography variant="h6">
-                                    { t("console:manage.features.actions.types.preUpdateProfile.heading") }
-                                </Typography>
-                            </div>
-                            <div
-                                className={ "ribbon " + resolveFeatureLabelClass(FeatureStatusLabel.COMING_SOON) }
-                            >
-                                <span className="MuiChip-label">
-                                    { t(FeatureStatusLabel.COMING_SOON) }
-                                </span>
-                            </div>
-                        </CardContent>
-                        <CardContent>
-                            <Typography variant="body2" color="text.secondary">
-                                { t("console:manage.features.actions.types.preUpdateProfile." +
-                                        "description.shortened") }
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>    
-            </Grid>
+                                            <CardContent
+                                                className="action-type-header">
+                                                <div>
+                                                    <GenericIcon
+                                                        size="micro"
+                                                        icon={ (
+                                                            <Avatar
+                                                                variant="square"
+                                                                randomBackgroundColor
+                                                                backgroundColorRandomizer={ cardProps.identifier }
+                                                                className="action-type-icon-container"
+                                                            >
+                                                                { cardProps.icon }
+                                                            </Avatar>
+                                                        ) }
+                                                        inline
+                                                        transparent
+                                                        shape="square"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <Typography variant="h6">
+                                                        { cardProps.heading }
+                                                    </Typography>
+                                                    { !cardProps.disabled ?
+                                                        resolveConfiguredLabel(cardProps.identifier) : null }
+                                                </div>
+                                                <div
+                                                    className={ "ribbon " +
+                                                        resolveFeatureLabelClass(cardProps.featureStatusLabel) }
+                                                >
+                                                    <span className="MuiChip-label">
+                                                        { t(cardProps.featureStatusLabel) }
+                                                    </span>
+                                                </div>
+                                            </CardContent>
+                                            <CardContent>
+                                                <Typography variant="body2" color="text.secondary">
+                                                    {  cardProps.description }
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
+                                </>
+                            );
+                        }) }
+                    </Grid>
+                </ResourceGrid>
+            </Fragment>
         </PageLayout>
     );
 };

@@ -17,29 +17,8 @@
  */
 
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AuthTypeDropdownOption, AuthenticationType } from "../models";
-
-/**
- * Model for action type.
- * This class will hold the values for the URL path and the API path.
- */
-class ActionType {
-    urlPath: string;
-    apiPath: string;
-
-    constructor(path: string, name: string) {
-        this.urlPath = path;
-        this.apiPath = name;
-    }
-
-    getUrlPath(): string {
-        return this.urlPath;
-    }
-
-    getApiPath(): string {
-        return this.apiPath;
-    }
-}
+import ActionType from "../constants/action-type";
+import { AuthenticationType, AuthenticationTypeDropdownOption } from "../models/actions";
 
 /**
  * Class containing Actions constants.
@@ -55,10 +34,13 @@ export class ActionsConstants {
 
     public static readonly ACTIONS_DIR: string = "actions";
     public static readonly TYPES_DIR: string = "types";
-    public static readonly ACTIONS_ACTIVATE: string = "activate";
-    public static readonly ACTIONS_DEACTIVATE: string = "deactivate";
+    public static readonly ACTIVATE: string = "activate";
+    public static readonly DEACTIVATE: string = "deactivate";
     public static readonly ACTIVE_STATUS: string = "ACTIVE";
-    public static readonly ACTION_UPDATE_ERROR_CODE: string = "ACTION-00001";
+
+    public static readonly CREATE_ACTION_ERROR_CODE: string = "ACTION-00001";
+    public static readonly UPDATE_ACTION_ERROR_CODE: string = "ACTION-00002";
+    public static readonly DELETE_ACTION_ERROR_CODE: string = "ACTION-00003";
 
     public static readonly CREATE: string = "create";
     public static readonly UPDATE: string = "update";
@@ -66,36 +48,58 @@ export class ActionsConstants {
     public static readonly FETCH: string = "fetch";
     public static readonly FETCH_TYPES: string = "typesFetch";
 
-    public static readonly PRE_ISSUE_ACCESS_TOKEN_FROM_PATH: string = "pre-issue-access-token";
-    public static readonly PRE_ISSUE_ACCESS_TOKEN_TYPE: string = "preIssueAccessToken";
-    public static readonly PRE_UPDATE_PASSWORD_TYPE: string = "preUpdatePassword";
-    public static readonly PRE_UPDATE_PROFILE_TYPE: string = "preUpdateProfile";
-    public static readonly PRE_REGISTRATION_TYPE: string = "preRegistration";
+    public static readonly PRE_ISSUE_ACCESS_TOKEN_URL_PATH: string = "pre-issue-access-token";
+    public static readonly PRE_UPDATE_PASSWORD_URL_PATH: string = "pre-update-password";
+    public static readonly PRE_UPDATE_PROFILE_URL_PATH: string = "pre-update-profile";
+    public static readonly PRE_REGISTRATION_URL_PATH: string = "pre-registration";
 
-    public static ErrorMessages: {
-        ACTION_UPDATE_ERROR_CODE: IdentityAppsError;
+    public static readonly PRE_ISSUE_ACCESS_TOKEN_API_PATH: string = "preIssueAccessToken";
+    public static readonly PRE_UPDATE_PASSWORD_API_PATH: string = "preUpdatePassword";
+    public static readonly PRE_UPDATE_PROFILE_API_PATH: string = "preUpdateProfile";
+    public static readonly PRE_REGISTRATION_API_PATH: string = "preRegistration";
+
+    public static readonly ERROR_MESSAGES: {
+        CREATE_ACTION_INVALID_STATUS_CODE_ERROR: IdentityAppsError;
+        DELETE_ACTION_INVALID_STATUS_CODE_ERROR: IdentityAppsError;
+        UPDATE_ACTION_INVALID_STATUS_CODE_ERROR: IdentityAppsError;
     } = {
-            ACTION_UPDATE_ERROR_CODE: new IdentityAppsError(
-                ActionsConstants.ACTION_UPDATE_ERROR_CODE,
-                "An error occurred while updating the Action.",
-                "Error while updating the Action configurations",
+            CREATE_ACTION_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
+                ActionsConstants.CREATE_ACTION_ERROR_CODE,
+                "An error occurred while creating the action.",
+                "Error while creating the action.",
+                null
+            ),
+            DELETE_ACTION_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
+                ActionsConstants.DELETE_ACTION_ERROR_CODE,
+                "An error occurred while deleting the action.",
+                "Error while deleting the action",
+                null
+            ),
+            UPDATE_ACTION_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
+                ActionsConstants.UPDATE_ACTION_ERROR_CODE,
+                "An error occurred while updating the action.",
+                "Error while updating the action",
                 null
             )
         };
 
-    public static ActionTypes: {
+    public static readonly ACTION_TYPES: {
         PRE_ISSUE_ACCESS_TOKEN: ActionType;
         PRE_UPDATE_PASSWORD: ActionType;
         PRE_UPDATE_PROFILE: ActionType;
         PRE_REGISTRATION: ActionType;
     } = {
-            PRE_ISSUE_ACCESS_TOKEN: new ActionType("pre-issue-access-token", "preIssueAccessToken"),
-            PRE_REGISTRATION: new ActionType("pre-registration", "preRegistration"),
-            PRE_UPDATE_PASSWORD: new ActionType("pre-update-password", "preUpdatePassword"),
-            PRE_UPDATE_PROFILE: new ActionType("pre-update-profile", "preUpdateProfile")
+            PRE_ISSUE_ACCESS_TOKEN: new ActionType(
+                ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH, ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH),
+            PRE_REGISTRATION: new ActionType(
+                ActionsConstants.PRE_REGISTRATION_URL_PATH, ActionsConstants.PRE_REGISTRATION_API_PATH),
+            PRE_UPDATE_PASSWORD: new ActionType(
+                ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH, ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH),
+            PRE_UPDATE_PROFILE: new ActionType(
+                ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH, ActionsConstants.PRE_UPDATE_PROFILE_API_PATH)
         };
 
-    public static readonly AUTH_TYPES: AuthTypeDropdownOption[] = [
+    public static readonly AUTH_TYPES: AuthenticationTypeDropdownOption[] = [
         {
             key: AuthenticationType.NONE,
             text: "console:manage.features.actions.fields.authentication.types.none.name",

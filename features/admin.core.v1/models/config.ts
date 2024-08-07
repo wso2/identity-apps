@@ -17,7 +17,7 @@
  */
 
 import { ResponseMode, Storage } from "@asgardeo/auth-react";
-import { ActionsResourceEndpointsInterface } from "@wso2is/admin.actions.v1/models";
+import { ActionsResourceEndpointsInterface } from "@wso2is/admin.actions.v1/models/endpoints";
 import {
     ApplicationTemplateLoadingStrategies,
     ApplicationsResourceEndpointsInterface

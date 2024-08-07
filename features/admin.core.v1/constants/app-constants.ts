@@ -403,13 +403,6 @@ export class AppConstants {
                 `${AppConstants.getAdminViewBasePath()}/actions` ],
             [ "PRE_ISSUE_ACCESS_TOKEN_EDIT",
                 `${ AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ]
-            // TODO: Uncomment following when respective action execution is implemented in the product.
-            // [ "PRE_UPDATE_PASSWORD_EDIT",
-            //     `${ AppConstants.getAdminViewBasePath()}/actions/pre-update-password` ],
-            // [ "PRE_UPDATE_PROFILE_EDIT",
-            //     `${ AppConstants.getAdminViewBasePath()}/actions/pre-update-profile` ],
-            // [ "PRE_REGISTRATION_EDIT",
-            //     `${ AppConstants.getAdminViewBasePath()}/actions/pre-registration` ]
         ]);
 
         return paths;

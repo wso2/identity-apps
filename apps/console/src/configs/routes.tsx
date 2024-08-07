@@ -1383,66 +1383,22 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             children: [
                 {
                     component: lazy(() =>
-                        import("@wso2is/admin.actions.v1/pages/action-edit-page")
+                        import("@wso2is/admin.actions.v1/pages/action-configuration-page")
                     ),
                     exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
                     id: "pre-issue-access-token",
                     name: "Pre Issue Access Token",
                     path: AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT"),
                     protected: true,
                     showOnSidePanel: false
                 }
-                // TODO: Uncomment following when respective action execution is implemented in the product.
-                // {
-                //     component: lazy(() =>
-                //         import("@wso2is/admin.actions.v1/pages/action-edit-page")
-                //     ),
-                //     exact: true,
-                //     icon: {
-                //         icon: getSidePanelIcons().childIcon
-                //     },
-                //     id: "pre-update-password",
-                //     name: "Pre Update Password",
-                //     path: AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT"),
-                //     protected: true,
-                //     showOnSidePanel: false
-                // },
-                // {
-                //     component: lazy(() =>
-                //         import("@wso2is/admin.actions.v1/pages/action-edit-page")
-                //     ),
-                //     exact: true,
-                //     icon: {
-                //         icon: getSidePanelIcons().childIcon
-                //     },
-                //     id: "pre-update-profile",
-                //     name: "Pre Update Profile",
-                //     path: AppConstants.getPaths().get("PRE_UPDATE_PROFILE_EDIT"),
-                //     protected: true,
-                //     showOnSidePanel: false
-                // },
-                // {
-                //     component: lazy(() =>
-                //         import("@wso2is/admin.actions.v1/pages/action-edit-page")
-                //     ),
-                //     exact: true,
-                //     icon: {
-                //         icon: getSidePanelIcons().childIcon
-                //     },
-                //     id: "pre-registration",
-                //     name: "Pre Registration",
-                //     path: AppConstants.getPaths().get("PRE_REGISTRATION_EDIT"),
-                //     protected: true,
-                //     showOnSidePanel: false
-                // }
             ],
             component: lazy(() =>
                 import("@wso2is/admin.actions.v1/pages/actions")
             ),
             exact: true,
+            featureStatus: "BETA",
+            featureStatusLabel: "common:beta",
             icon: {
                 icon: <ProgressFlowIcon className="icon" fill="black" />
             },

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ActionsResourceEndpointsInterface } from "../models";
+import { ActionsResourceEndpointsInterface } from "../models/endpoints";
 
 /**
  * Get the resource endpoints for the actions feature.

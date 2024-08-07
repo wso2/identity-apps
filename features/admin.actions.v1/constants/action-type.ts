@@ -16,4 +16,25 @@
  * under the License.
  */
 
-export * from "./action-edit";
+/**
+ * Model for action type.
+ * This class will hold the values for the URL path and the API path.
+ */
+
+export default class ActionType {
+    urlPath: string;
+    apiPath: string;
+
+    constructor(path: string, name: string) {
+        this.urlPath = path;
+        this.apiPath = name;
+    }
+
+    public getUrlPath(): string {
+        return this.urlPath;
+    }
+
+    public getApiPath(): string {
+        return this.apiPath;
+    }
+};

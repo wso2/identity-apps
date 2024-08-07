@@ -8355,7 +8355,7 @@ export const console: ConsoleNS = {
             actions: {
                 goBackActions: "Go back to Actions",
                 title: "Actions",
-                description: "Actions are executed sequentially at specific points in the Login, Registration, Self Account Management, and User Management flows (e.g., after a user logs in). Use these points to extend or integrate by adding your actions.",
+                description: "Actions are executed as in-line hooks at specific points in the Login, Registration, Self Account Management, and User Management flows (e.g., when an access token is issued). Use these points to extend or integrate.",
                 types: {
                     preIssueAccessToken: {
                         heading: "Pre Issue Access Token",
@@ -8368,21 +8368,21 @@ export const console: ConsoleNS = {
                         heading: "Pre Update Password",
                         description: {
                             shortened: "This action is executed before updating the password of a user.",
-                            expanded: "This action is executed before updating the password of a user. Use this action to _________________________________. Refer the documentation for the API definition to implement."
+                            expanded: "This action is executed before updating the password of a user. Refer the documentation for the API definition to implement."
                         }
                     },
                     preUpdateProfile: {
                         heading: "Pre Update Profile",
                         description: {
                             shortened: "This action is executed before updating the profile of a user.",
-                            expanded: "This action is executed before updating the profile of a user. Use this action to _________________________________. Refer the documentation for the API definition to implement."
+                            expanded: "This action is executed before updating the profile of a user. Refer the documentation for the API definition to implement."
                         }
                     },
                     preRegistration: {
                         heading: "Pre Registration",
                         description: {
                             shortened: "This action is executed before registering a user.",
-                            expanded: "This action is executed before registering a user. Use this action to _________________________________. Refer the documentation for the API definition to implement."
+                            expanded: "This action is executed before registering a user. Refer the documentation for the API definition to implement."
                         }
                     }
                 },
@@ -8455,14 +8455,16 @@ export const console: ConsoleNS = {
                 fields: {
                     name: {
                         label: "Action Name",
-                        placeholder: "My Action",
+                        placeholder: "Sample Action",
+                        hint: "Must be a string containing only letters (a-z, A-Z), numbers (0-9), spaces, underscore (_) and hyphen (-).",
                         validations: {
-                            empty: "Action Name is a required field."
+                            empty: "Action Name is a required field.",
+                            invalid: "Please choose a valid name that adheres to the given guidelines."
                         }
                     },
                     endpoint: {
                         label: "Endpoint",
-                        placeholder: "https://localhost:3000/my-endpoint",
+                        placeholder: "https://www.mywebsite.com/extensions",
                         hint: "The URL of the configured external endpoint to integrate with this action.",
                         validations: {
                             empty: "Endpoint is a required field.",
@@ -8555,7 +8557,7 @@ export const console: ConsoleNS = {
                 },
                 confirmationModal: {
                     assertionHint: "Please confirm your action.",
-                    content: "If you delete this configuration, you will not be able to extend the flow. Please proceed with caution.",
+                    content: "If you delete this configuration, your service extending the flow will not be executed. Please proceed with caution.",
                     header: "Are you sure?",
                     message: "This action is irreversible and will permanently delete the Action configurations."
                 },
