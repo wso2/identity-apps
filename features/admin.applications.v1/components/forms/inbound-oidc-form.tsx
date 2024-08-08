@@ -261,9 +261,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     ] = useState<boolean>(false);
     const [ activeOption, setActiveOption ] = useState<ExternalClaim>(undefined);
     const [ selectedTokenType, setSelectedTokenType ] = useState<string>(undefined);
-    const [ selectedJwtAccessTokenAttributes, setSelectedJwtAccessTokenAttributes ] = useState<ExternalClaim[]>(undefined);
-    const [ jwtAccessTokenAttributes, setJwtAccessTokenAttributes ] = useState<ExternalClaim[]>([]);
-    const [ jwtAccessTokenAttributesEnabled, setJwtAccessTokenAttributesEnabled ] = useState<boolean>(false);
+    const [ selectedAccessTokenAttributes, setSelectedAccessTokenAttributes ] = useState<ExternalClaim[]>(undefined);
+    const [ accessTokenAttributes, setAccessTokenAttributes ] = useState<ExternalClaim[]>([]);
+    const [ accessTokenAttributesEnabled, setAccessTokenAttributesEnabled ] = useState<boolean>(false);
     const [ isSubjectTokenEnabled, setIsSubjectTokenEnabled ] = useState<boolean>(false);
     const [ isSubjectTokenFeatureAvailable, setIsSubjectTokenFeatureAvailable ] = useState<boolean>(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
@@ -304,7 +304,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const requestObjectSigningAlg: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const requestObjectEncryptionAlgorithm: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const requestObjectEncryptionMethod: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const jwtAccessTokenAttributesEnabledConfig: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const accessTokenAttributesEnabledConfig: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const subjectToken: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const applicationSubjectTokenExpiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
 
@@ -456,7 +456,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         getAllExternalClaims("aHR0cDovL3dzbzIub3JnL29pZGMvY2xhaW0", null)
             .then((response: ExternalClaim[]) => {
                 console.log("External claims response: ", response);
-                setJwtAccessTokenAttributes(response);
+                setAccessTokenAttributes(response);
             })
             .catch(() => {
                 console.log("Error while fetching external claims");
@@ -464,16 +464,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     }, []);
 
     useEffect(() => {
-        if (!initialValues.accessToken.jwtAccessTokenAttributesConfiguration.attributes) {
+        if (!initialValues.accessToken.accessTokenAttributes) {
             return;
         }
-        const selectedClaims = initialValues.accessToken.jwtAccessTokenAttributesConfiguration.attributes
-        .map((claim: string) => jwtAccessTokenAttributes.find((claimObj: ExternalClaim) => claimObj.claimURI === claim))
+        const selectedClaims = initialValues.accessToken.accessTokenAttributes
+        .map((claim: string) => accessTokenAttributes.find((claimObj: ExternalClaim) => claimObj.claimURI === claim))
         .filter((claimObj: ExternalClaim | undefined) => claimObj !== undefined);
 
-        setSelectedJwtAccessTokenAttributes(selectedClaims);
-        setJwtAccessTokenAttributesEnabled(initialValues.accessToken.jwtAccessTokenAttributesConfiguration.enable)
-    }, [jwtAccessTokenAttributes]);
+        setSelectedAccessTokenAttributes(selectedClaims);
+        setAccessTokenAttributesEnabled(initialValues.accessToken.accessTokenAttributesEnabled)
+    }, [accessTokenAttributes]);
 
     useEffect(() => {
         const isSharedWithAll: additionalSpProperty[] = application?.advancedConfigurations
@@ -752,12 +752,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
         setSelectedGrantTypes(grants);
         setGrantChanged(!isGrantChanged);
-    };
-
-    const handleTokenTypeChange = (values: Map<string, FormValue>) => {
-        let tokenType: string = values.get("type") as string;
-
-        setSelectedTokenType(tokenType);
     };
 
     const getMetadataHints = (element: string) => {
@@ -1267,10 +1261,8 @@ const getAllowedListForAccessToken = (
                     type: values.get("type"),
                     userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds")),
                     validateTokenBinding: values.get("ValidateTokenBinding")?.length > 0,
-                    jwtAccessTokenAttributesConfiguration: {
-                        attributes: selectedJwtAccessTokenAttributes.map((claim: ExternalClaim) => claim.claimURI),
-                        enable: jwtAccessTokenAttributesEnabled
-                    }
+                    accessTokenAttributes: selectedAccessTokenAttributes.map((claim: ExternalClaim) => claim.claimURI),
+                    accessTokenAttributesEnabled: accessTokenAttributesEnabled
                 },
                 grantTypes: values.get("grant"),
                 idToken: {
@@ -2652,15 +2644,14 @@ const getAllowedListForAccessToken = (
                                     );
                                 } }
                                 readOnly={ readOnly }
-                                listen={ (values: Map<string, FormValue>) => handleTokenTypeChange(values) }
                                 data-testid={ `${ testId }-access-token-type-radio-group` }
                             />
-                        { selectedTokenType === "JWT" ? (
+                        { isJWTAccessTokenTypeSelected ? (
                         <Grid.Row>
                             <Grid.Column width={ 8 } className="jwt-attributes-dropdown-label-column">
                                 <span>
                                 { t("applications:forms.inboundOIDC.sections" +
-                                    ".accessToken.fields.jwtAccessTokenAttributes.label") }
+                                    ".accessToken.fields.accessTokenAttributes.label") }
                                 </span>
                             </Grid.Column>
                             <Grid.Column width={ 8 }>
@@ -2669,9 +2660,9 @@ const getAllowedListForAccessToken = (
                                     multiple
                                     disableCloseOnSelect
                                     loading={ isLoading }
-                                    options={ jwtAccessTokenAttributes }
-                                    value={ selectedJwtAccessTokenAttributes ?? [] }
-                                    disabled = { !initialValues?.accessToken?.jwtAccessTokenAttributesConfiguration.enable }
+                                    options={ accessTokenAttributes }
+                                    value={ selectedAccessTokenAttributes ?? [] }
+                                    disabled = { !initialValues?.accessToken?.accessTokenAttributesEnabled }
                                     data-componentid={ `${ componentId }-assigned-jwt-attribute-list` }
                                     getOptionLabel={
                                         (claim: ExternalClaim) => claim.claimURI
@@ -2680,12 +2671,12 @@ const getAllowedListForAccessToken = (
                                         <TextField className="jwt-attributes-dropdown-input"
                                             { ...params }
                                             placeholder={ !false && t("applications:forms.inboundOIDC.sections" +
-                                            ".accessToken.fields.jwtAccessTokenAttributes.placeholder") }
+                                            ".accessToken.fields.accessTokenAttributes.placeholder") }
                                         />
                                     ) }
                                     onChange={ (event: SyntheticEvent, claims: ExternalClaim[]) => {
                                         setIsFormStale(true);
-                                        setSelectedJwtAccessTokenAttributes(claims);
+                                        setSelectedAccessTokenAttributes(claims);
                                     } }
                                     isOptionEqualToValue={
                                         (option: ExternalClaim, value: ExternalClaim) =>
@@ -2702,7 +2693,7 @@ const getAllowedListForAccessToken = (
                                             activeOption={ activeOption }
                                             setActiveOption={ setActiveOption }
                                             variant={
-                                                jwtAccessTokenAttributes?.find(
+                                                accessTokenAttributes?.find(
                                                     (claim: ExternalClaim) => claim.id === option.id
                                                 )
                                                     ? "solid"
@@ -2727,41 +2718,41 @@ const getAllowedListForAccessToken = (
                                         values={ { productName: config.ui.productName } }
                                         i18nKey={
                                             "applications:forms.inboundOIDC.sections." +
-                                            "jwtAccessTokenAttributes.description"
+                                            "accessTokenAttributes.description"
                                         }
                                     >
                                     Define the attributes that should be included in the <Code withBackground>JWT access token</Code>
                                     </Trans>
                                 </Hint>
                             </Grid.Column>
-                            {!initialValues?.accessToken?.jwtAccessTokenAttributesConfiguration.enable && (
+                            {!initialValues?.accessToken?.accessTokenAttributesEnabled && (
                             <Grid.Column>
                                 <Field
-                                    ref={ jwtAccessTokenAttributesEnabledConfig }
-                                    name="jwtAccessTokenAttributesEnabledConfig"
+                                    ref={ accessTokenAttributesEnabledConfig }
+                                    name="accessTokenAttributesEnabledConfig"
                                     label=""
                                     required={ false }
                                     type="checkbox"
                                     listen={ (values: Map<string, FormValue>): void => {
-                                        const jwtAccessTokenAttributesEnabled: boolean = values.get("jwtAccessTokenAttributesEnabledConfig")
-                                            .includes("jwtAccessTokenAttributesEnabled");
+                                        const accessTokenAttributesEnabled: boolean = values.get("accessTokenAttributesEnabledConfig")
+                                            .includes("accessTokenAttributesEnabled");
 
-                                        setJwtAccessTokenAttributesEnabled(jwtAccessTokenAttributesEnabled);
+                                        setAccessTokenAttributesEnabled(accessTokenAttributesEnabled);
                                     } }
                                     value={
-                                        initialValues?.accessToken?.jwtAccessTokenAttributesConfiguration.enable
-                                            ? [ "jwtAccessTokenAttributesEnabled" ]
+                                        initialValues?.accessToken?.accessTokenAttributesEnabled
+                                            ? [ "accessTokenAttributesEnabled" ]
                                             : []
                                     }
                                     children={ [
                                         {
                                             label: t("applications:forms.inboundOIDC.sections" +
-                                                ".accessToken.fields.jwtAccessTokenAttributes.enable.label"),
-                                            value: "jwtAccessTokenAttributesEnabled"
+                                                ".accessToken.fields.accessTokenAttributes.enable.label"),
+                                            value: "accessTokenAttributesEnabled"
                                         }
                                     ] }
                                     readOnly={ readOnly }
-                                    data-testid={ `${ testId }-jwtAccessTokenAttributesEnabled-checkbox` }
+                                    data-testid={ `${ testId }-access-token-attributes-enabled-checkbox` }
                                 />
                             </Grid.Column>
                             )}

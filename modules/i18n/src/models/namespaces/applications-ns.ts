@@ -1323,7 +1323,7 @@ export interface ApplicationsNS {
                                 invalid: string;
                             };
                         };
-                        jwtAccessTokenAttributes: {
+                        accessTokenAttributes: {
                             hint: string;
                             label:string;
                             description: string;

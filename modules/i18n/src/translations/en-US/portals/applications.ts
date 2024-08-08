@@ -1575,7 +1575,7 @@ export const applications: ApplicationsNS = {
                                 invalid: "Please avoid special characters like commas (,)"
                             }
                         },
-                        jwtAccessTokenAttributes: {
+                        accessTokenAttributes: {
                             hint : "",
                             label: "JWT Access Token Attributes",
                             description: "Define the attributes that should be included in the JWT access token.",
