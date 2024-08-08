@@ -271,10 +271,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 {
                     component: lazy(() =>
-                        import(
-                            "@wso2is/admin.extensions.v1/components/account-login/" +
-                            "pages/alternative-login-identifier-edit"
-                        )
+                        import("@wso2is/admin.alternative-login-identifier.v1/pages/alternative-login-identifier-page")
                     ),
                     exact: true,
                     icon: {

@@ -43,6 +43,7 @@ module.exports = [
         input: [
             "./index.ts",
             "./admin.administrators.v1/public-api.ts",
+            "./admin.alternative-login-identifier.v1/public-api.ts",
             "./admin.api-resources.v2/public-api.ts",
             "./admin.application-roles.v1/public-api.ts",
             "./admin.applications.v1/public-api.ts",
@@ -110,6 +111,8 @@ module.exports = [
                 baseContents: (pkg) => ({
                     ...pkg, // Include fields from the root package.json
                     exports: {
+                        "./admin.alternative-login-identifier.v1":
+                            "./admin.admin.alternative-login-identifier.v1/public-api.js",
                         "./admin.api-resources.v2": "./admin.api-resources.v2/public-api.js",
                         "./admin.application-roles.v1": "./admin.application-roles.v1/public-api.js",
                         "./admin.applications.v1": "./admin.applications.v1/public-api.js",
