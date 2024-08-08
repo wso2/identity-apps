@@ -127,14 +127,14 @@
     }
 %>
 <%
-    String user_identifier_claim_key = "http://wso2.org/claims/username";
+    String userIdentifierClaimKey = "http://wso2.org/claims/username";
     final String MULTI_ATTRIBUTE_USER_IDENTIFIER_CLAIM_URI = "internal.user.identifier.claim.uri";
     final RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
     
     try {
         PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
         if (preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain)) {
-            user_identifier_claim_key = MULTI_ATTRIBUTE_USER_IDENTIFIER_CLAIM_URI;
+            userIdentifierClaimKey = MULTI_ATTRIBUTE_USER_IDENTIFIER_CLAIM_URI;
         }
     } catch (PreferenceRetrievalClientException e) {
         IdentityManagementEndpointUtil.addErrorInformation(request, e);
@@ -163,7 +163,7 @@
 
         // Get the username claim string for the tenant
         UserClaim userNameClaim = new UserClaim();
-        userNameClaim.setUri(user_identifier_claim_key);
+        userNameClaim.setUri(userIdentifierClaimKey);
         userNameClaim.setValue(MultitenantUtils.getTenantAwareUsername(username));
         userClaims.add(userNameClaim);
 

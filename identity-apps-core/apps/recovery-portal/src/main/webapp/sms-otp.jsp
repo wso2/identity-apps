@@ -341,8 +341,8 @@
                                         .getRelativePublicURL();
                                     String multiOptionPathWithQuery;
                                     if (urlQuery.contains("&username=")) {
-                                        String regex = "(&username=)[^&]+";
-                                        multiOptionPathWithQuery = urlQuery.replaceAll(regex, "$1" + username);
+                                        multiOptionPathWithQuery =
+                                            urlQuery.replaceAll("(&username=)[^&]+", "$1" + username);
                                     } else {
                                         multiOptionPathWithQuery = urlQuery + "&username=" + username 
                                             + "&selectedOption=SMSOTP";
