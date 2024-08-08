@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -42,7 +42,7 @@ import {
 } from "./expert-mode-authentication-provider-create-wizard-content";
 import { createConnection } from "../../../api/connections";
 import { getConnectionIcons } from "../../../configs/ui";
-import { ConnectionManagementConstants } from "../../../constants/connection-constants";
+import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import {
     ConnectionInterface,
     GenericConnectionCreateWizardPropsInterface
@@ -163,8 +163,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
                 })
                 .catch((error: AxiosError) => {
 
-                    const identityAppsError: IdentityAppsError = ConnectionManagementConstants
-                        .ERROR_CREATE_LIMIT_REACHED;
+                    const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
 
                     if (error.response.status === 403 &&
                     error?.response?.data?.code ===

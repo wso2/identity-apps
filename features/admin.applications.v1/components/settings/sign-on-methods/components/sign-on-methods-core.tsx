@@ -22,7 +22,7 @@ import AuthenticationFlowProvider
     from "@wso2is/admin.authentication-flow-builder.v1/providers/authentication-flow-provider";
 import { AuthenticatorCreateWizardFactory } from "@wso2is/admin.connections.v1";
 import {
-    CommonAuthenticatorManagementConstants
+    CommonAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
 import {
     FederatedAuthenticatorConstants
@@ -637,23 +637,23 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
         let authenticatorName: string = null; // Which flow triggered the flow? i.e Google, Facebook etc.
 
         if (socialDisclaimerModalType === LoginFlowTypes.GOOGLE_LOGIN) {
-            idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GOOGLE;
+            idpTemplateTypeToTrigger = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE;
             authenticatorName = FederatedAuthenticatorConstants
                 .AUTHENTICATOR_DISPLAY_NAMES.GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.GITHUB_LOGIN) {
-            idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.GITHUB;
+            idpTemplateTypeToTrigger = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GITHUB;
             authenticatorName = FederatedAuthenticatorConstants
                 .AUTHENTICATOR_DISPLAY_NAMES.GITHUB_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.FACEBOOK_LOGIN) {
-            idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK;
+            idpTemplateTypeToTrigger = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK;
             authenticatorName = FederatedAuthenticatorConstants
                 .AUTHENTICATOR_DISPLAY_NAMES.FACEBOOK_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.MICROSOFT_LOGIN) {
-            idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.MICROSOFT;
+            idpTemplateTypeToTrigger = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.MICROSOFT;
             authenticatorName = FederatedAuthenticatorConstants
                 .AUTHENTICATOR_DISPLAY_NAMES.MICROSOFT_AUTHENTICATOR_DISPLAY_NAME;
         } else if (socialDisclaimerModalType === LoginFlowTypes.APPLE_LOGIN) {
-            idpTemplateTypeToTrigger = CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE;
+            idpTemplateTypeToTrigger = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.APPLE;
             authenticatorName = FederatedAuthenticatorConstants
                 .AUTHENTICATOR_DISPLAY_NAMES.APPLE_AUTHENTICATOR_DISPLAY_NAME;
         } else {

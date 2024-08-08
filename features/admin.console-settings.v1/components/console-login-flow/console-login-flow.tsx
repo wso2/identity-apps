@@ -24,7 +24,9 @@ import AILoginFlowProvider from "@wso2is/admin.login-flow.ai.v1/providers/ai-log
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
-import { AuthenticatorManagementConstants } from "../../../admin.connections.v1";
+import {
+    FederatedAuthenticatorConstants
+} from "../../../admin.connections.v1/constants/federated-authenticator-constants";
 import useConsoleSettings from "../../hooks/use-console-settings";
 import "./console-login-flow.scss";
 
@@ -48,7 +50,7 @@ const ConsoleLoginFlow: FunctionComponent<ConsoleLoginFlowPropsInterface> = (
     // In Console login flow, Organization authenticator should not be shown.
     const hiddenAuthenticators: string[] = [
         ...(UIConfig?.hiddenAuthenticators ?? []),
-        AuthenticatorManagementConstants.ORGANIZATION_AUTHENTICATOR
+        FederatedAuthenticatorConstants.ORGANIZATION_AUTHENTICATOR
     ];
 
     const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {

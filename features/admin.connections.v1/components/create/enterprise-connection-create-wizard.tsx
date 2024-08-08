@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -72,7 +72,7 @@ import { Dispatch } from "redux";
 import { Icon, Grid as SemanticGrid } from "semantic-ui-react";
 import { createConnection, useGetConnectionTemplate } from "../../api/connections";
 import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/ui";
-import { ConnectionManagementConstants } from "../../constants/connection-constants";
+import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import { AuthenticatorMeta } from "../../meta/authenticator-meta";
 import {
     AuthProtocolTypes,
@@ -368,7 +368,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 onIDPCreate();
             })
             .catch((error: AxiosError) => {
-                const identityAppsError: IdentityAppsError = ConnectionManagementConstants.ERROR_CREATE_LIMIT_REACHED;
+                const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
 
                 if (error.response.status === 403 &&
                     error?.response?.data?.code ===

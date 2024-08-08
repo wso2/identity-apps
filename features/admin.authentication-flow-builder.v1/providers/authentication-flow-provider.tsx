@@ -27,7 +27,6 @@ import {
 } from "@wso2is/admin.applications.v1/models/application";
 import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
 import { SignInMethodUtils } from "@wso2is/admin.applications.v1/utils/sign-in-method-utils";
-import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1/constants/autheticator-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AuthenticatorMeta } from "@wso2is/admin.connections.v1/meta/authenticator-meta";
 import { ConnectionInterface } from "@wso2is/admin.connections.v1/models/connection";
@@ -203,8 +202,8 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         });
 
         federatedAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
-            authenticator.image = authenticator.defaultAuthenticator?.authenticatorId ===
-            AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
+            authenticator.image = ConnectionsManagementUtils.isOrganizationSSOConnection(authenticator
+                .defaultAuthenticator?.authenticatorId)
                 ? AuthenticatorMeta.getAuthenticatorIcon(
                     (authenticator as ConnectionInterface)
                         .federatedAuthenticators?.defaultAuthenticatorId

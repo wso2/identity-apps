@@ -76,8 +76,7 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
                         id: GeneralApplicationTemplateCategory.id,
                         resource: GeneralApplicationTemplateCategory
                     }
-                ], "id"),
-                keyBy(extensionsManager.getApplicationTemplatesConfig().categories, "id")
+                ], "id")
             )
         ),
         groups: values(
@@ -93,8 +92,7 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
                         id: DesktopApplicationTemplateGroup.id,
                         resource: DesktopApplicationTemplateGroup
                     }
-                ], "id"),
-                keyBy(extensionsManager.getApplicationTemplatesConfig().groups, "id")
+                ], "id")
             )
         ),
         templates: values(

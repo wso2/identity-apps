@@ -23,7 +23,10 @@ export interface Extensions {
     common: {
         community: string;
         help: {
-            communityLink: string;
+            communityLinks: {
+                discord: string;
+                stackOverflow: string;
+            };
             docSiteLink: string;
             helpCenterLink: {
                 title: string;

@@ -17,7 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1";
+import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
@@ -109,7 +109,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     const interpretValueByType = (value: FormValue, key: string, type: string) => {
         switch (type?.toUpperCase()) {
             case CommonConstants.BOOLEAN: {
-                if (key === ConnectionManagementConstants.USER_ID_IN_CLAIMS) {
+                if (key === ConnectionUIConstants.USER_ID_IN_CLAIMS) {
                     return value;
                 } else {
                     return value?.includes(key);

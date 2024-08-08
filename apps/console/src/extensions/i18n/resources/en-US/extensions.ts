@@ -29,7 +29,10 @@ export const extensions: Extensions = {
     common: {
         community: "Community",
         help: {
-            communityLink: "Ask the Community",
+            communityLinks: {
+                discord: "Ask on Discord",
+                stackOverflow: "Ask on Stack Overflow"
+            },
             docSiteLink: "Documentation",
             helpCenterLink: {
                 title: "Contact Support",
