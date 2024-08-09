@@ -254,10 +254,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 {
                     component: lazy(() =>
-                        import(
-                            "@wso2is/admin.extensions.v1/components/account-login/" +
-                            "pages/username-validation-edit"
-                        )
+                        import("@wso2is/admin.username-validation.v1/pages/username-validation-page")
                     ),
                     exact: true,
                     icon: {
