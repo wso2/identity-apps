@@ -43,6 +43,7 @@ module.exports = [
         input: [
             "./index.ts",
             "./admin.administrators.v1/public-api.ts",
+            "./admin.alternative-login-identifier.v1/public-api.ts",
             "./admin.api-resources.v2/public-api.ts",
             "./admin.application-roles.v1/public-api.ts",
             "./admin.applications.v1/public-api.ts",
@@ -76,6 +77,7 @@ module.exports = [
             "./admin.session-management.v1/public-api.ts",
             "./admin.sms-providers.v1/public-api.ts",
             "./admin.tenants.v1/public-api.ts",
+            "./admin.username-validation.v1/public-api.ts",
             "./admin.users.v1/public-api.ts",
             "./admin.userstores.v1/public-api.ts",
             "./admin.validation.v1/public-api.ts",
@@ -110,6 +112,8 @@ module.exports = [
                 baseContents: (pkg) => ({
                     ...pkg, // Include fields from the root package.json
                     exports: {
+                        "./admin.alternative-login-identifier.v1":
+                            "./admin.admin.alternative-login-identifier.v1/public-api.js",
                         "./admin.api-resources.v2": "./admin.api-resources.v2/public-api.js",
                         "./admin.application-roles.v1": "./admin.application-roles.v1/public-api.js",
                         "./admin.applications.v1": "./admin.applications.v1/public-api.js",
@@ -145,6 +149,7 @@ module.exports = [
                         "./admin.session-management.v1": "./admin.session-management.v1/public-api.js",
                         "./admin.sms-providers.v1": "./admin.sms-providers.v1/public-api.js",
                         "./admin.tenants.v1": "./admin.tenants.v1/public-api.js",
+                        "./admin.username-validation.v1": "./admin.username-validation.v1/public-api.js",
                         "./admin.users.v1": "./admin.users.v1/public-api.js",
                         "./admin.userstores.v1": "./admin.userstores.v1/public-api.js",
                         "./admin.validation.v1": "./admin.validation.v1/public-api.js",
