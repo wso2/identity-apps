@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.org-insights.v1",
-    "version": "2.20.110",
+    "version": "2.20.111",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -21,7 +21,7 @@
         "@oxygen-ui/react": "^1.13.6",
         "@oxygen-ui/react-icons": "^1.13.6",
         "@wso2is/access-control": "^3.0.20",
-        "@wso2is/admin.core.v1": "^2.24.3",
+        "@wso2is/admin.core.v1": "^2.24.4",
         "@wso2is/core": "^2.0.60",
         "@wso2is/dynamic-forms": "^2.0.92",
         "@wso2is/form": "^2.0.93",
