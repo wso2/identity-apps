@@ -1,5 +1,65 @@
 # @wso2is/admin.users.v1
 
+## 2.20.101
+
+### Patch Changes
+
+- [#6715](https://github.com/wso2/identity-apps/pull/6715) [`afeb344ddbc6a674f342893b3f8135977e52a468`](https://github.com/wso2/identity-apps/commit/afeb344ddbc6a674f342893b3f8135977e52a468) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Bump oxygen ui version
+
+- Updated dependencies [[`afeb344ddbc6a674f342893b3f8135977e52a468`](https://github.com/wso2/identity-apps/commit/afeb344ddbc6a674f342893b3f8135977e52a468)]:
+  - @wso2is/admin.server-configurations.v1@2.21.43
+  - @wso2is/admin.identity-providers.v1@2.21.31
+  - @wso2is/admin.authorization.v1@2.20.42
+  - @wso2is/admin.organizations.v1@2.20.101
+  - @wso2is/admin.extensions.v1@2.21.71
+  - @wso2is/admin.userstores.v1@2.20.101
+  - @wso2is/admin.validation.v1@2.20.101
+  - @wso2is/admin.claims.v1@2.20.101
+  - @wso2is/admin.groups.v1@2.20.101
+  - @wso2is/react-components@2.2.30
+  - @wso2is/admin.roles.v2@2.20.101
+  - @wso2is/admin.users.v1@2.20.101
+  - @wso2is/admin.core.v1@2.23.31
+  - @wso2is/dynamic-forms@2.0.88
+  - @wso2is/admin.authentication.v1@2.20.101
+  - @wso2is/form@2.0.89
+
+## 2.20.100
+
+### Patch Changes
+
+- Updated dependencies [[`3533ef2c2cc693af44884f32e42e506d462704aa`](https://github.com/wso2/identity-apps/commit/3533ef2c2cc693af44884f32e42e506d462704aa)]:
+  - @wso2is/admin.extensions.v1@2.21.70
+  - @wso2is/admin.authentication.v1@2.20.100
+  - @wso2is/admin.claims.v1@2.20.100
+  - @wso2is/admin.core.v1@2.23.30
+  - @wso2is/admin.groups.v1@2.20.100
+  - @wso2is/admin.identity-providers.v1@2.21.30
+  - @wso2is/admin.organizations.v1@2.20.100
+  - @wso2is/admin.roles.v2@2.20.100
+  - @wso2is/admin.server-configurations.v1@2.21.42
+  - @wso2is/admin.users.v1@2.20.100
+  - @wso2is/admin.userstores.v1@2.20.100
+  - @wso2is/admin.validation.v1@2.20.100
+
+## 2.20.99
+
+### Patch Changes
+
+- Updated dependencies [[`1f7f75c007d4c8c562c0d72d29db6760f20a15e6`](https://github.com/wso2/identity-apps/commit/1f7f75c007d4c8c562c0d72d29db6760f20a15e6)]:
+  - @wso2is/admin.extensions.v1@2.21.69
+  - @wso2is/admin.core.v1@2.23.29
+  - @wso2is/admin.identity-providers.v1@2.21.29
+  - @wso2is/admin.organizations.v1@2.20.99
+  - @wso2is/admin.roles.v2@2.20.99
+  - @wso2is/admin.authentication.v1@2.20.99
+  - @wso2is/admin.claims.v1@2.20.99
+  - @wso2is/admin.groups.v1@2.20.99
+  - @wso2is/admin.server-configurations.v1@2.21.41
+  - @wso2is/admin.users.v1@2.20.99
+  - @wso2is/admin.userstores.v1@2.20.99
+  - @wso2is/admin.validation.v1@2.20.99
+
 ## 2.20.98
 
 ### Patch Changes
