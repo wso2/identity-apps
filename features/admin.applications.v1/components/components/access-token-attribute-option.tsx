@@ -69,8 +69,8 @@ export const AccessTokenAttributeOption: FunctionComponent<AccessTokenAttributeO
                         }
                     </Grid>
                     <Grid xs={ 5 }>
-                        <ListItemText primary={ displayName }/>  
-                        <Code>{claimURI}</Code> 
+                        <ListItemText primary={ displayName } />
+                        <Code>{ claimURI }</Code>
                     </Grid>
                 </Grid>
             </Grid>
