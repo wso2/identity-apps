@@ -1300,6 +1300,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (!isSystemApplication && !isDefaultApplication) {
             let inboundConfigFormValues: any = {
                 accessToken: {
+                    accessTokenAttributes: selectedAccessTokenAttributes.map((claim: ExternalClaim) => claim.claimURI),
+                    accessTokenAttributesEnabled: accessTokenAttributesEnabled,
                     applicationAccessTokenExpiryInSeconds: values.get("applicationAccessTokenExpiryInSeconds")
                         ? Number(values.get("applicationAccessTokenExpiryInSeconds"))
                         : Number(metadata?.defaultApplicationAccessTokenExpiryTime),
@@ -1307,9 +1309,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     revokeTokensWhenIDPSessionTerminated: values.get("RevokeAccessToken")?.length > 0,
                     type: values.get("type"),
                     userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds")),
-                    validateTokenBinding: values.get("ValidateTokenBinding")?.length > 0,
-                    accessTokenAttributes: selectedAccessTokenAttributes.map((claim: ExternalClaim) => claim.claimURI),
-                    accessTokenAttributesEnabled: accessTokenAttributesEnabled
+                    validateTokenBinding: values.get("ValidateTokenBinding")?.length > 0
                 },
                 grantTypes: values.get("grant"),
                 idToken: {
