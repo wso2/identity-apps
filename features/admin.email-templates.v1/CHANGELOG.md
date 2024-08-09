@@ -1,5 +1,13 @@
 # @wso2is/admin.email-templates.v1
 
+## 2.20.111
+
+### Patch Changes
+
+- Updated dependencies [[`f708548a9cf9846788ba620264f57f5298e76c96`](https://github.com/wso2/identity-apps/commit/f708548a9cf9846788ba620264f57f5298e76c96)]:
+  - @wso2is/admin.organizations.v1@2.21.4
+  - @wso2is/admin.core.v1@2.24.4
+
 ## 2.20.110
 
 ### Patch Changes
