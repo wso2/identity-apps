@@ -16,10 +16,9 @@
  * under the License.
  */
 
+import ApplicationSelectionModal from "@wso2is/admin.applications.v1/components/application-selection-modal";
 import { VerticalStepper, VerticalStepperStepInterface } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import ApplicationSelectionModal
-    from "@wso2is/admin.extensions.v1/components/shared/application-selection-modal";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Encode } from "@wso2is/core/utils";
 import { GenericIcon, Heading, PageHeader } from "@wso2is/react-components";

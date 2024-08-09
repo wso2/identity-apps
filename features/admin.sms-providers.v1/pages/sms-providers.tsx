@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
-import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1/constants/autheticator-constants";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import {
     AppConstants,
     AppState,
@@ -26,7 +25,6 @@ import {
 import { history } from "@wso2is/admin.core.v1/helpers";
 import smsProviderConfig from "@wso2is/admin.extensions.v1/configs/sms-provider";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FormRenderProps } from "@wso2is/form";
@@ -39,7 +37,7 @@ import {
     PageLayout,
     useDocumentation
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -79,7 +77,6 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
     const dispatch: Dispatch<any> = useDispatch();
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const defaultProviderParams: {
         [key: string]: SMSProviderInterface;
     } = {
@@ -111,11 +108,8 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         providerParams: defaultProviderParams,
         selectedProvider: null
     });
-    const isReadOnly: boolean = useMemo(() => !hasRequiredScopes(
-        featureConfig?.smsProviders,
-        featureConfig?.smsProviders?.scopes?.update,
-        allowedScopes
-    ), [ featureConfig, allowedScopes ]);
+
+    const hasSMSProvidersUpdatePermission: boolean = useRequiredScopes(featureConfig?.smsProviders?.scopes?.update);
 
     const {
         data: originalSMSProviderConfig,
@@ -299,10 +293,10 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             try {
                 await deleteSMSProviders();
             } catch (error: any) {
-                const errorType : string = error.code === AuthenticatorManagementConstants.ErrorMessages
-                    .SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS.getErrorCode() ? "activeSubs" :
-                    ( error.code === AuthenticatorManagementConstants.ErrorMessages
-                        .SMS_NOTIFICATION_SENDER_DELETION_ERROR_CONNECTED_APPS.getErrorCode() ? "connectedApps"
+                const errorType : string = error.code === SMSProviderConstants
+                    .SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS ? "activeSubs" :
+                    ( error.code === SMSProviderConstants
+                        .SMS_PROVIDER_CONFIG_UNABLE_TO_DISABLE_ERROR_CODE ? "connectedApps"
                         : "generic" );
 
                 dispatch(addAlert({
@@ -608,7 +602,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                             <>
                                                 <CustomSMSProvider
                                                     isLoading={ isSubmitting }
-                                                    isReadOnly={ isReadOnly }
+                                                    isReadOnly={ !hasSMSProvidersUpdatePermission }
                                                     onSubmit={ handleSubmit }
                                                     data-componentid={ "custom-sms-provider" }
                                                 />
@@ -624,7 +618,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                         SMSProviderConstants.TWILIO_SMS_PROVIDER && (
                                             <TwilioSMSProvider
                                                 isLoading={ isSubmitting }
-                                                isReadOnly={ isReadOnly }
+                                                isReadOnly={ !hasSMSProvidersUpdatePermission }
                                                 onSubmit={ handleSubmit }
                                                 data-componentid={ "twilio-sms-provider" }
                                             />
@@ -633,7 +627,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                         SMSProviderConstants.VONAGE_SMS_PROVIDER && (
                                             <VonageSMSProvider
                                                 isLoading={ isSubmitting }
-                                                isReadOnly={ isReadOnly }
+                                                isReadOnly={ !hasSMSProvidersUpdatePermission }
                                                 onSubmit={ handleSubmit }
                                                 data-componentid={ "vonage-sms-provider" }
                                             />

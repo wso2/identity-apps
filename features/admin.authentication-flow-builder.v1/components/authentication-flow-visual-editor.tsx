@@ -26,7 +26,6 @@ import {
 } from "@wso2is/admin.applications.v1/models/application";
 import useMultiFactorAuthenticatorDetails
     from "@wso2is/admin.connections.v1/api/use-multi-factor-authentication-details";
-import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1/constants/autheticator-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1";
@@ -144,7 +143,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
         data: FIDOAuthenticatorDetails,
         error: FIDOAuthenticatorDetailsFetchError,
         isLoading: FIDOAuthenticatorDetailsFetchRequestLoading
-    } = useMultiFactorAuthenticatorDetails(AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID);
+    } = useMultiFactorAuthenticatorDetails(LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID);
 
     const { getLink } = useDocumentation();
 

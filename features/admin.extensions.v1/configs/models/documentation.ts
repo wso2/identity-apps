@@ -421,6 +421,7 @@ interface UsersDocumentationLinksInterface {
     customerAccounts: {
         learnMore: string;
     }
+    learnMore: string;
     newCollaboratorUser: {
         learnMore: string;
     }
@@ -469,6 +470,20 @@ interface EmailCustomizationLinksInterface {
             learnMore: string
         }
     }
+}
+
+/**
+ * Interface for the insights section documentation structure.
+ */
+interface InsightsDocumentationLinksInterface {
+    learnMore: string;
+}
+
+/**
+ * Interface for the logs section documentation structure.
+ */
+interface LogsDocumentationLinksInterface {
+    learnMore: string;
 }
 
 /**
@@ -530,6 +545,14 @@ export interface DocumentationLinksExtensionInterface {
          * Documentation links for groups section elements.
          */
         groups: GroupsDocumentationLinksInterface;
+        /**
+         * Documentation links for insights section elements.
+         */
+        insights: InsightsDocumentationLinksInterface;
+        /**
+         * Documentation links for logs section elements.
+         */
+        logs: LogsDocumentationLinksInterface;
         /**
          * Documentation links for organization section elements.
          */

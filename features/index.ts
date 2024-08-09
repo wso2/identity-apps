@@ -17,6 +17,7 @@
  */
 
 export * from "./admin.administrators.v1/public-api";
+export * from "./admin.alternative-login-identifier.v1/public-api";
 export * from "./admin.api-resources.v2/public-api";
 export * from "./admin.application-roles.v1/public-api";
 export * from "./admin.application-templates.v1/public-api";
@@ -51,6 +52,7 @@ export * from "./admin.session-management.v1/public-api";
 export * from "./admin.sms-providers.v1/public-api";
 export * from "./admin.template-core.v1/public-api";
 export * from "./admin.tenants.v1/public-api";
+export * from "./admin.username-validation.v1/public-api";
 export * from "./admin.users.v1/public-api";
 export * from "./admin.userstores.v1/public-api";
 export * from "./admin.validation.v1/public-api";

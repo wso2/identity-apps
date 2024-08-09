@@ -53,9 +53,8 @@ import {
     updateFederatedAuthenticators
 } from "../../../api/authenticators";
 import { getConnectionIcons } from "../../../configs/ui";
-import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
-import { CommonAuthenticatorManagementConstants } from "../../../constants/common-authenticator-constants";
-import { ConnectionManagementConstants } from "../../../constants/connection-constants";
+import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
+import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import { FederatedAuthenticatorConstants } from "../../../constants/federated-authenticator-constants";
 import {
     AuthenticatorSettingsFormModes,
@@ -121,14 +120,14 @@ const AUTHORIZED_REDIRECT_URLS: string[] = [ "callbackUrl", "callBackUrl" ];
  * The set of authenticator templates in the Create New Connection Wizard.
  */
 const commonAuthenticators: string[] = [
-    ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID,
-    ConnectionManagementConstants.MS_LIVE_AUTHENTICATOR_ID,
-    ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
-    ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID,
+    FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID,
+    FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.MS_LIVE_AUTHENTICATOR_ID,
+    FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID,
+    FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID,
     FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID,
-    CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
-    ConnectionManagementConstants.SAML_AUTHENTICATOR_ID,
-    ConnectionManagementConstants.OIDC_AUTHENTICATOR_ID
+    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+    FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID,
+    FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID
 ];
 
 /**
@@ -191,7 +190,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
     const isActiveTemplateExpertMode: boolean = useMemo(() => {
         return identityProviderConfig?.templates?.expertMode &&
-            (identityProvider.templateId === CommonAuthenticatorManagementConstants
+            (identityProvider.templateId === CommonAuthenticatorConstants
                 .CONNECTION_TEMPLATE_IDS.EXPERT_MODE);
     }, [ identityProvider, identityProviderConfig  ]);
 
@@ -217,10 +216,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 // Filter out legacy SMS and Email OTP authenticators.
                 const filteredAuthenticators: FederatedAuthenticatorMetaInterface[] = response.filter(
                     (authenticator: FederatedAuthenticatorMetaInterface) => {
-                        return authenticator.authenticatorId !== AuthenticatorManagementConstants
-                            .LEGACY_SMS_OTP_AUTHENTICATOR_ID &&
-                            authenticator.authenticatorId !== AuthenticatorManagementConstants
-                                .LEGACY_EMAIL_OTP_AUTHENTICATOR_ID;
+                        return authenticator.authenticatorId !== FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+                            .SMS_OTP_AUTHENTICATOR_ID &&
+                            authenticator.authenticatorId !== FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+                                .EMAIL_OTP_AUTHENTICATOR_ID;
                     }
                 );
 
@@ -276,7 +275,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         // to disable a Google authenticator in expert mode.
         if (!isActiveTemplateExpertMode) {
             // Special checks on Google IDP
-            if (values.authenticatorId === ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
+            if (values.authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+                .GOOGLE_OIDC_AUTHENTICATOR_ID) {
                 // Enable/disable the Google authenticator based on client id and secret
                 const props: CommonPluggableComponentPropertyInterface[] = values.properties;
                 let isEnabled: boolean = true;
@@ -659,7 +659,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
         moderatedManualModeOptions = moderatedManualModeOptions?.filter((a: FederatedAuthenticatorMetaDataInterface) =>
             !availableAuthenticatorIDs.includes(a?.authenticatorId) &&
-            a?.authenticatorId !== ConnectionManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID);
+            a?.authenticatorId !== FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+                .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID);
 
         setAvailableManualModeOptions(moderatedManualModeOptions);
         setAvailableTemplates(filteredTemplates);
@@ -809,7 +810,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                 <PrimaryButton
                                     onClick={ handleAddAuthenticator }
                                     disabled={
-                                        ConnectionManagementConstants.SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP
+                                        ConnectionUIConstants.SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP
                                             ? isEmpty(availableTemplates) && isEmpty(availableManualModeOptions)
                                             : isEmpty(availableManualModeOptions)
                                     }
@@ -855,8 +856,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                                 authenticator={ authenticator }
                                                                 metadata={ authenticator.meta }
                                                                 showCustomProperties={
-                                                                    authenticator.id !== ConnectionManagementConstants
-                                                                        .GITHUB_AUTHENTICATOR_ID
+                                                                    authenticator.id !== FederatedAuthenticatorConstants
+                                                                        .AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID
                                                                 }
                                                                 initialValues={ authenticator.data }
                                                                 onSubmit={ handleAuthenticatorConfigFormSubmit }
@@ -930,7 +931,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
             // TODO: Need to update below values in the OIDC authenticator metadata API
             // Set additional meta data if the authenticator is OIDC
-            if (authenticator.id === ConnectionManagementConstants.OIDC_AUTHENTICATOR_ID) {
+            if (authenticator.id === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID) {
                 authenticator.meta.properties.map((prop: CommonPluggableComponentMetaPropertyInterface) => {
                     if (prop.key === "ClientId") {
                         prop.displayName = "Client ID";
@@ -1145,7 +1146,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                             //    Should we show the Facebook OIDC Authenticator?
                             // 2. Once the Authenticator is added, there's no way of figuring out
                             //    if the Authenticator is predefined or not in the edit view.
-                            ConnectionManagementConstants
+                            ConnectionUIConstants
                                 .SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP && availableTemplates
                         }
                         idpId={ identityProvider.id }

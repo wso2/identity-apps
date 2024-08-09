@@ -18,14 +18,15 @@
 
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import {
-    AuthenticatorManagementConstants,
-    ConnectionManagementConstants,
     ConnectionTemplateInterface
 } from "@wso2is/admin.connections.v1";
 import { useGetConnectionTemplates } from "@wso2is/admin.connections.v1/api/use-get-connection-templates";
 import {
-    CommonAuthenticatorManagementConstants
+    CommonAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { AuthenticatorMeta } from "@wso2is/admin.connections.v1/meta/authenticator-meta";
 import { ConnectionsManagementUtils, resolveConnectionName } from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
@@ -278,8 +279,8 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         // should be handled automatically in the login flow, based on whether the app is shared or not.
         _filteredAuthenticators = _filteredAuthenticators.filter((authenticator: GenericAuthenticatorInterface) => {
             return (
-                authenticator.name !==
-                    AuthenticatorManagementConstants.ORGANIZATION_AUTHENTICATOR
+                authenticator.defaultAuthenticator.name !==
+                    FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME
             );
         });
 
@@ -527,9 +528,10 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                             let disabledHint: ReactNode = undefined;
 
                             // Disable the Apple template in localhost as it's not supported.
-                            if (template.id === CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.APPLE &&
+                            if (template.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.APPLE &&
                                                     new URL(deploymentConfig?.serverOrigin)?.
-                                                        hostname === ConnectionManagementConstants.LOCAL_SERVER_URL) {
+                                                        hostname === CommonAuthenticatorConstants
+                                                        .LOCAL_SERVER_URL) {
                                 isTemplateDisabled = true;
                                 disabledHint = t("console:develop.pages." +
                                                     "authenticationProviderTemplate.disabledHint.apple");

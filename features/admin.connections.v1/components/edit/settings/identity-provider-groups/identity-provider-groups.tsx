@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -36,7 +37,7 @@ import { Dispatch } from "redux";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { IdentityProviderGroupsList } from "./identity-provider-groups-list";
 import { useClaimConfigs } from "../../../../api/connections";
-import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
+import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
 import {
     ConnectionClaimMappingInterface,
     ConnectionInterface
@@ -135,7 +136,7 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
         if (originalClaimConfigs?.mappings?.length > 0) {
             const groupAttribute: ConnectionClaimMappingInterface = originalClaimConfigs.mappings.find(
                 (claim: ConnectionClaimMappingInterface) => {
-                    return claim.localClaim.uri === ConnectionManagementConstants.LOCAL_DIALECT_GROUP_CLAIM;
+                    return claim.localClaim.uri === ClaimManagementConstants.GROUPS_CLAIM_URI;
                 }
             );
 
@@ -189,8 +190,8 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
 
         // The default group claim is determined based on the IDP type.
         const groupClaim: string = isOIDC
-            ? ConnectionManagementConstants.STANDARD_DIALECT_GROUP_CLAIM
-            : ConnectionManagementConstants.LOCAL_DIALECT_GROUP_CLAIM;
+            ? ClaimManagementConstants.GROUPS_CLAIM_NAME
+            : ClaimManagementConstants.GROUPS_CLAIM_URI;
 
         // Construct the default dialect group claim message.
         const defaultDialectMessage: ReactElement = (
@@ -255,8 +256,8 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                                         placeholder={ t("extensions:console.identityProviderGroups.claimConfigs." +
                                             "groupAttributePlaceholder") }
                                         readOnly={ true }
-                                        maxLength={ ConnectionManagementConstants.CLAIM_CONFIG_FIELD_MAX_LENGTH }
-                                        minLength={ ConnectionManagementConstants.CLAIM_CONFIG_FIELD_MIN_LENGTH }
+                                        maxLength={ ConnectionUIConstants.GROUP_CLAIM_LENGTH.max }
+                                        minLength={ ConnectionUIConstants.GROUP_CLAIM_LENGTH.min }
                                         data-componentid={ `${ componentId }-group-attribute-input` }
                                         value={ groupAttribute }
                                         onChange={ (e: ChangeEvent<HTMLInputElement>) => {

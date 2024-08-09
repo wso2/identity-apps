@@ -19,8 +19,8 @@
 import SIWEIdPTemplate from "@wso2is/admin.extensions.v1/identity-provider-templates/templates/swe/swe.json";
 import groupBy from "lodash-es/groupBy";
 import { getConnectionTemplatesConfig } from "../configs/templates";
-import { CommonAuthenticatorManagementConstants } from "../constants/common-authenticator-constants";
-import { ConnectionManagementConstants } from "../constants/connection-constants";
+import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
+import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import {
     ConnectionTemplateCategoryInterface,
     ConnectionTemplateGroupInterface,
@@ -265,10 +265,10 @@ export const groupConnectionTemplates = (
         /**
          * OIDC and SAML are grouped under "Enterprise Protocols".
          */
-        if (group.id === ConnectionManagementConstants.CONNECTION_TEMPLATE_GROUPS.ENTERPRISE_PROTOCOLS) {
+        if (group.id === ConnectionUIConstants.CONNECTION_TEMPLATE_GROUPS.ENTERPRISE_PROTOCOLS) {
             const subTemplateIds: string[] = [
-                CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.OIDC,
-                CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.SAML
+                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OIDC,
+                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.SAML
             ];
 
             updatedGroup.subTemplates = _templates

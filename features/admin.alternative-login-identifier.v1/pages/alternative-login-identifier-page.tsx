@@ -22,27 +22,13 @@ import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Typography from "@oxygen-ui/react/Typography";
-import {
-    ExtendedClaimInterface
-} from "@wso2is/admin.applications.v1/components/settings/attribute-management";
+import { ExtendedClaimInterface } from "@wso2is/admin.applications.v1/components/settings/attribute-management";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
-import {
-    getAllLocalClaims,
-    updateAClaim
-} from "@wso2is/admin.claims.v1/api/claims";
+import { getAllLocalClaims, updateAClaim } from "@wso2is/admin.claims.v1/api/claims";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
-import {
-    AppConstants,
-    AppState,
-    history
-} from "@wso2is/admin.core.v1";
-import {
-    getConnectorDetails,
-    updateGovernanceConnector
-} from "@wso2is/admin.server-configurations.v1/api";
-import {
-    ServerConfigurationsConstants
-} from "@wso2is/admin.server-configurations.v1/constants";
+import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { getConnectorDetails, updateGovernanceConnector } from "@wso2is/admin.server-configurations.v1/api";
+import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
@@ -51,55 +37,34 @@ import {
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import {
-    AlertLevels,
-    Claim,
-    ClaimsGetParams,
-    IdentifiableComponentInterface,
-    Property
-} from "@wso2is/core/models";
+import { AlertLevels, Claim, ClaimsGetParams, IdentifiableComponentInterface, Property } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import {
-    Field,
-    Form
-} from "@wso2is/form";
-import {
-    ContentLoader,
-    EmphasizedSegment,
-    Message,
-    PageLayout
-} from "@wso2is/react-components";
+import { Field, Form } from "@wso2is/form";
+import { ContentLoader, EmphasizedSegment, Message, PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import React, {
-    FunctionComponent,
-    ReactElement,
-    useEffect,
-    useState
-} from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
-import {
-    AlternativeLoginIdentifierFormInterface
-} from "../models";
+import { AlternativeLoginIdentifierFormInterface } from "../models/alternative-login-identifier-validation";
 
 /**
- * Props for alternative login identifier edit page.
+ * Props for alternative login identifier page.
  */
-type AlternativeLoginIdentifierEditPage = IdentifiableComponentInterface;
+type AlternativeLoginIdentifierInterface = IdentifiableComponentInterface;
 
 const FORM_ID: string = "alternative-login-identifier-form";
 
 /**
- * Alternative Login Identifier Edit page.
+ * Entrypoint for the alternative login identifier page.
  *
  * @param props - Props injected to the component.
- * @returns Altrenative Login Identifier page component.
+ * @returns Alternative login identifier page component.
  */
-export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLoginIdentifierEditPage> = (
-    props: AlternativeLoginIdentifierEditPage
+const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIdentifierInterface> = (
+    props: AlternativeLoginIdentifierInterface
 ): ReactElement => {
 
     const { ["data-componentid"]: componentId } = props;
@@ -618,13 +583,8 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
 /**
 * Default props for the component.
 */
-AlternativeLoginIdentifierEditPage.defaultProps = {
+AlternativeLoginIdentifierInterface.defaultProps = {
     "data-componentid": "alternative-login-identifier-edit-page"
 };
 
-/**
- * A default export was added to support React.lazy.
- * TODO: Change this to a named export once react starts supporting named exports for code splitting.
- * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
- */
-export default AlternativeLoginIdentifierEditPage;
+export default AlternativeLoginIdentifierInterface;

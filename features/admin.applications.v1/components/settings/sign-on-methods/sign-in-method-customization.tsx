@@ -17,7 +17,6 @@
  */
 
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
-import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
 import { getMultiFactorAuthenticatorDetails } from "@wso2is/admin.connections.v1/api/authenticators";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import {
@@ -216,7 +215,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     useEffect(() => {
         if (readOnly) return;
 
-        getMultiFactorAuthenticatorDetails(AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID)
+        getMultiFactorAuthenticatorDetails(LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID)
             .then((response: GovernanceConnectorInterface) => {
                 const properties: ConnectorPropertyInterface[] = response?.properties;
                 const passkeyProgressiveEnrollmentProperty: ConnectorPropertyInterface | undefined =
@@ -708,7 +707,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                             history.push(
                                                 AppConstants.getPaths().get("IDP_EDIT")
                                                     .replace(
-                                                        ":id", AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID)
+                                                        ":id", LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                                                            .FIDO_AUTHENTICATOR_ID)
                                             );
                                         } }
                                     >

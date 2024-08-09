@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { AuthenticatorLabels, ConnectionManagementConstants } from "@wso2is/admin.connections.v1";
 import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
+import { AuthenticatorLabels } from "@wso2is/admin.connections.v1/models/authenticators";
 import get from "lodash-es/get";
 import { ReactNode } from "react";
 import { getAuthenticatorIcons } from "../configs/ui";
@@ -66,7 +66,7 @@ export class AuthenticatorMeta {
                 "existing Twitter accounts.",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID ]: "Authenticate users with " +
                 "Enterprise OIDC connections.",
-            [ ConnectionManagementConstants.SAML_AUTHENTICATOR_ID ]: "Authenticate users with " +
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ]: "Authenticate users with " +
                 "Enterprise SAML connections.",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .EMAIL_OTP_AUTHENTICATOR_ID ]: "Email users a one-time passcode to " +
@@ -174,7 +174,7 @@ export class AuthenticatorMeta {
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID ]: "Facebook",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.TWITTER_AUTHENTICATOR_ID ]: "Twitter",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID ]: "OIDC",
-            [ ConnectionManagementConstants.SAML_AUTHENTICATOR_ID ]: "SAML",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ]: "SAML",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID ]: "Predefined",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: "Predefined",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID ]: "Apple",
@@ -224,7 +224,7 @@ export class AuthenticatorMeta {
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID ]: "facebook",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.TWITTER_AUTHENTICATOR_ID ]: "twitter",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID ]: "enterprise-oidc",
-            [ ConnectionManagementConstants.SAML_AUTHENTICATOR_ID ]: "enterprise-saml",
+            [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ]: "enterprise-saml",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID ]: "apple"
         }, authenticatorId);
     }

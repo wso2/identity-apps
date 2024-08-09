@@ -32,22 +32,22 @@ export class UsernameValidationConstants {
         USERNAME_MIN_LENGTH: number;
         USERNAME_MIN_VALUE: number;
     } = {
-        MIN_LENGTH: 1,
-        MIN_VALUE: 0,
-        USERNAME_MAX_LENGTH: 2,
-        USERNAME_MAX_VALUE: 50,
-        USERNAME_MIN_LENGTH: 1,
-        USERNAME_MIN_VALUE: 3
-    };
+            MIN_LENGTH: 1,
+            MIN_VALUE: 0,
+            USERNAME_MAX_LENGTH: 2,
+            USERNAME_MAX_VALUE: 50,
+            USERNAME_MIN_LENGTH: 1,
+            USERNAME_MIN_VALUE: 3
+        };
 
     /**
      * Constants for username validation default constants.
      */
-     public static readonly VALIDATION_DEFAULT_CONSTANTS: {
+    public static readonly VALIDATION_DEFAULT_CONSTANTS: {
         USERNAME_MAX: string;
         USERNAME_MIN: string;
     } = {
-        USERNAME_MAX: "50",
-        USERNAME_MIN: "3"
-    };
+            USERNAME_MAX: "50",
+            USERNAME_MIN: "3"
+        };
 }

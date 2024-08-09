@@ -28,44 +28,31 @@ import {
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
-import {
-    ContentLoader,
-    EmphasizedSegment,
-    Hint,
-    PageLayout,
-    Text
-} from "@wso2is/react-components";
+import { ContentLoader, EmphasizedSegment, Hint, PageLayout, Text } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, {
-    FunctionComponent,
-    MutableRefObject,
-    ReactElement,
-    useEffect,
-    useRef,
-    useState
-} from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Ref } from "semantic-ui-react";
 import { UsernameValidationConstants } from "../constants/username-validation-constants";
-import { UsernameTypes } from "../models";
+import { UsernameTypes } from "../models/username-validation";
 
 /**
- * Props for username validation edit page.
+ * Props for username validation page.
  */
-type UsernameValidationEditPage = IdentifiableComponentInterface;
+type UsernameValidationPageInterface = IdentifiableComponentInterface;
 
 const FORM_ID: string = "username-validation-form";
 
 /**
- * Governance connector listing page.
+ * Entrypoint page for the username validation configurations.
  *
  * @param props - Props injected to the component.
- * @returns Governance connector listing page component.
+ * @returns Username validation page component.
  */
-export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEditPage> = (
-    props: UsernameValidationEditPage
+const UsernameValidationPage: FunctionComponent<UsernameValidationPageInterface> = (
+    props: UsernameValidationPageInterface
 ): ReactElement => {
     const { ["data-componentid"]: componentId } = props;
 
@@ -606,13 +593,8 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
 /**
  * Default props for the component.
  */
-UsernameValidationEditPage.defaultProps = {
+UsernameValidationPage.defaultProps = {
     "data-componentid": "username-validation-edit-page"
 };
 
-/**
- * A default export was added to support React.lazy.
- * TODO: Change this to a named export once react starts supporting named exports for code splitting.
- * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
- */
-export default UsernameValidationEditPage;
+export default UsernameValidationPage;
