@@ -16,14 +16,21 @@
  * under the License.
  */
 
+import { EmptyComponent } from "@wso2is/unit-testing/__mocks__/empty-component";
 import { fireEvent, render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import "@testing-library/jest-dom";
 import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { State } from "../../../models/application-inbound";
 
+jest.mock("@wso2is/admin.application-templates.v1/components/application-tab-components-filter", () => ({
+    ApplicationTabComponentsFilter: EmptyComponent
+}));
+
 describe("Advance attribute settings in the attributes tab of Application Edit view works as expected", () => {
     it("Alternate subject attribute dropdown is displayed on checking Alternate subject attribute checkbox", () => {
+
+
         render(
             <AdvanceAttributeSettings
                 dropDownOptions={ [

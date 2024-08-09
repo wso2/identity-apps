@@ -132,7 +132,9 @@
         "slashes": "^2.0.2",
         "styled-components": "^4.4.1",
         "swr": "^2.0.0",
-        "uuid": "^8.3.0"
+        "uuid": "^8.3.0",
+        "@wso2is/admin.application-templates.v1": "^1.0.0",
+        "@wso2is/admin.template-core.v1": "^1.0.0"
     },
     "devDependencies": {
         "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",

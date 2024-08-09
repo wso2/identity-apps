@@ -38,8 +38,11 @@ import {
     history
 } from "@wso2is/admin.core.v1";
 import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
+import { ApplicationTabIDs } from "@wso2is/admin.extensions.v1";
 import { applicationListConfig } from "@wso2is/admin.extensions.v1/configs/application-list";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import useExtensionTemplates from "@wso2is/admin.template-core.v1/hooks/use-extension-templates";
+import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -80,7 +83,6 @@ import {
     ConnectedAppsInterface,
     ConnectionInterface
 } from "../../../models/connection";
-
 
 /**
  * Proptypes for the advance settings component.
@@ -172,6 +174,10 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     ] = useState<boolean>(false);
 
     const { t } = useTranslation();
+    const {
+        templates: extensionApplicationTemplates,
+        isExtensionTemplatesRequestLoading: isExtensionApplicationTemplatesRequestLoading
+    } = useExtensionTemplates();
 
     useEffect(() => {
         setIsAppsLoading(true);
@@ -297,6 +303,18 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                         }
                     }
 
+                    /**
+                     * This condition block will help identify the applications created from templates
+                     * on the extensions management API side.
+                     */
+                    if (!templateDisplayName) {
+                        templateDisplayName = extensionApplicationTemplates?.find(
+                            (template: ExtensionTemplateListInterface) => {
+                                return template?.id === app?.templateId;
+                            }
+                        )?.name;
+                    }
+
                     return (
                         <Header
                             image
@@ -398,8 +416,8 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 pathname: AppConstants.getPaths().get("APPLICATION_SIGN_IN_METHOD_EDIT")
                     .replace(":id", appId).replace(":tabName", tabName),
 
-                search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }=
-                ${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`,
+                search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }` +
+                    `=${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`,
 
                 state: { id: editingIDP.id, name: editingIDP.name }
             });
@@ -502,7 +520,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                         app.id,
                         app.access,
                         `#tab=${
-                            ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG
+                            ApplicationTabIDs.SIGN_IN_METHODS
                         }`,
                         app.name
                     );
@@ -567,7 +585,11 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
             ) }
             <DataTable<ConnectedAppInterface>
                 className="connected-applications-table"
-                isLoading={ isLoading || isApplicationTemplateRequestLoading }
+                isLoading={
+                    isLoading
+                        || isApplicationTemplateRequestLoading
+                        || isExtensionApplicationTemplatesRequestLoading
+                }
                 loadingStateOptions={ {
                     count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
@@ -580,7 +602,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                         app.id,
                         app.access,
                         `#tab=${
-                            ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG
+                            ApplicationTabIDs.SIGN_IN_METHODS
                         }`,
                         app.name
                     );
@@ -589,7 +611,12 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
                 showHeader={ applicationListConfig.enableTableHeaders }
-                transparent={ !(isLoading || isApplicationTemplateRequestLoading) && (showPlaceholders() !== null) }
+                transparent={
+                    !(isLoading
+                        || isApplicationTemplateRequestLoading
+                        || isExtensionApplicationTemplatesRequestLoading)
+                        && (showPlaceholders() !== null)
+                }
                 data-componentid={ `${ componentId }-data-table` }
             />
         </EmphasizedSegment>

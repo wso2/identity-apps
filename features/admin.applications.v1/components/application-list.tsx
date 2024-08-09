@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { ConsoleSettingsModes } from "@wso2is/admin.console-settings.v1/models/ui";
 import {
     AppConstants,
@@ -32,7 +32,9 @@ import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { applicationListConfig } from "@wso2is/admin.extensions.v1/configs/application-list";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import useExtensionTemplates from "@wso2is/admin.template-core.v1/hooks/use-extension-templates";
+import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -75,8 +77,8 @@ import { ApplicationTemplateManagementUtils } from "../utils/application-templat
  *
  * Proptypes for the applications list component.
  */
-interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInterface>, LoadableComponentInterface,
-    TestableComponentInterface, IdentifiableComponentInterface {
+export interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInterface>,
+    LoadableComponentInterface, TestableComponentInterface, IdentifiableComponentInterface {
 
     /**
      * Advanced Search component.
@@ -161,11 +163,18 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         (state: AppState) => state.application.templates);
     const groupedApplicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state?.application?.groupedTemplates);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
 
     const { organizationType } = useGetCurrentOrganizationType();
+    const {
+        templates: extensionApplicationTemplates,
+        isExtensionTemplatesRequestLoading: isExtensionApplicationTemplatesRequestLoading
+    } = useExtensionTemplates();
+    // Check if the user has the required scopes to update the application.
+    const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
+    // Check if the user has the required scopes to delete the application.
+    const hasApplicationDeletePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.delete);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);
@@ -350,6 +359,18 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         }
                     }
 
+                    /**
+                     * This condition block will help identify the applications created from templates
+                     * on the extensions management API side.
+                     */
+                    if (!templateDisplayName) {
+                        templateDisplayName = extensionApplicationTemplates?.find(
+                            (template: ExtensionTemplateListInterface) => {
+                                return template?.id === app?.templateId;
+                            }
+                        )?.name;
+                    }
+
                     return (
                         <Header
                             image
@@ -500,8 +521,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
                 icon: (app: ApplicationListItemInterface): SemanticICONS => {
                     return app?.access === ApplicationAccessTypes.READ
-                        || !hasRequiredScopes(featureConfig?.applications,
-                            featureConfig?.applications?.scopes?.update, allowedScopes)
+                        || !hasApplicationUpdatePermissions
                         ? "eye"
                         : "pencil alternate";
                 },
@@ -509,8 +529,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     handleApplicationEdit(app.id, app.access, app.name),
                 popupText: (app: ApplicationListItemInterface): string => {
                     return app?.access === ApplicationAccessTypes.READ
-                        || !hasRequiredScopes(featureConfig?.applications,
-                            featureConfig?.applications?.scopes?.update, allowedScopes)
+                        || !hasApplicationUpdatePermissions
                         ? t("common:view")
                         : t("common:edit");
                 },
@@ -519,13 +538,11 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             {
                 "data-testid": `${ testId }-item-delete-button`,
                 hidden: (app: ApplicationListItemInterface) => {
-                    const hasScopes: boolean = !hasRequiredScopes(featureConfig?.applications,
-                        featureConfig?.applications?.scopes?.delete, allowedScopes);
                     const isSuperTenant: boolean = (tenantDomain === AppConstants.getSuperTenant());
                     const isSystemApp: boolean = isSuperTenant && (UIConfig.systemAppsIdentifiers.includes(app?.name));
                     const isFragmentApp: boolean = app.advancedConfigurations?.fragment || false;
 
-                    return hasScopes ||
+                    return !hasApplicationDeletePermissions ||
                         isSystemApp ||
                         (app?.access === ApplicationAccessTypes.READ) ||
                         !applicationConfig.editApplication.showDeleteButton(app) ||
@@ -608,7 +625,11 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             <DataTable<ApplicationListItemInterface>
                 className="applications-table"
                 externalSearch={ advancedSearch }
-                isLoading={ isLoading || isApplicationTemplateRequestLoading }
+                isLoading={
+                    isLoading
+                        || isApplicationTemplateRequestLoading
+                        || isExtensionApplicationTemplatesRequestLoading
+                }
                 actions={ !isSetStrongerAuth && resolveTableActions() }
                 columns={ resolveTableColumns() }
                 data={ list?.applications }
@@ -619,7 +640,12 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
                 showHeader={ applicationListConfig.enableTableHeaders }
-                transparent={ !(isLoading || isApplicationTemplateRequestLoading) && (showPlaceholders() !== null) }
+                transparent={
+                    !(isLoading
+                        || isApplicationTemplateRequestLoading
+                        || isExtensionApplicationTemplatesRequestLoading)
+                        && (showPlaceholders() !== null)
+                }
                 data-testid={ testId }
             />
             {

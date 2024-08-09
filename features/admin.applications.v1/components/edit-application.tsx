@@ -17,6 +17,14 @@
  */
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { ApplicationEditForm } from "@wso2is/admin.application-templates.v1/components/application-edit-form";
+import { ApplicationMarkdownGuide } from "@wso2is/admin.application-templates.v1/components/application-markdown-guide";
+import useApplicationTemplateMetadata from
+    "@wso2is/admin.application-templates.v1/hooks/use-application-template-metadata";
+import {
+    ApplicationEditTabContentType,
+    ApplicationEditTabMetadataInterface
+} from "@wso2is/admin.application-templates.v1/models/templates";
 import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants";
 import {
     AppConstants,
@@ -28,7 +36,7 @@ import {
     history
 } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
 import { MyAccountOverview } from "@wso2is/admin.extensions.v1/configs/components/my-account-overview";
 import AILoginFlowProvider from "@wso2is/admin.login-flow.ai.v1/providers/ai-login-flow-provider";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
@@ -44,11 +52,13 @@ import {
     DangerZoneGroup,
     Link,
     ResourceTab,
-    ResourceTabPaneInterface
+    ResourceTabPaneInterface,
+    TAB_URL_HASH_FRAGMENT
 } from "@wso2is/react-components";
 import Axios, { AxiosError, AxiosResponse } from "axios";
+import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FormEvent, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
+import React, { FormEvent, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -78,8 +88,7 @@ import {
     OIDCApplicationConfigurationInterface,
     OIDCDataInterface,
     SAMLApplicationConfigurationInterface,
-    SupportedAuthProtocolTypes,
-    URLFragmentTypes
+    SupportedAuthProtocolTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 
@@ -156,9 +165,15 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     } = props;
 
     const { t } = useTranslation();
-    const { isSuperOrganization } = useGetCurrentOrganizationType();
+    const { isSuperOrganization, isSubOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
     const { UIConfig } = useUIConfig();
+    const {
+        templateMetadata: extensionTemplateMetadata,
+        isTemplateMetadataRequestLoading: isExtensionTemplateMetadataFetchRequestLoading
+    } = useApplicationTemplateMetadata();
+    // Check if the user has the required scopes to update the application.
+    const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
 
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
         useSelector((state: AppState) => state.application.meta.inboundProtocols);
@@ -190,9 +205,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     ] = useState<{ clientSecret: string; clientId: string }>({ clientId: "", clientSecret: "" });
     const [ isOIDCConfigsLoading, setOIDCConfigsLoading ] = useState<boolean>(false);
     const [ isSAMLConfigsLoading, setSAMLConfigsLoading ] = useState<boolean>(false);
-    const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
-    const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(undefined);
-    const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
     const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
@@ -204,16 +216,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         ApplicationManagementConstants.MY_ACCOUNT_APP_NAME === application?.name;
     const applicationsUpdateScopes: string[] = featureConfig?.applications?.scopes?.update;
 
-    const { isSubOrganization } = useGetCurrentOrganizationType();
     const [ isDisableInProgress, setIsDisableInProgress ] = useState<boolean>(false);
     const [ enableStatus, setEnableStatus ] = useState<boolean>(false);
     const [ showDisableConfirmationModal, setShowDisableConfirmationModal ] = useState<boolean>(false);
     const brandingDisabledFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.branding?.disabledFeatures);
-
-    const hasApplicationsUpdatePermissions: boolean = useRequiredScopes(
-        featureConfig?.applications?.scopes?.update
-    );
 
     /**
      * Called when an application updates.
@@ -223,565 +230,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const handleApplicationUpdate = (id: string): void => {
         setIsApplicationUpdated(true);
         onUpdate(id);
-    };
-
-    /**
-     * Resolves the tab panes based on the application config.
-     *
-     * @returns Resolved tab panes.
-     */
-    const resolveTabPanes = (): ResourceTabPaneInterface[] => {
-        const panes: ResourceTabPaneInterface[] = [];
-        const extensionPanes: ResourceTabPaneInterface[] = [];
-
-        if (!tabPaneExtensions && applicationConfig.editApplication.extendTabs
-            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
-            return [];
-        }
-
-        if (tabPaneExtensions && tabPaneExtensions.length > 0) {
-            extensionPanes.push(...tabPaneExtensions);
-        }
-
-        if (featureConfig) {
-            if (isMyAccount) {
-                panes.push({
-                    componentId: "overview",
-                    menuItem: t("applications:myaccount.overview.tabName"),
-                    render: MyAccountOverviewTabPane
-                });
-            }
-            if (
-                isFeatureEnabled(featureConfig?.applications,
-                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))
-                && (isSubOrganization() ?
-                    !brandingDisabledFeatures.includes(
-                        BrandingPreferencesConstants.APP_WISE_BRANDING_FEATURE_TAG): true)
-                && !isMyAccount
-            ) {
-                if (applicationConfig.editApplication.
-                    isTabEnabledForApp(
-                        inboundProtocolConfig?.oidc?.clientId,
-                        ApplicationTabTypes.GENERAL,
-                        tenantDomain
-                    )) {
-                    panes.push({
-                        componentId: "general",
-                        menuItem:
-                                 <Menu.Item data-tourid="general">
-                                     { t("applications:edit.sections.general.tabName") }
-                                 </Menu.Item>,
-                        render: () =>
-                            applicationConfig.editApplication.
-                                getOveriddenTab(
-                                    inboundProtocolConfig?.oidc?.clientId,
-                                    ApplicationTabTypes.GENERAL,
-                                    GeneralApplicationSettingsTabPane(),
-                                    application?.name,
-                                    application?.id,
-                                    tenantDomain
-                                )
-                    });
-                }
-            }
-            if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))
-                && !isFragmentApp
-                && !isMyAccount
-            ) {
-
-                applicationConfig.editApplication.isTabEnabledForApp(
-                    inboundProtocolConfig?.oidc?.clientId,
-                    ApplicationTabTypes.PROTOCOL,
-                    tenantDomain
-                ) &&
-                panes.push({
-                    componentId: "protocol",
-                    menuItem: t("applications:edit.sections.access.tabName"),
-                    render: ApplicationSettingsTabPane
-                });
-            }
-            if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))
-                && !isFragmentApp
-                && !isM2MApplication
-                && (
-                    UIConfig?.legacyMode?.applicationSystemAppsSettings ||
-                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
-                )
-            ) {
-
-                applicationConfig.editApplication.isTabEnabledForApp(
-                    inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.USER_ATTRIBUTES, tenantDomain) &&
-                panes.push({
-                    componentId: "user-attributes",
-                    menuItem:
-                        <Menu.Item data-tourid="attributes">
-                            { t("applications:edit.sections.attributes.tabName") }
-                        </Menu.Item>,
-                    render: () =>
-                        applicationConfig.editApplication.
-                            getOveriddenTab(
-                                inboundProtocolConfig?.oidc?.clientId,
-                                ApplicationTabTypes.USER_ATTRIBUTES,
-                                AttributeSettingTabPane(),
-                                application?.name,
-                                application?.id,
-                                tenantDomain
-                            )
-                });
-            }
-            if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))
-                && !isM2MApplication) {
-
-                applicationConfig.editApplication.
-                    isTabEnabledForApp(
-                        inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.SIGN_IN_METHOD, tenantDomain) &&
-                  panes.push({
-                      componentId: "sign-in-method",
-                      menuItem:
-                          <Menu.Item data-tourid="sign-in-methods">
-                              { t("applications:edit.sections.signOnMethod.tabName") }
-                          </Menu.Item>,
-                      render: SignOnMethodsTabPane
-                  });
-            }
-            if (applicationConfig.editApplication.showProvisioningSettings
-                && isFeatureEnabled(featureConfig?.applications,
-                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))
-                && !isFragmentApp
-                && !isM2MApplication
-                && (
-                    UIConfig?.legacyMode?.applicationSystemAppsSettings ||
-                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
-                )) {
-
-                applicationConfig.editApplication.isTabEnabledForApp(
-                    inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROVISIONING, tenantDomain) &&
-                panes.push({
-                    componentId: "provisioning",
-                    menuItem: t("applications:edit.sections.provisioning.tabName"),
-                    render: ProvisioningSettingsTabPane
-                });
-            }
-            if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))
-                && !isFragmentApp
-                && !isM2MApplication
-                && (
-                    UIConfig?.legacyMode?.applicationSystemAppsSettings ||
-                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
-                )
-            ) {
-
-                applicationConfig.editApplication.
-                    isTabEnabledForApp(
-                        inboundProtocolConfig?.oidc?.clientId , ApplicationTabTypes.ADVANCED, tenantDomain) &&
-                  panes.push({
-                      componentId: "advanced",
-                      menuItem: (
-                          <Menu.Item data-tourid="advanced">
-                              { t("applications:edit.sections.advanced.tabName") }
-                          </Menu.Item> ),
-                      render: AdvancedSettingsTabPane
-                  });
-            }
-            if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_SHARED_ACCESS"))
-                 && application?.templateId != ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-                    && !isFragmentApp
-                    && !isM2MApplication
-                    && applicationConfig.editApplication.showApplicationShare
-                    && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
-                    && hasApplicationsUpdatePermissions
-                    && orgType !== OrganizationType.SUBORGANIZATION
-                    && !ApplicationManagementConstants.SYSTEM_APPS.includes(application?.clientId)) {
-                applicationConfig.editApplication.
-                    isTabEnabledForApp(
-                        inboundProtocolConfig?.oidc?.clientId,
-                        ApplicationTabTypes.INFO,
-                        tenantDomain
-                    ) &&
-                    panes.push({
-                        componentId: "shared-access",
-                        menuItem: t("applications:edit.sections.sharedAccess.tabName"),
-                        render: SharedAccessTabPane
-                    });
-            }
-            if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
-                 && !isFragmentApp
-                 && !isMyAccount) {
-                applicationConfig.editApplication.
-                    isTabEnabledForApp(
-                        inboundProtocolConfig?.oidc?.clientId,
-                        ApplicationTabTypes.INFO,
-                        tenantDomain
-                    ) &&
-                 panes.push({
-                     componentId: "info",
-                     menuItem: {
-                         content: t("applications:edit.sections.info.tabName"),
-                         icon: "info circle grey"
-                     },
-                     render: InfoTabPane
-                 });
-            }
-
-            extensionPanes.forEach(
-                (extensionPane: ResourceTabPaneInterface) => {
-                    panes.splice(extensionPane.index, 0, extensionPane);
-                }
-            );
-
-            return panes;
-        }
-
-        return [
-            {
-                componentId: "general",
-                menuItem: t("applications:edit.sections.general.tabName"),
-                render: GeneralApplicationSettingsTabPane
-            },
-            {
-                componentId: "protocol",
-                menuItem: t("applications:edit.sections.access.tabName"),
-                render: ApplicationSettingsTabPane
-            },
-            {
-                componentId: "user-attributes",
-                menuItem: t("applications:edit.sections.attributes.tabName"),
-                render: AttributeSettingTabPane
-            },
-            {
-                componentId: "sign-in-method",
-                menuItem: t("applications:edit.sections.signOnMethod.tabName"),
-                render: SignOnMethodsTabPane
-            },
-            applicationConfig.editApplication.showProvisioningSettings && {
-                componentId: "provisioning",
-                menuItem: t("applications:edit.sections.provisioning.tabName"),
-                render: ProvisioningSettingsTabPane
-            },
-            {
-                componentId: "advanced",
-                menuItem: t("applications:edit.sections.advanced.tabName"),
-                render: AdvancedSettingsTabPane
-            },
-            {
-                componentId: "shared-access",
-                menuItem: t("applications:edit.sections.sharedAccess.tabName"),
-                render: SharedAccessTabPane
-            },
-            {
-                componentId: "info",
-                menuItem: {
-                    content: t("applications:edit.sections.info.tabName"),
-                    icon: "info circle grey"
-                },
-                render: InfoTabPane
-            }
-        ];
-    };
-
-    const renderedTabPanes: ResourceTabPaneInterface[] = useMemo(
-        () => resolveTabPanes(), [
-            tabPaneExtensions,
-            application?.templateId
-        ]);
-
-    /**
-     * Set the defaultTabIndex when the application template updates.
-     */
-    useEffect(() => {
-
-        if(!template) {
-            return;
-        }
-
-        let defaultTabIndex: number = 0;
-
-        if(applicationConfig.editApplication.extendTabs) {
-            defaultTabIndex=1;
-        }
-
-        setDefaultActiveIndex(defaultTabIndex);
-
-        if(isEmpty(window.location.hash)){
-            if(urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY) ===
-                ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE) {
-                // When application selection is done through the strong authentication flow.
-                const signInMethodtabIndex: number = renderedTabPanes?.findIndex(
-                    (element: {"componentId": string}) =>
-                        element.componentId === ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG
-                );
-
-                if (signInMethodtabIndex !== -1) {
-                    handleActiveTabIndexChange(signInMethodtabIndex);
-                }
-
-                return;
-            } else if (urlSearchParams.get(ApplicationManagementConstants.IS_PROTOCOL) === "true") {
-                const protocolTabIndex: number = renderedTabPanes?.findIndex(
-                    (element: {"componentId": string}) =>
-                        element.componentId === ApplicationManagementConstants.PROTOCOL_TAB_URL_FRAG
-                );
-
-                if(protocolTabIndex !== -1) {
-                    handleActiveTabIndexChange(protocolTabIndex);
-                }
-
-                return;
-            } else if (urlSearchParams.get(ApplicationManagementConstants.IS_ROLES) === "true") {
-                const rolesTabIndex: number = renderedTabPanes?.findIndex(
-                    (element: {"componentId": string}) =>
-                        element.componentId === ApplicationManagementConstants.ROLES_TAB_URL_FRAG
-                );
-
-                if (rolesTabIndex !== -1) {
-                    handleActiveTabIndexChange(rolesTabIndex);
-                }
-
-                return;
-            }
-            else {
-                handleDefaultTabIndexChange(defaultTabIndex);
-            }
-        }
-    },[ template, renderedTabPanes, urlSearchParams ]);
-
-    /**
-     * Check whether the application is an M2M Application.
-     */
-    useEffect(() => {
-
-        if (template?.id === ApplicationTemplateIdTypes.M2M_APPLICATION) {
-            setM2MApplication(true);
-        }
-    }, [ template ]);
-
-    /**
-     * Called when the URL fragment updates.
-     */
-    useEffect( () => {
-
-        if(totalTabs === undefined || window.location.hash.includes(URLFragmentTypes.VIEW) ||
-            isEmpty(window.location.hash)) {
-
-            return;
-        }
-
-        const urlFragment: string[] = window.location.hash.split("#"+URLFragmentTypes.TAB_INDEX);
-
-        if(urlFragment.length === 2 && isEmpty(urlFragment[0]) && /^\d+$/.test(urlFragment[1])) {
-
-            const tabIndex: number = parseInt(urlFragment[1], 10);
-
-            if(tabIndex === activeTabIndex) {
-                return;
-            }
-
-            handleActiveTabIndexChange(tabIndex);
-        } else if (window.location.hash.includes(ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG)) {
-            // Handle loading sign-in method tab when redirecting from the "Connected Apps" Tab of an IdP.
-            const SignInMethodtabIndex: number = renderedTabPanes?.findIndex(
-                (element: {"componentId": string}) =>
-                    element.componentId === ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG);
-
-            handleActiveTabIndexChange(SignInMethodtabIndex);
-        } else {
-            // Change the tab index to defaultActiveIndex for invalid URL fragments.
-            handleDefaultTabIndexChange(defaultActiveIndex);
-        }
-    }, [ window.location.hash, totalTabs ]);
-
-    /**
-     * Fetch the allowed origins list whenever there's an update.
-     */
-    useEffect(() => {
-        const allowedCORSOrigins: string[] = [];
-
-        if (isSuperOrganization()) {
-            getCORSOrigins()
-                .then((response: CORSOriginsListInterface[]) => {
-                    response.map((origin: CORSOriginsListInterface) => {
-                        allowedCORSOrigins.push(origin.url);
-                    });
-                    setAllowedOrigins(allowedCORSOrigins);
-                })
-                .catch((error: AxiosError) => {
-                    if (error?.response?.data?.description) {
-                        dispatch(addAlert({
-                            description: error.response.data.description,
-                            level: AlertLevels.ERROR,
-                            message: t("applications:notifications.fetchAllowedCORSOrigins." +
-                                "error.message")
-                        }));
-
-                        return;
-                    }
-
-                    dispatch(addAlert({
-                        description: t("applications:notifications.fetchAllowedCORSOrigins" +
-                            ".genericError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("applications:notifications.fetchAllowedCORSOrigins." +
-                            "genericError.message")
-                    }));
-                });
-        }
-    }, [ isAllowedOriginsUpdated ]);
-
-    /**
-     * Called on `availableInboundProtocols` prop update.
-     */
-    useEffect(() => {
-        if (!isEmpty(availableInboundProtocols)) {
-            return;
-        }
-
-        setInboundProtocolsRequestLoading(true);
-
-        ApplicationManagementUtils.getInboundProtocols(InboundProtocolsMeta, false)
-            .finally(() => {
-                setInboundProtocolsRequestLoading(false);
-            });
-    }, [ availableInboundProtocols ]);
-
-    /**
-     * Watch for `inboundProtocols` array change and fetch configured protocols if there's a difference.
-     */
-    useEffect(() => {
-        if (!application?.inboundProtocols || !application?.id) {
-            return;
-        }
-
-        findConfiguredInboundProtocol(application.id);
-    }, [ JSON.stringify(application?.inboundProtocols) ]);
-
-    useEffect(() => {
-        if (samlConfigurations !== undefined) {
-            return;
-        }
-        setSAMLConfigsLoading(true);
-
-        ApplicationManagementUtils.getSAMLApplicationMeta()
-            .finally(() => {
-                setSAMLConfigsLoading(false);
-            });
-    }, [ samlConfigurations, inboundProtocolConfig ]);
-
-    useEffect(() => {
-        if (oidcConfigurations !== undefined) {
-            return;
-        }
-        setOIDCConfigsLoading(true);
-
-        ApplicationManagementUtils.getOIDCApplicationMeta()
-            .finally(() => {
-                setOIDCConfigsLoading(false);
-            });
-    }, [ oidcConfigurations, inboundProtocolConfig ]);
-
-    useEffect(() => {
-        if (tabPaneExtensions && !isApplicationUpdated) {
-            return;
-        }
-
-        if (!application?.id || isInboundProtocolConfigRequestLoading) {
-            return;
-        }
-
-        if (inboundProtocolConfig && samlConfigurations && samlConfigurations.certificate) {
-            inboundProtocolConfig.certificate = samlConfigurations.certificate;
-            inboundProtocolConfig.ssoUrl = samlConfigurations.ssoUrl;
-            inboundProtocolConfig.issuer = samlConfigurations.issuer;
-        }
-
-        const extensions: ResourceTabPaneInterface[] = applicationConfig.editApplication.getTabExtensions(
-            {
-                application: application,
-                content: template?.content?.quickStart,
-                inboundProtocolConfig: inboundProtocolConfig,
-                inboundProtocols: inboundProtocolList,
-                onApplicationUpdate: () => {
-                    handleApplicationUpdate(application?.id);
-                },
-                onTriggerTabUpdate: (tabIndex: number) => {
-                    setActiveTabIndex(tabIndex);
-                },
-                template: template
-            },
-            featureConfig,
-            readOnly,
-            tenantDomain
-        );
-
-        setTabPaneExtensions(extensions);
-        setIsApplicationUpdated(false);
-    }, [
-        tabPaneExtensions,
-        template,
-        application,
-        inboundProtocolList,
-        inboundProtocolConfig,
-        isInboundProtocolConfigRequestLoading
-    ]);
-
-    useEffect(() => {
-
-        if (!urlSearchParams.get(ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY)) {
-            return;
-        }
-
-        setShowClientSecretHashDisclaimerModal(true);
-    }, [ urlSearchParams.get(ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY) ]);
-
-    /**
-     * Handles the defaultActiveIndex change.
-     */
-    const handleDefaultTabIndexChange = (defaultActiveIndex: number): void => {
-
-        if (template.id === CustomApplicationTemplate.id && defaultActiveIndex > 0) {
-            handleActiveTabIndexChange(defaultActiveIndex - 1);
-
-            return;
-        }
-
-        handleActiveTabIndexChange(defaultActiveIndex);
-    };
-
-    /**
-     * Handles the activeTabIndex change.
-     *
-     * @param tabIndex - Active tab index.
-     */
-    const handleActiveTabIndexChange = (tabIndex:number): void => {
-
-        history.push({
-            hash: `#${ URLFragmentTypes.TAB_INDEX }${ tabIndex }`,
-            pathname: window.location.pathname
-        });
-        setActiveTabIndex(tabIndex);
-    };
-
-    /**
-     * Handles the tab change.
-     *
-     * @param e - Click event.
-     * @param data - Tab properties.
-     */
-    const handleTabChange = (e: SyntheticEvent, data: TabProps): void => {
-        eventPublisher.compute(() => {
-            eventPublisher.publish("application-switch-edit-application-tabs", {
-                type: data.panes[data.activeIndex].componentId
-            });
-        });
-
-        handleActiveTabIndexChange(data.activeIndex as number);
     };
 
     /**
@@ -864,9 +312,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         return;
                     }
 
-                    if (error?.response && error?.response?.data && error?.response?.data?.description) {
+                    if (error?.response?.data?.description) {
                         dispatch(addAlert({
-                            description: error.response?.data?.description,
+                            description: error.response.data.description,
                             level: AlertLevels.ERROR,
                             message: t("applications:notifications.getInboundProtocolConfig" +
                                 ".error.message")
@@ -1103,7 +551,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
                     "APPLICATION_EDIT_GENERAL_SETTINGS", application) }
                 data-componentid={ `${ componentId }-general-settings` }
-                isManagementApp={ application.isManagementApp }
+                isManagementApp={ application?.isManagementApp }
             />
         </ResourceTab.Pane>
     );
@@ -1239,6 +687,606 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     );
 
     /**
+     * Renders a dynamic application edit tab pane.
+     *
+     * @param tab - The metadata for the tab.
+     * @returns The rendered tab pane.
+     */
+    const DynamicApplicationEditTabPane = (tab: ApplicationEditTabMetadataInterface): ReactElement => {
+        const firstProtocolName: string = mapProtocolTypeToName(application?.inboundProtocols?.[0]?.type);
+
+        return (
+            <ResourceTab.Pane controlledSegmentation>
+                <ApplicationEditForm
+                    tab={ tab }
+                    application={ application }
+                    protocolName={ firstProtocolName }
+                    inboundProtocolConfigurations={ inboundProtocolConfig?.[firstProtocolName] }
+                    isLoading={ isLoading }
+                    onUpdate={ handleApplicationUpdate }
+                    onProtocolUpdate = { handleProtocolUpdate }
+                    readOnly={ readOnly }
+                />
+            </ResourceTab.Pane>
+        );
+    };
+
+    /**
+     * Renders a markdown guide tab pane.
+     *
+     * @param guideContent - Content to display in Markdown format.
+     * @returns The rendered tab pane.
+     */
+    const MarkdownGuideTabPane = (guideContent: string): ReactElement => {
+        const firstProtocolName: string = mapProtocolTypeToName(application?.inboundProtocols?.[0]?.type);
+
+        return (
+            <ResourceTab.Pane controlledSegmentation>
+                <ApplicationMarkdownGuide
+                    application={ application }
+                    inboundProtocolConfigurations={ inboundProtocolConfig?.[firstProtocolName] }
+                    content={ guideContent }
+                    isLoading={ isLoading }
+                    protocolName={ firstProtocolName }
+                />
+            </ResourceTab.Pane>
+        );
+    };
+
+    /**
+     * Resolves the tab panes based on the application config.
+     *
+     * @returns Resolved tab panes.
+     */
+    const resolveTabPanes = (): ResourceTabPaneInterface[] => {
+        const panes: ResourceTabPaneInterface[] = [];
+        const extensionPanes: ResourceTabPaneInterface[] = [];
+
+        if (!tabPaneExtensions && applicationConfig.editApplication.extendTabs
+            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+            && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML) {
+            return [];
+        }
+
+        if (tabPaneExtensions && tabPaneExtensions?.length > 0) {
+            extensionPanes.push(...cloneDeep(tabPaneExtensions));
+        }
+
+        if (featureConfig) {
+            if (isMyAccount) {
+                panes.push({
+                    componentId: "overview",
+                    menuItem: t("applications:myaccount.overview.tabName"),
+                    render: MyAccountOverviewTabPane
+                });
+            }
+            if (isFeatureEnabled(featureConfig?.applications,
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))
+                && (isSubOrganization() ?
+                    !brandingDisabledFeatures.includes(
+                        BrandingPreferencesConstants.APP_WISE_BRANDING_FEATURE_TAG): true)
+                && !isMyAccount
+            ) {
+                if (applicationConfig.editApplication.
+                    isTabEnabledForApp(
+                        inboundProtocolConfig?.oidc?.clientId,
+                        ApplicationTabTypes.GENERAL,
+                        tenantDomain
+                    )) {
+                    panes.push({
+                        componentId: "general",
+                        "data-tabid": ApplicationTabIDs.GENERAL,
+                        menuItem:
+                                 <Menu.Item data-tourid="general">
+                                     { t("applications:edit.sections.general.tabName") }
+                                 </Menu.Item>,
+                        render: () =>
+                            applicationConfig.editApplication.
+                                getOveriddenTab(
+                                    inboundProtocolConfig?.oidc?.clientId,
+                                    ApplicationTabTypes.GENERAL,
+                                    GeneralApplicationSettingsTabPane(),
+                                    application?.name,
+                                    application?.id,
+                                    tenantDomain
+                                )
+                    });
+                }
+            }
+            if (isFeatureEnabled(featureConfig?.applications,
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))
+                && !isFragmentApp
+                && !isMyAccount
+            ) {
+
+                applicationConfig.editApplication.isTabEnabledForApp(
+                    inboundProtocolConfig?.oidc?.clientId,
+                    ApplicationTabTypes.PROTOCOL,
+                    tenantDomain
+                ) &&
+                panes.push({
+                    componentId: "protocol",
+                    "data-tabid": ApplicationTabIDs.PROTOCOL,
+                    menuItem: t("applications:edit.sections.access.tabName"),
+                    render: ApplicationSettingsTabPane
+                });
+            }
+            if (isFeatureEnabled(featureConfig?.applications,
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))
+                && !isFragmentApp
+                && !isM2MApplication
+                && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
+                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)
+            ) {
+
+                applicationConfig.editApplication.isTabEnabledForApp(
+                    inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.USER_ATTRIBUTES, tenantDomain) &&
+                panes.push({
+                    componentId: "user-attributes",
+                    "data-tabid": ApplicationTabIDs.USER_ATTRIBUTES,
+                    menuItem:
+                        <Menu.Item data-tourid="attributes">
+                            { t("applications:edit.sections.attributes.tabName") }
+                        </Menu.Item>,
+                    render: () =>
+                        applicationConfig.editApplication.
+                            getOveriddenTab(
+                                inboundProtocolConfig?.oidc?.clientId,
+                                ApplicationTabTypes.USER_ATTRIBUTES,
+                                AttributeSettingTabPane(),
+                                application?.name,
+                                application?.id,
+                                tenantDomain
+                            )
+                });
+            }
+            if (isFeatureEnabled(featureConfig?.applications,
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))
+                && !isM2MApplication) {
+
+                applicationConfig.editApplication.
+                    isTabEnabledForApp(
+                        inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.SIGN_IN_METHOD, tenantDomain) &&
+                  panes.push({
+                      componentId: "sign-in-method",
+                      "data-tabid": ApplicationTabIDs.SIGN_IN_METHODS,
+                      menuItem:
+                          <Menu.Item data-tourid="sign-in-methods">
+                              { t("applications:edit.sections.signOnMethod.tabName") }
+                          </Menu.Item>,
+                      render: SignOnMethodsTabPane
+                  });
+            }
+            if (applicationConfig.editApplication.showProvisioningSettings
+                && isFeatureEnabled(featureConfig?.applications,
+                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))
+                && !isFragmentApp
+                && !isM2MApplication
+                && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
+                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
+
+                applicationConfig.editApplication.isTabEnabledForApp(
+                    inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROVISIONING, tenantDomain) &&
+                panes.push({
+                    componentId: "provisioning",
+                    "data-tabid": ApplicationTabIDs.PROVISIONING,
+                    menuItem: t("applications:edit.sections.provisioning.tabName"),
+                    render: ProvisioningSettingsTabPane
+                });
+            }
+            if (isFeatureEnabled(featureConfig?.applications,
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))
+                && !isFragmentApp
+                && !isM2MApplication
+                && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
+                    application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
+
+                applicationConfig.editApplication.
+                    isTabEnabledForApp(
+                        inboundProtocolConfig?.oidc?.clientId , ApplicationTabTypes.ADVANCED, tenantDomain) &&
+                  panes.push({
+                      componentId: "advanced",
+                      "data-tabid": ApplicationTabIDs.ADVANCED,
+                      menuItem: (
+                          <Menu.Item data-tourid="advanced">
+                              { t("applications:edit.sections.advanced.tabName") }
+                          </Menu.Item> ),
+                      render: AdvancedSettingsTabPane
+                  });
+            }
+            if (isFeatureEnabled(featureConfig?.applications,
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_SHARED_ACCESS"))
+                 && application?.templateId != ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+                    && !isFragmentApp
+                    && !isM2MApplication
+                    && applicationConfig.editApplication.showApplicationShare
+                    && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
+                    && hasApplicationUpdatePermissions
+                    && orgType !== OrganizationType.SUBORGANIZATION
+                    && !ApplicationManagementConstants.SYSTEM_APPS.includes(application?.clientId)) {
+                applicationConfig.editApplication.
+                    isTabEnabledForApp(
+                        inboundProtocolConfig?.oidc?.clientId,
+                        ApplicationTabTypes.INFO,
+                        tenantDomain
+                    ) &&
+                    panes.push({
+                        componentId: "shared-access",
+                        "data-tabid": ApplicationTabIDs.SHARED_ACCESS,
+                        menuItem: t("applications:edit.sections.sharedAccess.tabName"),
+                        render: SharedAccessTabPane
+                    });
+            }
+            if (isFeatureEnabled(featureConfig?.applications,
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
+                 && !isFragmentApp
+                 && !isMyAccount) {
+
+                applicationConfig.editApplication.
+                    isTabEnabledForApp(
+                        inboundProtocolConfig?.oidc?.clientId,
+                        ApplicationTabTypes.INFO,
+                        tenantDomain
+                    ) &&
+                 panes.push({
+                     componentId: "info",
+                     "data-tabid": ApplicationTabIDs.INFO,
+                     menuItem: {
+                         content: t("applications:edit.sections.info.tabName"),
+                         icon: "info circle grey"
+                     },
+                     render: InfoTabPane
+                 });
+            }
+
+            extensionPanes.forEach(
+                (extensionPane: ResourceTabPaneInterface) => {
+                    panes.splice(extensionPane?.index, 0, extensionPane);
+                }
+            );
+
+            return panes;
+        }
+
+        return [
+            {
+                componentId: "general",
+                "data-tabid": ApplicationTabIDs.GENERAL,
+                menuItem: t("applications:edit.sections.general.tabName"),
+                render: GeneralApplicationSettingsTabPane
+            },
+            {
+                componentId: "protocol",
+                "data-tabid": ApplicationTabIDs.PROTOCOL,
+                menuItem: t("applications:edit.sections.access.tabName"),
+                render: ApplicationSettingsTabPane
+            },
+            {
+                componentId: "user-attributes",
+                "data-tabid": ApplicationTabIDs.USER_ATTRIBUTES,
+                menuItem: t("applications:edit.sections.attributes.tabName"),
+                render: AttributeSettingTabPane
+            },
+            {
+                componentId: "sign-in-method",
+                "data-tabid": ApplicationTabIDs.SIGN_IN_METHODS,
+                menuItem: t("applications:edit.sections.signOnMethod.tabName"),
+                render: SignOnMethodsTabPane
+            },
+            applicationConfig.editApplication.showProvisioningSettings && {
+                componentId: "provisioning",
+                "data-tabid": ApplicationTabIDs.PROVISIONING,
+                menuItem: t("applications:edit.sections.provisioning.tabName"),
+                render: ProvisioningSettingsTabPane
+            },
+            {
+                componentId: "advanced",
+                "data-tabid": ApplicationTabIDs.ADVANCED,
+                menuItem: t("applications:edit.sections.advanced.tabName"),
+                render: AdvancedSettingsTabPane
+            },
+            {
+                componentId: "shared-access",
+                "data-tabid": ApplicationTabIDs.SHARED_ACCESS,
+                menuItem: t("applications:edit.sections.sharedAccess.tabName"),
+                render: SharedAccessTabPane
+            },
+            {
+                componentId: "info",
+                "data-tabid": ApplicationTabIDs.INFO,
+                menuItem: {
+                    content: t("applications:edit.sections.info.tabName"),
+                    icon: "info circle grey"
+                },
+                render: InfoTabPane
+            }
+        ];
+    };
+
+    /**
+     * Filter the available tabs based on metadata defined in the extension template.
+     *
+     * @param tabs - All available tabs.
+     * @returns Filtered tabs list.
+     */
+    const filterTabsBasedOnExtensionTemplateMetadata = (
+        tabs: ResourceTabPaneInterface[]
+    ): ResourceTabPaneInterface[] => {
+        const filteredTabs: ResourceTabPaneInterface[] = [];
+
+        /**
+         * Check the existence of predefined tab based on the given tab ID and
+         * add it to the filtered list.
+         *
+         * @param currentTab - Metadata for the tab defined in the template.
+         */
+        const addPredefineTab = (currentTab: ApplicationEditTabMetadataInterface) => {
+            const predefineTab: ResourceTabPaneInterface =
+                        tabs?.find((item: ResourceTabPaneInterface) => item?.["data-tabid"] === currentTab?.id);
+
+            if (predefineTab) {
+                if (currentTab?.displayName) {
+                    predefineTab.menuItem = currentTab?.displayName;
+                }
+
+                filteredTabs.push(predefineTab);
+            }
+        };
+
+        extensionTemplateMetadata?.edit?.tabs?.forEach((tab: ApplicationEditTabMetadataInterface) => {
+            switch (tab?.contentType) {
+                case ApplicationEditTabContentType.GUIDE:
+                    if (tab?.guide) {
+                        filteredTabs.push({
+                            componentId: tab?.id,
+                            "data-tabid": tab?.id,
+                            menuItem: tab?.displayName,
+                            render: () => MarkdownGuideTabPane(tab?.guide)
+                        });
+                    }
+
+                    break;
+                case ApplicationEditTabContentType.FORM:
+                    if (tab?.form) {
+                        filteredTabs.push({
+                            componentId: tab?.id,
+                            "data-tabid": tab?.id,
+                            menuItem: tab?.displayName,
+                            render: () => DynamicApplicationEditTabPane(tab)
+                        });
+                    }
+
+                    break;
+                default:
+                    addPredefineTab(tab);
+            }
+        });
+
+        return filteredTabs?.length > 0 ? filteredTabs : tabs;
+    };
+
+    /**
+     * Generate the final rendered tab list based on template metadata.
+     *
+     * @returns Tab panes list.
+     */
+    const getFinalRenderingTabPanes = (): ResourceTabPaneInterface[] => {
+        const availableTabs: ResourceTabPaneInterface[] = resolveTabPanes();
+
+        if (extensionTemplateMetadata?.edit?.tabs
+                && Array.isArray(extensionTemplateMetadata?.edit?.tabs)
+                && extensionTemplateMetadata?.edit?.tabs?.length > 0) {
+            return filterTabsBasedOnExtensionTemplateMetadata(availableTabs);
+        }
+
+        return availableTabs;
+    };
+
+    /**
+     * The list of tab panes rendered in the final render.
+     */
+    const renderedTabPanes: ResourceTabPaneInterface[] = getFinalRenderingTabPanes();
+
+    /**
+     * Get the default active tab.
+     */
+    const getDefaultActiveTab = (): number | string => {
+
+        let defaultTab: number | string = 0;
+
+        if(applicationConfig.editApplication.extendTabs && template?.id !== CustomApplicationTemplate.id) {
+            defaultTab = 1;
+        }
+
+        if (extensionTemplateMetadata?.edit?.defaultActiveTabId) {
+            defaultTab = extensionTemplateMetadata?.edit?.defaultActiveTabId;
+        }
+
+        return defaultTab;
+    };
+
+    /**
+     * When the strong authentication parameter is set to true, set the sign-in methods tab.
+     */
+    useEffect(() => {
+
+        if(isEmpty(window?.location?.hash)){
+            if(urlSearchParams.get(ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY) ===
+                ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE) {
+                window.location.hash = TAB_URL_HASH_FRAGMENT + ApplicationTabIDs.SIGN_IN_METHODS;
+            } else if (urlSearchParams.get(ApplicationManagementConstants.IS_PROTOCOL) === "true") {
+                window.location.hash = TAB_URL_HASH_FRAGMENT + ApplicationTabIDs.PROTOCOL;
+            } else if (urlSearchParams.get(ApplicationManagementConstants.IS_ROLES) === "true") {
+                window.location.hash = TAB_URL_HASH_FRAGMENT + ApplicationTabIDs.APPLICATION_ROLES;
+            }
+        }
+    },[ urlSearchParams ]);
+
+    /**
+     * Check whether the application is an M2M Application.
+     */
+    useEffect(() => {
+
+        if (template?.id === ApplicationTemplateIdTypes.M2M_APPLICATION) {
+            setM2MApplication(true);
+        }
+    }, [ template ]);
+
+    /**
+     * Fetch the allowed origins list whenever there's an update.
+     */
+    useEffect(() => {
+        const allowedCORSOrigins: string[] = [];
+
+        if (isSuperOrganization()) {
+            getCORSOrigins()
+                .then((response: CORSOriginsListInterface[]) => {
+                    response?.map((origin: CORSOriginsListInterface) => {
+                        allowedCORSOrigins.push(origin?.url);
+                    });
+                    setAllowedOrigins(allowedCORSOrigins);
+                })
+                .catch((error: AxiosError) => {
+                    if (error?.response?.data?.description) {
+                        dispatch(addAlert({
+                            description: error.response.data.description,
+                            level: AlertLevels.ERROR,
+                            message: t("applications:notifications.fetchAllowedCORSOrigins." +
+                                "error.message")
+                        }));
+
+                        return;
+                    }
+
+                    dispatch(addAlert({
+                        description: t("applications:notifications.fetchAllowedCORSOrigins" +
+                            ".genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("applications:notifications.fetchAllowedCORSOrigins." +
+                            "genericError.message")
+                    }));
+                });
+        }
+    }, [ isAllowedOriginsUpdated ]);
+
+    /**
+     * Called on `availableInboundProtocols` prop update.
+     */
+    useEffect(() => {
+        if (!isEmpty(availableInboundProtocols)) {
+            return;
+        }
+
+        setInboundProtocolsRequestLoading(true);
+
+        ApplicationManagementUtils.getInboundProtocols(InboundProtocolsMeta, false)
+            .finally(() => {
+                setInboundProtocolsRequestLoading(false);
+            });
+    }, [ availableInboundProtocols ]);
+
+    /**
+     * Watch for `inboundProtocols` array change and fetch configured protocols if there's a difference.
+     */
+    useEffect(() => {
+        if (!application?.inboundProtocols || !application?.id) {
+            return;
+        }
+
+        findConfiguredInboundProtocol(application.id);
+    }, [ JSON.stringify(application?.inboundProtocols) ]);
+
+    useEffect(() => {
+        if (samlConfigurations !== undefined) {
+            return;
+        }
+        setSAMLConfigsLoading(true);
+
+        ApplicationManagementUtils.getSAMLApplicationMeta()
+            .finally(() => {
+                setSAMLConfigsLoading(false);
+            });
+    }, [ samlConfigurations, inboundProtocolConfig ]);
+
+    useEffect(() => {
+        if (oidcConfigurations !== undefined) {
+            return;
+        }
+        setOIDCConfigsLoading(true);
+
+        ApplicationManagementUtils.getOIDCApplicationMeta()
+            .finally(() => {
+                setOIDCConfigsLoading(false);
+            });
+    }, [ oidcConfigurations, inboundProtocolConfig ]);
+
+    useEffect(() => {
+        if (tabPaneExtensions && !isApplicationUpdated) {
+            return;
+        }
+
+        if (!application?.id || isInboundProtocolConfigRequestLoading) {
+            return;
+        }
+
+        if (inboundProtocolConfig && samlConfigurations && samlConfigurations?.certificate) {
+            inboundProtocolConfig.certificate = samlConfigurations?.certificate;
+            inboundProtocolConfig.ssoUrl = samlConfigurations?.ssoUrl;
+            inboundProtocolConfig.issuer = samlConfigurations?.issuer;
+        }
+
+        const extensions: ResourceTabPaneInterface[] = applicationConfig.editApplication.getTabExtensions(
+            {
+                application: application,
+                content: template?.content?.quickStart,
+                inboundProtocolConfig: inboundProtocolConfig,
+                inboundProtocols: inboundProtocolList,
+                onApplicationUpdate: () => {
+                    handleApplicationUpdate(application?.id);
+                },
+                template: template
+            },
+            featureConfig,
+            readOnly,
+            tenantDomain
+        );
+
+        setTabPaneExtensions(extensions);
+        setIsApplicationUpdated(false);
+    }, [
+        tabPaneExtensions,
+        template,
+        application,
+        inboundProtocolList,
+        inboundProtocolConfig,
+        isInboundProtocolConfigRequestLoading
+    ]);
+
+    useEffect(() => {
+
+        if (!urlSearchParams.get(ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY)) {
+            return;
+        }
+
+        setShowClientSecretHashDisclaimerModal(true);
+    }, [ urlSearchParams.get(ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY) ]);
+
+    /**
+     * Handles the tab change.
+     *
+     * @param e - Click event.
+     * @param data - Tab properties.
+     */
+    const handleTabChange = (e: SyntheticEvent, data: TabProps): void => {
+        eventPublisher.compute(() => {
+            eventPublisher.publish("application-switch-edit-application-tabs", {
+                type: data.panes[data.activeIndex].componentId
+            });
+        });
+    };
+
+    /**
      * Renders the client secret hash disclaimer modal.
      * @returns Client Secret Hash Disclaimer Modal.
      */
@@ -1358,15 +1406,12 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             ? (
                 <>
                     <ResourceTab
-                        isLoading={ isLoading }
-                        activeIndex={ activeTabIndex }
+                        isLoading={ isLoading || isExtensionTemplateMetadataFetchRequestLoading }
                         data-componentid={ `${ componentId }-resource-tabs` }
-                        defaultActiveIndex={ defaultActiveIndex }
+                        controlTabRedirectionInternally
+                        defaultActiveTab={ getDefaultActiveTab() }
                         onTabChange={ handleTabChange }
-                        panes={ resolveTabPanes() }
-                        onInitialize={ ({ panesLength }: { panesLength: number }) => {
-                            setTotalTabs(panesLength);
-                        } }
+                        panes={ renderedTabPanes }
                     />
                     { showClientSecretHashDisclaimerModal && renderClientSecretHashDisclaimerModal() }
                 </>
