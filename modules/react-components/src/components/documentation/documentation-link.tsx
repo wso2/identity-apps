@@ -16,11 +16,12 @@
  * under the License.
  */
 
+import { ArrowUpRightFromSquareIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
-import { Icon } from "semantic-ui-react";
 import { useDocumentation } from "./use-documentation";
+import "./documentation-link.scss";
 
 /**
  * DocumentationLink component Prop types.
@@ -106,7 +107,7 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
             data-componentid={ componentId }
         >
             { children }
-            { showIcon && (<Icon className="ml-2" name="external alternate"/>) }
+            { showIcon && (<ArrowUpRightFromSquareIcon className="documentation-icon" />) }
         </a>)
     );
 };

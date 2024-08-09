@@ -1,5 +1,22 @@
 # @wso2is/common.ai.v1
 
+## 2.20.111
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.24.4
+
+## 2.20.110
+
+### Patch Changes
+
+- Updated dependencies [[`6da9bb307f8b0168777a7d8ea44f67619c99d493`](https://github.com/wso2/identity-apps/commit/6da9bb307f8b0168777a7d8ea44f67619c99d493)]:
+  - @wso2is/react-components@2.3.1
+  - @wso2is/admin.core.v1@2.24.3
+  - @wso2is/dynamic-forms@2.0.92
+  - @wso2is/form@2.0.93
+
 ## 2.20.109
 
 ### Patch Changes
