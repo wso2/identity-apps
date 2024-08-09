@@ -56,7 +56,7 @@ import "./action-configuration-page.scss";
 type ActionConfigurationPageInterface = IdentifiableComponentInterface;
 
 export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterface> = ({
-    "data-componentid": _componentId = "action-configuration-page"
+    [ "data-componentid" ]: _componentId = "action-configuration-page"
 }: ActionConfigurationPageInterface): ReactElement => {
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features.actions);

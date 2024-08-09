@@ -63,11 +63,15 @@ import "./action-config-form.scss";
 /**
  * Prop types for the action configuration form component.
  */
-interface ActionConfigFormInterface extends IdentifiableComponentInterface, LoadableComponentInterface {
+interface ActionConfigFormInterface extends IdentifiableComponentInterface {
     /**
      * Action's initial values.
      */
     initialValues: ActionConfigFormPropertyInterface;
+    /**
+     * Flag for loading state.
+     */
+    isLoading?: boolean;
     /**
      * Action Type of the Action.
      */
@@ -88,7 +92,7 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     actionTypeApiPath,
     isCreateFormState,
     mutate: mutateActions,
-    "data-componentid": _componentId = "action-config-form"
+    [ "data-componentid" ]: _componentId = "action-config-form"
 }: ActionConfigFormInterface): ReactElement => {
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features.actions);

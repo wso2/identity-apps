@@ -8568,7 +8568,7 @@ export const console: ConsoleNS = {
                         heading: "Delete Action Configurations",
                         subHeading: "Once the action is deleted, it cannot be recovered and configurations of the external endpoint will be lost."
                     }
-                },
+                }
             }
         },
         notifications: {
