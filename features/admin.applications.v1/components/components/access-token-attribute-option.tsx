@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,13 +20,14 @@ import Checkbox from "@oxygen-ui/react/Checkbox";
 import Grid from "@oxygen-ui/react/Grid";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Code } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     HTMLAttributes,
     ReactElement
 } from "react";
 
-interface AutoCompleteRenderOption extends IdentifiableComponentInterface {
+interface AccessTokenAttributeOption extends IdentifiableComponentInterface {
     /**
      * Is the option selected.
      */
@@ -36,18 +37,23 @@ interface AutoCompleteRenderOption extends IdentifiableComponentInterface {
      */
     displayName: string;
     /**
+     * The claim URI of the option.
+     */
+    claimURI: string;
+    /**
      * The props passed to the option.
      */
     renderOptionProps: HTMLAttributes<HTMLLIElement>
 }
 
-export const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOption> = (
-    props: AutoCompleteRenderOption
+export const AccessTokenAttributeOption: FunctionComponent<AccessTokenAttributeOption> = (
+    props: AccessTokenAttributeOption
 ): ReactElement => {
 
     const {
         selected,
         displayName,
+        claimURI,
         renderOptionProps
     } = props;
 
@@ -64,6 +70,7 @@ export const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOptio
                     </Grid>
                     <Grid xs={ 5 }>
                         <ListItemText primary={ displayName }/>  
+                        <Code>{claimURI}</Code> 
                     </Grid>
                 </Grid>
             </Grid>

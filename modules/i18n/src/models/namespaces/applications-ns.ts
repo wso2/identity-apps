@@ -1326,9 +1326,9 @@ export interface ApplicationsNS {
                         accessTokenAttributes: {
                             hint: string;
                             label:string;
-                            description: string;
                             placeholder: string;
                             enable: {
+                                hint: string;
                                 label: string;
                             };
                         };

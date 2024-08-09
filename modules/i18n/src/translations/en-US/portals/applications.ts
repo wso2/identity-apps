@@ -1576,12 +1576,12 @@ export const applications: ApplicationsNS = {
                             }
                         },
                         accessTokenAttributes: {
-                            hint : "",
-                            label: "JWT Access Token Attributes",
-                            description: "Define the attributes that should be included in the JWT access token.",
+                            hint : "Select the attributes that should be included in the <1>access_token</1>.",
+                            label: "Access Token Attributes",
                             placeholder: "Search by attribute name",
                             enable: {
-                                label: "Enable JWT Access Token Attributes Feature"
+                                hint : "",
+                                label: "Enable Access Token Attributes Feature"
                             }
                         }
                     },

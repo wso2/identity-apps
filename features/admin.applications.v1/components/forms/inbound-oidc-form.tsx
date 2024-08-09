@@ -28,7 +28,7 @@ import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { ImpersonationConfigConstants } from "@wso2is/admin.impersonation.v1/constants/impersonation-configuration";
 import { getSharedOrganizations } from "@wso2is/admin.organizations.v1/api";
-import { getAllExternalClaims } from "@wso2is/admin.claims.v1/api";
+import { getAllExternalClaims, getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationInterface, OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -58,7 +58,7 @@ import {
     URLInput
 } from "@wso2is/react-components";
 import TextField from "@oxygen-ui/react/TextField";
-import { AutoCompleteRenderOption } from "./../auto-complete-render-option";
+import { AccessTokenAttributeOption } from "../components/access-token-attribute-option";
 import { FormValidation } from "@wso2is/validation";
 import { AxiosResponse } from "axios";
 import get from "lodash-es/get";
@@ -74,11 +74,12 @@ import React, {
     MutableRefObject,
     ReactElement,
     SyntheticEvent,
+    useCallback,
     useEffect,
     useRef,
     useState
 } from "react";
-import { ExternalClaim } from "@wso2is/core/models";
+import { ExternalClaim, Claim } from "@wso2is/core/models";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -113,7 +114,9 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { ApplicationCertificateWrapper } from "../settings/certificate";
+import { OIDCScopesManagementConstants } from "../../../admin.oidc-scopes.v1/constants";
 import "./inbound-oidc-form.scss";
+import InputLabel from "@oxygen-ui/react/InputLabel";
 
 /**
  * Proptypes for the inbound OIDC form component.
@@ -260,7 +263,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         setRefreshTokenWithoutAlllowdGrantType
     ] = useState<boolean>(false);
     const [ activeOption, setActiveOption ] = useState<ExternalClaim>(undefined);
-    const [ selectedTokenType, setSelectedTokenType ] = useState<string>(undefined);
+    const [ claims, setClaims ] = useState<Claim[]>([]);
+    const [ externalClaims, setExternalClaims ] = useState<ExternalClaim[]>([]);
     const [ selectedAccessTokenAttributes, setSelectedAccessTokenAttributes ] = useState<ExternalClaim[]>(undefined);
     const [ accessTokenAttributes, setAccessTokenAttributes ] = useState<ExternalClaim[]>([]);
     const [ accessTokenAttributesEnabled, setAccessTokenAttributesEnabled ] = useState<boolean>(false);
@@ -452,26 +456,69 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         );
     }, [ application ]);
 
-    useEffect(() => {
-        getAllExternalClaims("aHR0cDovL3dzbzIub3JnL29pZGMvY2xhaW0", null)
-            .then((response: ExternalClaim[]) => {
-                console.log("External claims response: ", response);
-                setAccessTokenAttributes(response);
+    const fetchLocalClaims = useCallback(() => {
+        getAllLocalClaims(null)
+            .then((response: Claim[]) => {
+                setClaims(response);
             })
             .catch(() => {
-                console.log("Error while fetching external claims");
+                dispatch(addAlert({
+                    description: t("claims:local.notifications.fetchLocalClaims.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("claims:local.notifications.fetchLocalClaims.genericError.message")
+                }));
             });
     }, []);
+
+    const fetchExternalClaims = useCallback(() => {
+        getAllExternalClaims(OIDCScopesManagementConstants.OIDC_ATTRIBUTE_ID, null)
+            .then((response: ExternalClaim[]) => {
+                setExternalClaims(response);
+            })
+            .catch(() => {
+                dispatch(addAlert({
+                    description: t("claims:external.notifications.fetchExternalClaims.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("claims:external.notifications.fetchExternalClaims.genericError.message")
+                }));
+            });
+    }, []);
+
+    useEffect(() => {
+        fetchLocalClaims();
+        fetchExternalClaims();
+    }, []);
+
+
+    useEffect(() => {
+        if (claims.length && externalClaims.length) {
+            const updatedAttributes = externalClaims.map((externalClaim) => {
+                const matchedLocalClaim = claims.find((localClaim) => 
+                    localClaim.claimURI === externalClaim.mappedLocalClaimURI
+                );
+                
+                if (matchedLocalClaim && matchedLocalClaim.displayName) {
+                    return {
+                        ...externalClaim,
+                        localClaimDisplayName: matchedLocalClaim.displayName
+                    };
+                }
+                return externalClaim;
+            });
+            console.log(updatedAttributes);
+            setAccessTokenAttributes(updatedAttributes);
+        }
+    }, [claims, externalClaims]);
 
     useEffect(() => {
         if (!initialValues.accessToken.accessTokenAttributes) {
             return;
         }
-        const selectedClaims = initialValues.accessToken.accessTokenAttributes
+        const selectedAttributes = initialValues.accessToken.accessTokenAttributes
         .map((claim: string) => accessTokenAttributes.find((claimObj: ExternalClaim) => claimObj.claimURI === claim))
         .filter((claimObj: ExternalClaim | undefined) => claimObj !== undefined);
 
-        setSelectedAccessTokenAttributes(selectedClaims);
+        setSelectedAccessTokenAttributes(selectedAttributes);
         setAccessTokenAttributesEnabled(initialValues.accessToken.accessTokenAttributesEnabled)
     }, [accessTokenAttributes]);
 
@@ -635,9 +682,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (initialValues?.allowedOrigins) {
             setAllowedOrigins(initialValues.allowedOrigins.toString());
         }
-
-        setSelectedTokenType(initialValues?.accessToken? initialValues.accessToken.type 
-            : metadata?.accessTokenType?.defaultValue);
 
     }, [ initialValues ]);
 
@@ -2633,9 +2677,11 @@ const getAllowedListForAccessToken = (
                                         ".accessToken.fields.type.label")
                                 }
                                 name="type"
-                                value={ selectedTokenType ?? initialValues?.accessToken
-                                    ? initialValues.accessToken.type
-                                    : metadata?.accessTokenType?.defaultValue }
+                                default={
+                                    initialValues?.accessToken
+                                        ? initialValues.accessToken.type
+                                        : metadata?.accessTokenType?.defaultValue
+                                }
                                 type="radio"
                                 children={ getAllowedListForAccessToken(metadata?.accessTokenType, false) }
                                 listen={ (values: Map<string, FormValue>) => {
@@ -2648,12 +2694,6 @@ const getAllowedListForAccessToken = (
                             />
                         { isJWTAccessTokenTypeSelected ? (
                         <Grid.Row>
-                            <Grid.Column width={ 8 } className="jwt-attributes-dropdown-label-column">
-                                <span>
-                                { t("applications:forms.inboundOIDC.sections" +
-                                    ".accessToken.fields.accessTokenAttributes.label") }
-                                </span>
-                            </Grid.Column>
                             <Grid.Column width={ 8 }>
                                 <Autocomplete
                                     disablePortal
@@ -2668,13 +2708,22 @@ const getAllowedListForAccessToken = (
                                         (claim: ExternalClaim) => claim.claimURI
                                     }
                                     renderInput={ (params: AutocompleteRenderInputParams) => (
+                                        <>
+                                        <InputLabel htmlFor="tags-filled" disableAnimation shrink={ false }>
+                                            { t(
+                                                "applications:forms.inboundOIDC.sections" +
+                                                ".accessToken.fields.accessTokenAttributes.label"
+                                            ) }
+                                        </InputLabel>
                                         <TextField className="jwt-attributes-dropdown-input"
-                                            { ...params }
+                                            { ...params }   
                                             placeholder={ !false && t("applications:forms.inboundOIDC.sections" +
                                             ".accessToken.fields.accessTokenAttributes.placeholder") }
                                         />
+                                        </>
                                     ) }
                                     onChange={ (event: SyntheticEvent, claims: ExternalClaim[]) => {
+                                        console.log(accessTokenAttributes)
                                         setIsFormStale(true);
                                         setSelectedAccessTokenAttributes(claims);
                                     } }
@@ -2706,9 +2755,10 @@ const getAllowedListForAccessToken = (
                                         option: ExternalClaim,
                                         { selected }: { selected: boolean }
                                     ) => (
-                                        <AutoCompleteRenderOption
+                                        <AccessTokenAttributeOption
                                             selected={ selected }
-                                            displayName={ option.claimURI }
+                                            displayName={ option.localClaimDisplayName }
+                                            claimURI={ option.claimURI }
                                             renderOptionProps={ props }
                                         />
                                     ) }
@@ -2718,10 +2768,10 @@ const getAllowedListForAccessToken = (
                                         values={ { productName: config.ui.productName } }
                                         i18nKey={
                                             "applications:forms.inboundOIDC.sections." +
-                                            "accessTokenAttributes.description"
+                                            "accessTokenAttributes.hint"
                                         }
                                     >
-                                    Define the attributes that should be included in the <Code withBackground>JWT access token</Code>
+                                    Select the attributes that should be included in the <Code withBackground>access token</Code>
                                     </Trans>
                                 </Hint>
                             </Grid.Column>
