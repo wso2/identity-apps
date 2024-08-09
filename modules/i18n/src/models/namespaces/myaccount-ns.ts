@@ -766,6 +766,12 @@ export interface MyAccountNS {
             };
         };
         profile: {
+            actions: {
+                verifyEmail: string;
+                verifyMobile: string;
+                deleteEmail: string;
+                deleteMobile: string;
+            }
             fields: {
                 generic: {
                     default: string;
@@ -853,6 +859,10 @@ export interface MyAccountNS {
                 "Verify Mobile": string,
                 "Verify Secret Key": string,
                 "Website URL": string,
+                "Email Addresses": string,
+                "Mobile Numbers": string,
+                "Verified Email Addresses": string,
+                "Verified Mobile Numbers": string,
             };
             forms: {
                 generic: {
@@ -950,11 +960,27 @@ export interface MyAccountNS {
                     content: string;
                 };
             };
+            modals: {
+                emailAddressDeleteConfirmation: {
+                    assertionHint: string;
+                    content: string;
+                    description: string;
+                    heading: string;
+                },
+                mobileNumberDeleteConfirmation: {
+                    assertionHint: string;
+                    content: string;
+                    description: string;
+                    heading: string;
+                }
+            },
             notifications: {
                 getProfileCompletion: Notification;
                 getProfileInfo: Notification;
                 getUserReadOnlyStatus: Notification;
                 updateProfileInfo: Notification;
+                verifyEmail: Notification;
+                verifyMobile: Notification;
             };
             placeholders: {
                 SCIMDisabled: {
@@ -1021,6 +1047,9 @@ export interface MyAccountNS {
                     error: NotificationItem;
                 };
             };
+            verificationSent: {
+                heading: string
+            }
         };
     };
     modals: {
