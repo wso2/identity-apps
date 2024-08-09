@@ -43,6 +43,8 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.RecoveryResponse" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.ResendRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.ResendResponse" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 
 <%-- Include tenant context --%>
@@ -125,9 +127,21 @@
     }
 %>
 <%
-    final String USERNAME_CLAIM_URI_FOR_TENANT = "http://wso2.org/claims/username";
+    String userIdentifierClaimKey = "http://wso2.org/claims/username";
+    final String MULTI_ATTRIBUTE_USER_IDENTIFIER_CLAIM_URI = "internal.user.identifier.claim.uri";
     final RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
     
+    try {
+        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+        if (preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain)) {
+            userIdentifierClaimKey = MULTI_ATTRIBUTE_USER_IDENTIFIER_CLAIM_URI;
+        }
+    } catch (PreferenceRetrievalClientException e) {
+        IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
+
     String username = (String) request.getAttribute("username");
     if (StringUtils.isBlank(username)) {
         username = request.getParameter("username");
@@ -149,7 +163,7 @@
 
         // Get the username claim string for the tenant
         UserClaim userNameClaim = new UserClaim();
-        userNameClaim.setUri(USERNAME_CLAIM_URI_FOR_TENANT);
+        userNameClaim.setUri(userIdentifierClaimKey);
         userNameClaim.setValue(MultitenantUtils.getTenantAwareUsername(username));
         userClaims.add(userNameClaim);
 

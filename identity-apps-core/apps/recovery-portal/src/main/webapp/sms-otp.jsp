@@ -339,8 +339,14 @@
                                     String baseUrl = ServiceURLBuilder.create()
                                         .addPath("/accountrecoveryendpoint/recoveraccountrouter.do").build()
                                         .getRelativePublicURL();
-                                    String multiOptionPathWithQuery = urlQuery + "&username=" + username 
-                                        + "&selectedOption=SMSOTP";
+                                    String multiOptionPathWithQuery;
+                                    if (urlQuery.contains("&username=")) {
+                                        multiOptionPathWithQuery =
+                                            urlQuery.replaceAll("(&username=)[^&]+", "$1" + username);
+                                    } else {
+                                        multiOptionPathWithQuery = urlQuery + "&username=" + username 
+                                            + "&selectedOption=SMSOTP";
+                                    }
                                 %>
                                 <a class="ui primary basic button link-button" id="goBackLink"
                                     href=<%=baseUrl + "?" + multiOptionPathWithQuery %>>

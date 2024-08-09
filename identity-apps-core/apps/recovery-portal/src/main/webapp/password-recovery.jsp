@@ -560,6 +560,8 @@
                         "Please.enter.valid.email")%>";
             const emptyUsernameErrorMsg = "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                         "Please.enter.your.username")%>";
+            const emptyUserIdentifierMsg = "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                        "Please.enter.your.identifier")%>";
             let errorMsgContent = document.getElementById("error-message");
 
             let userName = document.getElementById("username");
@@ -569,7 +571,8 @@
             }
 
             if ($("#username").val() === "") {
-                errorMsgContent.innerHTML = emptyUsernameErrorMsg;
+                errorMsgContent.innerHTML =
+                    <%=isMultiAttributeLoginEnabledInTenant? "emptyUserIdentifierMsg" : "emptyUsernameErrorMsg"%>;
                 errorMessage.show();
                 submitBtnState( { disabled: true } );
 
