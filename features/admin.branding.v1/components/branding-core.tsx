@@ -17,7 +17,7 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import useAIBrandingPreference from "@wso2is/admin.branding.ai.v1/hooks/use-ai-branding-preference";
 import { EventPublisher, OrganizationType } from "@wso2is/admin.core.v1";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -34,7 +34,6 @@ import {
     PredefinedLayouts
 } from "@wso2is/common.branding.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -186,11 +185,11 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const isReadOnly: boolean = useMemo(() => !hasRequiredScopes(
-        featureConfig?.branding,
-        featureConfig?.branding?.scopes?.update,
-        allowedScopes
-    ), [ featureConfig, allowedScopes ]);
+    const hasBrandingScopesUpdatePermissions: boolean = useRequiredScopes(
+        featureConfig?.branding?.scopes?.update
+    );
+
+    const isReadOnly: boolean = useMemo(() => !hasBrandingScopesUpdatePermissions, [ featureConfig, allowedScopes ]);
 
     const isBrandingPageLoading: boolean = useMemo(
         () =>
@@ -242,11 +241,19 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
             return;
         }
 
-        if (organizationType === OrganizationType.SUBORGANIZATION
-            && originalBrandingPreference?.name !== currentOrganization?.id) {
-            // This means the sub-org has no branding preference configured.
-            // It gets the branding preference from the parent org.
-            setIsBrandingConfigured(false);
+        if (organizationType === OrganizationType.SUBORGANIZATION) {
+            if (
+                (brandingMode === BrandingModes.APPLICATION &&
+                    originalBrandingPreference?.name !== selectedApplication) ||
+                (brandingMode === BrandingModes.ORGANIZATION &&
+                    originalBrandingPreference?.name !== currentOrganization?.id)
+            ) {
+                // This means the sub-org or app has no branding preference configured.
+                // It gets the branding preference from the parent org.
+                setIsBrandingConfigured(false);
+            } else {
+                setIsBrandingConfigured(true);
+            }
         } else {
             setIsBrandingConfigured(true);
         }
