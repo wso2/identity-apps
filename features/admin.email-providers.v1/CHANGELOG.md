@@ -1,5 +1,16 @@
 # @wso2is/admin.email-providers.v1
 
+## 2.20.112
+
+### Patch Changes
+
+- Updated dependencies [[`00ee3fbc87f646c936fcda1534d75f9359ad03db`](https://github.com/wso2/identity-apps/commit/00ee3fbc87f646c936fcda1534d75f9359ad03db), [`00ee3fbc87f646c936fcda1534d75f9359ad03db`](https://github.com/wso2/identity-apps/commit/00ee3fbc87f646c936fcda1534d75f9359ad03db), [`00ee3fbc87f646c936fcda1534d75f9359ad03db`](https://github.com/wso2/identity-apps/commit/00ee3fbc87f646c936fcda1534d75f9359ad03db)]:
+  - @wso2is/admin.core.v1@2.24.5
+  - @wso2is/i18n@2.5.17
+  - @wso2is/react-components@2.4.0
+  - @wso2is/form@2.1.0
+  - @wso2is/dynamic-forms@2.0.93
+
 ## 2.20.111
 
 ### Patch Changes
