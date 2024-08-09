@@ -16,8 +16,15 @@
  * under the License.
  */
 
+import Autocomplete, {
+    AutocompleteRenderGetTagProps,
+    AutocompleteRenderInputParams
+} from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
+import InputLabel from "@oxygen-ui/react/InputLabel";
+import TextField from "@oxygen-ui/react/TextField";
+import { getAllExternalClaims, getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
 import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
@@ -30,6 +37,8 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
+    Claim,
+    ExternalClaim,
     FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
     TestableComponentInterface
@@ -62,9 +71,12 @@ import React, {
     ChangeEvent,
     Fragment,
     FunctionComponent,
+    HTMLAttributes,
     MouseEvent,
     MutableRefObject,
     ReactElement,
+    SyntheticEvent,
+    useCallback,
     useEffect,
     useRef,
     useState
@@ -73,6 +85,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Container, Divider, DropdownProps, Form, Grid, Label, List, Table } from "semantic-ui-react";
+import { OIDCScopesManagementConstants } from "../../../admin.oidc-scopes.v1/constants";
 import { getGeneralIcons } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate from
@@ -102,7 +115,9 @@ import {
     additionalSpProperty
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
+import { AccessTokenAttributeOption } from "../components/access-token-attribute-option";
 import { ApplicationCertificateWrapper } from "../settings/certificate";
+import "./inbound-oidc-form.scss";
 
 /**
  * Proptypes for the inbound OIDC form component.
@@ -248,6 +263,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         isRefreshTokenWithoutAllowedGrantType,
         setRefreshTokenWithoutAlllowdGrantType
     ] = useState<boolean>(false);
+    const [ activeOption, setActiveOption ] = useState<ExternalClaim>(undefined);
+    const [ claims, setClaims ] = useState<Claim[]>([]);
+    const [ externalClaims, setExternalClaims ] = useState<ExternalClaim[]>([]);
+    const [ selectedAccessTokenAttributes, setSelectedAccessTokenAttributes ] = useState<ExternalClaim[]>(undefined);
+    const [ accessTokenAttributes, setAccessTokenAttributes ] = useState<ExternalClaim[]>([]);
+    const [ accessTokenAttributesEnabled, setAccessTokenAttributesEnabled ] = useState<boolean>(false);
     const [ isSubjectTokenEnabled, setIsSubjectTokenEnabled ] = useState<boolean>(false);
     const [ isSubjectTokenFeatureAvailable, setIsSubjectTokenFeatureAvailable ] = useState<boolean>(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
@@ -288,6 +309,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const requestObjectSigningAlg: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const requestObjectEncryptionAlgorithm: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const requestObjectEncryptionMethod: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const accessTokenAttributesEnabledConfig: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const subjectToken: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const applicationSubjectTokenExpiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
 
@@ -434,6 +456,74 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
         );
     }, [ application ]);
+
+    const fetchLocalClaims: () => void = useCallback(() => {
+        getAllLocalClaims(null)
+            .then((response: Claim[]) => {
+                setClaims(response);
+            })
+            .catch(() => {
+                dispatch(addAlert({
+                    description: t("claims:local.notifications.fetchLocalClaims.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("claims:local.notifications.fetchLocalClaims.genericError.message")
+                }));
+            });
+    }, []);
+
+    const fetchExternalClaims: () => void = useCallback(() => {
+        getAllExternalClaims(OIDCScopesManagementConstants.OIDC_ATTRIBUTE_ID, null)
+            .then((response: ExternalClaim[]) => {
+                setExternalClaims(response);
+            })
+            .catch(() => {
+                dispatch(addAlert({
+                    description: t("claims:external.notifications.fetchExternalClaims.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("claims:external.notifications.fetchExternalClaims.genericError.message")
+                }));
+            });
+    }, []);
+
+    useEffect(() => {
+        fetchLocalClaims();
+        fetchExternalClaims();
+    }, []);
+
+
+    useEffect(() => {
+        if (claims.length && externalClaims.length) {
+            const updatedAttributes : ExternalClaim[] = externalClaims.map((externalClaim : ExternalClaim) => {
+                const matchedLocalClaim: Claim = claims.find((localClaim: Claim) =>
+                    localClaim.claimURI === externalClaim.mappedLocalClaimURI
+                );
+
+                if (matchedLocalClaim && matchedLocalClaim.displayName) {
+                    return {
+                        ...externalClaim,
+                        localClaimDisplayName: matchedLocalClaim.displayName
+                    };
+                }
+
+                return externalClaim;
+            });
+
+            setAccessTokenAttributes(updatedAttributes);
+        }
+    }, [ claims, externalClaims ]);
+
+    useEffect(() => {
+        if (!initialValues.accessToken.accessTokenAttributes) {
+            return;
+        }
+        const selectedAttributes: ExternalClaim[] = initialValues.accessToken.accessTokenAttributes
+            .map((claim: string) => accessTokenAttributes
+                .find((claimObj: ExternalClaim) => claimObj.claimURI === claim))
+            .filter((claimObj: ExternalClaim | undefined) => claimObj !== undefined);
+
+        setSelectedAccessTokenAttributes(selectedAttributes);
+        setAccessTokenAttributesEnabled(initialValues.accessToken.accessTokenAttributesEnabled);
+    }, [ accessTokenAttributes ]);
 
     useEffect(() => {
         const isSharedWithAll: additionalSpProperty[] = application?.advancedConfigurations
@@ -1210,6 +1300,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (!isSystemApplication && !isDefaultApplication) {
             let inboundConfigFormValues: any = {
                 accessToken: {
+                    accessTokenAttributes: selectedAccessTokenAttributes.map((claim: ExternalClaim) => claim.claimURI),
+                    accessTokenAttributesEnabled: accessTokenAttributesEnabled,
                     applicationAccessTokenExpiryInSeconds: values.get("applicationAccessTokenExpiryInSeconds")
                         ? Number(values.get("applicationAccessTokenExpiryInSeconds"))
                         : Number(metadata?.defaultApplicationAccessTokenExpiryTime),
@@ -2603,6 +2695,125 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 readOnly={ readOnly }
                                 data-testid={ `${ testId }-access-token-type-radio-group` }
                             />
+                            { isJWTAccessTokenTypeSelected ? (
+                                <Grid.Row>
+                                    <Grid.Column width={ 8 }>
+                                        <Autocomplete
+                                            disablePortal
+                                            multiple
+                                            disableCloseOnSelect
+                                            loading={ isLoading }
+                                            options={ accessTokenAttributes }
+                                            value={ selectedAccessTokenAttributes ?? [] }
+                                            disabled = { !initialValues?.accessToken?.accessTokenAttributesEnabled }
+                                            data-componentid={ `${ componentId }-assigned-jwt-attribute-list` }
+                                            getOptionLabel={
+                                                (claim: ExternalClaim) => claim.claimURI
+                                            }
+                                            renderInput={ (params: AutocompleteRenderInputParams) => (
+                                                <>
+                                                    <InputLabel htmlFor="tags-filled" disableAnimation shrink={ false }>
+                                                        { t(
+                                                            "applications:forms.inboundOIDC.sections" +
+                                                            ".accessToken.fields.accessTokenAttributes.label"
+                                                        ) }
+                                                    </InputLabel>
+                                                    <TextField
+                                                        className="jwt-attributes-dropdown-input"
+                                                        { ...params }
+                                                        placeholder={ !false &&
+                                                            t("applications:forms.inboundOIDC.sections" +
+                                                        ".accessToken.fields.accessTokenAttributes.placeholder") }
+                                                    />
+                                                </>
+                                            ) }
+                                            onChange={ (event: SyntheticEvent, claims: ExternalClaim[]) => {
+                                                setIsFormStale(true);
+                                                setSelectedAccessTokenAttributes(claims);
+                                            } }
+                                            isOptionEqualToValue={
+                                                (option: ExternalClaim, value: ExternalClaim) =>
+                                                    option.id === value.id
+                                            }
+                                            renderTags={ (
+                                                value: ExternalClaim[],
+                                                getTagProps: AutocompleteRenderGetTagProps
+                                            ) => value.map((option: ExternalClaim, index: number) => (
+                                                <Chip
+                                                    { ...getTagProps({ index }) }
+                                                    key={ index }
+                                                    label={ option.claimURI }
+                                                    activeOption={ activeOption }
+                                                    setActiveOption={ setActiveOption }
+                                                    variant={
+                                                        accessTokenAttributes?.find(
+                                                            (claim: ExternalClaim) => claim.id === option.id
+                                                        )
+                                                            ? "solid"
+                                                            : "outlined"
+                                                    }
+                                                />
+                                            )) }
+                                            renderOption={ (
+                                                props: HTMLAttributes<HTMLLIElement>,
+                                                option: ExternalClaim,
+                                                { selected }: { selected: boolean }
+                                            ) => (
+                                                <AccessTokenAttributeOption
+                                                    selected={ selected }
+                                                    displayName={ option.localClaimDisplayName }
+                                                    claimURI={ option.claimURI }
+                                                    renderOptionProps={ props }
+                                                />
+                                            ) }
+                                        />
+                                        <Hint>
+                                            <Trans
+                                                values={ { productName: config.ui.productName } }
+                                                i18nKey={
+                                                    "applications:forms.inboundOIDC.sections." +
+                                                    "accessTokenAttributes.hint"
+                                                }
+                                            >
+                                            Select the attributes that should be included in
+                                            the <Code withBackground>access token</Code>
+                                            </Trans>
+                                        </Hint>
+                                    </Grid.Column>
+                                    { !initialValues?.accessToken?.accessTokenAttributesEnabled && (
+                                        <Grid.Column>
+                                            <Field
+                                                ref={ accessTokenAttributesEnabledConfig }
+                                                name="accessTokenAttributesEnabledConfig"
+                                                label=""
+                                                required={ false }
+                                                type="checkbox"
+                                                listen={ (values: Map<string, FormValue>): void => {
+                                                    const accessTokenAttributesEnabled: boolean =
+                                                    values.get("accessTokenAttributesEnabledConfig")
+                                                        .includes("accessTokenAttributesEnabled");
+
+                                                    setAccessTokenAttributesEnabled(accessTokenAttributesEnabled);
+                                                } }
+                                                value={
+                                                    initialValues?.accessToken?.accessTokenAttributesEnabled
+                                                        ? [ "accessTokenAttributesEnabled" ]
+                                                        : []
+                                                }
+                                                children={ [
+                                                    {
+                                                        label: t("applications:forms.inboundOIDC.sections" +
+                                                        ".accessToken.fields.accessTokenAttributes.enable.label"),
+                                                        value: "accessTokenAttributesEnabled"
+                                                    }
+                                                ] }
+                                                readOnly={ readOnly }
+                                                data-testid={ `${ testId }-access-token-attributes-enabled-checkbox` }
+                                            />
+                                        </Grid.Column>
+                                    ) }
+                                </Grid.Row>
+                            ) : null }
                         </Grid.Column>
                     </Grid.Row>
                 )

@@ -1574,6 +1574,15 @@ export const applications: ApplicationsNS = {
                                 empty: "Please fill the audience",
                                 invalid: "Please avoid special characters like commas (,)"
                             }
+                        },
+                        accessTokenAttributes: {
+                            hint : "Select the attributes that should be included in the <1>access_token</1>.",
+                            label: "Access Token Attributes",
+                            placeholder: "Search by attribute name",
+                            enable: {
+                                hint : "",
+                                label: "Enable Access Token Attributes Feature"
+                            }
                         }
                     },
                     heading: "Access Token",

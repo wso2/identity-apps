@@ -127,8 +127,9 @@ interface AccessTokenConfigurationInterface {
     bindingType?: SupportedAccessTokenBindingTypes | string;
     revokeTokensWhenIDPSessionTerminated?: boolean;
     validateTokenBinding?: boolean;
+    accessTokenAttributes?: string[];
+    accessTokenAttributesEnabled?: boolean;
 }
-
 interface RefreshTokenConfigurationInterface {
     expiryInSeconds?: number;
     renewRefreshToken?: boolean;
