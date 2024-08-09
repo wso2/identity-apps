@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,7 @@
 import { SelectChangeEvent } from "@mui/material";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
-import { Hint, PageLayout } from "@wso2is/react-components";
+import { DocumentationLink, Hint, PageLayout } from "@wso2is/react-components";
 import moment from "moment";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -51,9 +51,9 @@ const OrgInsightsPage: FunctionComponent = () => {
         {
             menuItem: "Login",
             render: () => (
-                <InsightsView 
+                <InsightsView
                     selectedActivityType={ selectedActivityType }
-                />    
+                />
             )
         },
         {
@@ -71,7 +71,17 @@ const OrgInsightsPage: FunctionComponent = () => {
             data-componentid="asgardeo-insights"
             pageTitle={ t("insights:pageTitle") }
             title={ t("insights:title") }
-            description={ t("insights:description") }
+            description={ (
+                <>
+                    { t("insights:description") }
+                    <DocumentationLink
+                        link="manage.insights.learnMore"
+                        isLinkRef
+                    >
+                        { t("extensions:common.learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
             action={
                 (<>
                     <Select
@@ -114,7 +124,7 @@ const OrgInsightsPage: FunctionComponent = () => {
                     setFilterQuery,
                     setLastFetchTimestamp
                 } }
-            >            
+            >
                 <Tab
                     className="tabs resource-tabs"
                     menu={ { pointing: true, secondary: true } }

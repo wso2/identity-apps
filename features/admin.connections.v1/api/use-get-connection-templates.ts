@@ -24,7 +24,7 @@ import useRequest, {
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { HttpMethods } from "@wso2is/core/models";
-import { CommonAuthenticatorManagementConstants } from "../constants/common-authenticator-constants";
+import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
 import { ConnectionTemplateInterface } from "../models/connection";
 import { groupConnectionTemplates } from "../utils/connection-template-utils";
 
@@ -76,16 +76,16 @@ export const useGetConnectionTemplates = <Data = ConnectionTemplateInterface[], 
 
     if (data) {
         const hiddenConnectionTemplateIds: string[] = [
-            CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.LINKEDIN,
-            CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS
+            CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.LINKEDIN,
+            CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS
                 .ORGANIZATION_ENTERPRISE_IDP,
-            CommonAuthenticatorManagementConstants.CONNECTION_TEMPLATE_IDS.ENTERPRISE,
+            CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.ENTERPRISE,
             ...(UIConfig?.hiddenConnectionTemplates || [])
         ];
 
         // Hide specific connection templates for login flow builder.
         if (isLoginFlow) {
-            hiddenConnectionTemplateIds.push(CommonAuthenticatorManagementConstants
+            hiddenConnectionTemplateIds.push(CommonAuthenticatorConstants
                 .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER);
         }
 

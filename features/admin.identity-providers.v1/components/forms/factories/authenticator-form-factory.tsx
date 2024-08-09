@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1";
 import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
@@ -217,7 +216,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-        case ConnectionManagementConstants.SAML_AUTHENTICATOR_ID:
+        case FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID:
             return (
                 <SamlAuthenticatorSettingsForm
                     mode={ mode }

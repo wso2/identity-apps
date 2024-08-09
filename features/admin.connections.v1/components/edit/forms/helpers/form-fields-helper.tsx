@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,7 +30,7 @@ import { FormValidation } from "@wso2is/validation";
 import React, { ReactElement, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { Pkcs12FileField } from "./pkcs12-file-field";
-import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
+import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
 import {
     AuthenticatorSettingsFormModes
 } from "../../../../models/authenticators";
@@ -670,7 +670,7 @@ export const getFieldType = (
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     mode: AuthenticatorSettingsFormModes
 ): FieldType => {
-    if (propertyMetadata?.key === ConnectionManagementConstants.USER_ID_IN_CLAIMS) {
+    if (propertyMetadata?.key === ConnectionUIConstants.USER_ID_IN_CLAIMS) {
         return FieldType.RADIO;
     } else if (propertyMetadata?.type?.toUpperCase() === CommonConstants.BOOLEAN) {
         return FieldType.CHECKBOX;
@@ -695,7 +695,7 @@ export const getFieldType = (
         return FieldType.DROP_DOWN;
     } else if (propertyMetadata.type?.toUpperCase() === CommonConstants.RADIO) {
         return FieldType.RADIO;
-    } else if (propertyMetadata?.key === ConnectionManagementConstants.GOOGLE_PRIVATE_KEY) {
+    } else if (propertyMetadata?.key === ConnectionUIConstants.GOOGLE_PRIVATE_KEY) {
         return FieldType.FILE_PICKER;
     }
 
@@ -730,7 +730,7 @@ export const getPropertyField = (
         }
         case FieldType.RADIO : {
             if (listen) {
-                if (propertyMetadata?.key === ConnectionManagementConstants.USER_ID_IN_CLAIMS) {
+                if (propertyMetadata?.key === ConnectionUIConstants.USER_ID_IN_CLAIMS) {
                     return getUserIdClaimRadioButtonField(property, propertyMetadata, listen, testId);
                 } else {
                     return getRadioButtonFieldWithListener(property, propertyMetadata, listen, testId);

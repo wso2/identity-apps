@@ -17,7 +17,6 @@
  */
 
 import Chip from "@oxygen-ui/react/Chip";
-import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AuthenticatorMeta } from "@wso2is/admin.connections.v1/meta/authenticator-meta";
 import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
@@ -373,8 +372,8 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     const renderFeatureStatusChip = (authenticator: GenericAuthenticatorInterface): ReactElement => {
         if (
             isSAASDeployment &&
-          authenticator?.defaultAuthenticator?.authenticatorId === AuthenticatorManagementConstants
-              .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
+            authenticator?.defaultAuthenticator?.authenticatorId === LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
         ) {
             return (
                 <Chip
@@ -424,9 +423,8 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 featureStatus={ renderFeatureStatusChip(authenticator) }
                                 image={
                                     authenticator.idp === AuthenticatorCategories.LOCAL ||
-                                    authenticator
-                                        .defaultAuthenticator?.authenticatorId === AuthenticatorManagementConstants
-                                        .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
+                                    ConnectionsManagementUtils.isOrganizationSSOConnection(authenticator
+                                        .defaultAuthenticator?.authenticatorId)
                                         ? authenticator.image
                                         : ConnectionsManagementUtils
                                             .resolveConnectionResourcePath(connectionResourcesUrl, authenticator.image)
