@@ -1701,9 +1701,6 @@ importers:
       '@oxygen-ui/react':
         specifier: ^1.13.6
         version: 1.13.6(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.16.1)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.1)(@mui/utils@5.16.1)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
-      '@wso2is/access-control':
-        specifier: ^3.0.18
-        version: link:../../modules/access-control
       '@wso2is/admin.applications.v1':
         specifier: ^2.22.39
         version: link:../admin.applications.v1
@@ -1728,9 +1725,6 @@ importers:
       '@wso2is/form':
         specifier: ^2.0.92
         version: link:../../modules/form
-      '@wso2is/forms':
-        specifier: ^2.0.48
-        version: link:../../modules/forms
       '@wso2is/react-components':
         specifier: ^2.3.0
         version: link:../../modules/react-components
