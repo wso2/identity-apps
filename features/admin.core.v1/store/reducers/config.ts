@@ -84,6 +84,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             accountDisabling: "",
             accountLocking: "",
             accountRecovery: "",
+            actions: "",
             adminAdvisoryBanner: "",
             apiResourceCollection: "",
             apiResourceCollections: "",

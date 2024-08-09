@@ -328,6 +328,7 @@ export class AppConstants {
             [ "LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attributes/:id` ],
             [ "LOGIN", window["AppUtils"]?.getConfig()?.routes.login ],
             [ "LOGIN_AND_REGISTRATION", `${ AppConstants.getDeveloperViewBasePath() }/login-and-registration` ],
+            [ "ACTIONS", `${ AppConstants.getDeveloperViewBasePath() }/actions` ],
             [ "SCIM_MAPPING", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/scim` ],
             [ "LOGOUT", window["AppUtils"]?.getConfig()?.routes.logout ],
             [ "OIDC_SCOPES", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes` ],
@@ -397,8 +398,11 @@ export class AppConstants {
                 `${AppConstants.getAdminViewBasePath()}/server/internal-notification-sending` ],
             [ "OUTBOUND_PROVISIONING_SETTINGS",
                 `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ],
-            [ "IMPERSONATION", `${AppConstants.getAdminViewBasePath()}/login-and-registration/impersonation` ]
-
+            [ "IMPERSONATION", `${AppConstants.getAdminViewBasePath()}/login-and-registration/impersonation` ],
+            [ "ACTIONS",
+                `${AppConstants.getAdminViewBasePath()}/actions` ],
+            [ "PRE_ISSUE_ACCESS_TOKEN_EDIT",
+                `${ AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ]
         ]);
 
         return paths;

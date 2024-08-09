@@ -304,9 +304,14 @@ export class RouteUtils {
             order: 5
         };
 
+        const extensions: NavCategory = {
+            id: "extensions",
+            order: 6
+        };
+
         const settings: NavCategory = {
             id: "settings",
-            order: 6
+            order: 7
         };
 
         const loginAndRegPathsToCheck: string[] = [
@@ -464,6 +469,11 @@ export class RouteUtils {
                 id: "server",
                 order: 2,
                 selected: history.location.pathname.includes("server")
+            },
+            {
+                category: extensions,
+                id: "actions",
+                order: 0
             }
         ];
 

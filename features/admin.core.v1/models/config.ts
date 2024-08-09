@@ -17,6 +17,7 @@
  */
 
 import { ResponseMode, Storage } from "@asgardeo/auth-react";
+import { ActionsResourceEndpointsInterface } from "@wso2is/admin.actions.v1/models/endpoints";
 import {
     ApplicationTemplateLoadingStrategies,
     ApplicationsResourceEndpointsInterface
@@ -63,6 +64,10 @@ interface ConnectionConfigInterface extends FeatureAccessConfigInterface {
  * Application configuration interface.
  */
 export interface FeatureConfigInterface {
+    /**
+     * Action management feature.
+     */
+    actions?: FeatureAccessConfigInterface;
     /**
      * Admin user management feature.
      */
@@ -526,7 +531,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     TenantResourceEndpointsInterface,
     ValidationServiceEndpointsInterface,
     BrandingPreferenceResourceEndpointsInterface,
-    ConsoleSettingsResourceEndpointsInterface {
+    ConsoleSettingsResourceEndpointsInterface,
+    ActionsResourceEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details

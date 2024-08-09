@@ -21,8 +21,17 @@ import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectProps } from "@oxygen-ui/react/Select";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, ReactNode } from "react";
 import { FieldRenderProps } from "react-final-form";
+import "./text-field-adapter.scss";
+
+/**
+ * Interface for the DropDownItem.
+ */
+export interface DropDownItemInterface {
+    text: string;
+    value: string;
+}
 
 /**
  * Props interface of {@link SelectFieldAdapter}
@@ -58,6 +67,7 @@ const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = 
         fullWidth,
         required,
         helperText,
+        onChange,
         ...rest
     } = props;
 
@@ -76,7 +86,10 @@ const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = 
                 { ...input }
                 name={ name }
                 value={ input.value || "" }
-                onChange={ (event: ChangeEvent<HTMLInputElement>) => input.onChange(event.target.value) }
+                onChange={ (e: ChangeEvent, child: ReactNode) => {
+                    input.onChange((e?.target as any)?.value as string);
+                    onChange(e as any, child);
+                } }
                 margin="dense"
                 label={ label }
                 // Need any to avoid 'children' does not exist on type 'IntrinsicAttributes & SelectProps' error.
@@ -85,9 +98,9 @@ const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = 
                 <MenuItem value="" disabled>
                     { placeholder }
                 </MenuItem>
-                { options?.map((option: string) => (
-                    <MenuItem key={ option } value={ option }>
-                        { option }
+                { options?.map((option: DropDownItemInterface) => (
+                    <MenuItem key={ option.value } value={ option.value }>
+                        { option.text }
                     </MenuItem>
                 )) }
             </Select>

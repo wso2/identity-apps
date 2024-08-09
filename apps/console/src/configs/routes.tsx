@@ -27,6 +27,7 @@ import {
     LightbulbOnIcon,
     LinearNodesIcon,
     NodesIcon,
+    ProgressFlowIcon,
     UserCircleDotIcon,
     UserGroupIcon
 } from "@oxygen-ui/react-icons";
@@ -1374,6 +1375,37 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             name: "Groups",
             order: 6,
             path: AppConstants.getPaths().get("GROUPS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "extensions:manage.sidePanel.categories.extensions",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.actions.v1/pages/action-configuration-page")
+                    ),
+                    exact: true,
+                    id: "pre-issue-access-token",
+                    name: "Pre Issue Access Token",
+                    path: AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() =>
+                import("@wso2is/admin.actions.v1/pages/actions")
+            ),
+            exact: true,
+            featureStatus: "BETA",
+            featureStatusLabel: "common:beta",
+            icon: {
+                icon: <ProgressFlowIcon className="icon" fill="black" />
+            },
+            id: "actions",
+            name: "console:manage.features.actions.title",
+            order: 30,
+            path: AppConstants.getPaths().get("ACTIONS"),
             protected: true,
             showOnSidePanel: true
         },

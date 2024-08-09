@@ -2385,6 +2385,7 @@ export interface ConsoleNS {
                     authenticationProviders: string;
                     general: string;
                     identityVerificationProviders: string;
+                    extensions: string;
                 };
                 customize: string;
                 identityProviderEdit: string;
@@ -8038,6 +8039,224 @@ export interface ConsoleNS {
                             description: string;
                             message: string;
                         };
+                    };
+                };
+            };
+            actions: {
+                goBackActions: string,
+                title: string;
+                description: string;
+                types: {
+                    preIssueAccessToken: {
+                        heading: string;
+                        description: {
+                            shortened: string;
+                            expanded: string;
+                        };
+                    };
+                    preUpdatePassword: {
+                        heading: string;
+                        description: {
+                            shortened: string;
+                            expanded: string;
+                        };
+                    };
+                    preUpdateProfile: {
+                        heading: string;
+                        description: {
+                            shortened: string;
+                            expanded: string;
+                        };
+                    };
+                    preRegistration: {
+                        heading: string;
+                        description: {
+                            shortened: string;
+                            expanded: string;
+                        };
+                    };
+                };
+                notification: {
+                    success: {
+                        create: {
+                            description: string;
+                            message: string;
+                        };
+                        update: {
+                            description: string;
+                            message: string;
+                        };
+                        delete: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    error: {
+                        create: {
+                            description: string;
+                            message: string;
+                        };
+                        update: {
+                            description: string;
+                            message: string;
+                        };
+                        delete: {
+                            description: string;
+                            message: string;
+                        };
+                        fetch: {
+                            description: string;
+                            message: string;
+                        };
+                        typesFetch: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    genericError: {
+                        create: {
+                            description: string;
+                            message: string;
+                        };
+                        update: {
+                            description:  string;
+                            message: string;
+                        };
+                        delete: {
+                            description: string;
+                            message: string;
+                        };
+                        fetch: {
+                            description: string;
+                            message: string;
+                        };
+                        typesFetch: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                };
+                status: {
+                    active: string;
+                    inactive: string;
+                    configured: string;
+                    notConfigured: string;
+                };
+                fields: {
+                    name: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                        validations: {
+                            empty: string;
+                            invalid: string;
+                        };
+                    };
+                    endpoint: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                        validations: {
+                            empty: string;
+                            invalidUrl: string;
+                            notHttps: string;
+                        };
+                    };
+                    authentication: {
+                        label: string;
+                        types: {
+                            basic: {
+                                name: string;
+                                properties: {
+                                    username: {
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string
+                                        };
+                                    };
+                                    password: {
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string
+                                        };
+                                    };
+                                };
+                            };
+                            bearer: {
+                                name: string;
+                                properties: {
+                                    accessToken: {
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string
+                                        };
+                                    };
+                                };
+                            };
+                            apiKey: {
+                                name: string;
+                                properties: {
+                                    header: {
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string
+                                        };
+                                    };
+                                    value: {
+                                        label: string;
+                                        placeholder: string;
+                                        validations: {
+                                            empty: string
+                                        };
+                                    };
+                                };
+                            };
+                            none: {
+                                name: string;
+                            };
+                        };
+                        info: {
+                            title: {
+                                noneAuthType: string;
+                                otherAuthType: string;
+                            };
+                            message: string;
+                        };
+                    };
+                    authenticationType: {
+                        label: string;
+                        placeholder: string;
+                        hint: {
+                            create: string;
+                            update: string;
+                        };
+                        validations: {
+                            empty: string;
+                        };
+                    };
+                };
+                buttons: {
+                    changeAuthentication: string;
+                    cancel: string;
+                    update: string;
+                    create: string;
+                };
+                confirmationModal: {
+                    header: string;
+                    message: string;
+                    content: string;
+                    assertionHint: string;
+                };
+                dangerZoneGroup: {
+                    header: string;
+                    revertConfig: {
+                        heading: string;
+                        subHeading: string;
+                        actionTitle: string;
                     };
                 };
             };

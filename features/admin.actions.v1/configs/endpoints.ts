@@ -16,15 +16,18 @@
  * under the License.
  */
 
-/**
- * Enum that lists the currently defined feature status label types and their corresponding i18n keys.
- */
-enum FeatureStatusLabel {
-    NEW = "common:new",
-    BETA = "common:beta",
-    EXPERIMENTAL = "common:experimental",
-    PREMIUM = "common:premium",
-    COMING_SOON = "common:comingSoon"
-}
+import { ActionsResourceEndpointsInterface } from "../models/endpoints";
 
-export default FeatureStatusLabel;
+/**
+ * Get the resource endpoints for the actions feature.
+ *
+ * @param serverHost - Server Host.
+ * @returns Interface of Actions Resource Endpoints.
+ */
+export const getActionsResourceEndpoints = (
+    serverHost: string
+): ActionsResourceEndpointsInterface => {
+    return {
+        actions: `${ serverHost }/api/server/v1/actions`
+    };
+};
