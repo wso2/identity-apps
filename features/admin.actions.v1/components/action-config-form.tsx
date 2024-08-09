@@ -756,7 +756,7 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                     <FormSpy
                         subscription={ { values: true } }
                     >
-                        { ({ values }) => {
+                        { ({ values }: { values: ActionConfigFormPropertyInterface }) => {
                             if (!isAuthenticationUpdateFormState) {
                                 form.change("authenticationType",
                                     initialValues?.authenticationType);

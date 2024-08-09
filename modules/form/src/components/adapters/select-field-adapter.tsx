@@ -21,7 +21,7 @@ import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectProps } from "@oxygen-ui/react/Select";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { ChangeEvent, FunctionComponent, ReactElement, ReactNode} from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, ReactNode } from "react";
 import { FieldRenderProps } from "react-final-form";
 import "./text-field-adapter.scss";
 
