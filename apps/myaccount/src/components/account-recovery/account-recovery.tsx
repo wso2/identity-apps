@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { useRequiredScopes } from "@wso2is/access-control";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { List, Placeholder } from "semantic-ui-react";
 import { EmailRecovery, SMSRecovery, SecurityQuestionsComponent } from "./options";
 import { getPreference } from "../../api";
@@ -35,7 +35,6 @@ import {
     PreferenceProperty,
     PreferenceRequest
 } from "../../models";
-import { AppState } from "../../store";
 import { SettingsSection } from "../shared";
 
 /**
@@ -57,8 +56,10 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
 ): ReactElement => {
     const { onAlertFired, featureConfig, ["data-testid"]: testId } = props;
 
+    const hasSecuritySettingsReadPermission: boolean = useRequiredScopes(
+        featureConfig?.security?.scopes?.read);
+
     const { t } = useTranslation();
-    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const RECOVERY_CONNECTOR: string = "account-recovery";
     const RECOVERY_PASSWORD_QUESTION: string = "Recovery.Question.Password.Enable";
     const RECOVERY_PASSWORD_NOTIFICATION: string = "Recovery.Notification.Password.Enable";
@@ -184,11 +185,8 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
             { !isAccountRecoveryDetailsLoading ? (
                 <List divided={ true } verticalAlign="middle" className="main-content-inner">
                     <List.Item className="inner-list-item">
-                        { hasRequiredScopes(
-                            featureConfig?.security,
-                            featureConfig?.security?.scopes?.read,
-                            allowedScopes
-                        )  &&
+                        { hasSecuritySettingsReadPermission
+                          &&
                         isFeatureEnabled(
                             featureConfig?.security,
                             AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY_CHALLENGE_QUESTIONS")
@@ -201,11 +199,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                             ) : null }
                     </List.Item>
                     <List.Item className="inner-list-item">
-                        { hasRequiredScopes(
-                            featureConfig?.security,
-                            featureConfig?.security?.scopes?.read,
-                            allowedScopes
-                        ) &&
+                        { hasSecuritySettingsReadPermission &&
                         isFeatureEnabled(
                             featureConfig?.security,
                             AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY_EMAIL_RECOVERY")
@@ -218,11 +212,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                             ) : null }
                     </List.Item>
                     <List.Item className="inner-list-item">
-                        { hasRequiredScopes(
-                            featureConfig?.security,
-                            featureConfig?.security?.scopes?.read,
-                            allowedScopes
-                        ) &&
+                        { hasSecuritySettingsReadPermission &&
                         isNotificationRecoverySMSOTPEnabled ? (
                                 <SMSRecovery
                                     onAlertFired={ onAlertFired }

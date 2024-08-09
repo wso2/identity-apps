@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,11 +17,13 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import { GenericIcon } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { addSecurityQs, getSecurityQs, updateSecurityQs } from "../../../api";
 import { getAccountRecoveryIcons } from "../../../configs";
@@ -41,12 +43,8 @@ import { EditSection } from "../../shared";
 
 /**
  * Question key.
- *
- * @constant
- * @type {string}
- * @default
  */
-const QUESTION = "question-";
+const QUESTION: string = "question-";
 
 /**
  * Prop types for SecurityQuestionsComponent.
@@ -59,43 +57,44 @@ interface SecurityQuestionsProps extends TestableComponentInterface {
 /**
  * The SecurityQuestionsComponent component in the AccountRecoveryComponent
  *
- * @param {SecurityQuestionsProps} props
- * @return {JSX.Element}
+ * @param props - props passed to the component
+ * @returns security questions component
  */
 export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestionsProps> = (
     props: SecurityQuestionsProps
 ) => {
 
     const { onAlertFired, ["data-testid"]: testId } = props;
-    const [challengeQuestions, setChallengeQuestions] = useState<ChallengesQuestionsInterface[]>();
-    const [challenges, setChallenges] = useState(createEmptyChallenge());
-    const [isEdit, setIsEdit] = useState<number | string>(-1);
-    const [isInit, setIsInit] = useState(false);
+    const [ challengeQuestions, setChallengeQuestions ] = useState<ChallengesQuestionsInterface[]>();
+    const [ challenges, setChallenges ] = useState(createEmptyChallenge());
+    const [ isEdit, setIsEdit ] = useState<number | string>(-1);
+    const [ isInit, setIsInit ] = useState(false);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     /**
      * Set the fetched security questions and answers to the state
-     * @param response
+     * @param response - security questions API response
      */
-    const setSecurityDetails = (response) => {
+    const setSecurityDetails = (response: any) => {
         setIsInit(true);
         setChallenges({
-            answers: [...response[1]],
+            answers: [ ...response[1] ],
             isEdit: false,
             isInit: false,
             options: [],
-            questions: [...response[0]]
+            questions: [ ...response[0] ]
         });
     };
 
     /**
      * This function returns the saved answer for a questionSet
-     * @param {string} questionSetId
-     * @returns {AnswersInterface} answer
+     *
+     * @param questionSetId - question set id
+     * @returns the saved answer
      */
     const findAnswer = (questionSetId: string): AnswersInterface => {
         return challenges.answers.find((answerParam: AnswersInterface) => {
@@ -105,17 +104,17 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
 
     /**
      * This function returns the question object for a saved answer
-     * @param {string} questionSetId
-     * @param {QuestionsInterface[]} questions
+     * @param questionSetId - question set id
+     * @param questions - available questions
      *
-     * @returns {QuestionsInterface} question
+     * @returns the question for a saved answer
      */
     const findQuestion = (questionSetId: string, questions: QuestionsInterface[]): QuestionsInterface => {
-        const answer: AnswersInterface = challenges.answers.find((answerParam) => {
+        const answer: AnswersInterface = challenges.answers.find((answerParam: AnswersInterface) => {
             return answerParam.questionSetId === questionSetId;
         });
 
-        return questions.find((questionParam) => {
+        return questions.find((questionParam: QuestionsInterface) => {
             return questionParam.question === answer.question;
         });
     };
@@ -128,10 +127,11 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
         const challengesCopy: ChallengesQuestionsInterface[] = [];
 
         challenges.questions.forEach((question: QuestionSetsInterface) => {
-            const answer =
+            const answer: AnswersInterface =
                 challenges.answers && challenges.answers.length > 0 ? findAnswer(question.questionSetId) : null;
 
-            const questionInSet = answer ? findQuestion(question.questionSetId, question.questions) : null;
+            const questionInSet: QuestionsInterface =
+                answer ? findQuestion(question.questionSetId, question.questions) : null;
 
             challengesCopy.push({
                 answer: answer ? answer.answer : "",
@@ -156,7 +156,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
 
     /**
      * This function is called when a notification on error should be fired
-     * @param error
+     * @param error - error to be displayed
      */
     const fireNotificationOnError = (error: any) => {
         if (error.response && error.response.data && error.response.data.detail) {
@@ -195,28 +195,30 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
      * on the status of the response
      */
     const handleSave = (values: Map<string, string | string[]>) => {
-        const data: ChallengesQuestionsInterface[] = [...challengeQuestions];
+        const data: ChallengesQuestionsInterface[] = [ ...challengeQuestions ];
 
-        values.forEach((value, key) => {
+        values.forEach((value: string | string[], key: string) => {
             if (key.includes("question")) {
-                const questionSetId = key.split(" ")[1];
-                const challenge = challenges.questions.find((challengeParam) => {
-                    return challengeParam.questionSetId === questionSetId;
-                });
+                const questionSetId: string = key.split(" ")[1];
+                const challenge: QuestionSetsInterface = challenges.questions.find(
+                    (challengeParam: QuestionSetsInterface) => {
+                        return challengeParam.questionSetId === questionSetId;
+                    });
 
-                const chosenQuestion = challenge.questions.find((question) => {
+                const chosenQuestion: QuestionsInterface = challenge.questions.find((question: QuestionsInterface) => {
                     return question.questionId === value;
                 });
 
-                data.forEach((question) => {
+                data.forEach((question: ChallengesQuestionsInterface) => {
                     if (question.questionSetId === questionSetId) {
                         question.challengeQuestion = { ...chosenQuestion };
                     }
                 });
             }
             if (key.includes("answer")) {
-                const questionSetId = key.split(" ")[1];
-                data.forEach((question) => {
+                const questionSetId: string = key.split(" ")[1];
+
+                data.forEach((question: ChallengesQuestionsInterface) => {
                     if (question.questionSetId === questionSetId) {
                         question.answer = value.toString();
                     }
@@ -229,7 +231,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                 .then(() => {
                     // Re-fetch the security questions.
                     getSecurityQs()
-                        .then((res) => {
+                        .then((res: any) => {
                             setSecurityDetails(res);
                         });
 
@@ -246,7 +248,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                             "success.message")
                     });
                 })
-                .catch((error) => {
+                .catch((error: AxiosError) => {
                     fireNotificationOnError(error);
                 });
         } else {
@@ -254,7 +256,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                 .then(() => {
                     // Re-fetch the security questions.
                     getSecurityQs()
-                        .then((response) => {
+                        .then((response: any) => {
                             setSecurityDetails(response);
                         });
 
@@ -273,7 +275,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                     });
 
                 })
-                .catch((error) => {
+                .catch((error: AxiosError) => {
                     fireNotificationOnError(error);
                 });
         }
@@ -281,7 +283,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
 
     useEffect(() => {
         if (!isInit) {
-            getSecurityQs().then((response) => {
+            getSecurityQs().then((response: any) => {
                 setSecurityDetails(response);
             });
         }
@@ -289,14 +291,14 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
 
     useEffect(() => {
         initModel();
-    }, [challenges]);
+    }, [ challenges ]);
 
     /**
      * This function returns the question and answer chosen by the user for a questionSetId
      * from challengeQuestions
-     * @param {string} questionSetId
+     * @param questionSetId - question set id
      *
-     * @return {ChallengesQuestionsInterface} question
+     * @returns question
      */
     const findChosenQuestionFromChallengeQuestions = (questionSetId: string) => {
         return challengeQuestions.find((questionParam: ChallengesQuestionsInterface) => {
@@ -324,13 +326,14 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                         <Grid.Column width={ 12 }>
                             <Field
                                 autoFocus={ index === 0 }
-                                children={ questionSet.questions.map((ques, i) => {
-                                    return {
-                                        key: i,
-                                        text: ques.question,
-                                        value: ques.questionId
-                                    };
-                                }) }
+                                children={ questionSet.questions.map(
+                                    (questionObj: QuestionsInterface, index: number) => {
+                                        return {
+                                            key: index,
+                                            text: questionObj.question,
+                                            value: questionObj.questionId
+                                        };
+                                    }) }
                                 label={ t(
                                     "myAccount:components.accountRecovery.questionRecovery." +
                                     "forms.securityQuestionsForm" +
@@ -399,6 +402,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                 </Grid.Row>
             )
         ]);
+
         return formFields;
     };
 
@@ -453,7 +457,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                             style={ { paddingTop: 0, width: "100%" } }
                             className="main-content-inner settings-section-inner-list"
                         >
-                            { challenges.answers.map((answer, index) => {
+                            { challenges.answers.map((answer: AnswersInterface, index: number) => {
                                 return (
                                     <List.Item key={ index } className="inner-list-item">
                                         <Grid padded={ true }>
@@ -495,14 +499,15 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
             );
         } else if (isEdit !== -1 && activeForm?.startsWith(CommonConstants.SECURITY + QUESTION)) {
             if (challenges.questions && challenges.questions.length > 0) {
-                const formFields = generateFormFields();
+                const formFields: ReactElement[] = generateFormFields();
+
                 return (
                     <EditSection data-testid={ `${testId}-edit-section` }>
                         <Grid>
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column width={ 16 }>
                                     <Forms
-                                        onSubmit={ (values) => {
+                                        onSubmit={ (values: Map<string, FormValue>) => {
                                             handleSave(values);
                                         } }
                                     >
@@ -525,5 +530,5 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
  * See type definitions in {@link SecurityQuestionsProps}
  */
 SecurityQuestionsComponent.defaultProps = {
-  "data-testid": "security-questions-component"
+    "data-testid": "security-questions-component"
 };

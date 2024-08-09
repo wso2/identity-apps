@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -61,7 +61,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
     const [ recentApplications, setRecentApplications ] = useState<Application[]>([]);
     const [ searchQuery, setSearchQuery ] = useState("");
     const [ isRequestLoading, setIsRequestLoading ] = useState(false);
-    const username = useSelector((state: AppState) => state.authenticationInformation.username);
+    const username: string = useSelector((state: AppState) => state.authenticationInformation.username);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const { t } = useTranslation();
 
@@ -76,11 +76,11 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
         setIsRequestLoading(true);
 
         fetchApplications(limit, offset, filter)
-            .then((response) => {
+            .then((response: any) => {
                 setApplications(response.applications);
                 setIsRequestLoading(false);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
@@ -253,7 +253,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
     const handleAppNavigation = (id: string, url: string): void => {
         updateRecentApplications(id);
 
-        const a = document.createElement("a");
+        const a: Partial<HTMLLinkElement> = document.createElement("a");
 
         a.href = url;
         a.target = "_blank";

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -36,7 +36,7 @@ interface RecentApplicationCardProps extends TestableComponentInterface {
 /**
  * Recent application card component.
  *
- * @return {JSX.Element}
+ * @returns recent applications card
  */
 export const RecentApplicationCard: FunctionComponent<RecentApplicationCardProps> = (
     props: RecentApplicationCardProps
@@ -45,7 +45,7 @@ export const RecentApplicationCard: FunctionComponent<RecentApplicationCardProps
     const { app, onAppNavigate, showFavouriteIcon } = props;
     const { ["data-testid"]: testId } = props;
 
-    const appImageContainerClassNames = classNames({
+    const appImageContainerClassNames: string = classNames({
         [ "default" ]: !app.image
     }, "application-image");
 
@@ -70,7 +70,7 @@ export const RecentApplicationCard: FunctionComponent<RecentApplicationCardProps
                                 <Card.Meta>
                                     <Icon name="tag" size="small"/>
                                     {
-                                        app.tags.map((tag, index) => {
+                                        app.tags.map((tag: string, index: number) => {
                                             if (index === 0) {
                                                 return (
                                                     <span className="application-tag" key={ index }>
@@ -78,6 +78,7 @@ export const RecentApplicationCard: FunctionComponent<RecentApplicationCardProps
                                                     </span>
                                                 );
                                             }
+
                                             return (
                                                 <span className="application-tag" key={ index }>
                                                     { ", " }{ tag }

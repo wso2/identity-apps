@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -122,7 +122,7 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
             <Grid.Row>
                 {
                     (apps && apps.length && apps.length > 0)
-                        ? apps.map((app) => (
+                        ? apps.map((app: Application) => (
                             <Fragment key={ app.id }>
                                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 5 }>
                                     <Popup
