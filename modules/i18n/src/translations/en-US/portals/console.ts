@@ -8469,7 +8469,7 @@ export const console: ConsoleNS = {
                         validations: {
                             empty: "Endpoint is a required field.",
                             invalidUrl: "Please enter a valid URL.",
-                            notHttpOrHttps: "The entered URL is neither HTTP nor HTTPS. Please add a valid URL."
+                            notHttps: "The entered URL is not HTTPS. Please add a valid URL."
                         }
                     },
                     authentication: {

@@ -247,7 +247,6 @@ export interface ActionTypesCountInterface {
      * Count of the configured actions of type PRE_REGISTRATION.
      */
     preRegistration?: number;
-
 }
 
 /**

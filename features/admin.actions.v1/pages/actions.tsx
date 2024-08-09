@@ -35,7 +35,7 @@ import {
     AlertInterface,
     AlertLevels,
     FeatureAccessConfigInterface,
-    IdentifiableComponentInterface 
+    IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, GenericIcon, PageLayout, ResourceGrid, useDocumentation } from "@wso2is/react-components";
@@ -142,7 +142,7 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
                 );
             }
         }
-    }, [ ]);
+    }, []);
 
     const checkFeatureEnabledStatus = (actionType: string): boolean => {
 
@@ -161,24 +161,21 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
     };
 
 
-    const resolveActionDescription = (): ReactNode => {
+    const resolveActionDescription = (): ReactNode => (
+        <>
+            { t("console:manage.features.actions.description") }
+            <DocumentationLink
+                link={
+                    getLink("develop.actions.learnMore")
+                }
+                showEmptyLink={ false }
+            >
+                { t("common:learnMore") }
+            </DocumentationLink>
+        </>
+    );
 
-        return (
-            <>
-                { t("console:manage.features.actions.description") }
-                <DocumentationLink
-                    link={
-                        getLink("develop.actions.learnMore")
-                    }
-                    showEmptyLink={ false }
-                >
-                    { t("common:learnMore") }
-                </DocumentationLink>
-            </>
-        );
-    };
-
-    const resolveFeatureLabelClass = (featureStatus: FeatureStatusLabel) => {
+    const resolveFeatureLabelClass = (featureStatus: FeatureStatusLabel): string => {
         switch (featureStatus) {
             case FeatureStatusLabel.BETA:
                 return "oxygen-chip-beta";
@@ -187,8 +184,7 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
         }
     };
 
-    const resolveConfiguredLabel = (actionType: string) => {
-
+    const resolveConfiguredLabel = (actionType: string): ReactElement => {
         let count: number = 0;
 
         switch (actionType) {
@@ -231,7 +227,6 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
     };
 
     const actionTypesCardsInfo = (): ActionTypeCardInterface[] => {
-
         return [
             {
                 description: t("console:manage.features.actions.types.preIssueAccessToken" +

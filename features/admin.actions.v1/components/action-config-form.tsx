@@ -108,7 +108,7 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
      * The following useEffect is used to set the current Action Authentication Type.
      */
     useEffect(() => {
-        if (initialValues?.id === undefined) {
+        if (!initialValues?.id) {
             setIsAuthenticationUpdateFormState(true);
         } else {
             setAuthenticationType(initialValues.authenticationType as AuthenticationType);
@@ -144,35 +144,31 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
         </InputAdornment>
     );
 
-    const renderLoadingPlaceholders = (): ReactElement => {
-
-        return (
-            <>
-                <Skeleton variant="rectangular" className="placeholder label" />
-                <Skeleton variant="rectangular" className="placeholder text-field with-max-width" />
-                <Skeleton variant="rectangular" className="placeholder label" />
-                <Skeleton variant="rectangular" className="placeholder text-field with-max-width" />
-            </>
-        );
-    };
+    const renderLoadingPlaceholders = (): ReactElement => (
+        <>
+            <Skeleton variant="rectangular" className="placeholder label" />
+            <Skeleton variant="rectangular" className="placeholder text-field with-max-width" />
+            <Skeleton variant="rectangular" className="placeholder label" />
+            <Skeleton variant="rectangular" className="placeholder text-field with-max-width" />
+        </>
+    );
 
     /**
      * This is called when the Change Authentication button is pressed.
      */
-    const handleAuthenticationChange = () : void => {
-        // setIsAuthUpdating(true);
+    const handleAuthenticationChange = (): void => {
         setIsAuthenticationUpdateFormState(true);
     };
 
     /**
      * This is called when the cancel button is pressed.
      */
-    const handleAuthenticationChangeCancel = () : void => {
+    const handleAuthenticationChangeCancel = (): void => {
         setAuthenticationType(initialValues?.authenticationType as AuthenticationType);
         setIsAuthenticationUpdateFormState(false);
     };
 
-    const handleSuccess = (operation: string) => {
+    const handleSuccess = (operation: string): void => {
         dispatch(
             addAlert({
                 description: t("console:manage.features.actions.notification.success." + operation + ".description"),
@@ -182,7 +178,7 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
         );
     };
 
-    const handleError = (error: AxiosError, operation: string) => {
+    const handleError = (error: AxiosError, operation: string): void => {
         if (error.response && error.response.data && error.response.data.description) {
             dispatch(
                 addAlert({
@@ -206,8 +202,7 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
         }
     };
 
-    const getFieldDisableStatus = (): boolean => {
-
+    const getFieldDisabledStatus = (): boolean => {
         if (isCreateFormState) {
             return !hasActionCreatePermissions;
         } else {
@@ -240,8 +235,8 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
             error.endpointUri = t("console:manage.features.actions.fields.endpoint.validations.empty");
         }
         if (URLUtils.isURLValid(values?.endpointUri)) {
-            if (!(URLUtils.isHttpUrl(values?.endpointUri) || URLUtils.isHttpsUrl(values?.endpointUri))) {
-                error.endpointUri = t("console:manage.features.actions.fields.endpoint.validations.notHttpOrHttps");
+            if (!(URLUtils.isHttpsUrl(values?.endpointUri))) {
+                error.endpointUri = t("console:manage.features.actions.fields.endpoint.validations.notHttps");
             }
         } else {
             error.endpointUri = t("console:manage.features.actions.fields.endpoint.validations.invalidUrl");
@@ -375,11 +370,8 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     };
 
     const renderFormFields = (): ReactElement => {
-
         const renderAuthenticationSection = (): ReactElement => {
-
             const renderAuthenticationSectionInfoBox = (): ReactElement => {
-
                 const resolveAuthTypeDisplayName = (): string => {
                     switch (authenticationType) {
                         case AuthenticationType.NONE:
@@ -407,7 +399,6 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                         t("console:manage.features.actions.fields.authentication" +
                                             ".info.title.otherAuthType", { authType: resolveAuthTypeDisplayName() })
                                 }
-                                // values={ { authType: resolveAuthTypeDisplayName() } }
                                 components={ { strong: <strong/> } }
                             />
                         </AlertTitle>
@@ -422,9 +413,9 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                 onClick={ handleAuthenticationChange }
                                 variant="outlined"
                                 size="small"
-                                className={ "mt-2" }
+                                className={ "secondary-button" }
                                 data-componentid={ `${ _componentId }-change-authentication-button` }
-                                disabled={ getFieldDisableStatus() }
+                                disabled={ getFieldDisabledStatus() }
                             >
                                 { t("console:manage.features.actions.buttons.changeAuthentication") }
                             </Button>
@@ -434,22 +425,17 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
             };
 
             const renderAuthenticationSectionUpdatingBox = (): ReactElement => {
-
                 const renderAuthentication = (): ReactElement => {
-
                     const renderAuthenticationPropertyFields = (): ReactElement => {
-
-                        const showAuthSecretsHint = (): ReactElement => {
-                            return (
-                                <Hint className="hint-text" compact>
-                                    {
-                                        isCreateFormState ?
-                                            t("console:manage.features.actions.fields.authenticationType.hint.create")
-                                            : t("console:manage.features.actions.fields.authenticationType.hint.update")
-                                    }
-                                </Hint>
-                            );
-                        };
+                        const showAuthSecretsHint = (): ReactElement => (
+                            <Hint className="hint-text" compact>
+                                {
+                                    isCreateFormState ?
+                                        t("console:manage.features.actions.fields.authenticationType.hint.create")
+                                        : t("console:manage.features.actions.fields.authenticationType.hint.update")
+                                }
+                            </Hint>
+                        );
 
                         switch (authenticationType) {
                             case AuthenticationType.NONE:
@@ -480,7 +466,7 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                             component={ TextFieldAdapter }
                                             maxLength={ 100 }
                                             minLength={ 0 }
-                                            disabled={ getFieldDisableStatus() }
+                                            disabled={ getFieldDisabledStatus() }
                                         />
                                         <FinalFormField
                                             key="password"
@@ -504,7 +490,7 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                             component={ TextFieldAdapter }
                                             maxLength={ 100 }
                                             minLength={ 0 }
-                                            disabled={ getFieldDisableStatus() }
+                                            disabled={ getFieldDisabledStatus() }
                                         />
                                     </>
                                 );
@@ -533,7 +519,7 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                             component={ TextFieldAdapter }
                                             maxLength={ 100 }
                                             minLength={ 0 }
-                                            disabled={ getFieldDisableStatus() }
+                                            disabled={ getFieldDisabledStatus() }
                                         />
                                     </>
                                 );
@@ -559,7 +545,7 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                             component={ TextFieldAdapter }
                                             maxLength={ 100 }
                                             minLength={ 0 }
-                                            disabled={ getFieldDisableStatus() }
+                                            disabled={ getFieldDisabledStatus() }
                                         />
                                         <FinalFormField
                                             key="value"
@@ -582,7 +568,7 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                             component={ TextFieldAdapter }
                                             maxLength={ 100 }
                                             minLength={ 0 }
-                                            disabled={ getFieldDisableStatus() }
+                                            disabled={ getFieldDisabledStatus() }
                                         />
                                     </>
                                 );
@@ -645,7 +631,7 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                     ]
                                 }
                                 onChange={ handleAuthTypeChange }
-                                disabled={ getFieldDisableStatus() }
+                                disabled={ getFieldDisabledStatus() }
                             />
                             { renderAuthenticationPropertyFields() }
                         </>
@@ -653,9 +639,7 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                 };
 
                 return (
-                    <Box
-                        className="box-container"
-                    >
+                    <Box className="box-container">
                         <div className="box-field">
                             { renderAuthentication() }
                             { !isCreateFormState && (
@@ -663,7 +647,7 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                     onClick={ handleAuthenticationChangeCancel }
                                     variant="outlined"
                                     size="small"
-                                    className={ "mt-2" }
+                                    className="secondary-button"
                                     data-componentid={ `${ _componentId }-cancel-edit-authentication-button` }
                                 >
                                     { t("console:manage.features.actions.buttons.cancel") }
@@ -702,7 +686,7 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                     component={ TextFieldAdapter }
                     maxLength={ 100 }
                     minLength={ 0 }
-                    disabled={ getFieldDisableStatus() }
+                    disabled={ getFieldDisabledStatus() }
                 />
                 <FinalFormField
                     key="uri"
@@ -726,7 +710,7 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                     component={ TextFieldAdapter }
                     maxLength={ 100 }
                     minLength={ 0 }
-                    disabled={ getFieldDisableStatus() }
+                    disabled={ getFieldDisabledStatus() }
                 />
                 <Divider className="divider-container"/>
                 <Heading className="heading-container" as="h5">
@@ -761,7 +745,7 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                     className={ "button-container" }
                                     data-componentid={ `${ _componentId }-primary-button` }
                                     loading={ isSubmitting }
-                                    disabled={ getFieldDisableStatus() }
+                                    disabled={ getFieldDisabledStatus() }
                                 >
                                     { isCreateFormState ? t("console:manage.features.actions.buttons.create")
                                         : t("console:manage.features.actions.buttons.update") }

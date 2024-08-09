@@ -8159,7 +8159,7 @@ export interface ConsoleNS {
                         validations: {
                             empty: string;
                             invalidUrl: string;
-                            notHttpOrHttps: string;
+                            notHttps: string;
                         };
                     };
                     authentication: {

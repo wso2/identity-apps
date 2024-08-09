@@ -29,26 +29,26 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { Fragment, FunctionComponent,
-    MutableRefObject,
+import React, {
+    FunctionComponent,
     ReactElement,
     ReactNode,
     SyntheticEvent,
     useEffect,
     useMemo,
-    useRef,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Checkbox, CheckboxProps, Grid, Ref } from "semantic-ui-react";
+import { Checkbox, CheckboxProps, Grid } from "semantic-ui-react";
 import changeActionStatus from "../api/change-action-status";
 import deleteAction from "../api/delete-action";
 import useGetActionsByType from "../api/use-get-actions-by-type";
 import { ActionConfigForm } from "../components/action-config-form";
 import { ActionsConstants } from "../constants/actions-constants";
 import { ActionConfigFormPropertyInterface } from "../models/actions";
+import "./action-configuration-page.scss";
 
 /**
  * Props for the Action Configuration page.
@@ -59,7 +59,6 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
     "data-componentid": _componentId = "action-configuration-page"
 }: ActionConfigurationPageInterface): ReactElement => {
 
-    const pageContextRef: MutableRefObject<HTMLElement> = useRef(null);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features.actions);
 
     const [ isOpenRevertConfigModal, setOpenRevertConfigModal ] = useState<boolean>(false);
@@ -113,7 +112,7 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
     }, [ actions ]);
 
     useEffect(() => {
-        if (actions && !(actions.length < 1)) {
+        if (actions?.length >= 1) {
             setShowCreateForm(false);
             setIsActive(actions[0]?.status.toString() === ActionsConstants.ACTIVE_STATUS);
         } else {
@@ -153,7 +152,6 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
-
         history.push(AppConstants.getPaths().get("ACTIONS"));
     };
 
@@ -161,7 +159,6 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
      * Resolves Title of the page.
      */
     const resolveActionTitle = (actionType: string): string => {
-
         switch(actionType) {
             case ActionsConstants.ACTION_TYPES.PRE_ISSUE_ACCESS_TOKEN.getApiPath():
                 return t("console:manage.features.actions.types.preIssueAccessToken.heading");
@@ -178,7 +175,6 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
      * Resolves description of the page.
      */
     const resolveActionDescription = (actionType: string): ReactNode => {
-
         switch(actionType) {
             case ActionsConstants.ACTION_TYPES.PRE_ISSUE_ACCESS_TOKEN.getApiPath():
                 return (
@@ -193,7 +189,6 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
                             { t("common:learnMore") }
                         </DocumentationLink>
                     </>
-
                 );
             case ActionsConstants.ACTION_TYPES.PRE_UPDATE_PASSWORD.getApiPath():
                 return (
@@ -208,7 +203,6 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
                             { t("common:learnMore") }
                         </DocumentationLink>
                     </>
-
                 );
             case ActionsConstants.ACTION_TYPES.PRE_UPDATE_PROFILE.getApiPath():
                 return (
@@ -223,7 +217,6 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
                             { t("common:learnMore") }
                         </DocumentationLink>
                     </>
-
                 );
             case ActionsConstants.ACTION_TYPES.PRE_REGISTRATION.getApiPath():
                 return (
@@ -239,6 +232,8 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
                         </DocumentationLink>
                     </>
                 );
+            default:
+                return "";
         }
     };
 
@@ -294,7 +289,7 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
         );
     };
 
-    const handleSuccess = (operation: string) => {
+    const handleSuccess = (operation: string): void => {
         dispatch(
             addAlert({
                 description: t("console:manage.features.actions.notification.success." + operation + ".description"),
@@ -304,7 +299,7 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
         );
     };
 
-    const handleError = (error: AxiosError, operation: string) => {
+    const handleError = (error: AxiosError, operation: string): void => {
         if (error.response && error.response.data && error.response.data.description) {
             dispatch(
                 addAlert({
@@ -345,21 +340,19 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
         >
             { actionToggle() }
             {
-                <Ref innerRef={ pageContextRef }>
-                    <Grid className={ "mt-3 mb-3" }>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column width={ 16 }>
-                                <ActionConfigForm
-                                    initialValues={ actionInitialValues }
-                                    isLoading={ isLoading }
-                                    actionTypeApiPath={ actionTypeApiPath }
-                                    isCreateFormState={ showCreateForm }
-                                    mutate={ mutateActions }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </Ref>
+                <Grid className="grid-form">
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 16 }>
+                            <ActionConfigForm
+                                initialValues={ actionInitialValues }
+                                isLoading={ isLoading }
+                                actionTypeApiPath={ actionTypeApiPath }
+                                isCreateFormState={ showCreateForm }
+                                mutate={ mutateActions }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             }
             { !isLoading && !showCreateForm && (
                 <Show

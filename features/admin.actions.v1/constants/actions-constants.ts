@@ -24,7 +24,6 @@ import { AuthenticationType, AuthenticationTypeDropdownOption } from "../models/
  * Class containing Actions constants.
  */
 export class ActionsConstants {
-
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.

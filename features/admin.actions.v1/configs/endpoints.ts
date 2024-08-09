@@ -27,7 +27,6 @@ import { ActionsResourceEndpointsInterface } from "../models/endpoints";
 export const getActionsResourceEndpoints = (
     serverHost: string
 ): ActionsResourceEndpointsInterface => {
-
     return {
         actions: `${ serverHost }/api/server/v1/actions`
     };
