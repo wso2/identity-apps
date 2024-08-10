@@ -26,7 +26,7 @@ import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
-import { AlertLevels, IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import {
@@ -38,21 +38,19 @@ import {
     TextFieldAdapter
 } from "@wso2is/form";
 import { EmphasizedSegment, Heading, Hint } from "@wso2is/react-components";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosError } from "axios";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-
 import { Icon } from "semantic-ui-react";
-import { KeyedMutator } from "swr";
 import createAction from "../api/create-action";
 import updateAction from "../api/update-action";
+import useGetActionsByType from "../api/use-get-actions-by-type";
 import { ActionsConstants } from "../constants/actions-constants";
 import {
     ActionConfigFormPropertyInterface,
     ActionInterface,
-    ActionResponseInterface,
     ActionUpdateInterface,
     AuthenticationPropertiesInterface,
     AuthenticationType,
@@ -80,18 +78,13 @@ interface ActionConfigFormInterface extends IdentifiableComponentInterface {
      * Specifies action creation state.
      */
     isCreateFormState: boolean;
-    /**
-     * Mutate api.
-     */
-    mutate: KeyedMutator<AxiosResponse<ActionResponseInterface[]>>
 }
 
-export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
+const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     initialValues,
     isLoading,
     actionTypeApiPath,
     isCreateFormState,
-    mutate: mutateActions,
     [ "data-componentid" ]: _componentId = "action-config-form"
 }: ActionConfigFormInterface): ReactElement => {
 
@@ -108,6 +101,10 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     const hasActionUpdatePermissions: boolean = useRequiredScopes(featureConfig?.actions?.scopes?.update);
     const hasActionCreatePermissions: boolean = useRequiredScopes(featureConfig?.actions?.scopes?.create);
 
+    const {
+        mutate: mutateActions
+    } = useGetActionsByType(actionTypeApiPath);
+
     /**
      * The following useEffect is used to set the current Action Authentication Type.
      */
@@ -120,30 +117,16 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
         }
     }, [ initialValues ]);
 
-    const renderInputAdornmentOfSecret1 = (): ReactElement => (
+    const renderInputAdornmentOfSecret = (showSecret: boolean, onClick: () => void): ReactElement => (
         <InputAdornment position="end">
             <Icon
                 link={ true }
                 className="list-icon reset-field-to-default-adornment"
                 size="small"
                 color="grey"
-                name={ !isShowSecret1 ? "eye" : "eye slash" }
+                name={ !showSecret ? "eye" : "eye slash" }
                 data-componentid={ `${ _componentId }-authentication-property-secret1-view-button` }
-                onClick={ () => { setIsShowSecret1(!isShowSecret1); } }
-            />
-        </InputAdornment>
-    );
-
-    const renderInputAdornmentOfSecret2 = (): ReactElement => (
-        <InputAdornment position="end">
-            <Icon
-                link={ true }
-                className="list-icon reset-field-to-default-adornment"
-                size="small"
-                color="grey"
-                name={ !isShowSecret2 ? "eye" : "eye slash" }
-                data-componentid={ `${ _componentId }-authentication-property-secret2-view-button` }
-                onClick={ () => { setIsShowSecret2(!isShowSecret2); } }
+                onClick={ onClick }
             />
         </InputAdornment>
     );
@@ -175,32 +158,29 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     const handleSuccess = (operation: string): void => {
         dispatch(
             addAlert({
-                description: t("console:manage.features.actions.notification.success." + operation + ".description"),
+                description: t("actions:notification.success." + operation + ".description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:manage.features.actions.notification.success." + operation + ".message")
+                message: t("actions:notification.success." + operation + ".message")
             })
         );
     };
 
     const handleError = (error: AxiosError, operation: string): void => {
-        if (error.response && error.response.data && error.response.data.description) {
+        if (error.response?.data?.description) {
             dispatch(
                 addAlert({
-                    description: t("console:manage.features.actions.notification.error." + operation + ".description",
+                    description: t("actions:notification.error." + operation + ".description",
                         { description: error.response.data.description }),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.actions.notification.error." + operation + ".message")
+                    message: t("actions:notification.error." + operation + ".message")
                 })
             );
         } else {
-            // Generic error message
             dispatch(
                 addAlert({
-                    description: t("console:manage.features.actions.notification.genericError." + operation
-                        + ".description"),
+                    description: t("actions:notification.genericError." + operation + ".description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.actions.notification.genericError." + operation
-                        + ".message")
+                    message: t("actions:notification.genericError." + operation + ".message")
                 })
             );
         }
@@ -214,39 +194,29 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
         }
     };
 
-    const validateForm = (values: ActionConfigFormPropertyInterface): ActionConfigFormPropertyInterface => {
-        const error: ActionConfigFormPropertyInterface = {
-            accessTokenAuthProperty: undefined,
-            authenticationType: undefined,
-            endpointUri: undefined,
-            headerAuthProperty: undefined,
-            id: undefined,
-            name: undefined,
-            passwordAuthProperty: undefined,
-            usernameAuthProperty: undefined,
-            valueAuthProperty: undefined
-        };
+    const validateForm = (values: ActionConfigFormPropertyInterface): Partial<ActionConfigFormPropertyInterface> => {
+        const error: Partial<ActionConfigFormPropertyInterface> = {};
 
         if (!values?.name) {
-            error.name = t("console:manage.features.actions.fields.name.validations.empty");
+            error.name = t("actions:fields.name.validations.empty");
         }
-        const vsCharRegex: RegExp = /^[A-Za-z0-9 -_]*$/;
+        const actionNameRegex: RegExp = /^[a-zA-Z0-9-_][a-zA-Z0-9-_ ]*[a-zA-Z0-9-_]$/;
 
-        if (!vsCharRegex.test(values?.name)) {
-            error.name = t("console:manage.features.actions.fields.name.validations.invalid");
+        if (!actionNameRegex.test(values?.name)) {
+            error.name = t("actions:fields.name.validations.invalid");
         }
         if (!values?.endpointUri) {
-            error.endpointUri = t("console:manage.features.actions.fields.endpoint.validations.empty");
+            error.endpointUri = t("actions:fields.endpoint.validations.empty");
         }
         if (URLUtils.isURLValid(values?.endpointUri)) {
             if (!(URLUtils.isHttpsUrl(values?.endpointUri))) {
-                error.endpointUri = t("console:manage.features.actions.fields.endpoint.validations.notHttps");
+                error.endpointUri = t("actions:fields.endpoint.validations.notHttps");
             }
         } else {
-            error.endpointUri = t("console:manage.features.actions.fields.endpoint.validations.invalidUrl");
+            error.endpointUri = t("actions:fields.endpoint.validations.invalidUrl");
         }
         if (!values?.authenticationType) {
-            error.authenticationType = t("console:manage.features.actions.fields.authenticationType.validations.empty");
+            error.authenticationType = t("actions:fields.authenticationType.validations.empty");
         }
 
         switch (authenticationType) {
@@ -254,11 +224,11 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                 if(isCreateFormState || isAuthenticationUpdateFormState ||
                     values?.usernameAuthProperty || values?.passwordAuthProperty) {
                     if (!values?.usernameAuthProperty) {
-                        error.usernameAuthProperty = t("console:manage.features.actions.fields.authentication." +
+                        error.usernameAuthProperty = t("actions:fields.authentication." +
                             "types.basic.properties.username.validations.empty");
                     }
                     if (!values?.passwordAuthProperty) {
-                        error.passwordAuthProperty = t("console:manage.features.actions.fields.authentication." +
+                        error.passwordAuthProperty = t("actions:fields.authentication." +
                             "types.basic.properties.password.validations.empty");
                     }
                 }
@@ -267,7 +237,7 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
             case AuthenticationType.BEARER:
                 if (isCreateFormState || isAuthenticationUpdateFormState) {
                     if (!values?.accessTokenAuthProperty) {
-                        error.accessTokenAuthProperty = t("console:manage.features.actions.fields.authentication." +
+                        error.accessTokenAuthProperty = t("actions:fields.authentication." +
                         "types.bearer.properties.accessToken.validations.empty");
                     }
                 }
@@ -277,11 +247,11 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                 if (isCreateFormState || isAuthenticationUpdateFormState ||
                     values?.headerAuthProperty || values?.valueAuthProperty) {
                     if (!values?.headerAuthProperty) {
-                        error.headerAuthProperty = t("console:manage.features.actions.fields.authentication." +
+                        error.headerAuthProperty = t("actions:fields.authentication." +
                             "types.apiKey.properties.header.validations.empty");
                     }
                     if (!values?.valueAuthProperty) {
-                        error.valueAuthProperty = t("console:manage.features.actions.fields.authentication." +
+                        error.valueAuthProperty = t("actions:fields.authentication." +
                             "types.apiKey.properties.value.validations.empty");
                     }
                 }
@@ -294,7 +264,10 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
         return error;
     };
 
-    const handleSubmit = async (values: ActionConfigFormPropertyInterface) => {
+    const handleSubmit = (
+        values: ActionConfigFormPropertyInterface,
+        changedFields: ActionConfigFormPropertyInterface) =>
+    {
         const authProperties: Partial<AuthenticationPropertiesInterface> = {};
 
         if (isAuthenticationUpdateFormState || isCreateFormState) {
@@ -347,18 +320,18 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
         } else {
             // Updating the action
             const updatingValues: ActionUpdateInterface = {
-                endpoint: isAuthenticationUpdateFormState || values.endpointUri !== initialValues?.endpointUri ? {
+                endpoint: isAuthenticationUpdateFormState || changedFields?.endpointUri ? {
                     authentication: isAuthenticationUpdateFormState ? {
                         properties: authProperties,
                         type: authenticationType
                     } : undefined,
-                    uri: values.endpointUri !== initialValues?.endpointUri ? values.endpointUri : undefined
+                    uri: changedFields?.endpointUri ? values.endpointUri : undefined
                 } : undefined,
-                name: values.name !== initialValues?.name ? values.name : undefined
+                name: changedFields?.name ? values.name : undefined
             };
 
             setIsSubmitting(true);
-            updateAction(actionTypeApiPath, initialValues?.id, updatingValues)
+            updateAction(actionTypeApiPath, initialValues.id, updatingValues)
                 .then(() => {
                     handleSuccess(ActionsConstants.UPDATE);
                     setIsAuthenticationUpdateFormState(false);
@@ -379,13 +352,13 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                 const resolveAuthTypeDisplayName = (): string => {
                     switch (authenticationType) {
                         case AuthenticationType.NONE:
-                            return t("console:manage.features.actions.fields.authentication.types.none.name");
+                            return t("actions:fields.authentication.types.none.name");
                         case AuthenticationType.BASIC:
-                            return t("console:manage.features.actions.fields.authentication.types.basic.name");
+                            return t("actions:fields.authentication.types.basic.name");
                         case AuthenticationType.BEARER:
-                            return t("console:manage.features.actions.fields.authentication.types.bearer.name");
+                            return t("actions:fields.authentication.types.bearer.name");
                         case AuthenticationType.API_KEY:
-                            return t("console:manage.features.actions.fields.authentication.types.apiKey.name");
+                            return t("actions:fields.authentication.types.apiKey.name");
                         default:
                             return;
                     }
@@ -398,16 +371,15 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                             <Trans
                                 i18nKey={
                                     authenticationType === AuthenticationType.NONE ?
-                                        t("console:manage.features.actions.fields.authentication" +
-                                        ".info.title.noneAuthType") :
-                                        t("console:manage.features.actions.fields.authentication" +
-                                            ".info.title.otherAuthType", { authType: resolveAuthTypeDisplayName() })
+                                        t("actions:fields.authentication.info.title.noneAuthType") :
+                                        t("actions:fields.authentication.info.title.otherAuthType",
+                                            { authType: resolveAuthTypeDisplayName() })
                                 }
                                 components={ { strong: <strong/> } }
                             />
                         </AlertTitle>
                         <Trans
-                            i18nKey={ t("console:manage.features.actions.fields.authentication.info.message") }
+                            i18nKey={ t("actions:fields.authentication.info.message") }
                         >
                                 If you are changing the authentication, be aware that the authentication secrets of
                                 the external endpoint need to be updated.
@@ -421,22 +393,22 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                 data-componentid={ `${ _componentId }-change-authentication-button` }
                                 disabled={ getFieldDisabledStatus() }
                             >
-                                { t("console:manage.features.actions.buttons.changeAuthentication") }
+                                { t("actions:buttons.changeAuthentication") }
                             </Button>
                         </div>
                     </Alert>
                 );
             };
 
-            const renderAuthenticationSectionUpdatingBox = (): ReactElement => {
+            const renderAuthenticationUpdateWidget = (): ReactElement => {
                 const renderAuthentication = (): ReactElement => {
                     const renderAuthenticationPropertyFields = (): ReactElement => {
                         const showAuthSecretsHint = (): ReactElement => (
                             <Hint className="hint-text" compact>
                                 {
                                     isCreateFormState ?
-                                        t("console:manage.features.actions.fields.authenticationType.hint.create")
-                                        : t("console:manage.features.actions.fields.authenticationType.hint.update")
+                                        t("actions:fields.authenticationType.hint.create")
+                                        : t("actions:fields.authenticationType.hint.update")
                                 }
                             </Hint>
                         );
@@ -461,11 +433,13 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                             name="usernameAuthProperty"
                                             type={ isShowSecret1 ? "text" : "password" }
                                             InputProps={ {
-                                                endAdornment: renderInputAdornmentOfSecret1()
+                                                endAdornment: renderInputAdornmentOfSecret(
+                                                    isShowSecret1,
+                                                    () => setIsShowSecret1(!isShowSecret1))
                                             } }
-                                            label={ t("console:manage.features.actions.fields.authentication" +
+                                            label={ t("actions:fields.authentication" +
                                                 ".types.basic.properties.username.label") }
-                                            placeholder={ t("console:manage.features.actions.fields.authentication" +
+                                            placeholder={ t("actions:fields.authentication" +
                                                 ".types.basic.properties.username.placeholder") }
                                             component={ TextFieldAdapter }
                                             maxLength={ 100 }
@@ -485,11 +459,13 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                             name="passwordAuthProperty"
                                             type={ isShowSecret2 ? "text" : "password" }
                                             InputProps={ {
-                                                endAdornment: renderInputAdornmentOfSecret2()
+                                                endAdornment: renderInputAdornmentOfSecret(
+                                                    isShowSecret2,
+                                                    () => setIsShowSecret2(!isShowSecret2))
                                             } }
-                                            label={ t("console:manage.features.actions.fields.authentication" +
+                                            label={ t("actions:fields.authentication" +
                                                 ".types.basic.properties.password.label") }
-                                            placeholder={ t("console:manage.features.actions.fields.authentication" +
+                                            placeholder={ t("actions:fields.authentication" +
                                                 ".types.basic.properties.password.placeholder") }
                                             component={ TextFieldAdapter }
                                             maxLength={ 100 }
@@ -514,11 +490,13 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                             name="accessTokenAuthProperty"
                                             type={ isShowSecret1 ? "text" : "password" }
                                             InputProps={ {
-                                                endAdornment: renderInputAdornmentOfSecret1()
+                                                endAdornment: renderInputAdornmentOfSecret(
+                                                    isShowSecret1,
+                                                    () => setIsShowSecret1(!isShowSecret1))
                                             } }
-                                            label={ t("console:manage.features.actions.fields.authentication" +
+                                            label={ t("actions:fields.authentication" +
                                                 ".types.bearer.properties.accessToken.label") }
-                                            placeholder={ t("console:manage.features.actions.fields.authentication" +
+                                            placeholder={ t("actions:fields.authentication" +
                                                 ".types.bearer.properties.accessToken.placeholder") }
                                             component={ TextFieldAdapter }
                                             maxLength={ 100 }
@@ -542,9 +520,9 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                             data-componentid={ `${ _componentId }-authentication-property-header` }
                                             name="headerAuthProperty"
                                             type={ "text" }
-                                            label={ t("console:manage.features.actions.fields.authentication" +
+                                            label={ t("actions:fields.authentication" +
                                                 ".types.apiKey.properties.header.label") }
-                                            placeholder={ t("console:manage.features.actions.fields.authentication" +
+                                            placeholder={ t("actions:fields.authentication" +
                                                 ".types.apiKey.properties.header.placeholder") }
                                             component={ TextFieldAdapter }
                                             maxLength={ 100 }
@@ -563,11 +541,13 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                             name="valueAuthProperty"
                                             type={ isShowSecret1 ? "text" : "password" }
                                             InputProps={ {
-                                                endAdornment: renderInputAdornmentOfSecret1()
+                                                endAdornment: renderInputAdornmentOfSecret(
+                                                    isShowSecret2,
+                                                    () => setIsShowSecret2(!isShowSecret2))
                                             } }
-                                            label={ t("console:manage.features.actions.fields.authentication" +
+                                            label={ t("actions:fields.authentication" +
                                                 ".types.apiKey.properties.value.label") }
-                                            placeholder={ t("console:manage.features.actions.fields.authentication" +
+                                            placeholder={ t("actions:fields.authentication" +
                                                 ".types.apiKey.properties.value.placeholder") }
                                             component={ TextFieldAdapter }
                                             maxLength={ 100 }
@@ -621,9 +601,8 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                 name="authenticationType"
                                 type={ "dropdown" }
                                 displayEmpty={ true }
-                                label={ t("console:manage.features.actions.fields.authenticationType.label") }
-                                placeholder={ t("console:manage.features.actions.fields." +
-                                    "authenticationType.placeholder") }
+                                label={ t("actions:fields.authenticationType.label") }
+                                placeholder={ t("actions:fields.authenticationType.placeholder") }
                                 component={ SelectFieldAdapter }
                                 maxLength={ 100 }
                                 minLength={ 0 }
@@ -654,7 +633,7 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                     className="secondary-button"
                                     data-componentid={ `${ _componentId }-cancel-edit-authentication-button` }
                                 >
-                                    { t("console:manage.features.actions.buttons.cancel") }
+                                    { t("actions:buttons.cancel") }
                                 </Button>
                             ) }
                         </div>
@@ -663,10 +642,14 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
             };
 
             return ( !isAuthenticationUpdateFormState && !isCreateFormState && !(authenticationType === null) ?
-                renderAuthenticationSectionInfoBox() : renderAuthenticationSectionUpdatingBox());
+                renderAuthenticationSectionInfoBox() : renderAuthenticationUpdateWidget());
         };
 
-        return isLoading ? renderLoadingPlaceholders() : (
+        if (isLoading) {
+            return renderLoadingPlaceholders();
+        }
+
+        return (
             <>
                 <FinalFormField
                     key="name"
@@ -680,11 +663,11 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                     data-componentid={ `${ _componentId }-action-name` }
                     name="name"
                     type="text"
-                    label={ t("console:manage.features.actions.fields.name.label") }
-                    placeholder={ t("console:manage.features.actions.fields.name.placeholder") }
+                    label={ t("actions:fields.name.label") }
+                    placeholder={ t("actions:fields.name.placeholder") }
                     helperText={ (
                         <Hint className="hint" compact>
-                            { t("console:manage.features.actions.fields.name.hint") }
+                            { t("actions:fields.name.hint") }
                         </Hint>
                     ) }
                     component={ TextFieldAdapter }
@@ -704,11 +687,11 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                     data-componentid={ `${ _componentId }-action-name` }
                     name="endpointUri"
                     type="text"
-                    label={ t("console:manage.features.actions.fields.endpoint.label") }
-                    placeholder={ t("console:manage.features.actions.fields.endpoint.placeholder") }
+                    label={ t("actions:fields.endpoint.label") }
+                    placeholder={ t("actions:fields.endpoint.placeholder") }
                     helperText={ (
                         <Hint className="hint" compact>
-                            { t("console:manage.features.actions.fields.endpoint.hint") }
+                            { t("actions:fields.endpoint.hint") }
                         </Hint>
                     ) }
                     component={ TextFieldAdapter }
@@ -718,7 +701,7 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                 />
                 <Divider className="divider-container"/>
                 <Heading className="heading-container" as="h5">
-                    { t("console:manage.features.actions.fields.authentication.label") }
+                    { t("actions:fields.authentication.label") }
                 </Heading>
                 { renderAuthenticationSection() }
             </>
@@ -727,13 +710,13 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
 
     return (
         <FinalForm
-            onSubmit={ handleSubmit }
+            onSubmit={ (values: ActionConfigFormPropertyInterface, form: any) => {
+                handleSubmit(values, form.getState().dirtyFields); }
+            }
             validate={ validateForm }
             initialValues={ initialValues }
             render={ ({ handleSubmit, form }: FormRenderProps) => (
-                <form
-                    onSubmit={ handleSubmit }
-                >
+                <form onSubmit={ handleSubmit }>
                     <EmphasizedSegment
                         className="form-wrapper"
                         padded={ "very" }
@@ -751,8 +734,11 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                     loading={ isSubmitting }
                                     disabled={ getFieldDisabledStatus() }
                                 >
-                                    { isCreateFormState ? t("console:manage.features.actions.buttons.create")
-                                        : t("console:manage.features.actions.buttons.update") }
+                                    {
+                                        isCreateFormState
+                                            ? t("actions:buttons.create")
+                                            : t("actions:buttons.update")
+                                    }
                                 </Button>
                             ) }
                         </div>
@@ -827,3 +813,5 @@ export const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
         </FinalForm>
     );
 };
+
+export default ActionConfigForm;

@@ -17,10 +17,11 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { ActionsConstants } from "../constants/actions-constants";
 import { ActionBasicResponseInterface } from "../models/actions";
 
@@ -39,10 +40,13 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * @returns Promise containing the response.
  * @throws Throws an IdentityAppsApiException if the request fails.
  */
-const changeActionStatus = (actionType: string, actionId: string, status: string):
-Promise<ActionBasicResponseInterface> => {
+const changeActionStatus = (
+    actionType: string,
+    actionId: string,
+    status: string
+): Promise<ActionBasicResponseInterface> => {
 
-    const requestConfig: AxiosRequestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"

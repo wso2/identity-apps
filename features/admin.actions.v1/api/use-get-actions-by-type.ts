@@ -44,8 +44,10 @@ const useGetActionsByType = <Data = ActionResponseInterface[], Error = RequestEr
         url: `${ store.getState().config.endpoints.actions }/${ actionType }`
     };
 
-    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>
-    (shouldFetch ? requestConfig : null, { shouldRetryOnError: false });
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
+        shouldFetch ? requestConfig : null,
+        { shouldRetryOnError: false }
+    );
 
     return {
         data,

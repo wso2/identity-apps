@@ -35,6 +35,7 @@ import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
 import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
 import compact from "lodash-es/compact";
@@ -1398,12 +1399,12 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             ),
             exact: true,
             featureStatus: "BETA",
-            featureStatusLabel: "common:beta",
+            featureStatusLabel: FeatureStatusLabel.BETA,
             icon: {
                 icon: <ProgressFlowIcon className="icon" fill="black" />
             },
             id: "actions",
-            name: "console:manage.features.actions.title",
+            name: "pages:actions.title",
             order: 30,
             path: AppConstants.getPaths().get("ACTIONS"),
             protected: true,

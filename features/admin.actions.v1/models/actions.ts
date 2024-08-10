@@ -20,7 +20,7 @@ import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-g
 import { ReactNode } from "react";
 
 /**
- * Different Authentication Types.
+ * Authentication Types.
  */
 export enum AuthenticationType {
     NONE = "NONE",
@@ -30,7 +30,7 @@ export enum AuthenticationType {
 }
 
 /**
- * Different Action Types.
+ * Action Types.
  */
 export enum ActionType {
     PRE_ISSUE_ACCESS_TOKEN = "PRE_ISSUE_ACCESS_TOKEN",

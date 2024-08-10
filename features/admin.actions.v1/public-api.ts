@@ -17,3 +17,4 @@
  */
 
 export { default as ActionTypesListingPage } from "./pages/actions";
+export { default as ActionConfigForm } from "./components/action-config-form";

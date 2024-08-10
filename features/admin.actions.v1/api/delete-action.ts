@@ -17,10 +17,11 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { ActionsConstants } from "../constants/actions-constants";
 
 /**
@@ -38,7 +39,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  */
 export const deleteAction = (actionType: string, actionId: string): Promise<string> => {
 
-    const requestConfig: AxiosRequestConfig = {
+    const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"

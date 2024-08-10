@@ -17,7 +17,7 @@
  */
 
 import { IdentityAppsError } from "@wso2is/core/errors";
-import ActionType from "../constants/action-type";
+import ActionType from "../models/action-type";
 import { AuthenticationType, AuthenticationTypeDropdownOption } from "../models/actions";
 
 /**
@@ -101,22 +101,22 @@ export class ActionsConstants {
     public static readonly AUTH_TYPES: AuthenticationTypeDropdownOption[] = [
         {
             key: AuthenticationType.NONE,
-            text: "console:manage.features.actions.fields.authentication.types.none.name",
+            text: "actions:fields.authentication.types.none.name",
             value: AuthenticationType.NONE
         },
         {
             key: AuthenticationType.BASIC,
-            text: "console:manage.features.actions.fields.authentication.types.basic.name",
+            text: "actions:fields.authentication.types.basic.name",
             value: AuthenticationType.BASIC
         },
         {
             key: AuthenticationType.BEARER,
-            text: "console:manage.features.actions.fields.authentication.types.bearer.name",
+            text: "actions:fields.authentication.types.bearer.name",
             value: AuthenticationType.BEARER
         },
         {
             key: AuthenticationType.API_KEY,
-            text: "console:manage.features.actions.fields.authentication.types.apiKey.name",
+            text: "actions:fields.authentication.types.apiKey.name",
             value: AuthenticationType.API_KEY
         }
     ];

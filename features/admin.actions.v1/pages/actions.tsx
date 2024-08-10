@@ -40,7 +40,6 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, GenericIcon, PageLayout, ResourceGrid, useDocumentation } from "@wso2is/react-components";
 import React, {
-    Fragment,
     FunctionComponent,
     ReactElement,
     ReactNode,
@@ -118,31 +117,30 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
      * The following useEffect is used to handle if any error occurs while fetching the Action Types.
      */
     useEffect(() => {
-        if (actionTypesConfigsRetrievalError && !isActionTypesConfigsLoading) {
-            if (actionTypesConfigsRetrievalError.response && actionTypesConfigsRetrievalError.response.data
-                && actionTypesConfigsRetrievalError.response.data.description) {
-                dispatch(
-                    addAlert<AlertInterface>({
-                        description: t("console:manage.features.actions.notification.error.typesFetch.description",
-                            { description: actionTypesConfigsRetrievalError.response.data.description }
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t("console:manage.features.actions.notification.error.typesFetch.message")
-                    })
-                );
-            } else {
-                // Generic error message
-                dispatch(
-                    addAlert<AlertInterface>({
-                        description: t("console:manage.features.actions.notification.genericError" +
-                            ".typesFetch.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("console:manage.features.actions.notification.genericError.typesFetch.message")
-                    })
-                );
-            }
+        if (isActionTypesConfigsLoading || !actionTypesConfigsRetrievalError) {
+            return;
         }
-    }, []);
+
+        if (actionTypesConfigsRetrievalError.response?.data?.description) {
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: t("actions:notification.error.typesFetch.description",
+                        { description: actionTypesConfigsRetrievalError.response.data.description }
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t("actions:notification.error.typesFetch.message")
+                })
+            );
+        } else {
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: t("actions:notification.genericError.typesFetch.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("actions:notification.genericError.typesFetch.message")
+                })
+            );
+        }
+    }, [ isActionTypesConfigsLoading, actionTypesConfigsRetrievalError ]);
 
     const checkFeatureEnabledStatus = (actionType: string): boolean => {
 
@@ -160,10 +158,9 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
         }
     };
 
-
     const resolveActionDescription = (): ReactNode => (
         <>
-            { t("console:manage.features.actions.description") }
+            { t("pages:actions.subTitle") }
             <DocumentationLink
                 link={
                     getLink("develop.actions.learnMore")
@@ -184,7 +181,7 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
         }
     };
 
-    const resolveConfiguredLabel = (actionType: string): ReactElement => {
+    const renderActionConfiguredStatus = (actionType: string): ReactElement => {
         let count: number = 0;
 
         switch (actionType) {
@@ -208,59 +205,60 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
                 break;
         }
 
-        return (
-            count > 0 ? (
+        if (count > 0) {
+            return (
                 <div className="status-tag">
                     <CircleCheckFilledIcon className="icon-configured"/>
                     <Typography  className="text-configured" variant="h6">
-                        { t("console:manage.features.actions.status.configured") }
+                        { t("actions:status.configured") }
                     </Typography>
                 </div>
-            ):(
+            );
+        } else {
+            return (
                 <div className="status-tag">
                     <Typography  className="text-not-configured" variant="h6">
-                        {  t("console:manage.features.actions.status.notConfigured") }
+                        {  t("actions:status.notConfigured") }
                     </Typography>
                 </div>
-            )
-        );
+            );
+        }
     };
 
     const actionTypesCardsInfo = (): ActionTypeCardInterface[] => {
         return [
             {
-                description: t("console:manage.features.actions.types.preIssueAccessToken" +
-                    ".description.shortened"),
+                description: t("actions:types.preIssueAccessToken.description.shortened"),
                 disabled: false,
                 featureStatusLabel: FeatureStatusLabel.BETA,
-                heading: t("console:manage.features.actions.types.preIssueAccessToken.heading"),
+                heading: t("actions:types.preIssueAccessToken.heading"),
                 icon: <KeyFlowIcon size="small" className="icon"/>,
                 identifier: ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH,
                 route: AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT")
             },
             {
-                description: t("console:manage.features.actions.types.preUpdatePassword.description.shortened"),
+                description: t("actions:types.preUpdatePassword.description.shortened"),
                 disabled: true,
                 featureStatusLabel: FeatureStatusLabel.COMING_SOON,
-                heading: t("console:manage.features.actions.types.preUpdatePassword.heading"),
+                heading: t("actions:types.preUpdatePassword.heading"),
                 icon: <PadlockAsteriskFlowIcon size="small" className="icon"/>,
                 identifier: ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH,
                 route: AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT")
             },
             {
-                description: t("console:manage.features.actions.types.preUpdateProfile.description.shortened"),
+                description: t("actions:types.preUpdateProfile.description.shortened"),
                 disabled: true,
                 featureStatusLabel: FeatureStatusLabel.COMING_SOON,
-                heading: t("console:manage.features.actions.types.preUpdateProfile.heading"),
+                heading: t("actions:types.preUpdateProfile.heading"),
                 icon: <ProfileFlowIcon size="small" className="icon"/>,
                 identifier: ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH,
                 route: AppConstants.getPaths().get("PRE_UPDATE_PROFILE_EDIT")
             },
             {
-                description: t("console:manage.features.actions.types.preRegistration.description.shortened"),
+                description: t("actions:types.preRegistration.description.shortened"),
                 disabled: true,
                 featureStatusLabel: FeatureStatusLabel.COMING_SOON,
-                heading: t("console:manage.features.actions.types.preRegistration.heading"),
+                heading: t("actions:types.preRegistration.heading"),
                 icon: <UserFlowIcon size="small" className="icon"/>,
                 identifier: ActionsConstants.PRE_REGISTRATION_URL_PATH,
                 route: AppConstants.getPaths().get("PRE_REGISTRATION_EDIT")
@@ -269,93 +267,89 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
 
     return (
         <PageLayout
-            pageTitle={ t("console:manage.features.actions.title") }
-            title={ t("console:manage.features.actions.title") }
+            pageTitle={ t("pages:actions.title") }
+            title={ t("pages:actions.title") }
             description={ resolveActionDescription() }
             data-componentid={ `${ _componentId }-page-layout` }
             bottomMargin={ false }
             contentTopMargin={ true }
             pageHeaderMaxWidth={ false }
         >
-            <Fragment>
-                <ResourceGrid
-                    isLoading={ isActionTypesConfigsLoading }
-                    isEmpty={
-                        (!actionTypesConfigs
+            <ResourceGrid
+                isLoading={ isActionTypesConfigsLoading }
+                isEmpty={
+                    (!actionTypesConfigs
                         || !Array.isArray(actionTypesConfigs)
                         || actionTypesConfigs.length <= 0)
-                    }
-                    data-componentid={ `${ _componentId }-resource-grid` }
+                }
+                data-componentid={ `${ _componentId }-resource-grid` }
+            >
+                <Grid
+                    container
+                    spacing={ { md: 3, xs: 2 } }
+                    className="actions-page"
                 >
-                    <Grid
-                        container
-                        spacing={ { md: 3, xs: 2 } }
-                        className="actions-page"
-                    >
-                        { actionTypesCardsInfo().map((cardProps: ActionTypeCardInterface) => {
-                            return checkFeatureEnabledStatus(cardProps.identifier) && (
-                                <>
-                                    <Grid
-                                        xs={ 12 }
-                                        sm={ 6 }
-                                        md={ 4 }
-                                        lg={ 4 }
-                                    >
-                                        <Card
-                                            key={ cardProps.identifier }
-                                            className={ cardProps.disabled ? "action-card disabled" : "action-card" }
-                                            data-componentid={ `${ cardProps.identifier }-action-type-card` }
-                                            onClick={ () => history.push(cardProps.route) }
-                                        >
-                                            <CardContent
-                                                className="action-type-header">
-                                                <div>
-                                                    <GenericIcon
-                                                        size="micro"
-                                                        icon={ (
-                                                            <Avatar
-                                                                variant="square"
-                                                                randomBackgroundColor
-                                                                backgroundColorRandomizer={ cardProps.identifier }
-                                                                className="action-type-icon-container"
-                                                            >
-                                                                { cardProps.icon }
-                                                            </Avatar>
-                                                        ) }
-                                                        inline
-                                                        transparent
-                                                        shape="square"
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <Typography variant="h6">
-                                                        { cardProps.heading }
-                                                    </Typography>
-                                                    { !cardProps.disabled ?
-                                                        resolveConfiguredLabel(cardProps.identifier) : null }
-                                                </div>
-                                                <div
-                                                    className={ "ribbon " +
+                    { actionTypesCardsInfo().map((cardProps: ActionTypeCardInterface) => {
+                        return checkFeatureEnabledStatus(cardProps.identifier) && (
+                            <Grid
+                                xs={ 12 }
+                                sm={ 6 }
+                                md={ 4 }
+                                lg={ 4 }
+                            >
+                                <Card
+                                    key={ cardProps.identifier }
+                                    className={ cardProps.disabled ? "action-card disabled" : "action-card" }
+                                    data-componentid={ `${ cardProps.identifier }-action-type-card` }
+                                    onClick={ () => history.push(cardProps.route) }
+                                >
+                                    <CardContent
+                                        className="action-type-header">
+                                        <div>
+                                            <GenericIcon
+                                                size="micro"
+                                                icon={ (
+                                                    <Avatar
+                                                        variant="square"
+                                                        randomBackgroundColor
+                                                        backgroundColorRandomizer={ cardProps.identifier }
+                                                        className="action-type-icon-container"
+                                                    >
+                                                        { cardProps.icon }
+                                                    </Avatar>
+                                                ) }
+                                                inline
+                                                transparent
+                                                shape="square"
+                                            />
+                                        </div>
+                                        <div>
+                                            <Typography variant="h6">
+                                                { cardProps.heading }
+                                            </Typography>
+                                            { !cardProps.disabled ?
+                                                renderActionConfiguredStatus(cardProps.identifier) : null }
+                                        </div>
+                                        <div
+                                            className={ "ribbon " +
                                                         resolveFeatureLabelClass(cardProps.featureStatusLabel) }
-                                                >
-                                                    <span className="MuiChip-label">
-                                                        { t(cardProps.featureStatusLabel) }
-                                                    </span>
-                                                </div>
-                                            </CardContent>
-                                            <CardContent>
-                                                <Typography variant="body2" color="text.secondary">
-                                                    {  cardProps.description }
-                                                </Typography>
-                                            </CardContent>
-                                        </Card>
-                                    </Grid>
-                                </>
-                            );
-                        }) }
-                    </Grid>
-                </ResourceGrid>
-            </Fragment>
+                                        >
+                                            <span className="MuiChip-label">
+                                                { t(cardProps.featureStatusLabel) }
+                                            </span>
+                                        </div>
+                                    </CardContent>
+                                    <CardContent>
+                                        <Typography variant="body2" color="text.secondary">
+                                            {  cardProps.description }
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                        );
+                    }) }
+                </Grid>
+            </ResourceGrid>
         </PageLayout>
     );
 };

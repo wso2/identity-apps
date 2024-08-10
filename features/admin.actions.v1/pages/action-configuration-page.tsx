@@ -45,7 +45,7 @@ import { Checkbox, CheckboxProps, Grid } from "semantic-ui-react";
 import changeActionStatus from "../api/change-action-status";
 import deleteAction from "../api/delete-action";
 import useGetActionsByType from "../api/use-get-actions-by-type";
-import { ActionConfigForm } from "../components/action-config-form";
+import ActionConfigForm from "../components/action-config-form";
 import { ActionsConstants } from "../constants/actions-constants";
 import { ActionConfigFormPropertyInterface } from "../models/actions";
 import "./action-configuration-page.scss";
@@ -55,7 +55,7 @@ import "./action-configuration-page.scss";
  */
 type ActionConfigurationPageInterface = IdentifiableComponentInterface;
 
-export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterface> = ({
+const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterface> = ({
     [ "data-componentid" ]: _componentId = "action-configuration-page"
 }: ActionConfigurationPageInterface): ReactElement => {
 
@@ -124,29 +124,29 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
      * The following useEffect is used to handle if any error occurs while fetching the Action.
      */
     useEffect(() => {
-        if (actionsFetchRequestError && !isActionsLoading) {
-            if (actionsFetchRequestError.response && actionsFetchRequestError.response.data
-                && actionsFetchRequestError.response.data.description) {
-                dispatch(
-                    addAlert<AlertInterface>({
-                        description: t("console:manage.features.actions.notification.error.fetch.description",
-                            { description: actionsFetchRequestError.response.data.description }),
-                        level: AlertLevels.ERROR,
-                        message: t("console:manage.features.actions.notification.error.fetch.message")
-                    })
-                );
-            } else {
-                // Generic error message
-                dispatch(
-                    addAlert<AlertInterface>({
-                        description: t("console:manage.features.actions.notification.genericError.fetch.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("console:manage.features.actions.notification.genericError.fetch.message")
-                    })
-                );
-            }
+        if (isActionsLoading || !actionsFetchRequestError) {
+            return;
         }
-    }, [ ]);
+
+        if (actionsFetchRequestError.response?.data?.description) {
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: t("actions:notification.error.fetch.description",
+                        { description: actionsFetchRequestError.response.data.description }),
+                    level: AlertLevels.ERROR,
+                    message: t("actions:notification.error.fetch.message")
+                })
+            );
+        } else {
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: t("actions:notification.genericError.fetch.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("actions:notification.genericError.fetch.message")
+                })
+            );
+        }
+    }, [ isActionsLoading, actionsFetchRequestError ]);
 
     /**
      * Handles the back button click event.
@@ -161,13 +161,13 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
     const resolveActionTitle = (actionType: string): string => {
         switch(actionType) {
             case ActionsConstants.ACTION_TYPES.PRE_ISSUE_ACCESS_TOKEN.getApiPath():
-                return t("console:manage.features.actions.types.preIssueAccessToken.heading");
+                return t("actions:types.preIssueAccessToken.heading");
             case ActionsConstants.ACTION_TYPES.PRE_UPDATE_PASSWORD.getApiPath():
-                return t("console:manage.features.actions.types.preUpdatePassword.heading");
+                return t("actions:types.preUpdatePassword.heading");
             case ActionsConstants.ACTION_TYPES.PRE_UPDATE_PROFILE.getApiPath():
-                return t("console:manage.features.actions.types.preUpdateProfile.heading");
+                return t("actions:types.preUpdateProfile.heading");
             case ActionsConstants.ACTION_TYPES.PRE_REGISTRATION.getApiPath():
-                return t("console:manage.features.actions.types.preRegistration.heading");
+                return t("actions:types.preRegistration.heading");
         }
     };
 
@@ -179,7 +179,7 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
             case ActionsConstants.ACTION_TYPES.PRE_ISSUE_ACCESS_TOKEN.getApiPath():
                 return (
                     <>
-                        { t("console:manage.features.actions.types.preIssueAccessToken.description.expanded") }
+                        { t("actions:types.preIssueAccessToken.description.expanded") }
                         <DocumentationLink
                             link={
                                 getLink("develop.actions.types.preIssueAccessToken.learnMore")
@@ -193,7 +193,7 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
             case ActionsConstants.ACTION_TYPES.PRE_UPDATE_PASSWORD.getApiPath():
                 return (
                     <>
-                        { t("console:manage.features.actions.types.preUpdatePassword.description.expanded") }
+                        { t("actions:types.preUpdatePassword.description.expanded") }
                         <DocumentationLink
                             link={
                                 getLink("develop.actions.types.preUpdatePassword.learnMore")
@@ -207,7 +207,7 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
             case ActionsConstants.ACTION_TYPES.PRE_UPDATE_PROFILE.getApiPath():
                 return (
                     <>
-                        { t("console:manage.features.actions.types.preUpdateProfile.description.expanded") }
+                        { t("actions:types.preUpdateProfile.description.expanded") }
                         <DocumentationLink
                             link={
                                 getLink("develop.actions.types.preUpdateProfile.learnMore")
@@ -221,7 +221,7 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
             case ActionsConstants.ACTION_TYPES.PRE_REGISTRATION.getApiPath():
                 return (
                     <>
-                        { t("console:manage.features.actions.types.preRegistration.description.expanded") }
+                        { t("actions:types.preRegistration.description.expanded") }
                         <DocumentationLink
                             link={
                                 getLink("develop.actions.types.preRegistration.learnMore")
@@ -241,42 +241,29 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
      * This renders the toggle button for action status.
      */
     const actionToggle = (): ReactElement => {
-
         const handleToggle = (e: SyntheticEvent, data: CheckboxProps) => {
             setIsActive(data.checked);
-
-            if (data.checked) {
-
-                changeActionStatus(actionTypeApiPath, actionInitialValues.id, ActionsConstants.ACTIVATE)
-                    .then(() => {
-                        handleSuccess(ActionsConstants.UPDATE);
-                    })
-                    .catch((error: AxiosError) => {
-                        handleError(error, ActionsConstants.UPDATE);
-                    })
-                    .finally(() => {
-                        mutateActions();
-                    });
-            } else {
-                changeActionStatus(actionTypeApiPath, actionInitialValues.id, ActionsConstants.DEACTIVATE)
-                    .then(() => {
-                        handleSuccess(ActionsConstants.UPDATE);
-                    })
-                    .catch((error: AxiosError) => {
-                        handleError(error, ActionsConstants.UPDATE);
-                    })
-                    .finally(() => {
-                        mutateActions();
-                    });
-            }
+            changeActionStatus(
+                actionTypeApiPath,
+                actionInitialValues.id,
+                data.checked ? ActionsConstants.ACTIVATE : ActionsConstants.DEACTIVATE)
+                .then(() => {
+                    handleSuccess(ActionsConstants.UPDATE);
+                })
+                .catch((error: AxiosError) => {
+                    handleError(error, ActionsConstants.UPDATE);
+                })
+                .finally(() => {
+                    mutateActions();
+                });
         };
 
         return !isLoading && !showCreateForm && (
             <Checkbox
                 label={
                     isActive
-                        ? t("console:manage.features.actions.status.active")
-                        : t("console:manage.features.actions.status.inactive")
+                        ? t("actions:status.active")
+                        : t("actions:status.inactive")
                 }
                 toggle
                 onChange={ handleToggle }
@@ -285,39 +272,49 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
                 data-componentId={ `${ _componentId }-${ actionTypeApiPath }-enable-toggle` }
                 disabled={ !hasActionUpdatePermissions }
             />
-
         );
+    };
+
+    const handleDelete = (): void => {
+        deleteAction(actionTypeApiPath, actionInitialValues.id)
+            .then(() => {
+                handleSuccess(ActionsConstants.DELETE);
+                history.push(AppConstants.getPaths().get("ACTIONS"));
+            })
+            .catch((error: AxiosError) => {
+                handleError(error, ActionsConstants.DELETE);
+            })
+            .finally(() => {
+                setOpenRevertConfigModal(false);
+            });
     };
 
     const handleSuccess = (operation: string): void => {
         dispatch(
             addAlert({
-                description: t("console:manage.features.actions.notification.success." + operation + ".description"),
+                description: t("actions:notification.success." + operation + ".description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:manage.features.actions.notification.success." + operation + ".message")
+                message: t("actions:notification.success." + operation + ".message")
             })
         );
     };
 
     const handleError = (error: AxiosError, operation: string): void => {
-        if (error.response && error.response.data && error.response.data.description) {
+        if (error.response?.data?.description) {
             dispatch(
                 addAlert({
-                    description: t("console:manage.features.actions.notification.error." + operation + ".description",
+                    description: t("actions:notification.error." + operation + ".description",
                         { description: error.response.data.description }),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.actions.notification.error." + operation + ".message")
+                    message: t("actions:notification.error." + operation + ".message")
                 })
             );
         } else {
-            // Generic error message
             dispatch(
                 addAlert({
-                    description: t("console:manage.features.actions.notification.genericError." + operation
-                        + ".description"),
+                    description: t("actions:notification.genericError." + operation + ".description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.actions.notification.genericError." + operation
-                        + ".message")
+                    message: t("actions:notification.genericError." + operation + ".message")
                 })
             );
         }
@@ -330,7 +327,7 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
             backButton={ {
                 "data-componentid": `${ _componentId }-${ actionTypeApiPath }-page-back-button`,
                 onClick: () => handleBackButtonClick(),
-                text: t("console:manage.features.actions.goBackActions")
+                text: t("actions:goBackActions")
             } }
             isLoading={ isLoading }
             bottomMargin={ false }
@@ -348,7 +345,6 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
                                 isLoading={ isLoading }
                                 actionTypeApiPath={ actionTypeApiPath }
                                 isCreateFormState={ showCreateForm }
-                                mutate={ mutateActions }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -359,16 +355,16 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
                     when={ featureConfig?.actions?.scopes?.delete }
                 >
                     <DangerZoneGroup
-                        sectionHeader={ t("console:manage.features.actions.dangerZoneGroup.header") }
+                        sectionHeader={ t("actions:dangerZoneGroup.header") }
                     >
                         <DangerZone
                             data-componentid={ `${ _componentId }-delete-action-of-type-${ actionTypeApiPath}` }
                             actionTitle={
-                                t("console:manage.features.actions.dangerZoneGroup.revertConfig.actionTitle")
+                                t("actions:dangerZoneGroup.revertConfig.actionTitle")
                             }
-                            header={ t("console:manage.features.actions.dangerZoneGroup.revertConfig.heading") }
+                            header={ t("actions:dangerZoneGroup.revertConfig.heading") }
                             subheader={
-                                t("console:manage.features.actions.dangerZoneGroup.revertConfig.subHeading")
+                                t("actions:dangerZoneGroup.revertConfig.subHeading")
                             }
                             onActionClick={ (): void => {
                                 setOpenRevertConfigModal(true);
@@ -381,30 +377,18 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
                         onClose={ (): void => setOpenRevertConfigModal(false) }
                         type="negative"
                         open={ isOpenRevertConfigModal }
-                        assertionHint={ t("console:manage.features.actions.confirmationModal.assertionHint") }
+                        assertionHint={ t("actions:confirmationModal.assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setOpenRevertConfigModal(false) }
-                        onPrimaryActionClick={ (): void => {
-                            deleteAction(actionTypeApiPath, actionInitialValues.id)
-                                .then(() => {
-                                    handleSuccess(ActionsConstants.DELETE);
-                                    history.push(AppConstants.getPaths().get("ACTIONS"));
-                                })
-                                .catch((error: AxiosError) => {
-                                    handleError(error, ActionsConstants.DELETE);
-                                })
-                                .finally(() => {
-                                    setOpenRevertConfigModal(false);
-                                });
-                        } }
+                        onPrimaryActionClick={ (): void => handleDelete() }
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header
                             data-componentid={ `${ _componentId }-revert-confirmation-modal-header` }
                         >
-                            { t("console:manage.features.actions.confirmationModal.header") }
+                            { t("actions:confirmationModal.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             data-componentid={
@@ -413,10 +397,10 @@ export const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageI
                             attached
                             negative
                         >
-                            { t("console:manage.features.actions.confirmationModal.message") }
+                            { t("actions:confirmationModal.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            { t("console:manage.features.actions.confirmationModal.content") }
+                            { t("actions:confirmationModal.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 </Show>

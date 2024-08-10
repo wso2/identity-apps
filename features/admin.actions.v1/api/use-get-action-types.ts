@@ -44,8 +44,10 @@ const useGetActionTypes = <Data = ActionTypesResponseInterface[], Error = Reques
         url: `${ store.getState().config.endpoints.actions }/${ ActionsConstants.TYPES_DIR }`
     };
 
-    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>
-    (shouldFetch ? requestConfig : null, { shouldRetryOnError: false });
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
+        shouldFetch ? requestConfig : null,
+        { shouldRetryOnError: false }
+    );
 
     return {
         data,

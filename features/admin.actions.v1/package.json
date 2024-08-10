@@ -2,7 +2,7 @@
     "private": true,
     "name": "@wso2is/admin.actions.v1",
     "version": "0.0.0",
-    "description": "Action component",
+    "description": "UI components and utility methods for WSO2 Identity Server Actions",
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
@@ -89,7 +89,9 @@
         "typescript": "^4.6.4"
     },
     "peerDependencies": {
-        "react": "^18.2.0"
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^4.3.1"
     },
     "browserslist": [
         "> 0.2%"

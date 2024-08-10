@@ -17,10 +17,11 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { ActionsConstants } from "../constants/actions-constants";
 import { ActionInterface, ActionResponseInterface } from "../models/actions";
 
@@ -40,7 +41,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  */
 const createAction = (actionType: string, actionBody: ActionInterface): Promise<ActionResponseInterface> => {
 
-    const requestConfig: AxiosRequestConfig = {
+    const requestConfig: RequestConfigInterface = {
         data: actionBody,
         method: HttpMethods.POST,
         url: `${ store.getState().config.endpoints.actions }/${ actionType }`
