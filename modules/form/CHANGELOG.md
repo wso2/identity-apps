@@ -1,5 +1,16 @@
 # @wso2is/form
 
+## 2.1.0
+
+### Minor Changes
+
+- [#5896](https://github.com/wso2/identity-apps/pull/5896) [`00ee3fbc87f646c936fcda1534d75f9359ad03db`](https://github.com/wso2/identity-apps/commit/00ee3fbc87f646c936fcda1534d75f9359ad03db) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a file-picker adapter and update the style of the text field adapter for read-only mode
+
+### Patch Changes
+
+- Updated dependencies [[`00ee3fbc87f646c936fcda1534d75f9359ad03db`](https://github.com/wso2/identity-apps/commit/00ee3fbc87f646c936fcda1534d75f9359ad03db)]:
+  - @wso2is/react-components@2.4.0
+
 ## 2.0.93
 
 ### Patch Changes
