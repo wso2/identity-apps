@@ -296,4 +296,12 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly AI_NAMESPACE: string = "ai";
+
+    /**
+     * Actions namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly ACTIONS_NAMESPACE: string = "actions";
 }
