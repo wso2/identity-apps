@@ -27,6 +27,7 @@ import {
     LightbulbOnIcon,
     LinearNodesIcon,
     NodesIcon,
+    ProgressFlowIcon,
     UserCircleDotIcon,
     UserGroupIcon
 } from "@oxygen-ui/react-icons";
@@ -34,6 +35,7 @@ import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
 import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
 import compact from "lodash-es/compact";
@@ -254,10 +256,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 {
                     component: lazy(() =>
-                        import(
-                            "@wso2is/admin.extensions.v1/components/account-login/" +
-                            "pages/username-validation-edit"
-                        )
+                        import("@wso2is/admin.username-validation.v1/pages/username-validation-page")
                     ),
                     exact: true,
                     icon: {
@@ -271,10 +270,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 {
                     component: lazy(() =>
-                        import(
-                            "@wso2is/admin.extensions.v1/components/account-login/" +
-                            "pages/alternative-login-identifier-edit"
-                        )
+                        import("@wso2is/admin.alternative-login-identifier.v1/pages/alternative-login-identifier-page")
                     ),
                     exact: true,
                     icon: {
@@ -307,7 +303,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             category: "console:develop.features.sidePanel.categories.application",
             children: [
                 {
-                    component: lazy(() => import("@wso2is/admin.applications.v1/pages/application-template")),
+                    component: lazy(() => import("@wso2is/admin.application-templates.v1/pages/application-template")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
@@ -1374,6 +1370,37 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             name: "Groups",
             order: 6,
             path: AppConstants.getPaths().get("GROUPS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "extensions:manage.sidePanel.categories.extensions",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.actions.v1/pages/action-configuration-page")
+                    ),
+                    exact: true,
+                    id: "pre-issue-access-token",
+                    name: "Pre Issue Access Token",
+                    path: AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() =>
+                import("@wso2is/admin.actions.v1/pages/actions")
+            ),
+            exact: true,
+            featureStatus: "BETA",
+            featureStatusLabel: FeatureStatusLabel.BETA,
+            icon: {
+                icon: <ProgressFlowIcon className="icon" fill="black" />
+            },
+            id: "actions",
+            name: "pages:actions.title",
+            order: 30,
+            path: AppConstants.getPaths().get("ACTIONS"),
             protected: true,
             showOnSidePanel: true
         },

@@ -81,7 +81,7 @@ type MetaAttributeOption = {
 const MetaAttributeAutoComplete: FunctionComponent<MetaAttributeAutoCompleteProps> = ({
     onMetaAttributeChange,
     hasErrors,
-    "data-componentid": _componentId = "organization-meta-attribute"
+    "data-componentid": componentId = "organization-meta-attribute"
 }: MetaAttributeAutoCompleteProps): ReactElement => {
 
     const { t } = useTranslation();
@@ -233,7 +233,9 @@ const MetaAttributeAutoComplete: FunctionComponent<MetaAttributeAutoCompleteProp
      * @see {@link https://github.com/mui/material-ui/issues/40250}
      */
     return (
-        <div className={ classNames("meta-attribute-autocomplete", { "error": hasErrors }) }>
+        <div
+            className={ classNames("meta-attribute-autocomplete", { "error": hasErrors }) }
+            data-componentid={ `${ componentId }-autocomplete` }>
             <Autocomplete
                 disablePortal
                 fullWidth
@@ -291,10 +293,9 @@ const MetaAttributeAutoComplete: FunctionComponent<MetaAttributeAutoCompleteProp
                                 event.preventDefault();
                             }
                         } }
-                        data-componentid={ `${ _componentId }-text-field` }
+                        data-componentid={ `${ componentId }-input-field` }
                     />
                 ) }
-                data-componentid={ `${ _componentId }-autocomplete` }
             />
             { hasErrors && (
                 <div className="ui pointing above prompt label" role="alert" aria-atomic="true">

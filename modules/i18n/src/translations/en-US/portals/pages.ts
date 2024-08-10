@@ -18,6 +18,12 @@
 import { pagesNS } from "../../../models";
 
 export const pages: pagesNS = {
+    actions: {
+        subTitle: "Actions are executed as in-line hooks at specific points in the Login, Registration, " +
+        "Self Account Management, and User Management flows (e.g., when an access token is issued). " +
+        "Use these points to extend or integrate.",
+        title: "Actions"
+    },
     addEmailTemplate: {
         backButton: "Go back to {{name}} template",
         subTitle: null,
@@ -64,6 +70,11 @@ export const pages: pagesNS = {
         subTitle: "Create and manage user groups, assign permissions for groups.",
         title: "Groups"
     },
+    groupsEdit: {
+        backButton: "Go back to {{type}}",
+        subTitle: null,
+        title: "Edit Group"
+    },
     impersonation: {
         subTitle: "Configure impersonation settings for organization.",
         title: "Impersonation"
@@ -99,11 +110,6 @@ export const pages: pagesNS = {
         backButton: "Go back to {{type}}",
         subTitle: null,
         title: "Edit Role"
-    },
-    groupsEdit: {
-        backButton: "Go back to {{type}}",
-        subTitle: null,
-        title: "Edit Group"
     },
     serverConfigurations: {
         subTitle: "Manage general configurations of the server.",

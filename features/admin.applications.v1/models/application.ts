@@ -41,6 +41,10 @@ export interface ApplicationBasicInterface {
     issuer?: string;
     realm?: string;
     templateId?: string;
+    /**
+     * Version of the template used to create the application.
+     */
+    templateVersion?: string;
     isManagementApp?: boolean;
     applicationEnabled?:boolean;
     advancedConfigurations?: AdvancedConfigurationsInterface;

@@ -2385,6 +2385,7 @@ export interface ConsoleNS {
                     authenticationProviders: string;
                     general: string;
                     identityVerificationProviders: string;
+                    extensions: string;
                 };
                 customize: string;
                 identityProviderEdit: string;

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -208,6 +208,16 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 },
                 roles: {
                     learnMore: undefined
+                },
+                template: {
+                    categories: {
+                        default: {
+                            learnMore: undefined
+                        },
+                        ssoIntegration: {
+                            learnMore: undefined
+                        }
+                    }
                 }
             },
             branding: {
