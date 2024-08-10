@@ -246,15 +246,20 @@ export class I18nConstants {
     public static readonly AI_NAMESPACE: string = I18nModuleConstants.AI_NAMESPACE;
 
     /**
-    * Application Templates namespace.
-    */
+     * Application Templates namespace.
+     */
     public static readonly APPLICATION_TEMPLATES_NAMESPACE: string =
         I18nModuleConstants.APPLICATION_TEMPLATES_NAMESPACE;
 
     /**
-    * Extension Templates namespace.
-    */
+     * Extension Templates namespace.
+     */
     public static readonly TEMPLATE_CORE_NAMESPACE: string = I18nModuleConstants.TEMPLATE_CORE_NAMESPACE;
+
+    /**
+     * Actions namespace.
+     */
+    public static readonly ACTIONS_NAMESPACE: string = I18nModuleConstants.ACTIONS_NAMESPACE;
 
     /**
      * Locations of the I18n namespaces.
@@ -303,7 +308,8 @@ export class I18nConstants {
         [ I18nConstants.AI_NAMESPACE, "portals" ],
         [ I18nConstants.APPLICATION_TEMPLATES_NAMESPACE, "portals" ],
         [ I18nConstants.TEMPLATE_CORE_NAMESPACE, "portals" ],
-        [ I18nConstants.IMPERSONATION_CONFIGURATION_NAMESPACE, "portals" ]
+        [ I18nConstants.IMPERSONATION_CONFIGURATION_NAMESPACE, "portals" ],
+        [ I18nConstants.ACTIONS_NAMESPACE, "portals" ]
     ]);
 
     /**

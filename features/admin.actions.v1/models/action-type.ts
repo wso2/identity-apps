@@ -17,14 +17,24 @@
  */
 
 /**
- * Enum that lists the currently defined feature status label types and their corresponding i18n keys.
+ * Model for action type.
+ * This class will hold the values for the URL path and the API path.
  */
-enum FeatureStatusLabel {
-    NEW = "common:new",
-    BETA = "common:beta",
-    EXPERIMENTAL = "common:experimental",
-    PREMIUM = "common:premium",
-    COMING_SOON = "common:comingSoon"
-}
 
-export default FeatureStatusLabel;
+export default class ActionType {
+    urlPath: string;
+    apiPath: string;
+
+    constructor(path: string, name: string) {
+        this.urlPath = path;
+        this.apiPath = name;
+    }
+
+    public getUrlPath(): string {
+        return this.urlPath;
+    }
+
+    public getApiPath(): string {
+        return this.apiPath;
+    }
+};

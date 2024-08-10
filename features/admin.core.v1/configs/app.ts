@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { getActionsResourceEndpoints } from "@wso2is/admin.actions.v1/configs/endpoints";
 import { getAdministratorsResourceEndpoints } from "@wso2is/admin.administrators.v1/config/endpoints";
 import { getAPIResourceEndpoints } from "@wso2is/admin.api-resources.v2/configs/endpoint";
 import { getApplicationTemplatesResourcesEndpoints } from "@wso2is/admin.application-templates.v1/configs/endpoints";
@@ -205,7 +206,8 @@ export class Config {
                 I18nConstants.API_RESOURCES_NAMESPACE,
                 I18nConstants.AI_NAMESPACE,
                 I18nConstants.TEMPLATE_CORE_NAMESPACE,
-                I18nConstants.APPLICATION_TEMPLATES_NAMESPACE
+                I18nConstants.APPLICATION_TEMPLATES_NAMESPACE,
+                I18nConstants.ACTIONS_NAMESPACE
             ],
             preload: []
         };
@@ -263,6 +265,7 @@ export class Config {
             ...getConsoleSettingsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtensionTemplatesEndpoints(this.resolveServerHost()),
             ...getApplicationTemplatesResourcesEndpoints(this.resolveServerHost()),
+            ...getActionsResourceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,

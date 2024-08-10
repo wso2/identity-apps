@@ -17,14 +17,8 @@
  */
 
 /**
- * Enum that lists the currently defined feature status label types and their corresponding i18n keys.
+ * Interface for the Actions feature resource endpoints.
  */
-enum FeatureStatusLabel {
-    NEW = "common:new",
-    BETA = "common:beta",
-    EXPERIMENTAL = "common:experimental",
-    PREMIUM = "common:premium",
-    COMING_SOON = "common:comingSoon"
+export interface ActionsResourceEndpointsInterface {
+    actions: string;
 }
-
-export default FeatureStatusLabel;

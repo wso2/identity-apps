@@ -2573,7 +2573,8 @@ export const console: ConsoleNS = {
                     general: "General",
                     gettingStarted: "Getting Started",
                     identityProviders: "Connections",
-                    identityVerificationProviders: "Identity Verification Providers"
+                    identityVerificationProviders: "Identity Verification Providers",
+                    extensions: "Extensions"
                 },
                 customize: "Customize",
                 identityProviderEdit: "Connections Edit",
