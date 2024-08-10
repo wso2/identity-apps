@@ -57,5 +57,7 @@ export * from "./applications";
 export * from "./idp";
 export * from "./api-resources";
 export * from "./ai";
+export * from "./template-core";
+export * from "./application-templates";
 export * from "./impersonation";
 export * from "./actions";

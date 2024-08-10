@@ -223,6 +223,16 @@ interface ApplicationsDocumentationLinksInterface {
     roles: {
         learnMore: string;
     }
+    template: {
+        categories: {
+            default: {
+                learnMore: string;
+            }
+            ssoIntegration: {
+                learnMore: string;
+            }
+        }
+    }
 }
 
 /**

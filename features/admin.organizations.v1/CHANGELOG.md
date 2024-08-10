@@ -1,5 +1,48 @@
 # @wso2is/admin.organizations.v1
 
+## 2.21.5
+
+### Patch Changes
+
+- [#6743](https://github.com/wso2/identity-apps/pull/6743) [`0677cb68e4985fc573836bb2050ce24b1ed4baac`](https://github.com/wso2/identity-apps/commit/0677cb68e4985fc573836bb2050ce24b1ed4baac) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Updated Meta Attribute Autocomplete component IDs for E2E
+
+- Updated dependencies [[`00ee3fbc87f646c936fcda1534d75f9359ad03db`](https://github.com/wso2/identity-apps/commit/00ee3fbc87f646c936fcda1534d75f9359ad03db), [`00ee3fbc87f646c936fcda1534d75f9359ad03db`](https://github.com/wso2/identity-apps/commit/00ee3fbc87f646c936fcda1534d75f9359ad03db), [`00ee3fbc87f646c936fcda1534d75f9359ad03db`](https://github.com/wso2/identity-apps/commit/00ee3fbc87f646c936fcda1534d75f9359ad03db), [`48e1d0d66298fe8cd0ae822d5dc85abfc64cb610`](https://github.com/wso2/identity-apps/commit/48e1d0d66298fe8cd0ae822d5dc85abfc64cb610)]:
+  - @wso2is/admin.applications.v1@2.23.0
+  - @wso2is/admin.connections.v1@2.21.42
+  - @wso2is/admin.extensions.v1@2.22.0
+  - @wso2is/admin.core.v1@2.24.5
+  - @wso2is/i18n@2.5.17
+  - @wso2is/react-components@2.4.0
+  - @wso2is/form@2.1.0
+  - @wso2is/admin.identity-providers.v1@2.21.42
+  - @wso2is/admin.roles.v2@2.20.112
+  - @wso2is/admin.authentication.v1@2.20.112
+  - @wso2is/admin.groups.v1@2.20.112
+  - @wso2is/admin.tenants.v1@2.20.112
+  - @wso2is/admin.users.v1@2.20.112
+  - @wso2is/admin.userstores.v1@2.20.112
+  - @wso2is/admin.authorization.v1@2.20.47
+  - @wso2is/dynamic-forms@2.0.93
+
+## 2.21.4
+
+### Patch Changes
+
+- [#6738](https://github.com/wso2/identity-apps/pull/6738) [`f708548a9cf9846788ba620264f57f5298e76c96`](https://github.com/wso2/identity-apps/commit/f708548a9cf9846788ba620264f57f5298e76c96) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add data-testid to the organizations page
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.22.41
+  - @wso2is/admin.authentication.v1@2.20.111
+  - @wso2is/admin.connections.v1@2.21.41
+  - @wso2is/admin.core.v1@2.24.4
+  - @wso2is/admin.extensions.v1@2.21.81
+  - @wso2is/admin.groups.v1@2.20.111
+  - @wso2is/admin.identity-providers.v1@2.21.41
+  - @wso2is/admin.roles.v2@2.20.111
+  - @wso2is/admin.tenants.v1@2.20.111
+  - @wso2is/admin.users.v1@2.20.111
+  - @wso2is/admin.userstores.v1@2.20.111
+
 ## 2.21.3
 
 ### Patch Changes
