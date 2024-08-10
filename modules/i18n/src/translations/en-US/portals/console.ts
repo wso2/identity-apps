@@ -8351,7 +8351,7 @@ export const console: ConsoleNS = {
                         }
                     }
                 }
-            },
+            }
         },
         notifications: {
             endSession: {
