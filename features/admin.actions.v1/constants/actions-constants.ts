@@ -62,25 +62,25 @@ export class ActionsConstants {
         DELETE_ACTION_INVALID_STATUS_CODE_ERROR: IdentityAppsError;
         UPDATE_ACTION_INVALID_STATUS_CODE_ERROR: IdentityAppsError;
     } = {
-            CREATE_ACTION_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
-                ActionsConstants.CREATE_ACTION_ERROR_CODE,
-                "An error occurred while creating the action.",
-                "Error while creating the action.",
-                null
-            ),
-            DELETE_ACTION_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
-                ActionsConstants.DELETE_ACTION_ERROR_CODE,
-                "An error occurred while deleting the action.",
-                "Error while deleting the action",
-                null
-            ),
-            UPDATE_ACTION_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
-                ActionsConstants.UPDATE_ACTION_ERROR_CODE,
-                "An error occurred while updating the action.",
-                "Error while updating the action",
-                null
-            )
-        };
+        CREATE_ACTION_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
+            ActionsConstants.CREATE_ACTION_ERROR_CODE,
+            "An error occurred while creating the action.",
+            "Error while creating the action.",
+            null
+        ),
+        DELETE_ACTION_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
+            ActionsConstants.DELETE_ACTION_ERROR_CODE,
+            "An error occurred while deleting the action.",
+            "Error while deleting the action",
+            null
+        ),
+        UPDATE_ACTION_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
+            ActionsConstants.UPDATE_ACTION_ERROR_CODE,
+            "An error occurred while updating the action.",
+            "Error while updating the action",
+            null
+        )
+    };
 
     public static readonly ACTION_TYPES: {
         PRE_ISSUE_ACCESS_TOKEN: ActionType;
@@ -88,15 +88,15 @@ export class ActionsConstants {
         PRE_UPDATE_PROFILE: ActionType;
         PRE_REGISTRATION: ActionType;
     } = {
-            PRE_ISSUE_ACCESS_TOKEN: new ActionType(
-                ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH, ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH),
-            PRE_REGISTRATION: new ActionType(
-                ActionsConstants.PRE_REGISTRATION_URL_PATH, ActionsConstants.PRE_REGISTRATION_API_PATH),
-            PRE_UPDATE_PASSWORD: new ActionType(
-                ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH, ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH),
-            PRE_UPDATE_PROFILE: new ActionType(
-                ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH, ActionsConstants.PRE_UPDATE_PROFILE_API_PATH)
-        };
+        PRE_ISSUE_ACCESS_TOKEN: new ActionType(
+            ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH, ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH),
+        PRE_REGISTRATION: new ActionType(
+            ActionsConstants.PRE_REGISTRATION_URL_PATH, ActionsConstants.PRE_REGISTRATION_API_PATH),
+        PRE_UPDATE_PASSWORD: new ActionType(
+            ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH, ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH),
+        PRE_UPDATE_PROFILE: new ActionType(
+            ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH, ActionsConstants.PRE_UPDATE_PROFILE_API_PATH)
+    };
 
     public static readonly AUTH_TYPES: AuthenticationTypeDropdownOption[] = [
         {
