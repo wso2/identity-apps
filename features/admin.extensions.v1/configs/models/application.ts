@@ -181,6 +181,7 @@ export interface ApplicationConfig {
  * Unique identifiers for application edit tabs.
  */
 export enum ApplicationTabIDs {
+    QUICK_START = "quick-start",
     GENERAL = "general",
     PROTOCOL = "protocol",
     USER_ATTRIBUTES = "user-attributes",
