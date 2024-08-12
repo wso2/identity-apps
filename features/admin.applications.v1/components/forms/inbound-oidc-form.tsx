@@ -2704,11 +2704,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             To enable the new Selective Access Token Attributes feature,
                                             select
                                                 <Code withBackground>Enable Access Token Attributes</Code>
-                                            and update your application, but be aware that this change is
-                                            irreversible and will automatically include attributes
-                                            (attributes set as requested in the User Attribute section)
-                                            in the <Code withBackground>access_token</Code> without
-                                            requiring OIDC scopes. <b> Proceed with caution.</b>
+                                            and update your application, but be aware that after this change,
+                                            attributes (set as requested in the User Attribute section)
+                                            will be automatically included in the
+                                                <Code withBackground>access_token</Code> without
+                                            requiring OIDC scopes, and this change is irreversible.
+                                                <b> Proceed with caution.</b>
                                             </Alert>
                                             <Field
                                                 ref={ accessTokenAttributesEnabledConfig }
