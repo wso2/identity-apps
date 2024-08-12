@@ -1,9 +1,9 @@
-<!-- PLEASE NOTE THAT IT'S MANDATORY TO FILL IN THE PULL REQUEST TEMPLATE WHEN SUBMITTING PULL REQUESTS. DO NOT ERASE THE PR TEMPLATE. -->
+<!-- PLEASE NOTE THAT IT'S MANDATORY TO FILL IN THE PULL REQUEST TEMPLATE WHEN SUBMITTING PULL REQUESTS. -->
 
 ### Purpose
 <!-- Describe the problem, feature, improvement or the change introduces by the PR briefly. Add screenshots/GIFs if UI/UX changes are introduced. -->
 
-$subject
+
 
 ### Related Issues
 <!-- Mention the **PUBLIC** issue/s related to the pull request -->
