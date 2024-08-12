@@ -115,9 +115,10 @@ import {
     additionalSpProperty
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
-import { AccessTokenAttributeOption } from "../components/access-token-attribute-option";
+import { AccessTokenAttributeOption } from "../access-token-attribute-option";
 import { ApplicationCertificateWrapper } from "../settings/certificate";
 import "./inbound-oidc-form.scss";
+import Alert from "@oxygen-ui/react/Alert";
 
 /**
  * Proptypes for the inbound OIDC form component.
@@ -2697,8 +2698,52 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             />
                             { isJWTAccessTokenTypeSelected ? (
                                 <Grid.Row>
+                                    { !initialValues?.accessToken?.accessTokenAttributesEnabled && (
+                                        <Grid.Column>
+                                            <Alert severity="warning">
+                                            To enable the new Selective Access Token Attributes feature,
+                                            select
+                                                <Code withBackground>Enable Access Token Attributes</Code>
+                                            and update your application, but be aware that this change is
+                                            irreversible and will automatically include attributes
+                                            (attributes set as requested in the User Attribute section)
+                                            in the <Code withBackground>access_token</Code> without
+                                            requiring OIDC scopes. <b> Proceed with caution.</b>
+                                            </Alert>
+                                            <Field
+                                                ref={ accessTokenAttributesEnabledConfig }
+                                                name="accessTokenAttributesEnabledConfig"
+                                                label=""
+                                                required={ false }
+                                                type="checkbox"
+                                                listen={ (values: Map<string, FormValue>): void => {
+                                                    const accessTokenAttributesEnabled: boolean =
+                                                    values.get("accessTokenAttributesEnabledConfig")
+                                                        .includes("accessTokenAttributesEnabled");
+
+                                                    setAccessTokenAttributesEnabled(accessTokenAttributesEnabled);
+                                                } }
+                                                value={
+                                                    initialValues?.accessToken?.accessTokenAttributesEnabled
+                                                        ? [ "accessTokenAttributesEnabled" ]
+                                                        : []
+                                                }
+                                                children={ [
+                                                    {
+                                                        label: t("applications:forms.inboundOIDC.sections" +
+                                                        ".accessToken.fields.accessTokenAttributes.enable.label"),
+                                                        value: "accessTokenAttributesEnabled"
+                                                    }
+                                                ] }
+                                                readOnly={ readOnly }
+                                                data-testid={ `${ testId }-access-token-attributes-enabled-checkbox` }
+                                            />
+                                        </Grid.Column>
+                                    ) }
                                     <Grid.Column width={ 8 }>
                                         <Autocomplete
+                                            className="ui form field access-token-attributes-dropdown"
+                                            size="small"
                                             disablePortal
                                             multiple
                                             disableCloseOnSelect
@@ -2706,7 +2751,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             options={ accessTokenAttributes }
                                             value={ selectedAccessTokenAttributes ?? [] }
                                             disabled = { !initialValues?.accessToken?.accessTokenAttributesEnabled }
-                                            data-componentid={ `${ componentId }-assigned-jwt-attribute-list` }
+                                            data-componentid={ `${ componentId }-assigned-access-token-attribute-list` }
                                             getOptionLabel={
                                                 (claim: ExternalClaim) => claim.claimURI
                                             }
@@ -2719,7 +2764,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                         ) }
                                                     </InputLabel>
                                                     <TextField
-                                                        className="jwt-attributes-dropdown-input"
+                                                        className="access-token-attributes-dropdown-input"
                                                         { ...params }
                                                         placeholder={ t("applications:forms.inboundOIDC.sections" +
                                                         ".accessToken.fields.accessTokenAttributes.placeholder") }
@@ -2775,42 +2820,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 }
                                             >
                                             Select the attributes that should be included in
-                                            the <Code withBackground>access token</Code>
+                                            the <Code withBackground>access_token</Code>.
                                             </Trans>
                                         </Hint>
                                     </Grid.Column>
-                                    { !initialValues?.accessToken?.accessTokenAttributesEnabled && (
-                                        <Grid.Column>
-                                            <Field
-                                                ref={ accessTokenAttributesEnabledConfig }
-                                                name="accessTokenAttributesEnabledConfig"
-                                                label=""
-                                                required={ false }
-                                                type="checkbox"
-                                                listen={ (values: Map<string, FormValue>): void => {
-                                                    const accessTokenAttributesEnabled: boolean =
-                                                    values.get("accessTokenAttributesEnabledConfig")
-                                                        .includes("accessTokenAttributesEnabled");
-
-                                                    setAccessTokenAttributesEnabled(accessTokenAttributesEnabled);
-                                                } }
-                                                value={
-                                                    initialValues?.accessToken?.accessTokenAttributesEnabled
-                                                        ? [ "accessTokenAttributesEnabled" ]
-                                                        : []
-                                                }
-                                                children={ [
-                                                    {
-                                                        label: t("applications:forms.inboundOIDC.sections" +
-                                                        ".accessToken.fields.accessTokenAttributes.enable.label"),
-                                                        value: "accessTokenAttributesEnabled"
-                                                    }
-                                                ] }
-                                                readOnly={ readOnly }
-                                                data-testid={ `${ testId }-access-token-attributes-enabled-checkbox` }
-                                            />
-                                        </Grid.Column>
-                                    ) }
                                 </Grid.Row>
                             ) : null }
                         </Grid.Column>

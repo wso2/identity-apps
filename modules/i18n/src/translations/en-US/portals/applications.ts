@@ -1581,7 +1581,7 @@ export const applications: ApplicationsNS = {
                             placeholder: "Search by attribute name",
                             enable: {
                                 hint : "",
-                                label: "Enable Access Token Attributes Feature"
+                                label: "Enable Access Token Attributes"
                             }
                         }
                     },
