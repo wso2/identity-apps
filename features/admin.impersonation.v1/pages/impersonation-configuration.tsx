@@ -170,7 +170,7 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
                                 { isImpersonationFetchRequestLoading
                                     ? (
                                         <ContentLoader />
-                                    )   
+                                    )
                                     : (
                                         <>
                                             <Form
