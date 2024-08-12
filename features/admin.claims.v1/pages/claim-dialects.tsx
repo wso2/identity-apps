@@ -38,7 +38,8 @@ import {
     GridLayout,
     PageLayout,
     Popup,
-    PrimaryButton
+    PrimaryButton,
+    useDocumentation
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -66,6 +67,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     const { [ "data-testid" ]: testId } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -241,8 +243,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                     <>
                         { t("claims:dialects.pageLayout.list.description") }
                         <DocumentationLink
-                            link="manage.userStores.attributeMappings.learnMore"
-                            isLinkRef
+                            link={ getLink("manage.userStores.attributeMappings.learnMore") }
                         >
                             { t("extensions:common.learnMore") }
                         </DocumentationLink>
