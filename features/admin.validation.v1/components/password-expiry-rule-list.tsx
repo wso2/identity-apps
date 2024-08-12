@@ -142,7 +142,6 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
     };
 
     const updateRules = (updatedRules: PasswordExpiryRule[]) => {
-        console.log("testing:", updatedRules);
         setRules(updatedRules);
         onRuleChange(updatedRules);
     };

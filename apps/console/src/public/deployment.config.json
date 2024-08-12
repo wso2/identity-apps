@@ -662,7 +662,7 @@
                 "scopes": {}
             },
             "loginAndRegistration": {
-                "disabledFeatures": ["ruleBasedPasswordExpiry"],
+                "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
                     "create": [],

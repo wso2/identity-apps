@@ -32,7 +32,8 @@ import { getConfiguration } from "@wso2is/admin.users.v1/utils/generate-password
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
-    IdentifiableComponentInterface
+    IdentifiableComponentInterface,
+    RolesInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -60,8 +61,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Ref } from "semantic-ui-react";
-import { PasswordExpiryRuleList } from "./password-expiry-rule-list";
 import { updateValidationConfigData, useValidationConfigData } from "../api";
+import { PasswordExpiryRuleList } from "../components/password-expiry-rule-list";
 import { ValidationConfigConstants } from "../constants/validation-config-constants";
 import {
     PasswordExpiryRule,
@@ -98,7 +99,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         state?.config?.ui?.isPasswordInputValidationEnabled);
     const disabledFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.loginAndRegistration?.disabledFeatures);
-    const isRuleBasedPasswordExpiryDisabled: boolean = disabledFeatures.includes("ruleBasedPasswordExpiry");
+    const isRuleBasedPasswordExpiryDisabled: boolean = disabledFeatures?.includes("ruleBasedPasswordExpiry");
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
@@ -129,6 +130,10 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const [ initialPasswordExpiryRules, setInitialPasswordExpiryRules ] = useState<PasswordExpiryRule[]>([]);
     const [ passwordExpiryRules, setPasswordExpiryRules ] = useState<PasswordExpiryRule[]>([]);
     const [ hasPasswordExpiryRuleErrors, setHasPasswordExpiryRuleErrors ] = useState<boolean>(false);
+
+    const [ allRoleList, setAllRoleList ] = useState<RolesInterface[]>([]);
+    const [ roleListOffset, setRoleListOffset ] = useState<number>(0);
+    const rolesListItemLimit: number = 50;
 
     // State variables required to support legacy password policies.
     const [ isLegacyPasswordPolicyEnabled, setIsLegacyPasswordPolicyEnabled ] = useState<boolean>(undefined);
@@ -166,18 +171,23 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         data: groupsList,
         error: groupsListError,
         isLoading: isGroupListLoading
-    } = useGroupList(null, "members,roles", null, true);
+    } = useGroupList(
+        null,
+        "members,roles",
+        null,
+        !isRuleBasedPasswordExpiryDisabled
+    );
 
     const {
-        data: rolesList,
+        data: currentRoleList,
         isLoading: isRolesListLoading,
         error: rolesListError
     } = useRolesList(
-        null,
-        null,
+        rolesListItemLimit,
+        roleListOffset,
         null,
         "users,groups,permissions,associatedApplications",
-        true
+        !isRuleBasedPasswordExpiryDisabled
     );
 
     useEffect(() => {
@@ -205,6 +215,16 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             }));
         }
     }, [ groupsListError, rolesListError ]);
+
+    useEffect(() => {
+        if (!currentRoleList || !currentRoleList?.Resources) {
+            return;
+        }
+        setAllRoleList((prevRoles: RolesInterface[]) => [ ...prevRoles, ...currentRoleList?.Resources ]);
+        if (allRoleList?.length < currentRoleList?.totalResults) {
+            setRoleListOffset((prevOffset: number) => prevOffset + rolesListItemLimit);
+        }
+    }, [ currentRoleList ]);
 
     // Handle rule based password expiry related data.
     useEffect(() => {
@@ -973,7 +993,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     isSkipFallbackEnabled={ passwordExpirySkipFallback }
                     defaultPasswordExpiryTime={ defaultPasswordExpiryTime }
                     ruleList={ passwordExpiryRules }
-                    rolesList={ rolesList.Resources }
+                    rolesList={ allRoleList }
                     groupsList={ groupsList.Resources }
                     isReadOnly={ isReadOnly }
                     onDefaultPasswordExpiryTimeChange={ (days: number) => setDefaultPasswordExpiryTime(days) }
@@ -1664,60 +1684,62 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 padded={ "very" }
                             >
                                 <div className="validation-configurations password-validation-configurations">
-                                    { !(isLoading || isRolesListLoading || isGroupListLoading) ? (
-                                        <Form
-                                            id={ FORM_ID }
-                                            initialValues={ initialFormValues }
-                                            uncontrolledForm={ true }
-                                            validate={ null }
-                                            onSubmit={ (
-                                                values: ValidationFormInterface
-                                            ) =>
-                                                handleUpdateMyAccountData(
-                                                    values
-                                                )
-                                            }
-                                            enableReInitialize={ true }
-                                        >
-                                            { isRuleType && (
-                                                <div className="validation-configurations-form">
-                                                    { isRuleBasedPasswordExpiryDisabled
-                                                        ? serverConfigurationConfig.passwordExpiryComponent(
+                                    { !(isLoading
+                                        || (!isRuleBasedPasswordExpiryDisabled
+                                        && (isRolesListLoading || isGroupListLoading))) ? (
+                                            <Form
+                                                id={ FORM_ID }
+                                                initialValues={ initialFormValues }
+                                                uncontrolledForm={ true }
+                                                validate={ null }
+                                                onSubmit={ (
+                                                    values: ValidationFormInterface
+                                                ) =>
+                                                    handleUpdateMyAccountData(
+                                                        values
+                                                    )
+                                                }
+                                                enableReInitialize={ true }
+                                            >
+                                                { isRuleType && (
+                                                    <div className="validation-configurations-form">
+                                                        { isRuleBasedPasswordExpiryDisabled
+                                                            ? serverConfigurationConfig.passwordExpiryComponent(
+                                                                componentId,
+                                                                passwordExpiryEnabled,
+                                                                setPasswordExpiryEnabled,
+                                                                t,
+                                                                isReadOnly )
+                                                            : resolvePasswordExpiration() }
+                                                        <Divider className="mt-4 mb-5" />
+                                                        { serverConfigurationConfig.passwordHistoryCountComponent(
                                                             componentId,
-                                                            passwordExpiryEnabled,
-                                                            setPasswordExpiryEnabled,
+                                                            passwordHistoryEnabled,
+                                                            setPasswordHistoryEnabled,
                                                             t,
-                                                            isReadOnly )
-                                                        : resolvePasswordExpiration() }
-                                                    <Divider className="mt-4 mb-5" />
-                                                    { serverConfigurationConfig.passwordHistoryCountComponent(
-                                                        componentId,
-                                                        passwordHistoryEnabled,
-                                                        setPasswordHistoryEnabled,
-                                                        t,
-                                                        isReadOnly
-                                                    ) }
-                                                </div>
-                                            ) }
-                                            { isPasswordInputValidationEnabled
-                                                ? resolvePasswordValidation()
-                                                : resolveLegacyPasswordValidation()
-                                            }
-                                            <Field.Button
-                                                form={ FORM_ID }
-                                                size="small"
-                                                buttonType="primary_btn"
-                                                ariaLabel="Validation configuration update button"
-                                                name="update-button"
-                                                data-testid={ `${ componentId }-submit-button` }
-                                                loading={ isSubmitting }
-                                                label={ t("common:update") }
-                                                hidden={ isReadOnly }
-                                            />
-                                        </Form>
-                                    ) : (
-                                        <ContentLoader />
-                                    ) }
+                                                            isReadOnly
+                                                        ) }
+                                                    </div>
+                                                ) }
+                                                { isPasswordInputValidationEnabled
+                                                    ? resolvePasswordValidation()
+                                                    : resolveLegacyPasswordValidation()
+                                                }
+                                                <Field.Button
+                                                    form={ FORM_ID }
+                                                    size="small"
+                                                    buttonType="primary_btn"
+                                                    ariaLabel="Validation configuration update button"
+                                                    name="update-button"
+                                                    data-testid={ `${ componentId }-submit-button` }
+                                                    loading={ isSubmitting }
+                                                    label={ t("common:update") }
+                                                    hidden={ isReadOnly }
+                                                />
+                                            </Form>
+                                        ) : (
+                                            <ContentLoader />
+                                        ) }
                                 </div>
                             </EmphasizedSegment>
                         </Grid.Column>
