@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -46,12 +46,12 @@ export interface ResourceTabSubComponentsInterface {
  * Interface for the resource tab pane components.
  */
 export interface ResourceTabPaneInterface {
-    pane?: SemanticShorthandItem<TabPaneProps>
-    menuItem?: any
-    render?: () => React.ReactNode
-    "data-tabid"?: string
-    componentId?: string
-    index?: number
+    pane?: SemanticShorthandItem<TabPaneProps>;
+    menuItem?: any;
+    render?: () => React.ReactNode;
+    "data-tabid"?: string;
+    componentId?: string;
+    index?: number;
 }
 
 /**
@@ -97,6 +97,16 @@ export interface ResourceTabPropsInterface extends Omit<TabProps, "onTabChange">
      */
     tabIdentifier?: string;
     /**
+     * Should the component handle tab redirection based on the hash.
+     */
+    controlTabRedirectionInternally?: boolean;
+    /**
+     * The default tab to be active when there is no hash or an invalid hash.
+     * This will only work when `controlTabRedirectionInternally` is enabled.
+     * Otherwise, utilize `defaultActiveIndex`.
+     */
+    defaultActiveTab?: number | string;
+    /**
      * Called on tab change.
      *
      * @param event - React's original SyntheticEvent.
@@ -109,33 +119,37 @@ export interface ResourceTabPropsInterface extends Omit<TabProps, "onTabChange">
 }
 
 /**
+ * Constant representing a URL hash fragment for the current tab.
+ */
+export const TAB_URL_HASH_FRAGMENT: string = "tab=";
+
+/**
  * Resource tab component.
  *
  * @param props - Props injected to the component.
  *
  * @returns Resource tab component
  */
-export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & ResourceTabSubComponentsInterface = (
-    props: ResourceTabPropsInterface
-): ReactElement => {
-
-    const {
-        isLoading,
-        attached,
-        className,
-        onInitialize,
-        panes,
-        defaultActiveIndex,
-        loadingStateOptions,
-        pointing,
-        secondary,
-        onTabChange,
-        isAutomaticTabRedirectionEnabled,
-        tabIdentifier,
-        [ "data-componentid" ]: componentId,
-        [ "data-testid" ]: testId,
-        ...rest
-    } = props;
+export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & ResourceTabSubComponentsInterface = ({
+    isLoading = false,
+    attached = false,
+    className,
+    onInitialize,
+    panes,
+    defaultActiveIndex,
+    loadingStateOptions,
+    pointing = true,
+    secondary = true,
+    onTabChange,
+    isAutomaticTabRedirectionEnabled = false,
+    tabIdentifier,
+    controlTabRedirectionInternally = false,
+    defaultActiveTab = 0,
+    tabIdentifierURLFrag = "",
+    [ "data-componentid" ]: componentId = "resource-tabs",
+    [ "data-testid" ]: testId = "resource-tabs",
+    ...rest
+}: ResourceTabPropsInterface): ReactElement => {
 
     const classes: string = classNames(
         "tabs resource-tabs",
@@ -152,6 +166,10 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
      * Called to set the pane index as the active tab index if it is needed to redirect to a specific tab
      */
     useEffect(() => {
+        if (controlTabRedirectionInternally) {
+            return;
+        }
+
         if (isTabChanged) {
             return;
         }
@@ -174,6 +192,56 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
     }, [ defaultActiveIndex ]);
 
     /**
+     * Update the active tab index based on the hash.
+     */
+    useEffect(() => {
+        if (!controlTabRedirectionInternally) {
+            return;
+        }
+
+        const hashComponents: string[] = window?.location?.hash?.split(TAB_URL_HASH_FRAGMENT);
+        let tabId: string;
+        let tabIndex: number;
+
+        // Verify if the hash contains the redirecting tab's ID or index.
+        if (hashComponents?.length === 2) {
+            const hashTabValue: string = hashComponents[1];
+
+            const hashTabIndex: number = parseInt(hashTabValue);
+
+            if (isNaN(hashTabIndex)) {
+                tabId = hashTabValue;
+            } else {
+                tabIndex = hashTabIndex;
+            }
+        }
+
+        if (tabId) {
+            tabIndex = panes?.findIndex((pane: ResourceTabPaneInterface) => pane?.["data-tabid"] === tabId);
+        }
+
+        if (tabIndex >= 0 && tabIndex < panes?.length) {
+            if (tabIndex === activeIndex) {
+                return;
+            }
+            setActiveIndex(tabIndex);
+        } else {
+            if (typeof defaultActiveTab === "string") {
+                tabIndex = panes?.findIndex(
+                    (pane: ResourceTabPaneInterface) => pane?.["data-tabid"] === defaultActiveTab);
+            } else if (typeof defaultActiveTab === "number") {
+                tabIndex = defaultActiveTab;
+            }
+
+            if (tabIndex >= 0 && tabIndex < panes?.length) {
+                setActiveIndex(tabIndex);
+            } else {
+                setActiveIndex(0);
+            }
+        }
+    }, [ window?.location?.hash, defaultActiveTab, panes ]);
+
+    /**
      * Called to set the panes list length initially.
      */
     useEffect(()=> {
@@ -186,9 +254,13 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
     /**
      * Handles the tab change.
      */
-    const handleTabChange = (e: SyntheticEvent, activeIndex: string | number) => {
-        setIsTabChanged(true);
-        setActiveIndex(activeIndex);
+    const handleTabChange = (e: SyntheticEvent, activeIndex: string | number, activeTabId: string) => {
+        if (!controlTabRedirectionInternally) {
+            setIsTabChanged(true);
+            setActiveIndex(activeIndex);
+        } else {
+            window.location.hash = `${TAB_URL_HASH_FRAGMENT}${activeTabId}`;
+        }
     };
 
     //TODO - Add style classes to placeholders.
@@ -237,7 +309,7 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
                     render?: () => ReactNode
                   } = panes[data.activeIndex];
 
-                handleTabChange(e, data.activeIndex);
+                handleTabChange(e, data.activeIndex, activeTab?.["data-tabid"]);
                 onTabChange && typeof onTabChange === "function" && onTabChange(e, data, {
                     "data-tabid": activeTab["data-tabid"],
                     index: data.activeIndex
@@ -253,23 +325,10 @@ export const ResourceTab: FunctionComponent<ResourceTabPropsInterface> & Resourc
             activeIndex={ activeIndex }
             data-componentid={ componentId }
             data-testid={ testId }
+            tabIdentifierURLFrag={ tabIdentifierURLFrag }
             { ...rest }
         />
     );
-};
-
-/**
- * Default props for the resource tab component.
- */
-ResourceTab.defaultProps = {
-    attached: false,
-    "data-componentid": "resource-tabs",
-    "data-testid": "resource-tabs",
-    isAutomaticTabRedirectionEnabled: false,
-    isLoading: false,
-    pointing: true,
-    secondary: true,
-    tabIdentifierURLFrag: ""
 };
 
 ResourceTab.Pane = ResourceTabPane;

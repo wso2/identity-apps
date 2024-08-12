@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,13 +24,12 @@ export class ProfileConstants {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     private constructor() { }
 
     // API errors
     public static readonly CHANGE_PASSWORD_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
         "code while changing the users password.";
+
     public static readonly CHANGE_PASSWORD_ERROR: string = "Error occurred while changing the users password.";
 }

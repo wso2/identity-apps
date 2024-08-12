@@ -1,5 +1,32 @@
 # @wso2is/admin.authorization.v1
 
+## 2.20.48
+
+### Patch Changes
+
+- Updated dependencies [[`d646c0baa3e0cdba239cc9fd8b4acf60ca336f84`](https://github.com/wso2/identity-apps/commit/d646c0baa3e0cdba239cc9fd8b4acf60ca336f84)]:
+  - @wso2is/form@2.1.1
+  - @wso2is/i18n@2.5.18
+
+## 2.20.47
+
+### Patch Changes
+
+- Updated dependencies [[`00ee3fbc87f646c936fcda1534d75f9359ad03db`](https://github.com/wso2/identity-apps/commit/00ee3fbc87f646c936fcda1534d75f9359ad03db), [`00ee3fbc87f646c936fcda1534d75f9359ad03db`](https://github.com/wso2/identity-apps/commit/00ee3fbc87f646c936fcda1534d75f9359ad03db), [`00ee3fbc87f646c936fcda1534d75f9359ad03db`](https://github.com/wso2/identity-apps/commit/00ee3fbc87f646c936fcda1534d75f9359ad03db)]:
+  - @wso2is/i18n@2.5.17
+  - @wso2is/react-components@2.4.0
+  - @wso2is/form@2.1.0
+  - @wso2is/dynamic-forms@2.0.93
+
+## 2.20.46
+
+### Patch Changes
+
+- Updated dependencies [[`6da9bb307f8b0168777a7d8ea44f67619c99d493`](https://github.com/wso2/identity-apps/commit/6da9bb307f8b0168777a7d8ea44f67619c99d493)]:
+  - @wso2is/react-components@2.3.1
+  - @wso2is/dynamic-forms@2.0.92
+  - @wso2is/form@2.0.93
+
 ## 2.20.45
 
 ### Patch Changes

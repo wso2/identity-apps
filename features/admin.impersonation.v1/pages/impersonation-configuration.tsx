@@ -22,12 +22,12 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
-import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
+import { ContentLoader, EmphasizedSegment, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Grid, Placeholder, Ref } from "semantic-ui-react";
+import { Grid, Ref } from "semantic-ui-react";
 import {
     updateImpersonationConfigurations,
     useImpersonationConfig
@@ -148,42 +148,6 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
         history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
     };
 
-    /**
-     * This function returns loading placeholder.
-     */
-    const renderLoadingPlaceholder = (): ReactElement => {
-        return (
-            <Grid.Row columns={ 1 }>
-                <div>
-                    <div
-                        className="ui card fluid settings-card"
-                        data-componentid={ `${componentId}-loading-card` }
-                    >
-                        <div className="content no-padding">
-                            <div className="header-section">
-                                <Placeholder>
-                                    <Placeholder.Header>
-                                        <Placeholder.Line length="medium" />
-                                        <Placeholder.Line length="full" />
-                                    </Placeholder.Header>
-                                </Placeholder>
-                                <Divider hidden />
-                            </div>
-                        </div>
-                        <div className="content extra extra-content">
-                            <div className="action-button">
-                                <Placeholder>
-                                    <Placeholder.Line length="very short" />
-                                </Placeholder>
-                            </div>
-                        </div>
-                    </div>
-                    <Divider hidden/>
-                </div>
-            </Grid.Row>
-        );
-    };
-
     return (
         <PageLayout
             title={ t("impersonation:title") }
@@ -204,7 +168,9 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
                         <Grid.Column width={ 16 }>
                             <EmphasizedSegment className="form-wrapper" padded={ "very" }>
                                 { isImpersonationFetchRequestLoading
-                                    ? renderLoadingPlaceholder()
+                                    ? (
+                                        <ContentLoader />
+                                    )
                                     : (
                                         <>
                                             <Form

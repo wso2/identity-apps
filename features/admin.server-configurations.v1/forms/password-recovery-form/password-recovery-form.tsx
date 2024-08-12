@@ -17,6 +17,7 @@
  */
 
 import Chip from "@oxygen-ui/react/Chip";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
 import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import {
     PasswordRecoveryConfigurationFormPropsInterface,
@@ -27,13 +28,13 @@ import {
 } from "@wso2is/admin.server-configurations.v1";
 import { CommonUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
-import { Heading, Hint } from "@wso2is/react-components";
+import { Heading, Hint, Link, Message } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider } from "semantic-ui-react";
+import { Divider, Icon } from "semantic-ui-react";
 import { AppState } from "../../../admin.core.v1";
 import { GovernanceConnectorConstants } from "../../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
@@ -239,14 +240,14 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
         } else if (!values.smsOtpLength) {
             // Check for required error
             errors.smsOtpLength = t("extensions:manage.serverConfigurations.accountRecovery." +
-            "passwordRecovery.form.fields.smsOtpLength.validations.empty");
+            "passwordRecovery.form.fields.passwordRecoveryOtpLength.validations.empty");
         } else if (parseInt(values.smsOtpLength, 10) < GovernanceConnectorConstants
             .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.SMS_OTP_CODE_LENGTH_MIN_VALUE ||
             parseInt(values.smsOtpLength, 10) > GovernanceConnectorConstants
                 .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.SMS_OTP_CODE_LENGTH_MAX_VALUE) {
             // Check for invalid input length.
             errors.smsOtpLength = t("extensions:manage.serverConfigurations.accountRecovery." +
-                "passwordRecovery.form.fields.smsOtpLength.validations.maxLengthReached");
+                "passwordRecovery.form.fields.passwordRecoveryOtpLength.validations.maxLengthReached");
         } else if (!values.maxResendCount) {
             // Check for required error
             errors.maxResendCount = t("extensions:manage.serverConfigurations.accountRecovery." +
@@ -426,6 +427,29 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                             className="oxygen-menu-item-chip oxygen-chip-beta" />)
                     }
                 </Heading>
+                {
+                    <Message info>
+                        <Icon name="info circle" />
+                        <Trans
+                            i18nKey={
+                                "extensions:manage.serverConfigurations.accountRecovery." +
+                                "passwordRecovery.form.smsProviderWarning"
+                            }
+                        >
+                            Ensure that an
+                            <Link
+                                external={ false }
+                                onClick={ () => {
+                                    history.push(
+                                        AppConstants.getPaths().get("SMS_PROVIDER")
+                                    );
+                                } }
+                            >SMS Provider
+                            </Link>
+                            &nbsp;is configured for the OTP feature to work properly.
+                        </Trans>
+                    </Message>
+                }
                 <Field.Checkbox
                     ariaLabel="enableSMSBasedRecovery"
                     name="enableSMSBasedRecovery"
@@ -564,7 +588,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     }
                     label= { t("extensions:manage.serverConfigurations.accountRecovery." +
                                     "passwordRecovery.form.fields.passwordRecoveryOtpLength.label") }
-                    placeholder="SMS OTP Length"
+                    placeholder="OTP Length"
                     required={ false }
                     maxLength={
                         GovernanceConnectorConstants

@@ -1,5 +1,19 @@
 # @wso2is/react-components
 
+## 2.4.0
+
+### Minor Changes
+
+- [#5896](https://github.com/wso2/identity-apps/pull/5896) [`00ee3fbc87f646c936fcda1534d75f9359ad03db`](https://github.com/wso2/identity-apps/commit/00ee3fbc87f646c936fcda1534d75f9359ad03db) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - - Improve the React Markdown component to have the documentation theme
+  - Add support for automatic tab redirection based on tab ID
+  - Enhance the link component to include a title attribute
+
+## 2.3.1
+
+### Patch Changes
+
+- [#6739](https://github.com/wso2/identity-apps/pull/6739) [`6da9bb307f8b0168777a7d8ea44f67619c99d493`](https://github.com/wso2/identity-apps/commit/6da9bb307f8b0168777a7d8ea44f67619c99d493) Thanks [@Achintha444](https://github.com/Achintha444)! - changed the external link navigation icon in the "Learn More"
+
 ## 2.3.0
 
 ### Minor Changes

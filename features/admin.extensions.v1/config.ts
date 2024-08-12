@@ -19,15 +19,6 @@
 import { ExtensionsConfigInterface } from "./models";
 
 export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
-    sections: {
-        components: {
-            // TODO: Temporarily disable feedback button.
-            // "feedback-button": "./components/feedback/feedback.tsx"
-            // TODO: Temporarily use help center in the place of feedback.
-            "feedback-button": "./components/help-center/helpCenter.tsx",
-            "tenant-dropdown": "./components/tenants/components/dropdown/tenant-dropdown.tsx"
-        }
-    },
     templateExtensions: {
         applications: {
             categories: [],

@@ -1,5 +1,17 @@
 # @wso2is/i18n
 
+## 2.5.18
+
+### Patch Changes
+
+- [#6722](https://github.com/wso2/identity-apps/pull/6722) [`d646c0baa3e0cdba239cc9fd8b4acf60ca336f84`](https://github.com/wso2/identity-apps/commit/d646c0baa3e0cdba239cc9fd8b4acf60ca336f84) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Improvements done along with actions feature
+
+## 2.5.17
+
+### Patch Changes
+
+- [#5896](https://github.com/wso2/identity-apps/pull/5896) [`00ee3fbc87f646c936fcda1534d75f9359ad03db`](https://github.com/wso2/identity-apps/commit/00ee3fbc87f646c936fcda1534d75f9359ad03db) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Update the application section to support SSO integration templates
+
 ## 2.5.16
 
 ### Patch Changes

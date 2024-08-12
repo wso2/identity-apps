@@ -176,3 +176,20 @@ export interface ApplicationConfig {
         spa: SDKMetaInterface
     };
 }
+
+/**
+ * Unique identifiers for application edit tabs.
+ */
+export enum ApplicationTabIDs {
+    QUICK_START = "quick-start",
+    GENERAL = "general",
+    PROTOCOL = "protocol",
+    USER_ATTRIBUTES = "user-attributes",
+    SIGN_IN_METHODS = "sign-in-method",
+    PROVISIONING = "provisioning",
+    ADVANCED = "advanced",
+    SHARED_ACCESS = "shared-access",
+    INFO = "info",
+    API_AUTHORIZATION = "api-authorization",
+    APPLICATION_ROLES = "application-roles"
+}

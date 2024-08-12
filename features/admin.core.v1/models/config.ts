@@ -17,6 +17,8 @@
  */
 
 import { ResponseMode, Storage } from "@asgardeo/auth-react";
+import { ActionsResourceEndpointsInterface } from "@wso2is/admin.actions.v1/models/endpoints";
+import { ApplicationsTemplatesEndpointsInterface } from "@wso2is/admin.application-templates.v1/models/endpoints";
 import {
     ApplicationTemplateLoadingStrategies,
     ApplicationsResourceEndpointsInterface
@@ -32,6 +34,7 @@ import { OrganizationResourceEndpointsInterface } from "@wso2is/admin.organizati
 import { RolesResourceEndpointsInterface } from "@wso2is/admin.roles.v2/models/endpoints";
 import { SecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "@wso2is/admin.server-configurations.v1";
+import { ExtensionTemplatesEndpointsInterface } from "@wso2is/admin.template-core.v1/models/endpoints";
 import { TenantResourceEndpointsInterface } from "@wso2is/admin.tenants.v1/models/endpoints";
 import { UsersResourceEndpointsInterface } from "@wso2is/admin.users.v1/models/endpoints";
 import { UserstoreResourceEndpointsInterface } from "@wso2is/admin.userstores.v1/models/endpoints";
@@ -63,6 +66,10 @@ interface ConnectionConfigInterface extends FeatureAccessConfigInterface {
  * Application configuration interface.
  */
 export interface FeatureConfigInterface {
+    /**
+     * Action management feature.
+     */
+    actions?: FeatureAccessConfigInterface;
     /**
      * Admin user management feature.
      */
@@ -332,6 +339,11 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     hiddenConnectionTemplates?: string[];
     /**
+     * Set of application templates to be hidden.
+     * Include the IDs of application templates.
+     */
+    hiddenApplicationTemplates?: string[];
+    /**
      * Configurations for IDP templates.
      */
     identityProviderTemplates: IdentityProviderTemplatesConfigInterface;
@@ -526,7 +538,10 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     TenantResourceEndpointsInterface,
     ValidationServiceEndpointsInterface,
     BrandingPreferenceResourceEndpointsInterface,
-    ConsoleSettingsResourceEndpointsInterface {
+    ConsoleSettingsResourceEndpointsInterface,
+    ExtensionTemplatesEndpointsInterface,
+    ApplicationsTemplatesEndpointsInterface,
+    ActionsResourceEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details

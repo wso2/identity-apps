@@ -105,6 +105,7 @@ features/themes/
 apps/myaccount/src/main/
 apps/console/src/main/
 apps/*/cache
+**/*/v8-compile-cache-0
 apps/myaccount/src/themes/
 apps/console/src/themes/
 apps/console/src/login-portal-layouts
