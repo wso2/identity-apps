@@ -16,16 +16,23 @@
  * under the License.
  */
 
-import LoginApplicationTemplate from
-    "../../../application-templates/templates/single-page-application/login-playground-application.json";
+import LoginApplicationTemplate from "../data/try-it-application.json";
 
 /**
- * Get the client Id of the Try it application.
+ * Retrieves the Try It client ID for a given tenant domain.
  *
- * @return {string}
+ * @param tenantDomain - The tenant domain to replace in the client ID template.
+ * @returns The client ID with the tenant domain replaced.
+ *
+ * @example
+ * // Assuming the client ID template is "client_<TENANT>_id"
+ * // and tenantDomain is "example.com"
+ * // returns "client_example.com_id"
+ * const clientId = getTryItClientId("example.com");
  */
-export const getTryItClientId = (tenantDomain:string): string => {
-
+const getTryItClientId = (tenantDomain:string): string => {
     return LoginApplicationTemplate.application.
         inboundProtocolConfiguration.oidc.clientId.replace("<TENANT>", tenantDomain);
 };
+
+export default getTryItClientId;

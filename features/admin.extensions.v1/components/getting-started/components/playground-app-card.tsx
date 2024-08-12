@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,17 +16,16 @@
  * under the License.
  */
 
+import TryItCreateWizard from "@wso2is/admin.applications.v1/components/try-it/try-it-create-wizard";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, PrimaryButton, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Card, Divider, Grid } from "semantic-ui-react";
-import { LoginPlaygroundWizard } from "./login-playground-wizard";
 import { getGettingStartedCardIllustrations } from "../configs";
 
 export type Context = "TEMPLATES" | "RECENT_APPS";
 
 interface PlaygroundApplicationCardInterface extends IdentifiableComponentInterface {
-    
     onApplicationCreate: () => void;
 }
 
@@ -36,10 +35,9 @@ export const PlaygroundApplicationCard: FunctionComponent<PlaygroundApplicationC
     const {
         onApplicationCreate
     } = props;
-    
 
     const [ showWizardLogin, setShowWizardLogin ] = useState<boolean>(false);
-    
+
     return (
         <Card
             data-componentid="application-integration-card"
@@ -85,7 +83,7 @@ export const PlaygroundApplicationCard: FunctionComponent<PlaygroundApplicationC
             </Card.Content>
             {
                 showWizardLogin && (
-                    <LoginPlaygroundWizard
+                    <TryItCreateWizard
                         data-componentId="login-playground-wizard-modal"
                         closeWizard={ () => setShowWizardLogin(false) }
                         applicationName="Asgardeo Login Playground"
@@ -93,9 +91,8 @@ export const PlaygroundApplicationCard: FunctionComponent<PlaygroundApplicationC
                     />
                 )
             }
-        </Card> 
+        </Card>
     );
-
 };
 
 /**

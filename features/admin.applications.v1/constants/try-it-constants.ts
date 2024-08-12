@@ -19,10 +19,17 @@
 /*
  * Try it application constants.
  */
-export class TryItApplicationConstants {
+class TryItApplicationConstants {
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     */
+    private constructor() {}
 
     /**
      * Application's Display Name.
      */
-    public static readonly DISPLAY_NAME = "Asgardeo Try It";
+    public static readonly DISPLAY_NAME: string = "Asgardeo Try It";
 }
+
+export default TryItApplicationConstants;

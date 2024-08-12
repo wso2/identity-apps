@@ -1,7 +1,7 @@
 {
     "id": "asgardeo-login-playground-template",
     "name":"Asgardeo Try It",
-    "image": "../../../../assets/illustrations/asgardeo-rafiki-illustration.svg",
+    "image": "try-it",
     "application": {
         "templateId": "custom-application-oidc",
         "name": "Asgardeo Try It",
@@ -27,11 +27,10 @@
         "claimConfiguration":{
             "dialect":"LOCAL",
             "requestedClaims": [
-                
                 {
                     "claim": {
                         "uri":"http://wso2.org/claims/emailaddress"
-                    }, 
+                    },
                     "mandatory": false
                 },
                 {
