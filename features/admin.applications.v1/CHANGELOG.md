@@ -1,5 +1,33 @@
 # @wso2is/admin.applications.v1
 
+## 2.23.4
+
+### Patch Changes
+
+- [#6751](https://github.com/wso2/identity-apps/pull/6751) [`8d49cc893d99c65802efb5787ccb24deddc1eb2d`](https://github.com/wso2/identity-apps/commit/8d49cc893d99c65802efb5787ccb24deddc1eb2d) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Fix trusted app configs getting cleared issue
+
+- Updated dependencies [[`0513c0bef2a5e0149555e0912c05b34c03471e15`](https://github.com/wso2/identity-apps/commit/0513c0bef2a5e0149555e0912c05b34c03471e15)]:
+  - @wso2is/admin.branding.v1@2.20.116
+  - @wso2is/admin.application-templates.v1@1.0.4
+  - @wso2is/admin.authentication-flow-builder.v1@2.20.116
+  - @wso2is/admin.connections.v1@2.21.46
+  - @wso2is/admin.console-settings.v1@2.20.116
+  - @wso2is/admin.core.v1@2.24.9
+  - @wso2is/admin.extensions.v1@2.22.4
+  - @wso2is/admin.identity-providers.v1@2.21.46
+  - @wso2is/admin.login-flow.ai.v1@2.20.116
+  - @wso2is/admin.oidc-scopes.v1@2.20.116
+  - @wso2is/admin.organizations.v1@2.21.9
+  - @wso2is/admin.roles.v2@2.20.116
+  - @wso2is/admin.api-resources.v2@2.20.116
+  - @wso2is/admin.claims.v1@2.20.116
+  - @wso2is/admin.impersonation.v1@1.1.58
+  - @wso2is/admin.secrets.v1@2.20.116
+  - @wso2is/admin.server-configurations.v1@2.21.58
+  - @wso2is/admin.template-core.v1@1.0.4
+  - @wso2is/admin.userstores.v1@2.20.116
+  - @wso2is/admin.wsfed-configuration.v1@2.20.116
+
 ## 2.23.3
 
 ### Patch Changes
