@@ -1,5 +1,11 @@
 # @wso2is/features
 
+## 2.21.56
+
+### Patch Changes
+
+- [#6696](https://github.com/wso2/identity-apps/pull/6696) [`a0a70dd8124718a49d9a8a1aeed42144a6946a7e`](https://github.com/wso2/identity-apps/commit/a0a70dd8124718a49d9a8a1aeed42144a6946a7e) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Fix bugs in SM OTP for password recovery feature
+
 ## 2.21.55
 
 ### Patch Changes
