@@ -24,7 +24,7 @@ import {
     Heading,
     ResourceTab
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState  } from "react";
+import React, { FunctionComponent, ReactElement  } from "react";
 import { Trans } from "react-i18next";
 import { Divider } from "semantic-ui-react";
 
@@ -44,8 +44,6 @@ export const ApplicationGeneralTabOverride: FunctionComponent<ApplicationGeneral
         clientId,
         [ "data-componentid" ]: componentId
     } = props ;
-
-    const [ isTriggered, setIsTriggered ] = useState<boolean>(false);
 
     return (
         <ResourceTab.Pane controlledSegmentation>
