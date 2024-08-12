@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.7.117
+
+### Patch Changes
+
+- [#6754](https://github.com/wso2/identity-apps/pull/6754) [`2ae8cf41100063f46ee0e9b70675f760186126b7`](https://github.com/wso2/identity-apps/commit/2ae8cf41100063f46ee0e9b70675f760186126b7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove unnecessary external integrations from myaccount app
+
 ## 2.7.116
 
 ### Patch Changes
