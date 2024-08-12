@@ -2617,7 +2617,7 @@ importers:
         specifier: ^1.0.6
         version: link:../admin.template-core.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.20.115
+        specifier: ^2.20.116
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.20.118
