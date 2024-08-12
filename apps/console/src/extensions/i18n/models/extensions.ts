@@ -3099,6 +3099,7 @@ export interface Extensions {
                             passwordRecoveryOtpUseNumeric: FormAttributes;
                             passwordRecoveryOtpLength: FormAttributes;
                         };
+                        smsProviderWarning: string;
                     };
                     recoveryOptionSubHeadingEmailLink: string;
                     recoveryOptionSubHeadingSMS: string;

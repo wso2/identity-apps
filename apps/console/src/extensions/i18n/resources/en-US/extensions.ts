@@ -3691,14 +3691,16 @@ export const extensions: Extensions = {
                                 validations: {
                                     empty: "Password recovery OTP length cannot be empty.",
                                     maxLengthReached:
-                                        "Password recovery OTP length should be between 6 and 10 characters."
+                                        "Password recovery OTP length should be between 4 and 10 characters."
                                 }
                             },
                             enableEmailBasedRecovery: {
                                 hint: "This specifies whether to send an recovery link to the email address.",
                                 label: "Enable email link based recovery"
                             }
-                        }
+                        },
+                        smsProviderWarning:
+                            "Ensure that an <1>SMS Provider</1> is configured for the OTP feature to work properly."
                     },
                     recoveryOptionSubHeadingEmailLink: "Email Link",
                     recoveryOptionSubHeadingSMS: "SMS OTP",
