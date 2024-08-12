@@ -492,13 +492,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
 
     useEffect(() => {
-        if (claims.length && externalClaims.length) {
+        if (claims?.length > 0 && externalClaims?.length > 0) {
             const updatedAttributes : ExternalClaim[] = externalClaims.map((externalClaim : ExternalClaim) => {
                 const matchedLocalClaim: Claim = claims.find((localClaim: Claim) =>
                     localClaim.claimURI === externalClaim.mappedLocalClaimURI
                 );
 
-                if (matchedLocalClaim && matchedLocalClaim.displayName) {
+                if (matchedLocalClaim?.displayName) {
                     return {
                         ...externalClaim,
                         localClaimDisplayName: matchedLocalClaim.displayName
@@ -2721,8 +2721,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     <TextField
                                                         className="jwt-attributes-dropdown-input"
                                                         { ...params }
-                                                        placeholder={ !false &&
-                                                            t("applications:forms.inboundOIDC.sections" +
+                                                        placeholder={ t("applications:forms.inboundOIDC.sections" +
                                                         ".accessToken.fields.accessTokenAttributes.placeholder") }
                                                     />
                                                 </>
