@@ -15,9 +15,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { validationNS } from "../../../models";
 
+/**
+ * NOTES: No need to care about the max-len for this file since it's easier to
+ * translate the strings to other languages easily with editor translation tools.
+ */
+/* eslint-disable max-len */
 export const validation: validationNS = {
+    description: "Customize password validation rules for your users.",
     fetchValidationConfigData: {
         error: {
             description: "{{description}}",
@@ -28,17 +35,8 @@ export const validation: validationNS = {
             message: "Something went wrong"
         }
     },
-    validationError: {
-        minMaxMismatch: "Minimum length should be less than maximum length.",
-        uniqueChrMismatch: "Number of unique characters should be less than tha minimum length of " +
-            "the password.",
-        consecutiveChrMismatch: "Number of consecutive characters should be less than tha minimum " +
-            "length of the password.",
-        invalidConfig: "Unable to create password with the above configurations.",
-        minLimitError: "The minimum length cannot be less than 8.",
-        maxLimitError: "The maximum length cannot be more than 30.",
-        wrongCombination: "The combination is not allowed"
-    },
+    goBackToApplication: "Go back to application",
+    goBackToValidationConfig: "Go back to Account Security",
     notifications: {
         error: {
             description: "{{description}}",
@@ -54,7 +52,41 @@ export const validation: validationNS = {
         }
     },
     pageTitle: "Password Validation",
-    description: "Customize password validation rules for your users.",
-    goBackToApplication: "Go back to application",
-    goBackToValidationConfig: "Go back to Account Security"
+    passwordExpiry: {
+        heading: "Password Expiry Rules",
+        rules: {
+            actions: {
+                apply: "Apply",
+                skip: "Skip"
+            },
+            attributes: {
+                groups: "Groups",
+                roles: "Roles"
+            },
+            buttons: {
+                addRule: "Add Rule",
+                deleteRule: "Delete Rule"
+            },
+            messages: {
+                applyMessage: "days password expiry.",
+                defaultRuleApplyMessage: "days for users if no specific rules apply.",
+                defaultRuleSkipMessage: "all the users if no specific rules apply.",
+                ifUserHas: "If user has",
+                info: "Rules will be applied in the order listed below, from top to bottom. Use the arrows to adjust the priority.",
+                passwordExpiryFor: "password expiry for",
+                skipMessage: "password expiry."
+            }
+        }
+    },
+    validationError: {
+        consecutiveChrMismatch: "Number of consecutive characters should be less than tha minimum " +
+            "length of the password.",
+        invalidConfig: "Unable to create password with the above configurations.",
+        maxLimitError: "The maximum length cannot be more than 30.",
+        minLimitError: "The minimum length cannot be less than 8.",
+        minMaxMismatch: "Minimum length should be less than maximum length.",
+        uniqueChrMismatch: "Number of unique characters should be less than tha minimum length of " +
+            "the password.",
+        wrongCombination: "The combination is not allowed"
+    }
 };

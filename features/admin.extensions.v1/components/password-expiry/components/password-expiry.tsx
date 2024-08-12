@@ -20,7 +20,10 @@ import {
     GovernanceConnectorConstants
 } from "@wso2is/admin.server-configurations.v1/constants/governance-connector-constants";
 import { Field } from "@wso2is/form/src";
-import React, { ReactElement } from "react";
+import {
+    Heading
+} from "@wso2is/react-components";
+import React, { ReactElement, ReactNode } from "react";
 import { TFunction } from "react-i18next";
 
 export const generatePasswordExpiry = (
@@ -32,7 +35,9 @@ export const generatePasswordExpiry = (
 ): ReactElement => {
     return (
         <>
-            <h5>{ t("extensions:manage.serverConfigurations.passwordExpiry.heading") }</h5>
+            <Heading as="h4">
+                { t("extensions:manage.serverConfigurations.passwordExpiry.heading") as ReactNode }
+            </Heading>
             <div className="criteria">
                 <Field.Checkbox
                     ariaLabel="Enable/Disable Password Expiry"

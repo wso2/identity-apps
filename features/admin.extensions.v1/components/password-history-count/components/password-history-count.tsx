@@ -16,11 +16,13 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import { Field } from "@wso2is/form/src";
-import { Message } from "@wso2is/react-components/src";
-import React, { ReactElement } from "react";
+import {
+    Heading
+} from "@wso2is/react-components";
+import React, { ReactElement, ReactNode } from "react";
 import { TFunction } from "react-i18next";
-import { Divider, Icon } from "semantic-ui-react";
 
 export const generatePasswordHistoryCount = (
     componentId: string,
@@ -31,7 +33,12 @@ export const generatePasswordHistoryCount = (
 ): ReactElement => {
     return (
         <>
-            <h5>{ t("extensions:manage.serverConfigurations.passwordHistoryCount.heading") }</h5>
+            <Heading as="h4">
+                { t("extensions:manage.serverConfigurations.passwordHistoryCount.heading") as ReactNode }
+            </Heading>
+            <Alert severity="info" className="info-box">
+                { t("extensions:manage.serverConfigurations.passwordHistoryCount.message") }
+            </Alert>
             <div className="criteria">
                 <Field.Checkbox
                     ariaLabel="Enable/Disable Password History Count"
@@ -70,12 +77,6 @@ export const generatePasswordHistoryCount = (
                 />
                 <label>{ t("extensions:manage.serverConfigurations.passwordHistoryCount.label2") }</label>
             </div>
-            <Message info>
-                <Icon name="info circle" />
-                { t("extensions:manage.serverConfigurations.passwordHistoryCount.message") }
-            </Message>
-            <Divider className="mt-6 mb-6" />
-            <h5>{ t("extensions:manage.serverConfigurations.passwordValidationHeading") }</h5>
         </>
     );
 };

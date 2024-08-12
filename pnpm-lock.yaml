@@ -16777,9 +16777,15 @@ importers:
       '@wso2is/admin.extensions.v1':
         specifier: ^2.21.77
         version: link:../admin.extensions.v1
+      '@wso2is/admin.groups.v1':
+        specifier: ^2.20.107
+        version: link:../admin.groups.v1
       '@wso2is/admin.organizations.v1':
         specifier: ^2.21.0
         version: link:../admin.organizations.v1
+      '@wso2is/admin.roles.v2':
+        specifier: ^2.20.107
+        version: link:../admin.roles.v2
       '@wso2is/admin.server-configurations.v1':
         specifier: ^2.21.49
         version: link:../admin.server-configurations.v1
