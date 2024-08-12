@@ -171,15 +171,15 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 saas: !!values.saas,
                 skipLoginConsent: !!values.skipConsentLogin,
                 skipLogoutConsent: !!values.skipConsentLogout,
-                trustedAppConfiguration: values.enableFIDOTrustedApps ?
-                    {
-                        // androidPackageName and appleAppId is same as clientAttestation.
-                        androidPackageName: values.androidPackageName,
-                        androidThumbprints: isEmpty(thumbprints) ? [] : thumbprints.split(","),
-                        appleAppId: values.appleAppId,
-                        isConsentGranted: isConsentGranted,
-                        isFIDOTrustedApp: values.enableFIDOTrustedApps
-                    } : undefined
+                trustedAppConfiguration: {
+                    // androidPackageName and appleAppId is same as clientAttestation.
+                    androidPackageName: values.enableFIDOTrustedApps ? values.androidPackageName : "",
+                    androidThumbprints: values.enableFIDOTrustedApps ?
+                        (isEmpty(thumbprints) ? [] : thumbprints.split(",")) : [],
+                    appleAppId: values.enableFIDOTrustedApps ? values.appleAppId : "",
+                    isConsentGranted: isConsentGranted,
+                    isFIDOTrustedApp: values.enableFIDOTrustedApps
+                }
             }
         };
 
