@@ -16,6 +16,4 @@
  * under the License.
  */
 
-export * from "./api-authorization";
-export * from "./application-roles";
 export * from "./try-it-constants";
