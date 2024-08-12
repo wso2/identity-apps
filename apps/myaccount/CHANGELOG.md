@@ -1,5 +1,27 @@
 # @wso2is/myaccount
 
+## 2.7.118
+
+### Patch Changes
+
+- Updated dependencies [[`1669568cf17b4aa9dda387194bd38cdf32ac3212`](https://github.com/wso2/identity-apps/commit/1669568cf17b4aa9dda387194bd38cdf32ac3212)]:
+  - @wso2is/admin.organizations.v1@2.21.10
+  - @wso2is/common.branding.v1@2.20.117
+
+## 2.7.117
+
+### Patch Changes
+
+- [#6754](https://github.com/wso2/identity-apps/pull/6754) [`2ae8cf41100063f46ee0e9b70675f760186126b7`](https://github.com/wso2/identity-apps/commit/2ae8cf41100063f46ee0e9b70675f760186126b7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove unnecessary external integrations from myaccount app
+
+## 2.7.116
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.21.9
+  - @wso2is/common.branding.v1@2.20.116
+
 ## 2.7.115
 
 ### Patch Changes

@@ -67,7 +67,8 @@ import {
     PageLayout,
     PrimaryButton,
     ResourceTab,
-    ResourceTabPaneInterface
+    ResourceTabPaneInterface,
+    useDocumentation
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -127,6 +128,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const dispatch: Dispatch<any> = useDispatch();
 
@@ -1000,8 +1002,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 <>
                     { t("extensions:manage.users.usersSubTitle") }
                     <DocumentationLink
-                        link="manage.users.learnMore"
-                        isLinkRef
+                        link={ getLink("manage.users.learnMore") }
                     >
                         { t("extensions:common.learnMore") }
                     </DocumentationLink>
