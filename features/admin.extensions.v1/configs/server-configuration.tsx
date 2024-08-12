@@ -242,16 +242,17 @@ const serverConfigurationConfig: ServerConfigurationConfig = {
         let passwordExpiryTime: number | undefined = parseInt((data.passwordExpiryTime as string));
         const passwordExpiryEnabled: boolean | undefined = data.passwordExpiryEnabled;
         const passwordExpirySkipFallback: boolean | undefined = data.passwordExpirySkipFallback as boolean;
-        let passwordHistoryCount: number | undefined = parseInt((data.passwordHistoryCount as string));
-        const passwordHistoryCountEnabled: boolean | undefined = data.passwordHistoryCountEnabled;
         const passwordExpiryRules: Record<string, string> | undefined =
             data?.passwordExpiryRules as Record<string, string>;
+        let passwordHistoryCount: number | undefined = parseInt((data.passwordHistoryCount as string));
+        const passwordHistoryCountEnabled: boolean | undefined = data.passwordHistoryCountEnabled;
 
         delete data.passwordExpiryTime;
         delete data.passwordExpiryEnabled;
         delete data.passwordHistoryCount;
         delete data.passwordHistoryCountEnabled;
         delete data.skipPasswordExpiryFallback;
+        delete data.passwordExpiryRules;
 
         // Default password expiry time.
         if (passwordExpiryEnabled && !passwordExpirySkipFallback && passwordExpiryTime === 0) {
