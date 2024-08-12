@@ -446,6 +446,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     useRoleClaimAsGroupClaim?: boolean;
     /**
+     * Whether to consider the access token attributes feature enabled.
+     */
+    enableAccessTokenAttributes?: boolean;
+    /**
      * Feature configs related to governance connectors.
      */
     governanceConnectors?: GovernanceConnectorsFeatureConfig;

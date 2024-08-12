@@ -2696,10 +2696,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 readOnly={ readOnly }
                                 data-testid={ `${ testId }-access-token-type-radio-group` }
                             />
-                            { isJWTAccessTokenTypeSelected ? (
+                            { isJWTAccessTokenTypeSelected && config.ui.enableAccessTokenAttributes ? (
                                 <Grid.Row>
                                     { !initialValues?.accessToken?.accessTokenAttributesEnabled && (
-                                        <Grid.Column>
+                                        <Grid.Column className="access-token-attributes-feature-banner">
                                             <Alert severity="warning">
                                             To enable the new Selective Access Token Attributes feature,
                                             select
