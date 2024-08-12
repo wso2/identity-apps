@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
@@ -76,7 +77,6 @@ import React, {
     MutableRefObject,
     ReactElement,
     SyntheticEvent,
-    useCallback,
     useEffect,
     useRef,
     useState
@@ -118,7 +118,6 @@ import { ApplicationManagementUtils } from "../../utils/application-management-u
 import { AccessTokenAttributeOption } from "../access-token-attribute-option";
 import { ApplicationCertificateWrapper } from "../settings/certificate";
 import "./inbound-oidc-form.scss";
-import Alert from "@oxygen-ui/react/Alert";
 
 /**
  * Proptypes for the inbound OIDC form component.
@@ -458,7 +457,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         );
     }, [ application ]);
 
-    const fetchLocalClaims: () => void = useCallback(() => {
+    const fetchLocalClaims = () => {
         getAllLocalClaims(null)
             .then((response: Claim[]) => {
                 setClaims(response);
@@ -470,9 +469,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     message: t("claims:local.notifications.fetchLocalClaims.genericError.message")
                 }));
             });
-    }, []);
+    };
 
-    const fetchExternalClaims: () => void = useCallback(() => {
+    const fetchExternalClaims = () => {
         getAllExternalClaims(OIDCScopesManagementConstants.OIDC_ATTRIBUTE_ID, null)
             .then((response: ExternalClaim[]) => {
                 setExternalClaims(response);
@@ -484,7 +483,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     message: t("claims:external.notifications.fetchExternalClaims.genericError.message")
                 }));
             });
-    }, []);
+    };
 
     useEffect(() => {
         fetchLocalClaims();
@@ -517,6 +516,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (!initialValues.accessToken.accessTokenAttributes) {
             return;
         }
+
         const selectedAttributes: ExternalClaim[] = initialValues.accessToken.accessTokenAttributes
             .map((claim: string) => accessTokenAttributes
                 .find((claimObj: ExternalClaim) => claimObj.claimURI === claim))
@@ -2701,15 +2701,18 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     { !initialValues?.accessToken?.accessTokenAttributesEnabled && (
                                         <Grid.Column className="access-token-attributes-feature-banner">
                                             <Alert severity="warning">
-                                            To enable the new Selective Access Token Attributes feature,
-                                            select
-                                                <Code withBackground>Enable Access Token Attributes</Code>
-                                            and update your application, but be aware that after this change,
-                                            attributes (set as requested in the User Attribute section)
-                                            will be automatically included in the
-                                                <Code withBackground>access_token</Code> without
-                                            requiring OIDC scopes, and this change is irreversible.
-                                                <b> Proceed with caution.</b>
+                                                <Trans
+                                                    i18nKey={ "applications:forms.inboundOIDC.sections " +
+                                                        ".accessToken.fields.accessTokenAttributes.enable.hint" }>
+                                                    To enable the new Selective Access Token Attributes feature,
+                                                    select <Code withBackground>Enable Access Token Attributes</Code>
+                                                    and update your application, but be aware that after this change,
+                                                    attributes (set as requested in the User Attribute section)
+                                                    will be automatically included in the
+                                                    <Code withBackground>access_token</Code> without
+                                                    requiring OIDC scopes, and this change is irreversible.
+                                                    <b>Proceed with caution.</b>
+                                                </Trans>
                                             </Alert>
                                             <Field
                                                 ref={ accessTokenAttributesEnabledConfig }
