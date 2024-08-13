@@ -473,7 +473,8 @@ export class RouteUtils {
             {
                 category: extensions,
                 id: "actions",
-                order: 0
+                order: 0,
+                selected: history.location.pathname.includes("/actions")
             },
             {
                 category: extensions,
