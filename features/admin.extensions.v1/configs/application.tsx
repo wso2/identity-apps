@@ -29,6 +29,7 @@ import {
     SupportedAuthProtocolTypes,
     additionalSpProperty
 } from "@wso2is/admin.applications.v1/models";
+import getTryItClientId from "@wso2is/admin.applications.v1/utils/get-try-it-client-id";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
@@ -59,7 +60,6 @@ import SamlWebAppTemplate
     from "../application-templates/templates/saml-web-application/saml-web-application.json";
 import SinglePageAppTemplate from
     "../application-templates/templates/single-page-application/single-page-application.json";
-import { getTryItClientId } from "../components/application/utils/try-it-utils";
 import { getGettingStartedCardIllustrations } from "../components/getting-started/configs";
 
 function isClaimInterface(

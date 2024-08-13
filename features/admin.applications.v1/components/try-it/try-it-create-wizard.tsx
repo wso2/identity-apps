@@ -16,9 +16,6 @@
  * under the License.
  */
 
-import { createApplication, getApplicationList } from "@wso2is/admin.applications.v1/api";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
-import { ApplicationListInterface, MainApplicationInterface } from "@wso2is/admin.applications.v1/models";
 import { AppState, EventPublisher } from "@wso2is/admin.core.v1";
 import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
 import { getUserDetails } from "@wso2is/admin.users.v1/api/users";
@@ -40,15 +37,16 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Icon, List, Modal } from "semantic-ui-react";
-import LoginApplicationTemplate from
-    "../../../application-templates/templates/single-page-application/login-playground-application.json";
-import InformationIcon from "../../../assets/images/illustrations/information-icon.svg";
-import { getTryItClientId } from "../../application/utils/try-it-utils";
+import { createApplication, getApplicationList } from "../../api/application";
+import { ApplicationManagementConstants } from "../../constants/application-management";
+import LoginApplicationTemplate from "../../data/try-it-application.json";
+import { ApplicationListInterface, MainApplicationInterface } from "../../models/application";
+import getTryItClientId from "../../utils/get-try-it-client-id";
 
 /**
-  * Prop types of the `LoginPlaygroundWizard` component.
+  * Prop types of the `TryItCreateWizard` component.
   */
-interface LoginPlaygroundWizardPropsInterface extends TestableComponentInterface {
+interface TryItCreateWizardPropsInterface extends TestableComponentInterface {
      closeWizard: () => void;
      applicationName: string;
      onApplicationCreate: () => void;
@@ -61,8 +59,8 @@ const INTERMITTENT_REDIRECTION_TIMEOUT: number = 2000;
  *
  * @returns Login Playground application wizard.
  */
-export const LoginPlaygroundWizard: FunctionComponent<LoginPlaygroundWizardPropsInterface> = (
-    props: LoginPlaygroundWizardPropsInterface
+const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
+    props: TryItCreateWizardPropsInterface
 ): ReactElement => {
     const {
         closeWizard,
@@ -153,7 +151,21 @@ export const LoginPlaygroundWizard: FunctionComponent<LoginPlaygroundWizardProps
                         <Grid.Row textAlign="center">
                             <Grid.Column stretched width={ "16" }>
                                 <GenericIcon
-                                    icon={ InformationIcon }
+                                    icon={ (
+                                        /* eslint-disable max-len */
+                                        <svg width="80" height="80" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M256 0C114.51 0 0 114.497 0 256C0 397.49 114.497 512 256 512C397.49 512 512 397.503 512 256C512 114.51 397.503 0 256 0ZM256 477.867C133.663 477.867 34.133 378.338 34.133 256C34.133 133.662 133.663 34.133 256 34.133C378.337 34.133 477.867 133.663 477.867 256C477.867 378.337 378.337 477.867 256 477.867Z"
+                                                fill="#2185D0" />
+                                            <path
+                                                d="M255.997 209.777C246.572 209.777 238.93 217.418 238.93 226.844V370.813C238.93 380.238 246.571 387.88 255.997 387.88C265.423 387.88 273.064 380.239 273.064 370.813V226.843C273.063 217.417 265.422 209.777 255.997 209.777Z"
+                                                fill="#2185D0" />
+                                            <path
+                                                d="M256 124.122C237.179 124.122 221.867 139.434 221.867 158.255C221.867 177.076 237.179 192.388 256 192.388C274.821 192.388 290.133 177.076 290.133 158.255C290.133 139.434 274.821 124.122 256 124.122Z"
+                                                fill="#2185D0" />
+                                        </svg>
+                                        /* eslint-enable max-len */
+                                    ) }
                                     size="tiny"
                                     className="icon"
                                     transparent
@@ -443,3 +455,5 @@ export const LoginPlaygroundWizard: FunctionComponent<LoginPlaygroundWizardProps
         </>
     );
 };
+
+export default TryItCreateWizard;
