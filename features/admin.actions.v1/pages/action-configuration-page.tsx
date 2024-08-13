@@ -62,6 +62,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features.actions);
 
     const [ isOpenRevertConfigModal, setOpenRevertConfigModal ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState(false);
     const [ isActive, setIsActive ] = useState<boolean>(false);
     const [ showCreateForm, setShowCreateForm ] = useState<boolean>(false);
 
@@ -243,6 +244,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     const actionToggle = (): ReactElement => {
         const handleToggle = (e: SyntheticEvent, data: CheckboxProps) => {
             setIsActive(data.checked);
+            setIsSubmitting(true);
             changeActionStatus(
                 actionTypeApiPath,
                 actionInitialValues.id,
@@ -255,6 +257,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 })
                 .finally(() => {
                     mutateActions();
+                    setIsSubmitting(false);
                 });
         };
 
@@ -345,6 +348,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                                 isLoading={ isLoading }
                                 actionTypeApiPath={ actionTypeApiPath }
                                 isCreateFormState={ showCreateForm }
+                                isUpdating={ isSubmitting }
                             />
                         </Grid.Column>
                     </Grid.Row>

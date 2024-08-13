@@ -30,6 +30,23 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
             termsOfService: "https://wso2.com/terms-of-use"
         },
         develop: {
+            actions:{
+                learnMore: undefined,
+                types: {
+                    preIssueAccessToken: {
+                        learnMore: undefined
+                    },
+                    preRegistration: {
+                        learnMore: undefined
+                    },
+                    preUpdatePassword: {
+                        learnMore: undefined
+                    },
+                    preUpdateProfile: {
+                        learnMore:undefined
+                    }
+                }
+            },
             apiResources: {
                 addAPIResource: {
                     rbacInfoBox: {
