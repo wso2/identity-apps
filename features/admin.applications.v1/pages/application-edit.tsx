@@ -221,6 +221,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
         setApplicationTemplate(template);
 
+        setApplicationRequestLoading(false);
+
         return applicationData;
     };
 
@@ -262,10 +264,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 return determineApplicationTemplate(clonedApplication);
             }
 
+            setApplicationRequestLoading(false);
+
             return clonedApplication;
         }
-
-        setApplicationRequestLoading(false);
 
         return determineApplicationTemplate(clonedApplication);
     }, [

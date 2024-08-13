@@ -22,15 +22,18 @@ import {
     getInboundProtocolConfig,
     useApplicationList
 } from "@wso2is/admin.applications.v1/api";
+import TryItCreateWizard from "@wso2is/admin.applications.v1/components/try-it/try-it-create-wizard";
 import {
     MinimalAppCreateWizard
 } from "@wso2is/admin.applications.v1/components/wizard/minimal-application-create-wizard";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import TryItApplicationConstants from "@wso2is/admin.applications.v1/constants/try-it-constants";
 import {
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
 } from "@wso2is/admin.applications.v1/models";
 import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
+import getTryItClientId from "@wso2is/admin.applications.v1/utils/get-try-it-client-id";
 import {
     AppConstants,
     AppState,
@@ -52,10 +55,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Card, Grid, Placeholder } from "semantic-ui-react";
 import { CardExpandedNavigationButton } from "./card-expanded-navigation-button";
-import { LoginPlaygroundWizard } from "./login-playground-wizard";
 import { AppViewExtensionTypes } from "../../../configs";
-import { TryItApplicationConstants } from "../../application/constants";
-import { getTryItClientId } from "../../application/utils/try-it-utils";
 import { FeatureGateConstants } from "../../feature-gate/constants/feature-gate";
 import { DynamicApplicationContextCard } from "../components/dynamic-application-context-card";
 import { getGettingStartedCardIllustrations } from "../configs";
@@ -552,7 +552,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
             ) }
             {
                 showWizardLogin && (
-                    <LoginPlaygroundWizard
+                    <TryItCreateWizard
                         data-componentId="login-playground-wizard-modal"
                         closeWizard={ () => setShowWizardLogin(false) }
                         applicationName="Asgardeo Login Playground"

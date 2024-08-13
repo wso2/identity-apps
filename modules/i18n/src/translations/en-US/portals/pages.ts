@@ -19,9 +19,7 @@ import { pagesNS } from "../../../models";
 
 export const pages: pagesNS = {
     actions: {
-        subTitle: "Actions are executed as in-line hooks at specific points in the Login, Registration, " +
-        "Self Account Management, and User Management flows (e.g., when an access token is issued). " +
-        "Use these points to extend or integrate.",
+        subTitle: "Create Actions to extend or integrate Login & Registration flows.",
         title: "Actions"
     },
     addEmailTemplate: {

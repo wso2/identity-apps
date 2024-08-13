@@ -39,7 +39,7 @@ import {
 } from "@wso2is/form";
 import { EmphasizedSegment, Heading, Hint } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -78,6 +78,10 @@ interface ActionConfigFormInterface extends IdentifiableComponentInterface {
      * Specifies action creation state.
      */
     isCreateFormState: boolean;
+    /**
+     * Flag for form updating state.
+     */
+    isUpdating?: boolean;
 }
 
 const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
@@ -85,6 +89,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     isLoading,
     actionTypeApiPath,
     isCreateFormState,
+    isUpdating,
     [ "data-componentid" ]: _componentId = "action-config-form"
 }: ActionConfigFormInterface): ReactElement => {
 
@@ -480,6 +485,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                         { showAuthSecretsHint() }
                                         <FinalFormField
                                             key="accessToken"
+                                            className="text-field-container"
                                             width={ 16 }
                                             FormControlProps={ {
                                                 margin: "dense"
@@ -511,6 +517,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                         { showAuthSecretsHint() }
                                         <FinalFormField
                                             key="header"
+                                            className="text-field-container"
                                             width={ 16 }
                                             FormControlProps={ {
                                                 margin: "dense"
@@ -531,6 +538,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                         />
                                         <FinalFormField
                                             key="value"
+                                            className="text-field-container"
                                             width={ 16 }
                                             FormControlProps={ {
                                                 margin: "dense"
@@ -731,7 +739,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                     onClick={ handleSubmit }
                                     className={ "button-container" }
                                     data-componentid={ `${ _componentId }-primary-button` }
-                                    loading={ isSubmitting }
+                                    loading={ isSubmitting || isUpdating }
                                     disabled={ getFieldDisabledStatus() }
                                 >
                                     {

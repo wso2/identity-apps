@@ -216,16 +216,26 @@
                 }
             },
             "actions": {
-               "disabledFeatures": [],
-               "enabled": true,
-               "scopes": {
-                 "create": [ "internal_action_mgt_create" ],
-                 "delete": [ "internal_action_mgt_delete" ],
-                 "feature": [ "console:actions" ],
-                 "read": [ "internal_action_mgt_view" ],
-                 "update": [ "internal_action_mgt_update" ]
-               }
-           },
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_action_mgt_create"
+                    ],
+                    "delete": [
+                        "internal_action_mgt_delete"
+                    ],
+                    "feature": [
+                        "console:actions"
+                    ],
+                    "read": [
+                        "internal_action_mgt_view"
+                    ],
+                    "update": [
+                        "internal_action_mgt_update"
+                    ]
+                }
+            },
             "adminAdvisoryBanner": {
                 "disabledFeatures": [],
                 "enabled": true,
