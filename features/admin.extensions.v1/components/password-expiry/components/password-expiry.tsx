@@ -20,10 +20,8 @@ import {
     GovernanceConnectorConstants
 } from "@wso2is/admin.server-configurations.v1/constants/governance-connector-constants";
 import { Field } from "@wso2is/form/src";
-import {
-    Heading
-} from "@wso2is/react-components";
-import React, { ReactElement, ReactNode } from "react";
+import { Heading } from "@wso2is/react-components";
+import React, { ReactElement } from "react";
 import { TFunction } from "react-i18next";
 
 export const generatePasswordExpiry = (
@@ -36,7 +34,7 @@ export const generatePasswordExpiry = (
     return (
         <>
             <Heading as="h4">
-                { t("extensions:manage.serverConfigurations.passwordExpiry.heading") as ReactNode }
+                { t("extensions:manage.serverConfigurations.passwordExpiry.heading") }
             </Heading>
             <div className="criteria">
                 <Field.Checkbox

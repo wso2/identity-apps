@@ -975,9 +975,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             <>
                 <div className="title-header">
                     <Heading as="h4">
-                        {
-                            t("validation:passwordExpiry.heading") as ReactNode
-                        }
+                        { t("validation:passwordExpiry.heading") }
                     </Heading>
                     <Heading as="h4">
                         <Switch
@@ -1010,9 +1008,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             <div className="validation-configurations-form">
                 <Divider className="mt-4 mb-5" />
                 <Heading as="h4">
-                    {
-                        t("extensions:manage.serverConfigurations.passwordValidationHeading") as ReactNode
-                    }
+                    { t("extensions:manage.serverConfigurations.passwordValidationHeading") }
                 </Heading>
                 <div className="criteria">
                     <label>

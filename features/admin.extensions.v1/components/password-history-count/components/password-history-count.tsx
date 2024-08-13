@@ -18,10 +18,8 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import { Field } from "@wso2is/form/src";
-import {
-    Heading
-} from "@wso2is/react-components";
-import React, { ReactElement, ReactNode } from "react";
+import { Heading } from "@wso2is/react-components";
+import React, { ReactElement } from "react";
 import { TFunction } from "react-i18next";
 
 export const generatePasswordHistoryCount = (
@@ -34,7 +32,7 @@ export const generatePasswordHistoryCount = (
     return (
         <>
             <Heading as="h4">
-                { t("extensions:manage.serverConfigurations.passwordHistoryCount.heading") as ReactNode }
+                { t("extensions:manage.serverConfigurations.passwordHistoryCount.heading") }
             </Heading>
             <Alert severity="info" className="info-box">
                 { t("extensions:manage.serverConfigurations.passwordHistoryCount.message") }

@@ -341,10 +341,13 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                 <PlusIcon />
                 { t("validation:passwordExpiry.rules.buttons.addRule") }
             </Button>
-            <div>
-                { t("validation:passwordExpiry.rules.messages.ifUserHas") }
-            </div>
-
+            {
+                rules && rules.length > 0 && (
+                    <div>
+                        { t("validation:passwordExpiry.rules.messages.ifUserHas") }
+                    </div>
+                )
+            }
             <List>
                 { rules.map((rule: PasswordExpiryRule, index: number) => (
                     <ListItem key={ rule.id }>
