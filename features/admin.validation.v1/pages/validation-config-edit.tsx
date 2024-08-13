@@ -17,6 +17,7 @@
  */
 
 import Switch from "@oxygen-ui/react/Switch";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
 import { useGroupList } from "@wso2is/admin.groups.v1/api";
@@ -29,7 +30,6 @@ import {
     getConnectorDetails
 } from "@wso2is/admin.server-configurations.v1";
 import { getConfiguration } from "@wso2is/admin.users.v1/utils/generate-password.utils";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -51,9 +51,7 @@ import React, {
     FunctionComponent,
     MutableRefObject,
     ReactElement,
-    ReactNode,
     useEffect,
-    useMemo,
     useRef,
     useState
 } from "react";
@@ -139,15 +137,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const [ isLegacyPasswordPolicyEnabled, setIsLegacyPasswordPolicyEnabled ] = useState<boolean>(undefined);
     const [ legacyPasswordPolicies, setLegacyPasswordPolicies ] = useState<ConnectorPropertyInterface[]>([]);
 
-    const isReadOnly: boolean = useMemo(
-        () =>
-            !hasRequiredScopes(
-                featureConfig?.governanceConnectors,
-                featureConfig?.governanceConnectors?.scopes?.update,
-                allowedScopes
-            ),
-        [ featureConfig, allowedScopes ]
-    );
+    const isReadOnly: boolean = !useRequiredScopes(featureConfig?.governanceConnectors?.scopes?.update);
 
     const {
         data: passwordHistoryCountData,
@@ -980,6 +970,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     <Heading as="h4">
                         <Switch
                             checked={ passwordExpiryEnabled }
+                            disabled={ isReadOnly }
                             onChange={
                                 () => setPasswordExpiryEnabled(!passwordExpiryEnabled)
                             } />
