@@ -35,7 +35,7 @@ import {
     SharedApplicationAPIResponseInterface,
     SharedApplicationDataInterface,
     UpdateRolePayloadInterface
-} from "@wso2is/admin.extensions.v1/components/application/models";
+} from "../models/application-roles";
 
 /**
  * Initialize an axios Http client.
