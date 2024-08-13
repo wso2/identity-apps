@@ -1,5 +1,33 @@
 # @wso2is/admin.applications.v1
 
+## 2.23.6
+
+### Patch Changes
+
+- [#6761](https://github.com/wso2/identity-apps/pull/6761) [`e61f67bfb6f516f72b0e496a0a27fd781830f664`](https://github.com/wso2/identity-apps/commit/e61f67bfb6f516f72b0e496a0a27fd781830f664) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue with application data loading state
+
+- Updated dependencies []:
+  - @wso2is/admin.application-templates.v1@1.0.6
+  - @wso2is/admin.authentication-flow-builder.v1@2.20.118
+  - @wso2is/admin.connections.v1@2.21.48
+  - @wso2is/admin.console-settings.v1@2.20.118
+  - @wso2is/admin.core.v1@2.24.11
+  - @wso2is/admin.extensions.v1@2.22.6
+  - @wso2is/admin.identity-providers.v1@2.21.48
+  - @wso2is/admin.login-flow.ai.v1@2.20.118
+  - @wso2is/admin.oidc-scopes.v1@2.20.118
+  - @wso2is/admin.organizations.v1@2.21.11
+  - @wso2is/admin.roles.v2@2.20.118
+  - @wso2is/admin.api-resources.v2@2.20.118
+  - @wso2is/admin.branding.v1@2.20.118
+  - @wso2is/admin.claims.v1@2.20.118
+  - @wso2is/admin.impersonation.v1@1.1.60
+  - @wso2is/admin.secrets.v1@2.20.118
+  - @wso2is/admin.server-configurations.v1@2.21.60
+  - @wso2is/admin.template-core.v1@1.0.6
+  - @wso2is/admin.userstores.v1@2.20.118
+  - @wso2is/admin.wsfed-configuration.v1@2.20.118
+
 ## 2.23.5
 
 ### Patch Changes
