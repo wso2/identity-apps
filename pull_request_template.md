@@ -1,15 +1,19 @@
-<!-- PLEASE NOTE THAT IT'S MANDATORY TO FILL IN THE PULL REQUEST TEMPLATE WHEN SUBMITTING PULL REQUESTS. -->
+<!-- 
+   READ THIS FIRST:
+   - PLEASE NOTE THAT IT'S MANDATORY TO FILL IN THE PULL REQUEST TEMPLATE WHEN SUBMITTING PULL REQUESTS.
+   - PLEASE MAKE SURE TO ONLY ADD PUBLICLY ACCESSIBLE REFERENCES
+-->
 
 ### Purpose
 <!-- Describe the problem, feature, improvement or the change introduces by the PR briefly. Add screenshots/GIFs if UI/UX changes are introduced. -->
 
 
 ### Related Issues
-<!-- Mention the issue/s related to the pull request. Make sure to only add **PUBLIC** references -->
+<!-- Mention the issue/s related to the pull request. -->
 - N/A
 
 ### Related PRs
-<!-- Mention the related pull requests. Make sure to only add **PUBLIC** references -->
+<!-- Mention the related pull requests. -->
 - N/A
 
 ### Checklist
