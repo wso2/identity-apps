@@ -5,11 +5,11 @@
 
 
 ### Related Issues
-<!-- Mention the **PUBLIC** issue/s related to the pull request -->
+<!-- Mention the issue/s related to the pull request. Make sure to only add **PUBLIC** references -->
 - N/A
 
 ### Related PRs
-<!-- Mention the related **PUBLIC** pull requests -->
+<!-- Mention the related pull requests. Make sure to only add **PUBLIC** references -->
 - N/A
 
 ### Checklist
