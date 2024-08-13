@@ -30,7 +30,7 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import { DocumentationLink, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { DocumentationLink, ListLayout, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
@@ -94,6 +94,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { getLink } = useDocumentation();
+
     const hasOrganizationListViewPermissions: boolean = useRequiredScopes(
         featureConfig?.organizations?.scopes?.read
     );
@@ -523,8 +525,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                     <>
                         { t("pages:organizations.subTitle") }
                         <DocumentationLink
-                            link="manage.organizations.learnMore"
-                            isLinkRef
+                            link={ getLink("manage.organizations.learnMore") }
                         >
                             { t("extensions:common.learnMore") }
                         </DocumentationLink>

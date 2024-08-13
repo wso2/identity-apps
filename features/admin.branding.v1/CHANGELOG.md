@@ -1,5 +1,33 @@
 # @wso2is/admin.branding.v1
 
+## 2.20.117
+
+### Patch Changes
+
+- [#6755](https://github.com/wso2/identity-apps/pull/6755) [`f9b6d524b2049650a1dc7d81c8df0845f2a295a7`](https://github.com/wso2/identity-apps/commit/f9b6d524b2049650a1dc7d81c8df0845f2a295a7) Thanks [@savindi7](https://github.com/savindi7)! - Fix title size and remove email templates in App Branding.
+
+- Updated dependencies [[`1669568cf17b4aa9dda387194bd38cdf32ac3212`](https://github.com/wso2/identity-apps/commit/1669568cf17b4aa9dda387194bd38cdf32ac3212)]:
+  - @wso2is/admin.organizations.v1@2.21.10
+  - @wso2is/admin.extensions.v1@2.22.5
+  - @wso2is/admin.core.v1@2.24.10
+  - @wso2is/admin.branding.ai.v1@2.20.117
+  - @wso2is/admin.server-configurations.v1@2.21.59
+  - @wso2is/common.branding.v1@2.20.117
+
+## 2.20.116
+
+### Patch Changes
+
+- [#6705](https://github.com/wso2/identity-apps/pull/6705) [`0513c0bef2a5e0149555e0912c05b34c03471e15`](https://github.com/wso2/identity-apps/commit/0513c0bef2a5e0149555e0912c05b34c03471e15) Thanks [@savindi7](https://github.com/savindi7)! - Fix update call in B2B app-wise branding.
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.24.9
+  - @wso2is/admin.extensions.v1@2.22.4
+  - @wso2is/admin.organizations.v1@2.21.9
+  - @wso2is/admin.branding.ai.v1@2.20.116
+  - @wso2is/admin.server-configurations.v1@2.21.58
+  - @wso2is/common.branding.v1@2.20.116
+
 ## 2.20.115
 
 ### Patch Changes

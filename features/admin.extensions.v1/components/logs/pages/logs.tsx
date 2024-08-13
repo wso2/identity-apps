@@ -23,7 +23,8 @@ import {
     DocumentationLink,
     PageLayout,
     ResourceTab,
-    ResourceTabPaneInterface
+    ResourceTabPaneInterface,
+    useDocumentation
 } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
@@ -60,6 +61,7 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const handleTabChange = (e: SyntheticEvent, data: TabProps): void => {
         setActiveTabIndex(data.activeIndex as number);
@@ -134,8 +136,7 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (
                     <>
                         { t("extensions:develop.monitor.pageHeader.description") }
                         <DocumentationLink
-                            link="manage.logs.learnMore"
-                            isLinkRef
+                            link={ getLink("manage.logs.learnMore") }
                         >
                             { t("extensions:common.learnMore") }
                         </DocumentationLink>

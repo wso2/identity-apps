@@ -586,7 +586,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             {
                                 (!isBrandingSectionHidden && !isM2MApplication) && (
                                     <>
-                                        <Heading as="h5">
+                                        <Heading as="h4">
                                             { t("applications:forms.generalDetails.sections.branding.title") }
                                         </Heading>
                                         <PaletteIcon fill="#ff7300" /> &nbsp;
