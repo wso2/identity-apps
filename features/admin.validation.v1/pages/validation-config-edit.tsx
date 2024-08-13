@@ -99,7 +99,6 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         state?.config?.ui?.features?.loginAndRegistration?.disabledFeatures);
     const isRuleBasedPasswordExpiryDisabled: boolean = disabledFeatures?.includes("ruleBasedPasswordExpiry");
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ isSubmitting, setSubmitting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<

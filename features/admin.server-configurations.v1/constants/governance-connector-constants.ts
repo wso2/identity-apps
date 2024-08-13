@@ -34,7 +34,7 @@ export class GovernanceConnectorConstants {
         EXPIRY_TIME_MAX_VALUE: 10080,
         EXPIRY_TIME_MIN_LENGTH: 1,
         EXPIRY_TIME_MIN_VALUE: -1
-        };
+    };
 
     /**
      * Self Registration Form element constraints.
@@ -49,7 +49,7 @@ export class GovernanceConnectorConstants {
         EXPIRY_TIME_MAX_VALUE: 10080,
         EXPIRY_TIME_MIN_LENGTH: 1,
         EXPIRY_TIME_MIN_VALUE: 1
-        };
+    };
 
     /**
      * Password Recovery Form element constraints.
@@ -92,7 +92,7 @@ export class GovernanceConnectorConstants {
         SMS_OTP_CODE_LENGTH_MIN_VALUE: 4,
         SMS_OTP_EXPIRY_TIME_MAX_LENGTH: 4,
         SMS_OTP_EXPIRY_TIME_MAX_VALUE: 1440
-        };
+    };
 
     /**
      * Login Attempt Security Form element constraints.
@@ -123,7 +123,7 @@ export class GovernanceConnectorConstants {
         FAILED_ATTEMPTS_MAX_VALUE: 10,
         FAILED_ATTEMPTS_MIN_LENGTH: 1,
         FAILED_ATTEMPTS_MIN_VALUE: 1
-        };
+    };
 
     /**
      * Password Expiry Form element constraints.
@@ -140,7 +140,7 @@ export class GovernanceConnectorConstants {
         EXPIRY_TIME_MAX_VALUE: 10080,
         EXPIRY_TIME_MIN_LENGTH: 1,
         EXPIRY_TIME_MIN_VALUE: 1
-        };
+    };
 
     /**
      * Analytics Form element constraints.
@@ -149,5 +149,5 @@ export class GovernanceConnectorConstants {
         TIMEOUT_MIN_LENGTH: number;
     } = {
         TIMEOUT_MIN_LENGTH: 0
-        };
+    };
 }
