@@ -38,6 +38,27 @@ interface LoginSecurityDocumentationLinksInterface {
 }
 
 /**
+ * Interface for the Actions section documentation structure.
+ */
+interface ActionsDocumentationLinksInterface {
+    learnMore: string;
+    types: {
+        preIssueAccessToken: {
+            learnMore: string;
+        }
+        preRegistration: {
+            learnMore: string;
+        }
+        preUpdatePassword: {
+            learnMore: string;
+        }
+        preUpdateProfile: {
+            learnMore: string;
+        }
+    }
+}
+
+/**
  * Interface for the API Resources section documentation structure.
  */
 interface APIResourcesDocumentationLinksInterface {
@@ -498,6 +519,10 @@ export interface DocumentationLinksExtensionInterface {
      * Documentation links for develop section elements.
      */
     develop: {
+        /**
+         * Documentation links for actions section elements.
+         */
+        actions: ActionsDocumentationLinksInterface;
         /**
          * Documentation links for API resources section elements.
          */

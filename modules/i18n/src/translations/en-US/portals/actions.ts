@@ -210,9 +210,7 @@ export const actions: actionsNS = {
     types: {
         preIssueAccessToken: {
             description: {
-                expanded: "This action is executed before issuing the access token to an application. " +
-                "Use this action to manage claims and scopes of the access token. " +
-                "Refer the documentation for the API definition to implement.",
+                expanded:  "Use this action to manage claims and scopes of the access token.",
                 shortened: "This action is executed before issuing the access token to an application."
             },
             heading: "Pre Issue Access Token"

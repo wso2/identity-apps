@@ -299,13 +299,13 @@ export class RouteUtils {
             order: 4
         };
 
-        const monitoring: NavCategory = {
-            id: "monitoring",
+        const extensions: NavCategory = {
+            id: "extensions",
             order: 5
         };
 
-        const extensions: NavCategory = {
-            id: "extensions",
+        const monitoring: NavCategory = {
+            id: "monitoring",
             order: 6
         };
 
@@ -474,6 +474,11 @@ export class RouteUtils {
                 category: extensions,
                 id: "actions",
                 order: 0
+            },
+            {
+                category: extensions,
+                id: "eventPublishing",
+                order: 1
             }
         ];
 
