@@ -1,5 +1,13 @@
 # @wso2is/admin.organization-discovery.v1
 
+## 2.20.121
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.24.14
+  - @wso2is/admin.organizations.v1@2.21.14
+
 ## 2.20.120
 
 ### Patch Changes
