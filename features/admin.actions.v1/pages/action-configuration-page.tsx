@@ -282,6 +282,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
         deleteAction(actionTypeApiPath, actionInitialValues.id)
             .then(() => {
                 handleSuccess(ActionsConstants.DELETE);
+                mutateActions();
                 history.push(AppConstants.getPaths().get("ACTIONS"));
             })
             .catch((error: AxiosError) => {

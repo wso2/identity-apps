@@ -39,6 +39,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, GenericIcon, PageLayout, useDocumentation } from "@wso2is/react-components";
+import classNames from "classnames";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -328,7 +329,7 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
                             return checkFeatureEnabledStatus(cardProps.identifier) && (
                                 <Card
                                     key={ cardProps.identifier }
-                                    className={ cardProps.disabled ? "action-type disabled" : "action-type" }
+                                    className={ classNames("action-type", { "disabled": cardProps.disabled }) }
                                     data-componentid={ `${ cardProps.identifier }-action-type-card` }
                                     onClick={ () => history.push(cardProps.route) }
                                 >

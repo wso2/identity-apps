@@ -19,7 +19,7 @@ import { pagesNS } from "../../../models";
 
 export const pages: pagesNS = {
     actions: {
-        subTitle: "Create Actions to extend or integrate Login & Registration flows.",
+        subTitle: "Create actions to extend login & registration flows.",
         title: "Actions"
     },
     addEmailTemplate: {
