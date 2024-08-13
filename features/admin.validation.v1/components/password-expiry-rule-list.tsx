@@ -324,9 +324,8 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                             { t("validation:passwordExpiry.rules.messages.defaultRuleApplyMessage") }
                         </div>
                     )
-                    : t("validation:passwordExpiry.rules.messages.defaultRuleSkipMessage")
+                    : (" " + t("validation:passwordExpiry.rules.messages.defaultRuleSkipMessage"))
                 }
-
             </div>
             <Alert severity="info" className="info-box">
                 { t("validation:passwordExpiry.rules.messages.info") }
