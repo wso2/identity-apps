@@ -1,5 +1,15 @@
 # @wso2is/admin.email-management.v1
 
+## 2.20.122
+
+### Patch Changes
+
+- Updated dependencies [[`ec3fae95750df6503d6d6286c4e700e3b66cd18f`](https://github.com/wso2/identity-apps/commit/ec3fae95750df6503d6d6286c4e700e3b66cd18f)]:
+  - @wso2is/admin.core.v1@2.24.15
+  - @wso2is/i18n@2.5.20
+  - @wso2is/admin.branding.v1@2.20.122
+  - @wso2is/common.branding.v1@2.20.122
+
 ## 2.20.121
 
 ### Patch Changes
