@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,18 +19,17 @@
 /*
  * Try it application constants.
  */
-export class TryItApplicationConstants {
+class TryItApplicationConstants {
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     */
+    private constructor() {}
 
     /**
      * Application's Display Name.
      */
-    public static readonly DISPLAY_NAME = "Asgardeo Try It";
-    /*
-     * status of the try it tour 
-     */
-    public static readonly TRY_IT_TOUR_STATUS_STORAGE_KEY = "isTryItTourViewed";
-    /*
-     * enabling or disabling try it tour
-     */
-    public static readonly TRY_IT_TOUR_ENABLED = false;
+    public static readonly DISPLAY_NAME: string = "Asgardeo Try It";
 }
+
+export default TryItApplicationConstants;
