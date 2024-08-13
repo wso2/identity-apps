@@ -20,14 +20,6 @@ import { useRequiredScopes } from "@wso2is/access-control";
 import { getConnectionDetails } from "@wso2is/admin.connections.v1/api/connections";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import {
-    updateIdentityProviderAssignedGroups,
-    useIdentityProviderAssignedGroups
-} from "@wso2is/admin.extensions.v1/components/application/api";
-import {
-    ApplicationRoleGroupInterface,
-    ApplicationRoleGroupsUpdatePayloadInterface
-} from "@wso2is/admin.extensions.v1/components/application/models";
 import { IdentityProviderGroupInterface, IdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -47,6 +39,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
+import { updateIdentityProviderAssignedGroups, useIdentityProviderAssignedGroups } from "../../api/application-roles";
+import {
+    ApplicationRoleGroupInterface,
+    ApplicationRoleGroupsUpdatePayloadInterface
+} from "../../models/application-roles";
 
 interface GroupsListProps extends IdentifiableComponentInterface {
     authenticatorId: string;

@@ -17,11 +17,6 @@
  */
 
 import { AppConstants, history } from "@wso2is/admin.core.v1";
-import { getApplicationRolesList } from "@wso2is/admin.extensions.v1/components/application/api";
-import {
-    ApplicationRolesResponseInterface,
-    RoleListItemInterface
-} from "@wso2is/admin.extensions.v1/components/application/models";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AnimatedAvatar, TabPageLayout } from "@wso2is/react-components";
@@ -34,7 +29,9 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { getApplicationRolesList } from "../api/application-roles";
 import EditApplicationRoles from "../components/edit-application-role";
+import { ApplicationRolesResponseInterface, RoleListItemInterface } from "../models/application-roles";
 
 type ApplicationRoleEditPageProps = IdentifiableComponentInterface
 

@@ -16,12 +16,6 @@
  * under the License.
  */
 import { UIConstants } from "@wso2is/admin.core.v1";
-import {
-    useApplicationRoleInvitedUserGroups, useDescendantsOfSubOrg
-} from "@wso2is/admin.extensions.v1/components/application/api";
-import {
-    ApplicationRoleGroupInterface, DescendantDataInterface
-} from "@wso2is/admin.extensions.v1/components/application/models";
 import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { resolveUserstore } from "@wso2is/core/helpers";
@@ -42,6 +36,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Header, Icon, Input } from "semantic-ui-react";
+import { useApplicationRoleInvitedUserGroups, useDescendantsOfSubOrg } from "../api/application-roles";
+import { ApplicationRoleGroupInterface, DescendantDataInterface } from "../models/application-roles";
 
 interface ApplicationRoleGroupsProps extends IdentifiableComponentInterface {
     appId: string;

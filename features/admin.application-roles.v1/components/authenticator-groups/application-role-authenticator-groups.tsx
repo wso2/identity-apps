@@ -30,7 +30,6 @@ import { getAuthenticators } from "@wso2is/admin.connections.v1/api/authenticato
 import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
-import { ApplicationRolesConstants } from "@wso2is/admin.extensions.v1/components/application/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -40,6 +39,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AuthenticatorGroupsList } from "./authenticator-groups-list";
+import { ApplicationRolesConstants } from "../../constants/application-roles-constants";
 
 interface ApplicationRoleAuthenticatorGroupsProps extends IdentifiableComponentInterface {
     appId: string;
