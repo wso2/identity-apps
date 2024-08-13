@@ -266,7 +266,6 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             } ];
     };
 
-
     /**
      * This function returns loading placeholders.
      */
@@ -280,20 +279,21 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
 
             for (let columnIndex: number = 0; columnIndex < cardsInRow; columnIndex++) {
                 cards.push(
-                    <div data-componentid={ `${ _componentId }-loading-card` }>
-                        <Box className="placeholder-box">
-                            <Placeholder>
-                                <Placeholder.Header>
-                                    <Placeholder.Line length="medium" />
-                                    <Placeholder.Line length="full" />
-                                </Placeholder.Header>
-                                <Placeholder.Paragraph>
-                                    <Placeholder.Line />
-                                    <Placeholder.Line />
-                                </Placeholder.Paragraph>
-                            </Placeholder>
-                        </Box>
-                    </div>
+                    <Box
+                        className="placeholder-box"
+                        data-componentid={ `${ _componentId }-loading-card` }
+                    >
+                        <Placeholder>
+                            <Placeholder.Header>
+                                <Placeholder.Line length="medium" />
+                                <Placeholder.Line length="full" />
+                            </Placeholder.Header>
+                            <Placeholder.Paragraph>
+                                <Placeholder.Line />
+                                <Placeholder.Line />
+                            </Placeholder.Paragraph>
+                        </Placeholder>
+                    </Box>
                 );
             }
 
