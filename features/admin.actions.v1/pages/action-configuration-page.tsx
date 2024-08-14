@@ -243,17 +243,19 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
      */
     const actionToggle = (): ReactElement => {
         const handleToggle = (e: SyntheticEvent, data: CheckboxProps) => {
+            const toggleOperation: string = data.checked ? ActionsConstants.ACTIVATE : ActionsConstants.DEACTIVATE;
+
             setIsActive(data.checked);
             setIsSubmitting(true);
             changeActionStatus(
                 actionTypeApiPath,
                 actionInitialValues.id,
-                data.checked ? ActionsConstants.ACTIVATE : ActionsConstants.DEACTIVATE)
+                toggleOperation)
                 .then(() => {
-                    handleSuccess(ActionsConstants.UPDATE);
+                    handleSuccess(toggleOperation);
                 })
                 .catch((error: AxiosError) => {
-                    handleError(error, ActionsConstants.UPDATE);
+                    handleError(error, toggleOperation);
                 })
                 .finally(() => {
                     mutateActions();
@@ -279,6 +281,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     };
 
     const handleDelete = (): void => {
+        setIsSubmitting(true);
         deleteAction(actionTypeApiPath, actionInitialValues.id)
             .then(() => {
                 handleSuccess(ActionsConstants.DELETE);
@@ -290,6 +293,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
             })
             .finally(() => {
                 setOpenRevertConfigModal(false);
+                setIsSubmitting(false);
             });
     };
 
@@ -333,7 +337,6 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 onClick: () => handleBackButtonClick(),
                 text: t("actions:goBackActions")
             } }
-            isLoading={ isLoading }
             bottomMargin={ false }
             contentTopMargin={ true }
             pageHeaderMaxWidth={ false }
@@ -349,7 +352,6 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                                 isLoading={ isLoading }
                                 actionTypeApiPath={ actionTypeApiPath }
                                 isCreateFormState={ showCreateForm }
-                                isUpdating={ isSubmitting }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -377,7 +379,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                         />
                     </DangerZoneGroup>
                     <ConfirmationModal
-                        primaryActionLoading={ isActionsLoading || !actions || !Array.isArray(actions) }
+                        primaryActionLoading={ isSubmitting }
                         data-componentid={ `${ _componentId }-revert-confirmation-modal` }
                         onClose={ (): void => setOpenRevertConfigModal(false) }
                         type="negative"

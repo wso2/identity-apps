@@ -143,9 +143,17 @@ export const actions: actionsNS = {
     goBackActions: "Go back to Actions",
     notification: {
         error: {
+            activate: {
+                description: "{{description}}",
+                message: "Error activating the new action."
+            },
             create: {
                 description: "{{description}}",
                 message: "Error creating the new action."
+            },
+            deactivate: {
+                description: "{{description}}",
+                message: "Error deactivating the action."
             },
             delete: {
                 description: "{{description}}",
@@ -165,8 +173,16 @@ export const actions: actionsNS = {
             }
         },
         genericError: {
+            activate: {
+                description: "Couldn't activate the new action.",
+                message: "Something went wrong."
+            },
             create: {
                 description: "Couldn't add the new action.",
+                message: "Something went wrong."
+            },
+            deactivate: {
+                description: "Couldn't deactivate the new action.",
                 message: "Something went wrong."
             },
             delete: {
@@ -187,16 +203,24 @@ export const actions: actionsNS = {
             }
         },
         success: {
+            activate: {
+                description: "The action was activated successfully.",
+                message: "Action activated successfully."
+            },
             create: {
                 description: "The new action was added successfully.",
                 message: "Action added successfully."
             },
+            deactivate: {
+                description: "The action was deactivated successfully.",
+                message: "Action deactivated successfully."
+            },
             delete: {
-                description: "The  action was added successfully.",
+                description: "The action was deleted successfully.",
                 message: "Action deleted successfully."
             },
             update: {
-                description: "The action configurations were updated successfully.",
+                description: "The action was updated successfully.",
                 message: "Action updated successfully."
             }
         }
