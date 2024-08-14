@@ -24,8 +24,8 @@ import Button from "@oxygen-ui/react/Button";
 import Divider from "@oxygen-ui/react/Divider";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import Skeleton from "@oxygen-ui/react/Skeleton";
-import { useRequiredScopes } from "@wso2is/access-control";
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import { AppState } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
@@ -88,7 +88,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     [ "data-componentid" ]: _componentId = "action-config-form"
 }: ActionConfigFormInterface): ReactElement => {
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features.actions);
+    const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => state.config.ui.features.actions);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
     const [ isSubmitting, setIsSubmitting ] = useState(false);
@@ -98,8 +98,8 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const hasActionUpdatePermissions: boolean = useRequiredScopes(featureConfig?.actions?.scopes?.update);
-    const hasActionCreatePermissions: boolean = useRequiredScopes(featureConfig?.actions?.scopes?.create);
+    const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
+    const hasActionCreatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.create);
 
     const {
         mutate: mutateActions
@@ -132,7 +132,6 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     );
 
     const renderLoadingPlaceholders = (): ReactElement => (
-
         <Box className="placeholder-box">
             <Skeleton variant="rectangular" height={ 7 } width="30%" />
             <Skeleton variant="rectangular" height={ 28 } />
