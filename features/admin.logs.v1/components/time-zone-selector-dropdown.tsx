@@ -20,7 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Dropdown } from "semantic-ui-react";
-import { LogsConstants } from "../constants";
+import LogsConstants from "../constants/logs-constants";
 
 const TIME_ZONE_DATA: Array<{key: number, text: string, value: string}> = LogsConstants.TIME_ZONE_DATA;
 

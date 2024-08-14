@@ -35,7 +35,7 @@ import { useTranslation } from "react-i18next";
 import { Icon, Label } from "semantic-ui-react";
 import InfiniteScrollContainer from "../components/infinite-scroll-container";
 import TimeRangeSelector from "../components/time-range-selector";
-import { LogsConstants } from "../constants/logs-constants";
+import LogsConstants from "../constants/logs-constants";
 import useFetch from "../hooks/use-fetch";
 import { InterfaceLogEntry, InterfaceLogsFilter, InterfaceLogsRequest, TabIndex } from "../models/log-models";
 import { getDateTimeWithOffset, getTimeFromTimestamp } from "../utils/datetime-utils";
