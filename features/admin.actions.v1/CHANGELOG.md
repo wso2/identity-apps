@@ -1,5 +1,15 @@
 # @wso2is/admin.actions.v1
 
+## 1.0.11
+
+### Patch Changes
+
+- [#6774](https://github.com/wso2/identity-apps/pull/6774) [`882287d2b7aeb48e267984a9bc898f2bd20ccb89`](https://github.com/wso2/identity-apps/commit/882287d2b7aeb48e267984a9bc898f2bd20ccb89) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix issue in fetching scopes in actions ui
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.24.17
+  - @wso2is/admin.extensions.v1@2.22.12
+
 ## 1.0.10
 
 ### Patch Changes
