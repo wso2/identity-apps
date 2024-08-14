@@ -78,10 +78,6 @@ interface ActionConfigFormInterface extends IdentifiableComponentInterface {
      * Specifies action creation state.
      */
     isCreateFormState: boolean;
-    /**
-     * Flag for form updating state.
-     */
-    isUpdating?: boolean;
 }
 
 const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
@@ -89,7 +85,6 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     isLoading,
     actionTypeApiPath,
     isCreateFormState,
-    isUpdating,
     [ "data-componentid" ]: _componentId = "action-config-form"
 }: ActionConfigFormInterface): ReactElement => {
 
@@ -740,7 +735,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                     onClick={ handleSubmit }
                                     className={ "button-container" }
                                     data-componentid={ `${ _componentId }-primary-button` }
-                                    loading={ isSubmitting || isUpdating }
+                                    loading={ isSubmitting }
                                     disabled={ getFieldDisabledStatus() }
                                 >
                                     {
