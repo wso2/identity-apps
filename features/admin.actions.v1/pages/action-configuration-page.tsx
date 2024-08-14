@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { Show, useRequiredScopes } from "@wso2is/access-control";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/access-control";
+import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -59,8 +59,8 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     [ "data-componentid" ]: _componentId = "action-configuration-page"
 }: ActionConfigurationPageInterface): ReactElement => {
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features.actions);
-
+    const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features.actions);
     const [ isOpenRevertConfigModal, setOpenRevertConfigModal ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState(false);
     const [ isActive, setIsActive ] = useState<boolean>(false);
@@ -70,7 +70,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const hasActionUpdatePermissions: boolean = useRequiredScopes(featureConfig?.actions?.scopes?.update);
+    const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
 
     const actionTypeApiPath: string = useMemo(() => {
         const path: string[] = history.location.pathname.split("/");
@@ -359,7 +359,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
             }
             { !isLoading && !showCreateForm && (
                 <Show
-                    when={ featureConfig?.actions?.scopes?.delete }
+                    when={ actionsFeatureConfig?.scopes?.delete }
                 >
                     <DangerZoneGroup
                         sectionHeader={ t("actions:dangerZoneGroup.header") }
