@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.5.21
+
+### Patch Changes
+
+- [#6770](https://github.com/wso2/identity-apps/pull/6770) [`6349ffa59c542b1be0304aabad766455fceabf25`](https://github.com/wso2/identity-apps/commit/6349ffa59c542b1be0304aabad766455fceabf25) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Minor fixes in actions ui
+
 ## 2.5.20
 
 ### Patch Changes

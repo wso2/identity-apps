@@ -1,5 +1,16 @@
 # @wso2is/admin.actions.v1
 
+## 1.0.10
+
+### Patch Changes
+
+- [#6770](https://github.com/wso2/identity-apps/pull/6770) [`6349ffa59c542b1be0304aabad766455fceabf25`](https://github.com/wso2/identity-apps/commit/6349ffa59c542b1be0304aabad766455fceabf25) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Minor fixes in actions ui
+
+- Updated dependencies [[`6349ffa59c542b1be0304aabad766455fceabf25`](https://github.com/wso2/identity-apps/commit/6349ffa59c542b1be0304aabad766455fceabf25)]:
+  - @wso2is/i18n@2.5.21
+  - @wso2is/admin.core.v1@2.24.16
+  - @wso2is/admin.extensions.v1@2.22.11
+
 ## 1.0.9
 
 ### Patch Changes
