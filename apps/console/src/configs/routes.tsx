@@ -1074,7 +1074,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:develop.sidePanel.categories.monitor",
-            component: lazy(() => import("@wso2is/admin.extensions.v1/components/logs/pages/logs")),
+            component: lazy(() => import("@wso2is/admin.logs.v1/pages/logs-page")),
             exact: true,
             featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
             icon: {

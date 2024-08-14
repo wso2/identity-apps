@@ -64,6 +64,7 @@ module.exports = [
             "./admin.groups.v1/public-api.ts",
             "./admin.identity-providers.v1/public-api.ts",
             "./admin.identity-verification-providers.v1/public-api.ts",
+            "./admin.logs.v1/public-api.ts",
             "./admin.oidc-scopes.v1/public-api.ts",
             "./admin.org-insights.v1/public-api.ts",
             "./admin.organization-discovery.v1/public-api.ts",
@@ -138,6 +139,7 @@ module.exports = [
                         "./admin.identity-verification-providers.v1":
                             "./admin.identity-verification-providers.v1/public-api.js",
                         "./admin.impersonation.v1":  "./admin.impersonation.v1/public-api.js",
+                        "./admin.logs.v1": "./admin.logs.v1/public-api.js",
                         "./admin.oidc-scopes.v1": "./admin.oidc-scopes.v1/public-api.js",
                         "./admin.org-insights.v1": "./admin.org-insights.v1/public-api.js",
                         "./admin.organization-discovery.v1": "./admin.organization-discovery.v1/public-api.js",
