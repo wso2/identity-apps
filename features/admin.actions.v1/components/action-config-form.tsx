@@ -88,7 +88,8 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     [ "data-componentid" ]: _componentId = "action-config-form"
 }: ActionConfigFormInterface): ReactElement => {
 
-    const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => state.config.ui.features.actions);
+    const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features.actions);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
     const [ isSubmitting, setIsSubmitting ] = useState(false);

@@ -61,7 +61,6 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
 
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features.actions);
-
     const [ isOpenRevertConfigModal, setOpenRevertConfigModal ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState(false);
     const [ isActive, setIsActive ] = useState<boolean>(false);
