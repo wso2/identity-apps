@@ -83,4 +83,10 @@
             height: 40px;
         }
     }
+
+    .placeholder-box {
+        > * {
+            margin-bottom: 8px; 
+        }
+    }
 }

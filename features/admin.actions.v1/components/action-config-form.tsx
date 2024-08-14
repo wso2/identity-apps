@@ -137,12 +137,13 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     );
 
     const renderLoadingPlaceholders = (): ReactElement => (
-        <>
-            <Skeleton variant="rectangular" className="placeholder label" />
-            <Skeleton variant="rectangular" className="placeholder text-field with-max-width" />
-            <Skeleton variant="rectangular" className="placeholder label" />
-            <Skeleton variant="rectangular" className="placeholder text-field with-max-width" />
-        </>
+
+        <Box className="placeholder-box">
+            <Skeleton variant="rectangular" height={ 7 } width="30%" />
+            <Skeleton variant="rectangular" height={ 28 } />
+            <Skeleton variant="rectangular" height={ 7 } width="90%" />
+            <Skeleton variant="rectangular" height={ 7 } />
+        </Box>
     );
 
     /**

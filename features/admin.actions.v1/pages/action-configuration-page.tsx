@@ -333,7 +333,6 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 onClick: () => handleBackButtonClick(),
                 text: t("actions:goBackActions")
             } }
-            isLoading={ isLoading }
             bottomMargin={ false }
             contentTopMargin={ true }
             pageHeaderMaxWidth={ false }
