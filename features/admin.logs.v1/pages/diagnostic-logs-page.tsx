@@ -15,13 +15,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder,
     Hint,
     LinkButton,
     Message,
-    PrimaryButton } from "@wso2is/react-components";
+    PrimaryButton
+} from "@wso2is/react-components";
 import React, {
     MutableRefObject,
     ReactElement,
@@ -32,17 +34,17 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Icon, Label } from "semantic-ui-react";
-import InfiniteScrollContainer from "../logs/components/infinite-scroll-container";
-import TimeRangeSelector from "../logs/components/time-range-selector";
-import { LogsConstants } from "../logs/constants";
-import useFetch from "../logs/hooks/use-fetch";
-import { InterfaceLogEntry, InterfaceLogsFilter, InterfaceLogsRequest, TabIndex } from "../logs/models/log-models";
-import { getDateTimeWithOffset, getTimeFromTimestamp } from "../logs/utils";
+import InfiniteScrollContainer from "../components/infinite-scroll-container";
+import TimeRangeSelector from "../components/time-range-selector";
+import LogsConstants from "../constants/logs-constants";
+import useFetch from "../hooks/use-fetch";
+import { InterfaceLogEntry, InterfaceLogsFilter, InterfaceLogsRequest, TabIndex } from "../models/log-models";
+import { getDateTimeWithOffset, getTimeFromTimestamp } from "../utils/datetime-utils";
 
 /**
  * Proptypes for the logs page component.
  */
-type AuditPagePropsInterface = IdentifiableComponentInterface;
+type DiagnosticPagePropsInterface = IdentifiableComponentInterface;
 
 /**
  * Logs monitoring page.
@@ -51,7 +53,7 @@ type AuditPagePropsInterface = IdentifiableComponentInterface;
  *
  * @returns Logs Page {@link React.ReactElement}
  */
-export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => {
+const DiagnosticLogsPage = (props: DiagnosticPagePropsInterface) : ReactElement => {
 
     const {
         ["data-componentid"]: componentId
@@ -70,11 +72,11 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
     const [ requestPayload, setRequestPayload ] = useState<InterfaceLogsRequest | null>(null);
     const [ showLastLogTime, setShowLastLogTime ] = useState<boolean>(false);
     const [ showDelayMessage, setShowDelayMessage ] = useState<boolean>(false);
-    const [ lastAuditLogRequestTime, setLastAuditLogRequestTime ] = useState<string>("");
-    const [ lastAuditLogRequestTimeRange, setLastAuditLogRequestTimeRange ] = useState<number>(0.25);
+    const [ lastDiagnosticLogRequestTime, setLastDiagnosticLogRequestTime ] = useState<string>("");
+    const [ lastDiagnosticLogRequestTimeRange, setLastDiagnosticLogRequestTimeRange ] = useState<number>(0.25);
     const [ showRefreshButton, setShowRefreshButton ] = useState<boolean>(false);
     const [ timerRunning, setTimerRunning ] = useState<boolean>(false);
-    const [ audiLogList, setAuditLogList ] = useState<InterfaceLogEntry[]>([]);
+    const [ diagnosticLogList, setDiagnosticLogList ] = useState<InterfaceLogEntry[]>([]);
 
     const { t } = useTranslation();
     const timeZone: string = "GMT+0000 UTC";
@@ -99,7 +101,7 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
                 }, LogsConstants.REFRESH_BUTTON_TIMEOUT);
             }
         }
-    }, [ lastAuditLogRequestTime ]);
+    }, [ lastDiagnosticLogRequestTime ]);
 
     useEffect(() => {
         setShowRefreshButton(false);
@@ -112,38 +114,46 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
 
         setEndTime(currentEndTime);
         setStartTime(currentStartTime);
-        setLastAuditLogRequestTime(currentEndTime);
+        setLastDiagnosticLogRequestTime(currentEndTime);
 
         // Fetch logs automatically during the first render.
         setRequestPayload({
             endTime: currentEndTime,
             filter: "",
             limit: LogsConstants.LOG_FETCH_COUNT,
-            logType: TabIndex.AUDIT_LOGS,
+            logType: TabIndex.DIAGNOSTIC_LOGS,
             startTime: currentStartTime
         });
     }, []);
 
     const scrollRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+
     const { error, list, loading, next, previous } = useFetch(requestPayload);
 
+
     useEffect (() => {
-        setAuditLogList(list);
-    }, [ list ]);
+        if (!loading && list.length > 0) {
+            setDiagnosticLogList(list);
+        }
+    }, [ list, loading ]);
 
     /**
-     * Handles the behavior of the infinite scroller.
+     * Handles the behaviour of the infinite scroller
      */
     const handleScroll: UIEventHandler<HTMLDivElement> = (e: React.UIEvent<HTMLElement>) => {
-        const element: HTMLElement = e.target as HTMLElement;
+        const element: any = e.target;
 
         setShowDelayMessage(false);
-        // When the at the top of the log container.
+        /**
+         * When the at the top of the log container
+         */
         if (element.scrollTop === 0) {
+
             if (previous) {
                 setRequestPayload({
                     filter: searchQuery,
                     limit: LogsConstants.LOG_FETCH_COUNT,
+                    logType: TabIndex.DIAGNOSTIC_LOGS,
                     previousToken: previous
                 });
                 setIsPreviousEmpty(false);
@@ -152,12 +162,15 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
                 setIsPreviousEmpty(true);
             }
         }
-        // When the at the bottom of the log container.
+        /**
+         * When at the bottom of the log container
+         */
         if (element.scrollHeight - element.scrollTop === element.clientHeight) {
             if (next) {
                 setRequestPayload({
                     filter: searchQuery,
                     limit: LogsConstants.LOG_FETCH_COUNT,
+                    logType: TabIndex.DIAGNOSTIC_LOGS,
                     nextToken: next
                 });
                 setIsNextEmpty(false);
@@ -168,7 +181,7 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
         }
     };
 
-    const renderAuditLogContent = () : ReactElement => {
+    const renderDiagnosticLogContent = () : ReactElement => {
 
         return (
             <div>
@@ -178,7 +191,7 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
                         setFromTime={ (value: string): void => setStartTime(value) }
                         setToTime={ (value: string): void => setEndTime(value) }
                         setTimeRange={ (value: number): void => setTimeRange(value) }
-                        data-componentid={ `${ componentId }-audit` }
+                        data-componentid={ componentId }
                     />
                     { showRefreshButton
                         ? (
@@ -201,27 +214,30 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
                     }
                 </div>
                 <div>
-                    <div className="top-toolbar">
-                        { renderRefreshTime() }
-                        <Label.Group>
-                            { filterList?.map(
-                                (value: { key: string, value:string }, index: number) =>
-                                    (<Label key={ index } className="filter-pill">
-                                        { getLabelTextForFilterPill(value.key) }
-                                        <Label.Detail>{ value.value }</Label.Detail>
-                                        <Icon name="delete" onClick={ () => removeFilter(value.key) }></Icon>
-                                    </Label>)
-                            ) }
-                            { resolveClearAllFilters() }
-                        </Label.Group>
-                    </div>
-                    { resolveAuditLogs() }
+                    <>
+                        <div className="top-toolbar">
+                            { renderRefreshTime() }
+                            <Label.Group>
+                                { filterList && filterList.map(
+                                    (value: { key: string, value:string }, index: number) =>
+                                        (<Label key={ index } className="filter-pill">
+                                            { getLabelTextForFilterPill(value.key) }
+                                            <Label.Detail>{ value.value }</Label.Detail>
+                                            <Icon name="delete" onClick={ () => removeFilter(value.key) }></Icon>
+                                        </Label>)
+                                ) }
+                                { resolveClearAllFilters() }
+                            </Label.Group>
+                        </div>
+                        { resolveDiagnosticLogs() }
+                    </>
                 </div>
-            </div> );
+            </div>
+        );
     };
 
     /**
-     * Build filter query.
+     * Build filter query
      */
     const buildFilterQuery = () => {
         let tempQuery: string = "";
@@ -237,9 +253,9 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
     };
 
     /**
-     * Search logs.
+     * Search logs
      *
-     * @param query - search query with filters.
+     * @param query - search query with filters
      */
     const handleSearch = () => {
         let currentQuery: string = "";
@@ -265,14 +281,14 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
             currentStartTime = (currentTime - 3600*1000*timeRange).toString();
         }
         setShowDelayMessage(false);
-        setLastAuditLogRequestTime(currentTime.toString());
-        setLastAuditLogRequestTimeRange(timeRange);
+        setLastDiagnosticLogRequestTime(currentTime.toString());
+        setLastDiagnosticLogRequestTimeRange(timeRange);
 
         setRequestPayload({
             endTime: currentEndTime,
             filter: `${filterQuery}${currentQuery}`,
             limit: LogsConstants.LOG_FETCH_COUNT,
-            logType: TabIndex.AUDIT_LOGS,
+            logType: TabIndex.DIAGNOSTIC_LOGS,
             startTime: currentStartTime
         });
     };
@@ -284,10 +300,11 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
         setSearchQuery("");
         setInputQuery("");
         setShowRefreshButton(false);
+
     };
 
     /**
-     * Handles searching logs with multiple filters.
+     * Handles searching logs with multiple filters
      */
     const handleFilter = (query: InterfaceLogsFilter): void => {
         const tempMap: Map<string, string> = filterMap;
@@ -307,7 +324,7 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
 
     /**
      * Remove specific filter attributes on click delete button
-     * in filter pills.
+     * in filter pills
      */
     const removeFilter = (filterKey: string): void => {
         const tempMap: Map<string, string> = filterMap;
@@ -326,7 +343,7 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
     };
 
     /**
-     * Clear all filter attributes.
+     * Clear all filter attributes
      */
     const clearAllFilters = (): void => {
         const tempMap: Map<string, string> = filterMap;
@@ -338,7 +355,7 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
     };
 
     /**
-     * Returns search component.
+     * Returns search component
      */
     const advancedSearchFilter = (): ReactElement => (
         <form
@@ -348,7 +365,7 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
                 <div className="search-box ui action left icon input advanced-search with-add-on">
                     <input
                         autoComplete="off"
-                        placeholder={ t("extensions:develop.monitor.filter.searchBar.placeholderAudit") }
+                        placeholder={ t("extensions:develop.monitor.filter.searchBar.placeholderDiagnostic") }
                         maxLength={ 120 }
                         name="query"
                         type="text"
@@ -379,7 +396,7 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
         </form>
     );
 
-    const resolveAuditLogs = (): ReactElement => {
+    const resolveDiagnosticLogs = (): ReactElement => {
         if (error) {
             if (error?.response?.data?.code === LogsConstants.END_TIME_GREATER_THAN_START_TIME_ERROR_CODE) {
                 return (
@@ -441,7 +458,7 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
                     data-componentid={ `${ componentId }-empty-search-placeholder` }
                 />
             );
-        } else if (filterQuery && list?.length === 0) {
+        } else if (filterQuery && list.length === 0) {
             return (
                 <EmptyPlaceholder
                     action={ (
@@ -459,7 +476,7 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
                     data-componentid={ `${ componentId }-empty-filter-placeholder` }
                 />
             );
-        } else if (list?.length === 0 && (!next || !previous) && !loading) {
+        } else if (list.length === 0 && (!next || !previous) && !loading) {
             return (
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
@@ -469,7 +486,7 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
                         t("extensions:develop.monitor.notifications.emptyResponse.subtitle.0") +
                         `${ LogsConstants.TIMERANGE_DROPDOWN_OPTIONS.find(
                             (el: {key: number; text: string; value: number;}) =>
-                                el.value === lastAuditLogRequestTimeRange)?.text.toLowerCase()
+                                el.value === lastDiagnosticLogRequestTimeRange)?.text.toLowerCase()
                         }`,
                         t("extensions:develop.monitor.notifications.emptyResponse.subtitle.1")
                     ] }
@@ -480,7 +497,7 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
             return (
                 <>
                     { (loading && showDelayMessage) && (
-                        <div className="audit-logs-delay-message">
+                        <div className="diagnostic-logs-delay-message">
                             <Message
                                 type="info"
                                 compact
@@ -491,13 +508,13 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
                     <InfiniteScrollContainer
                         handleScroll={ handleScroll }
                         scrollRef={ scrollRef }
-                        logs={ audiLogList }
+                        logs={ diagnosticLogList }
                         loading={ loading }
                         rowHeight= { LogsConstants.LOG_ROW_HEIGHT }
                         logCount={ LogsConstants.LOG_FETCH_COUNT }
                         isPreviousEmpty = { isPreviousEmpty }
                         isNextEmpty = { isNextEmpty }
-                        logType={ TabIndex.AUDIT_LOGS }
+                        logType={ TabIndex.DIAGNOSTIC_LOGS }
                         setSearchQuery = { handleFilter }
                         data-componentid={ componentId }
                     />
@@ -527,6 +544,7 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
     };
 
     const fetchLatestLogs = (): void => {
+
         if (timeRange !== -1) {
             const current: number = getDateTimeWithOffset(timeZone);
 
@@ -537,7 +555,7 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
     };
 
     const renderRefreshTime = (): ReactElement => {
-        const isoDateString: string = new Date(Number(lastAuditLogRequestTime)).toISOString();
+        const isoDateString: string = new Date(Number(lastDiagnosticLogRequestTime)).toISOString();
 
         return (
             <div className="logs-refresh-component">
@@ -574,17 +592,9 @@ export const AuditLogsPage = (props: AuditPagePropsInterface) : ReactElement => 
 
     return (
         <div>
-            { renderAuditLogContent() }
+            { renderDiagnosticLogContent() }
         </div>
     );
 };
 
-
-/**
- * Default props for the component.
- */
-AuditLogsPage.defaultProps = {
-    "data-componentid": "audit-logs"
-};
-
-export default AuditLogsPage;
+export default DiagnosticLogsPage;

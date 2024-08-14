@@ -21,7 +21,12 @@ import { I18n } from "@wso2is/i18n";
 /*
  * Logs constants.
  */
-export class LogsConstants {
+class LogsConstants {
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     */
+    private constructor() {}
 
     /**
      * Log entries fetched per a single request.
@@ -149,3 +154,5 @@ export class LogsConstants {
     public static readonly END_TIME_GREATER_THAN_START_TIME_ERROR_CODE: string = "LM-10008";
     public static readonly START_TIME_GREATER_THAN_CURRENT_TIME_ERROR_CODE: string = "LM-10009";
 }
+
+export default LogsConstants;

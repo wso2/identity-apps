@@ -17,7 +17,6 @@
  */
 
 import Modal from "@mui/material/Modal";
-import { CopyIcon, DownloadIcon, EyeIcon, XMarkIcon } from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
@@ -25,6 +24,7 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import Link from "@oxygen-ui/react/Link";
 import Toolbar from "@oxygen-ui/react/Toolbar";
 import Typography from "@oxygen-ui/react/Typography";
+import { CopyIcon, DownloadIcon, EyeIcon, XMarkIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Popup } from "@wso2is/react-components";
 import { saveAs } from "file-saver";
@@ -36,7 +36,8 @@ import React, {
     UIEventHandler,
     lazy,
     useEffect,
-    useState } from "react";
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, Icon } from "semantic-ui-react";
 import CopyButton from "./copy-button";

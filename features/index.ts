@@ -38,6 +38,7 @@ export * from "./admin.extensions.v1/public-api";
 export * from "./admin.groups.v1/public-api";
 export * from "./admin.identity-providers.v1/public-api";
 export * from "./admin.identity-verification-providers.v1/public-api";
+export * from "./admin.logs.v1/public-api";
 export * from "./admin.oidc-scopes.v1/public-api";
 export * from "./admin.org-insights.v1/public-api";
 export * from "./admin.organization-discovery.v1/public-api";

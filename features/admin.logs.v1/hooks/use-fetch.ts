@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { useLogs } from "../api/useLogs";
+import { useLogs } from "../api/use-logs";
 import { InterfaceLogEntry, InterfaceLogsRequest } from "../models/log-models";
 
 /**

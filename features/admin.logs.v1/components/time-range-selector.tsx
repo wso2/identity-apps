@@ -21,7 +21,7 @@ import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Dropdown, Form, Icon, Input, Portal, Segment } from "semantic-ui-react";
 import TimeZoneSelectorDropdown from "./time-zone-selector-dropdown";
-import { LogsConstants } from "../constants/logs-constants";
+import LogsConstants from "../constants/logs-constants";
 import { getCurrentTimeZone, resolveMaxFromTime, resolveMaxToTime } from "../utils/datetime-utils";
 
 /**

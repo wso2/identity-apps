@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,6 @@
  * under the License.
  */
 
-export * from "./infinite-scroll-container";
-export * from "./advanced-filter-popup";
-export * from "./loader-placeholder";
+export { default as AuditLogsPage } from "./pages/audit-logs-page";
+export { default as DiagnosticLogsPage } from "./pages/diagnostic-logs-page";
+export { default as LogsPage } from "./pages/logs-page";
