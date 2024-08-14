@@ -1,5 +1,13 @@
 # @wso2is/admin.actions.v1
 
+## 1.0.12
+
+### Patch Changes
+
+- Updated dependencies [[`c29b2f1a11930a4ddf06d5f91828122139df0891`](https://github.com/wso2/identity-apps/commit/c29b2f1a11930a4ddf06d5f91828122139df0891)]:
+  - @wso2is/admin.extensions.v1@2.23.0
+  - @wso2is/admin.core.v1@2.24.18
+
 ## 1.0.11
 
 ### Patch Changes
