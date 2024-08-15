@@ -572,7 +572,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         const processedRules: Record<string, string> = {};
         const currentRuleIds: Set<string> = new Set<string>();
 
-        passwordExpiryRules.forEach((rule: PasswordExpiryRule) => {
+        passwordExpiryRules?.forEach((rule: PasswordExpiryRule) => {
             if (!rule) return;
             const ruleKey: string = `${ServerConfigurationsConstants.PASSWORD_EXPIRY_RULES_PREFIX}${rule?.priority}`;
 
@@ -581,7 +581,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             currentRuleIds.add(ruleKey);
         });
         // Handle deleted rules.
-        initialPasswordExpiryRules.forEach((rule: PasswordExpiryRule) => {
+        initialPasswordExpiryRules?.forEach((rule: PasswordExpiryRule) => {
             if (!currentRuleIds.has(rule?.id)) {
                 processedRules[rule?.id] = "";
             }
@@ -959,7 +959,6 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     };
 
     const resolvePasswordExpiration: () => ReactElement = (): ReactElement => {
-
         return (
             <>
                 <div className="title-header">
@@ -980,9 +979,9 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     isPasswordExpiryEnabled={ passwordExpiryEnabled }
                     isSkipFallbackEnabled={ passwordExpirySkipFallback }
                     defaultPasswordExpiryTime={ defaultPasswordExpiryTime }
-                    ruleList={ passwordExpiryRules }
-                    rolesList={ allRoleList }
-                    groupsList={ groupsList.Resources }
+                    ruleList={ passwordExpiryRules ?? [] }
+                    rolesList={ allRoleList ?? [] }
+                    groupsList={ groupsList?.Resources ?? [] }
                     isReadOnly={ isReadOnly }
                     onDefaultPasswordExpiryTimeChange={ (days: number) => setDefaultPasswordExpiryTime(days) }
                     onSkipFallbackChange={ (skip: boolean) => setPasswordExpirySkipFallback(skip) }
@@ -996,7 +995,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const resolvePasswordValidation: () => ReactElement = (): ReactElement => {
         return (
             <div className="validation-configurations-form">
-                <Divider className="mt-4 mb-5" />
+                <Divider className="heading-divider" />
                 <Heading as="h4">
                     { t("extensions:manage.serverConfigurations.passwordValidationHeading") }
                 </Heading>
@@ -1697,7 +1696,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                                 t,
                                                                 isReadOnly )
                                                             : resolvePasswordExpiration() }
-                                                        <Divider className="mt-4 mb-5" />
+                                                        <Divider className="heading-divider" />
                                                         { serverConfigurationConfig.passwordHistoryCountComponent(
                                                             componentId,
                                                             passwordHistoryEnabled,

@@ -74,7 +74,6 @@ export interface validationNS {
                 applyMessage: string;
                 skipMessage: string;
                 ifUserHas: string;
-                passwordExpiryFor: string;
                 defaultRuleApplyMessage: string;
                 defaultRuleSkipMessage: string;
             }

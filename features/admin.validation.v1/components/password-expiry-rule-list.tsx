@@ -84,33 +84,45 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
         validateRules(ruleList);
     }, [ ruleList ]);
 
+    /**
+     * Validate the password expiry rules.
+     *
+     * @param rulesToValidate - Password expiry rules to validate.
+     */
     const validateRules = (rulesToValidate: PasswordExpiryRule[]) => {
-        const newHasErrors: { [key: string]: { values: boolean; expiryDays: boolean } } = {};
+        const ruleValidationErrors: { [key: string]: { values: boolean; expiryDays: boolean } } = {};
         let hasAnyError: boolean = false;
 
         rulesToValidate.forEach((rule: PasswordExpiryRule) => {
-            newHasErrors[rule.id] = { expiryDays: false, values: false };
+            ruleValidationErrors[rule?.id] = { expiryDays: false, values: false };
 
-            if (rule.values.length === 0) {
-                newHasErrors[rule.id].values = true;
+            if (rule?.values.length === 0) {
+                ruleValidationErrors[rule?.id].values = true;
                 hasAnyError = true;
             }
 
-            if (rule.operator === PasswordExpiryRuleOperator.EQ
-                && (rule.expiryDays <
+            if (rule?.operator === PasswordExpiryRuleOperator.EQ
+                && (rule?.expiryDays <
                     GovernanceConnectorConstants.PASSWORD_EXPIRY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE
-                || rule.expiryDays >
+                || rule?.expiryDays >
                     GovernanceConnectorConstants.PASSWORD_EXPIRY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_VALUE)) {
-                newHasErrors[rule.id].expiryDays = true;
+                ruleValidationErrors[rule?.id].expiryDays = true;
                 hasAnyError = true;
             }
         });
 
-        setHasErrors(newHasErrors);
+        setHasErrors(ruleValidationErrors);
         onRuleError(hasAnyError);
     };
 
 
+    /**
+     * Handle the rule change.
+     *
+     * @param index - index of the rule.
+     * @param field - field to update.
+     * @param value - value to update.
+     */
     const handleRuleChange = (index: number, field: keyof PasswordExpiryRule, value: any) => {
         const updatedRules: PasswordExpiryRule[] = [ ...rules ];
 
@@ -118,6 +130,9 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
         updateRules(updatedRules);
     };
 
+    /**
+     * Add a new rule.
+     */
     const addRule = () => {
         const newRule: PasswordExpiryRule = {
             attribute: PasswordExpiryRuleAttribute.ROLES,
@@ -128,24 +143,40 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
             values: []
         };
         const updatedRules: PasswordExpiryRule[] =
-            [ newRule, ...rules.map((rule: PasswordExpiryRule) => ({ ...rule, priority: rule.priority + 1 })) ];
+            [ newRule, ...rules.map((rule: PasswordExpiryRule) => ({ ...rule, priority: rule?.priority + 1 })) ];
 
         updateRules(updatedRules);
     };
 
+    /**
+     * Delete a rule.
+     *
+     * @param id - id of the rule to delete.
+     */
     const deleteRule = (id: string) => {
         const updatedRules: PasswordExpiryRule[] = rules
-            .filter((rule: PasswordExpiryRule) => rule.id !== id)
+            .filter((rule: PasswordExpiryRule) => rule?.id !== id)
             .map((rule: PasswordExpiryRule, index: number) => ({ ...rule, priority: index + 1 }));
 
         updateRules(updatedRules);
     };
 
+    /**
+     * Update the rules.
+     *
+     * @param updatedRules - Updated rules.
+     */
     const updateRules = (updatedRules: PasswordExpiryRule[]) => {
         setRules(updatedRules);
         onRuleChange(updatedRules);
     };
 
+    /**
+     * Move the priority of a rule.
+     *
+     * @param index - index of the rule.
+     * @param direction - direction to move the rule.
+     */
     const movePriority = (index: number, direction: "up" | "down") => {
         if ((direction === "up" && index === 0) || (direction === "down" && index === rules.length - 1)) {
             return;
@@ -168,12 +199,25 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
         { label: t("validation:passwordExpiry.rules.actions.skip"), value: PasswordExpiryRuleOperator.NE }
     ];
 
+    /**
+     * Handle the expiry days change.
+     *
+     * @param index - index of the rule.
+     * @param value - value to update.
+     */
     const handleExpiryDaysChange = (index: number, value: string) => {
         const newValue: number = value === "" ? 0 : parseInt(value);
 
         handleRuleChange(index, "expiryDays", newValue);
     };
 
+    /**
+     * Handle the rule values change.
+     *
+     * @param index - index of the rule.
+     * @param event - event object.
+     * @param isRole - is the object a role.
+     */
     const handleValuesChange = (index: number, event: SelectChangeEvent<string[]>, isRole: boolean) => {
         const {
             target: { value }
@@ -204,7 +248,7 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
             const { audience } = resource as RolesInterface;
 
             return audience?.type === "application"
-                ? `application|${audience?.display}`
+                ? `application | ${audience?.display}`
                 : audience?.type ?? "";
         }
 
@@ -233,14 +277,19 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
             : displayName ?? "";
     };
 
+    /**
+     * Render the resource (roles or groups) menu items.
+     *
+     * @param rule - password expiry rule.
+     */
     const renderResourceMenuItems = (rule: PasswordExpiryRule): ReactElement[] => {
-        const isRoleAttribute: boolean = rule.attribute === PasswordExpiryRuleAttribute.ROLES;
+        const isRoleAttribute: boolean = rule?.attribute === PasswordExpiryRuleAttribute.ROLES;
         const valueOptions: Resource[] = isRoleAttribute ? rolesList : groupsList;
 
         return (
             valueOptions.map((item: Resource) => (
                 <MenuItem key={ item.id } value={ item.id } className="flex-row-gap-10 ">
-                    <Checkbox checked={ rule.values.indexOf(item.id) > -1 } />
+                    <Checkbox checked={ rule?.values.indexOf(item.id) > -1 } />
                     <Chip label={ getResourceIdentifier(item, isRoleAttribute) } />
                     <ListItemText primary={ getResourceDisplayName(item, isRoleAttribute) } />
                 </MenuItem>
@@ -248,15 +297,21 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
         );
     };
 
+    /**
+     * Render the selected rule values.
+     *
+     * @param selected - selected rule values.
+     * @param rule - password expiry rule.
+     */
     const renderSelectedValues = (selected: string[], rule: PasswordExpiryRule): ReactElement[] | ReactElement => {
-        if (!selected || selected.length === 0) {
+        if (!selected || selected?.length === 0) {
             return null;
         }
         // console.log("testing:selected:", selected, "\n", rule);
-        const isRoleAttribute: boolean = rule.attribute === PasswordExpiryRuleAttribute.ROLES;
+        const isRoleAttribute: boolean = rule?.attribute === PasswordExpiryRuleAttribute.ROLES;
         const resourceList: Resource[] = isRoleAttribute ? rolesList : groupsList;
         const firstItem: Resource | undefined =
-                resourceList.find((resource: Resource) => resource.id === selected[0]);
+                resourceList?.find((resource: Resource) => resource.id === selected[0]);
 
         if (!firstItem) {
             return null;
@@ -268,19 +323,29 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                     <Chip label={ getResourceIdentifier(firstItem, isRoleAttribute) } size="small" />
                     <ListItemText primary={ getResourceDisplayName(firstItem, isRoleAttribute) } />
                 </div>
-                { selected.length > 1 && (
-                    <Chip label={ `+${selected.length - 1} more` } size="small" />
+                { selected?.length > 1 && (
+                    <Chip label={ `+${selected?.length - 1} more` } size="small" />
                 ) }
             </div>
         );
     };
 
+    /**
+     * Handle the default behavior change.
+     *
+     * @param event - event object.
+     */
     const handleSkipFallbackChange = (event: SelectChangeEvent<PasswordExpiryRuleOperator>) => {
         const value: PasswordExpiryRuleOperator = event.target.value as PasswordExpiryRuleOperator;
 
         onSkipFallbackChange(value === PasswordExpiryRuleOperator.NE);
     };
 
+    /**
+     * Handle the default expiry time change.
+     *
+     * @param event - event object.
+     */
     const handleDefaultExpiryTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value: number = parseInt(event.target.value, 10);
 
@@ -303,7 +368,6 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                         </MenuItem>
                     )) }
                 </Select>
-                { t("validation:passwordExpiry.rules.messages.passwordExpiryFor") }
                 { !isSkipFallbackEnabled
                     ? (
                         <div className="flex-row-gap-10">
@@ -337,19 +401,21 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                 disabled={ !isPasswordExpiryEnabled || isReadOnly }
                 data-componentid={ `${componentId}-add-rule` }
             >
-                <PlusIcon />
-                { t("validation:passwordExpiry.rules.buttons.addRule") }
+                <div className="flex-row-gap-10">
+                    <PlusIcon />
+                    { t("validation:passwordExpiry.rules.buttons.addRule") }
+                </div>
             </Button>
             {
-                rules && rules.length > 0 && (
+                rules?.length > 0 && (
                     <div>
                         { t("validation:passwordExpiry.rules.messages.ifUserHas") }
                     </div>
                 )
             }
             <List>
-                { rules.map((rule: PasswordExpiryRule, index: number) => (
-                    <ListItem key={ rule.id }>
+                { rules?.map((rule: PasswordExpiryRule, index: number) => (
+                    <ListItem key={ rule?.id }>
                         <Grid container spacing={ 2 } alignItems="center" className="full-width">
                             <Grid md={ 1 }>
                                 <div className="priority-arrows">
@@ -377,7 +443,7 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                             </Grid>
                             <Grid md={ 1.5 }>
                                 <Select
-                                    value={ rule.attribute }
+                                    value={ rule?.attribute }
                                     onChange={ (e: SelectChangeEvent<PasswordExpiryRuleAttribute>) =>
                                         handleRuleChange(
                                             index,
@@ -390,7 +456,7 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                                     disabled={ !isPasswordExpiryEnabled }
                                     data-componentid={ `${componentId}-attribute-select-${index}` }
                                 >
-                                    { attributeOptions.map((
+                                    { attributeOptions?.map((
                                         option: { label: string, value: PasswordExpiryRuleAttribute }
                                     ) => (
                                         <MenuItem key={ option.value } value={ option.value }>
@@ -406,15 +472,15 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                                     data-componentid={ `${componentId}-values-select-${index}` }
                                     multiple
                                     readOnly={ isReadOnly }
-                                    value={ rule.values }
+                                    value={ rule?.values }
                                     onChange={ (e: SelectChangeEvent<string[]>) =>
                                         handleValuesChange(
                                             index,
                                             e as SelectChangeEvent<string[]>,
-                                            rule.attribute === PasswordExpiryRuleAttribute.ROLES) }
+                                            rule?.attribute === PasswordExpiryRuleAttribute.ROLES) }
                                     renderValue={ (selected: string[]) => renderSelectedValues(selected, rule) }
                                     disabled={ !isPasswordExpiryEnabled }
-                                    error={ hasErrors[rule.id]?.values }
+                                    error={ hasErrors[rule?.id]?.values }
                                 >
                                     {
                                         renderResourceMenuItems(rule)
@@ -423,7 +489,7 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                             </Grid>
                             <Grid md={ 1.5 }>
                                 <Select
-                                    value={ rule.operator }
+                                    value={ rule?.operator }
                                     onChange={ (e: SelectChangeEvent<PasswordExpiryRuleOperator>) =>
                                         handleRuleChange(index, "operator", e.target.value) }
                                     fullWidth
@@ -440,7 +506,7 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                                     )) }
                                 </Select>
                             </Grid>
-                            { rule.operator === PasswordExpiryRuleOperator.EQ && (
+                            { rule?.operator === PasswordExpiryRuleOperator.EQ && (
                                 <Grid md={ 1 }>
                                     <TextField
                                         id="expiryDays"
@@ -457,17 +523,17 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                                                 PASSWORD_EXPIRY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE,
                                             readOnly: isReadOnly
                                         } }
-                                        error={ hasErrors[rule.id]?.expiryDays }
+                                        error={ hasErrors[rule?.id]?.expiryDays }
                                         disabled={ !isPasswordExpiryEnabled }
                                     />
                                 </Grid>
                             ) }
                             <Grid md={ 2.5 } className="flex-row">
-                                { rule.operator === PasswordExpiryRuleOperator.EQ
+                                { rule?.operator === PasswordExpiryRuleOperator.EQ
                                     ? t("validation:passwordExpiry.rules.messages.applyMessage")
                                     : t("validation:passwordExpiry.rules.messages.skipMessage") }
                             </Grid>
-                            { rule.operator === PasswordExpiryRuleOperator.NE && (
+                            { rule?.operator === PasswordExpiryRuleOperator.NE && (
                                 <Grid md={ 1 }>
                                     <div></div>
                                 </Grid>
@@ -475,7 +541,7 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                             <Grid md={ 0.5 }>
                                 <IconButton
                                     disabled={ isReadOnly || !isPasswordExpiryEnabled }
-                                    onClick={ () => deleteRule(rule.id) }
+                                    onClick={ () => deleteRule(rule?.id) }
                                     data-componentid={ `${componentId}-delete-rule-${index}` }
                                 >
                                     <TrashIcon />

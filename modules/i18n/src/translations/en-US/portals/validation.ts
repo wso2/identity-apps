@@ -53,7 +53,7 @@ export const validation: validationNS = {
     },
     pageTitle: "Password Validation",
     passwordExpiry: {
-        heading: "Password Expiry Rules",
+        heading: "Password Expiration",
         rules: {
             actions: {
                 apply: "Apply",
@@ -69,11 +69,10 @@ export const validation: validationNS = {
             },
             messages: {
                 applyMessage: "days password expiry.",
-                defaultRuleApplyMessage: "days for users if no specific rules apply.",
-                defaultRuleSkipMessage: "all the users if no specific rules apply.",
+                defaultRuleApplyMessage: "days password expiry if no other rules match to the user.",
+                defaultRuleSkipMessage: "password expiry if no other rules match to the user.",
                 ifUserHas: "If user has",
                 info: "Rules will be applied in the order listed below, from top to bottom. Use the arrows to adjust the priority.",
-                passwordExpiryFor: "password expiry for",
                 skipMessage: "password expiry."
             }
         }
