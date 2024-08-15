@@ -232,13 +232,20 @@ export const applicationConfig: ApplicationConfig = {
 
             return null;
         },
-        getOveriddenTab: (clientId: string, tabName: ApplicationTabTypes,
-            defaultComponent: ReactElement, appName: string, appId: string, tenantDomain: string) => {
+        getOverriddenTab: (
+            clientId: string,
+            tabName: ApplicationTabTypes,
+            defaultComponent: ReactElement,
+            application: ApplicationInterface,
+            tenantDomain: string,
+            _onUpdate?:(id: string) => void,
+            _readOnly?:boolean
+        ) => {
             if (clientId === getTryItClientId(tenantDomain) && tabName === ApplicationTabTypes.GENERAL) {
                 return (
                     <ApplicationGeneralTabOverride
-                        appId={ appId }
-                        appName={ appName }
+                        appId={ application?.id }
+                        appName={ application?.name }
                         clientId={ clientId }
                     ></ApplicationGeneralTabOverride>
                 );

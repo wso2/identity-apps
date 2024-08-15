@@ -99,13 +99,14 @@ export interface ApplicationConfig {
             templateName: string
         ) => ReactElement,
         getOverriddenImage: (clientId: string, tenantDomain: string) => ReactElement;
-        getOveriddenTab: (
+        getOverriddenTab: (
             clientId: string,
             tabName: any,
             defaultComponent: ReactElement,
-            appName: string,
-            appId: string,
-            tenantDomain: string
+            application: ApplicationInterface,
+            tenantDomain: string,
+            onUpdate?:(id: string) => void,
+            readOnly?:boolean
         ) => ReactNode;
         showApplicationShare: boolean;
         getStrongAuthenticationFlowTabIndex: (
