@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.7.128
+
+### Patch Changes
+
+- [#6779](https://github.com/wso2/identity-apps/pull/6779) [`3a9747e52a5eee589352cccb3426911c054e05a8`](https://github.com/wso2/identity-apps/commit/3a9747e52a5eee589352cccb3426911c054e05a8) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix runtime error in myaccount security page due to incompatible hook usage
+
 ## 2.7.127
 
 ### Patch Changes
