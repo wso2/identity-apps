@@ -1,5 +1,13 @@
 # @wso2is/admin.server.v1
 
+## 2.20.126
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.24.19
+  - @wso2is/admin.server-configurations.v1@2.21.68
+
 ## 2.20.125
 
 ### Patch Changes
