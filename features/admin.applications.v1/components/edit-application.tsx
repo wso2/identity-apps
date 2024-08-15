@@ -783,12 +783,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                                  </Menu.Item>,
                         render: () =>
                             applicationConfig.editApplication.
-                                getOveriddenTab(
+                                getOverriddenTab(
                                     inboundProtocolConfig?.oidc?.clientId,
                                     ApplicationTabTypes.GENERAL,
                                     GeneralApplicationSettingsTabPane(),
-                                    application?.name,
-                                    application?.id,
+                                    application,
                                     tenantDomain
                                 )
                     });
@@ -831,12 +830,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         </Menu.Item>,
                     render: () =>
                         applicationConfig.editApplication.
-                            getOveriddenTab(
+                            getOverriddenTab(
                                 inboundProtocolConfig?.oidc?.clientId,
                                 ApplicationTabTypes.USER_ATTRIBUTES,
                                 AttributeSettingTabPane(),
-                                application?.name,
-                                application?.id,
+                                application,
                                 tenantDomain
                             )
                 });
@@ -892,7 +890,17 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                           <Menu.Item data-tourid="advanced">
                               { t("applications:edit.sections.advanced.tabName") }
                           </Menu.Item> ),
-                      render: AdvancedSettingsTabPane
+                      render: () =>
+                          applicationConfig.editApplication.
+                              getOverriddenTab(
+                                  inboundProtocolConfig?.oidc?.clientId,
+                                  ApplicationTabTypes.ADVANCED,
+                                  AdvancedSettingsTabPane(),
+                                  application,
+                                  tenantDomain,
+                                  handleApplicationUpdate,
+                                  readOnly
+                              )
                   });
             }
             if (isFeatureEnabled(featureConfig?.applications,
