@@ -1,5 +1,25 @@
 # @wso2is/admin.users.v1
 
+## 2.20.126
+
+### Patch Changes
+
+- [#6777](https://github.com/wso2/identity-apps/pull/6777) [`6f69a172c082afc6b7485dccff089835141ac567`](https://github.com/wso2/identity-apps/commit/6f69a172c082afc6b7485dccff089835141ac567) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix missing domain issue in user edit groups retrieval
+
+- Updated dependencies [[`6f69a172c082afc6b7485dccff089835141ac567`](https://github.com/wso2/identity-apps/commit/6f69a172c082afc6b7485dccff089835141ac567)]:
+  - @wso2is/admin.users.v1@2.20.126
+  - @wso2is/admin.authentication.v1@2.20.126
+  - @wso2is/admin.claims.v1@2.20.126
+  - @wso2is/admin.core.v1@2.24.19
+  - @wso2is/admin.extensions.v1@2.23.1
+  - @wso2is/admin.groups.v1@2.20.126
+  - @wso2is/admin.organizations.v1@2.21.19
+  - @wso2is/admin.roles.v2@2.20.126
+  - @wso2is/admin.server-configurations.v1@2.21.68
+  - @wso2is/admin.validation.v1@2.20.126
+  - @wso2is/admin.identity-providers.v1@2.21.56
+  - @wso2is/admin.userstores.v1@2.20.126
+
 ## 2.20.125
 
 ### Patch Changes
