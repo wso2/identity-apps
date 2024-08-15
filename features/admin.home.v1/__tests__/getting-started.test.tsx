@@ -19,7 +19,7 @@
 import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import { fullPermissions } from "./__mocks__/getting-started-permissions";
-import GettingStartedPage from "../getting-started";
+import GettingStartedPage from "../pages/home-page";
 import "@testing-library/jest-dom";
 
 describe("Test if the Getting Started page is working as expected", () => {

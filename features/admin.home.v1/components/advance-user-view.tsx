@@ -40,9 +40,9 @@ import {
     ConfigReducerStateInterface,
     EventPublisher,
     FeatureConfigInterface,
-    history,
-    setActiveView
+    history
 } from "@wso2is/admin.core.v1";
+import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { resolveUserDisplayName } from "@wso2is/core/helpers";
@@ -51,14 +51,11 @@ import { GenericIcon, Heading, Popup, Text } from "@wso2is/react-components";
 import axios from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
+import { useSelector } from "react-redux";
 import { Button, Card, Grid, Placeholder } from "semantic-ui-react";
 import { CardExpandedNavigationButton } from "./card-expanded-navigation-button";
-import { AppViewExtensionTypes } from "../../../configs";
-import { FeatureGateConstants } from "../../feature-gate/constants/feature-gate";
-import { DynamicApplicationContextCard } from "../components/dynamic-application-context-card";
-import { getGettingStartedCardIllustrations } from "../configs";
+import { DynamicApplicationContextCard } from "./dynamic-application-context-card";
+import { getGettingStartedCardIllustrations } from "../configs/ui";
 
 /**
  * Proptypes for the overview page component.
@@ -84,13 +81,10 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
 
     const { t } = useTranslation();
 
-    const dispatch: Dispatch = useDispatch();
-
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoRequestLoading);
     const asgardeoTryItURL: string = useSelector((state: AppState) =>
         state.config.deployment.extensions.asgardeoTryItURL) as string;
-    const activeView: string = useSelector((state: AppState) => state.global.activeView);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
@@ -130,17 +124,6 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
     useEffect(() => {
         checkTryItApplicationExistence();
     }, [ tryItApplicationSearchResults ]);
-
-    /**
-     * Make sure `QUICKSTART` tab is highlighed when this page is in use.
-     */
-    useEffect(() => {
-        if (activeView === AppViewExtensionTypes.QUICKSTART) {
-            return;
-        }
-
-        dispatch(setActiveView(AppViewExtensionTypes.QUICKSTART));
-    }, []);
 
     useEffect(() => {
         // Add debug logs here one a logger is added.

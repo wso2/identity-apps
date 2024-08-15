@@ -21,7 +21,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, PrimaryButton, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Card, Divider, Grid } from "semantic-ui-react";
-import { getGettingStartedCardIllustrations } from "../configs";
+import { getGettingStartedCardIllustrations } from "../configs/ui";
 
 export type Context = "TEMPLATES" | "RECENT_APPS";
 

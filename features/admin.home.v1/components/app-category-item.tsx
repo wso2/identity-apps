@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, GenericIconProps, Text } from "@wso2is/react-components";
 import React, { CSSProperties, FC, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { DynamicTile } from "./dynamic-tile";
-import FeatureStatusLabel from "../../feature-gate/models/feature-gate";
 
 export type CategoryItemPropsInterface = {
     categoryName: string;
