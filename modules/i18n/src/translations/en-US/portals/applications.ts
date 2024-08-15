@@ -1580,13 +1580,14 @@ export const applications: ApplicationsNS = {
                             label: "Access Token Attributes",
                             placeholder: "Search by attribute name",
                             enable: {
-                                hint : "To enable the new Selective Access Token Attributes feature,select " +
-                                    "<1>Enable Access Token Attributes</1> and update your application " +
-                                    "and update your application, but be aware that after this change, " +
-                                    "attributes (set as requested in the User Attribute section) " +
-                                    "will be automatically included in the <1>access_token<1/> without " +
-                                    "requiring OIDC scopes, and this change is irreversible. Proceed " +
-                                    "with caution.",
+                                hint : "Previously, attributes that are set as requested in the User Attributes " +
+                                 "section were automatically added to <1>access_token</1>. Now, you can choose which " +
+                                 "user attributes are included in the <1>access_token</1>. To enable this new feature, " +
+                                 "select <1>Enable Access Token Attributes</1> and update your application. When updating, " +
+                                 "attributes that are set as requested in the User Attribute section will be set as " +
+                                 "Access Token Attributes. Once updated, only selected attributes from the Access " +
+                                 "Token Attributes will be included in the <1>access_token</1> without requiring OIDC scopes. " +
+                                 "Important: This change is irreversible. Proceed with caution.",
                                 label: "Enable Access Token Attributes"
                             }
                         }

@@ -2704,14 +2704,20 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 <Trans
                                                     i18nKey={ "applications:forms.inboundOIDC.sections " +
                                                         ".accessToken.fields.accessTokenAttributes.enable.hint" }>
-                                                    To enable the new Selective Access Token Attributes feature,
-                                                    select <Code withBackground>Enable Access Token Attributes</Code>
-                                                    and update your application, but be aware that after this change,
-                                                    attributes (set as requested in the User Attribute section)
-                                                    will be automatically included in the
-                                                    <Code withBackground>access_token</Code> without
-                                                    requiring OIDC scopes, and this change is irreversible.
-                                                    <b>Proceed with caution.</b>
+                                                    Previously, attributes that are set as requested in the User
+                                                    Attribute section were automatically added to
+                                                    <Code withBackground>access_token</Code>.
+                                                    Now, you can choose which user attributes are included in the
+                                                    <Code withBackground>access_token</Code>. To enable this
+                                                    new feature, select
+                                                    <Code withBackground>Enable Access Token Attributes</Code>
+                                                    and update your application. When updating,
+                                                    attributes that are set as requested in the User Attribute
+                                                    section will be set as Access Token Attributes. Once updated,
+                                                    only selected attributes from the Access Token Attributes will
+                                                    be included in the <Code withBackground>access_token</Code>
+                                                    without requiring OIDC scopes. Important: This change is
+                                                    irreversible. <b>Proceed with caution.</b>
                                                 </Trans>
                                             </Alert>
                                             <Field
