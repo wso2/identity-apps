@@ -134,6 +134,9 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
      * Add a new rule.
      */
     const addRule = () => {
+        if (rules?.length >= GovernanceConnectorConstants.PASSWORD_EXPIRY_FORM_FIELD_CONSTRAINTS.
+            EXPIRY_RULES_MAX_COUNT) return;
+
         const newRule: PasswordExpiryRule = {
             attribute: PasswordExpiryRuleAttribute.ROLES,
             expiryDays: 30,
@@ -227,7 +230,7 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
         const validList: Resource[] = isRole ? rolesList : groupsList;
         const validatedValues: string[] = selectedValues.filter((selectedValue: string) =>
             validList.some((item: Resource) => item.id === selectedValue)
-        );
+        ).slice(0, GovernanceConnectorConstants.PASSWORD_EXPIRY_FORM_FIELD_CONSTRAINTS.EXPIRY_RULE_MAX_VALUES_PER_RULE);
 
         handleRuleChange(
             index,

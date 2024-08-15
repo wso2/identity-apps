@@ -134,8 +134,10 @@ export class GovernanceConnectorConstants {
         EXPIRY_TIME_MIN_LENGTH: number;
         EXPIRY_TIME_MIN_VALUE: number;
         EXPIRY_RULES_MAX_COUNT: number;
+        EXPIRY_RULE_MAX_VALUES_PER_RULE: number;
     } = {
         EXPIRY_RULES_MAX_COUNT: 10,
+        EXPIRY_RULE_MAX_VALUES_PER_RULE: 5,
         EXPIRY_TIME_MAX_LENGTH: 5,
         EXPIRY_TIME_MAX_VALUE: 10080,
         EXPIRY_TIME_MIN_LENGTH: 1,
