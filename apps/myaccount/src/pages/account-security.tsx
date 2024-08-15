@@ -16,9 +16,12 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
+/**
+ * `useRequiredScopes` is not supported for myaccount.
+ */
+// eslint-disable-next-line no-restricted-imports
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, {
@@ -79,6 +82,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
     const disableMFAforSuperTenantUser: boolean = useSelector((state: AppState) => {
         return state?.config?.ui?.disableMFAforSuperTenantUser;
     });
+    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const disableMFAForFederatedUsers: boolean = useSelector((state: AppState) => {
         return state?.config?.ui?.disableMFAForFederatedUsers;
     });
@@ -93,8 +97,6 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
     const consentControl: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
     const accountSecurity: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
     const accountActivity: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
-
-    const hasSecuritySettingsReadPermissions: boolean = useRequiredScopes(accessConfig?.security?.scopes?.read);
 
     useEffect(() => {
         setTimeout(() => {
@@ -186,7 +188,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
         >
             <Grid>
                 { !CommonUtils.isProfileReadOnly(isReadOnlyUser) && !isNonLocalCredentialUser
-                    && hasSecuritySettingsReadPermissions
+                    && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes)
                     && isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_CHANGE_PASSWORD")
@@ -199,7 +201,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                     ) : null }
 
                 { !CommonUtils.isProfileReadOnly(isReadOnlyUser) && !isNonLocalCredentialUser
-                    && hasSecuritySettingsReadPermissions
+                    && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes)
                     && isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY")
@@ -217,7 +219,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                     ) : null }
 
                 { hasLocalAccount
-                    && hasSecuritySettingsReadPermissions
+                    && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes)
                     && ((isNonLocalCredentialUser && (!disableMFAForFederatedUsers || !isSuperTenantLogin())) ||
                         !isNonLocalCredentialUser) &&
                     isFeatureEnabled(
@@ -236,7 +238,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                         </Grid.Row>
                     ) : null }
 
-                { hasSecuritySettingsReadPermissions &&
+                { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_LOGIN_VERIFY_DATA")
@@ -251,7 +253,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                         </Grid.Row>
                     ) : null }
 
-                { hasSecuritySettingsReadPermissions &&
+                { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACTIVE_SESSIONS")
@@ -266,7 +268,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                     ) : null }
 
                 { hasLocalAccount
-                    && hasSecuritySettingsReadPermissions
+                    && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes)
                     && isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_CONSENTS")
