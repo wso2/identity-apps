@@ -34,7 +34,6 @@ import {
     ServiceResourceEndpointsInterface,
     UIConfigInterface
 } from "./config";
-import { AppViewTypes } from "./ui";
 
 /**
  * Portal config reducer state interface.
@@ -53,8 +52,6 @@ export interface GlobalReducerStateInterface extends CommonGlobalReducerStateInt
     AlertInterface,
     System,
     SupportedLanguagesMeta> {
-
-    activeView: AppViewTypes;
 }
 
 export interface AccessControlReducerStateInterface {

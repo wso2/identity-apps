@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,18 +16,25 @@
  * under the License.
  */
 
-import { GlobalActionTypes, SetActiveViewAction } from "./types";
-import { AppViewTypes } from "../../models";
+declare module "*.json" {
+    const value: any;
 
-/**
- * Set the active view of the Application.
- * Whether it's DEVELOP, MANAGE etc.
- *
- * @param {AppViewTypes} payload - Active view.
- *
- * @return {SetActiveViewAction}
- */
-export const setActiveView = (payload: AppViewTypes): SetActiveViewAction => ({
-    payload,
-    type: GlobalActionTypes.SET_ACTIVE_VIEW
-});
+    export default value;
+}
+
+declare module "*.svg" {
+    import React = require("react");
+
+    export const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    const src: string;
+
+    export default src;
+}
+
+declare module "*.png" {
+    const content: string;
+
+    export default content;
+}
+
+declare module "*.md";

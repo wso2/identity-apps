@@ -22,7 +22,6 @@ import {
     EventPublisher,
     history
 } from "@wso2is/admin.core.v1";
-import { setActiveView } from "@wso2is/admin.core.v1/store";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
@@ -35,16 +34,14 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
+import { useSelector } from "react-redux";
 import { Icon } from "semantic-ui-react";
-import AdvanceUserView from "./components/advance-user-view";
-import { AppViewExtensionTypes } from "../../configs/models";
+import AdvanceUserView from "../components/advance-user-view";
 
 /**
  * Proptypes for the overview page component.
  */
-type GettingStartedPageInterface = IdentifiableComponentInterface;
+type HomePageInterface = IdentifiableComponentInterface;
 
 /**
  * Overview page.
@@ -53,18 +50,14 @@ type GettingStartedPageInterface = IdentifiableComponentInterface;
  *
  * @returns Getting started page.
  */
-const GettingStartedPage: FunctionComponent<GettingStartedPageInterface> = (
-    props: GettingStartedPageInterface
+const HomePage: FunctionComponent<HomePageInterface> = (
+    props: HomePageInterface
 ): ReactElement => {
-
     const {
         ["data-componentid"]: componentId
     } = props;
 
-    const dispatch: Dispatch = useDispatch();
-
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
-    const activeView: string = useSelector((state: AppState) => state.global.activeView);
 
     const { organizationType } = useGetCurrentOrganizationType();
 
@@ -79,18 +72,6 @@ const GettingStartedPage: FunctionComponent<GettingStartedPageInterface> = (
     }, [ organizationType ]);
 
     /**
-     * Make sure `QUICKSTART` tab is highlighed when this page is in use.
-     */
-    useEffect(() => {
-
-        if (activeView === AppViewExtensionTypes.QUICKSTART) {
-            return;
-        }
-
-        dispatch(setActiveView(AppViewExtensionTypes.QUICKSTART));
-    }, []);
-
-    /**
      * Monitor `profileInfo.id` and publish the event to avoid an event without `UUID`.
      */
     useEffect(() => {
@@ -99,8 +80,6 @@ const GettingStartedPage: FunctionComponent<GettingStartedPageInterface> = (
             return;
         }
 
-        // TODO: Move this to the `extensions/configs/common`.
-        // Tracked here https://github.com/wso2-enterprise/asgardeo-product/issues/7742#issuecomment-939960128.
         eventPublisher.publish("console-click-getting-started-menu-item");
     }, [ profileInfo?.id ]);
 
@@ -148,13 +127,8 @@ const GettingStartedPage: FunctionComponent<GettingStartedPageInterface> = (
 /**
  * Default props for the component.
  */
-GettingStartedPage.defaultProps = {
+HomePage.defaultProps = {
     "data-componentid": "getting-started-page"
 };
 
-/**
- * A default export was added to support React.lazy.
- * TODO: Change this to a named export once react starts supporting named exports for code splitting.
- * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
- */
-export default GettingStartedPage;
+export default HomePage;

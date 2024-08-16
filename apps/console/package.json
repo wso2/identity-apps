@@ -66,6 +66,7 @@
         "@wso2is/admin.email-providers.v1": "^2.20.126",
         "@wso2is/admin.extensions.v1": "^2.23.1",
         "@wso2is/admin.groups.v1": "^2.20.126",
+        "@wso2is/admin.home.v1": "^0.0.0",
         "@wso2is/admin.identity-verification-providers.v1": "^2.20.126",
         "@wso2is/admin.logs.v1": "^1.0.1",
         "@wso2is/admin.oidc-scopes.v1": "^2.20.126",

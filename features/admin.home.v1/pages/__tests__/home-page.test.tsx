@@ -19,30 +19,30 @@
 import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import { fullPermissions } from "./__mocks__/getting-started-permissions";
-import GettingStartedPage from "../getting-started";
+import HomePage from "../home-page";
 import "@testing-library/jest-dom";
 
 describe("Test if the Getting Started page is working as expected", () => {
 
     // Skipping until the snapshot issue is sorted out.
-    it.skip("<GettingStartedPage /> matches snapshot", () => {
-        const { container } = render(<GettingStartedPage />, {
+    it.skip("<HomePage /> matches snapshot", () => {
+        const { container } = render(<HomePage />, {
             allowedScopes: fullPermissions
         });
 
         expect(container).toMatchSnapshot();
     });
 
-    it.skip("<GettingStartedPage /> renders without exploding", () => {
-        render(<GettingStartedPage />, {
+    it.skip("<HomePage /> renders without exploding", () => {
+        render(<HomePage />, {
             allowedScopes: fullPermissions
         });
 
         expect(screen.getByTestId("getting-started-page-layout")).toBeInTheDocument();
     });
 
-    it.skip("<GettingStartedPage /> renders loaders properly", async () => {
-        render(<GettingStartedPage />, {
+    it.skip("<HomePage /> renders loaders properly", async () => {
+        render(<HomePage />, {
             allowedScopes: fullPermissions
         });
 

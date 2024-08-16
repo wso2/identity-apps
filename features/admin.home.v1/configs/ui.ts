@@ -18,17 +18,17 @@
 
 import { FunctionComponent, SVGProps } from "react";
 import {
-    ReactComponent as TryItAppIllustration
-} from "../../../../themes/default/assets/images/illustrations/rafiki-illustration.svg";
-import {
     ReactComponent as OnboardUsersIllustration
-} from "../../../assets/images/illustrations/onboard-users-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/onboard-users-illustration.svg";
+import {
+    ReactComponent as TryItAppIllustration
+} from "../../themes/default/assets/images/illustrations/rafiki-illustration.svg";
 import {
     ReactComponent as OnboardApplicationsIllustration
-} from "../../../assets/images/illustrations/register-applications-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/register-applications-illustration.svg";
 import {
     ReactComponent as SetupSocialConnections
-} from "../../../assets/images/illustrations/setup-social-connections-illustration.svg";
+} from "../../themes/default/assets/images/illustrations/setup-social-connections-illustration.svg";
 
 export const getGettingStartedCardIllustrations = (): {
     onboardApplications: FunctionComponent<SVGProps<SVGSVGElement>>;
