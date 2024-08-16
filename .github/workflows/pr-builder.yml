@@ -237,15 +237,17 @@ jobs:
         pnpm-version: [ 8.7.4 ]
     steps:
       - name: ⬇️ Checkout
+        id: checkout-master
+        uses: actions/checkout@v2.3.3
+        with:
+          fetch-depth: 1
+          ref: master
+
+      - name: ⬇️ Checkout
         id: checkout
         uses: actions/checkout@v2.3.3
         with:
           fetch-depth: 1
-
-      - name: ⬇️ Fetch the latest commit from master branch
-        run: |
-            git fetch origin master:refs/remotes/origin/master
-            git fetch origin master --depth=1
 
       - name: 🟢 Setup node
         id: setup-node
