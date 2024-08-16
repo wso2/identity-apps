@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Config, store } from "@wso2is/admin.core.v1";
+import { AppState, Config, store } from "@wso2is/admin.core.v1";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
@@ -24,8 +24,7 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { HttpMethods } from "@wso2is/core/models";
-import { getDomainQueryParam } from "../../tenants/api/tenants";
-import { getTenantResourceEndpoints } from "../../tenants/configs";
+import { useSelector } from "react-redux";
 import { TenantTierRequestResponse } from "../models/subscription";
 
 /**
@@ -36,7 +35,8 @@ import { TenantTierRequestResponse } from "../models/subscription";
 const useTenantTier = <Data = TenantTierRequestResponse,
     Error = RequestErrorInterface> (): RequestResultInterface<Data, Error> => {
 
-    const organizationType: OrganizationType = store.getState().organization.organizationType;
+    const organizationType: OrganizationType = useSelector((state: AppState) => state.organization.organizationType);
+    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -44,7 +44,7 @@ const useTenantTier = <Data = TenantTierRequestResponse,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: getTenantResourceEndpoints().tenantSubscriptionApi + "/tier" + getDomainQueryParam()
+        url: `${ store.getState().config.endpoints.tenantSubscriptionApi }/tier?domain=${ tenantDomain }`
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(

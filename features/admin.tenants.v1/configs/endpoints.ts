@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Config } from "@wso2is/admin.core.v1/configs";
 import { TenantResourceEndpointsInterface } from "../models";
 
 /**
@@ -28,6 +29,7 @@ export const getTenantResourceEndpoints = (
 ): TenantResourceEndpointsInterface => {
     return {
         tenantAssociationApi: `${ serverOrigin }/api/asgardeo/v1/tenant/me`,
-        tenantManagementApi: `${ serverOrigin }/api/asgardeo/v1/tenant`
+        tenantManagementApi: `${ serverOrigin }/api/asgardeo/v1/tenant`,
+        tenantSubscriptionApi: `${ serverOrigin }${ Config.getDeploymentConfig().extensions?.subscriptionApiPath }`
     };
 };
