@@ -1,5 +1,17 @@
 # @wso2is/admin.email-templates.v1
 
+## 2.20.127
+
+### Patch Changes
+
+- Updated dependencies [[`0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a`](https://github.com/wso2/identity-apps/commit/0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a)]:
+  - @wso2is/admin.core.v1@2.25.0
+  - @wso2is/theme@2.1.0
+  - @wso2is/admin.organizations.v1@2.21.20
+  - @wso2is/react-components@2.4.2
+  - @wso2is/dynamic-forms@2.0.95
+  - @wso2is/form@2.1.3
+
 ## 2.20.126
 
 ### Patch Changes
