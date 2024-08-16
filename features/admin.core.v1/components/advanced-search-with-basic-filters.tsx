@@ -16,8 +16,6 @@
  * under the License.
  */
 
-
-
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { SearchUtils } from "@wso2is/core/utils";
