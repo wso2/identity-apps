@@ -48,6 +48,7 @@ export interface groupsNS {
                 subHeading: string;
             };
             heading: string;
+            searchUsers: string;
             selectAllUsers: string;
             subHeading: string;
             placeHolders: {

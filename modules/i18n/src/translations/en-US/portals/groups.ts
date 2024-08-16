@@ -70,6 +70,7 @@ export const groups: groupsNS = {
                     title: "No Users Assigned"
                 }
             },
+            searchUsers: "Search users by username for more results",
             selectAllUsers: "Select All Users",
             subHeading: "View assigned users for the group."
         }

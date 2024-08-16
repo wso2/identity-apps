@@ -228,10 +228,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                     bordered
                     className="one-column-selection"
                     selectionComponent
-                    searchPlaceholder={
-                        t("roles:addRoleWizard.users.assignUserModal.list" +
-                            ".searchPlaceholder")
-                    }
+                    searchPlaceholder={ t("groups:edit.users.searchUsers") }
                     isLoading={ isUserListFetchRequestLoading }
                     handleHeaderCheckboxChange={ () => selectAllAssignedList() }
                     isHeaderCheckboxChecked={ isSelectAllUsers }

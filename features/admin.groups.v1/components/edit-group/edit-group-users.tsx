@@ -83,6 +83,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
 
     const [ showAddNewUserModal, setAddNewUserModalView ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -218,6 +219,8 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
     const updateGroupUsersList = (selectedUsers: UserBasicInterface[]) => {
         const newUsers: CreateGroupMemberInterface[] = [];
 
+        setIsSubmitting(true);
+
         for (const selectedUser of selectedUsers) {
             newUsers.push({
                 display: selectedUser.userName,
@@ -252,6 +255,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                 }));
             }).finally(() => {
                 setAddNewUserModalView(false);
+                setIsSubmitting(false);
             });
     };
 
@@ -471,7 +475,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                 showPagination={ true }
                 totalPages={ resolveTotalPages() }
                 totalListSize={ groupUserList?.totalResults }
-                isLoading={ isGroupUserListFetchRequestLoading }
+                isLoading={ isGroupUserListFetchRequestLoading || isSubmitting }
                 rightActionPanel={ !isReadOnly && groupUserList?.totalResults > 0 && (
                     <PrimaryButton
                         data-testid={
