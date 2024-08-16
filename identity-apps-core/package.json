@@ -6,7 +6,8 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "scripts": {
-        "build": "pnpm nx run theme:build && node theme-distribute.js",
+        "build": "mvn clean install",
+        "build:theme": "pnpm nx run theme:build && node theme-distribute.js",
         "clean": "pnpm clean:theme-folders && pnpm clean:node-modules && pnpm clean:maven-folders",
         "clean:maven-folders": "mvn clean",
         "clean:node-modules": "pnpm rimraf node_modules",
