@@ -53,7 +53,8 @@ interface AddGroupUserModalProps extends IdentifiableComponentInterface {
 }
 
 export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
-    props: AddGroupUserModalProps): ReactElement => {
+    props: AddGroupUserModalProps
+): ReactElement => {
 
     const {
         [ "data-componentid" ]: componentId,
@@ -126,9 +127,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
             return;
         }
 
-        if (userListFetchRequestError.response
-            && userListFetchRequestError.response.data
-            && userListFetchRequestError.response.data.description) {
+        if (userListFetchRequestError?.response?.data?.description) {
             dispatch(addAlert({
                 description: userListFetchRequestError.response.data.description,
                 level: AlertLevels.ERROR,

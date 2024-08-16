@@ -60,7 +60,7 @@ export const groups: groupsNS = {
         },
         users: {
             addUsersModal: {
-                heading: "Update Group Users",
+                heading: "Manage Group Users",
                 subHeading: "Add new users or remove existing users assigned to the group."
             },
             heading: "Assigned Users",
