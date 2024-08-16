@@ -236,12 +236,12 @@ jobs:
         java-version: [ 11 ]
         pnpm-version: [ 8.7.4 ]
     steps:
-    #   - name: ⬇️ Checkout
-    #     id: checkout-master
-    #     uses: actions/checkout@v2.3.3
-    #     with:
-    #       fetch-depth: 1
-    #       ref: master
+      - name: ⬇️ Checkout
+        id: checkout-master
+        uses: actions/checkout@v2.3.3
+        with:
+          fetch-depth: 1
+          ref: master
 
       - name: ⬇️ Checkout
         id: checkout
