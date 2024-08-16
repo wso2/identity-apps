@@ -301,7 +301,7 @@ jobs:
 
       - name: 👷 PNPM Build
         id: build-with-pnpm
-        run: pnpm nx affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --target=build --parallel=3
+        run: pnpm nx affected --base=origin/master --head=${{ env.NX_HEAD }} --target=build --parallel=3
 
       - name: 💾 Cache local Maven repository
         id: cache-maven-m2
