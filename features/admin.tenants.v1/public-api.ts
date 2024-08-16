@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export { default as TenantCreationPage } from "./pages/create-tenant";
+export { default as TenantCreationPage } from "./pages/create-tenant-page";

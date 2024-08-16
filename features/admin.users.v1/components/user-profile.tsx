@@ -18,8 +18,6 @@
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { SCIMConfigs, commonConfig, userConfig } from "@wso2is/admin.extensions.v1";
-import { TenantInfo } from "@wso2is/admin.extensions.v1/components/tenants/models";
-import { getAssociationType } from "@wso2is/admin.extensions.v1/components/tenants/utils/tenants";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { searchRoleList, updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import {
@@ -29,6 +27,8 @@ import {
     SearchRoleInterface
 } from "@wso2is/admin.roles.v2/models/roles";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "@wso2is/admin.server-configurations.v1";
+import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
+import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { resolveUserEmails } from "@wso2is/core/helpers";
