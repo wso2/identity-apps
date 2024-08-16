@@ -240,7 +240,12 @@ jobs:
         id: checkout
         uses: actions/checkout@v2.3.3
         with:
-          fetch-depth: 0
+          fetch-depth: 1
+
+      - name: ⬇️ Fetch the latest commit from master branch
+        run: |
+            git fetch origin master:refs/remotes/origin/master
+            git fetch origin master --depth=1
 
       - name: 🟢 Setup node
         id: setup-node
