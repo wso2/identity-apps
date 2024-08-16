@@ -193,6 +193,8 @@ export interface OIDCDataInterface {
     subject?: SubjectConfigInterface;
     isFAPIApplication?: boolean;
     hybridFlow?: HybridFlowConfigurationInterface;
+    useClientIdAsSubClaimForAppTokens?: boolean;
+    omitUsernameInIntrospectionRespForAppTokens?: boolean;
 }
 
 /**

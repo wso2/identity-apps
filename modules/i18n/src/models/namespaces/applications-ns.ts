@@ -1377,6 +1377,19 @@ export interface ApplicationsNS {
                         };
                     };
                 };
+                legacyApplicationTokens: {
+                    heading: string;
+                    fields: {
+                        useClientIdAsSubClaimForAppTokens: {
+                            label: string,
+                            hint: string
+                        };
+                        omitUsernameInIntrospectionRespForAppTokens: {
+                            label: string,
+                            hint: string
+                        };
+                    }
+                };
                 logoutURLs: {
                     heading: string;
                     fields: {

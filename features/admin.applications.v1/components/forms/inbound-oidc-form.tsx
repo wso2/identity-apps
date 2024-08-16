@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
+import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Box from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
 import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
@@ -215,6 +217,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
     const [ isPublicClient, setPublicClient ] = useState<boolean>(false);
+    const useClientIdAsSubClaimForAppTokens: boolean = initialValues.useClientIdAsSubClaimForAppTokens;
+    const omitUsernameInIntrospectionRespForAppTokens: boolean
+        = initialValues.omitUsernameInIntrospectionRespForAppTokens;
     const [ callBackUrls, setCallBackUrls ] = useState("");
     const [ audienceUrls, setAudienceUrls ] = useState("");
     const [ showURLError, setShowURLError ] = useState(false);
@@ -290,6 +295,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const requestObjectEncryptionMethod: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const subjectToken: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const applicationSubjectTokenExpiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const useClientIdAsSubClaimForAppTokensEle: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const omitUsernameInIntrospectionRespForAppTokensEle: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
 
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
@@ -1353,6 +1360,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
             inboundConfigFormValues = {
                 ...inboundConfigFormValues,
+                omitUsernameInIntrospectionRespForAppTokens:
+                    values.get("omitUsernameInIntrospectionRespForAppTokens")?.length > 0,
                 pushAuthorizationRequest: {
                     requirePushAuthorizationRequest: values.get("requirePushAuthorizationRequest")?.length > 0
                 },
@@ -1366,7 +1375,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 subject: {
                     sectorIdentifierUri: initialValues?.subject?.sectorIdentifierUri,
                     subjectType: initialValues?.subject?.subjectType
-                }
+                },
+                useClientIdAsSubClaimForAppTokens: values.get("useClientIdAsSubClaimForAppTokens")?.length > 0
             };
 
             // If the app is not a newly created, add `clientId` & `clientSecret`.
@@ -2565,6 +2575,130 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         </Grid.Row>
                     </>
                 ) }
+
+            { /* Legacy Application Tokens */ }
+            {
+                (!omitUsernameInIntrospectionRespForAppTokens
+                || !useClientIdAsSubClaimForAppTokens)
+                && (
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Divider />
+                            <Divider hidden />
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Heading as="h4">
+                                { t("applications:forms.inboundOIDC.sections" +
+                                    ".legacyApplicationTokens.heading") }
+                            </Heading>
+                            <Divider hidden />
+                            {
+                                (
+                                    <Alert severity="warning">
+                                        <AlertTitle
+                                            className="alert-title">
+                                            <Trans components={ { strong: <strong/> } } >Note:</Trans>
+                                        </AlertTitle>
+                                        <Trans
+                                            i18nKey={ t("actions:fields.authentication.info.message") }
+                                        >
+                                            You currently using an outdated behavior for application tokens.
+                                            Please follow the below guideline before migrating to the new behavior.
+                                            <ol>
+                                                <li>
+                                                    <strong>Client Application Changes:</strong>
+                                                    <p>Update your client application to no longer use the 
+                                                        <code>sub</code> claim to refer to the application
+                                                        owner&apos;s user ID in the application token.</p>
+                                                </li>
+                                                <li>
+                                                    <strong>Introspection Response Updates:</strong>
+                                                    <p>Modify your application to stop relying on the
+                                                        <code>username</code> claim in the introspection endpoint
+                                                        response for application tokens, as this claim will no
+                                                        longer be included.</p>
+                                                </li>
+                                            </ol>
+                                        </Trans>
+                                    </Alert>
+                                )
+                            }
+                            {
+                                !useClientIdAsSubClaimForAppTokens && (
+                                    <>
+                                        <Field
+                                            ref={ useClientIdAsSubClaimForAppTokensEle }
+                                            name="useClientIdAsSubClaimForAppTokens"
+                                            required={ false }
+                                            type="checkbox"
+                                            disabled={ false }
+                                            value={
+                                                initialValues?.useClientIdAsSubClaimForAppTokens ?
+                                                    [ "useClientIdAsSubClaimForAppTokens" ]
+                                                    : [] }
+                                            readOnly={ readOnly }
+                                            data-componentId={
+                                                `${ componentId }-use-client-id-as-sub-claim-for-app-tokens` }
+                                            children={ [
+                                                {
+                                                    label: t("applications:forms.inboundOIDC.sections."
+                                                        + "legacyApplicationTokens.fields"
+                                                        + ".useClientIdAsSubClaimForAppTokens.label"),
+                                                    value: "useClientIdAsSubClaimForAppTokens"
+                                                }
+                                            ] }
+                                        />
+                                        <Hint>
+                                            { t("applications:forms.inboundOIDC.sections.legacyApplicationTokens."
+                                                    + "fields.useClientIdAsSubClaimForAppTokens.hint") }
+                                        </Hint>
+                                    </>
+                                )
+                            }
+                            {
+                                (!omitUsernameInIntrospectionRespForAppTokens
+                                    && !useClientIdAsSubClaimForAppTokens) &&
+                                (
+                                    <Divider hidden />
+                                )
+                            }
+                            {
+                                (!omitUsernameInIntrospectionRespForAppTokens) &&
+                                (
+                                    <>
+                                        <Field
+                                            ref={ omitUsernameInIntrospectionRespForAppTokensEle }
+                                            name="omitUsernameInIntrospectionRespForAppTokens"
+                                            required={ false }
+                                            type="checkbox"
+                                            disabled={ false }
+                                            value={
+                                                initialValues?.omitUsernameInIntrospectionRespForAppTokens ?
+                                                    [ "omitUsernameInIntrospectionRespForAppTokens" ]
+                                                    : [] }
+                                            readOnly={ readOnly }
+                                            data-componentId={
+                                                `${ componentId }-omit-username-in-introspection-resp-for-app-tokens` }
+                                            children={ [
+                                                {
+                                                    label: t("applications:forms.inboundOIDC.sections"
+                                                    + ".legacyApplicationTokens.fields."
+                                                    + "omitUsernameInIntrospectionRespForAppTokens.label"),
+                                                    value: "omitUsernameInIntrospectionRespForAppTokens"
+                                                }
+                                            ] }
+                                        />
+                                        <Hint>
+                                            { t("applications:forms.inboundOIDC.sections.legacyApplicationTokens."
+                                            + "fields.omitUsernameInIntrospectionRespForAppTokens.hint") }
+                                        </Hint>
+                                    </>
+                                )
+                            }
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
 
             { /* Access Token */ }
             {
@@ -4377,6 +4511,7 @@ InboundOIDCForm.defaultProps = {
         },
         idToken: undefined,
         logout: undefined,
+        omitUsernameInIntrospectionRespForAppTokens: undefined,
         pkce: {
             mandatory: false,
             supportPlainTransformAlgorithm: false
@@ -4386,6 +4521,7 @@ InboundOIDCForm.defaultProps = {
         scopeValidators: [],
         state: undefined,
         subjectToken: undefined,
+        useClientIdAsSubClaimForAppTokens: undefined,
         validateRequestObjectSignature: undefined
     }
 };

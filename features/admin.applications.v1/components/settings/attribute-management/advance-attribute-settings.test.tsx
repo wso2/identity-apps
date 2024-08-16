@@ -127,6 +127,7 @@ describe("Advance attribute settings in the attributes tab of Application Edit v
                     },
                     isFAPIApplication: false,
                     logout: {},
+                    omitUsernameInIntrospectionRespForAppTokens: false,
                     pkce: { mandatory: true, supportPlainTransformAlgorithm: false },
                     publicClient: true,
                     pushAuthorizationRequest: { requirePushAuthorizationRequest: false },
@@ -139,6 +140,7 @@ describe("Advance attribute settings in the attributes tab of Application Edit v
                         applicationSubjectTokenExpiryInSeconds: 180,
                         enable: false
                     },
+                    useClientIdAsSubClaimForAppTokens: false,
                     validateRequestObjectSignature: false
                 } }
                 data-testid={ "advanced-attribute-settings-form" }
