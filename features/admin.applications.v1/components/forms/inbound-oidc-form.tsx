@@ -295,8 +295,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const requestObjectEncryptionMethod: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const subjectToken: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const applicationSubjectTokenExpiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const useClientIdAsSubClaimForAppTokensEle: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const omitUsernameInIntrospectionRespForAppTokensEle: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const useClientIdAsSubClaimForAppTokensElement: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const omitUsernameInIntrospectionRespForAppTokensElement: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
 
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
@@ -2602,19 +2602,19 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         <Trans
                                             i18nKey={ t("actions:fields.authentication.info.message") }
                                         >
-                                            You currently using an outdated behavior for application tokens.
+                                            You are currently using an outdated behavior for application tokens.
                                             Please follow the below guideline before migrating to the new behavior.
                                             <ol>
                                                 <li>
                                                     <strong>Client Application Changes:</strong>
-                                                    <p>Update your client application to no longer use the 
-                                                        <code>sub</code> claim to refer to the application
+                                                    <p>Update your client application to no longer use the&nbsp;
+                                                        <code>sub</code> attribute to refer to the application
                                                         owner&apos;s user ID in the application token.</p>
                                                 </li>
                                                 <li>
                                                     <strong>Introspection Response Updates:</strong>
-                                                    <p>Modify your application to stop relying on the
-                                                        <code>username</code> claim in the introspection endpoint
+                                                    <p>Modify your application to stop relying on the&nbsp;
+                                                        <code>username</code> field in the introspection endpoint
                                                         response for application tokens, as this claim will no
                                                         longer be included.</p>
                                                 </li>
@@ -2627,7 +2627,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 !useClientIdAsSubClaimForAppTokens && (
                                     <>
                                         <Field
-                                            ref={ useClientIdAsSubClaimForAppTokensEle }
+                                            ref={ useClientIdAsSubClaimForAppTokensElement }
                                             name="useClientIdAsSubClaimForAppTokens"
                                             required={ false }
                                             type="checkbox"
@@ -2667,7 +2667,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 (
                                     <>
                                         <Field
-                                            ref={ omitUsernameInIntrospectionRespForAppTokensEle }
+                                            ref={ omitUsernameInIntrospectionRespForAppTokensElement }
                                             name="omitUsernameInIntrospectionRespForAppTokens"
                                             required={ false }
                                             type="checkbox"
