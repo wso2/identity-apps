@@ -7,10 +7,10 @@
     "license": "Apache-2.0",
     "scripts": {
         "build": "pnpm nx run theme:build && node theme-distribute.js",
-        "clean": "pnpm clean:lock-files && pnpm clean:maven-folders && pnpm clean:node-modules",
-        "clean:lock-files": "pnpm rimraf package-lock.json && pnpm rimraf pnpm-lock.yaml && pnpm rimraf yarn.lock",
-        "clean:maven-folders": "pnpm rimraf target",
-        "clean:node-modules": "pnpm rimraf node_modules"
+        "clean": "pnpm clean:theme-folders && pnpm clean:node-modules && pnpm clean:maven-folders",
+        "clean:maven-folders": "mvn clean",
+        "clean:node-modules": "pnpm rimraf node_modules",
+        "clean:theme-folders": "node theme-distribute.js clean"
     },
     "dependencies": {
         "@wso2is/theme": "^2.1.4",

@@ -50,4 +50,12 @@ async function main() {
     }
 }
 
-main();
+// Parse command-line arguments.
+const args = process.argv.slice(2);
+
+// Check which function to run based on the arguments.
+if (args.includes("clean")) {
+    deleteExistingThemesFolder().catch(console.error);
+} else {
+    main().catch(console.error);
+}
