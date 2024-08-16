@@ -1,5 +1,77 @@
 # @wso2is/admin.connections.v1
 
+## 2.21.57
+
+### Patch Changes
+
+- Updated dependencies [[`0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a`](https://github.com/wso2/identity-apps/commit/0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a)]:
+  - @wso2is/admin.extensions.v1@2.24.0
+  - @wso2is/admin.core.v1@2.25.0
+  - @wso2is/theme@2.1.0
+  - @wso2is/admin.applications.v1@2.23.15
+  - @wso2is/admin.claims.v1@2.20.127
+  - @wso2is/admin.connections.v1@2.21.57
+  - @wso2is/admin.console-settings.v1@2.20.127
+  - @wso2is/admin.identity-providers.v1@2.21.57
+  - @wso2is/admin.organizations.v1@2.21.20
+  - @wso2is/admin.roles.v2@2.20.127
+  - @wso2is/admin.userstores.v1@2.20.127
+  - @wso2is/admin.template-core.v1@1.0.15
+  - @wso2is/react-components@2.4.2
+  - @wso2is/dynamic-forms@2.0.95
+  - @wso2is/form@2.1.3
+
+## 2.21.56
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.23.14
+  - @wso2is/admin.claims.v1@2.20.126
+  - @wso2is/admin.console-settings.v1@2.20.126
+  - @wso2is/admin.core.v1@2.24.19
+  - @wso2is/admin.extensions.v1@2.23.1
+  - @wso2is/admin.organizations.v1@2.21.19
+  - @wso2is/admin.roles.v2@2.20.126
+  - @wso2is/admin.connections.v1@2.21.56
+  - @wso2is/admin.identity-providers.v1@2.21.56
+  - @wso2is/admin.template-core.v1@1.0.14
+  - @wso2is/admin.userstores.v1@2.20.126
+
+## 2.21.55
+
+### Patch Changes
+
+- Updated dependencies [[`c29b2f1a11930a4ddf06d5f91828122139df0891`](https://github.com/wso2/identity-apps/commit/c29b2f1a11930a4ddf06d5f91828122139df0891)]:
+  - @wso2is/admin.extensions.v1@2.23.0
+  - @wso2is/admin.applications.v1@2.23.13
+  - @wso2is/admin.claims.v1@2.20.125
+  - @wso2is/admin.connections.v1@2.21.55
+  - @wso2is/admin.console-settings.v1@2.20.125
+  - @wso2is/admin.core.v1@2.24.18
+  - @wso2is/admin.identity-providers.v1@2.21.55
+  - @wso2is/admin.organizations.v1@2.21.18
+  - @wso2is/admin.roles.v2@2.20.125
+  - @wso2is/admin.userstores.v1@2.20.125
+  - @wso2is/admin.template-core.v1@1.0.13
+
+## 2.21.54
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.24.17
+  - @wso2is/admin.applications.v1@2.23.12
+  - @wso2is/admin.claims.v1@2.20.124
+  - @wso2is/admin.connections.v1@2.21.54
+  - @wso2is/admin.console-settings.v1@2.20.124
+  - @wso2is/admin.extensions.v1@2.22.12
+  - @wso2is/admin.identity-providers.v1@2.21.54
+  - @wso2is/admin.organizations.v1@2.21.17
+  - @wso2is/admin.roles.v2@2.20.124
+  - @wso2is/admin.template-core.v1@1.0.12
+  - @wso2is/admin.userstores.v1@2.20.124
+
 ## 2.21.53
 
 ### Patch Changes

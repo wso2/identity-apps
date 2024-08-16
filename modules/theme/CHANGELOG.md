@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.1.0
+
+### Minor Changes
+
+- [#6781](https://github.com/wso2/identity-apps/pull/6781) [`0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a`](https://github.com/wso2/identity-apps/commit/0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a) Thanks [@brionmario](https://github.com/brionmario)! - Separate out `admin.home.v1` feature
+
 ## 2.0.99
 
 ### Patch Changes

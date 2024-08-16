@@ -1,5 +1,12 @@
 # @wso2is/identity-apps-core
 
+## 2.4.26
+
+### Patch Changes
+
+- Updated dependencies [[`0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a`](https://github.com/wso2/identity-apps/commit/0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a)]:
+  - @wso2is/theme@2.1.0
+
 ## 2.4.25
 
 ### Patch Changes

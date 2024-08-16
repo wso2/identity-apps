@@ -1,5 +1,41 @@
 # @wso2is/admin.actions.v1
 
+## 1.0.14
+
+### Patch Changes
+
+- Updated dependencies [[`0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a`](https://github.com/wso2/identity-apps/commit/0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a)]:
+  - @wso2is/admin.extensions.v1@2.24.0
+  - @wso2is/admin.core.v1@2.25.0
+  - @wso2is/react-components@2.4.2
+  - @wso2is/form@2.1.3
+
+## 1.0.13
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.24.19
+  - @wso2is/admin.extensions.v1@2.23.1
+
+## 1.0.12
+
+### Patch Changes
+
+- Updated dependencies [[`c29b2f1a11930a4ddf06d5f91828122139df0891`](https://github.com/wso2/identity-apps/commit/c29b2f1a11930a4ddf06d5f91828122139df0891)]:
+  - @wso2is/admin.extensions.v1@2.23.0
+  - @wso2is/admin.core.v1@2.24.18
+
+## 1.0.11
+
+### Patch Changes
+
+- [#6774](https://github.com/wso2/identity-apps/pull/6774) [`882287d2b7aeb48e267984a9bc898f2bd20ccb89`](https://github.com/wso2/identity-apps/commit/882287d2b7aeb48e267984a9bc898f2bd20ccb89) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix issue in fetching scopes in actions ui
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.24.17
+  - @wso2is/admin.extensions.v1@2.22.12
+
 ## 1.0.10
 
 ### Patch Changes
