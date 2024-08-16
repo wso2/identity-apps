@@ -1567,7 +1567,7 @@ export const getErrorLayoutRoutes = (): RouteInterface[] => {
 export const getAuthLayoutRoutes = (): RouteInterface[] => {
     const routes: RouteInterface[] = [
         {
-            component: lazy(() => import("@wso2is/admin.extensions.v1/components/tenants/pages/create-tenant")),
+            component: lazy(() => import("@wso2is/admin.tenants.v1/pages/create-tenant-page")),
             exact: true,
             icon: null,
             id: "createTenant",

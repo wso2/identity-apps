@@ -611,6 +611,9 @@ importers:
       '@wso2is/admin.template-core.v1':
         specifier: ^1.0.15
         version: link:../../features/admin.template-core.v1
+      '@wso2is/admin.tenants.v1':
+        specifier: ^2.20.127
+        version: link:../../features/admin.tenants.v1
       '@wso2is/admin.username-validation.v1':
         specifier: ^1.0.15
         version: link:../../features/admin.username-validation.v1
@@ -1830,6 +1833,9 @@ importers:
       '@wso2is/admin.server-configurations.v1':
         specifier: ^2.21.69
         version: link:../admin.server-configurations.v1
+      '@wso2is/admin.tenants.v1':
+        specifier: ^2.20.127
+        version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
         specifier: ^2.20.127
         version: link:../admin.users.v1
@@ -17007,6 +17013,9 @@ importers:
       '@wso2is/admin.server-configurations.v1':
         specifier: ^2.21.69
         version: link:../admin.server-configurations.v1
+      '@wso2is/admin.tenants.v1':
+        specifier: ^2.20.127
+        version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
         specifier: ^2.20.127
         version: 'link:'

@@ -37,8 +37,6 @@ import {
     store
 } from "@wso2is/admin.core.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
-import { TenantInfo } from "@wso2is/admin.extensions.v1/components/tenants/models/tenant";
-import { getAssociationType } from "@wso2is/admin.extensions.v1/components/tenants/utils/tenants";
 import { getAgentConnections } from "@wso2is/admin.extensions.v1/components/user-stores/api/remote-user-stores";
 import { AgentConnectionInterface } from "@wso2is/admin.extensions.v1/components/user-stores/models/remote-user-stores";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
@@ -46,6 +44,8 @@ import { getRoleById, searchRoleList } from "@wso2is/admin.roles.v2/api/roles";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants";
 import { RolesV2Interface, SearchRoleInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
+import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
+import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { useInvitedUsersList, useUsersList } from "@wso2is/admin.users.v1/api";
 import { AddUserWizard } from "@wso2is/admin.users.v1/components/wizard/add-user-wizard";
 import {
