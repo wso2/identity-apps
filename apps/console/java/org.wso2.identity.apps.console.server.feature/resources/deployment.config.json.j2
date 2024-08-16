@@ -1820,9 +1820,6 @@
         {% if console.ui.administrator_role_display_name is defined %}
         "administratorRoleDisplayName": "{{ console.ui.administrator_role_display_name }}",
         {% endif %}
-        {% if oauth.oidc.enable_claims_separation_for_access_tokens is defined %}
-        "enableAccessTokenAttributes": {{ oauth.oidc.enable_claims_separation_for_access_tokens }},
-        {% endif %}
         "legacyMode": {
             {% if console.ui.legacy_mode.items() is defined %}
                 {% for key, value in console.ui.legacy_mode.items() %}

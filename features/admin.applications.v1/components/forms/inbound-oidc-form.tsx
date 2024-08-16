@@ -1301,7 +1301,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (!isSystemApplication && !isDefaultApplication) {
             let inboundConfigFormValues: any = {
                 accessToken: {
-                    accessTokenAttributes: selectedAccessTokenAttributes.map((claim: ExternalClaim) => claim.claimURI),
+                    accessTokenAttributes: selectedAccessTokenAttributes?.map((claim: ExternalClaim) => claim.claimURI),
                     accessTokenAttributesEnabled: accessTokenAttributesEnabled,
                     applicationAccessTokenExpiryInSeconds: values.get("applicationAccessTokenExpiryInSeconds")
                         ? Number(values.get("applicationAccessTokenExpiryInSeconds"))
@@ -2696,146 +2696,147 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 readOnly={ readOnly }
                                 data-testid={ `${ testId }-access-token-type-radio-group` }
                             />
-                            { isJWTAccessTokenTypeSelected && config.ui.enableAccessTokenAttributes ? (
-                                <Grid.Row>
-                                    { !initialValues?.accessToken?.accessTokenAttributesEnabled && (
-                                        <Grid.Column className="access-token-attributes-feature-banner">
-                                            <Alert severity="warning">
-                                                <Trans
-                                                    i18nKey={ "applications:forms.inboundOIDC.sections " +
-                                                        ".accessToken.fields.accessTokenAttributes.enable.hint" }>
-                                                    Previously, attributes that are set as requested in the User
-                                                    Attribute section were automatically added to
-                                                    <Code withBackground>access_token</Code>.
-                                                    Now, you can choose which user attributes are included in the
-                                                    <Code withBackground>access_token</Code>. To enable this
-                                                    new feature, select
-                                                    <Code withBackground>Enable Access Token Attributes</Code>
-                                                    and update your application. When updating,
-                                                    attributes that are set as requested in the User Attribute
-                                                    section will be set as Access Token Attributes. Once updated,
-                                                    only selected attributes from the Access Token Attributes will
-                                                    be included in the <Code withBackground>access_token</Code>
-                                                    without requiring OIDC scopes. Important: This change is
-                                                    irreversible. <b>Proceed with caution.</b>
-                                                </Trans>
-                                            </Alert>
-                                            <Field
-                                                ref={ accessTokenAttributesEnabledConfig }
-                                                name="accessTokenAttributesEnabledConfig"
-                                                label=""
-                                                required={ false }
-                                                type="checkbox"
-                                                listen={ (values: Map<string, FormValue>): void => {
-                                                    const accessTokenAttributesEnabled: boolean =
-                                                    values.get("accessTokenAttributesEnabledConfig")
-                                                        .includes("accessTokenAttributesEnabled");
+                            { isJWTAccessTokenTypeSelected &&
+                                isFeatureEnabled(applicationFeatureConfig, "applications.accessTokenAttributes") ? (
+                                    <Grid.Row>
+                                        { !initialValues?.accessToken?.accessTokenAttributesEnabled && (
+                                            <Grid.Column className="access-token-attributes-feature-banner">
+                                                <Alert severity="warning">
+                                                    <Trans
+                                                        i18nKey={ "applications:forms.inboundOIDC.sections " +
+                                                            ".accessToken.fields.accessTokenAttributes.enable.hint" }>
+                                                        Previously, attributes that are set as requested in the User
+                                                        Attribute section were automatically added to
+                                                        <Code withBackground>access_token</Code>.
+                                                        Now, you can choose which user attributes are included in the
+                                                        <Code withBackground>access_token</Code>. To enable this
+                                                        new feature, select
+                                                        <Code withBackground>Enable Access Token Attributes</Code>
+                                                        and update your application. When updating,
+                                                        attributes that are set as requested in the User Attribute
+                                                        section will be set as Access Token Attributes. Once updated,
+                                                        only selected attributes from the Access Token Attributes will
+                                                        be included in the <Code withBackground>access_token</Code>
+                                                        without requiring OIDC scopes. Important: This change is
+                                                        irreversible. <b>Proceed with caution.</b>
+                                                    </Trans>
+                                                </Alert>
+                                                <Field
+                                                    ref={ accessTokenAttributesEnabledConfig }
+                                                    name="accessTokenAttributesEnabledConfig"
+                                                    label=""
+                                                    required={ false }
+                                                    type="checkbox"
+                                                    listen={ (values: Map<string, FormValue>): void => {
+                                                        const accessTokenAttributesEnabled: boolean =
+                                                        values.get("accessTokenAttributesEnabledConfig")
+                                                            .includes("accessTokenAttributesEnabled");
 
-                                                    setAccessTokenAttributesEnabled(accessTokenAttributesEnabled);
+                                                        setAccessTokenAttributesEnabled(accessTokenAttributesEnabled);
+                                                    } }
+                                                    value={
+                                                        initialValues?.accessToken?.accessTokenAttributesEnabled
+                                                            ? [ "accessTokenAttributesEnabled" ]
+                                                            : []
+                                                    }
+                                                    children={ [
+                                                        {
+                                                            label: t("applications:forms.inboundOIDC.sections" +
+                                                            ".accessToken.fields.accessTokenAttributes.enable.label"),
+                                                            value: "accessTokenAttributesEnabled"
+                                                        }
+                                                    ] }
+                                                    readOnly={ readOnly }
+                                                    data-testid={ `${ testId }-access-token-attributes-enabled-checkbox` }
+                                                />
+                                            </Grid.Column>
+                                        ) }
+                                        <Grid.Column width={ 8 }>
+                                            <Autocomplete
+                                                className="ui form field access-token-attributes-dropdown"
+                                                size="small"
+                                                disablePortal
+                                                multiple
+                                                disableCloseOnSelect
+                                                loading={ isLoading }
+                                                options={ accessTokenAttributes }
+                                                value={ selectedAccessTokenAttributes ?? [] }
+                                                disabled = { !initialValues?.accessToken?.accessTokenAttributesEnabled }
+                                                data-componentid={ `${ componentId }-assigned-access-token-attribute-list` }
+                                                getOptionLabel={
+                                                    (claim: ExternalClaim) => claim.claimURI
+                                                }
+                                                renderInput={ (params: AutocompleteRenderInputParams) => (
+                                                    <>
+                                                        <InputLabel htmlFor="tags-filled" disableAnimation shrink={ false }>
+                                                            { t(
+                                                                "applications:forms.inboundOIDC.sections" +
+                                                                ".accessToken.fields.accessTokenAttributes.label"
+                                                            ) }
+                                                        </InputLabel>
+                                                        <TextField
+                                                            className="access-token-attributes-dropdown-input"
+                                                            { ...params }
+                                                            placeholder={ t("applications:forms.inboundOIDC.sections" +
+                                                            ".accessToken.fields.accessTokenAttributes.placeholder") }
+                                                        />
+                                                    </>
+                                                ) }
+                                                onChange={ (event: SyntheticEvent, claims: ExternalClaim[]) => {
+                                                    setIsFormStale(true);
+                                                    setSelectedAccessTokenAttributes(claims);
                                                 } }
-                                                value={
-                                                    initialValues?.accessToken?.accessTokenAttributesEnabled
-                                                        ? [ "accessTokenAttributesEnabled" ]
-                                                        : []
+                                                isOptionEqualToValue={
+                                                    (option: ExternalClaim, value: ExternalClaim) =>
+                                                        option.id === value.id
                                                 }
-                                                children={ [
-                                                    {
-                                                        label: t("applications:forms.inboundOIDC.sections" +
-                                                        ".accessToken.fields.accessTokenAttributes.enable.label"),
-                                                        value: "accessTokenAttributesEnabled"
-                                                    }
-                                                ] }
-                                                readOnly={ readOnly }
-                                                data-testid={ `${ testId }-access-token-attributes-enabled-checkbox` }
-                                            />
-                                        </Grid.Column>
-                                    ) }
-                                    <Grid.Column width={ 8 }>
-                                        <Autocomplete
-                                            className="ui form field access-token-attributes-dropdown"
-                                            size="small"
-                                            disablePortal
-                                            multiple
-                                            disableCloseOnSelect
-                                            loading={ isLoading }
-                                            options={ accessTokenAttributes }
-                                            value={ selectedAccessTokenAttributes ?? [] }
-                                            disabled = { !initialValues?.accessToken?.accessTokenAttributesEnabled }
-                                            data-componentid={ `${ componentId }-assigned-access-token-attribute-list` }
-                                            getOptionLabel={
-                                                (claim: ExternalClaim) => claim.claimURI
-                                            }
-                                            renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                <>
-                                                    <InputLabel htmlFor="tags-filled" disableAnimation shrink={ false }>
-                                                        { t(
-                                                            "applications:forms.inboundOIDC.sections" +
-                                                            ".accessToken.fields.accessTokenAttributes.label"
-                                                        ) }
-                                                    </InputLabel>
-                                                    <TextField
-                                                        className="access-token-attributes-dropdown-input"
-                                                        { ...params }
-                                                        placeholder={ t("applications:forms.inboundOIDC.sections" +
-                                                        ".accessToken.fields.accessTokenAttributes.placeholder") }
+                                                renderTags={ (
+                                                    value: ExternalClaim[],
+                                                    getTagProps: AutocompleteRenderGetTagProps
+                                                ) => value.map((option: ExternalClaim, index: number) => (
+                                                    <Chip
+                                                        { ...getTagProps({ index }) }
+                                                        key={ index }
+                                                        label={ option.claimURI }
+                                                        activeOption={ activeOption }
+                                                        setActiveOption={ setActiveOption }
+                                                        variant={
+                                                            accessTokenAttributes?.find(
+                                                                (claim: ExternalClaim) => claim.id === option.id
+                                                            )
+                                                                ? "solid"
+                                                                : "outlined"
+                                                        }
                                                     />
-                                                </>
-                                            ) }
-                                            onChange={ (event: SyntheticEvent, claims: ExternalClaim[]) => {
-                                                setIsFormStale(true);
-                                                setSelectedAccessTokenAttributes(claims);
-                                            } }
-                                            isOptionEqualToValue={
-                                                (option: ExternalClaim, value: ExternalClaim) =>
-                                                    option.id === value.id
-                                            }
-                                            renderTags={ (
-                                                value: ExternalClaim[],
-                                                getTagProps: AutocompleteRenderGetTagProps
-                                            ) => value.map((option: ExternalClaim, index: number) => (
-                                                <Chip
-                                                    { ...getTagProps({ index }) }
-                                                    key={ index }
-                                                    label={ option.claimURI }
-                                                    activeOption={ activeOption }
-                                                    setActiveOption={ setActiveOption }
-                                                    variant={
-                                                        accessTokenAttributes?.find(
-                                                            (claim: ExternalClaim) => claim.id === option.id
-                                                        )
-                                                            ? "solid"
-                                                            : "outlined"
+                                                )) }
+                                                renderOption={ (
+                                                    props: HTMLAttributes<HTMLLIElement>,
+                                                    option: ExternalClaim,
+                                                    { selected }: { selected: boolean }
+                                                ) => (
+                                                    <AccessTokenAttributeOption
+                                                        selected={ selected }
+                                                        displayName={ option.localClaimDisplayName }
+                                                        claimURI={ option.claimURI }
+                                                        renderOptionProps={ props }
+                                                    />
+                                                ) }
+                                            />
+                                            <Hint>
+                                                <Trans
+                                                    values={ { productName: config.ui.productName } }
+                                                    i18nKey={
+                                                        "applications:forms.inboundOIDC.sections." +
+                                                        "accessTokenAttributes.hint"
                                                     }
-                                                />
-                                            )) }
-                                            renderOption={ (
-                                                props: HTMLAttributes<HTMLLIElement>,
-                                                option: ExternalClaim,
-                                                { selected }: { selected: boolean }
-                                            ) => (
-                                                <AccessTokenAttributeOption
-                                                    selected={ selected }
-                                                    displayName={ option.localClaimDisplayName }
-                                                    claimURI={ option.claimURI }
-                                                    renderOptionProps={ props }
-                                                />
-                                            ) }
-                                        />
-                                        <Hint>
-                                            <Trans
-                                                values={ { productName: config.ui.productName } }
-                                                i18nKey={
-                                                    "applications:forms.inboundOIDC.sections." +
-                                                    "accessTokenAttributes.hint"
-                                                }
-                                            >
-                                            Select the attributes that should be included in
-                                            the <Code withBackground>access_token</Code>.
-                                            </Trans>
-                                        </Hint>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            ) : null }
+                                                >
+                                                Select the attributes that should be included in
+                                                the <Code withBackground>access_token</Code>.
+                                                </Trans>
+                                            </Hint>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                ) : null }
                         </Grid.Column>
                     </Grid.Row>
                 )

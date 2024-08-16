@@ -168,7 +168,6 @@
             "defaultLogoUrl": "/libs/themes/default/assets/images/branding/logo.svg",
             "defaultWhiteLogoUrl": "/libs/themes/default/assets/images/branding/logo-inverted.svg"
         },
-        "enableAccessTokenAttributes": true,
         "enableCustomEmailTemplates": true,
         "enableEmailDomain": false,
         "enableIdentityClaims": true,
