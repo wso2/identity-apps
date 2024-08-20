@@ -33,13 +33,10 @@ import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
-import { SubscriptionContext } from "@wso2is/admin.extensions.v1/components/subscription/contexts/subscription-context";
-import {
-    TenantTier,
-    TenantTierRequestResponse
-} from "@wso2is/admin.extensions.v1/components/subscription/models/subscription";
 import { OrganizationSwitchBreadcrumb } from "@wso2is/admin.organizations.v1/components/organization-switch";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
+import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { FeatureAccessConfigInterface } from "@wso2is/core/src/models";
@@ -104,7 +101,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
     );
 
     const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
-    const { tierName }: TenantTierRequestResponse = useContext(SubscriptionContext);
+    const { tierName }: UseSubscriptionInterface = useSubscription();
 
     const { organizationType } = useGetCurrentOrganizationType();
 

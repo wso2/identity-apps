@@ -25,14 +25,14 @@ import useRequest, {
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { HttpMethods } from "@wso2is/core/models";
 import { useSelector } from "react-redux";
-import { TenantTierRequestResponse } from "../models/subscription";
+import { TenantTierRequestResponse } from "../models/tenant-tier";
 
 /**
  * Hook to get the tier of a tenant.
  *
  * @returns SWR response object containing the data, error, isValidating, mutate.
  */
-const useTenantTier = <Data = TenantTierRequestResponse,
+const useGetTenantTier = <Data = TenantTierRequestResponse,
     Error = RequestErrorInterface> (): RequestResultInterface<Data, Error> => {
 
     const organizationType: OrganizationType = useSelector((state: AppState) => state.organization.organizationType);
@@ -66,4 +66,4 @@ const useTenantTier = <Data = TenantTierRequestResponse,
     };
 };
 
-export default useTenantTier;
+export default useGetTenantTier;

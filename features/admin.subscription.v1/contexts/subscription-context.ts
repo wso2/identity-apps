@@ -17,10 +17,27 @@
  */
 
 import { Context, createContext } from "react";
-import { TenantTier } from "../models/subscription";
+import { TenantTier } from "../models/tenant-tier";
 
-export const SubscriptionContext: Context<{
+/**
+ * Props interface of {@link SubscriptionContext}
+ */
+export interface SubscriptionContextPropsInterface {
+    /**
+     * Tenant Tier identifier.
+     */
     tierName: TenantTier;
-}> = createContext({
-    tierName: TenantTier.ENTERPRISE
-});
+}
+
+/**
+ * Context object for managing the Subscription context.
+ */
+const SubscriptionContext: Context<SubscriptionContextPropsInterface> =
+  createContext<null | SubscriptionContextPropsInterface>(null);
+
+/**
+ * Display name for the SubscriptionContext.
+ */
+SubscriptionContext.displayName = "SubscriptionContext";
+
+export default SubscriptionContext;
