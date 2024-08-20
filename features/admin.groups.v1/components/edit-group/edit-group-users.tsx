@@ -89,11 +89,14 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
     const [ listOffset, setListOffset ] = useState<number>(0);
 
     const modifiedLimit: number = listItemLimit + TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET;
-    const groupsFilter: string = `groups eq ${ group?.displayName }`;
     const excludedAttributes: string = UserManagementConstants.GROUPS_AND_ROLES_ATTRIBUTE;
     const userstore: string = group?.displayName?.indexOf("/") === -1
         ? userstoresConfig.primaryUserstoreName
         : group?.displayName?.split("/")[ 0 ];
+    const groupName: string = group?.displayName?.indexOf("/") === -1
+        ? group?.displayName
+        : group?.displayName?.split("/")[ 1 ];
+    const groupsFilter: string = `groups eq ${ groupName }`;
 
     /**
      * Fetch the user list of the group.
@@ -515,7 +518,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
             {
                 showAddNewUserModal && (
                     <AddGroupUserModal
-                        data-componentid={ `${ testId }-add-new-user-modal` }
+                        data-componentid={ testId }
                         showAddNewUserModal={ showAddNewUserModal }
                         handleAddUserSubmit={ handleAddUserSubmit }
                         handleCloseAddNewGroupModal={ handleCloseAddNewGroupModal }

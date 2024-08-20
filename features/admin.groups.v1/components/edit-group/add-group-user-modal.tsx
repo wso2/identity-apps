@@ -258,7 +258,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                                     <TransferListItem
                                         handleItemChange={ () => handleItemCheckboxChange(user) }
                                         key={ index }
-                                        listItem={ resolvedUsername }
+                                        listItem={ resolvedGivenName ?? resolvedUsername }
                                         listItemId={ user.id }
                                         listItemIndex={ index }
                                         isItemChecked={
@@ -268,7 +268,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                                         showSecondaryActions={ false }
                                         showListSubItem={ true }
                                         listSubItem={ resolvedGivenName && (
-                                            <Code compact withBackground={ false }>{ resolvedGivenName }</Code>
+                                            <Code compact withBackground={ false }>{ resolvedUsername }</Code>
                                         ) }
                                         data-testid={ `${ componentId }-unselected-transfer-list-item-${ index }` }
                                     />
@@ -283,6 +283,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <LinkButton
+                                data-componentid={ `${ componentId }-assign-user-wizard-modal-cancel-button` }
                                 data-testid={ `${ componentId }-assign-user-wizard-modal-cancel-button` }
                                 onClick={ handleCloseAddNewGroupModal }
                                 floated="left"
@@ -295,6 +296,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                                 variant="contained"
                                 color="primary"
                                 data-componentid={ `${ componentId }-assign-user-wizard-modal-save-button` }
+                                data-testid={ `${ componentId }-assign-user-wizard-modal-save-button` }
                                 onClick={ () => {
                                     setIsSubmitting(true);
                                     handleAddUserSubmit(selectedUsers);
