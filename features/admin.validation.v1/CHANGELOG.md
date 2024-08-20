@@ -1,5 +1,17 @@
 # @wso2is/admin.validation.v1
 
+## 2.20.129
+
+### Patch Changes
+
+- Updated dependencies [[`c35e28e3d811841b3bc4762486b80c255e82a54e`](https://github.com/wso2/identity-apps/commit/c35e28e3d811841b3bc4762486b80c255e82a54e)]:
+  - @wso2is/admin.users.v1@2.21.1
+  - @wso2is/admin.core.v1@2.26.1
+  - @wso2is/i18n@2.5.22
+  - @wso2is/admin.extensions.v1@2.24.2
+  - @wso2is/admin.organizations.v1@2.21.22
+  - @wso2is/admin.server-configurations.v1@2.21.71
+
 ## 2.20.128
 
 ### Patch Changes

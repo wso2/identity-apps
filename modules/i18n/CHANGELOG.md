@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.5.22
+
+### Patch Changes
+
+- [#6787](https://github.com/wso2/identity-apps/pull/6787) [`c35e28e3d811841b3bc4762486b80c255e82a54e`](https://github.com/wso2/identity-apps/commit/c35e28e3d811841b3bc4762486b80c255e82a54e) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Refactor user add feature in groups edit page
+
 ## 2.5.21
 
 ### Patch Changes
