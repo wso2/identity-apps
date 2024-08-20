@@ -165,9 +165,6 @@ export const applicationConfig: ApplicationConfig = {
         advancedAttributeSettings: {
             isLinkedAccountsEnabled: (templateId: string): boolean => {
                 const allowedTemplates: string[] = [
-                    ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS,
-                    ApplicationManagementConstants.CUSTOM_APPLICATION_SAML,
-                    ApplicationManagementConstants.TRADITIONAL_WEB_APPLICATION_SAML,
                     ApplicationManagementConstants.MOBILE,
                     ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC,
                     ApplicationManagementConstants.TRADITIONAL_WEB_APPLICATION_OIDC,
