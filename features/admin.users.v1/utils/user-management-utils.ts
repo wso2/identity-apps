@@ -137,6 +137,8 @@ export class UserManagementUtils {
 
     /* Resolves username.
     *
+    * @param user - User details.
+    *
     * @returns Username for the user avatar.
     */
     public static resolveAvatarUsername(user: UserBasicInterface): string {
