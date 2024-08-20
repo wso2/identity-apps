@@ -982,9 +982,9 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         Please enable email invitations for user password setup from
                         <Link
                         onClick={ () => history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
-                        .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
-                        .replace(":connectorId", ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID)) }
-                        external={ false }>
+                            .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+                                .replace(":connectorId", ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID)) }
+                                external={ false }>
                             Login & Registration settings
                         </Link>
                     </Trans>
