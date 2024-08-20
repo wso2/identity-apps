@@ -43,7 +43,7 @@ import { FeatureAccessConfigInterface } from "@wso2is/core/src/models";
 import { StringUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import { useDocumentation } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, ReactNode, useContext, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { ReactComponent as LogoutIcon } from "../../themes/default/assets/images/icons/logout-icon.svg";
