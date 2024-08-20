@@ -1,5 +1,18 @@
 # @wso2is/identity-apps-core
 
+## 2.4.27
+
+### Patch Changes
+
+- [#6784](https://github.com/wso2/identity-apps/pull/6784) [`d0ab529ec372f4d0f0ffe00c0c34971e22e7fb56`](https://github.com/wso2/identity-apps/commit/d0ab529ec372f4d0f0ffe00c0c34971e22e7fb56) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Support servlet mapping configuration for authentication and recovery portal
+
+## 2.4.26
+
+### Patch Changes
+
+- Updated dependencies [[`0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a`](https://github.com/wso2/identity-apps/commit/0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a)]:
+  - @wso2is/theme@2.1.0
+
 ## 2.4.25
 
 ### Patch Changes

@@ -1,5 +1,21 @@
 # @wso2is/admin.logs.v1
 
+## 1.0.3
+
+### Patch Changes
+
+- Updated dependencies [[`b7ba328bd2a29881c5cbb06b9d3bc8968c5b3da2`](https://github.com/wso2/identity-apps/commit/b7ba328bd2a29881c5cbb06b9d3bc8968c5b3da2)]:
+  - @wso2is/admin.core.v1@2.26.0
+
+## 1.0.2
+
+### Patch Changes
+
+- Updated dependencies [[`0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a`](https://github.com/wso2/identity-apps/commit/0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a)]:
+  - @wso2is/admin.core.v1@2.25.0
+  - @wso2is/react-components@2.4.2
+  - @wso2is/form@2.1.3
+
 ## 1.0.1
 
 ### Patch Changes

@@ -292,456 +292,91 @@
         </listener-class>
     </listener>
 
-    <servlet>
-        <servlet-name>retry.do</servlet-name>
-        <jsp-file>/retry.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>wait.do</servlet-name>
-        <jsp-file>/long-wait.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>resend-confirmation-captcha.do</servlet-name>
-        <jsp-file>/resend-confirmation-captcha.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>idf-confirm.do</servlet-name>
-        <jsp-file>/identifier-logout-confirm.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>dynamic_prompt.do</servlet-name>
-        <jsp-file>/dynamic_prompt.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>handle-multiple-sessions.do</servlet-name>
-        <jsp-file>/handle-multiple-sessions.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>claims.do</servlet-name>
-        <jsp-file>/requested-claims.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>oauth2_login.do</servlet-name>
-        <jsp-file>/login.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>oauth2_authz.do</servlet-name>
-        <jsp-file>/oauth2_authz.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>oauth2_consent.do</servlet-name>
-        <jsp-file>/oauth2_consent.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>oauth2_logout_consent.do</servlet-name>
-        <jsp-file>/oauth2_logout_consent.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>oauth2_logout.do</servlet-name>
-        <jsp-file>/logout.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>oauth2_error.do</servlet-name>
-        <jsp-file>/oauth2_error.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>samlsso_login.do</servlet-name>
-        <jsp-file>/login.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>samlsso_logout.do</servlet-name>
-        <jsp-file>/logout.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>samlsso_redirect.do</servlet-name>
-        <jsp-file>/login.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>samlsso_notification.do</servlet-name>
-        <jsp-file>/samlsso_notification.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>openid_login.do</servlet-name>
-        <jsp-file>/login.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>openid_profile.do</servlet-name>
-        <jsp-file>/openid_profile.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>passivests_login.do</servlet-name>
-        <jsp-file>/login.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>tenantlistrefresher.do</servlet-name>
-        <jsp-file>/tenant_refresh_endpoint.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>consent.do</servlet-name>
-        <jsp-file>/consent.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>cookie_policy.do</servlet-name>
-        <jsp-file>/cookie_policy.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>privacy_policy.do</servlet-name>
-        <jsp-file>/privacy_policy.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>authenticate.do</servlet-name>
-        <jsp-file>/authenticate.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>error.do</servlet-name>
-        <jsp-file>/generic-exception-response.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>device.do</servlet-name>
-        <jsp-file>/enter-user-code.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>device_success.do</servlet-name>
-        <jsp-file>/device-success.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>totp_enroll.do</servlet-name>
-        <jsp-file>/enableTOTP.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>totp.do</servlet-name>
-        <jsp-file>/totp.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>totp_error.do</servlet-name>
-        <jsp-file>/totpError.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>backup_code.do</servlet-name>
-        <jsp-file>/backup-code.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>backup_code_error.do</servlet-name>
-        <jsp-file>/backup-code-error.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>email_capture.do</servlet-name>
-        <jsp-file>/emailAddressCapture.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>email_otp.do</servlet-name>
-        <jsp-file>/emailOtp.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>email_otp_error.do</servlet-name>
-        <jsp-file>/emailOtpError.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>mobile.do</servlet-name>
-        <jsp-file>/mobile.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>sms_otp.do</servlet-name>
-        <jsp-file>/smsOtp.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>sms_otp_error.do</servlet-name>
-        <jsp-file>/smsOtpError.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>duo_error.do</servlet-name>
-        <jsp-file>/duoError.jsp</jsp-file>
-    </servlet>
-
-    {% for custom_servlet in servlet %}
-    <servlet>
-        <servlet-name>{{custom_servlet.name}}</servlet-name>
-        <jsp-file>{{custom_servlet.jsp}}</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>{{custom_servlet.name}}</servlet-name>
-        <url-pattern>{{custom_servlet.url}}</url-pattern>
-    </servlet-mapping>
+    {% set keys = [] %}
+    {% set values = [] %}
+    {% for servlet_item in authenticationendpoint.servlet %}
+        {% set _ = keys.append(servlet_item['name']) %}
+        {% set _ = values.append(servlet_item) %}
     {% endfor %}
-
+    {% set default_servlets = [
+        {"name": "retry.do", "jsp": "/retry.jsp", "url": "/retry.do"},
+        {"name": "wait.do", "jsp": "/long-wait.jsp", "url": "/wait.do"},
+        {"name": "resend-confirmation-captcha.do", "jsp": "/resend-confirmation-captcha.jsp", "url": "/resend-confirmation-captcha.do"},
+        {"name": "idf-confirm.do", "jsp": "/identifier-logout-confirm.jsp", "url": "/idf-confirm.do"},
+        {"name": "dynamic_prompt.do", "jsp": "/dynamic_prompt.jsp", "url": "/dynamic_prompt.do"},
+        {"name": "handle-multiple-sessions.do", "jsp": "/handle-multiple-sessions.jsp", "url": "/handle-multiple-sessions.do"},
+        {"name": "claims.do", "jsp": "/requested-claims.jsp", "url": "/claims.do"},
+        {"name": "oauth2_login.do", "jsp": "/login.jsp", "url": "/oauth2_login.do"},
+        {"name": "oauth2_authz.do", "jsp": "/oauth2_authz.jsp", "url": "/oauth2_authz.do"},
+        {"name": "oauth2_consent.do", "jsp": "/oauth2_consent.jsp", "url": "/oauth2_consent.do"},
+        {"name": "oauth2_logout_consent.do", "jsp": "/oauth2_logout_consent.jsp", "url": "/oauth2_logout_consent.do"},
+        {"name": "oauth2_logout.do", "jsp": "/logout.jsp", "url": "/oauth2_logout.do"},
+        {"name": "oauth2_error.do", "jsp": "/oauth2_error.jsp", "url": "/oauth2_error.do"},
+        {"name": "samlsso_login.do", "jsp": "/login.jsp", "url": "/samlsso_login.do"},
+        {"name": "samlsso_logout.do", "jsp": "/logout.jsp", "url": "/samlsso_logout.do"},
+        {"name": "samlsso_redirect.do", "jsp": "/login.jsp", "url": "/samlsso_redirect.do"},
+        {"name": "samlsso_notification.do", "jsp": "/samlsso_notification.jsp", "url": "/samlsso_notification.do"},
+        {"name": "openid_login.do", "jsp": "/login.jsp", "url": "/openid_login.do"},
+        {"name": "openid_profile.do", "jsp": "/openid_profile.jsp", "url": "/openid_profile.do"},
+        {"name": "passivests_login.do", "jsp": "/login.jsp", "url": "/passivests_login.do"},
+        {"name": "tenantlistrefresher.do", "jsp": "/tenant_refresh_endpoint.jsp", "url": "/tenantlistrefresher.do"},
+        {"name": "consent.do", "jsp": "/consent.jsp", "url": "/consent.do"},
+        {"name": "cookie_policy.do", "jsp": "/cookie_policy.jsp", "url": "/cookie_policy.do"},
+        {"name": "privacy_policy.do", "jsp": "/privacy_policy.jsp", "url": "/privacy_policy.do"},
+        {"name": "authenticate.do", "jsp": "/authenticate.jsp", "url": "/authenticate.do"},
+        {"name": "error.do", "jsp": "/generic-exception-response.jsp", "url": "/error.do"},
+        {"name": "device.do", "jsp": "/enter-user-code.jsp", "url": "/device.do"},
+        {"name": "device_success.do", "jsp": "/device_success.jsp", "url": "/device_success.do"},
+        {"name": "totp_enroll.do", "jsp": "/enableTOTP.jsp", "url": "/totp_enroll.do"},
+        {"name": "totp.do", "jsp": "/totp.jsp", "url": "/totp.do"},
+        {"name": "totp_error.do", "jsp": "/totpError.jsp", "url": "/totp_error.do"},
+        {"name": "backup_code.do", "jsp": "/backup-code.jsp", "url": "/backup_code.do"},
+        {"name": "backup_code_error.do", "jsp": "/backup-code-error.jsp", "url": "/backup_code_error.do"},
+        {"name": "email_capture.do", "jsp": "/emailAddressCapture.jsp", "url": "/email_capture.do"},
+        {"name": "email_otp.do", "jsp": "/emailOtp.jsp", "url": "/email_otp.do"},
+        {"name": "email_otp_error.do", "jsp": "/emailOtpError.jsp", "url": "/email_otp_error.do"},
+        {"name": "mobile.do", "jsp": "/mobile.jsp", "url": "/mobile.do"},
+        {"name": "sms_otp.do", "jsp": "/smsOtp.jsp", "url": "/sms_otp.do"},
+        {"name": "sms_otp_error.do", "jsp": "/smsOtpError.jsp", "url": "/sms_otp_error.do"},
+        {"name": "duo_error.do", "jsp": "/duoError.jsp", "url": "/duo_error.do"},
+        {"name": "magic_link_notification.do", "jsp": "/magic_link_notification.jsp", "url": "/magic_link_notification.do"},
+        {"name": "org_name.do", "jsp": "/org_name.jsp", "url": "/org_name.do"},
+        {"name": "org_discovery.do", "jsp": "/org_discovery.jsp", "url": "/org_discovery.do"},
+        {"name": "select_org.do", "jsp": "/select_org.jsp", "url": "/select_org.do"}
+    ] %}
+    {% for servlet_item in default_servlets %}
+        {% set key_name = servlet_item['name'] %}
+        {% set custom_servlet = servlet_item %}
+        {% if key_name in keys %}
+            {% set index = keys.index(key_name) %}
+            {% set custom_servlet = values[index] %}
+        {% endif %}
     <servlet>
-        <servlet-name>magic_link_notification.do</servlet-name>
-        <jsp-file>/magic_link_notification.jsp</jsp-file>
+        <servlet-name>{{ custom_servlet['name'] }}</servlet-name>
+        <jsp-file>{{ custom_servlet['jsp'] }}</jsp-file>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>magic_link_notification.do</servlet-name>
-        <url-pattern>/magic_link_notification.do</url-pattern>
+        <servlet-name>{{ custom_servlet['name'] }}</servlet-name>
+        <url-pattern>{{ custom_servlet['url'] }}</url-pattern>
     </servlet-mapping>
 
+    {% endfor %}
+    {% set default_keys = default_servlets | map(attribute='name') | list %}
+    {% for servlet_item in authenticationendpoint.servlet %}
+      {% if servlet_item['name'] not in default_keys %}
     <servlet>
-        <servlet-name>org_name.do</servlet-name>
-        <jsp-file>/org_name.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>org_discovery.do</servlet-name>
-        <jsp-file>/org_discovery.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>select_org.do</servlet-name>
-        <jsp-file>/select_org.jsp</jsp-file>
+        <servlet-name>{{ servlet_item['name'] }}</servlet-name>
+        <jsp-file>{{ servlet_item['jsp'] }}</jsp-file>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>totp_enroll.do</servlet-name>
-        <url-pattern>/totp_enroll.do</url-pattern>
+        <servlet-name>{{ servlet_item['name'] }}</servlet-name>
+        <url-pattern>{{ servlet_item['url'] }}</url-pattern>
     </servlet-mapping>
 
-    <servlet-mapping>
-        <servlet-name>totp.do</servlet-name>
-        <url-pattern>/totp.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>totp_error.do</servlet-name>
-        <url-pattern>/totp_error.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>backup_code.do</servlet-name>
-        <url-pattern>/backup_code.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>backup_code_error.do</servlet-name>
-        <url-pattern>/backup_code_error.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>email_capture.do</servlet-name>
-        <url-pattern>/email_capture.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>email_otp.do</servlet-name>
-        <url-pattern>/email_otp.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>email_otp_error.do</servlet-name>
-        <url-pattern>/email_otp_error.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>mobile.do</servlet-name>
-        <url-pattern>/mobile.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>sms_otp.do</servlet-name>
-        <url-pattern>/sms_otp.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>sms_otp_error.do</servlet-name>
-        <url-pattern>/sms_otp_error.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>org_name.do</servlet-name>
-        <url-pattern>/org_name.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>org_discovery.do</servlet-name>
-        <url-pattern>/org_discovery.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>select_org.do</servlet-name>
-        <url-pattern>/select_org.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>device.do</servlet-name>
-        <url-pattern>/device.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>device_success.do</servlet-name>
-        <url-pattern>/device_success.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>retry.do</servlet-name>
-        <url-pattern>/retry.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>wait.do</servlet-name>
-        <url-pattern>/wait.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>resend-confirmation-captcha.do</servlet-name>
-        <url-pattern>/resend-confirmation-captcha.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>idf-confirm.do</servlet-name>
-        <url-pattern>/idf-confirm.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>dynamic_prompt.do</servlet-name>
-        <url-pattern>/dynamic_prompt.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>handle-multiple-sessions.do</servlet-name>
-        <url-pattern>/handle-multiple-sessions.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>oauth2_login.do</servlet-name>
-        <url-pattern>/oauth2_login.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>oauth2_authz.do</servlet-name>
-        <url-pattern>/oauth2_authz.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>oauth2_consent.do</servlet-name>
-        <url-pattern>/oauth2_consent.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>oauth2_logout_consent.do</servlet-name>
-        <url-pattern>/oauth2_logout_consent.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>oauth2_logout.do</servlet-name>
-        <url-pattern>/oauth2_logout.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>oauth2_error.do</servlet-name>
-        <url-pattern>/oauth2_error.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>samlsso_login.do</servlet-name>
-        <url-pattern>/samlsso_login.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>samlsso_logout.do</servlet-name>
-        <url-pattern>/samlsso_logout.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>samlsso_redirect.do</servlet-name>
-        <url-pattern>/samlsso_redirect.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>samlsso_notification.do</servlet-name>
-        <url-pattern>/samlsso_notification.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>openid_login.do</servlet-name>
-        <url-pattern>/openid_login.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>openid_profile.do</servlet-name>
-        <url-pattern>/openid_profile.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>passivests_login.do</servlet-name>
-        <url-pattern>/passivests_login.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>tenantlistrefresher.do</servlet-name>
-        <url-pattern>/tenantlistrefresher.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>claims.do</servlet-name>
-        <url-pattern>/claims.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>consent.do</servlet-name>
-        <url-pattern>/consent.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>cookie_policy.do</servlet-name>
-        <url-pattern>/cookie_policy.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>privacy_policy.do</servlet-name>
-        <url-pattern>/privacy_policy.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>authenticate.do</servlet-name>
-        <url-pattern>/authenticate.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>error.do</servlet-name>
-        <url-pattern>/error.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>duo_error.do</servlet-name>
-        <url-pattern>/duo_error.do</url-pattern>
-    </servlet-mapping>
+      {% endif %}
+    {% endfor %}
 
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>

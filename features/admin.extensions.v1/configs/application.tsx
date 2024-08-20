@@ -54,13 +54,15 @@ import { ApplicationGeneralTabOverride } from "./components/application-general-
 import { MarketingConsentModalWrapper } from "./components/marketing-consent/components";
 import { ApplicationConfig, ExtendedFeatureConfigInterface } from "./models";
 import { ApplicationTabIDs } from "./models/application";
+import {
+    ReactComponent as TryItAppIllustration
+} from "../../themes/default/assets/images/illustrations/rafiki-illustration.svg";
 import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";
 import SamlWebAppTemplate
     from "../application-templates/templates/saml-web-application/saml-web-application.json";
 import SinglePageAppTemplate from
     "../application-templates/templates/single-page-application/single-page-application.json";
-import { getGettingStartedCardIllustrations } from "../components/getting-started/configs";
 
 function isClaimInterface(
     claim: ExtendedClaimInterface | ExtendedExternalClaimInterface
