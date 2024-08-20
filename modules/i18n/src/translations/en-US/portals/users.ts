@@ -82,7 +82,7 @@ export const users: usersNS = {
             header: "Before you proceed",
             message: "Invite users option is disabled",
             content: "Invite User to Set Password should be enabled to add multiple users. " +
-                "Please enable email invitations for user password setup from Login & Registration settings.",
+                "Please enable email invitations for user password setup from <1>Login & Registration settings</1>.",
             assertionHint: "Please confirm your action."
         }
     },
