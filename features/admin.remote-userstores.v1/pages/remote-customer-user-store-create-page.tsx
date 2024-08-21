@@ -84,6 +84,8 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
     const [ userStoreType, setUserStoreType ] = useState<string>(RemoteUserStoreTypes.LDAP);
     const [ userStoreAccessType, setUserStoreAccessType ] = useState<string>(RemoteUserStoreAccessTypes.ReadOnly);
     const [ isUserStoreNameValid, setUserStoreNameValid ] = useState(false);
+    const [ isUserStoreDescriptionValid, setUserStoreDescriptionValid ] = useState(false);
+    const [ inputDescription, setInputDescription ] = useState<string>("");
     const [ isAttributesListRequestLoading, setAttributesListRequestLoading ] = useState<boolean>(false);
     const [ mandatoryAttributes, setMandatoryAttributes ] = useState<Claim[]>(null);
 
@@ -245,8 +247,16 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
         });
     };
 
+    const preventBasicDetailsNext = (): boolean => {
+        if (inputDescription) {
+            return (!isUserStoreNameValid || !isUserStoreDescriptionValid);
+        } else {
+            return !isUserStoreNameValid;
+        }
+    };
+
     const handleAttributeMappingsSubmit = (values: Map<string, FormValue>) => {
-        if (!isUserStoreNameValid) {
+        if (preventBasicDetailsNext()) {
             return;
         }
 
@@ -288,7 +298,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
 
     const creationFlowSteps: VerticalStepperStepInterface[] = [
         {
-            preventGoToNextStep: !isUserStoreNameValid,
+            preventGoToNextStep: preventBasicDetailsNext(),
             stepAction: setTriggerBasicDetailsSubmit,
             stepContent: (
                 <GeneralUserStoreDetails
@@ -298,6 +308,8 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
                     handleUserStoreTypeChange={ handleUserStoreTypeChange }
                     handleUserStoreAccessTypeChange={ handleUserStoreAccessTypeChange }
                     setUserStoreNameValid={ setUserStoreNameValid }
+                    setUserStoreDescriptionValid={ setUserStoreDescriptionValid }
+                    setListenedDescription={ setInputDescription }
                 />
             ),
             stepTitle: t("extensions:manage.features.userStores.create.pageLayout.steps.generalSettings.title")

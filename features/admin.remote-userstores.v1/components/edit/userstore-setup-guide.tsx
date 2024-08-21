@@ -33,10 +33,9 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Icon } from "semantic-ui-react";
 import { generateToken, getAgentConnections } from "../../api";
-import { RemoteUserStoreMeta } from "../../constants";
 import { AgentConnectionInterface } from "../../models";
 
 /**
@@ -144,8 +143,7 @@ export const SetupGuideTab: FunctionComponent<SetupGuideTabPropsInterface> = (
                 color="orange"
                 onClick={ () => {
                     window.open(
-                        window["AppUtils"].getConfig().extensions.userStoreAgentUrl +
-                        RemoteUserStoreMeta.userStoreAgent.artifact, "_blank",
+                        window["AppUtils"].getConfig().extensions.userStoreAgentUrl, "_blank",
                         "noopener, noreferrer"
                     );
                 } }
@@ -203,12 +201,18 @@ export const SetupGuideTab: FunctionComponent<SetupGuideTabPropsInterface> = (
             </Text>
             <Divider hidden />
             <Text weight="500">
-                See the
-                <DocumentationLink
-                    link={ getLink("manage.userStores.userStoreProperties.learnMore") }
+                <Trans
+                    i18nKey={
+                        "extensions:manage.features.userStores.edit." +
+                        "setupGuide.steps.configureProperties.docsDescription"
+                    }
                 >
-                    Asgardeo documentation
-                </DocumentationLink> for the complete list of user store configuration properties.
+                   See the
+                    <DocumentationLink
+                        link={ getLink("manage.userStores.userStoreProperties.learnMore") }>
+                        Asgardeo documentation
+                    </DocumentationLink> for more details on configuring the user store agent.
+                </Trans>
             </Text>
         </>
     );
@@ -319,7 +323,7 @@ export const SetupGuideTab: FunctionComponent<SetupGuideTabPropsInterface> = (
         },
         {
             stepContent: resolveConfigureUserStoreStep(),
-            stepTitle: "Configure local user store properties"
+            stepTitle: "Configure the agent"
         },
         {
             stepContent: resolveGenerateTokenStep(),

@@ -29,7 +29,7 @@ import {
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue } from "@wso2is/form";
-import { Field, Forms } from "@wso2is/forms";
+import { Field, Forms, Validation } from "@wso2is/forms";
 import {
     ConfirmationModal,
     ContentLoader,
@@ -53,7 +53,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, Grid, Icon, List, Segment } from "semantic-ui-react";
 import { disconnectAgentConnection, generateToken, getAgentConnections, regenerateToken } from "../../api";
-import { AgentConnectionInterface, RegenerateTokenInterface } from "../../models";
+import { USERSTORE_VALIDATION_REGEX_PATTERNS } from "../../constants/remote-user-stores";
+import { AgentConnectionInterface, RegenerateTokenInterface } from "../../models/remote-user-stores";
+import { validateInputWithRegex } from "../../utils/userstore-utils";
 
 /**
  * Props for the user store general settings component.
@@ -576,6 +578,38 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                                                     ? userStore?.description
                                                     : ""
                                             }
+                                            validation={ (value: string, validation: Validation) => {
+
+                                                let isMatch: boolean = true;
+                                                let validationErrorMessage: string;
+
+                                                const validityResult: Map<string, string | boolean> =
+                                                    validateInputWithRegex(value,
+                                                        USERSTORE_VALIDATION_REGEX_PATTERNS.EscapeRegEx);
+                                                const validationMatch: boolean = (
+                                                    validityResult.get("isMatch").toString() === "true");
+
+                                                if (validationMatch) {
+                                                    isMatch = false;
+                                                    const invalidString: string = validityResult.get(
+                                                        "invalidStringValue").toString();
+
+                                                    validationErrorMessage =
+                                                        t("console:manage.features.userstores.forms.general.description"
+                                                            + ".validationErrorMessages.invalidInputErrorMessage", {
+                                                            invalidString: invalidString
+                                                        });
+                                                } else {
+                                                    isMatch = true;
+                                                }
+
+                                                if (!isMatch) {
+                                                    validation.isValid = false;
+                                                    validation.errorMessages.push(
+                                                        validationErrorMessage
+                                                    );
+                                                }
+                                            } }
                                         />
                                         <Popup
                                             trigger={ (
