@@ -33,9 +33,8 @@ import classnames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ApplicationTemplateConstants } from "../constants/templates";
-import "./application-template-card.scss";
 import { ApplicationTemplateFeatureStatus, SupportedTechnologyMetadataInterface } from "../models/templates";
-import FeatureStatusLabel from "../../admin.extensions.v1/components/feature-gate/models/feature-gate";
+import "./application-template-card.scss";
 
 /**
  * Props for the application template card component.
@@ -174,18 +173,18 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
                     </Typography>
                 </div>
                 {
-                featureStatus
-                    ? (
-                        <div className={ classnames("application-template-ribbon",
-                                resolveFeatureLabelClass(featureStatus) ) }
-                        >
-                            <span className="MuiChip-label">
-                                { resolveRibbonLabel(featureStatus) }
-                            </span>
-                        </div>
-                    )
-                    : null
-            }
+                    featureStatus
+                        ? (
+                            <div className={ classnames("application-template-ribbon",
+                                    resolveFeatureLabelClass(featureStatus) ) }
+                            >
+                                <span className="MuiChip-label">
+                                    { resolveRibbonLabel(featureStatus) }
+                                </span>
+                            </div>
+                        )
+                        : null
+                }
             </CardContent>
             <CardContent className="application-template-body">
                 <Tooltip title={ template?.description }>
