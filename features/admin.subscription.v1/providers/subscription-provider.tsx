@@ -17,8 +17,8 @@
  */
 
 import React, { PropsWithChildren, ReactElement } from "react";
-import { SubscriptionContext } from "../contexts/subscription-context";
-import { TenantTier } from "../models/subscription";
+import SubscriptionContext from "../contexts/subscription-context";
+import { TenantTier } from "../models/tenant-tier";
 
 /**
  * Subscription provider props interface.
@@ -36,7 +36,7 @@ export interface SubscriptionProviderPropsInterface {
  * @param props - Wrap content/elements.
  * @returns SubscriptionContext Provider.
  */
-export const SubscriptionProvider = (
+const SubscriptionProvider = (
     props: PropsWithChildren<SubscriptionProviderPropsInterface>
 ): ReactElement => {
 
@@ -54,3 +54,5 @@ export const SubscriptionProvider = (
         </SubscriptionContext.Provider>
     );
 };
+
+export default SubscriptionProvider;

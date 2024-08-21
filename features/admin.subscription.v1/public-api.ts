@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,11 +16,7 @@
  * under the License.
  */
 
-import { Context, createContext } from "react";
-import { TenantTier } from "../models/subscription";
-
-export const SubscriptionContext: Context<{
-    tierName: TenantTier;
-}> = createContext({
-    tierName: TenantTier.ENTERPRISE
-});
+export { default as useGetTenantTier } from "./api/use-get-tenant-tier";
+export { default as useSubscription } from "./hooks/use-subscription";
+export { default as SubscriptionProvider } from "./providers/subscription-provider";
+export * from "./models/tenant-tier";
