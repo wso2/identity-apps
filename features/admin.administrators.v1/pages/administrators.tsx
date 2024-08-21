@@ -37,9 +37,9 @@ import {
     store
 } from "@wso2is/admin.core.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
-import { getAgentConnections } from "@wso2is/admin.extensions.v1/components/user-stores/api/remote-user-stores";
-import { AgentConnectionInterface } from "@wso2is/admin.extensions.v1/components/user-stores/models/remote-user-stores";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import { getAgentConnections } from "@wso2is/admin.remote-userstores.v1/api/remote-user-stores";
+import { AgentConnectionInterface } from "@wso2is/admin.remote-userstores.v1/models/remote-user-stores";
 import { getRoleById, searchRoleList } from "@wso2is/admin.roles.v2/api/roles";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants";
 import { RolesV2Interface, SearchRoleInterface } from "@wso2is/admin.roles.v2/models/roles";

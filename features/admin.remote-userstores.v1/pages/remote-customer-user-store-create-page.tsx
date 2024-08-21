@@ -23,6 +23,7 @@ import {
     VerticalStepper,
     VerticalStepperStepInterface
 } from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { addUserStore, getAType } from "@wso2is/admin.userstores.v1/api/user-stores";
 import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {
@@ -44,7 +45,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { userstoresConfig } from "../../../configs";
 import { AttributeMappingsComponent, GeneralUserStoreDetails } from "../components";
 import { RemoteUserStoreAccessTypes, RemoteUserStoreConstants, RemoteUserStoreTypes } from "../constants";
 
@@ -348,9 +348,4 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
     );
 };
 
-/**
- * A default export was added to support React.lazy.
- * TODO: Change this to a named export once react starts supporting named exports for code splitting.
- * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
- */
 export default RemoteCustomerUserStoreCreatePage;
