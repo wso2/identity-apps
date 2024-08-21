@@ -175,7 +175,8 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
                 {
                     featureStatus
                         ? (
-                            <div className={ classnames("application-template-ribbon",
+                            <div
+                                className={ classnames("application-template-ribbon",
                                     resolveFeatureLabelClass(featureStatus) ) }
                             >
                                 <span className="MuiChip-label">
