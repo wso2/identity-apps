@@ -28,7 +28,7 @@
         "@wso2is/admin.secrets.v1": "^2.20.130",
         "@wso2is/admin.server-configurations.v1": "^2.21.72",
         "classnames": "^2.2.6",
-        "axios": "^0.19.2",
+        "axios": "^0.28.0",
         "i18next": "^21.9.1",
         "lodash-es": "^4.17.21",
         "node-forge": "^0.10.0",

@@ -36,7 +36,7 @@
         "@wso2is/admin.organizations.v1": "^2.21.23",
         "@wso2is/core": "^2.0.58",
         "classnames": "^2.2.6",
-        "axios": "^0.19.2",
+        "axios": "^0.28.0",
         "i18next": "^21.9.1",
         "moment": "^2.24.0",
         "react-helmet": "^5.2.1",
