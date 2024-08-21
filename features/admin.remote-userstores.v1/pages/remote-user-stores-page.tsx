@@ -40,17 +40,16 @@ import { RemoteUserStoreConstants } from "../constants";
 /**
  * Props for the Userstore page.
  */
-type UserStoresPageInterface = TestableComponentInterface;
+type RemoteUserStoresPagePropsInterface = TestableComponentInterface;
 
 /**
- * This renders the Userstores page.
+ * This renders the Remote Userstores page.
  *
  * @param props - Props injected to the component.
- *
- * @returns Userstores page.
+ * @returns Remote Userstores page component.
  */
-const UserStores: FunctionComponent<UserStoresPageInterface> = (
-    props: UserStoresPageInterface
+const RemoteUserStoresPage: FunctionComponent<RemoteUserStoresPagePropsInterface> = (
+    props: RemoteUserStoresPagePropsInterface
 ): ReactElement => {
 
     const {
@@ -226,8 +225,8 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
 /**
  * Default props for the component.
  */
-UserStores.defaultProps = {
+RemoteUserStoresPage.defaultProps = {
     "data-testid": "userstores"
 };
 
-export default UserStores;
+export default RemoteUserStoresPage;
