@@ -291,7 +291,7 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
 
         return (
             valueOptions.map((item: Resource) => (
-                <MenuItem key={ item.id } value={ item.id } className="flex-row-gap-10 ">
+                <MenuItem key={ item.id } value={ item.id } className="flex-row-gap-10">
                     <Checkbox checked={ rule?.values.indexOf(item.id) > -1 } />
                     <Chip label={ getResourceIdentifier(item, isRoleAttribute) } />
                     <ListItemText primary={ getResourceDisplayName(item, isRoleAttribute) } />
@@ -377,7 +377,7 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                             <TextField
                                 type="number"
                                 value={ defaultPasswordExpiryTime }
-
+                                data-componentid={ `${componentId}-default-expiry-time` }
                                 onChange={ handleDefaultExpiryTimeChange }
                                 disabled={ !isPasswordExpiryEnabled }
                                 inputProps={ {

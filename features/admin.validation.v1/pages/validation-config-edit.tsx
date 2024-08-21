@@ -969,13 +969,14 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         <Switch
                             checked={ passwordExpiryEnabled }
                             disabled={ isReadOnly }
+                            data-componentid={ `${ componentId }-password-expiry-toggle` }
                             onChange={
                                 () => setPasswordExpiryEnabled(!passwordExpiryEnabled)
                             } />
                     </Heading>
                 </div>
                 <PasswordExpiryRuleList
-                    componentId={ "`${componentId}-password-expiry-rules`" }
+                    componentId={ `${componentId}-password-expiry-rules` }
                     isPasswordExpiryEnabled={ passwordExpiryEnabled }
                     isSkipFallbackEnabled={ passwordExpirySkipFallback }
                     defaultPasswordExpiryTime={ defaultPasswordExpiryTime }
