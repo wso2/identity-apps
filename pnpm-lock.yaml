@@ -584,6 +584,9 @@ importers:
       '@wso2is/admin.remote-repository-configuration.v1':
         specifier: ^2.20.132
         version: link:../../features/admin.remote-repository-configuration.v1
+      '@wso2is/admin.remote-userstores.v1':
+        specifier: ^0.0.0
+        version: link:../../features/admin.remote-userstores.v1
       '@wso2is/admin.roles.v1':
         specifier: ^2.20.132
         version: link:../../features/admin.roles.v1
