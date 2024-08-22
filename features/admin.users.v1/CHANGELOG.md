@@ -1,5 +1,28 @@
 # @wso2is/admin.users.v1
 
+## 2.21.3
+
+### Patch Changes
+
+- [#6792](https://github.com/wso2/identity-apps/pull/6792) [`087a548e2f5c4565b6da489ff1632154c566772f`](https://github.com/wso2/identity-apps/commit/087a548e2f5c4565b6da489ff1632154c566772f) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add navigation to Invite User to Set Password in the Multiple User popup
+
+- Updated dependencies [[`087a548e2f5c4565b6da489ff1632154c566772f`](https://github.com/wso2/identity-apps/commit/087a548e2f5c4565b6da489ff1632154c566772f)]:
+  - @wso2is/admin.users.v1@2.21.3
+  - @wso2is/i18n@2.5.23
+  - @wso2is/admin.authentication.v1@2.20.131
+  - @wso2is/admin.claims.v1@2.20.131
+  - @wso2is/admin.core.v1@2.27.1
+  - @wso2is/admin.extensions.v1@2.24.4
+  - @wso2is/admin.groups.v1@2.20.131
+  - @wso2is/admin.organizations.v1@2.21.24
+  - @wso2is/admin.roles.v2@2.20.131
+  - @wso2is/admin.server-configurations.v1@2.21.73
+  - @wso2is/admin.validation.v1@2.20.131
+  - @wso2is/admin.authorization.v1@2.20.55
+  - @wso2is/admin.identity-providers.v1@2.21.61
+  - @wso2is/admin.tenants.v1@2.21.3
+  - @wso2is/admin.userstores.v1@2.20.131
+
 ## 2.21.2
 
 ### Patch Changes

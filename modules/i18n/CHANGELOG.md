@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.5.23
+
+### Patch Changes
+
+- [#6792](https://github.com/wso2/identity-apps/pull/6792) [`087a548e2f5c4565b6da489ff1632154c566772f`](https://github.com/wso2/identity-apps/commit/087a548e2f5c4565b6da489ff1632154c566772f) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add navigation to Invite User to Set Password in the Multiple User popup
+
 ## 2.5.22
 
 ### Patch Changes
