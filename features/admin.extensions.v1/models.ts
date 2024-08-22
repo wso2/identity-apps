@@ -26,7 +26,6 @@ import { RouteInterface } from "@wso2is/core/models";
  * Interface for the core extensions config.
  */
 export interface ExtensionsConfigInterface {
-    sections: SectionExtensionsConfigInterface;
     templateExtensions: TemplateExtensionsConfigInterface;
 }
 

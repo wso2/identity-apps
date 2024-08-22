@@ -51,7 +51,7 @@ import {
 import { generatePasswordHistoryCount } from "../components/password-history-count/components";
 import { updatePasswordPolicyProperties } from "../components/password-policies/api/password-policies";
 
-export const serverConfigurationConfig: ServerConfigurationConfig = {
+const serverConfigurationConfig: ServerConfigurationConfig = {
     autoEnableConnectorToggleProperty: false,
     backButtonDisabledConnectorIDs: [
         ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
@@ -380,3 +380,6 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     usePasswordExpiry: useGetPasswordExpiryProperties,
     usePasswordHistory: useGetPasswordHistoryCount
 };
+
+
+export { serverConfigurationConfig };

@@ -1,5 +1,44 @@
 # @wso2is/identity-apps-core
 
+## 2.4.27
+
+### Patch Changes
+
+- [#6784](https://github.com/wso2/identity-apps/pull/6784) [`d0ab529ec372f4d0f0ffe00c0c34971e22e7fb56`](https://github.com/wso2/identity-apps/commit/d0ab529ec372f4d0f0ffe00c0c34971e22e7fb56) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Support servlet mapping configuration for authentication and recovery portal
+
+## 2.4.26
+
+### Patch Changes
+
+- Updated dependencies [[`0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a`](https://github.com/wso2/identity-apps/commit/0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a)]:
+  - @wso2is/theme@2.1.0
+
+## 2.4.25
+
+### Patch Changes
+
+- Updated dependencies [[`dec724ba75c4937cd84ec7afcd2ec0bc00058d2e`](https://github.com/wso2/identity-apps/commit/dec724ba75c4937cd84ec7afcd2ec0bc00058d2e)]:
+  - @wso2is/theme@2.0.99
+
+## 2.4.24
+
+### Patch Changes
+
+- [#6696](https://github.com/wso2/identity-apps/pull/6696) [`a0a70dd8124718a49d9a8a1aeed42144a6946a7e`](https://github.com/wso2/identity-apps/commit/a0a70dd8124718a49d9a8a1aeed42144a6946a7e) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Fix bugs in SM OTP for password recovery feature
+
+## 2.4.23
+
+### Patch Changes
+
+- [#6731](https://github.com/wso2/identity-apps/pull/6731) [`49cf19f45ebd9798d66ae3f84e1a6ed922f0428b`](https://github.com/wso2/identity-apps/commit/49cf19f45ebd9798d66ae3f84e1a6ed922f0428b) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Remove character limit for username in identifier-first
+
+## 2.4.22
+
+### Patch Changes
+
+- Updated dependencies [[`d9615827f6e7c2f087c1debdb377e02e66ac4e62`](https://github.com/wso2/identity-apps/commit/d9615827f6e7c2f087c1debdb377e02e66ac4e62)]:
+  - @wso2is/theme@2.0.98
+
 ## 2.4.21
 
 ### Patch Changes

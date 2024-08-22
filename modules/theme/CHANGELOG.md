@@ -1,5 +1,23 @@
 # @wso2is/theme
 
+## 2.1.0
+
+### Minor Changes
+
+- [#6781](https://github.com/wso2/identity-apps/pull/6781) [`0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a`](https://github.com/wso2/identity-apps/commit/0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a) Thanks [@brionmario](https://github.com/brionmario)! - Separate out `admin.home.v1` feature
+
+## 2.0.99
+
+### Patch Changes
+
+- [#6744](https://github.com/wso2/identity-apps/pull/6744) [`dec724ba75c4937cd84ec7afcd2ec0bc00058d2e`](https://github.com/wso2/identity-apps/commit/dec724ba75c4937cd84ec7afcd2ec0bc00058d2e) Thanks [@brionmario](https://github.com/brionmario)! - Refactor `admin.extensions.v1/components/application`
+
+## 2.0.98
+
+### Patch Changes
+
+- [#6692](https://github.com/wso2/identity-apps/pull/6692) [`d9615827f6e7c2f087c1debdb377e02e66ac4e62`](https://github.com/wso2/identity-apps/commit/d9615827f6e7c2f087c1debdb377e02e66ac4e62) Thanks [@brionmario](https://github.com/brionmario)! - Move `administrators` to a new feature
+
 ## 2.0.97
 
 ### Patch Changes

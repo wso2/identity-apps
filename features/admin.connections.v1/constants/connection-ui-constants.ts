@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
+import { IdentityAppsError } from "@wso2is/core/errors";
+
 /**
  * This class contains the constants for the Connections feature UIs.
  */
@@ -197,4 +200,141 @@ export class ConnectionUIConstants {
         this.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.SECRET_VALIDITY_PERIOD,
         this.APPLE_SECRET_REGENERATIVE_FIELDS_DICTIONARY.TEAM_ID
     ];
+
+    /* eslint-disable max-len */
+    // TODO: These error messages need to be localized.
+    public static readonly ERROR_MESSAGES: {
+        AUTHENTICATORS_FETCH_ERROR: string;
+        AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: string;
+        COMBINED_AUTHENTICATOR_FETCH_ERROR: string;
+        CONNECTIONS_FETCH_ERROR: string;
+        CONNECTIONS_FETCH_INVALID_STATUS_CODE_ERROR: string;
+        CONNECTION_CERTIFICATE_UPDATE_ERROR: string;
+        CONNECTION_CLAIMS_UPDATE_ERROR: string;
+        CONNECTION_IMPLICIT_ASSOCIATION_UPDATE_ERROR: string;
+        CONNECTION_JIT_PROVISIONING_UPDATE_ERROR: string;
+        FIDO_AUTHENTICATOR_CONFIG_UPDATE_ERROR: string;
+        FIDO_AUTHENTICATOR_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR: string;
+        FIDO_TRUSTED_APPS_UPDATE_ERROR: string;
+        FIDO_TRUSTED_APPS_UPDATE_INVALID_STATUS_CODE_ERROR: string;
+        IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR: string;
+        IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR: string;
+        LOCAL_AUTHENTICATORS_FETCH_ERROR: string;
+        LOCAL_AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: string;
+        LOCAL_AUTHENTICATOR_FETCH_ERROR: string;
+        LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR: string;
+        MULTI_FACTOR_AUTHENTICATOR_FETCH_ERROR: string;
+        MULTI_FACTOR_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR: string;
+        MULTI_FACTOR_AUTHENTICATOR_UPDATE_ERROR: string;
+        MULTI_FACTOR_AUTHENTICATOR_UPDATE_INVALID_STATUS_CODE_ERROR: string;
+    } = {
+            AUTHENTICATORS_FETCH_ERROR: "An error occurred while fetching the authenticators.",
+            AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while fetching the authenticators.",
+            COMBINED_AUTHENTICATOR_FETCH_ERROR: "An error occurred while fetching the local and federated authenticators.",
+            CONNECTIONS_FETCH_ERROR: "An error occurred while fetching connections.",
+            CONNECTIONS_FETCH_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while fetching connections.",
+            CONNECTION_CERTIFICATE_UPDATE_ERROR: "An error occurred while updating the certificate of the connection.",
+            CONNECTION_CLAIMS_UPDATE_ERROR: "An error occurred while updating claims configurations of the identity provider.",
+            CONNECTION_IMPLICIT_ASSOCIATION_UPDATE_ERROR: "An error occurred while updating implicit association configurations of the identity provider.",
+            CONNECTION_JIT_PROVISIONING_UPDATE_ERROR: "An error occurred while updating the JIT provisioning configurations of the connection.",
+            FIDO_AUTHENTICATOR_CONFIG_UPDATE_ERROR: "An error occurred while updating the Passkey connector configs.",
+            FIDO_AUTHENTICATOR_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while updating the Passkey connector configs.",
+            FIDO_TRUSTED_APPS_UPDATE_ERROR: "An error occurred while updating the Passkey trusted apps.",
+            FIDO_TRUSTED_APPS_UPDATE_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while updating the Passkey trusted apps.",
+            IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR: "An error occurred while fetching the required connection templates list.",
+            IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while fetching connection templates list.",
+            LOCAL_AUTHENTICATORS_FETCH_ERROR: "An error occurred while fetching the local authenticators.",
+            LOCAL_AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while fetching local authenticators.",
+            LOCAL_AUTHENTICATOR_FETCH_ERROR: "An error occurred while fetching the local authenticator.",
+            LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while fetching the local authenticator.",
+            MULTI_FACTOR_AUTHENTICATOR_FETCH_ERROR: "An error occurred while fetching the multi-factor authenticator.",
+            MULTI_FACTOR_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR:"Received an invalid status code while fetching the multi-factor authenticator.",
+            MULTI_FACTOR_AUTHENTICATOR_UPDATE_ERROR: "An error occurred while fetching the multi-factor authenticator.",
+            MULTI_FACTOR_AUTHENTICATOR_UPDATE_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while updating the multi-factor authenticator."
+        };
+    /* eslint-enable max-len */
+
+    public static readonly ERROR_CODES: {
+        FIDO_CONNECTOR_CONFIGS_NOT_CONFIGURED_ERROR_CODE: string;
+    } = {
+            FIDO_CONNECTOR_CONFIGS_NOT_CONFIGURED_ERROR_CODE: "CONFIGM_00017"
+        };
+
+    /**
+     * Identity provider create limit reached error.
+    **/
+    public static readonly ERROR_CREATE_LIMIT_REACHED: IdentityAppsError = new IdentityAppsError(
+        "IDP-60035",
+        "idp:notifications.apiLimitReachedError.error.description",
+        "idp:notifications.apiLimitReachedError.error.message",
+        "cec1f247-32fd-4624-9915-f469195a53ac"
+    );
+
+    public static readonly IDP_NAME_LENGTH: {
+        min: number;
+        max: number;
+    } = {
+            max: 120,
+            min: 3
+        };
+
+    public static readonly JWKS_URL_LENGTH: {
+        min: number;
+        max: number;
+    } = {
+            max: 2048,
+            min: 0
+        };
+
+    public static readonly GROUP_CLAIM_LENGTH: {
+        min: number;
+        max: number;
+    } = {
+            max: 100,
+            min: 1
+        };
+
+    /**
+     * Set of Connection setup guide links.
+     */
+    public static readonly DOC_LINK_DICTIONARY: Map<string, string> = new Map<string, string>([
+        [ "apple-idp", "develop.connections.newConnection.apple.learnMore" ],
+        [ "enterprise-protocols", "develop.connections.newConnection.learnMore" ],
+        [ "facebook-idp", "develop.connections.newConnection.facebook.learnMore" ],
+        [ "github-idp", "develop.connections.newConnection.github.learnMore" ],
+        [ "google-idp", "develop.connections.newConnection.google.learnMore" ],
+        [ "hypr-idp", "develop.connections.newConnection.hypr.learnMore" ],
+        [ "microsoft-idp", "develop.connections.newConnection.microsoft.learnMore" ],
+        [ "enterprise-oidc-idp", "develop.connections.newConnection.enterprise.oidcLearnMore.learnMore" ],
+        [ "enterprise-saml-idp", "develop.connections.newConnection.enterprise.samlLearnMore.learnMore" ],
+        [ "swe-idp", "develop.connections.newConnection.siwe.learnMore" ],
+        [ "trusted-token-issuer", "develop.connections.newConnection.trustedTokenIssuer.learnMore" ]
+    ]);
+
+    /**
+     * Set of connection template group Ids.
+     */
+    public static readonly CONNECTION_TEMPLATE_GROUPS: {
+        ENTERPRISE_PROTOCOLS: string;
+    } = {
+            ENTERPRISE_PROTOCOLS: "enterprise-protocols"
+        };
+
+    public static readonly IMPLICIT_ACCOUNT_LINKING_ATTRIBUTES: string[] = [
+        ClaimManagementConstants.USER_NAME_CLAIM_URI,
+        ClaimManagementConstants.EMAIL_CLAIM_URI,
+        ClaimManagementConstants.MOBILE_CLAIM_URI
+    ];
+
+    /**
+     * Attribute key for Private Key in Google Outbound Provisioning connector.
+     */
+    public static readonly GOOGLE_PRIVATE_KEY: string = "google_prov_private_key";
+
+    /**
+     * Attribute key for Passive STS User ID Location.
+     */
+    public static readonly USER_ID_IN_CLAIMS: string = "IsUserIdInClaims";
+
+    public static readonly SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP: boolean = false;
 }

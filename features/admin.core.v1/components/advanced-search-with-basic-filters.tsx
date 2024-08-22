@@ -27,30 +27,21 @@ import {
     PrimaryButton,
     SessionTimedOutContext
 } from "@wso2is/react-components";
-import React, { CSSProperties, FunctionComponent, ReactElement, useState } from "react";
+import React, { CSSProperties, FunctionComponent, ReactElement, ReactNode, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { getAdvancedSearchIcons } from "../configs";
-
-/**
- * Filter attribute field identifier.
- */
-const FILTER_ATTRIBUTE_FIELD_IDENTIFIER: string = "filterAttribute";
-
-/**
- * Filter condition field identifier.
- */
-const FILTER_CONDITION_FIELD_IDENTIFIER: string = "filterCondition";
-
-/**
- * Filter value field identifier.
- */
-const FILTER_VALUES_FIELD_IDENTIFIER: string = "filterValues";
+import { AdvanceSearchConstants } from "../constants/advance-search";
 
 /**
  * Prop types for the application search component.
  */
 export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableComponentInterface {
+
+    /**
+     * Children node form field passed from parent
+     */
+    children?: ReactNode;
     /**
      * Default Search attribute. ex: "name"
      */
@@ -72,9 +63,25 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
      */
     fill?: AdvancedSearchPropsInterface[ "fill" ];
     /**
+     * Callback to be triggered on advance search close.
+     */
+    onClose?: () => void;
+    /**
      * Callback to be triggered on filter query change.
      */
     onFilter: (query: string) => void;
+    /**
+     * Callback to be triggered on filter attribute option change.
+     */
+    onFilterAttributeOptionsChange?: (values) => void;
+    /**
+     * Callback to be triggered on submit error.
+     */
+    onSubmitError?: () => boolean;
+    /**
+     * Callback to be get custom query.
+     */
+    getQuery?: (values) => string;
     /**
      * Filter attributes options.
      */
@@ -152,6 +159,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 ): ReactElement => {
 
     const {
+        children,
         defaultSearchAttribute,
         defaultSearchOperator,
         disableSearchFilterDropdown,
@@ -163,7 +171,11 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         filterConditionsPlaceholder,
         filterAttributePlaceholder,
         filterValuePlaceholder,
+        onClose,
         onFilter,
+        onFilterAttributeOptionsChange,
+        onSubmitError,
+        getQuery,
         placeholder,
         predefinedDefaultSearchStrategy,
         resetButtonLabel,
@@ -181,6 +193,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
     const [ isFiltersReset, setIsFiltersReset ] = useState<boolean>(false);
     const [ externalSearchQuery, setExternalSearchQuery ] = useState<string>("");
     const sessionTimedOut: boolean = React.useContext(SessionTimedOutContext);
+    const formRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     /**
      * Handles the form submit.
@@ -188,12 +201,26 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
      * @param values - Form values.
      */
     const handleFormSubmit = (values: Map<string, string | string[]>): void => {
-        const query: string = values.get(FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
-            + " "
-            + values.get(FILTER_CONDITION_FIELD_IDENTIFIER)
-            + " "
-            + values?.get(FILTER_VALUES_FIELD_IDENTIFIER);
 
+        if (onSubmitError) {
+            const shouldReturn: boolean = onSubmitError();
+
+            if (shouldReturn) {
+                return;
+            }
+        }
+        let query: string;
+        const customQuery: string = getQuery ? getQuery(values) : null;
+
+        if (customQuery !== null) {
+            query = customQuery;
+        } else {
+            query = values.get(AdvanceSearchConstants.FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
+                    + " "
+                    + values.get(AdvanceSearchConstants.FILTER_CONDITION_FIELD_IDENTIFIER)
+                    + " "
+                    + values?.get(AdvanceSearchConstants.FILTER_VALUES_FIELD_IDENTIFIER);
+        }
         setExternalSearchQuery(query);
         onFilter(query);
         setIsFormSubmitted(true);
@@ -246,6 +273,28 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             return `${defaultSearchAttribute} ${defaultSearchOperator} %search-value%`;
         }
     };
+
+    /**
+     * Handles any clicks outside the form.
+     */
+    const handleClickOutside = (event: MouseEvent) => {
+        if (formRef.current && !formRef.current.contains(event.target as Node)) {
+            if (onClose) {
+                onClose();
+            }
+        }
+    };
+
+    /**
+     * Adds an event listener for detecting clicks outside the form on component mount.
+     */
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     /**
      * Default filter condition options.
@@ -305,6 +354,8 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                             onSubmit={ (values: Map<string, FormValue>) => handleFormSubmit(values) }
                             resetState={ isFiltersReset }
                             onChange={ () => setIsFiltersReset(false) }
+                            onSubmitError={ () => {onSubmitError?.();} }
+                            ref={ formRef }
                         >
                             <Field
                                 children={
@@ -319,7 +370,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                 // TODO: Enable this once default value is working properly for the dropdowns.
                                 // readOnly={ filterAttributeOptions.length === 1 }
                                 label={ t("console:common.advancedSearch.form.inputs.filterAttribute.label") }
-                                name={ FILTER_ATTRIBUTE_FIELD_IDENTIFIER }
+                                name={ AdvanceSearchConstants.FILTER_ATTRIBUTE_FIELD_IDENTIFIER }
                                 placeholder={
                                     filterAttributePlaceholder
                                         ? filterAttributePlaceholder
@@ -335,7 +386,9 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                 value={ defaultSearchAttribute }
                                 data-testid={ `${ testId }-filter-attribute-dropdown` }
                                 data-componentid={ `${ testId }-filter-attribute-dropdown` }
+                                listen={ (values: Map<string, FormValue>) => onFilterAttributeOptionsChange?.(values) }
                             />
+                            { children }
                             <Form.Group widths="equal">
                                 <Field
                                     children={
@@ -359,7 +412,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                     label={
                                         t("console:common.advancedSearch.form.inputs.filterCondition.label")
                                     }
-                                    name={ FILTER_CONDITION_FIELD_IDENTIFIER }
+                                    name={ AdvanceSearchConstants.FILTER_CONDITION_FIELD_IDENTIFIER }
                                     placeholder={
                                         filterConditionsPlaceholder
                                             ? filterConditionsPlaceholder
@@ -375,7 +428,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                 />
                                 <Field
                                     label={ t("console:common.advancedSearch.form.inputs.filterValue.label") }
-                                    name={ FILTER_VALUES_FIELD_IDENTIFIER }
+                                    name={ AdvanceSearchConstants.FILTER_VALUES_FIELD_IDENTIFIER }
                                     placeholder={
                                         filterValuePlaceholder
                                             ? filterValuePlaceholder

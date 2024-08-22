@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -54,7 +54,7 @@ export const RecentApplications: FunctionComponent<RecentApplicationsProps> = (
             <Grid.Row>
                 {
                     (recentApps && recentApps.length && recentApps.length > 0)
-                        ? recentApps.map((app) => (
+                        ? recentApps.map((app: Application) => (
                             <Grid.Column computer={ 5 } tablet={ 16 } mobile={ 16 } key={ app.id }>
                                 <Popup
                                     trigger={ (

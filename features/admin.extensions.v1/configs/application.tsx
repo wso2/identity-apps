@@ -29,6 +29,7 @@ import {
     SupportedAuthProtocolTypes,
     additionalSpProperty
 } from "@wso2is/admin.applications.v1/models";
+import getTryItClientId from "@wso2is/admin.applications.v1/utils/get-try-it-client-id";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
@@ -52,14 +53,16 @@ import { Divider, Icon, Message } from "semantic-ui-react";
 import { ApplicationGeneralTabOverride } from "./components/application-general-tab-overide";
 import { MarketingConsentModalWrapper } from "./components/marketing-consent/components";
 import { ApplicationConfig, ExtendedFeatureConfigInterface } from "./models";
+import { ApplicationTabIDs } from "./models/application";
+import {
+    ReactComponent as TryItAppIllustration
+} from "../../themes/default/assets/images/illustrations/rafiki-illustration.svg";
 import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";
 import SamlWebAppTemplate
     from "../application-templates/templates/saml-web-application/saml-web-application.json";
 import SinglePageAppTemplate from
     "../application-templates/templates/single-page-application/single-page-application.json";
-import { getTryItClientId } from "../components/application/utils/try-it-utils";
-import { getGettingStartedCardIllustrations } from "../components/getting-started/configs";
 
 function isClaimInterface(
     claim: ExtendedClaimInterface | ExtendedExternalClaimInterface
@@ -374,7 +377,7 @@ export const applicationConfig: ApplicationConfig = {
                         floated="left"
                         size="tiny"
                         transparent
-                        icon={ getGettingStartedCardIllustrations().tryItApplication }
+                        icon={ TryItAppIllustration }
                     />
                 );
             }
@@ -420,6 +423,7 @@ export const applicationConfig: ApplicationConfig = {
                 tabExtensions.push(
                     {
                         componentId: "api-authorization",
+                        "data-tabid": ApplicationTabIDs.API_AUTHORIZATION,
                         index: application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
                             ? M2M_API_AUTHORIZATION_INDEX + tabExtensions.length
                             : API_AUTHORIZATION_INDEX + tabExtensions.length,
@@ -456,6 +460,7 @@ export const applicationConfig: ApplicationConfig = {
                 tabExtensions.push(
                     {
                         componentId: "application-roles",
+                        "data-tabid": ApplicationTabIDs.APPLICATION_ROLES,
                         index: APPLICATION_ROLES_INDEX + tabExtensions.length,
                         menuItem: I18n.instance.t(
                             "extensions:develop.applications.edit.sections.roles.heading"

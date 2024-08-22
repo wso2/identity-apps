@@ -36,10 +36,12 @@ import { UserStorePostData } from "@wso2is/admin.userstores.v1/models/user-store
 import { AlertInterface, AlertLevels, RolesInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    DocumentationLink,
     EmptyPlaceholder,
     ListLayout,
     PageLayout,
-    PrimaryButton
+    PrimaryButton,
+    useDocumentation
 } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import find from "lodash-es/find";
@@ -79,6 +81,7 @@ const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
 const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -311,7 +314,16 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             }
             title={ t("pages:groups.title") }
             pageTitle={ t("pages:groups.title") }
-            description={ t("pages:groups.subTitle") }
+            description={ (
+                <>
+                    { t("pages:groups.subTitle") }
+                    <DocumentationLink
+                        link={ getLink("manage.groups.learnMore") }
+                    >
+                        { t("extensions:common.learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
         >
             <ListLayout
                 advancedSearch={ (

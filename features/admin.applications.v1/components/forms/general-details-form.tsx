@@ -18,8 +18,10 @@
 
 import Link from "@oxygen-ui/react/Link";
 import { PaletteIcon } from "@oxygen-ui/react-icons";
+import { ApplicationTabComponentsFilter } from
+    "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
 import { AppConstants, AppState, UIConfigInterface, history } from "@wso2is/admin.core.v1";
-import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
@@ -37,7 +39,7 @@ import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider } from "semantic-ui-react";
+import { Divider, Grid } from "semantic-ui-react";
 import { useMyAccountStatus } from "../../api";
 import { ApplicationManagementConstants } from "../../constants";
 import { ApplicationInterface } from "../../models";
@@ -342,7 +344,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     return (
         <Form
             id={ FORM_ID }
-            uncontrolledForm={ false }
+            uncontrolledForm={ true }
             onSubmit={ (values: GeneralDetailsFormValuesInterface) => {
                 updateConfigurations(values);
             } }
@@ -353,219 +355,262 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             } }
             validate={ validateForm }
         >
-            { getLink("develop.connections.newConnection.enterprise.saml.learnMore") === undefined
-                ? null
-                : <Divider hidden/>
-            }
-            { isManagementApp && (
-                <Message
-                    type="info"
-                    content={ (
-                        <>
-                            { t("applications:forms.generalDetails.managementAppBanner") }
-                            <DocumentationLink
-                                link={ getLink("develop.applications.managementApplication.learnMore") }>
-                                {
-                                    t("common:learnMore")
-                                }
-                            </DocumentationLink>
-                        </>
+            <Grid>
+                <ApplicationTabComponentsFilter
+                    tabId={ ApplicationTabIDs.GENERAL }
+                >
+                    { isManagementApp && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Message
+                                    type="info"
+                                    content={ (
+                                        <>
+                                            { t("applications:forms.generalDetails.managementAppBanner") }
+                                            <DocumentationLink
+                                                link={ getLink("develop.applications.managementApplication.learnMore") }
+                                            >
+                                                {
+                                                    t("common:learnMore")
+                                                }
+                                            </DocumentationLink>
+                                        </>
+                                    ) }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
                     ) }
-                />
-            ) }
-            { !UIConfig.systemAppsIdentifiers.includes(name) && (
-                <Field.Input
-                    ariaLabel="Application name"
-                    inputType="name"
-                    name="name"
-                    label={
-                        t("applications:forms.generalDetails.fields.name" +
-                            ".label")
+                    { !UIConfig.systemAppsIdentifiers.includes(name) && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Field.Input
+                                    ariaLabel="Application name"
+                                    inputType="name"
+                                    name="name"
+                                    label={
+                                        t("applications:forms.generalDetails.fields.name" +
+                                            ".label")
+                                    }
+                                    required={ true }
+                                    placeholder={
+                                        t("applications:forms.generalDetails.fields.name" +
+                                            ".placeholder")
+                                    }
+                                    value={ name }
+                                    hidden={ isSubOrganizationType }
+                                    readOnly={ readOnly || isSubOrganizationType }
+                                    validation ={ (value: string) => validateName(value.toString().trim()) }
+                                    maxLength={
+                                        ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
+                                    minLength={ 3 }
+                                    data-testid={ `${ testId }-application-name-input` }
+                                    width={ 16 }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) }
+                    {
+                        name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME && (
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Field.Textarea
+                                        ariaLabel="Application description"
+                                        name="description"
+                                        label={
+                                            t("applications:forms.generalDetails.fields.description" +
+                                                ".label")
+                                        }
+                                        required={ false }
+                                        placeholder={
+                                            t("applications:forms.generalDetails.fields.description" +
+                                                ".placeholder")
+                                        }
+                                        value={ description }
+                                        hidden={ isSubOrganizationType }
+                                        readOnly={ readOnly }
+                                        validation ={ (value: string) => validateDescription(value.toString().trim()) }
+                                        maxLength={ 300 }
+                                        minLength={ 3 }
+                                        data-testid={ `${ testId }-application-description-textarea` }
+                                        width={ 16 }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                        )
                     }
-                    required={ true }
-                    placeholder={
-                        t("applications:forms.generalDetails.fields.name" +
-                            ".placeholder")
+                    {
+                        <Grid.Row columns={ 1 } data-componentid="application-edit-general-details-form-image-url">
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Field.Input
+                                    ariaLabel="Application image URL"
+                                    inputType="url"
+                                    name="imageUrl"
+                                    label={
+                                        t("applications:forms.generalDetails" +
+                                            ".fields.imageUrl.label")
+                                    }
+                                    required={ false }
+                                    placeholder={
+                                        t("applications:forms.generalDetails" +
+                                            ".fields.imageUrl.placeholder")
+                                    }
+                                    value={ imageUrl }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }-application-image-url-input` }
+                                    maxLength={ 200 }
+                                    minLength={ 3 }
+                                    hint={
+                                        t("applications:forms.generalDetails" +
+                                            ".fields.imageUrl.hint")
+                                    }
+                                    width={ 16 }
+                                    hidden={ isSubOrganizationType || hiddenFields?.includes("imageUrl") }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
                     }
-                    value={ name }
-                    hidden={ isSubOrganizationType }
-                    readOnly={ readOnly || isSubOrganizationType }
-                    validation ={ (value: string) => validateName(value.toString().trim()) }
-                    maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
-                    minLength={ 3 }
-                    data-testid={ `${ testId }-application-name-input` }
-                    width={ 16 }
-                />
-            ) }
-            {
-                name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME && (
-                    <Field.Textarea
-                        ariaLabel="Application description"
-                        name="description"
-                        label={
-                            t("applications:forms.generalDetails.fields.description" +
-                                ".label")
-                        }
-                        required={ false }
-                        placeholder={
-                            t("applications:forms.generalDetails.fields.description" +
-                                ".placeholder")
-                        }
-                        value={ description }
-                        hidden={ isSubOrganizationType }
-                        readOnly={ readOnly }
-                        validation ={ (value: string) => validateDescription(value.toString().trim()) }
-                        maxLength={ 300 }
-                        minLength={ 3 }
-                        data-testid={ `${ testId }-application-description-textarea` }
-                        width={ 16 }
-                    />
-                )
-            }
-            {
-                <Field.Input
-                    ariaLabel="Application image URL"
-                    inputType="url"
-                    name="imageUrl"
-                    label={
-                        t("applications:forms.generalDetails" +
-                            ".fields.imageUrl.label")
+                    { (
+                        !isM2MApplication
+                        && (
+                            isMyAccountEnabled
+                            || isSubOrg
+                        )
+                    ) ? (
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Field.Checkbox
+                                        ariaLabel="Make application discoverable by end users"
+                                        name="discoverableByEndUsers"
+                                        required={ false }
+                                        label={ t("applications:forms.generalDetails.fields" +
+                                            ".discoverable.label") }
+                                        initialValue={ isDiscoverable }
+                                        readOnly={ readOnly }
+                                        data-testid={ `${ testId }-application-discoverable-checkbox` }
+                                        listen={ (value: boolean) => setDiscoverability(value) }
+                                        hint={ (
+                                            <Trans
+                                                i18nKey={
+                                                    application.templateId === ApplicationManagementConstants.MOBILE
+                                                        ? "applications:forms.inboundOIDC.mobileApp" +
+                                                            ".discoverableHint"
+                                                        : "applications:forms.generalDetails.fields." +
+                                                            "discoverable.hint"
+                                                }
+                                                tOptions={ { myAccount: "My Account" } }
+                                            >
+                                                { " " }
+                                                { getLink(
+                                                    "develop.applications.managementApplication.selfServicePortal"
+                                                ) === undefined
+                                                    ? (
+                                                        <strong data-testid="application-name-assertion">
+                                                            My Account
+                                                        </strong>
+                                                    )
+                                                    : (
+                                                        <strong
+                                                            className="link pointing"
+                                                            data-testid="application-name-assertion"
+                                                            onClick={
+                                                                () => window.open(
+                                                                    getLink(
+                                                                        "develop.applications.managementApplication"
+                                                                            + ".selfServicePortal"
+                                                                    ),
+                                                                    "_blank"
+                                                                )
+                                                            }
+                                                        >
+                                                            My Account
+                                                        </strong>
+                                                    )
+                                                }
+                                            </Trans>
+                                        ) }
+                                        hidden={ isSubOrganizationType }
+                                        width={ 16 }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                        ) : null
                     }
-                    required={ false }
-                    placeholder={
-                        t("applications:forms.generalDetails" +
-                            ".fields.imageUrl.placeholder")
+                    {
+                        !isM2MApplication && (
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Field.Input
+                                        ariaLabel={
+                                            t("applications:forms.generalDetails.fields.accessUrl.ariaLabel")
+                                        }
+                                        inputType="url"
+                                        name="accessUrl"
+                                        label={
+                                            t("applications:forms.generalDetails.fields.accessUrl.label")
+                                        }
+                                        required={ isDiscoverable }
+                                        placeholder={
+                                            t("applications:forms.generalDetails.fields.accessUrl" +
+                                                ".placeholder")
+                                        }
+                                        value={ accessUrl }
+                                        readOnly={
+                                            !hasRequiredScope || (
+                                                readOnly
+                                                && applicationConfig.generalSettings.getFieldReadOnlyStatus(
+                                                    application, "ACCESS_URL"
+                                                )
+                                            )
+                                        }
+                                        validation={ validateAccessURL }
+                                        hidden={ isSubOrganizationType }
+                                        maxLength={ ApplicationManagementConstants
+                                            .FORM_FIELD_CONSTRAINTS.ACCESS_URL_MAX_LENGTH }
+                                        minLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS
+                                            .ACCESS_URL_MIN_LENGTH }
+                                        data-testid={ `${ testId }-application-access-url-input` }
+                                        hint={ t("applications:forms.generalDetails.fields.accessUrl.hint") }
+                                        width={ 16 }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                        )
                     }
-                    value={ imageUrl }
-                    readOnly={ readOnly }
-                    data-testid={ `${ testId }-application-image-url-input` }
-                    maxLength={ 200 }
-                    minLength={ 3 }
-                    hint={
-                        t("applications:forms.generalDetails" +
-                            ".fields.imageUrl.hint")
-                    }
-                    width={ 16 }
-                    hidden={ isSubOrganizationType || hiddenFields?.includes("imageUrl") }
-                />
-            }
-            { (
-                !isM2MApplication
-                && (
-                    isMyAccountEnabled
-                    || isSubOrg
-                )
-            ) ? (
-                    <Field.Checkbox
-                        ariaLabel="Make application discoverable by end users"
-                        name="discoverableByEndUsers"
-                        required={ false }
-                        label={ t("applications:forms.generalDetails.fields" +
-                            ".discoverable.label") }
-                        initialValue={ isDiscoverable }
-                        readOnly={ readOnly }
-                        data-testid={ `${ testId }-application-discoverable-checkbox` }
-                        listen={ (value: boolean) => setDiscoverability(value) }
-                        hint={ (
-                            <Trans
-                                i18nKey={
-                                    application.templateId === ApplicationManagementConstants.MOBILE
-                                        ? "applications:forms.inboundOIDC.mobileApp" +
-                                            ".discoverableHint"
-                                        : "applications:forms.generalDetails.fields." +
-                                            "discoverable.hint"
-                                }
-                                tOptions={ { myAccount: "My Account" } }
-                            >
-                                { " " }
-                                { getLink("develop.applications.managementApplication.selfServicePortal") === undefined
-                                    ? (
-                                        <strong data-testid="application-name-assertion">
-                                            My Account
-                                        </strong>
-                                    )
-                                    : (
-                                        <strong
-                                            className="link pointing"
-                                            data-testid="application-name-assertion"
-                                            onClick={
-                                                () => window.open(getLink("develop.applications.managementApplication"+
-                                                            ".selfServicePortal"), "_blank")
-                                            }
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            {
+                                (!isBrandingSectionHidden &&
+                                !isM2MApplication &&
+                                orgType !== OrganizationType.SUBORGANIZATION) && <Divider />
+                            }
+                            {
+                                (!isBrandingSectionHidden && !isM2MApplication) && (
+                                    <>
+                                        <Heading as="h4">
+                                            { t("applications:forms.generalDetails.sections.branding.title") }
+                                        </Heading>
+                                        <PaletteIcon fill="#ff7300" /> &nbsp;
+                                        <Link
+                                            className="application-branding-link"
+                                            color="primary"
+                                            data-componentid={ `${testId}-application-branding-link` }
+                                            onClick={ () => {
+                                                history.push({
+                                                    pathname: AppConstants.getPaths().get("BRANDING"),
+                                                    state: appId
+                                                });
+                                            } }
                                         >
-                                            My Account
-                                        </strong>
-                                    )
-                                }
-                            </Trans>
-                        ) }
-                        hidden={ isSubOrganizationType }
-                        width={ 16 }
-                    /> ) : null
-            }
-            {
-                !isM2MApplication && (
-                    <Field.Input
-                        ariaLabel={
-                            t("applications:forms.generalDetails.fields.accessUrl.ariaLabel")
-                        }
-                        inputType="url"
-                        name="accessUrl"
-                        label={
-                            t("applications:forms.generalDetails.fields.accessUrl.label")
-                        }
-                        required={ isDiscoverable }
-                        placeholder={
-                            t("applications:forms.generalDetails.fields.accessUrl" +
-                                ".placeholder")
-                        }
-                        value={ accessUrl }
-                        readOnly={
-                            !hasRequiredScope || (
-                                readOnly
-                                && applicationConfig.generalSettings.getFieldReadOnlyStatus(
-                                    application, "ACCESS_URL"
+                                            { t("applications:forms.generalDetails.brandingLink.label") }
+                                        </Link>
+                                        <Hint>{ t("applications:forms.generalDetails.brandingLink.hint") }</Hint>
+                                    </>
                                 )
-                            )
-                        }
-                        validation={ validateAccessURL }
-                        hidden={ isSubOrganizationType }
-                        maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.ACCESS_URL_MAX_LENGTH }
-                        minLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.ACCESS_URL_MIN_LENGTH }
-                        data-testid={ `${ testId }-application-access-url-input` }
-                        hint={ t("applications:forms.generalDetails.fields.accessUrl.hint") }
-                        width={ 16 }
-                    />)
-            }
-            {
-                (!isBrandingSectionHidden &&
-                !isM2MApplication &&
-                orgType !== OrganizationType.SUBORGANIZATION) && <Divider />
-            }
-            {
-                (!isBrandingSectionHidden && !isM2MApplication) && (
-                    <>
-                        <Heading as="h5">
-                            { t("applications:forms.generalDetails.sections.branding.title") }
-                        </Heading>
-                        <PaletteIcon fill="#ff7300" /> &nbsp;
-                        <Link
-                            className="application-branding-link"
-                            color="primary"
-                            data-componentid={ `${testId}-application-branding-link` }
-                            onClick={ () => {
-                                history.push({
-                                    pathname: AppConstants.getPaths().get("BRANDING"),
-                                    state: appId
-                                });
-                            } }
-                        >
-                            { t("applications:forms.generalDetails.brandingLink.label") }
-                        </Link>
-                        <Hint>{ t("applications:forms.generalDetails.brandingLink.hint") }</Hint>
-                    </>
-                )
-            }
+                            }
+                        </Grid.Column>
+                    </Grid.Row>
+                </ApplicationTabComponentsFilter>
+            </Grid>
             <Field.Button
                 form={ FORM_ID }
                 size="small"

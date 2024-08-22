@@ -27,6 +27,7 @@ import {
     LightbulbOnIcon,
     LinearNodesIcon,
     NodesIcon,
+    ProgressFlowIcon,
     UserCircleDotIcon,
     UserGroupIcon
 } from "@oxygen-ui/react-icons";
@@ -34,6 +35,7 @@ import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
 import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
 import compact from "lodash-es/compact";
@@ -68,12 +70,51 @@ import FullScreenLayout from "../layouts/full-screen-layout";
  */
 
 export const getAppViewRoutes = (): RouteInterface[] => {
-
     const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
     const showStatusLabelForNewAuthzRuntimeFeatures: boolean =
         window["AppUtils"]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures;
 
     const defaultRoutes: RouteInterface[] = [
+        {
+            category: "extensions:manage.sidePanel.categories.userManagement",
+            children: [
+                {
+                    component: lazy(() => import("@wso2is/admin.administrators.v1/pages/administrator-edit")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "collaborator-user-edit",
+                    name: "Collaborator Users Edit",
+                    path: AppConstants.getPaths().get("ADMINISTRATOR_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.administrators.v1/pages/administrator-settings")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "administrator-settings-edit",
+                    name: "administrator-settings-edit",
+                    path: AppConstants.getPaths().get("ADMINISTRATOR_SETTINGS"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("@wso2is/admin.administrators.v1/pages/administrators")),
+            exact: true,
+            icon: {
+                icon: getSidePanelIcons().administrators
+            },
+            id: "administrators",
+            name: "Administrators",
+            order: 5,
+            path: AppConstants.getPaths().get("ADMINISTRATORS"),
+            protected: true,
+            showOnSidePanel: true
+        },
         {
             category: "console:develop.features.sidePanel.categories.application",
             children: [
@@ -116,7 +157,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             component: lazy(() =>
-                import("@wso2is/admin.extensions.v1/components/getting-started/getting-started")),
+                import("@wso2is/admin.home.v1/pages/home-page")),
             exact: false,
             icon: {
                 icon: getSidePanelIcons().home
@@ -215,10 +256,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 {
                     component: lazy(() =>
-                        import(
-                            "@wso2is/admin.extensions.v1/components/account-login/" +
-                            "pages/username-validation-edit"
-                        )
+                        import("@wso2is/admin.username-validation.v1/pages/username-validation-page")
                     ),
                     exact: true,
                     icon: {
@@ -232,10 +270,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 {
                     component: lazy(() =>
-                        import(
-                            "@wso2is/admin.extensions.v1/components/account-login/" +
-                            "pages/alternative-login-identifier-edit"
-                        )
+                        import("@wso2is/admin.alternative-login-identifier.v1/pages/alternative-login-identifier-page")
                     ),
                     exact: true,
                     icon: {
@@ -268,7 +303,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             category: "console:develop.features.sidePanel.categories.application",
             children: [
                 {
-                    component: lazy(() => import("@wso2is/admin.applications.v1/pages/application-template")),
+                    component: lazy(() => import("@wso2is/admin.application-templates.v1/pages/application-template")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
@@ -1039,7 +1074,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:develop.sidePanel.categories.monitor",
-            component: lazy(() => import("@wso2is/admin.extensions.v1/components/logs/pages/logs")),
+            component: lazy(() => import("@wso2is/admin.logs.v1/pages/logs-page")),
             exact: true,
             featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
             icon: {
@@ -1338,6 +1373,37 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             protected: true,
             showOnSidePanel: true
         },
+        {
+            category: "extensions:manage.sidePanel.categories.extensions",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.actions.v1/pages/action-configuration-page")
+                    ),
+                    exact: true,
+                    id: "pre-issue-access-token",
+                    name: "Pre Issue Access Token",
+                    path: AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() =>
+                import("@wso2is/admin.actions.v1/pages/actions")
+            ),
+            exact: true,
+            featureStatus: "BETA",
+            featureStatusLabel: FeatureStatusLabel.BETA,
+            icon: {
+                icon: <ProgressFlowIcon className="icon" fill="black" />
+            },
+            id: "actions",
+            name: "pages:actions.title",
+            order: 30,
+            path: AppConstants.getPaths().get("ACTIONS"),
+            protected: true,
+            showOnSidePanel: true
+        },
         // the following routes are not onboarded to the side panel
         {
             category: "console:manage.features.sidePanel.categories.configurations",
@@ -1501,7 +1567,7 @@ export const getErrorLayoutRoutes = (): RouteInterface[] => {
 export const getAuthLayoutRoutes = (): RouteInterface[] => {
     const routes: RouteInterface[] = [
         {
-            component: lazy(() => import("@wso2is/admin.extensions.v1/components/tenants/pages/create-tenant")),
+            component: lazy(() => import("@wso2is/admin.tenants.v1/pages/create-tenant-page")),
             exact: true,
             icon: null,
             id: "createTenant",

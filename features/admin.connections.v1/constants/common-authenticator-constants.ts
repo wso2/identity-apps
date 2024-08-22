@@ -19,7 +19,7 @@
 /**
  * This class contains the constants for the Common for Authenticators.
  */
-export class CommonAuthenticatorManagementConstants {
+export class CommonAuthenticatorConstants {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
@@ -62,4 +62,28 @@ export class CommonAuthenticatorManagementConstants {
             SWE: "swe-idp",
             TRUSTED_TOKEN_ISSUER: "trusted-token-issuer"
         };
+
+    /**
+	 * UUID of the Multi-Factor Authenticators governance connector category.
+	 */
+    public static readonly MFA_CONNECTOR_CATEGORY_ID: string = "TXVsdGkgRmFjdG9yIEF1dGhlbnRpY2F0b3Jz";
+
+    /**
+     * ID of the deprecated SCIM1 provisioning connector.
+     */
+    public static readonly DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID: string = "c2NpbQ";
+
+    /**
+     * Local Server host.
+     */
+    public static readonly LOCAL_SERVER_URL: string = "localhost";
+
+    public static readonly ERROR_CODES: {
+        CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE: string
+    } = {
+            CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE: "IDP-65004"
+        };
+
+    public static readonly PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY: string = "displayName";
+    public static readonly PROVISIONING_CONNECTOR_GOOGLE: string = "googleapps";
 }

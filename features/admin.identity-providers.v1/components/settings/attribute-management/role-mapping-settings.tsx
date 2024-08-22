@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1";
+
 import { AppState } from "@wso2is/admin.core.v1";
 import { getOrganizationRoles } from "@wso2is/admin.organizations.v1/api";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -25,6 +25,7 @@ import {
     OrganizationRoleListResponseInterface
 } from "@wso2is/admin.organizations.v1/models";
 import { getRolesList } from "@wso2is/admin.roles.v2/api/roles";
+import { INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { DynamicField, KeyValue } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";
@@ -134,7 +135,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
      */
     const resolveRoleName = (role: string): string => {
         if (role.split("/").length === 1) {
-            return `${ ConnectionManagementConstants.INTERNAL_DOMAIN }${ role }`;
+            return `${ INTERNAL_DOMAIN }/${ role }`;
         }
 
         return role;
@@ -151,7 +152,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
         const roleParts: string[] = role.split("/");
 
         if (roleParts.length > 1) {
-            if (roleParts[ 0 ] === ConnectionManagementConstants.INTERNAL_DOMAIN.slice(0, -1)) {
+            if (roleParts[ 0 ] === `${ INTERNAL_DOMAIN }/`.slice(0, -1)) {
                 return roleParts[ 1 ];
             }
         }

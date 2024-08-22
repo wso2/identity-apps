@@ -495,6 +495,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
             closeOnDocumentClick={ true }
             closeOnEscape={ true }
             data-testid={ `${ componentId }-share-application-modal` }
+            data-componentid={ `${ componentId }-share-application-modal` }
             { ...rest }
         >
             <Modal.Header>

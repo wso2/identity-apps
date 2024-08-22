@@ -66,14 +66,14 @@ interface CustomExtendedWindow extends Window {
             docSiteUrl: "https://is.docs.wso2.com/",
             extensions: {
                 collaboratorUsernameRegex: "^[\\u00C0-\\u00FFa-zA-Z0-9.+\\-_]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,10}$",
-                community: "https://wso2iem-en-community.insided.com/ssoproxy/login?ssoType=openidconnect&returnUrl=https://wso2iem-en-community.insided.com/asgardeo-1",
-                feedbackEndPoint: "https://dev.portal.asgardeo.io/api/cloud/v1/feedback/",
-                helpCenterUrl: "https://dev.support.asgardeo.io/asp?id=asgardeo_support_login",
+                community: "https://localhost:9443/community",
+                feedbackEndPoint: "https://localhost:9443/api/server/v1/feedback/",
+                helpCenterUrl: "https://localhost:9443/help-center",
                 defaultBrandedLoginScreenCopyright: "${copyright} ${year} WSO2, Inc.",
-                supportEmail: "asgardeo-help@wso2.com"
+                supportEmail: "help@wso2.com"
             },
             idpConfigs: {
-                serverOrigin: "https://dev.api.asgardeo.io",
+                serverOrigin: "https://https://localhost:9443",
                 enablePKCE: true,
                 clockTolerance: 300,
                 responseMode: "query",
@@ -81,13 +81,13 @@ interface CustomExtendedWindow extends Window {
                     "SYSTEM"
                 ],
                 storage: "webWorker",
-                authorizeEndpointURL: "https://api.wso2iam.io/t/a/oauth2/authorize?ut=testorg",
-                logoutEndpointURL: "https://api.wso2iam.io/t/a/oidc/logout",
-                oidcSessionIFrameEndpointURL: "https://api.wso2iam.io/t/a/oidc/checksession"
+                authorizeEndpointURL: "https://https://localhost:9443/t/carbon.super/oauth2/authorize?ut=testorg",
+                logoutEndpointURL: "https://https://localhost:9443/t/carbon.super/oidc/logout",
+                oidcSessionIFrameEndpointURL: "https://https://localhost:9443/t/carbon.super/oidc/checksession"
             },
             isSaas: true,
-            loginCallbackURL: "https://dev.console.asgardeo.io/login",
-            logoutCallbackURL: "https://dev.console.asgardeo.io",
+            loginCallbackURL: "https://localhost:9443/console/login",
+            logoutCallbackURL: "https://hlocalhost:9443/console",
             productVersionConfig: {
                 productVersion: "BETA"
             },
@@ -96,8 +96,8 @@ interface CustomExtendedWindow extends Window {
                 login: "/t/testorg/login",
                 logout: "/t/testorg/logout"
             },
-            serverOrigin: "https://dev.api.asgardeo.io",
-            serverOriginWithTenant: "https://api.wso2iam.io/t/testorg",
+            serverOrigin: "https://https://localhost:9443",
+            serverOriginWithTenant: "https://https://localhost:9443/t/testorg",
             session: {
                 sessionRefreshTimeOut: 300,
                 userIdleWarningTimeOut: 1740,
@@ -110,8 +110,8 @@ interface CustomExtendedWindow extends Window {
             tenantPrefix: "t",
             ui: {
                 appCopyright: "${copyright} ${year} WSO2, Inc.",
-                appTitle: "Asgardeo Console",
-                appName: "Console",
+                appTitle: "Console",
+                appName: "Console | WSO2 Identity Server",
                 applicationTemplateLoadingStrategy: "LOCAL",
                 appLogoPath: "/assets/images/branding/logo.svg",
                 showAppSwitchButton: true,
@@ -554,7 +554,7 @@ interface CustomExtendedWindow extends Window {
                 privacyPolicyConfigs: {
                     visibleOnFooter: false
                 },
-                productName: "Asgardeo",
+                productName: "WSO2 Identity Server",
                 productVersionConfig: {
                     productVersion: "BETA"
                 },

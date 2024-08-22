@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import ApplicationSelectionModal from "@wso2is/admin.applications.v1/components/application-selection-modal";
 import {
     VerticalStepper,
     VerticalStepperStepInterface
@@ -30,7 +31,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
 import CustomizeStepsIllustration from "./assets/customize-steps.png";
-import ApplicationSelectionModal from "../../../components/shared/application-selection-modal";
 
 /**
  * Prop types of the component.

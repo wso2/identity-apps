@@ -17,6 +17,5 @@
  */
 
 export * from "./access-control";
-export * from "./global";
 export * from "./organization";
 export * from "./routes";

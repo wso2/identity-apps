@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,9 +26,8 @@ import {
 } from "@wso2is/admin.applications.v1/models/application";
 import useMultiFactorAuthenticatorDetails
     from "@wso2is/admin.connections.v1/api/use-multi-factor-authentication-details";
-import { AuthenticatorManagementConstants } from "@wso2is/admin.connections.v1/constants/autheticator-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
-import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -144,7 +143,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
         data: FIDOAuthenticatorDetails,
         error: FIDOAuthenticatorDetailsFetchError,
         isLoading: FIDOAuthenticatorDetailsFetchRequestLoading
-    } = useMultiFactorAuthenticatorDetails(AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID);
+    } = useMultiFactorAuthenticatorDetails(LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID);
 
     const { getLink } = useDocumentation();
 
@@ -377,7 +376,8 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
             (step: AuthenticationStepInterface) =>
                 !!step?.options.find(
                     (authenticator: AuthenticatorInterface) =>
-                        authenticator?.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
+                        authenticator?.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                            .FIDO_AUTHENTICATOR_NAME
                 )
         );
 
@@ -385,7 +385,8 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
             if (isPasskeyProgressiveEnrollmentEnabled) {
                 const isPasskeyIncludedAsAFirstFatorOption: boolean = !!authenticationSequence?.steps[0]?.options.find(
                     (authenticator: AuthenticatorInterface) =>
-                        authenticator?.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
+                        authenticator?.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                            .FIDO_AUTHENTICATOR_NAME
                 );
 
                 if (isPasskeyIncludedAsAFirstFatorOption) {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,16 +16,15 @@
  * under the License.
  */
 
-import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1";
 import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import MicrosoftIDPTemplate from
     "@wso2is/admin.identity-providers.v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     AuthenticatorSettingsFormModes,
     FederatedAuthenticatorListItemInterface,
@@ -128,7 +127,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
     }
 
     switch (type) {
-        case IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID:
+        case FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID:
             return (
                 <GoogleAuthenticatorForm
                     mode={ mode }
@@ -143,7 +142,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-        case IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID:
+        case FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID:
             return (
                 <FacebookAuthenticatorForm
                     mode={ mode }
@@ -158,7 +157,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-        case IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID:
+        case FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID:
             return (
                 <GithubAuthenticatorForm
                     mode={ mode }
@@ -173,7 +172,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-        case IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID:
+        case LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID:
             return (
                 <EmailOTPAuthenticatorForm
                     mode={ mode }
@@ -188,7 +187,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-        case IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID:
+        case LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID:
             return (
                 <SMSOTPAuthenticatorForm
                     initialValues={ initialValues }
@@ -202,7 +201,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-        case IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID:
+        case LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID:
             return (
                 <FIDOAuthenticatorForm
                     mode={ mode }
@@ -217,7 +216,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-        case ConnectionManagementConstants.SAML_AUTHENTICATOR_ID:
+        case FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID:
             return (
                 <SamlAuthenticatorSettingsForm
                     mode={ mode }
@@ -227,7 +226,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
-        case IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_ID:
+        case FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.MICROSOFT_AUTHENTICATOR_ID:
             if (templateId === MicrosoftIDPTemplate.id){
                 return(
                     <MicrosoftAuthenticatorForm

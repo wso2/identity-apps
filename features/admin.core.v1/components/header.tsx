@@ -28,32 +28,27 @@ import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Typography from "@oxygen-ui/react/Typography";
-import { DiamondIcon } from "@oxygen-ui/react-icons";
+import { DiamondIcon, DiscordIcon, StackOverflowIcon, TalkingHeadsetIcon } from "@oxygen-ui/react-icons";
 import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
 import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
-import { SubscriptionContext } from "@wso2is/admin.extensions.v1/components/subscription/contexts/subscription-context";
-import {
-    TenantTier,
-    TenantTierRequestResponse
-} from "@wso2is/admin.extensions.v1/components/subscription/models/subscription";
 import { OrganizationSwitchBreadcrumb } from "@wso2is/admin.organizations.v1/components/organization-switch";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
+import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { FeatureAccessConfigInterface } from "@wso2is/core/src/models";
 import { StringUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
-import { GenericIcon, useDocumentation } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, ReactNode, useContext, useEffect, useMemo, useState } from "react";
+import { useDocumentation } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { ReactComponent as LogoutIcon } from "../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../themes/default/assets/images/icons/user-icon.svg";
 import { ReactComponent as AskHelpIcon } from "../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
-import { ReactComponent as CommunityIcon } from "../../themes/wso2is/assets/images/icons/community-icon.svg";
-import { ReactComponent as ContactSupportIcon } from "../../themes/wso2is/assets/images/icons/contact-support-icon.svg";
 import { ReactComponent as DocsIcon } from "../../themes/wso2is/assets/images/icons/docs-icon.svg";
 import { ReactComponent as BillingPortalIcon } from "../../themes/wso2is/assets/images/icons/dollar-icon.svg";
 import { AppConstants, OrganizationType } from "../constants";
@@ -106,7 +101,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
     );
 
     const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
-    const { tierName }: TenantTierRequestResponse = useContext(SubscriptionContext);
+    const { tierName }: UseSubscriptionInterface = useSubscription();
 
     const { organizationType } = useGetCurrentOrganizationType();
 
@@ -187,8 +182,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                 { I18n.instance.t("extensions:common.help.docSiteLink") as ReactNode }
             </Button>
         ),
-        (window["AppUtils"].getConfig().extensions.community ||
-            window["AppUtils"].getConfig().extensions.helpCenterUrl) && (
+        (window["AppUtils"].getConfig().extensions.getHelp) && (
             <>
                 <Button
                     color="inherit"
@@ -208,27 +202,21 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                     transformOrigin={ { horizontal: "right", vertical: "top" } }
                     onClose={ onCloseHelpMenu }
                 >
-                    { window["AppUtils"].getConfig().extensions.helpCenterUrl && (
+                    { window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL && (
                         <>
                             <MenuItem
                                 className="get-help-dropdown-item contact-support-dropdown-item"
                                 onClick={ () => {
                                     window.open(
-                                        window["AppUtils"].getConfig().extensions.helpCenterUrl,
+                                        window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL,
                                         "_blank",
                                         "noopener noreferrer"
                                     );
                                 } }
                             >
                                 <>
-                                    <ListItemIcon>
-                                        <GenericIcon
-                                            className="spaced-right"
-                                            transparent
-                                            fill="white"
-                                            size="x22"
-                                            icon={ ContactSupportIcon }
-                                        />
+                                    <ListItemIcon className="contact-support-icon get-help-icon">
+                                        <TalkingHeadsetIcon />
                                     </ListItemIcon>
                                     <ListItemText
                                         primary={
@@ -257,24 +245,36 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                             <Divider className="get-help-dropdown-divider" />
                         </>
                     ) }
-                    { window["AppUtils"].getConfig().extensions.community && (
+                    { window["AppUtils"].getConfig().extensions.getHelp.communityLinks.discord && (
                         <MenuItem
                             className="get-help-dropdown-item"
                             onClick={ () => {
-                                window.open(window["AppUtils"].getConfig().extensions.community, "_blank", "noopener");
+                                window.open(window["AppUtils"].getConfig().extensions.getHelp.communityLinks.discord
+                                    , "_blank", "noopener");
                             } }
                         >
                             <>
-                                <ListItemIcon>
-                                    <GenericIcon
-                                        className="spaced-right"
-                                        transparent
-                                        fill="white"
-                                        size="x22"
-                                        icon={ CommunityIcon }
-                                    />
+                                <ListItemIcon className="get-help-icon">
+                                    <DiscordIcon />
                                 </ListItemIcon>
-                                { I18n.instance.t("extensions:common.help.communityLink") }
+                                <ListItemText primary={ t("extensions:common.help.communityLinks.discord") } />
+                            </>
+                        </MenuItem>
+                    ) }
+                    { window["AppUtils"].getConfig().extensions.getHelp.communityLinks.stackOverflow && (
+                        <MenuItem
+                            className="get-help-dropdown-item"
+                            onClick={ () => {
+                                window.open(window["AppUtils"].getConfig()
+                                    .extensions.getHelp.communityLinks.stackOverflow
+                                , "_blank", "noopener");
+                            } }
+                        >
+                            <>
+                                <ListItemIcon className="get-help-icon">
+                                    <StackOverflowIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={ t("extensions:common.help.communityLinks.stackOverflow") } />
                             </>
                         </MenuItem>
                     ) }

@@ -1,5 +1,70 @@
 # @wso2is/react-components
 
+## 2.4.2
+
+### Patch Changes
+
+- Updated dependencies [[`0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a`](https://github.com/wso2/identity-apps/commit/0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a)]:
+  - @wso2is/theme@2.1.0
+
+## 2.4.1
+
+### Patch Changes
+
+- Updated dependencies [[`dec724ba75c4937cd84ec7afcd2ec0bc00058d2e`](https://github.com/wso2/identity-apps/commit/dec724ba75c4937cd84ec7afcd2ec0bc00058d2e)]:
+  - @wso2is/theme@2.0.99
+
+## 2.4.0
+
+### Minor Changes
+
+- [#5896](https://github.com/wso2/identity-apps/pull/5896) [`00ee3fbc87f646c936fcda1534d75f9359ad03db`](https://github.com/wso2/identity-apps/commit/00ee3fbc87f646c936fcda1534d75f9359ad03db) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - - Improve the React Markdown component to have the documentation theme
+  - Add support for automatic tab redirection based on tab ID
+  - Enhance the link component to include a title attribute
+
+## 2.3.1
+
+### Patch Changes
+
+- [#6739](https://github.com/wso2/identity-apps/pull/6739) [`6da9bb307f8b0168777a7d8ea44f67619c99d493`](https://github.com/wso2/identity-apps/commit/6da9bb307f8b0168777a7d8ea44f67619c99d493) Thanks [@Achintha444](https://github.com/Achintha444)! - changed the external link navigation icon in the "Learn More"
+
+## 2.3.0
+
+### Minor Changes
+
+- [#6667](https://github.com/wso2/identity-apps/pull/6667) [`dc9ac2782b9faa497d06d376c1e1fcf63168ee85`](https://github.com/wso2/identity-apps/commit/dc9ac2782b9faa497d06d376c1e1fcf63168ee85) Thanks [@HasiniSama](https://github.com/HasiniSama)! - UI support for Filtering Organizations by Metadata Attributes
+
+## 2.2.32
+
+### Patch Changes
+
+- [#6728](https://github.com/wso2/identity-apps/pull/6728) [`8d2e9fced7e60158fb1fcdc35ab09bf93271d3e6`](https://github.com/wso2/identity-apps/commit/8d2e9fced7e60158fb1fcdc35ab09bf93271d3e6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix search query not being shown after search results are retrieved
+
+## 2.2.31
+
+### Patch Changes
+
+- [#6707](https://github.com/wso2/identity-apps/pull/6707) [`64d1d40cf664987e22e18a3cd7983a5e845829f3`](https://github.com/wso2/identity-apps/commit/64d1d40cf664987e22e18a3cd7983a5e845829f3) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add missing learn more doc links
+
+## 2.2.30
+
+### Patch Changes
+
+- [#6715](https://github.com/wso2/identity-apps/pull/6715) [`afeb344ddbc6a674f342893b3f8135977e52a468`](https://github.com/wso2/identity-apps/commit/afeb344ddbc6a674f342893b3f8135977e52a468) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Bump oxygen ui version
+
+## 2.2.29
+
+### Patch Changes
+
+- [#6702](https://github.com/wso2/identity-apps/pull/6702) [`198c2432e6eacdc2bcf1bb9e7432ea7d700f7534`](https://github.com/wso2/identity-apps/commit/198c2432e6eacdc2bcf1bb9e7432ea7d700f7534) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prevent showing search bar in list layout when the data retrieval is in progress
+
+## 2.2.28
+
+### Patch Changes
+
+- Updated dependencies [[`d9615827f6e7c2f087c1debdb377e02e66ac4e62`](https://github.com/wso2/identity-apps/commit/d9615827f6e7c2f087c1debdb377e02e66ac4e62)]:
+  - @wso2is/theme@2.0.98
+
 ## 2.2.27
 
 ### Patch Changes

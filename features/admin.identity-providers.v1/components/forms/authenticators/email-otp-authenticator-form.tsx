@@ -17,6 +17,7 @@
  */
 
 import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
@@ -27,7 +28,6 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Label } from "semantic-ui-react";
-import { IdentityProviderManagementConstants } from "../../../constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormFieldInterface,
@@ -189,8 +189,8 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
             const moderatedName: string = value.name.replace(/\./g, "_");
 
             // Converting expiry time from seconds to minutes
-            if (moderatedName === IdentityProviderManagementConstants
-                .AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY) {
+            if (moderatedName === LocalAuthenticatorConstants
+                .MODERATED_EMAIL_OTP_EXPIRY_TIME_KEY) {
                 const expiryTimeInMinutes: number = Math.round(parseInt(value.value, 10) / 60);
 
                 resolvedInitialValues = {
@@ -245,7 +245,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
 
                 const moderatedName: string = name.replace(/_/g, ".");
 
-                if (name === IdentityProviderManagementConstants.AUTHENTICATOR_INIT_VALUES_EMAIL_OTP_EXPIRY_TIME_KEY) {
+                if (name === LocalAuthenticatorConstants.MODERATED_EMAIL_OTP_EXPIRY_TIME_KEY) {
                     const timeInSeconds: number = value * 60;
 
                     properties.push({

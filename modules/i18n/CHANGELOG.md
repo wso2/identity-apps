@@ -1,5 +1,53 @@
 # @wso2is/i18n
 
+## 2.5.23
+
+### Patch Changes
+
+- [#6792](https://github.com/wso2/identity-apps/pull/6792) [`087a548e2f5c4565b6da489ff1632154c566772f`](https://github.com/wso2/identity-apps/commit/087a548e2f5c4565b6da489ff1632154c566772f) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add navigation to Invite User to Set Password in the Multiple User popup
+
+## 2.5.22
+
+### Patch Changes
+
+- [#6787](https://github.com/wso2/identity-apps/pull/6787) [`c35e28e3d811841b3bc4762486b80c255e82a54e`](https://github.com/wso2/identity-apps/commit/c35e28e3d811841b3bc4762486b80c255e82a54e) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Refactor user add feature in groups edit page
+
+## 2.5.21
+
+### Patch Changes
+
+- [#6770](https://github.com/wso2/identity-apps/pull/6770) [`6349ffa59c542b1be0304aabad766455fceabf25`](https://github.com/wso2/identity-apps/commit/6349ffa59c542b1be0304aabad766455fceabf25) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Minor fixes in actions ui
+
+## 2.5.20
+
+### Patch Changes
+
+- [#6768](https://github.com/wso2/identity-apps/pull/6768) [`ec3fae95750df6503d6d6286c4e700e3b66cd18f`](https://github.com/wso2/identity-apps/commit/ec3fae95750df6503d6d6286c4e700e3b66cd18f) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix minor bugs in actions ui
+
+## 2.5.19
+
+### Patch Changes
+
+- [#6764](https://github.com/wso2/identity-apps/pull/6764) [`74e82b2f465d11c02969f7fef52f83a1956214b8`](https://github.com/wso2/identity-apps/commit/74e82b2f465d11c02969f7fef52f83a1956214b8) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix formatting issues in actions ui
+
+## 2.5.18
+
+### Patch Changes
+
+- [#6722](https://github.com/wso2/identity-apps/pull/6722) [`d646c0baa3e0cdba239cc9fd8b4acf60ca336f84`](https://github.com/wso2/identity-apps/commit/d646c0baa3e0cdba239cc9fd8b4acf60ca336f84) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Improvements done along with actions feature
+
+## 2.5.17
+
+### Patch Changes
+
+- [#5896](https://github.com/wso2/identity-apps/pull/5896) [`00ee3fbc87f646c936fcda1534d75f9359ad03db`](https://github.com/wso2/identity-apps/commit/00ee3fbc87f646c936fcda1534d75f9359ad03db) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Update the application section to support SSO integration templates
+
+## 2.5.16
+
+### Patch Changes
+
+- [#6667](https://github.com/wso2/identity-apps/pull/6667) [`dc9ac2782b9faa497d06d376c1e1fcf63168ee85`](https://github.com/wso2/identity-apps/commit/dc9ac2782b9faa497d06d376c1e1fcf63168ee85) Thanks [@HasiniSama](https://github.com/HasiniSama)! - UI support for Filtering Organizations by Metadata Attributes
+
 ## 2.5.15
 
 ### Patch Changes

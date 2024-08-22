@@ -17,7 +17,7 @@ define and use feature flags in identity-apps React applications.
 1. Identify the High-Level Feature
 
 First, determine which feature you want to control using a feature flag. For example, let's say we want to control the visibility
-of a new "filter by metadata attribute" input field in organizations page.
+of a new "filter by metadata attribute" input field in organizations page. In this case, the high level feature is "organizations".
 
 2. Locate Feature Config in Deployment Config
 
@@ -100,7 +100,7 @@ const App = () => {
   return (
     <div>
       <h1>Organizations</h1>
-      {isFeatureEnabled("organizations.filterByMetadataAttributes") && (
+      {isFeatureEnabled(organizationFeatureConfig, "organizations.filterByMetadataAttributes") && (
         <Select>
           <label>Select metadata attribute</label>
         </Select>

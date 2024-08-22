@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,10 +18,8 @@
 
 /**
  * Action type to handle starting state of an API request.
- *
- * @type {string}
  */
-export const API_REQUEST_START = "API_REQUEST_START";
+export const API_REQUEST_START: string = "API_REQUEST_START";
 
 /**
  * Api request start action interface.
@@ -33,10 +31,8 @@ export interface ApiRequestStartAction {
 
 /**
  * Action type to handle termination of an API request.
- *
- * @type {string}
  */
-export const API_REQUEST_END = "API_REQUEST_END";
+export const API_REQUEST_END: string = "API_REQUEST_END";
 
 /**
  * Api request end action interface.
@@ -48,10 +44,8 @@ export interface ApiRequestEndAction {
 
 /**
  * Action type to handle API requests.
- *
- * @type {string}
  */
-export const API_REQUEST = "API_REQUEST";
+export const API_REQUEST: string = "API_REQUEST";
 
 /**
  * Api request action interface.

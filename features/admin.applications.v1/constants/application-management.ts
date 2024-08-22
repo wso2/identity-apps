@@ -16,12 +16,10 @@
  * under the License.
  */
 
-import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1/constants/connection-constants";
 import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
-import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { SupportedAuthenticators } from "@wso2is/admin.identity-providers.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } from "../models";
@@ -119,21 +117,6 @@ export class ApplicationManagementConstants {
      * Value for sign on authentication param for application state.
      */
     public static readonly APP_STATE_STRONG_AUTH_PARAM_VALUE: string = "true";
-
-    /**
-     * Value for sign in method tab url.
-     */
-    public static readonly SIGN_IN_METHOD_TAB_URL_FRAG: string = "sign-in-method";
-
-    /**
-     * Value for protocol tab url.
-     */
-    public static readonly PROTOCOL_TAB_URL_FRAG: string = "protocol";
-
-    /**
-     * Value for application roles tab url.
-     */
-    public static readonly ROLES_TAB_URL_FRAG: string = "application-roles";
 
     /**
      * Role callback redirect type
@@ -345,53 +328,53 @@ export class ApplicationManagementConstants {
     // Authenticators that are only handlers.
     public static readonly HANDLER_AUTHENTICATORS: string[] = [
         ApplicationManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
+        LocalAuthenticatorConstants.AUTHENTICATOR_IDS.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
     ];
 
     // First factor authenticators.
     public static readonly FIRST_FACTOR_AUTHENTICATORS: string[] = [
-        IdentityProviderManagementConstants.BASIC_AUTHENTICATOR,
-        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR,
-        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR,
-        IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.FIDO_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID,
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.SMS_OTP_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID
     ];
 
     // Second factor authenticators.
     public static readonly SECOND_FACTOR_AUTHENTICATORS: string[] = [
-        IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.IPROOV_AUTHENTICATOR,
-        IdentityProviderManagementConstants.IPROOV_AUTHENTICATOR_ID
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.IPROOV_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.IPROOV_AUTHENTICATOR_ID
     ];
 
     // Known social authenticators.
     public static readonly SOCIAL_AUTHENTICATORS: string[] = [
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_NAME,
-        IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME,
-        IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_NAME,
-        IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_NAME,
-        IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_NAME,
-        IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_NAME
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.APPLE_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.GOOGLE_OIDC_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.FACEBOOK_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.MICROSOFT_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.MICROSOFT_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.TWITTER_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.TWITTER_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.GITHUB_AUTHENTICATOR_NAME
     ];
 
     // Authenticators that can handle TOTP.
     public static readonly TOTP_HANDLERS: string[] = [
         ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
         ...ApplicationManagementConstants.SOCIAL_AUTHENTICATORS,
-        IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR,
-        IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.OIDC_AUTHENTICATOR_NAME,
-        ConnectionManagementConstants.SAML_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.SAML_AUTHENTICATOR_NAME
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.MAGIC_LINK_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.OIDC_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.SAML_AUTHENTICATOR_NAME
     ];
 
     // Authenticators that can handle Email OTP.
@@ -413,10 +396,10 @@ export class ApplicationManagementConstants {
 
     // Authenticators that can handle Active Sessions Limit.
     public static readonly ACTIVE_SESSIONS_LIMIT_HANDLERS: string[] = [
-        IdentityProviderManagementConstants.BASIC_AUTHENTICATOR,
-        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR,
-        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.FIDO_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID
     ];
 
     /**
@@ -439,16 +422,16 @@ export class ApplicationManagementConstants {
         APP_NAME_MAX_LENGTH: number,
         APP_NAME_PATTERN: RegExp
     } = {
-            ACCESS_URL_ALLOWED_PLACEHOLDERS: [
-                "\\${UserTenantHint}",
-                "\\${organizationIdHint}"
-            ],
-            ACCESS_URL_MAX_LENGTH: 200,
-            ACCESS_URL_MIN_LENGTH: 3,
-            APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),
-            APP_NAME_MAX_LENGTH: 50,
-            APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
-        };
+        ACCESS_URL_ALLOWED_PLACEHOLDERS: [
+            "\\${UserTenantHint}",
+            "\\${organizationIdHint}"
+        ],
+        ACCESS_URL_MAX_LENGTH: 200,
+        ACCESS_URL_MIN_LENGTH: 3,
+        APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),
+        APP_NAME_MAX_LENGTH: 50,
+        APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
+    };
 
     public static readonly CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY: string = "isConditionalAuthTourViewed";
 

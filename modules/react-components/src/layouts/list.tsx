@@ -233,7 +233,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                                     { advancedSearchPosition === "right" && advancedSearch }
                                                     { rightActionPanel }
                                                     {
-                                                        sortOptions && 
+                                                        sortOptions &&
                                                         sortStrategy &&
                                                         onSortStrategyChange &&
                                                         onSortOrderChange && (

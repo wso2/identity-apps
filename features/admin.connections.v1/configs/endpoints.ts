@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
+import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
 import { ConnectionResourceEndpointsInterface } from "../models/endpoints";
 
 /**
@@ -35,7 +35,7 @@ export const getConnectionResourceEndpoints = (serverHost: string): ConnectionRe
         identityProviders: `${ serverHost }/api/server/v1/identity-providers`,
         localAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators`,
         multiFactorAuthenticators: `${ serverHost }/api/server/v1/identity-governance/${
-            AuthenticatorManagementConstants.MFA_CONNECTOR_CATEGORY_ID
+            CommonAuthenticatorConstants.MFA_CONNECTOR_CATEGORY_ID
         }`
     };
 };

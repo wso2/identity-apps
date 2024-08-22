@@ -16,7 +16,10 @@
  * under the License.
  */
 
+import { getActionsResourceEndpoints } from "@wso2is/admin.actions.v1/configs/endpoints";
+import { getAdministratorsResourceEndpoints } from "@wso2is/admin.administrators.v1/config/endpoints";
 import { getAPIResourceEndpoints } from "@wso2is/admin.api-resources.v2/configs/endpoint";
+import { getApplicationTemplatesResourcesEndpoints } from "@wso2is/admin.application-templates.v1/configs/endpoints";
 import { getApplicationsResourceEndpoints } from "@wso2is/admin.applications.v1/configs/endpoints";
 import { getBrandingResourceEndpoints } from "@wso2is/admin.branding.v1/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1";
@@ -26,7 +29,6 @@ import { getConsoleSettingsResourceEndpoints } from "@wso2is/admin.console-setti
 import { getEmailTemplatesResourceEndpoints } from "@wso2is/admin.email-templates.v1";
 import { getFeatureGateResourceEndpoints } from "@wso2is/admin.extensions.v1/components/feature-gate/configs";
 import { getExtendedFeatureResourceEndpoints } from "@wso2is/admin.extensions.v1/configs/endpoints";
-import { getExtendedFeatureResourceEndpointsV2 } from "@wso2is/admin.extensions.v2/config/endpoints";
 import { getGroupsResourceEndpoints } from "@wso2is/admin.groups.v1";
 import { getIDVPResourceEndpoints } from "@wso2is/admin.identity-verification-providers.v1";
 import { getScopesResourceEndpoints } from "@wso2is/admin.oidc-scopes.v1";
@@ -37,6 +39,7 @@ import { getRemoteFetchConfigResourceEndpoints } from "@wso2is/admin.remote-repo
 import { getRolesResourceEndpoints } from "@wso2is/admin.roles.v2/configs/endpoints";
 import { getSecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/configs/endpoints";
 import { getServerConfigurationsResourceEndpoints } from "@wso2is/admin.server-configurations.v1";
+import { getExtensionTemplatesEndpoints } from "@wso2is/admin.template-core.v1/configs/endpoints";
 import { getTenantResourceEndpoints } from "@wso2is/admin.tenants.v1/configs/endpoints";
 import { getUsersResourceEndpoints } from "@wso2is/admin.users.v1/configs/endpoints";
 import { getUserstoreResourceEndpoints } from "@wso2is/admin.userstores.v1/configs/endpoints";
@@ -201,7 +204,10 @@ export class Config {
                 I18nConstants.APPLICATIONS_NAMESPACE,
                 I18nConstants.IDP_NAMESPACE,
                 I18nConstants.API_RESOURCES_NAMESPACE,
-                I18nConstants.AI_NAMESPACE
+                I18nConstants.AI_NAMESPACE,
+                I18nConstants.TEMPLATE_CORE_NAMESPACE,
+                I18nConstants.APPLICATION_TEMPLATES_NAMESPACE,
+                I18nConstants.ACTIONS_NAMESPACE
             ],
             preload: []
         };
@@ -233,6 +239,7 @@ export class Config {
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
             ...getAPIResourceEndpoints(this.resolveServerHost()),
+            ...getAdministratorsResourceEndpoints(this.resolveServerHost()),
             ...getApplicationsResourceEndpoints(this.resolveServerHost()),
             ...getApprovalsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getBrandingResourceEndpoints(this.resolveServerHost()),
@@ -251,12 +258,14 @@ export class Config {
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtendedFeatureResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig()),
-            ...getExtendedFeatureResourceEndpointsV2(this.resolveServerHost()),
             ...getOrganizationsResourceEndpoints(this.resolveServerHost(true), this.getDeploymentConfig().serverHost),
             ...getTenantResourceEndpoints(this.getDeploymentConfig().serverOrigin),
             ...getFeatureGateResourceEndpoints(this.resolveServerHostforFG(false)),
             ...getInsightsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getConsoleSettingsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getExtensionTemplatesEndpoints(this.resolveServerHost()),
+            ...getApplicationTemplatesResourcesEndpoints(this.resolveServerHost()),
+            ...getActionsResourceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,
@@ -301,6 +310,7 @@ export class Config {
             googleOneTapEnabledTenants: window["AppUtils"]?.getConfig()?.ui?.googleOneTapEnabledTenants,
             governanceConnectors: window["AppUtils"]?.getConfig()?.ui?.governanceConnectors,
             gravatarConfig: window[ "AppUtils" ]?.getConfig()?.ui?.gravatarConfig,
+            hiddenApplicationTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenApplicationTemplates ?? [],
             hiddenAuthenticators: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenAuthenticators,
             hiddenConnectionTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenConnectionTemplates,
             hiddenUserStores: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenUserStores,

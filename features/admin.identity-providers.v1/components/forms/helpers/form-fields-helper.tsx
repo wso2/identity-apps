@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1/constants/connection-constants";
+import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { URLUtils } from "@wso2is/core/utils";
 import {
@@ -723,7 +723,7 @@ export const getFieldType = (
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     mode: AuthenticatorSettingsFormModes
 ): FieldType => {
-    if (propertyMetadata?.key === ConnectionManagementConstants.USER_ID_IN_CLAIMS) {
+    if (propertyMetadata?.key === ConnectionUIConstants.USER_ID_IN_CLAIMS) {
         return FieldType.RADIO;
     } else if (propertyMetadata?.type?.toUpperCase() === CommonConstants.BOOLEAN) {
         return FieldType.CHECKBOX;
@@ -783,7 +783,7 @@ export const getPropertyField = (
             return getCheckboxField(property, propertyMetadata, testId, showField);
         }
         case FieldType.RADIO : {
-            if (propertyMetadata?.key === ConnectionManagementConstants.USER_ID_IN_CLAIMS) {
+            if (propertyMetadata?.key === ConnectionUIConstants.USER_ID_IN_CLAIMS) {
                 return getUserIdClaimRadioButtonField(property, propertyMetadata, listen, testId);
             } else {
                 return getRadioButtonFieldWithListener(property, propertyMetadata, listen, testId);

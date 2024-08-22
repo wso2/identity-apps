@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,6 +30,23 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
             termsOfService: "https://wso2.com/terms-of-use"
         },
         develop: {
+            actions:{
+                learnMore: undefined,
+                types: {
+                    preIssueAccessToken: {
+                        learnMore: undefined
+                    },
+                    preRegistration: {
+                        learnMore: undefined
+                    },
+                    preUpdatePassword: {
+                        learnMore: undefined
+                    },
+                    preUpdateProfile: {
+                        learnMore:undefined
+                    }
+                }
+            },
             apiResources: {
                 addAPIResource: {
                     rbacInfoBox: {
@@ -208,6 +225,16 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 },
                 roles: {
                     learnMore: undefined
+                },
+                template: {
+                    categories: {
+                        default: {
+                            learnMore: undefined
+                        },
+                        ssoIntegration: {
+                            learnMore: undefined
+                        }
+                    }
                 }
             },
             branding: {
@@ -343,6 +370,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                     learnMore: undefined
                 }
             },
+            insights: {
+                learnMore: undefined
+            },
             loginSecurity: {
                 botDetection: {
                     learnMore: undefined
@@ -350,6 +380,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 loginAttempts: {
                     learnMore: undefined
                 }
+            },
+            logs: {
+                learnMore: undefined
             },
             organizations: {
                 learnMore: undefined
@@ -394,6 +427,7 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 customerAccounts: {
                     learnMore: undefined
                 },
+                learnMore: undefined,
                 newCollaboratorUser: {
                     learnMore: undefined
                 }

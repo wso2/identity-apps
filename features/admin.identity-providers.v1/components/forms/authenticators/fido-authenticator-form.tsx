@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import { updateFidoConfigs, useFIDOConnectorConfigs } from "@wso2is/admin.identity-providers.v1/api/fido-configs";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -101,7 +104,7 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
             const trustedOriginsAttribute: FIDOConnectorConfigsAttributeInterface = fidoConnectorConfigs?.attributes
                 ?.find(
                     (attribute: FIDOConnectorConfigsAttributeInterface) =>
-                        attribute?.key === IdentityProviderManagementConstants.FIDO_TRUSTED_ORIGINS_ATTRIBUTE_KEY
+                        attribute?.key === LocalAuthenticatorConstants.FIDO_TRUSTED_ORIGINS_ATTRIBUTE_KEY
                 );
 
             if (trustedOriginsAttribute) {
@@ -123,7 +126,7 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
         }
 
         if (fidoConnectorConfigFetchError?.response?.data?.code ===
-            IdentityProviderManagementConstants.FIDO_CONNECTOR_CONFIGS_NOT_CONFIGURED_ERROR_CODE) {
+            ConnectionUIConstants.ERROR_CODES.FIDO_CONNECTOR_CONFIGS_NOT_CONFIGURED_ERROR_CODE) {
             return;
         }
 
@@ -194,11 +197,11 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
         const payload: FIDOConfigsInterface = {
             attributes: [
                 {
-                    key: IdentityProviderManagementConstants.FIDO_TRUSTED_ORIGINS_ATTRIBUTE_KEY,
+                    key: LocalAuthenticatorConstants.FIDO_TRUSTED_ORIGINS_ATTRIBUTE_KEY,
                     value: FIDOTrustedOrigins
                 }
             ],
-            name: IdentityProviderManagementConstants.FIDO_CONNECTOR_CONFIG_NAME
+            name: LocalAuthenticatorConstants.FIDO_CONNECTOR_CONFIG_NAME
         };
 
         updateFidoConfigs(payload)
@@ -258,7 +261,7 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
 
         for (const [ name, value ] of Object.entries(values)) {
             if (name) {
-                if (name === IdentityProviderManagementConstants.FIDO_TRUSTED_ORIGINS_ATTRIBUTE_KEY) {
+                if (name === LocalAuthenticatorConstants.FIDO_TRUSTED_ORIGINS_ATTRIBUTE_KEY) {
                     continue;
                 }
 

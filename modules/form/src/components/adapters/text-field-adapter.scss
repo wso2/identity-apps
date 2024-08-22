@@ -19,5 +19,10 @@
 .text-field-adapter {
     .MuiInputBase-root {
         padding: 0;
+
+        &.Mui-readOnly {
+            cursor: default;
+            background-color: #e9ecef!important;
+        }
     }
 }

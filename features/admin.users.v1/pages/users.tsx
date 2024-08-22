@@ -61,12 +61,15 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
+    DocumentationLink,
     EmptyPlaceholder,
+    Link,
     ListLayout,
     PageLayout,
     PrimaryButton,
     ResourceTab,
-    ResourceTabPaneInterface
+    ResourceTabPaneInterface,
+    useDocumentation
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -77,7 +80,7 @@ import React, {
     useEffect,
     useMemo,
     useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
@@ -126,6 +129,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const dispatch: Dispatch<any> = useDispatch();
 
@@ -973,7 +977,17 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     { t("users:confirmations.addMultipleUser.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content>
-                    { t("users:confirmations.addMultipleUser.content") }
+                    <Trans i18nKey="users:confirmations.addMultipleUser.content">
+                        Invite User to Set Password should be enabled to add multiple users.
+                        Please enable email invitations for user password setup from
+                        <Link
+                            onClick={ () => history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
+                                .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+                                .replace(":connectorId", ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID)) }
+                            external={ false }>
+                            Login & Registration settings
+                        </Link>
+                    </Trans>
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         );
@@ -995,7 +1009,16 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             }
             title={ t("pages:users.title") }
             pageTitle={ t("pages:users.title") }
-            description={ t("extensions:manage.users.usersSubTitle") }
+            description={ (
+                <>
+                    { t("extensions:manage.users.usersSubTitle") }
+                    <DocumentationLink
+                        link={ getLink("manage.users.learnMore") }
+                    >
+                        { t("extensions:common.learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
             data-testid={ `${ testId }-page-layout` }
         >
             { isSubOrganization()

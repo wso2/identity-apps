@@ -28,24 +28,92 @@ export class FederatedAuthenticatorConstants {
 
     public static readonly AUTHENTICATOR_IDS: {
         APPLE_AUTHENTICATOR_ID: string;
+        EMAIL_OTP_AUTHENTICATOR_ID: string;
         FACEBOOK_AUTHENTICATOR_ID: string;
         GITHUB_AUTHENTICATOR_ID: string;
         GOOGLE_OIDC_AUTHENTICATOR_ID: string;
         HYPR_AUTHENTICATOR_ID: string;
+        IPROOV_AUTHENTICATOR_ID: string;
+        IWA_KERBEROS_AUTHENTICATOR_ID: string;
         MICROSOFT_AUTHENTICATOR_ID: string;
+        MS_LIVE_AUTHENTICATOR_ID: string;
+        OFFICE_365_AUTHENTICATOR_ID: string;
+        OIDC_AUTHENTICATOR_ID: string;
         ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: string;
+        SAML_AUTHENTICATOR_ID: string;
         SIWE_AUTHENTICATOR_ID: string;
+        SMS_OTP_AUTHENTICATOR_ID: string;
         TWITTER_AUTHENTICATOR_ID: string;
+        YAHOO_AUTHENTICATOR_ID: string;
     } = {
             APPLE_AUTHENTICATOR_ID: "QXBwbGVPSURDQXV0aGVudGljYXRvcg",
+            EMAIL_OTP_AUTHENTICATOR_ID: "RW1haWxPVFA",
             FACEBOOK_AUTHENTICATOR_ID: "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
             GITHUB_AUTHENTICATOR_ID: "R2l0aHViQXV0aGVudGljYXRvcg",
             GOOGLE_OIDC_AUTHENTICATOR_ID: "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I",
             HYPR_AUTHENTICATOR_ID: "SFlQUkF1dGhlbnRpY2F0b3I",
+            IPROOV_AUTHENTICATOR_ID: "SXByb292QXV0aGVudGljYXRvcg",
+            IWA_KERBEROS_AUTHENTICATOR_ID: "SVdBS2VyYmVyb3NBdXRoZW50aWNhdG9y",
             MICROSOFT_AUTHENTICATOR_ID: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
+            MS_LIVE_AUTHENTICATOR_ID: "TWljcm9zb2Z0V2luZG93c0xpdmVBdXRoZW50aWNhdG9y",
+            OFFICE_365_AUTHENTICATOR_ID: "T2ZmaWNlMzY1QXV0aGVudGljYXRvcg",
+            OIDC_AUTHENTICATOR_ID: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
             ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg",
+            SAML_AUTHENTICATOR_ID: "U0FNTFNTT0F1dGhlbnRpY2F0b3I",
             SIWE_AUTHENTICATOR_ID: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
-            TWITTER_AUTHENTICATOR_ID: "VHdpdHRlckF1dGhlbnRpY2F0b3I"
+            SMS_OTP_AUTHENTICATOR_ID: "U01TT1RQ",
+            TWITTER_AUTHENTICATOR_ID: "VHdpdHRlckF1dGhlbnRpY2F0b3I",
+            YAHOO_AUTHENTICATOR_ID: "WWFob29PQXV0aDJBdXRoZW50aWNhdG9y"
+        };
+
+    public static readonly AUTHENTICATOR_NAMES: {
+        APPLE_AUTHENTICATOR_NAME: string;
+        EMAIL_OTP_AUTHENTICATOR_NAME: string;
+        FACEBOOK_AUTHENTICATOR_NAME: string;
+        GITHUB_AUTHENTICATOR_NAME: string;
+        GOOGLE_OIDC_AUTHENTICATOR_NAME: string;
+        IPROOV_AUTHENTICATOR_NAME: string;
+        IWA_KERBEROS_AUTHENTICATOR_NAME: string;
+        MICROSOFT_AUTHENTICATOR_NAME: string;
+        MS_LIVE_AUTHENTICATOR_NAME: string;
+        TWITTER_AUTHENTICATOR_NAME: string;
+        SAML_AUTHENTICATOR_NAME: string;
+        SMS_OTP_AUTHENTICATOR_NAME: string;
+        OFFICE_365_AUTHENTICATOR_NAME: string;
+        OIDC_AUTHENTICATOR_NAME: string;
+        ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME: string;
+        YAHOO_AUTHENTICATOR_NAME: string;
+    } = {
+            APPLE_AUTHENTICATOR_NAME: "AppleOIDCAuthenticator",
+            EMAIL_OTP_AUTHENTICATOR_NAME: "EmailOTP",
+            FACEBOOK_AUTHENTICATOR_NAME: "FacebookAuthenticator",
+            GITHUB_AUTHENTICATOR_NAME: "GithubAuthenticator",
+            GOOGLE_OIDC_AUTHENTICATOR_NAME: "GoogleOIDCAuthenticator",
+            IPROOV_AUTHENTICATOR_NAME: "IproovAuthenticator",
+            IWA_KERBEROS_AUTHENTICATOR_NAME: "IWAKerberosAuthenticator",
+            MICROSOFT_AUTHENTICATOR_NAME: "MicrosoftAuthenticator",
+            MS_LIVE_AUTHENTICATOR_NAME: "MicrosoftWindowsLiveAuthenticator",
+            OFFICE_365_AUTHENTICATOR_NAME: "Office365Authenticator",
+            OIDC_AUTHENTICATOR_NAME: "OpenIDConnectAuthenticator",
+            ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME: "OrganizationAuthenticator",
+            SAML_AUTHENTICATOR_NAME: "SAMLSSOAuthenticator",
+            SMS_OTP_AUTHENTICATOR_NAME: "SMSOTP",
+            TWITTER_AUTHENTICATOR_NAME: "TwitterAuthenticator",
+            YAHOO_AUTHENTICATOR_NAME: "YahooOAuth2Authenticator"
+        };
+
+    public static readonly AUTHENTICATOR_DISPLAY_NAMES: {
+        APPLE_AUTHENTICATOR_DISPLAY_NAME: string;
+        FACEBOOK_AUTHENTICATOR_DISPLAY_NAME: string;
+        GITHUB_AUTHENTICATOR_DISPLAY_NAME: string;
+        GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME: string;
+        MICROSOFT_AUTHENTICATOR_DISPLAY_NAME: string;
+    } = {
+            APPLE_AUTHENTICATOR_DISPLAY_NAME: "Apple",
+            FACEBOOK_AUTHENTICATOR_DISPLAY_NAME: "Facebook",
+            GITHUB_AUTHENTICATOR_DISPLAY_NAME: "GitHub",
+            GOOGLE_OIDC_AUTHENTICATOR_DISPLAY_NAME: "Google",
+            MICROSOFT_AUTHENTICATOR_DISPLAY_NAME: "Microsoft"
         };
 
     /**
@@ -99,4 +167,20 @@ export class FederatedAuthenticatorConstants {
      * Key of the Apple client secret regenerate attribute.
      */
     public static readonly APPLE_SECRET_REGENERATE_ATTRIBUTE_KEY: string = "RegenerateClientSecret";
+
+    /**
+     * SIWE Scope mappings.
+     */
+    public static readonly SIWE_SCOPE_DICTIONARY: Record<string, string> = {
+        OPENID: "openid",
+        PROFILE: "profile"
+    };
+
+    /**
+     * @deprecated Use `ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME` from
+     * `FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES` instead.
+     * Hardcoded name for SSO authenticator.
+     * TODO: This should be removed once the `getOrganizationAuthenticator()` util function is cleaned up.
+     */
+    public static readonly ORGANIZATION_AUTHENTICATOR: string = "SSO";
 }
