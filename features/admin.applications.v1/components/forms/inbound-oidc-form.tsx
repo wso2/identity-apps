@@ -2705,20 +2705,29 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     <Trans
                                                         i18nKey={ "applications:forms.inboundOIDC.sections " +
                                                             ".accessToken.fields.accessTokenAttributes.enable.hint" }>
-                                                        Previously, attributes that are set as requested in the User
-                                                        Attribute section were automatically added to
-                                                        <Code withBackground>access_token</Code>.
-                                                        Now, you can choose which user attributes are included in the
-                                                        <Code withBackground>access_token</Code>. To enable this
-                                                        new feature, select
-                                                        <Code withBackground>Enable Access Token Attributes</Code>
-                                                        and update your application. When updating,
-                                                        attributes that are set as requested in the User Attribute
-                                                        section will be set as Access Token Attributes. Once updated,
-                                                        only selected attributes from the Access Token Attributes will
-                                                        be included in the <Code withBackground>access_token</Code>
-                                                        without requiring OIDC scopes. Important: This change is
-                                                        irreversible. <b>Proceed with caution.</b>
+                                                        Previously, all attributes marked as
+                                                        <Code withBackground>requested</Code> in the application&apos;s
+                                                        <Code withBackground>User</Code> Attributes section (referred
+                                                        to as requested attributes) were automatically included in the
+                                                        access token. With the latest update, admins can now choose
+                                                        which attributes to include in the access token. To enable
+                                                        this feature, select
+                                                        <Code withBackground>Enable Access Token Attributes</Code>.
+                                                        To ensure a smooth transition from the old behavior, selecting
+                                                        it for the first time will populate the
+                                                        <Code withBackground>Access Token Attributes</Code>
+                                                        section with all the requested attributes.  Admins can then
+                                                        remove any unwanted attributes. After saving the changes,
+                                                        only the selected attributes will be included in the access
+                                                        token. Moving forward, all requested attributes will appear
+                                                        in a dropdown for admins to manage as needed.
+
+                                                        Important: Once updated, requested attributes are no longer
+                                                        automatically included in the access token and this change is
+                                                        irreversible. Admin-selected attributes will be included in
+                                                        the access token even without requiring the relevant OIDC
+                                                        scopes.
+                                                        <Code withBackground>Proceed with caution.</Code>.
                                                     </Trans>
                                                 </Alert>
                                                 <Field

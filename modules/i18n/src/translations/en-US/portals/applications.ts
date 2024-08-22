@@ -1580,14 +1580,20 @@ export const applications: ApplicationsNS = {
                             label: "Access Token Attributes",
                             placeholder: "Search by attribute name",
                             enable: {
-                                hint : "Previously, attributes that are set as requested in the User Attributes " +
-                                 "section were automatically added to <1>access_token</1>. Now, you can choose which " +
-                                 "user attributes are included in the <1>access_token</1>. To enable this new feature, " +
-                                 "select <1>Enable Access Token Attributes</1> and update your application. When updating, " +
-                                 "attributes that are set as requested in the User Attribute section will be set as " +
-                                 "Access Token Attributes. Once updated, only selected attributes from the Access " +
-                                 "Token Attributes will be included in the <1>access_token</1> without requiring OIDC scopes. " +
-                                 "Important: This change is irreversible. Proceed with caution.",
+                                hint : "Previously, all attributes marked as requested in the application's " +
+                                "User Attributes section (referred to as requested attributes) were " +
+                                "automatically included in the access token. With the latest update, " +
+                                "admins can now choose which attributes to include in the access token. " +
+                                "To enable this feature, select Enable Access Token Attributes. To ensure " +
+                                "a smooth transition from the old behavior, selecting it for the first time " +
+                                "will populate the Access Token Attributes section with all the requested " +
+                                "attributes.  Admins can then remove any unwanted attributes. After saving the " +
+                                "changes, only the selected attributes will be included in the access token. " +
+                                "Moving forward, all requested attributes will appear in a dropdown for admins " +
+                                "to manage as needed. Important: Once updated, requested attributes are no " +
+                                "longer automatically included in the access token and this change is " +
+                                "irreversible. Admin-selected attributes will be included in the access token " +
+                                "even without requiring the relevant OIDC scopes. Proceed with caution.",
                                 label: "Enable Access Token Attributes"
                             }
                         }
