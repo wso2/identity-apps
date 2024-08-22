@@ -1,5 +1,16 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.0.20
+
+### Patch Changes
+
+- [#6796](https://github.com/wso2/identity-apps/pull/6796) [`8c688ec9a38cbc0d65759b4c3a3aa05a44142ad1`](https://github.com/wso2/identity-apps/commit/8c688ec9a38cbc0d65759b4c3a3aa05a44142ad1) Thanks [@Achintha444](https://github.com/Achintha444)! - Fix Inconsistency with "New" Flag in M2M Application Template card.
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.23.20
+  - @wso2is/admin.core.v1@2.27.2
+  - @wso2is/admin.template-core.v1@1.0.20
+
 ## 1.0.19
 
 ### Patch Changes
