@@ -481,10 +481,10 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
             <Box display="flex" direction="row" justifyContent="space-between">
                 <div>
                     <Heading as="h4">
-                        { t("console:manage.features.groups.edit.users.heading") }
+                        { t("groups:edit.users.heading") }
                     </Heading>
                     <Heading subHeading ellipsis as="h6">
-                        { t("console:manage.features.groups.edit.users.subHeading") }
+                        { t("groups:edit.users.subHeading") }
                     </Heading>
                 </div>
 
