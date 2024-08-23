@@ -30,8 +30,8 @@ import TextField from "@oxygen-ui/react/TextField";
 import { updateResources } from "@wso2is/admin.core.v1/api/bulk-operations";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { RemoteUserStoreConstants } from "@wso2is/admin.extensions.v1/components/user-stores/constants";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
+import { RemoteUserStoreConstants } from "@wso2is/admin.remote-userstores.v1/constants/remote-user-stores";
 import { useUsersList } from "@wso2is/admin.users.v1/api";
 import {
     PatchBulkUserDataInterface,

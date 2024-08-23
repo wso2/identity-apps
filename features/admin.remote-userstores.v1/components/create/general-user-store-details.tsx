@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, RadioChild, Validation } from "@wso2is/forms";
@@ -24,7 +24,13 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { RemoteUserStoreAccessTypes, RemoteUserStoreConstants, RemoteUserStoreTypes } from "../../constants";
+import {
+    RemoteUserStoreAccessTypes,
+    RemoteUserStoreConstants,
+    RemoteUserStoreTypes,
+    USERSTORE_VALIDATION_REGEX_PATTERNS
+} from "../../constants/remote-user-stores";
+import { validateInputWithRegex } from "../../utils/userstore-utils";
 
 /**
  * Prop types of the general user store details component
@@ -55,6 +61,14 @@ interface GeneralUserStoreDetailsPropsInterface extends SBACInterface<FeatureCon
      * Checks whether userstore name entered is valid.
      */
     setUserStoreNameValid: (isValid: boolean) => void;
+    /**
+     * Checks whether userstore description entered is valid.
+     */
+    setUserStoreDescriptionValid: (isValid: boolean) => void;
+    /**
+     * Set the listened description.
+     */
+    setListenedDescription: (description: string) => void;
 }
 
 /**
@@ -76,6 +90,8 @@ export const GeneralUserStoreDetails: FunctionComponent<GeneralUserStoreDetailsP
         handleUserStoreAccessTypeChange,
         handleUserStoreTypeChange,
         setUserStoreNameValid,
+        setUserStoreDescriptionValid,
+        setListenedDescription,
         ["data-testid"]: testId
     } = props;
 
@@ -181,6 +197,10 @@ export const GeneralUserStoreDetails: FunctionComponent<GeneralUserStoreDetailsP
 
                                     let isMatch: boolean = true;
                                     let validationErrorMessage: string;
+                                    const validityResult: Map<string, string | boolean> = validateInputWithRegex(value,
+                                        USERSTORE_VALIDATION_REGEX_PATTERNS.EscapeRegEx);
+                                    const validationMatch: boolean = (
+                                        validityResult.get("isMatch").toString() === "true");
 
                                     if (!regExpInvalidSymbols.test(value)) {
                                         isMatch = false;
@@ -198,6 +218,14 @@ export const GeneralUserStoreDetails: FunctionComponent<GeneralUserStoreDetailsP
                                         isMatch = false;
                                         validationErrorMessage = t("extensions:manage.features.userStores.edit."
                                             + "general.form.validations.allSymbolsErrorMessage");
+                                    } else if (validationMatch) {
+                                        isMatch = false;
+                                        const invalidString: string =
+                                            validityResult.get("invalidStringValue").toString();
+
+                                        validationErrorMessage = t("console:manage.features.userstores."
+                                            + "forms.general.name.validationErrorMessages."
+                                            + "invalidInputErrorMessage", { invalidString: invalidString });
                                     } else {
                                         isMatch = true;
                                     }
@@ -229,6 +257,43 @@ export const GeneralUserStoreDetails: FunctionComponent<GeneralUserStoreDetailsP
                             minLength={ 3 }
                             width={ 14 }
                             data-testid={ `${testId}-user-store-description-textarea` }
+                            listen={ (values: Map<string, FormValue>) => {
+                                setUserStoreDescriptionValid(
+                                    validateInputWithRegex(values.get("description").toString(),
+                                        USERSTORE_VALIDATION_REGEX_PATTERNS.EscapeRegEx)
+                                        .get("isMatch").toString() === "false");
+                                setListenedDescription(values.get("description").toString());
+                            } }
+                            validation={ (value: string, validation: Validation) => {
+
+                                let isMatch: boolean = true;
+                                let validationErrorMessage: string;
+
+                                const validityResult: Map<string, string | boolean> = validateInputWithRegex(value,
+                                    USERSTORE_VALIDATION_REGEX_PATTERNS.EscapeRegEx);
+                                const validationMatch: boolean = (validityResult.get("isMatch").toString() === "true");
+
+                                if (validationMatch) {
+                                    isMatch = false;
+                                    const invalidString: string = validityResult.get("invalidStringValue").toString();
+
+                                    validationErrorMessage =
+                                        t("console:manage.features.userstores.forms.general.description"
+                                            + ".validationErrorMessages.invalidInputErrorMessage", {
+                                            invalidString: invalidString
+                                        });
+                                } else {
+                                    isMatch = true;
+                                }
+
+                                if (!isMatch) {
+                                    setUserStoreDescriptionValid(false);
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(
+                                        validationErrorMessage
+                                    );
+                                }
+                            } }
                         />
                         <Field
                             type="radio"
