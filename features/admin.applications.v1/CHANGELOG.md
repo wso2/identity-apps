@@ -1,5 +1,34 @@
 # @wso2is/admin.applications.v1
 
+## 2.23.24
+
+### Patch Changes
+
+- [#6782](https://github.com/wso2/identity-apps/pull/6782) [`1d8f2a9b051645e69100e76bf49b452fc0ff0f8e`](https://github.com/wso2/identity-apps/commit/1d8f2a9b051645e69100e76bf49b452fc0ff0f8e) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Enable capability to override advanced settings tab of an application.
+
+- Updated dependencies [[`1d8f2a9b051645e69100e76bf49b452fc0ff0f8e`](https://github.com/wso2/identity-apps/commit/1d8f2a9b051645e69100e76bf49b452fc0ff0f8e)]:
+  - @wso2is/admin.extensions.v1@2.24.9
+  - @wso2is/admin.application-templates.v1@1.0.24
+  - @wso2is/admin.authentication-flow-builder.v1@2.20.136
+  - @wso2is/admin.connections.v1@2.21.66
+  - @wso2is/admin.console-settings.v1@2.20.136
+  - @wso2is/admin.core.v1@2.27.6
+  - @wso2is/admin.identity-providers.v1@2.21.66
+  - @wso2is/admin.login-flow.ai.v1@2.20.136
+  - @wso2is/admin.oidc-scopes.v1@2.20.136
+  - @wso2is/admin.organizations.v1@2.21.29
+  - @wso2is/admin.roles.v2@2.21.3
+  - @wso2is/admin.branding.v1@2.20.136
+  - @wso2is/admin.claims.v1@2.20.136
+  - @wso2is/admin.server-configurations.v1@2.21.78
+  - @wso2is/admin.users.v1@2.21.8
+  - @wso2is/admin.userstores.v1@2.20.136
+  - @wso2is/admin.api-resources.v2@2.20.136
+  - @wso2is/admin.impersonation.v1@1.1.78
+  - @wso2is/admin.secrets.v1@2.20.136
+  - @wso2is/admin.template-core.v1@1.0.24
+  - @wso2is/admin.wsfed-configuration.v1@2.20.136
+
 ## 2.23.23
 
 ### Patch Changes
