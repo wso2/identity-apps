@@ -234,13 +234,64 @@ export const applicationConfig: ApplicationConfig = {
 
             return null;
         },
-        getOveriddenTab: (clientId: string, tabName: ApplicationTabTypes,
-            defaultComponent: ReactElement, appName: string, appId: string, tenantDomain: string) => {
+        getOverriddenDescription: (clientId: string, tenantDomain: string, _templateName: string) => {
+            if (clientId === getTryItClientId(tenantDomain)){
+                return (
+                    <div className="ellipsis">
+                        <Popup
+                            content={ (
+                                <Trans
+                                    i18nKey=
+                                        { "extensions:develop.applications.asgardeoTryit.description" }
+                                >
+                                    You can try out different login flows of Asgardeo with our Try It app.
+                                </Trans>
+                            ) }
+                            trigger={ (
+                                <span>
+                                    <Trans
+                                        i18nKey=
+                                            { "extensions:develop.applications.asgardeoTryit.description" }
+                                    >
+                                        You can try out different login flows of Asgardeo with our Try It app.
+                                    </Trans>
+                                </span>
+                            ) }
+                        />
+                    </div>
+                );
+            }
+
+            return null;
+        },
+        getOverriddenImage: (clientId: string, tenantDomain: string) => {
+            if(clientId === getTryItClientId(tenantDomain)) {
+                return (
+                    <GenericIcon
+                        floated="left"
+                        size="tiny"
+                        transparent
+                        icon={ TryItAppIllustration }
+                    />
+                );
+            }
+
+            return null;
+        },
+        getOverriddenTab: (
+            clientId: string,
+            tabName: ApplicationTabTypes,
+            defaultComponent: ReactElement,
+            application: ApplicationInterface,
+            tenantDomain: string,
+            _onUpdate?:(id: string) => void,
+            _readOnly?:boolean
+        ) => {
             if (clientId === getTryItClientId(tenantDomain) && tabName === ApplicationTabTypes.GENERAL) {
                 return (
                     <ApplicationGeneralTabOverride
-                        appId={ appId }
-                        appName={ appName }
+                        appId={ application?.id }
+                        appName={ application?.name }
                         clientId={ clientId }
                     ></ApplicationGeneralTabOverride>
                 );
@@ -339,50 +390,6 @@ export const applicationConfig: ApplicationConfig = {
             }
 
             return defaultComponent;
-        },
-        getOverriddenDescription: (clientId: string, tenantDomain: string, _templateName: string) => {
-            if (clientId === getTryItClientId(tenantDomain)){
-                return (
-                    <div className="ellipsis">
-                        <Popup
-                            content={ (
-                                <Trans
-                                    i18nKey=
-                                        { "extensions:develop.applications.asgardeoTryit.description" }
-                                >
-                                    You can try out different login flows of Asgardeo with our Try It app.
-                                </Trans>
-                            ) }
-                            trigger={ (
-                                <span>
-                                    <Trans
-                                        i18nKey=
-                                            { "extensions:develop.applications.asgardeoTryit.description" }
-                                    >
-                                        You can try out different login flows of Asgardeo with our Try It app.
-                                    </Trans>
-                                </span>
-                            ) }
-                        />
-                    </div>
-                );
-            }
-
-            return null;
-        },
-        getOverriddenImage: (clientId: string, tenantDomain: string) => {
-            if(clientId === getTryItClientId(tenantDomain)) {
-                return (
-                    <GenericIcon
-                        floated="left"
-                        size="tiny"
-                        transparent
-                        icon={ TryItAppIllustration }
-                    />
-                );
-            }
-
-            return null;
         },
         getStrongAuthenticationFlowTabIndex: (
             clientId: string,
