@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.4.28
+
+### Patch Changes
+
+- [#6805](https://github.com/wso2/identity-apps/pull/6805) [`a8e227f1e41edaf0b72f68b77148e295c4addaa5`](https://github.com/wso2/identity-apps/commit/a8e227f1e41edaf0b72f68b77148e295c4addaa5) Thanks [@dhaura](https://github.com/dhaura)! - Add invalid org discovery type error message.
+
 ## 2.4.27
 
 ### Patch Changes
