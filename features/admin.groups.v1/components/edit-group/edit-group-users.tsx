@@ -492,6 +492,9 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                         data-testid={
                             `${ testId }-users-list-empty-assign-users-button`
                         }
+                        data-componentid={
+                            `${ testId }-users-list-empty-assign-users-button`
+                        }
                         onClick={ handleOpenAddNewGroupModal }
                     >
                         <Icon name="plus"/>
