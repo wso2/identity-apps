@@ -32,6 +32,7 @@
         "@wso2is/admin.identity-providers.v1": "^2.21.63",
         "@wso2is/admin.organizations.v1": "^2.21.26",
         "@wso2is/admin.provisioning.v1": "^2.20.133",
+        "@wso2is/admin.remote-userstores.v1": "^1.0.0",
         "@wso2is/admin.roles.v2": "^2.21.0",
         "@wso2is/admin.server-configurations.v1": "^2.21.75",
         "@wso2is/admin.sms-providers.v1": "^2.20.133",
