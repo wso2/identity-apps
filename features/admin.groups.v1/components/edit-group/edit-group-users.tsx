@@ -487,7 +487,6 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                         { t("groups:edit.users.subHeading") }
                     </Heading>
                 </div>
-
                 { !isReadOnly && groupUserList?.totalResults > 0 && (
                     <PrimaryButton
                         data-testid={
