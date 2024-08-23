@@ -23,6 +23,7 @@ import {
     VerticalStepper,
     VerticalStepperStepInterface
 } from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { addUserStore, getAType } from "@wso2is/admin.userstores.v1/api/user-stores";
 import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {
@@ -44,7 +45,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { userstoresConfig } from "../../../configs";
 import { AttributeMappingsComponent, GeneralUserStoreDetails } from "../components";
 import { RemoteUserStoreAccessTypes, RemoteUserStoreConstants, RemoteUserStoreTypes } from "../constants";
 
@@ -84,6 +84,8 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
     const [ userStoreType, setUserStoreType ] = useState<string>(RemoteUserStoreTypes.LDAP);
     const [ userStoreAccessType, setUserStoreAccessType ] = useState<string>(RemoteUserStoreAccessTypes.ReadOnly);
     const [ isUserStoreNameValid, setUserStoreNameValid ] = useState(false);
+    const [ isUserStoreDescriptionValid, setUserStoreDescriptionValid ] = useState(false);
+    const [ inputDescription, setInputDescription ] = useState<string>("");
     const [ isAttributesListRequestLoading, setAttributesListRequestLoading ] = useState<boolean>(false);
     const [ mandatoryAttributes, setMandatoryAttributes ] = useState<Claim[]>(null);
 
@@ -245,8 +247,16 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
         });
     };
 
+    const preventBasicDetailsNext = (): boolean => {
+        if (inputDescription) {
+            return (!isUserStoreNameValid || !isUserStoreDescriptionValid);
+        } else {
+            return !isUserStoreNameValid;
+        }
+    };
+
     const handleAttributeMappingsSubmit = (values: Map<string, FormValue>) => {
-        if (!isUserStoreNameValid) {
+        if (preventBasicDetailsNext()) {
             return;
         }
 
@@ -288,7 +298,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
 
     const creationFlowSteps: VerticalStepperStepInterface[] = [
         {
-            preventGoToNextStep: !isUserStoreNameValid,
+            preventGoToNextStep: preventBasicDetailsNext(),
             stepAction: setTriggerBasicDetailsSubmit,
             stepContent: (
                 <GeneralUserStoreDetails
@@ -298,6 +308,8 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
                     handleUserStoreTypeChange={ handleUserStoreTypeChange }
                     handleUserStoreAccessTypeChange={ handleUserStoreAccessTypeChange }
                     setUserStoreNameValid={ setUserStoreNameValid }
+                    setUserStoreDescriptionValid={ setUserStoreDescriptionValid }
+                    setListenedDescription={ setInputDescription }
                 />
             ),
             stepTitle: t("extensions:manage.features.userStores.create.pageLayout.steps.generalSettings.title")
@@ -348,9 +360,4 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
     );
 };
 
-/**
- * A default export was added to support React.lazy.
- * TODO: Change this to a named export once react starts supporting named exports for code splitting.
- * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
- */
 export default RemoteCustomerUserStoreCreatePage;
