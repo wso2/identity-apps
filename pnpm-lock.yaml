@@ -7942,6 +7942,9 @@ importers:
       '@wso2is/admin.provisioning.v1':
         specifier: ^2.20.133
         version: link:../admin.provisioning.v1
+      '@wso2is/admin.remote-userstores.v1':
+        specifier: ^1.0.0
+        version: link:../admin.remote-userstores.v1
       '@wso2is/admin.roles.v2':
         specifier: ^2.21.0
         version: link:../admin.roles.v2
