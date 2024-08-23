@@ -21,8 +21,13 @@ import {
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "@wso2is/admin.applications.v1/components/settings";
-import { ApplicationInterface, ApplicationTabTypes } from "@wso2is/admin.applications.v1/models";
+import {
+    AdvancedConfigurationsInterface,
+    ApplicationInterface,
+    ApplicationTabTypes
+} from "@wso2is/admin.applications.v1/models";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import { ReactElement, ReactNode } from "react";
 import { Dispatch } from "redux";
@@ -193,4 +198,28 @@ export enum ApplicationTabIDs {
     INFO = "info",
     API_AUTHORIZATION = "api-authorization",
     APPLICATION_ROLES = "application-roles"
+}
+
+/**
+ * Proptypes for the form in advance settings tab override component.
+ */
+export interface AdvancedSettingsOverriddenFormPropsInterface
+    extends SBACInterface<FeatureConfigInterface>,
+        IdentifiableComponentInterface {
+    /**
+     * Current advanced configurations.
+     */
+    advancedConfigurations: AdvancedConfigurationsInterface;
+    /**
+     * Callback to update the application details.
+     */
+    onSubmit: (values: any) => void;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
+    /**
+     * Specifies if the form is submitting
+     */
+    isSubmitting?: boolean;
 }

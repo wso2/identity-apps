@@ -271,7 +271,7 @@ export const applicationConfig: ApplicationConfig = {
                         floated="left"
                         size="tiny"
                         transparent
-                        icon={ getGettingStartedCardIllustrations().tryItApplication }
+                        icon={ TryItAppIllustration }
                     />
                 );
             }
