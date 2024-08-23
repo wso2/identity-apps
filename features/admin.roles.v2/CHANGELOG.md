@@ -1,5 +1,27 @@
 # @wso2is/admin.roles.v2
 
+## 2.21.0
+
+### Minor Changes
+
+- [#6798](https://github.com/wso2/identity-apps/pull/6798) [`7f46b3c3677d7650b18871f76cfa66e4c9bff685`](https://github.com/wso2/identity-apps/commit/7f46b3c3677d7650b18871f76cfa66e4c9bff685) Thanks [@brionmario](https://github.com/brionmario)! - Separare out `admin.remote-userstores.v1` feature
+
+### Patch Changes
+
+- Updated dependencies [[`7f46b3c3677d7650b18871f76cfa66e4c9bff685`](https://github.com/wso2/identity-apps/commit/7f46b3c3677d7650b18871f76cfa66e4c9bff685)]:
+  - @wso2is/admin.remote-userstores.v1@1.0.0
+  - @wso2is/admin.core.v1@2.27.3
+  - @wso2is/admin.applications.v1@2.23.21
+  - @wso2is/admin.connections.v1@2.21.63
+  - @wso2is/admin.extensions.v1@2.24.6
+  - @wso2is/admin.groups.v1@2.20.133
+  - @wso2is/admin.identity-providers.v1@2.21.63
+  - @wso2is/admin.organizations.v1@2.21.26
+  - @wso2is/admin.users.v1@2.21.5
+  - @wso2is/admin.api-resources.v2@2.20.133
+  - @wso2is/admin.server-configurations.v1@2.21.75
+  - @wso2is/admin.userstores.v1@2.20.133
+
 ## 2.20.132
 
 ### Patch Changes
