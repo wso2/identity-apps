@@ -73,6 +73,7 @@ module.exports = [
             "./admin.impersonation.v1/public-api.ts",
             "./admin.provisioning.v1/public-api.ts",
             "./admin.remote-repository-configuration.v1/public-api.ts",
+            "./admin.remote-userstores.v1/public-api.ts",
             "./admin.roles.v2/public-api.ts",
             "./admin.saml2-configuration.v1/public-api.ts",
             "./admin.secrets.v1/public-api.ts",
@@ -148,6 +149,7 @@ module.exports = [
                         "./admin.provisioning.v1": "./admin.provisioning.v1/public-api.js",
                         "./admin.remote-repository-configuration.v1":
                             "./admin.remote-repository-configuration.v1/public-api.js",
+                        "./admin.remote-userstores.v1": "./admin.remote-userstores.v1/public-api.js",
                         "./admin.roles.v2": "./admin.roles.v2/public-api.js",
                         "./admin.saml2-configuration.v1": "./admin.saml2-configuration.v1/public-api.js",
                         "./admin.secrets.v1": "./admin.secrets.v1/public-api.js",
