@@ -1,5 +1,31 @@
 # @wso2is/admin.extensions.v1
 
+## 2.24.7
+
+### Patch Changes
+
+- [#6804](https://github.com/wso2/identity-apps/pull/6804) [`b2af4ec80a8e2d58b82ef855636ef4fb51d442b5`](https://github.com/wso2/identity-apps/commit/b2af4ec80a8e2d58b82ef855636ef4fb51d442b5) Thanks [@brionmario](https://github.com/brionmario)! - Add missing `@wso2is/admin.remote-userstores.v1` dependency
+
+- Updated dependencies []:
+  - @wso2is/admin.api-resources.v1@2.20.134
+  - @wso2is/admin.applications.v1@2.23.22
+  - @wso2is/admin.authentication.v1@2.20.134
+  - @wso2is/admin.claims.v1@2.20.134
+  - @wso2is/admin.connections.v1@2.21.64
+  - @wso2is/admin.core.v1@2.27.4
+  - @wso2is/admin.groups.v1@2.20.134
+  - @wso2is/admin.identity-providers.v1@2.21.64
+  - @wso2is/admin.organizations.v1@2.21.27
+  - @wso2is/admin.remote-userstores.v1@1.0.1
+  - @wso2is/admin.roles.v2@2.21.1
+  - @wso2is/admin.server-configurations.v1@2.21.76
+  - @wso2is/admin.sms-providers.v1@2.20.134
+  - @wso2is/admin.tenants.v1@2.21.6
+  - @wso2is/admin.users.v1@2.21.6
+  - @wso2is/admin.userstores.v1@2.20.134
+  - @wso2is/admin.validation.v1@2.20.134
+  - @wso2is/admin.provisioning.v1@2.20.134
+
 ## 2.24.6
 
 ### Patch Changes
