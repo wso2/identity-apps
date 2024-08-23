@@ -45,8 +45,8 @@
                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
            } else if (errorMessage.equalsIgnoreCase("Can't identify organization")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.discovery.input");
-           } else if (errorMessage.equalsIgnoreCase("Organization discovery type is invalid or not enabled")) {
-                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.discovery.type");
+           } else if (errorMessage.equalsIgnoreCase("invalid.organization.discovery.type")) {
+               errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.discovery.type");
            } else if (isErrorFallbackLocale) {
                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
            }
