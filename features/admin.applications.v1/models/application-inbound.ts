@@ -130,6 +130,7 @@ interface AccessTokenConfigurationInterface {
     accessTokenAttributes?: string[];
     accessTokenAttributesEnabled?: boolean;
 }
+
 interface RefreshTokenConfigurationInterface {
     expiryInSeconds?: number;
     renewRefreshToken?: boolean;

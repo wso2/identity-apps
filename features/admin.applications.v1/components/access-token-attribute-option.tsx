@@ -60,9 +60,9 @@ export const AccessTokenAttributeOption: FunctionComponent<AccessTokenAttributeO
     return (
         <li { ...renderOptionProps }>
             <Grid container justifyContent="space-between" alignItems="center" xs={ 12 }>
-                <Grid container alignItems="center" xs={ 8 }>
+                <Grid container alignItems="top" xs={ 8 }>
                     <Grid>
-                        <Checkbox checked={ selected } />
+                        <Checkbox checked={ selected } style={ { padding: "4px" } }/>
                     </Grid>
                     <Grid xs={ 5 }>
                         <ListItemText primary={ displayName } />

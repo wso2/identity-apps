@@ -309,7 +309,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const requestObjectSigningAlg: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const requestObjectEncryptionAlgorithm: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const requestObjectEncryptionMethod: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const accessTokenAttributesEnabledConfig: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const subjectToken: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const applicationSubjectTokenExpiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
 
@@ -2731,7 +2730,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     </Trans>
                                                 </Alert>
                                                 <Field
-                                                    ref={ accessTokenAttributesEnabledConfig }
                                                     name="accessTokenAttributesEnabledConfig"
                                                     label=""
                                                     required={ false }
@@ -2756,13 +2754,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                         }
                                                     ] }
                                                     readOnly={ readOnly }
-                                                    data-testid={ `${ testId }-access-token-attributes-enabled-checkbox` }
+                                                    data-testid={
+                                                        `${ testId }-access-token-attributes-enabled-checkbox`
+                                                    }
                                                 />
                                             </Grid.Column>
                                         ) }
                                         <Grid.Column width={ 8 }>
                                             <Autocomplete
-                                                className="ui form field access-token-attributes-dropdown"
+                                                className="access-token-attributes-dropdown"
                                                 size="small"
                                                 disablePortal
                                                 multiple
@@ -2770,26 +2770,26 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 loading={ isLoading }
                                                 options={ accessTokenAttributes }
                                                 value={ selectedAccessTokenAttributes ?? [] }
-                                                disabled = { !initialValues?.accessToken?.accessTokenAttributesEnabled }
-                                                data-componentid={ `${ componentId }-assigned-access-token-attribute-list` }
+                                                disabled={ !initialValues?.accessToken?.accessTokenAttributesEnabled }
+                                                data-componentid={
+                                                    `${ componentId }-assigned-access-token-attribute-list`
+                                                }
                                                 getOptionLabel={
                                                     (claim: ExternalClaim) => claim.claimURI
                                                 }
                                                 renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                    <>
-                                                        <InputLabel htmlFor="tags-filled" disableAnimation shrink={ false }>
-                                                            { t(
+                                                    <TextField
+                                                        label={
+                                                            t(
                                                                 "applications:forms.inboundOIDC.sections" +
                                                                 ".accessToken.fields.accessTokenAttributes.label"
-                                                            ) }
-                                                        </InputLabel>
-                                                        <TextField
-                                                            className="access-token-attributes-dropdown-input"
-                                                            { ...params }
-                                                            placeholder={ t("applications:forms.inboundOIDC.sections" +
-                                                            ".accessToken.fields.accessTokenAttributes.placeholder") }
-                                                        />
-                                                    </>
+                                                            )
+                                                        }
+                                                        className="access-token-attributes-dropdown-input"
+                                                        { ...params }
+                                                        placeholder={ t("applications:forms.inboundOIDC.sections" +
+                                                        ".accessToken.fields.accessTokenAttributes.placeholder") }
+                                                    />
                                                 ) }
                                                 onChange={ (event: SyntheticEvent, claims: ExternalClaim[]) => {
                                                     setIsFormStale(true);
@@ -2843,6 +2843,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 the <Code withBackground>access_token</Code>.
                                                 </Trans>
                                             </Hint>
+                                            <AccessTokenAttributeOption
+                                                selected={ false }
+                                                displayName="name"
+                                                claimURI="uri"
+                                                renderOptionProps={ {} }
+                                            />
                                         </Grid.Column>
                                     </Grid.Row>
                                 ) : null }
