@@ -2843,12 +2843,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 the <Code withBackground>access_token</Code>.
                                                 </Trans>
                                             </Hint>
-                                            <AccessTokenAttributeOption
-                                                selected={ false }
-                                                displayName="name"
-                                                claimURI="uri"
-                                                renderOptionProps={ {} }
-                                            />
                                         </Grid.Column>
                                     </Grid.Row>
                                 ) : null }

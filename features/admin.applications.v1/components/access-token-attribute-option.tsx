@@ -26,6 +26,7 @@ import React, {
     HTMLAttributes,
     ReactElement
 } from "react";
+import "./access-token-attribute-option.scss";
 
 interface AccessTokenAttributeOption extends IdentifiableComponentInterface {
     /**
@@ -62,7 +63,7 @@ export const AccessTokenAttributeOption: FunctionComponent<AccessTokenAttributeO
             <Grid container justifyContent="space-between" alignItems="center" xs={ 12 }>
                 <Grid container alignItems="top" xs={ 8 }>
                     <Grid>
-                        <Checkbox checked={ selected } style={ { padding: "4px" } }/>
+                        <Checkbox checked={ selected } className="access-token-attribute-option-checkbox"/>
                     </Grid>
                     <Grid xs={ 5 }>
                         <ListItemText primary={ displayName } />
