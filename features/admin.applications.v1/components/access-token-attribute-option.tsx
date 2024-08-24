@@ -28,7 +28,7 @@ import React, {
 } from "react";
 import "./access-token-attribute-option.scss";
 
-interface AccessTokenAttributeOption extends IdentifiableComponentInterface {
+interface AccessTokenAttributeOptionPropsInterface extends IdentifiableComponentInterface {
     /**
      * Is the option selected.
      */
@@ -47,8 +47,8 @@ interface AccessTokenAttributeOption extends IdentifiableComponentInterface {
     renderOptionProps: HTMLAttributes<HTMLLIElement>
 }
 
-export const AccessTokenAttributeOption: FunctionComponent<AccessTokenAttributeOption> = (
-    props: AccessTokenAttributeOption
+export const AccessTokenAttributeOption: FunctionComponent<AccessTokenAttributeOptionPropsInterface> = (
+    props: AccessTokenAttributeOptionPropsInterface
 ): ReactElement => {
 
     const {
