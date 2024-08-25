@@ -368,7 +368,9 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                 return (
                     <Alert severity="info">
                         <AlertTitle
-                            className="alert-title">
+                            className="alert-title"
+                            data-componentid={ `${ _componentId }-authentication-info-box-title` }
+                        >
                             <Trans
                                 i18nKey={
                                     authenticationType === AuthenticationType.NONE ?
@@ -688,7 +690,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                     } }
                     ariaLabel="endpointUri"
                     required={ true }
-                    data-componentid={ `${ _componentId }-action-name` }
+                    data-componentid={ `${ _componentId }-action-endpointUri` }
                     name="endpointUri"
                     type="text"
                     label={ t("actions:fields.endpoint.label") }
