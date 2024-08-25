@@ -1,5 +1,15 @@
 # @wso2is/admin.actions.v1
 
+## 1.0.24
+
+### Patch Changes
+
+- [#6811](https://github.com/wso2/identity-apps/pull/6811) [`fa4abc1547b12fa195310a289365bee4ae8e3ff2`](https://github.com/wso2/identity-apps/commit/fa4abc1547b12fa195310a289365bee4ae8e3ff2) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix data-componentids in actions component
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.7
+  - @wso2is/admin.extensions.v1@2.24.10
+
 ## 1.0.23
 
 ### Patch Changes
