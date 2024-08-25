@@ -209,7 +209,10 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
 
         if (count > 0) {
             return (
-                <div className="status-tag">
+                <div
+                    className="status-tag"
+                    data-componentid={ `${ _componentId }-${ actionType }-configured-status-tag` }
+                >
                     <CircleCheckFilledIcon className="icon-configured"/>
                     <Typography  className="text-configured" variant="h6">
                         { t("actions:status.configured") }
@@ -218,7 +221,10 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             );
         } else {
             return (
-                <div className="status-tag">
+                <div
+                    className="status-tag"
+                    data-componentid={ `${ _componentId }-${ actionType }-not-configured-status-tag` }
+                >
                     <Typography  className="text-not-configured" variant="h6">
                         {  t("actions:status.notConfigured") }
                     </Typography>
