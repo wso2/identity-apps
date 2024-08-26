@@ -1,5 +1,78 @@
 # @wso2is/admin.impersonation.v1
 
+## 1.1.80
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.8
+  - @wso2is/admin.server-configurations.v1@2.21.80
+
+## 1.1.79
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.7
+  - @wso2is/admin.server-configurations.v1@2.21.79
+
+## 1.1.78
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.6
+  - @wso2is/admin.server-configurations.v1@2.21.78
+
+## 1.1.77
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.5
+  - @wso2is/admin.server-configurations.v1@2.21.77
+
+## 1.1.76
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.4
+  - @wso2is/admin.server-configurations.v1@2.21.76
+
+## 1.1.75
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.3
+  - @wso2is/admin.server-configurations.v1@2.21.75
+
+## 1.1.74
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.2
+  - @wso2is/admin.server-configurations.v1@2.21.74
+
+## 1.1.73
+
+### Patch Changes
+
+- Updated dependencies [[`087a548e2f5c4565b6da489ff1632154c566772f`](https://github.com/wso2/identity-apps/commit/087a548e2f5c4565b6da489ff1632154c566772f)]:
+  - @wso2is/i18n@2.5.23
+  - @wso2is/admin.core.v1@2.27.1
+  - @wso2is/admin.server-configurations.v1@2.21.73
+
+## 1.1.72
+
+### Patch Changes
+
+- Updated dependencies [[`6fd5b32c01294438785c9f6ac9ad15ad310036f8`](https://github.com/wso2/identity-apps/commit/6fd5b32c01294438785c9f6ac9ad15ad310036f8)]:
+  - @wso2is/admin.core.v1@2.27.0
+  - @wso2is/admin.server-configurations.v1@2.21.72
+
 ## 1.1.71
 
 ### Patch Changes

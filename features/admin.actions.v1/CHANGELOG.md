@@ -1,5 +1,80 @@
 # @wso2is/admin.actions.v1
 
+## 1.0.25
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.8
+  - @wso2is/admin.extensions.v1@2.24.11
+
+## 1.0.24
+
+### Patch Changes
+
+- [#6811](https://github.com/wso2/identity-apps/pull/6811) [`fa4abc1547b12fa195310a289365bee4ae8e3ff2`](https://github.com/wso2/identity-apps/commit/fa4abc1547b12fa195310a289365bee4ae8e3ff2) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix data-componentids in actions component
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.7
+  - @wso2is/admin.extensions.v1@2.24.10
+
+## 1.0.23
+
+### Patch Changes
+
+- Updated dependencies [[`1d8f2a9b051645e69100e76bf49b452fc0ff0f8e`](https://github.com/wso2/identity-apps/commit/1d8f2a9b051645e69100e76bf49b452fc0ff0f8e)]:
+  - @wso2is/admin.extensions.v1@2.24.9
+  - @wso2is/admin.core.v1@2.27.6
+
+## 1.0.22
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.extensions.v1@2.24.8
+  - @wso2is/admin.core.v1@2.27.5
+
+## 1.0.21
+
+### Patch Changes
+
+- Updated dependencies [[`b2af4ec80a8e2d58b82ef855636ef4fb51d442b5`](https://github.com/wso2/identity-apps/commit/b2af4ec80a8e2d58b82ef855636ef4fb51d442b5)]:
+  - @wso2is/admin.extensions.v1@2.24.7
+  - @wso2is/admin.core.v1@2.27.4
+
+## 1.0.20
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.3
+  - @wso2is/admin.extensions.v1@2.24.6
+
+## 1.0.19
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.2
+  - @wso2is/admin.extensions.v1@2.24.5
+
+## 1.0.18
+
+### Patch Changes
+
+- Updated dependencies [[`087a548e2f5c4565b6da489ff1632154c566772f`](https://github.com/wso2/identity-apps/commit/087a548e2f5c4565b6da489ff1632154c566772f)]:
+  - @wso2is/i18n@2.5.23
+  - @wso2is/admin.core.v1@2.27.1
+  - @wso2is/admin.extensions.v1@2.24.4
+
+## 1.0.17
+
+### Patch Changes
+
+- Updated dependencies [[`6fd5b32c01294438785c9f6ac9ad15ad310036f8`](https://github.com/wso2/identity-apps/commit/6fd5b32c01294438785c9f6ac9ad15ad310036f8)]:
+  - @wso2is/admin.core.v1@2.27.0
+  - @wso2is/admin.extensions.v1@2.24.3
+
 ## 1.0.16
 
 ### Patch Changes

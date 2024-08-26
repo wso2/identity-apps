@@ -1,5 +1,96 @@
 # @wso2is/admin.provisioning.v1
 
+## 2.20.138
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.8
+  - @wso2is/admin.applications.v1@2.23.26
+  - @wso2is/admin.connections.v1@2.21.68
+  - @wso2is/admin.identity-providers.v1@2.21.68
+
+## 2.20.137
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.7
+  - @wso2is/admin.applications.v1@2.23.25
+  - @wso2is/admin.connections.v1@2.21.67
+  - @wso2is/admin.identity-providers.v1@2.21.67
+
+## 2.20.136
+
+### Patch Changes
+
+- Updated dependencies [[`1d8f2a9b051645e69100e76bf49b452fc0ff0f8e`](https://github.com/wso2/identity-apps/commit/1d8f2a9b051645e69100e76bf49b452fc0ff0f8e)]:
+  - @wso2is/admin.applications.v1@2.23.24
+  - @wso2is/admin.connections.v1@2.21.66
+  - @wso2is/admin.core.v1@2.27.6
+  - @wso2is/admin.identity-providers.v1@2.21.66
+
+## 2.20.135
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.5
+  - @wso2is/admin.applications.v1@2.23.23
+  - @wso2is/admin.connections.v1@2.21.65
+  - @wso2is/admin.identity-providers.v1@2.21.65
+
+## 2.20.134
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.23.22
+  - @wso2is/admin.connections.v1@2.21.64
+  - @wso2is/admin.core.v1@2.27.4
+  - @wso2is/admin.identity-providers.v1@2.21.64
+
+## 2.20.133
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.3
+  - @wso2is/admin.applications.v1@2.23.21
+  - @wso2is/admin.connections.v1@2.21.63
+  - @wso2is/admin.identity-providers.v1@2.21.63
+
+## 2.20.132
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.23.20
+  - @wso2is/admin.core.v1@2.27.2
+  - @wso2is/admin.connections.v1@2.21.62
+  - @wso2is/admin.identity-providers.v1@2.21.62
+
+## 2.20.131
+
+### Patch Changes
+
+- Updated dependencies [[`087a548e2f5c4565b6da489ff1632154c566772f`](https://github.com/wso2/identity-apps/commit/087a548e2f5c4565b6da489ff1632154c566772f)]:
+  - @wso2is/i18n@2.5.23
+  - @wso2is/admin.applications.v1@2.23.19
+  - @wso2is/admin.core.v1@2.27.1
+  - @wso2is/admin.connections.v1@2.21.61
+  - @wso2is/admin.identity-providers.v1@2.21.61
+
+## 2.20.130
+
+### Patch Changes
+
+- Updated dependencies [[`6fd5b32c01294438785c9f6ac9ad15ad310036f8`](https://github.com/wso2/identity-apps/commit/6fd5b32c01294438785c9f6ac9ad15ad310036f8)]:
+  - @wso2is/admin.core.v1@2.27.0
+  - @wso2is/admin.applications.v1@2.23.18
+  - @wso2is/admin.connections.v1@2.21.60
+  - @wso2is/admin.identity-providers.v1@2.21.60
+
 ## 2.20.129
 
 ### Patch Changes

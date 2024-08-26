@@ -365,7 +365,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                         sectionHeader={ t("actions:dangerZoneGroup.header") }
                     >
                         <DangerZone
-                            data-componentid={ `${ _componentId }-delete-action-of-type-${ actionTypeApiPath}` }
+                            data-componentid={ `${ _componentId }-danger-zone` }
                             actionTitle={
                                 t("actions:dangerZoneGroup.revertConfig.actionTitle")
                             }

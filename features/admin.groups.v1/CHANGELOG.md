@@ -1,5 +1,119 @@
 # @wso2is/admin.groups.v1
 
+## 2.20.138
+
+### Patch Changes
+
+- [#6816](https://github.com/wso2/identity-apps/pull/6816) [`4d0dd2ebaddb56b874140873665c759913542949`](https://github.com/wso2/identity-apps/commit/4d0dd2ebaddb56b874140873665c759913542949) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix test id in groups user assign button
+
+* [#6807](https://github.com/wso2/identity-apps/pull/6807) [`7ef03d17b51408970bef290acb6a48b222e89524`](https://github.com/wso2/identity-apps/commit/7ef03d17b51408970bef290acb6a48b222e89524) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve UX in assigned users view in group edit view
+
+* Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.8
+  - @wso2is/admin.extensions.v1@2.24.11
+  - @wso2is/admin.organizations.v1@2.21.31
+  - @wso2is/admin.roles.v2@2.21.5
+  - @wso2is/admin.users.v1@2.21.10
+  - @wso2is/admin.userstores.v1@2.20.138
+
+## 2.20.137
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.7
+  - @wso2is/admin.extensions.v1@2.24.10
+  - @wso2is/admin.organizations.v1@2.21.30
+  - @wso2is/admin.roles.v2@2.21.4
+  - @wso2is/admin.users.v1@2.21.9
+  - @wso2is/admin.userstores.v1@2.20.137
+
+## 2.20.136
+
+### Patch Changes
+
+- Updated dependencies [[`1d8f2a9b051645e69100e76bf49b452fc0ff0f8e`](https://github.com/wso2/identity-apps/commit/1d8f2a9b051645e69100e76bf49b452fc0ff0f8e)]:
+  - @wso2is/admin.extensions.v1@2.24.9
+  - @wso2is/admin.core.v1@2.27.6
+  - @wso2is/admin.organizations.v1@2.21.29
+  - @wso2is/admin.roles.v2@2.21.3
+  - @wso2is/admin.users.v1@2.21.8
+  - @wso2is/admin.userstores.v1@2.20.136
+
+## 2.20.135
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.extensions.v1@2.24.8
+  - @wso2is/admin.roles.v2@2.21.2
+  - @wso2is/admin.core.v1@2.27.5
+  - @wso2is/admin.organizations.v1@2.21.28
+  - @wso2is/admin.users.v1@2.21.7
+  - @wso2is/admin.userstores.v1@2.20.135
+
+## 2.20.134
+
+### Patch Changes
+
+- Updated dependencies [[`b2af4ec80a8e2d58b82ef855636ef4fb51d442b5`](https://github.com/wso2/identity-apps/commit/b2af4ec80a8e2d58b82ef855636ef4fb51d442b5)]:
+  - @wso2is/admin.extensions.v1@2.24.7
+  - @wso2is/admin.core.v1@2.27.4
+  - @wso2is/admin.organizations.v1@2.21.27
+  - @wso2is/admin.roles.v2@2.21.1
+  - @wso2is/admin.users.v1@2.21.6
+  - @wso2is/admin.userstores.v1@2.20.134
+
+## 2.20.133
+
+### Patch Changes
+
+- Updated dependencies [[`7f46b3c3677d7650b18871f76cfa66e4c9bff685`](https://github.com/wso2/identity-apps/commit/7f46b3c3677d7650b18871f76cfa66e4c9bff685)]:
+  - @wso2is/admin.roles.v2@2.21.0
+  - @wso2is/admin.core.v1@2.27.3
+  - @wso2is/admin.extensions.v1@2.24.6
+  - @wso2is/admin.organizations.v1@2.21.26
+  - @wso2is/admin.users.v1@2.21.5
+  - @wso2is/admin.userstores.v1@2.20.133
+
+## 2.20.132
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.2
+  - @wso2is/admin.extensions.v1@2.24.5
+  - @wso2is/admin.organizations.v1@2.21.25
+  - @wso2is/admin.roles.v2@2.20.132
+  - @wso2is/admin.users.v1@2.21.4
+  - @wso2is/admin.userstores.v1@2.20.132
+
+## 2.20.131
+
+### Patch Changes
+
+- Updated dependencies [[`087a548e2f5c4565b6da489ff1632154c566772f`](https://github.com/wso2/identity-apps/commit/087a548e2f5c4565b6da489ff1632154c566772f)]:
+  - @wso2is/admin.users.v1@2.21.3
+  - @wso2is/i18n@2.5.23
+  - @wso2is/admin.core.v1@2.27.1
+  - @wso2is/admin.extensions.v1@2.24.4
+  - @wso2is/admin.organizations.v1@2.21.24
+  - @wso2is/admin.roles.v2@2.20.131
+  - @wso2is/admin.authorization.v1@2.20.55
+  - @wso2is/admin.userstores.v1@2.20.131
+
+## 2.20.130
+
+### Patch Changes
+
+- Updated dependencies [[`6fd5b32c01294438785c9f6ac9ad15ad310036f8`](https://github.com/wso2/identity-apps/commit/6fd5b32c01294438785c9f6ac9ad15ad310036f8)]:
+  - @wso2is/admin.core.v1@2.27.0
+  - @wso2is/admin.extensions.v1@2.24.3
+  - @wso2is/admin.organizations.v1@2.21.23
+  - @wso2is/admin.roles.v2@2.20.130
+  - @wso2is/admin.users.v1@2.21.2
+  - @wso2is/admin.userstores.v1@2.20.130
+
 ## 2.20.129
 
 ### Patch Changes

@@ -33,8 +33,8 @@ import classnames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ApplicationTemplateConstants } from "../constants/templates";
-import "./application-template-card.scss";
 import { ApplicationTemplateFeatureStatus, SupportedTechnologyMetadataInterface } from "../models/templates";
+import "./application-template-card.scss";
 
 /**
  * Props for the application template card component.
@@ -124,6 +124,21 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
         }
     };
 
+    /**
+     * Resolve the corresponding class name for the current feature status label.
+     *
+     * @param featureStatus - Feature status from the template.
+     * @returns The class name for the feature status label.
+     */
+    const resolveFeatureLabelClass = (featureStatus: ApplicationTemplateFeatureStatus) => {
+        switch (featureStatus) {
+            case ApplicationTemplateFeatureStatus.COMING_SOON:
+                return "oxygen-chip-coming-soon";
+            case ApplicationTemplateFeatureStatus.NEW:
+                return "oxygen-chip-new";
+        }
+    };
+
     return (
         <Card
             key={ template?.id }
@@ -139,20 +154,6 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
             }
             data-componentid={ `${componentId}-${template?.id}` }
         >
-            {
-                featureStatus
-                    ? (
-                        <div
-                            className={ classnames("application-template-ribbon", {
-                                "coming-soon": featureStatus === ApplicationTemplateFeatureStatus.COMING_SOON,
-                                "new": featureStatus === ApplicationTemplateFeatureStatus.NEW
-                            }) }
-                        >
-                            { resolveRibbonLabel(featureStatus) }
-                        </div>
-                    )
-                    : null
-            }
             <CardContent className="application-template-header">
                 <div className="application-template-image-container">
                     <img
@@ -171,6 +172,20 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
                         { template?.name }
                     </Typography>
                 </div>
+                {
+                    featureStatus
+                        ? (
+                            <div
+                                className={ classnames("application-template-ribbon",
+                                    resolveFeatureLabelClass(featureStatus) ) }
+                            >
+                                <span className="MuiChip-label">
+                                    { resolveRibbonLabel(featureStatus) }
+                                </span>
+                            </div>
+                        )
+                        : null
+                }
             </CardContent>
             <CardContent className="application-template-body">
                 <Tooltip title={ template?.description }>
@@ -186,6 +201,7 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
                             (technology: SupportedTechnologyMetadataInterface) => (
                                 <Avatar
                                     sx={ { height: 20, width: 20 } }
+                                    variant="square"
                                     key={ technology?.displayName }
                                     className="application-template-supported-technology"
                                     alt={ technology?.displayName }

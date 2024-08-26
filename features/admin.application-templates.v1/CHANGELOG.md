@@ -1,5 +1,88 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.0.26
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.8
+  - @wso2is/admin.applications.v1@2.23.26
+  - @wso2is/admin.template-core.v1@1.0.26
+
+## 1.0.25
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.7
+  - @wso2is/admin.applications.v1@2.23.25
+  - @wso2is/admin.template-core.v1@1.0.25
+
+## 1.0.24
+
+### Patch Changes
+
+- Updated dependencies [[`1d8f2a9b051645e69100e76bf49b452fc0ff0f8e`](https://github.com/wso2/identity-apps/commit/1d8f2a9b051645e69100e76bf49b452fc0ff0f8e)]:
+  - @wso2is/admin.applications.v1@2.23.24
+  - @wso2is/admin.core.v1@2.27.6
+  - @wso2is/admin.template-core.v1@1.0.24
+
+## 1.0.23
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.5
+  - @wso2is/admin.applications.v1@2.23.23
+  - @wso2is/admin.template-core.v1@1.0.23
+
+## 1.0.22
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.23.22
+  - @wso2is/admin.core.v1@2.27.4
+  - @wso2is/admin.template-core.v1@1.0.22
+
+## 1.0.21
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.3
+  - @wso2is/admin.applications.v1@2.23.21
+  - @wso2is/admin.template-core.v1@1.0.21
+
+## 1.0.20
+
+### Patch Changes
+
+- [#6796](https://github.com/wso2/identity-apps/pull/6796) [`8c688ec9a38cbc0d65759b4c3a3aa05a44142ad1`](https://github.com/wso2/identity-apps/commit/8c688ec9a38cbc0d65759b4c3a3aa05a44142ad1) Thanks [@Achintha444](https://github.com/Achintha444)! - Fix Inconsistency with "New" Flag in M2M Application Template card.
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.23.20
+  - @wso2is/admin.core.v1@2.27.2
+  - @wso2is/admin.template-core.v1@1.0.20
+
+## 1.0.19
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.23.19
+  - @wso2is/admin.core.v1@2.27.1
+  - @wso2is/admin.template-core.v1@1.0.19
+
+## 1.0.18
+
+### Patch Changes
+
+- Updated dependencies [[`6fd5b32c01294438785c9f6ac9ad15ad310036f8`](https://github.com/wso2/identity-apps/commit/6fd5b32c01294438785c9f6ac9ad15ad310036f8)]:
+  - @wso2is/admin.core.v1@2.27.0
+  - @wso2is/admin.applications.v1@2.23.18
+  - @wso2is/admin.template-core.v1@1.0.18
+
 ## 1.0.17
 
 ### Patch Changes
