@@ -1,5 +1,13 @@
 # @wso2is/admin.actions.v1
 
+## 1.0.28
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.11
+  - @wso2is/admin.extensions.v1@2.24.14
+
 ## 1.0.27
 
 ### Patch Changes
