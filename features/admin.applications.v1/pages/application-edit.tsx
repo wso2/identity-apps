@@ -16,6 +16,10 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
+import AlertTitle from "@oxygen-ui/react/AlertTitle";
+import Card from "@oxygen-ui/react/Card";
+import Grid from "@oxygen-ui/react/Grid";
 import { useRequiredScopes } from "@wso2is/access-control";
 import ApplicationTemplateMetadataProvider from
     "@wso2is/admin.application-templates.v1/provider/application-template-metadata-provider";
@@ -33,21 +37,27 @@ import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/m
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { Field, Forms } from "@wso2is/forms";
 import {
     AnimatedAvatar,
     AppAvatar,
+    ConfirmationModal,
+    Hint,
     LabelWithPopup,
     Popup,
     TabPageLayout
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { Label } from "semantic-ui-react";
+import { CardContent, Divider, Label } from "semantic-ui-react";
+import { updateAuthProtocolConfig } from "../api/application";
 import { useGetApplication } from "../api/use-get-application";
+import useGetApplicationInboundConfigs from "../api/use-get-application-inbound-configs";
 import { EditApplication } from "../components/edit-application";
 import { InboundProtocolDefaultFallbackTemplates } from "../components/meta/inbound-protocols.meta";
 import { ApplicationManagementConstants } from "../constants";
@@ -57,6 +67,7 @@ import {
     ApplicationAccessTypes,
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
+    OIDCDataInterface,
     State,
     SupportedAuthProtocolTypes,
     idpInfoTypeInterface
@@ -64,6 +75,9 @@ import {
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 import "./application-edit.scss";
+import { Typography } from "@mui/material";
+import Button from "@oxygen-ui/react/Button";
+import classNames from "classnames";
 
 /**
  * Prop types for the applications edit page component.
@@ -128,6 +142,44 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         mutate: mutateApplicationGetRequest,
         error: applicationGetRequestError
     } = useGetApplication(applicationId, !!applicationId);
+
+    const [ viewBannerDetails, setViewBannerDetails ] = useState<boolean>(false);
+    const [ displayBanner, setDisplayBanner ] = useState<boolean>(false);
+    const {
+        data: applicationInboundConfigData,
+        isLoading: isBannerDataLoading
+    } = useGetApplicationInboundConfigs(application?.id, SupportedAuthProtocolTypes.OIDC, !!application?.id);
+    const [ applicationInboundConfig, setApplicationInboundConfig ] = useState<OIDCDataInterface>(undefined);
+    const [ useClientIdAsSubClaimForAppTokens, setUseClientIdAsSubClaimForAppTokens ] = useState<boolean>(false);
+    const [ omitUsernameInIntrospectionRespForAppTokens, setOmitUsernameInIntrospectionRespForAppTokens ]
+        = useState<boolean>(false);
+    const useClientIdAsSubClaimForAppTokensElement: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const omitUsernameInIntrospectionRespForAppTokensElement: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const [ bannerUpdateLoading, setBannerUpdateLoading ] = useState<boolean>(false);
+    const [ showConfirmationModal, setShowConfirmationModal ] = useState<boolean>(false);
+    const [ formData, setFormdata ] = useState<any>(undefined);
+
+    /**
+     * Loads banner data.
+     */
+    useEffect(() => {
+        if (!isBannerDataLoading) {
+            setApplicationInboundConfig(applicationInboundConfigData);
+        }
+    }, [ applicationInboundConfigData, isBannerDataLoading ]);
+
+    /**
+     * Assign loaded banner data into config states.
+     */
+    useEffect(() => {
+        if (applicationInboundConfig != undefined) {
+            setUseClientIdAsSubClaimForAppTokens(applicationInboundConfig.useClientIdAsSubClaimForAppTokens);
+            setOmitUsernameInIntrospectionRespForAppTokens(applicationInboundConfig
+                .omitUsernameInIntrospectionRespForAppTokens);
+            setDisplayBanner(!applicationInboundConfig.useClientIdAsSubClaimForAppTokens
+                || !applicationInboundConfig.omitUsernameInIntrospectionRespForAppTokens);
+        }
+    }, [ applicationInboundConfig ]);
 
     /**
      * Load the template that the application is built on.
@@ -506,6 +558,354 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         return null;
     };
 
+    /**
+     * Resolves the application banner content.
+     *
+     * @returns Alert banner.
+     */
+    const resolveAlertBanner = (): ReactElement => {
+
+        const classes: any = classNames( { "application-outdated-alert-expanded-view": viewBannerDetails } );
+
+        return (
+            !isBannerDataLoading && displayBanner &&
+                (
+                    <>
+                        {
+                            <>
+                                <Alert
+                                    className={ classes }
+                                    severity="warning"
+                                    action={
+                                        (
+                                            <>
+                                                <Button
+                                                    onClick={ () => setViewBannerDetails(!viewBannerDetails) }>
+                                                    { t("applications:forms.inboundOIDC.sections"
+                                                        + ".legacyApplicationTokens.alert.viewButton") }
+                                                </Button>
+                                                <Button
+                                                    className="ignore-once-button"
+                                                    onClick={ () => setDisplayBanner(false) }>
+                                                    { t("applications:forms.inboundOIDC.sections"
+                                                        + ".legacyApplicationTokens.alert.cancelButton") }
+                                                </Button>
+                                            </>
+                                        )
+                                    }
+                                >
+                                    <AlertTitle className="alert-title">
+                                        <Trans components={ { strong: <strong/> } } >
+                                            { t("applications:forms.inboundOIDC.sections.legacyApplicationTokens"
+                                                + ".alert.title") }
+                                        </Trans>
+                                    </AlertTitle>
+                                    <Trans>
+                                        { t("applications:forms.inboundOIDC.sections.legacyApplicationTokens"
+                                                    + ".alert.content") }
+                                    </Trans>
+                                </Alert>
+                                <Card
+                                    className="banner-detail-card"
+                                    hidden={ !viewBannerDetails }
+                                >
+                                    <CardContent>
+                                        { resolveBannerViewDetails() }
+                                    </CardContent>
+                                </Card>
+                            </>
+                        }
+                        <Divider hidden />
+                    </>
+                )
+        );
+    };
+
+    /**
+     * Resolves the application banner view details section.
+     *
+     * @returns Alert banner details.
+     */
+    const resolveBannerViewDetails = (): ReactElement => {
+
+        return (
+            <Forms onSubmit={ handleBannerCheckBoxUpdate }>
+                <Grid>
+                    <Typography component="div">
+                        <Trans
+                            i18nKey={
+                                t("applications:forms.inboundOIDC.sections"
+                                        + ".legacyApplicationTokens.fields."
+                                        + "commonInstruction")
+                            }>
+                            Change the customer-end applications accordingly to recieve the below updates.
+                        </Trans>
+                    </Typography>
+                    <ol>
+                        <li>
+                            <Trans
+                                i18nKey={
+                                    t("applications:forms.inboundOIDC.sections"
+                                        + ".legacyApplicationTokens.fields."
+                                        + "useClientIdAsSubClaimForAppTokens.label")
+                                }>
+                            </Trans>
+                            {
+                                !applicationInboundConfig
+                                    .useClientIdAsSubClaimForAppTokens && (
+                                    <>
+                                        <Field
+                                            ref={ useClientIdAsSubClaimForAppTokensElement }
+                                            name="useClientIdAsSubClaimForAppTokens"
+                                            required={ false }
+                                            type="checkbox"
+                                            disabled={ false }
+                                            value={ useClientIdAsSubClaimForAppTokens ?
+                                                [ "useClientIdAsSubClaimForAppTokens" ]
+                                                : [] }
+                                            readOnly={ false }
+                                            data-componentId={
+                                                `${ componentId }-use-client-id-as-sub-claim-for-app-tokens` }
+                                            children={ [
+                                                {
+                                                    label: t("applications:forms.inboundOIDC.sections."
+                                                    + "legacyApplicationTokens.fields"
+                                                    + ".useClientIdAsSubClaimForAppTokens.label"),
+                                                    value: "useClientIdAsSubClaimForAppTokens"
+                                                }
+                                            ] }
+                                            listen={ () =>
+                                                setUseClientIdAsSubClaimForAppTokens(
+                                                    !useClientIdAsSubClaimForAppTokens) }
+                                        />
+                                        <Hint>
+                                            { t("applications:forms.inboundOIDC.sections.legacyApplicationTokens."
+                                                + "fields.useClientIdAsSubClaimForAppTokens.hint") }
+                                        </Hint>
+                                    </>
+                                )
+                            }
+                        </li>
+                        {
+                            (!omitUsernameInIntrospectionRespForAppTokens
+                            && !useClientIdAsSubClaimForAppTokens) &&
+                        (
+                            <Divider hidden />
+                        )
+                        }
+                        <li>
+                            <Trans
+                                i18nKey={
+                                    t("applications:forms.inboundOIDC.sections"
+                                        + ".legacyApplicationTokens.fields."
+                                        + "omitUsernameInIntrospectionRespForAppTokens.label")
+                                }>
+                                Application access token, Introspection response will not include
+                                the <code>username</code> attribute.
+                            </Trans>
+                            {
+                                (!applicationInboundConfig
+                                    .omitUsernameInIntrospectionRespForAppTokens) &&
+                                (
+                                    <>
+                                        <Field
+                                            ref={ omitUsernameInIntrospectionRespForAppTokensElement }
+                                            name="omitUsernameInIntrospectionRespForAppTokens"
+                                            required={ false }
+                                            type="checkbox"
+                                            disabled={ false }
+                                            value={ omitUsernameInIntrospectionRespForAppTokens ?
+                                                [ "omitUsernameInIntrospectionRespForAppTokens" ]
+                                                : [] }
+                                            readOnly={ false }
+                                            data-componentId={
+                                                `${ componentId }-omit-username-in-introspection-resp-for-app-tokens` }
+                                            children={ [
+                                                {
+                                                    label: t("applications:forms.inboundOIDC.sections"
+                                                    + ".legacyApplicationTokens.fields."
+                                                    + "omitUsernameInIntrospectionRespForAppTokens.label"),
+                                                    value: "omitUsernameInIntrospectionRespForAppTokens"
+                                                }
+                                            ] }
+                                            listen={ () => setOmitUsernameInIntrospectionRespForAppTokens(
+                                                !omitUsernameInIntrospectionRespForAppTokens)
+                                            }
+                                        />
+                                        <Hint>
+                                            { t("applications:forms.inboundOIDC.sections.legacyApplicationTokens."
+                                            + "fields.omitUsernameInIntrospectionRespForAppTokens.hint") }
+                                        </Hint>
+                                    </>
+                                )
+                            }
+                        </li>
+                    </ol>
+                </Grid>
+                <Button
+                    variant="contained"
+                    disabled={ !useClientIdAsSubClaimForAppTokens && !omitUsernameInIntrospectionRespForAppTokens }
+                    type="submit"
+                    data-componentId={ `${componentId}-application-update-banner-button` }
+                >
+                    { t("common:update") }
+                </Button>
+                { showConfirmationModal && confirmationModal() }
+            </Forms>
+        );
+    };
+
+    /**
+     * Resolves the update confirmation modal.
+     *
+     * @returns Confirmation modal.
+     */
+    const confirmationModal = () => {
+
+        return (
+            <ConfirmationModal
+                primaryActionLoading={ bannerUpdateLoading }
+                data-testid={ `${ componentId }-confirmation-modal` }
+                onClose={ (): void => setShowConfirmationModal(false) }
+                type="negative"
+                open={ showConfirmationModal }
+                assertionHint={ t("applications:forms.inboundOIDC.sections.legacyApplicationTokens"
+                    + ".confirmationModal.assertionHint") }
+                assertionType="checkbox"
+                primaryAction="Confirm"
+                secondaryAction="Cancel"
+                onSecondaryActionClick={ (): void =>{
+                    setShowConfirmationModal(false);
+                } }
+                onPrimaryActionClick={ handleBannerCheckBoxUpdateConfirmation }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header data-testid={ `${ componentId }-confirmation-modal-header` }>
+                    { t("applications:forms.inboundOIDC.sections.legacyApplicationTokens"
+                        + ".confirmationModal.header") }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message
+                    data-testid={ `${ componentId }-confirmation-modal-message` }
+                    attached
+                    negative
+                >
+                    { t("applications:forms.inboundOIDC.sections.legacyApplicationTokens"
+                        + ".confirmationModal.message") }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content data-testid={ `${ componentId }-confirmation-modal-content` }>
+                    { t("applications:forms.inboundOIDC.sections.legacyApplicationTokens"
+                        + ".confirmationModal.content") }
+                    <ol>
+                        { formData["useClientIdAsSubClaimForAppTokens"] && (
+                            <li>
+                                {
+                                    t("applications:forms.inboundOIDC.sections"
+                                        + ".legacyApplicationTokens.fields."
+                                        + "useClientIdAsSubClaimForAppTokens.label")
+                                }
+                            </li>
+                        )
+                        }
+                        { formData["omitUsernameInIntrospectionRespForAppTokens"] && (
+                            <li>
+                                {
+                                    t("applications:forms.inboundOIDC.sections"
+                                        + ".legacyApplicationTokens.fields."
+                                        + "omitUsernameInIntrospectionRespForAppTokens.label")
+                                }
+                            </li>
+                        )
+                        }
+                    </ol>
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        );
+    };
+
+    /**
+     * Handles banner content update action which prepares data.
+     */
+    const handleBannerCheckBoxUpdate = (formDataValues: any) => {
+
+        // Todo: check if we need to send all configs. Though the method is PUT, it works as a PATCH.
+        let values: any = { ...applicationInboundConfig };
+
+        if (formDataValues.get("omitUsernameInIntrospectionRespForAppTokens")){
+            values = {
+                ...values,
+                omitUsernameInIntrospectionRespForAppTokens:
+                    formDataValues.get("omitUsernameInIntrospectionRespForAppTokens")?.length > 0
+            };
+        } else {
+            values = {
+                ...values,
+                omitUsernameInIntrospectionRespForAppTokens: omitUsernameInIntrospectionRespForAppTokens
+            };
+        }
+
+        if (formDataValues.get("useClientIdAsSubClaimForAppTokens")) {
+            values = {
+                ...values,
+                useClientIdAsSubClaimForAppTokens:
+                formDataValues.get("useClientIdAsSubClaimForAppTokens")?.length > 0
+            };
+        } else {
+            values = {
+                ...values,
+                useClientIdAsSubClaimForAppTokens: useClientIdAsSubClaimForAppTokens
+            };
+        }
+
+        setFormdata({ ...values });
+        setShowConfirmationModal(true);
+    };
+
+    /**
+     * Handles the banner data update action.
+     */
+    const handleBannerCheckBoxUpdateConfirmation = async (): Promise<void> => {
+
+        setBannerUpdateLoading(true);
+
+        return updateAuthProtocolConfig<OIDCDataInterface>(application?.id, formData, SupportedAuthProtocolTypes.OIDC)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("applications:notifications.updateInboundProtocolConfig" +
+                            ".success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("applications:notifications.updateInboundProtocolConfig" +
+                            ".success.message")
+                }));
+            })
+            .catch((error: AxiosError) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("applications:notifications.updateInboundProtocolConfig" +
+                                ".error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("applications:notifications.updateInboundProtocolConfig" +
+                            ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:notifications.updateInboundProtocolConfig" +
+                            ".genericError.message")
+                }));
+            }).finally(() => {
+                setUseClientIdAsSubClaimForAppTokens(formData.useClientIdAsSubClaimForAppTokens);
+                setOmitUsernameInIntrospectionRespForAppTokens(formData.omitUsernameInIntrospectionRespForAppTokens);
+                setDisplayBanner(!formData.useClientIdAsSubClaimForAppTokens ||
+                    !formData.omitUsernameInIntrospectionRespForAppTokens);
+                setShowConfirmationModal(false);
+                setBannerUpdateLoading(false);
+            });
+    };
+
     return (
         <TabPageLayout
             pageTitle="Edit Application"
@@ -575,6 +975,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 text: isConnectedAppsRedirect ? t("idp:connectedApps.applicationEdit.back",
                     { idpName: callBackIdpName }) : t("console:develop.pages.applicationsEdit.backButton")
             } }
+            alertBanner={ resolveAlertBanner() }
             titleTextAlign="left"
             bottomMargin={ false }
             pageHeaderMaxWidth={ true }

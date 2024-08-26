@@ -19,3 +19,19 @@
 .application-branding-link {
     cursor: pointer;
 }
+
+.ignore-once-button {
+    color: #788997;
+}
+
+.banner-detail-card {
+    border: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    background: #fff;
+}
+
+.application-outdated-alert-expanded-view {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
