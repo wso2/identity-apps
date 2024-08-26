@@ -29,7 +29,7 @@ import {
     UserFlowIcon
 } from "@oxygen-ui/react-icons";
 import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
-import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,

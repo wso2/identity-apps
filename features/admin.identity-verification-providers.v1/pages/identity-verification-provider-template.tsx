@@ -21,6 +21,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "@wso2is/admin.core.v1";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader, EmptyPlaceholder,
@@ -33,7 +34,6 @@ import cloneDeep from "lodash-es/cloneDeep";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router";
-import FeatureStatusLabel from "../../admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { useIDVPTemplateTypeMetadataList } from "../api";
 import { IdvpCreateWizard } from "../components/wizards/idvp-create-wizard";
 import { IdentityVerificationProviderConstants } from "../constants";

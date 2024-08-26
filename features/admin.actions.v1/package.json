@@ -13,6 +13,7 @@
         "@wso2is/access-control": "^3.0.21",
         "@wso2is/admin.core.v1": "^2.27.13",
         "@wso2is/admin.extensions.v1": "^2.24.16",
+        "@wso2is/admin.feature-gate.v1": "^0.0.0",
         "@wso2is/core": "^2.0.61",
         "@wso2is/form": "^2.1.6",
         "@wso2is/i18n": "^2.5.24",

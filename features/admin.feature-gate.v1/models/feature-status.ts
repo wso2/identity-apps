@@ -16,11 +16,13 @@
  * under the License.
  */
 
-export * from "./extensions-manager";
-export * from "./models";
-export * from "./configs";
-
-export { featureGateConfig } from "./configs/feature-gate";
-export { TenantTier } from "./components/subscription/models/subscription";
-export { default as useTenantTier } from "./components/subscription/api/subscription";
-export { SubscriptionProvider } from "./components/subscription/providers/subscription-provider";
+/**
+ * Enum that lists the currently defined feature status label types and their corresponding i18n keys.
+ */
+export enum FeatureStatusLabel {
+    NEW = "common:new",
+    BETA = "common:beta",
+    EXPERIMENTAL = "common:experimental",
+    PREMIUM = "common:premium",
+    COMING_SOON = "common:comingSoon"
+}
