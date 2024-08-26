@@ -16,8 +16,11 @@
  * under the License.
  */
 
-import { AdvancedSearchWithBasicFilters, UIConstants,
-    getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import {
+    AdvancedSearchWithBasicFilters,
+    UIConstants,
+    getEmptyPlaceholderIllustrations
+} from "@wso2is/admin.core.v1";
 import {
     CreateGroupMemberInterface,
     GroupsInterface,

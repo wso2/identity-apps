@@ -18,7 +18,6 @@
 
 import { SharedUserStoreConstants, SharedUserStoreUtils } from "@wso2is/admin.core.v1";
 import { CreateGroupFormData, SearchGroupInterface, searchGroupList } from "@wso2is/admin.groups.v1";
-import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, Validation } from "@wso2is/forms";
@@ -28,7 +27,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
-import { commonConfig } from "../../../configs/common";
+import { userstoresConfig } from "../../../configs/userstores";
 
 /**
  * Interface to capture group basics props.
@@ -67,7 +66,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
     const validateGroupNamePattern = async (): Promise<string> => {
         let userStoreRegEx: string = "";
 
-        await SharedUserStoreUtils.getUserStoreRegEx(CONSUMER_USERSTORE,
+        await SharedUserStoreUtils.getUserStoreRegEx(userstoresConfig.primaryUserstoreName,
             SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
             .then((response: string) => {
                 setRegExLoading(true);
@@ -93,7 +92,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
      */
     const getFormValues = (values: any): CreateGroupFormData => {
         return {
-            domain: commonConfig?.primaryUserstoreOnly ? PRIMARY_USERSTORE : CONSUMER_USERSTORE,
+            domain: userstoresConfig.primaryUserstoreName,
             groupName: values.get("groupName").toString()
         };
     };
@@ -136,7 +135,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                 }
 
                                 const searchData: SearchGroupInterface = {
-                                    filter: `displayName eq  ${ CONSUMER_USERSTORE }/${ value }`,
+                                    filter: `displayName eq  ${ userstoresConfig.primaryUserstoreName }/${ value }`,
                                     schemas: [
                                         "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
                                     ],

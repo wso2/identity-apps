@@ -27,7 +27,6 @@ import {
 } from "@wso2is/admin.groups.v1/models";
 import { updateRole } from "@wso2is/admin.roles.v2/api";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models";
-import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -40,7 +39,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Grid, Icon, Modal } from "semantic-ui-react";
 import { AddGroupUsers } from "./group-assign-users";
-import { commonConfig } from "../../../configs";
+import { userstoresConfig } from "../../../configs/userstores";
 
 /**
  * Interface which captures create group props.
@@ -103,8 +102,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>(undefined);
-    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(
-        commonConfig?.primaryUserstoreOnly ? PRIMARY_USERSTORE : CONSUMER_USERSTORE);
+    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(userstoresConfig.primaryUserstoreName);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();

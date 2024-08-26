@@ -33,6 +33,8 @@ export class GroupsConstants {
 
     public static readonly DEBOUNCE_TIMEOUT: number = 1000;
 
+    public static readonly APPLICATION_FETCH_LIMIT: number = 100;
+
     /**
      * Get the paths necessary for the groups page.
      *

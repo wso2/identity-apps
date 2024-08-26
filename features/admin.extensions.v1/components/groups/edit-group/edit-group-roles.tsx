@@ -16,10 +16,17 @@
  * under the License.
  */
 
-import { getApplicationList } from "@wso2is/admin.applications.v1/api";
-import { ApplicationListInterface, ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models";
-import { getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
-import { GroupsInterface } from "@wso2is/admin.groups.v1";
+import { useRequiredScopes } from "@wso2is/access-control";
+import { getApplicationList } from "@wso2is/admin.applications.v1/api/application";
+import {
+    ApplicationListInterface,
+    ApplicationListItemInterface
+} from "@wso2is/admin.applications.v1/models/application";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -56,7 +63,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Checkbox, Divider, Grid, Header, Icon, Input, Label, Modal, Table } from "semantic-ui-react";
 import {
     getAllApplicationRolesList,
@@ -100,7 +107,13 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
     const { getLink } = useDocumentation();
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
-    const [ appList, setAppList ] = useState<ApplicationListItemInterface[]>(null);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const hasUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applicationRoles?.scopes?.update);
+
+    const [ appList, setAppList ] = useState<ApplicationListItemInterface[]>([]);
+    const [ fetchedAppList, setFetchedAppList ] = useState<ApplicationListItemInterface[]>([]);
+    const [ totalAppCount, setTotalAppCount ] = useState<number>(-1);
     const [ allApplicationRoleList, setAllApplicationRoleList ] = useState<ApplicationRoleInterface[]>([]);
     const [ selectedApplicationRoleList, setSelectedApplicationRoleList ] = useState<ApplicationRoleInterface[]>([]);
     const [
@@ -113,6 +126,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
     ] = useState<ApplicationRoleInterface[]>([]);
     const [ isAssignedRolesFetchRequestLoading, setIsAssignedRolesFetchRequestLoading ] = useState<boolean>(true);
     const [ isApplicationRolesFetchRequestLoading, setIsApplicationRolesFetchRequestLoading ] = useState<boolean>(true);
+    const [ isInitialApplicationsFetchRequestLoading, setIsInitialApplicationFetchRequestLoading ] =
+        useState<boolean>(true);
     const [ isApplicationsFetchRequestLoading, setIsApplicationFetchRequestLoading ] = useState<boolean>(true);
     const [ showAssignApplicationRolesModal, setShowAssignApplicationRolesModal ] = useState<boolean>(false);
 
@@ -125,9 +140,41 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
-        getApplicationList(null, null, null)
+        if (appList) {
+            getAssignedApplicationRoles();
+            getAllApplicationRoles();
+        }
+        if(appList?.length === totalAppCount) {
+            setIsApplicationFetchRequestLoading(false);
+        }
+    }, [ group, appList ]);
+
+    useEffect(() => {
+        getAllApplications(null);
+    }, []);
+
+    useEffect(() => {
+        setAppList([ ...appList, ...fetchedAppList ]);
+    }, [ fetchedAppList ]);
+
+    useEffect(() => {
+        if (!isInitialApplicationsFetchRequestLoading && totalAppCount > 0) {
+            const remainingIterations: number = Math.ceil((totalAppCount/GroupsConstants.APPLICATION_FETCH_LIMIT)-1);
+
+            for (let i: number = 1; i <= remainingIterations; i += 1) {
+                getAllApplications(i*GroupsConstants.APPLICATION_FETCH_LIMIT);
+            }
+        }
+    }, [ totalAppCount, isInitialApplicationsFetchRequestLoading ]);
+
+    const getAllApplications = (offset: number) => {
+        getApplicationList(GroupsConstants.APPLICATION_FETCH_LIMIT, offset, null)
             .then((response: ApplicationListInterface) => {
-                setAppList(response.applications);
+
+                setFetchedAppList(response?.applications);
+                if (totalAppCount < 0) {
+                    setTotalAppCount(response?.totalResults);
+                }
             })
             .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -149,16 +196,9 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
                 }));
             })
             .finally(() => {
-                setIsApplicationFetchRequestLoading(false);
+                setIsInitialApplicationFetchRequestLoading(false);
             });
-    }, []);
-
-    useEffect(() => {
-        if (appList) {
-            getAssignedApplicationRoles();
-            getAllApplicationRoles();
-        }
-    }, [ group, appList ]);
+    };
 
     /*
     * Navigate to the API Resources page.
@@ -192,7 +232,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
                     title={ t("extensions:manage.groups.edit.roles.placeHolders.emptyList.title") }
                     subtitle={ [ t("extensions:manage.groups.edit.roles.placeHolders.emptyList.subtitles.0") ] }
                     action={
-                        !isReadOnly && (
+                        !isReadOnly && hasUpdatePermissions && (
                             <PrimaryButton
                                 data-componentid={ `${ componentId }-empty-assign-roles-button` }
                                 onClick={ openAssignApplicationRolesModal }
@@ -948,7 +988,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesListProps> = (props: Gr
                                                         floated="left"
                                                         size="small"
                                                     />
-                                                    { !isReadOnly && (
+                                                    { !isReadOnly && hasUpdatePermissions && (
                                                         <Popup
                                                             content= {
                                                                 t("extensions:manage.groups.edit.roles.editHoverText")

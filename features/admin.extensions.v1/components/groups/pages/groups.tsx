@@ -114,7 +114,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         error: groupListFetchRequestError,
         mutate: mutateGroupListFetchRequest,
         response: groupListFetchRequestResponse
-    } = useGroupList(userStore, excludeMembers);
+    } = useGroupList(userStore, excludeMembers, null, true);
 
     const {
         data: userStoreList,

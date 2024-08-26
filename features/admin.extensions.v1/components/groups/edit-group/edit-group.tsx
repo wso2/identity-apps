@@ -20,7 +20,6 @@ import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { GroupsInterface } from "@wso2is/admin.groups.v1";
 import { GroupConstants } from "@wso2is/admin.groups.v1/constants";
 import useGroupManagement from "@wso2is/admin.groups.v1/hooks/use-group-management";
-import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -35,6 +34,7 @@ import { BasicGroupDetails } from "./edit-group-basic";
 import { GroupRolesList } from "./edit-group-roles";
 import { GroupUsersList } from "./edit-group-users";
 import { ExtendedFeatureConfigInterface } from "../../../configs/models";
+import { userstoresConfig } from "../../../configs/userstores";
 import { UserStoreUtils } from "../../../utils/user-store-utils";
 import { getAllApplicationRolesList } from "../api";
 import { ApplicationRoleInterface } from "../models";
@@ -128,7 +128,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
             setReadOnly(true);
         }
 
-        if(userStore[0]?.toString() !== CONSUMER_USERSTORE) {
+        if (userStore[0]?.toString() !== userstoresConfig.primaryUserstoreName) {
             setUserstoreRemote(true);
         }
     }, [ group, readOnlyUserStoresList ]);
