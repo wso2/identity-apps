@@ -1645,14 +1645,32 @@ export const applications: ApplicationsNS = {
                 },
                 legacyApplicationTokens: {
                     heading: "Legacy Application Tokens",
+                    alert : {
+                        title: "Application is outdated.",
+                        content: "This application is using an outdated behavior for application tokens. "
+                            + "Please follow the below guideline before migrating to the new behavior.",
+                        viewButton: "View Details",
+                        cancelButton: "Ignore Once"
+                    },
+                    confirmationModal: {
+                        header: "Have you done the relevant changes?",
+                        message: "Proceeding the action without making relevant change will cause the client application behavior break.",
+                        content: "By confirming the action,",
+                        assertionHint: "Please confirm your action"
+                    },
                     fields: {
+                        commonInstruction: "Change the customer-end applications accordingly to recieve the below updates.",
                         useClientIdAsSubClaimForAppTokens: {
+                            instruction: "Application access token <code>sub</code> attribute will be"
+                                + "<code>client_id</code> generated for an application.",
                             label: "Set client_id as the sub claim value for Application tokens",
                             hint: "For application tokens, the sub claim was previosuly set to the "
                             + "application owner's user_id. However, to support a more industry standard "
                             + "solution, this value will be changed to the client ID for application tokens."
                         },
                         omitUsernameInIntrospectionRespForAppTokens: {
+                            instruction: "Application access token, Introspection response will not include"
+                                + "the <code>username</code> attribute.",
                             label: "Omit sending username claim in the Introspection response for Application tokens",
                             hint: "For access tokens, the previous behavior includes sending the username claim"
                             + " in the introspection response. However, to support a more industry standard"

@@ -1379,14 +1379,29 @@ export interface ApplicationsNS {
                 };
                 legacyApplicationTokens: {
                     heading: string;
+                    alert : {
+                        title: string;
+                        content: string;
+                        viewButton: string;
+                        cancelButton: string;
+                    }
+                    confirmationModal: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    },
                     fields: {
+                        commonInstruction: string;
                         useClientIdAsSubClaimForAppTokens: {
-                            label: string,
-                            hint: string
+                            instruction: string;
+                            label: string;
+                            hint: string;
                         };
                         omitUsernameInIntrospectionRespForAppTokens: {
-                            label: string,
-                            hint: string
+                            instruction: string;
+                            label: string;
+                            hint: string;
                         };
                     }
                 };
