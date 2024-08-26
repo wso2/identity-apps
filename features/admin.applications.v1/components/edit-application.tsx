@@ -1103,7 +1103,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         let defaultTab: number | string = 0;
 
-        if(applicationConfig.editApplication.extendTabs && template?.id !== CustomApplicationTemplate.id) {
+        if(applicationConfig.editApplication.extendTabs
+            && template?.id !== CustomApplicationTemplate.id
+            && !isSubOrganization()) {
             defaultTab = 1;
         }
 
