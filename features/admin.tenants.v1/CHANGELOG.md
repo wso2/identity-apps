@@ -1,5 +1,14 @@
 # @wso2is/admin.tenants.v1
 
+## 2.21.11
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.9
+  - @wso2is/admin.extensions.v1@2.24.12
+  - @wso2is/admin.organizations.v1@2.21.32
+
 ## 2.21.10
 
 ### Patch Changes
