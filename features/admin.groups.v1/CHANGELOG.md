@@ -1,5 +1,21 @@
 # @wso2is/admin.groups.v1
 
+## 2.20.138
+
+### Patch Changes
+
+- [#6816](https://github.com/wso2/identity-apps/pull/6816) [`4d0dd2ebaddb56b874140873665c759913542949`](https://github.com/wso2/identity-apps/commit/4d0dd2ebaddb56b874140873665c759913542949) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix test id in groups user assign button
+
+* [#6807](https://github.com/wso2/identity-apps/pull/6807) [`7ef03d17b51408970bef290acb6a48b222e89524`](https://github.com/wso2/identity-apps/commit/7ef03d17b51408970bef290acb6a48b222e89524) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve UX in assigned users view in group edit view
+
+* Updated dependencies []:
+  - @wso2is/admin.core.v1@2.27.8
+  - @wso2is/admin.extensions.v1@2.24.11
+  - @wso2is/admin.organizations.v1@2.21.31
+  - @wso2is/admin.roles.v2@2.21.5
+  - @wso2is/admin.users.v1@2.21.10
+  - @wso2is/admin.userstores.v1@2.20.138
+
 ## 2.20.137
 
 ### Patch Changes
