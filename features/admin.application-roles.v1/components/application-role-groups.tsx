@@ -20,14 +20,6 @@ import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import {
-    updateApplicationRoleMappedGroups,
-    useApplicationRoleMappedGroups
-} from "@wso2is/admin.extensions.v1/components/application/api";
-import {
-    ApplicationRoleGroupInterface,
-    ApplicationRoleGroupsUpdatePayloadInterface
-} from "@wso2is/admin.extensions.v1/components/application/models";
 import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { resolveUserstore } from "@wso2is/core/helpers";
@@ -52,6 +44,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Header, Icon, Input, SemanticICONS } from "semantic-ui-react";
 import AssignGroupWizard from "./assign-group-wizard";
+import { updateApplicationRoleMappedGroups, useApplicationRoleMappedGroups } from "../api/application-roles";
+import {
+    ApplicationRoleGroupInterface,
+    ApplicationRoleGroupsUpdatePayloadInterface
+} from "../models/application-roles";
 
 interface ApplicationRoleGroupsProps extends IdentifiableComponentInterface {
     appId: string;

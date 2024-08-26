@@ -56,7 +56,8 @@
                 "refreshToken": {
                     "expiryInSeconds": 86400,
                     "renewRefreshToken": true
-                }
+                },
+                "hybridFlowResponseType": "code_idtoken"
             }
         }
     }

@@ -19,8 +19,8 @@
 import { AutocompleteRenderGetTagProps } from "@oxygen-ui/react/Autocomplete";
 import Chip from "@oxygen-ui/react/Chip";
 import Typography from "@oxygen-ui/react/Typography";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { GroupsInterface, useGroupList } from "@wso2is/admin.groups.v1";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { AutocompleteFieldAdapter, FinalForm, FinalFormField } from "@wso2is/form";
 import { Hint, Message } from "@wso2is/react-components";
@@ -60,13 +60,12 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
         onSubmit,
         [ "data-componentid"]: componentId
     } = props;
-    const userStore: string = PRIMARY_USERSTORE;
 
     const { t } = useTranslation();
 
     const {
         data: groupList
-    } = useGroupList(userStore, "members", null, true);
+    } = useGroupList(userstoresConfig?.primaryUserstoreName, "members", null, true);
 
     const groupsAutocompleteOptions: GroupsAutoCompleteOption[] = useMemo(() => {
 

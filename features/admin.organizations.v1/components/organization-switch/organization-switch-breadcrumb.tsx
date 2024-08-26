@@ -18,7 +18,6 @@
 
 import { BasicUserInfo } from "@asgardeo/auth-react";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
 import { AppConstants, AppState, OrganizationType } from "@wso2is/admin.core.v1";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
@@ -64,38 +63,28 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
 
     const { switchOrganization } = useOrganizationSwitch();
 
-    const { legacyAuthzRuntime }  = useAuthorization();
-
     const { organizationType } = useGetCurrentOrganizationType();
 
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const tenantDomain: string = useSelector(
         (state: AppState) => state?.auth?.tenantDomain
     );
-    const isFirstLevelOrg: boolean = useSelector(
-        (state: AppState) => state?.organization?.isFirstLevelOrganization
-    );
+
+    const organizationId: string = useSelector((state: AppState) => state?.organization?.organization?.id);
+
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
     const shouldSendRequest: boolean = useMemo(() => {
-        if (legacyAuthzRuntime) {
-            return (
-                isFirstLevelOrg ||
-                window[ "AppUtils" ].getConfig().organizationName ||
-                tenantDomain === AppConstants.getSuperTenant()
-            );
-        }
-
         return (
             organizationType === OrganizationType.SUPER_ORGANIZATION ||
             organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
             organizationType === OrganizationType.SUBORGANIZATION ||
             tenantDomain === AppConstants.getSuperTenant()
         );
-    }, [ isFirstLevelOrg, organizationType, tenantDomain ]);
+    }, [ organizationType ]);
 
     const {
         data: breadcrumbListData,
@@ -106,6 +95,10 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     } = useGetOrganizationBreadCrumb(
         shouldSendRequest
     );
+
+    useEffect(() => {
+        mutateOrganizationBreadCrumbFetchRequest();
+    }, [ organizationId ]);
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
@@ -163,41 +156,6 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         organization: GenericOrganization,
         redirectToStart: boolean = true
     ): Promise<void> => {
-        if (legacyAuthzRuntime) {
-            let newOrgPath: string = "";
-
-            if (
-                breadcrumbList && breadcrumbList.length > 0 &&
-                OrganizationUtils.isSuperOrganization(breadcrumbList[ 0 ]) &&
-                breadcrumbList[ 1 ]?.id === organization.id &&
-                organizationConfigs.showSwitcherInTenants
-            ) {
-                newOrgPath =
-                    "/t/" +
-                    organization.name +
-                    "/" +
-                    window[ "AppUtils" ].getConfig().appBase;
-            } else if (OrganizationUtils.isSuperOrganization(organization)) {
-                newOrgPath = `/${ window[ "AppUtils" ].getConfig().appBase }`;
-            } else {
-                newOrgPath =
-                    "/o/" +
-                    organization.id +
-                    "/" +
-                    window[ "AppUtils" ].getConfig().appBase;
-            }
-
-            // Clear the callback url of the previous organization.
-            SessionStorageUtils.clearItemFromSessionStorage(
-                "auth_callback_url_console"
-            );
-
-            // Redirect the user to the newly selected organization path.
-            window.location.replace(newOrgPath);
-
-            return;
-        }
-
         let response: BasicUserInfo = null;
 
         try {

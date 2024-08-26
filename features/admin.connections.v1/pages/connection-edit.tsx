@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import {
     AppConstants,
     AppState,
@@ -27,11 +28,7 @@ import {
     AuthenticatorExtensionsConfigInterface,
     identityProviderConfig
 } from "@wso2is/admin.extensions.v1/configs";
-import {
-    EditMultiFactorAuthenticator
-} from "@wso2is/admin.identity-providers.v1/components/edit-multi-factor-authenticator";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -52,7 +49,6 @@ import React, {
     ReactElement,
     ReactNode,
     useEffect,
-    useMemo,
     useRef,
     useState
 } from "react";
@@ -71,8 +67,9 @@ import {
     getConnectionTemplates
 } from "../api/connections";
 import { EditConnection } from "../components/edit/connection-edit";
-import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
-import { ConnectionManagementConstants } from "../constants/connection-constants";
+import { EditMultiFactorAuthenticator } from "../components/edit/edit-multi-factor-authenticator";
+import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
+import { FederatedAuthenticatorConstants } from "../constants/federated-authenticator-constants";
 import { useSetConnectionTemplates } from "../hooks/use-connection-templates";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
@@ -139,7 +136,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         setConnectorDetailFetchRequestLoading
     ] = useState<boolean>(undefined);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const [ isDescTruncated, setIsDescTruncated ] = useState<boolean>(false);
     const [ tabIdentifier, setTabIdentifier ] = useState<string>();
@@ -150,10 +146,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         setConnectorMetaDataFetchRequestLoading
     ] = useState<boolean>(undefined);
 
-    const isReadOnly: boolean = useMemo(() => (
-        !hasRequiredScopes(
-            featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update, allowedScopes)
-    ), [ featureConfig, allowedScopes ]);
+    const isReadOnly: boolean = !(useRequiredScopes(featureConfig?.identityProviders?.scopes?.update));
     const { getLink } = useDocumentation();
 
     /**
@@ -241,8 +234,8 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         const path: string[] = location.pathname.split("/");
         const id: string = path[ path.length - 1 ];
 
-        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(identityProviderConfig
-            .authenticators, id);
+        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
+            AuthenticatorMeta.getAuthenticators(), id);
 
         if (authenticatorConfig?.isEnabled) {
             getMultiFactorAuthenticator(id, authenticatorConfig?.useAuthenticatorsAPI);
@@ -303,7 +296,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         }
 
         if (!connector.templateId) {
-            connector.templateId = ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID;
+            connector.templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE;
         }
 
         let template: ConnectionTemplateInterface = {};
@@ -313,23 +306,24 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             const authenticatorId: string = (connector as ConnectionInterface)
                 ?.federatedAuthenticators?.defaultAuthenticatorId;
 
-            if (authenticatorId === ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_ID) {
-                templateId = ConnectionManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK;
-            } else if (authenticatorId === ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
-                templateId = ConnectionManagementConstants.IDP_TEMPLATE_IDS.GOOGLE;
-            } else if (authenticatorId === ConnectionManagementConstants.OIDC_AUTHENTICATOR_ID) {
-                templateId = ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC;
-            } else if (authenticatorId === ConnectionManagementConstants.SAML_AUTHENTICATOR_ID) {
-                templateId = ConnectionManagementConstants.IDP_TEMPLATE_IDS.SAML;
-            } else if (authenticatorId === ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID) {
-                templateId = ConnectionManagementConstants.IDP_TEMPLATE_IDS.GITHUB;
-            } else if (authenticatorId === ConnectionManagementConstants.APPLE_AUTHENTICATOR_ID) {
-                templateId = ConnectionManagementConstants.IDP_TEMPLATE_IDS.APPLE;
+            if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID) {
+                templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK;
+            } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+                .GOOGLE_OIDC_AUTHENTICATOR_ID) {
+                templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE;
+            } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID) {
+                templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OIDC;
+            } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID) {
+                templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.SAML;
+            } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID) {
+                templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GITHUB;
+            } else if (authenticatorId === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID) {
+                templateId = CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.APPLE;
             }
         }
 
-        if (templateId === ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC ||
-            templateId === ConnectionManagementConstants.IDP_TEMPLATE_IDS.SAML) {
+        if (templateId === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OIDC ||
+            templateId === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.SAML) {
 
             const groupedTemplates: ConnectionTemplateInterface = UIConfig?.connectionTemplates
                 .find((template: ConnectionTemplateInterface) => {
@@ -355,10 +349,12 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return;
         }
 
-        if (identityProviderTemplate?.id === ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID ||
-            identityProviderTemplate?.id === ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID ||
-            identityProviderTemplate?.id === ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC ||
-            identityProviderTemplate?.id === ConnectionManagementConstants.IDP_TEMPLATE_IDS.SAML) {
+        if (identityProviderTemplate?.id
+                === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ||
+            identityProviderTemplate?.id
+                === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE ||
+            identityProviderTemplate?.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OIDC ||
+            identityProviderTemplate?.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.SAML) {
 
             return;
         }
@@ -447,7 +443,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
          * @param cb - Callback.
          * @returns Promise containing authenticator details.
          */
-        const getAuthenticatorDetails = <T extends unknown>(cb: (id: string) => Promise<T>) => {
+        const getAuthenticatorDetails = <T,>(cb: (id: string) => Promise<T>) => {
 
             cb(id)
                 .then((response: T) => {
@@ -527,8 +523,9 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return;
         }
 
-        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(identityProviderConfig
-            .authenticators, id);
+
+        const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
+            AuthenticatorMeta.getAuthenticators(), id);
 
         getMultiFactorAuthenticator(id, authenticatorConfig?.useAuthenticatorsAPI);
     };
@@ -666,11 +663,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             );
         }
 
-        if (connector.id === AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID) {
-            connector.displayName = identityProviderConfig.getOverriddenAuthenticatorDisplayName(
-                connector.id, connector.displayName);
-        }
-
         return connector.friendlyName || connector.displayName || connector.name;
     };
 
@@ -783,13 +775,13 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                                 (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
                                     ? undefined
                                     : (connector?.federatedAuthenticators?.defaultAuthenticatorId
-                                        === AuthenticatorManagementConstants.SAML_AUTHENTICATOR_ID)
+                                        === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID)
                             }
                             isOidc={
                                 (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
                                     ? undefined
                                     : (connector.federatedAuthenticators.defaultAuthenticatorId
-                                        === AuthenticatorManagementConstants.OIDC_AUTHENTICATOR_ID)
+                                        === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID)
                             }
                             data-testid={ testId }
                             template={ identityProviderTemplate }

@@ -135,7 +135,7 @@ export class GovernanceConnectorUtils {
             id: "VXNlciBPbmJvYXJkaW5n",
             name: "User Onboarding"
         }
-    ]
+    ];
 
     /**
      * Filter governance categories of a connector for a sub organization.
@@ -260,13 +260,6 @@ export class GovernanceConnectorUtils {
                         id: ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR_ID,
                         route: AppConstants.getPaths().get("SESSION_MANAGEMENT"),
                         testId: "session-management-card"
-                    },
-                    {
-                        description: "Authentication via JWT signed with client's registered key.",
-                        header: "Private Key JWT Client Authentication (OIDC)",
-                        id: ServerConfigurationsConstants.PRIVATE_KEY_JWT_CLIENT_AUTH,
-                        route: AppConstants.getPaths().get("PRIVATE_KEY_JWT_CONFIG_EDIT"),
-                        testId: "private-key-jwt-client-auth-card"
                     }
                 ],
                 displayOrder: 1,
@@ -379,6 +372,14 @@ export class GovernanceConnectorUtils {
                         route: AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
                         status: FeatureStatusLabel.NEW,
                         testId: "email-domain-discovery-card"
+                    },
+                    {
+                        description: I18n.instance.t("pages:impersonation.subTitle"),
+                        header: I18n.instance.t("pages:impersonation.title"),
+                        id: ServerConfigurationsConstants.IMPERSONATION,
+                        route: AppConstants.getPaths().get("IMPERSONATION"),
+                        status: FeatureStatusLabel.NEW,
+                        testId: "impersonation-card"
                     }
                 ],
                 displayOrder: 0,

@@ -16,9 +16,11 @@
  * under the License.
  */
 
+import { ApplicationTabComponentsFilter } from
+    "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
 import { AppState } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
@@ -28,7 +30,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Checkbox, CheckboxProps, Divider, Icon } from "semantic-ui-react";
+import { Checkbox, CheckboxProps, Divider, Grid, Icon } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
 import { ApplicationManagementConstants } from "../../../constants";
 import {
@@ -318,11 +320,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
      * @returns The hidden status.
      */
     const resolveSubjectAttributeHiddenStatus = (): boolean => {
-        return (
-            !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute ||
-            (onlyOIDCConfigured && !UIConfig?.legacyMode?.applicationOIDCSubjectIdentifier) ||
-            (onlyOIDCConfigured && !showSubjectAttribute)
-        );
+        return !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute ||
+                (onlyOIDCConfigured && !showSubjectAttribute)
+        ;
     };
 
     const validateLinkedAccountCheckboxHandler = (value: boolean) => {
@@ -419,307 +419,392 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     } }
                     triggerSubmit={ (submitFunction: FormEvent<HTMLFormElement>) => triggerSubmission(submitFunction) }
                 >
-                    { (
-                        !disabledFeatures?.includes("applications.attributes.alternativeSubjectIdentifier")
-                        || !disabledFeatures?.includes("applications.attributes.subjectType")
-                    ) && (
-                        <>
-                            <Divider />
-                            <Heading
-                                hidden={
-                                    !applicationConfig.attributeSettings.
-                                        advancedAttributeSettings.showSubjectAttribute
-                                }
-                                as="h4"
-                            >
-                                { t(
-                                    "applications:forms.advancedAttributeSettings." +
-                                "sections.subject.heading"
-                                ) }
-                            </Heading>
-                        </>
-                    ) }
-                    { (onlyOIDCConfigured &&
-                        !disabledFeatures?.includes("applications.attributes.alternativeSubjectIdentifier")) && (
-                        <>
-                            <Checkbox
-                                name= "enableAlternativeSubjectIdentifier"
-                                ariaLabel={ t("applications:forms.advancedAttributeSettings." +
-                                    "sections.subject.fields.alternateSubjectAttribute.label") }
-                                data-componentid={ `${ componentId }-reassign-subject-attribute-checkbox` }
-                                checked={ showSubjectAttribute }
-                                label={ t("applications:forms.advancedAttributeSettings." +
-                                    "sections.subject.fields.alternateSubjectAttribute.label") }
-                                onClick={ (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) =>
-                                    disableAlternativeSubjectIdentifier(data?.checked)
-                                }
-                                disabled={ readOnly }
-                            />
-                            <Hint>
-                                <Trans
-                                    i18nKey={ t("applications:forms." +
-                                        "advancedAttributeSettings.sections.subject.fields.alternateSubjectAttribute." +
-                                        "hint") }
-                                >
-                                    This option will allow to use an alternate attribute as the subject identifier
-                                    instead of the <Code withBackground>userid</Code>.
-                                </Trans>
-                            </Hint>
-                        </>
-                    ) }
-                    { resolveInfoSectionHiddenStatus() && (
-                        <Message info>
-                            <Icon name="info circle" />
-                            { t("applications:forms.advancedAttributeSettings" +
-                            ".sections.subject.fields.subjectAttribute.info") }
-                        </Message>
-                    ) }
-                    <Field.Dropdown
-                        ariaLabel="Subject attribute"
-                        name="subjectAttribute"
-                        label={
-                            t("applications:forms.advancedAttributeSettings" +
-                                ".sections.subject.fields.subjectAttribute.label")
-                        }
-                        placeholder = {
-                            t("applications:forms.advancedAttributeSettings" +
-                                ".sections.subject.fields.subjectAttribute.placeholder")
-                        }
-                        required={ claimMappingOn }
-                        value={ selectedSubjectValue }
-                        options={ dropDownOptions }
-                        hidden={ resolveDropDownHiddenStatus() }
-                        readOnly={ readOnly }
-                        data-testid={ `${ componentId }-subject-attribute-dropdown` }
-                        listen={ subjectAttributeChangeListener }
-                        enableReinitialize={ true }
-                        hint={ resolveSubjectAttributeHint() }
-                    />
-                    <Field.CheckboxLegacy
-                        ariaLabel="Subject include user domain"
-                        name="subjectIncludeUserDomain"
-                        label={ t("applications:forms.advancedAttributeSettings." +
-                            "sections.subject.fields.subjectIncludeUserDomain.label") }
-                        required={ false }
-                        value={ initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
-                        readOnly={ readOnly }
-                        data-testid={ `${ componentId }-subject-iInclude-user-domain-checkbox` }
-                        hidden={ disabledFeatures?.includes("applications.attributes" +
-                                        ".alternativeSubjectIdentifier")
-                            || resolveDropDownHiddenStatus() }
-                        hint={
-                            t("applications:forms.advancedAttributeSettings" +
-                                ".sections.subject.fields.subjectIncludeUserDomain.hint")
-                        }
-                    />
-                    <Field.CheckboxLegacy
-                        ariaLabel="Subject include tenant domain"
-                        name="subjectIncludeTenantDomain"
-                        label={
-                            t("applications:forms.advancedAttributeSettings" +
-                                ".sections.subject.fields.subjectIncludeTenantDomain.label")
-                        }
-                        required={ false }
-                        value={ initialSubject?.includeTenantDomain ? [ "includeTenantDomain" ] : [] }
-                        readOnly={ readOnly }
-                        data-testid={ `${ componentId }-subject-include-tenant-domain-checkbox` }
-                        hidden={ disabledFeatures?.includes("applications.attributes" +
-                                        ".alternativeSubjectIdentifier")
-                            || resolveDropDownHiddenStatus() }
-                        hint={
-                            t("applications:forms.advancedAttributeSettings" +
-                                ".sections.subject.fields.subjectIncludeTenantDomain.hint")
-                        }
-                    />
-                    <Divider hidden />
-                    { onlyOIDCConfigured
-                      && !disabledFeatures?.includes("applications.attributes.subjectType")
-                      && (
-                          <div>
-                              <Text>
-                                  {
-                                      t("applications:forms.advancedAttributeSettings" +
-                                        ".sections.subject.fields.subjectType.label")
-                                  }
-                              </Text>
-                              {
-                                  Object.keys(SubjectTypes)
-                                      .map((subjectTypeKey: SubjectTypes, index: number) => {
-                                          const subjectType: SubjectTypes
-                                            = SubjectTypes[subjectTypeKey];
+                    <Grid>
+                        <ApplicationTabComponentsFilter
+                            tabId={ ApplicationTabIDs.USER_ATTRIBUTES }
+                        >
+                            { (
+                                !disabledFeatures?.includes(
+                                    "applications.attributes.alternativeSubjectIdentifier")
+                                || !disabledFeatures?.includes("applications.attributes.subjectType")
+                            ) && applicationConfig?.attributeSettings?.advancedAttributeSettings
+                                ?.showSubjectAttribute && (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Divider />
+                                        <Heading as="h4">
+                                            { t(
+                                                "applications:forms.advancedAttributeSettings." +
+                                            "sections.subject.heading"
+                                            ) }
+                                        </Heading>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            ) }
+                            { (onlyOIDCConfigured &&
+                                !disabledFeatures?.includes(
+                                    "applications.attributes.alternativeSubjectIdentifier")) && (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Checkbox
+                                            name= "enableAlternativeSubjectIdentifier"
+                                            ariaLabel={ t("applications:forms.advancedAttributeSettings." +
+                                                "sections.subject.fields.alternateSubjectAttribute.label") }
+                                            data-componentid={
+                                                `${ componentId }-reassign-subject-attribute-checkbox` }
+                                            checked={ showSubjectAttribute }
+                                            label={ t("applications:forms.advancedAttributeSettings." +
+                                                "sections.subject.fields.alternateSubjectAttribute.label") }
+                                            onClick={
+                                                (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) =>
+                                                    disableAlternativeSubjectIdentifier(data?.checked)
+                                            }
+                                            disabled={ readOnly }
+                                        />
+                                        <Hint>
+                                            <Trans
+                                                i18nKey={ t("applications:forms." +
+                                                    "advancedAttributeSettings.sections.subject.fields." +
+                                                    "hint") }
+                                            >
+                                                This option will allow to use an alternate attribute as the subject
+                                                identifier instead of the <Code withBackground>userid</Code>.
+                                            </Trans>
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            ) }
+                            { resolveInfoSectionHiddenStatus() && (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Message info>
+                                            <Icon name="info circle" />
+                                            { t("applications:forms.advancedAttributeSettings" +
+                                            ".sections.subject.fields.subjectAttribute.info") }
+                                        </Message>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            ) }
+                            {
+                                !resolveDropDownHiddenStatus() && (
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <Field.Dropdown
+                                                ariaLabel="Subject attribute"
+                                                name="subjectAttribute"
+                                                label={
+                                                    t("applications:forms.advancedAttributeSettings" +
+                                                        ".sections.subject.fields.subjectAttribute.label")
+                                                }
+                                                placeholder = {
+                                                    t("applications:forms.advancedAttributeSettings" +
+                                                        ".sections.subject.fields.subjectAttribute.placeholder")
+                                                }
+                                                required={ claimMappingOn }
+                                                value={ selectedSubjectValue }
+                                                options={ dropDownOptions }
+                                                readOnly={ readOnly }
+                                                data-testid={ `${ componentId }-subject-attribute-dropdown` }
+                                                data-componentid={ `${ componentId }-subject-attribute-dropdown` }
+                                                listen={ subjectAttributeChangeListener }
+                                                enableReinitialize={ true }
+                                                hint={ resolveSubjectAttributeHint() }
+                                            />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
+                            {
+                                !(disabledFeatures?.includes("applications.attributes" +
+                                        ".alternativeSubjectIdentifier") || resolveDropDownHiddenStatus()) && (
+                                    <Grid.Row
+                                        columns={ 1 }
+                                        data-componentid="application-edit-user-attributes-include-user-domain"
+                                    >
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <Field.CheckboxLegacy
+                                                ariaLabel="Subject include user domain"
+                                                name="subjectIncludeUserDomain"
+                                                label={ t("applications:forms.advancedAttributeSettings." +
+                                                    "sections.subject.fields.subjectIncludeUserDomain.label") }
+                                                required={ false }
+                                                value={
+                                                    initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
+                                                readOnly={ readOnly }
+                                                data-testid={ `${ componentId }-subject-iInclude-user-domain-checkbox` }
+                                                hint={
+                                                    t("applications:forms.advancedAttributeSettings" +
+                                                        ".sections.subject.fields.subjectIncludeUserDomain.hint")
+                                                }
+                                            />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
+                            {
+                                !(disabledFeatures?.includes("applications.attributes" +
+                                    ".alternativeSubjectIdentifier") || resolveDropDownHiddenStatus()) && (
+                                    <Grid.Row
+                                        columns={ 1 }
+                                        data-componentid="application-edit-user-attributes-include-tenant-domain"
+                                    >
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <Field.CheckboxLegacy
+                                                ariaLabel="Subject include tenant domain"
+                                                name="subjectIncludeTenantDomain"
+                                                label={
+                                                    t("applications:forms.advancedAttributeSettings" +
+                                                        ".sections.subject.fields.subjectIncludeTenantDomain.label")
+                                                }
+                                                required={ false }
+                                                value={
+                                                    initialSubject?.includeTenantDomain
+                                                        ? [ "includeTenantDomain" ]
+                                                        : []
+                                                }
+                                                readOnly={ readOnly }
+                                                data-testid={
+                                                    `${ componentId }-subject-include-tenant-domain-checkbox` }
+                                                hint={
+                                                    t("applications:forms.advancedAttributeSettings" +
+                                                        ".sections.subject.fields.subjectIncludeTenantDomain.hint")
+                                                }
+                                            />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
+                            { onlyOIDCConfigured
+                              && !disabledFeatures?.includes("applications.attributes.subjectType") && (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Text>
+                                            {
+                                                t("applications:forms.advancedAttributeSettings" +
+                                                    ".sections.subject.fields.subjectType.label")
+                                            }
+                                        </Text>
+                                        {
+                                            Object.keys(SubjectTypes)
+                                                .map((subjectTypeKey: SubjectTypes, index: number) => {
+                                                    const subjectType: SubjectTypes
+                                                        = SubjectTypes[subjectTypeKey];
 
-                                          return (
-                                              <>
-                                                  <Field.Radio
-                                                      key={ index }
-                                                      ariaLabel={ `Subject type ${subjectType}` }
-                                                      name={ "subjectType" }
-                                                      value={ subjectType }
-                                                      label={ t("applications:forms" +
-                                                        ".advancedAttributeSettings.sections.subject.fields" +
-                                                        ".subjectType." + subjectType + ".label") }
-                                                      hint={ subjectType === SubjectTypes.PAIRWISE &&
-                                                            t("applications:forms" +
-                                                        ".advancedAttributeSettings.sections.subject.fields" +
-                                                        ".subjectType." + subjectType + ".hint") }
-                                                      checked={ selectedSubjectType === subjectType }
-                                                      listen={ () => {
-                                                          setSelectedSubjectType(subjectType);
-                                                      } }
-                                                      readOnly={ readOnly }
-                                                      data-componentId={
-                                                          `${ componentId }-subject-type-${ subjectType }-radio`
-                                                      }
-                                                  />
-                                              </>
-                                          );
-                                      })
-                              }
-                          </div>
-                      ) }
-                    { selectedSubjectType === SubjectTypes.PAIRWISE && (
-                        <Field.Input
-                            ariaLabel="Sector Identifier URI"
-                            inputType="url"
-                            name="sectorIdentifierURI"
-                            label={ t("applications:forms.advancedAttributeSettings" +
-                                ".sections.subject.fields.sectorIdentifierURI.label")
+                                                    return (
+                                                        <>
+                                                            <Field.Radio
+                                                                key={ index }
+                                                                ariaLabel={ `Subject type ${subjectType}` }
+                                                                name={ "subjectType" }
+                                                                value={ subjectType }
+                                                                label={ t("applications:forms" +
+                                                                    ".advancedAttributeSettings.sections.subject" +
+                                                                    ".fields.subjectType." + subjectType + ".label") }
+                                                                hint={ subjectType === SubjectTypes.PAIRWISE &&
+                                                                        t("applications:forms" +
+                                                                    ".advancedAttributeSettings.sections.subject" +
+                                                                    ".fields.subjectType." + subjectType + ".hint") }
+                                                                checked={ selectedSubjectType === subjectType }
+                                                                listen={ () => {
+                                                                    setSelectedSubjectType(subjectType);
+                                                                } }
+                                                                readOnly={ readOnly }
+                                                                data-componentId={
+                                                                    `${ componentId }-subject` +
+                                                                        `-type-${ subjectType }-radio`
+                                                                }
+                                                            />
+                                                        </>
+                                                    );
+                                                })
+                                        }
+                                    </Grid.Column>
+                                </Grid.Row>)
                             }
-                            required={ false }
-                            placeholder={
-                                t("applications:forms.advancedAttributeSettings" +
-                                    ".sections.subject.fields.sectorIdentifierURI.placeholder")
+                            { selectedSubjectType === SubjectTypes.PAIRWISE && (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Field.Input
+                                            ariaLabel="Sector Identifier URI"
+                                            inputType="url"
+                                            name="sectorIdentifierURI"
+                                            label={ t("applications:forms.advancedAttributeSettings" +
+                                                ".sections.subject.fields.sectorIdentifierURI.label")
+                                            }
+                                            required={ false }
+                                            placeholder={
+                                                t("applications:forms.advancedAttributeSettings" +
+                                                    ".sections.subject.fields.sectorIdentifierURI.placeholder")
+                                            }
+                                            hint={ t("applications:forms.advancedAttributeSettings" +
+                                                ".sections.subject.fields.sectorIdentifierURI.hint") }
+                                            readOnly={ readOnly }
+                                            maxLength={ 200 }
+                                            minLength={ 3 }
+                                            width={ 16 }
+                                            initialValue={ oidcInitialValues?.subject?.sectorIdentifierUri }
+                                            data-componentId={ `${ componentId }-sector-identifier-uri` }
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            ) }
+                            { applicationConfig?.attributeSettings?.advancedAttributeSettings
+                                ?.isLinkedAccountsEnabled(applicationTemplateId) &&
+                                (<Grid.Row
+                                    columns={ 1 }
+                                    data-componentid="application-edit-user-attributes-linked-accounts"
+                                >
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Divider />
+                                        <Heading
+                                            as="h4"
+                                        >
+                                            { t("applications:forms.advancedAttributeSettings." +
+                                                "sections.linkedAccounts.heading") }
+                                        </Heading>
+                                        <Heading as="h6" color="grey">
+                                            { t("applications:forms.advancedAttributeSettings." +
+                                                "sections.linkedAccounts.descriptionFederated") }
+                                        </Heading>
+                                    </Grid.Column>
+                                </Grid.Row>)
                             }
-                            hint={ t("applications:forms.advancedAttributeSettings" +
-                                ".sections.subject.fields.sectorIdentifierURI.hint") }
-                            readOnly={ readOnly }
-                            maxLength={ 200 }
-                            minLength={ 3 }
-                            width={ 16 }
-                            initialValue={ oidcInitialValues?.subject?.sectorIdentifierUri }
-                            data-componentId={ `${ componentId }-sector-identifier-uri` }
-                        />
-                    )
-                    }
-                    { applicationConfig.attributeSettings.advancedAttributeSettings
-                        .isLinkedAccountsEnabled(applicationTemplateId) &&
-                        (<>
-                            <Divider />
-                            <Heading
-                                as="h4"
-                            >
-                                { t("applications:forms.advancedAttributeSettings." +
-                                    "sections.linkedAccounts.heading") }
-                            </Heading>
-                            <Heading as="h6" color="grey">
-                                { t("applications:forms.advancedAttributeSettings." +
-                                    "sections.linkedAccounts.descriptionFederated") }
-                            </Heading>
-                        </>)
-                    }
-                    <Field.CheckboxLegacy
-                        listen={ validateLinkedAccountCheckboxHandler }
-                        disabled= { mandateLinkedLocalAccount }
-                        ariaLabel="Validate linked local account"
-                        name="validateLinkedLocalAccount"
-                        label={
-                            t("applications:forms.advancedAttributeSettings." +
-                            "sections.linkedAccounts.fields.validateLocalAccount.label")
-                        }
-                        required={ false }
-                        value={
-                            validateLinkedLocalAccount
-                                ? [ "useMappedLocalSubject" ]
-                                : []
-                        }
-                        readOnly={ readOnly }
-                        data-testid={ `${ componentId }-validate-linked-local-account-checkbox` }
-                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
-                            .isLinkedAccountsEnabled(applicationTemplateId) ||
-                            !applicationConfig.attributeSettings.advancedAttributeSettings
-                                .showValidateLinkedLocalAccount
-                        }
-                        hint={ t("applications:forms.advancedAttributeSettings." +
-                        "sections.linkedAccounts.fields.validateLocalAccount.hint") }
-                    />
-                    { applicationConfig.attributeSettings.advancedAttributeSettings
-                        .isLinkedAccountsEnabled(applicationTemplateId) &&
-                        applicationConfig.attributeSettings.advancedAttributeSettings
-                            .showMandateLinkedLocalAccount ? (<div className="ml-3">
-                            <Field.CheckboxLegacy
-                                listen={ mandateLinkedAccountCheckboxHandler }
-                                disabled= { !validateLinkedLocalAccount }
-                                ariaLabel="Mandate linked local account"
-                                name="mandateLinkedLocalAccount"
-                                label={
-                                    t("applications:forms.advancedAttributeSettings." +
-                                    "sections.linkedAccounts.fields.mandateLocalAccount.label")
-                                }
-                                required={ false }
-                                value={
-                                    mandateLinkedLocalAccount
-                                        ? [ "mappedLocalSubjectMandatory" ]
-                                        : []
-                                }
-                                readOnly={ readOnly }
-                                data-testid={ `${ componentId }-mandate-linked-local-account-checkbox` }
-                                hint={ t("applications:forms.advancedAttributeSettings." +
-                                "sections.linkedAccounts.fields.mandateLocalAccount.hint") }
-                            />
-                        </div>): null }
-                    <Divider
-                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
-                            .showRoleAttribute || !UIConfig?.legacyMode?.roleMapping }
-                    />
-                    {
-                        applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute &&
-                        UIConfig?.legacyMode?.roleMapping && (
-                            <>
-                                <Heading as="h4">
-                                    { t("applications:forms.advancedAttributeSettings" +
-                                        ".sections.role.heading") }
-                                </Heading>
-                            </>
-                        )
-                    }
-                    <Field.Dropdown
-                        ariaLabel="Role attribute"
-                        name="roleAttribute"
-                        label={
-                            t("applications:forms.advancedAttributeSettings" +
-                                ".sections.role.fields.roleAttribute.label")
-                        }
-                        required={ claimMappingOn }
-                        value={ initialRole?.claim?.uri }
-                        options={ dropDownOptions }
-                        readOnly={ readOnly }
-                        data-testid={ `${ componentId }-role-attribute-dropdown` }
-                        hidden={  !applicationConfig.attributeSettings.advancedAttributeSettings
-                            .showRoleAttribute || !UIConfig?.legacyMode?.roleMapping }
-                        hint={
-                            t("applications:forms.advancedAttributeSettings." +
-                                "sections.role.fields.roleAttribute.hint")
-                        }
-                    />
-                    <Field.CheckboxLegacy
-                        ariaLabel="Role"
-                        name="role"
-                        label={
-                            t("applications:forms.advancedAttributeSettings." +
-                                "sections.role.fields.role.label")
-                        }
-                        required={ false }
-                        value={ initialRole?.includeUserDomain ? [ "includeUserDomain" ] : [] }
-                        readOnly={ readOnly }
-                        data-testid={ `${ componentId }-role-checkbox` }
-                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
-                            .showIncludeUserstoreDomainRole ||
-                            !UIConfig?.legacyMode?.roleMapping }
-                        hint={
-                            t("applications:forms.advancedAttributeSettings." +
-                                "sections.role.fields.role.hint")
-                        }
-                    />
+                            {
+                                applicationConfig?.attributeSettings?.advancedAttributeSettings
+                                    ?.isLinkedAccountsEnabled(applicationTemplateId) &&
+                                applicationConfig?.attributeSettings?.advancedAttributeSettings
+                                    ?.showValidateLinkedLocalAccount && (
+                                    <Grid.Row
+                                        columns={ 1 }
+                                        data-componentid=
+                                            "application-edit-user-attributes--validate-linked-local-accounts"
+                                    >
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <Field.CheckboxLegacy
+                                                listen={ validateLinkedAccountCheckboxHandler }
+                                                disabled= { mandateLinkedLocalAccount }
+                                                ariaLabel="Validate linked local account"
+                                                name="validateLinkedLocalAccount"
+                                                label={
+                                                    t("applications:forms.advancedAttributeSettings." +
+                                                    "sections.linkedAccounts.fields.validateLocalAccount.label")
+                                                }
+                                                required={ false }
+                                                value={
+                                                    validateLinkedLocalAccount
+                                                        ? [ "useMappedLocalSubject" ]
+                                                        : []
+                                                }
+                                                readOnly={ readOnly }
+                                                data-testid={
+                                                    `${ componentId }-validate-linked-local-account-checkbox` }
+                                                hint={ t("applications:forms.advancedAttributeSettings." +
+                                                "sections.linkedAccounts.fields.validateLocalAccount.hint") }
+                                            />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
+                            { applicationConfig?.attributeSettings?.advancedAttributeSettings
+                                ?.isLinkedAccountsEnabled(applicationTemplateId) &&
+                                applicationConfig?.attributeSettings?.advancedAttributeSettings
+                                    ?.showMandateLinkedLocalAccount ? (<div className="ml-3">
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <Field.CheckboxLegacy
+                                                listen={ mandateLinkedAccountCheckboxHandler }
+                                                disabled= { !validateLinkedLocalAccount }
+                                                ariaLabel="Mandate linked local account"
+                                                name="mandateLinkedLocalAccount"
+                                                label={
+                                                    t("applications:forms.advancedAttributeSettings." +
+                                                    "sections.linkedAccounts.fields.mandateLocalAccount.label")
+                                                }
+                                                required={ false }
+                                                value={
+                                                    mandateLinkedLocalAccount
+                                                        ? [ "mappedLocalSubjectMandatory" ]
+                                                        : []
+                                                }
+                                                readOnly={ readOnly }
+                                                data-testid={ `${ componentId }-mandate-linked-local-account-checkbox` }
+                                                hint={ t("applications:forms.advancedAttributeSettings." +
+                                                "sections.linkedAccounts.fields.mandateLocalAccount.hint") }
+                                            />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </div>)
+                                : null
+                            }
+                            {
+                                applicationConfig?.attributeSettings?.advancedAttributeSettings
+                                    ?.showRoleAttribute &&
+                                UIConfig?.legacyMode?.roleMapping && (
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <Divider />
+                                            <Heading as="h4">
+                                                { t("applications:forms.advancedAttributeSettings" +
+                                                    ".sections.role.heading") }
+                                            </Heading>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
+                            {
+                                applicationConfig?.attributeSettings?.advancedAttributeSettings?.showRoleAttribute
+                                    && UIConfig?.legacyMode?.roleMapping && (
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <Field.Dropdown
+                                                ariaLabel="Role attribute"
+                                                name="roleAttribute"
+                                                label={
+                                                    t("applications:forms.advancedAttributeSettings" +
+                                                        ".sections.role.fields.roleAttribute.label")
+                                                }
+                                                required={ claimMappingOn }
+                                                value={ initialRole?.claim?.uri }
+                                                options={ dropDownOptions }
+                                                readOnly={ readOnly }
+                                                data-testid={ `${ componentId }-role-attribute-dropdown` }
+                                                hint={
+                                                    t("applications:forms.advancedAttributeSettings." +
+                                                        "sections.role.fields.roleAttribute.hint")
+                                                }
+                                            />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
+                            {
+                                applicationConfig?.attributeSettings?.advancedAttributeSettings
+                                    ?.showIncludeUserstoreDomainRole
+                                    && UIConfig?.legacyMode?.roleMapping && (
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <Field.CheckboxLegacy
+                                                ariaLabel="Role"
+                                                name="role"
+                                                label={
+                                                    t("applications:forms.advancedAttributeSettings." +
+                                                        "sections.role.fields.role.label")
+                                                }
+                                                required={ false }
+                                                value={ initialRole?.includeUserDomain ? [ "includeUserDomain" ] : [] }
+                                                readOnly={ readOnly }
+                                                data-testid={ `${ componentId }-role-checkbox` }
+                                                hint={
+                                                    t("applications:forms.advancedAttributeSettings." +
+                                                        "sections.role.fields.role.hint")
+                                                }
+                                            />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
+                        </ApplicationTabComponentsFilter>
+                    </Grid>
                 </Form>
             ) : null
     );

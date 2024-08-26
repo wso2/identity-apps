@@ -138,13 +138,13 @@ module.exports = {
             rules: {
                 "@typescript-eslint/ban-types": 1,
                 "@typescript-eslint/explicit-function-return-type": 0,
-                "@typescript-eslint/no-empty-function": [
-                    "error",
-                    {
-                        allow: [ "constructors" ]
-                    }
-                ],
+                // Temporary disable the no-empty-function rule.
+                // Refer: https://github.com/wso2/product-is/issues/20659
+                "@typescript-eslint/no-empty-function": "off",
                 "@typescript-eslint/no-explicit-any": 0,
+                // Temporary disable the `no-extra-semi` rule.
+                // Refer: https://github.com/wso2/product-is/issues/20659
+                "@typescript-eslint/no-extra-semi": 0,
                 "@typescript-eslint/no-inferrable-types": "off",
                 "@typescript-eslint/no-unused-vars": [
                     "warn",
@@ -181,9 +181,13 @@ module.exports = {
                 // In development, error level is set to `warn`. This will be overridden
                 // by the production env linting config.
                 "no-debugger": 1,
+                // Temporary disable the `no-extra-semi` rule.
+                // Refer: https://github.com/wso2/product-is/issues/20659
+                "no-extra-semi": 0,
                 // `no-undef` is discouraged in Typescript projects.
                 // https://github.com/typescript-eslint/typescript-eslint/issues/2477#issuecomment-686892459
                 "no-undef": 0,
+                "no-unsafe-optional-chaining": "off",
                 "no-use-before-define": "off",
                 "padding-line-between-statements": "off"
             },
@@ -262,6 +266,9 @@ module.exports = {
         "no-alert": 1,
         "no-console": "warn",
         "no-duplicate-imports": "warn",
+        // Temporary disable the `no-extra-semi` rule.
+        // Refer: https://github.com/wso2/product-is/issues/20659
+        "no-extra-semi": 0,
         "no-restricted-imports": [
             "error",
             {
@@ -291,6 +298,13 @@ module.exports = {
                     {
                         message: "Please use import foo from '@oxygen-ui/react/foo' instead.",
                         name: "@oxygen-ui/react"
+                    },
+                    {
+                        importNames: [ "hasRequiredScopes" ],
+                        message: "Please use \"import { useRequiredScopes } from '@wso2is/access-control'\" instead. " +
+                            "Refer documentation: https://github.com/wso2/identity-apps/blob/master/docs/write-code/" +
+                            "PERFORMANCE.md#use-userequiredscopes-hook-instead-of-hasrequiredscopes-function",
+                        name: "@wso2is/core/helpers"
                     }
                 ],
                 patterns: [
@@ -311,6 +325,7 @@ module.exports = {
         ],
         "no-trailing-spaces": "warn",
         "no-unreachable": "error",
+        "no-unsafe-optional-chaining": "off",
         "object-curly-spacing": [ "warn", "always" ],
         "padding-line-between-statements": [ ...LINE_PADDING_RULES ],
         quotes: [ "warn", "double" ],

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Form, Grid, Modal } from "semantic-ui-react";
 import { updateConnectionGroup } from "../../../../api/connections";
-import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
+import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
 import { ConnectionGroupInterface } from "../../../../models/connection";
 
 const FORM_ID: string = "create-idp-group-form";
@@ -147,8 +147,8 @@ export const CreateIdPGroupWizard: FunctionComponent<CreateGroupProps> = (props:
                                 onChange={ (e: any) => setGroupName(e.target.value) }
                                 value={ groupName }
                                 required={ true }
-                                maxLength={ ConnectionManagementConstants.CLAIM_CONFIG_FIELD_MAX_LENGTH }
-                                minLength={ ConnectionManagementConstants.CLAIM_CONFIG_FIELD_MIN_LENGTH }
+                                maxLength={ ConnectionUIConstants.GROUP_CLAIM_LENGTH.max }
+                                minLength={ ConnectionUIConstants.GROUP_CLAIM_LENGTH.min }
                                 width={ 16 }
                                 data-componentid={ `${ componentId }-group-name` }
                             />

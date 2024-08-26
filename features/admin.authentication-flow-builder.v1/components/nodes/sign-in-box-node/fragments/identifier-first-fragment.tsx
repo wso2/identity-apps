@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,9 +22,7 @@ import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormGroup from "@oxygen-ui/react/FormGroup";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
-import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { MouseEvent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -81,7 +79,7 @@ const IdentifierFirstFragment = (props: IdentifierFirstFragmentPropsInterface): 
             <BasicSignInOptionControls
                 onOptionRemove={ (event: MouseEvent<HTMLButtonElement>) => {
                     onOptionRemove(event, {
-                        toRemove: IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+                        toRemove: LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME
                     });
                 } }
                 optionSwitchTooltipContent={

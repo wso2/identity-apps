@@ -24,7 +24,7 @@ enum FeatureStatusLabel {
     BETA = "common:beta",
     EXPERIMENTAL = "common:experimental",
     PREMIUM = "common:premium",
-    COMING_SOON = "comon:comingSoon"
+    COMING_SOON = "common:comingSoon"
 }
 
 export default FeatureStatusLabel;

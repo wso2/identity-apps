@@ -1,7 +1,7 @@
 /**
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com).
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,12 +20,12 @@ import { analyticsConfig } from "../extensions/configs/analytics";
 
 /**
  * A event publisher to perform event logging.
- * 
+ *
  * @example
  * Example usage.
  * ```
  * const eventPublisher = EventPublisher.getInstance();
- * 
+ *
  * eventPublisher.publish("sample-event");
  * ```
 */
@@ -34,15 +34,15 @@ export class EventPublisher {
     private static publisherInstance: EventPublisher;
 
     /**
-     * Private constructor to avoid object initialization from 
+     * Private constructor to avoid object initialization from
      * outside the class.
     */
     private constructor() { }
 
     /**
      * Returns an instance of the event publisher.
-     * 
-     * @returns {EventPublisher}
+     *
+     * @returns an EventPublisher instance
     */
     public static getInstance(): EventPublisher {
 
@@ -55,21 +55,20 @@ export class EventPublisher {
 
     /**
      * Function to perform event publisher related computations.
-     * 
-     * @param {any} computation - Computation to perform.
+     *
+     * @param computation - Computation to perform.
     */
     public compute = (computation: () => void): void => {
 
         analyticsConfig.EventPublisherExtension.compute &&
             analyticsConfig.EventPublisherExtension.compute(computation);
-    }
+    };
 
     /**
      * Function to publish event logs.
-     * 
-     * @param {string} eventId - Publishing event identifier.
-     * @param { {[key: string]: string | Record<string, unknown>} } [customProperties] 
-     *      - Any custom properties to be published (optional).
+     *
+     * @param eventId - Publishing event identifier.
+     * @param customProperties - Any custom properties to be published (optional).
     */
     public publish(eventId: string, customProperties?: { [key: string]: string | Record<string, unknown> }): void {
 
@@ -79,7 +78,7 @@ export class EventPublisher {
              * custom properties are passed here.
             */
 
-            analyticsConfig.EventPublisherExtension.publish && 
+            analyticsConfig.EventPublisherExtension.publish &&
                 analyticsConfig.EventPublisherExtension.publish(eventId, customProperties);
 
             return;
@@ -90,7 +89,7 @@ export class EventPublisher {
          * custom properties are not passed.
         */
 
-        analyticsConfig.EventPublisherExtension.publish && 
+        analyticsConfig.EventPublisherExtension.publish &&
             analyticsConfig.EventPublisherExtension.publish(eventId);
     }
 
@@ -100,7 +99,7 @@ export class EventPublisher {
     public init(): void {
 
         /**
-         * If you want to do any event publisher initialization logic, 
+         * If you want to do any event publisher initialization logic,
          * you can do it here.
         */
         analyticsConfig.EventPublisherExtension.init && analyticsConfig.EventPublisherExtension.init();

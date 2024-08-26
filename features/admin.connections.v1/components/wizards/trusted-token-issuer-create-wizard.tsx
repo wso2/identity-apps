@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -75,7 +75,7 @@ import { ThunkDispatch } from "redux-thunk";
 import { Icon, Modal } from "semantic-ui-react";
 import { createConnection } from "../../api/connections";
 import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/ui";
-import { ConnectionManagementConstants } from "../../constants/connection-constants";
+import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import { IdpNameValidationCache } from "../../models/connection";
 import { ConnectionsManagementUtils } from "../../utils/connection-utils";
 
@@ -284,7 +284,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                 onIDPCreate();
             })
             .catch((error: AxiosError) => {
-                const identityAppsError: IdentityAppsError = ConnectionManagementConstants.ERROR_CREATE_LIMIT_REACHED;
+                const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
 
                 if (error?.response?.status === 403 &&
                     error?.response?.data?.code ===identityAppsError.getErrorCode()) {
@@ -337,8 +337,8 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                     "templates.trustedTokenIssuer.forms.name.placeholder") }
                 label= { t("authenticationProvider:" +
                     "templates.trustedTokenIssuer.forms.name.label") }
-                maxLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.max }
-                minLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.min }
+                maxLength={ ConnectionUIConstants.IDP_NAME_LENGTH.max }
+                minLength={ ConnectionUIConstants.IDP_NAME_LENGTH.min }
                 required={ true }
                 width={ 15 }
                 format = { (values: string) => values.trimStart() }
@@ -373,8 +373,8 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                     "templates.trustedTokenIssuer.forms.issuer.label") }
                 hint={ t("authenticationProvider:" +
                     "templates.trustedTokenIssuer.forms.issuer.hint") }
-                maxLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.max }
-                minLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.min }
+                maxLength={ ConnectionUIConstants.IDP_NAME_LENGTH.max }
+                minLength={ ConnectionUIConstants.IDP_NAME_LENGTH.min }
                 required={ true }
                 width={ 15 }
                 format = { (values: string) => values.trimStart() }
@@ -403,8 +403,8 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                     "templates.trustedTokenIssuer.forms.alias.label") }
                 hint={ t("authenticationProvider:" +
                     "templates.trustedTokenIssuer.forms.alias.hint", { productName: config.ui.productName }) }
-                maxLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.max }
-                minLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.min }
+                maxLength={ ConnectionUIConstants.IDP_NAME_LENGTH.max }
+                minLength={ ConnectionUIConstants.IDP_NAME_LENGTH.min }
                 width={ 15 }
                 format = { (values: string) => values.trimStart() }
                 validation={ (values: string) => {
@@ -475,8 +475,8 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                             label={ t("authenticationProvider:" +
                                 "templates.trustedTokenIssuer.forms.jwksUrl.label") }
                             required
-                            maxLength={ ConnectionManagementConstants.JWKS_URL_LENGTH.max }
-                            minLength={ ConnectionManagementConstants.JWKS_URL_LENGTH.min }
+                            maxLength={ ConnectionUIConstants.JWKS_URL_LENGTH.max }
+                            minLength={ ConnectionUIConstants.JWKS_URL_LENGTH.min }
                             width={ 15 }
                             initialValue={ "" }
                             placeholder={ t("authenticationProvider:" +

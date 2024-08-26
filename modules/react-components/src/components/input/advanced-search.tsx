@@ -307,8 +307,13 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                 const terms: string[] = internalSearchQuery.split(" ");
 
                 if (terms.length > 2) {
+                    const filterAttributeParts = terms[0].split(".");
+                    const filterAttribute = filterAttributeParts[0] === "attributes"
+                        ? filterAttributeParts[0]
+                        : terms[0];
+
                     const attributes = filterAttributeOptions.filter((attribute) => {
-                        return attribute.value === terms[0];
+                        return attribute.value === filterAttribute;
                     });
 
                     if (attributes.length > 0) {

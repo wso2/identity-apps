@@ -16,29 +16,26 @@
  * under the License.
  */
 
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
-import { AppState, store } from "@wso2is/admin.core.v1/store";
+import { store } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { ServerConfigurationsInterface, getServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1/models";
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ResourceTab } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
 import { UserGroupsList } from "./user-groups-edit";
 import { UserProfile } from "./user-profile";
-import { UserRolesList } from "./user-roles-list";
-import { UserRolesV1List } from "./user-roles-v1-list";
 import { UserSessions } from "./user-sessions";
 import { AdminAccountTypes, UserManagementConstants } from "../constants";
 import useUserManagement from "../hooks/use-user-management";
@@ -91,19 +88,12 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     const { t } = useTranslation();
     const { activeTab, updateActiveTab } = useUserManagement();
-    const { legacyAuthzRuntime }  = useAuthorization();
     const dispatch: Dispatch = useDispatch();
-    const { isSuperOrganization, isSubOrganization } = useGetCurrentOrganizationType();
-    const { UIConfig } = useUIConfig();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const isGroupAndRoleSeparationEnabled: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
-    const roleV1Enabled: boolean = UIConfig?.legacyMode?.rolesV1;
-
-    const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
-        return state.config.ui.features?.users?.disabledFeatures;
-    });
+    const hasUsersUpdatePermissions: boolean = useRequiredScopes(
+        featureConfig?.users?.scopes?.update
+    );
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
     const [ isSuperAdmin, setIsSuperAdmin ] = useState<boolean>(false);
@@ -124,7 +114,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
         if (!isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
             || readOnlyUserStores?.includes(userStore?.toString())
-            || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+            || !hasUsersUpdatePermissions
             || user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
         ) {
             setReadOnly(true);
@@ -238,37 +228,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 </ResourceTab.Pane>
             )
         },
-        !userRolesDisabledFeatures?.includes(UserManagementConstants.FEATURE_DICTIONARY.get("USER_ROLES"))
-        && !isSubOrganization()
-        && !legacyAuthzRuntime
-        && roleV1Enabled
-            ? {
-                menuItem: t("users:editUser.tab.menuItems.2"),
-                render: () => (
-                    <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <UserRolesV1List
-                            isGroupAndRoleSeparationEnabled={ isGroupAndRoleSeparationEnabled }
-                            onAlertFired={ handleAlerts }
-                            user={ user }
-                            handleUserUpdate={ handleUserUpdate }
-                            isReadOnly={ isReadOnly }
-                        />
-                    </ResourceTab.Pane>
-                )
-            } : null,
-        // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
-        !userRolesDisabledFeatures?.includes(UserManagementConstants.FEATURE_DICTIONARY.get("USER_ROLES"))
-        && !isSubOrganization()
-        && !legacyAuthzRuntime
-        && !roleV1Enabled
-            ? {
-                menuItem: t("users:editUser.tab.menuItems.2"),
-                render: () => (
-                    <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <UserRolesList user={ user } />
-                    </ResourceTab.Pane>
-                )
-            } : null,
         {
             menuItem: t("users:editUser.tab.menuItems.3"),
             render: () => (

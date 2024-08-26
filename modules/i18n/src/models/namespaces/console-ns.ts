@@ -2385,6 +2385,7 @@ export interface ConsoleNS {
                     authenticationProviders: string;
                     general: string;
                     identityVerificationProviders: string;
+                    extensions: string;
                 };
                 customize: string;
                 identityProviderEdit: string;
@@ -2459,6 +2460,26 @@ export interface ConsoleNS {
                 backButton: string;
                 title: string;
                 subTitle: string;
+            };
+            applicationsSettings: {
+                backButton: string;
+                title: string;
+                subTitle: string;
+                learnMore: string;
+                notifications: {
+                    error: {
+                        description: string;
+                        message: string;
+                    };
+                    genericError: {
+                        description: string;
+                        message: string;
+                    };
+                    success: {
+                        description: string;
+                        message: string;
+                    };
+                };
             };
             authenticationProvider: {
                 title: string;
@@ -7784,39 +7805,6 @@ export interface ConsoleNS {
                 description: string;
                 goBackToApplication: string;
                 goBackToValidationConfig: string;
-            };
-            jwtPrivateKeyConfiguration: {
-                fetchValidationConfigData: {
-                    error: {
-                        description: string;
-                        message: string;
-                    };
-                    genericError: {
-                        description: string;
-                        message: string;
-                    };
-                };
-                notifications: {
-                    error: {
-                        description: string;
-                        message: string;
-                    };
-                    genericError: {
-                        description: string;
-                        message: string;
-                    };
-                    success: {
-                        description: string;
-                        message: string;
-                    };
-                };
-                pageTitle: string;
-                description: string;
-                goBackToApplication: string;
-                goBackToAccountSecurityConfig: string;
-                messageInfo: string;
-                tokenReuseEnabled: string;
-                tokenReuseDisabled: string;
             };
             insights: {
                 pageTitle: string;

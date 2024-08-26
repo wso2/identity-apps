@@ -103,8 +103,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ existingGroupList, setExistingGroupList ] = useState([]);
 
-    const domain: string = user?.userName?.split("/").length > 1
-        ? user?.userName?.split[0]
+    const domain: string = user?.userName?.split("/")?.length > 1
+        ? user.userName.split("/")[0]
         : userstoresConfig.primaryUserstoreName;
 
     const {

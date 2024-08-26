@@ -86,7 +86,7 @@ export const branding: BrandingNS = {
                     hint: "The placeholder of the identifier input field in the password recovery box. If not set, {{productName}} defaults are used.",
                     warning: "<0>IMPORTANT</0>: Customizing the password recovery identifier placeholder will replace the dynamic placeholder when {{feature}} are <1>configured</1>."
                 },
-                "password.recovery.button": {
+                "password.recovery.button.email.link": {
                     hint: "The text that appears on the main action button of the password recovery box. If not set, {{productName}} defaults are used."
                 },
                 "password.recovery.heading": {
@@ -146,6 +146,10 @@ export const branding: BrandingNS = {
         screenSelectDropdown: {
             label: "Screen",
             placeholder: "Select screen"
+        },
+        screenSelectVariationDropdown: {
+            label: "Variation",
+            placeholder: "Select Variation"
         }
     },
     connectors: {
@@ -171,6 +175,12 @@ export const branding: BrandingNS = {
         "sign-up": "Sign Up",
         "sms-otp": "SMS OTP",
         "totp": "TOTP"
+    },
+    variations: {
+        "sms-otp": "SMS OTP",
+        "email-link": "Email Link",
+        "base": "Base",
+        "multi": "Multi Option"
     },
     ai: {
         banner: {

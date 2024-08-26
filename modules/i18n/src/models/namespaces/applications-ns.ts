@@ -143,7 +143,10 @@ export interface ApplicationsNS {
         disableApplication: {
             header: string;
             message: string;
-            content: string;
+            content: {
+                0: string;
+                1: string;
+            };
             assertionHint: string;
         },
         enableApplication: {
@@ -913,18 +916,57 @@ export interface ApplicationsNS {
             sections: {
                 applicationNativeAuthentication: {
                     heading: string;
-                    alerts: {
-                        clientAttestation: string;
-                    };
                     fields: {
                         enableAPIBasedAuthentication: {
                             hint: string;
                             label: string;
                         };
+                    };
+                };
+                clientAttestation: {
+                    heading: string;
+                    alerts: {
+                        clientAttestationAlert: string;
+                    };
+                    fields: {
                         enableClientAttestation: {
                             hint: string;
                             label: string;
                         };
+                        androidAttestationServiceCredentials: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                invalid: string;
+                            };
+                        };
+                    };
+                };
+                trustedApps: {
+                    heading: string;
+                    alerts: {
+                        trustedAppSettingsAlert: string;
+                        link: string;
+                    };
+                    fields: {
+                        enableFIDOTrustedApps: {
+                            hint: string;
+                            label: string;
+                        };
+                    };
+                    modal:{
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    }
+                };
+                platformSettings: {
+                    heading: string;
+                    subTitle: string;
+                    fields: {
                         android: {
                             heading: string;
                             fields: {
@@ -933,16 +975,19 @@ export interface ApplicationsNS {
                                     label: string;
                                     placeholder: string;
                                     validations: {
-                                        empty: string;
+                                        emptyForAttestation: string;
+                                        emptyForFIDO: string;
                                     };
                                 };
-                                androidAttestationServiceCredentials: {
+                                keyHashes: {
                                     hint: string;
                                     label: string;
                                     placeholder: string;
                                     validations: {
-                                        empty: string;
+                                        invalidOrEmpty: string;
+                                        duplicate: string;
                                     };
+                                    tooltip: string;
                                 };
                             };
                         };
@@ -1007,7 +1052,44 @@ export interface ApplicationsNS {
                 };
             };
         };
+        applicationsSettings: {
+            fields :{
+                dcrEndpoint: {
+                    label: string,
+                    hint: string
+                };
+                ssaJwks: {
+                    label: string,
+                    placeholder: string,
+                    hint: string,
+                    validations: {
+                        empty: string
+                    }
+                };
+                mandateSSA: {
+                    label: string,
+                    hint: string
+                };
+                authenticationRequired: {
+                    label: string,
+                    hint: string
+                };
+                enforceFapi: {
+                    label: string,
+                    hint: string
+                };
+            }
+        };
         generalDetails: {
+            sections: {
+                branding: {
+                    title: string;
+                }
+            };
+            brandingLink: {
+                hint: string;
+                label: string;
+            };
             fields: {
                 name: {
                     label: string;
@@ -1158,6 +1240,18 @@ export interface ApplicationsNS {
                         empty: string;
                     };
                 };
+                hybridFlow: {
+                    hybridFlowResponseType: {
+                        children: {
+                            code_token: {
+                                hint: string;
+                            };
+                            code_idtoken_token: {
+                                hint: string;
+                            }
+                        }
+                    }
+                }
             };
             mobileApp: {
                 discoverableHint: string;
@@ -1334,6 +1428,10 @@ export interface ApplicationsNS {
                             label: string;
                             placeholder: string;
                         };
+                        reusePvtKeyJwt: {
+                            hint: string;
+                            label: string;
+                        };
                         signingAlgorithm: {
                             hint: string;
                             label: string;
@@ -1396,6 +1494,27 @@ export interface ApplicationsNS {
                         };
                     };
                 };
+                subjectToken: {
+                    fields: {
+                        enable: {
+                            hint: string;
+                            label: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        expiry: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                invalid: string;
+                            };
+                        };
+                    };
+                    heading: string;
+                };
                 requestObjectSignature: {
                     heading: string;
                     description: string;
@@ -1418,6 +1537,29 @@ export interface ApplicationsNS {
                 };
                 certificates: {
                     disabledPopup: string;
+                };
+                hybridFlow: {
+                    heading: string;
+                    enable: {
+                        label: string;
+                    };
+                    hybridFlowResponseType: {
+                        label: string;
+                        fields: {
+                            children: {
+                                code_token: {
+                                    label: string;
+                                };
+                                code_idtoken: {
+                                    label: string;
+                                };
+                                code_idtoken_token: {
+                                    label: string;
+                                };
+                            };
+                            hint: string;
+                        };
+                    }
                 };
             };
             messages: {

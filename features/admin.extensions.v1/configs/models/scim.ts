@@ -30,6 +30,7 @@ export interface SCIMConfigInterface {
         accountDisabled: string,
         accountLocked: string,
         askPassword: string,
+        forcePasswordReset: string,
         isReadOnlyUser: string,
         oneTimePassword: string,
         profileUrl: string

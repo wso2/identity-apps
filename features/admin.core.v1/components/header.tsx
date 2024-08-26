@@ -19,6 +19,7 @@
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
+import Divider from "@oxygen-ui/react/Divider";
 import OxygenHeader from "@oxygen-ui/react/Header";
 import Image from "@oxygen-ui/react/Image";
 import Link from "@oxygen-ui/react/Link";
@@ -26,53 +27,41 @@ import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
-import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import Typography from "@oxygen-ui/react/Typography";
+import { DiamondIcon, DiscordIcon, StackOverflowIcon, TalkingHeadsetIcon } from "@oxygen-ui/react-icons";
+import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
-import { SubscriptionContext } from "@wso2is/admin.extensions.v1/components/subscription/contexts/subscription-context";
-import {
-    TenantTier,
-    TenantTierRequestResponse
-} from "@wso2is/admin.extensions.v1/components/subscription/models/subscription";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { OrganizationSwitchBreadcrumb } from "@wso2is/admin.organizations.v1/components/organization-switch";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { hasRequiredScopes, resolveAppLogoFilePath } from "@wso2is/core/helpers";
+import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
+import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
+import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface } from "@wso2is/core/src/models";
 import { StringUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
-import { GenericIcon, useDocumentation } from "@wso2is/react-components";
-import React, {
-    FunctionComponent,
-    ReactElement,
-    ReactNode,
-    useContext,
-    useEffect,
-    useMemo,
-    useState
-} from "react";
+import { useDocumentation } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { ReactComponent as LogoutIcon } from "../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../themes/default/assets/images/icons/user-icon.svg";
 import { ReactComponent as AskHelpIcon } from "../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
-import { ReactComponent as CommunityIcon } from "../../themes/wso2is/assets/images/icons/community-icon.svg";
-import {
-    ReactComponent as ContactSupportIcon
-} from "../../themes/wso2is/assets/images/icons/contact-support-icon.svg";
 import { ReactComponent as DocsIcon } from "../../themes/wso2is/assets/images/icons/docs-icon.svg";
 import { ReactComponent as BillingPortalIcon } from "../../themes/wso2is/assets/images/icons/dollar-icon.svg";
 import { AppConstants, OrganizationType } from "../constants";
 import { history } from "../helpers";
 import useGlobalVariables from "../hooks/use-global-variables";
-import useUIConfig from "../hooks/use-ui-configs";
-import { ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
+import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
 import { CommonUtils, EventPublisher } from "../utils";
+import "./header.scss";
+
 /**
  * Dashboard layout Prop types.
  */
-
 interface HeaderPropsInterface extends IdentifiableComponentInterface {
     handleSidePanelToggleClick?: () => void;
 }
@@ -83,61 +72,46 @@ interface HeaderPropsInterface extends IdentifiableComponentInterface {
  * @param props - Props injected to the component.
  * @returns react element containing the Reusable Header component.
  */
-export const Header: FunctionComponent<HeaderPropsInterface> = (
-    props: HeaderPropsInterface
-): ReactElement => {
+export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPropsInterface): ReactElement => {
     const { handleSidePanelToggleClick } = props;
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const profileInfo: ProfileInfoInterface = useSelector(
-        (state: AppState) => state.profile.profileInfo
-    );
-    const config: ConfigReducerStateInterface = useSelector(
-        (state: AppState) => state.config
-    );
-    const showAppSwitchButton: boolean = useSelector(
-        (state: AppState) => state.config.ui.showAppSwitchButton
-    );
-    const accountAppURL: string = useSelector(
-        (state: AppState) => state.config.deployment.accountApp.path
-    );
-    const tenantDomain: string = useSelector(
-        (state: AppState) => state?.auth?.tenantDomain
-    );
-    const associatedTenants: any[] = useSelector(
-        (state: AppState) => state?.auth?.tenants
-    );
+    const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const showAppSwitchButton: boolean = useSelector((state: AppState) => state.config.ui.showAppSwitchButton);
+    const accountAppURL: string = useSelector((state: AppState) => state.config.deployment.accountApp.path);
+    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
+    const associatedTenants: any[] = useSelector((state: AppState) => state?.auth?.tenants);
     const privilegedUserAccountURL: string = useSelector(
-        (state: AppState) =>
-            state.config.deployment.accountApp.tenantQualifiedPath
+        (state: AppState) => state.config.deployment.accountApp.tenantQualifiedPath
     );
-    const isPrivilegedUser: boolean = useSelector(
-        (state: AppState) => state.auth.isPrivilegedUser
-    );
-    const feature: FeatureConfigInterface = useSelector(
-        (state: AppState) => state.config.ui.features
-    );
-    const scopes: string = useSelector(
-        (state: AppState) => state.auth.allowedScopes
-    );
-    const userOrganizationID: string = useSelector((state: AppState) =>
-        state?.organization?.userOrganizationId);
+    const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const organizationFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state.config.ui.features.organizations);
+    const gettingStartedFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state.config.ui.features.gettingStarted);
+    const scopes: string = useSelector((state: AppState) => state.auth.allowedScopes);
+    const userOrganizationID: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
 
-    const { UIConfig } = useUIConfig();
-    const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
-    const { tierName }: TenantTierRequestResponse = useContext(SubscriptionContext);
+    const hasOrganizationReadPermission: boolean =useRequiredScopes(organizationFeatureConfig?.scopes?.read);
+    const hasGettingStartedViewPermission: boolean = useRequiredScopes(
+        gettingStartedFeatureConfig?.scopes?.feature
+    );
+
+    const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+    const { tierName }: UseSubscriptionInterface = useSubscription();
 
     const { organizationType } = useGetCurrentOrganizationType();
 
-    const { legacyAuthzRuntime }  = useAuthorization();
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
 
     const [ anchorHelpMenu, setAnchorHelpMenu ] = useState<null | HTMLElement>(null);
 
     const openHelpMenu: boolean = Boolean(anchorHelpMenu);
 
-    const handleHelpMenuClick = (event: { currentTarget: React.SetStateAction<HTMLElement>; }) => {
+    const handleHelpMenuClick = (event: { currentTarget: React.SetStateAction<HTMLElement> }) => {
         setAnchorHelpMenu(event.currentTarget);
     };
 
@@ -156,13 +130,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         }
 
         CommonUtils.buildBillingURLs(tenantDomain, associatedTenants).then(
-            ({
-                billingPortalURL,
-                upgradeButtonURL
-            }: {
-                billingPortalURL: string;
-                upgradeButtonURL: string;
-            }) => {
+            ({ billingPortalURL, upgradeButtonURL }: { billingPortalURL: string; upgradeButtonURL: string }) => {
                 setBillingPortalURL(billingPortalURL);
                 setUpgradeButtonURL(upgradeButtonURL);
             }
@@ -177,49 +145,13 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
      *  - the organization management feature is enabled by the backend
      *  - the user is logged in to a non-super-tenant account
      */
-    const isOrgSwitcherEnabled: boolean = useMemo(() => {
-        // If the organizations feature is disabled, do not show the org switcher.
-        if (!UIConfig?.legacyMode?.organizations) {
-            return false;
-        }
-
-        if (legacyAuthzRuntime) {
-            return (
-                isOrganizationManagementEnabled &&
-                // The `tenantDomain` takes the organization id when you log in to a sub-organization.
-                // So, we cannot use `tenantDomain` to check
-                // if the user is logged in to a non-super-tenant account reliably.
-                // So, we check if the organization id is there in the URL to see if the user is in a sub-organization.
-                (tenantDomain === AppConstants.getSuperTenant() ||
-                    window[ "AppUtils" ].getConfig().organizationName ||
-                    organizationConfigs.showSwitcherInTenants) &&
-                hasRequiredScopes(
-                    feature?.organizations,
-                    feature?.organizations?.scopes?.read,
-                    scopes
-                )
-            );
-        }
-
-        return (
-            isOrganizationManagementEnabled &&
-            (organizationType === OrganizationType.SUPER_ORGANIZATION ||
-                organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
-                organizationType === OrganizationType.SUBORGANIZATION ||
-                organizationConfigs.showSwitcherInTenants) &&
-            hasRequiredScopes(
-                feature?.organizations,
-                feature?.organizations?.scopes?.read,
-                scopes,
-                organizationType
-            )
-        );
-    }, [
-        tenantDomain,
-        feature.organizations,
-        organizationType,
-        scopes
-    ]);
+    const isOrgSwitcherEnabled: boolean = useMemo(() => (
+        isOrganizationManagementEnabled &&
+        (organizationType === OrganizationType.SUPER_ORGANIZATION ||
+            organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+            organizationType === OrganizationType.SUBORGANIZATION ||
+            organizationConfigs.showSwitcherInTenants) && hasOrganizationReadPermission
+    ), [ tenantDomain, hasOrganizationReadPermission, organizationType, scopes ]);
 
     const resolveUsername = (): string => {
         if (profileInfo?.name?.givenName) {
@@ -237,167 +169,160 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         return "";
     };
 
-    const generateHeaderButtons = (): ReactElement[] => {
-        return [
-            window[ "AppUtils" ].getConfig().docSiteUrl && (
+    const generateHeaderButtons = (): ReactElement[] => [
+        window["AppUtils"].getConfig().docSiteUrl && (
+            <Button
+                color="inherit"
+                onClick={ () => {
+                    window.open(window["AppUtils"].getConfig().docSiteUrl, "_blank", "noopener");
+                } }
+                startIcon={ <DocsIcon /> }
+                data-testid="dev-doc-site-link"
+            >
+                { I18n.instance.t("extensions:common.help.docSiteLink") as ReactNode }
+            </Button>
+        ),
+        (window["AppUtils"].getConfig().extensions.getHelp) && (
+            <>
                 <Button
                     color="inherit"
-                    onClick={ () => {
-                        window.open(
-                            window[ "AppUtils" ].getConfig().docSiteUrl,
-                            "_blank",
-                            "noopener"
-                        );
-                    } }
-                    startIcon={ <DocsIcon /> }
-                    data-testid="dev-doc-site-link"
+                    startIcon={ <AskHelpIcon /> }
+                    data-testid="get-help-dropdown-link"
+                    className="oxygen-user-dropdown-button"
+                    onClick={ handleHelpMenuClick }
                 >
-                    {
-                        I18n.instance.t(
-                            "extensions:common.help.docSiteLink"
-                        ) as ReactNode
-                    }
+                    { I18n.instance.t("extensions:common.help.helpDropdownLink") as ReactNode }
                 </Button>
-            ),
-            (window[ "AppUtils" ].getConfig().extensions.community ||
-                window[ "AppUtils" ].getConfig().extensions.helpCenterUrl) && (
-                <>
-                    <Button
-                        color="inherit"
-                        startIcon={ <AskHelpIcon /> }
-                        data-testid="get-help-dropdown-link"
-                        className="oxygen-user-dropdown-button"
-                        onClick={ handleHelpMenuClick }
-                    >
-                        { I18n.instance.t("extensions:common.help.helpDropdownLink") as ReactNode }
-                    </Button>
-                    <Menu
-                        open={ openHelpMenu }
-                        anchorEl={ anchorHelpMenu }
-                        className="oxygen-user-dropdown-menu header-help-menu"
-                        id="header-help-menu"
-                        anchorOrigin={ { horizontal: "right", vertical: "bottom" } }
-                        transformOrigin={ { horizontal: "right", vertical: "top" } }
-                        onClose={ onCloseHelpMenu }
-                    >
-                        { window[ "AppUtils" ].getConfig().extensions.community && (
+                <Menu
+                    open={ openHelpMenu }
+                    anchorEl={ anchorHelpMenu }
+                    className="oxygen-user-dropdown-menu header-help-menu"
+                    id="header-help-menu"
+                    anchorOrigin={ { horizontal: "right", vertical: "bottom" } }
+                    transformOrigin={ { horizontal: "right", vertical: "top" } }
+                    onClose={ onCloseHelpMenu }
+                >
+                    { window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL && (
+                        <>
                             <MenuItem
-                                className="get-help-dropdown-item"
+                                className="get-help-dropdown-item contact-support-dropdown-item"
                                 onClick={ () => {
                                     window.open(
-                                        window[ "AppUtils" ].getConfig()
-                                            .extensions.community,
+                                        window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL,
                                         "_blank",
-                                        "noopener"
+                                        "noopener noreferrer"
                                     );
                                 } }
                             >
                                 <>
-                                    <ListItemIcon>
-                                        <GenericIcon
-                                            className="spaced-right"
-                                            transparent
-                                            fill="white"
-                                            size="x22"
-                                            icon={ CommunityIcon }
-                                        />
+                                    <ListItemIcon className="contact-support-icon get-help-icon">
+                                        <TalkingHeadsetIcon />
                                     </ListItemIcon>
-                                    { I18n.instance.t("extensions:common.help.communityLink") }
+                                    <ListItemText
+                                        primary={
+                                            (
+                                                <span className="contact-support-title">
+                                                    { t("extensions:common.help.helpCenterLink.title") }
+                                                    <Chip
+                                                        icon={ <DiamondIcon /> }
+                                                        label={ t(FeatureStatusLabel.PREMIUM) }
+                                                        className="oxygen-menu-item-chip oxygen-chip-premium"
+                                                    />
+                                                </span>
+                                            )
+                                        }
+                                        secondary={
+                                            (
+                                                <Typography className="contact-support-subtitle" variant="inherit">
+                                                    { t("extensions:common.help.helpCenterLink.subtitle",
+                                                        { productName }) }
+                                                </Typography>
+                                            )
+                                        }
+                                    />
                                 </>
                             </MenuItem>
-                        ) }
-                        { window[ "AppUtils" ].getConfig().extensions.helpCenterUrl && (
-                            <MenuItem
-                                className="get-help-dropdown-item"
-                                onClick={ () => {
-                                    window.open(
-                                        window[ "AppUtils" ].getConfig()
-                                            .extensions.helpCenterUrl,
-                                        "_blank",
-                                        "noopener"
-                                    );
-                                } }
-                            >
-                                <>
-                                    <ListItemIcon>
-                                        <GenericIcon
-                                            className="spaced-right"
-                                            transparent
-                                            fill="white"
-                                            size="x22"
-                                            icon={ ContactSupportIcon }
-                                        />
-                                    </ListItemIcon>
-                                    { I18n.instance.t("extensions:common.help.helpCenterLink") }
-                                    <Chip
-                                        label="PREMIUM"
-                                        className="oxygen-menu-item-chip oxygen-chip-premium" />
-                                </>
-                            </MenuItem>
-                        ) }
-                    </Menu>
-                </>
-            ),
-            tierName === TenantTier.FREE && billingPortalURL && !isPrivilegedUser &&
-            window[ "AppUtils" ].getConfig().extensions
-                .upgradeButtonEnabled && (
-                <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
-                    <a
-                        href={ upgradeButtonURL }
-                        target="_blank"
-                        rel="noreferrer"
-                        data-componentid="upgrade-button-link"
-                    >
-                        <Button
-                            color="secondary"
-                            variant="outlined"
+                            <Divider className="get-help-dropdown-divider" />
+                        </>
+                    ) }
+                    { window["AppUtils"].getConfig().extensions.getHelp.communityLinks.discord && (
+                        <MenuItem
+                            className="get-help-dropdown-item"
+                            onClick={ () => {
+                                window.open(window["AppUtils"].getConfig().extensions.getHelp.communityLinks.discord
+                                    , "_blank", "noopener");
+                            } }
                         >
-                            {
-                                I18n.instance.t(
-                                    "extensions:common.upgrade"
-                                ) as ReactNode
-                            }
-                        </Button>
-                    </a>
-                </Show>
-            )
-        ];
-    };
+                            <>
+                                <ListItemIcon className="get-help-icon">
+                                    <DiscordIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={ t("extensions:common.help.communityLinks.discord") } />
+                            </>
+                        </MenuItem>
+                    ) }
+                    { window["AppUtils"].getConfig().extensions.getHelp.communityLinks.stackOverflow && (
+                        <MenuItem
+                            className="get-help-dropdown-item"
+                            onClick={ () => {
+                                window.open(window["AppUtils"].getConfig()
+                                    .extensions.getHelp.communityLinks.stackOverflow
+                                , "_blank", "noopener");
+                            } }
+                        >
+                            <>
+                                <ListItemIcon className="get-help-icon">
+                                    <StackOverflowIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={ t("extensions:common.help.communityLinks.stackOverflow") } />
+                            </>
+                        </MenuItem>
+                    ) }
+                </Menu>
+            </>
+        ),
+        tierName === TenantTier.FREE &&
+            billingPortalURL &&
+            !isPrivilegedUser &&
+            window["AppUtils"].getConfig().extensions.upgradeButtonEnabled && (
+            <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+                <a href={ upgradeButtonURL } target="_blank" rel="noreferrer" data-componentid="upgrade-button-link">
+                    <Button
+                        className="header-upgrade-btn"
+                        color="secondary"
+                        variant="outlined"
+                        startIcon={ <DiamondIcon /> }
+                    >
+                        <span className="header-upgrade-btn-text">
+                            { I18n.instance.t("extensions:common.upgrade") as ReactNode }
+                        </span>
+                    </Button>
+                </a>
+            </Show>
+        )
+    ];
 
     const isShowAppSwitchButton = (): boolean => {
         if (!showAppSwitchButton) {
             return false;
         }
 
-        // Show the app switch button only if the user is logged in to the
-        // user resident organization.
-        if (!legacyAuthzRuntime) {
-            return (!userOrganizationID
-                || userOrganizationID === window[ "AppUtils" ].getConfig().organizationName);
-        }
-
-        return true;
+        return !userOrganizationID || userOrganizationID === window["AppUtils"].getConfig().organizationName;
     };
 
     const LOGO_IMAGE = () => {
         return (
             <Image
                 src={ resolveAppLogoFilePath(
-                    window[ "AppUtils" ].getConfig().ui.appLogo?.defaultLogoPath
-                        ?? window[ "AppUtils" ].getConfig().ui.appLogoPath,
-                    `${ window[ "AppUtils" ].getConfig().clientOrigin
-                    }/` +
-                    `${ StringUtils.removeSlashesFromPath(
-                        window[ "AppUtils" ].getConfig()
-                            .appBase
-                    ) !== ""
-                        ? StringUtils.removeSlashesFromPath(
-                            window[ "AppUtils" ].getConfig()
-                                .appBase
-                        ) + "/"
-                        : ""
-                    }libs/themes/` +
-                    config.ui.theme.name
+                    window["AppUtils"].getConfig().ui.appLogo?.defaultLogoPath ??
+                        window["AppUtils"].getConfig().ui.appLogoPath,
+                    `${window["AppUtils"].getConfig().clientOrigin}/` +
+                        `${
+                            StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBase) !== ""
+                                ? StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBase) + "/"
+                                : ""
+                        }libs/themes/` +
+                        config.ui.theme.name
                 ) }
                 alt="logo"
             />
@@ -409,29 +334,26 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             className="is-header"
             brand={ {
                 logo: {
-                    desktop: (<LOGO_IMAGE />),
-                    mobile: (<LOGO_IMAGE />)
+                    desktop: <LOGO_IMAGE />,
+                    mobile: <LOGO_IMAGE />
                 },
-                onClick: () => hasRequiredScopes(feature?.gettingStarted,
-                    feature?.gettingStarted?.scopes?.feature, scopes)
-                    && history.push(config.deployment.appHomePath),
+                onClick: () =>
+                    hasGettingStartedViewPermission &&
+                    history.push(config.deployment.appHomePath),
                 title: config.ui.appName
             } }
             user={ {
                 email:
-                    profileInfo?.email ??
-                        typeof profileInfo?.emails[ 0 ] === "string"
-                        ? (profileInfo?.emails[ 0 ] as string)
-                        : profileInfo?.emails[ 0 ]?.value,
+                    profileInfo?.email ?? typeof profileInfo?.emails[0] === "string"
+                        ? (profileInfo?.emails[0] as string)
+                        : profileInfo?.emails[0]?.value,
                 image: profileInfo?.profileUrl,
                 name: resolveUsername()
             } }
             showCollapsibleHamburger
             onCollapsibleHamburgerClick={ handleSidePanelToggleClick }
             position="fixed"
-            leftAlignedElements={ [
-                isOrgSwitcherEnabled ? <OrganizationSwitchBreadcrumb /> : null
-            ] }
+            leftAlignedElements={ [ isOrgSwitcherEnabled ? <OrganizationSwitchBreadcrumb /> : null ] }
             rightAlignedElements={ generateHeaderButtons() }
             userDropdownMenu={ {
                 actionIcon: <LogoutIcon />,
@@ -450,8 +372,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             variant="body3"
                             href={ getLink("common.cookiePolicy") }
                             target="_blank"
-                            rel="noreferrer"
-                        >
+                            rel="noreferrer">
                             { I18n.instance.t("extensions:common.dropdown.footer.cookiePolicy") as string }
                         </Link>
                         <Link
@@ -465,8 +386,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     </Box>
                 ],
                 menuItems: [
-                    billingPortalURL && window[ "AppUtils" ].getConfig().extensions.billingPortalUrl &&
-                    !isPrivilegedUser && (
+                    billingPortalURL &&
+                        window["AppUtils"].getConfig().extensions.billingPortalUrl &&
+                        !isPrivilegedUser && (
                         <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
                             <MenuItem
                                 color="inherit"
@@ -479,44 +401,32 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                     <BillingPortalIcon />
                                 </ListItemIcon>
                                 <ListItemText>
-                                    { t(
-                                        "extensions:manage.features.header.links.billingPortalNav"
-                                    ) }
+                                    { t("extensions:manage.features.header.links.billingPortalNav") }
                                 </ListItemText>
                             </MenuItem>
                         </Show>
                     ),
-                    isShowAppSwitchButton()
-                        ? (
-                            <MenuItem
-                                color="inherit"
-                                key={ t(
-                                    "myAccount:components.header.appSwitch.console.name"
-                                ) }
-                                onClick={ () => {
-                                    eventPublisher.publish(
-                                        "console-click-visit-my-account"
-                                    );
-                                    window.open(
-                                        isPrivilegedUser
-                                            ? privilegedUserAccountURL
-                                            : accountAppURL,
-                                        "_blank",
-                                        "noopener"
-                                    );
-                                } }
-                            >
-                                <ListItemIcon>
-                                    <MyAccountIcon />
-                                </ListItemIcon>
-                                <ListItemText>
-                                    { t("console:common.header.appSwitch.myAccount.name") }
-                                </ListItemText>
-                            </MenuItem>
-                        ) : null
+                    isShowAppSwitchButton() ? (
+                        <MenuItem
+                            color="inherit"
+                            key={ t("myAccount:components.header.appSwitch.console.name") }
+                            onClick={ () => {
+                                eventPublisher.publish("console-click-visit-my-account");
+                                window.open(
+                                    isPrivilegedUser ? privilegedUserAccountURL : accountAppURL,
+                                    "_blank",
+                                    "noopener"
+                                );
+                            } }
+                        >
+                            <ListItemIcon>
+                                <MyAccountIcon />
+                            </ListItemIcon>
+                            <ListItemText>{ t("console:common.header.appSwitch.myAccount.name") }</ListItemText>
+                        </MenuItem>
+                    ) : null
                 ],
-                onActionClick: () =>
-                    history.push(AppConstants.getAppLogoutPath()),
+                onActionClick: () => history.push(AppConstants.getAppLogoutPath()),
                 triggerOptions: {
                     "data-componentid": "app-header-user-avatar",
                     "data-testid": "app-header-user-avatar"

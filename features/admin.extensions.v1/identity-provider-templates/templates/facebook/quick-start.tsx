@@ -16,8 +16,12 @@
  * under the License.
  */
 
+import ApplicationSelectionModal from "@wso2is/admin.applications.v1/components/application-selection-modal";
 import {
-    IdentityProviderInterface,
+    VerticalStepper,
+    VerticalStepperStepInterface
+} from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
+import {
     IdentityProviderTemplateInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { TestableComponentInterface } from "@wso2is/core/models";
@@ -27,17 +31,11 @@ import { Trans, useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
 import CustomizeStepsIllustration from "./assets/customize-steps.png";
-import { VerticalStepper, VerticalStepperStepInterface } from "../../../components/component-extensions";
-import ApplicationSelectionModal from "../../../components/shared/application-selection-modal";
 
 /**
  * Prop types of the component.
  */
 interface FacebookAuthenticatorQuickStartPropsInterface extends TestableComponentInterface {
-    /**
-     * Identity provider object.
-     */
-    identityProvider: IdentityProviderInterface;
     /**
      * Identity provider template object.
      */

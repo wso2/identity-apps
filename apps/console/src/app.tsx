@@ -18,10 +18,10 @@
 
 import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
-import useAuthorization from "@wso2is/admin.authorization.v1/hooks/use-authorization";
+import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
 import { EventPublisher, PreLoader } from "@wso2is/admin.core.v1";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components";
-import { Config, DocumentationLinks, getBaseRoutes } from "@wso2is/admin.core.v1/configs";
+import { Config, DocumentationLinks } from "@wso2is/admin.core.v1/configs";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { history } from "@wso2is/admin.core.v1/helpers";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
@@ -35,6 +35,8 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { useGetAllFeatures } from "@wso2is/admin.extensions.v1/components/feature-gate/api/feature-gate";
 import { featureGateConfig } from "@wso2is/admin.extensions.v1/configs/feature-gate";
+import { ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
+import ExtensionTemplatesProvider from "@wso2is/admin.template-core.v1/provider/extension-templates-provider";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
@@ -64,6 +66,7 @@ import { Redirect, Route, RouteComponentProps, Router, Switch } from "react-rout
 import { Dispatch } from "redux";
 import "moment/locale/si";
 import "moment/locale/fr";
+import { getBaseRoutes } from "./configs/routes";
 
 /**
  * Main App component.
@@ -78,8 +81,6 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const { trySignInSilently, getDecodedIDToken, signOut } = useAuthContext();
-
-    const { legacyAuthzRuntime }  = useAuthorization();
 
     const { setResourceEndpoints } = useResourceEndpoints();
 
@@ -322,7 +323,6 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                             <AccessControlProvider
                                 allowedScopes={ allowedScopes }
                                 features={ featureGateConfigData }
-                                isLegacyRuntimeEnabled={ legacyAuthzRuntime }
                                 organizationType={ organizationType }
                             >
                                 <SessionManagementProvider
@@ -469,46 +469,51 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 </Trans>)
                                             }
                                         />
-                                        <Switch>
-                                            <Redirect
-                                                exact
-                                                from="/"
-                                                to={ AppConstants.getAppHomePath() }
-                                            />
-                                            {
-                                                baseRoutes.map((route: RouteInterface, index: number) => {
-                                                    return (
-                                                        route.protected ?
-                                                            (
-                                                                <ProtectedRoute
-                                                                    component={ route.component }
-                                                                    path={ route.path }
-                                                                    key={ index }
-                                                                    exact={ route.exact }
-                                                                />
-                                                            )
-                                                            :
-                                                            (
-                                                                <Route
-                                                                    path={ route.path }
-                                                                    render={
-                                                                        (props:  RouteComponentProps<
-                                                                            { [p: string]: string },
-                                                                            StaticContext, unknown
-                                                                        >) => {
-                                                                            return (<route.component
-                                                                                { ...props }
-                                                                            />);
+                                        <ExtensionTemplatesProvider
+                                            resourceType={ ResourceTypes.APPLICATIONS }
+                                            categories={ ApplicationTemplateConstants.SUPPORTED_CATEGORIES_INFO }
+                                        >
+                                            <Switch>
+                                                <Redirect
+                                                    exact
+                                                    from="/"
+                                                    to={ AppConstants.getAppHomePath() }
+                                                />
+                                                {
+                                                    baseRoutes.map((route: RouteInterface, index: number) => {
+                                                        return (
+                                                            route.protected ?
+                                                                (
+                                                                    <ProtectedRoute
+                                                                        component={ route.component }
+                                                                        path={ route.path }
+                                                                        key={ index }
+                                                                        exact={ route.exact }
+                                                                    />
+                                                                )
+                                                                :
+                                                                (
+                                                                    <Route
+                                                                        path={ route.path }
+                                                                        render={
+                                                                            (props:  RouteComponentProps<
+                                                                                { [p: string]: string },
+                                                                                StaticContext, unknown
+                                                                            >) => {
+                                                                                return (<route.component
+                                                                                    { ...props }
+                                                                                />);
+                                                                            }
                                                                         }
-                                                                    }
-                                                                    key={ index }
-                                                                    exact={ route.exact }
-                                                                />
-                                                            )
-                                                    );
-                                                })
-                                            }
-                                        </Switch>
+                                                                        key={ index }
+                                                                        exact={ route.exact }
+                                                                    />
+                                                                )
+                                                        );
+                                                    })
+                                                }
+                                            </Switch>
+                                        </ExtensionTemplatesProvider>
                                     </>
                                 </SessionManagementProvider>
                             </AccessControlProvider>

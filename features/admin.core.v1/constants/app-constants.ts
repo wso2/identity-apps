@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs";
 import {
     GovernanceCategoryForOrgsInterface,
     GovernanceConnectorCategoryInterface,
@@ -254,8 +253,6 @@ export class AppConstants {
      */
     public static getPaths(): Map<string, string> {
 
-        const useNewConnectionsView: boolean = identityProviderConfig?.useNewConnectionsView;
-
         const paths: Map<string, string> = new Map<string, string>([
             [ "GETTING_STARTED", `${ AppConstants.getDeveloperViewBasePath() }/getting-started` ],
             [ "ADMIN_OVERVIEW", `${ AppConstants.getAdminViewBasePath() }/overview` ],
@@ -271,6 +268,7 @@ export class AppConstants {
             [ "APPLICATIONS", `${ AppConstants.getDeveloperViewBasePath() }/applications` ],
             [ "APPLICATION_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/applications/templates` ],
             [ "APPLICATION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/applications/:id` ],
+            [ "APPLICATIONS_SETTINGS", `${ AppConstants.getDeveloperViewBasePath() }/applications-settings` ],
             [ "APPLICATION_ROLES", `${ AppConstants.getAdminViewBasePath() }/application-roles` ],
             [ "APPLICATION_ROLES_EDIT",
                 `${ AppConstants.getAdminViewBasePath() }/application-roles/:applicationId/:roleId` ],
@@ -317,21 +315,9 @@ export class AppConstants {
             [ "EXTERNAL_DIALECT_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attribute-mappings/:id` ],
             [ "GROUPS", `${ AppConstants.getAdminViewBasePath() }/groups` ],
             [ "GROUP_EDIT", `${ AppConstants.getAdminViewBasePath() }/groups/:id` ],
-            [ "IDP",
-                useNewConnectionsView
-                    ? `${ AppConstants.getDeveloperViewBasePath() }/connections`
-                    : `${ AppConstants.getDeveloperViewBasePath() }/identity-providers`
-            ],
-            [ "IDP_TEMPLATES",
-                useNewConnectionsView
-                    ? `${ AppConstants.getDeveloperViewBasePath() }/connections/templates`
-                    : `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/templates`
-            ],
-            [ "IDP_EDIT",
-                useNewConnectionsView
-                    ? `${ AppConstants.getDeveloperViewBasePath() }/connections/:id`
-                    : `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/:id`
-            ],
+            [ "IDP", `${ AppConstants.getDeveloperViewBasePath() }/connections` ],
+            [ "IDP_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/connections/templates` ],
+            [ "IDP_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/connections/:id` ],
             [ "IDVP", `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers` ],
             [ "IDVP_TEMPLATES",
                 `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers/templates`
@@ -342,6 +328,7 @@ export class AppConstants {
             [ "LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attributes/:id` ],
             [ "LOGIN", window["AppUtils"]?.getConfig()?.routes.login ],
             [ "LOGIN_AND_REGISTRATION", `${ AppConstants.getDeveloperViewBasePath() }/login-and-registration` ],
+            [ "ACTIONS", `${ AppConstants.getDeveloperViewBasePath() }/actions` ],
             [ "SCIM_MAPPING", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/scim` ],
             [ "LOGOUT", window["AppUtils"]?.getConfig()?.routes.logout ],
             [ "OIDC_SCOPES", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes` ],
@@ -394,10 +381,6 @@ export class AppConstants {
             [ "USERNAME_VALIDATION_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-username-validation` ],
             [ "ALTERNATIVE_LOGIN_IDENTIFIER_EDIT",
                 `${AppConstants.getAdminViewBasePath()}/edit-alternative-login-identifier` ],
-            [
-                "PRIVATE_KEY_JWT_CONFIG_EDIT",
-                `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration`
-            ],
             [ "INSIGHTS", `${AppConstants.getAdminViewBasePath()}/insights` ],
             [ "REMOTE_LOGGING", `${AppConstants.getAdminViewBasePath()}/server/logs` ],
             [ "SESSION_MANAGEMENT",
@@ -414,7 +397,12 @@ export class AppConstants {
             [ "INTERNAL_NOTIFICATION_SENDING",
                 `${AppConstants.getAdminViewBasePath()}/server/internal-notification-sending` ],
             [ "OUTBOUND_PROVISIONING_SETTINGS",
-                `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ]
+                `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ],
+            [ "IMPERSONATION", `${AppConstants.getAdminViewBasePath()}/login-and-registration/impersonation` ],
+            [ "ACTIONS",
+                `${AppConstants.getAdminViewBasePath()}/actions` ],
+            [ "PRE_ISSUE_ACCESS_TOKEN_EDIT",
+                `${ AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ]
         ]);
 
         return paths;
@@ -501,7 +489,7 @@ export class AppConstants {
     public static readonly ORGANIZATION_ONLY_ROUTES: string[] = [
         "roles",
         ...(this.getAdministratorsFeatureConfig()?.enabled ? [ "consoleSettings" ] : [])
-    ]
+    ];
 
     /**
      * Route ids that are enabled in only for super admins.
@@ -511,7 +499,7 @@ export class AppConstants {
         "remote-logging",
         "internal-notification-sending",
         "server"
-    ]
+    ];
 
     /**
      * Route id of the console settings page.

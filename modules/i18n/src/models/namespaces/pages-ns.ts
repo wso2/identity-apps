@@ -16,6 +16,10 @@
  * under the License.
  */
 export interface pagesNS {
+    actions: {
+        title: string;
+        subTitle: string;
+    };
     addEmailTemplate: {
         title: string;
         subTitle: string;
@@ -62,6 +66,15 @@ export interface pagesNS {
         title: string;
         subTitle: string;
     };
+    groupsEdit: {
+        title: string;
+        subTitle: string;
+        backButton: string;
+    };
+    impersonation: {
+        title: string;
+        subTitle: string;
+    };
     organizations: {
         title: string;
         subTitle: string;
@@ -85,11 +98,6 @@ export interface pagesNS {
         alternateSubTitle: string;
     };
     rolesEdit: {
-        title: string;
-        subTitle: string;
-        backButton: string;
-    };
-    groupsEdit: {
         title: string;
         subTitle: string;
         backButton: string;

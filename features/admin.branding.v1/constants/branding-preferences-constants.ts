@@ -57,43 +57,43 @@ export class BrandingPreferencesConstants {
         BRANDING_PREFERENCE_UPDATE_ERROR: IdentityAppsError;
         BRANDING_PREFERENCE_UPDATE_INVALID_STATUS_CODE_ERROR: IdentityAppsError;
     } = {
-        BRANDING_PREFERENCE_DELETE_ERROR: new IdentityAppsError(
-            BrandingPreferencesConstants.BRANDING_PREFERENCE_DELETE_ERROR_CODE,
-            "An error occurred while deleting the branding preferences for the requested resource.",
-            "Error while deleting Branding Preferences",
-            null
-        ),
-        BRANDING_PREFERENCE_DELETE_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
-            BrandingPreferencesConstants.BRANDING_PREFERENCE_DELETE_INVALID_STATUS_CODE_ERROR_CODE,
-            "Received an invalid status code while deleting the branding preferences for the requested resource.",
-            "Invalid Error Code while deleting Branding Preferences",
-            null
-        ),
-        BRANDING_PREFERENCE_FETCH_ERROR: new IdentityAppsError(
-            BrandingPreferencesConstants.BRANDING_PREFERENCE_FETCH_ERROR_CODE,
-            "An error occurred while fetching the branding preferences for the requested resource.",
-            "Error while fetching Branding Preferences",
-            null
-        ),
-        BRANDING_PREFERENCE_FETCH_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
-            BrandingPreferencesConstants.BRANDING_PREFERENCE_FETCH_INVALID_STATUS_CODE_ERROR_CODE,
-            "Received an invalid status code while fetching the branding preferences for the requested resource.",
-            "Invalid Error Code while fetching Branding Preferences",
-            null
-        ),
-        BRANDING_PREFERENCE_UPDATE_ERROR: new IdentityAppsError(
-            BrandingPreferencesConstants.BRANDING_PREFERENCE_UPDATE_ERROR_CODE,
-            "An error occurred while updating the branding preferences for the requested resource.",
-            "Error while updating Branding Preferences",
-            null
-        ),
-        BRANDING_PREFERENCE_UPDATE_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
-            BrandingPreferencesConstants.BRANDING_PREFERENCE_UPDATE_INVALID_STATUS_CODE_ERROR_CODE,
-            "Received an invalid status code while updating the branding preferences for the requested resource.",
-            "Invalid Error Code while updating Branding Preferences",
-            null
-        )
-    };
+            BRANDING_PREFERENCE_DELETE_ERROR: new IdentityAppsError(
+                BrandingPreferencesConstants.BRANDING_PREFERENCE_DELETE_ERROR_CODE,
+                "An error occurred while deleting the branding preferences for the requested resource.",
+                "Error while deleting Branding Preferences",
+                null
+            ),
+            BRANDING_PREFERENCE_DELETE_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
+                BrandingPreferencesConstants.BRANDING_PREFERENCE_DELETE_INVALID_STATUS_CODE_ERROR_CODE,
+                "Received an invalid status code while deleting the branding preferences for the requested resource.",
+                "Invalid Error Code while deleting Branding Preferences",
+                null
+            ),
+            BRANDING_PREFERENCE_FETCH_ERROR: new IdentityAppsError(
+                BrandingPreferencesConstants.BRANDING_PREFERENCE_FETCH_ERROR_CODE,
+                "An error occurred while fetching the branding preferences for the requested resource.",
+                "Error while fetching Branding Preferences",
+                null
+            ),
+            BRANDING_PREFERENCE_FETCH_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
+                BrandingPreferencesConstants.BRANDING_PREFERENCE_FETCH_INVALID_STATUS_CODE_ERROR_CODE,
+                "Received an invalid status code while fetching the branding preferences for the requested resource.",
+                "Invalid Error Code while fetching Branding Preferences",
+                null
+            ),
+            BRANDING_PREFERENCE_UPDATE_ERROR: new IdentityAppsError(
+                BrandingPreferencesConstants.BRANDING_PREFERENCE_UPDATE_ERROR_CODE,
+                "An error occurred while updating the branding preferences for the requested resource.",
+                "Error while updating Branding Preferences",
+                null
+            ),
+            BRANDING_PREFERENCE_UPDATE_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
+                BrandingPreferencesConstants.BRANDING_PREFERENCE_UPDATE_INVALID_STATUS_CODE_ERROR_CODE,
+                "Received an invalid status code while updating the branding preferences for the requested resource.",
+                "Invalid Error Code while updating Branding Preferences",
+                null
+            )
+        };
 
     /**
      * Branding preference tab ids.
@@ -103,12 +103,31 @@ export class BrandingPreferencesConstants {
         DESIGN_TAB_ID: string;
         GENERAL_TAB_ID: string;
         TEXT_TAB_ID: string;
+        PREVIEW_TAB_ID: string;
     } = {
-        ADVANCED_TAB_ID: "advanced",
-        DESIGN_TAB_ID: "design",
-        GENERAL_TAB_ID: "general",
-        TEXT_TAB_ID: "text"
-    };
+            ADVANCED_TAB_ID: "advanced",
+            DESIGN_TAB_ID: "design",
+            GENERAL_TAB_ID: "general",
+            PREVIEW_TAB_ID: "preview",
+            TEXT_TAB_ID: "text"
+        };
+
+    /**
+     * Branding preference tab indices.
+     */
+    public static readonly TAB_INDEX: {
+        ADVANCED_TAB_INDEX: number;
+        DESIGN_TAB_INDEX: number;
+        GENERAL_TAB_INDEX: number;
+        PREVIEW_TAB_INDEX: number;
+        TEXT_TAB_INDEX: number;
+    } = {
+            ADVANCED_TAB_INDEX: 2,
+            DESIGN_TAB_INDEX: 1,
+            GENERAL_TAB_INDEX: 0,
+            PREVIEW_TAB_INDEX: 4,
+            TEXT_TAB_INDEX: 3
+        };
 
     /**
      * General form field constraints for validations.
@@ -119,11 +138,11 @@ export class BrandingPreferencesConstants {
         DISPLAY_NAME_MAX_LENGTH: number,
         DISPLAY_NAME_MIN_LENGTH: number
     } = {
-        DISPLAY_NAME_MAX_LENGTH: 100,
-        DISPLAY_NAME_MIN_LENGTH: 3,
-        SUPPORT_EMAIL_MAX_LENGTH: 100,
-        SUPPORT_EMAIL_MIN_LENGTH: 3
-    };
+            DISPLAY_NAME_MAX_LENGTH: 100,
+            DISPLAY_NAME_MIN_LENGTH: 3,
+            SUPPORT_EMAIL_MAX_LENGTH: 100,
+            SUPPORT_EMAIL_MIN_LENGTH: 3
+        };
 
     /**
      * Design form field constraints for validations.
@@ -156,33 +175,33 @@ export class BrandingPreferencesConstants {
         PRODUCT_TAGLINE_TEXT_MAX_LENGTH: number,
         PRODUCT_TAGLINE_TEXT_MIN_LENGTH: number,
     } = {
-        BORDER_RADIUS_MAX_LENGTH: 100,
-        BORDER_RADIUS_MIN_LENGTH: 3,
-        BORDER_WIDTH_MAX_LENGTH: 100,
-        BORDER_WIDTH_MIN_LENGTH: 3,
-        FAVICON_URL_MAX_LENGTH: 2048,
-        FAVICON_URL_MIN_LENGTH: 3,
-        FONT_FAMILY_MAX_LENGTH: 1024,
-        FONT_FAMILY_MIN_LENGTH: 3,
-        FONT_IMPORT_URL_MAX_LENGTH: 2048,
-        FONT_IMPORT_URL_MIN_LENGTH: 3,
-        LOGO_ALT_TEXT_MAX_LENGTH: 100,
-        LOGO_ALT_TEXT_MIN_LENGTH: 1,
-        LOGO_URL_MAX_LENGTH: 2048,
-        LOGO_URL_MIN_LENGTH: 3,
-        MYACCOUNT_LOGO_ALT_TEXT_MAX_LENGTH: 100,
-        MYACCOUNT_LOGO_ALT_TEXT_MIN_LENGTH: 1,
-        MYACCOUNT_LOGO_TITLE_MAX_LENGTH: 20,
-        MYACCOUNT_LOGO_TITLE_MIN_LENGTH: 0,
-        MYACCOUNT_LOGO_URL_MAX_LENGTH: 2048,
-        MYACCOUNT_LOGO_URL_MIN_LENGTH: 3,
-        PRODUCT_TAGLINE_TEXT_MAX_LENGTH: 100,
-        PRODUCT_TAGLINE_TEXT_MIN_LENGTH: 1,
-        SIDE_IMAGE_ALT_TEXT_MAX_LENGTH: 100,
-        SIDE_IMAGE_ALT_TEXT_MIN_LENGTH: 1,
-        SIDE_IMAGE_URL_MAX_LENGTH: 2048,
-        SIDE_IMAGE_URL_MIN_LENGTH: 3
-    };
+            BORDER_RADIUS_MAX_LENGTH: 100,
+            BORDER_RADIUS_MIN_LENGTH: 3,
+            BORDER_WIDTH_MAX_LENGTH: 100,
+            BORDER_WIDTH_MIN_LENGTH: 3,
+            FAVICON_URL_MAX_LENGTH: 2048,
+            FAVICON_URL_MIN_LENGTH: 3,
+            FONT_FAMILY_MAX_LENGTH: 1024,
+            FONT_FAMILY_MIN_LENGTH: 3,
+            FONT_IMPORT_URL_MAX_LENGTH: 2048,
+            FONT_IMPORT_URL_MIN_LENGTH: 3,
+            LOGO_ALT_TEXT_MAX_LENGTH: 100,
+            LOGO_ALT_TEXT_MIN_LENGTH: 1,
+            LOGO_URL_MAX_LENGTH: 2048,
+            LOGO_URL_MIN_LENGTH: 3,
+            MYACCOUNT_LOGO_ALT_TEXT_MAX_LENGTH: 100,
+            MYACCOUNT_LOGO_ALT_TEXT_MIN_LENGTH: 1,
+            MYACCOUNT_LOGO_TITLE_MAX_LENGTH: 20,
+            MYACCOUNT_LOGO_TITLE_MIN_LENGTH: 0,
+            MYACCOUNT_LOGO_URL_MAX_LENGTH: 2048,
+            MYACCOUNT_LOGO_URL_MIN_LENGTH: 3,
+            PRODUCT_TAGLINE_TEXT_MAX_LENGTH: 100,
+            PRODUCT_TAGLINE_TEXT_MIN_LENGTH: 1,
+            SIDE_IMAGE_ALT_TEXT_MAX_LENGTH: 100,
+            SIDE_IMAGE_ALT_TEXT_MIN_LENGTH: 1,
+            SIDE_IMAGE_URL_MAX_LENGTH: 2048,
+            SIDE_IMAGE_URL_MIN_LENGTH: 3
+        };
 
     /**
      * Advance form field constraints for validations.
@@ -195,13 +214,13 @@ export class BrandingPreferencesConstants {
         TOS_URL_MAX_LENGTH: number,
         TOS_URL_MIN_LENGTH: number
     } = {
-        COOKIE_POLICY_URL_MAX_LENGTH: 2048,
-        COOKIE_POLICY_URL_MIN_LENGTH: 3,
-        PRIVACY_POLICY_URL_MAX_LENGTH: 2048,
-        PRIVACY_POLICY_URL_MIN_LENGTH: 3,
-        TOS_URL_MAX_LENGTH: 2048,
-        TOS_URL_MIN_LENGTH: 3
-    };
+            COOKIE_POLICY_URL_MAX_LENGTH: 2048,
+            COOKIE_POLICY_URL_MIN_LENGTH: 3,
+            PRIVACY_POLICY_URL_MAX_LENGTH: 2048,
+            PRIVACY_POLICY_URL_MIN_LENGTH: 3,
+            TOS_URL_MAX_LENGTH: 2048,
+            TOS_URL_MIN_LENGTH: 3
+        };
 
     /**
      * Default Preference Object.
@@ -845,4 +864,11 @@ export class BrandingPreferencesConstants {
             }
         }
     };
+
+    public static readonly APP_WISE_BRANDING_FEATURE_TAG: string = "branding.applicationLevelBranding";
+}
+
+export enum BrandingModes {
+    APPLICATION = "application",
+    ORGANIZATION = "organization"
 }

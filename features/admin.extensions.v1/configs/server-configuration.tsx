@@ -51,7 +51,7 @@ import {
 import { generatePasswordHistoryCount } from "../components/password-history-count/components";
 import { updatePasswordPolicyProperties } from "../components/password-policies/api/password-policies";
 
-export const serverConfigurationConfig: ServerConfigurationConfig = {
+const serverConfigurationConfig: ServerConfigurationConfig = {
     autoEnableConnectorToggleProperty: false,
     backButtonDisabledConnectorIDs: [
         ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
@@ -79,7 +79,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         [ServerConfigurationsConstants.SELF_SIGNUP]:
             ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
         [ServerConfigurationsConstants.SSO_LOGIN_RECAPTCHA]:
-            ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE
+            ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE
     },
     connectorsToHide: [
         ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,
@@ -380,3 +380,6 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     usePasswordExpiry: useGetPasswordExpiryProperties,
     usePasswordHistory: useGetPasswordHistoryCount
 };
+
+
+export { serverConfigurationConfig };

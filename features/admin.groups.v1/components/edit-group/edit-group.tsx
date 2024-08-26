@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,35 +16,26 @@
  * under the License.
  */
 
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { getUsersList } from "@wso2is/admin.users.v1/api";
-import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
-import { UserBasicInterface, UserListInterface } from "@wso2is/admin.users.v1/models";
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, FeatureAccessConfigInterface, SBACInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
-import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 // TODO: Move to shared components.
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
+import { useSelector } from "react-redux";
 import { TabProps } from "semantic-ui-react";
 import { BasicGroupDetails } from "./edit-group-basic";
 import { EditGroupRoles } from "./edit-group-roles";
-import { GroupRolesV1List } from "./edit-group-roles-v1";
 import { GroupUsersList } from "./edit-group-users";
 import { GroupConstants } from "../../constants";
 import useGroupManagement from "../../hooks/use-group-management";
-import { GroupsInterface, GroupsMemberInterface } from "../../models";
+import { GroupsInterface } from "../../models";
 
 /**
  * Captures props needed for edit group component
  */
-interface EditGroupProps extends SBACInterface<FeatureConfigInterface> {
+interface EditGroupProps {
     /**
      * Group ID
      */
@@ -79,37 +70,18 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
         group,
         isLoading,
         onGroupUpdate,
-        featureConfig,
         readOnlyUserStores
     } = props;
 
     const { t } = useTranslation();
-    const dispatch: Dispatch = useDispatch();
-    const { UIConfig } = useUIConfig();
-
     const { activeTab, updateActiveTab } = useGroupManagement();
 
-    const usersFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.users);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const roleV1Enabled: boolean = UIConfig?.legacyMode?.rolesV1;
+    const groupsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features.groups);
 
-    const [ isUsersFetchRequestLoading, setIsUsersFetchRequestLoading ] = useState<boolean>(true);
-    const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
-    const [ selectedUsersList, setSelectedUsersList ] = useState<UserBasicInterface[]>([]);
+    const hasGroupsUpdatePermissions: boolean = useRequiredScopes(groupsFeatureConfig?.scopes?.update);
+
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
-
-    const isUserReadOnly: boolean = useMemo(() => {
-        return !isFeatureEnabled(usersFeatureConfig,
-            UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE")) ||
-            !hasRequiredScopes(usersFeatureConfig,
-                usersFeatureConfig?.scopes?.update, allowedScopes);
-    }, [ usersFeatureConfig, allowedScopes ]);
-
-    useEffect(() => {
-
-        getUserList();
-    }, [ group ]);
 
     useEffect(() => {
         if(!group) {
@@ -118,88 +90,13 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
 
         const userStore: string[] = group?.displayName.split("/");
 
-        if (!isFeatureEnabled(featureConfig?.groups, GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
+        if (!isFeatureEnabled(groupsFeatureConfig, GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
             || readOnlyUserStores?.includes(userStore?.toString())
-            || !hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.update, allowedScopes)
+            || !hasGroupsUpdatePermissions
         ) {
             setReadOnly(true);
         }
     }, [ group, readOnlyUserStores ]);
-
-    /**
-     * Get the users list.
-     */
-    const getUserList = (): void => {
-
-        const userstore: string = group?.displayName?.indexOf("/") === -1
-            ? "primary"
-            : group?.displayName?.split("/")[ 0 ];
-
-        setIsUsersFetchRequestLoading(true);
-
-        getUsersList(null, null, null, null, userstore)
-            .then((response: UserListInterface) => {
-                setUsersList(response.Resources);
-                setSelectedUsersList(filterUsersList(response.Resources));
-            })
-            .catch((error: AxiosError) => {
-                if (error?.response?.data?.description) {
-                    dispatch(addAlert({
-                        description: error?.response?.data?.description ?? error?.response?.data?.detail
-                        ?? t("users:notifications.fetchUsers.error.description"),
-                        level: AlertLevels.ERROR,
-                        message: error?.response?.data?.message
-                        ?? t("users:notifications.fetchUsers.error.message")
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("users:notifications.fetchUsers.genericError." +
-                    "description"),
-                    level: AlertLevels.ERROR,
-                    message: t("users:notifications.fetchUsers.genericError.message")
-                }));
-
-            })
-            .finally(() => {
-                setIsUsersFetchRequestLoading(false);
-            });
-    };
-
-    /**
-     * Filter out the members of the group.
-     *
-     * @param usersToFilter - Original users list.
-     * @returns Filtered user list.
-     */
-    const filterUsersList = (usersToFilter: UserBasicInterface[]): UserBasicInterface[] => {
-
-        if (!group?.members || !Array.isArray(group.members) || group.members.length < 1 || !usersToFilter) {
-            return;
-        }
-
-        const selectedUserList: UserBasicInterface[] = [];
-
-        usersToFilter
-            .slice()
-            .reverse()
-            .forEach((user: UserBasicInterface) => {
-                group.members.forEach((assignedUser: GroupsMemberInterface) => {
-                    if (user.id === assignedUser.value) {
-                        selectedUserList.push(user);
-                        usersToFilter.splice(usersToFilter.indexOf(user), 1);
-                    }
-                });
-            });
-
-        selectedUserList.sort((userObject: UserBasicInterface, comparedUserObject: UserBasicInterface) =>
-            userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
-        );
-
-        return selectedUserList;
-    };
 
     const resolveResourcePanes = () => {
         const panes: ResourceTabPaneInterface[] = [
@@ -220,41 +117,25 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
             },{
                 menuItem: t("roles:edit.menuItems.users"),
                 render: () => (
-                    <ResourceTab.Pane controlledSegmentation attached={ false } loading={ isUsersFetchRequestLoading }>
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <GroupUsersList
                             data-testid="group-mgt-edit-group-users"
                             isGroup={ true }
                             group={ group }
-                            users={ usersList }
-                            selectedUsers={ selectedUsersList }
-                            isLoading={ isUsersFetchRequestLoading }
                             onGroupUpdate={ onGroupUpdate }
                             isReadOnly={ isReadOnly }
                         />
                     </ResourceTab.Pane>
                 )
             },
-            roleV1Enabled ? {
-                menuItem: t("roles:edit.menuItems.roles"),
-                render: () => (
-                    <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <GroupRolesV1List
-                            data-testid="group-mgt-edit-group-roles-v1"
-                            group={ group }
-                            onGroupUpdate={ onGroupUpdate }
-                            isReadOnly={ isReadOnly || isUserReadOnly }
-                        />
-                    </ResourceTab.Pane>
-                )
-            } : null,
-            !roleV1Enabled ? {
+            {
                 menuItem: t("roles:edit.menuItems.roles"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <EditGroupRoles group={ group } />
                     </ResourceTab.Pane>
                 )
-            } : null
+            }
         ];
 
         return panes;

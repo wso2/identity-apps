@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { applyMiddleware, createStore } from "redux";
+import { Dispatch, StoreEnhancer, applyMiddleware, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import thunk from "redux-thunk";
 import { reducers } from "./combine-reducers";
@@ -31,16 +31,20 @@ export type AppState = ReturnType<typeof reducers>;
  * Enables the instantiation of a redux store which could be passed on
  * to the `Provider` supplied by the `react-redux` library.
  *
- * @return {Store<any, AnyAction> & Store<S & {}, A> & {dispatch: any}} Redux Store
+ * @returns Redux Store
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const configureStore = (): any => {
     // Set of custom middleware.
-    const middleware = [
+    const middleware: (({ dispatch }: {
+        dispatch: Dispatch<any>;
+    }) => (next: any) => (action: any) => void)[] = [
         apiMiddleware,
         thunk
     ];
-    const middleWareEnhancer = applyMiddleware(...middleware);
+    const middleWareEnhancer: StoreEnhancer<{
+        dispatch: unknown;
+    }, object> = applyMiddleware(...middleware);
 
     return createStore(
         reducers,
@@ -48,4 +52,4 @@ const configureStore = (): any => {
     );
 };
 
-export const store = configureStore();
+export const store: any = configureStore();

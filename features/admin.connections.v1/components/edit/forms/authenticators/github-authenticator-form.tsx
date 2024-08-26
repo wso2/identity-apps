@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,7 +23,8 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
-import { AuthenticatorManagementConstants } from "../../../../constants/autheticator-constants";
+import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
+import { FederatedAuthenticatorConstants } from "../../../../constants/federated-authenticator-constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormFieldInterface,
@@ -32,6 +33,10 @@ import {
     CommonAuthenticatorFormMetaInterface,
     CommonAuthenticatorFormPropertyInterface
 } from "../../../../models/authenticators";
+import {
+    CommonPluggableComponentMetaPropertyInterface,
+    CommonPluggableComponentPropertyInterface
+} from "../../../../models/connection";
 
 /**
  * Interface for GitHub Authenticator Form props.
@@ -190,7 +195,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
 
         originalInitialValues.properties.map((value: CommonAuthenticatorFormPropertyInterface) => {
             const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties
-                .find((meta) => meta.key === value.key);
+                .find((meta: CommonPluggableComponentMetaPropertyInterface) => meta.key === value.key);
 
             resolvedFormFields = {
                 ...resolvedFormFields,
@@ -219,7 +224,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
     const getUpdatedConfigurations = (values: GithubAuthenticatorFormInitialValuesInterface)
         : CommonAuthenticatorFormInitialValuesInterface => {
 
-        const properties = [];
+        const properties: CommonPluggableComponentPropertyInterface[] = [];
 
         for (const [ key, value ] of Object.entries(values)) {
             if (key !== undefined) {
@@ -244,24 +249,24 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
      */
     const resolveScopeMetadata = (scope: string): ScopeMetaInterface => {
 
-        if (scope === AuthenticatorManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_READ) {
+        if (scope === FederatedAuthenticatorConstants.GITHUB_SCOPE_DICTIONARY.USER_READ) {
             return {
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.github.scopes.list.profile.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { AuthenticatorManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_READ }
+                        { FederatedAuthenticatorConstants.GITHUB_SCOPE_DICTIONARY.USER_READ }
                     </Code>
                 ),
                 icon: "user outline"
             };
-        } else if (scope === AuthenticatorManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_EMAIL) {
+        } else if (scope === FederatedAuthenticatorConstants.GITHUB_SCOPE_DICTIONARY.USER_EMAIL) {
             return {
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.github.scopes.list.email.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { AuthenticatorManagementConstants.GITHUB_SCOPE_DICTIONARY.USER_EMAIL }
+                        { FederatedAuthenticatorConstants.GITHUB_SCOPE_DICTIONARY.USER_EMAIL }
                     </Code>
                 ),
                 icon: "envelope outline"
@@ -279,7 +284,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
         <Form
             id={ FORM_ID }
             uncontrolledForm={ false }
-            onSubmit={ (values) => onSubmit(getUpdatedConfigurations(values as any)) }
+            onSubmit={ (values: Record<string, unknown>) => onSubmit(getUpdatedConfigurations(values as any)) }
             initialValues={ initialValues }
         >
             <Field.Input
@@ -315,7 +320,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                 value={ formFields?.ClientId?.value }
                 maxLength={ formFields?.ClientId?.meta?.maxLength }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -356,7 +361,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                 value={ formFields?.ClientSecret?.value }
                 maxLength={ formFields?.ClientSecret?.meta?.maxLength }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_SECRET_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -389,7 +394,7 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                 }
                 maxLength={ formFields?.callbackUrl?.meta?.maxLength }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CALLBACK_URL_MIN_LENGTH as number
                 }
                 width={ 16 }

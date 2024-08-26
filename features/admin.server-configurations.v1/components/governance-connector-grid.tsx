@@ -242,20 +242,6 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                     onClick={ () => handleConnectorSelection(connector) }
                                                     data-componentid={ connector.testId }
                                                 >
-                                                    {
-                                                        connector.status
-                                                        && (
-                                                            <div
-                                                                className={
-                                                                    "ribbon " + resolveFeatureLabelClass(
-                                                                        connector.status as FeatureStatusLabel
-                                                                    )
-                                                                }
-                                                            >
-                                                                { t(connector.status).toUpperCase() }
-                                                            </div>
-                                                        )
-                                                    }
                                                     <CardContent className="governance-connector-header">
                                                         <Avatar
                                                             variant="square"
@@ -270,6 +256,22 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                                 { connector.header }
                                                             </Typography>
                                                         </div>
+                                                        {
+                                                            connector.status
+                                                            && (
+                                                                <div
+                                                                    className={
+                                                                        "ribbon " + resolveFeatureLabelClass(
+                                                                            connector.status as FeatureStatusLabel
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <span className="MuiChip-label">
+                                                                        { t(connector.status) }
+                                                                    </span>
+                                                                </div>
+                                                            )
+                                                        }
                                                     </CardContent>
                                                     <CardContent>
                                                         <Typography variant="body2" color="text.secondary">

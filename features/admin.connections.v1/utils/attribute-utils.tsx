@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,6 +27,7 @@ import isEmpty from "lodash-es/isEmpty";
 import { Dispatch, SetStateAction } from "react";
 import { handleUpdateIDPRoleMappingsError } from "./connection-utils";
 import { updateClaimsConfigs, updateConnectionRoleMappings } from "../api/connections";
+import { FederatedAuthenticatorConstants } from "../constants/federated-authenticator-constants";
 import {
     ConnectionClaimInterface,
     ConnectionClaimMappingInterface,
@@ -242,4 +243,22 @@ export const isClaimExistsInConnectionClaims = (mapping: ConnectionCommonClaimMa
  */
 export const isLocalIdentityClaim = (claim: string): boolean => {
     return /identity/.test(claim);
+};
+
+/**
+ * Checks if provisioning attributes are enabled for the authenticator.
+ *
+ * @param authenticatorId - Id of the authenticator.
+ * @returns Whether provisioning attributes are enabled for the authenticator.
+ */
+export const isProvisioningAttributesEnabled = (authenticatorId: string): boolean => {
+    const excludedAuthenticators: Set<string> = new Set([
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID
+    ]);
+
+    /**
+     * If the authenticatorId is not in the excluded set we
+     * can say the provisioning attributes is enabled for authenticator.
+     */
+    return !excludedAuthenticators.has(authenticatorId);
 };

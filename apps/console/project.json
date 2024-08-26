@@ -1,6 +1,6 @@
 {
+    "name": "console",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "root": "apps/console",
     "sourceRoot": "apps/console/src",
     "projectType": "application",
     "generators": {},
@@ -31,7 +31,7 @@
             }
         },
         "build-base": {
-            "executor": "@nrwl/web:webpack",
+            "executor": "@nx/webpack:webpack",
             "outputs": [
                 "{options.outputPath}"
             ],
@@ -90,7 +90,8 @@
                     "optimization": false,
                     "sourceMap": true,
                     "vendorChunk": true,
-                    "verbose": true
+                    "verbose": true,
+                    "extractCss": false
                 },
                 "production": {
                     "index": "index.jsp",
@@ -100,7 +101,8 @@
                     "outputHashing": "all",
                     "sourceMap": false,
                     "extractLicenses": false,
-                    "verbose": true
+                    "verbose": true,
+                    "extractCss": false
                 }
             }
         },
@@ -156,7 +158,7 @@
             }
         },
         "serve-base": {
-            "executor": "@nrwl/web:dev-server",
+            "executor": "@nx/webpack:dev-server",
             "defaultConfiguration": "development",
             "options": {
                 "buildTarget": "console:build-base",
@@ -199,6 +201,14 @@
             "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm test",
+                "cwd": "apps/console",
+                "parallel": false
+            }
+        },
+        "test-coverage": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm test:coverage",
                 "cwd": "apps/console",
                 "parallel": false
             }

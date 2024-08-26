@@ -29,11 +29,11 @@ import {
     SupportedAuthProtocolTypes,
     additionalSpProperty
 } from "@wso2is/admin.applications.v1/models";
+import getTryItClientId from "@wso2is/admin.applications.v1/utils/get-try-it-client-id";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { ApplicationRoles } from "@wso2is/admin.roles.v2/components/application-roles";
-import { LegacyModeInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import {
     Code,
@@ -53,14 +53,16 @@ import { Divider, Icon, Message } from "semantic-ui-react";
 import { ApplicationGeneralTabOverride } from "./components/application-general-tab-overide";
 import { MarketingConsentModalWrapper } from "./components/marketing-consent/components";
 import { ApplicationConfig, ExtendedFeatureConfigInterface } from "./models";
+import { ApplicationTabIDs } from "./models/application";
+import {
+    ReactComponent as TryItAppIllustration
+} from "../../themes/default/assets/images/illustrations/rafiki-illustration.svg";
 import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";
 import SamlWebAppTemplate
     from "../application-templates/templates/saml-web-application/saml-web-application.json";
 import SinglePageAppTemplate from
     "../application-templates/templates/single-page-application/single-page-application.json";
-import { getTryItClientId } from "../components/application/utils/try-it-utils";
-import { getGettingStartedCardIllustrations } from "../components/getting-started/configs";
 
 function isClaimInterface(
     claim: ExtendedClaimInterface | ExtendedExternalClaimInterface
@@ -107,11 +109,13 @@ export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
         showEnableAuthorization: true,
         showFapiFeatureStatusChip: false,
+        showHybridFlowFeatureStatusChip: false,
         showMtlsAliases: false,
         showMyAccount: true,
-        showMyAccountStatus: false,
+        showMyAccountStatus: true,
         showReturnAuthenticatedIdPs: true,
-        showSaaS: true
+        showSaaS: true,
+        showTrustedAppConsentWarning: false
     },
     allowedGrantTypes: {
         // single page app template
@@ -206,36 +210,88 @@ export const applicationConfig: ApplicationConfig = {
     },
     editApplication: {
         extendTabs: false,
-        getActions: (clientId: string, tenant: string, testId: string) => {
+        getActions: (applicationId: string, clientId: string, tenant: string, testId: string) => {
 
             const asgardeoLoginPlaygroundURL: string = window[ "AppUtils" ]?.getConfig()?.extensions?.asgardeoTryItURL;
 
-            return (
-                clientId === getTryItClientId(tenant)
-                    ? (
-                        <PrimaryButton
-                            data-tourid="button"
-                            onClick={ (): void => {
-                                EventPublisher.getInstance().publish("tryit-try-login", {
-                                    "client-id": clientId
-                                });
-                                window.open(asgardeoLoginPlaygroundURL+"?client_id="+clientId+"&org="+tenant);
-                            } }
-                            data-testid={ `${ testId }-playground-button` }
-                        >
-                            Try Login
-                            <Icon name="arrow right"/>
-                        </PrimaryButton>
-                    ): null
-            );
+            if (clientId === getTryItClientId(tenant)) {
+                return (
+                    <PrimaryButton
+                        data-tourid="button"
+                        onClick={ (): void => {
+                            EventPublisher.getInstance().publish("tryit-try-login", {
+                                "client-id": clientId
+                            });
+                            window.open(asgardeoLoginPlaygroundURL+"?client_id="+clientId+"&org="+tenant);
+                        } }
+                        data-testid={ `${ testId }-playground-button` }
+                    >
+                        Try Login
+                        <Icon name="arrow right"/>
+                    </PrimaryButton>
+                );
+            }
+
+            return null;
         },
-        getOveriddenTab: (clientId: string, tabName: ApplicationTabTypes,
-            defaultComponent: ReactElement, appName: string, appId: string, tenantDomain: string) => {
+        getOverriddenDescription: (clientId: string, tenantDomain: string, _templateName: string) => {
+            if (clientId === getTryItClientId(tenantDomain)){
+                return (
+                    <div className="ellipsis">
+                        <Popup
+                            content={ (
+                                <Trans
+                                    i18nKey=
+                                        { "extensions:develop.applications.asgardeoTryit.description" }
+                                >
+                                    You can try out different login flows of Asgardeo with our Try It app.
+                                </Trans>
+                            ) }
+                            trigger={ (
+                                <span>
+                                    <Trans
+                                        i18nKey=
+                                            { "extensions:develop.applications.asgardeoTryit.description" }
+                                    >
+                                        You can try out different login flows of Asgardeo with our Try It app.
+                                    </Trans>
+                                </span>
+                            ) }
+                        />
+                    </div>
+                );
+            }
+
+            return null;
+        },
+        getOverriddenImage: (clientId: string, tenantDomain: string) => {
+            if(clientId === getTryItClientId(tenantDomain)) {
+                return (
+                    <GenericIcon
+                        floated="left"
+                        size="tiny"
+                        transparent
+                        icon={ TryItAppIllustration }
+                    />
+                );
+            }
+
+            return null;
+        },
+        getOverriddenTab: (
+            clientId: string,
+            tabName: ApplicationTabTypes,
+            defaultComponent: ReactElement,
+            application: ApplicationInterface,
+            tenantDomain: string,
+            _onUpdate?:(id: string) => void,
+            _readOnly?:boolean
+        ) => {
             if (clientId === getTryItClientId(tenantDomain) && tabName === ApplicationTabTypes.GENERAL) {
                 return (
                     <ApplicationGeneralTabOverride
-                        appId={ appId }
-                        appName={ appName }
+                        appId={ application?.id }
+                        appName={ application?.name }
                         clientId={ clientId }
                     ></ApplicationGeneralTabOverride>
                 );
@@ -335,50 +391,6 @@ export const applicationConfig: ApplicationConfig = {
 
             return defaultComponent;
         },
-        getOverriddenDescription: (clientId: string, tenantDomain: string, _templateName: string) => {
-            if (clientId === getTryItClientId(tenantDomain)){
-                return (
-                    <div className="ellipsis">
-                        <Popup
-                            content={ (
-                                <Trans
-                                    i18nKey=
-                                        { "extensions:develop.applications.asgardeoTryit.description" }
-                                >
-                                    You can try out different login flows of Asgardeo with our Try It app.
-                                </Trans>
-                            ) }
-                            trigger={ (
-                                <span>
-                                    <Trans
-                                        i18nKey=
-                                            { "extensions:develop.applications.asgardeoTryit.description" }
-                                    >
-                                        You can try out different login flows of Asgardeo with our Try It app.
-                                    </Trans>
-                                </span>
-                            ) }
-                        />
-                    </div>
-                );
-            }
-
-            return null;
-        },
-        getOverriddenImage: (clientId: string, tenantDomain: string) => {
-            if(clientId === getTryItClientId(tenantDomain)) {
-                return (
-                    <GenericIcon
-                        floated="left"
-                        size="tiny"
-                        transparent
-                        icon={ getGettingStartedCardIllustrations().tryItApplication }
-                    />
-                );
-            }
-
-            return null;
-        },
         getStrongAuthenticationFlowTabIndex: (
             clientId: string,
             tenantDomain: string
@@ -403,12 +415,9 @@ export const applicationConfig: ApplicationConfig = {
 
             const tabExtensions: ResourceTabPaneInterface[] = [];
 
-            const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
-
             // Enable the API authorization tab for supported templates when the api resources config is enabled.
             if (
                 apiResourceFeatureEnabled && !application?.advancedConfigurations?.fragment &&
-                legacyMode?.apiResourcesV2 &&
                 (
                     application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
                     || application?.templateId === MobileAppTemplate?.id
@@ -421,6 +430,7 @@ export const applicationConfig: ApplicationConfig = {
                 tabExtensions.push(
                     {
                         componentId: "api-authorization",
+                        "data-tabid": ApplicationTabIDs.API_AUTHORIZATION,
                         index: application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
                             ? M2M_API_AUTHORIZATION_INDEX + tabExtensions.length
                             : API_AUTHORIZATION_INDEX + tabExtensions.length,
@@ -441,7 +451,6 @@ export const applicationConfig: ApplicationConfig = {
 
             // Enable the roles tab for supported templates when the api resources config is enabled.
             if (apiResourceFeatureEnabled
-                && !legacyMode?.rolesV1
                 && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
                     applicationRoles?.enabled)
                 && (
@@ -458,6 +467,7 @@ export const applicationConfig: ApplicationConfig = {
                 tabExtensions.push(
                     {
                         componentId: "application-roles",
+                        "data-tabid": ApplicationTabIDs.APPLICATION_ROLES,
                         index: APPLICATION_ROLES_INDEX + tabExtensions.length,
                         menuItem: I18n.instance.t(
                             "extensions:develop.applications.edit.sections.roles.heading"
@@ -692,8 +702,8 @@ export const applicationConfig: ApplicationConfig = {
             },
             react: {
                 links: {
-                    authClientConfig: "",
-                    secureRoute: "",
+                    reactClientConfig: "",
+                    routingOptions: "",
                     useContextDocumentation: ""
                 },
                 npmInstallCommand: "",

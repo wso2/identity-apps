@@ -16,14 +16,24 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
+import { ImpersonationConfigConstants } from "@wso2is/admin.impersonation.v1/constants/impersonation-configuration";
 import { getSharedOrganizations } from "@wso2is/admin.organizations.v1/api";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationInterface, OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import {
+    AlertLevels,
+    FeatureAccessConfigInterface,
+    IdentifiableComponentInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { CheckboxChild, Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
@@ -32,6 +42,7 @@ import {
     ConfirmationModal,
     ContentLoader,
     CopyInputField,
+    DocumentationLink,
     GenericIcon,
     Heading,
     Hint,
@@ -64,16 +75,14 @@ import { Dispatch } from "redux";
 import { Button, Container, Divider, DropdownProps, Form, Grid, Label, List, Table } from "semantic-ui-react";
 import { getGeneralIcons } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
-import CustomApplicationTemplate
-    from "../../data/application-templates/templates/custom-application/custom-application.json";
-import M2MApplicationTemplate
-    from "../../data/application-templates/templates/m2m-application/m2m-application.json";
-import MobileTemplate
-    from "../../data/application-templates/templates/mobile-application/mobile-application.json";
-import OIDCWebApplicationTemplate
-    from "../../data/application-templates/templates/oidc-web-application/oidc-web-application.json";
-import SinglePageApplicationTemplate
-    from "../../data/application-templates/templates/single-page-application/single-page-application.json";
+import CustomApplicationTemplate from
+    "../../data/application-templates/templates/custom-application/custom-application.json";
+import M2MApplicationTemplate from "../../data/application-templates/templates/m2m-application/m2m-application.json";
+import MobileTemplate from "../../data/application-templates/templates/mobile-application/mobile-application.json";
+import OIDCWebApplicationTemplate from
+    "../../data/application-templates/templates/oidc-web-application/oidc-web-application.json";
+import SinglePageApplicationTemplate from
+    "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import {
     ApplicationInterface,
     ApplicationTemplateIdTypes,
@@ -142,6 +151,7 @@ interface InboundOIDCFormPropsInterface extends TestableComponentInterface, Iden
      * ex: Console
      */
     isSystemApplication?: boolean;
+    documentationLink?: string;
 }
 
 /**
@@ -169,6 +179,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         onUpdate,
         application,
         certificate,
+        documentationLink,
         metadata,
         initialValues,
         onSubmit,
@@ -210,9 +221,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ showAudienceError, setShowAudienceError ] = useState(false);
     const [ showOriginError, setShowOriginError ] = useState(false);
     const [ showPKCEField, setPKCEField ] = useState<boolean>(undefined);
+    const [ showHybridFlowEnableConfig, setHybridFlowEnableConfig ] = useState<boolean>(false);
     const [ showCallbackURLField, setShowCallbackURLField ] = useState<boolean>(undefined);
     const [ hideRefreshTokenGrantType, setHideRefreshTokenGrantType ] = useState<boolean>(false);
     const [ selectedGrantTypes, setSelectedGrantTypes ] = useState<string[]>(undefined);
+    const [ isJWTAccessTokenTypeSelected, setJWTAccessTokenTypeSelected ] =useState<boolean>(false);
     const [ isGrantChanged, setGrantChanged ] = useState<boolean>(false);
     const [ showRegenerateConfirmationModal, setShowRegenerateConfirmationModal ] = useState<boolean>(false);
     const [ showRevokeConfirmationModal, setShowRevokeConfirmationModal ] = useState<boolean>(false);
@@ -235,6 +248,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         isRefreshTokenWithoutAllowedGrantType,
         setRefreshTokenWithoutAlllowdGrantType
     ] = useState<boolean>(false);
+    const [ isSubjectTokenEnabled, setIsSubjectTokenEnabled ] = useState<boolean>(false);
+    const [ isSubjectTokenFeatureAvailable, setIsSubjectTokenFeatureAvailable ] = useState<boolean>(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const clientSecret: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
@@ -243,6 +258,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const allowedOrigin: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
     const supportPublicClients: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const pkce: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const hybridFlowEnableConfig: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const hybridFlow: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const bindingType: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const type: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const validateTokenBinding: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
@@ -264,12 +281,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const formRef: MutableRefObject<HTMLFormElement> = useRef<HTMLFormElement>();
     const updateRef: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const tokenEndpointAuthMethod: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const tokenEndpointAllowReusePvtKeyJwt: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const tokenEndpointAuthSigningAlg: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const tlsClientAuthSubjectDn: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const requirePushedAuthorizationRequests: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const requestObjectSigningAlg: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const requestObjectEncryptionAlgorithm: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const requestObjectEncryptionMethod: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const subjectToken: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const applicationSubjectTokenExpiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
 
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
@@ -283,6 +303,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     const [ isAppShared, setIsAppShared ] = useState<boolean>(false);
     const [ sharedOrganizationsList, setSharedOrganizationsList ] = useState<Array<OrganizationInterface>>(undefined);
+    const [ enableHybridFlowResponseTypeField , setEnableHybridFlowResponseTypeField ] = useState<boolean>(undefined);
 
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
 
@@ -322,6 +343,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const PKCE_KEY: string = "PKCE";
     const ENABLE_PKCE_CHECKBOX_VALUE: string = "mandatory";
     const SUPPORT_PKCE_PLAIN_ALGORITHM_VALUE: string = "supportPlainTransformAlgorithm";
+    const JWT: string = "JWT";
+
+    const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state.config.ui.features?.applications
+    );
 
     /**
      * The listener handler for the enable PKCE toggle form field. This function
@@ -356,9 +382,21 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
     };
 
+    const hybridFlowConfigValuesChangeListener = (tempForm: Map<string, FormValue>): void => {
+        if (tempForm.has(ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG)) {
+            const values: string[] = tempForm.get(ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG) as string[];
+
+            if (values.find((val: string): boolean =>
+                val === ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG )) {
+                setEnableHybridFlowResponseTypeField(true);
+            } else {
+                setEnableHybridFlowResponseTypeField(false);
+            }
+        }
+    };
+
     const PRIVATE_KEY_JWT: string = "private_key_jwt";
     const TLS_CLIENT_AUTH: string = "tls_client_auth";
-
 
     useEffect(() => {
         if (sharedOrganizationsList) {
@@ -503,6 +541,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     }, [ selectedGrantTypes, isGrantChanged ]);
 
+    useEffect(() => {
+        setHybridFlowEnableConfig(false);
+        if (selectedGrantTypes?.includes(ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
+            && isFeatureEnabled(applicationFeatureConfig, "applications.hybridFlow")
+        ) {
+            setHybridFlowEnableConfig(true);
+        }
+    }, [ selectedGrantTypes, isGrantChanged ]);
+
     /**
      * Check whether to enable refresh token grant type or not.
      */
@@ -542,14 +589,50 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
 
         if (initialValues?.grantTypes) {
-            setSelectedGrantTypes([ ...initialValues?.grantTypes ]);
+            setSelectedGrantTypes([ ...initialValues.grantTypes ]);
         }
 
         if (initialValues?.allowedOrigins) {
-            setAllowedOrigins(initialValues?.allowedOrigins.toString());
+            setAllowedOrigins(initialValues.allowedOrigins.toString());
         }
 
     }, [ initialValues ]);
+
+
+    /**
+     * Check whether which access token type is enabled.
+     */
+    useEffect(() => {
+
+        if (initialValues?.accessToken) {
+            setJWTAccessTokenTypeSelected(initialValues?.accessToken?.type === JWT);
+        } else {
+            setJWTAccessTokenTypeSelected(metadata?.accessTokenType?.defaultValue === JWT);
+        }
+    }, [ initialValues, metadata ]);
+
+    const isSubjectTokenFeatureEnabled: boolean = !disabledFeatures?.includes("applications.subjectToken");
+
+    /**
+     * Sets if subject token is enabled.
+     */
+    useEffect(() => {
+        setIsSubjectTokenEnabled(initialValues?.subjectToken ? initialValues?.subjectToken?.enable : false);
+        setIsSubjectTokenFeatureAvailable(isSubjectTokenFeatureEnabled ? initialValues?.subjectToken ?
+            true : false : false);
+    }, [ initialValues ]);
+
+    useEffect(() => {
+        if (isGrantChanged) {
+            if (!selectedGrantTypes?.includes(ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)) {
+                setIsSubjectTokenEnabled(false);
+            }
+
+            if (initialValues?.subjectToken) {
+                setIsSubjectTokenEnabled(initialValues?.subjectToken?.enable);
+            }
+        }
+    }, [ selectedGrantTypes, isGrantChanged ]);
 
     /**
      * Set the certificate type.
@@ -855,6 +938,106 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
     };
 
+    const hybridFlowResponseTypeMap: Map<string, string> = new Map([
+        [
+            t("applications:forms.inboundOIDC.sections.hybridFlow.hybridFlowResponseType." +
+            "fields.children.code_token.label"),
+            ApplicationManagementConstants.CODE_TOKEN
+        ],
+        [
+            t("applications:forms.inboundOIDC.sections.hybridFlow.hybridFlowResponseType.fields." +
+            "children.code_idtoken.label"),
+            ApplicationManagementConstants.CODE_IDTOKEN
+        ],
+        [
+            t("applications:forms.inboundOIDC.sections.hybridFlow.hybridFlowResponseType.fields." +
+            "children.code_idtoken_token.label"),
+            ApplicationManagementConstants.CODE_IDTOKEN_TOKEN
+        ]
+    ]);
+
+    /**
+    * Retrieves the list of hybrid flow response types.
+    *
+    * @returns List of response types with labels and values.
+    */
+    const getHybridFlowResponseTypes = (): CheckboxChild[] => {
+        type CheckboxChildWithIndex = CheckboxChild & { index?: number; };
+        const allowedList: CheckboxChildWithIndex[] = [];
+
+        hybridFlowResponseTypeMap.forEach((responseType: string, label: string) => {
+            const responseTypeList: CheckboxChildWithIndex = {
+                label: modifyResponseTypeLabel(responseType, label),
+                value: responseType
+            };
+
+            const description: string = getHybridFlowResponseTypesHintDescription(responseType);
+
+            if (description && !isM2MApplication) {
+                responseTypeList.hint = {
+                    content: description,
+                    header: ""
+                };
+            }
+
+            allowedList.push(responseTypeList);
+        });
+
+        return allowedList;
+    };
+
+    /**
+     * Modifies the response type label. For `code token` and `code id_token token` fields,
+     * a warning icon is concatenated with the label.
+     *
+     * @param value - checkbox key
+     * @param label - mapping label for value
+     */
+    const modifyResponseTypeLabel = (value: string, label: string) => {
+        if (value === ApplicationManagementConstants.CODE_TOKEN ||
+            value === ApplicationManagementConstants.CODE_IDTOKEN_TOKEN
+        ) {
+            return (
+                <>
+                    <label>
+                        { label }
+                        { !isM2MApplication && (
+                            <GenericIcon
+                                icon={ getGeneralIcons().warning }
+                                defaultIcon
+                                colored
+                                transparent
+                                spaced="left"
+                                floated="right"
+                            />)
+                        }
+                    </label>
+                </>
+            );
+        }
+
+        return label;
+    };
+
+    /**
+     * Retrieves the hint description for a given hybrid flow response type value.
+     *
+     * @param value - The hybrid flow response type value.
+     * @returns The hint description corresponding to the response type.
+     */
+    const getHybridFlowResponseTypesHintDescription = (value: string): string => {
+        switch (value) {
+            case ApplicationManagementConstants.CODE_TOKEN:
+                return t("applications:forms.inboundOIDC.fields.hybridFlow.hybridFlowResponseType.children." +
+                    "code_token.hint");
+            case ApplicationManagementConstants.CODE_IDTOKEN_TOKEN:
+                return t("applications:forms.inboundOIDC.fields.hybridFlow.hybridFlowResponseType.children." +
+                    "code_idtoken_token.hint");
+            default:
+                return null;
+        }
+    };
+
     /**
      * Creates options for Radio GrantTypeMetaDataInterface options.
      *
@@ -1061,6 +1244,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     renewRefreshToken: values.get("RefreshToken")?.length > 0
                 },
                 scopeValidators: values.get("scopeValidator"),
+                subjectToken: {
+                    applicationSubjectTokenExpiryInSeconds : values.get("applicationSubjectTokenExpiryInSeconds")
+                        ? parseInt(values.get("applicationSubjectTokenExpiryInSeconds"), 10)
+                        : ImpersonationConfigConstants.DEFAULT_SUBJECT_TOKEN_EXPIRY_TIME,
+                    enable : values.get("SubjectToken")?.length > 0
+                },
                 validateRequestObjectSignature: values.get("enableRequestObjectSignatureValidation")?.length > 0
             };
 
@@ -1111,6 +1300,24 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 };
             }
 
+            if(showHybridFlowEnableConfig) {
+                inboundConfigFormValues = {
+                    ...inboundConfigFormValues,
+                    hybridFlow: {
+                        enable: values.get("enable-hybrid-flow")?.length > 0,
+                        responseType: values.get(ApplicationManagementConstants.HYBRID_FLOW_RESPONSE_TYPE)
+                    }
+                };
+            } else {
+                inboundConfigFormValues = {
+                    ...inboundConfigFormValues,
+                    hybridFlow: {
+                        enable: false,
+                        responseType: null
+                    }
+                };
+            }
+
             // Remove fields not applicable for M2M applications.
             if (isM2MApplication) {
                 inboundConfigFormValues = {
@@ -1128,10 +1335,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
 
             if (!isPublicClient) {
+                let tokenEndpointAllowReusePvtKeyJwtValue: boolean = null;
+
+                if (values.get("tokenEndpointAuthMethod") === PRIVATE_KEY_JWT) {
+                    tokenEndpointAllowReusePvtKeyJwtValue = values.get("tokenEndpointAllowReusePvtKeyJwt")?.length > 0;
+                }
+
                 inboundConfigFormValues = {
                     ...inboundConfigFormValues,
                     clientAuthentication: {
                         tlsClientAuthSubjectDn: subjectDN,
+                        tokenEndpointAllowReusePvtKeyJwt: tokenEndpointAllowReusePvtKeyJwtValue,
                         tokenEndpointAuthMethod: values.get("tokenEndpointAuthMethod"),
                         tokenEndpointAuthSigningAlg: values.get("tokenEndpointAuthSigningAlg")
                     }
@@ -1233,6 +1447,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     ? parseInt(values.get("expiryInSeconds"), 10)
                     : Number(metadata?.defaultRefreshTokenExpiryTime),
                 renewRefreshToken: values.get("RefreshToken")?.length > 0
+            },
+            subjectToken: {
+                applicationSubjectTokenExpiryInSeconds : values.get("applicationSubjectTokenExpiryInSeconds")
+                    ? parseInt(values.get("applicationSubjectTokenExpiryInSeconds"), 10)
+                    : ImpersonationConfigConstants.DEFAULT_SUBJECT_TOKEN_EXPIRY_TIME,
+                enable : values.get("SubjectToken")?.length > 0
+
             }
         };
 
@@ -1268,6 +1489,24 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 pkce: {
                     mandatory: false,
                     supportPlainTransformAlgorithm: false
+                }
+            };
+        }
+
+        if(showHybridFlowEnableConfig) {
+            inboundConfigFormValues = {
+                ...inboundConfigFormValues,
+                hybridFlow: {
+                    enable: values.get("enable-hybrid-flow")?.length > 0,
+                    responseType: values.get(ApplicationManagementConstants.HYBRID_FLOW_RESPONSE_TYPE)
+                }
+            };
+        } else {
+            inboundConfigFormValues = {
+                ...inboundConfigFormValues,
+                hybridFlow: {
+                    enable: false,
+                    responseType: null
                 }
             };
         }
@@ -1400,6 +1639,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 expiryInSeconds.current.scrollIntoView(options);
 
                 break;
+            case "subjectToken":
+                subjectToken.current.scrollIntoView(options);
+
+                break;
+            case "applicationSubjectTokenExpiryInSeconds":
+                applicationSubjectTokenExpiryInSeconds.current.scrollIntoView(options);
+
+                break;
             case "audience":
                 audience.current.scrollIntoView(options);
 
@@ -1434,6 +1681,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 break;
             case "scopeValidator":
                 scopeValidator.current.scrollIntoView(options);
+
+                break;
+            case "hybridFlow":
+                hybridFlow.current.scrollIntoView(options);
 
                 break;
         }
@@ -1832,6 +2083,102 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 )
             }
 
+            { /* hybrid flow */ }
+            {
+                showHybridFlowEnableConfig
+                && !isSystemApplication
+                && !isDefaultApplication
+                && !isM2MApplication
+                && (
+                    <>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Divider />
+                                <Divider hidden />
+                            </Grid.Column>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Box display="flex" alignItems="self-start">
+                                    <Heading as="h4" className="hybrid-flow-heading">
+                                        { t("applications:forms.inboundOIDC.sections" +
+                                        ".hybridFlow.heading") }
+                                    </Heading>
+
+                                    { applicationConfig.advancedConfigurations.showHybridFlowFeatureStatusChip && (
+                                        <div className="oxygen-chip-div" >
+                                            <Chip
+                                                label={ t(FeatureStatusLabel.NEW) }
+                                                className="oxygen-menu-item-chip oxygen-chip-new" />
+                                        </div>
+                                    ) }
+                                </Box>
+                                <Field
+                                    ref={ hybridFlowEnableConfig }
+                                    name={ ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG }
+                                    required={ false }
+                                    children={
+                                        [
+                                            {
+                                                label: t("applications:forms.inboundOIDC.sections.hybridFlow.enable." +
+                                                "label"),
+                                                value: ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG
+                                            }
+                                        ]
+                                    }
+                                    type="checkbox"
+                                    value = { initialValues?.hybridFlow?.enable? [
+                                        ApplicationManagementConstants.HYBRID_FLOW_ENABLE_CONFIG ] : [] }
+                                    listen={ hybridFlowConfigValuesChangeListener }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }--hybridFlow-enable-checkbox` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </>
+                )
+            }
+            {
+                showHybridFlowEnableConfig
+                && ( enableHybridFlowResponseTypeField || initialValues?.hybridFlow?.enable )
+                && (
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Field
+                                ref={ hybridFlow }
+                                label={
+                                    t("applications:forms.inboundOIDC.sections" +
+                                        ".hybridFlow.hybridFlowResponseType.label")
+                                }
+                                name = { ApplicationManagementConstants.HYBRID_FLOW_RESPONSE_TYPE }
+                                type="radio"
+                                required={ true }
+                                children={ getHybridFlowResponseTypes() }
+                                readOnly={ readOnly }
+                                default= { initialValues?.hybridFlow?.responseType?
+                                    initialValues.hybridFlow.responseType :ApplicationManagementConstants.CODE_IDTOKEN }
+                                enableReinitialize={ true }
+                                data-testid={ `${ testId }--hybridflow-responsetype-checkbox` }
+                            />
+                            <Hint>
+                                <Trans
+                                    i18nKey={
+                                        "applications:forms.inboundOIDC.sections.hybridFlow" +
+                                        "hybridFlowResponseType.fields.hint"
+                                    }
+                                >
+                                    Select the allowed { " " }
+                                    <DocumentationLink
+                                        link={ documentationLink }
+                                        showEmptyLinkText
+                                    > hybrid flow </DocumentationLink> response type.
+                                </Trans>
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
+
             { /* Client Authentication*/ }
             {
                 isClientAuthenticationSectionEnabled && (
@@ -1930,6 +2277,39 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
                             </Grid.Column>
                         </Grid.Row>
+                        { selectedAuthMethod === PRIVATE_KEY_JWT &&
+                            (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Field
+                                            ref={ tokenEndpointAllowReusePvtKeyJwt }
+                                            name="tokenEndpointAllowReusePvtKeyJwt"
+                                            required={ false }
+                                            type="checkbox"
+                                            disabled={ isPublicClient }
+                                            value={
+                                                initialValues?.clientAuthentication?.tokenEndpointAllowReusePvtKeyJwt ?
+                                                    [ "tokenEndpointAllowReusePvtKeyJwt" ]
+                                                    : [] }
+                                            readOnly={ readOnly }
+                                            data-componentId={
+                                                `${ componentId }-client-auth-pvt-key-jwt-reuse-checkbox` }
+                                            children={ [
+                                                {
+                                                    label: t("applications:forms.inboundOIDC.sections" +
+                                                        ".clientAuthentication.fields.reusePvtKeyJwt.label"),
+                                                    value: "tokenEndpointAllowReusePvtKeyJwt"
+                                                }
+                                            ] }
+                                        />
+                                        <Hint>
+                                            { t("applications:forms.inboundOIDC.sections" +
+                                                ".clientAuthentication.fields.reusePvtKeyJwt.hint") }
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
+                        }
                         { selectedAuthMethod === PRIVATE_KEY_JWT &&
                             (
                                 <Grid.Row columns={ 1 }>
@@ -2215,6 +2595,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 }
                                 type="radio"
                                 children={ getAllowedListForAccessToken(metadata?.accessTokenType, false) }
+                                listen={ (values: Map<string, FormValue>) => {
+                                    setJWTAccessTokenTypeSelected(
+                                        values.get("type") === JWT
+                                    );
+                                } }
                                 readOnly={ readOnly }
                                 data-testid={ `${ testId }-access-token-type-radio-group` }
                             />
@@ -2664,7 +3049,123 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </>
                 )
             }
+            { /* Subject Token */ }
+            { selectedGrantTypes?.includes(ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)
+                && !isSystemApplication
+                && !isDefaultApplication
+                && isSubjectTokenFeatureAvailable
+                && isJWTAccessTokenTypeSelected
+                && (
+                    <>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 16 }>
+                                <Divider />
+                                <Divider hidden />
+                            </Grid.Column>
+                            <Grid.Column mobile={ 16 }>
+                                <Heading as="h4">
+                                    { t("applications:forms.inboundOIDC.sections.subjectToken.heading") }
+                                </Heading>
+                                <Field
+                                    ref={ subjectToken }
+                                    name="SubjectToken"
+                                    label=""
+                                    required={ false }
+                                    requiredErrorMessage={
+                                        t("applications:forms.inboundOIDC.sections" +
+                                            ".subjectToken.fields.enable.validations.empty")
+                                    }
+                                    type="checkbox"
+                                    listen={ (values: Map<string, FormValue>): void => {
+                                        const isSubjectTokenEnabled: boolean = values?.get("SubjectToken")
+                                            ?.includes("subjectToken");
 
+                                        setIsSubjectTokenEnabled(isSubjectTokenEnabled);
+                                    } }
+                                    value={
+                                        initialValues?.subjectToken?.enable
+                                            ? [ "subjectToken" ]
+                                            : []
+                                    }
+                                    children={ [
+                                        {
+                                            label: t("applications:forms.inboundOIDC" +
+                                                ".sections.subjectToken.fields.enable.label"),
+                                            value: "subjectToken"
+                                        }
+                                    ] }
+                                    readOnly={ readOnly }
+                                    data-componentid={ `${ testId }-subject-token-checkbox` }
+                                />
+                                <Hint>
+                                    <Trans
+                                        i18nKey={
+                                            "applications:forms.inboundOIDC.sections" +
+                                            ".subjectToken.fields.enable.hint"
+                                        }
+                                    >
+                                        Select to enable the subject token response type for this application
+                                        to be used in the impersonation flow.
+                                    </Trans>
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                        { isSubjectTokenEnabled
+                            && (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Field
+                                            ref={ applicationSubjectTokenExpiryInSeconds }
+                                            name="applicationSubjectTokenExpiryInSeconds"
+                                            label={
+                                                t("applications:forms.inboundOIDC.sections" +
+                                                ".subjectToken.fields.expiry.label")
+                                            }
+                                            required={ true }
+                                            requiredErrorMessage={
+                                                t("applications:forms.inboundOIDC.sections" +
+                                                ".subjectToken.fields.expiry.validations.empty")
+                                            }
+                                            placeholder={
+                                                t("applications:forms.inboundOIDC.sections" +
+                                                ".subjectToken.fields.expiry.placeholder")
+                                            }
+                                            validation={ (value: FormValue, validation: Validation) => {
+                                                if (!isValidExpiryTime(value.toString())) {
+                                                    validation.isValid = false;
+                                                    validation.errorMessages.push(
+                                                        t("applications:forms.inboundOIDC" +
+                                                        ".sections.subjectToken.fields.expiry.validations.invalid")
+                                                    );
+                                                }
+                                            } }
+                                            value={ initialValues?.subjectToken
+                                                ? initialValues.subjectToken
+                                                    .applicationSubjectTokenExpiryInSeconds.toString()
+                                                : ImpersonationConfigConstants.DEFAULT_SUBJECT_TOKEN_EXPIRY_TIME }
+                                            type="number"
+                                            readOnly={ readOnly }
+                                            min={ 1 }
+                                            data-testid={ `${ testId }-subject-token-expiry-time-input` }
+                                        />
+                                        <Hint>
+                                            <Trans
+                                                i18nKey={
+                                                    "applications:forms.inboundOIDC.sections" +
+                                                ".subjectToken.fields.expiry.hint"
+                                                }
+                                            >
+                                            Specify the validity period of the <Code withBackground>subject_token</Code>
+                                            in seconds.
+                                            </Trans>
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
+                        }
+                    </>
+                )
+            }
             { /* ID Token */ }
             {
                 !isM2MApplication
@@ -3870,6 +4371,10 @@ InboundOIDCForm.defaultProps = {
         clientId: "",
         clientSecret: "",
         grantTypes: [],
+        hybridFlow: {
+            enable: false,
+            responseType: undefined
+        },
         idToken: undefined,
         logout: undefined,
         pkce: {
@@ -3880,6 +4385,7 @@ InboundOIDCForm.defaultProps = {
         refreshToken: undefined,
         scopeValidators: [],
         state: undefined,
+        subjectToken: undefined,
         validateRequestObjectSignature: undefined
     }
 };

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,15 +16,12 @@
  * under the License.
  */
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
-import { ConnectionManagementConstants } from "@wso2is/admin.connections.v1/constants/connection-constants";
+import {
+    CommonAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
-import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
-import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { Heading, InfoCard, useMediaContext } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -82,8 +79,6 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
     const { isMobileViewport } = useMediaContext();
     const { hiddenAuthenticators } = useAuthenticationFlow();
     const { deploymentConfig } = useDeploymentConfig();
-
-    const { organizationType } = useGetCurrentOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -199,9 +194,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                 />
                             ) }
                             {
-                                (!hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_SMS_OTP) &&
-                                    !(organizationType === OrganizationType.SUBORGANIZATION &&
-                                    identityProviderConfig?.disableSMSOTPInSubOrgs)) && (
+                                (!hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_SMS_OTP)) && (
                                     <InfoCard
                                         fluid
                                         data-componentid="sms-otp-mfa-flow-card"
@@ -240,7 +233,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             </Heading>
                             { !hiddenOptions?.includes(LoginFlowTypes.FIDO_LOGIN) &&
                                 !hiddenAuthenticators?.includes(
-                                    IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
+                                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.FIDO_AUTHENTICATOR_NAME
                                 ) && (
                                 <InfoCard
                                     fluid
@@ -269,7 +262,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             ) }
                             { !hiddenOptions?.includes(LoginFlowTypes.MAGIC_LINK) &&
                                 !hiddenAuthenticators?.includes(
-                                    IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
+                                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.MAGIC_LINK_AUTHENTICATOR_NAME
                                 ) && (
                                 <InfoCard
                                     fluid
@@ -299,7 +292,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             ) }
                             { !hiddenOptions?.includes(LoginFlowTypes.EMAIL_OTP) &&
                                 !hiddenAuthenticators?.includes(
-                                    IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID
+                                    LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID
                                 ) && (
                                 <InfoCard
                                     fluid
@@ -329,7 +322,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             ) }
                             { !hiddenOptions?.includes(LoginFlowTypes.SMS_OTP) &&
                                 !hiddenAuthenticators?.includes(
-                                    IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID
+                                    LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID
                                 ) && (
                                 <InfoCard
                                     fluid
@@ -484,7 +477,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                             disabledHint={ t("console:develop.pages." +
                                                 "authenticationProviderTemplate.disabledHint.apple") }
                                             disabled={ new URL(deploymentConfig?.serverOrigin)?.
-                                                hostname === ConnectionManagementConstants.LOCAL_SERVER_URL }
+                                                hostname === CommonAuthenticatorConstants.LOCAL_SERVER_URL }
                                         />
                                     ) }
                                 </>

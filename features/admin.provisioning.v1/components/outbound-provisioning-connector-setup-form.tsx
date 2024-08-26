@@ -17,9 +17,12 @@
  */
 
 import { OutboundProvisioningConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
-import { OutboundProvisioningConnectorInterface } from "@wso2is/admin.connections.v1/models/connection";
+import { getConnectionDetails } from "@wso2is/admin.connections.v1/api/connections";
+import {
+    ConnectionInterface,
+    OutboundProvisioningConnectorInterface
+} from "@wso2is/admin.connections.v1/models/connection";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import { getIdentityProviderDetail } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
 import { IdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
@@ -143,8 +146,8 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
             value: ""
         };
 
-        getIdentityProviderDetail(selectedIdp)
-            .then((response: IdentityProviderInterface) => {
+        getConnectionDetails(selectedIdp)
+            .then((response: ConnectionInterface) => {
                 response.provisioning.outboundConnectors.connectors.map(
                     (connector: OutboundProvisioningConnectorInterface, index: number) => {
                     // Check enabled connectors
