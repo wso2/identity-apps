@@ -1,5 +1,20 @@
 # @wso2is/admin.provisioning.v1
 
+## 2.20.140
+
+### Patch Changes
+
+- [#6820](https://github.com/wso2/identity-apps/pull/6820) [`24189079ee5159ad4b312a15f0a1d4f3b99e34f8`](https://github.com/wso2/identity-apps/commit/24189079ee5159ad4b312a15f0a1d4f3b99e34f8) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Bump oxygen ui version
+
+- Updated dependencies [[`93b7a97b335a22b7a6ffc3b476051e96946951a9`](https://github.com/wso2/identity-apps/commit/93b7a97b335a22b7a6ffc3b476051e96946951a9), [`24189079ee5159ad4b312a15f0a1d4f3b99e34f8`](https://github.com/wso2/identity-apps/commit/24189079ee5159ad4b312a15f0a1d4f3b99e34f8)]:
+  - @wso2is/admin.applications.v1@2.23.28
+  - @wso2is/admin.identity-providers.v1@2.21.70
+  - @wso2is/admin.connections.v1@2.21.70
+  - @wso2is/react-components@2.4.3
+  - @wso2is/dynamic-forms@2.0.96
+  - @wso2is/admin.core.v1@2.27.10
+  - @wso2is/form@2.1.4
+
 ## 2.20.139
 
 ### Patch Changes

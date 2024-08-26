@@ -1,5 +1,14 @@
 # @wso2is/dynamic-forms
 
+## 2.0.96
+
+### Patch Changes
+
+- [#6820](https://github.com/wso2/identity-apps/pull/6820) [`24189079ee5159ad4b312a15f0a1d4f3b99e34f8`](https://github.com/wso2/identity-apps/commit/24189079ee5159ad4b312a15f0a1d4f3b99e34f8) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Bump oxygen ui version
+
+- Updated dependencies [[`24189079ee5159ad4b312a15f0a1d4f3b99e34f8`](https://github.com/wso2/identity-apps/commit/24189079ee5159ad4b312a15f0a1d4f3b99e34f8)]:
+  - @wso2is/react-components@2.4.3
+
 ## 2.0.95
 
 ### Patch Changes
