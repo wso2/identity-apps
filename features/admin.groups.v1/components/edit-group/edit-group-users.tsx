@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
 import { AdvancedSearchWithBasicFilters, UIConstants, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { useUsersList } from "@wso2is/admin.users.v1/api";
@@ -52,6 +53,7 @@ import { Divider, DropdownProps, Header, Icon, PaginationProps, SemanticICONS } 
 import { AddGroupUserModal } from "./add-group-user-modal";
 import { updateGroupDetails } from "../../api";
 import { CreateGroupMemberInterface, GroupsInterface, PatchGroupDataInterface } from "../../models";
+import "./edit-group-users.scss";
 
 /**
  * Temporary value to append to the list limit to figure out if the next button is there.
@@ -144,20 +146,6 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
         }));
     }, [ groupUserListFetchRequestError ]);
 
-    /**
-     * Deletes a user from the group.
-     *
-     * @param user - User to be deleted.
-     */
-    const deleteGroupUser = (user: UserBasicInterface) => {
-        const selectedUsers: UserBasicInterface[] = groupUserList?.Resources;
-
-        if (selectedUsers.includes(user)) {
-            selectedUsers.splice(selectedUsers.indexOf(user), 1);
-            updateGroupUsersList(selectedUsers);
-        }
-    };
-
     const handleOpenAddNewGroupModal = () => {
         setAddNewUserModalView(true);
     };
@@ -237,6 +225,36 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                 "value": {
                     "members": newUsers
                 }
+            } ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        };
+
+        updateGroupDetails(group.id, groupData)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("console:manage.features.groups.notifications.updateGroup.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("console:manage.features.groups.notifications.updateGroup.success.message")
+                }));
+                onGroupUpdate(group.id);
+                mutateGroupUserListFetchRequest();
+            }).catch(() => {
+                dispatch(addAlert({
+                    description: t("console:manage.features.groups.notifications.updateGroup.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.groups.notifications.updateGroup.error.message")
+                }));
+            }).finally(() => {
+                setAddNewUserModalView(false);
+                setIsSubmitting(false);
+            });
+    };
+
+    const unassignUserFromGroup = (user: UserBasicInterface) => {
+        const groupData: PatchGroupDataInterface = {
+            Operations: [ {
+                "op": "remove",
+                "path": `members[display eq ${user.userName}]`
             } ],
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
@@ -449,7 +467,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                 hidden: (): boolean => isReadOnly,
                 icon: (): SemanticICONS =>  "trash alternate",
                 onClick: (e: SyntheticEvent, user: UserBasicInterface): void =>
-                    deleteGroupUser(user),
+                    unassignUserFromGroup(user),
                 popupText: (): string => t("common:delete"),
                 renderer: "semantic-icon"
             }
@@ -460,12 +478,31 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
 
     return (
         <EmphasizedSegment padded="very" className="list-group-roles-section">
-            <Heading as="h4">
-                { t("groups:edit.users.heading") }
-            </Heading>
-            <Heading subHeading ellipsis as="h6">
-                { t("groups:edit.users.subHeading") }
-            </Heading>
+            <Box display="flex" direction="row" justifyContent="space-between">
+                <div>
+                    <Heading as="h4">
+                        { t("groups:edit.users.heading") }
+                    </Heading>
+                    <Heading subHeading ellipsis as="h6">
+                        { t("groups:edit.users.subHeading") }
+                    </Heading>
+                </div>
+                { !isReadOnly && groupUserList?.totalResults > 0 && (
+                    <PrimaryButton
+                        data-testid={
+                            `${ testId }-users-list-empty-assign-users-button`
+                        }
+                        data-componentid={
+                            `${ testId }-users-list-empty-assign-users-button`
+                        }
+                        onClick={ handleOpenAddNewGroupModal }
+                    >
+                        <Icon name="plus"/>
+                        { t("console:manage.features.roles.edit.users.list." +
+                            "emptyPlaceholder.action") }
+                    </PrimaryButton>
+                ) }
+            </Box>
             <Divider hidden/>
             <ListLayout
                 advancedSearch={ advancedSearchFilter() }
@@ -479,18 +516,6 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                 totalPages={ resolveTotalPages() }
                 totalListSize={ groupUserList?.totalResults }
                 isLoading={ isGroupUserListFetchRequestLoading || isSubmitting }
-                rightActionPanel={ !isReadOnly && groupUserList?.totalResults > 0 && (
-                    <PrimaryButton
-                        data-testid={
-                            `${ testId }-users-list-empty-assign-users-button`
-                        }
-                        onClick={ handleOpenAddNewGroupModal }
-                    >
-                        <Icon name="plus"/>
-                        { t("roles:edit.users.list." +
-                            "emptyPlaceholder.action") }
-                    </PrimaryButton>
-                ) }
                 paginationOptions={ {
                     showItemsPerPageDropdown: userstore === userstoresConfig.primaryUserstoreName
                         ? true
