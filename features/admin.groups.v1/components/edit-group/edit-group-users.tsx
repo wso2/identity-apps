@@ -320,7 +320,10 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                         !isReadOnly && (
                             <PrimaryButton
                                 data-testid={
-                                    `${ testId }-users-list-empty-assign-users-button`
+                                    `${ testId }-users-list-edit-button`
+                                }
+                                data-componentid={
+                                    `${ testId }-users-list-edit-button`
                                 }
                                 onClick={ handleOpenAddNewGroupModal }
                             >
