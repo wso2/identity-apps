@@ -1,5 +1,16 @@
 # @wso2is/myaccount
 
+## 2.7.142
+
+### Patch Changes
+
+- [#6820](https://github.com/wso2/identity-apps/pull/6820) [`24189079ee5159ad4b312a15f0a1d4f3b99e34f8`](https://github.com/wso2/identity-apps/commit/24189079ee5159ad4b312a15f0a1d4f3b99e34f8) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Bump oxygen ui version
+
+- Updated dependencies [[`24189079ee5159ad4b312a15f0a1d4f3b99e34f8`](https://github.com/wso2/identity-apps/commit/24189079ee5159ad4b312a15f0a1d4f3b99e34f8)]:
+  - @wso2is/admin.organizations.v1@2.21.33
+  - @wso2is/common.branding.v1@2.20.140
+  - @wso2is/react-components@2.4.3
+
 ## 2.7.141
 
 ### Patch Changes

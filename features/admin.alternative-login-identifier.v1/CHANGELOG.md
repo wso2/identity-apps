@@ -1,5 +1,21 @@
 # @wso2is/admin.alternative-login-identifier.v1
 
+## 1.0.28
+
+### Patch Changes
+
+- [#6820](https://github.com/wso2/identity-apps/pull/6820) [`24189079ee5159ad4b312a15f0a1d4f3b99e34f8`](https://github.com/wso2/identity-apps/commit/24189079ee5159ad4b312a15f0a1d4f3b99e34f8) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Bump oxygen ui version
+
+- Updated dependencies [[`93b7a97b335a22b7a6ffc3b476051e96946951a9`](https://github.com/wso2/identity-apps/commit/93b7a97b335a22b7a6ffc3b476051e96946951a9), [`24189079ee5159ad4b312a15f0a1d4f3b99e34f8`](https://github.com/wso2/identity-apps/commit/24189079ee5159ad4b312a15f0a1d4f3b99e34f8)]:
+  - @wso2is/admin.applications.v1@2.23.28
+  - @wso2is/admin.server-configurations.v1@2.21.82
+  - @wso2is/admin.validation.v1@2.20.140
+  - @wso2is/admin.claims.v1@2.20.140
+  - @wso2is/react-components@2.4.3
+  - @wso2is/admin.users.v1@2.21.12
+  - @wso2is/admin.core.v1@2.27.10
+  - @wso2is/form@2.1.4
+
 ## 1.0.27
 
 ### Patch Changes
