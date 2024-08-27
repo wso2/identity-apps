@@ -693,7 +693,7 @@
                                         </div>
                                     </div>
                                     <br>
-                                <%} else if (isGoogleIdp) { %>
+                                <% } else if (isGoogleIdp) { %>
                                     <div class="social-login blurring social-dimmer">
                                         <div
                                             class="ui basic segment google-one-tap-loader"
