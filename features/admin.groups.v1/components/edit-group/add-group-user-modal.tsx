@@ -109,6 +109,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
 
             originalUserList.Resources.map((user: UserBasicInterface) => {
                 let isUserExistInGroup: boolean = false;
+
                 if (user?.groups?.length > 0) {
                     user.groups.map((userGroup: UserRoleInterface) => {
                         if (userGroup.display === group.displayName) {
