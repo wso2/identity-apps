@@ -105,7 +105,25 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
         }
 
         if (originalUserList.Resources) {
-            setUserList(originalUserList.Resources);
+            const filteredUsers: UserBasicInterface[] = [];
+
+            originalUserList.Resources.map((user: UserBasicInterface) => {
+                let isUserExistInGroup: boolean = false;
+                if (user?.groups?.length > 0) {
+                    user.groups.map((userGroup: UserRoleInterface) => {
+                        if (userGroup.display === group.displayName) {
+                            isUserExistInGroup = true;
+                        }
+                    });
+                }
+
+                // Do not show the user if the user is already assigned to the group.
+                if (!isUserExistInGroup) {
+                    filteredUsers.push(user);
+                }
+            });
+
+            setUserList(filteredUsers);
         }
     }, [ originalUserList, isUserListFetchRequestLoading ]);
 
@@ -243,21 +261,6 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                             userList?.map((user: UserBasicInterface, index: number) => {
                                 const resolvedGivenName: string = UserManagementUtils.resolveUserListSubheader(user);
                                 const resolvedUsername: string = getUserNameWithoutDomain(user?.userName);
-
-                                // Do not show the user if the user is already assigned to the group.
-                                let filterUser: boolean = false;
-
-                                if (user?.groups?.length > 0) {
-                                    user.groups.map((userGroup: UserRoleInterface) => {
-                                        if (userGroup.display === group.displayName) {
-                                            filterUser = true;
-                                        }
-                                    });
-                                }
-
-                                if (filterUser) {
-                                    return null;
-                                }
 
                                 return (
                                     <TransferListItem
