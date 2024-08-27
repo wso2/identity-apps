@@ -1,5 +1,24 @@
 # @wso2is/admin.groups.v1
 
+## 2.20.142
+
+### Patch Changes
+
+- [#6827](https://github.com/wso2/identity-apps/pull/6827) [`19751f62ed1923a0c75b342407c9048148489b25`](https://github.com/wso2/identity-apps/commit/19751f62ed1923a0c75b342407c9048148489b25) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in the user assignment modal in groups edit
+
+- Updated dependencies [[`19751f62ed1923a0c75b342407c9048148489b25`](https://github.com/wso2/identity-apps/commit/19751f62ed1923a0c75b342407c9048148489b25)]:
+  - @wso2is/theme@2.1.1
+  - @wso2is/admin.core.v1@2.27.12
+  - @wso2is/admin.extensions.v1@2.24.15
+  - @wso2is/admin.organizations.v1@2.21.35
+  - @wso2is/admin.roles.v2@2.21.9
+  - @wso2is/admin.users.v1@2.21.14
+  - @wso2is/admin.authorization.v1@2.20.57
+  - @wso2is/admin.userstores.v1@2.20.142
+  - @wso2is/react-components@2.4.4
+  - @wso2is/dynamic-forms@2.0.97
+  - @wso2is/form@2.1.5
+
 ## 2.20.141
 
 ### Patch Changes
