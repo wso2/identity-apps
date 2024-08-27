@@ -52,7 +52,7 @@ import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { deleteGroupById, useGroupList } from "../api";
 import { GroupList } from "../components";
-import { CreateGroupWizardUpdated } from "../components/wizard/create-group-wizard-updated";
+import { CreateGroupWizard } from "../components/wizard/create-group-wizard";
 import { GroupsInterface, WizardStepsFormTypes } from "../models";
 
 const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
@@ -435,7 +435,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             </ListLayout>
             {
                 showWizard && (
-                    <CreateGroupWizardUpdated
+                    <CreateGroupWizard
                         data-componentid="group-mgt-create-group-wizard"
                         closeWizard={ () => setShowWizard(false) }
                         onCreate={ () => mutateGroupsFetchRequest() }
