@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.1.1
+
+### Patch Changes
+
+- [#6827](https://github.com/wso2/identity-apps/pull/6827) [`19751f62ed1923a0c75b342407c9048148489b25`](https://github.com/wso2/identity-apps/commit/19751f62ed1923a0c75b342407c9048148489b25) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in the user assignment modal in groups edit
+
 ## 2.1.0
 
 ### Minor Changes
