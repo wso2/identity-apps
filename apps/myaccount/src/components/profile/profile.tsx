@@ -326,6 +326,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         if (schema.extended
                             && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
                             && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]) {
+                            console.log(profileDetails?.profileInfo[ProfileConstants
+                                .SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]);
                             tempProfileInfo.set(
                                 schema.name,
                                 profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
