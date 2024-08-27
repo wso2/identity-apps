@@ -83,10 +83,11 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
     const {
         data: originalUserList,
         isLoading: isUserListFetchRequestLoading,
+        isValidating: isUserListFetchRequestValidating,
         error: userListFetchRequestError
     } = useUsersList(
-        null,
-        null,
+        20,
+        0,
         !isEmpty(searchQuery) ? searchQuery : null,
         null,
         userstore,
@@ -105,17 +106,28 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
         }
 
         if (originalUserList.Resources) {
-            setUserList(originalUserList.Resources);
+            const filteredUsers: UserBasicInterface[] = [];
 
             originalUserList.Resources.map((user: UserBasicInterface) => {
+                let isUserExistInGroup: boolean = false;
+
                 if (user?.groups?.length > 0) {
                     user.groups.map((userGroup: UserRoleInterface) => {
                         if (userGroup.display === group.displayName) {
-                            setSelectedUsers((selectedUsers: UserBasicInterface[]) => [ ...selectedUsers, user ]);
+                            isUserExistInGroup = true;
                         }
                     });
                 }
+
+                // Do not show the user if the user is already assigned to the group.
+                if (!isUserExistInGroup) {
+                    filteredUsers.push(user);
+                }
             });
+
+            setUserList(filteredUsers);
+        } else {
+            setUserList([]);
         }
     }, [ originalUserList, isUserListFetchRequestLoading ]);
 
@@ -228,7 +240,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                     className="one-column-selection"
                     selectionComponent
                     searchPlaceholder={ t("groups:edit.users.searchUsers") }
-                    isLoading={ isUserListFetchRequestLoading }
+                    isLoading={ isUserListFetchRequestLoading || isUserListFetchRequestValidating }
                     handleHeaderCheckboxChange={ () => selectAllAssignedList() }
                     isHeaderCheckboxChecked={ isSelectAllUsers }
                     handleUnelectedListSearch={ (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
@@ -240,7 +252,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                     <TransferList
                         selectionComponent
                         isListEmpty={ userList.length <= 0 }
-                        isLoading={ isUserListFetchRequestLoading }
+                        isLoading={ isUserListFetchRequestLoading || isUserListFetchRequestValidating }
                         listType="unselected"
                         selectAllCheckboxLabel={ t("groups:edit.users.selectAllUsers") }
                         data-testid={ `${ componentId }-unselected-transfer-list` }
