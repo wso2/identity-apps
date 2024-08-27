@@ -221,7 +221,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
 
         const groupData: PatchGroupDataInterface = {
             Operations: [ {
-                "op": "replace",
+                "op": "add",
                 "value": {
                     "members": newUsers
                 }
