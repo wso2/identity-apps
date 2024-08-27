@@ -158,3 +158,27 @@ export interface DescendantDataInterface {
     id: string;
     name: string;
 }
+
+/**
+ * Interface to store basic role data.
+ */
+export interface RoleBasicInterface {
+    name: string;
+}
+
+/**
+ * Interface to store application role data grouped by application.
+ */
+export interface ApplicationRoleInterface {
+    app: string;
+    appName?: string;
+    roles: RoleBasicInterface[];
+}
+
+/**
+ * Interface for group role assignment payload.
+ */
+export interface GroupRoleAssignPayloadInterface {
+    added_roles: ApplicationRoleInterface[];
+    removed_roles: ApplicationRoleInterface[];
+}
