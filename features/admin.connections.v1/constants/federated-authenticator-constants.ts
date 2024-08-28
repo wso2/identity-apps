@@ -28,6 +28,7 @@ export class FederatedAuthenticatorConstants {
 
     public static readonly AUTHENTICATOR_IDS: {
         APPLE_AUTHENTICATOR_ID: string;
+        DUO_AUTHENTICATOR_ID: string;
         EMAIL_OTP_AUTHENTICATOR_ID: string;
         FACEBOOK_AUTHENTICATOR_ID: string;
         GITHUB_AUTHENTICATOR_ID: string;
@@ -47,6 +48,7 @@ export class FederatedAuthenticatorConstants {
         YAHOO_AUTHENTICATOR_ID: string;
     } = {
             APPLE_AUTHENTICATOR_ID: "QXBwbGVPSURDQXV0aGVudGljYXRvcg",
+            DUO_AUTHENTICATOR_ID: "RHVvQXV0aGVudGljYXRvcg",
             EMAIL_OTP_AUTHENTICATOR_ID: "RW1haWxPVFA",
             FACEBOOK_AUTHENTICATOR_ID: "RmFjZWJvb2tBdXRoZW50aWNhdG9y",
             GITHUB_AUTHENTICATOR_ID: "R2l0aHViQXV0aGVudGljYXRvcg",
@@ -68,6 +70,7 @@ export class FederatedAuthenticatorConstants {
 
     public static readonly AUTHENTICATOR_NAMES: {
         APPLE_AUTHENTICATOR_NAME: string;
+        DUO_AUTHENTICATOR_NAME: string;
         EMAIL_OTP_AUTHENTICATOR_NAME: string;
         FACEBOOK_AUTHENTICATOR_NAME: string;
         GITHUB_AUTHENTICATOR_NAME: string;
@@ -85,6 +88,7 @@ export class FederatedAuthenticatorConstants {
         YAHOO_AUTHENTICATOR_NAME: string;
     } = {
             APPLE_AUTHENTICATOR_NAME: "AppleOIDCAuthenticator",
+            DUO_AUTHENTICATOR_NAME: "DuoAuthenticator",
             EMAIL_OTP_AUTHENTICATOR_NAME: "EmailOTP",
             FACEBOOK_AUTHENTICATOR_NAME: "FacebookAuthenticator",
             GITHUB_AUTHENTICATOR_NAME: "GithubAuthenticator",

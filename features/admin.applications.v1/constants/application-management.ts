@@ -347,7 +347,9 @@ export class ApplicationManagementConstants {
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID,
         FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.IPROOV_AUTHENTICATOR_NAME,
-        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.IPROOV_AUTHENTICATOR_ID
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.IPROOV_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.DUO_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.DUO_AUTHENTICATOR_ID
     ];
 
     // Known social authenticators.
