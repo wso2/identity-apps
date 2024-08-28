@@ -20,7 +20,6 @@ import { GroupsInterface } from "@wso2is/admin.groups.v1";
 
 export interface GroupConfig {
     addGroupWizard: {
-        defaultUserstore?: string;
         requiredSteps?: string[];
         showUserstoreDropdown?: boolean;
         subHeading?: string;

@@ -20,7 +20,6 @@ import { GroupConfig } from "./models";
 
 export const groupConfig: GroupConfig = {
     addGroupWizard: {
-        defaultUserstore: "PRIMARY",
         showUserstoreDropdown: true
     }
 };
