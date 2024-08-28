@@ -31,6 +31,7 @@ const authenticateInitialState: AuthStateInterface = {
     location: window["AppUtils"]?.getConfig()?.routes.home,
     loginInit: false,
     logoutInit: false,
+    orgName: "",
     profileInfo: createEmptyProfile(),
     profileSchemas: [],
     scope: "",
@@ -59,6 +60,7 @@ const authenticateReducer = (
                     isAuth: true,
                     loginInit: true,
                     logoutInit: false,
+                    orgName: action.payload.orgName,
                     scope: action.payload.scope,
                     tenantDomain: action.payload.tenantDomain,
                     username: action.payload.username
