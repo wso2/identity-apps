@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "@wso2is/admin.core.v1";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
@@ -37,7 +38,7 @@ import {
 } from "@wso2is/admin.roles.v2/models";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models";
 import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     FeatureAccessConfigInterface,
@@ -139,16 +140,14 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
     const isEditingSystemRolesAllowed: boolean =
         useSelector((state: AppState) => state?.config?.ui?.isSystemRolesEditAllowed);
 
+    const hasUserRolesUpdatePermission: boolean = useRequiredScopes(featureConfig);
+
     const isRoleReadOnly: boolean = useMemo(() => {
         return (
             !isFeatureEnabled(
                 featureConfig,
                 RoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE")
-            ) || !hasRequiredScopes(
-                featureConfig,
-                featureConfig?.scopes?.update,
-                allowedScopes
-            )
+            ) || !hasUserRolesUpdatePermission
         );
     }, [ featureConfig, allowedScopes ]);
 
