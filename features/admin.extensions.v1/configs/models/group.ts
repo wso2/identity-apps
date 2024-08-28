@@ -22,6 +22,7 @@ export interface GroupConfig {
     addGroupWizard: {
         defaultUserstore?: string;
         requiredSteps?: string[];
+        showUserstoreDropdown?: boolean;
         subHeading?: string;
         submitStep?: string;
     };
