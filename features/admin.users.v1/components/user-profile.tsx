@@ -1391,6 +1391,34 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     fluid
                 />
             );
+        } else if (schema?.name === "dateOfBirth") {
+            return (
+                <Field
+                    data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
+                    name={ schema.name }
+                    label={ fieldName }
+                    required={ schema.required }
+                    requiredErrorMessage={ fieldName + " is required" }
+                    placeholder="YYYY-MM-DD"
+                    type="text"
+                    value={ profileInfo.get(schema.name) }
+                    key={ key }
+                    readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
+                    validation={ (value: string, validation: Validation) => {
+                        if (!RegExp(schema.regEx).test(value)) {
+                            validation.isValid = false;
+                            validation.errorMessages
+                                .push(t("users:forms.validation.dateFormatError", {
+                                    field: fieldName
+                                }));
+                        }
+                    } }
+                    maxLength={ schema.maxLength
+                        ? schema.maxLength
+                        : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                    }
+                />
+            );
         } else {
             return (
                 <Field
@@ -1398,13 +1426,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     name={ schema.name }
                     label={ schema.name === "profileUrl" ? "Profile Image URL" :
                         (  (!commonConfig.userEditSection.showEmail && schema.name === "userName")
-                            ? fieldName +" (Email)"
+                            ? fieldName + " (Email)"
                             : fieldName
                         )
                     }
                     required={ schema.required }
-                    requiredErrorMessage={ fieldName + " " + "is required" }
-                    placeholder={ "Enter your" + " " + fieldName }
+                    requiredErrorMessage={ fieldName + " is required" }
+                    placeholder={ "Enter your " + fieldName }
                     type="text"
                     value={ profileInfo.get(schema.name) }
                     key={ key }
