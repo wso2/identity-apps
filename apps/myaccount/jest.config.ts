@@ -54,7 +54,7 @@ module.exports = {
         "\\.svg": "<rootDir>/test-configs/__mocks__/svgr.ts",
         "^@unit-testing(.*)$": "<rootDir>/test-configs/utils",
         "^lodash-es/(.*)$": "<rootDir>/../../node_modules/lodash/$1",
-        "^react($|/.+)": "<rootDir>/node_modules/react$1"
+        "^react($|/.+)": "<rootDir>/../../node_modules/react$1"
     },
     modulePaths: [
         "<rootDir>"
@@ -66,9 +66,6 @@ module.exports = {
         "<rootDir>/../../modules/unit-testing/setup-test.ts"
     ],
     testEnvironment: "jest-environment-jsdom-global",
-    testEnvironmentOptions: {
-        url: "http://localhost/"
-    },
     testMatch: [
         "<rootDir>/**/?(*.)test.{ts,tsx}"
     ],
