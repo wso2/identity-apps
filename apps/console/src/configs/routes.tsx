@@ -762,68 +762,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             children: [
                 {
                     component: lazy(() =>
-                        import("@wso2is/admin.extensions.v1/components/" + "my-account/pages/my-account-edit")
-                    ),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "my-account-settings",
-                    name: "My Account Settings",
-                    path: AppConstants.getPaths().get("MY_ACCOUNT_EDIT"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ],
-            component: lazy(() => import("@wso2is/admin.extensions.v1/components/my-account/pages/" +
-                "my-account")),
-            exact: true,
-            icon: {
-                icon: import("@wso2is/admin.extensions.v1/assets/images/icons/self-service-portal-icon.svg")
-            },
-            id: "myAccount",
-            name: "Self-Service Portal",
-            order: 16,
-            path: AppConstants.getPaths().get("MY_ACCOUNT"),
-            protected: true,
-            showOnSidePanel: false
-        },
-        {
-            category: "extensions:manage.sidePanel.categories.AccountManagement",
-            children: [
-                {
-                    component: lazy(() =>
-                        import("@wso2is/admin.extensions.v1/components/" + "my-account/pages/my-account-edit")
-                    ),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "my-account-settings",
-                    name: "My Account Settings",
-                    path: AppConstants.getPaths().get("MY_ACCOUNT_EDIT"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ],
-            component: lazy(() => import("@wso2is/admin.extensions.v1/components/my-account/pages/" +
-                "my-account")),
-            exact: true,
-            icon: {
-                icon: import("@wso2is/admin.extensions.v1/assets/images/icons/self-service-portal-icon.svg")
-            },
-            id: "myAccount",
-            name: "Self-Service Portal",
-            order: 17,
-            path: AppConstants.getPaths().get("MY_ACCOUNT"),
-            protected: true,
-            showOnSidePanel: false
-        },
-        {
-            category: "extensions:manage.sidePanel.categories.AccountManagement",
-            children: [
-                {
-                    component: lazy(() =>
                         import(
                             "@wso2is/admin.server-configurations.v1/" +
                             "pages/connector-edit-page"

@@ -33,15 +33,20 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
-export const MyAccountOverview: FunctionComponent<IdentifiableComponentInterface> = (
-    props: IdentifiableComponentInterface
-): ReactElement => {
-    const {
-        ["data-componentid"]: componentId
-    } = props;
+export type MyAccountOverviewPropsInterface = IdentifiableComponentInterface;
 
-    const consumerAccountURL: string = useSelector((state: AppState) =>
-        state?.config?.deployment?.accountApp?.tenantQualifiedPath);
+/**
+ * Component to display in the General tab of the My Account application's edit page.
+ *
+ * @param props - Props injected to the component.
+ * @returns My Account general tab component.
+ */
+const MyAccountOverview: FunctionComponent<MyAccountOverviewPropsInterface> = ({
+    ["data-componentid"]: componentId = "my-account-overview"
+}: MyAccountOverviewPropsInterface): ReactElement => {
+    const consumerAccountURL: string = useSelector((state: AppState) => {
+        return state?.config?.deployment?.accountApp?.tenantQualifiedPath;
+    });
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
@@ -107,9 +112,4 @@ export const MyAccountOverview: FunctionComponent<IdentifiableComponentInterface
     );
 };
 
-/**
- * Default proptypes for the my account overview component.
- */
-MyAccountOverview.defaultProps = {
-    "data-componentid": "my-account-overview"
-};
+export default MyAccountOverview;

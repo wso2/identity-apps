@@ -398,33 +398,22 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * Navigate to the my account edit page.
      */
     const navigateToMyAccountSettings = (): void => {
-        if (
-            applicationDisabledFeatures?.includes(
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_MYACCOUNT_SAAS_SETTINGS")
-            )
-        ) {
-            if (strongAuth) {
-                history.push({
-                    pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(
-                        ":id", myAccountApplicationData?.applications[0]?.id
-                    ),
-                    search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }=${
-                        ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`
-                });
-            } else {
-                history.push({
-                    pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(
-                        ":id", myAccountApplicationData?.applications[0]?.id
-                    ),
-                    search: myAccountApplicationData?.applications[0]?.access === ApplicationAccessTypes.READ
-                        ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
-                        : ""
-                });
-            }
+        if (strongAuth) {
+            history.push({
+                pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(
+                    ":id", myAccountApplicationData?.applications[0]?.id
+                ),
+                search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }=${
+                    ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`
+            });
         } else {
             history.push({
-                pathname: AppConstants.getPaths().get("MY_ACCOUNT_EDIT"),
-                state: ApplicationManagementConstants.APPLICATION_STATE
+                pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(
+                    ":id", myAccountApplicationData?.applications[0]?.id
+                ),
+                search: myAccountApplicationData?.applications[0]?.access === ApplicationAccessTypes.READ
+                    ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
+                    : ""
             });
         }
     };
