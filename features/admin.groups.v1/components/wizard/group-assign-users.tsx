@@ -63,7 +63,7 @@ interface AddGroupUserProps extends IdentifiableComponentInterface {
     setSelectedUserStore: (userStore: string) => void;
 }
 
-export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props: AddGroupUserProps): ReactElement => {
+export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGroupUserProps): ReactElement => {
     const {
         triggerSubmit,
         onSubmit,

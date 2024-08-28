@@ -50,7 +50,7 @@ interface GroupBasicProps extends IdentifiableComponentInterface {
 /**
  * Component to capture basic details of a new role.
  */
-export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: GroupBasicProps): ReactElement => {
+export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasicProps): ReactElement => {
 
     const {
         onSubmit,

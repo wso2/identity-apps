@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "@wso2is/admin.core.v1";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
@@ -41,7 +41,6 @@ import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "@wso2is/admin.userstores.
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
-    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
     RolesInterface
 } from "@wso2is/core/models";
@@ -55,7 +54,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { AddGroupUsersUpdated } from "./group-assign-users";
+import { AddGroupUsers } from "./group-assign-users";
 import { createGroup } from "../../api";
 import { getGroupsWizardStepIcons } from "../../configs";
 import {
@@ -481,7 +480,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
     const getBasicDetailsWizardStep = (): WizardStepInterface => {
         return {
             content: (
-                <AddGroupUsersUpdated
+                <AddGroupUsers
                     data-componentid="new-group"
                     isEdit={ false }
                     triggerSubmit={ submitGeneralSettings }
