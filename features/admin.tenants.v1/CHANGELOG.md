@@ -1,5 +1,21 @@
 # @wso2is/admin.tenants.v1
 
+## 2.21.15
+
+### Patch Changes
+
+- Updated dependencies [[`47a7d939097403b8374324515efa7a5e52977ecc`](https://github.com/wso2/identity-apps/commit/47a7d939097403b8374324515efa7a5e52977ecc), [`2c5971f384ca9fce857cb74162759b2b785658cb`](https://github.com/wso2/identity-apps/commit/2c5971f384ca9fce857cb74162759b2b785658cb)]:
+  - @wso2is/core@2.0.61
+  - @wso2is/admin.extensions.v1@2.24.16
+  - @wso2is/admin.core.v1@2.27.13
+  - @wso2is/admin.organizations.v1@2.21.36
+  - @wso2is/access-control@3.0.21
+  - @wso2is/dynamic-forms@2.0.98
+  - @wso2is/form@2.1.6
+  - @wso2is/forms@2.0.51
+  - @wso2is/i18n@2.5.24
+  - @wso2is/react-components@2.4.5
+
 ## 2.21.14
 
 ### Patch Changes

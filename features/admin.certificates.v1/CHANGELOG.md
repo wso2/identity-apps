@@ -1,5 +1,19 @@
 # @wso2is/admin.certificates.v1
 
+## 2.20.143
+
+### Patch Changes
+
+- Updated dependencies [[`47a7d939097403b8374324515efa7a5e52977ecc`](https://github.com/wso2/identity-apps/commit/47a7d939097403b8374324515efa7a5e52977ecc)]:
+  - @wso2is/core@2.0.61
+  - @wso2is/admin.core.v1@2.27.13
+  - @wso2is/access-control@3.0.21
+  - @wso2is/dynamic-forms@2.0.98
+  - @wso2is/form@2.1.6
+  - @wso2is/forms@2.0.51
+  - @wso2is/i18n@2.5.24
+  - @wso2is/react-components@2.4.5
+
 ## 2.20.142
 
 ### Patch Changes

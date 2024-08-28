@@ -1,5 +1,20 @@
 # @wso2is/myaccount
 
+## 2.7.145
+
+### Patch Changes
+
+- [#6466](https://github.com/wso2/identity-apps/pull/6466) [`47a7d939097403b8374324515efa7a5e52977ecc`](https://github.com/wso2/identity-apps/commit/47a7d939097403b8374324515efa7a5e52977ecc) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show suborg name in the user dropdown for suborg user's myaccount login
+
+- Updated dependencies [[`47a7d939097403b8374324515efa7a5e52977ecc`](https://github.com/wso2/identity-apps/commit/47a7d939097403b8374324515efa7a5e52977ecc)]:
+  - @wso2is/core@2.0.61
+  - @wso2is/admin.organizations.v1@2.21.36
+  - @wso2is/common.branding.v1@2.20.143
+  - @wso2is/access-control@3.0.21
+  - @wso2is/forms@2.0.51
+  - @wso2is/i18n@2.5.24
+  - @wso2is/react-components@2.4.5
+
 ## 2.7.144
 
 ### Patch Changes

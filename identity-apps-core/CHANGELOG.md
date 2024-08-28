@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.4.30
+
+### Patch Changes
+
+- [#6826](https://github.com/wso2/identity-apps/pull/6826) [`d36ecc8aba63f920ef3974c4fd0b5e098b32edbe`](https://github.com/wso2/identity-apps/commit/d36ecc8aba63f920ef3974c4fd0b5e098b32edbe) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Fix localize Or and Username labels in Authentication Portal and Recovery Portal
+
 ## 2.4.29
 
 ### Patch Changes

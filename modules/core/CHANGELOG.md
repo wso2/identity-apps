@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.0.61
+
+### Patch Changes
+
+- [#6466](https://github.com/wso2/identity-apps/pull/6466) [`47a7d939097403b8374324515efa7a5e52977ecc`](https://github.com/wso2/identity-apps/commit/47a7d939097403b8374324515efa7a5e52977ecc) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show suborg name in the user dropdown for suborg user's myaccount login
+
 ## 2.0.60
 
 ### Patch Changes
