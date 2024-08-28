@@ -132,23 +132,23 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
     const [ viewRolePermissions, setViewRolePermissions ] = useState<boolean>(false);
     const [ submitStep, setSubmitStep ] = useState<WizardStepsFormTypes>(undefined);
 
-    const featureConfig: FeatureAccessConfigInterface = useSelector(
+    const userRoleFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRoles);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
     const isEditingSystemRolesAllowed: boolean =
         useSelector((state: AppState) => state?.config?.ui?.isSystemRolesEditAllowed);
 
-    const hasUserRolesUpdatePermission: boolean = useRequiredScopes(featureConfig);
+    const hasUserRolesUpdatePermission: boolean = useRequiredScopes(userRoleFeatureConfig?.scopes?.update);
 
     const isRoleReadOnly: boolean = useMemo(() => {
         return (
             !isFeatureEnabled(
-                featureConfig,
+                userRoleFeatureConfig,
                 RoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE")
             ) || !hasUserRolesUpdatePermission
         );
-    }, [ featureConfig, allowedScopes ]);
+    }, [ userRoleFeatureConfig, allowedScopes ]);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
