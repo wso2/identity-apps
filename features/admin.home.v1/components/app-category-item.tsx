@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, GenericIconProps, Text } from "@wso2is/react-components";
 import React, { CSSProperties, FC, ReactElement } from "react";

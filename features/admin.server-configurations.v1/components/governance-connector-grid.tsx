@@ -40,7 +40,7 @@ import {
 } from "@oxygen-ui/react-icons";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
-import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";

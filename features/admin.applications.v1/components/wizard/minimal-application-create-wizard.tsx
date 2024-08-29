@@ -34,7 +34,7 @@ import {
 import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
-import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { RoleAudienceTypes, RoleConstants } from "@wso2is/admin.roles.v2/constants/role-constants";

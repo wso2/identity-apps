@@ -27,8 +27,8 @@ import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpo
 import { getConnectionResourceEndpoints } from "@wso2is/admin.connections.v1";
 import { getConsoleSettingsResourceEndpoints } from "@wso2is/admin.console-settings.v1/configs/endpoints";
 import { getEmailTemplatesResourceEndpoints } from "@wso2is/admin.email-templates.v1";
-import { getFeatureGateResourceEndpoints } from "@wso2is/admin.extensions.v1/components/feature-gate/configs";
 import { getExtendedFeatureResourceEndpoints } from "@wso2is/admin.extensions.v1/configs/endpoints";
+import { getFeatureGateResourceEndpoints } from "@wso2is/admin.feature-gate.v1/configs/endpoints";
 import { getGroupsResourceEndpoints } from "@wso2is/admin.groups.v1";
 import { getIDVPResourceEndpoints } from "@wso2is/admin.identity-verification-providers.v1";
 import { getScopesResourceEndpoints } from "@wso2is/admin.oidc-scopes.v1";

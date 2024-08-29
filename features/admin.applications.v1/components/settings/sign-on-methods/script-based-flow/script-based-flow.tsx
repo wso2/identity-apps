@@ -34,7 +34,7 @@ import {
 } from "@wso2is/admin.authentication-flow-builder.v1/constants/template-constants";
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import { AppState, AppUtils, EventPublisher, FeatureConfigInterface, getOperationIcons } from "@wso2is/admin.core.v1";
-import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
 import { deleteSecret, getSecretList } from "@wso2is/admin.secrets.v1/api/secret";

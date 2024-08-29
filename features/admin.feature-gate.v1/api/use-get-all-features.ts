@@ -28,14 +28,17 @@ import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { HttpMethods } from "@wso2is/core/models";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { getFeatureGateResourceEndpoints } from "../configs";
+import { getFeatureGateResourceEndpoints } from "../configs/endpoints";
 
 /**
- * Hook to get the all features of the organization.
+ * Custom hook to get all features from the feature gate.
  *
- * @returns The response of all features.
+ * @example
+ * `const { data, error, isLoading, isValidating, mutate } = useGetAllFeatures();`
+ *
+ * @returns The result of the request, including data, error, loading state, and mutate function.
  */
-export const useGetAllFeatures = <
+const useGetAllFeatures = <
     Data = AllFeatureInterface[],
     Error = RequestErrorInterface
 >(): RequestResultInterface<Data, Error> => {
@@ -90,3 +93,5 @@ export const useGetAllFeatures = <
         mutate
     };
 };
+
+export default useGetAllFeatures;

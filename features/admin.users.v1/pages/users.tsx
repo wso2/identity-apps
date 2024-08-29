@@ -32,8 +32,8 @@ import {
     history
 } from "@wso2is/admin.core.v1";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
-import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
-import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
+import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {

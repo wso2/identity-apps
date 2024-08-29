@@ -18,7 +18,7 @@
 
 import Chip from "@oxygen-ui/react/Chip";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
-import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import {
     PasswordRecoveryConfigurationFormPropsInterface,
     PasswordRecoveryFormConstants,

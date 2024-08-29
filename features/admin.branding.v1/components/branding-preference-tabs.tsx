@@ -19,8 +19,8 @@
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import {
     BrandingPreferenceInterface,
     BrandingPreferenceThemeInterface,
