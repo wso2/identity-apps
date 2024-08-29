@@ -8326,31 +8326,31 @@ importers:
     dependencies:
       '@asgardeo/auth-react':
         specifier: ^5.0.3
-        version: 5.1.0(@babel/runtime-corejs3@7.24.8)(react-dom@18.3.1)(react@18.3.1)
+        version: 5.1.2(@babel/runtime-corejs3@7.25.0)(react-dom@18.3.1)(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
-        version: 11.11.4(@types/react@18.0.18)(react@18.3.1)
+        version: 11.13.3(@types/react@18.0.18)(react@18.3.1)
       '@emotion/styled':
         specifier: ^11.11.0
-        version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.0.18)(react@18.3.1)
+        version: 11.13.0(@emotion/react@11.13.3)(@types/react@18.0.18)(react@18.3.1)
       '@mui/icons-material':
         specifier: ^5.11.16
-        version: 5.16.1(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.16.7(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/lab':
         specifier: 5.0.0-alpha.129
-        version: 5.0.0-alpha.129(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
+        version: 5.0.0-alpha.129(@emotion/react@11.13.3)(@emotion/styled@11.13.0)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       '@mui/material':
         specifier: 5.13.0
-        version: 5.13.0(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
+        version: 5.13.0(@emotion/react@11.13.3)(@emotion/styled@11.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       '@mui/system':
         specifier: ^5.12.3
-        version: 5.16.1(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.0.18)(react@18.3.1)
+        version: 5.16.7(@emotion/react@11.13.3)(@emotion/styled@11.13.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/utils':
         specifier: ^5.12.3
-        version: 5.16.1(@types/react@18.0.18)(react@18.3.1)
+        version: 5.16.6(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^1.13.6
-        version: 1.13.6(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@mui/icons-material@5.16.1)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.1)(@mui/utils@5.16.1)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 1.13.7(@emotion/react@11.13.3)(@emotion/styled@11.13.0)(@mui/icons-material@5.16.7)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.7)(@mui/utils@5.16.6)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/access-control':
         specifier: ^3.0.20
         version: link:../../modules/access-control
@@ -8396,22 +8396,22 @@ importers:
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: ^25.0.7
-        version: 25.0.8(rollup@4.18.1)
+        version: 25.0.8(rollup@4.21.0)
       '@rollup/plugin-dynamic-import-vars':
         specifier: ^2.1.2
-        version: 2.1.2(rollup@4.18.1)
+        version: 2.1.2(rollup@4.21.0)
       '@rollup/plugin-image':
         specifier: ^3.0.3
-        version: 3.0.3(rollup@4.18.1)
+        version: 3.0.3(rollup@4.21.0)
       '@rollup/plugin-json':
         specifier: ^6.1.0
-        version: 6.1.0(rollup@4.18.1)
+        version: 6.1.0(rollup@4.21.0)
       '@rollup/plugin-node-resolve':
         specifier: ^15.2.3
-        version: 15.2.3(rollup@4.18.1)
+        version: 15.2.3(rollup@4.21.0)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.18.1)(tslib@2.6.3)(typescript@4.9.5)
+        version: 11.1.6(rollup@4.21.0)(tslib@2.7.0)(typescript@4.9.5)
       '@svgr/rollup':
         specifier: ^6.2.1
         version: 6.5.1
@@ -8423,22 +8423,22 @@ importers:
         version: 7.1.33
       rollup:
         specifier: ^4.17.2
-        version: 4.18.1
+        version: 4.21.0
       rollup-plugin-dts:
         specifier: ^6.1.1
-        version: 6.1.1(rollup@4.18.1)(typescript@4.9.5)
+        version: 6.1.1(rollup@4.21.0)(typescript@4.9.5)
       rollup-plugin-generate-package-json:
         specifier: ^3.2.0
-        version: 3.2.0(rollup@4.18.1)
+        version: 3.2.0(rollup@4.21.0)
       rollup-plugin-polyfill-node:
         specifier: ^0.13.0
-        version: 0.13.0(rollup@4.18.1)
+        version: 0.13.0(rollup@4.21.0)
       rollup-plugin-scss:
         specifier: ^4.0.0
         version: 4.0.0
       rollup-plugin-styles:
         specifier: ^4.0.0
-        version: 4.0.0(rollup@4.18.1)
+        version: 4.0.0(rollup@4.21.0)
       rollup-plugin-svg:
         specifier: ^2.0.0
         version: 2.0.0
