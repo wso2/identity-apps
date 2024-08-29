@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.7.146
+
+### Patch Changes
+
+- [#6839](https://github.com/wso2/identity-apps/pull/6839) [`9f05ef44da90d94759201a7948a7270c89f924d0`](https://github.com/wso2/identity-apps/commit/9f05ef44da90d94759201a7948a7270c89f924d0) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Handle passwords containing special characters when updating password via my account.
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.21.37
+  - @wso2is/common.branding.v1@2.20.144
+
 ## 2.7.145
 
 ### Patch Changes
