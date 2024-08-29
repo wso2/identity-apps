@@ -1,5 +1,22 @@
 # @wso2is/admin.branding.v1
 
+## 2.21.0
+
+### Minor Changes
+
+- [#6817](https://github.com/wso2/identity-apps/pull/6817) [`862d20ae987422010ba53b3825f86a8ba5685910`](https://github.com/wso2/identity-apps/commit/862d20ae987422010ba53b3825f86a8ba5685910) Thanks [@brionmario](https://github.com/brionmario)! - Separate out `admin.feature-gate.v1` feature
+
+### Patch Changes
+
+- Updated dependencies [[`862d20ae987422010ba53b3825f86a8ba5685910`](https://github.com/wso2/identity-apps/commit/862d20ae987422010ba53b3825f86a8ba5685910), [`862d20ae987422010ba53b3825f86a8ba5685910`](https://github.com/wso2/identity-apps/commit/862d20ae987422010ba53b3825f86a8ba5685910)]:
+  - @wso2is/admin.branding.ai.v1@2.21.0
+  - @wso2is/admin.core.v1@2.28.0
+  - @wso2is/admin.extensions.v1@2.25.0
+  - @wso2is/admin.server-configurations.v1@2.22.0
+  - @wso2is/admin.feature-gate.v1@1.0.0
+  - @wso2is/admin.organizations.v1@2.21.37
+  - @wso2is/common.branding.v1@2.20.144
+
 ## 2.20.143
 
 ### Patch Changes

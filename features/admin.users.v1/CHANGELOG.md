@@ -1,5 +1,29 @@
 # @wso2is/admin.users.v1
 
+## 2.22.0
+
+### Minor Changes
+
+- [#6817](https://github.com/wso2/identity-apps/pull/6817) [`862d20ae987422010ba53b3825f86a8ba5685910`](https://github.com/wso2/identity-apps/commit/862d20ae987422010ba53b3825f86a8ba5685910) Thanks [@brionmario](https://github.com/brionmario)! - Separate out `admin.feature-gate.v1` feature
+
+### Patch Changes
+
+- Updated dependencies [[`862d20ae987422010ba53b3825f86a8ba5685910`](https://github.com/wso2/identity-apps/commit/862d20ae987422010ba53b3825f86a8ba5685910), [`862d20ae987422010ba53b3825f86a8ba5685910`](https://github.com/wso2/identity-apps/commit/862d20ae987422010ba53b3825f86a8ba5685910)]:
+  - @wso2is/admin.core.v1@2.28.0
+  - @wso2is/admin.extensions.v1@2.25.0
+  - @wso2is/admin.server-configurations.v1@2.22.0
+  - @wso2is/admin.tenants.v1@2.22.0
+  - @wso2is/admin.users.v1@2.22.0
+  - @wso2is/admin.feature-gate.v1@1.0.0
+  - @wso2is/admin.identity-providers.v1@2.21.74
+  - @wso2is/admin.organizations.v1@2.21.37
+  - @wso2is/admin.roles.v2@2.21.11
+  - @wso2is/admin.authentication.v1@2.20.144
+  - @wso2is/admin.claims.v1@2.20.144
+  - @wso2is/admin.groups.v1@2.20.144
+  - @wso2is/admin.userstores.v1@2.20.144
+  - @wso2is/admin.validation.v1@2.20.144
+
 ## 2.21.15
 
 ### Patch Changes
