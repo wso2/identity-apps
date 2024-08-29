@@ -36,7 +36,7 @@ import {
 } from "@wso2is/admin.core.v1";
 import { CommonUtils as ConsoleCommonUtils } from "@wso2is/admin.core.v1/utils";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
-import { FeatureGateConstants } from "@wso2is/admin.feature-gate.v1/constants/feature-gate";
+import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import {
     AlertInterface,
     AnnouncementBannerInterface,

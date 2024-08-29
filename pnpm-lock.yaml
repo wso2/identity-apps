@@ -7954,6 +7954,9 @@ importers:
       '@wso2is/admin.core.v1':
         specifier: ^2.27.13
         version: link:../admin.core.v1
+      '@wso2is/admin.feature-gate.v1':
+        specifier: ^0.0.0
+        version: link:../admin.feature-gate.v1
       '@wso2is/admin.groups.v1':
         specifier: ^2.20.143
         version: link:../admin.groups.v1

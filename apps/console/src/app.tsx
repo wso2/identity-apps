@@ -34,7 +34,7 @@ import {
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { featureGateConfig } from "@wso2is/admin.extensions.v1/configs/feature-gate";
-import { useGetAllFeatures } from "@wso2is/admin.feature-gate.v1/api/feature-gate";
+import useGetAllFeatures from "@wso2is/admin.feature-gate.v1/api/use-get-all-features";
 import { ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
 import ExtensionTemplatesProvider from "@wso2is/admin.template-core.v1/provider/extension-templates-provider";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";

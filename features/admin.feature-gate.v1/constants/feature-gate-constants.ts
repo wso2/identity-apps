@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,4 +16,14 @@
  * under the License.
  */
 
-export * from "./endpoints";
+class FeatureGateConstants {
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     */
+    private constructor() {}
+
+    public static readonly SAAS_FEATURES_IDENTIFIER: string = "console.saasFeatures";
+}
+
+export default FeatureGateConstants;
