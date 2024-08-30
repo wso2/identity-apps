@@ -211,6 +211,15 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
                 : ConnectionsManagementUtils
                     .resolveConnectionResourcePath(connectionResourcesUrl, authenticator.image);
 
+            // Restrict the second factor authenticators being added in the first step.
+            if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS?.includes(
+                authenticator?.defaultAuthenticator?.authenticatorId)
+            ) {
+                secondFactorAuthenticators?.push(authenticator);
+
+                return;
+            }
+
             if (
                 ApplicationManagementConstants.SOCIAL_AUTHENTICATORS.includes(
                     authenticator.defaultAuthenticator.authenticatorId
