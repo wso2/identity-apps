@@ -1,5 +1,17 @@
 # @wso2is/features
 
+## 2.21.67
+
+### Patch Changes
+
+- [#6837](https://github.com/wso2/identity-apps/pull/6837) [`c28c89ff852ec2b4aa28da4c4dce123b54f87d61`](https://github.com/wso2/identity-apps/commit/c28c89ff852ec2b4aa28da4c4dce123b54f87d61) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Restrict second-factor authenticators in the initial step of the login flow
+
+- Updated dependencies [[`a4fb4106bace0826911b8a385bd39167d84f9ac0`](https://github.com/wso2/identity-apps/commit/a4fb4106bace0826911b8a385bd39167d84f9ac0)]:
+  - @wso2is/theme@2.1.2
+  - @wso2is/react-components@2.4.6
+  - @wso2is/dynamic-forms@2.0.99
+  - @wso2is/form@2.1.7
+
 ## 2.21.66
 
 ### Patch Changes

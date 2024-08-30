@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.1.2
+
+### Patch Changes
+
+- [#6837](https://github.com/wso2/identity-apps/pull/6837) [`a4fb4106bace0826911b8a385bd39167d84f9ac0`](https://github.com/wso2/identity-apps/commit/a4fb4106bace0826911b8a385bd39167d84f9ac0) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add Duo logo in the theme
+
 ## 2.1.1
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @wso2is/admin.secrets.v1
 
+## 2.20.145
+
+### Patch Changes
+
+- Updated dependencies [[`a4fb4106bace0826911b8a385bd39167d84f9ac0`](https://github.com/wso2/identity-apps/commit/a4fb4106bace0826911b8a385bd39167d84f9ac0)]:
+  - @wso2is/theme@2.1.2
+  - @wso2is/react-components@2.4.6
+  - @wso2is/admin.core.v1@2.28.1
+  - @wso2is/dynamic-forms@2.0.99
+  - @wso2is/form@2.1.7
+
 ## 2.20.144
 
 ### Patch Changes
