@@ -28,6 +28,7 @@ import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import {
     ApplicationRoleGroupsAPIResponseInterface,
     ApplicationRoleGroupsUpdatePayloadInterface,
+    ApplicationRoleInterface,
     ApplicationRolesResponseInterface,
     AuthorizedAPIListItemInterface,
     CreateRolePayloadInterface,
@@ -442,4 +443,24 @@ export const useDescendantsOfSubOrg = <Data = DescendantDataInterface[],
         isValidating,
         mutate: mutate
     };
+};
+
+/**
+ * Get all the application roles in the organization.
+ *
+ * @returns A promise containing the response.
+ */
+export const getAllApplicationRolesList = ():Promise<ApplicationRoleInterface[]> => {
+    const requestConfig: AxiosRequestConfig = {
+        method: HttpMethods.GET,
+        url: `${ store.getState().config.endpoints.authzEndpoint }/roles`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data.app_roles as ApplicationRoleInterface[]);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
 };
