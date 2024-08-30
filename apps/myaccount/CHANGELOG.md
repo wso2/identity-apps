@@ -1,5 +1,17 @@
 # @wso2is/myaccount
 
+## 2.7.147
+
+### Patch Changes
+
+- [#6837](https://github.com/wso2/identity-apps/pull/6837) [`a4fb4106bace0826911b8a385bd39167d84f9ac0`](https://github.com/wso2/identity-apps/commit/a4fb4106bace0826911b8a385bd39167d84f9ac0) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add Duo logo in the theme
+
+- Updated dependencies [[`a4fb4106bace0826911b8a385bd39167d84f9ac0`](https://github.com/wso2/identity-apps/commit/a4fb4106bace0826911b8a385bd39167d84f9ac0)]:
+  - @wso2is/theme@2.1.2
+  - @wso2is/admin.organizations.v1@2.21.38
+  - @wso2is/react-components@2.4.6
+  - @wso2is/common.branding.v1@2.20.145
+
 ## 2.7.146
 
 ### Patch Changes
