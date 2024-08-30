@@ -373,8 +373,6 @@ export class AppConstants {
             [ "ADMINISTRATORS", `${AppConstants.getAdminViewBasePath()}/administrators` ],
             [ "ADMINISTRATOR_EDIT", `${AppConstants.getAdminViewBasePath()}/administrators/:id` ],
             [ "ADMINISTRATOR_SETTINGS", `${AppConstants.getAdminViewBasePath()}/administrator-settings-edit` ],
-            [ "MY_ACCOUNT", `${AppConstants.getAdminViewBasePath()}/my-account` ],
-            [ "MY_ACCOUNT_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-my-account` ],
             [ "VALIDATION_CONFIG", `${AppConstants.getAdminViewBasePath()}/validation-configuration` ],
             [ "VALIDATION_CONFIG_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-validation-configuration` ],
             [ "ACCOUNT_LOGIN", `${AppConstants.getAdminViewBasePath()}/account-login` ],

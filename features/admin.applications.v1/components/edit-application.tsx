@@ -37,7 +37,6 @@ import {
 } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
-import { MyAccountOverview } from "@wso2is/admin.extensions.v1/configs/components/my-account-overview";
 import AILoginFlowProvider from "@wso2is/admin.login-flow.ai.v1/providers/ai-login-flow-provider";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -64,6 +63,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, Form, Grid, Menu, TabProps } from "semantic-ui-react";
 import { InboundProtocolsMeta } from "./meta";
+import MyAccountOverview from "./my-account/my-account-overview";
 import {
     AccessConfiguration,
     AdvancedSettings,
