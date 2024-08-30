@@ -15,16 +15,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { deleteADialect } from "@wso2is/admin.claims.v1/api/claims";
+import { deleteADialect, getDialects, getExternalClaims } from "@wso2is/admin.claims.v1/api/claims";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
-import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import {  getUserStoreList } from "@wso2is/admin.userstores.v1/api";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { Claim, ClaimDialect, ExternalClaim } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import { AxiosResponse } from "axios";
 import { SemanticICONS } from "semantic-ui-react";
 import { AttributeConfig } from "./models";
-import { getClaimsForDialect, getDialects } from "../components/claims/api";
 
 /**
  * Check whether claims is  identity claims or not.
@@ -148,7 +147,7 @@ export const attributeConfig: AttributeConfig = {
             let dialectID: string = "";
             let noCustomClaims: boolean = false;
 
-            await getDialects()
+            await getDialects(null)
                 .then((response: Claim[] | ClaimDialect[]) => {
                     response.map((dialect: Claim | ClaimDialect) => {
                         if (dialect.dialectURI === "urn:scim:wso2:schema") {
@@ -157,7 +156,7 @@ export const attributeConfig: AttributeConfig = {
                     });
                 });
 
-            await getClaimsForDialect(dialectID)
+            await getExternalClaims(dialectID)
                 .then((response: Claim[] | ClaimDialect[]) => {
                     if (response.length === 0) {
                         noCustomClaims = true;
@@ -238,7 +237,7 @@ export const attributeConfig: AttributeConfig = {
                 .set("OIDC", true);
 
             if (protocol === "OIDC" || protocol === "BOTH" ) {
-                await getClaimsForDialect(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OIDC"))
+                await getExternalClaims(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OIDC"))
                     .then((response: Claim[] | ExternalClaim[]) => {
                         response.map((attrib: Claim | ExternalClaim) => {
                             if (attrib.claimURI === attributeName) {
@@ -249,7 +248,7 @@ export const attributeConfig: AttributeConfig = {
             }
 
             if (protocol === "SCIM" || protocol === "BOTH" ) {
-                await getDialects()
+                await getDialects(null)
                     .then((response: Claim[] | ClaimDialect[]) => {
                         response.map((dialect: Claim | ClaimDialect) => {
                             if (dialect.dialectURI === "urn:scim:wso2:schema") {
@@ -259,7 +258,7 @@ export const attributeConfig: AttributeConfig = {
                     });
 
                 if (dialectID !== "") {
-                    await getClaimsForDialect(dialectID)
+                    await getExternalClaims(dialectID)
                         .then((response: Claim[] | ExternalClaim[]) => {
                             response.map((attrib: Claim | ExternalClaim) => {
                                 if (attrib.claimURI === "urn:scim:wso2:schema:" + attributeName) {
@@ -289,7 +288,7 @@ export const attributeConfig: AttributeConfig = {
         getDialect: async (dialectURI: string): Promise<Claim | ClaimDialect> => {
             let dialectObject: Claim | ClaimDialect;
 
-            await getDialects()
+            await getDialects(null)
                 .then((response: Claim[] | ClaimDialect[]) => {
                     response.map((dialect: Claim | ClaimDialect) => {
                         if (dialect.dialectURI === dialectURI) {
@@ -303,7 +302,7 @@ export const attributeConfig: AttributeConfig = {
         isSCIMCustomDialectAvailable: async (): Promise<string> => {
             let dialectID: string = "";
 
-            await getDialects()
+            await getDialects(null)
                 .then((response: Claim[] | ClaimDialect[]) => {
                     response.map((dialect: Claim | ClaimDialect) => {
                         if (dialect.dialectURI === "urn:scim:wso2:schema") {
