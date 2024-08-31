@@ -1,5 +1,13 @@
 # @wso2is/admin.api-resources.v1
 
+## 2.20.149
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.29.1
+  - @wso2is/admin.extensions.v1@2.28.1
+
 ## 2.20.148
 
 ### Patch Changes

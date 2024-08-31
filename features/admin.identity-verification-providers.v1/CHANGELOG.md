@@ -1,5 +1,15 @@
 # @wso2is/admin.identity-verification-providers.v1
 
+## 2.21.5
+
+### Patch Changes
+
+- Updated dependencies [[`47824646cba3146cf7e6561377ca4e6b293dbda8`](https://github.com/wso2/identity-apps/commit/47824646cba3146cf7e6561377ca4e6b293dbda8)]:
+  - @wso2is/i18n@2.5.25
+  - @wso2is/admin.claims.v1@2.20.149
+  - @wso2is/admin.core.v1@2.29.1
+  - @wso2is/admin.feature-gate.v1@1.0.5
+
 ## 2.21.4
 
 ### Patch Changes
