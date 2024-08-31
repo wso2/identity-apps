@@ -113,10 +113,10 @@ export const actions: actionsNS = {
                 create: "Once added, these secrets will not be displayed. You will only be able to reset them.",
                 update: "Once updated, these secrets will not be displayed. You will only be able to reset them again."
             },
-            label: "Authentication Type",
-            placeholder: "Select Authentication Type",
+            label: "Authentication Scheme",
+            placeholder: "Select Authentication Scheme",
             validations: {
-                empty: "Authentication Type is a required field."
+                empty: "Authentication Scheme is a required field."
             }
         },
         endpoint: {
