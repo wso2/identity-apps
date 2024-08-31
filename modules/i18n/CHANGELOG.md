@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.5.25
+
+### Patch Changes
+
+- [#6845](https://github.com/wso2/identity-apps/pull/6845) [`47824646cba3146cf7e6561377ca4e6b293dbda8`](https://github.com/wso2/identity-apps/commit/47824646cba3146cf7e6561377ca4e6b293dbda8) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Modify Authentication Type label name in action ui
+
 ## 2.5.24
 
 ### Patch Changes
