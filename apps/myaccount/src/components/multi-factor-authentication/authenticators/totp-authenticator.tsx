@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, LinkButton, Popup } from "@wso2is/react-components";
 import QRCode from "qrcode.react";
-import React, { FormEvent, PropsWithChildren, SyntheticEvent, useEffect, useRef, useState } from "react";
+import React, { PropsWithChildren, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import {
@@ -41,11 +41,9 @@ import {
     initTOTPCode,
     refreshTOTPCode,
     updateEnabledAuthenticators,
-    validateTOTPCode,
-    viewTOTPCode
+    validateTOTPCode
 } from "../../../api";
 import { getMFAIcons } from "../../../configs";
-import { commonConfig } from "../../../extensions";
 import {
     AlertInterface,
     AlertLevels,
@@ -103,8 +101,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const [ isTOTPError, setIsTOTPError ] = useState<boolean>(false);
     const [ isRevokeTOTPModalOpen, setIsRevokeTOTPModalOpen ] = useState<boolean>(false);
     const [ isViewTOTPModalOpen, setIsViewTOTPModalOpen ] = useState<boolean>(false);
+    const [ isConfirmRegenerationModalOpen, setIsConfirmRegenerationModalOpen ] = useState<boolean>(false);
     const [ viewTOTPModalCurrentStep, setViewTOTPModalCurrentStep ] = useState<number>(0);
-    const [ isConfirmRegenerate, setIsConfirmRegenerate ] = useState<boolean>(false);
 
     const pinCode1: React.MutableRefObject<HTMLInputElement> = useRef<HTMLInputElement>();
     const pinCode2: React.MutableRefObject<HTMLInputElement> = useRef<HTMLInputElement>();
@@ -655,39 +653,6 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Handle view TOTP event.
-     */
-    const handleViewTOTP = (): void => {
-        setIsLoading(true);
-        viewTOTPCode()
-            .then((response: any) => {
-                const qrCodeUrl: string = window.atob(response?.data?.qrCodeUrl);
-
-                setQrCode(qrCodeUrl);
-                setIsViewTOTPModalOpen(true);
-            })
-            .catch((error: any) => {
-                onAlertFired({
-                    description: t(translateKey + "notifications.initError.error.description", {
-                        error
-                    }),
-                    level: AlertLevels.ERROR,
-                    message: t(translateKey + "notifications.initError.error.message")
-                });
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
-    };
-
-    /**
-     * Handle confirm QR code regeneration checkbox event.
-     */
-    const handleConfirmRegenerateQRCode = (_: FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
-        setIsConfirmRegenerate(data.checked ?? false);
-    };
-
-    /**
      * Handle regenerate QR code event.
      */
     const handleRegenerateQRCode = (): void => {
@@ -697,6 +662,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 const qrCodeUrl: string = window.atob(response?.data?.qrCodeUrl);
 
                 setQrCode(qrCodeUrl);
+                setIsViewTOTPModalOpen(true);
+                setIsConfirmRegenerationModalOpen(false);
                 setViewTOTPModalCurrentStep(1);
             })
             .catch((errorMessage: any) => {
@@ -714,6 +681,49 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
+     * Render the totp QR code regenerate confirmation modal
+     */
+    const renderConfirmRegenerateModal = (): ReactElement => {
+        return (
+            <Modal
+                data-testid={ `${testId}-regenerate-confirm-modal` }
+                size="small"
+                open={ isConfirmRegenerationModalOpen }
+                closeOnDimmerClick={ false }
+                dimmer="blurring"
+            >
+                <Modal.Content data-testid={ `${testId}-regenerate-confirm-modal-content` }>
+                    <Container>
+                        <h3>{ t(translateKey + "modals.scan.regenerateConfirmLabel") }</h3>
+                    </Container>
+                    <Message className="display-flex" size="small" warning>
+                        <Icon name="info" color="orange" corner />
+                        <Message.Content className="tiny">
+                            { t(translateKey + "modals.scan.regenerateWarning.generic") }
+                        </Message.Content>
+                    </Message>
+                </Modal.Content>
+                <Modal.Actions data-testid={ `${testId}-regenerate-confirm-modal-actions` }>
+                    <LinkButton
+                        color="red"
+                        onClick={ () => setIsConfirmRegenerationModalOpen(false) }
+                        data-testid={ `${testId}-regenerate-confirm-modal-actions-cancel-button` }
+                    >
+                        { t("common:cancel") }
+                    </LinkButton>
+                    <Button
+                        color="red"
+                        onClick={ handleRegenerateQRCode }
+                        data-testid={ `${testId}-regenerate-confirm-modal-actions-confirm-button` }
+                    >
+                        { t(translateKey + "regenerate") }
+                    </Button>
+                </Modal.Actions>
+            </Modal>
+        );
+    };
+
+    /**
      * Renders modal content.
      *
      * @returns Modal content based on viewTOTPModalCurrentStep.
@@ -724,59 +734,15 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 return (
                     <Segment basic >
                         <h5 className=" text-center"> { t(translateKey + "modals.scan.heading") }</h5>
-                        <Segment textAlign="center" basic className="qr-code">
-                            { qrCode
-                                ? <QRCode value={ qrCode } data-testid={ `${ testId }-view-modals-scan-qrcode` }/>
-                                : null
-                            }
-                        </Segment>
                         <div className="ml-3 mr-3">
-                            <Message className="display-flex" size="small" warning>
-                                <Icon name="warning sign" color="orange" corner />
-                                <Message.Content className="tiny">
-                                    { t(commonConfig.accountSecurityPage.mfa.totp.regenerateWarning) }
-                                </Message.Content>
-                            </Message>
-                            {
-                                commonConfig.accountSecurityPage.mfa.totp.showRegenerateConfirmation
-                                    ? (
-                                        <Checkbox
-                                            className="mb-2"
-                                            label={ t(translateKey + "modals.scan.regenerateConfirmLabel") }
-                                            checked={ isConfirmRegenerate }
-                                            onChange={ handleConfirmRegenerateQRCode }
-                                            data-componentid={ `${ testId }-regenerate-assertion-checkbox` }
-                                        />
-                                    ) : null
-                            }
-                            <div className = "totp-verify-step-btn">
-                                <Grid.Row columns={ 1 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                        <Button
-                                            primary
-                                            type="button"
-                                            className=" totp-verify-action-button"
-                                            onClick={ handleRegenerateQRCode }
-                                            disabled= {
-                                                isLoading
-                                                || (commonConfig.accountSecurityPage
-                                                    .mfa.totp.showRegenerateConfirmation && !isConfirmRegenerate)
-                                            }
-                                            data-testid={ `${ testId }-view-modal-actions-primary-button` }
-                                        >
-                                            { t(translateKey + "regenerate") }
-                                        </Button>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </div>
                             <div className = "totp-verify-step-btn">
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Button
                                             type="button"
                                             onClick={ () => {
-                                                setIsConfirmRegenerate(false);
                                                 setIsViewTOTPModalOpen(false);
+                                                setIsConfirmRegenerationModalOpen(false);
                                             } }
                                             className="link-button totp-verify-action-button"
                                             data-testid={ `${ testId }-view-modal-actions-cancel-button` }>
@@ -863,8 +829,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 className = "totp-verify-done-button"
                 data-testid={ `${ testId }-modal-actions-primary-button` }
                 onClick= { () => {
-                    setIsConfirmRegenerate(false);
                     setIsViewTOTPModalOpen(false);
+                    setIsConfirmRegenerationModalOpen(false);
                     setViewTOTPModalCurrentStep(0);
                     handleSessionTerminationModalVisibility(true);
                 } }
@@ -1028,6 +994,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 ) : (
                     <>
                         { renderViewTOTPWizard() }
+                        { renderConfirmRegenerateModal() }
                         { renderRevokeTOTPModal() }
                         <Grid padded={ true } data-testid={ testId }>
                             <Grid.Row columns={ 3 }>
@@ -1090,16 +1057,18 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 (
                                                     <Icon
                                                         link={ true }
-                                                        onClick={ handleViewTOTP }
+                                                        onClick={ () => {
+                                                            setIsConfirmRegenerationModalOpen(true);
+                                                        } }
                                                         className="list-icon padded-icon"
                                                         size="small"
                                                         color="grey"
-                                                        name="eye"
-                                                        data-testid={ `${testId}-view-button` }
+                                                        name="refresh"
+                                                        data-testid={ `${testId}-regenerate-button` }
                                                     />
                                                 )
                                             }
-                                            content={ t(translateKey + "hint") }
+                                            content={ t(translateKey + "regenerate") }
                                             position="top right"
                                             inverted
                                         />
