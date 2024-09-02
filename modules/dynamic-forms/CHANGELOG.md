@@ -1,5 +1,14 @@
 # @wso2is/dynamic-forms
 
+## 2.0.100
+
+### Patch Changes
+
+- [#6856](https://github.com/wso2/identity-apps/pull/6856) [`e8b882b2c9837535e53ac032a77bbc4e6a776e13`](https://github.com/wso2/identity-apps/commit/e8b882b2c9837535e53ac032a77bbc4e6a776e13) Thanks [@Achintha444](https://github.com/Achintha444)! - Change filter icon to `HorizontalBarsFilterIcon` and change the search icon to `MagnifyingGlassIcon` in the advanced search
+
+- Updated dependencies [[`e8b882b2c9837535e53ac032a77bbc4e6a776e13`](https://github.com/wso2/identity-apps/commit/e8b882b2c9837535e53ac032a77bbc4e6a776e13)]:
+  - @wso2is/react-components@2.4.7
+
 ## 2.0.99
 
 ### Patch Changes

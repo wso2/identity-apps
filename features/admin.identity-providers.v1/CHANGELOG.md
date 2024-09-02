@@ -1,5 +1,26 @@
 # @wso2is/admin.identity-providers.v1
 
+## 2.21.82
+
+### Patch Changes
+
+- [#6856](https://github.com/wso2/identity-apps/pull/6856) [`e8b882b2c9837535e53ac032a77bbc4e6a776e13`](https://github.com/wso2/identity-apps/commit/e8b882b2c9837535e53ac032a77bbc4e6a776e13) Thanks [@Achintha444](https://github.com/Achintha444)! - Change filter icon to `HorizontalBarsFilterIcon` and change the search icon to `MagnifyingGlassIcon` in the advanced search
+
+- Updated dependencies [[`e8b882b2c9837535e53ac032a77bbc4e6a776e13`](https://github.com/wso2/identity-apps/commit/e8b882b2c9837535e53ac032a77bbc4e6a776e13)]:
+  - @wso2is/admin.server-configurations.v1@2.23.2
+  - @wso2is/admin.identity-providers.v1@2.21.82
+  - @wso2is/admin.organizations.v1@2.21.45
+  - @wso2is/admin.applications.v1@2.25.4
+  - @wso2is/admin.connections.v1@2.22.8
+  - @wso2is/admin.extensions.v1@2.29.2
+  - @wso2is/admin.userstores.v1@2.20.152
+  - @wso2is/admin.claims.v1@2.20.152
+  - @wso2is/react-components@2.4.7
+  - @wso2is/admin.roles.v2@2.21.19
+  - @wso2is/dynamic-forms@2.0.100
+  - @wso2is/admin.core.v1@2.29.4
+  - @wso2is/form@2.1.8
+
 ## 2.21.81
 
 ### Patch Changes

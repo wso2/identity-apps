@@ -1,5 +1,22 @@
 # @wso2is/admin.remote-userstores.v1
 
+## 1.0.19
+
+### Patch Changes
+
+- [#6856](https://github.com/wso2/identity-apps/pull/6856) [`e8b882b2c9837535e53ac032a77bbc4e6a776e13`](https://github.com/wso2/identity-apps/commit/e8b882b2c9837535e53ac032a77bbc4e6a776e13) Thanks [@Achintha444](https://github.com/Achintha444)! - Change filter icon to `HorizontalBarsFilterIcon` and change the search icon to `MagnifyingGlassIcon` in the advanced search
+
+- Updated dependencies [[`e8b882b2c9837535e53ac032a77bbc4e6a776e13`](https://github.com/wso2/identity-apps/commit/e8b882b2c9837535e53ac032a77bbc4e6a776e13)]:
+  - @wso2is/admin.applications.v1@2.25.4
+  - @wso2is/admin.extensions.v1@2.29.2
+  - @wso2is/admin.userstores.v1@2.20.152
+  - @wso2is/admin.validation.v1@2.21.2
+  - @wso2is/admin.claims.v1@2.20.152
+  - @wso2is/react-components@2.4.7
+  - @wso2is/admin.users.v1@2.22.8
+  - @wso2is/admin.core.v1@2.29.4
+  - @wso2is/form@2.1.8
+
 ## 1.0.18
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @wso2is/common.branding.v1
 
+## 2.20.152
+
+### Patch Changes
+
+- [#6856](https://github.com/wso2/identity-apps/pull/6856) [`e8b882b2c9837535e53ac032a77bbc4e6a776e13`](https://github.com/wso2/identity-apps/commit/e8b882b2c9837535e53ac032a77bbc4e6a776e13) Thanks [@Achintha444](https://github.com/Achintha444)! - Change filter icon to `HorizontalBarsFilterIcon` and change the search icon to `MagnifyingGlassIcon` in the advanced search
+
+- Updated dependencies [[`e8b882b2c9837535e53ac032a77bbc4e6a776e13`](https://github.com/wso2/identity-apps/commit/e8b882b2c9837535e53ac032a77bbc4e6a776e13)]:
+  - @wso2is/admin.organizations.v1@2.21.45
+  - @wso2is/admin.core.v1@2.29.4
+
 ## 2.20.151
 
 ### Patch Changes
