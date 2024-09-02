@@ -473,7 +473,19 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 // Check whether the property is not in the metadata.
                 if (!metadata?.properties?.find(
                     (meta: CommonPluggableComponentMetaPropertyInterface) => meta.key === property.key)) {
-                    values.push(property.key + "=" + property.value);
+
+                    // Check whether the property is not in the subproperties of metadata.
+                    metadata?.properties.forEach((meta: CommonPluggableComponentMetaPropertyInterface) => {
+                        meta?.subProperties.forEach((subProperties: CommonPluggableComponentMetaPropertyInterface) => {
+
+                            // Check whether the property is not in the subproperties metadata.
+                            if (!meta?.subProperties?.find(
+                                (subProperties: CommonPluggableComponentMetaPropertyInterface) => 
+                                    subProperties.key === property.key)) {
+                                values.push(subProperties.key + "=" + property.value);
+                            }
+                        });
+                    });
                 }
             });
         setCustomProperties(values.join(", "));
