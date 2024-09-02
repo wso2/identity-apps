@@ -684,7 +684,6 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
      * Render the totp QR code regenerate confirmation modal
      */
     const renderConfirmRegenerateModal = (): ReactElement => {
-        return (
             <Modal
                 data-testid={ `${testId}-regenerate-confirm-modal` }
                 size="small"
