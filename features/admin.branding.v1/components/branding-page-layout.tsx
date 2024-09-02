@@ -20,12 +20,14 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import Chip from "@oxygen-ui/react/Chip";
 import Paper from "@oxygen-ui/react/Paper";
 import TextField from "@oxygen-ui/react/TextField";
 import { BuildingIcon, TilesIcon } from "@oxygen-ui/react-icons";
 import BrandingAIBanner from "@wso2is/admin.branding.ai.v1/components/branding-ai-banner";
 import useAIBrandingPreference from "@wso2is/admin.branding.ai.v1/hooks/use-ai-branding-preference";
 import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -233,7 +235,18 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                     type: "spring"
                                 } }
                                 variants={ animationVariants }>
-                                <h1>{ resolveBrandingTitle() }</h1>
+                                <h1>
+                                    { resolveBrandingTitle() }
+                                    {
+                                        brandingMode === BrandingModes.APPLICATION && (
+                                            <Chip
+                                                size="small"
+                                                label={ t(FeatureStatusLabel.BETA) }
+                                                className="oxygen-chip-beta mb-1 ml-2"
+                                            />
+                                        )
+                                    }
+                                </h1>
                             </motion.div>
                         </AnimatePresence>
                     </div>
