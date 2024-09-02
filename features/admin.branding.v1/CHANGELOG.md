@@ -1,5 +1,20 @@
 # @wso2is/admin.branding.v1
 
+## 2.21.7
+
+### Patch Changes
+
+- [#6849](https://github.com/wso2/identity-apps/pull/6849) [`bc295dd68271816535f575e7c27ddae8d3d2f2b4`](https://github.com/wso2/identity-apps/commit/bc295dd68271816535f575e7c27ddae8d3d2f2b4) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add beta label for application branding
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.29.3
+  - @wso2is/admin.extensions.v1@2.29.1
+  - @wso2is/admin.organizations.v1@2.21.44
+  - @wso2is/admin.branding.ai.v1@2.21.7
+  - @wso2is/admin.feature-gate.v1@1.0.7
+  - @wso2is/admin.server-configurations.v1@2.23.1
+  - @wso2is/common.branding.v1@2.20.151
+
 ## 2.21.6
 
 ### Patch Changes

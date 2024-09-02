@@ -32,26 +32,28 @@ git fetch upstream
 
 ## Preparing hotfixes manually
 
-1. Create the hotfix branch for the specific application version in wso2/identity-apps repo, from the branch dropdown in Github UI. Make sure to follow the `hotfix-<app_name>@<app_version>` format, when creating the hotfix branch. If there is already a branch with the same name, you may use that existing branch for your hotfix.
+1. In the identity-apps Github UI, search and switch to the relevant git tag that needs to be hotfixed. **This is important for the second step.**
+
+2. Create the hotfix branch from the selected tag, for the specific application version in wso2/identity-apps repo, from the branch dropdown in Github UI. Make sure to follow the `hotfix-<app_name>@<app_version>` format, when creating the hotfix branch. If there is already a branch with the same name, you may use that existing branch for your hotfix.
 
 For example, if you are planning to send a hotfix for `@wso2is/console` v2.19.9 version, below is how you get to create the hotfix branch.
 
 ![create-hotfix-branch](https://i.imgur.com/NhRRXax.png)
 
-2. Fetch the upstream repo branches to your local workspace, and create a new branch from the hotfix branch. This new branch is referred to as `hotfix_feature` throughout this document.
+3. Fetch the upstream repo branches to your local workspace, and create a new branch from the hotfix branch. This new branch is referred to as `hotfix_feature` throughout this document.
 
 ```bash
 git fetch upstream hotfix-<app_name>@<app_version>
 git checkout -b hotfix_feature hotfix-<app_name>@<app_version>
 ```
 
-3. Implement your changes in the created feature branch (`hotfix_feature`) and send a PR from your hotfix_feature_branch targeting the created hotfix branch. Get the PR approved and merged.
+4. Implement your changes in the created feature branch (`hotfix_feature`) and send a PR from your hotfix_feature_branch targeting the created hotfix branch. Get the PR approved and merged.
 
-4. Go to [releases](https://github.com/wso2/identity-apps/releases) and click on `Draft a new release`.
+5. Go to [releases](https://github.com/wso2/identity-apps/releases) and click on `Draft a new release`.
 
 ![draft-a-new-release](https://i.imgur.com/LiACkDj.png)
 
-5. You will see the form to create a new release. Follow the steps below.
+6. You will see the form to create a new release. Follow the steps below.
 
 - For the tag name, type in the new release tag of the hotfix to be released. Please follow the format `<app_name>@<version>-hotfix-<hotfix-number>` when specifying the new release tag. Click `Create new <your_release_tag> on publish`. 
 
