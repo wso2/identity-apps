@@ -16,12 +16,14 @@
  * under the License.
  */
 
+import Chip from "@oxygen-ui/react/Chip";
 import Link from "@oxygen-ui/react/Link";
 import { PaletteIcon } from "@oxygen-ui/react-icons";
 import { ApplicationTabComponentsFilter } from
     "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
 import { AppConstants, AppState, UIConfigInterface, history } from "@wso2is/admin.core.v1";
 import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
@@ -586,6 +588,11 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     <>
                                         <Heading as="h4">
                                             { t("applications:forms.generalDetails.sections.branding.title") }
+                                            <Chip
+                                                size="small"
+                                                label={ t(FeatureStatusLabel.BETA) }
+                                                className="oxygen-chip-beta mb-1 ml-2"
+                                            />
                                         </Heading>
                                         <PaletteIcon fill="#ff7300" /> &nbsp;
                                         <Link
