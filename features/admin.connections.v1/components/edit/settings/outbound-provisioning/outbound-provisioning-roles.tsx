@@ -146,6 +146,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                 <Grid.Column width={ 8 }>
                     <Form className="outbound-provisioning-roles role-select-dropdown">
                         <Form.Select
+                            selectOnBlur={ false }
                             options={ roleList?.map((role: RolesInterface) => {
                                 return {
                                     key: role.id,
