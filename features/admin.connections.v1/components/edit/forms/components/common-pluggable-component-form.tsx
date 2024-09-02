@@ -480,7 +480,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
                             // Check whether the property is not in the subproperties metadata.
                             if (!meta?.subProperties?.find(
-                                (subProperties: CommonPluggableComponentMetaPropertyInterface) => 
+                                (subProperties: CommonPluggableComponentMetaPropertyInterface) =>
                                     subProperties.key === property.key)) {
                                 values.push(subProperties.key + "=" + property.value);
                             }
