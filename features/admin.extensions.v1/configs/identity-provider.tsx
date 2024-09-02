@@ -28,11 +28,8 @@ import {
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { IdentityProviderTabTypes } from "@wso2is/admin.identity-providers.v1/models";
-import { I18n } from "@wso2is/i18n";
-import { ResourceTabPaneInterface } from "@wso2is/react-components";
-import React, { ElementType, ReactElement } from "react";
+import React, { ReactElement } from "react";
 import { IdentityProviderConfig } from "./models";
-import QuickStartTab from "../components/component-extensions/application/quick-start-tab";
 import { SIWEAuthenticatorForm } from "../identity-provider-templates/templates/swe/swe-authenticator-form";
 import SIWEIdPTemplate from "../identity-provider-templates/templates/swe/swe.json";
 
@@ -91,19 +88,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
             }
 
             return null;
-        },
-        getTabExtensions: (props: Record<string, unknown>): ResourceTabPaneInterface[] => {
-            const { content, ...rest } = props;
-
-            return [
-                {
-                    componentId: "quick-start",
-                    menuItem: I18n.instance.t(
-                        "console:develop.componentExtensions.component.application.quickStart.title"
-                    ),
-                    render: () => <QuickStartTab content={ content as ElementType } { ...rest } />
-                }
-            ];
         },
         isTabEnabledForIdP: (templateType: string, tabType: ConnectionTabTypes): boolean | undefined => {
 

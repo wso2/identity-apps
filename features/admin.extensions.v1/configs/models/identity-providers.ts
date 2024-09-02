@@ -42,12 +42,6 @@ export interface IdentityProviderConfig {
         showJitProvisioning: boolean;
         showOutboundProvisioning: boolean;
         /**
-         * Get the list of passible tab extensions.
-         * @param props - Props for the component.
-         * @returns Array of tab extensions.
-         */
-        getTabExtensions: (props: Record<string, unknown>) => ResourceTabPaneInterface[];
-        /**
          * Used enable/disable certain tabs for certain IDP template type.
          * @param templateId - The IDP Template Type.
          * @param tabType - Tab Type.
