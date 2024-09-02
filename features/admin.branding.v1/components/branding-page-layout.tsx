@@ -27,7 +27,7 @@ import { BuildingIcon, TilesIcon } from "@oxygen-ui/react-icons";
 import BrandingAIBanner from "@wso2is/admin.branding.ai.v1/components/branding-ai-banner";
 import useAIBrandingPreference from "@wso2is/admin.branding.ai.v1/hooks/use-ai-branding-preference";
 import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
