@@ -16,8 +16,7 @@
  * under the License.
  */
 
-// Need to add this icon to oxygen icons
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import { HorizontalBarsFilterIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DropdownChild, Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
@@ -442,7 +441,7 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
                         className="org-insights-advanced-filter-trigger"
                         onClick={ () => setIsFilteringModalOpen(!isFilteringModalOpen) }
                     >
-                        <FilterAltIcon className="org-insights-filter-icon" />
+                        <HorizontalBarsFilterIcon className="org-insights-filter-icon" />
                     </div>
                 )
             }
