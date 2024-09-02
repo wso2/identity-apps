@@ -34,6 +34,8 @@
         "@wso2is/react-components": "^2.4.6",
         "@wso2is/theme": "^2.1.2",
         "@wso2is/validation": "^2.0.9",
+        "@wso2is/admin.groups.v1": "^2.20.120",
+        "@wso2is/admin.roles.v2": "^2.20.120",
         "axios": "^0.19.2",
         "codemirror": "^5.52.0",
         "country-language": "^0.1.7",
