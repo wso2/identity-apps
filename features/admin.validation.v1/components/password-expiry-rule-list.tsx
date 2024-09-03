@@ -32,6 +32,7 @@ import TextField from "@oxygen-ui/react/TextField";
 import { ChevronDownIcon, ChevronUpIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { GroupsInterface } from "@wso2is/admin.groups.v1";
+import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants";
 import {
     GovernanceConnectorConstants
 } from "@wso2is/admin.server-configurations.v1/constants/governance-connector-constants";
@@ -57,10 +58,13 @@ interface PasswordExpiryRuleListProps {
 
 type Resource = RolesInterface | GroupsInterface;
 
+enum Direction {
+    UP = "up",
+    DOWN = "down"
+}
+
 export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListProps> = (
-    props: PasswordExpiryRuleListProps
-) => {
-    const {
+    {
         componentId,
         ruleList,
         isPasswordExpiryEnabled,
@@ -73,7 +77,8 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
         onDefaultPasswordExpiryTimeChange,
         onRuleChange,
         onRuleError
-    } = props;
+    }: PasswordExpiryRuleListProps
+) => {
 
     const [ rules, setRules ] = useState<PasswordExpiryRule[]>(ruleList);
     const [ hasErrors, setHasErrors ] = useState<{ [key: string]: { values: boolean; expiryDays: boolean } }>({});
@@ -180,12 +185,13 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
      * @param index - index of the rule.
      * @param direction - direction to move the rule.
      */
-    const movePriority = (index: number, direction: "up" | "down") => {
-        if ((direction === "up" && index === 0) || (direction === "down" && index === rules.length - 1)) {
+    const movePriority = (index: number, direction: Direction) => {
+        if ((direction === Direction.UP && index === 0) || (direction === Direction.DOWN && index === rules.length - 1))
+        {
             return;
         }
         const updatedRules: PasswordExpiryRule[] = [ ...rules ];
-        const swapIndex: number = direction === "up" ? index - 1 : index + 1;
+        const swapIndex: number = direction === Direction.UP ? index - 1 : index + 1;
 
         [ updatedRules[index], updatedRules[swapIndex] ] = [ updatedRules[swapIndex], updatedRules[index] ];
         updatedRules.forEach((rule: PasswordExpiryRule, i: number) => rule.priority = i + 1);
@@ -250,7 +256,7 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
         if (isRole) {
             const { audience } = resource as RolesInterface;
 
-            return audience?.type === "application"
+            return audience?.type?.toLowerCase() === RoleAudienceTypes.APPLICATION.toLowerCase()
                 ? `application | ${audience?.display}`
                 : audience?.type ?? "";
         }
@@ -327,7 +333,7 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                     <ListItemText primary={ getResourceDisplayName(firstItem, isRoleAttribute) } />
                 </div>
                 { selected?.length > 1 && (
-                    <Chip label={ `+${selected?.length - 1} more` } size="small" />
+                    <Chip label={ `+${selected?.length - 1} ${t("common:more")}` } size="small" />
                 ) }
             </div>
         );
@@ -423,7 +429,7 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                             <Grid md={ 1 }>
                                 <div className="priority-arrows">
                                     <IconButton
-                                        onClick={ () => movePriority(index, "up") }
+                                        onClick={ () => movePriority(index, Direction.UP) }
                                         disabled={ !isPasswordExpiryEnabled || index === 0 || isReadOnly }
                                         data-componentid={ `${componentId}-move-up-${index}` }
                                     >
@@ -435,7 +441,7 @@ export const PasswordExpiryRuleList: FunctionComponent<PasswordExpiryRuleListPro
                                         disabled={ !isPasswordExpiryEnabled
                                             || index === rules.length - 1
                                             || isReadOnly }
-                                        onClick={ () => movePriority(index, "down") }
+                                        onClick={ () => movePriority(index, Direction.DOWN) }
                                         data-componentid={ `${componentId}-move-down-${index}` }
                                     >
                                         <ChevronDownIcon

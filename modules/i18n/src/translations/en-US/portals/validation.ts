@@ -71,7 +71,7 @@ export const validation: validationNS = {
                 applyMessage: "days password expiry.",
                 defaultRuleApplyMessage: "days password expiry if no other rules match to the user.",
                 defaultRuleSkipMessage: "password expiry if no other rules match to the user.",
-                ifUserHas: "If user has",
+                ifUserHas: "If user belongs to",
                 info: "Rules will be applied in the order listed below, from top to bottom. Use the arrows to adjust the priority.",
                 skipMessage: "password expiry."
             }
