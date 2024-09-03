@@ -466,7 +466,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                         {
                                             applicationConfig?.advancedConfigurations?.showMyAccountStatus && (
                                                 <Icon
-                                                    color={ isMyAccountEnabled ? "green":"grey" }
+                                                    color={ isMyAccountEnabled ? "green" : "grey" }
                                                     name={ isMyAccountEnabled ? "check circle" : "minus circle" }
                                                     className="middle aligned ml-1"
                                                 />
