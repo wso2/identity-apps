@@ -119,7 +119,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
                     data-tooltip={ copied ? "Copied!" : "Copy to clipboard" }
                     data-inverted=""
                     className="copy-input-action"
-                    icon={ <CopyIcon /> }
+                    icon={ CopyIcon }
                     type="button"
                     onMouseEnter={ () => {
                         setCopied(false);
