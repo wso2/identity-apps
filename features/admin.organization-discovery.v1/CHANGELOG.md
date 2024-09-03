@@ -1,5 +1,14 @@
 # @wso2is/admin.organization-discovery.v1
 
+## 2.20.154
+
+### Patch Changes
+
+- Updated dependencies [[`60c435a2288880cab85bcec41f84ab4f707fa101`](https://github.com/wso2/identity-apps/commit/60c435a2288880cab85bcec41f84ab4f707fa101)]:
+  - @wso2is/i18n@2.5.27
+  - @wso2is/admin.core.v1@2.29.6
+  - @wso2is/admin.organizations.v1@2.21.47
+
 ## 2.20.153
 
 ### Patch Changes
