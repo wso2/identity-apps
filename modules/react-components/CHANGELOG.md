@@ -1,5 +1,14 @@
 # @wso2is/react-components
 
+## 2.4.8
+
+### Patch Changes
+
+- [#6860](https://github.com/wso2/identity-apps/pull/6860) [`1cb81cec3954eb14d1e294bed089782c0b8fe3b7`](https://github.com/wso2/identity-apps/commit/1cb81cec3954eb14d1e294bed089782c0b8fe3b7) Thanks [@Achintha444](https://github.com/Achintha444)! - Changed icons in the "Applications" sections to oxygen-ui
+
+- Updated dependencies [[`22dcbbe1383cfdb1b388f3f02e51ccc0dab653dd`](https://github.com/wso2/identity-apps/commit/22dcbbe1383cfdb1b388f3f02e51ccc0dab653dd)]:
+  - @wso2is/theme@2.1.3
+
 ## 2.4.7
 
 ### Patch Changes
