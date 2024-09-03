@@ -1903,10 +1903,11 @@ TODO : Move values to separate variables and cleanup styles.
 .email-template-resource-tab-pane {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
-    pointer-events: none;
 }
 
 .email-template-preview {
+    pointer-events: none;
+
     .email-template-preview-iframe {
         min-height: 800px;
     }
