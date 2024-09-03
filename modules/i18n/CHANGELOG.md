@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.5.27
+
+### Patch Changes
+
+- [#6862](https://github.com/wso2/identity-apps/pull/6862) [`60c435a2288880cab85bcec41f84ab4f707fa101`](https://github.com/wso2/identity-apps/commit/60c435a2288880cab85bcec41f84ab4f707fa101) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Change wordings of rule based password expiry
+
 ## 2.5.26
 
 ### Patch Changes
