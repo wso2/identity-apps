@@ -580,6 +580,7 @@
                     width: 80px;
                     max-height: 20px;
                     margin-left: 4px;
+                    margin-top: 8px;
                 }
             }
         }

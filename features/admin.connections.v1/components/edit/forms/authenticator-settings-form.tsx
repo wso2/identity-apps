@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,7 +30,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
-import { ConnectionManagementConstants } from "../../../constants/connection-constants";
+import { FederatedAuthenticatorConstants } from "../../../constants/federated-authenticator-constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormFieldMetaInterface,
@@ -167,7 +167,7 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
             */
             let localValue : any;
 
-            if (value.key === ConnectionManagementConstants.GOOGLE_ONE_TAP_ENABLED) {
+            if (value.key === FederatedAuthenticatorConstants.GOOGLE_ONE_TAP_ENABLED_PARAM) {
                 if (value.value === "true") {
                     localValue = true;
                 } else {

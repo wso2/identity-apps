@@ -57,6 +57,22 @@ export const groups: groupsNS = {
                 }
             },
             subHeading: "View assigned roles for the group."
+        },
+        users: {
+            addUsersModal: {
+                heading: "Manage Group Users",
+                subHeading: "Add new users or remove existing users assigned to the group."
+            },
+            heading: "Assigned Users",
+            placeHolders: {
+                emptyListPlaceholder: {
+                    subtitles: "There are no users assigned to this group at the moment.",
+                    title: "No Users Assigned"
+                }
+            },
+            searchUsers: "Search users by username for more results",
+            selectAllUsers: "Select All Users",
+            subHeading: "View assigned users for the group."
         }
     },
     list: {

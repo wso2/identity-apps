@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ResourceTab } from "@wso2is/react-components";
@@ -24,7 +25,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AuthorizationAPIResource, GeneralAPIResource, PermissionAPIResource } from "./api-resource-panes";
-import { FeatureConfigInterface } from "../../admin.core.v1";
 import { deleteScopeFromAPIResource, updateAPIResource } from "../api";
 import { APIResourceInterface, UpdatedAPIResourceInterface } from "../models";
 

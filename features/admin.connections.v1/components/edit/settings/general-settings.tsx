@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,10 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
+import { getApplicationDetails } from "@wso2is/admin.applications.v1/api";
+import { ApplicationBasicInterface } from "@wso2is/admin.applications.v1/models";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -24,18 +27,15 @@ import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@
 import { AxiosError } from "axios";
 import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, List } from "semantic-ui-react";
-import { getApplicationDetails } from "../../../../admin.applications.v1/api";
-import { ApplicationBasicInterface } from "../../../../admin.applications.v1/models";
 import {
     deleteConnection,
     getConnectedApps,
     updateIdentityProviderDetails,
     useGetConnections
 } from "../../../api/connections";
-import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
 import {
     ConnectedAppInterface,
     ConnectedAppsInterface,
@@ -123,6 +123,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ loading, setLoading ] = useState(false);
@@ -222,7 +223,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     const handleFormSubmit = (updatedDetails: ConnectionInterface): void => {
         setIsSubmitting(true);
 
-        updateIdentityProviderDetails({ id: editingIDP.id, ...updatedDetails })
+        updateIdentityProviderDetails({ id: editingIDP.id, ...updatedDetails }, editingIDP.idpIssuerName === undefined)
             .then(() => {
                 dispatch(addAlert({
                     description: t("authenticationProvider:notifications.updateIDP." +
@@ -293,46 +294,47 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                         isSubmitting={ isSubmitting }
                     />
                     <Divider hidden />
-                    { !(AuthenticatorManagementConstants.DELETING_FORBIDDEN_IDPS.includes(editingIDP.name)) && (
-                        <Show when={ AccessControlConstants.IDP_EDIT || AccessControlConstants.IDP_DELETE }>
-                            <DangerZoneGroup
-                                sectionHeader={ t("authenticationProvider:" +
+                    <Show
+                        when={ featureConfig?.identityProviders?.scopes?.update ||
+                                featureConfig?.identityProviders?.scopes?.delete }
+                    >
+                        <DangerZoneGroup
+                            sectionHeader={ t("authenticationProvider:" +
                                 "dangerZoneGroup.header") }>
-                                <Show when={ AccessControlConstants.IDP_EDIT }>
-                                    <DangerZone
-                                        actionTitle={ t("authenticationProvider:" +
+                            <Show when={ featureConfig?.identityProviders?.scopes?.update }>
+                                <DangerZone
+                                    actionTitle={ t("authenticationProvider:" +
                                             "dangerZoneGroup.disableIDP.actionTitle",
-                                        { state: editingIDP.isEnabled ? t("common:disable") : t("common:enable") }) }
-                                        header={ t("authenticationProvider:dangerZoneGroup." +
+                                    { state: editingIDP.isEnabled ? t("common:disable") : t("common:enable") }) }
+                                    header={ t("authenticationProvider:dangerZoneGroup." +
                                             "disableIDP.header",
-                                        { state: editingIDP.isEnabled ? t("common:disable") : t("common:enable") } ) }
-                                        subheader={ editingIDP.isEnabled
-                                            ? t("authenticationProvider:" +
+                                    { state: editingIDP.isEnabled ? t("common:disable") : t("common:enable") } ) }
+                                    subheader={ editingIDP.isEnabled
+                                        ? t("authenticationProvider:" +
                                                 "dangerZoneGroup.disableIDP.subheader")
-                                            : t("authenticationProvider:dangerZoneGroup.disableIDP.subheader2") }
-                                        onActionClick={ undefined }
-                                        toggle={ {
-                                            checked: editingIDP.isEnabled,
-                                            onChange: handleIdentityProviderDisable
-                                        } }
-                                        data-testid={ `${ testId }-disable-idp-danger-zone` }
-                                    />
-                                </Show>
-                                <Show when={ AccessControlConstants.IDP_DELETE }>
-                                    <DangerZone
-                                        actionTitle={ t("authenticationProvider:" +
+                                        : t("authenticationProvider:dangerZoneGroup.disableIDP.subheader2") }
+                                    onActionClick={ undefined }
+                                    toggle={ {
+                                        checked: editingIDP.isEnabled,
+                                        onChange: handleIdentityProviderDisable
+                                    } }
+                                    data-testid={ `${ testId }-disable-idp-danger-zone` }
+                                />
+                            </Show>
+                            <Show when={ featureConfig?.identityProviders?.scopes?.delete }>
+                                <DangerZone
+                                    actionTitle={ t("authenticationProvider:" +
                                             "dangerZoneGroup.deleteIDP.actionTitle") }
-                                        header={ t("authenticationProvider:" +
+                                    header={ t("authenticationProvider:" +
                                             "dangerZoneGroup.deleteIDP.header") }
-                                        subheader={ t("authenticationProvider:" +
+                                    subheader={ t("authenticationProvider:" +
                                             "dangerZoneGroup.deleteIDP.subheader") }
-                                        onActionClick={ handleIdentityProviderDeleteAction }
-                                        data-testid={ `${ testId }-delete-idp-danger-zone` }
-                                    />
-                                </Show>
-                            </DangerZoneGroup>
-                        </Show>
-                    ) }
+                                    onActionClick={ handleIdentityProviderDeleteAction }
+                                    data-testid={ `${ testId }-delete-idp-danger-zone` }
+                                />
+                            </Show>
+                        </DangerZoneGroup>
+                    </Show>
                     {
                         showDeleteConfirmationModal && (
                             <ConfirmationModal

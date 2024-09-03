@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,11 @@
  * under the License.
  */
 
+import {
+    ApplicationInterface,
+    ApplicationTemplateInterface
+} from "@wso2is/admin.applications.v1/models";
+import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import { Code, Hint, Link, Message, useDocumentation } from "@wso2is/react-components";
@@ -33,11 +38,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, DropdownItemProps, DropdownProps, Form, Icon, Table } from "semantic-ui-react";
 import { IntegrateStepGeneratorFactory } from "./integrate-step-generator-factory";
-import {
-    ApplicationInterface,
-    ApplicationTemplateInterface
-} from "../../../../../admin.applications.v1/models";
-import { AppState, ConfigReducerStateInterface } from "../../../../../admin.core.v1";
 import { SDKInitConfig } from "../../../shared";
 import { AddUserStepContent } from "../../../shared/components";
 import { SupportedSPATechnologyTypes } from "../models";
@@ -220,7 +220,7 @@ export const IntegrateSDKs: FunctionComponent<IntegrateSDKsPropsInterface> = (
                                                     ".sdkConfigs.signInRedirectURL.hint.content"
                                                 }
                                             >
-                                                The URL that determines where the authorization 
+                                                The URL that determines where the authorization
                                                 code is sent to upon user authentication.
 
                                                 <Divider hidden />
@@ -354,7 +354,7 @@ export const IntegrateSDKs: FunctionComponent<IntegrateSDKsPropsInterface> = (
                                                 If you need to to add more scopes other than <Code>openid</Code> &
                                                 <Code>profile</Code>, you can append them to the array.
                                                 <Divider hidden />
-                                                Read through our <Link 
+                                                Read through our <Link
                                                     link={
                                                         getLink("develop.applications.editApplication.oidcApplication" +
                                                         ".quickStart.applicationScopes.learnMore")

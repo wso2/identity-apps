@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,12 +19,12 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
-import { IdentityProviderManagementConstants } from "../../../../admin.identity-providers.v1/constants";
 import { AxiosError } from "axios";
 import React, { Dispatch, FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { updateIdentityProviderDetails, updateImplicitAssociationConfig } from "../../../api/connections";
+import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 import {
     ConnectionAdvanceInterface,
     ConnectionInterface,
@@ -155,7 +155,7 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
 
     return (
         <EmphasizedSegment padded="very" className="advanced-configuration-section">
-            { templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ?
+            { templateType === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ?
                 (<TrustedTokenIssuerAdvanceConfigurationsForm
                     config={ implicitAssociationConfig }
                     onSubmit={ handleImplicitAssociationConfigFormSubmit }

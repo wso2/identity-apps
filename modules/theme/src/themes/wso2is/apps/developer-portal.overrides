@@ -451,6 +451,7 @@
 
     .title-container {
         display: flex;
+        justify-content: space-between;
     }
 
     .title-container-heading {
@@ -1926,6 +1927,10 @@ TODO : Move values to separate variables and cleanup styles.
 
 #onetrust-policy-text {
     color: black !important;
+}
+
+#onetrust-policy-text *:not(a) {
+    color: inherit !important;
 }
 
 #onetrust-pc-btn-handler {

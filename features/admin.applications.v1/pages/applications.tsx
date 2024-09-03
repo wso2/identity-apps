@@ -16,9 +16,22 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
-import useUIConfig from "../../admin.core.v1/hooks/use-ui-configs";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { Show } from "@wso2is/access-control";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppConstants,
+    AppState,
+    EventPublisher,
+    FeatureConfigInterface,
+    UIConstants,
+    getGeneralIcons,
+    history
+} from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import {
@@ -55,27 +68,10 @@ import {
     List,
     PaginationProps
 } from "semantic-ui-react";
-import { applicationConfig } from "../../admin.extensions.v1";
-import isLegacyAuthzRuntime from "../../admin.authorization.v1/utils/get-legacy-authz-runtime";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
-    EventPublisher,
-    FeatureConfigInterface,
-    UIConstants,
-    getGeneralIcons,
-    history
-} from "../../admin.core.v1";
-import { OrganizationType } from "../../admin.organizations.v1/constants";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
-import { useApplicationList, useMyAccountApplicationData, useMyAccountStatus } from "../api";
+import { useApplicationList, useMyAccountApplicationData } from "../api";
+import { useGetApplication } from "../api/use-get-application";
 import { ApplicationList } from "../components/application-list";
-import { MinimalAppCreateWizard } from "../components/wizard/minimal-application-create-wizard";
 import { ApplicationManagementConstants } from "../constants";
-import CustomApplicationTemplate
-    from "../data/application-templates/templates/custom-application/custom-application.json";
 import { ApplicationAccessTypes, ApplicationListInterface, ApplicationListItemInterface } from "../models";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
@@ -104,7 +100,7 @@ const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
 /**
  * Props for the Applications page.
  */
-type ApplicationsPageInterface = TestableComponentInterface;
+type ApplicationsPageInterface = TestableComponentInterface & IdentifiableComponentInterface;
 
 /**
  * Applications page.
@@ -128,7 +124,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const { UIConfig } = useUIConfig();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
+    const applicationDisabledFeatures: string[] = useSelector((state: AppState) => {
+        return state.config.ui.features?.applications?.disabledFeatures;
+    });
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
@@ -137,16 +135,15 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-    const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const consumerAccountURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
     // Note: If we are providing strong auth for applications use this state to handle it.
     const [ strongAuth, _setStrongAuth ] = useState<boolean>(undefined);
     const [ filteredApplicationList, setFilteredApplicationList ] = useState<ApplicationListInterface>(null);
+    const [ myAccountAppId, setMyAccountAppId ] = useState<string>(null);
 
-    const { isSubOrganization, organizationType } = useGetCurrentOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -163,43 +160,54 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         error: myAccountApplicationDataFetchRequestError
     } = useMyAccountApplicationData("advancedConfigurations,templateId,clientId,issuer");
 
-    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
-
     const {
-        data: myAccountStatus,
-        isLoading: isMyAccountStatusLoading,
-        error: myAccountStatusFetchRequestError
-    } = useMyAccountStatus(!isSubOrg && applicationConfig?.advancedConfigurations?.showMyAccountStatus);
+        data: myAccountApplication,
+        isLoading: isMyAccountApplicationGetRequestLoading,
+        error: myAccountApplicationGetRequestError
+    } = useGetApplication(myAccountAppId , !!myAccountAppId);
+
+    /**
+     * Set the application id for My Account.
+     */
+    useEffect(() => {
+        if (myAccountApplicationData?.applications?.length === 1) {
+            myAccountApplicationData.applications.forEach((
+                item: ApplicationListItemInterface
+            ) => {
+                setMyAccountAppId(item?.id);
+            });
+        }
+    }, [ myAccountApplicationData ]);
 
     /**
      * Sets the initial spinner.
      * TODO: Remove this once the loaders are finalized.
      */
     useEffect(() => {
-        if (isApplicationListFetchRequestLoading === false && isMyAccountStatusLoading === false
-            && !isMyAccountApplicationDataFetchRequestLoading) {
-            let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
+        let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
 
-            if (myAccountStatus) {
-                const enableProperty: string = myAccountStatus["value"];
-
-                if (enableProperty && enableProperty === "false") {
-                    status = false;
-                }
+        if (
+            !isApplicationListFetchRequestLoading
+                && !isMyAccountApplicationGetRequestLoading
+                && !isMyAccountApplicationDataFetchRequestLoading
+        ) {
+            if (myAccountApplication) {
+                status = myAccountApplication?.applicationEnabled;
             }
-            setMyAccountStatus(status);
         }
+
+        setMyAccountStatus(status);
     }, [
         isApplicationListFetchRequestLoading,
-        isMyAccountStatusLoading,
-        isMyAccountApplicationDataFetchRequestLoading
+        isMyAccountApplicationGetRequestLoading,
+        isMyAccountApplicationDataFetchRequestLoading,
+        myAccountAppId
     ]);
 
     /**
      * Handles the application list fetch request error.
      */
     useEffect(() => {
-
         if (!applicationListFetchRequestError) {
             return;
         }
@@ -230,7 +238,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * Handles the my account application fetch request error.
      */
     useEffect(() => {
-
         if (!myAccountApplicationDataFetchRequestError) {
             return;
         }
@@ -256,22 +263,22 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     }, [ myAccountApplicationDataFetchRequestError ]);
 
     /**
-     * Handles the application list fetch request error.
+     * Handles the My Account application data fetch request error.
      */
     useEffect(() => {
-
-        if (!myAccountStatusFetchRequestError) {
+        if (!myAccountApplicationGetRequestError) {
             return;
         }
 
-        if (myAccountStatusFetchRequestError.response
-            && myAccountStatusFetchRequestError.response.data
-            && myAccountStatusFetchRequestError.response.data.description) {
-            if (myAccountStatusFetchRequestError.response.status === 404) {
+        if (
+            myAccountApplicationGetRequestError?.response?.data?.description
+        ) {
+            if (myAccountApplicationGetRequestError.response?.status === 404) {
                 return;
             }
+
             dispatch(addAlert({
-                description: myAccountStatusFetchRequestError.response.data.description ??
+                description: myAccountApplicationGetRequestError.response.data.description ??
                     t("applications:myaccount.fetchMyAccountStatus.error.description"),
                 level: AlertLevels.ERROR,
                 message: t("applications:myaccount.fetchMyAccountStatus.error.message")
@@ -287,7 +294,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             message: t("applications:myaccount.fetchMyAccountStatus" +
                 ".genericError.message")
         }));
-    }, [ myAccountStatusFetchRequestError ]);
+    }, [ myAccountApplicationGetRequestError ]);
 
     /**
      * Filter out the system apps from the application list.
@@ -306,10 +313,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     !ApplicationManagementConstants.SYSTEM_APPS.includes(item.name)
                     && !ApplicationManagementConstants.DEFAULT_APPS.includes(item.name)
                 );
-                appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
-                appList.totalResults = appList.totalResults -
-                    (applicationList.applications.length - appList.applications.length);
             }
+
+            appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
+            appList.totalResults = appList.totalResults -
+                (applicationList.applications.length - appList.applications.length);
 
             setFilteredApplicationList(appList);
         }
@@ -390,29 +398,22 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * Navigate to the my account edit page.
      */
     const navigateToMyAccountSettings = (): void => {
-        if (applicationConfig?.advancedConfigurations?.showDefaultMyAccountApplicationEditPage) {
-            if (strongAuth) {
-                history.push({
-                    pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(
-                        ":id", myAccountApplicationData?.applications[0]?.id
-                    ),
-                    search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }=${
-                        ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`
-                });
-            } else {
-                history.push({
-                    pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(
-                        ":id", myAccountApplicationData?.applications[0]?.id
-                    ),
-                    search: myAccountApplicationData?.applications[0]?.access === ApplicationAccessTypes.READ
-                        ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
-                        : ""
-                });
-            }
+        if (strongAuth) {
+            history.push({
+                pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(
+                    ":id", myAccountApplicationData?.applications[0]?.id
+                ),
+                search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }=${
+                    ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`
+            });
         } else {
             history.push({
-                pathname: AppConstants.getPaths().get("MY_ACCOUNT_EDIT"),
-                state: ApplicationManagementConstants.APPLICATION_STATE
+                pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(
+                    ":id", myAccountApplicationData?.applications[0]?.id
+                ),
+                search: myAccountApplicationData?.applications[0]?.access === ApplicationAccessTypes.READ
+                    ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
+                    : ""
             });
         }
     };
@@ -426,8 +427,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         if (
             !applicationConfig.advancedConfigurations.showMyAccount
             || UIConfig?.legacyMode?.applicationListSystemApps
-            // Disable the myaccount navigation box for suborgs in legacyauthz runtime.
-            || (isLegacyAuthzRuntime() && isSubOrganization())
         ) {
             return null;
         }
@@ -532,24 +531,60 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         );
     };
 
+    const handleSettingsButton = () => {
+        history.push(AppConstants.getPaths().get("APPLICATIONS_SETTINGS"));
+    };
+
     return (
         <PageLayout
             pageTitle="Applications"
             action={ (organizationType !== OrganizationType.SUBORGANIZATION &&
-                filteredApplicationList?.totalResults > 0) && (
-                <Show when={ AccessControlConstants.APPLICATION_WRITE }>
-                    <PrimaryButton
-                        onClick={ (): void => {
-                            eventPublisher.publish("application-click-new-application-button");
-                            history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
-                        } }
-                        data-testid={ `${ testId }-list-layout-add-button` }
-                    >
-                        <Icon name="add" />
-                        { t("applications:list.actions.add") }
-                    </PrimaryButton>
-                </Show>
-            ) }
+                filteredApplicationList?.totalResults > 0) ? (
+                    <>
+                        <Show when={ featureConfig?.applications?.scopes?.create }>
+                            {
+                                !applicationDisabledFeatures?.includes(
+                                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATIONS_SETTINGS")
+                                ) &&
+                                (<Button
+                                    data-componentid={ "applications-settings-button" }
+                                    icon="setting"
+                                    onClick={ handleSettingsButton }
+                                >
+                                </Button>)
+                            }
+                        </Show>
+                        <Show
+                            when={ featureConfig?.applications?.scopes?.create }
+                        >
+                            <PrimaryButton
+                                onClick={ (): void => {
+                                    eventPublisher.publish("application-click-new-application-button");
+                                    history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                                } }
+                                data-testid={ `${ testId }-list-layout-add-button` }
+                            >
+                                <Icon name="add" />
+                                { t("applications:list.actions.add") }
+                            </PrimaryButton>
+                        </Show>
+                    </>
+                ) : (
+                    <Show when={ featureConfig?.applications?.scopes?.create }>
+                        {
+                            !applicationDisabledFeatures?.includes(
+                                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATIONS_SETTINGS")
+                            ) &&
+                            (<Button
+                                data-componentid={ "applications-settings-button" }
+                                icon="setting"
+                                onClick={ handleSettingsButton }
+                            >
+                            </Button>)
+                        }
+                    </Show>
+
+                ) }
             title={ t("console:develop.pages.applications.title") }
             description={ organizationType !== OrganizationType.SUBORGANIZATION
                 ? (
@@ -577,14 +612,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             data-testid={ `${ testId }-page-layout` }
         >
             {
-                (
-                    isSAASDeployment
-                    || (
-                        !isMyAccountApplicationDataFetchRequestLoading
-                        && myAccountApplicationData?.applications?.length !== 0
-                    )
-                )
-                && renderTenantedMyAccountLink()
+                !isMyAccountApplicationDataFetchRequestLoading
+                    && myAccountApplicationData?.applications?.length !== 0
+                    && renderTenantedMyAccountLink()
             }
             <ListLayout
                 advancedSearch={ (
@@ -717,22 +747,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     data-componentid="application"
                 />
             </ListLayout>
-            { showWizard && (
-                <MinimalAppCreateWizard
-                    title={ CustomApplicationTemplate?.name }
-                    subTitle={ CustomApplicationTemplate?.description }
-                    closeWizard={ (): void => setShowWizard(false) }
-                    template={ CustomApplicationTemplate }
-                    showHelpPanel={ true }
-                    subTemplates={ CustomApplicationTemplate?.subTemplates }
-                    subTemplatesSectionTitle={ CustomApplicationTemplate?.subTemplatesSectionTitle }
-                    addProtocol={ false }
-                    templateLoadingStrategy={
-                        config.ui.applicationTemplateLoadingStrategy
-                        ?? ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY
-                    }
-                />
-            ) }
         </PageLayout>
     );
 };
@@ -741,6 +755,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
  * Default props for the component.
  */
 ApplicationsPage.defaultProps = {
+    "data-componentid": "applications",
     "data-testid": "applications"
 };
 

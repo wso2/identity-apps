@@ -17,6 +17,7 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { store } from "@wso2is/admin.core.v1";
 import { ClaimConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -28,7 +29,6 @@ import {
     HttpMethods
 } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../admin.core.v1";
 import { ClaimManagementConstants } from "../constants";
 import { AddExternalClaim, ServerSupportedClaimsInterface } from "../models";
 
@@ -561,7 +561,7 @@ export const getServerSupportedClaimsForSchema = (id: string): Promise<ServerSup
  * Fetch all local claims.
  *
  * @param params - limit, offset, sort, attributes, filter.
-
+ *
  * @returns response.
  * @throws IdentityAppsApiException
  */

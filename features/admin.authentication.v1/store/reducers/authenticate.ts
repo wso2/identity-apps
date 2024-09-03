@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthReducerStateInterface } from "../../../admin.core.v1/models";
+import { AuthReducerStateInterface } from "@wso2is/admin.core.v1/models";
 
 /**
  * Initial state for the common authenticate reducer.

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -26,7 +27,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Card, Grid, Icon } from "semantic-ui-react";
-import { AppState } from "../../../../../admin.core.v1";
 import { updateUserConsent } from "../api";
 import { getMarketingConsentIllustrations } from "../configs";
 import { setMarketingConsentStatusToLocalStorage } from "../utils";
@@ -55,7 +55,7 @@ interface MarketingConsentModalPropTypes extends IdentifiableComponentInterface 
 export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropTypes> = (
     props: MarketingConsentModalPropTypes
 ): ReactElement => {
-    const { 
+    const {
         isOpen,
         onClosed,
         ["data-componentid"]: componentId
@@ -70,7 +70,7 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
 
     /**
      * Handles updating user consent.
-     * 
+     *
      * @param isSubscribed - Is subscribed or declined.
      */
     const submitUserConsent = (isSubscribed: boolean): void => {
@@ -84,7 +84,7 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
                         message: t("extensions:console.marketingConsent.notifications.errors.update.message")
                     }));
                 }
-                
+
                 setMarketingConsentStatusToLocalStorage(uuid);
                 onClosed();
             })
@@ -141,7 +141,7 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
                         <Grid.Column width={ 13 }>
                             <Card.Content>
                                 <div className="header-wrapper">
-                                    <h4 
+                                    <h4
                                         data-componentid={ `${componentId}-heading` }
                                         className="ui header"
                                     >

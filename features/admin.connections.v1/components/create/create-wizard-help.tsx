@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import useDeploymentConfig from "../../../admin.core.v1/hooks/use-app-configs";
+import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-app-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Encode } from "@wso2is/core/utils";
 import { CodeEditor, CopyInputField, Heading, Message } from "@wso2is/react-components";

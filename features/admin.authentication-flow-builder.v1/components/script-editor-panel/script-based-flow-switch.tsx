@@ -23,6 +23,11 @@ import Box from "@oxygen-ui/react/Box";
 import Grid from "@oxygen-ui/react/Grid";
 import Switch from "@oxygen-ui/react/Switch";
 import Typography from "@oxygen-ui/react/Typography";
+import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { LOGIN_FLOW_AI_FEATURE_TAG } from "@wso2is/admin.login-flow.ai.v1/constants/login-flow-ai-constants";
+import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     PropsWithChildren,
@@ -31,9 +36,9 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import AdaptiveScriptResetConfirmationModal from "./adaptive-script-reset-confirmation-modal";
 import ScriptEditorPanel from "./script-editor-panel";
-import { AdaptiveScriptUtils } from "../../../admin.applications.v1/utils/adaptive-script-utils";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import "./script-based-flow-switch.scss";
 
@@ -66,13 +71,34 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
         applicationMetaData
     } = useAuthenticationFlow();
 
+    const { aiGeneratedLoginFlow } = useAILoginFlow();
+
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
     const [ showScriptResetWarning, setShowScriptResetWarning ] = useState<boolean>(false);
+
+    const applicationDisabledFeatures: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications?.disabledFeatures);
 
     /**
      * This useEffect is responsible for deciding whether
      * the adaptive script section should be enabled or not.
      */
     useEffect(() => {
+        // Enable conditional authentication script for AI generated authentication sequence.
+        if (!applicationDisabledFeatures?.includes(LOGIN_FLOW_AI_FEATURE_TAG)
+            && !isSubOrganization()
+            && aiGeneratedLoginFlow?.script
+            && !AdaptiveScriptUtils.isDefaultScript(
+                aiGeneratedLoginFlow.script,
+                aiGeneratedLoginFlow?.steps?.length
+            )
+            && !AdaptiveScriptUtils.isEmptyScript(aiGeneratedLoginFlow?.script)) {
+            onConditionalAuthenticationToggle(true);
+
+            return;
+        }
+
         if (applicationMetaData?.authenticationSequence?.script
                 && !AdaptiveScriptUtils.isDefaultScript(
                     applicationMetaData.authenticationSequence.script,

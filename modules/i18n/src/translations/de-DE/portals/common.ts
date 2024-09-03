@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -85,6 +85,7 @@ export const common: CommonNS = {
     "endsWith": "endet auf",
     "equals": "Gleich",
     "exitFullScreen": "Beenden Sie den Vollbildmodus",
+    "experimental": "Experimental",
     "explore": "Entdecken",
     "export": "Export",
     "featureAvailable": "Diese Funktion wird in Kürze verfügbar sein!",
@@ -113,6 +114,7 @@ export const common: CommonNS = {
     "logout": "Logout",
     "maxValidation": "Dieser Wert sollte kleiner oder gleich {{max}} sein.",
     "maximize": "Maximieren",
+    "metaAttributes": "Metaattribute",
     "minValidation": "Dieser Wert sollte größer oder gleich {{min}} sein.",
     "minimize": "Minimieren",
     "more": "Mehr",
@@ -133,6 +135,7 @@ export const common: CommonNS = {
     "personalInfo": "Persönliche Informationen",
     "pin": "PIN",
     "pinned": "Gepinnt",
+    "premium": "Prämie",
     "pressEnterPrompt": "Drücken Sie zur Auswahl die <1>Eingabetaste</1>",
     "preview": "Vorschau",
     "previous": "Bisherige",

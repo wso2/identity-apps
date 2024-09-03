@@ -1,0 +1,93 @@
+/**
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.ai-loading-screen-parent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.ai-loading-screen-container {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.ai-loading-screen-illustration-container {
+    display: flex;
+    flex: 1;
+    justify-content: right;
+
+    /**
+    * The following styles are used to hide the illustration container
+    * when the screen is in a loading state.
+    * This is done to prevent the illustration from overlapping with the
+    * loading animation.
+    */
+    &.hidden {
+        visibility: hidden;
+    }
+}
+
+.ai-loading-screen-text-container {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 7rem 10rem 7rem 0;
+    z-index: 2;
+}
+
+.ai-loading-screen-loading-container {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ai-loading-screen-heading {
+    font-size: 19px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.ai-loading-screen-sub-heading {
+    font-size: 15px;
+    font-weight: 400;
+    color: #6a6d7b;
+}
+
+.ai-loading-screen-loading-state {
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.ai-loading-screen-animation-container {
+    position: absolute;
+    width: 100%;
+}
+
+.ai-loading-screen-animation {
+    margin-left: 5rem;
+    width: 70%;
+    height: 100%;
+    max-width: 50vw;
+}

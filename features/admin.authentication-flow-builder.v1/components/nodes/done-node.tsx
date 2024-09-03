@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,7 +22,7 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, SVGAttributes
 import { Handle, Node, Position } from "reactflow";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import "./done-node.scss";
- 
+
 /**
  * Prop types for the done node component.
  */

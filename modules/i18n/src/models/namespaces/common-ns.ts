@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -77,6 +77,7 @@ export interface CommonNS {
     endsWith: string;
     equals: string;
     exitFullScreen: string;
+    experimental: string;
     explore: string;
     export: string;
     featureAvailable: string;
@@ -103,6 +104,7 @@ export interface CommonNS {
     logout: string;
     maximize: string;
     maxValidation: string;
+    metaAttributes: string;
     minimize: string;
     minValidation: string;
     more: string;
@@ -116,6 +118,7 @@ export interface CommonNS {
     personalInfo: string;
     pin: string;
     pinned: string;
+    premium: string;
     preview: string;
     previous: string;
     priority: string;

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,24 +17,25 @@
  */
 
 import { PlusIcon } from "@oxygen-ui/react-icons";
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
+import { AppState, FeatureConfigInterface, getMiscellaneousIcons } from "@wso2is/admin.core.v1";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import OrganizationSwitcherList from
+    "@wso2is/admin.organizations.v1/components/organization-switch/organization-switch-list";
+import { OrganizationManagementConstants } from "@wso2is/admin.organizations.v1/constants";
+import { OrganizationInterface } from "@wso2is/admin.organizations.v1/models";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert, setTenants } from "@wso2is/core/store";
 import { SessionStorageUtils } from "@wso2is/core/utils";
 import { GenericIcon, Popup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Dropdown, Grid, Icon, Input, Item, Loader, Segment } from "semantic-ui-react";
-import { 
-    ReactComponent as CrossIcon 
+import {
+    ReactComponent as CrossIcon
 } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
-import { getMiscellaneousIcons } from "../../../admin.core.v1";
-import OrganizationSwitcherList from
-    "../../../admin.organizations.v1/components/organization-switch/organization-switch-list";
-import { OrganizationManagementConstants } from "../../../admin.organizations.v1/constants";
-import { OrganizationInterface } from "../../../admin.organizations.v1/models";
 import { getAssociatedTenants } from "../../api";
 import { TenantInfo, TenantRequestResponse } from "../../models";
 import { AddTenantWizard } from "../add-modal";
@@ -51,6 +52,7 @@ const TenantSwitchDropdown: FunctionComponent<TenantSwitchDropdownInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ associatedOrganizations, setAssociatedOrganizations ] = useState<OrganizationInterface[]>([]);
     const [ filteredOrganizations, setFilteredOrganizations ] = useState<OrganizationInterface[]>([]);
@@ -237,7 +239,7 @@ const TenantSwitchDropdown: FunctionComponent<TenantSwitchDropdownInterface> = (
                                         <h5> { t("organizations:title") } </h5>
                                     </Grid.Column>
                                     <Grid.Column width={ 4 }>
-                                        <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
+                                        <Show when={ featureConfig?.organizations?.scopes?.create }>
                                             <Button
                                                 basic
                                                 floated="right"
@@ -245,7 +247,7 @@ const TenantSwitchDropdown: FunctionComponent<TenantSwitchDropdownInterface> = (
                                                 data-componentid={ `${ componentId }-new-button` }
                                             >
                                                 <PlusIcon fill="black" />
-                                                { t("common:new") }
+                                                { t(FeatureStatusLabel.NEW) }
                                             </Button>
                                         </Show>
                                     </Grid.Column>

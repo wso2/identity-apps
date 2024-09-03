@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { UserAgentParser } from "@wso2is/core/helpers";
 import TimerWorker from "@wso2is/core/workers/timer.worker";
-import { UAParser } from "ua-parser-js";
 import { AppUtils } from "./app-utils";
 
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
@@ -122,7 +122,7 @@ document.onkeypress = function() {
 };
 
 // Run the timer in main thread if the browser is Internet Explorer, and using a web worker otherwise.
-if (new UAParser().getBrowser().name === "IE") {
+if (new UserAgentParser().browser.name === "IE") {
     window.setInterval(() => {
         _idleSecondsCounter++;
         _sessionAgeCounter++;

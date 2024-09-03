@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { AskPasswordOptionTypes, PasswordOptionTypes } from "@wso2is/admin.users.v1/constants";
 import { ProfileInfoInterface } from "@wso2is/core/models";
-import { AskPasswordOptionTypes, PasswordOptionTypes } from "../../../admin.users.v1/constants";
 
 export interface User {
     bulkUserImportLimit: {
@@ -33,4 +33,5 @@ export interface User {
     enableAdminPrivilegeRevokeOption: boolean;
     enableUsernameValidation: boolean;
     userProfileSchema: string;
+    hiddenItemsPerPageRemoteUserStoreDropdown: boolean;
 }

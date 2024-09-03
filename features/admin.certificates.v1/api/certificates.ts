@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the 'License'); you may not use this file except
+ * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -10,16 +10,16 @@
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
- * 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
  */
 
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { Certificate, HttpMethods } from "@wso2is/core/models";
-import { store } from "../../admin.core.v1/store";
 
 /**
  * Initialize an axios Http client.
@@ -87,11 +87,13 @@ export const retrieveCertificateAlias = (alias: string, encode?: boolean): Promi
         },
         url: `${store.getState().config.endpoints.certificates}/${encodeURI(alias).replace(/#/g, "%23")}`
     };
+
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {
@@ -126,11 +128,13 @@ export const retrievePublicCertificate = (encode?: boolean): Promise<any> => {
         },
         url: store.getState().config.endpoints.publicCertificates
     };
+
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {
@@ -165,11 +169,13 @@ export const listClientCertificates = (filter?: string): Promise<any> => {
         },
         url: store.getState().config.endpoints.clientCertificates
     };
+
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {
@@ -205,11 +211,13 @@ export const retrieveClientCertificate = (alias: string, encode?: boolean): Prom
         },
         url: `${store.getState().config.endpoints.clientCertificates}/${alias}`
     };
+
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {
@@ -241,11 +249,13 @@ export const deleteKeystoreCertificate = (alias: string): Promise<any> => {
         method: HttpMethods.DELETE,
         url: `${store.getState().config.endpoints.certificates}/${alias}`
     };
+
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {
@@ -278,11 +288,13 @@ export const createKeystoreCertificate = (data: Certificate): Promise<any> => {
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.certificates
     };
+
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 201) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
+
             return Promise.resolve(response.data);
         })
         .catch((error) => {

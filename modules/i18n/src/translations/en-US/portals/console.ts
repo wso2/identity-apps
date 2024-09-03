@@ -2573,7 +2573,8 @@ export const console: ConsoleNS = {
                     general: "General",
                     gettingStarted: "Getting Started",
                     identityProviders: "Connections",
-                    identityVerificationProviders: "Identity Verification Providers"
+                    identityVerificationProviders: "Identity Verification Providers",
+                    extensions: "Extensions"
                 },
                 customize: "Customize",
                 identityProviderEdit: "Connections Edit",
@@ -2646,6 +2647,26 @@ export const console: ConsoleNS = {
                 backButton: "Go back to Applications",
                 subTitle: null,
                 title: null
+            },
+            applicationsSettings: {
+                backButton: "Go back to Applications",
+                subTitle: "Dynamic Client Registration (DCR) can be used to create applications using DCR API.",
+                title: "Dynamic Client Registration",
+                learnMore: "Learn More",
+                notifications: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Update error"
+                    },
+                    genericError: {
+                        description: "Failed to update DCR configurations.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully updated DCR configurations.",
+                        message: "Update successful"
+                    }
+                }
             },
             authenticationProvider: {
                 subTitle: "Create and manage connections to use in the login flow of your applications.",
@@ -8092,39 +8113,6 @@ export const console: ConsoleNS = {
                 description: "Customize password validation rules for your users.",
                 goBackToApplication: "Go back to application",
                 goBackToValidationConfig: "Go back to Account Security"
-            },
-            jwtPrivateKeyConfiguration: {
-                fetchValidationConfigData: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Retrieval error"
-                    },
-                    genericError: {
-                        description: "Impossible de récupérer les données de configuration de l'authentificateur de clé privée jwt.",
-                        message: "Something went wrong"
-                    }
-                },
-                notifications: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Update error"
-                    },
-                    genericError: {
-                        description: "Failed to update jwt private-key authenticator configuration.",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "Successfully updated jwt private-key authenticator configuration.",
-                        message: "Update successful"
-                    }
-                },
-                pageTitle: "Private Key JWT Client Authentication for OIDC",
-                description: "Authenticate confidential clients to the authorization server when using the token endpoint.",
-                goBackToApplication: "Go back to application",
-                goBackToAccountSecurityConfig: "Go back to Account Security",
-                messageInfo: "If enabled, the JWT can be reused again within its expiration period. JTI (JWT ID) is a claim that provides a unique identifier for the JWT.",
-                tokenReuseEnabled: "Token Reuse Enabled",
-                tokenReuseDisabled: "Token Reuse Disabled"
             },
             insights: {
                 pageTitle: "Insights",

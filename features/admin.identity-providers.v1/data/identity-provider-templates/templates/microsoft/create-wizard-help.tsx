@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,14 +16,13 @@
  * under the License.
  */
 
+import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, CopyInputField, DocumentationLink, Heading, Message, useDocumentation } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../../admin.extensions.v1/configs";
-import { AppState, ConfigReducerStateInterface } from "../../../../../admin.core.v1";
 
 /**
  * Prop types of the component.
@@ -48,20 +47,6 @@ const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHe
     const { getLink } = useDocumentation();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-
-    const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
-
-    /**
-     * Checks if the listing view defined in the config is the new connections view.
-     */
-    useEffect(() => {
-
-        if (useNewConnectionsView !== undefined) {
-            return;
-        }
-
-        setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
-    }, [ identityProviderConfig ]);
 
     return (
         <div data-testid={ testId }>
@@ -126,11 +111,8 @@ const MicrosoftIDPCreateWizardHelp: FunctionComponent<MicrosoftIDPCreateWizardHe
             </Heading>
             <p>
                 {
-                    useNewConnectionsView
-                        ? t("authenticationProvider:templates.microsoft." +
-                            "wizardHelp.name.connectionDescription")
-                        : t("authenticationProvider:templates.microsoft." +
-                            "wizardHelp.name.idpDescription")
+                    t("authenticationProvider:templates.microsoft." +
+                        "wizardHelp.name.connectionDescription")
                 }
             </p>
 

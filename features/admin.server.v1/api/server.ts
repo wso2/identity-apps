@@ -17,16 +17,21 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { store } from "@wso2is/admin.core.v1";
+import useRequest, {
+    RequestConfigInterface,
+    RequestErrorInterface,
+    RequestResultInterface
+} from "@wso2is/admin.core.v1/hooks/use-request";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import { AxiosError, AxiosResponse } from "axios";
-import { store } from "../../admin.core.v1";
-import useRequest,
-{ RequestConfigInterface, RequestErrorInterface, RequestResultInterface } from "../../admin.core.v1/hooks/use-request";
 import { ServerConstants } from "../constants/server";
-import { 
-    AdminAdvisoryBannerConfigurationInterface, LogType, RemoteLogPublishingConfigurationInterface 
+import {
+    AdminAdvisoryBannerConfigurationInterface,
+    LogType,
+    RemoteLogPublishingConfigurationInterface
 } from "../models/server";
 
 /**
@@ -35,10 +40,10 @@ import {
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().
     httpRequest.bind(AsgardeoSPAClient.getInstance());
-    
+
 /**
  * Hook to get the admin advisory banner configurations.
- * 
+ *
  * @returns admin advisory banner configurations.
  */
 export const useAdminAdvisoryBannerConfigs = <Data = AdminAdvisoryBannerConfigurationInterface,
@@ -120,7 +125,7 @@ export const updateAdminAdvisoryBannerConfiguration = (
 
 /**
  * Hook to get the remote log publishing configurations.
- * 
+ *
  * @returns remote log publishing configurations.
  */
 export const useRemoteLogPublishingConfigs = <Data = RemoteLogPublishingConfigurationInterface[],
@@ -147,7 +152,7 @@ export const useRemoteLogPublishingConfigs = <Data = RemoteLogPublishingConfigur
 
 /**
  * Restore remote log publishing configurations.
- * 
+ *
  * @param logType - Log type.
  *
  * @returns a promise containing the response.

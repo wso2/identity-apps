@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -40,10 +40,6 @@ export interface StorageApplicationSettingsItemsInterface {
  * Interface for the dev portal preferences.
  */
 export interface StorageDevPortalPreferencesInterface {
-    /**
-     * Help panel preferences.
-     */
-    helpPanel: StorageHelpPanelPreferencesItemsInterface;
     [ key: string ]: any;
 }
 
@@ -64,7 +60,6 @@ export interface StorageHelpPanelPreferencesItemsInterface {
  */
 export interface StorageIdentityUserPreferencesInterface {
     applicationPreferences: StorageApplicationSettingsItemsInterface;
-    devPortal: StorageDevPortalPreferencesInterface;
     userPreferences: StorageUserPreferencesItemsInterface;
     [ key: string ]: any;
 }
@@ -79,7 +74,7 @@ export interface StorageIdentityAppsSettingsInterface {
 /**
  * Empty storage application settings item object.
  *
- * @return {StorageApplicationSettingsItemsInterface}
+ * @returns Empty storage application settings item object.
  */
 export const emptyStorageApplicationSettingsItem = (): StorageApplicationSettingsItemsInterface => ({
     recentApplications: []
@@ -88,17 +83,12 @@ export const emptyStorageApplicationSettingsItem = (): StorageApplicationSetting
 /**
  * Empty identity apps settings object.
  *
- * @return {StorageIdentityAppsSettingsInterface}
+ * @returns Empty identity apps settings object.
  */
 export const emptyIdentityAppsSettings = (): StorageIdentityAppsSettingsInterface => ({
     identityAppsSettings: {
         applicationPreferences: {
             recentApplications: []
-        },
-        devPortal: {
-            helpPanel: {
-                isPinned: false
-            }
         },
         userPreferences: {
             userListColumns: []

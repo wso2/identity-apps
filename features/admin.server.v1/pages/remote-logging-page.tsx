@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PageLayout } from "@wso2is/react-components";
@@ -23,7 +24,6 @@ import React, { FC, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { AppConstants, history } from "../../admin.core.v1";
 import {
     useRemoteLogPublishingConfigs
 } from "../api/server";

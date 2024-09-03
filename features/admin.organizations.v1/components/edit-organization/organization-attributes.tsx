@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import {
     AlertLevels,
@@ -39,8 +40,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../../admin.core.v1";
 import { patchOrganization } from "../../api";
+import { useGetOrganizationsMetaAttributes } from "../../api/use-get-organizations-meta-attributes";
 import {
     OrganizationAttributesInterface,
     OrganizationPatchData,
@@ -81,6 +82,10 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
 
     const [ submit, setSubmit ] = useTrigger();
     const [ isSubmitting, setIsSubmitting ] = useState(false);
+
+    const {
+        mutate: mutateMetaAttributeGetRequest
+    } = useGetOrganizationsMetaAttributes(undefined, 10, undefined, undefined);
 
     const updateOrgAttributes: (data: KeyValue[]) => void = useCallback(
         (data: KeyValue[]) => {
@@ -171,13 +176,16 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
                         })
                     );
                 })
-                .finally(() => setIsSubmitting(false));
+                .finally(() => {
+                    mutateMetaAttributeGetRequest();
+                    setIsSubmitting(false);
+                });
         },
         [ organization ]
     );
 
     return (
-        <EmphasizedSegment key={ organization.id } >
+        <EmphasizedSegment key={ organization?.id } >
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column
@@ -193,7 +201,7 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
                             ) }
                         </p>
                         <DynamicField
-                            data={ organization.attributes }
+                            data={ organization?.attributes }
                             keyType="text"
                             keyName={ t(
                                 "organizations:edit.attributes.key"

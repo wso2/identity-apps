@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
-import { render, screen } from "../../../test-configs/utils";
 import AuthenticationFlowModeSwitchDisclaimerModal, {
     AuthenticationFlowModeSwitchDisclaimerModalPropsInterface
 } from "../authentication-flow-mode-switch-disclaimer-modal";
@@ -29,7 +29,8 @@ describe("AuthenticationFlowModeSwitchDisclaimerModal", () => {
         mode: {
             id: 0,
             label: "Visual Editor"
-        }
+        },
+        open: true
     };
 
     it("renders the AuthenticationFlowModeSwitchDisclaimerModal component", () => {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,11 +16,12 @@
  * under the License.
  */
 
+import { ArrowUpRightFromSquareIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
-import { Icon } from "semantic-ui-react";
 import { useDocumentation } from "./use-documentation";
+import "./documentation-link.scss";
 
 /**
  * DocumentationLink component Prop types.
@@ -106,7 +107,7 @@ export const DocumentationLink: FunctionComponent<PropsWithChildren<Documentatio
             data-componentid={ componentId }
         >
             { children }
-            { showIcon && (<Icon className="ml-2" name="external alternate"/>) }
+            { showIcon && (<ArrowUpRightFromSquareIcon className="documentation-icon" />) }
         </a>)
     );
 };
@@ -118,6 +119,6 @@ DocumentationLink.defaultProps = {
     "data-componentid": "documentation-link",
     showEmptyLink: true,
     showEmptyLinkText: false,
-    showIcon: false,
+    showIcon: true,
     target: "_blank"
 };

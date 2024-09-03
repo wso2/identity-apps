@@ -17,12 +17,6 @@
  */
 
 import { useColorScheme } from "@mui/material";
-import {
-    ArrowRightFromBracketIcon,
-    ChevronDownIcon,
-    LanguageIcon,
-    RectangleLineIcon
-} from "@oxygen-ui/react-icons";
 import Alert from "@oxygen-ui/react/Alert";
 import Button from "@oxygen-ui/react/Button";
 import Flag from "@oxygen-ui/react/CountryFlag";
@@ -34,6 +28,13 @@ import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
+import {
+    ArrowRightFromBracketIcon,
+    ChevronDownIcon,
+    LanguageIcon,
+    RectangleLineIcon
+} from "@oxygen-ui/react-icons";
+import { useThemeProvider } from "@wso2is/common.branding.v1/hooks/use-theme-provider";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -62,7 +63,6 @@ import { Gravatar } from "./gravatar";
 import { AppConstants } from "../../constants";
 import { commonConfig } from "../../extensions";
 import { history, resolveUserstore } from "../../helpers";
-import { useBrandingPreference } from "../../hooks/use-branding-preference";
 import { AuthStateInterface, ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 import {
@@ -112,6 +112,12 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const tenantName: string = useSelector(
         (state: AppState) => state.authenticationInformation.tenantDomain
     );
+
+    // B2B organization name if the user has logged in through B2B organization.
+    const orgName: string = useSelector(
+        (state: AppState) => state?.authenticationInformation?.orgName
+    );
+
     const linkedAccounts: LinkedAccountInterface[] = useSelector(
         (state: AppState) => state.profile.linkedAccounts
     );
@@ -134,7 +140,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const { mode } = useColorScheme();
 
-    const { theme } = useBrandingPreference();
+    const { theme } = useThemeProvider();
 
     useEffect(() => {
         const localeCookie: string = CookieStorageUtils.getItem("ui_lang");
@@ -271,16 +277,19 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     /**
      * Resolves the organization label in the header.
      */
-    const resolveOrganizationLabel = (): ReactElement => {
-        const organization: string =
-            tenantName == "carbon.super"
-                ? commonConfig.header.organization.replace("{{productName}}", productName)
-                : tenantName;
+    const resolveOrganizationLabel =  (): ReactElement => {
+        let organizationName: string = tenantName;
+
+        if (tenantName === AppConstants.getSuperTenant()) {
+            organizationName = commonConfig.header.organization.replace("{{productName}}", productName);
+        } else if (!!orgName && orgName !== tenantName) {
+            organizationName = orgName;
+        }
 
         return (
             <Alert classes={ { root: "organization-label-alert" } } severity="info" icon={ false }>
                 { t("myAccount:components.header.organizationLabel") }{ " " }
-                <strong>{ organization }</strong>
+                <strong>{ organizationName }</strong>
             </Alert>
         );
     };
@@ -340,6 +349,17 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         return "";
     };
 
+    const resolveEmail = (): string => {
+        let email: string = profileInfo?.email ?? profileInfo?.emails[profileInfo.emails.length - 1];
+
+        if (email === resolveUsername()) {
+            // When both the username and email are the same, the email is not shown.
+            email = "";
+        }
+
+        return email;
+    };
+
     return (
         <OxygenHeader
             className="is-header"
@@ -396,7 +416,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 title: theme?.images?.myAccountLogo?.title ?? config.ui.appName
             } }
             user={ {
-                email: profileInfo?.email ?? profileInfo?.emails[profileInfo.emails.length - 1],
+                email: resolveEmail(),
                 image: profileInfo?.profileUrl,
                 name: resolveUsername()
             } }

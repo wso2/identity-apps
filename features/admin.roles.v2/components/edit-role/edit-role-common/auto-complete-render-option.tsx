@@ -20,6 +20,7 @@ import Checkbox from "@oxygen-ui/react/Checkbox";
 import Chip from "@oxygen-ui/react/Chip";
 import Grid from "@oxygen-ui/react/Grid";
 import ListItemText from "@oxygen-ui/react/ListItemText";
+import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon } from "@wso2is/react-components";
 import React, {
@@ -27,7 +28,6 @@ import React, {
     HTMLAttributes,
     ReactElement
 } from "react";
-import { getSidePanelIcons } from "../../../../admin.core.v1/configs/ui";
 
 interface AutoCompleteRenderOption extends IdentifiableComponentInterface {
     /**
@@ -86,10 +86,10 @@ export const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOptio
                         }
                     </Grid>
                     <Grid xs={ 5 }>
-                        <ListItemText primary={ displayName } secondary={ subTitle } />  
+                        <ListItemText primary={ displayName } secondary={ subTitle } />
                     </Grid>
                     {
-                        ( ternaryTitle && ternarySubTitle ) 
+                        ( ternaryTitle && ternarySubTitle )
                             ? (
                                 <Grid>
                                     <ListItemText primary={ ternaryTitle } secondary={ ternarySubTitle } />
@@ -101,15 +101,15 @@ export const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOptio
                 <Grid justifyContent="flex-end">
                     {
                         userstore ? (
-                            <Chip 
-                                icon={ ( 
+                            <Chip
+                                icon={ (
                                     <GenericIcon
                                         inline
                                         size="default"
                                         transparent
                                         icon={ getSidePanelIcons().userStore }
                                         verticalAlign="middle"
-                                    /> 
+                                    />
                                 ) }
                                 label={ userstore }
                             />

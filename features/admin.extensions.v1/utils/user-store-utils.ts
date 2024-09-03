@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,11 +16,11 @@
  * under the License.
  */
 
+import { getAUserStore } from "@wso2is/admin.core.v1/api";
+import { SharedUserStoreConstants } from "@wso2is/admin.core.v1/constants";
+import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
 import { AxiosResponse } from "axios";
-import { getAUserStore } from "../../admin.core.v1/api";
-import { SharedUserStoreConstants } from "../../admin.core.v1/constants";
-import { getUserStoreList } from "../../admin.userstores.v1/api";
-import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "../../admin.userstores.v1/models";
 
 /**
  * Utility class for common user store operations.
@@ -73,7 +73,7 @@ export class UserStoreUtils {
     public static async getReadOnlyUserStores(userstores?: UserStoreListItem[]): Promise<string[]> {
         const ids: string[] = await UserStoreUtils.getUserStoreIds(userstores) as string[];
         const readOnlyUserStores: string[] = [];
-    
+
         readOnlyUserStores.push(UserStoreUtils.primaryUserStore);
 
         ids.forEach((id: string) => {

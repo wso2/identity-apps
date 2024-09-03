@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms } from "@wso2is/forms";
@@ -26,7 +27,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { AppState, ConfigReducerStateInterface } from "../../../admin.core.v1";
 import { getAuthProtocolMetadata } from "../../api";
 import { ApplicationManagementConstants } from "../../constants";
 import SinglePageApplicationTemplate
@@ -530,27 +530,27 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                             selectedTemplate.templateId === ApplicationManagementConstants.MOBILE
                                         }
                                         validation={ (value: string) => {
-                                            if (
-                                                !(selectedTemplate.templateId === ApplicationManagementConstants.MOBILE)
-                                            ) {
-                                                if ((
-                                                    !(URLUtils.isURLValid(value, true)
-                                                    && (URLUtils.isHttpUrl(value)
-                                                    || URLUtils.isHttpsUrl(value)))
-                                                )) {
-                                                    return false;
-                                                }
-                                            }
+                                            if (selectedTemplate.templateId === ApplicationManagementConstants.MOBILE) {
+                                                if (URLUtils.isMobileDeepLink(value)) {
+                                                    setCallbackURLsErrorLabel(null);
 
-                                            if (!URLUtils.isMobileDeepLink(value)) {
+                                                    return true;
+                                                }
                                                 setIsDeepLinkError(true);
 
                                                 return false;
                                             }
+                                            if (URLUtils.isURLValid(value)) {
+                                                if (URLUtils.isHttpUrl(value) || URLUtils.isHttpsUrl(value)) {
+                                                    setCallbackURLsErrorLabel(null);
 
-                                            setCallbackURLsErrorLabel(null);
+                                                    return true;
+                                                }
 
-                                            return true;
+                                                return false;
+                                            }
+
+                                            return false;
                                         } }
                                         computerWidth={ 10 }
                                         setShowError={ setShowURLError }

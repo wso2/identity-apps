@@ -17,6 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -30,11 +31,9 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
-import { AccessControlConstants } from "../../../admin.access-control.v1/constants/access-control";
-import { FeatureConfigInterface, history } from "../../../admin.core.v1";
 import { deleteAPIResource } from "../../api/api-resources";
 import { APIResourcesConstants } from "../../constants/api-resources-constants";
 import {
@@ -73,6 +72,8 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ isFormValidationError, setIsFormValidationError ] = useState<boolean>(true);
     const [ deleteAPIResourceLoading, setDeleteAPIResourceLoading ] = useState<boolean>(false);
@@ -125,7 +126,7 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
                 { !isReadOnly &&
                     (
                         <Show
-                            when={ AccessControlConstants.API_RESOURCES_DELETE }
+                            when={ featureConfig?.apiResources?.scopes?.delete }
                         >
                             <DangerZoneGroup
                                 sectionHeader={

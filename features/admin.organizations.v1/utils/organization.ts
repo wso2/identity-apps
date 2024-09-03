@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,12 @@
  * under the License.
  */
 
-import { store } from "../../admin.core.v1/store";
-import { OrganizationManagementConstants, OrganizationType } from "../constants";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
+import { store } from "@wso2is/admin.core.v1/store";
+import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models";
+import { OrganizationManagementConstants, OrganizationType } from "../constants/organization-constants";
 import { GenericOrganization } from "../models";
 
 export class OrganizationUtils {
@@ -44,5 +48,40 @@ export class OrganizationUtils {
      */
     public static getOrganizationType(): OrganizationType{
         return store.getState().organization?.organizationType;
+    }
+
+    /**
+     * Get the Organization Authenticator.
+     *
+     * @returns The Organization Authenticator.
+     */
+    public static getOrganizationAuthenticator(): GenericAuthenticatorInterface {
+        return {
+            authenticators: [
+                {
+                    authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+                        .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID,
+                    isEnabled: true,
+                    name: FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES
+                        .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME,
+                    tags: [ "APIAuth" ]
+                }
+            ],
+            defaultAuthenticator: {
+                authenticatorId: FederatedAuthenticatorConstants.AUTHENTICATOR_IDS
+                    .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID,
+                isEnabled: true,
+                name: FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME,
+                tags: [ "APIAuth" ]
+            },
+            description: "Identity provider for Organization SSO.",
+            displayName: "SSO",
+            id: "sso",
+            idp: "SSO",
+            image: "assets/images/logos/sso.svg",
+            isEnabled: true,
+            name: "SSO"
+        };
     }
 }

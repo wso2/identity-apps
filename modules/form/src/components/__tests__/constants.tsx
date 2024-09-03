@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import "@types/jest";
+
 /**
  * Class containing form field data constants.
  */
@@ -25,7 +27,6 @@ export class FieldTestConstants {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
@@ -46,12 +47,12 @@ export class FieldTestConstants {
     public static readonly TEXT_FIELD_NAME: string = "textBox";
     public static readonly TEXT_FIELD_PLACEHOLDER: string = "Text field placeholder";
     public static readonly TEXT_FIELD_VALIDATION_FAILED: string = "Please enter a valid input";
-    public static readonly TEXT_FIELD_REQUIRED_MESSAGE = "This field is required";
+    public static readonly TEXT_FIELD_REQUIRED_MESSAGE: string = "This field is required";
     public static readonly TEXT_FIELD_VALID_MESSAGE: string = "Text field Validated";
     public static readonly TEXT_FIELD_VALUE: string = "Text field value";
     public static readonly TEXT_FIELD_ARIA_LABEL: string = "Text field aria label";
     public static readonly TEXT_FIELD_TYPE_NAME: string = "name";
-    public static readonly listen = jest.fn((value) => value);
-    public static readonly onClick = jest.fn();
-    public static readonly onSubmit = jest.fn((value) => value);
+    public static readonly listen: jest.Mock<any, [value: any], any> = jest.fn((value: any) => value);
+    public static readonly onClick: jest.Mock<any, [value: any], any> = jest.fn();
+    public static readonly onSubmit: jest.Mock<any, [value: any], any> = jest.fn((value: any) => value);
 }

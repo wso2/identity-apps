@@ -356,6 +356,76 @@ export interface AuthenticationProviderNS {
                     hint: string;
                     label: string;
                 };
+                trustedOrigins: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        invalid: string;
+                    };
+                };
+                trustedApps: {
+                    heading: string;
+                    subHeading: string;
+                    removeTrustedAppPopOver: string;
+                    buttons: {
+                        addButton: string;
+                        emptySearchButton: string;
+                    };
+                    search: string;
+                    placeHolderTexts: {
+                        emptyText: string;
+                        errorText: {
+                            subtitles: {
+                                0: string;
+                                1: string;
+                            };
+                            title: string;
+                        };
+                        emptySearch: {
+                            title: string;
+                            subTitle: {
+                                0: string;
+                                1: string;
+                            };
+                        };
+                    };
+                    types: {
+                        android: string;
+                        ios: string;
+                    };
+                    wizard: {
+                        title: string;
+                        subTitle: string;
+                        fields: {
+                            appName: {
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                    duplicate: string;
+                                }
+                            };
+                            appType: {
+                                label: string;
+                            };
+                        };
+                        buttons: {
+                            finish: string;
+                            cancel: string;
+                        };
+                    };
+                },
+                trustedAppSHAValues: {
+                    hint: string;
+                    label: string;
+                    add: string;
+                    placeholder: string;
+                    validations: {
+                        invalid: string;
+                        duplicate: string;
+                    };
+                };
             };
             facebook: {
                 callbackUrl: {
@@ -1425,6 +1495,26 @@ export interface AuthenticationProviderNS {
                 description: string;
             };
         };
+        getFIDOConnectorConfigs: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+        };
+        getFIDOTrustedApps: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+        };
         getIDP: {
             error: {
                 message: string;
@@ -1710,6 +1800,34 @@ export interface AuthenticationProviderNS {
             };
         };
         updateEmailOTPAuthenticator: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        updateFIDOConnectorConfigs: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        updateFIDOTrustedApps: {
             error: {
                 message: string;
                 description: string;

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { PlusIcon } from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
@@ -30,6 +29,17 @@ import Paper from "@oxygen-ui/react/Paper";
 import Radio from "@oxygen-ui/react/Radio";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
+import { PlusIcon } from "@oxygen-ui/react-icons";
+import {
+    AuthenticationSequenceInterface,
+    AuthenticatorInterface
+} from "@wso2is/admin.applications.v1/models/application";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
+import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils/organization";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     ChangeEvent,
@@ -51,16 +61,6 @@ import EmailOTPFragment from "./fragments/email-otp-fragment";
 import IdentifierFirstFragment from "./fragments/identifier-first-fragment";
 import SMSOTPFragment from "./fragments/sms-otp-fragment";
 import TOTPFragment from "./fragments/totp-fragment";
-import {
-    AuthenticationSequenceInterface,
-    AuthenticatorInterface
-} from "../../../../admin.applications.v1/models/application";
-import useUIConfig from "../../../../admin.core.v1/hooks/use-ui-configs";
-import {
-    IdentityProviderManagementConstants
-} from "../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { GenericAuthenticatorInterface } from "../../../../admin.identity-providers.v1/models/identity-provider";
-import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
 import useAuthenticationFlow from "../../../hooks/use-authentication-flow";
 import "./sign-in-box-node.scss";
 
@@ -195,10 +195,6 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
 
     const { updateVisualEditorFlowNodeMeta } = useAuthenticationFlow();
 
-    const { isSubOrganization } = useGetCurrentOrganizationType();
-
-    const { UIConfig } = useUIConfig();
-
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     const authenticators: GenericAuthenticatorInterface[] = Object.values(
@@ -209,7 +205,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
      * No need to show Basic Auth, Identifier first, Backup Code authenticator .etc, as a Sign In option button.
      */
     const getAuthenticatorsToNotShowAsOptions: string[] = useMemo(
-        () => [ IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR ],
+        () => [ LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME ],
         []
     );
 
@@ -239,22 +235,27 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             }
         );
 
-        filteredOptions.forEach((option: AuthenticatorInterface) => {
-            if (option.authenticator === IdentityProviderManagementConstants.BASIC_AUTHENTICATOR) {
-                basicSignInOption = IdentityProviderManagementConstants.BASIC_AUTHENTICATOR;
-            } else if (option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR) {
-                basicSignInOption = IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR;
-            } else if (option.authenticator === IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) {
-                basicSignInOption = IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR;
+        filteredOptions?.forEach((option: AuthenticatorInterface) => {
+            if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME) {
+                basicSignInOption = LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME;
+            } else if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                .IDENTIFIER_FIRST_AUTHENTICATOR_NAME) {
+                basicSignInOption = LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME;
+            } else if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME) {
+                basicSignInOption = LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME;
             }
 
             if (filteredOptions.length === 1) {
-                if (option.authenticator === IdentityProviderManagementConstants.TOTP_AUTHENTICATOR) {
-                    basicSignInOption = IdentityProviderManagementConstants.TOTP_AUTHENTICATOR;
-                } else if (option.authenticator === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR) {
-                    basicSignInOption = IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR;
-                } else if (option.authenticator === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR) {
-                    basicSignInOption = IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR;
+                if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME) {
+                    basicSignInOption = LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME;
+                } else if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .EMAIL_OTP_AUTHENTICATOR_NAME) {
+                    basicSignInOption = LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME;
+                } else if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .SMS_OTP_AUTHENTICATOR_NAME) {
+                    basicSignInOption = LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.SMS_OTP_AUTHENTICATOR_NAME;
                 }
             }
         });
@@ -275,9 +276,14 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
 
         let authenticator: GenericAuthenticatorInterface = null;
 
-        if (option.idp === IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER) {
+        if (option.idp === LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER) {
             authenticator = authenticators.find(
                 (item: GenericAuthenticatorInterface) => item.defaultAuthenticator.name === option.authenticator
+            );
+        } else if (option?.authenticator === FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES
+            .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME) {
+            authenticator = authenticators?.find((item: GenericAuthenticatorInterface) =>
+                item?.id === OrganizationUtils.getOrganizationAuthenticator().id
             );
         } else {
             authenticator = authenticators.find((item: GenericAuthenticatorInterface) => item.idp === option.idp);
@@ -335,7 +341,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
     const generateBasicSignInOption = (): ReactElement => {
         const activeBasicSignInOption: string = getBasicSignInOption();
 
-        if (activeBasicSignInOption === IdentityProviderManagementConstants.BASIC_AUTHENTICATOR) {
+        if (activeBasicSignInOption === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME) {
             return (
                 <>
                     <BasicAuthFragment
@@ -361,7 +367,8 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             );
         }
 
-        if (activeBasicSignInOption === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR) {
+        if (activeBasicSignInOption === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+            .IDENTIFIER_FIRST_AUTHENTICATOR_NAME) {
             return (
                 <>
                     <IdentifierFirstFragment
@@ -387,7 +394,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             );
         }
 
-        if (activeBasicSignInOption === IdentityProviderManagementConstants.TOTP_AUTHENTICATOR) {
+        if (activeBasicSignInOption === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME) {
             return (
                 <TOTPFragment
                     onOptionRemove={ (e: MouseEvent<HTMLButtonElement>, { toRemove }: { toRemove: string }) => {
@@ -400,7 +407,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             );
         }
 
-        if (activeBasicSignInOption === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR) {
+        if (activeBasicSignInOption === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME) {
             return (
                 <EmailOTPFragment
                     onOptionRemove={ (e: MouseEvent<HTMLButtonElement>, { toRemove }: { toRemove: string }) => {
@@ -413,7 +420,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             );
         }
 
-        if (activeBasicSignInOption === IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR) {
+        if (activeBasicSignInOption === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.SMS_OTP_AUTHENTICATOR_NAME) {
             return (
                 <SMSOTPFragment
                     onOptionRemove={ (e: MouseEvent<HTMLButtonElement>, { toRemove }: { toRemove: string }) => {
@@ -426,7 +433,8 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             );
         }
 
-        if (activeBasicSignInOption === IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) {
+        if (activeBasicSignInOption === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+            .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME) {
             return (
                 <>
                     <ActiveSessionsLimitFragment
@@ -463,7 +471,8 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
         let isBackupCodesEnabled: boolean = false;
 
         authenticationSequence?.steps?.[stepIndex]?.options.map((option: AuthenticatorInterface) => {
-            if (option.authenticator === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+            if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                .BACKUP_CODE_AUTHENTICATOR_NAME) {
                 isBackupCodesEnabled = true;
             }
         });
@@ -483,9 +492,9 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
         authenticationSequence?.steps?.[stepIndex]?.options?.map((option: AuthenticatorInterface) => {
             if (
                 [
-                    IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME
                 ].includes(option.authenticator)
             ) {
                 shouldShowSubjectIdentifierCheck = false;
@@ -497,19 +506,13 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             // show the backup codes enable checkbox.
             if (
                 [
-                    IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
-                    IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.SMS_OTP_AUTHENTICATOR_NAME,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME
                 ].includes(option.authenticator)
             ) {
-                // Disabling backup codes option for suborganization users until the IS7 migration is completed.
-                if (
-                    !isSubOrganization()
-                    || (isSubOrganization() && UIConfig?.legacyMode?.backupCodesForSubOrganizations)
-                ) {
-                    shouldShowBackupCodesEnableCheck = true;
-                }
+                shouldShowBackupCodesEnableCheck = true;
             }
         });
 
@@ -557,7 +560,8 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                                 ) }
                                 {
                                     (getBasicSignInOption() !==
-                                        IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR)
+                                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                                        .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME)
                                     &&
                                     (<Button
                                         fullWidth
@@ -631,12 +635,14 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                             if (e.target.checked) {
                                 onSignInOptionAdd(e, {
                                     stepIndex,
-                                    toAdd: IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR
+                                    toAdd: LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                                        .BACKUP_CODE_AUTHENTICATOR_NAME
                                 });
                             } else {
                                 onSignInOptionRemove(e, {
                                     stepIndex,
-                                    toRemove: IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR
+                                    toRemove: LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                                        .BACKUP_CODE_AUTHENTICATOR_NAME
                                 });
                             }
                         } }

@@ -29,9 +29,15 @@ export const extensions: Extensions = {
     common: {
         community: "Community",
         help: {
-            communityLink: "Ask the Community",
+            communityLinks: {
+                discord: "Ask on Discord",
+                stackOverflow: "Ask on Stack Overflow"
+            },
             docSiteLink: "Documentation",
-            helpCenterLink: "Contact Support",
+            helpCenterLink: {
+                title: "Contact Support",
+                subtitle: "Talk to the {{productName}} team to obtain personalized assistance."
+            },
             helpDropdownLink: "Get Help"
         },
         learnMore: "Learn More",
@@ -172,6 +178,13 @@ export const extensions: Extensions = {
                             idpEntityId: "IdP Entity ID",
                             idpUrl: "IdP URL"
                         }
+                    }
+                },
+                m2m: {
+                    customConfig: {
+                        tokenEndpoint: "Token Endpoint",
+                        tokenRequest: "Token Request",
+                        configurations: "Configurations"
                     }
                 }
             }
@@ -445,8 +458,8 @@ export const extensions: Extensions = {
             notifications: {
                 getConfiguration: {
                     error: {
-                        description: "{{description}}",
-                        message: "Error occurred while retrieving organization information"
+                        description: "Error occurred while retrieving organization information",
+                        message: "An error occurred"
                     },
                     genericError: {
                         description: "An error occurred while retrieving organization information.",
@@ -594,7 +607,7 @@ export const extensions: Extensions = {
             },
             organizationAPI: {
                 header: "Organization APIs",
-                description: "APIs to manage resources in your other organizations"
+                description: "APIs to manage resources in your B2B organizations"
             },
             table: {
                 name: {
@@ -1317,6 +1330,20 @@ export const extensions: Extensions = {
                             "application that should not be secured, and do not require authentication. Multiple " +
                             "URIs can be set using <3>comma separated</3> values."
                     }
+                },
+                m2m: {
+                    configurations: {
+                        clientId: {
+                            hint: "The Client ID generated when registering the application in {{ productName }}."
+                        },
+                        clientSecret: {
+                            hint: "The Client Secret generated when registering the application in {{ productName }}."
+                        },
+                        tokenRequest: "The API request used by the application to obtain an access token from {{ productName }}.",
+                        tokenEndpoint: "The token endpoint of {{ productName }}.",
+                        scopes: "The list of authorized scopes." +
+                                "Include required scopes by authorizing APIs through the <1>API Authorization</1> tab"
+                    }
                 }
             }
         },
@@ -1347,12 +1374,14 @@ export const extensions: Extensions = {
                 header: "Danger Zone",
                 revertBranding: {
                     actionTitle: "Revert",
+                    disableHint: "Please select an application from the list above to revert the branding preferences.",
                     header: "Revert to default",
                     subheader: "Once the branding preferences are reverted, they can't be recovered and your " +
                         "users will see {{ productName }}'s default branding."
                 },
                 unpublishBranding: {
                     actionTitle: "Unpublish",
+                    disableHint: "Please select an application from the list above to unpublish the branding preferences.",
                     header: "Unpublish branding preferences",
                     subheader: "You can temporarily switch to {{ productName }}'s default branding by unpublishing. You can always switch back by saving your branding preferences again."
                 }
@@ -1953,7 +1982,15 @@ export const extensions: Extensions = {
                 }
             },
             pageHeader: {
+                application: "Application",
+                applicationBrandingtitle: "Application Branding",
+                applicationBrandingDescription: "Customize consumer-facing user interfaces of applications.",
+                applicationListWarning: "Please select an application from the list above to customize the branding preferences.",
+                backButtonText: "Go back to Application Settings",
                 description: "Customize consumer-facing user interfaces of applications in your organization.",
+                organization: "Organization",
+                organizationBrandingtitle: "Organization Branding",
+                selectApplication: "Select Application",
                 title: "Branding"
             },
             pageResolution: {
@@ -2765,6 +2802,20 @@ export const extensions: Extensions = {
                         1: "Please try a different time range."
                     },
                     title: "No logs available"
+                },
+                startTimeGreaterThanCurrentError: {
+                    subtitle: {
+                        0: "Couldn't fetch logs.",
+                        1: "Selected start time should be before the current time."
+                    },
+                    title: "Invalid time range"
+                },
+                endTimeGreaterThanStartTimeError: {
+                    subtitle: {
+                        0: "Couldn't fetch logs.",
+                        1: "Selected start time should be before the end time."
+                    },
+                    title: "Invalid time range"
                 }
             },
             pageHeader: {
@@ -2959,7 +3010,7 @@ export const extensions: Extensions = {
                     2: "characters."
                 },
                 usernameAlphanumeric: "Restrict to alphanumeric (a-z, A-Z, 0-9).",
-                usernameSpecialCharsHint: "Any combination of letters (a-z, A-Z), numbers (0-9), and the following characters: !@#$&'+\\=^_.{|}~-."
+                usernameSpecialCharsHint: "Any combination of letters (a-z, A-Z), numbers (0-9), and the following characters: !@#$&'+\\=^.{|}~-."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "Alternative Login Identifiers",
@@ -3204,10 +3255,11 @@ export const extensions: Extensions = {
                             "{{maxLength}} characters including at least one letter.",
                         usernameSpecialCharHint: "Must be {{minLength}} to {{maxLength}} characters long, " +
                             "including at least one letter, and may contain a combination of the following " +
-                            "characters: a-z, A-Z, 0-9, !@#$&'+\\=^_.{|}~-.",
+                            "characters: a-z, A-Z, 0-9, !@#$&'+\\=^.{|}~-.",
                         usernameLength: "The username length should be between {{minLength}} and {{maxLength}}.",
                         usernameSymbols: "The username should consist of alphanumeric characters (a-z, A-Z, 0-9) and must include at least one letter.",
-                        usernameSpecialCharSymbols: "Please choose a valid username that adheres to the given guidelines."
+                        usernameSpecialCharSymbols: "Please choose a valid username that adheres to the given guidelines.",
+                        usernameEmpty: "Username cannot be empty"
                     }
                 }
             },
@@ -3369,10 +3421,12 @@ export const extensions: Extensions = {
                                     message: "See the Asgardeo documentation for the complete list of user store " +
                                         "configuration properties."
                                 },
-                                description: "Configure the properties of the local user store in the " +
-                                    "deployment.toml file that is found in the user store agent " +
-                                    "distribution depending on your requirements.",
-                                title: "Configure user store properties"
+                                description: "Update the properties in the deployment.toml file located in the " +
+                                    "root directory of the user store agent to match the remote user store settings. " +
+                                    "Add additional properties according to your requirements.",
+                                docsDescription: "See the <1>Asgardeo documentation</1> for more details on " +
+                                    "configuring the user store agent. ",
+                                title: "Configure the agent"
                             },
                             downloadAgent: {
                                 content: {
@@ -3554,6 +3608,10 @@ export const extensions: Extensions = {
                                 hint: "Enabling this will let the users reset their password using an email.",
                                 label: "Enable"
                             },
+                            enableSMSBasedRecovery: {
+                                hint: "This specifies whether to send an SMS OTP to the mobile.",
+                                label: "Enable SMS based recovery"
+                            },
                             expiryTime: {
                                 hint: "Password recovery link expiry time in minutes.",
                                 label: "Recovery link expiry time",
@@ -3573,9 +3631,82 @@ export const extensions: Extensions = {
                                     "This specifies whether to notify the user via an email when password " +
                                     "recovery is successful.",
                                 label: "Notify on successful recovery"
+                            },
+                            maxResendCount: {
+                                hint: "Password recovery maximum resend count.",
+                                label: "Maximum resend attempts count",
+                                placeholder: "Enter max resend count",
+                                validations: {
+                                    invalid: "Password recovery OTP resend count should be an integer.",
+                                    empty: "Password recovery OTP resend count cannot be empty.",
+                                    range:
+                                        "Password recovery OTP resend count should be between 1 & 5.",
+                                    maxLengthReached:
+                                        "Password recovery OTP resend count should be a number with 1 digit."
+                                }
+                            },
+                            maxFailedAttemptCount: {
+                                hint: "Password recovery maximum failed attempt count.",
+                                label: "Max failed attempts count",
+                                placeholder: "Enter max failed attempts",
+                                validations: {
+                                    invalid: "Password recovery max failed attempts count should be an integer.",
+                                    empty: "Password recovery max failed attempts count cannot be empty.",
+                                    range:
+                                        "Password recovery max failed attempts count should be between 1 & 10.",
+                                    maxLengthReached:
+                                        "Password recovery max failed attempts count should be a number with less than 3 digits."
+                                }
+                            },
+                            smsOtpExpiryTime: {
+                                hint: "Password recovery OTP expiry time in minutes.",
+                                label: "Password recovery OTP expiry time",
+                                placeholder: "Enter expiry time",
+                                validations: {
+                                    invalid: "Password recovery OTP expiry time should be an integer.",
+                                    empty: "Password recovery OTP expiry time cannot be empty.",
+                                    range:
+                                        "Password recovery OTP expiry time should be between 1 minute & 1440 minutes " +
+                                        "(1 day).",
+                                    maxLengthReached:
+                                        "Password recovery OTP expiry time should be a number with 4 or less digits."
+                                }
+                            },
+                            passwordRecoveryOtpUseUppercase: {
+                                hint: "This specifies whether to use upper case characters in the password recovery otp code.",
+                                label: "Include upper case letters"
+                            },
+                            passwordRecoveryOtpUseLowercase: {
+                                hint: "This specifies whether to use lower case characters in the password recovery otp code.",
+                                label: "Include lower case letters"
+                            },
+                            passwordRecoveryOtpUseNumeric: {
+                                hint: "This specifies whether to use numeric characters in the password recovery otp code.",
+                                label: "Include numeric characters"
+                            },
+                            passwordRecoveryOtpLength: {
+                                hint: "Password recovery OTP length in characters",
+                                label: "Password recovery OTP code length",
+                                placeholder: "Enter OTP code length",
+                                validations: {
+                                    empty: "Password recovery OTP length cannot be empty.",
+                                    maxLengthReached:
+                                        "Password recovery OTP length should be between 4 and 10 characters."
+                                }
+                            },
+                            enableEmailBasedRecovery: {
+                                hint: "This specifies whether to send an recovery link to the email address.",
+                                label: "Enable email link based recovery"
                             }
-                        }
+                        },
+                        smsProviderWarning:
+                            "Ensure that an <1>SMS Provider</1> is configured for the OTP feature to work properly."
                     },
+                    recoveryOptionSubHeadingEmailLink: "Email Link",
+                    recoveryOptionSubHeadingSMS: "SMS OTP",
+                    recoveryOptionHeading: "Recovery Option Selection",
+                    otpConfigHeading: "OTP Code Configuration",
+                    failedAttemptConfigHeading: "Recovery Attempts Limitation",
                     connectorDescription: "Enable self-service password recovery for users " + "on the login page.",
                     heading: "Password Recovery",
                     notification: {
@@ -3589,8 +3720,7 @@ export const extensions: Extensions = {
                         }
                     },
                     subHeading:
-                        "Enable self-service password recovery for users " +
-                        "on the login page.\nThe user will receive a password reset link via email upon request."
+                    "Enable self-service password recovery for users on the login page."
                 },
                 subHeading: "Account Recovery related settings."
             },
@@ -3610,7 +3740,8 @@ export const extensions: Extensions = {
                         heading: "This will enforce reCAPTCHA validation in respective UIs of the following flows.",
                         subSection1: "Login to business applications",
                         subSection2: "Recover the password of a user account",
-                        subSection3: "Self registration for user accounts"
+                        subSection3: "Self registration for user accounts",
+                        subSection4: "Recover the username of a user account"
                     },
                     connectorDescription: "Enable reCAPTCHA for the organization.",
                     heading: "Bot Detection",
@@ -3945,7 +4076,7 @@ export const extensions: Extensions = {
                 addCollaboratorBtn: "Add Administrator"
             },
             collaboratorAccounts: {
-                consoleInfo: "Share this link with the users who have administrative priviledges " +
+                consoleInfo: "Share this link with the users who have administrative privileges " +
                     "to allow access to Console"
             },
             list: {
@@ -4038,11 +4169,26 @@ export const extensions: Extensions = {
             }
         },
         invite: {
+            assignAdminUser: {
+                confirmationModal: {
+                    assertionHint: "Assign Administrator role to the user.",
+                    header: "Assign Administrator Role",
+                    message: "The user already exists as a collaborator. Do you want to assign them to Administrator role?"
+                }
+            },
             notifications: {
                 sendInvite: {
+                    inviteAlreadyExistsError: {
+                        description: "The invite for the user {{userName}} already exists.",
+                        message: "Unable to send invite"
+                    },
                     limitReachError: {
                         description: "Maximum number of allowed collaborator users have been reached.",
                         message: "Error while sending the invitation"
+                    },
+                    userAlreadyExistsError: {
+                        description: "The user {{userName}} already exists.",
+                        message: "Unable to send invite"
                     }
                 }
             }

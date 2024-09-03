@@ -16,15 +16,14 @@
  * under the License.
  */
 
-import { AppThemeConfigInterface } from "@wso2is/core/models";
-import { StringUtils } from "@wso2is/core/utils";
-import { MultitenantConstants } from "./multitenant-constants";
-import { identityProviderConfig } from "../../admin.extensions.v1/configs";
 import {
     GovernanceCategoryForOrgsInterface,
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorUtils
-} from "../../admin.server-configurations.v1";
+} from "@wso2is/admin.server-configurations.v1";
+import { AppThemeConfigInterface, FeatureAccessConfigInterface } from "@wso2is/core/models";
+import { StringUtils } from "@wso2is/core/utils";
+import { MultitenantConstants } from "./multitenant-constants";
 
 /**
  * Class containing app constants.
@@ -178,6 +177,15 @@ export class AppConstants {
     }
 
     /**
+     * Get the feature configuration of the administrators feature.
+     *
+     * @returns Feature access config for the administrators feature.
+     */
+    public static getAdministratorsFeatureConfig(): FeatureAccessConfigInterface {
+        return window["AppUtils"]?.getConfig()?.ui?.features?.administrators;
+    }
+
+    /**
      * Get the My Account path.
      *
      * @returns The My Account path.
@@ -245,8 +253,6 @@ export class AppConstants {
      */
     public static getPaths(): Map<string, string> {
 
-        const useNewConnectionsView: boolean = identityProviderConfig?.useNewConnectionsView;
-
         const paths: Map<string, string> = new Map<string, string>([
             [ "GETTING_STARTED", `${ AppConstants.getDeveloperViewBasePath() }/getting-started` ],
             [ "ADMIN_OVERVIEW", `${ AppConstants.getAdminViewBasePath() }/overview` ],
@@ -262,6 +268,7 @@ export class AppConstants {
             [ "APPLICATIONS", `${ AppConstants.getDeveloperViewBasePath() }/applications` ],
             [ "APPLICATION_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/applications/templates` ],
             [ "APPLICATION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/applications/:id` ],
+            [ "APPLICATIONS_SETTINGS", `${ AppConstants.getDeveloperViewBasePath() }/applications-settings` ],
             [ "APPLICATION_ROLES", `${ AppConstants.getAdminViewBasePath() }/application-roles` ],
             [ "APPLICATION_ROLES_EDIT",
                 `${ AppConstants.getAdminViewBasePath() }/application-roles/:applicationId/:roleId` ],
@@ -273,6 +280,7 @@ export class AppConstants {
                 `${ AppConstants.getDeveloperViewBasePath() }/applications/:id:tabName`
             ],
             [ "APPROVALS", `${ AppConstants.getAdminViewBasePath() }/approvals` ],
+            [ "BRANDING", `${ AppConstants.getDeveloperViewBasePath() }/branding` ],
             [ "CERTIFICATES", `${ AppConstants.getAdminViewBasePath() }/certificates` ],
             [ "CLAIM_DIALECTS", `${ AppConstants.getAdminViewBasePath() }/attributes-and-mappings` ],
             [ "CLAIM_VERIFICATION_SETTINGS",
@@ -307,21 +315,9 @@ export class AppConstants {
             [ "EXTERNAL_DIALECT_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attribute-mappings/:id` ],
             [ "GROUPS", `${ AppConstants.getAdminViewBasePath() }/groups` ],
             [ "GROUP_EDIT", `${ AppConstants.getAdminViewBasePath() }/groups/:id` ],
-            [ "IDP",
-                useNewConnectionsView
-                    ? `${ AppConstants.getDeveloperViewBasePath() }/connections`
-                    : `${ AppConstants.getDeveloperViewBasePath() }/identity-providers`
-            ],
-            [ "IDP_TEMPLATES",
-                useNewConnectionsView
-                    ? `${ AppConstants.getDeveloperViewBasePath() }/connections/templates`
-                    : `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/templates`
-            ],
-            [ "IDP_EDIT",
-                useNewConnectionsView
-                    ? `${ AppConstants.getDeveloperViewBasePath() }/connections/:id`
-                    : `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/:id`
-            ],
+            [ "IDP", `${ AppConstants.getDeveloperViewBasePath() }/connections` ],
+            [ "IDP_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/connections/templates` ],
+            [ "IDP_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/connections/:id` ],
             [ "IDVP", `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers` ],
             [ "IDVP_TEMPLATES",
                 `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers/templates`
@@ -332,6 +328,7 @@ export class AppConstants {
             [ "LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attributes/:id` ],
             [ "LOGIN", window["AppUtils"]?.getConfig()?.routes.login ],
             [ "LOGIN_AND_REGISTRATION", `${ AppConstants.getDeveloperViewBasePath() }/login-and-registration` ],
+            [ "ACTIONS", `${ AppConstants.getDeveloperViewBasePath() }/actions` ],
             [ "SCIM_MAPPING", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/scim` ],
             [ "LOGOUT", window["AppUtils"]?.getConfig()?.routes.logout ],
             [ "OIDC_SCOPES", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes` ],
@@ -376,18 +373,12 @@ export class AppConstants {
             [ "ADMINISTRATORS", `${AppConstants.getAdminViewBasePath()}/administrators` ],
             [ "ADMINISTRATOR_EDIT", `${AppConstants.getAdminViewBasePath()}/administrators/:id` ],
             [ "ADMINISTRATOR_SETTINGS", `${AppConstants.getAdminViewBasePath()}/administrator-settings-edit` ],
-            [ "MY_ACCOUNT", `${AppConstants.getAdminViewBasePath()}/my-account` ],
-            [ "MY_ACCOUNT_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-my-account` ],
             [ "VALIDATION_CONFIG", `${AppConstants.getAdminViewBasePath()}/validation-configuration` ],
             [ "VALIDATION_CONFIG_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-validation-configuration` ],
             [ "ACCOUNT_LOGIN", `${AppConstants.getAdminViewBasePath()}/account-login` ],
             [ "USERNAME_VALIDATION_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-username-validation` ],
             [ "ALTERNATIVE_LOGIN_IDENTIFIER_EDIT",
                 `${AppConstants.getAdminViewBasePath()}/edit-alternative-login-identifier` ],
-            [
-                "PRIVATE_KEY_JWT_CONFIG_EDIT",
-                `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration`
-            ],
             [ "INSIGHTS", `${AppConstants.getAdminViewBasePath()}/insights` ],
             [ "REMOTE_LOGGING", `${AppConstants.getAdminViewBasePath()}/server/logs` ],
             [ "SESSION_MANAGEMENT",
@@ -404,7 +395,12 @@ export class AppConstants {
             [ "INTERNAL_NOTIFICATION_SENDING",
                 `${AppConstants.getAdminViewBasePath()}/server/internal-notification-sending` ],
             [ "OUTBOUND_PROVISIONING_SETTINGS",
-                `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ]
+                `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ],
+            [ "IMPERSONATION", `${AppConstants.getAdminViewBasePath()}/login-and-registration/impersonation` ],
+            [ "ACTIONS",
+                `${AppConstants.getAdminViewBasePath()}/actions` ],
+            [ "PRE_ISSUE_ACCESS_TOKEN_EDIT",
+                `${ AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ]
         ]);
 
         return paths;
@@ -489,8 +485,9 @@ export class AppConstants {
      * Route ids that are enabled in only for an organizations (Not allowed in root organization).
      */
     public static readonly ORGANIZATION_ONLY_ROUTES: string[] = [
-        "roles"
-    ]
+        "roles",
+        ...(this.getAdministratorsFeatureConfig()?.enabled ? [ "consoleSettings" ] : [])
+    ];
 
     /**
      * Route ids that are enabled in only for super admins.
@@ -500,7 +497,7 @@ export class AppConstants {
         "remote-logging",
         "internal-notification-sending",
         "server"
-    ]
+    ];
 
     /**
      * Route id of the console settings page.

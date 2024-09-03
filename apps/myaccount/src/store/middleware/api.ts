@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { Dispatch } from "redux";
 import { HttpRequestConfig } from "../../models";
 import { apiRequestEnd, apiRequestStart } from "../actions";
 import { API_REQUEST } from "../actions/types";
@@ -24,10 +25,11 @@ import { API_REQUEST } from "../actions/types";
 /**
  * Intercepts and handles actions of type `API_REQUEST`.
  *
- * @param {any} dispatch - `dispatch` function from redux
- * @returns {(next) => (action) => any} Passes the action to the next middleware
+ * @param dispatch - `dispatch` function from redux
  */
-export const apiMiddleware = ({ dispatch }) => (next) => (action): void => {
+export const apiMiddleware = ({ dispatch }: {
+    dispatch: Dispatch<any>
+}) => (next: any) => (action: any): void => {
     next(action);
 
     if (action.type !== API_REQUEST) {
@@ -39,7 +41,7 @@ export const apiMiddleware = ({ dispatch }) => (next) => (action): void => {
     const data: any = action.payload;
 
     // `GET` requests and `DELETE` requests usually has params rather than data.
-    const dataOrParams: string = ["GET", "DELETE"].includes(method) ? "params" : "data";
+    const dataOrParams: string = [ "GET", "DELETE" ].includes(method) ? "params" : "data";
 
     // `dispatcher` is the action which invoked the `API_REQUEST` action. This is
     // useful to show placeholders specific to certain API requests.
@@ -56,13 +58,13 @@ export const apiMiddleware = ({ dispatch }) => (next) => (action): void => {
             url,
             withCredentials: true
         })
-        .then((response) => {
+        .then((response: AxiosResponse<any>) => {
             dispatch({
                 payload: response,
                 type: onSuccess
             });
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             dispatch({
                 payload: error,
                 type: onError

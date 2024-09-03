@@ -19,13 +19,12 @@
 // eslint-disable-next-line no-unused-vars
 var startupConfig = {
     enableDefaultPreLoader: true,
-    legacyAuthzRuntime: false,
     orgPrefix: "o",
     pathExtension: "",
     serverUrl: "https://localhost:9443",
     serverUrlGlobal: "https://localhost:9443",
     subdomainApplication: false,
     superTenant: "carbon.super",
-    superTenantProxy: "carbon.super",
+    superTenantProxy: "",
     tenantPrefix: "t"
 };

@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppState, ConfigReducerStateInterface, getCertificateIllustrations } from "@wso2is/admin.core.v1";
+import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
@@ -35,8 +37,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
-import { commonConfig } from "../../../admin.extensions.v1";
-import { AppState, ConfigReducerStateInterface, getCertificateIllustrations } from "../../../admin.core.v1";
 import { SAMLConfigModes } from "../../models";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 

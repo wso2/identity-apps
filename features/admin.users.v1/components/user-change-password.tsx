@@ -15,9 +15,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { useRequiredScopes } from "@wso2is/access-control";
+import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "@wso2is/admin.core.v1";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1";
+import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
+import {
+    ConnectorPropertyInterface,
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1";
+import {
+    PRIMARY_USERSTORE,
+    USERSTORE_REGEX_PROPERTIES
+} from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
+import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
 import { LinkButton, Message, PasswordValidation, PrimaryButton } from "@wso2is/react-components";
@@ -32,18 +45,6 @@ import React,
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Icon, Modal, SemanticCOLORS } from "semantic-ui-react";
-import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../admin.core.v1";
-import { PatchRoleDataInterface } from "../../admin.roles.v2/models/roles";
-import {
-    ConnectorPropertyInterface,
-    ServerConfigurationsConstants
-} from "../../admin.server-configurations.v1";
-import {
-    PRIMARY_USERSTORE,
-    USERSTORE_REGEX_PROPERTIES
-} from "../../admin.userstores.v1/constants/user-store-constants";
-import { useValidationConfigData } from "../../admin.validation.v1/api";
-import { ValidationFormInterface } from "../../admin.validation.v1/models";
 import { updateUserInfo } from "../api";
 import { getConfiguration } from "../utils";
 
@@ -120,7 +121,10 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const hasLoginAndRegistrationFeaturePermissions: boolean = useRequiredScopes(
+        featureConfig?.loginAndRegistration?.scopes?.feature
+    );
 
     const {
         data: validationConfig
@@ -219,7 +223,10 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 {
                     "op": "add",
                     "value": {
-                        [ProfileConstants.SCIM2_WSO2_USER_SCHEMA]: {
+                        [ SCIMConfigs?.scimEnterpriseUserClaimUri?.forcePasswordReset?.
+                            startsWith(ProfileConstants.SCIM2_ENT_USER_SCHEMA)
+                            ? ProfileConstants.SCIM2_ENT_USER_SCHEMA
+                            : ProfileConstants.SCIM2_WSO2_USER_SCHEMA ]: {
                             "forcePasswordReset": true
                         }
                     }
@@ -320,9 +327,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                                 Password reset via recovery email is not enabled.
                                                 Please make sure to enable it from
                                                 {
-                                                    hasRequiredScopes(featureConfig?.loginAndRegistration,
-                                                        featureConfig?.loginAndRegistration?.scopes?.feature,
-                                                        allowedScopes)
+                                                    hasLoginAndRegistrationFeaturePermissions
                                                         ? (
                                                             <a
                                                                 onClick={ handleLoginAndRegistrationPageRedirect }

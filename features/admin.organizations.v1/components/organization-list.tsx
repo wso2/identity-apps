@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,8 +17,19 @@
  */
 
 import { BasicUserInfo } from "@asgardeo/auth-react";
-import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
+import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
+import {
+    AppConstants,
+    AppState,
+    EventPublisher,
+    FeatureConfigInterface,
+    UIConstants,
+    history
+} from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { organizationConfigs } from "@wso2is/admin.extensions.v1";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -37,29 +48,19 @@ import {
     TableColumnInterface
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { organizationConfigs } from "../../admin.extensions.v1";
-import useSignIn from "../../admin.authentication.v1/hooks/use-sign-in";
-import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
-import {
-    AppConstants,
-    AppState,
-    EventPublisher,
-    FeatureConfigInterface,
-    UIConstants,
-    history
-} from "../../admin.core.v1";
-import { getEmptyPlaceholderIllustrations } from "../../admin.core.v1/configs/ui";
-import { deleteOrganization, useGetOrganizationBreadCrumb } from "../api";
+import { deleteOrganization } from "../api";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
 import useOrganizationSwitch from "../hooks/use-organization-switch";
 import { GenericOrganization, OrganizationInterface, OrganizationListInterface } from "../models";
+import "./organization-list.scss";
 
 /**
  *
@@ -161,35 +162,15 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
     const { onSignIn } = useSignIn();
 
-    const { switchOrganization, switchOrganizationInLegacyMode } = useOrganizationSwitch();
+    const { switchOrganization } = useOrganizationSwitch();
 
-    const { legacyAuthzRuntime }  = useAuthorization();
-
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const isFirstLevelOrg: boolean = useSelector(
-        (state: AppState) => state?.organization?.isFirstLevelOrganization
-    );
-    const tenantDomain: string = useSelector(
-        (state: AppState) => state?.auth?.tenantDomain
-    );
 
+    const hasOrganizationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.organizations?.scopes?.update);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingOrganization, setDeletingOrganization ] = useState<OrganizationInterface>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-
-    const shouldSendRequest: boolean = useMemo(() => {
-        return (
-            isFirstLevelOrg ||
-            window[ "AppUtils" ].getConfig().organizationName ||
-            tenantDomain === AppConstants.getSuperTenant()
-        );
-    }, [ isFirstLevelOrg, tenantDomain ]);
-
-    const { data: breadcrumbList, mutate: mutateOrganizationBreadCrumbFetchRequest } = useGetOrganizationBreadCrumb(
-        shouldSendRequest
-    );
 
     /**
      * Redirects to the organizations edit page when the edit button is clicked.
@@ -288,11 +269,6 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     const handleOrganizationSwitch = async (
         organization: GenericOrganization
     ): Promise<void> => {
-        if (legacyAuthzRuntime) {
-            switchOrganizationInLegacyMode(breadcrumbList, organization);
-
-            return;
-        }
 
         let response: BasicUserInfo = null;
 
@@ -301,7 +277,6 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
             await onSignIn(response, () => null, () => null, () => null);
 
             onListMutate();
-            mutateOrganizationBreadCrumbFetchRequest();
             history.push(AppConstants.getPaths().get("GETTING_STARTED"));
         } catch(e) {
             // TODO: Handle error
@@ -314,6 +289,13 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
      * @returns
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
+        // Get the class names for the status icon in the list.
+        const getClassNamesForStatusIcon = (status: string): string => classNames({
+            "active": status === "ACTIVE",
+            "inactive": status !== "ACTIVE",
+            "organization-active-icon": true
+        });
+
         return [
             {
                 allowToggleVisibility: false,
@@ -340,10 +322,9 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                             { organization.id === OrganizationManagementConstants.SUPER_ORGANIZATION_ID
                                && (< Header.Content >
                                    <Icon
-                                       className="mr-2 ml-0 vertical-aligned-baseline"
+                                       className="organization-active-icon active"
                                        size="small"
                                        name="circle"
-                                       color="green"
                                    />
                                </Header.Content>)
                             }
@@ -352,10 +333,9 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                     trigger={
                                         (<Icon
                                             data-componentid={ `${ componentId }-org-status-icon` }
-                                            className="mr-2 ml-0 vertical-aligned-baseline"
+                                            className={ getClassNamesForStatusIcon(organization.status) }
                                             size="small"
                                             name="circle"
-                                            color={ organization.status === "ACTIVE" ? "green" : "orange" }
                                         />)
                                     }
                                     content={
@@ -456,11 +436,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         }
                     });
 
-                    return !hasRequiredScopes(
-                        featureConfig?.organizations,
-                        featureConfig?.organizations?.scopes?.update,
-                        allowedScopes
-                    ) || !isAuthorized
+                    return !hasOrganizationUpdatePermissions || !isAuthorized
                         ? "eye"
                         : "pencil alternate";
                 },
@@ -476,11 +452,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         }
                     });
 
-                    return !hasRequiredScopes(
-                        featureConfig?.organizations,
-                        featureConfig?.organizations?.scopes?.update,
-                        allowedScopes
-                    ) || !isAuthorized
+                    return !hasOrganizationUpdatePermissions || !isAuthorized
                         ? t("common:view")
                         : t("common:edit");
                 },
@@ -498,11 +470,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         }
                     });
 
-                    return !hasRequiredScopes(
-                        featureConfig?.organizations,
-                        featureConfig?.organizations?.scopes?.delete,
-                        allowedScopes
-                    ) || !isAuthorized;
+                    return !hasOrganizationUpdatePermissions || !isAuthorized;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, organization: OrganizationInterface): void => {
@@ -533,11 +501,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     imageSize="tiny"
                     title={ t("console:manage.placeholders.emptySearchResult.title") }
                     subtitle={ [
-                        t("console:manage.placeholders.emptySearchResult.subtitles.0", {
-                            // searchQuery looks like "name co OrgName", so we only remove the filter string only to get
-                            // the actual user entered query
-                            query: searchQuery.split("name co ")[1]
-                        }),
+                        t("console:manage.placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
                         t("console:manage.placeholders.emptySearchResult.subtitles.1")
                     ] }
                     data-componentid={ `${ componentId }-empty-search-placeholder` }
@@ -552,7 +516,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     className={ !isRenderedOnPortal ? "list-placeholder mr-0" : "" }
                     action={
                         onEmptyListPlaceholderActionClick && (
-                            <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
+                            <Show when={ featureConfig?.organizations?.scopes?.create }>
                                 <PrimaryButton
                                     disabled={ parentOrganization?.status === "DISABLED" }
                                     onClick={ () => {

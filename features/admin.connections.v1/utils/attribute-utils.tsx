@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,26 +16,27 @@
  * under the License.
  */
 
-import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
+import { store } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
 import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
 import { Dispatch, SetStateAction } from "react";
-import { 
+import { handleUpdateIDPRoleMappingsError } from "./connection-utils";
+import { updateClaimsConfigs, updateConnectionRoleMappings } from "../api/connections";
+import { FederatedAuthenticatorConstants } from "../constants/federated-authenticator-constants";
+import {
     ConnectionClaimInterface,
     ConnectionClaimMappingInterface,
     ConnectionClaimsInterface,
-    ConnectionCommonClaimMappingInterface, 
-    ConnectionProvisioningClaimInterface, 
+    ConnectionCommonClaimMappingInterface,
+    ConnectionProvisioningClaimInterface,
     ConnectionRoleMappingInterface,
     ConnectionRolesInterface
 } from "../models/connection";
-import { updateClaimsConfigs, updateConnectionRoleMappings } from "../api/connections";
-import { store } from "../../admin.core.v1";
-import { handleUpdateIDPRoleMappingsError } from "./connection-utils";
 
 /**
  * Interface for the dropdown options.
@@ -196,7 +197,7 @@ export const initSelectedClaimMappings = (
  */
 export const initSelectedProvisioningClaimsWithDefaultValues = (
     initialClaims: ConnectionClaimsInterface,
-    setSelectedProvisioningClaimsWithDefaultValue: 
+    setSelectedProvisioningClaimsWithDefaultValue:
         Dispatch<SetStateAction<ConnectionCommonClaimMappingInterface[]>>
 ): void => {
     setSelectedProvisioningClaimsWithDefaultValue(
@@ -242,4 +243,22 @@ export const isClaimExistsInConnectionClaims = (mapping: ConnectionCommonClaimMa
  */
 export const isLocalIdentityClaim = (claim: string): boolean => {
     return /identity/.test(claim);
+};
+
+/**
+ * Checks if provisioning attributes are enabled for the authenticator.
+ *
+ * @param authenticatorId - Id of the authenticator.
+ * @returns Whether provisioning attributes are enabled for the authenticator.
+ */
+export const isProvisioningAttributesEnabled = (authenticatorId: string): boolean => {
+    const excludedAuthenticators: Set<string> = new Set([
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID
+    ]);
+
+    /**
+     * If the authenticatorId is not in the excluded set we
+     * can say the provisioning attributes is enabled for authenticator.
+     */
+    return !excludedAuthenticators.has(authenticatorId);
 };

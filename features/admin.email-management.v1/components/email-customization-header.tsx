@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DropdownChild, Field, Form } from "@wso2is/form";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
@@ -23,7 +24,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Segment } from "semantic-ui-react";
-import { AppState } from "../../admin.core.v1";
 import { EmailTemplateType } from "../models";
 
 const FORM_ID: string = "email-customization-header-form";
@@ -84,7 +84,7 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
 
     const { t } = useTranslation();
 
-    const [ localeList, setLocaleList ] = 
+    const [ localeList, setLocaleList ] =
         useState<DropdownChild[]>(undefined);
 
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(

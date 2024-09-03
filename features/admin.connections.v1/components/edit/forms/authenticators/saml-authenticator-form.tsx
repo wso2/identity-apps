@@ -19,6 +19,8 @@
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
+import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { DropdownChild, Field, Form } from "@wso2is/form";
 import { Code, FormInputLabel, FormSection } from "@wso2is/react-components";
@@ -26,8 +28,6 @@ import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, u
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid, SemanticWIDTHS } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../../admin.extensions.v1";
-import { AppState, ConfigReducerStateInterface } from "../../../../../admin.core.v1";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormInitialValuesInterface

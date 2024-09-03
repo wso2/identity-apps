@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,9 +27,6 @@ import {
     ReactComponent as CertificateColoredIcon
 } from "../../themes/default/assets/images/icons/certificate-colored-icon.svg";
 import { ReactComponent as ClockColoredIcon } from "../../themes/default/assets/images/icons/clock-colored-icon.svg";
-import { ReactComponent as CodeIcon } from "../../themes/default/assets/images/icons/code-icon.svg";
-import { ReactComponent as CogWheelIcon } from "../../themes/default/assets/images/icons/cog-wheel-icon.svg";
-import { ReactComponent as CubeStack } from "../../themes/default/assets/images/icons/cube-stack-icon.svg";
 import { ReactComponent as DestinationIcon } from "../../themes/default/assets/images/icons/destination-icon.svg";
 import { ReactComponent as DocumentIcon } from "../../themes/default/assets/images/icons/document-icon.svg";
 import { ReactComponent as DoneButtonIcon } from "../../themes/default/assets/images/icons/done-button.svg";
@@ -47,7 +44,6 @@ import {
     ReactComponent as MagnifierColoredIcon
 } from "../../themes/default/assets/images/icons/magnifier-colored-icon.svg";
 import { ReactComponent as IDPMetadataIcon } from "../../themes/default/assets/images/icons/metadata.svg";
-import { ReactComponent as OpenBookIcon } from "../../themes/default/assets/images/icons/open-book-icon.svg";
 import  {
     ReactComponent as AddCircleOutlineIcon
 } from "../../themes/default/assets/images/icons/outline-icons/add-circle-outline.svg";
@@ -62,7 +58,6 @@ import { ReactComponent as ReportIcon } from "../../themes/default/assets/images
 import {
     ReactComponent as SessionIframeIcon
 } from "../../themes/default/assets/images/icons/session-iframe-icon.svg";
-import { ReactComponent as ShuttleIcon } from "../../themes/default/assets/images/icons/shuttle-icon.svg";
 import { ReactComponent as SLOIcon } from "../../themes/default/assets/images/icons/slo.svg";
 import { ReactComponent as SpinWheelIcon } from "../../themes/default/assets/images/icons/spin-wheel-icon.svg";
 import { ReactComponent as SSOIcon } from "../../themes/default/assets/images/icons/sso.svg";
@@ -295,13 +290,6 @@ export const getHelpPanelIcons = (): {
         userInfo: FunctionComponent<SVGProps<SVGSVGElement>>;
         webFinger: FunctionComponent<SVGProps<SVGSVGElement>>;
         wellKnown: FunctionComponent<SVGProps<SVGSVGElement>>;
-    },
-    tabs: {
-        docs: FunctionComponent<SVGProps<SVGSVGElement>>;
-        guide: FunctionComponent<SVGProps<SVGSVGElement>>;
-        samples: FunctionComponent<SVGProps<SVGSVGElement>>;
-        sdks: FunctionComponent<SVGProps<SVGSVGElement>>;
-        whatsNext: FunctionComponent<SVGProps<SVGSVGElement>>;
     }
 } => {
 
@@ -324,13 +312,6 @@ export const getHelpPanelIcons = (): {
             userInfo: UserInfoIcon,
             webFinger: WebFingerIcon,
             wellKnown: WellKnownIcon
-        },
-        tabs: {
-            docs: OpenBookIcon,
-            guide: CogWheelIcon,
-            samples: CodeIcon,
-            sdks: CubeStack,
-            whatsNext: ShuttleIcon
         }
     };
 };

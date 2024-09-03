@@ -15,6 +15,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import {
+    AppState,
+    AuthenticatorAccordion,
+    FeatureConfigInterface,
+    getEmptyPlaceholderIllustrations,
+    store
+} from "@wso2is/admin.core.v1";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -50,15 +59,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Grid, Header, Button as SemButton } from "semantic-ui-react";
 import { SAMLSelectionLanding } from "./protocols";
-import { applicationConfig } from "../../../admin.extensions.v1";
-import useAuthorization from "../../../admin.authorization.v1/hooks/use-authorization";
-import {
-    AppState,
-    AuthenticatorAccordion,
-    FeatureConfigInterface,
-    getEmptyPlaceholderIllustrations,
-    store
-} from "../../../admin.core.v1";
 import {
     deleteProtocol,
     getAuthProtocolMetadata,
@@ -245,7 +245,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const allowMultipleProtocol: boolean = useSelector(
         (state: AppState) => state.config.deployment.allowMultipleAppProtocols);
     const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
-    const { legacyAuthzRuntime } = useAuthorization();
 
     const [ selectedProtocol, setSelectedProtocol ] = useState<SupportedAuthProtocolTypes | string>(undefined);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>([]);
@@ -796,8 +795,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                                     featureConfig?.applications,
                                                                     featureConfig?.applications?.scopes?.update,
                                                                     allowedScopes,
-                                                                    organizationType,
-                                                                    legacyAuthzRuntime
+                                                                    organizationType
                                                                 )
                                                             }
                                                             showSAMLCreation={
@@ -871,8 +869,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                     featureConfig?.applications,
                                                     featureConfig?.applications?.scopes?.update,
                                                     allowedScopes,
-                                                    organizationType,
-                                                    legacyAuthzRuntime
+                                                    organizationType
                                                 )
                                             }
                                             template={ template }
@@ -936,8 +933,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                     featureConfig?.applications,
                                                     featureConfig?.applications?.scopes?.update,
                                                     allowedScopes,
-                                                    organizationType,
-                                                    legacyAuthzRuntime
+                                                    organizationType
                                                 )
                                             }
                                             showSAMLCreation={
@@ -999,8 +995,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                     featureConfig?.applications,
                                                     featureConfig?.applications?.scopes?.update,
                                                     allowedScopes,
-                                                    organizationType,
-                                                    legacyAuthzRuntime
+                                                    organizationType
                                                 )
                                             }
                                             template={ template }

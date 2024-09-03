@@ -73,7 +73,8 @@ export class I18nConstants {
     /**
      * JWT private key configuration namespace.
      */
-    public static readonly JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE: string = I18nModuleConstants.JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE;
+    public static readonly IMPERSONATION_CONFIGURATION_NAMESPACE: string =
+        I18nModuleConstants.IMPERSONATION_NAMESPACE;
 
     /**
      * transferList namespace.
@@ -93,7 +94,8 @@ export class I18nConstants {
     /**
      * governanceConnectors namespace.
      */
-    public static readonly GOVERNANCE_CONNECTORS_NAMESPACE: string = I18nModuleConstants.GOVERNANCE_CONNECTORS_NAMESPACE;
+    public static readonly GOVERNANCE_CONNECTORS_NAMESPACE: string =
+        I18nModuleConstants.GOVERNANCE_CONNECTORS_NAMESPACE;
 
     /**
      * Groups namespace.
@@ -118,7 +120,8 @@ export class I18nConstants {
     /**
      * Parent org invitations namespace.
      */
-    public static readonly PARENT_ORG_INVITATIONS_NAMESPACE: string = I18nModuleConstants.PARENT_ORG_INVITATIONS_NAMESPACE;
+    public static readonly PARENT_ORG_INVITATIONS_NAMESPACE: string =
+        I18nModuleConstants.PARENT_ORG_INVITATIONS_NAMESPACE;
 
     /**
      * OIDC scopes namespace.
@@ -133,7 +136,8 @@ export class I18nConstants {
     /**
      * Organization discovery namespace.
      */
-    public static readonly ORGANIZATION_DISCOVERY_NAMESPACE: string = I18nModuleConstants.ORGANIZATION_DISCOVERY_NAMESPACE;
+    public static readonly ORGANIZATION_DISCOVERY_NAMESPACE: string =
+        I18nModuleConstants.ORGANIZATION_DISCOVERY_NAMESPACE;
 
     /**
      * Organizations namespace.
@@ -234,7 +238,28 @@ export class I18nConstants {
      * authenticationProvider namespace.
      */
     public static readonly AUTHENTICATION_PROVIDER_NAMESPACE: string =
-      I18nModuleConstants.AUTHENTICATION_PROVIDER_NAMESPACE;
+        I18nModuleConstants.AUTHENTICATION_PROVIDER_NAMESPACE;
+
+    /**
+    * AI namespace.
+    */
+    public static readonly AI_NAMESPACE: string = I18nModuleConstants.AI_NAMESPACE;
+
+    /**
+     * Application Templates namespace.
+     */
+    public static readonly APPLICATION_TEMPLATES_NAMESPACE: string =
+        I18nModuleConstants.APPLICATION_TEMPLATES_NAMESPACE;
+
+    /**
+     * Extension Templates namespace.
+     */
+    public static readonly TEMPLATE_CORE_NAMESPACE: string = I18nModuleConstants.TEMPLATE_CORE_NAMESPACE;
+
+    /**
+     * Actions namespace.
+     */
+    public static readonly ACTIONS_NAMESPACE: string = I18nModuleConstants.ACTIONS_NAMESPACE;
 
     /**
      * Locations of the I18n namespaces.
@@ -245,7 +270,6 @@ export class I18nConstants {
         [ I18nConstants.EXTENSIONS_NAMESPACE, "portals" ],
         [ I18nConstants.USERSTORES_NAMESPACE, "portals" ],
         [ I18nConstants.VALIDATION_NAMESPACE, "portals" ],
-        [ I18nConstants.JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE, "portals" ],
         [ I18nConstants.TRANSFER_LIST_NAMESPACE, "portals" ],
         [ I18nConstants.USER_NAMESPACE, "portals" ],
         [ I18nConstants.USERS_NAMESPACE, "portals" ],
@@ -280,7 +304,12 @@ export class I18nConstants {
         [ I18nConstants.GROUPS_NAMESPACE, "portals" ],
         [ I18nConstants.APPLICATIONS_NAMESPACE, "portals" ],
         [ I18nConstants.IDP_NAMESPACE, "portals" ],
-        [ I18nConstants.API_RESOURCES_NAMESPACE, "portals" ]
+        [ I18nConstants.API_RESOURCES_NAMESPACE, "portals" ],
+        [ I18nConstants.AI_NAMESPACE, "portals" ],
+        [ I18nConstants.APPLICATION_TEMPLATES_NAMESPACE, "portals" ],
+        [ I18nConstants.TEMPLATE_CORE_NAMESPACE, "portals" ],
+        [ I18nConstants.IMPERSONATION_CONFIGURATION_NAMESPACE, "portals" ],
+        [ I18nConstants.ACTIONS_NAMESPACE, "portals" ]
     ]);
 
     /**

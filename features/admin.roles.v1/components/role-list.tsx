@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,15 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "@wso2is/admin.core.v1";
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -43,13 +51,6 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useMemo, useState } fro
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import {
-    AppConstants,
-    AppState,
-    UIConstants,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../admin.core.v1";
 import { APPLICATION_DOMAIN, RoleConstants as LocalRoleConstants } from "../constants/role-constants";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {
@@ -139,19 +140,20 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
 
     const { t } = useTranslation();
 
-    const featureConfig: FeatureAccessConfigInterface = useSelector(
+    const userRolesFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userV1Roles);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedRole, setCurrentDeletedRole ] = useState<RolesInterface>();
 
     const isReadOnly: boolean = useMemo(() => {
-        return !isFeatureEnabled(featureConfig,
+        return !isFeatureEnabled(userRolesFeatureConfig,
             LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE")) ||
-            !hasRequiredScopes(featureConfig,
-                featureConfig?.scopes?.update, allowedScopes);
-    }, [ featureConfig, allowedScopes ]);
+            !hasRequiredScopes(userRolesFeatureConfig,
+                userRolesFeatureConfig?.scopes?.update, allowedScopes);
+    }, [ userRolesFeatureConfig, allowedScopes ]);
 
     const handleRoleEdit = (roleId: string) => {
         history.push(AppConstants.getPaths().get("ROLE_EDIT").replace(":id", roleId));
@@ -242,7 +244,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 <EmptyPlaceholder
                     data-testid={ `${ testId }-empty-list-empty-placeholder` }
                     action={ (
-                        <Show when={ AccessControlConstants.ROLE_WRITE }>
+                        <Show when={ featureConfig?.userRoles?.scopes?.create }>
                             <PrimaryButton
                                 data-testid={ `${ testId }-empty-list-empty-placeholder-add-button` }
                                 onClick={ onEmptyListPlaceholderActionClick }
@@ -365,8 +367,10 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
             {
                 hidden: (role: RolesInterface) => (role?.displayName === RoleConstants.ADMIN_ROLE ||
                     role?.displayName === RoleConstants.ADMIN_GROUP)
-                    || !isFeatureEnabled(featureConfig, LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_DELETE"))
-                    || !hasRequiredScopes(featureConfig, featureConfig?.scopes?.delete, allowedScopes),
+                    || !isFeatureEnabled(userRolesFeatureConfig,
+                        LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_DELETE"))
+                    || !hasRequiredScopes(userRolesFeatureConfig,
+                        userRolesFeatureConfig?.scopes?.delete, allowedScopes),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {
                     setCurrentDeletedRole(role);

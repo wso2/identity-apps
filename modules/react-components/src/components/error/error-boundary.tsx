@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -60,7 +60,7 @@ class ErrorBoundary extends Component<
         fallback: PropTypes.element,
         handleError: PropTypes.func,
         onChunkLoadError: PropTypes.func
-    }
+    };
 
     constructor(props: ErrorBoundaryProps) {
         super(props);
@@ -79,6 +79,7 @@ class ErrorBoundary extends Component<
         if (error.name === "ChunkLoadError") {
             onChunkLoadError && onChunkLoadError();
         }
+
         // Catch errors in any components below and re-render with error message
         this.setState({
             error,

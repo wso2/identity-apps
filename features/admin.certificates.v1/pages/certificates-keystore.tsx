@@ -17,6 +17,14 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    filterList,
+    sortList
+} from "@wso2is/admin.core.v1";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, Certificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -27,15 +35,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    filterList,
-    sortList
-} from "../../admin.core.v1";
 import { listCertificateAliases } from "../api";
 import { CertificatesList, ImportCertificate } from "../components";
 
@@ -233,7 +232,7 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
                     (isLoading || !(!searchQuery && certificatesKeystore?.length <= 0))
                     && !isSuper && (
                         <Show
-                            when={ AccessControlConstants.CERTIFICATES_WRITE }
+                            when={ featureConfig?.certificates?.scopes?.create }
                         >
                             <PrimaryButton
                                 onClick={ () => {

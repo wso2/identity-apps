@@ -16,25 +16,33 @@
  * under the License.
  */
 
+import UserPreferenceProvider from "@wso2is/admin.core.v1/providers/user-preferences-provider";
+import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
-import { render, screen } from "../../../../test-configs/utils";
 import MissingSocialAuthenticatorSelectionModal, {
     MissingSocialAuthenticatorSelectionModalPropsInterface
 } from "../missing-social-authenticator-selection-modal";
 
 describe("MissingSocialAuthenticatorSelectionModal", () => {
-    const defaultProps: MissingSocialAuthenticatorSelectionModalPropsInterface = {
+    const defaultProps: MissingSocialAuthenticatorSelectionModalPropsInterface & {
+        open: boolean
+    } = {
         authenticatorCategoryDisplayName: "Microsoft",
-        authenticatorCategoryTemplate: "microsoft-idp"
+        authenticatorCategoryTemplate: "microsoft-idp",
+        open: true
     };
 
     it("renders the MissingSocialAuthenticatorSelectionModal component", () => {
-        render(<MissingSocialAuthenticatorSelectionModal { ...defaultProps } />, { allowedScopes: fullPermissions });
+        render(
+            <UserPreferenceProvider>
+                <MissingSocialAuthenticatorSelectionModal { ...defaultProps } />
+            </UserPreferenceProvider>
+            , { allowedScopes: fullPermissions });
 
         const missingSocialAuthenticatorSelectionModal: Element = screen.getByTestId(
-            "missing-social-authenticator-selection-modal"
+            "duplicate-social-authenticator-selection-modal"
         );
 
         expect(missingSocialAuthenticatorSelectionModal).toBeInTheDocument();

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -85,6 +85,7 @@ export const common: CommonNS = {
     endsWith: "Termina com",
     equals: "Igual a",
     exitFullScreen: "Sair do modo tela cheia",
+    experimental: "experimental",
     explore: "Explorar",
     export: "Exportar",
     featureAvailable: "Este recurso estará disponível em breve!",
@@ -113,6 +114,7 @@ export const common: CommonNS = {
     logout: "Logout",
     maxValidation: "Este valor deve ser menor ou igual a {{max}}.",
     maximize: "Maximizar",
+    metaAttributes: "Metaatributos",
     minValidation: "Este valor deve ser maior ou igual a {{min}}.",
     minimize: "Minimizar",
     more: "Mais",
@@ -133,6 +135,7 @@ export const common: CommonNS = {
     personalInfo: "Informação Pessoal",
     pin: "Fixar",
     pinned: "Fixado",
+    premium: "Prêmio",
     pressEnterPrompt: "Pressione <1>Enter</1> para selecionar",
     preview: "Pré-visualização",
     previous: "Anterior",

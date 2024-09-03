@@ -33,7 +33,7 @@ import { RemoteFetchStatus } from "../components";
  * This will test the remote configuration status view.
  * TODO: Enable once https://github.com/wso2/product-is/issues/10393 is fixed.
  */
-describe("UTC-2.0 - [Remote Fetch Configuration] - Deployed Configuration Status", () => {
+describe.skip("UTC-2.0 - [Remote Fetch Configuration] - Deployed Configuration Status", () => {
     const mockStore = configureStore();
     const store = mockStore({});
 

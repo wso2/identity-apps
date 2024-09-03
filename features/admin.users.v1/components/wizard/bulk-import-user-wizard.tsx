@@ -29,16 +29,36 @@ import Divider from "@oxygen-ui/react/Divider";
 import InputLabel from "@oxygen-ui/react/InputLabel/InputLabel";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "@wso2is/admin.claims.v1/api";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
+import {
+    AppConstants,
+    AppState,
+    ModalWithSidePanel,
+    UserStoreDetails,
+    UserStoreProperty,
+    getCertificateIllustrations,
+    history
+} from "@wso2is/admin.core.v1";
+import { userConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
+import { getGroupList, useGroupList } from "@wso2is/admin.groups.v1/api";
+import { GroupsInterface } from "@wso2is/admin.groups.v1/models";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models";
+import { getAUserStore, getUserStores } from "@wso2is/admin.userstores.v1/api";
+import { PRIMARY_USERSTORE, UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
+import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
+import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertLevels,
     ClaimDialect,
     ExternalClaim,
     HttpMethods,
+    IdentifiableComponentInterface,
     RolesInterface,
     SCIMResource,
-    SCIMSchemaExtension,
-    TestableComponentInterface
+    SCIMSchemaExtension
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -61,31 +81,12 @@ import {
 import { FormValidation } from "@wso2is/validation";
 import Axios,  { AxiosResponse }from "axios";
 import toUpper from "lodash-es/toUpper";
-import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, Suspense, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
-import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../admin.claims.v1/api";
-import { ClaimManagementConstants } from "../../../admin.claims.v1/constants";
-import {
-    AppConstants,
-    ModalWithSidePanel,
-    UserStoreDetails,
-    UserStoreProperty,
-    getCertificateIllustrations,
-    history
-} from "../../../admin.core.v1";
-import { userConfig, userstoresConfig } from "../../../admin.extensions.v1/configs";
-import { getGroupList, useGroupList } from "../../../admin.groups.v1/api";
-import { GroupsInterface } from "../../../admin.groups.v1/models";
-import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { PatchRoleDataInterface } from "../../../admin.roles.v2/models";
-import { getAUserStore, getUserStores } from "../../../admin.userstores.v1/api";
-import { PRIMARY_USERSTORE, UserStoreManagementConstants } from "../../../admin.userstores.v1/constants";
-import { useValidationConfigData } from "../../../admin.validation.v1/api";
-import { ValidationFormInterface } from "../../../admin.validation.v1/models";
 import { addBulkUsers } from "../../api";
 import {
     BlockedBulkUserImportAttributes,
@@ -98,7 +99,6 @@ import {
 import {
     BulkResponseSummary,
     BulkUserImportOperationResponse,
-    BulkUserImportOperationStatus,
     MultipleInviteMode,
     SCIMBulkEndpointInterface,
     SCIMBulkOperation,
@@ -111,10 +111,9 @@ import { BulkImportResponseList } from "../bulk-import-response-list";
 /**
  * Prototypes for the BulkImportUserWizardComponent.
  */
-interface BulkImportUserInterface extends TestableComponentInterface {
+interface BulkImportUserInterface extends IdentifiableComponentInterface {
     closeWizard: () => void;
     userstore: string;
-    ["data-componentid"]?: string;
 }
 
 interface CSVAttributeMapping {
@@ -152,11 +151,6 @@ interface GroupMemberAssociation {
 }
 
 const ASK_PASSWORD_ATTRIBUTE: string = "identity/askPassword";
-const CSV_FILE_PROCESSING_STRATEGY: CSVFileStrategy = new CSVFileStrategy(
-    undefined,  // Mimetype.
-    userConfig.bulkUserImportLimit.fileSize * CSVFileStrategy.KILOBYTE,  // File Size.
-    userConfig.bulkUserImportLimit.userCount  // Row Count.
-);
 const DATA_VALIDATION_ERROR: string = "Data validation error";
 const TIMEOUT_ERROR: string = "TIMEOUT_ERROR";
 const ADDRESS_HOME_ATTRIBUTE: string = "addresses#home";
@@ -174,7 +168,11 @@ const FILE_IMPORT_TIMEOUT: number = 60000; // 1 minutes.
 export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = (
     props: BulkImportUserInterface
 ): ReactElement => {
-    const { closeWizard, userstore, ["data-componentid"]: componentId } = props;
+    const {
+        closeWizard,
+        userstore,
+        ["data-componentid"]: componentId
+    } = props;
 
     const { t } = useTranslation();
     const { isSubOrganization } = useGetCurrentOrganizationType();
@@ -210,6 +208,17 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const { getLink } = useDocumentation();
     const config: ValidationFormInterface = getUsernameConfiguration(validationData);
     const isAlphanumericUsername: boolean = config?.enableValidator === "true";
+    const fileImportTimeout: number = useSelector((state: AppState) =>
+        state.config.ui.features.bulkUserImport.fileImportTimeout);
+    const userLimit: number = useSelector((state: AppState) =>
+        state.config.ui.features.bulkUserImport.userLimit);
+    const csvFileProcessingStrategy: CSVFileStrategy = useMemo( () => {
+        return new CSVFileStrategy(
+            undefined,  // Mimetype.
+            userConfig.bulkUserImportLimit.fileSize * CSVFileStrategy.KILOBYTE,  // File Size.
+            userLimit ? userLimit : userConfig.bulkUserImportLimit.userCount  // Row Count.
+        );
+    }, [ userLimit ]);
 
     const optionsArray: string[] = [];
 
@@ -1189,7 +1198,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             const timeoutPromise: Promise<unknown> = new Promise((_: unknown, reject: (reason?: any) => void) => {
                 setTimeout(() => reject(
                     new Error(TIMEOUT_ERROR)
-                ), FILE_IMPORT_TIMEOUT);
+                ), fileImportTimeout ? fileImportTimeout : FILE_IMPORT_TIMEOUT);
             });
 
             const scimResponse: any = await Promise.race([ scimResponsePromise, timeoutPromise ]);
@@ -1402,7 +1411,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @param statusCode - Status code from the bulk response.
      * @returns - Status message.
      */
-    const getStatusFromCode = (statusCode: number): BulkUserImportOperationStatus => {
+    const getStatusFromCode = (statusCode: number): string => {
         if (statusCode === 201 || statusCode === 200) return t(
             "user:modals.bulkImportUserWizard.wizardSummary.tableStatus.success" );
         if (statusCode === 202) return t(
@@ -1836,7 +1845,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                 <Grid.Column mobile={ 16 }>
                                     <FilePicker
                                         key={ 1 }
-                                        fileStrategy={ CSV_FILE_PROCESSING_STRATEGY }
+                                        fileStrategy={ csvFileProcessingStrategy }
                                         file={ selectedCSVFile }
                                         onChange={ (
                                             result: PickerResult<{

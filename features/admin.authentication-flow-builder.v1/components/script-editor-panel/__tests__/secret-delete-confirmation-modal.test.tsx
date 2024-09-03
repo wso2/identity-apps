@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
-import { render, screen } from "../../../../test-configs/utils";
 import SecretDeleteConfirmationModal, {
     SecretDeleteConfirmationModalPropsInterface
 } from "../secret-delete-confirmation-modal";
@@ -33,7 +33,8 @@ describe("SecretDeleteConfirmationModal", () => {
             secretId: "342234-5f41-46c3-a646-53187e091b1e",
             secretName: "NPM_TOKEN",
             type: "ADAPTIVE_AUTH_CALL_CHOREO"
-        }
+        },
+        open: true
     };
 
     it("renders the SecretDeleteConfirmationModal component", () => {

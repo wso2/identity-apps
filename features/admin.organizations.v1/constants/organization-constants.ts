@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -63,7 +63,6 @@ export class OrganizationManagementConstants {
         "suborganizations:notifications.duplicateOrgError.message",
         "cdaefcee-ecdb-47af-8538-174ec13292db"
     );
-
 }
 
 export enum ORGANIZATION_TYPE {
@@ -106,5 +105,5 @@ export enum OrganizationType {
     SUBORGANIZATION = "SUBORGANIZATION",
     TENANT = "TENANT",
     FIRST_LEVEL_ORGANIZATION = "FIRST_LEVEL_ORGANIZATION",
-    SUPER_ORGANIZATION= "SUPER_ORGANIZATION"
+    SUPER_ORGANIZATION = "SUPER_ORGANIZATION"
 }

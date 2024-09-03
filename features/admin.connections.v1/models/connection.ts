@@ -566,22 +566,6 @@ export interface GenericConnectionCreateWizardPropsInterface {
     connectionNamesList?: string[];
 }
 
-/**
- * Enum for Connection template loading strategies.
- *
- * @readonly
- */
-export enum ConnectionTemplateLoadingStrategies {
-    /**
-     * App will resort to in-app templates.
-     */
-    LOCAL = "LOCAL",
-    /**
-     * App will fetch templates from the template management REST API.
-     */
-    REMOTE = "REMOTE"
-}
-
 export interface TemplateConfigInterface<T = Record<string, unknown>> {
     content?: TemplateContentInterface;
     enabled: boolean;
@@ -612,7 +596,6 @@ export interface TemplateConfigInterface<T = Record<string, unknown>> {
 export interface ConnectionTemplatesConfigInterface {
     categories: TemplateConfigInterface<ConnectionTemplateCategoryInterface>[] | any;
     groups?: TemplateConfigInterface<ConnectionTemplateGroupInterface>[] | any;
-    templates: TemplateConfigInterface<any>[] | any;
 }
 
 /**
@@ -762,4 +745,22 @@ export interface IdpNameValidationCache {
      * Indicates whether the above IDP name is already taken.
      */
     state: boolean;
+}
+
+/**
+ * Interface for the general form values in the enterprise connection wizard.
+ */
+export interface EnterpriseConnectionCreateWizardGeneralFormValuesInterface {
+    /**
+     * Name ID type used in the SAML protocol connection.
+     */
+    NameIDType: string;
+    /**
+     * Request method for the SAML protocol connection.
+     */
+    RequestMethod: string;
+    /**
+     * Unique name for the connection.
+     */
+    name: string;
 }

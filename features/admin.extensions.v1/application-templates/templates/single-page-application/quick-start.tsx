@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,21 @@
  * under the License.
  */
 
+import { getApplicationList } from "@wso2is/admin.applications.v1/api";
+import {
+    ApplicationInterface,
+    ApplicationListInterface,
+    ApplicationTemplateInterface,
+    URLFragmentTypes
+} from "@wso2is/admin.applications.v1/models";
+import { history } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, useDocumentation } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
 import AngularIcon from "./assets/angular-logo-icon.svg";
@@ -34,15 +42,6 @@ import VueIcon from "./assets/vue-logo-icon.svg";
 import { IntegrateSDKs } from "./integrate-sdks/integrate-sdks";
 import { SupportedSPATechnologyTypes } from "./models";
 import { TryoutSamples } from "./tryout-samples";
-import { getApplicationList } from "../../../../admin.applications.v1/api";
-import {
-    ApplicationInterface,
-    ApplicationListInterface,
-    ApplicationTemplateInterface,
-    URLFragmentTypes
-} from "../../../../admin.applications.v1/models";
-import { history } from "../../../../admin.core.v1";
-import { AppState } from "../../../../admin.core.v1/store";
 import { QuickStartModes } from "../../shared";
 import { QuickStartPanelOverview, SPACustomConfiguration, SPATechnologySelection } from "../../shared/components";
 import { SDKMeta } from "../../templates/single-page-application/meta";
@@ -92,7 +91,6 @@ const SinglePageApplicationQuickStart: FunctionComponent<SinglePageApplicationQu
     const [ selectedIntegration, setSelectedIntegration ] = useState<QuickStartModes>(undefined);
     const [ selectedTechnology, setSelectedTechnology ] = useState<SupportedSPATechnologyTypes>(undefined);
     const [ appList, setAppList ] = useState<ApplicationListInterface>(undefined);
-    const isHelpPanelVisible: boolean = useSelector((state: AppState) => state.helpPanel.visibility);
 
 
     useEffect(() => {
@@ -306,7 +304,7 @@ const SinglePageApplicationQuickStart: FunctionComponent<SinglePageApplicationQu
                     : (
                         <>
                             <Grid.Row>
-                                <Grid.Column width={ isHelpPanelVisible ? 16 : 13 }>
+                                <Grid.Column width={ 13 }>
                                     <QuickStartPanelOverview
                                         technology={ selectedTechnology }
                                         applicationType={ template.id }
@@ -320,7 +318,7 @@ const SinglePageApplicationQuickStart: FunctionComponent<SinglePageApplicationQu
                                 </Grid.Column>
                             </Grid.Row>
                             <Grid.Row>
-                                <Grid.Column width={ isHelpPanelVisible ? 16 : 13 }>
+                                <Grid.Column width={ 13 }>
                                     { resolveQuickStartMode() }
                                 </Grid.Column>
                             </Grid.Row>

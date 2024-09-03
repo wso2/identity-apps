@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { URLFragmentTypes } from "@wso2is/admin.applications.v1/models";
+import { AppState, history } from "@wso2is/admin.core.v1";
+import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {  ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { ReactElement, SyntheticEvent, useState } from "react";
@@ -23,9 +26,6 @@ import { TabProps } from "semantic-ui-react";
 import ApplicationRoleGroups from "./application-role-groups";
 import ApplicationRoleInvitedUserGroups from "./application-role-invited-user-groups";
 import ApplicationRoleAuthenticatorGroups from "./authenticator-groups/application-role-authenticator-groups";
-import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1";
-import { URLFragmentTypes } from "../../admin.applications.v1/models";
-import { AppState, history } from "../../admin.core.v1";
 
 interface EditApplicationRolesProps extends IdentifiableComponentInterface {
     appId: string;
@@ -41,7 +41,7 @@ const EditApplicationRoles = (props: EditApplicationRolesProps): ReactElement =>
 
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
     const defaultActiveIndex: number = 0;
-    
+
     const extendedFeatureConfig: ExtendedFeatureConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features);
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
@@ -102,7 +102,7 @@ const EditApplicationRoles = (props: EditApplicationRolesProps): ReactElement =>
                 }
             );
         }
-    
+
         return panes;
     };
 

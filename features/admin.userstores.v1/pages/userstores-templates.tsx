@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppConstants, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-components";
@@ -24,8 +26,6 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useS
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { userstoresConfig } from "../../admin.extensions.v1";
-import { AppConstants, getEmptyPlaceholderIllustrations, history } from "../../admin.core.v1";
 import { getAType, getUserstoreTypes } from "../api";
 import { AddUserStore } from "../components";
 import { getUserstoreTemplateIllustrations } from "../configs";
@@ -128,7 +128,7 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                     } else {
                         userstoreTypes.push(
                             {
-                                description: USER_STORE_TYPE_DESCRIPTIONS[ type.typeName ] 
+                                description: USER_STORE_TYPE_DESCRIPTIONS[ type.typeName ]
                                     ?? DEFAULT_DESCRIPTION_CUSTOM_USERSTORE,
                                 id: type.typeId,
                                 image: USERSTORE_TYPE_IMAGES[ type.typeName ] ?? DEFAULT_USERSTORE_TYPE_IMAGE,

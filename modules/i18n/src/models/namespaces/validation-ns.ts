@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 export interface validationNS {
     fetchValidationConfigData: {
         error: {
@@ -53,4 +54,29 @@ export interface validationNS {
     description: string;
     goBackToApplication: string;
     goBackToValidationConfig: string;
+    passwordExpiry: {
+        heading: string;
+        rules: {
+            buttons: {
+                addRule: string;
+                deleteRule: string;
+            },
+            actions: {
+                apply: string;
+                skip: string;
+            },
+            attributes: {
+                roles: string;
+                groups: string;
+            },
+            messages: {
+                info: string;
+                applyMessage: string;
+                skipMessage: string;
+                ifUserHas: string;
+                defaultRuleApplyMessage: string;
+                defaultRuleSkipMessage: string;
+            }
+        }
+    }
 }

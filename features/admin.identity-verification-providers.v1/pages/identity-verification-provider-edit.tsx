@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,14 @@
  * under the License.
  */
 
+import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar,
     AppAvatar,
     TabPageLayout
 } from "@wso2is/react-components";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -33,7 +34,6 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
 import {
     useIDVPTemplateTypeMetadata,
     useIdentityVerificationProvider,

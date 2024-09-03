@@ -6,7 +6,7 @@
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~     http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing,
   ~ software distributed under the License is distributed on an
@@ -105,9 +105,9 @@
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
     %>
-    <jsp:include page="extensions/header.jsp"/>
+        <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-    <jsp:include page="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
     <% } %>
     <script src="js/scripts.js"></script>
     <!--[if lt IE 9]>
@@ -123,9 +123,9 @@
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                 if (productTitleFile.exists()) {
             %>
-            <jsp:include page="extensions/product-title.jsp"/>
+                <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-            <jsp:include page="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection" >
@@ -172,9 +172,9 @@
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
                 if (productFooterFile.exists()) {
             %>
-            <jsp:include page="extensions/product-footer.jsp"/>
+                <jsp:include page="extensions/product-footer.jsp"/>
             <% } else { %>
-            <jsp:include page="includes/product-footer.jsp"/>
+                <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
         <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
@@ -187,9 +187,9 @@
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {
     %>
-    <jsp:include page="extensions/footer.jsp"/>
+        <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-    <jsp:include page="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
     <% } %>
 </body>
 </html>

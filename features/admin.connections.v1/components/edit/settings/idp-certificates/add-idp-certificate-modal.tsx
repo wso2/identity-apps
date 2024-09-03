@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { getCertificateIllustrations } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Form } from "@wso2is/form";
@@ -33,7 +34,6 @@ import React, { FC, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { getCertificateIllustrations } from "../../../../../admin.core.v1";
 import { updateIDPCertificate } from "../../../../api/connections";
 import { ConnectionInterface } from "../../../../models/connection";
 

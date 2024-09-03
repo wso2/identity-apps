@@ -11,6 +11,9 @@ End-user apps in WSO2 Identity Server
 
 ## Table of Content
 
+<!-- Execute: `node scripts/generate-markdown-toc.js README.md` -->
+<!-- TOC:START - Do not remove or modify this section -->
+
 - [Prerequisite](#prerequisite)
   * [Setup Development Environment](#setup-development-environment)
   * [Download WSO2 Identity Server](#download-wso2-identity-server)
@@ -20,8 +23,7 @@ End-user apps in WSO2 Identity Server
     + [Make Applications Editable](#make-applications-editable)
     + [Configure Callback URLs for System Applications (for WSO2 IS v7.0 and above)](#configure-callback-urls-for-system-applications-for-wso2-is-v70-and-above)
     + [Start the Identity Server](#start-the-identity-server)
-    + [Configure Callback URLs for System Applications (for WSO2 IS below v7.0)
-](#configure-callback-urls-for-system-applications-for-wso2-is-below-v70)
+    + [Configure Callback URLs for System Applications (for WSO2 IS below v7.0)](#configure-callback-urls-for-system-applications-for-wso2-is-below-v70)
 - [Build & Run](#build--run)
   * [Build](#build)
     + [For Console & My Account](#for-console--my-account)
@@ -38,12 +40,16 @@ End-user apps in WSO2 Identity Server
 - [Reporting Issues](#reporting-issues)
 - [License](#license)
 
+<!-- TOC:END -->
+
 ## Prerequisite
 
 ### Setup Development Environment
 
 1. Install NodeJS LTS(Latest Stable Version) from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
 2. Install [pnpm](https://pnpm.io/).
+
+> Note: Only PNPM v8 is supported at the moment.
 
     ```shell
     corepack prepare pnpm@latest --activate
@@ -53,6 +59,7 @@ End-user apps in WSO2 Identity Server
 
 3. Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi).
 4. Install JDK 11 [https://openjdk.org/projects/jdk/](https://openjdk.org/projects/jdk/).
+5. Install the [recommended developer tools](./docs/SET_UP_DEV_ENVIRONMENT.md).
 
 ### Download WSO2 Identity Server
 
@@ -126,8 +133,8 @@ For instructions on startup, [read the docs](https://is.docs.wso2.com/en/latest/
 #### Configure Callback URLs for System Applications (for WSO2 IS below v7.0)
 
 > ℹ️ Note
-> 
-> This step is only applicable for WSO2 Identity Server versions below v7.0. 
+>
+> This step is only applicable for WSO2 Identity Server versions below v7.0.
 
 1. Navigate to the Management Console i.e `https://localhost:9443/carbon/` from the browser, and login to the system by entering an admin password.
 

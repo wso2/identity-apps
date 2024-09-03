@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,15 +16,13 @@
  * under the License.
  */
 
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
+import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code, ConfirmationModal, ConfirmationModalPropsInterface, LabeledCard, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
-import {
-    IdentityProviderManagementConstants
-} from "../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { GenericAuthenticatorInterface } from "../../../admin.identity-providers.v1/models/identity-provider";
 
 /**
  * Proptypes for the duplicate social authenticator selection modal component.
@@ -132,7 +130,8 @@ const DuplicateSocialAuthenticatorSelectionModal: FunctionComponent<
                 <div className="authenticator-grid">
                     { authenticators
                         .filter((authenticator: GenericAuthenticatorInterface) => {
-                            return authenticator.name !== IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR;
+                            return authenticator.name !== LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                                .BACKUP_CODE_AUTHENTICATOR_NAME;
                         })
                         .map((authenticator: GenericAuthenticatorInterface, index: number) => (
                             <LabeledCard

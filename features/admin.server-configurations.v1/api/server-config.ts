@@ -17,13 +17,14 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { store } from "@wso2is/admin.core.v1";
+import useRequest,
+{ RequestConfigInterface, RequestErrorInterface, RequestResultInterface }
+    from "@wso2is/admin.core.v1/hooks/use-request";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { ServerConfigurationsInterface } from "./governance-connectors";
-import { store } from "../../admin.core.v1";
-import useRequest,
-{ RequestConfigInterface, RequestErrorInterface, RequestResultInterface } from "../../admin.core.v1/hooks/use-request";
 import { ServerConfigurationsConstants } from "../constants";
 
 /**
@@ -76,7 +77,7 @@ export const getServerConfigs = () : Promise<ServerConfigurationsInterface> => {
 
 /**
  * Hook to get the server configurations.
- * 
+ *
  * @returns server configurations.
  */
 export const useServerConfigs = <Data = ServerConfigurationsInterface,

@@ -17,15 +17,15 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import useRequest, { 
+import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
-import { store } from "../../admin.core.v1/store";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { EmailProviderConstants } from "../constants";
 import { EmailProviderConfigAPIResponseInterface }  from "../models";
 
@@ -34,10 +34,10 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 
 /**
  * Get email provider configurations.
- * 
+ *
  * @returns the email provider configurations of the tenant.
  */
-export const useEmailProviderConfig = <Data = EmailProviderConfigAPIResponseInterface[], Error = RequestErrorInterface> 
+export const useEmailProviderConfig = <Data = EmailProviderConfigAPIResponseInterface[], Error = RequestErrorInterface>
     (): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -62,13 +62,13 @@ export const useEmailProviderConfig = <Data = EmailProviderConfigAPIResponseInte
 
 /**
  * Update email provider configurations.
- * 
+ *
  * @param data - the updated email provider configurations.
  * @returns a promise to update the email provider configurations.
  */
-export const updateEmailProviderConfigurations = (data: EmailProviderConfigAPIResponseInterface): 
+export const updateEmailProviderConfigurations = (data: EmailProviderConfigAPIResponseInterface):
     Promise<EmailProviderConfigAPIResponseInterface> => {
-    
+
     const requestConfig: AxiosRequestConfig = {
         data: data,
         headers: {
@@ -106,9 +106,9 @@ export const updateEmailProviderConfigurations = (data: EmailProviderConfigAPIRe
  * Delete email provider configurations.
  *
  */
-export const deleteEmailProviderConfigurations = (): 
+export const deleteEmailProviderConfigurations = ():
     Promise<EmailProviderConfigAPIResponseInterface> => {
-    
+
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
@@ -132,7 +132,7 @@ export const deleteEmailProviderConfigurations = ():
             }
 
             return Promise.resolve(response.data as EmailProviderConfigAPIResponseInterface);
-        }).catch((error: AxiosError) => {            
+        }).catch((error: AxiosError) => {
             if (error.response?.data?.code === EmailProviderConstants.EMAIL_PROVIDER_CONFIG_NOT_FOUND_ERROR_CODE) {
                 // Error due to the email provider configurations not existing. This is expected and should throw error.
                 return Promise.resolve(null);

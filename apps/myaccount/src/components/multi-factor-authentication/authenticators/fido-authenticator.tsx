@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { UserAgentParser } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import { ConfirmationModal, GenericIcon, Popup } from "@wso2is/react-components";
@@ -26,7 +27,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Form, Grid, Icon, Label, List, ModalContent } from "semantic-ui-react";
-import UAParser from "ua-parser-js";
 import {
     connectToDevice,
     decodePublicKeyCredentialCreationOptions,
@@ -86,7 +86,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     // link https://bugs.webkit.org/show_bug.cgi?id=213595
     // So the request is sent on component mount so that the button click can trigger the flow directly.
     useEffect(() => {
-        if (new UAParser().getBrowser().name !== "Safari") {
+        if (new UserAgentParser().browser.name !== "Safari") {
             return;
         }
 
@@ -226,12 +226,10 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
      */
     const addDevice = () => {
         setDeviceErrorModalVisibility(false);
-        if (new UAParser().getBrowser().name === "Safari") {
+        if (new UserAgentParser().browser.name === "Safari") {
             // Safari doesn't allow the flow to be initiated in async.
-            // link https://bugs.webkit.org/show_bug.cgi?id=213595
-            if (new UAParser().getBrowser().name === "Safari") {
-                talkToDevice(oldFidoFlowStartResponse);
-            }
+            // Ref: https://bugs.webkit.org/show_bug.cgi?id=213595
+            talkToDevice(oldFidoFlowStartResponse);
         } else {
             startFidoFlow()
                 .then((response: Record<string, unknown>) => {
@@ -253,7 +251,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
 
         // Safari doesn't allow the flow to be initiated in async.
         // link https://bugs.webkit.org/show_bug.cgi?id=213595
-        if (new UAParser().getBrowser().name === "Safari") {
+        if (new UserAgentParser().browser.name === "Safari") {
             talkToDevice(fidoFlowStartResponse);
         } else {
             startFidoUsernamelessFlow()

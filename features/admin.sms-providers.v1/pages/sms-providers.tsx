@@ -16,9 +16,15 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface
+} from "@wso2is/admin.core.v1";
+import { history } from "@wso2is/admin.core.v1/helpers";
+import smsProviderConfig from "@wso2is/admin.extensions.v1/configs/sms-provider";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FormRenderProps } from "@wso2is/form";
@@ -31,7 +37,7 @@ import {
     PageLayout,
     useDocumentation
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -39,15 +45,6 @@ import { Divider, Grid, Placeholder } from "semantic-ui-react";
 import CustomSMSProvider from "./custom-sms-provider";
 import TwilioSMSProvider from "./twilio-sms-provider";
 import VonageSMSProvider from "./vonage-sms-provider";
-import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
-import { AuthenticatorManagementConstants } from "../../admin.connections.v1/constants/autheticator-constants";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface
-} from "../../admin.core.v1";
-import { history } from "../../admin.core.v1/helpers";
-import smsProviderConfig from "../../admin.extensions.v1/configs/sms-provider";
 import { createSMSProvider, deleteSMSProviders, updateSMSProvider, useSMSProviders } from "../api";
 import { providerCards } from "../configs/provider-cards";
 import { SMSProviderConstants } from "../constants";
@@ -80,7 +77,6 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
     const dispatch: Dispatch<any> = useDispatch();
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const defaultProviderParams: {
         [key: string]: SMSProviderInterface;
     } = {
@@ -112,11 +108,8 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         providerParams: defaultProviderParams,
         selectedProvider: null
     });
-    const isReadOnly: boolean = useMemo(() => !hasRequiredScopes(
-        featureConfig?.smsProviders,
-        featureConfig?.smsProviders?.scopes?.update,
-        allowedScopes
-    ), [ featureConfig, allowedScopes ]);
+
+    const hasSMSProvidersUpdatePermission: boolean = useRequiredScopes(featureConfig?.smsProviders?.scopes?.update);
 
     const {
         data: originalSMSProviderConfig,
@@ -124,23 +117,28 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         mutate: mutateSMSProviderConfig,
         error: smsProviderConfigFetchRequestError
     } = useSMSProviders();
+
     const [ isLoading, setIsLoading ] = useState(true);
     const [ isChoreoSMSOTPProvider, setChoreoSMSOTPProvider ] = useState<boolean>(false);
     const [ existingSMSProviders, setExistingSMSProviders ] = useState<string[]>([]);
 
     useEffect(() => {
-        if (!isSMSProviderConfigFetchRequestLoading && originalSMSProviderConfig?.length > 0) {
+        if (!isSMSProviderConfigFetchRequestLoading) {
             const existingSMSProviderNames: string[] = [];
+
+            let isAlternateSMSOTPProvidersEnabled: boolean = false;
 
             originalSMSProviderConfig?.forEach((smsProvider: SMSProviderAPIResponseInterface) => {
                 existingSMSProviderNames.push(smsProvider.provider + "SMSProvider");
 
                 smsProvider.properties?.forEach((prop: { key: string, value: string }) => {
                     if (prop.key === "channel.type" && prop.value === "choreo") {
-                        setChoreoSMSOTPProvider(true);
+                        isAlternateSMSOTPProvidersEnabled = true;
                     }
                 });
             });
+
+            setChoreoSMSOTPProvider(isAlternateSMSOTPProvidersEnabled);
 
             setExistingSMSProviders(existingSMSProviderNames);
         }
@@ -208,6 +206,10 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         setIsLoading(false);
 
     }, [ originalSMSProviderConfig ]);
+
+    const mutateGetSMSProviderConfig = (): void => {
+        mutateSMSProviderConfig();
+    };
 
     /**
      * Displays the error banner when unable to fetch sms provider configuration.
@@ -291,10 +293,10 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             try {
                 await deleteSMSProviders();
             } catch (error: any) {
-                const errorType : string = error.code === AuthenticatorManagementConstants.ErrorMessages
-                    .SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS.getErrorCode() ? "activeSubs" :
-                    ( error.code === AuthenticatorManagementConstants.ErrorMessages
-                        .SMS_NOTIFICATION_SENDER_DELETION_ERROR_CONNECTED_APPS.getErrorCode() ? "connectedApps"
+                const errorType : string = error.code === SMSProviderConstants
+                    .SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS ? "activeSubs" :
+                    ( error.code === SMSProviderConstants
+                        .SMS_PROVIDER_CONFIG_UNABLE_TO_DISABLE_ERROR_CODE ? "connectedApps"
                         : "generic" );
 
                 dispatch(addAlert({
@@ -599,24 +601,35 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                         SMSProviderConstants.CUSTOM_SMS_PROVIDER && (
                                             <>
                                                 <CustomSMSProvider
-                                                    isReadOnly={ isReadOnly }
+                                                    isLoading={ isSubmitting }
+                                                    isReadOnly={ !hasSMSProvidersUpdatePermission }
                                                     onSubmit={ handleSubmit }
+                                                    data-componentid={ "custom-sms-provider" }
                                                 />
-                                                { smsProviderConfig.renderAlternativeSmsProviderOptions() }
+                                                { smsProviderConfig.renderAlternativeSmsProviderOptions({
+                                                    existingSMSProviders,
+                                                    mutateGetSMSProviderConfig,
+                                                    originalSMSProviderConfig,
+                                                    smsProviderConfigFetchRequestError
+                                                }) }
                                             </>
                                         ) }
                                         { smsProviderSettings?.selectedProvider ===
                                                         SMSProviderConstants.TWILIO_SMS_PROVIDER && (
                                             <TwilioSMSProvider
-                                                isReadOnly={ isReadOnly }
+                                                isLoading={ isSubmitting }
+                                                isReadOnly={ !hasSMSProvidersUpdatePermission }
                                                 onSubmit={ handleSubmit }
+                                                data-componentid={ "twilio-sms-provider" }
                                             />
                                         ) }
                                         { smsProviderSettings?.selectedProvider ===
                                                         SMSProviderConstants.VONAGE_SMS_PROVIDER && (
                                             <VonageSMSProvider
-                                                isReadOnly={ isReadOnly }
+                                                isLoading={ isSubmitting }
+                                                isReadOnly={ !hasSMSProvidersUpdatePermission }
                                                 onSubmit={ handleSubmit }
+                                                data-componentid={ "vonage-sms-provider" }
                                             />
                                         ) }
 
@@ -631,7 +644,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             {
                 !isLoading && !isSMSProviderConfigFetchRequestLoading && (
                     <Show
-                        when={ AccessControlConstants.NOTIFICATION_SENDERS_DELETE }
+                        when={ featureConfig?.notificationChannels?.scopes?.delete }
                     >
                         <Divider hidden />
                         <DangerZoneGroup

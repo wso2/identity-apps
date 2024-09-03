@@ -34,6 +34,9 @@ export interface BrandingNS {
                 copyright: {
                     hint: string;
                 };
+                "email.link.expiry.message": {
+                    hint: string;
+                };
                 "privacy.policy": {
                     hint: string;
                 };
@@ -75,7 +78,7 @@ export interface BrandingNS {
                     hint: string;
                     warning?: string;
                 };
-                "password.recovery.button": {
+                "password.recovery.button.email.link": {
                     hint: string;
                 };
                 "password.recovery.heading": {
@@ -136,6 +139,10 @@ export interface BrandingNS {
             label: string;
             placeholder: string;
         };
+        screenSelectVariationDropdown: {
+            label: string;
+            placeholder: string;
+        };
     };
     connectors: {
         multiAttributeLogin: string;
@@ -157,6 +164,7 @@ export interface BrandingNS {
     };
     screens: {
         common: string;
+        "email-link-expiry": string;
         login: string;
         "sms-otp": string;
         "email-otp": string;
@@ -167,5 +175,78 @@ export interface BrandingNS {
         "password-recovery": string;
         "password-reset": string;
         "password-reset-success": string;
+    };
+    variations: {
+        "sms-otp": string;
+        "email-link": string;
+        "base": string;
+        "multi": string;
+    };
+    ai: {
+        banner: {
+            full: {
+                heading: string;
+                subHeading: string;
+                button: string;
+            };
+            input: {
+                heading: string;
+                subHeading: string;
+                placeholder: string;
+                button: string;
+            };
+            collapsed: {
+                heading: string;
+                subHeading: string;
+                button: string;
+            };
+        };
+        disclaimer: string;
+        notifications: {
+            generateError: {
+                description: string;
+                message: string;
+            };
+            generateLimitError: {
+                description: string;
+                message: string;
+            };
+            regenerateError: {
+                description: string;
+                message: string;
+            };
+            resetSuccess: {
+                description: string;
+                message: string;
+            };
+            renderingError: {
+                description: string;
+                message: string;
+            };
+        };
+        screens: {
+            loading: {
+                heading: string;
+                didYouKnow: string;
+                facts: {
+                    0: string;
+                    1: string;
+                    2: string;
+                };
+                states: {
+                    0: string;
+                    1: string;
+                    2: string;
+                    3: string;
+                    4: string;
+                    5: string;
+                    6: string;
+                    7: string;
+                    8: string;
+                };
+            };
+        };
+        title: string;
+        termsAndConditions: string;
     };
 }

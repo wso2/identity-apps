@@ -16,14 +16,17 @@
  * under the License.
  */
 
-import { Card, CardContent, Paper, Popover } from "@oxygen-ui/react";
+import Card from "@oxygen-ui/react/Card";
+import CardContent from "@oxygen-ui/react/CardContent";
 import Chip from "@oxygen-ui/react/Chip";
 import Grid from "@oxygen-ui/react/Grid";
 import ListItemText from "@oxygen-ui/react/ListItemText";
+import Paper from "@oxygen-ui/react/Paper";
+import Popover from "@oxygen-ui/react/Popover";
+import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { AnimatedAvatar, AppAvatar, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { getSidePanelIcons } from "../../../../admin.core.v1/configs/ui";
 
 interface ChipMoreDetailsInterface extends IdentifiableComponentInterface {
     /**

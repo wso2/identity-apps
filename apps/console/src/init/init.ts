@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { CommonConstants } from "@wso2is/core/constants";
 import TimerWorker from "@wso2is/core/workers/timer.worker";
-import { UAParser } from "ua-parser-js";
 import { AppUtils } from "./app-utils";
 
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
@@ -72,6 +72,12 @@ function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,
         dispatchEvent(new MessageEvent("session-timeout", { data: state }));
     }
 
+    // Refresh session every SESSION_REFRESH_TIMEOUT seconds if the user is active.
+    if (_sessionAgeCounter % SESSION_REFRESH_TIMEOUT === 0
+            && _idleSecondsCounter < SESSION_REFRESH_TIMEOUT) {
+        dispatchEvent(new MessageEvent(CommonConstants.SESSION_REFRESH_EVENT));
+    }
+
     return _sessionAgeCounter;
 }
 
@@ -115,8 +121,8 @@ document.onkeypress = function() {
     _idleSecondsCounter = 0;
 };
 
-// Run the timer in main thread if the browser is Internet Explorer.
-if (new UAParser().getBrowser().name === "IE") {
+// Run the timer in main thread if the browser doesn't support worker threads.
+if (typeof Worker === "undefined") {
     window.setInterval(() => {
         _idleSecondsCounter++;
         _sessionAgeCounter++;

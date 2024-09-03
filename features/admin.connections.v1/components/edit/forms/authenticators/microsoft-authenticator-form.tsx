@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,7 +23,8 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, SemanticICONS } from "semantic-ui-react";
-import { AuthenticatorManagementConstants } from "../../../../constants/autheticator-constants";
+import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
+import { FederatedAuthenticatorConstants } from "../../../../constants/federated-authenticator-constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormFieldInterface,
@@ -247,39 +248,39 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
      */
     const resolveScopeMetadata = (scope: string): ScopeMetaInterface => {
 
-        if (scope === AuthenticatorManagementConstants.MICROSOFT_SCOPE_DICTIONARY.EMAIL) {
+        if (scope === FederatedAuthenticatorConstants.MICROSOFT_SCOPE_DICTIONARY.EMAIL) {
             return {
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.microsoft.scopes.list.email.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { AuthenticatorManagementConstants.MICROSOFT_SCOPE_DICTIONARY.EMAIL }
+                        { FederatedAuthenticatorConstants.MICROSOFT_SCOPE_DICTIONARY.EMAIL }
                     </Code>
                 ),
                 icon: "envelope outline"
             };
         }
 
-        if (scope === AuthenticatorManagementConstants.MICROSOFT_SCOPE_DICTIONARY.OPENID) {
+        if (scope === FederatedAuthenticatorConstants.MICROSOFT_SCOPE_DICTIONARY.OPENID) {
             return {
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.microsoft.scopes.list.openid.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { AuthenticatorManagementConstants.MICROSOFT_SCOPE_DICTIONARY.OPENID }
+                        { FederatedAuthenticatorConstants.MICROSOFT_SCOPE_DICTIONARY.OPENID }
                     </Code>
                 ),
                 icon: "openid"
             };
         }
 
-        if (scope === AuthenticatorManagementConstants.MICROSOFT_SCOPE_DICTIONARY.PROFILE) {
+        if (scope === FederatedAuthenticatorConstants.MICROSOFT_SCOPE_DICTIONARY.PROFILE) {
             return {
                 description: t("authenticationProvider:forms" +
                     ".authenticatorSettings.microsoft.scopes.list.profile.description"),
                 displayName: (
                     <Code compact withBackground={ false } fontSize="inherit" fontColor="inherit">
-                        { AuthenticatorManagementConstants.MICROSOFT_SCOPE_DICTIONARY.PROFILE }
+                        { FederatedAuthenticatorConstants.MICROSOFT_SCOPE_DICTIONARY.PROFILE }
                     </Code>
                 ),
                 icon: "user outline"
@@ -356,10 +357,10 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                     )
                 }
                 value={ formFields?.ClientId?.value }
-                maxLength={ AuthenticatorManagementConstants
+                maxLength={ ConnectionUIConstants
                     .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MAX_LENGTH as number }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -400,7 +401,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                 value={ formFields?.ClientSecret?.value }
                 maxLength={ formFields?.ClientSecret?.meta?.maxLength }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_SECRET_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -433,7 +434,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                 }
                 maxLength={ formFields?.callbackUrl?.meta?.maxLength }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CALLBACK_URL_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -469,7 +470,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                 }
                 maxLength={ formFields?.ClientId?.meta?.maxLength }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
                 }
                 width={ 16 }
@@ -505,7 +506,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
                 }
                 maxLength={ formFields?.ClientId?.meta?.maxLength }
                 minLength={
-                    AuthenticatorManagementConstants
+                    ConnectionUIConstants
                         .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.CLIENT_ID_MIN_LENGTH as number
                 }
                 width={ 16 }

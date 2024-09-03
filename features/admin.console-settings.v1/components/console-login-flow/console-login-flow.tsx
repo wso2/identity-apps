@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,14 +16,17 @@
  * under the License.
  */
 
-import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { useRequiredScopes } from "@wso2is/access-control";
+import { SignOnMethods } from "@wso2is/admin.applications.v1/components/settings/sign-on-methods/sign-on-methods";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import AILoginFlowProvider from "@wso2is/admin.login-flow.ai.v1/providers/ai-login-flow-provider";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
-import { SignOnMethods } from "../../../admin.applications.v1/components/settings/sign-on-methods/sign-on-methods";
-import { AppState } from "../../../admin.core.v1/store";
-import { IdentityProviderManagementConstants } from "../../../admin.identity-providers.v1/constants";
+import {
+    FederatedAuthenticatorConstants
+} from "../../../admin.connections.v1/constants/federated-authenticator-constants";
 import useConsoleSettings from "../../hooks/use-console-settings";
 import "./console-login-flow.scss";
 
@@ -47,11 +50,10 @@ const ConsoleLoginFlow: FunctionComponent<ConsoleLoginFlowPropsInterface> = (
     // In Console login flow, Organization authenticator should not be shown.
     const hiddenAuthenticators: string[] = [
         ...(UIConfig?.hiddenAuthenticators ?? []),
-        IdentityProviderManagementConstants.ORGANIZATION_AUTHENTICATOR
+        FederatedAuthenticatorConstants.ORGANIZATION_AUTHENTICATOR
     ];
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+    const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state.config?.ui?.features?.applications;
     });
 
@@ -61,27 +63,27 @@ const ConsoleLoginFlow: FunctionComponent<ConsoleLoginFlowPropsInterface> = (
         mutateConsoleConfigurations
     } = useConsoleSettings();
 
-    const isReadOnly: boolean = useMemo(() => {
-        return !hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes);
-    }, [ featureConfig ]);
+    const isReadOnly: boolean = !(useRequiredScopes(applicationsFeatureConfig?.scopes?.update));
 
     return (
-        <div className="console-login-flow" data-componentid={ componentId }>
-            <SignOnMethods
-                application={ consoleConfigurations }
-                appId={ consoleConfigurations?.id }
-                authenticationSequence={ consoleConfigurations?.authenticationSequence }
-                clientId={ consoleConfigurations?.clientId }
-                isLoading={ isConsoleConfigurationsFetchRequestLoading }
-                onUpdate={ () => {
-                    mutateConsoleConfigurations();
-                } }
-                readOnly={ isReadOnly }
-                isSystemApplication={ true }
-                hiddenAuthenticators={ hiddenAuthenticators }
-                data-componentid={ `${componentId}-sign-on-methods` }
-            />
-        </div>
+        <AILoginFlowProvider>
+            <div className="console-login-flow" data-componentid={ componentId }>
+                <SignOnMethods
+                    application={ consoleConfigurations }
+                    appId={ consoleConfigurations?.id }
+                    authenticationSequence={ consoleConfigurations?.authenticationSequence }
+                    clientId={ consoleConfigurations?.clientId }
+                    isLoading={ isConsoleConfigurationsFetchRequestLoading }
+                    onUpdate={ () => {
+                        mutateConsoleConfigurations();
+                    } }
+                    readOnly={ isReadOnly }
+                    isSystemApplication={ true }
+                    hiddenAuthenticators={ hiddenAuthenticators }
+                    data-componentid={ `${componentId}-sign-on-methods` }
+                />
+            </div>
+        </AILoginFlowProvider>
     );
 };
 

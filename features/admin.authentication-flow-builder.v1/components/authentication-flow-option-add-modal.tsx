@@ -16,19 +16,19 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { useRequiredScopes } from "@wso2is/access-control";
+import {
+    AddAuthenticatorModal,
+    AddAuthenticatorModalPropsInterface
+} from "@wso2is/admin.applications.v1/components/settings/sign-on-methods/step-based-flow/add-authenticator-modal";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ConfirmationModalPropsInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import {
-    AddAuthenticatorModal,
-    AddAuthenticatorModalPropsInterface
-} from "../../admin.applications.v1/components/settings/sign-on-methods/step-based-flow/add-authenticator-modal";
-import { FeatureConfigInterface } from "../../admin.core.v1/models";
-import { AppState } from "../../admin.core.v1/store";
-import { GenericAuthenticatorInterface } from "../../admin.identity-providers.v1/models/identity-provider";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 
 /**
@@ -49,18 +49,18 @@ const AuthenticationFlowOptionAddModal: FunctionComponent<AuthenticationFlowOpti
 ): ReactElement => {
     const { open, onClose, ["data-componentid"]: componentId, currentStep, onIDPCreateWizardTrigger, ...rest } = props;
 
-    const { authenticators, authenticationSequence, addSignInOption } = useAuthenticationFlow();
-
-    const { t } = useTranslation();
-
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+
+    const { authenticators, authenticationSequence, addSignInOption } = useAuthenticationFlow();
+    const hasIdentityProviderCreatePermissions: boolean = useRequiredScopes(
+        featureConfig?.identityProviders?.scopes?.create
+    );
+    const { t } = useTranslation();
 
     return (
         <AddAuthenticatorModal
             authenticationSteps={ authenticationSequence?.steps }
-            allowSocialLoginAddition={ hasRequiredScopes(featureConfig?.identityProviders,
-                featureConfig?.identityProviders?.scopes?.create, allowedScopes) }
+            allowSocialLoginAddition={ hasIdentityProviderCreatePermissions }
             currentStep={ currentStep }
             open={ open }
             onModalSubmit={ (authenticators: GenericAuthenticatorInterface[]) => {

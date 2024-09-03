@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,7 +18,9 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import Grid from "@oxygen-ui/react/Grid";
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
+import { AppState, ConfigReducerStateInterface, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -34,7 +36,6 @@ import {
     SwitcherOptionProps
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import { IdentityProviderManagementConstants } from "../../../../../admin.identity-providers.v1/constants";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -43,10 +44,9 @@ import { Icon, Segment } from "semantic-ui-react";
 import { AddIdpCertificateModal } from "./add-idp-certificate-modal";
 import { EmptyCertificatesPlaceholder } from "./empty-certificates-placeholder";
 import { IdpCertificatesList } from "./idp-cetificates-list";
-import { commonConfig } from "../../../../../admin.extensions.v1/configs";
-import { AppState, ConfigReducerStateInterface } from "../../../../../admin.core.v1";
 import { updateIDPCertificate } from "../../../../api/connections";
-import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
+import { CommonAuthenticatorConstants } from "../../../../constants/common-authenticator-constants";
+import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
 import { CertificatePatchRequestInterface, ConnectionInterface } from "../../../../models/connection";
 
 /**
@@ -146,6 +146,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
     } = props;
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ selectedConfigurationMode, setSelectedConfigurationMode ] = useState<CertificateConfigurationMode>();
     const [ addCertificateModalOpen, setAddCertificateModalOpen ] = useState<boolean>(false);
@@ -292,13 +293,13 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 } }
                 listen={ (value: string) => setJwksValue(value) }
                 placeholder="https://{ oauth-provider-url }/oauth/jwks"
-                maxLength={ ConnectionManagementConstants.JWKS_URL_LENGTH.max }
-                minLength={ ConnectionManagementConstants.JWKS_URL_LENGTH.min }
+                maxLength={ ConnectionUIConstants.JWKS_URL_LENGTH.max }
+                minLength={ ConnectionUIConstants.JWKS_URL_LENGTH.min }
                 name="jwks_endpoint"
                 disabled={ isReadOnly }
             />
 
-            <Show when={ AccessControlConstants.IDP_EDIT }>
+            <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                 <Field.Button
                     form={ FORM_ID }
                     data-testid={ `${ testId }-save-button` }
@@ -333,7 +334,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                     <Segment>
                         <Grid direction="column" container spacing={ 2 }>
                             <Grid xs={ 12 }>
-                                <Show when={ AccessControlConstants.IDP_EDIT }>
+                                <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                                     <PrimaryButton
                                         floated="right"
                                         onClick={ openAddCertificatesWizard }
@@ -375,7 +376,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
      * @returns `true` if the IDP is a trusted token issuer and has no certificates, `false` otherwise.
      */
     const shouldShowNoCertificatesAlert = (): boolean => templateType ===
-        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER && !editingIDP?.certificate;
+        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER && !editingIDP?.certificate;
 
     if (!isJWKSEnabled && !isPEMEnabled) {
         return null;

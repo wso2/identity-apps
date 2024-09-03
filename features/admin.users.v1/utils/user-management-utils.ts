@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
-import { ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
-import { administratorConfig } from "../../admin.extensions.v1/configs/administrator";
-import { UserRoleInterface } from "../../admin.core.v1/models";
-import { store } from "../../admin.core.v1/store";
+import { UserRoleInterface } from "@wso2is/admin.core.v1/models";
+import { store } from "@wso2is/admin.core.v1/store";
+import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import {
     ValidationConfInterface,
     ValidationDataInterface,
     ValidationFormInterface,
     ValidationPropertyInterface
-} from "../../admin.validation.v1/models";
+} from "@wso2is/admin.validation.v1/models";
+import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
+import { ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import { UserManagementConstants } from "../constants/user-management-constants";
 import { MultipleInviteMode, MultipleInvitesDisplayNames, UserBasicInterface } from "../models";
 
@@ -134,6 +134,42 @@ export class UserManagementUtils {
             .some((schemaItem: ProfileSchemaInterface) =>
                 schemaItem.name === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("DISPLAY_NAME"));
     }
+
+    /* Resolves username.
+    *
+    * @param user - User details.
+    *
+    * @returns Username for the user avatar.
+    */
+    public static resolveAvatarUsername(user: UserBasicInterface): string {
+        const usernameUUID: string = getUserNameWithoutDomain(user?.userName);
+
+        if (user?.name?.givenName){
+            return user.name.givenName[0];
+        } else if (user?.name?.familyName) {
+            return user.name.familyName[0];
+        } else if (user?.emails?.length > 0 && user?.emails[0]) {
+            return user.emails[0][0];
+        } else if (!UserManagementUtils.checkUUID(usernameUUID)){
+            return usernameUUID[0];
+        }
+
+        return "";
+    };
+
+    /**
+     * Checks whether the username is a UUID.
+     *
+     * @returns If the username is a UUID.
+     */
+    public static checkUUID(username : string): boolean {
+
+        const regexExp: RegExp = new RegExp(
+            /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi
+        );
+
+        return regexExp.test(username);
+    };
 }
 
 /**

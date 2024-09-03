@@ -41,7 +41,7 @@ import {
     UserAvatar,
     useMediaContext
 } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import moment from "moment";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
@@ -51,6 +51,7 @@ import { Dispatch } from "redux";
 import { Container, DropdownItemProps, Form, Grid, Icon, List, Placeholder } from "semantic-ui-react";
 import {
     fetchPasswordValidationConfig,
+    getPreference,
     getUsernameConfiguration,
     updateProfileImageURL,
     updateProfileInfo
@@ -62,6 +63,9 @@ import {
     AlertLevels,
     AuthStateInterface, BasicProfileInterface, ConfigReducerStateInterface,
     FeatureConfigInterface,
+    PreferenceConnectorResponse,
+    PreferenceProperty,
+    PreferenceRequest,
     ProfileSchema,
     ValidationFormInterface
 } from "../../models";
@@ -121,6 +125,81 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
+    const [ isMobileVerificationEnabled, setIsMobileVerificationEnabled ] = useState<boolean>(false);
+    const [ isEmailVerificationEnabled, setIsEmailVerificationEnabled ] = useState<boolean>(false);
+
+    /**
+     * The following method gets the preference for verification on mobile and email update.
+     */
+    const getPreferences = (): void => {
+
+        const userClaimUpdateConnector: PreferenceRequest[] = [
+            {
+                "connector-name": ProfileConstants.USER_CLAIM_UPDATE_CONNECTOR,
+                properties: [
+                    ProfileConstants.ENABLE_EMAIL_VERIFICATION,
+                    ProfileConstants.ENABLE_MOBILE_VERIFICATION
+                ]
+            }
+        ];
+
+        getPreference(userClaimUpdateConnector)
+            .then((response: PreferenceConnectorResponse[]) => {
+                if (response) {
+                    const userClaimUpdateOptions: PreferenceConnectorResponse[] = response;
+                    const responseProperties: PreferenceProperty[] = userClaimUpdateOptions[0].properties;
+
+                    responseProperties.forEach((prop: PreferenceProperty) => {
+                        if (prop.name === ProfileConstants.ENABLE_EMAIL_VERIFICATION) {
+                            setIsEmailVerificationEnabled(prop.value.toLowerCase() == "true");
+                        }
+                        if (prop.name === ProfileConstants.ENABLE_MOBILE_VERIFICATION) {
+                            setIsMobileVerificationEnabled(prop.value.toLowerCase() == "true");
+                        }
+                    });
+                } else {
+                    onAlertFired({
+                        description: t(
+                            "myAccount:sections.verificationOnUpdate.preference.notifications.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "myAccount:sections.verificationOnUpdate.preference.notifications.genericError.message"
+                        )
+                    });
+                }
+            })
+            .catch((error: AxiosError) => {
+                if (error?.response?.data?.detail) {
+                    onAlertFired({
+                        description: t(
+                            "myAccount:sections.verificationOnUpdate.preference.notifications.error.description",
+                            { description: error.response.data.detail }
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t("myAccount:sections.verificationOnUpdate.preference.notifications..error.message")
+                    });
+
+                    return;
+                }
+
+                onAlertFired({
+                    description: t(
+                        "myAccount:sections.verificationOnUpdate.preference.notifications.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t("myAccount:sections.verificationOnUpdate.preference.notifications.genericError.message")
+                });
+            });
+    };
+
+    /**
+     * Load verification on update preferences.
+     */
+    useEffect(() => {
+        getPreferences();
+    }, []);
+
     /**
      * Interface for the canonical attributes.
      */
@@ -132,7 +211,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * Set the if the email verification is pending.
      */
     useEffect(() => {
-        if (profileDetails?.profileInfo?.pendingEmails && !isEmpty(profileDetails?.profileInfo?.pendingEmails)) {
+        if (
+            isEmailVerificationEnabled
+            && profileDetails?.profileInfo?.pendingEmails
+            && !isEmpty(profileDetails?.profileInfo?.pendingEmails)
+        ) {
             setEmailPending(true);
         }
     }, [ profileDetails?.profileInfo?.pendingEmails ]);
@@ -212,7 +295,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
                 if (schemaNames.length === 1) {
                     if (schemaNames[0] === "emails") {
-                        if (profileDetails?.profileInfo?.pendingEmails?.length > 0) {
+                        if (isEmailVerificationEnabled &&
+                            profileDetails?.profileInfo?.pendingEmails?.length > 0) {
                             tempProfileInfo.set(schema.name,
                                 profileDetails.profileInfo.pendingEmails[0].value as string);
                         } else {
@@ -694,6 +778,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     featureConfig?.personalInfo,
                     AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_MOBILE_VERIFICATION")
                 ) && checkSchemaType(schema.name, "mobile")
+                && isMobileVerificationEnabled
                     ? (
                         <EditSection data-testid={ `${testId}-schema-mobile-editing-section` }>
                             <p>
@@ -971,7 +1056,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                             : profileInfo.get(schema.name)
                                                 ? (
                                                     schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY
-                                                        .get("EMAILS") && isEmailPending
+                                                        .get("EMAILS") && isEmailPending && isEmailVerificationEnabled
                                                         ? (
                                                             <>
                                                                 <p>

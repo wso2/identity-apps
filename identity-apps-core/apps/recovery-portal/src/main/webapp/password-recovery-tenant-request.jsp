@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -32,6 +32,13 @@
 
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
+
+<%
+if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
+
+    request.getRequestDispatcher("password-recovery-with-claims.jsp").forward(request, response);
+}
+%>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -88,38 +95,34 @@
                 <div class="segment-form">
                     <form class="ui large form" method="post" action="password-recovery-with-claims.jsp"
                         id="tenantBasedRecovery">
+                        <input id="tenant-domain" type="text" name="tenantDomain" class="form-control align-center" 
+                                placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Tenant.domain")%>">
                         <%
-                            if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
+                            String callback = Encode.forHtmlAttribute
+                                    (request.getParameter("callback"));
+                            if (callback != null) {
                         %>
-                        <input id="tenant-domain" type="text" name="tenantDomain"
-                                    class="form-control ">
+                        <div>
+                            <input type="hidden" name="callback" value="<%=callback %>"/>
+                        </div>
                         <%
                             }
                         %>
-                            <%
-                                String callback = Encode.forHtmlAttribute
-                                        (request.getParameter("callback"));
-                                if (callback != null) {
-                            %>
-                            <div>
-                                <input type="hidden" name="callback" value="<%=callback %>"/>
-                            </div>
-                            <%
-                                }
-                            %>
-                            <div class="ui divider hidden"></div>
+                        <div class="ui divider hidden"></div>
 
-                            <div class="align-right buttons">
-                                <a href="javascript:goBack()" class="ui button secondary">
+                        <div class="align-right buttons">
+                            <button id="recoverSubmit"
+                                    class="ui primary large button fluid"
+                                    type="submit">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                "Proceed.password.recovery")%>
+                            </button>
+                            <div class="mt-2 align-center">
+                                <a href="javascript:goBack()" class="ui button secondary large fluid">
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                                 </a>
-                                <button id="recoverSubmit"
-                                        class="ui primary large button"
-                                        type="submit">
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                    "Proceed.password.recovery")%>
-                                </button>
                             </div>
+                        </div>
                     </form>
                 </div>
             </div>

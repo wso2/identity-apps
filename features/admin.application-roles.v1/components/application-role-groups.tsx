@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { resolveUserstore } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -34,20 +40,15 @@ import {
 } from "@wso2is/react-components";
 import React, { ChangeEvent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Header, Icon, Input, SemanticICONS } from "semantic-ui-react";
 import AssignGroupWizard from "./assign-group-wizard";
-import {
-    updateApplicationRoleMappedGroups,
-    useApplicationRoleMappedGroups
-} from "../../admin.extensions.v1/components/application/api";
+import { updateApplicationRoleMappedGroups, useApplicationRoleMappedGroups } from "../api/application-roles";
 import {
     ApplicationRoleGroupInterface,
     ApplicationRoleGroupsUpdatePayloadInterface
-} from "../../admin.extensions.v1/components/application/models";
-import { UIConstants } from "../../admin.core.v1";
-import { CONSUMER_USERSTORE } from "../../admin.userstores.v1/constants";
+} from "../models/application-roles";
 
 interface ApplicationRoleGroupsProps extends IdentifiableComponentInterface {
     appId: string;
@@ -67,6 +68,12 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const hasApplicationRolesUpdatePermissions: boolean = useRequiredScopes(
+        featureConfig?.applicationRoles?.scopes?.update
+    );
+
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ processedGroupsList, setProcessedGroupsList ] = useState<ApplicationRoleGroupInterface[]>([]);
     const [ showGroupDeleteConfirmation, setShowGroupDeleteConfirmation ] = useState<boolean>(false);
@@ -81,8 +88,8 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
         error: applicationRoleGroupDataFetchRequestError
     } = useApplicationRoleMappedGroups(appId, roleId);
 
-    useEffect(() => {                        
-        if (originalApplicationRoleGroupData instanceof IdentityAppsApiException 
+    useEffect(() => {
+        if (originalApplicationRoleGroupData instanceof IdentityAppsApiException
                 || applicationRoleGroupDataFetchRequestError) {
             handleAlerts({
                 description: t(
@@ -124,11 +131,11 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
 
         if (query === "") {
             setProcessedGroupsList(originalApplicationRoleGroupData.groups);
-            
+
             return;
         }
 
-        const filteredGroupsList: ApplicationRoleGroupInterface[] = 
+        const filteredGroupsList: ApplicationRoleGroupInterface[] =
         originalApplicationRoleGroupData.groups.filter((group: ApplicationRoleGroupInterface) => {
             return group.name.toLowerCase().includes(query.toLowerCase());
         });
@@ -148,7 +155,7 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
         };
 
         setSubmitting(true);
-        
+
         updateApplicationRoleMappedGroups(appId, roleId, groupData)
             .then(() => {
                 handleAlerts({
@@ -255,13 +262,15 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
                 <EmptyPlaceholder
                     data-testid={ `${ componentId }-search-empty-placeholder` }
                     action={ (
-                        <PrimaryButton
-                            data-testid={ `${ componentId }-groups-list-assign-button` }
-                            onClick={ () => setShowWizard(true) }
-                        >
-                            <Icon name="add"/>
-                            { t("extensions:console.applicationRoles.roleGroups.assignGroup") }
-                        </PrimaryButton>
+                        <Show when={ featureConfig?.applicationRoles?.scopes?.update }>
+                            <PrimaryButton
+                                data-testid={ `${ componentId }-groups-list-assign-button` }
+                                onClick={ () => setShowWizard(true) }
+                            >
+                                <Icon name="add"/>
+                                { t("extensions:console.applicationRoles.roleGroups.assignGroup") }
+                            </PrimaryButton>
+                        </Show>
                     ) }
                     title={ t("extensions:console.applicationRoles.roleGroups.placeholder.title") }
                     subtitle={ [
@@ -274,7 +283,7 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
 
         return null;
     };
-        
+
     /**
      * Resolves data table columns.
      */
@@ -360,6 +369,7 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
     const resolveTableActions = (): TableActionsInterface[] => {
         const actions: TableActionsInterface[] = [
             {
+                hidden: () => !hasApplicationRolesUpdatePermissions,
                 icon: (): SemanticICONS =>  "trash alternate",
                 onClick: (e: SyntheticEvent, group: ApplicationRoleGroupInterface): void => {
                     setCurrentDeletedGroup(group);
@@ -374,7 +384,7 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
     };
 
     return (
-        !isApplicationRoleGroupDataFetchRequestLoading 
+        !isApplicationRoleGroupDataFetchRequestLoading
             ? (
                 <>
                     <Grid>
@@ -386,7 +396,7 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
                                             data-componentid={ `${ componentId }-groups-list-search-input` }
                                             icon={ <Icon name="search" /> }
                                             iconPosition="left"
-                                            onChange={ (e: ChangeEvent<HTMLInputElement>) => 
+                                            onChange={ (e: ChangeEvent<HTMLInputElement>) =>
                                                 searchGroups(e.target.value) }
                                             value={ searchQuery }
                                             placeholder={ t("extensions:console.applicationRoles.roleGroups." +
@@ -395,16 +405,18 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
                                             fluid
                                         />
                                     </Grid.Column>
-                                    <Grid.Column width={ 10 }>
-                                        <PrimaryButton
-                                            data-testid={ `${ componentId }-groups-list-assign-button` }
-                                            onClick={ () => setShowWizard(true) }
-                                            floated="right"
-                                        >
-                                            <Icon name="add"/>
-                                            { t("extensions:console.applicationRoles.roleGroups.assignGroup") }
-                                        </PrimaryButton>
-                                    </Grid.Column>
+                                    <Show when={ featureConfig?.applicationRoles?.scopes?.update }>
+                                        <Grid.Column width={ 10 }>
+                                            <PrimaryButton
+                                                data-testid={ `${ componentId }-groups-list-assign-button` }
+                                                onClick={ () => setShowWizard(true) }
+                                                floated="right"
+                                            >
+                                                <Icon name="add"/>
+                                                { t("extensions:console.applicationRoles.roleGroups.assignGroup") }
+                                            </PrimaryButton>
+                                        </Grid.Column>
+                                    </Show>
                                 </Grid.Row>
                             )
                         }

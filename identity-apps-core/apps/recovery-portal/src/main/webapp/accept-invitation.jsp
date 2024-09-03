@@ -122,7 +122,7 @@
         <layout:component componentName="MainSection" >
             <% if(acceptApiResponse.equalsIgnoreCase("SUCCESS")) { %>
                 <div class="ui green segment mt-3 attached">
-                    <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="password-reset-complete-page-header">
+                    <h3 class="ui header text-center slogan-message mt-4 mb-6" data-componentid="user-invitation-accept-page-header">
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"invitation.accepted")%>
                     </h3>
                     <p class="portal-tagline-description">
@@ -132,7 +132,7 @@
                 </div>
             <% } else { %>
                 <div class="ui orange segment mt-3 attached">
-                    <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="password-reset-complete-page-header">
+                    <h3 class="ui header text-center slogan-message mt-4 mb-6" data-componentid="user-invitation-accept-page-header">
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"invitation.not.active")%>
                     </h3>
                     <p class="portal-tagline-description">

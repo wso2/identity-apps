@@ -16,6 +16,20 @@
  * under the License.
  */
 
+/* eslint-disable sort-keys */
+
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface,
+    GovernanceConnectorUtils,
+    UpdateGovernanceConnectorConfigInterface,
+    UpdateGovernanceConnectorConfigPropertyInterface,
+    UpdateMultipleGovernanceConnectorsInterface
+} from "@wso2is/admin.server-configurations.v1";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import React, { ReactElement, ReactNode } from "react";
 import { TFunction } from "react-i18next";
 import { Card, Divider, Grid, Header } from "semantic-ui-react";
@@ -25,16 +39,6 @@ import {
     PasswordPoliciesInterface,
     ServerConfigurationConfig
 } from "./models/server-configuration";
-import {
-    ConnectorPropertyInterface,
-    GovernanceConnectorInterface,
-    GovernanceConnectorUtils,
-    ServerConfigurationsConstants,
-    UpdateGovernanceConnectorConfigInterface,
-    UpdateGovernanceConnectorConfigPropertyInterface,
-    UpdateMultipleGovernanceConnectorsInterface
-} from "../../admin.server-configurations.v1";
-import { ValidationFormInterface } from "../../admin.validation.v1/models";
 import {
     updatePasswordExpiryProperties,
     useGetPasswordExpiryProperties
@@ -47,7 +51,7 @@ import {
 import { generatePasswordHistoryCount } from "../components/password-history-count/components";
 import { updatePasswordPolicyProperties } from "../components/password-policies/api/password-policies";
 
-export const serverConfigurationConfig: ServerConfigurationConfig = {
+const serverConfigurationConfig: ServerConfigurationConfig = {
     autoEnableConnectorToggleProperty: false,
     backButtonDisabledConnectorIDs: [
         ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
@@ -62,13 +66,20 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
     ],
     connectorToggleName: {
-        "account-recovery": ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE,
-        "account-recovery-username": ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE,
-        "account.lock.handler": ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE,
-        "multiattribute.login.handler": ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_ENABLE,
-        "organization-self-service": ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_ENABLE,
-        "self-sign-up": ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
-        "sso.login.recaptcha": ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE
+        [ServerConfigurationsConstants.ACCOUNT_RECOVERY]:
+            ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE,
+        [ServerConfigurationsConstants.ACCOUNT_RECOVERY_BY_USERNAME]:
+            ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE,
+        [ServerConfigurationsConstants.ACCOUNT_LOCK_HANDLER]:
+            ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE,
+        [ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_HANDLER]:
+            ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_ENABLE,
+        [ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE]:
+            ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_ENABLE,
+        [ServerConfigurationsConstants.SELF_SIGNUP]:
+            ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
+        [ServerConfigurationsConstants.SSO_LOGIN_RECAPTCHA]:
+            ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE
     },
     connectorsToHide: [
         ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,
@@ -230,6 +241,9 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     processPasswordPoliciesSubmitData: (data: PasswordPoliciesInterface, isLegacy: boolean) => {
         let passwordExpiryTime: number | undefined = parseInt((data.passwordExpiryTime as string));
         const passwordExpiryEnabled: boolean | undefined = data.passwordExpiryEnabled;
+        const passwordExpirySkipFallback: boolean | undefined = data.passwordExpirySkipFallback || false;
+        const passwordExpiryRules: Record<string, string> | undefined =
+            data?.passwordExpiryRules || {};
         let passwordHistoryCount: number | undefined = parseInt((data.passwordHistoryCount as string));
         const passwordHistoryCountEnabled: boolean | undefined = data.passwordHistoryCountEnabled;
 
@@ -237,14 +251,39 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         delete data.passwordExpiryEnabled;
         delete data.passwordHistoryCount;
         delete data.passwordHistoryCountEnabled;
+        delete data.skipPasswordExpiryFallback;
+        delete data.passwordExpiryRules;
 
-        if (passwordExpiryEnabled && passwordExpiryTime === 0) {
+        // Default password expiry time.
+        if (passwordExpiryEnabled && !passwordExpirySkipFallback && passwordExpiryTime === 0) {
             passwordExpiryTime = 30;
         }
 
         if (passwordHistoryCountEnabled && passwordHistoryCount === 0) {
             passwordHistoryCount = 1;
         }
+
+        const passwordExpiryProperties: UpdateGovernanceConnectorConfigPropertyInterface[] = [
+            {
+                name: ServerConfigurationsConstants.PASSWORD_EXPIRY_ENABLE,
+                value: passwordExpiryEnabled?.toString()
+            },
+            {
+                name: ServerConfigurationsConstants.PASSWORD_EXPIRY_TIME,
+                value: passwordExpiryTime?.toString()
+            },
+            {
+                name: ServerConfigurationsConstants.PASSWORD_EXPIRY_SKIP_IF_NO_APPLICABLE_RULES,
+                value: passwordExpirySkipFallback?.toString()
+            }
+        ];
+
+        Object.entries(passwordExpiryRules as Record<string, string>).forEach(([ key, value ]: [ string, string ]) => {
+            passwordExpiryProperties.push({
+                name: key,
+                value: value
+            });
+        });
 
         const legacyPasswordPoliciesData: {
             id: string, properties: UpdateGovernanceConnectorConfigPropertyInterface[] } = {
@@ -287,16 +326,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
             connectors: [
                 {
                     id: ServerConfigurationsConstants.PASSWORD_EXPIRY_CONNECTOR_ID,
-                    properties: [
-                        {
-                            name: ServerConfigurationsConstants.PASSWORD_EXPIRY_ENABLE,
-                            value: passwordExpiryEnabled?.toString()
-                        },
-                        {
-                            name: ServerConfigurationsConstants.PASSWORD_EXPIRY_TIME,
-                            value: passwordExpiryTime?.toString()
-                        }
-                    ]
+                    properties: passwordExpiryProperties
                 },
                 {
                     id: ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID,
@@ -369,3 +399,6 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     usePasswordExpiry: useGetPasswordExpiryProperties,
     usePasswordHistory: useGetPasswordHistoryCount
 };
+
+
+export { serverConfigurationConfig };

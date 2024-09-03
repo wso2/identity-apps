@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,15 +16,14 @@
  * under the License.
  */
 
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, CopyInputField, DocumentationLink, Heading, Message, useDocumentation } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../../admin.extensions.v1/configs";
-import { ConfigReducerStateInterface } from "../../../../../admin.core.v1/models";
-import { AppState } from "../../../../../admin.core.v1/store";
 
 /**
  * Prop types of the component.
@@ -52,20 +51,6 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
 
         const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-        const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
-
-        /**
-         * Checks if the listing view defined in the config is the new connections view.
-         */
-        useEffect(() => {
-
-            if (useNewConnectionsView !== undefined) {
-                return;
-            }
-
-            setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
-        }, [ identityProviderConfig ]);
-        
         return (
             <div data-testid={ testId }>
                 <Message
@@ -93,7 +78,7 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                                 </Trans>
                             </p>
                             <p>
-    
+
                                 <Trans
                                     i18nKey={
                                         "authenticationProvider:templates.facebook." +
@@ -102,7 +87,7 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                                 >
                                 Use the following as the <strong>Site URL</strong>.
                                 </Trans>
-    
+
                                 <CopyInputField
                                     className="copy-input-dark spaced"
                                     value={ config?.deployment?.customServerHost }
@@ -117,12 +102,12 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                                 >
                                 Add the following URL as a <strong>Valid OAuth Redirect URI</strong>.
                                 </Trans>
-    
+
                                 <CopyInputField
                                     className="copy-input-dark spaced"
                                     value={ config?.deployment?.customServerHost + "/commonauth" }
                                 />
-    
+
                                 <DocumentationLink
                                     link={ getLink("develop.connections.newConnection.facebook.help.configureOAuth") }
                                     showEmptyLinkText
@@ -136,7 +121,7 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                         </>)
                     }
                 />
-    
+
                 <Heading as="h5">
                     {
                         t("authenticationProvider:templates.facebook" +
@@ -145,16 +130,13 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                 </Heading>
                 <p>
                     {
-                        useNewConnectionsView
-                            ? t("authenticationProvider:templates.facebook." +
-                                    "wizardHelp.name.connectionDescription")
-                            : t("authenticationProvider:templates.facebook." +
-                                    "wizardHelp.name.idpDescription")
+                        t("authenticationProvider:templates.facebook." +
+                            "wizardHelp.name.connectionDescription")
                     }
                 </p>
-    
+
                 <Divider/>
-    
+
                 <Heading as="h5">
                     { t("authenticationProvider:" +
                             "templates.facebook.wizardHelp.clientId.heading") }
@@ -169,9 +151,9 @@ const FacebookIdentityProviderCreateWizardHelp: FunctionComponent<
                             Provide the <Code>App ID</Code> obtained from Facebook.
                     </Trans>
                 </p>
-    
+
                 <Divider/>
-    
+
                 <Heading as="h5">
                     {
                         t("authenticationProvider:templates.facebook" +

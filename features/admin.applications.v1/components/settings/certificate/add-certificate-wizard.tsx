@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { getAddIDPCertificateWizardStepIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
@@ -22,7 +23,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Grid, Modal } from "semantic-ui-react";
 import { AddApplicationCertificateFormComponent } from "./add-certificate-form";
-import { getAddIDPCertificateWizardStepIcons } from "../../../../admin.identity-providers.v1/configs/ui";
 
 /**
  * Interface for the Add application certificate wizard component props.

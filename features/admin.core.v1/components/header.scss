@@ -1,0 +1,143 @@
+/**
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+// --- Upgrade button styles ---
+
+$header-upgrade-btn-background: linear-gradient(93deg, #ddb7380d 50%, #cba8370d 88.67%, #bd9b2c0d 112.88%);
+$header-upgrade-btn-font-weight: 700;
+$header-upgrade-btn-line-height: 20px;
+$header-upgrade-btn-border-color: #E0B834;
+$header-upgrade-btn-border-color-hover: #FBCB30;
+$header-upgrade-btn-border: 1px solid $header-upgrade-btn-border-color;
+$header-upgrade-btn-transition: background-image 0.3s ease-in-out;
+$header-upgrade-btn-transition-delay: 0s;
+$header-upgrade-btn-border-hover: 1px solid $header-upgrade-btn-border-color-hover;
+$header-upgrade-btn-oxygen-icon-height: 20px;
+$header-upgrade-btn-oxygen-icon-width: 20px;
+$header-upgrade-btn-oxygen-icon-path-stroke-width: 0.5;
+$header-upgrade-btn-oxygen-icon-path-transition: all 0.3s ease-in-out;
+$header-upgrade-btn-oxygen-icon-path-transition-delay: 0s;
+$header-upgrade-btn-oxygen-icon-path-stroke-width-hover: 0.75;
+$header-upgrade-btn-text-background-clip: text;
+$header-upgrade-btn-text-background-background-blend-mode: darken;
+$header-upgrade-btn-text-transition: background-position .2s,outline-width .2s;
+$header-upgrade-btn-text-transition-delay: 0s;
+$header-upgrade-btn-text-color: linear-gradient(93deg, #DDB638 50%, #CBA837 88.67%, #BD9B2C 112.88%);
+$header-upgrade-btn-text-fill-color: transparent;
+
+.header-upgrade-btn {
+    background-image: $header-upgrade-btn-background;
+    font-weight: $header-upgrade-btn-font-weight;
+    line-height: $header-upgrade-btn-line-height;
+    border: $header-upgrade-btn-border;
+    transition: $header-upgrade-btn-transition;
+    transition-delay: $header-upgrade-btn-transition-delay;
+
+    .oxygen-icon {
+        fill: $header-upgrade-btn-border-color;
+        height: $header-upgrade-btn-oxygen-icon-height;
+        width: $header-upgrade-btn-oxygen-icon-width;
+        path {
+            stroke: $header-upgrade-btn-border-color;
+            stroke-width: $header-upgrade-btn-oxygen-icon-path-stroke-width;
+            transition: $header-upgrade-btn-oxygen-icon-path-transition;
+            transition-delay: $header-upgrade-btn-oxygen-icon-path-transition-delay;
+        }
+    }
+
+    .header-upgrade-btn-text {
+        background-clip: $header-upgrade-btn-text-background-clip;
+        background-image: $header-upgrade-btn-text-color;
+        background-blend-mode: $header-upgrade-btn-text-background-background-blend-mode;
+        color: $header-upgrade-btn-text-fill-color;
+        transition: $header-upgrade-btn-text-transition;
+        transition-delay: $header-upgrade-btn-text-transition-delay;
+    }
+}
+
+.header-upgrade-btn:hover {
+    background-image: $header-upgrade-btn-text-color;
+    border: $header-upgrade-btn-border-hover;
+
+    .oxygen-icon {
+        fill: var(--oxygen-palette-primary-contrastText);
+        path {
+            stroke: var(--oxygen-palette-primary-contrastText);
+            stroke-width: $header-upgrade-btn-oxygen-icon-path-stroke-width-hover;
+        }
+    }
+
+    .header-upgrade-btn-text {
+        color: var(--oxygen-palette-primary-contrastText);
+    }
+}
+
+// --- Get help dropdown item styles ---
+
+$contact-support-dropdown-item-contact-support-background-hover:
+    linear-gradient(93deg, rgba(203, 168, 55, 0.10) 50%, rgba(135, 103, 0, 0.10) 112.88%);
+$get-help-dropdown-divider-border-color: #E1E1E152;
+$get-help-dropdown-divider-margin-bottom: 6px !important;
+$get-help-icon-color: #000;
+$contact-support-icon-hover-color: #928934;
+$contact-support-title-display: flex;
+$contact-support-title-align-items: center;
+$contact-support-title-flex-direction: row;
+$contact-support-title-oxygen-chip-premium-margin-left: 6px;
+$contact-support-subtitle-max-width: 213px;
+$contact-support-subtitle-text-wrap: wrap;
+$contact-support-subtitle-line-height: 16px;
+$contact-support-subtitle-margin-top: 4px !important;
+
+.get-help-icon {
+    svg {
+        color: $get-help-icon-color;
+    }
+}
+
+.get-help-dropdown-divider {
+    border-color: $get-help-dropdown-divider-border-color;
+    margin-bottom: $get-help-dropdown-divider-margin-bottom;
+}
+
+.contact-support-dropdown-item:hover {
+    background: $contact-support-dropdown-item-contact-support-background-hover;
+
+    .contact-support-icon {
+        svg {
+            color: $contact-support-icon-hover-color;
+        }
+    }
+}
+
+.contact-support-title {
+    display: $contact-support-title-display;
+    align-items: $contact-support-title-align-items;
+    flex-direction: $contact-support-title-flex-direction;
+
+    .oxygen-chip-premium {
+        margin-left: $contact-support-title-oxygen-chip-premium-margin-left;
+    }
+}
+
+.contact-support-subtitle {
+    max-width: $contact-support-subtitle-max-width;
+    text-wrap: $contact-support-subtitle-text-wrap;
+    line-height: $contact-support-subtitle-line-height;
+    margin-top: $contact-support-subtitle-margin-top;
+}

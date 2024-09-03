@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -85,6 +85,7 @@ export const common: CommonNS = {
     "endsWith": "で終わります",
     "equals": "平等です",
     "exitFullScreen": "フルスクリーンを終了します",
+    "experimental": "実験的な",
     "explore": "探検する",
     "export": "輸出",
     "featureAvailable": "この機能はまもなく利用可能になります！",
@@ -113,6 +114,7 @@ export const common: CommonNS = {
     "logout": "ログアウト",
     "maxValidation": "この値は、{{max}}以下でなければなりません。",
     "maximize": "最大化します",
+    "metaAttributes": "メタ属性",
     "minValidation": "この値は{{min}}以上である必要があります。",
     "minimize": "最小化します",
     "more": "もっと",
@@ -133,6 +135,7 @@ export const common: CommonNS = {
     "personalInfo": "個人情報",
     "pin": "ピン",
     "pinned": "ピン留め",
+    "premium": "プレミアム",
     "pressEnterPrompt": "<1>Enter</1> を押して選択します",
     "preview": "プレビュー",
     "previous": "前の",

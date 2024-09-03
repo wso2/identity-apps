@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,8 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { ScimOperationsInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { RolesInterface } from "@wso2is/core/models";
-import { ScimOperationsInterface } from "../../admin.roles.v2/models/roles";
 
 export interface OrganizationInterface {
     id: string;
@@ -113,4 +113,9 @@ export type GenericOrganization = OrganizationInterface | OrganizationResponseIn
 export interface ShareApplicationRequestInterface {
     shareWithAllChildren: boolean;
     sharedOrganizations?: string[];
+}
+
+export interface OrganizationsMetaAttributesListInterface {
+    links?: OrganizationLinkInterface[];
+    attributes: string[];
 }

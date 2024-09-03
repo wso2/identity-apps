@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,10 @@
  * under the License.
  */
 
+import { DropdownOptionsInterface } from "@wso2is/admin.applications.v1/components/settings";
+import { getExternalClaims } from "@wso2is/admin.claims.v1/api";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Claim } from "@wso2is/core/src/models";
 import { addAlert } from "@wso2is/core/store";
@@ -24,11 +28,7 @@ import { Hint, Message } from "@wso2is/react-components";
 import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { DropdownOptionsInterface } from "../../../../admin.applications.v1/components/settings";
-import { getExternalClaims } from "../../../../admin.claims.v1/api";
-import { ClaimManagementConstants } from "../../../../admin.claims.v1/constants";
-import { ConnectionManagementConstants } from "../../../constants/connection-constants";
+import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import { ImplicitAssociaionConfigInterface } from "../../../models/connection";
 import { SubjectAttributeListItem } from "../settings";
 
@@ -120,7 +120,7 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
         getExternalClaims(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("LOCAL"))
             .then(( response: Claim[] ) => {
                 response.forEach((claim: Claim) => {
-                    if (ConnectionManagementConstants.IMPLICIT_ACCOUNT_LINKING_ATTRIBUTES.includes(claim.claimURI)) {
+                    if (ConnectionUIConstants.IMPLICIT_ACCOUNT_LINKING_ATTRIBUTES.includes(claim.claimURI)) {
                         filteredAttributes.push({
                             key: claim.id,
                             text: <SubjectAttributeListItem

@@ -16,19 +16,19 @@
  * under the License.
  */
 
+import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
+import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { SCIMConfigs, attributeConfig } from "@wso2is/admin.extensions.v1";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import { Code, ContentLoader, Link, Message, PrimaryButton } from "@wso2is/react-components";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownOnSearchChangeData, Grid, Label } from "semantic-ui-react";
-import { SCIMConfigs, attributeConfig } from "../../../admin.extensions.v1";
-import { getAllLocalClaims } from "../../../admin.claims.v1/api";
-import { AppConstants, AppState, history } from "../../../admin.core.v1";
 import { addExternalClaim, getServerSupportedClaimsForSchema } from "../../api";
 import { ClaimManagementConstants } from "../../constants";
 import { AddExternalClaim, ServerSupportedClaimsInterface } from "../../models";

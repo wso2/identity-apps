@@ -19,6 +19,7 @@
 import Tab from "@oxygen-ui/react/Tab";
 import TabPanel from "@oxygen-ui/react/TabPanel";
 import Tabs from "@oxygen-ui/react/Tabs";
+import { BrandingSubFeatures, PreviewScreenType } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, {
@@ -35,7 +36,6 @@ import CustomTextFields from "./custom-text-fields";
 import CustomTextUnsavedChangesConfirmationModal from "./custom-text-unsaved-changes-confirmation-modal";
 import { CustomTextPreferenceConstants } from "../../constants/custom-text-preference-constants";
 import useBrandingPreference from "../../hooks/use-branding-preference";
-import { BrandingSubFeatures, PreviewScreenType } from "../../models";
 import { CustomTextConfigurationModes, CustomTextInterface } from "../../models/custom-text-preference";
 import replaceObjectKeySymbols from "../../utils/replace-object-key-symbols";
 import LocaleDropdown from "../locale-dropdown";

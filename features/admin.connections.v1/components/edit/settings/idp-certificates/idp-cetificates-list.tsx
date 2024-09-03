@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
 import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -35,7 +36,6 @@ import {
     ResourceListItem,
     UserAvatar
 } from "@wso2is/react-components";
-import { IdentityProviderManagementConstants } from "../../../../../admin.identity-providers.v1/constants";
 import moment from "moment";
 import React, { FC, PropsWithChildren, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -43,8 +43,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { ShowCertificateModal } from "./show-certificate-modal";
-import { AppState, ConfigReducerStateInterface } from "../../../../../admin.core.v1";
 import { updateIDPCertificate } from "../../../../api/connections";
+import { CommonAuthenticatorConstants } from "../../../../constants/common-authenticator-constants";
 import { CertificatePatchRequestInterface, ConnectionInterface } from "../../../../models/connection";
 
 /**
@@ -146,7 +146,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
     const handleDeletePEMCertificate = async (certificateIndex: number): Promise<void> => {
         setDeletingCertificateIndex(certificateIndex);
 
-        if (templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+        if (templateType === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
             && displayingCertificates.length === 1 && !currentlyEditingIdP?.certificate?.jwksUri) {
             setShowPEMCertificateDeleteConfirmationModal(true);
         } else {

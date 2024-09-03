@@ -22,6 +22,7 @@ import {
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
+import { ThemeProvider } from "@wso2is/common.branding.v1/providers/theme-provider";
 import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { setSupportedI18nLanguages } from "@wso2is/core/store";
@@ -37,12 +38,12 @@ import axios, { AxiosResponse } from "axios";
 import React, { FunctionComponent, LazyExoticComponent, ReactElement, lazy, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 import { useSelector } from "react-redux";
+import { useGetBrandingPreference } from "./api/branding-preferences";
 import { PreLoader } from "./components";
 import { Config } from "./configs";
 import { AppConstants } from "./constants";
 import { history } from "./helpers";
 import useSignIn from "./hooks/use-sign-in";
-import { BrandingPreferenceProvider } from "./providers";
 import { AppState, store } from "./store";
 import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
 
@@ -186,17 +187,33 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             });
     }, [ isAuthenticated ]);
 
+    /**
+     * Extracts theme preference data using a custom hook.
+     */
+    const { data: themePreference } = useGetBrandingPreference(tenantDomain);
+
+    /**
+     * Retrieves the application title from the Redux store.
+     */
+    const appTitle: string = useSelector((state: AppState) => state?.config?.ui?.appTitle);
+
     return (
-        <BrandingPreferenceProvider
-            tenantDomain={ getOrganizationName() !== "" ? getOrganizationName() : tenantDomain }
+        <ThemeProvider
+            themePreference={ themePreference }
+            defaultMode={ "light" }
+            modeStorageKey={ "myaccount-oxygen-mode" }
+            appTitle={ appTitle }
         >
             <SecureApp
                 fallback={ <PreLoader /> }
                 onSignIn={ loginSuccessRedirect }
                 overrideSignIn={ async () => {
+                    const prompt: string = new URL(location.href).searchParams.get("prompt");
+                    const fidp: string = new URL(location.href).searchParams.get("fidp");
+
                     // This is to prompt the SSO page if a user tries to sign in
                     // through a federated IdP using an existing email address.
-                    if (new URL(location.href).searchParams.get("prompt")) {
+                    if (prompt) {
                         await signIn({ prompt: "login" });
                     } else {
                         const authParams: {
@@ -220,6 +237,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             }
                         }
 
+                        if (fidp) {
+                            authParams["fidp"] = fidp;
+                        }
+
                         await signIn(authParams);
                     }
                 } }
@@ -229,7 +250,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     <App />
                 </I18nextProvider>
             </SecureApp>
-        </BrandingPreferenceProvider>
-
+        </ThemeProvider>
     );
 };

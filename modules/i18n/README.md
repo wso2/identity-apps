@@ -6,6 +6,7 @@ Implemented on top of [i18next](https://www.i18next.com/) library.
 
 ## Install
 Add following dependency in your package.json file.
+
 `"@wso2is/i18n": "<VERSION>"`
 
 ## Build

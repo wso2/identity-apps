@@ -17,10 +17,10 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../admin.core.v1/store";
 
 /**
  * Get an axios instance.
@@ -30,7 +30,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 
 /**
  * Authorize an API to application.
- * 
+ *
  * @param appId - application ID.
  * @param apiId - API ID.
  * @param addedScopes - added scopes.
@@ -39,7 +39,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  */
 export const authorizeAPI = (appId: string, apiId: string, scopes: string[], policyIdentifier: string)
     : Promise<null | IdentityAppsApiException> => {
-    
+
     const requestConfig: AxiosRequestConfig = {
         data: {
             id: apiId,
@@ -53,7 +53,7 @@ export const authorizeAPI = (appId: string, apiId: string, scopes: string[], pol
         method: HttpMethods.POST,
         url: `${ store.getState().config.endpoints.applications }/${ appId }/authorized-apis`
     };
-    
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
@@ -80,14 +80,14 @@ export const authorizeAPI = (appId: string, apiId: string, scopes: string[], pol
 
 /**
  * Remove authorized API in application.
- * 
+ *
  * @param appId - application ID.
  * @param apiId - API ID.
  * @returns `Promise<null | IdentityAppsApiException>`
  * @throws `IdentityAppsApiException`
  */
 export const removeAuthorizedAPI = (appId: string, apiId: string): Promise<null | IdentityAppsApiException> => {
-    
+
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
@@ -96,7 +96,7 @@ export const removeAuthorizedAPI = (appId: string, apiId: string): Promise<null 
         method: HttpMethods.DELETE,
         url: `${ store.getState().config.endpoints.applications }/${ appId }/authorized-apis/${ apiId }`
     };
-    
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 204) {
@@ -123,7 +123,7 @@ export const removeAuthorizedAPI = (appId: string, apiId: string): Promise<null 
 
 /**
  * Update authorized scopes in an authorized API.
- * 
+ *
  * @param appId - application ID.
  * @param apiId - API ID.
  * @returns `Promise<null | IdentityAppsApiException>`
@@ -131,7 +131,7 @@ export const removeAuthorizedAPI = (appId: string, apiId: string): Promise<null 
  */
 export const patchScopesOfAuthorizedAPI = (appId: string, apiId: string, addedScopes: string[], deletedScopes: string[])
     : Promise<null | IdentityAppsApiException> => {
-    
+
     const requestConfig: AxiosRequestConfig = {
         data: {
             addedScopes: addedScopes,
@@ -144,7 +144,7 @@ export const patchScopesOfAuthorizedAPI = (appId: string, apiId: string, addedSc
         method: HttpMethods.PATCH,
         url: `${ store.getState().config.endpoints.applications }/${ appId }/authorized-apis/${ apiId }`
     };
-    
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {

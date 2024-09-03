@@ -16,15 +16,11 @@
  * under the License.
  */
 
-import { UserGroupIcon } from "@oxygen-ui/react-icons";
-import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
-import React, { lazy } from "react";
+import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { RouteInterface } from "@wso2is/core/models";
+import { lazy } from "react";
 import { CommonConfig } from "./models";
-import { APIResourcesConstants } from "../../admin.api-resources.v1/constants";
-import { getSidePanelIcons } from "../../admin.core.v1/configs/ui";
-import { AppConstants } from "../../admin.core.v1/constants";
-
-const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
 
 export const commonConfig: CommonConfig = {
     advancedSearchWithBasicFilters: {
@@ -41,81 +37,7 @@ export const commonConfig: CommonConfig = {
                 category: "extensions:manage.sidePanel.categories.userManagement",
                 children: [
                     {
-                        component: lazy(() =>
-                            import("../components/administrators/pages/administrator-edit")
-                        ),
-                        exact: true,
-                        icon: {
-                            icon: import("../assets/images/icons/admin-icon.svg")
-                        },
-                        id: "collaborator-user-edit",
-                        name: "Collaborator Users Edit",
-                        path: AppConstants.getPaths().get("ADMINISTRATOR_EDIT"),
-                        protected: true,
-                        showOnSidePanel: false
-                    },
-                    {
-                        component: lazy(() =>
-                            import("../components/administrators/pages/administrator-settings")
-                        ),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().childIcon
-                        },
-                        id: "administrator-settings-edit",
-                        name: "administrator-settings-edit",
-                        path: AppConstants.getPaths().get("ADMINISTRATOR_SETTINGS"),
-                        protected: true,
-                        showOnSidePanel: false
-                    }
-                ],
-                component: lazy(() => import("../components/administrators/pages/administrators")),
-                exact: true,
-                icon: {
-                    icon: import("../assets/images/icons/admin-icon.svg")
-                },
-                id: "administrators",
-                name: "Administrators",
-                order: 5,
-                path: AppConstants.getPaths().get("ADMINISTRATORS"),
-                protected: true,
-                showOnSidePanel: true
-            },
-            {
-                category: "extensions:manage.sidePanel.categories.userManagement",
-                children: [
-                    {
-                        component: lazy(() =>
-                            import("../../admin.groups.v1/pages/group-edit")
-                        ),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().childIcon
-                        },
-                        id: "groupsEdit",
-                        name: "console:manage.features.sidePanel.editGroups",
-                        path: AppConstants.getPaths().get("GROUP_EDIT"),
-                        protected: true,
-                        showOnSidePanel: false
-                    }
-                ],
-                component: lazy(() => import("../../admin.groups.v1/pages/groups")),
-                exact: true,
-                icon: {
-                    icon: <UserGroupIcon className="icon" fill="black" />
-                },
-                id: "groups",
-                name: "Groups",
-                order: 6,
-                path: AppConstants.getPaths().get("GROUPS"),
-                protected: true,
-                showOnSidePanel: true
-            },
-            {
-                category: "extensions:manage.sidePanel.categories.userManagement",
-                children: [
-                    {
-                        component: lazy(() => import("../../admin.userstores.v1/pages/user-stores-edit")),
+                        component: lazy(() => import("@wso2is/admin.userstores.v1/pages/user-stores-edit")),
                         exact: true,
                         icon: {
                             icon: getSidePanelIcons().childIcon
@@ -128,7 +50,7 @@ export const commonConfig: CommonConfig = {
                     },
                     {
                         component: lazy(() =>
-                            import("../../admin.userstores.v1/pages/userstores-templates")
+                            import("@wso2is/admin.userstores.v1/pages/userstores-templates")
                         ),
                         exact: true,
                         icon: {
@@ -141,7 +63,7 @@ export const commonConfig: CommonConfig = {
                         showOnSidePanel: false
                     }
                 ],
-                component: lazy(() => import("../../admin.userstores.v1/pages/user-stores")),
+                component: lazy(() => import("@wso2is/admin.userstores.v1/pages/user-stores")),
                 exact: true,
                 icon: {
                     icon: getSidePanelIcons().userStore
@@ -155,7 +77,7 @@ export const commonConfig: CommonConfig = {
             },
             {
                 category: "extensions:manage.sidePanel.categories.userManagement",
-                component: lazy(() => import("../../admin.provisioning.v1/pages/outbound-provisioning-settings")),
+                component: lazy(() => import("@wso2is/admin.provisioning.v1/pages/outbound-provisioning-settings")),
                 exact: true,
                 icon: {
                     icon: getSidePanelIcons().childIcon
@@ -168,157 +90,6 @@ export const commonConfig: CommonConfig = {
                 showOnSidePanel: false
             }
         ];
-
-        if (legacyMode?.apiResourcesV1) {
-            routes.unshift({
-                category: "console:develop.features.sidePanel.categories.application",
-                children: [
-                    {
-                        component: lazy(() =>
-                            import("../../admin.api-resources.v1/pages/api-resource-edit")
-                        ),
-                        exact: true,
-                        id: "apiResources-edit",
-                        name: "extensions:develop.sidePanel.apiResources",
-                        path: APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT"),
-                        protected: true,
-                        showOnSidePanel: false
-                    }
-                ],
-                component: lazy(() =>
-                    import("../../admin.api-resources.v1/pages/api-resources")
-                ),
-                exact: true,
-                icon: {
-                    icon: import("../assets/images/icons/api-resources-icon.svg")
-                },
-                id: "apiResources",
-                name: "extensions:develop.sidePanel.apiResources",
-                order: 2,
-                path: APIResourcesConstants.getPaths().get("API_RESOURCES"),
-                protected: true,
-                showOnSidePanel: legacyMode?.apiResourcesV1
-            });
-        }
-
-        if (legacyMode?.apiResourcesV2) {
-            routes.unshift({
-                category: "console:develop.features.sidePanel.categories.application",
-                children: [
-                    {
-                        component: lazy(() =>
-                            import("../../admin.api-resources.v2/pages/api-resource-edit")
-                        ),
-                        exact: true,
-                        id: "apiResources-edit",
-                        name: "extensions:develop.sidePanel.apiResources",
-                        path: AppConstants.getPaths().get("API_RESOURCE_EDIT"),
-                        protected: true,
-                        showOnSidePanel: false
-                    },
-                    {
-                        component: lazy(() =>
-                            import("../../admin.api-resources.v2/pages/api-resources-internal-list")
-                        ),
-                        exact: true,
-                        id: "apiResources-list",
-                        name: "extensions:develop.sidePanel.apiResources",
-                        path: AppConstants.getPaths().get("API_RESOURCES_CATEGORY"),
-                        protected: true,
-                        showOnSidePanel: false
-                    }
-                ],
-                component: lazy(() =>
-                    import("../../admin.api-resources.v2/pages/api-resources")
-                ),
-                exact: true,
-                icon: {
-                    icon: import("../assets/images/icons/api-resources-icon.svg")
-                },
-                id: "apiResources",
-                name: "extensions:develop.sidePanel.apiResources",
-                order: 2,
-                path: AppConstants.getPaths().get("API_RESOURCES"),
-                protected: true,
-                showOnSidePanel: legacyMode?.apiResourcesV2
-            });
-        }
-
-        if (legacyMode?.rolesV1) {
-            routes.push(
-                {
-                    category: "extensions:manage.sidePanel.categories.userManagement",
-                    children: [
-                        {
-                            component: lazy(() => import("../../admin.roles.v1/pages/role-edit")),
-                            exact: true,
-                            icon: {
-                                icon: getSidePanelIcons().childIcon
-                            },
-                            id: "rolesV1Edit",
-                            name: "console:manage.features.sidePanel.editRoles",
-                            path: AppConstants.getPaths().get("ROLE_EDIT"),
-                            protected: true,
-                            showOnSidePanel: false
-                        }
-                    ],
-                    component: lazy(() => import("../../admin.roles.v1/pages/role")),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().applicationRoles
-                    },
-                    id: "userV1Roles",
-                    name: "console:manage.features.sidePanel.roles",
-                    order: 7,
-                    path: AppConstants.getPaths().get("ROLES"),
-                    protected: true,
-                    showOnSidePanel: legacyMode?.rolesV1
-                }
-            );
-        } else {
-            routes.push(
-                {
-                    category: "extensions:manage.sidePanel.categories.userManagement",
-                    children: [
-                        {
-                            component: lazy(() => import("../../admin.roles.v2/pages/role-edit")),
-                            exact: true,
-                            icon: {
-                                icon: getSidePanelIcons().childIcon
-                            },
-                            id: "rolesEdit",
-                            name: "console:manage.features.sidePanel.editRoles",
-                            path: AppConstants.getPaths().get("ROLE_EDIT"),
-                            protected: true,
-                            showOnSidePanel: false
-                        },
-                        {
-                            component: lazy(() => import("../../admin.roles.v2/pages/create-role-wizard")),
-                            exact: true,
-                            icon: {
-                                icon: getSidePanelIcons().childIcon
-                            },
-                            id: "rolesCreate",
-                            name: "console:manage.features.sidePanel.createRole",
-                            path: AppConstants.getPaths().get("ROLE_CREATE"),
-                            protected: true,
-                            showOnSidePanel: false
-                        }
-                    ],
-                    component: lazy(() => import("../../admin.roles.v2/pages/role")),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().applicationRoles
-                    },
-                    id: "userRoles",
-                    name: "console:manage.features.sidePanel.roles",
-                    order: 7,
-                    path: AppConstants.getPaths().get("ROLES"),
-                    protected: true,
-                    showOnSidePanel: !legacyMode?.rolesV1
-                }
-            );
-        }
 
         return routes;
     },

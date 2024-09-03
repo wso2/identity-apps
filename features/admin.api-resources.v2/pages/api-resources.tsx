@@ -16,8 +16,15 @@
  * under the License.
  */
 
-import { BuildingGearIcon, ChevronRightIcon, HierarchyIcon } from "@oxygen-ui/react-icons";
 import Grid from "@oxygen-ui/react/Grid";
+import { BuildingGearIcon, ChevronRightIcon, HierarchyIcon } from "@oxygen-ui/react-icons";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppState,
+    FeatureConfigInterface,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -36,13 +43,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Icon, List, PaginationProps } from "semantic-ui-react";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    FeatureConfigInterface,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../admin.core.v1";
 import { useAPIResources } from "../api";
 import { APIResourcesList } from "../components";
 import { AddAPIResource } from "../components/wizard";
@@ -84,6 +84,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
     const [ nextAfter, setNextAfter ] = useState<string>(undefined);
     const [ nextBefore, setNextBefore ] = useState<string>(undefined);
     const [ filter, setFilter ] = useState<string>(`type eq ${ APIResourcesConstants.BUSINESS }`);
+    const [ attributes ] = useState<string>(APIResourcesConstants.PROPERTIES);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -93,7 +94,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
         isLoading: isAPIResourcesListLoading,
         error: apiResourcesFetchRequestError,
         mutate: mutateAPIResourcesFetchRequest
-    } = useAPIResources(after, before, filter);
+    } = useAPIResources(after, before, filter, true, attributes);
 
     /**
      * Update the API resources list.

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,8 +32,6 @@ export class CommonUtils {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
@@ -41,7 +39,7 @@ export class CommonUtils {
     /**
      * Retrieve the set of seen announcements persisted in the storage.
      *
-     * @return {string[]} Seen announcements.
+     * @returns Seen announcements.
      */
     public static getSeenAnnouncements(): string[] {
 
@@ -57,7 +55,7 @@ export class CommonUtils {
     /**
      * Persists the seen announcement in the storage.
      *
-     * @param {string} id - Id of the seen announcement.
+     * @param id - Id of the seen announcement.
      */
     public static setSeenAnnouncements(id: string): void {
 
@@ -68,16 +66,17 @@ export class CommonUtils {
         }
 
         const newPref: StorageIdentityAppsSettingsInterface = cloneDeep(userPreferences);
-        const seen = get(userPreferences, CommonConstants.SEEN_ANNOUNCEMENTS_KEY, []);
+        const seen: any = get(userPreferences, CommonConstants.SEEN_ANNOUNCEMENTS_KEY, []);
+
         set(newPref, CommonConstants.SEEN_ANNOUNCEMENTS_KEY, [ ...seen, id ]);
 
         AppUtils.setUserPreferences(newPref);
-    }  
+    }
 
     /**
      * Converts the isReadOnlyUser string to a boolean variable
      *
-     * @return {boolean} True/False
+     * @returns the boolean value of `isReadOnlyUser` string
      */
     public static isProfileReadOnly(state: string): boolean {
         return (state === "true");

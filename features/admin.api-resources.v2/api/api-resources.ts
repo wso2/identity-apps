@@ -17,14 +17,14 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
-import { store } from "../../admin.core.v1/store";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { APIResourceInterface, APIResourcePermissionInterface, APIResourcesListInterface, UpdatedAPIResourceInterface }
     from "../models";
 
@@ -96,7 +96,8 @@ export const useAPIResources = <Data = APIResourcesListInterface, Error = Reques
     after?: string,
     before?: string,
     filter?: string,
-    shouldFetch: boolean = true
+    shouldFetch: boolean = true,
+    attributes?: string
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: AxiosRequestConfig = {
@@ -107,6 +108,7 @@ export const useAPIResources = <Data = APIResourcesListInterface, Error = Reques
         method: HttpMethods.GET,
         params: {
             after,
+            attributes,
             before,
             filter
         },

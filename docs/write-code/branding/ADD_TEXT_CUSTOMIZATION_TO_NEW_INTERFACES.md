@@ -32,7 +32,7 @@ Here are the steps to add text customization in the interfaces:
    - Add the updated strings to other resource language files as well.
 
 5. **Update i18n in Namespaces File:**
-   - Update the `modules/i18n/src/models/namespaces/console-ns.ts` file with the relevant i18n keys for the screens and form fields.
+   - Update the `modules/i18n/src/models/namespaces/branding-ns.ts` file with the relevant i18n keys for the screens and form fields.
         - It should be in the following format:
           ```
           export const consoleNS = {

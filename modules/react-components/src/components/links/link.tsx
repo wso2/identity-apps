@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -54,6 +54,10 @@ interface LinkPropsInterface extends IdentifiableComponentInterface {
      * Documentation URL target property. Opens in a new window by default.
      */
     target?: string;
+    /**
+     * Title attribute for the anchor element.
+     */
+    title?: string;
 }
 
 /**
@@ -62,21 +66,18 @@ interface LinkPropsInterface extends IdentifiableComponentInterface {
  * @param props - Props injected to the component.
  * @returns the link component.
  */
-export const Link: FunctionComponent<PropsWithChildren<LinkPropsInterface>> = (
-    props: PropsWithChildren<LinkPropsInterface>
-): ReactElement => {
-
-    const {
-        children,
-        className,
-        external,
-        icon,
-        iconPosition,
-        link,
-        onClick,
-        target,
-        [ "data-componentid" ]: componentId
-    } = props;
+export const Link: FunctionComponent<PropsWithChildren<LinkPropsInterface>> = ({
+    children,
+    className,
+    external = true,
+    icon = "external",
+    iconPosition = "right",
+    link = "#",
+    onClick,
+    target = "_blank",
+    title,
+    [ "data-componentid" ]: componentId = "link"
+}: PropsWithChildren<LinkPropsInterface>): ReactElement => {
 
     const classes = classNames(
         "link pointing",
@@ -106,22 +107,11 @@ export const Link: FunctionComponent<PropsWithChildren<LinkPropsInterface>> = (
                 onClick(e);
             } }
             data-componentid={ componentId }
+            title={ title }
         >
             { external && icon && iconPosition === "left" && <Icon className="mr-1" name={ icon } /> }
             { children }
             { external && icon && iconPosition === "right" && <Icon className="ml-1" name={ icon } /> }
         </a>
     );
-};
-
-/**
- * Prop types for the component.
- */
-Link.defaultProps = {
-    "data-componentid": "link",
-    external: true,
-    icon: "external",
-    iconPosition: "right",
-    link: "#",
-    target: "_blank"
 };

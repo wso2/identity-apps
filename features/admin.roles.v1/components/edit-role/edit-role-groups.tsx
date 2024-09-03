@@ -16,6 +16,15 @@
  * under the License.
  */
 
+import { getEmptyPlaceholderIllustrations, updateResources } from "@wso2is/admin.core.v1";
+import { getGroupList } from "@wso2is/admin.groups.v1/api";
+import {
+    GroupListInterface,
+    GroupsInterface,
+    PatchGroupAddOpInterface,
+    PatchGroupOpInterface,
+    PatchGroupRemoveOpInterface
+} from "@wso2is/admin.groups.v1/models";
 import {
     AlertLevels,
     RoleGroupsInterface,
@@ -55,15 +64,6 @@ import {
     Modal,
     Table
 } from "semantic-ui-react";
-import { getEmptyPlaceholderIllustrations, updateResources } from "../../../admin.core.v1";
-import { getGroupList } from "../../../admin.groups.v1/api";
-import {
-    GroupListInterface,
-    GroupsInterface,
-    PatchGroupAddOpInterface,
-    PatchGroupOpInterface,
-    PatchGroupRemoveOpInterface
-} from "../../../admin.groups.v1/models";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../constants/role-constants";
 
 interface RoleGroupsPropsInterface extends TestableComponentInterface {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,7 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import useSWR, { SWRConfiguration, SWRResponse } from "swr";
-import { FetcherResponse } from "swr/dist/types";
+import { FetcherResponse } from "swr/dist/_internal";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
@@ -46,6 +46,10 @@ export interface RequestResultInterface<Data = unknown, Error = unknown>
      * Request response.
      */
     response?: AxiosResponse<Data> | undefined;
+    /**
+     * Custom function to mutate multiple cache items
+     */
+    mutateMultiple?: () => void;
 }
 
 /**
@@ -105,7 +109,7 @@ const useRequest = <Data = unknown, Error = unknown>(
         ...config
     };
 
-    const { data: response, error, isValidating, mutate } = useSWR<AxiosResponse<Data>, AxiosError<Error>>(
+    const { data: response, error, isValidating, mutate, isLoading } = useSWR<AxiosResponse<Data>, AxiosError<Error>>(
         request && JSON.stringify(request),
         /**
          * NOTE: Typescript thinks `request` can be `null` here, but the fetcher
@@ -140,6 +144,7 @@ const useRequest = <Data = unknown, Error = unknown>(
     return {
         data: response && response.data,
         error,
+        isLoading,
         isValidating,
         mutate,
         response

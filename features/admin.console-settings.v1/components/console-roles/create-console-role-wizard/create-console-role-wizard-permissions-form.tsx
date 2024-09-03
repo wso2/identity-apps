@@ -23,14 +23,15 @@ import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { ChevronDownIcon } from "@oxygen-ui/react-icons";
 import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
-import { IdentifiableComponentInterface, LegacyModeInterface } from "@wso2is/core/models";
+import { ChevronDownIcon } from "@oxygen-ui/react-icons";
+import { CreateRolePermissionInterface } from "@wso2is/admin.roles.v2/models/roles";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
@@ -45,9 +46,6 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { AppState } from "../../../../admin.core.v1/store";
-import { CreateRolePermissionInterface } from "../../../../admin.roles.v2/models/roles";
 import useGetAPIResourceCollections from "../../../api/use-get-api-resource-collections";
 import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
 import {
@@ -108,8 +106,6 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
 
     const { t } = useTranslation();
 
-    const legacyMode: LegacyModeInterface = useSelector((state: AppState) => state?.config?.ui?.legacyMode);
-
     const { data: tenantAPIResourceCollections } = useGetAPIResourceCollections(true, "type eq tenant", "apiResources");
 
     const { data: organizationAPIResourceCollections } = useGetAPIResourceCollections(
@@ -159,13 +155,9 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
             cloneDeep(tenantAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
 
-        if (legacyMode?.rolesV1) {
-            filteringAPIResourceCollectionNames.push(
-                ConsoleRolesOnboardingConstants.ROLE_API_RESOURCES_COLLECTION_NAME);
-        } else {
-            filteringAPIResourceCollectionNames.push(
-                ConsoleRolesOnboardingConstants.ROLE_V1_API_RESOURCES_COLLECTION_NAME);
-        }
+
+        filteringAPIResourceCollectionNames.push(
+            ConsoleRolesOnboardingConstants.ROLE_V1_API_RESOURCES_COLLECTION_NAME);
 
         clonedTenantAPIResourceCollections.apiResourceCollections =
                 clonedTenantAPIResourceCollections?.apiResourceCollections?.filter(
@@ -186,13 +178,8 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
             cloneDeep(organizationAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
 
-        if (legacyMode?.rolesV1) {
-            filteringAPIResourceCollectionNames.push(
-                ConsoleRolesOnboardingConstants.ORG_ROLE_API_RESOURCES_COLLECTION_NAME);
-        } else {
-            filteringAPIResourceCollectionNames.push(
-                ConsoleRolesOnboardingConstants.ORG_ROLE_V1_API_RESOURCES_COLLECTION_NAME);
-        }
+        filteringAPIResourceCollectionNames.push(
+            ConsoleRolesOnboardingConstants.ORG_ROLE_V1_API_RESOURCES_COLLECTION_NAME);
 
         clonedOrganizationAPIResourceCollections.apiResourceCollections =
                 clonedOrganizationAPIResourceCollections?.apiResourceCollections?.filter(

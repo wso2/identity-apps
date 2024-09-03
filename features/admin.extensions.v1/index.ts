@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-export * from "./extension";
+
 export * from "./extensions-manager";
 export * from "./models";
 export * from "./configs";

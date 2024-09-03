@@ -149,9 +149,9 @@
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
                 if (productFooterFile.exists()) {
             %>
-            <jsp:include page="extensions/product-footer.jsp"/>
+                <jsp:include page="extensions/product-footer.jsp"/>
             <% } else { %>
-            <jsp:include page="includes/product-footer.jsp"/>
+                <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
         <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">

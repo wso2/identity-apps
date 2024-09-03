@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { getOrganizationRoleById } from "@wso2is/admin.organizations.v1/api";
+import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models/organizations";
+import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
+import { getRoleById } from "@wso2is/admin.roles.v2/api/roles";
+import { PermissionList } from "@wso2is/admin.roles.v2/components/wizard/role-permission";
 import { RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { LinkButton } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
@@ -22,12 +28,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Grid, Modal } from "semantic-ui-react";
-import { AppConstants, AppState, history } from "../../admin.core.v1";
-import { getOrganizationRoleById } from "../../admin.organizations.v1/api";
-import { OrganizationResponseInterface } from "../../admin.organizations.v1/models/organizations";
-import { OrganizationUtils } from "../../admin.organizations.v1/utils";
-import { getRoleById } from "../../admin.roles.v2/api/roles";
-import { PermissionList } from "../../admin.roles.v2/components/wizard/role-permission";
 
 /**
  * Proptypes for the user role permission component.

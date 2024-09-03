@@ -78,6 +78,11 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("isSelfRegistrationUsernameRequestPage", true);
+%>
+
 <%
     String BASIC_AUTHENTICATOR = "BasicAuthenticator";
     String OPEN_ID_AUTHENTICATOR = "OpenIDAuthenticator";
@@ -86,6 +91,7 @@
     String FACEBOOK_AUTHENTICATOR = "FacebookAuthenticator";
     String OIDC_AUTHENTICATOR = "OpenIDConnectAuthenticator";
     String SSO_AUTHENTICATOR = "OrganizationAuthenticator";
+    String SSO_AUTHENTICATOR_NAME = "SSO";
     String commonauthURL = "../commonauth";
 
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -208,12 +214,10 @@
             }
         }
     }
-    if (isFederated) {
-        if (federatedAuthenticators.length() == 1) {
-            JSONObject onlyAvailableFederatedAuthenticator = (JSONObject) federatedAuthenticators.get(0);
-            String authenticatorType = (String) onlyAvailableFederatedAuthenticator.get("type");
-            isSSOLoginTheOnlyAuthenticatorConfigured = authenticatorType.equals(SSO_AUTHENTICATOR);
-        }
+    if (isFederated && federatedAuthenticators.length() == 1) {
+        JSONObject onlyAvailableFederatedAuthenticator = (JSONObject) federatedAuthenticators.get(0);
+        String authenticatorType = (String) onlyAvailableFederatedAuthenticator.get("type");
+        isSSOLoginTheOnlyAuthenticatorConfigured = authenticatorType.equals(SSO_AUTHENTICATOR);
     }
 
     if (request.getParameter(Constants.MISSING_CLAIMS) != null) {
@@ -546,6 +550,10 @@
                         String EXTERNAL_CONNECTION_PREFIX = "sign in with";
                         if (StringUtils.startsWithIgnoreCase(name, EXTERNAL_CONNECTION_PREFIX)) {
                             displayName = name.substring(EXTERNAL_CONNECTION_PREFIX.length());
+                        }
+                        // If IdP name is "SSO", need to handle as special case.
+                        if (StringUtils.equalsIgnoreCase(name, SSO_AUTHENTICATOR_NAME)) {
+                            imageURL = "libs/themes/default/assets/images/identity-providers/sso.svg";
                         }
 
                         if (StringUtils.equals(type,GOOGLE_AUTHENTICATOR)) {
@@ -1295,7 +1303,7 @@
 
     <script>
         const ALPHANUMERIC_USERNAME_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/;
-        const USERNAME_WITH_SPECIAL_CHARS_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$&'+\\=^_.{|}~-]+$/;
+        const USERNAME_WITH_SPECIAL_CHARS_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$&'+\\=^.{|}~-]+$/;
         var registrationDataKey = "registrationData";
         var passwordField = $("#passwordUserInput");
         var $registerForm = $("#register");
@@ -1514,31 +1522,23 @@
             %>
 
             // Dynamically render the configured authenticators.
-            var hasLocal = false;
             var hasFederated = false;
             var isBasicForm = true;
             var isSSOLoginTheOnlyAuthenticatorConfigured = <%=isSSOLoginTheOnlyAuthenticatorConfigured%>;
             try {
-                var hasLocal=JSON.parse(<%=isLocal%>);
                 var hasFederated = JSON.parse(<%=isFederated%>);
                 var isBasicForm = JSON.parse(<%=isBasic%>);
             } catch(error) {
                 // Do nothing.
             }
 
-            if (hasLocal & hasFederated & !isSSOLoginTheOnlyAuthenticatorConfigured) {
+            if (hasFederated & !isSSOLoginTheOnlyAuthenticatorConfigured) {
                 $("#continue-with-email").show();
-                $("#federated-authenticators").show();
-            } else if (hasFederated & !isSSOLoginTheOnlyAuthenticatorConfigured) {
                 $("#federated-authenticators").show();
             } else {
                 $("#continue-with-email").hide();
                 $("#federated-authenticators").hide();
-                if (hasLocal || isBasicForm) {
-                    $("#basic-form").show();
-                } else {
-                    $("#basic-form").hide();
-                }
+                $("#basic-form").show();
             }
 
             var container;

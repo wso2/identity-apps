@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,18 +17,17 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import useResourceEndpoints from "../../admin.core.v1/hooks/use-resource-endpoints";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../admin.core.v1";
+import { store } from "@wso2is/admin.core.v1";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
-import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
-import { ConnectionManagementConstants } from "../constants/connection-constants";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import { NotificationSenderSMSInterface } from "../models/authenticators";
 import {
     ApplicationBasicInterface,
@@ -173,7 +172,7 @@ export const getConnections = (
         .then((response: AxiosResponse) => {
             if (response?.status !== 200) {
                 throw new IdentityAppsApiException(
-                    ConnectionManagementConstants.CONNECTIONS_FETCH_INVALID_STATUS_CODE_ERROR,
+                    ConnectionUIConstants.ERROR_MESSAGES.CONNECTIONS_FETCH_INVALID_STATUS_CODE_ERROR,
                     null,
                     response?.status,
                     response?.request,
@@ -184,7 +183,7 @@ export const getConnections = (
             return Promise.resolve(response?.data as ConnectionListResponseInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                ConnectionManagementConstants.CONNECTIONS_FETCH_ERROR,
+                ConnectionUIConstants.ERROR_MESSAGES.CONNECTIONS_FETCH_ERROR,
                 error?.stack,
                 error?.response?.data?.code,
                 error?.request,
@@ -324,6 +323,7 @@ export const useGetConnectionTemplate = <Data = ConnectionTemplateInterface, Err
 
 /**
  * Hook to get the connection template list with limit and offset.
+ * @deprecated - Use `useGetConnectionTemplates` from `use-get-connection-templates.ts`
  *
  * @param limit - Maximum Limit of the connection templates.
  * @param offset - Offset for get to start.
@@ -565,34 +565,6 @@ export const getOutboundProvisioningConnectorMetadata = (
 };
 
 /**
- * Fetch the list of outbound provisioning connectors.
- *
- * @returns A promise containing the response.
- */
-export const getOutboundProvisioningConnectorsList = (): Promise<OutboundProvisioningConnectorListItemInterface[]> => {
-
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.identityProviders + "/meta/outbound-provisioning-connectors"
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to fetch outbound provisioning connectors"));
-            }
-
-            return Promise.resolve(response.data as OutboundProvisioningConnectorListItemInterface[]);
-        }).catch((error: AxiosError) => {
-            return Promise.reject(error);
-        });
-};
-
-/**
  * Update a outbound provisioning connector of a specified IDP.
  *
  * @param idpId - ID of the Identity Provider.
@@ -727,7 +699,7 @@ export const updateJITProvisioningConfigs = (
             return Promise.resolve(response.data as ConnectionInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                ConnectionManagementConstants.CONNECTION_JIT_PROVISIONING_UPDATE_ERROR,
+                ConnectionUIConstants.ERROR_MESSAGES.CONNECTION_JIT_PROVISIONING_UPDATE_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -774,7 +746,10 @@ export const getConnectedApps = (idpId: string): Promise<any> => {
  * @param connection - Connection.
  * @returns A promise containing the response.
  */
-export const updateIdentityProviderDetails = (connection: ConnectionInterface): Promise<any> => {
+export const updateIdentityProviderDetails = (
+    connection: ConnectionInterface,
+    isAddOperation: boolean = false
+): Promise<any> => {
 
     const { id, ...rest } = connection;
     const replaceOps: any = [];
@@ -782,7 +757,7 @@ export const updateIdentityProviderDetails = (connection: ConnectionInterface): 
     for (const key in rest) {
         if(rest[key] !== undefined) {
             replaceOps.push({
-                "operation": "REPLACE",
+                "operation": (isAddOperation && key === "idpIssuerName") ? "ADD" : "REPLACE",
                 "path": "/" + key,
                 "value": rest[key]
             });
@@ -1006,7 +981,7 @@ export const updateIDPCertificate = <T = Record<string, unknown>>(
             return Promise.resolve(response.data as ConnectionInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                ConnectionManagementConstants.CONNECTION_CERTIFICATE_UPDATE_ERROR,
+                ConnectionUIConstants.ERROR_MESSAGES.CONNECTION_CERTIFICATE_UPDATE_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -1046,7 +1021,7 @@ export const updateClaimsConfigs = (
             return Promise.resolve(response.data as ConnectionInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                ConnectionManagementConstants.CONNECTION_CLAIMS_UPDATE_ERROR,
+                ConnectionUIConstants.ERROR_MESSAGES.CONNECTION_CLAIMS_UPDATE_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -1087,7 +1062,7 @@ export const updateImplicitAssociationConfig = (
             return Promise.resolve(response.data as ConnectionInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                ConnectionManagementConstants.CONNECTION_IMPLICIT_ASSOCIATION_UPDATE_ERROR,
+                ConnectionUIConstants.ERROR_MESSAGES.CONNECTION_IMPLICIT_ASSOCIATION_UPDATE_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -1123,104 +1098,6 @@ export const useSMSNotificationSenders = <Data = NotificationSenderSMSInterface[
         isValidating,
         mutate: mutate
     };
-};
-
-/**
- * Add sms notification senders with name SMSPublisher.
- *
- * @returns  A promise containing the response.
- */
-export const addSMSPublisher = (): Promise<NotificationSenderSMSInterface> => {
-    //SMS Notification sender with name SMSPublisher.
-    const smsProvider: NotificationSenderSMSInterface = {
-        contentType: "FORM",
-        name: "SMSPublisher",
-        properties: [
-            {
-                key: "channel.type",
-                value: "choreo"
-            }
-        ],
-        provider: "choreo",
-        providerURL: "https://console.choreo.dev/"
-    };
-
-    const requestConfig: RequestConfigInterface = {
-        data: smsProvider,
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.POST,
-        url: store.getState().config.endpoints.notificationSendersEndPoint + "/sms"
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse<NotificationSenderSMSInterface>) => {
-            if (response.status !== 201) {
-                throw new IdentityAppsApiException(
-                    AuthenticatorManagementConstants.ERROR_IN_CREATING_SMS_NOTIFICATION_SENDER,
-                    null,
-                    response.status,
-                    response.request,
-                    response,
-                    response.config);
-            }
-
-            return Promise.resolve(response.data as NotificationSenderSMSInterface);
-        }).catch((error: AxiosError) => {
-            throw new IdentityAppsApiException(
-                AuthenticatorManagementConstants.ERROR_IN_CREATING_SMS_NOTIFICATION_SENDER,
-                error.stack,
-                error.code,
-                error.request,
-                error.response,
-                error.config);
-        });
-};
-
-/**
- * Delete sms notification senders with name SMSPublisher.
- *
- * @returns  A promise containing the response.
- */
-export const deleteSMSPublisher = (): Promise<void> => {
-
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.DELETE,
-        url: store.getState().config.endpoints.notificationSendersEndPoint + "/sms/SMSPublisher"
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 204) {
-                throw new IdentityAppsApiException(
-                    AuthenticatorManagementConstants.ERROR_IN_DELETING_SMS_NOTIFICATION_SENDER,
-                    null,
-                    response.status,
-                    response.request,
-                    response,
-                    response.config);
-            }
-
-            return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
-            let errorMessage: string = AuthenticatorManagementConstants.ERROR_IN_DELETING_SMS_NOTIFICATION_SENDER;
-
-            if (error.response?.data?.code ===
-                AuthenticatorManagementConstants.ErrorMessages
-                    .SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS.getErrorCode()) {
-                errorMessage = AuthenticatorManagementConstants.ErrorMessages
-                    .SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS.getErrorMessage();
-            }
-            throw new IdentityAppsApiException(errorMessage, error.stack, error.response?.data?.code, error.request,
-                error.response, error.config);
-
-        });
 };
 
 /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,8 +20,8 @@ import { RouteInterface } from "@wso2is/core/models";
 
 /**
  * Returns true if a given key in the JSON object is set to true
- * @param appConfig
- * @param key
+ * @param appConfig - app config
+ * @param key - key to be checked in the config
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const checkEnabled = (appConfig: any, key: string): boolean => {
@@ -39,9 +39,9 @@ export const checkEnabled = (appConfig: any, key: string): boolean => {
 /**
  * This filters the routes based on the application configuration
  *
- * @param {RouteInterface[]} routes - Routes to be filtered.
- * @param {object} appConfig - App config.
- * @return {RouteInterface[]}
+ * @param routes - Routes to be filtered.
+ * @param appConfig - App config.
+ * @returns filtered routes
  */
 export const filterRoutes = (routes: RouteInterface[], appConfig: object): RouteInterface[] => {
 

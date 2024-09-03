@@ -16,15 +16,16 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { BrandingPreferenceInterface } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
 import React, { FunctionComponent, MutableRefObject, ReactElement, Ref, forwardRef, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Placeholder } from "semantic-ui-react";
-import { AppState } from "../../../admin.core.v1/store";
-import { BrandingPreferencesConstants } from "../../constants";
-import { BrandingPreferenceInterface } from "../../models";
+import { BrandingModes, BrandingPreferencesConstants } from "../../constants";
+import useBrandingPreference from "../../hooks/use-branding-preference";
 
 /**
  * Interface for Branding Preference General Details Form props.
@@ -95,6 +96,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPropsInterf
     const [ displayName, setDisplayName ] = useState<string>(initialValues.organizationDetails.displayName);
     const [ supportEmail, setSupportEmail ] = useState<string>(initialValues.organizationDetails.supportEmail);
 
+    const {
+        brandingMode
+    } = useBrandingPreference();
+
     /**
      * Broadcast values to the outside when internals change.
      */
@@ -137,28 +142,32 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPropsInterf
             onSubmit={ onSubmit }
             initialValues={ initialValues }
         >
-            <Field.Input
-                ariaLabel="Display name input field"
-                inputType="default"
-                name="organizationDetails.displayName"
-                label={ t("extensions:develop.branding.forms.general.fields.displayName.label") }
-                placeholder={ t("extensions:develop.branding.forms.general.fields.displayName.placeholder") }
-                hint={
-                    t("extensions:develop.branding.forms.general.fields.displayName.hint", { productName })
-                }
-                required={ false }
-                readOnly={ readOnly }
-                value={ initialValues.organizationDetails.displayName }
-                maxLength={
-                    BrandingPreferencesConstants.GENERAL_DETAILS_FORM_FIELD_CONSTRAINTS.DISPLAY_NAME_MAX_LENGTH
-                }
-                minLength={
-                    BrandingPreferencesConstants.GENERAL_DETAILS_FORM_FIELD_CONSTRAINTS.DISPLAY_NAME_MIN_LENGTH
-                }
-                width={ 16 }
-                listen={ (value: string) => setDisplayName(value) }
-                data-componentid={ `${componentId}-organization-display-name` }
-            />
+            {
+                brandingMode === BrandingModes.ORGANIZATION && (
+                    <Field.Input
+                        ariaLabel="Display name input field"
+                        inputType="default"
+                        name="organizationDetails.displayName"
+                        label={ t("extensions:develop.branding.forms.general.fields.displayName.label") }
+                        placeholder={ t("extensions:develop.branding.forms.general.fields.displayName.placeholder") }
+                        hint={
+                            t("extensions:develop.branding.forms.general.fields.displayName.hint", { productName })
+                        }
+                        required={ false }
+                        readOnly={ readOnly }
+                        value={ initialValues.organizationDetails.displayName }
+                        maxLength={
+                            BrandingPreferencesConstants.GENERAL_DETAILS_FORM_FIELD_CONSTRAINTS.DISPLAY_NAME_MAX_LENGTH
+                        }
+                        minLength={
+                            BrandingPreferencesConstants.GENERAL_DETAILS_FORM_FIELD_CONSTRAINTS.DISPLAY_NAME_MIN_LENGTH
+                        }
+                        width={ 16 }
+                        listen={ (value: string) => setDisplayName(value) }
+                        data-componentid={ `${componentId}-organization-display-name` }
+                    />
+                )
+            }
             <Field.Input
                 ariaLabel="Contact email input field"
                 inputType="email"

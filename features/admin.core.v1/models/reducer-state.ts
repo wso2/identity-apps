@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,8 @@
  */
 
 import { AuthenticatedUserInfo } from "@asgardeo/auth-react";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models";
 import {
     AlertInterface,
     CommonAuthReducerStateInterface,
@@ -32,10 +34,6 @@ import {
     ServiceResourceEndpointsInterface,
     UIConfigInterface
 } from "./config";
-import { PortalDocumentationStructureInterface } from "./help-panel";
-import { AppViewTypes } from "./ui";
-import { OrganizationType } from "../../admin.organizations.v1/constants";
-import { OrganizationResponseInterface } from "../../admin.organizations.v1/models";
 
 /**
  * Portal config reducer state interface.
@@ -54,18 +52,6 @@ export interface GlobalReducerStateInterface extends CommonGlobalReducerStateInt
     AlertInterface,
     System,
     SupportedLanguagesMeta> {
-
-    activeView: AppViewTypes;
-}
-
-/**
- * Help panel reducer state interface.
- */
-export interface HelpPanelReducerStateInterface {
-    activeTabIndex: number;
-    docURL: string;
-    docStructure: PortalDocumentationStructureInterface;
-    visibility: boolean;
 }
 
 export interface AccessControlReducerStateInterface {
@@ -76,7 +62,7 @@ export interface AccessControlReducerStateInterface {
 /**
  * Organization Reducer State Interface.
  */
-export interface OrganizationReducerStateInterface { 
+export interface OrganizationReducerStateInterface {
     superAdmin: string;
     currentOrganization: string;
     organization?: OrganizationResponseInterface;

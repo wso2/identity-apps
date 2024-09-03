@@ -17,17 +17,16 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { RoleConstants } from "@wso2is/core/constants";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods, RoleListInterface, RolesInterface } from "@wso2is/core/models";
-import { AxiosError, AxiosResponse } from "axios";
-import isLegacyAuthzRuntime from "../../admin.authorization.v1/utils/get-legacy-authz-runtime";
-import { store } from "../../admin.core.v1";
+import { store } from "@wso2is/admin.core.v1";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { RoleConstants } from "@wso2is/core/constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpMethods, RoleListInterface, RolesInterface } from "@wso2is/core/models";
+import { AxiosError, AxiosResponse } from "axios";
 import { RoleAudienceTypes } from "../constants/role-constants";
 import {
     CreateRoleInterface,
@@ -141,8 +140,7 @@ export const getRoleById = (roleId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: (isLegacyAuthzRuntime() ?
-            store.getState().config.endpoints.roles : store.getState().config.endpoints.rolesV2) + "/" + roleId
+        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
     };
 
     return httpClient(requestConfig)
@@ -216,8 +214,7 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: (isLegacyAuthzRuntime() ?
-            store.getState().config.endpoints.roles : store.getState().config.endpoints.rolesV2) + "/" + roleId
+        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
     };
 
     return httpClient(requestConfig)
@@ -241,7 +238,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.rolesWithoutOrgPath + "/.search"
+        url: store?.getState()?.config?.endpoints?.rolesV2 + "/.search"
     };
 
     return httpClient(requestConfig)
@@ -412,8 +409,7 @@ export const updateRole = (roleId: string, roleData: PatchRoleDataInterface): Pr
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: (isLegacyAuthzRuntime() ?
-            store.getState().config.endpoints.roles : store.getState().config.endpoints.rolesV2) + "/" + roleId
+        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
     };
 
     return httpClient(requestConfig)
@@ -443,10 +439,11 @@ export const updateRolesBulk = (roleIds: string[], roleData: PatchRoleDataInterf
  * TODO: Return `response.data` rather than `response` and stop returning any.
  *
  * @param domain - User store domain.
+ * @param filter - Search filter.
  * @returns A promise containing the roles list.
  * @throws `IdentityAppsApiException`
  */
-export const getRolesList = (domain: string): Promise<RoleListInterface | any> => {
+export const getRolesList = (domain: string, filter?: string): Promise<RoleListInterface | any> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -454,10 +451,10 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
         },
         method: HttpMethods.GET,
         params: {
-            domain
+            domain,
+            filter
         },
-        url: isLegacyAuthzRuntime() ?
-            store.getState().config.endpoints.roles : store.getState().config.endpoints.rolesV2
+        url: store.getState().config.endpoints.rolesV2
     };
 
     return httpClient(requestConfig)

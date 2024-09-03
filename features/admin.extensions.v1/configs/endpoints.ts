@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { DeploymentConfigInterface, store } from "@wso2is/admin.core.v1";
 import { ExtendedFeatureResourceEndpointsInterface } from "./models";
-import { DeploymentConfigInterface, store } from "../../admin.core.v1";
 
 /**
  * Get the resource endpoints for the extended features.

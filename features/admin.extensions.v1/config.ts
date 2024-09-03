@@ -19,25 +19,10 @@
 import { ExtensionsConfigInterface } from "./models";
 
 export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
-    sections: {
-        components: {
-            // TODO: Temporarily disable feedback button.
-            // "feedback-button": "./components/feedback/feedback.tsx"
-            // TODO: Temporarily use help center in the place of feedback.
-            "feedback-button": "./components/help-center/helpCenter.tsx",
-            "tenant-dropdown": "./components/tenants/components/dropdown/tenant-dropdown.tsx"
-        }
-    },
     templateExtensions: {
         applications: {
             categories: [],
-            groups: [
-                {
-                    enabled: true,
-                    id: "web-application",
-                    resource: "./application-templates/groups/web-application-template-group.json"
-                }
-            ],
+            groups: [],
             templates: [
                 {
                     content: {
@@ -81,6 +66,14 @@ export const ExtensionsConfig = (): ExtensionsConfigInterface => ({
                     enabled: true,
                     id: "mobile-application",
                     resource: "./application-templates/templates/mobile-application/mobile-application.json"
+                },
+                {
+                    content: {
+                        quickStart: "./application-templates/templates/m2m-application/quick-start.tsx"
+                    },
+                    enabled: true,
+                    id: "m2m-application",
+                    resource: "./application-templates/templates/m2m-application/m2m-application.json"
                 },
                 {
                     enabled: true,

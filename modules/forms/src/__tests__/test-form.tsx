@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import "@testing-library/jest-dom";
 import React from "react";
 import { Form } from "semantic-ui-react";
 import constants from "./constants";
@@ -30,10 +31,13 @@ export interface FormTestFields {
     type: Type;
 }
 
+const listen = jest.fn((value) => value);
+const onSubmit = jest.fn((value) => value);
+
 const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element => {
     const form = {
         button: {
-            onClick: constants.onClick,
+            onClick: jest.fn(),
             type: "button" as const,
             value: constants.BUTTON_VALUE
         },
@@ -53,7 +57,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
                 }
             ],
             label: constants.CHECKBOX_LABEL,
-            listen: (value) => { constants.listen(value); },
+            listen: (value) => { listen(value); },
             name: constants.CHECKBOX_NAME,
             required: true,
             requiredErrorMessage: constants.CHECKBOX_REQUIRED_MESSAGE,
@@ -83,7 +87,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
             ],
             default: constants.DROPDOWN_DEFAULT,
             label: constants.DROPDOWN_LABEL,
-            listen: (value) => { constants.listen(value); },
+            listen: (value) => { listen(value); },
             name: constants.DROPDOWN_NAME,
             placeholder: constants.DROPDOWN_PLACEHOLDER,
             required: true,
@@ -94,7 +98,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
             generatePassword: constants.GENERATE_PASSWORD,
             hidePassword: constants.HIDE_PASSWORD,
             label: constants.PASSWORD_LABEL,
-            listen: (value) => { constants.listen(value); },
+            listen: (value) => { listen(value); },
             name: constants.PASSWORD_NAME,
             placeholder: constants.PASSWORD_PLACEHOLDER,
             required: true,
@@ -125,7 +129,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
             ],
             default: constants.RADIO_DEFAULT,
             label: constants.RADIO_LABEL,
-            listen: (value) => { constants.listen(value); },
+            listen: (value) => { listen(value); },
             name: constants.RADIO_NAME,
             type: "radio" as const,
             value: constants.RADIO_VALUE
@@ -140,7 +144,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
         },
         text: {
             label: constants.TEXT_BOX_LABEL,
-            listen: (value) => { constants.listen(value); },
+            listen: (value) => { listen(value); },
             name: constants.TEXT_BOX_NAME,
             placeholder: constants.TEXT_BOX_PLACEHOLDER,
             required: true,
@@ -177,7 +181,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
     });
 
     return (
-        <Forms onSubmit={ (value) => constants.onSubmit(value) }>
+        <Forms onSubmit={ (value) => onSubmit(value) }>
             {
                 isGroup
                     ? (

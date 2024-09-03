@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -86,6 +86,7 @@ export const common: CommonNS = {
     endsWith: "முடிவடைவது",
     equals: "சமன்",
     exitFullScreen: "முழுத்திரையில் இருந்து வெளியேறவும்",
+    experimental: "சோதனைக்குரிய",
     explore: "ஆராயுங்கள்",
     export: "ஏற்று",
     featureAvailable: "இந்த அம்சம் விரைவில் கிடைக்கும்!",
@@ -114,6 +115,7 @@ export const common: CommonNS = {
     logout: "வெளியேறு",
     maxValidation: "இந்த மதிப்பு {{max}} ஐ விட குறைவாகவோ அல்லது சமமாகவோ இருக்க வேண்டும்.",
     maximize: "பெரிதாக்கு",
+    metaAttributes: "மெட்டா பண்புக்கூறுகள்",
     minValidation: "இந்த மதிப்பு {{min}} ஐ விட அதிகமாகவோ அல்லது சமமாகவோ இருக்க வேண்டும்.",
     minimize: "குறைத்தல்",
     more: "மேலும்",
@@ -134,6 +136,7 @@ export const common: CommonNS = {
     personalInfo: "பயனர் விபரம்",
     pin: "பொருத்து",
     pinned: "பொருத்தப்பட்டுள்ளது",
+    premium: "பிரீமியம்",
     pressEnterPrompt: "தேர்ந்தெடுக்க <1>Enter</1> ஐ அழுத்தவும்",
     preview: "முன்னோட்ட",
     previous: "பின் செல்",

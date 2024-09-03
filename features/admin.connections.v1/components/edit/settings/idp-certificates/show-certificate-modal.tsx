@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { getCertificateIllustrations } from "@wso2is/admin.core.v1";
 import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { DisplayCertificate, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
@@ -23,7 +24,6 @@ import { Certificate as CertificateDisplay, Code, GenericIcon } from "@wso2is/re
 import React, { FC, PropsWithChildren, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, Segment } from "semantic-ui-react";
-import { getCertificateIllustrations } from "../../../../../admin.core.v1";
 
 /**
  * Props interface of {@link ShowCertificateModal}

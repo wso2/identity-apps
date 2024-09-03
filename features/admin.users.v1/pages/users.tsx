@@ -16,41 +16,8 @@
  * under the License.
  */
 
-import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
-import {
-    AlertInterface,
-    AlertLevels,
-    IdentifiableComponentInterface,
-    MultiValueAttributeInterface,
-    TestableComponentInterface
-} from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import {
-    ConfirmationModal,
-    EmptyPlaceholder,
-    ListLayout,
-    PageLayout,
-    PrimaryButton,
-    ResourceTab,
-    ResourceTabPaneInterface
-} from "@wso2is/react-components";
-import { AxiosError } from "axios";
-import cloneDeep from "lodash-es/cloneDeep";
-import React, {
-    FunctionComponent,
-    ReactElement,
-    SyntheticEvent,
-    useEffect,
-    useMemo,
-    useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { RouteComponentProps } from "react-router";
-import { Dispatch } from "redux";
-import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps, TabProps } from "semantic-ui-react";
-import { userstoresConfig } from "../../admin.extensions.v1";
-import { FeatureGateConstants } from "../../admin.extensions.v1/components/feature-gate/constants/feature-gate";
+import Chip from "@oxygen-ui/react/Chip";
+import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -63,8 +30,12 @@ import {
     getAUserStore,
     getEmptyPlaceholderIllustrations,
     history
-} from "../../admin.core.v1";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
+} from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1";
+import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import { userConfig } from "@wso2is/admin.extensions.v1/configs";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorCategoryInterface,
@@ -73,14 +44,48 @@ import {
     ServerConfigurationsConstants,
     getConnectorCategory,
     useServerConfigs
-} from "../../admin.server-configurations.v1";
-import { useUserStores } from "../../admin.userstores.v1/api";
+} from "@wso2is/admin.server-configurations.v1";
+import { useUserStores } from "@wso2is/admin.userstores.v1/api";
 import {
     UserStoreItem,
     UserStoreListItem,
     UserStorePostData,
     UserStoreProperty
-} from "../../admin.userstores.v1/models/user-stores";
+} from "@wso2is/admin.userstores.v1/models/user-stores";
+import {
+    AlertInterface,
+    AlertLevels,
+    IdentifiableComponentInterface,
+    MultiValueAttributeInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import {
+    ConfirmationModal,
+    DocumentationLink,
+    EmptyPlaceholder,
+    Link,
+    ListLayout,
+    PageLayout,
+    PrimaryButton,
+    ResourceTab,
+    ResourceTabPaneInterface,
+    useDocumentation
+} from "@wso2is/react-components";
+import { AxiosError } from "axios";
+import cloneDeep from "lodash-es/cloneDeep";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    SyntheticEvent,
+    useEffect,
+    useMemo,
+    useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { RouteComponentProps } from "react-router";
+import { Dispatch } from "redux";
+import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps, TabProps } from "semantic-ui-react";
 import { useUsersList } from "../api";
 import { useGetParentOrgUserInvites } from "../components/guests/api/use-get-parent-org-user-invites";
 import { UserInviteInterface } from "../components/guests/models/invite";
@@ -96,6 +101,7 @@ import {
     UserManagementConstants
 } from "../constants";
 import { InvitationStatus, UserListInterface } from "../models";
+import "./users.scss";
 
 /**
  * Props for the Users page.
@@ -124,8 +130,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const dispatch: Dispatch<any> = useDispatch();
+
+    const showStatusLabelForNewAuthzRuntimeFeatures: boolean =
+        window["AppUtils"]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures;
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(
         FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
@@ -133,7 +143,16 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const { isSubOrganization, isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const hasUsersCreatePermissions: boolean = useRequiredScopes(
+        featureConfig?.users?.scopes?.create
+    );
+    const hasBulkUserImportCreatePermissions: boolean = useRequiredScopes(
+        featureConfig?.bulkUserImport?.scopes?.create
+    );
+    const hasGuestUserCreatePermissions: boolean = useRequiredScopes(
+        featureConfig?.guestUser?.scopes?.create
+    );
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -145,11 +164,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ emailVerificationEnabled, setEmailVerificationEnabled ] = useState<boolean>(undefined);
     const [ isNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(undefined);
+    const [ isUsersNextPageAvailable ] = useState<boolean>(undefined);
     const [ selectedAddUserType ] = useState<UserAccountTypes>(UserAccountTypes.USER);
     const [ userType, setUserType ] = useState<string>();
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>(userstoresConfig.primaryUserstoreName);
     const [ invitationStatusOption, setInvitationStatusOption ] = useState<string>(InvitationStatus.PENDING);
-    const [ isUsersNextPageAvailable ] = useState<boolean>(undefined);
     const [ isSelectedUserStoreReadOnly ] = useState<boolean>(false);
     const [ isInvitationStatusOptionChanged, setIsInvitationStatusOptionChanged ] = useState<boolean>(false);
     const [ filterGuestList, setFilterGuestList ] = useState<UserInviteInterface[]>();
@@ -554,6 +573,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         } else {
             setSelectedUserStore(data.value as string);
         }
+        setListOffset(0);
     };
 
     const onUserDelete = (): void => {
@@ -684,10 +704,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         />) : null
                 }
                 showPagination={ true }
-                totalPages={ Math.ceil(usersList?.totalResults / listItemLimit) }
+                totalPages={ resolveTotalPages() }
                 totalListSize={ usersList?.totalResults }
                 paginationOptions={ {
-                    disableNextButton: !isNextPageAvailable
+                    disableNextButton: !isNextPageAvailable,
+                    showItemsPerPageDropdown:
+                        !userConfig?.hiddenItemsPerPageRemoteUserStoreDropdown
+                        || selectedUserStore === userstoresConfig.primaryUserstoreName
                 } }
                 isLoading={ isUserListFetchRequestLoading }
             >
@@ -721,7 +744,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const getAddUserOptions = (): DropdownItemProps[] => {
         const dropDownOptions: DropdownItemProps[] = [];
 
-        if (hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.create, allowedScopes)) {
+        if (hasUsersCreatePermissions) {
             dropDownOptions.push({
                 "data-componentid": `${componentId}-add-user-dropdown-item`,
                 key: 1,
@@ -729,10 +752,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 value: UserAccountTypesMain.EXTERNAL
             });
         }
-        if (hasRequiredScopes(
-            featureConfig?.bulkUserImport,
-            featureConfig?.bulkUserImport?.scopes?.create,
-            allowedScopes)) {
+        if (hasBulkUserImportCreatePermissions) {
             dropDownOptions.push({
                 "data-componentid": `${testId}-bulk-import-users-dropdown-item`,
                 "data-testid": `${testId}-bulk-import-users-dropdown-item`,
@@ -742,12 +762,23 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             });
         }
         if (isSubOrganization() &&
-            featureConfig?.guestUser?.enabled &&
-            hasRequiredScopes(featureConfig?.guestUser, featureConfig?.guestUser?.scopes?.create, allowedScopes)) {
+            featureConfig?.parentUserInvitation?.enabled &&
+            hasGuestUserCreatePermissions) {
             dropDownOptions.push({
+                className: "users-invite-parent-user",
                 "data-componentid": `${componentId}-invite-parent-user`,
                 key: 3,
-                text: t("parentOrgInvitations:addUserWizard.heading"),
+                text: <>
+                    { t("parentOrgInvitations:addUserWizard.heading") }
+                    { showStatusLabelForNewAuthzRuntimeFeatures
+                      && (
+                          <Chip
+                              size="small"
+                              label={ t(FeatureStatusLabel.NEW) }
+                              className="oxygen-chip-new"
+                          />
+                      ) }
+                </>,
                 value: UserAccountTypesMain.INTERNAL
             });
         }
@@ -826,11 +857,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             render: renderUsersList
         });
 
-        panes.push({
-            componentId: "invitations",
-            menuItem: t("parentOrgInvitations:tab.invitationsTab"),
-            render: renderInvitationsList
-        });
+        if (featureConfig?.parentUserInvitation?.enabled) {
+            panes.push({
+                componentId: "invitations",
+                menuItem: t("parentOrgInvitations:tab.invitationsTab"),
+                render: renderInvitationsList
+            });
+        }
 
         return panes;
     };
@@ -948,7 +981,17 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     { t("users:confirmations.addMultipleUser.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content>
-                    { t("users:confirmations.addMultipleUser.content") }
+                    <Trans i18nKey="users:confirmations.addMultipleUser.content">
+                        Invite User to Set Password should be enabled to add multiple users.
+                        Please enable email invitations for user password setup from
+                        <Link
+                            onClick={ () => history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
+                                .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+                                .replace(":connectorId", ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID)) }
+                            external={ false }>
+                            Login & Registration settings
+                        </Link>
+                    </Trans>
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         );
@@ -962,7 +1005,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     return (
         <PageLayout
             action={
-                hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.create, allowedScopes)
+                hasUsersCreatePermissions
                 && !isUserListFetchRequestLoading
                 && (!isSubOrganization() || !isParentOrgUserInviteListLoading)
                 && !isReadOnlyUserStore
@@ -970,7 +1013,16 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             }
             title={ t("pages:users.title") }
             pageTitle={ t("pages:users.title") }
-            description={ t("extensions:manage.users.usersSubTitle") }
+            description={ (
+                <>
+                    { t("extensions:manage.users.usersSubTitle") }
+                    <DocumentationLink
+                        link={ getLink("manage.users.learnMore") }
+                    >
+                        { t("extensions:common.learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
             data-testid={ `${ testId }-page-layout` }
         >
             { isSubOrganization()

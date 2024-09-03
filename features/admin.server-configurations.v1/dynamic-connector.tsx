@@ -16,6 +16,11 @@
  * under the License.
  */
 
+import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AxiosError } from "axios";
@@ -33,11 +38,6 @@ import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Divider, Grid, Header, Image, Segment } from "semantic-ui-react";
 import { updateGovernanceConnector } from "./api";
 import { GovernanceConnectorUtils } from "./utils";
-import { serverConfigurationConfig } from "../admin.extensions.v1/configs/server-configuration";
-import {
-    ConnectorPropertyInterface,
-    GovernanceConnectorInterface
-} from "../admin.server-configurations.v1/models/governance-connectors";
 
 /**
  * Interface of the prop types of the `ExtendedDynamicConnector`.

@@ -16,7 +16,10 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { getRolesList } from "@wso2is/admin.roles.v2/api";
 import { AlertLevels, RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, Hint, Popup } from "@wso2is/react-components";
@@ -26,11 +29,9 @@ import isEmpty from "lodash-es/isEmpty";
 import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, MouseEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, DropdownItemProps, DropdownProps, Form, Grid, Icon, Label } from "semantic-ui-react";
-import { useGetCurrentOrganizationType } from "../../../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { getRolesList } from "../../../../../admin.roles.v2/api";
 import { updateConnectionRoleMappings } from "../../../../api/connections";
 import { ConnectionRolesInterface } from "../../../../models/connection";
 import { handleGetRoleListError, handleUpdateIDPRoleMappingsError } from "../../../../utils/connection-utils";
@@ -61,6 +62,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
     const dispatch: Dispatch = useDispatch();
     const { isSuperOrganization } = useGetCurrentOrganizationType();
     const { t } = useTranslation();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const handleRoleAdd = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -144,6 +146,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                 <Grid.Column width={ 8 }>
                     <Form className="outbound-provisioning-roles role-select-dropdown">
                         <Form.Select
+                            selectOnBlur={ false }
                             options={ roleList?.map((role: RolesInterface) => {
                                 return {
                                     key: role.id,
@@ -172,7 +175,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                         <Popup
                             trigger={
                                 (
-                                    <Show when={ AccessControlConstants.IDP_EDIT }>
+                                    <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                                         <Button
                                             onClick={ (event: MouseEvent<HTMLButtonElement>) =>
                                                 handleRoleAdd(event) }
@@ -197,7 +200,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                     {
                         selectedRoles && selectedRoles?.map((selectedRole: string, index: number) => {
                             return (
-                                <Show key={ index } when={ AccessControlConstants.IDP_EDIT }>
+                                <Show key={ index } when={ featureConfig?.identityProviders?.scopes?.update }>
                                     <Label>
                                         { selectedRole }
                                         <Icon
@@ -214,7 +217,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
             </Grid.Row>
             <Grid.Row>
                 <Grid.Column width={ 8 }>
-                    <Show when={ AccessControlConstants.IDP_EDIT }>
+                    <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                         <Button
                             primary
                             size="small"

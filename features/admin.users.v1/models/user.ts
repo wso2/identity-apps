@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { LinkInterface, MultiValueAttributeInterface, NameInterface, RolesInterface } from "@wso2is/core/models";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
+import { UserRoleInterface } from "@wso2is/admin.core.v1";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
+import { GroupsInterface, GroupsMemberInterface } from "@wso2is/admin.groups.v1";
+import { LinkInterface, MultiValueAttributeInterface, NameInterface, RolesInterface } from "@wso2is/core/models";
 import React, { ReactElement } from "react";
-import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
-import { UserRoleInterface } from "../../admin.core.v1";
-import { GroupsInterface, GroupsMemberInterface } from "../../admin.groups.v1";
 import { BulkImportResponseOperationTypes, BulkUserImportStatus } from "../constants";
 
 /**
@@ -346,16 +346,11 @@ export interface PayloadInterface {
 }
 
 /**
- * Type of the bulk user import operation status.
- */
-export type BulkUserImportOperationStatus = "Success" | "Failed" | "Warning";
-
-/**
  * Interface for the bulk user import operation response.
  */
 export interface BulkUserImportOperationResponse {
     resourceIdentifier: string;
-    status: BulkUserImportOperationStatus;
+    status: string;
     message: string;
     statusCode: BulkUserImportStatus;
     operationType?: BulkImportResponseOperationTypes;

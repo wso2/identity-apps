@@ -16,19 +16,21 @@
  * under the License.
  */
 
+import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
     DocumentationLink,
     EmphasizedSegment,
     Heading,
+    Link,
     useDocumentation
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { AppState } from "../../../admin.core.v1";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
@@ -39,7 +41,7 @@ import {
     OIDCApplicationConfigurationInterface,
     SAMLApplicationConfigurationInterface
 } from "../../models";
-import { OIDCConfigurations, SAMLConfigurations } from "../help-panel";
+import { MTLSOIDCConfigurations, OIDCConfigurations, SAMLConfigurations } from "../help-panel";
 import { WSFederationConfigurations } from "../help-panel/ws-fed-configurations";
 
 /**
@@ -62,6 +64,10 @@ interface InfoPropsInterface extends LoadableComponentInterface, IdentifiableCom
      * Id of the application template
      */
     templateId: string;
+    /**
+     * Application id.
+     */
+    appId: string;
 }
 
 /**
@@ -76,6 +82,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
 ): ReactElement => {
 
     const {
+        appId,
         inboundProtocols,
         isOIDCConfigLoading,
         isSAMLConfigLoading,
@@ -93,6 +100,8 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     const [ isSAML, setIsSAML ] = useState<boolean>(false);
     const [ isWSFed, setIsWSFed ] = useState<boolean>(false);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
+    const mtlsEndpointsPresent: boolean = oidcConfigurations.mtlsTokenEndpoint !== undefined
+        && templateId !== ApplicationManagementConstants.M2M_APP_TEMPLATE_ID;
 
     useEffect(() => {
         if (inboundProtocols == undefined) {
@@ -125,7 +134,12 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     return (
         !isLoading
             ? (
-                <EmphasizedSegment loading={ isLoading } padded="very" data-testid={ componentId }>
+                <EmphasizedSegment
+                    loading={ isLoading }
+                    padded="very"
+                    data-componentid={ componentId }
+                    data-testid={ componentId }
+                >
                     <Grid className="form-container with-max-width">
                         <Grid.Row>
                             <Grid.Column>
@@ -155,6 +169,39 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                             oidcConfigurations={ oidcConfigurations }
                                             templateId={ templateId }
                                         />
+
+                                        { applicationConfig.advancedConfigurations.showMtlsAliases &&
+                                        mtlsEndpointsPresent && (
+                                            <>
+                                                <Heading ellipsis as="h4">
+                                                    { t("applications:edit.sections.info.mtlsOidcHeading") }
+                                                </Heading>
+                                                <Heading as="h6" color="grey" compact>
+                                                    { t("applications:edit.sections.info.mtlsOidcSubHeading") }
+                                                    Navigate to
+                                                    <Link
+                                                        external={ false }
+                                                        onClick={ () => {
+                                                            history.push({
+                                                                pathname: AppConstants.getPaths()
+                                                                    .get("APPLICATION_EDIT")
+                                                                    .replace(":id", appId),
+                                                                search: "?" +
+                                                                    ApplicationManagementConstants.IS_PROTOCOL +
+                                                                    "=true"
+                                                            }
+                                                            );
+                                                        } }
+                                                    > protocol </Link>
+                                                    tab to configure MTLS and certificate token binding.
+                                                </Heading>
+                                                <Divider hidden/>
+                                                <MTLSOIDCConfigurations
+                                                    oidcConfigurations={ oidcConfigurations }
+                                                    templateId={ templateId }
+                                                />
+                                            </>
+                                        ) }
                                     </>
                                 ) }
                                 { isOIDC && isSAML ? (

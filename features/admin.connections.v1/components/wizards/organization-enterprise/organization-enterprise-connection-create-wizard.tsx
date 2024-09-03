@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,11 @@
  * under the License.
  */
 
+import {
+    EventPublisher,
+    ModalWithSidePanel,
+    TierLimitReachErrorModal
+} from "@wso2is/admin.core.v1";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -32,14 +37,10 @@ import { Grid } from "semantic-ui-react";
 import {
     OrganizationEnterpriseConnectionCreateWizardContent
 } from "./organization-enterprise-connection-create-wizard-content";
-import {
-    EventPublisher,
-    ModalWithSidePanel,
-    TierLimitReachErrorModal
-} from "../../../../admin.core.v1";
 import { createConnection } from "../../../api/connections";
 import { getConnectionIcons } from "../../../configs/ui";
-import { ConnectionManagementConstants } from "../../../constants/connection-constants";
+import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
+import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import {
     ConnectionInterface,
     GenericConnectionCreateWizardPropsInterface,
@@ -163,7 +164,7 @@ export const OrganizationEnterpriseConnectionCreateWizard: FunctionComponent<
                 onIDPCreate();
             })
             .catch((error: AxiosError) => {
-                const identityAppsError: IdentityAppsError = ConnectionManagementConstants.ERROR_CREATE_LIMIT_REACHED;
+                const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
 
                 if (error.response.status === 403 &&
                     error?.response?.data?.code ===
@@ -211,13 +212,13 @@ export const OrganizationEnterpriseConnectionCreateWizard: FunctionComponent<
             identityProvider?.provisioning?.outboundConnectors?.connectors[0];
 
         const isGoogleConnector: boolean = get(connector,
-            ConnectionManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME) ===
-            ConnectionManagementConstants.PROVISIONING_CONNECTOR_GOOGLE;
+            CommonAuthenticatorConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY) ===
+            CommonAuthenticatorConstants.PROVISIONING_CONNECTOR_GOOGLE;
 
         // If the outbound connector is Google, remove the displayName from the connector.
         if (connector && isGoogleConnector) {
             delete connector[
-                ConnectionManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME
+                CommonAuthenticatorConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY
             ];
         }
 

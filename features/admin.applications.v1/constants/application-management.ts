@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,10 +16,12 @@
  * under the License.
  */
 
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
+import { SupportedAuthenticators } from "@wso2is/admin.identity-providers.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { DocumentationConstants } from "./documentation-constants";
-import { IdentityProviderManagementConstants } from "../../admin.identity-providers.v1/constants";
-import { SupportedAuthenticators } from "../../admin.identity-providers.v1/models";
 import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } from "../models";
 
 /**
@@ -34,6 +36,7 @@ export class ApplicationManagementConstants {
     public static readonly EMPTY_JSON_ARRAY: string = "[]";
 
     public static readonly MY_ACCOUNT_APP_NAME: string = "My Account";
+    public static readonly MY_ACCOUNT_CLIENT_ID: string = "MY_ACCOUNT";
     public static readonly CONSOLE_APP_NAME: string = "Console";
     public static readonly SYSTEM_APPS: string[] = [ this.CONSOLE_APP_NAME ];
     public static readonly DEFAULT_APPS: string[] = [ this.MY_ACCOUNT_APP_NAME ];
@@ -70,27 +73,10 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_EDIT_INFO", "applications.edit.info")
         .set("FAPI_APP_CREATION", "applications.create.fapi")
         .set("APPLICATION_NATIVE_AUTHENTICATION", "applications.native.authentication")
-
-    /**
-     * Key for the `Edit Application` tag in the docs structure object.
-     */
-    public static readonly EDIT_APPLICATIONS_DOCS_KEY: string = `${
-        DocumentationConstants.PORTAL_DOCS_KEY }.Applications["Edit Application"]`;
-
-    /**
-     * Key for the application samples tag in the docs structure object.
-     */
-    public static readonly APPLICATION_SAMPLES_DOCS_KEY: string = "Quick Starts[\"Choose a Sample Type\"]";
-
-    /**
-     * Key for the application docs tag in the docs structure object.
-     */
-    public static readonly APPLICATION_DOCS_KEY: string = "[\"Developer Portal\"].Applications[\"Edit Application\"]";
-
-    /**
-     * Key for the overview tag in the docs structure object.
-     */
-    public static readonly APPLICATION_DOCS_OVERVIEW: string = "Overview";
+        .set("APPLICATION_MYACCOUNT_SAAS_SETTINGS", "applications.myaccount.saasMyaccountSettings")
+        .set("APPLICATION_ADD_MANAGEMENT_APPLICATIONS", "applications.add.managementApplications")
+        .set("APPLICATIONS_SETTINGS", "applications.settings")
+        .set("TRUSTED_APPS", "applications.trustedApps");
 
     /**
      * Key for the URL search param for application state.
@@ -101,6 +87,16 @@ export class ApplicationManagementConstants {
      * Value for sign on authentication param for application state.
      */
     public static readonly APP_STATE_STRONG_AUTH_PARAM_KEY: string = "isSignOn";
+
+    /**
+     * Value for protocol tab navigation.
+     */
+    public static readonly IS_PROTOCOL: string = "isProtocol";
+
+    /**
+     * Value for protocol tab navigation.
+     */
+    public static readonly IS_ROLES: string = "isRoles";
 
     /**
      * Key for the URL search param for application readonly state.
@@ -121,16 +117,6 @@ export class ApplicationManagementConstants {
      * Value for sign on authentication param for application state.
      */
     public static readonly APP_STATE_STRONG_AUTH_PARAM_VALUE: string = "true";
-
-    /**
-     * Value for sign in method tab url.
-     */
-    public static readonly SIGN_IN_METHOD_TAB_URL_FRAG: string = "sign-in-method";
-
-    /**
-     * Value for application roles tab url.
-     */
-    public static readonly ROLES_TAB_URL_FRAG: string = "5";
 
     /**
      * Role callback redirect type
@@ -190,6 +176,11 @@ export class ApplicationManagementConstants {
     public static readonly DEVICE_GRANT: string = "urn:ietf:params:oauth:grant-type:device_code";
     public static readonly OAUTH2_TOKEN_EXCHANGE: string = "urn:ietf:params:oauth:grant-type:token-exchange";
     public static readonly ACCOUNT_SWITCH_GRANT: string = "account_switch";
+    public static readonly CODE_TOKEN: string = "code token";
+    public static readonly CODE_IDTOKEN: string = "code id_token";
+    public static readonly CODE_IDTOKEN_TOKEN: string = "code id_token token";
+    public static readonly  HYBRID_FLOW_ENABLE_CONFIG:string = "enable-hybrid-flow";
+    public static readonly HYBRID_FLOW_RESPONSE_TYPE: string = "hybridFlowResponseType";
 
     /**
      * List of available grant types.
@@ -316,13 +307,19 @@ export class ApplicationManagementConstants {
     public static readonly UNABLE_FETCH_APPLICATIONS: string = "An error occurred while fetching applications.";
 
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR_ID: string =
-        IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER + "-" + "SWRlbnRpZmllckV4ZWN1dG9y";
+        LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER + "-" + "SWRlbnRpZmllckV4ZWN1dG9y";
 
     public static readonly MYACCOUNT_STATUS_UPDATE_ERROR: string = "An error occurred while updating " +
         "status of the My Account Portal.";
 
     public static readonly MYACCOUNT_STATUS_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while updating status of the My Account Portal.";
+
+    public static readonly APPLICATION_STATUS_UPDATE_INVALID_STATUS_CODE_ERROR: string = "Received an " +
+        "invalid status code while updating the status of the application. ";
+
+    public static readonly APPLICATION_STATUS_UPDATE_ERROR: string = "Error occurred while updating the " +
+        "status of the application. ";
 
     public static readonly SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID: string = "second-factor-authenticators";
     public static readonly EXTERNAL_AUTHENTICATORS_DROPPABLE_ID: string = "external-authenticators";
@@ -331,47 +328,55 @@ export class ApplicationManagementConstants {
     // Authenticators that are only handlers.
     public static readonly HANDLER_AUTHENTICATORS: string[] = [
         ApplicationManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
+        LocalAuthenticatorConstants.AUTHENTICATOR_IDS.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
     ];
 
     // First factor authenticators.
     public static readonly FIRST_FACTOR_AUTHENTICATORS: string[] = [
-        IdentityProviderManagementConstants.BASIC_AUTHENTICATOR,
-        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR,
-        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR,
-        IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.FIDO_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID,
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.SMS_OTP_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID
     ];
 
     // Second factor authenticators.
     public static readonly SECOND_FACTOR_AUTHENTICATORS: string[] = [
-        IdentityProviderManagementConstants.TOTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.TOTP_AUTHENTICATOR_ID
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.IPROOV_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.IPROOV_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.DUO_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.DUO_AUTHENTICATOR_ID
     ];
 
     // Known social authenticators.
     public static readonly SOCIAL_AUTHENTICATORS: string[] = [
-        IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.APPLE_AUTHENTICATOR_NAME,
-        IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME,
-        IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.FACEBOOK_AUTHENTICATOR_NAME,
-        IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.MICROSOFT_AUTHENTICATOR_NAME,
-        IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.TWITTER_AUTHENTICATOR_NAME,
-        IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.GITHUB_AUTHENTICATOR_NAME
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.APPLE_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.APPLE_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.GOOGLE_OIDC_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.FACEBOOK_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.MICROSOFT_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.MICROSOFT_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.TWITTER_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.TWITTER_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.GITHUB_AUTHENTICATOR_NAME
     ];
 
     // Authenticators that can handle TOTP.
     public static readonly TOTP_HANDLERS: string[] = [
         ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
         ...ApplicationManagementConstants.SOCIAL_AUTHENTICATORS,
-        IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.MAGIC_LINK_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.OIDC_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.SAML_AUTHENTICATOR_NAME
     ];
 
     // Authenticators that can handle Email OTP.
@@ -393,10 +398,10 @@ export class ApplicationManagementConstants {
 
     // Authenticators that can handle Active Sessions Limit.
     public static readonly ACTIVE_SESSIONS_LIMIT_HANDLERS: string[] = [
-        IdentityProviderManagementConstants.BASIC_AUTHENTICATOR,
-        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR,
-        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
-        IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.FIDO_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID
     ];
 
     /**
@@ -412,12 +417,17 @@ export class ApplicationManagementConstants {
      * Form element constraints.
      */
     public static readonly FORM_FIELD_CONSTRAINTS: {
+        ACCESS_URL_ALLOWED_PLACEHOLDERS: string[],
         ACCESS_URL_MAX_LENGTH: number,
         ACCESS_URL_MIN_LENGTH: number,
         APP_DESCRIPTION_PATTERN: RegExp,
         APP_NAME_MAX_LENGTH: number,
         APP_NAME_PATTERN: RegExp
     } = {
+        ACCESS_URL_ALLOWED_PLACEHOLDERS: [
+            "\\${UserTenantHint}",
+            "\\${organizationIdHint}"
+        ],
         ACCESS_URL_MAX_LENGTH: 200,
         ACCESS_URL_MIN_LENGTH: 3,
         APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),

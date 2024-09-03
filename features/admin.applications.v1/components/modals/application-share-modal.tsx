@@ -16,6 +16,21 @@
  * under the License.
  */
 
+import { AppState, EventPublisher } from "@wso2is/admin.core.v1";
+import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
+import {
+    getOrganizations,
+    getSharedOrganizations,
+    shareApplication,
+    stopSharingApplication,
+    unshareApplication
+} from "@wso2is/admin.organizations.v1/api";
+import {
+    OrganizationInterface,
+    OrganizationListInterface,
+    OrganizationResponseInterface,
+    ShareApplicationRequestInterface
+} from "@wso2is/admin.organizations.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -54,20 +69,6 @@ import {
     Segment,
     Transition
 } from "semantic-ui-react";
-import { AppState, EventPublisher } from "../../../admin.core.v1";
-import {
-    getOrganizations,
-    getSharedOrganizations,
-    shareApplication,
-    stopSharingApplication,
-    unshareApplication
-} from "../../../admin.organizations.v1/api";
-import {
-    OrganizationInterface,
-    OrganizationListInterface,
-    OrganizationResponseInterface,
-    ShareApplicationRequestInterface
-} from "../../../admin.organizations.v1/models";
 
 enum ShareType {
     SHARE_ALL,
@@ -117,7 +118,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
     const [ subOrganizationList, setSubOrganizationList ] = useState<Array<OrganizationInterface>>([]);
     const [ sharedOrganizationList, setSharedOrganizationList ] = useState<Array<OrganizationInterface>>([]);
     const [ filter, setFilter ] = useState<string>();
-
+    const { isOrganizationManagementEnabled } = useGlobalVariables();
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => setTempOrganizationList(subOrganizationList || []), [
@@ -224,7 +225,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
             if (shareType) {
                 addedOrganizations = checkedUnassignedListItems.map((org: OrganizationInterface) => org.id);
 
-                await unshareApplication(applicationId, currentOrganization.id);
+                await unshareApplication(applicationId);
 
             } else {
                 addedOrganizations = differenceBy(
@@ -369,7 +370,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                     });
             });
         } else if (shareType === ShareType.UNSHARE) {
-            unshareApplication(applicationId, currentOrganization.id)
+            unshareApplication(applicationId)
                 .then(() => {
                     onClose(null, null);
                     dispatch(
@@ -494,6 +495,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
             closeOnDocumentClick={ true }
             closeOnEscape={ true }
             data-testid={ `${ componentId }-share-application-modal` }
+            data-componentid={ `${ componentId }-share-application-modal` }
             { ...rest }
         >
             <Modal.Header>

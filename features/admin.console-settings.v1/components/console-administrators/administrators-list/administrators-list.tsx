@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,22 @@
 
 import { Show } from "@wso2is/access-control";
 import {
+    AdvancedSearchWithBasicFilters,
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    UserBasicInterface,
+    UserRoleInterface,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models";
+import {
     AlertInterface,
     AlertLevels,
     IdentifiableComponentInterface
@@ -26,24 +42,10 @@ import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, ListLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import AdministratorsTable from "./administrators-table";
-import { AccessControlConstants } from "../../../../admin.access-control.v1/constants/access-control";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    UIConstants,
-    UserBasicInterface,
-    UserRoleInterface,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../../../admin.core.v1";
-import { useGetCurrentOrganizationType } from "../../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { UserManagementConstants } from "../../../../admin.users.v1/constants";
-import { PRIMARY_USERSTORE } from "../../../../admin.userstores.v1/constants";
-import { UserStoreDropdownItem } from "../../../../admin.userstores.v1/models";
 import useAdministrators from "../../../hooks/use-administrators";
 import useBulkAssignAdministratorRoles from "../../../hooks/use-bulk-assign-user-roles";
 import AddExistingUserWizard from "../add-existing-user-wizard/add-existing-user-wizard";
@@ -90,7 +92,7 @@ enum AddAdministratorModes {
     /**
      * To invite a new user as an administrator.
      */
-    InviteNew = "inviteNewUser"
+    InviteParentUser = "inviteParentUser"
 }
 
 /**
@@ -116,8 +118,9 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
 
     const dispatch: Dispatch = useDispatch();
 
-    const { isSubOrganization, isFirstLevelOrganization, isSuperOrganization } = useGetCurrentOrganizationType();
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
+    const { isSubOrganization, isFirstLevelOrganization, isSuperOrganization } = useGetCurrentOrganizationType();
     const { unassignAdministratorRoles } = useBulkAssignAdministratorRoles();
 
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -126,7 +129,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ showAddExistingUserWizard, setShowAddExistingUserWizard ] = useState<boolean>(false);
     const [ showInviteNewAdministratorModal, setShowInviteNewAdministratorModal ] = useState<boolean>(false);
-    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(PRIMARY_USERSTORE.toLocaleLowerCase());
+    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(userstoresConfig?.primaryUserstoreName);
 
     const {
         administrators,
@@ -218,8 +221,8 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                     {
                         "data-componentid": `${ componentId }-invite-new-user-dropdown-item`,
                         key: 2,
-                        text: t("consoleSettings:administrators.add.options.inviteNewUser"),
-                        value: AddAdministratorModes.InviteNew
+                        text: t("consoleSettings:administrators.add.options.inviteParentUser"),
+                        value: AddAdministratorModes.InviteParentUser
                     }
                 ];
 
@@ -349,7 +352,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                     ) : null
             }
             topActionPanelExtension={ (
-                <Show when={ [ AccessControlConstants.USER_WRITE, AccessControlConstants.ROLE_EDIT ] }>
+                <Show when={ [ ...featureConfig?.users?.scopes?.create, ...featureConfig?.userRoles?.scopes?.update ] }>
                     { renderAdministratorAddOptions() }
                 </Show>
             ) }

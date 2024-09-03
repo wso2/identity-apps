@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppState, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -32,8 +34,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon, PaginationProps } from "semantic-ui-react";
-import { AppState, getEmptyPlaceholderIllustrations } from "../../admin.core.v1";
-import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
 import { useAPIResources } from "../api";
 import { APIResourcesList } from "../components";
 import { AddAPIResource } from "../components/wizard";

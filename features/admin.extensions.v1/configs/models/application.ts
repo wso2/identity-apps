@@ -16,16 +16,21 @@
  * under the License.
  */
 
-import { ResourceTabPaneInterface } from "@wso2is/react-components";
-import { ReactElement, ReactNode } from "react";
-import { Dispatch } from "redux";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
-} from "../../../admin.applications.v1/components/settings";
-import { ApplicationInterface, ApplicationTabTypes } from "../../../admin.applications.v1/models";
-import { FeatureConfigInterface } from "../../../admin.core.v1";
+} from "@wso2is/admin.applications.v1/components/settings";
+import {
+    AdvancedConfigurationsInterface,
+    ApplicationInterface,
+    ApplicationTabTypes
+} from "@wso2is/admin.applications.v1/models";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { ResourceTabPaneInterface } from "@wso2is/react-components";
+import { ReactElement, ReactNode } from "react";
+import { Dispatch } from "redux";
 import { OIDCSDKMeta } from "../../application-templates/templates/oidc-web-application/models";
 import { SAMLSDKMeta } from "../../application-templates/templates/saml-web-application/models";
 import { SDKMetaInterface } from "../../application-templates/templates/single-page-application/models";
@@ -33,11 +38,14 @@ import { SDKMetaInterface } from "../../application-templates/templates/single-p
 export interface ApplicationConfig {
     advancedConfigurations: {
         showEnableAuthorization: boolean;
+        showFapiFeatureStatusChip: boolean;
+        showHybridFlowFeatureStatusChip: boolean;
+        showMtlsAliases: boolean;
         showMyAccount: boolean;
         showMyAccountStatus: boolean;
-        showDefaultMyAccountApplicationEditPage: boolean;
         showSaaS: boolean;
         showReturnAuthenticatedIdPs: boolean;
+        showTrustedAppConsentWarning: boolean;
     };
     allowedGrantTypes: Record<string, string[]>,
     generalSettings: {
@@ -85,6 +93,7 @@ export interface ApplicationConfig {
         getTabPanelReadOnlyStatus: (tabPanelName: string, application: ApplicationInterface) => boolean;
         isTabEnabledForApp: (clientId: string, tabType: ApplicationTabTypes, tenantDomain: string) => boolean;
         getActions: (
+            applicationId: string,
             clientId: string,
             tenant: string,
             testId: string
@@ -95,13 +104,14 @@ export interface ApplicationConfig {
             templateName: string
         ) => ReactElement,
         getOverriddenImage: (clientId: string, tenantDomain: string) => ReactElement;
-        getOveriddenTab: (
+        getOverriddenTab: (
             clientId: string,
             tabName: any,
             defaultComponent: ReactElement,
-            appName: string,
-            appId: string,
-            tenantDomain: string
+            application: ApplicationInterface,
+            tenantDomain: string,
+            onUpdate?:(id: string) => void,
+            readOnly?:boolean
         ) => ReactNode;
         showApplicationShare: boolean;
         getStrongAuthenticationFlowTabIndex: (
@@ -171,4 +181,45 @@ export interface ApplicationConfig {
         samlWeb: SAMLSDKMeta;
         spa: SDKMetaInterface
     };
+}
+
+/**
+ * Unique identifiers for application edit tabs.
+ */
+export enum ApplicationTabIDs {
+    QUICK_START = "quick-start",
+    GENERAL = "general",
+    PROTOCOL = "protocol",
+    USER_ATTRIBUTES = "user-attributes",
+    SIGN_IN_METHODS = "sign-in-method",
+    PROVISIONING = "provisioning",
+    ADVANCED = "advanced",
+    SHARED_ACCESS = "shared-access",
+    INFO = "info",
+    API_AUTHORIZATION = "api-authorization",
+    APPLICATION_ROLES = "application-roles"
+}
+
+/**
+ * Proptypes for the form in advance settings tab override component.
+ */
+export interface AdvancedSettingsOverriddenFormPropsInterface
+    extends SBACInterface<FeatureConfigInterface>,
+        IdentifiableComponentInterface {
+    /**
+     * Current advanced configurations.
+     */
+    advancedConfigurations: AdvancedConfigurationsInterface;
+    /**
+     * Callback to update the application details.
+     */
+    onSubmit: (values: any) => void;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
+    /**
+     * Specifies if the form is submitting
+     */
+    isSubmitting?: boolean;
 }

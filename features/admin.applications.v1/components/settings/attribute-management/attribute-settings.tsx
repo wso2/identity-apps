@@ -17,6 +17,15 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { getAllExternalClaims, getAllLocalClaims, getDialects } from "@wso2is/admin.claims.v1/api";
+import { AppState, EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { SubjectAttributeListItem } from "@wso2is/admin.identity-providers.v1/components/settings";
+import { useOIDCScopesList } from "@wso2is/admin.oidc-scopes.v1/api/oidc-scopes";
+import {
+    OIDCScopesClaimsListInterface,
+    OIDCScopesListInterface
+} from "@wso2is/admin.oidc-scopes.v1/models/oidc-scopes";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -41,16 +50,6 @@ import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { AttributeSelectionOIDC } from "./attribute-selection-oidc";
 import { RoleMapping } from "./role-mapping";
-import { AccessControlConstants } from "../../../../admin.access-control.v1/constants/access-control";
-import { getAllExternalClaims, getAllLocalClaims, getDialects } from "../../../../admin.claims.v1/api";
-import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../admin.core.v1";
-import { applicationConfig } from "../../../../admin.extensions.v1";
-import { SubjectAttributeListItem } from "../../../../admin.identity-providers.v1/components/settings";
-import { useOIDCScopesList } from "../../../../admin.oidc-scopes.v1/api/oidc-scopes";
-import {
-    OIDCScopesClaimsListInterface,
-    OIDCScopesListInterface
-} from "../../../../admin.oidc-scopes.v1/models/oidc-scopes";
 import { updateAuthProtocolConfig, updateClaimConfiguration } from "../../../api/";
 import {
     AppClaimInterface,
@@ -969,6 +968,47 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         }
     });
 
+
+    /**
+     * Get the final value of includeUserDomain
+     *
+     * @param advanceSettingValues - Advanced settings values for submit
+     */
+    const getIncludeUserDomainFinalValue = ((advanceSettingValues : AdvanceSettingsSubmissionInterface) => {
+
+        let includeUserDomain: boolean = advanceSettingValues?.subject.includeUserDomain;
+
+        if (
+            onlyOIDCConfigured
+            && typeof advanceSettingValues?.subject?.claim === "string"
+            && advanceSettingValues?.subject?.claim === DefaultSubjectAttribute
+        ) {
+            includeUserDomain = false;
+        }
+
+        return includeUserDomain;
+    });
+
+    /**
+     * Get the final value of includeUserDomain
+     *
+     * @param advanceSettingValues - Advanced settings values for submit
+     */
+    const getIncludeOrgNameFinalValue = ((advanceSettingValues : AdvanceSettingsSubmissionInterface) => {
+
+        let includeTenantDomain: boolean = advanceSettingValues?.subject.includeTenantDomain;
+
+        if (
+            onlyOIDCConfigured
+            && typeof advanceSettingValues?.subject?.claim === "string"
+            && advanceSettingValues?.subject?.claim === DefaultSubjectAttribute
+        ) {
+            includeTenantDomain = false;
+        }
+
+        return includeTenantDomain;
+    });
+
     /**
      *  Submit update request
      *
@@ -1066,8 +1106,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                     claim: {
                         uri: advanceSettingValues?.subject.claim
                     },
-                    includeTenantDomain: advanceSettingValues?.subject.includeTenantDomain,
-                    includeUserDomain: advanceSettingValues?.subject.includeUserDomain,
+                    includeTenantDomain: getIncludeOrgNameFinalValue(advanceSettingValues),
+                    includeUserDomain: getIncludeUserDomainFinalValue(advanceSettingValues),
                     mappedLocalSubjectMandatory: advanceSettingValues?.subject.mappedLocalSubjectMandatory,
                     useMappedLocalSubject: advanceSettingValues?.subject.useMappedLocalSubject
                 }
@@ -1087,6 +1127,14 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         // Stop sending subject claim for OIDC applications based on the excludeSubjectClaim configuration.
         if (applicationConfig.excludeSubjectClaim && onlyOIDCConfigured) {
             delete submitValue.claimConfiguration.subject;
+        }
+
+        // Stop sending tokenEndpointAllowReusePvtKeyJwt if tokenEndpointAuthMethod is not PRIVATE_KEY_JWT.
+        const PRIVATE_KEY_JWT: string = "private_key_jwt";
+
+        if (oidcSubmitValue?.clientAuthentication?.tokenEndpointAuthMethod == null
+            || oidcSubmitValue?.clientAuthentication?.tokenEndpointAuthMethod != PRIVATE_KEY_JWT) {
+            delete oidcSubmitValue?.clientAuthentication?.tokenEndpointAllowReusePvtKeyJwt;
         }
 
         /**
@@ -1135,9 +1183,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         * Distpatch an error alert when the alternative subject identifier value is not in the
         * requested attribute list.
         */
-        if( onlyOIDCConfigured && !submitValue.claimConfiguration.requestedClaims.map(
-            (claim : RequestedClaimConfigurationInterface) =>claim.claim.uri)
-            .includes(submitValue.claimConfiguration.subject.claim.uri)) {
+        if( onlyOIDCConfigured && submitValue.claimConfiguration.subject.claim.uri !== DefaultSubjectAttribute
+            && !submitValue.claimConfiguration.requestedClaims.map(
+                (claim : RequestedClaimConfigurationInterface) =>claim.claim.uri)
+                .includes(submitValue.claimConfiguration.subject.claim.uri)) {
             onClaimConfigUpdateWithNotAllowedSubjectAttributeError();
 
             return;
@@ -1353,7 +1402,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                 !readOnly
                                 && (
                                     <Show
-                                        when={ AccessControlConstants.APPLICATION_EDIT }
+                                        when={ featureConfig?.applications?.scopes?.update }
                                     >
                                         <Divider hidden/>
                                         <Grid.Row>

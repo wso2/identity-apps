@@ -17,6 +17,10 @@
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
+/**
+ * `useRequiredScopes` is not supported for myaccount.
+ */
+// eslint-disable-next-line no-restricted-imports
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
@@ -78,10 +82,11 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
     const disableMFAforSuperTenantUser: boolean = useSelector((state: AppState) => {
         return state?.config?.ui?.disableMFAforSuperTenantUser;
     });
+    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const disableMFAForFederatedUsers: boolean = useSelector((state: AppState) => {
         return state?.config?.ui?.disableMFAForFederatedUsers;
     });
-    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
+
     const isReadOnlyUser: string = useSelector(
         (state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
     const hasLocalAccount: string = useSelector((state: AppState) => state.authenticationInformation.hasLocalAccount);
@@ -196,8 +201,8 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
                     ) : null }
 
                 { !CommonUtils.isProfileReadOnly(isReadOnlyUser) && !isNonLocalCredentialUser
-                    && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
-                    isFeatureEnabled(
+                    && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes)
+                    && isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY")
                     ) ? (

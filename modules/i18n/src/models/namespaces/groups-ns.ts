@@ -42,6 +42,22 @@ export interface groupsNS {
                 };
             };
         };
+        users: {
+            addUsersModal: {
+                heading: string;
+                subHeading: string;
+            };
+            heading: string;
+            searchUsers: string;
+            selectAllUsers: string;
+            subHeading: string;
+            placeHolders: {
+                emptyListPlaceholder: {
+                    title: string;
+                    subtitles: string;
+                };
+            };
+        };
         roles: {
             addRolesModal: {
                 heading: string;

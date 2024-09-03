@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+
+import { Show } from "@wso2is/access-control";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    history
+} from "@wso2is/admin.core.v1";
+import { CreateGroupMemberInterface } from "@wso2is/admin.groups.v1/models";
+import { CreateRoleInterface, CreateRoleMemberInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -39,16 +50,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    history
-} from "../../admin.core.v1";
-import { CreateGroupMemberInterface } from "../../admin.groups.v1/models";
-import { CreateRoleInterface, CreateRoleMemberInterface } from "../../admin.roles.v2/models/roles";
 import { createOrganizationRole, getOrganizationRoles } from "../api/organization-role";
 import { OrganizationRoleList } from "../components";
 import { AddOrganizationRoleWizard } from "../components/add-organization-role-wizard";
@@ -269,7 +270,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
     /**
      * Handles the organization role create action.
      */
-    const handleOrganizationRoleCreate: (roleData: CreateRoleInterface) 
+    const handleOrganizationRoleCreate: (roleData: CreateRoleInterface)
     => void = useCallback((roleData: CreateRoleInterface) => {
         // Setting up the data model for organization role creation (temp)
         roleData.groups.forEach((group: CreateGroupMemberInterface) => {
@@ -360,7 +361,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                 action={
                     !isLoading &&
                     !(!searchQuery && (isEmpty(organizationRoles) || organizationRoles.length <= 0)) && (
-                        <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
+                        <Show when={ featureConfig?.organizations?.scopes?.create }>
                             <PrimaryButton
                                 disabled={ isOrganizationRoleListRequestLoading }
                                 loading={ isOrganizationRoleListRequestLoading }

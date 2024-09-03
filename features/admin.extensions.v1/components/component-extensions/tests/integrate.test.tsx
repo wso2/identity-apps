@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,16 +27,9 @@ import configureStore from "redux-mock-store";
  * Test refactoring effort will be tracked in the following issue.
  *@see {@link https://github.com/wso2-enterprise/asgardeo-product/issues/1368}
  */
-describe("Test Suite - Integrate Extension Component.", () => { 
+describe("Test Suite - Integrate Extension Component.", () => {
     const mockStore: any = configureStore();
-    const store: any = mockStore({ 
-        helpPanel: {
-            "activeTabIndex": 0,
-            "docStructure": null,
-            "docURL": null,
-            "visibility": false
-        }
-    });
+    const store: any = mockStore({});
 
     test.skip("Test proper rendering of Integrate Component", () => {
         render(

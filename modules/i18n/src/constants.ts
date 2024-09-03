@@ -97,9 +97,9 @@ export class I18nModuleConstants {
     public static readonly VALIDATION_NAMESPACE: string = "validation";
 
     /**
-     * JWT private key configuration namespace.
+     * Impersonation namespace.
      */
-    public static readonly JWT_PRIVATE_KEY_CONFIGURATION_NAMESPACE: string = "jwtPrivateKeyConfiguration";
+    public static readonly IMPERSONATION_NAMESPACE: string = "impersonation";
 
     /**
      * transferList namespace.
@@ -275,7 +275,7 @@ export class I18nModuleConstants {
      * Applications namespace.
      */
     public static readonly APPLICATIONS_NAMESPACE: string = "applications";
-  
+
     /**
      * Identity Provider namespace.
      */
@@ -288,4 +288,36 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly API_RESOURCES_NAMESPACE: string = "apiResources";
+
+    /**
+     * AI namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly AI_NAMESPACE: string = "ai";
+
+    /**
+     * Application Templates namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly APPLICATION_TEMPLATES_NAMESPACE: string = "applicationTemplates";
+
+    /**
+     * Extension Templates namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly TEMPLATE_CORE_NAMESPACE: string = "templateCore";
+
+    /**
+     * Actions namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly ACTIONS_NAMESPACE: string = "actions";
 }

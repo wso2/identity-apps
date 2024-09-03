@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -57,7 +57,6 @@ export interface ServiceInterface {
  * This is the Purpose Model nested in the {@link ServiceInterface}
  * Don't get confused this with the {@link PurposeModel}
  *
- * @desc Structural Model
  * @see ServiceInterface
  */
 export interface PurposeInterface {
@@ -103,7 +102,6 @@ export interface PurposeModel {
 /**
  * This is a structural model nested inside the {@link PurposeModel}
  *
- * @desc Structural Model
  * @see PurposeModel
  */
 export interface PurposeModelPIICategory {
@@ -116,14 +114,16 @@ export interface PurposeModelPIICategory {
 }
 
 /**
- * This model is a partial structure which sent by our API
- * The only difference of this and {@link PurposeModel} is
- * that this does not contain the {@link PurposeModelPIICategory[]}
+ * This model is a partial structure sent by our API.
+ * The only difference between this and {@link PurposeModel} is
+ * that this does not contain the {@link PurposeModel.piiCategories}
  * list.
  *
- * @link /apidocs/Consent-management-apis/#!/operations#Purpose#consentsPurposesGet
+ * For more information, see {@link "/apidocs/Consent-management-apis/#!/operations#Purpose#consentsPurposesGet"}.
+ *
  * @see fetchAllPurposes for usages.
  */
+
 export interface PurposeModelPartial {
     description: string;
     group: string;
@@ -223,7 +223,7 @@ export enum ConsentState {
 /**
  * Creates an empty consent receipt object. This can be used to initialize
  * a consent receipt in the state.
- * @return {ConsentReceiptInterface}  an empty consent receipt object.
+ * @returns an empty consent receipt object.
  */
 export const createEmptyConsentReceipt = (): ConsentReceiptInterface => ({
     collectionMethod: "",
@@ -263,7 +263,7 @@ export const createEmptyConsentReceipt = (): ConsentReceiptInterface => ({
 /**
  * Creates an empty consent object. This can be used to initialize
  * a consent in the state.
- * @return {ConsentInterface} an empty consent object.
+ * @returns an empty consent object.
  */
 export const createEmptyConsent = (): ConsentInterface => ({
     consentReceipt: createEmptyConsentReceipt(),

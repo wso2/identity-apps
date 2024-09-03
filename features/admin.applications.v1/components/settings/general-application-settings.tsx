@@ -17,6 +17,8 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import { AppConstants, AppState, FeatureConfigInterface, UIConfigInterface, history } from "@wso2is/admin.core.v1";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -25,18 +27,16 @@ import {
     ContentLoader,
     DangerZone,
     DangerZoneGroup,
-    EmphasizedSegment
+    EmphasizedSegment,
+    Link
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FormEvent, FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider } from "semantic-ui-react";
-import { applicationConfig } from "../../../admin.extensions.v1";
-import { AccessControlConstants } from "../../../admin.access-control.v1/constants/access-control";
-import { AppState, FeatureConfigInterface, UIConfigInterface } from "../../../admin.core.v1";
-import { deleteApplication, updateApplicationDetails } from "../../api";
+import { CheckboxProps, Divider } from "semantic-ui-react";
+import { deleteApplication, disableApplication, updateApplicationDetails } from "../../api";
 import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface
@@ -105,7 +105,11 @@ interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfi
     /**
      * Application.
      */
-    application?: ApplicationInterface
+    application?: ApplicationInterface;
+    /**
+     * Is branding section hidden.
+     */
+    isBrandingSectionHidden?: boolean;
 }
 
 /**
@@ -125,7 +129,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         description,
         discoverability,
         featureConfig,
-        hiddenFields,
         imageUrl,
         accessUrl,
         isLoading,
@@ -134,6 +137,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         readOnly,
         isManagementApp,
         application,
+        isBrandingSectionHidden,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -145,8 +149,11 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ showDisableConfirmationModal, setShowDisableConfirmationModal ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isDeletionInProgress, setIsDeletionInProgress ] = useState<boolean>(false);
+    const [ isDisableInProgress, setIsDisableInProgress ] = useState<boolean>(false);
+    const [ enableStatus, setEnableStatus ] = useState<boolean>(false);
 
     /**
      * Deletes an application.
@@ -234,6 +241,60 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
     };
 
     /**
+     * Handles the toggle change to show confirmation modal.
+     *
+     * @param event - Form event.
+     * @param data - Checkbox data.
+     */
+    const handleAppEnableDisableToggleChange = (event: FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
+        setEnableStatus(data.checked);
+        setShowDisableConfirmationModal(true);
+    };
+
+    /**
+     * Disables an application.
+     */
+    const handleApplicationDisable = (): void => {
+        setIsDisableInProgress(true);
+        disableApplication(appId, enableStatus)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("applications:notifications.disableApplication.success" +
+                            ".description", {  state: enableStatus ? "enabled" : "disabled" }),
+                    level: AlertLevels.SUCCESS,
+                    message: t("applications:notifications.disableApplication.success.message",
+                        { state: enableStatus ? "enabled" : "disabled" })
+                }));
+                setShowDisableConfirmationModal(false);
+                onUpdate(appId);
+            })
+            .catch((error: AxiosError) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("applications:notifications.disableApplication.error" +
+                            ".message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("applications:notifications.disableApplication" +
+                        ".genericError.description", {  state: enableStatus ? "enable" : "disable" }),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:notifications.disableApplication.genericError" +
+                        ".message")
+                }));
+            })
+            .finally(() => {
+                setIsDisableInProgress(false);
+                setIsSubmitting(false);
+            });
+    };
+
+    /**
      * Resolves the danger actions.
      *
      * @returns React.ReactElement DangerZoneGroup element.
@@ -255,26 +316,48 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         if (!application?.advancedConfigurations?.fragment) {
             return (
                 <Show
-                    when={ AccessControlConstants.APPLICATION_DELETE }
+                    when={ featureConfig?.applications?.scopes?.delete ||  featureConfig?.applications?.scopes?.update }
                 >
                     <DangerZoneGroup
                         sectionHeader={ t("applications:dangerZoneGroup.header") }
                     >
-                        <DangerZone
-                            actionTitle={
-                                t("applications:dangerZoneGroup.deleteApplication" +
-                                    ".actionTitle")
-                            }
-                            header={
-                                t("applications:dangerZoneGroup.deleteApplication.header")
-                            }
-                            subheader={
-                                t("applications:dangerZoneGroup.deleteApplication" +
-                                    ".subheader")
-                            }
-                            onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
-                            data-testid={ `${ componentId }-danger-zone` }
-                        />
+                        <Show when={ featureConfig?.applications?.scopes?.update }>
+                            <DangerZone
+                                actionTitle={ t("applications:dangerZoneGroup.disableApplication.actionTitle",
+                                    { state: application.applicationEnabled ?
+                                        t("common:disable") : t("common:enable") }) }
+                                header={ t("applications:dangerZoneGroup.disableApplication.header",
+                                    { state: application.applicationEnabled ?
+                                        t("common:disable") : t("common:enable") } ) }
+                                subheader={ application.applicationEnabled ?
+                                    t("applications:dangerZoneGroup.disableApplication.subheader")
+                                    : t("applications:dangerZoneGroup.disableApplication.subheader2") }
+
+                                onActionClick={ undefined }
+                                toggle={ {
+                                    checked: application.applicationEnabled,
+                                    onChange: handleAppEnableDisableToggleChange
+                                } }
+                                data-testid={ `${ componentId }-danger-zone-disable` }
+                            />
+                        </Show>
+                        <Show when={ featureConfig?.applications?.scopes?.delete }>
+                            <DangerZone
+                                actionTitle={
+                                    t("applications:dangerZoneGroup.deleteApplication" +
+                                        ".actionTitle")
+                                }
+                                header={
+                                    t("applications:dangerZoneGroup.deleteApplication.header")
+                                }
+                                subheader={
+                                    t("applications:dangerZoneGroup.deleteApplication" +
+                                        ".subheader")
+                                }
+                                onActionClick={ (): void => setShowDeleteConfirmationModal(true) }
+                                data-testid={ `${ componentId }-danger-zone` }
+                            />
+                        </Show>
                     </DangerZoneGroup>
                 </Show>
             );
@@ -297,7 +380,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             onSubmit={ handleFormSubmit }
                             imageUrl={ imageUrl }
                             accessUrl={ accessUrl }
-                            hiddenFields={ hiddenFields }
                             readOnly={
                                 readOnly
                                 || !hasRequiredScopes(
@@ -308,6 +390,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             hasRequiredScope={ hasRequiredScopes(
                                 featureConfig?.applications, featureConfig?.applications?.scopes?.update,
                                 allowedScopes) }
+                            isBrandingSectionHidden={ isBrandingSectionHidden }
                             data-testid={ `${ componentId }-form` }
                             isSubmitting={ isSubmitting }
                             isManagementApp={ isManagementApp }
@@ -330,75 +413,143 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         primaryActionLoading={ isDeletionInProgress }
                         data-testid={ `${ componentId }-application-delete-confirmation-modal` }
                     >
-                        
+
                         {
                             ApplicationManagementUtils.isChoreoApplication(application)
-                                ? ( 
+                                ? (
                                     <>
                                         <ConfirmationModal.Header
-                                            data-testid={ 
-                                                `${ componentId }-application-delete-confirmation-modal-header` 
+                                            data-testid={
+                                                `${ componentId }-application-delete-confirmation-modal-header`
                                             }
                                         >
-                                            { t("applications:confirmations." + 
+                                            { t("applications:confirmations." +
                                                 "deleteChoreoApplication.header") }
                                         </ConfirmationModal.Header>
                                         <ConfirmationModal.Message
                                             attached
                                             negative
-                                            data-testid={ 
-                                                `${ componentId }-application-delete-confirmation-modal-message` 
+                                            data-testid={
+                                                `${ componentId }-application-delete-confirmation-modal-message`
                                             }
                                         >
-                                            { t("applications:confirmations." + 
+                                            { t("applications:confirmations." +
                                                 "deleteChoreoApplication.message") }
                                         </ConfirmationModal.Message>
                                         <ConfirmationModal.Content
-                                            data-testid={ 
-                                                `${ componentId }-application-delete-confirmation-modal-content` 
+                                            data-testid={
+                                                `${ componentId }-application-delete-confirmation-modal-content`
                                             }
                                         >
-                                            <Trans 
-                                                i18nKey= { "applications:confirmations." + 
+                                            <Trans
+                                                i18nKey= { "applications:confirmations." +
                                                 "deleteChoreoApplication.content" }>
-                                                Deleting this application will break the authentication flows and cause 
+                                                Deleting this application will break the authentication flows and cause
                                                 the associated Choreo application to be unusable with its credentials.
                                                 <b>Proceed at your own risk.</b>
                                             </Trans>
                                         </ConfirmationModal.Content>
-                                    </> 
+                                    </>
                                 )
-                                : ( 
+                                : (
                                     <>
                                         <ConfirmationModal.Header
-                                            data-testid={ 
-                                                `${ componentId }-application-delete-confirmation-modal-header` 
+                                            data-testid={
+                                                `${ componentId }-application-delete-confirmation-modal-header`
                                             }
                                         >
-                                            { t("applications:confirmations." + 
+                                            { t("applications:confirmations." +
                                                 "deleteApplication.header") }
                                         </ConfirmationModal.Header>
                                         <ConfirmationModal.Message
                                             attached
                                             negative
-                                            data-testid={ 
-                                                `${ componentId }-application-delete-confirmation-modal-message` 
+                                            data-testid={
+                                                `${ componentId }-application-delete-confirmation-modal-message`
                                             }
                                         >
-                                            { t("applications:confirmations." + 
+                                            { t("applications:confirmations." +
                                                 "deleteApplication.message") }
                                         </ConfirmationModal.Message>
                                         <ConfirmationModal.Content
-                                            data-testid={ 
-                                                `${ componentId }-application-delete-confirmation-modal-content` 
+                                            data-testid={
+                                                `${ componentId }-application-delete-confirmation-modal-content`
                                             }
                                         >
-                                            { t("applications:confirmations." + 
+                                            { t("applications:confirmations." +
                                                 "deleteApplication.content") }
                                         </ConfirmationModal.Content>
-                                    </> 
+                                    </>
                                 )
                         }
+                    </ConfirmationModal>
+                    <ConfirmationModal
+                        onClose={ (): void => setShowDisableConfirmationModal(false) }
+                        type="warning"
+                        open={ showDisableConfirmationModal }
+                        primaryAction={ t("common:confirm") }
+                        secondaryAction={ t("common:cancel") }
+                        onSecondaryActionClick={ (): void => setShowDisableConfirmationModal(false) }
+                        onPrimaryActionClick={ (): void => handleApplicationDisable() }
+                        closeOnDimmerClick={ false }
+                        primaryActionLoading={ isDisableInProgress }
+                        data-testid={ `${ componentId }-application-disable-confirmation-modal` }
+                    >
+                        <ConfirmationModal.Header
+                            data-testid={
+                                `${ componentId }-application-disable-confirmation-modal-header`
+                            }
+                        >
+                            { enableStatus
+                                ? t("applications:confirmations.enableApplication.header")
+                                : t("applications:confirmations.disableApplication.header") }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message
+                            attached
+                            warning
+                            data-testid={
+                                `${ componentId }-application-disable-confirmation-modal-message`
+                            }
+                        >
+                            { enableStatus
+                                ? t("applications:confirmations.enableApplication.message")
+                                : t("applications:confirmations.disableApplication.message") }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content
+                            data-testid={
+                                `${ componentId }-application-disable-confirmation-modal-content`
+                            }
+                        >
+                            { enableStatus
+                                ? t("applications:confirmations.enableApplication.content")
+                                : (
+                                    <>
+                                        <Trans
+                                            i18nKey={ "applications:confirmations.disableApplication.content.0" }
+                                        >
+                                        This may prevent consumers from accessing the application,
+                                        but it can be resolved by re-enabling the application.
+                                        </Trans>
+                                        <br /><br />
+                                        <Trans
+                                            i18nKey={ "applications:confirmations.disableApplication.content.1" }
+                                        >
+                                            Ensure that the references to the application in
+                                            <Link
+                                                data-componentid={ `${componentId}-link-email-templates-page` }
+                                                onClick={
+                                                    () => history.push(AppConstants.getPaths().get("EMAIL_MANAGEMENT"))
+                                                }
+                                                external={ false }
+                                            >
+                                                email templates
+                                            </Link> and other relevant locations are updated to reflect the
+                                            application status accordingly.
+                                        </Trans>
+                                    </>
+                                )
+                            }
+                        </ConfirmationModal.Content>
                     </ConfirmationModal>
                 </>
             ) :

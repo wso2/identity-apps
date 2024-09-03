@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { AppState } from "@wso2is/admin.core.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -23,7 +24,6 @@ import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { OIDCConfigurations } from "./oidc-configurations";
 import { SAMLConfigurations } from "./saml-configurations";
-import { AppState } from "../../../admin.core.v1";
 import {
     InboundProtocolListItemInterface,
     OIDCApplicationConfigurationInterface,
@@ -102,8 +102,8 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
             {
                 !isOIDCConfigsLoading ? (
                     <Grid>
-                        { 
-                            /* 
+                        {
+                            /*
                                 TODO : Check and remove the following if unnecssary
                                 applicationType && applicationType == ApplicationManagementConstants.SPA
                                     ? (
@@ -111,7 +111,7 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
                                             <Grid.Column width={ 16 }>
                                                 <Heading as="h5">
                                                     <strong>
-                                                        { t("applications:" + 
+                                                        { t("applications:" +
                                                             "helpPanel.tabs.start.content.trySample.title") }
                                                     </strong>
                                                 </Heading>
@@ -139,7 +139,7 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
                                                 <Divider hidden/>
                                                 <Button.Group>
                                                     <SecondaryButton onClick={ () => { handleTabChange(3) } }>
-                                                        { t("applications:" + 
+                                                        { t("applications:" +
                                                             "helpPanel.tabs.start.content.useSDK.btns.withSDK") }
                                                     </SecondaryButton>
                                                 </Button.Group>
@@ -147,7 +147,7 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
                                         </Grid.Row>
                                     )
                                     : null
-                            */ 
+                            */
                         }
                         <Grid.Row>
                             <Grid.Column>

@@ -29,7 +29,9 @@ import { Divider, Grid } from "semantic-ui-react";
 import { SMSProviderConstants } from "../constants";
 
 interface CustomSMSProviderPageInterface extends IdentifiableComponentInterface {
+    isLoading?: boolean;
     isReadOnly: boolean;
+    "data-componentid": string;
     onSubmit: (values: any) => void;
 }
 
@@ -39,6 +41,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
 
     const {
         ["data-componentid"]: componentId,
+        isLoading,
         isReadOnly,
         onSubmit
     } = props;
@@ -46,7 +49,11 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
     const { t } = useTranslation();
 
     return (
-        <EmphasizedSegment className="form-wrapper" padded={ "very" }>
+        <EmphasizedSegment
+            className="form-wrapper"
+            padded={ "very" }
+            data-componentid={ `${componentId}-tab` }
+        >
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column>
@@ -223,6 +230,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                         onClick={ onSubmit }
                                         ariaLabel="SMS provider form update button"
                                         data-componentid={ `${componentId}-update-button` }
+                                        loading={ isLoading }
                                     >
                                         { "Submit" }
                                     </PrimaryButton>
@@ -234,6 +242,10 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
             </Grid>
         </EmphasizedSegment>
     );
+};
+
+CustomSMSProvider.defaultProps = {
+    "data-componentid": "custom-sms-provider"
 };
 
 export default CustomSMSProvider;

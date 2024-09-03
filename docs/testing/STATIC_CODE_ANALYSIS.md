@@ -62,13 +62,6 @@ cd apps/console
 pnpm lint:targeted -- src/features/applications
 ```
 
-##### Example: To run linter on `basic-application.spec.ts` test file inside the integration test suite.
-
-```bash
-cd tests
-pnpm lint:targeted -- integration/applications/basic-application.spec.ts
-```
-
 ### Auto-fixing Issues
 
 ESLint has the ability to [auto-fix](https://eslint.org/docs/user-guide/command-line-interface#fixing-problems) certain warnings and errors.

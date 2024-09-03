@@ -28,6 +28,13 @@ export interface organizationsNS {
                 filterValue: {
                     placeholder: string;
                 };
+                filterMetaAttribute: {
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        empty: string;
+                    };
+                };
             };
         };
         placeholder: string;
@@ -144,6 +151,16 @@ export interface organizationsNS {
             };
         };
         getOrganizationList: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+        };
+        getMetaAttributesList: {
             error: {
                 message: string;
                 description: string;

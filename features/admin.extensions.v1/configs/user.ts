@@ -16,11 +16,11 @@
  * under the License.
  */
 
+import { deleteUser } from "@wso2is/admin.users.v1/api/users";
+import { AskPasswordOptionTypes, PasswordOptionTypes } from "@wso2is/admin.users.v1/constants";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { ProfileInfoInterface } from "@wso2is/core/models";
 import { User } from "./models";
-import { deleteUser } from "../../admin.users.v1/api/users";
-import { AskPasswordOptionTypes, PasswordOptionTypes } from "../../admin.users.v1/constants";
 
 export const userConfig: User = {
     bulkUserImportLimit: {
@@ -37,5 +37,6 @@ export const userConfig: User = {
     enableAdminPrivilegeRevokeOption: false,
     enableBulkImportSecondaryUserStore: true,
     enableUsernameValidation: false,
+    hiddenItemsPerPageRemoteUserStoreDropdown: false,
     userProfileSchema: ProfileConstants.SCIM2_ENT_USER_SCHEMA
 };

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -38,6 +38,27 @@ interface LoginSecurityDocumentationLinksInterface {
 }
 
 /**
+ * Interface for the Actions section documentation structure.
+ */
+interface ActionsDocumentationLinksInterface {
+    learnMore: string;
+    types: {
+        preIssueAccessToken: {
+            learnMore: string;
+        }
+        preRegistration: {
+            learnMore: string;
+        }
+        preUpdatePassword: {
+            learnMore: string;
+        }
+        preUpdateProfile: {
+            learnMore: string;
+        }
+    }
+}
+
+/**
  * Interface for the API Resources section documentation structure.
  */
 interface APIResourcesDocumentationLinksInterface {
@@ -68,6 +89,14 @@ interface ApplicationsDocumentationLinksInterface {
         }
     }
     learnMore: string;
+    applicationsSettings: {
+        dcr: {
+            learnMore: string;
+            authenticationRequired: {
+                learnMore: string;
+            },
+        }
+    },
     editApplication: {
         asgardeoTryitApplication: {
             general: {
@@ -78,9 +107,17 @@ interface ApplicationsDocumentationLinksInterface {
             manageOIDCScopes: string;
         },
         common: {
+            advanced: {
+                trustedApps: {
+                    learnMore: string
+                }
+            },
             signInMethod: {
                 learnMore: string;
                 conditionalAuthenticaion: {
+                    ai: {
+                        learnMore: string;
+                    }
                     apiReference: string;
                     learnMore: string;
                     template: {
@@ -185,6 +222,12 @@ interface ApplicationsDocumentationLinksInterface {
         }
         mobileApplication: {
             learnMore: string;
+        },
+        m2mApplication: {
+            learnMore: string
+        },
+        customApplication: {
+            learnMore: string
         }
     }
     managementApplication: {
@@ -194,9 +237,22 @@ interface ApplicationsDocumentationLinksInterface {
     myaccount: {
         learnMore: string;
         smsOtp: string;
+        overview: {
+            learnMore: string;
+        }
     }
     roles: {
         learnMore: string;
+    }
+    template: {
+        categories: {
+            default: {
+                learnMore: string;
+            }
+            ssoIntegration: {
+                learnMore: string;
+            }
+        }
     }
 }
 
@@ -219,6 +275,9 @@ interface AttributesDocumentationLinksInterface {
  * Interface for the Branding section documentation structure.
  */
 interface BrandingDocumentationLinksInterface {
+    ai: {
+        learnMore: string;
+    }
     layout: {
         custom: {
             learnMore: string;
@@ -383,6 +442,7 @@ interface UsersDocumentationLinksInterface {
     customerAccounts: {
         learnMore: string;
     }
+    learnMore: string;
     newCollaboratorUser: {
         learnMore: string;
     }
@@ -434,6 +494,20 @@ interface EmailCustomizationLinksInterface {
 }
 
 /**
+ * Interface for the insights section documentation structure.
+ */
+interface InsightsDocumentationLinksInterface {
+    learnMore: string;
+}
+
+/**
+ * Interface for the logs section documentation structure.
+ */
+interface LogsDocumentationLinksInterface {
+    learnMore: string;
+}
+
+/**
  * Interface for the console documentation structure.
  */
 export interface DocumentationLinksExtensionInterface {
@@ -445,6 +519,10 @@ export interface DocumentationLinksExtensionInterface {
      * Documentation links for develop section elements.
      */
     develop: {
+        /**
+         * Documentation links for actions section elements.
+         */
+        actions: ActionsDocumentationLinksInterface;
         /**
          * Documentation links for API resources section elements.
          */
@@ -492,6 +570,14 @@ export interface DocumentationLinksExtensionInterface {
          * Documentation links for groups section elements.
          */
         groups: GroupsDocumentationLinksInterface;
+        /**
+         * Documentation links for insights section elements.
+         */
+        insights: InsightsDocumentationLinksInterface;
+        /**
+         * Documentation links for logs section elements.
+         */
+        logs: LogsDocumentationLinksInterface;
         /**
          * Documentation links for organization section elements.
          */

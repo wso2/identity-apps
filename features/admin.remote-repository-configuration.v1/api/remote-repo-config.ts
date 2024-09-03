@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,10 +17,10 @@
  */
 
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { store } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { store } from "../../admin.core.v1";
 import { RemoteFetchConstants } from "../constants";
 import {
     InterfaceConfigDetails,
@@ -198,6 +198,7 @@ export const getConfigDeploymentDetails = (id: string): Promise<AxiosResponse<In
                     response,
                     response.config);
             }
+
             return Promise.resolve(response);
         })
         .catch((error) => {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -60,7 +60,7 @@ export const AddAPIResourcePermission: FunctionComponent<AddAPIResourcePermissio
             {
                 addedPermissions: [ permission ]
             },
-            (): void => { 
+            (): void => {
                 closeWizard();
                 setIsSubmitting(false);
             }
@@ -83,8 +83,8 @@ export const AddAPIResourcePermission: FunctionComponent<AddAPIResourcePermissio
                 <Heading as="h6">{ t("extensions:develop.apiResource.tabs.permissions.form.subTitle") }</Heading>
             </Modal.Header>
             <Modal.Content className="content-container">
-                <AddAPIResourcePermissionForm 
-                    triggerAddPermission={ submitAddPermissionForm } 
+                <AddAPIResourcePermissionForm
+                    triggerAddPermission={ submitAddPermissionForm }
                     addPermission={ addPermission }
                     setIsSubmitting={ setIsSubmitting }
                     permissionValidationLoading={ permissionValidationLoading }

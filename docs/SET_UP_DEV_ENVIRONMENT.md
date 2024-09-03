@@ -8,6 +8,7 @@ Follow this guide to set up the source code, development tools & other software.
   * [React Developer Tools](#react-developer-tools)
   * [Redux DevTools](#redux-devtools)
   * [ESLint IDE Plugin](#eslint-ide-plugin)
+  * [Code Spell Checker Plugin](#code-spell-checker-plugin)
 * [Setting up the Source Code](#setting-up-the-source-code)
 
 ## Prerequisite Software
@@ -60,6 +61,18 @@ WebStorm shows warnings and errors reported by ESLint right in the editor, as yo
 Integrates ESLint into VS Code. The extension uses the ESLint library installed in the opened workspace folder.
 
 - [Install the plugin](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+
+### Code Spell Checker
+
+A basic spell checker that works well with code and documents.
+
+- [Install the plugin](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+
+### JSON Sort Order
+
+Sorts JSON objects in alphabetical order.
+
+- [Install the plugin](https://marketplace.visualstudio.com/items?itemName=msyesyan.json-sorter)
 
 ## Setting up the Source Code
 

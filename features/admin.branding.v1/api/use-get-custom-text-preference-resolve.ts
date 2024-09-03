@@ -16,18 +16,19 @@
  * under the License.
  */
 
-import { HttpMethods } from "@wso2is/core/models";
-import { I18nConstants } from "../../admin.core.v1/constants/i18n-constants";
+import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
-import { store } from "../../admin.core.v1/store";
-import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models/branding-preferences";
+import { HttpMethods } from "@wso2is/core/models";
+import { mutate as swrMutate } from "swr";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
-import { BrandingPreferenceTypes } from "../models/branding-preferences";
 import {
     CustomTextPreferenceAPIResponseInterface
 } from "../models/custom-text-preference";
@@ -53,6 +54,10 @@ const useGetCustomTextPreferenceResolve = <
     ): RequestResultInterface<Data, Error> => {
     const { organizationType } = useGetCurrentOrganizationType();
 
+    const endpointUrl: string = organizationType === OrganizationType.SUBORGANIZATION
+        ? `${store.getState().config.endpoints.brandingTextPreferenceSubOrg}/resolve`
+        : `${store.getState().config.endpoints.brandingTextPreference}/resolve`;
+
     const tenantDomain: string = organizationType === OrganizationType.SUBORGANIZATION
         ? store.getState()?.organization?.organization?.id
         : name;
@@ -69,14 +74,31 @@ const useGetCustomTextPreferenceResolve = <
             screen,
             type
         },
-        url: organizationType === OrganizationType.SUBORGANIZATION
-            ? `${store.getState().config.endpoints.brandingTextPreferenceSubOrg}/resolve`
-            : `${store.getState().config.endpoints.brandingTextPreference}/resolve`
+        url: endpointUrl
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch? requestConfig : null, {
         shouldRetryOnError: false
     });
+
+    /**
+     * This function is used to mutate the request cache of custom text preference retrieval requests
+     * across all screens.
+     *
+     * @remarks
+     *
+     * If you want to mutate the request cache of a custom text preference retrieval
+     * request for a specific screen, use 'mutate' instead.
+     */
+    const mutateMultiple = () => {
+        swrMutate(
+            (key: string) => {
+                return typeof key === "string" && key.includes(endpointUrl);
+            },
+            undefined,
+            { revalidate: false }
+        );
+    };
 
     if ((error?.response?.data as any)?.code
         === CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_NOT_CONFIGURED_ERROR_CODE) {
@@ -85,7 +107,8 @@ const useGetCustomTextPreferenceResolve = <
             error,
             isLoading: !error && !data,
             isValidating,
-            mutate
+            mutate,
+            mutateMultiple
         };
     }
 
@@ -94,7 +117,8 @@ const useGetCustomTextPreferenceResolve = <
         error,
         isLoading: !error && !data,
         isValidating,
-        mutate
+        mutate,
+        mutateMultiple
     };
 };
 

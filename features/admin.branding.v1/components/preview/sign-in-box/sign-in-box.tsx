@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,11 @@
  * under the License.
  */
 
+import {
+    BrandingPreferenceInterface,
+    PreviewScreenType,
+    PreviewScreenVariationType
+} from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     FunctionComponent,
@@ -23,15 +28,17 @@ import React, {
 } from "react";
 import BasicAuthFragment from "./fragments/basic-auth-fragment";
 import CommonFragment from "./fragments/common-fragment";
+import EmailLinkExpiryFragment from "./fragments/email-link-expiry-fragment";
 import EmailOTPFragment from "./fragments/email-otp-fragment";
-import PasswordRecoveryFragment from "./fragments/password-recovery-fragment";
+import PasswordRecoveryEmailLinkFragment from "./fragments/password-recovery/password-recovery-email-link-fragment";
+import PasswordRecoveryMultiOptionFragment from "./fragments/password-recovery/password-recovery-multi-option-fragment";
+import PasswordRecoverySMSFragment from "./fragments/password-recovery/password-recovery-sms-otp-fragment";
 import PasswordResetFragment from "./fragments/password-reset-fragment";
 import PasswordResetSuccessFragment from "./fragments/password-reset-success-fragment";
 import SignUpFragment from "./fragments/sign-up-fragment";
 import SMSOTPFragment from "./fragments/sms-otp-fragment";
 import TOTPFragment from "./fragments/totp-fragment";
 import useBrandingPreference from "../../../hooks/use-branding-preference";
-import { BrandingPreferenceInterface, PreviewScreenType } from "../../../models";
 
 /**
  * Proptypes for the login box component of login screen skeleton.
@@ -57,7 +64,7 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (
         ["data-componentid"]: componentId
     } = props;
 
-    const { selectedScreen } = useBrandingPreference();
+    const { selectedScreen, selectedScreenVariation } = useBrandingPreference();
 
     const renderFragment = (): ReactElement => {
         if (selectedScreen === PreviewScreenType.COMMON) {
@@ -73,11 +80,21 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (
         } else if (selectedScreen === PreviewScreenType.TOTP) {
             return <TOTPFragment />;
         } else if (selectedScreen === PreviewScreenType.PASSWORD_RECOVERY) {
-            return <PasswordRecoveryFragment />;
+            if (selectedScreenVariation === PreviewScreenVariationType.EMAIL_LINK ||
+                selectedScreenVariation === PreviewScreenVariationType.BASE
+            ) {
+                return <PasswordRecoveryEmailLinkFragment />;
+            } else if(selectedScreenVariation === PreviewScreenVariationType.SMS_OTP) {
+                return <PasswordRecoverySMSFragment/>;
+            } else if(selectedScreenVariation === PreviewScreenVariationType.MULTI) {
+                return <PasswordRecoveryMultiOptionFragment/>;
+            }
         } else if (selectedScreen === PreviewScreenType.PASSWORD_RESET) {
             return <PasswordResetFragment />;
         } else if (selectedScreen === PreviewScreenType.PASSWORD_RESET_SUCCESS) {
             return <PasswordResetSuccessFragment />;
+        } else if (selectedScreen === PreviewScreenType.EMAIL_LINK_EXPIRY) {
+            return <EmailLinkExpiryFragment />;
         }
     };
 

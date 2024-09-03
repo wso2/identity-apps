@@ -17,16 +17,16 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance, HttpRequestConfig } from "@asgardeo/auth-react";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import isEmpty from "lodash-es/isEmpty";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
-import { store } from "../../admin.core.v1/store";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import isEmpty from "lodash-es/isEmpty";
 import { ApplicationManagementConstants } from "../constants";
 import {
     AdaptiveAuthTemplateCategoryListItemInterface,
@@ -118,6 +118,48 @@ export const deleteApplication = (id: string): Promise<any> => {
             return Promise.resolve(response);
         }).catch((error: AxiosError) => {
             return Promise.reject(error);
+        });
+};
+
+/**
+ * Disables an application when the relevant id is passed in.
+ *
+ * @param id - ID of the application.
+ * @returns A promise containing the response.
+ * @throws IdentityAppsApiException
+ */
+export const disableApplication = <T>(id: string, status: boolean): Promise<T> => {
+    const requestConfig: AxiosRequestConfig = {
+        data: { "applicationEnabled":status },
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: `${ store.getState().config.endpoints.applications }/${  id }`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ApplicationManagementConstants.APPLICATION_STATUS_UPDATE_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data as T);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ApplicationManagementConstants.APPLICATION_STATUS_UPDATE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 
@@ -991,6 +1033,9 @@ export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfi
                 endSessionEndpoint: response.data.end_session_endpoint,
                 introspectionEndpoint: response.data.introspection_endpoint,
                 jwksEndpoint: response.data.jwks_uri,
+                mtlsPushedAuthorizationRequestEndpoint:
+                    response.data.mtls_endpoint_aliases?.pushed_authorization_request_endpoint,
+                mtlsTokenEndpoint: response.data.mtls_endpoint_aliases?.token_endpoint,
                 pushedAuthorizationRequestEndpoint: response.data.pushed_authorization_request_endpoint,
                 sessionIframeEndpoint: response.data.check_session_iframe,
                 tokenEndpoint: response.data.token_endpoint,

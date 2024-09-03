@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import kebabCase from "lodash-es/kebabCase";
@@ -26,10 +27,9 @@ import { AnalyticsConfigurationForm } from "./analytics-form";
 import { AskPasswordForm } from "./ask-password";
 import { LoginAttemptSecurityConfigurationFrom } from "./login-attempt-security-form";
 import { MultiAttributeLoginForm } from "./multi-attribute-login";
-import { PasswordRecoveryConfigurationForm } from "./password-recovery-form";
+import { PasswordRecoveryConfigurationForm } from "./password-recovery-form/password-recovery-form";
 import { SelfRegistrationForm } from "./self-registration-form";
 import { UsernameRecoveryConfigurationForm } from "./username-recovery-form";
-import { AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
 import DynamicConnectorForm from "../components/governance-connectors/dynamic-connector-form";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../models/governance-connectors";

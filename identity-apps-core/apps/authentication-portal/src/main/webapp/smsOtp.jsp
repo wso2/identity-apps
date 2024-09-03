@@ -158,10 +158,16 @@
                               } %>
 
                             <div class="field">
-                                <% if (request.getParameter("screenValue") != null) { %>
+                                <%
+                                    String screenValue = request.getParameter("screenValue");
+                                    if (screenValue == null) {
+                                        screenValue = request.getParameter("screenvalue");
+                                    }
+                                    if (screenValue != null) {
+                                %>
                                     <label for="password">
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.code.sent.smsotp")%>
-                                        (<%=Encode.forHtmlContent(request.getParameter("screenValue"))%>)
+                                        (<%=Encode.forHtmlContent(screenValue)%>)
                                     </label>
                                 <% } else { %>
                                     <label for="password">

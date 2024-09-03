@@ -16,22 +16,23 @@
  * under the License.
  */
 
+import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import "@testing-library/jest-dom";
 import { fullPermissions } from "./__mocks__/permissions";
-import { render, screen } from "../../../../test-configs/utils";
 import SecretSelectionDropdown, { SecretSelectionDropdownPropsInterface } from "../secret-selection-dropdown";
 
 describe("SecretSelectionDropdown", () => {
     const defaultProps: SecretSelectionDropdownPropsInterface = {
         onOpen: jest.fn(),
-        onSecretSelect: jest.fn()
+        onSecretSelect: jest.fn(),
+        open: true
     };
 
     it("renders the SecretSelectionDropdown component", () => {
         render(<SecretSelectionDropdown { ...defaultProps } />, { allowedScopes: fullPermissions });
 
-        const secretSelectionDropdown: Element = screen.getByTestId("secret-selection-dropdown");
+        const secretSelectionDropdown: Element = screen.getByTestId("secret-selection-dropdown-popover");
 
         expect(secretSelectionDropdown).toBeInTheDocument();
     });

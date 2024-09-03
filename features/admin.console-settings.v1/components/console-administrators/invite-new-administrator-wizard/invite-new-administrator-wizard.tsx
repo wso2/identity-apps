@@ -20,6 +20,13 @@ import Alert from "@oxygen-ui/react/Alert";
 import { AutocompleteRenderGetTagProps } from "@oxygen-ui/react/Autocomplete";
 import Chip from "@oxygen-ui/react/Chip";
 import Typography from "@oxygen-ui/react/Typography";
+import { sendParentOrgUserInvite } from "@wso2is/admin.users.v1/components/guests/api/invite";
+import {
+    AdministratorInviteInterface,
+    ParentOrgUserInvitationResult,
+    ParentOrgUserInviteResultStatus
+} from "@wso2is/admin.users.v1/components/guests/models/invite";
+import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AutocompleteFieldAdapter, FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
@@ -28,17 +35,9 @@ import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal, ModalProps } from "semantic-ui-react";
-import { AppState } from "../../../../admin.core.v1/store";
-import { sendParentOrgUserInvite } from "../../../../admin.users.v1/components/guests/api/invite";
-import {
-    AdministratorInviteInterface,
-    ParentOrgUserInvitationResult,
-    ParentOrgUserInviteResultStatus
-} from "../../../../admin.users.v1/components/guests/models/invite";
-import { UserManagementConstants } from "../../../../admin.users.v1/constants";
 import { ConsoleAdministratorOnboardingConstants } from "../../../constants/console-administrator-onboarding-constants";
 import useConsoleRoles from "../../../hooks/use-console-roles";
 import "./invite-new-administrator-wizard.scss";
@@ -87,8 +86,6 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     const { consoleRoles } = useConsoleRoles(null, null);
-
-    const currentOrganization: string =  useSelector((state: AppState) => state?.config?.deployment?.tenant);
 
     const rolesAutocompleteOptions: InviteNewAdministratorWizardFormValuesInterface["roles"] = useMemo(() => {
         if (isEmpty(consoleRoles?.Resources)) {
@@ -227,7 +224,7 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
                 <Typography variant="inherit">Invite Administrator</Typography>
                 <Heading as="h6">
                     <Typography variant="inherit">
-                        Invite an existing user from your root organization as an administrator
+                        Invite an existing user from your immediate parent organization as an administrator
                     </Typography>
                 </Heading>
             </Modal.Header>
@@ -235,9 +232,7 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
                 { alert && alertComponent }
                 <Alert severity="info" className="root-invite-only-disclaimer-alert">
                     <Typography variant="inherit">
-                        You can only Invite an existing user from your root organization (<Typography
-                            component="span"
-                            fontWeight="bold">{ currentOrganization }</Typography>).
+                        You can only Invite an existing user from your immediate parent organization.
                     </Typography>
                 </Alert>
                 <FinalForm

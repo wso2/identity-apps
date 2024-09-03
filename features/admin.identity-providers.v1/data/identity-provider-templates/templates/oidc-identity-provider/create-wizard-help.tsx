@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,12 @@
  * under the License.
  */
 
+import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CopyInputField, Heading, Message } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Divider, Icon } from "semantic-ui-react";
-import { store } from "../../../../../admin.core.v1";
-import { AppState, ConfigReducerStateInterface } from "../../../../../admin.core.v1";
 
 /**
  * Prop types of the component.
@@ -50,7 +49,7 @@ const CustomIdentityProviderCreateWizardHelp: FunctionComponent<CustomIdentityPr
                     type="info"
                     header="Prerequisite"
                     content={
-                        <p>Before you begin, register an application in the Identity Provider, and obtain a
+                        (<p>Before you begin, register an application in the Identity Provider, and obtain a
                             <strong> client ID & secret</strong>. Use the following URL as the <strong>
                                 Authorized Redirect URL</strong>.
                             <br />
@@ -63,7 +62,7 @@ const CustomIdentityProviderCreateWizardHelp: FunctionComponent<CustomIdentityPr
                             <Icon name="info circle" />
                             The URL to which the authorization code is sent upon authentication and where the
                             user is redirected to upon logout.
-                        </p>
+                        </p>)
                     }
                 />
                 <Heading as="h5">Client ID</Heading>
@@ -82,7 +81,7 @@ const CustomIdentityProviderCreateWizardHelp: FunctionComponent<CustomIdentityPr
 
             </div>
         );
-};
+    };
 
 /**
  * Default props for the component

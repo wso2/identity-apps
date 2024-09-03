@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,7 @@ import {
     OrganizationEnterpriseConnectionCreateWizardFormErrorValidationsInterface,
     OrganizationEnterpriseConnectionCreateWizardFormValuesInterface
 } from "./organization-enterprise-connection-create-wizard";
-import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
+import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import { ConnectionTemplateInterface, IdpNameValidationCache } from "../../../models/connection";
 import { ConnectionsManagementUtils } from "../../../utils/connection-utils";
 
@@ -191,11 +191,11 @@ export const OrganizationEnterpriseConnectionCreateWizardContent:
                             }
                         }
                         maxLength={
-                            AuthenticatorManagementConstants
+                            ConnectionUIConstants
                                 .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.IDP_NAME_MAX_LENGTH as number
                         }
                         minLength={
-                            AuthenticatorManagementConstants
+                            ConnectionUIConstants
                                 .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.IDP_NAME_MIN_LENGTH as number
                         }
                         data-componentid={ `${componentId}-idp-name` }
@@ -219,12 +219,12 @@ export const OrganizationEnterpriseConnectionCreateWizardContent:
                         }
                         type="text"
                         maxLength={
-                            AuthenticatorManagementConstants
+                            ConnectionUIConstants
                                 .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
                                 .IDP_DESCRIPTION_MAX_LENGTH as number
                         }
                         minLength={
-                            AuthenticatorManagementConstants
+                            ConnectionUIConstants
                                 .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
                                 .IDP_DESCRIPTION_MIN_LENGTH as number
                         }

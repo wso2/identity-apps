@@ -23,6 +23,25 @@ import {
     OIDCEndpoints,
     useAuthContext
 } from "@asgardeo/auth-react";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
+import { AppConstants, CommonConstants } from "@wso2is/admin.core.v1/constants";
+import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
+import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
+import { DeploymentConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import {
+    getServerConfigurations,
+    setCurrentOrganization,
+    setGetOrganizationLoading,
+    setIsFirstLevelOrganization,
+    setOrganization,
+    setOrganizationType,
+    setUserOrganizationId
+} from "@wso2is/admin.core.v1/store/actions/organization";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import useOrganizationSwitch from "@wso2is/admin.organizations.v1/hooks/use-organization-switch";
+import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
+import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {
     AppConstants as CommonAppConstants,
     CommonConstants as CommonConstantsCore
@@ -34,28 +53,9 @@ import {
     ContextUtils
 } from "@wso2is/core/utils";
 import axios, { AxiosResponse } from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
-import useAuthorization from "../../admin.authorization.v1/hooks/use-authorization";
-import { Config } from "../../admin.core.v1/configs/app";
-import { AppConstants, CommonConstants } from "../../admin.core.v1/constants";
-import useDeploymentConfig from "../../admin.core.v1/hooks/use-deployment-configs";
-import useResourceEndpoints from "../../admin.core.v1/hooks/use-resource-endpoints";
-import { DeploymentConfigInterface } from "../../admin.core.v1/models/config";
-import { AppState } from "../../admin.core.v1/store";
-import {
-    getServerConfigurations,
-    setCurrentOrganization,
-    setGetOrganizationLoading,
-    setIsFirstLevelOrganization,
-    setOrganization,
-    setOrganizationType,
-    setUserOrganizationId
-} from "../../admin.core.v1/store/actions/organization";
-import { OrganizationType } from "../../admin.organizations.v1/constants";
-import useOrganizationSwitch from "../../admin.organizations.v1/hooks/use-organization-switch";
-import useOrganizations from "../../admin.organizations.v1/hooks/use-organizations";
 import { getProfileInformation } from "../store/actions";
 import { AuthenticateUtils } from "../utils/authenticate-utils";
 
@@ -107,8 +107,6 @@ const useSignIn = (): UseSignInInterface => {
 
     const { setDeploymentConfig } = useDeploymentConfig();
 
-    const { legacyAuthzRuntime }  = useAuthorization();
-
     const {
         transformTenantDomain,
         setUserOrgInLocalStorage,
@@ -118,93 +116,81 @@ const useSignIn = (): UseSignInInterface => {
         removeUserOrgInLocalStorage
     } = useOrganizations();
 
+    const disabledBrandingFeatures: string[] = useSelector((state: AppState) =>
+        state.config.ui.features?.branding?.disabledFeatures);
+
     /**
      * Resolves and sets the custom server host.
      *
      * @param orgType - Type of the organization. Ex: sub organization, etc.
      */
     const setCustomServerHost = (orgType: string): void => {
-        // In case of failure customServerHost is set to the serverHost.
-        let customServerHost: string = Config?.getDeploymentConfig()?.serverHost;
+        if (!disabledBrandingFeatures?.includes("branding.hostnameUrlBranding")) {
+            axios
+                .get(Config.getServiceResourceEndpoints().wellKnown)
+                .then((response: AxiosResponse) => {
+                    // Use token endpoint to extract the host url.
+                    const splitted: string[] = response?.data?.token_endpoint?.split("/") ?? [];
 
-        const isSuperTenant: boolean = window["AppUtils"]?.isSuperTenant();
-        const isSubOrganization: boolean = orgType === OrganizationType.SUBORGANIZATION &&
-            window["AppUtils"]?.getConfig()?.organizationName.length > 0;
+                    let serverHost: string = splitted?.slice(0, -2)?.join("/");
 
-        if (!window["AppUtils"]?.getConfig()?.requireSuperTenantInUrls && isSuperTenant) {
-            // Removing super tenant from the server host.
-            const customServerHostSplit: string[] = customServerHost?.split("/t/");
+                    if (orgType === OrganizationType.SUBORGANIZATION) {
+                        serverHost = `${Config?.getDeploymentConfig()?.serverOrigin}/${
+                            window["AppUtils"]?.getConfig()?.organizationPrefix
+                        }/${window["AppUtils"]?.getConfig()?.organizationName}`;
+                    }
 
-            if (customServerHostSplit?.length > 0) {
-                customServerHost = customServerHostSplit[0];
-            }
-        }
+                    window["AppUtils"]?.updateCustomServerHost(serverHost);
+                })
+                .catch((error: any) => {
+                    // In case of failure customServerHost is set to the serverHost.
+                    window["AppUtils"]?.updateCustomServerHost(Config?.getDeploymentConfig()?.serverHost);
 
-        if (isSubOrganization) {
-            customServerHost = `${Config?.getDeploymentConfig()?.serverOrigin}/${
-                window["AppUtils"]?.getConfig()?.organizationPrefix}/${
-                window["AppUtils"]?.getConfig()?.organizationName}`;
-        }
+                    throw error;
+                })
+                .finally(() => {
+                    // Update store with custom server host.
+                    dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config?.getDeploymentConfig()));
 
-        window["AppUtils"]?.updateCustomServerHost(customServerHost);
+                    // Set the deployment configs in the context.
+                    setDeploymentConfig(Config?.getDeploymentConfig());
 
-        // Update store with custom server host.
-        dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config?.getDeploymentConfig()));
+                    // Update runtime configurations.
+                    ContextUtils.setRuntimeConfig(Config?.getDeploymentConfig());
+                });
+        } else {
+            // Resolve the custom server host based on server host if the hostname branding is disabled.
+            let customServerHost: string = Config?.getDeploymentConfig()?.serverHost;
+            const isSuperTenant: boolean = window["AppUtils"]?.isSuperTenant();
+            const isSubOrganization: boolean = orgType === OrganizationType.SUBORGANIZATION &&
+                window["AppUtils"]?.getConfig()?.organizationName.length > 0;
 
-        // Set the deployment configs in the context.
-        setDeploymentConfig(Config?.getDeploymentConfig());
+            if (!window["AppUtils"]?.getConfig()?.tenantContext?.requireSuperTenantInUrls && isSuperTenant) {
+                // Removing super tenant from the server host.
+                const customServerHostSplit: string[] = customServerHost?.split("/t/");
 
-        // Update runtime configurations.
-        ContextUtils.setRuntimeConfig(Config?.getDeploymentConfig());
-    };
-
-    /**
-     * Resolves and sets the custom server host.
-     *
-     * @deprecated Use `setCustomServerHost()` instead.
-     * @param orgType - Type of the organization. Ex: sub organization, etc.
-     * @param wellKnownEndpoint - Wellknown discovery endpoint.
-     */
-    const setLegacyCustomServerHost = (orgType: string, wellKnownEndpoint: string): void => {
-        const disabledFeatures: string[] = window["AppUtils"]?.getConfig()?.ui?.features?.branding?.disabledFeatures;
-
-        if (disabledFeatures?.includes("branding.hostnameUrlBranding")) {
-            return;
-        }
-
-        // Set configurations related to hostname branding.
-        axios
-            .get(wellKnownEndpoint)
-            .then((response: AxiosResponse) => {
-                // Use token endpoint to extract the host url.
-                const splitted: string[] = response?.data?.token_endpoint?.split("/") ?? [];
-
-                let serverHost: string = splitted?.slice(0, -2)?.join("/");
-
-                if (orgType === OrganizationType.SUBORGANIZATION) {
-                    serverHost = `${Config?.getDeploymentConfig()?.serverOrigin}/${
-                        window["AppUtils"]?.getConfig()?.organizationPrefix
-                    }/${window["AppUtils"]?.getConfig()?.organizationName}`;
+                if (customServerHostSplit?.length > 0) {
+                    customServerHost = customServerHostSplit[0];
                 }
+            }
 
-                window["AppUtils"]?.updateCustomServerHost(serverHost);
-            })
-            .catch((error: any) => {
-                // In case of failure customServerHost is set to the serverHost.
-                window["AppUtils"]?.updateCustomServerHost(Config?.getDeploymentConfig()?.serverHost);
+            if (isSubOrganization) {
+                customServerHost = `${Config?.getDeploymentConfig()?.serverOrigin}/${
+                    window["AppUtils"]?.getConfig()?.organizationPrefix}/${
+                    window["AppUtils"]?.getConfig()?.organizationName}`;
+            }
 
-                throw error;
-            })
-            .finally(() => {
-                // Update store with custom server host.
-                dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config?.getDeploymentConfig()));
+            window["AppUtils"]?.updateCustomServerHost(customServerHost);
 
-                // Set the deployment configs in the context.
-                setDeploymentConfig(Config?.getDeploymentConfig());
+            // Update store with custom server host.
+            dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config?.getDeploymentConfig()));
 
-                // Update runtime configurations.
-                ContextUtils.setRuntimeConfig(Config?.getDeploymentConfig());
-            });
+            // Set the deployment configs in the context.
+            setDeploymentConfig(Config?.getDeploymentConfig());
+
+            // Update runtime configurations.
+            ContextUtils.setRuntimeConfig(Config?.getDeploymentConfig());
+        }
     };
 
     /**
@@ -228,17 +214,6 @@ const useSignIn = (): UseSignInInterface => {
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
         onAppReady: () => void
     ): Promise<void> => {
-        if (legacyAuthzRuntime) {
-            await legacyOnSignIn(
-                response,
-                onTenantResolve,
-                onSignInSuccessRedirect,
-                onAppReady
-            );
-
-            return;
-        }
-
         await _onSignIn(
             response,
             onTenantResolve,
@@ -263,16 +238,43 @@ const useSignIn = (): UseSignInInterface => {
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
         onAppReady: () => void
     ): Promise<void> => {
-        let logoutRedirectUrl: string;
-
         const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
-        const isPrivilegedUser: boolean =
+
+        let logoutRedirectUrl: string;
+        let isPrivilegedUser: boolean =
             idToken?.amr?.length > 0
                 ? idToken?.amr[0] === "EnterpriseIDPAuthenticator"
                 : false;
         const event: Event = new Event(CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT);
 
         dispatchEvent(event);
+
+        const __experimental__platformIdP: {
+            enabled: boolean;
+            homeRealmId: string;
+        } = window["AppUtils"].getConfig()?.__experimental__platformIdP;
+
+        if (__experimental__platformIdP?.enabled) {
+            isPrivilegedUser = idToken?.sub?.startsWith(`${ CONSUMER_USERSTORE }/`);
+
+            if (idToken?.default_tenant && idToken.default_tenant !== "carbon.super") {
+                const redirectUrl: URL = new URL(
+                    window["AppUtils"].getConfig().clientOriginWithTenant.replace(
+                        window["AppUtils"].getConfig().tenant,
+                        idToken.default_tenant
+                    )
+                );
+
+                redirectUrl.searchParams.set("fidp", __experimental__platformIdP.homeRealmId);
+
+                window.location.href = redirectUrl.href;
+
+                // This early return is essential to halt execution after the above redirection is set.
+                // Removing this can cause an intermittent authorize page to be displayed during sign
+                // in process in cloud deployments.
+                return;
+            }
+        }
 
         const orgIdIdToken: string = idToken.org_id;
         const orgName: string = idToken.org_name;
@@ -284,7 +286,7 @@ const useSignIn = (): UseSignInInterface => {
             || idToken.org_name === tenantDomainFromSubject
             || ((idToken.user_org === idToken.org_id) && idToken.org_name === tenantDomainFromSubject);
 
-        const tenantDomain: string = transformTenantDomain(orgName);
+        const tenantDomain: string = isFirstLevelOrg ? transformTenantDomain(orgName) : orgIdIdToken;
 
         const firstName: string = idToken?.given_name;
         const lastName: string = idToken?.family_name;
@@ -295,7 +297,7 @@ const useSignIn = (): UseSignInInterface => {
                 Object.assign(
                     CommonAuthenticateUtils.getSignInState(
                         response,
-                        transformTenantDomain(response.orgName)
+                        tenantDomain
                     ), {
                         associatedTenants: isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
                         defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
@@ -447,6 +449,73 @@ const useSignIn = (): UseSignInInterface => {
                 sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, oidcSessionIframeEndpoint);
                 sessionStorage.setItem(TOKEN_ENDPOINT, tokenEndpoint);
 
+                let signOutRedirectURL: URL = null;
+
+                try {
+                    signOutRedirectURL = new URL(deriveLogoutRedirectForSubOrgLogins(
+                        logoutRedirectUrl,
+                        userOrganizationId,
+                        orgIdIdToken
+                    ));
+                } catch(e) {
+                    signOutRedirectURL = null;
+                }
+
+                /**
+                 * If,
+                 *  (i) the experimental Platform IdP is enabled, and
+                 *  (ii) the user is not a privileged user, and
+                 *  (iii) the currently signed-in organization is not the super organization or a suborganization
+                 * We need to append the `homeRealmId` of the platform IdP as a `fidp` query
+                 * param to the post logout redirect URL.
+                 * */
+                if (__experimental__platformIdP?.enabled
+                        && !isPrivilegedUser
+                        && orgType !== OrganizationType.SUPER_ORGANIZATION
+                        && orgType !== OrganizationType.SUBORGANIZATION
+                ) {
+                    if (!signOutRedirectURL) {
+                        signOutRedirectURL = new URL(window["AppUtils"]?.getConfig()?.logoutCallbackURL);
+                    }
+
+                    signOutRedirectURL.searchParams.set("fidp", __experimental__platformIdP.homeRealmId);
+
+                    // `updateConfig` doesn't seem to be updating the SDK config after initializing.
+                    // Hence the updated `signOutRedirectURL` is not taken for logout.
+                    // Tracker: https://github.com/asgardeo/asgardeo-auth-react-sdk/issues/222
+                    // TODO: Remove this workaround once the above issue is fixed.
+                    Object.entries(sessionStorage).forEach(([ key, value ]: [ key: string, value: string ]) => {
+                        if (key.startsWith(LOGOUT_URL) && key.includes(window["AppUtils"]?.getConfig()?.clientID)) {
+                            const _signOutRedirectURL: URL = new URL(value);
+
+                            const postLogoutRedirectUri: URL = new URL(
+                                _signOutRedirectURL.searchParams.get("post_logout_redirect_uri")
+                            );
+
+                            postLogoutRedirectUri.searchParams.set("fidp", __experimental__platformIdP.homeRealmId);
+
+                            _signOutRedirectURL.searchParams.set(
+                                "post_logout_redirect_uri",
+                                postLogoutRedirectUri?.href
+                            );
+
+                            sessionStorage.setItem(key, _signOutRedirectURL.href);
+                        }
+
+                        // `updateConfig` doesn't seem to be updating the SDK configs as expected,
+                        // Hence it was needed to modify the session storage manually to
+                        // update check session SDK config.
+                        // Tracker: https://github.com/asgardeo/asgardeo-auth-react-sdk/issues/222
+                        // TODO: Remove this workaround once the above issue is fixed.
+                        if (key.startsWith("config_data-instance_0-CONSOLE")) {
+                            const config: any = JSON.parse(value);
+
+                            config.enableOIDCSessionManagement = true;
+                            sessionStorage.setItem(key,JSON.stringify(config));
+                        }
+                    });
+                }
+
                 updateConfig({
                     endpoints: {
                         authorizationEndpoint: authorizationEndpoint,
@@ -454,11 +523,7 @@ const useSignIn = (): UseSignInInterface => {
                         endSessionEndpoint: logoutUrl.split("?")[0],
                         tokenEndpoint: tokenEndpoint
                     },
-                    signOutRedirectURL: deriveLogoutRedirectForSubOrgLogins(
-                        logoutRedirectUrl,
-                        userOrganizationId,
-                        orgIdIdToken
-                    )
+                    signOutRedirectURL: signOutRedirectURL?.href
                 });
             })
             .catch((error: any) => {
@@ -479,285 +544,6 @@ const useSignIn = (): UseSignInInterface => {
 
         onSignInSuccessRedirect(idToken);
         setCustomServerHost(orgType);
-    };
-
-    /**
-     * Handles the sign-in process for legacy authorization server.
-     *
-     * @deprecated This is deprecated and will be removed in the next major release.
-     * @param response - The basic user information returned from the sign-in process.
-     * @param onTenantResolve - Callback to be triggered when tenant is resolved.
-     * @param onSignInSuccessRedirect - Callback to be triggered when sign in is successful.
-     * @param onAppReady - Callback to be triggered when the app is ready.
-     *
-     * @returns A promise.
-     */
-    const legacyOnSignIn = async (
-        response: BasicUserInfo,
-        onTenantResolve: (tenantDomain: string) => void,
-        onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
-        onAppReady: () => void
-    ): Promise<void> => {
-        let logoutUrl: string;
-        let logoutRedirectUrl: string;
-
-        const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
-        const isPrivilegedUser: boolean =
-            idToken?.amr?.length > 0
-                ? idToken?.amr[0] === "EnterpriseIDPAuthenticator"
-                : false;
-        const event: Event = new Event(CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT);
-
-        dispatchEvent(event);
-
-        const orgIdIdToken: string = idToken.org_id;
-        const orgName: string = idToken.org_name;
-        const userOrganizationId: string = idToken.user_org;
-        const tenantDomainFromSubject: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(
-            response.sub
-        );
-        const isFirstLevelOrg: boolean = !idToken.user_org
-            || idToken.org_name === tenantDomainFromSubject
-            || ((idToken.user_org === idToken.org_id) && idToken.org_name === tenantDomainFromSubject);
-
-        let tenantDomain: string = transformTenantDomain(orgName);
-
-        const firstName: string = idToken?.given_name;
-        const lastName: string = idToken?.family_name;
-        const fullName: string = firstName ? firstName + (lastName ? " " + lastName : "") : response.email;
-
-        await dispatch(
-            setSignIn<AuthenticatedUserInfo & TenantListInterface>(
-                Object.assign(
-                    CommonAuthenticateUtils.getSignInState(
-                        response,
-                        transformTenantDomain(response.orgName)
-                    ), {
-                        associatedTenants: isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
-                        defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
-                        fullName: fullName,
-                        isPrivilegedUser: isPrivilegedUser
-                    })
-            )
-        );
-
-        tenantDomain = tenantDomainFromSubject;
-
-        onTenantResolve(tenantDomain);
-
-        let orgType: OrganizationType;
-
-        // Update the organization name with the newly resolved org.
-        if (!isFirstLevelOrg) {
-            window["AppUtils"].updateOrganizationName(orgIdIdToken);
-        } else {
-            // Update the app base name with the newly resolved tenant.
-            window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
-        }
-
-        if (isFirstLevelOrg && tenantDomain === AppConstants.getSuperTenant()) {
-            orgType = OrganizationType.SUPER_ORGANIZATION;
-        } else if (isFirstLevelOrg) {
-            orgType = OrganizationType.FIRST_LEVEL_ORGANIZATION;
-        } else {
-            orgType = OrganizationType.SUBORGANIZATION;
-        }
-
-        dispatch(setOrganizationType(orgType));
-        window["AppUtils"].updateOrganizationType(orgType);
-        dispatch(setUserOrganizationId(userOrganizationId));
-        dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
-
-        if (window["AppUtils"].getConfig().organizationName || isFirstLevelOrg) {
-            // We are actually getting the orgId here rather than orgName
-            const orgId: string = isFirstLevelOrg ? orgIdIdToken : window["AppUtils"].getConfig().organizationName;
-
-            // Setting a dummy object until real data comes from the API
-            dispatch(
-                setOrganization({
-                    attributes: [],
-                    created: new Date().toString(),
-                    description: "",
-                    domain: "",
-                    id: orgId,
-                    lastModified: new Date().toString(),
-                    name: orgName,
-                    parent: {
-                        id: "",
-                        ref: ""
-                    },
-                    status: "",
-                    type: ""
-                })
-            );
-
-            if (!isPrivilegedUser && orgIdIdToken != orgId) {
-                dispatch(setCurrentOrganization(orgName));
-
-                // This is to make sure the endpoints are generated with the organization path.
-                await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
-
-                // Sets the resource endpoints in the context.
-                setResourceEndpoints(Config.getServiceResourceEndpoints() as any);
-
-                try {
-                    response = await switchOrganization(orgId);
-                } catch (e) {
-                    // TODO: Handle error
-                }
-
-                onTenantResolve(response.orgId);
-                dispatch(setCurrentOrganization(response.orgName));
-            }
-        }
-
-        dispatch(setGetOrganizationLoading(false));
-
-        const endpoints: Record<string, any> = Config.getServiceResourceEndpoints();
-
-        // Update the endpoints with tenant path.
-        await dispatch(setServiceResourceEndpoints(endpoints));
-
-        // Sets the resource endpoints in the context.
-        setResourceEndpoints(endpoints);
-
-        // When the tenant domain changes, we have to reset the auth callback in session storage.
-        // If not, it will hang and the app will be unresponsive with in the tab.
-        // We can skip clearing the callback for super tenant since we do not put it in the path.
-        if (tenantDomain !== AppConstants.getSuperTenant()) {
-            // If the auth callback already has the logged in tenant's path, we can skip the reset.
-            if (
-                !CommonAuthenticateUtils.isValidAuthenticationCallbackUrl(
-                    CommonAppConstants.CONSOLE_APP,
-                    AppConstants.getTenantPath()
-                )
-            ) {
-                CommonAuthenticateUtils.removeAuthenticationCallbackUrl(CommonAppConstants.CONSOLE_APP);
-            }
-        }
-
-        // Update runtime configurations.
-        ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
-
-        logoutUrl = window[ "AppUtils" ].getConfig().idpConfigs?.logoutEndpointURL;
-
-        // Update post_logout_redirect_uri of logout_url with tenant qualified url
-        if (sessionStorage.getItem(LOGOUT_URL)) {
-            logoutUrl = sessionStorage.getItem(LOGOUT_URL);
-
-            if (
-                !window[ "AppUtils" ].getConfig().accountApp
-                    .commonPostLogoutUrl
-            ) {
-                // If there is a base name, replace the `post_logout_redirect_uri` with the tenanted base name.
-                if (window[ "AppUtils" ].getConfig().appBase) {
-                    logoutUrl = logoutUrl.replace(
-                        window[ "AppUtils" ].getAppBase(),
-                        window[ "AppUtils" ].getAppBaseWithTenant()
-                    );
-                    logoutRedirectUrl = window[ "AppUtils" ]
-                        .getConfig()
-                        .logoutCallbackURL.replace(
-                            window[ "AppUtils" ].getAppBase(),
-                            window[ "AppUtils" ].getAppBaseWithTenant()
-                        );
-                } else {
-                    logoutUrl = logoutUrl.replace(
-                        window[ "AppUtils" ].getConfig().logoutCallbackURL,
-                        window[ "AppUtils" ].getConfig().clientOrigin +
-                        window[ "AppUtils" ].getConfig().routes.login
-                    );
-                    logoutRedirectUrl =
-                        window[ "AppUtils" ].getConfig().clientOrigin +
-                        window[ "AppUtils" ].getConfig().routes.login;
-                }
-            }
-
-            // If an override URL is defined in config, use that instead.
-            if (
-                window[ "AppUtils" ].getConfig().idpConfigs?.logoutEndpointURL
-            ) {
-                logoutUrl = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
-                    logoutUrl,
-                    window[ "AppUtils" ].getConfig().idpConfigs
-                        .logoutEndpointURL
-                );
-            }
-
-            sessionStorage.setItem(LOGOUT_URL, logoutUrl);
-        }
-
-        onAppReady();
-
-        sessionStorage.setItem(CommonConstants.SESSION_STATE, response?.sessionState);
-
-        getOIDCServiceEndpoints()
-            .then((response: OIDCEndpoints) => {
-                let authorizationEndpoint: string = response.authorizationEndpoint;
-                let oidcSessionIframeEndpoint: string = response.checkSessionIframe;
-                let tokenEndpoint: string = response.tokenEndpoint;
-
-                // If `authorize` endpoint is overridden, save that in the session.
-                if (window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL) {
-                    authorizationEndpoint = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
-                        authorizationEndpoint,
-                        window["AppUtils"].getConfig().idpConfigs.authorizeEndpointURL
-                    );
-                }
-
-                // If `oidc session iframe` endpoint is overridden, save that in the session.
-                if (window["AppUtils"].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL) {
-                    oidcSessionIframeEndpoint = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
-                        oidcSessionIframeEndpoint,
-                        window["AppUtils"].getConfig().idpConfigs.oidcSessionIFrameEndpointURL
-                    );
-                }
-
-                // If `token` endpoint is overridden, save that in the session.
-                if (window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL) {
-                    tokenEndpoint = AuthenticateUtils.resolveIdpURLSAfterTenantResolves(
-                        tokenEndpoint,
-                        window["AppUtils"].getConfig().idpConfigs.tokenEndpointURL
-                    );
-                }
-
-                if (isPrivilegedUser) {
-                    logoutRedirectUrl =
-                        window["AppUtils"].getConfig().clientOrigin + window["AppUtils"].getConfig().routes.login;
-                }
-
-                sessionStorage.setItem(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
-                sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, oidcSessionIframeEndpoint);
-                sessionStorage.setItem(TOKEN_ENDPOINT, tokenEndpoint);
-
-                updateConfig({
-                    endpoints: {
-                        authorizationEndpoint: authorizationEndpoint,
-                        checkSessionIframe: oidcSessionIframeEndpoint,
-                        endSessionEndpoint: logoutUrl.split("?")[0],
-                        tokenEndpoint: tokenEndpoint
-                    },
-                    signOutRedirectURL: logoutRedirectUrl
-                });
-            })
-            .catch((error: any) => {
-                throw error;
-            });
-
-        await dispatch(
-            getProfileInformation(
-                Config.getServiceResourceEndpoints().me,
-                window["AppUtils"].getConfig().clientOriginWithTenant,
-                true
-            )
-        );
-
-        if (isFirstLevelOrg) {
-            await dispatch(getServerConfigurations());
-        }
-
-        onSignInSuccessRedirect(idToken);
-        setLegacyCustomServerHost(orgType, Config.getServiceResourceEndpoints().wellKnown);
     };
 
     /**

@@ -9,7 +9,3 @@ Follow through [this guide](./STATIC_CODE_ANALYSIS.md) to set-up and understand 
 ## Unit Tests
 
 Read the unit testing guide [here](UNIT_TESTING.md)
-
-## Integration Tests
-
-Read the integration testing guide [here](INTEGRATION_TESTING.md)

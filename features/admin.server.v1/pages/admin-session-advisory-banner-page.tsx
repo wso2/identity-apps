@@ -17,6 +17,7 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -27,7 +28,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps } from "semantic-ui-react";
-import { AppConstants, history } from "../../admin.core.v1";
 import { updateAdminAdvisoryBannerConfiguration, useAdminAdvisoryBannerConfigs } from "../api/server";
 import { AdminAdvisoryBannerConfigurationInterface } from "../models/server";
 

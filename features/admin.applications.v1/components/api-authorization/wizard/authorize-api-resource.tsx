@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,6 +21,10 @@ import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Au
 import Button from "@oxygen-ui/react/Button";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
+import { APIResourceCategories, APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
+import { APIResourceInterface, APIResourcePermissionInterface } from "@wso2is/admin.api-resources.v2/models";
+import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -40,10 +44,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Grid, Header, Label, Modal } from "semantic-ui-react";
-import { useAPIResources } from "../../../../admin.api-resources.v2/api";
-import { APIResourceCategories, APIResourcesConstants } from "../../../../admin.api-resources.v2/constants";
-import { APIResourceInterface, APIResourcePermissionInterface } from "../../../../admin.api-resources.v2/models";
-import { APIResourceUtils } from "../../../../admin.api-resources.v2/utils/api-resource-utils";
 import useScopesOfAPIResources from "../../../api/use-scopes-of-api-resources";
 import { Policy, PolicyInfo, policyDetails } from "../../../constants/api-authorization";
 import { ApplicationTemplateIdTypes } from "../../../models";
@@ -543,8 +543,6 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                                         ".scopes.label")
                                                                     }
                                                                 </Typography>
-
-
                                                                 {
                                                                     isScopeSelectDropdownReady
                                                                         ? (
@@ -711,6 +709,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                         {
                                             !m2mApplication
                                             && selectedAPIResource
+                                            && selectedPolicy
                                             && (
                                                 <Grid.Row columns={ 1 } className="pt-0">
                                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
@@ -784,7 +783,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                 floated="right"
                                 onClick={ handleFormSubmit }
                                 loading={ isSubmitting }
-                                disabled={ !selectedAPIResource }
+                                disabled={ !selectedAPIResource || !selectedPolicy }
                             >
                                 { t("extensions:develop.applications.edit.sections." +
                                         "apiAuthorization.sections.apiSubscriptions.wizards." +

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -101,6 +101,9 @@ export class CustomTextPreferenceConstants {
 
     public static readonly TEXT_BUNDLE_KEYS: {
         COPYRIGHT: string;
+        EMAIL_LINK_EXPIRY: {
+            MESSAGE: string;
+        };
         EMAIL_OTP: {
             HEADING: string;
         }
@@ -118,10 +121,19 @@ export class CustomTextPreferenceConstants {
             BODY: string;
             IDENTIFIER: {
                 INPUT: {
+                    LABEL: string;
                     PLACEHOLDER: string;
                 }
+            };
+            RADIO_BUTTON: {
+                SMS_OTP: string,
+                EMAIL_LINK: string
             }
-            BUTTON: string;
+            BUTTON: {
+                SMS_OTP: string,
+                EMAIL_LINK: string,
+                MULTI: string
+            };
         },
         PASSWORD_RESET: {
             HEADING: string;
@@ -150,6 +162,9 @@ export class CustomTextPreferenceConstants {
         }
     } = {
         COPYRIGHT: "copyright",
+        EMAIL_LINK_EXPIRY: {
+            MESSAGE: "email.link.expiry.message"
+        },
         EMAIL_OTP: {
             HEADING: "email.otp.heading"
         },
@@ -164,12 +179,21 @@ export class CustomTextPreferenceConstants {
         },
         PASSWORD_RECOVERY: {
             BODY: "password.recovery.body",
-            BUTTON: "password.recovery.button",
+            BUTTON: {
+                EMAIL_LINK: "password.recovery.button.email.link",
+                MULTI: "password.recovery.button.multi",
+                SMS_OTP: "password.recovery.button.smsotp"
+            },
             HEADING: "password.recovery.heading",
             IDENTIFIER: {
                 INPUT: {
+                    LABEL: "Username",
                     PLACEHOLDER: "password.recovery.identifier.input.placeholder"
                 }
+            },
+            RADIO_BUTTON: {
+                EMAIL_LINK: "send.email.link",
+                SMS_OTP: "send.code.via.sms"
             }
         },
         PASSWORD_RESET: {

@@ -15,15 +15,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { deleteADialect } from "@wso2is/admin.claims.v1/api/claims";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
+import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { Claim, ClaimDialect, ExternalClaim } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import { AxiosResponse } from "axios";
 import { SemanticICONS } from "semantic-ui-react";
 import { AttributeConfig } from "./models";
-import { deleteADialect } from "../../admin.claims.v1/api/claims";
-import { ClaimManagementConstants } from "../../admin.claims.v1/constants/claim-management-constants";
-import { getUserStoreList } from "../../admin.userstores.v1/api";
-import { UserStoreListItem } from "../../admin.userstores.v1/models";
 import { getClaimsForDialect, getDialects } from "../components/claims/api";
 
 /**

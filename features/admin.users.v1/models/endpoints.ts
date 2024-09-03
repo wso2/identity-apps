@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models";
 import { UserDetailsInterface } from "./user";
-import { PatchRoleDataInterface } from "../../admin.roles.v2/models";
 
 /**
  * Interface for the Users feature resource endpoints.

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,15 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
+import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Button, Grid } from "semantic-ui-react";
-import { IdentityProviderConstants } from "../../../constants/identity-provider-constants";
 import {
     AuthenticatorSettingsFormModes,
     CommonPluggableComponentFormPropsInterface,
@@ -57,6 +59,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     } = props;
 
     const { t } = useTranslation();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     // Used for field elements which needs to listen for any onChange events in the form.
     const [ dynamicValues, setDynamicValues ] = useState<CommonPluggableComponentInterface>(undefined);
@@ -106,7 +109,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     const interpretValueByType = (value: FormValue, key: string, type: string) => {
         switch (type?.toUpperCase()) {
             case CommonConstants.BOOLEAN: {
-                if (key === IdentityProviderConstants.USER_ID_IN_CLAIMS) {
+                if (key === ConnectionUIConstants.USER_ID_IN_CLAIMS) {
                     return value;
                 } else {
                     return value?.includes(key);
@@ -442,7 +445,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         return (
             <Grid.Row columns={ 1 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    <Show when={ AccessControlConstants.IDP_EDIT }>
+                    <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                         <Button
                             primary
                             type="submit"

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 /* eslint-disable @typescript-eslint/typedef */
+import { DocPanelUICardInterface, store } from "@wso2is/admin.core.v1";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -24,7 +25,6 @@ import camelCase from "lodash-es/camelCase";
 import intersectionBy from "lodash-es/intersectionBy";
 import unionBy from "lodash-es/unionBy";
 import { FunctionComponent, SVGProps } from "react";
-import { DocPanelUICardInterface, store } from "../../admin.core.v1";
 import {
     getAvailableInboundProtocols,
     getOIDCApplicationConfigurations,
@@ -301,33 +301,6 @@ export class ApplicationManagementUtils {
 
         return samples;
     };
-
-    /**
-     * Get the docs key for the SDKs.
-     *
-     * @param template - Template id.
-     * @returns The docs key of the SDK.
-     */
-    public static getSDKDocsKey = (template: string): string => `${
-        ApplicationManagementConstants.APPLICATION_DOCS_KEY }["${ template }"].SDKs`;
-
-    /**
-     * Get the docs key for the Samples.
-     *
-     * @param template - Template id.
-     * @returns The docs key of the Samples.
-     */
-    public static getSampleDocsKey = (template: string): string => `${
-        ApplicationManagementConstants.APPLICATION_DOCS_KEY }["${ template }"].Samples`;
-
-    /**
-     * Get the docs key for the Configurations.
-     *
-     * @param template - Template id.
-     * @returns The docs key of Configuration.
-     */
-    public static getConfigDocsKey = (template: string): string => `${
-        ApplicationManagementConstants.APPLICATION_DOCS_KEY }["${ template }"].Configurations`;
 
     /**
      * Separate out multiple origins in the passed string.

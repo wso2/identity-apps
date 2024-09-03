@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, RolesInterface } from "@wso2is/core/models";
 import { TabPageLayout } from "@wso2is/react-components";
@@ -23,7 +24,6 @@ import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppConstants, AppState, history } from "../../admin.core.v1";
 import { getRoleById } from "../api/roles";
 import { EditRole } from "../components/edit-role/edit-role";
 import { RoleConstants } from "../constants/role-constants";

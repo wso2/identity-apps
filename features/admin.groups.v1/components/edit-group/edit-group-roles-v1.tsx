@@ -16,6 +16,17 @@
  * under the License.
  */
 
+import { AppState, getEmptyPlaceholderIllustrations, updateResources } from "@wso2is/admin.core.v1";
+import { getOrganizationRoles } from "@wso2is/admin.organizations.v1/api";
+import {
+    OrganizationResponseInterface,
+    OrganizationRoleListResponseInterface
+} from "@wso2is/admin.organizations.v1/models/organizations";
+import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
+import { getRolesList } from "@wso2is/admin.roles.v2/api/roles";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants/role-constants";
+import { UserRolePermissions } from "@wso2is/admin.users.v1/components/user-role-permissions";
+import { RolePermissions } from "@wso2is/admin.users.v1/components/wizard/user-role-permissions";
 import {
     AlertLevels,
     RolesMemberInterface,
@@ -54,17 +65,6 @@ import {
     Modal,
     Table
 } from "semantic-ui-react";
-import { AppState, getEmptyPlaceholderIllustrations, updateResources } from "../../../admin.core.v1";
-import { getOrganizationRoles } from "../../../admin.organizations.v1/api";
-import {
-    OrganizationResponseInterface,
-    OrganizationRoleListResponseInterface
-} from "../../../admin.organizations.v1/models/organizations";
-import { OrganizationUtils } from "../../../admin.organizations.v1/utils";
-import { getRolesList } from "../../../admin.roles.v2/api/roles";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../../admin.roles.v2/constants/role-constants";
-import { UserRolePermissions } from "../../../admin.users.v1/components/user-role-permissions";
-import { RolePermissions } from "../../../admin.users.v1/components/wizard/user-role-permissions";
 import { GroupsInterface } from "../../models";
 
 interface GroupRolesV1PropsInterface extends TestableComponentInterface {

@@ -36,6 +36,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
     UIConfigInterface> = {
 
         deployment: {
+            __experimental__platformIdP: null,
             accountApp: {
                 basePath: "",
                 displayName: "",
@@ -57,6 +58,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             clientHost: "",
             clientID: "",
             clientOrigin: "",
+            clientOriginWithTenant: "",
             customServerHost: "",
             developerApp: {
                 basePath: "",
@@ -65,7 +67,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 tenantQualifiedPath: ""
             },
             docSiteURL: "",
-            documentation: null,
             extensions: null,
             helpCenterURL: "",
             idpConfigs: null,
@@ -83,9 +84,12 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             accountDisabling: "",
             accountLocking: "",
             accountRecovery: "",
+            actions: "",
             adminAdvisoryBanner: "",
             apiResourceCollection: "",
             apiResourceCollections: "",
+            applicationTemplate: "",
+            applicationTemplateMetadata: "",
             applications: "",
             authenticatorTags: "",
             authenticators: "",
@@ -101,9 +105,14 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             clientCertificates: "",
             createSecret: "",
             createSecretType: "",
+            dcrConfiguration:"",
             deleteSecret: "",
             deleteSecretType: "",
+            extensionTemplates: "",
+            extensions: "",
             externalClaims: "",
+            fidoConfigs: "",
+            fidoTrustedApps: "",
             getSecret: "",
             getSecretList: "",
             getSecretType: "",
@@ -112,7 +121,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             guests: "",
             guestsList: "",
             identityProviders: "",
-            jwtAuthenticationServiceMgt: "",
+            impersonationConfigurations: "",
             localAuthenticators: "",
             localClaims: "",
             loginPolicies: "",
@@ -145,6 +154,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             serverSupportedSchemas: "",
             tenantAssociationApi: "",
             tenantManagementApi: "",
+            tenantSubscriptionApi: "",
             updateSecret: "",
             updateSecretType: "",
             userSessions: "",
@@ -218,7 +228,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             hiddenConnectionTemplates: [],
             hiddenUserStores: [],
             i18nConfigs: null,
-            identityProviderTemplateLoadingStrategy: null,
             identityProviderTemplates: {
                 apple: {
                     enabled: false
@@ -248,6 +257,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isCustomClaimMappingMergeEnabled: undefined,
             isDefaultDialectEditingEnabled: undefined,
             isDialectAddingEnabled: undefined,
+            isEditingSystemRolesAllowed: undefined,
             isGroupAndRoleSeparationEnabled: undefined,
             isHeaderAvatarLabelAllowed: undefined,
             isLeftNavigationCategorized: undefined,
@@ -256,12 +266,15 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isRequestPathAuthenticationEnabled: undefined,
             isSAASDeployment: undefined,
             isSignatureValidationCertificateAliasEnabled: undefined,
+            isTrustedAppConsentRequired: undefined,
             listAllAttributeDialects: undefined,
             privacyPolicyConfigs: null,
             productName: "",
             productVersionConfig: null,
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,
+            showSmsOtpPwdRecoveryFeatureStatusChip: undefined,
+            showStatusLabelForNewAuthzRuntimeFeatures: undefined,
             systemAppsIdentifiers: [],
             theme: {
                 name: "",

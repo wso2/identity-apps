@@ -16,6 +16,20 @@
  * under the License.
  */
 
+import { getApplicationDetails } from "@wso2is/admin.applications.v1/api";
+import {
+    AuthenticatorInterface as ApplicationAuthenticatorInterface,
+    ApplicationInterface,
+    AuthenticationStepInterface
+} from "@wso2is/admin.applications.v1/models";
+import {
+    AuthenticatorInterface,
+    AuthenticatorTypes
+} from "@wso2is/admin.connections.v1";
+import { getAuthenticators } from "@wso2is/admin.connections.v1/api/authenticators";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -25,16 +39,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AuthenticatorGroupsList } from "./authenticator-groups-list";
-import { ApplicationRolesConstants } from "../../../admin.extensions.v1/components/application/constants";
-import { getApplicationDetails } from "../../../admin.applications.v1/api";
-import {
-    AuthenticatorInterface as ApplicationAuthenticatorInterface,
-    ApplicationInterface,
-    AuthenticationStepInterface
-} from "../../../admin.applications.v1/models";
-import { AuthenticatorManagementConstants } from "../../../admin.connections.v1";
-import { getAuthenticators } from "../../../admin.identity-providers.v1/api";
-import { AuthenticatorInterface, AuthenticatorTypes } from "../../../admin.identity-providers.v1/models";
+import { ApplicationRolesConstants } from "../../constants/application-roles-constants";
 
 interface ApplicationRoleAuthenticatorGroupsProps extends IdentifiableComponentInterface {
     appId: string;
@@ -183,7 +188,8 @@ const ApplicationRoleAuthenticatorGroups = (props: ApplicationRoleAuthenticatorG
                 return federatedAuthenticator.name === attributeStepAuthenticator.idp
                     && (
                         attributeStepAuthenticator.authenticator
-                            !== AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME
+                            !== FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES
+                                .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME
                     );
             });
         });

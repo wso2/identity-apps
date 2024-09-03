@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FC, ReactElement, useEffect, useState } from "react";
@@ -25,9 +26,8 @@ import { CreateConnectionWizard } from "./add-connection-wizard";
 import {
     EnterpriseConnectionCreateWizard
 } from "./enterprise-connection-create-wizard";
-import { AppState } from "../../../admin.core.v1";
 import { useGetConnectionTemplate, useGetConnections } from "../../api/connections";
-import { ConnectionManagementConstants } from "../../constants/connection-constants";
+import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
 import {
     ConnectionTemplateInterface,
     GenericConnectionCreateWizardPropsInterface,
@@ -330,7 +330,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                     />
                 );
 
-            case ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID:
+            case CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXPERT_MODE:
                 return (
                     <ExpertModeAuthenticationProviderCreateWizard
                         title={

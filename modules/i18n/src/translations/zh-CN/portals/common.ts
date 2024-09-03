@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -85,6 +85,7 @@ export const common: CommonNS = {
     "endsWith": "以。。结束",
     "equals": "等于",
     "exitFullScreen": "出口全屏",
+    "experimental": "实验性的",
     "explore": "探索",
     "export": "出口",
     "featureAvailable": "此功能即将提供！",
@@ -113,6 +114,7 @@ export const common: CommonNS = {
     "logout": "登出",
     "maxValidation": "此值应小于或等于{{max}}。",
     "maximize": "最大化",
+    "metaAttributes": "元属性",
     "minValidation": "该值应大于或等于{{min}}。",
     "minimize": "最小化",
     "more": "更多的",
@@ -133,6 +135,7 @@ export const common: CommonNS = {
     "personalInfo": "个人信息",
     "pin": "别针",
     "pinned": "固定",
+    "premium": "优质的",
     "pressEnterPrompt": "按<1>Enter</1>键选择",
     "preview": "预览",
     "previous": "以前的",

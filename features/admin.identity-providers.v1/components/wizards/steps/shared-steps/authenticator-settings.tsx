@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -54,11 +54,11 @@ interface AuthenticatorSettingsWizardFormPropsInterface extends TestableComponen
 /**
  * Authenticator settings wizard form component.
  *
- * @param {AuthenticatorSettingsWizardFormPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns - The authenticator settings wizard form.
  */
 export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizardFormPropsInterface> = (
-    props
+    props: AuthenticatorSettingsWizardFormPropsInterface
 ): ReactElement => {
 
     const {
@@ -100,8 +100,9 @@ export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizar
         }
     };
 
-    const authenticator = initialValues?.federatedAuthenticators?.authenticators.find(authenticator =>
-        authenticator.authenticatorId === initialValues?.federatedAuthenticators?.defaultAuthenticatorId);
+    const authenticator: FederatedAuthenticatorListItemInterface = initialValues?.
+        federatedAuthenticators?.authenticators.find((authenticator: FederatedAuthenticatorListItemInterface) =>
+            authenticator.authenticatorId === initialValues?.federatedAuthenticators?.defaultAuthenticatorId);
 
     if (!metadata) {
         return <ContentLoader />;

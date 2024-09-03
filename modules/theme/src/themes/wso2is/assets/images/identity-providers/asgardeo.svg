@@ -1,0 +1,29 @@
+<!--
+ * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 Inc. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content."
+-->
+
+<svg id="asgardeo-trifacta" xmlns="http://www.w3.org/2000/svg" width="32.022" height="27.756"
+     viewBox="0 0 32.022 27.756">
+    <g id="Group_603">
+        <path id="Path_1937" d="M154.345,75.7l2.961,5.11-3.281,5.661h6.532l2.932,5.081H145.2Z"
+              transform="translate(-131.467 -75.7)" fill="#ff7300"/>
+        <path id="Path_1938"
+              d="M97.9,91.552l2.932-5.081h6.532l-3.252-5.661,2.932-5.11,9.174,15.852Z"
+              transform="translate(-97.9 -75.7)" fill="#ff7300"/>
+        <path id="Path_1939" fill="#000"
+              d="M133.926,132.552l-3.252-5.661-3.281,5.661H121.5l9.174-15.852,9.145,15.852Z"
+              transform="translate(-114.648 -104.796)"/>
+    </g>
+    <g id="Group_604" transform="translate(26.014 26.304)">
+        <path id="Path_1940" d="M188.632,166.545h-.465v1.277h-.2v-1.277H187.5V166.4h1.1v.145Z"
+              transform="translate(-187.5 -166.371)"/>
+        <path id="Path_1941"
+              d="M193.132,166.3l.465,1.19.465-1.19h.261v1.452h-.2V167.2l.029-.61-.465,1.161h-.145l-.465-1.161.029.61v.552h-.2V166.3Z"
+              transform="translate(-191.332 -166.3)"/>
+    </g>
+</svg>

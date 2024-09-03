@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,16 +18,10 @@
 
 /**
  * The login scope.
- * @constant
- * @type {string}
- * @default
  */
-export const LOGIN_SCOPE = "internal_login";
+export const LOGIN_SCOPE: string = "internal_login";
 
 /**
  * Human task scope.
- * @constant
- * @type {string}
- * @default
  */
-export const HUMAN_TASK_SCOPE = "internal_humantask_view";
+export const HUMAN_TASK_SCOPE: string = "internal_humantask_view";

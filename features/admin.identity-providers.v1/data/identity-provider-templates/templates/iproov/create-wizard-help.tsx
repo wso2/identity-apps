@@ -18,10 +18,9 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code, DocumentationLink, Heading, Message, useDocumentation } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../../admin.extensions.v1/configs";
 
 /**
  * Prop types of the component.
@@ -38,20 +37,6 @@ const IproovIDPCreateWizardHelp: FunctionComponent<IproovIDPCreateWizardHelpProp
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
-
-    const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
-
-    /**
-     * Checks if the listing view defined in the config is the new connections view.
-     */
-    useEffect(() => {
-
-        if (useNewConnectionsView !== undefined) {
-            return;
-        }
-
-        setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
-    }, [ identityProviderConfig ]);
 
     return (
         <div data-testid={ componentId }>
@@ -101,11 +86,8 @@ const IproovIDPCreateWizardHelp: FunctionComponent<IproovIDPCreateWizardHelpProp
             </Heading>
             <p>
                 {
-                    useNewConnectionsView
-                        ? t("authenticationProvider:templates.iproov." +
-                            "wizardHelp.name.connectionDescription")
-                        : t("console:develop.features.authenthypricationProvider.templates.iproov." +
-                            "wizardHelp.name.idpDescription")
+                    t("authenticationProvider:templates.iproov." +
+                        "wizardHelp.name.connectionDescription")
                 }
             </p>
 

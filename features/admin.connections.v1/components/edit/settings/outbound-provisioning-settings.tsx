@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
+import { AppState, AuthenticatorAccordion, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { RootOnlyComponent } from "@wso2is/admin.organizations.v1/components";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -31,19 +33,17 @@ import {
 import { AxiosError } from "axios";
 import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, CheckboxProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { OutboundProvisioningRoles } from "./outbound-provisioning";
-import { AuthenticatorAccordion } from "../../../../admin.core.v1";
-import { RootOnlyComponent } from "../../../../admin.organizations.v1/components";
 import {
     getOutboundProvisioningConnector,
     getOutboundProvisioningConnectorMetadata,
     updateOutboundProvisioningConnector,
     updateOutboundProvisioningConnectors
 } from "../../../api/connections";
-import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
+import { CommonAuthenticatorConstants } from "../../../constants/common-authenticator-constants";
 import { AuthenticatorSettingsFormModes } from "../../../models/authenticators";
 import {
     ConnectionInterface,
@@ -58,7 +58,7 @@ import {
     handleGetOutboundProvisioningConnectorMetadataError,
     handleUpdateOutboundProvisioningConnectorError
 } from "../../../utils/connection-utils";
-import { OutboundConnectors as OutboundConnectorsLocalMetadata } from "../../meta/connectors";
+import { getOutboundProvisioningConnectorsMetaData } from "../../meta/connectors";
 import {
     OutboundProvisioningConnectorCreateWizard
 } from "../../wizards/outbound-provisioning-connector-create-wizard";
@@ -116,6 +116,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
+    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
@@ -154,7 +155,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                             resolve({
                                 data: data,
                                 id: connectorId,
-                                localMeta: OutboundConnectorsLocalMetadata?.find(
+                                localMeta: getOutboundProvisioningConnectorsMetaData()?.find(
                                     (meta: OutboundProvisioningConnectorMetaDataInterface) => {
                                         return meta.connectorId === connectorId;
                                     }
@@ -392,7 +393,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                 <Grid>
                                     <Grid.Row>
                                         <Grid.Column>
-                                            <Show when={ AccessControlConstants.IDP_EDIT }>
+                                            <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                                                 <PrimaryButton
                                                     floated="right"
                                                     onClick={ () => setShowWizard(true) }
@@ -413,7 +414,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                     .filter((
                                                         connector: OutboundProvisioningConnectorWithMetaInterface
                                                     ) => connector.id !==
-                                                        AuthenticatorManagementConstants
+                                                        CommonAuthenticatorConstants
                                                             .DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID)
                                                     .map((
                                                         connector: OutboundProvisioningConnectorWithMetaInterface,
@@ -496,7 +497,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                         ] }
                                         imageSize="tiny"
                                         action={ (
-                                            <Show when={ AccessControlConstants.IDP_EDIT }>
+                                            <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                                                 <PrimaryButton
                                                     onClick={ () => setShowWizard(true) }
                                                     data-testid={ `${ testId }-add-connector-button` }>

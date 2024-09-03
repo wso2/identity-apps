@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { HorizontalBarsFilterIcon, MagnifyingGlassIcon, XMarkIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, {
@@ -30,11 +31,10 @@ import React, {
     useState
 } from "react";
 import { Button, Divider, Input, InputProps, PopupProps } from "semantic-ui-react";
-import { ReactComponent as CrossIcon } from "../../assets/images/cross-icon.svg";
-import { ReactComponent as FilterIcon } from "../../assets/images/icons/filter-icon.svg";
 import { GenericIcon } from "../icon";
 import { Popup } from "../popup";
 import { Heading } from "../typography";
+import "./advanced-search.scss";
 
 /**
  *
@@ -307,8 +307,13 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                 const terms: string[] = internalSearchQuery.split(" ");
 
                 if (terms.length > 2) {
+                    const filterAttributeParts = terms[0].split(".");
+                    const filterAttribute = filterAttributeParts[0] === "attributes"
+                        ? filterAttributeParts[0]
+                        : terms[0];
+
                     const attributes = filterAttributeOptions.filter((attribute) => {
-                        return attribute.value === terms[0];
+                        return attribute.value === filterAttribute;
                     });
 
                     if (attributes.length > 0) {
@@ -380,12 +385,18 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                                                         className="input-add-on clear-icon"
                                                         onClick={ clearSearchQuery }
                                                     >
-                                                        <GenericIcon
-                                                            size="nano"
-                                                            defaultIcon
-                                                            transparent
-                                                            icon={ clearIcon ? clearIcon : CrossIcon }
-                                                        />
+                                                        {
+                                                            clearIcon ?
+                                                                (
+                                                                    <GenericIcon
+                                                                        size="nano"
+                                                                        defaultIcon
+                                                                        transparent
+                                                                        icon={ clearIcon }
+                                                                    />
+                                                                )
+                                                                : <XMarkIcon />
+                                                        }
                                                     </Button>
                                                 )
                                             }
@@ -414,11 +425,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                                                     className="input-add-on"
                                                     onClick={ handleShowOptionsClick }
                                                 >
-                                                    <GenericIcon
-                                                        size="micro"
-                                                        transparent
-                                                        icon={ FilterIcon }
-                                                    />
+                                                    <HorizontalBarsFilterIcon />
                                                 </Button>
                                             )
                                         }
@@ -433,7 +440,11 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                     className={ `advanced-search with-add-on ${ searchFieldClasses }` }
                     size={ inputSize }
                     style={ style }
-                    icon="search"
+                    icon={ (
+                        <i aria-hidden="true" className="advanced-search-icon icon">
+                            <MagnifyingGlassIcon />
+                        </i>
+                    ) }
                     iconPosition="left"
                     placeholder={ placeholder }
                     value={ internalSearchQuery }

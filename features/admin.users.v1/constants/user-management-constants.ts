@@ -17,7 +17,7 @@
  */
 
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
-import { SCIMConfigs } from "../../admin.extensions.v1/configs/scim";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 
 /**
  * Class containing app constants which can be used across several applications.
@@ -63,7 +63,8 @@ export class UserManagementConstants {
         .set("USER_CREATE", "users.create")
         .set("USER_UPDATE", "users.update")
         .set("USER_DELETE", "users.delete")
-        .set("USER_READ", "users.read");
+        .set("USER_READ", "users.read")
+        .set("USER_ROLES", "users.edit.roles");
 
     // API errors
     public static readonly USER_INFO_UPDATE_ERROR: string = "Could not update the user information.";
@@ -103,7 +104,8 @@ export class UserManagementConstants {
         .set("USERNAME", "userName")
         .set("NAME", "name")
         .set("DISPLAY_NAME", "displayName")
-        .set("ENTERPRISE_USER", "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User");
+        .set("ENTERPRISE_USER", "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User")
+        .set("LOCALE", "locale");
 
     /**
      * Set of SCIM2 enterprise attributes.
@@ -125,7 +127,7 @@ export class UserManagementConstants {
     public static readonly USERNAME_VALIDATION_REGEX: string = "^(?=.*[a-zA-Z])[a-zA-Z0-9]+$";
     // Regular expression to validate having alphanumeric with special characters.
     public static readonly USERNAME_VALIDATION_REGEX_WITH_SPECIAL_CHARS: string =
-        "^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$&'+\\\\=^_.{|}~-]+$";
+        "^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$&'+\\\\=^.{|}~-]+$";
 
     // Error message when API call returns a status code !== 200
     public static readonly INVALID_STATUS_CODE_ERROR: string = "Invalid Status Code. Expected Code 200.";
@@ -134,7 +136,7 @@ export class UserManagementConstants {
 
     // ID of the form used in the invite parent organization user component.
     public static readonly INVITE_PARENT_ORG_USER_FORM_ID: string = "invite-parent-org-user-form";
-    public static readonly USERNAME_REGEX_ERROR_CODE: string = "31301"
+    public static readonly USERNAME_REGEX_ERROR_CODE: string = "31301";
 
     // Query param to exclude roles and groups from getUserList API call.
     public static readonly GROUPS_AND_ROLES_ATTRIBUTE: string = "groups,roles";
@@ -148,6 +150,10 @@ export class UserManagementConstants {
     public static readonly ERROR_COLLABORATOR_USER_LIMIT_REACHED: string = "ASG-UIM-10010";
     // Query param to exclude groups from getUserList API call.
     public static readonly GROUPS_ATTRIBUTE: string = "groups";
+
+    public static readonly MANAGED_BY_PARENT_TEXT: string = "Parent Organization";
+
+    public static readonly GLOBE: string = "globe";
 }
 
 /**
@@ -231,6 +237,7 @@ export enum UserAddOptionTypes {
 export enum BulkUserImportStatus {
     FAILED = "FAILED",
     SUCCESS = "SUCCESS",
+    ALL = "ALL"
 }
 
 /**
@@ -294,4 +301,14 @@ export enum InvitationStatus {
     ACCEPTED = "Accepted",
     PENDING = "Pending",
     EXPIRED = "Expired"
+}
+
+/**
+ * Enum for locale joining symbol.
+ *
+ * @readonly
+ */
+export enum LocaleJoiningSymbol {
+    HYPHEN = "-",
+    UNDERSCORE = "_"
 }

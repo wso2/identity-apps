@@ -17,16 +17,16 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { UserstoreConstants } from "@wso2is/core/constants";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods, UserstoreListResponseInterface } from "@wso2is/core/models";
-import { AxiosError, AxiosResponse } from "axios";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
-} from "../../admin.core.v1/hooks/use-request";
-import { store } from "../../admin.core.v1/store";
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { UserstoreConstants } from "@wso2is/core/constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpMethods, UserstoreListResponseInterface } from "@wso2is/core/models";
+import { AxiosError, AxiosResponse } from "axios";
 import {
     AttributeMapping,
     PatchData,

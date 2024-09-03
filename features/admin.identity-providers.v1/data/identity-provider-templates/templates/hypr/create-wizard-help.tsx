@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,10 +18,9 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code, DocumentationLink, Heading, Message, useDocumentation } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../../admin.extensions.v1/configs";
 
 /**
  * Prop types of the component.
@@ -38,20 +37,6 @@ const HyprIDPCreateWizardHelp: FunctionComponent<HyprIDPCreateWizardHelpPropsInt
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
-
-    const [ useNewConnectionsView, setUseNewConnectionsView ] = useState<boolean>(undefined);
-
-    /**
-     * Checks if the listing view defined in the config is the new connections view.
-     */
-    useEffect(() => {
-
-        if (useNewConnectionsView !== undefined) {
-            return;
-        }
-
-        setUseNewConnectionsView(identityProviderConfig.useNewConnectionsView);
-    }, [ identityProviderConfig ]);
 
     return (
         <div data-testid={ testId }>
@@ -101,11 +86,8 @@ const HyprIDPCreateWizardHelp: FunctionComponent<HyprIDPCreateWizardHelpPropsInt
             </Heading>
             <p>
                 {
-                    useNewConnectionsView
-                        ? t("authenticationProvider:templates.hypr." +
-                            "wizardHelp.name.connectionDescription")
-                        : t("authenticationProvider:templates.hypr." +
-                            "wizardHelp.name.idpDescription")
+                    t("authenticationProvider:templates.hypr." +
+                        "wizardHelp.name.connectionDescription")
                 }
             </p>
 
@@ -140,10 +122,10 @@ const HyprIDPCreateWizardHelp: FunctionComponent<HyprIDPCreateWizardHelpPropsInt
                         ".wizardHelp.baseUrl.description"
                     }
                 >
-                    Provide the <Code>base URL</Code> of your HYPR server deployment. 
+                    Provide the <Code>base URL</Code> of your HYPR server deployment.
                 </Trans>
             </p>
-            
+
             <Divider/>
 
             <Heading as="h5">
@@ -159,7 +141,7 @@ const HyprIDPCreateWizardHelp: FunctionComponent<HyprIDPCreateWizardHelpPropsInt
                         ".wizardHelp.apiToken.description"
                     }
                 >
-                    Provide the <Code>API Token</Code> obtained from HYPR. 
+                    Provide the <Code>API Token</Code> obtained from HYPR.
                     This will be used to access HYPR&apos;s APIs.
                 </Trans>
             </p>

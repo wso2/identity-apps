@@ -16,6 +16,12 @@
  * under the License.
  */
 
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface
+} from "@wso2is/admin.core.v1";
+import { history } from "@wso2is/admin.core.v1/helpers";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels } from "@wso2is/core/models";
@@ -47,12 +53,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Placeholder, Ref } from "semantic-ui-react";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface
-} from "../../admin.core.v1";
-import { history } from "../../admin.core.v1/helpers";
 import { deleteEmailProviderConfigurations, updateEmailProviderConfigurations, useEmailProviderConfig } from "../api";
 import { EmailProviderConstants } from "../constants";
 import {

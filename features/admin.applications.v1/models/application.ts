@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import { AssociatedRolesInterface } from "@wso2is/admin.roles.v2/models";
 import { LinkInterface } from "@wso2is/core/models";
 import {
     OIDCDataInterface,
@@ -23,8 +26,6 @@ import {
     SAML2ConfigurationInterface,
     WSTrustConfigurationInterface
 } from "./application-inbound";
-import { GenericAuthenticatorInterface } from "../../admin.identity-providers.v1/models/identity-provider";
-import { AssociatedRolesInterface } from "../../admin.roles.v2/models";
 import { TemplateContentInterface } from "../data/application-templates";
 
 /**
@@ -40,7 +41,12 @@ export interface ApplicationBasicInterface {
     issuer?: string;
     realm?: string;
     templateId?: string;
+    /**
+     * Version of the template used to create the application.
+     */
+    templateVersion?: string;
     isManagementApp?: boolean;
+    applicationEnabled?:boolean;
     advancedConfigurations?: AdvancedConfigurationsInterface;
     associatedRoles?: AssociatedRolesInterface;
 }
@@ -230,6 +236,17 @@ export interface AttestationMetaDataInterface {
 }
 
 /**
+ *  Captures trusted apps related configuration.
+ */
+export interface TrustedAppConfigurationsInterface {
+    isFIDOTrustedApp?: boolean;
+    isConsentGranted?: boolean;
+    androidPackageName?: string;
+    androidThumbprints?: string[];
+    appleAppId?: string;
+}
+
+/**
  *  Captures application advanced configuration related configuration.
  */
 export interface ApplicationAdvancedConfigurationsViewInterface {
@@ -263,6 +280,10 @@ export interface AdvancedConfigurationsInterface {
     enableClientAttestation?: boolean;
     androidPackageName?: string;
     androidAttestationServiceCredentials?: string;
+    trustedAppConfiguration?: TrustedAppConfigurationsInterface
+    enableFIDOTrustedApps?: boolean;
+    isConsentGranted?: boolean;
+    androidThumbprints?: string[];
     appleAppId?: string;
     skipConsentLogin?: boolean;
     skipConsentLogout?: boolean;
@@ -330,6 +351,7 @@ export interface ApplicationTemplateListItemInterface {
     category?: string;
     displayOrder?: number;
     self?: string;
+    status?: FeatureStatusLabel;
     /**
      * List of Sub templates.
      * ex: `OIDC Web Application` under `Web Application` template.
@@ -674,6 +696,8 @@ export interface OIDCApplicationConfigurationInterface {
     sessionIframeEndpoint?: string;
     webFingerEndpoint?: string;
     dynamicClientRegistrationEndpoint?: string;
+    mtlsTokenEndpoint?: string;
+    mtlsPushedAuthorizationRequestEndpoint?: string;
 }
 
 /**

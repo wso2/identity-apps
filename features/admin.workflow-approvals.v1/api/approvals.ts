@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,8 +17,8 @@
  */
 
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { store } from "@wso2is/admin.core.v1";
 import { HttpMethods } from "@wso2is/core/models";
-import { store } from "../../admin.core.v1";
 import { ApprovalStatus, ApprovalTaskDetails, ApprovalTaskListItemInterface, ApprovalTaskSummary } from "../models";
 
 /**

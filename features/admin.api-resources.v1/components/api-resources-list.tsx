@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,10 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { useRequiredScopes } from "@wso2is/access-control";
+import { UIConstants, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
+import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -29,14 +32,11 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { AppState, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../admin.core.v1";
-import { ExtendedFeatureConfigInterface } from "../../admin.extensions.v1/configs/models";
 import { deleteAPIResource } from "../api";
 import { APIResourcesConstants } from "../constants";
 import { APIResourceInterface } from "../models";
@@ -96,7 +96,10 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
     const [ loading, setLoading ] = useState<boolean>(false);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingAPIResource, setDeletingAPIResource ] = useState<APIResourceInterface>(undefined);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const hasApiResourcesReadPermissions: boolean = useRequiredScopes(featureConfig?.apiResources?.scopes?.read);
+    const hasApiResourcesUpdatePermissions: boolean = useRequiredScopes(featureConfig?.apiResources?.scopes?.update);
+    const hasApiResourcesDeletePermissions: boolean = useRequiredScopes(featureConfig?.apiResources?.scopes?.delete);
 
     /**
      * Resolves data table columns.
@@ -223,18 +226,9 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
         return [
             {
                 "data-componentid": `${componentId}-item-edit-button`,
-                hidden: () => {
-                    const hasScopesRead: boolean = !hasRequiredScopes(featureConfig?.apiResources,
-                        featureConfig?.apiResources?.scopes?.read, allowedScopes);
-
-                    const hasScopesUpdate: boolean = !hasRequiredScopes(featureConfig?.apiResources,
-                        featureConfig?.apiResources?.scopes?.update, allowedScopes);
-
-                    return hasScopesUpdate || hasScopesRead;
-                },
+                hidden: () =>  (!hasApiResourcesReadPermissions || !hasApiResourcesUpdatePermissions),
                 icon: (): SemanticICONS => {
-                    return !hasRequiredScopes(featureConfig?.applications,
-                        featureConfig?.applications?.scopes?.update, allowedScopes)
+                    return !hasApiResourcesUpdatePermissions
                         ? "eye"
                         : "pencil alternate";
                 },
@@ -242,8 +236,7 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
                     handleAPIResourceEdit(apiResource, e);
                 },
                 popupText: (): string => {
-                    return !hasRequiredScopes(featureConfig?.applications,
-                        featureConfig?.applications?.scopes?.update, allowedScopes)
+                    return !hasApiResourcesUpdatePermissions
                         ? t("common:view")
                         : t("common:edit");
                 },
@@ -251,12 +244,7 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
             },
             {
                 "data-componentid": `${componentId}-item-delete-button`,
-                hidden: () => {
-                    const hasScopes: boolean = !hasRequiredScopes(featureConfig?.apiResources,
-                        featureConfig?.apiResources?.scopes?.delete, allowedScopes);
-
-                    return hasScopes;
-                },
+                hidden: () =>  !hasApiResourcesDeletePermissions,
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, apiResource: APIResourceInterface): void => {
                     setShowDeleteConfirmationModal(true);

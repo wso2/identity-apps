@@ -16,11 +16,31 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import { Show } from "@wso2is/access-control";
-import useUIConfig from "../../../admin.core.v1/hooks/use-ui-configs";
+import {
+    AppConstants,
+    AppState,
+    CORSOriginsListInterface,
+    EventPublisher,
+    FeatureConfigInterface,
+    ModalWithSidePanel,
+    getCORSOrigins,
+    getTechnologyLogos,
+    history,
+    store
+} from "@wso2is/admin.core.v1";
+import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
+import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { RoleAudienceTypes, RoleConstants } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import {
@@ -58,25 +78,6 @@ import { Card, Checkbox, CheckboxProps, Dimmer, Divider, Grid } from "semantic-u
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
-import { applicationConfig } from "../../../admin.extensions.v1";
-import { AccessControlConstants } from "../../../admin.access-control.v1/constants/access-control";
-import useAuthorization from "../../../admin.authorization.v1/hooks/use-authorization";
-import {
-    AppConstants,
-    AppState,
-    CORSOriginsListInterface,
-    EventPublisher,
-    FeatureConfigInterface,
-    ModalWithSidePanel,
-    getCORSOrigins,
-    getTechnologyLogos,
-    history,
-    store
-} from "../../../admin.core.v1";
-import { TierLimitReachErrorModal } from "../../../admin.core.v1/components/modals/tier-limit-reach-error-modal";
-import { OrganizationType } from "../../../admin.organizations.v1/constants";
-import { useGetCurrentOrganizationType } from "../../../admin.organizations.v1/hooks/use-get-organization-type";
-import { RoleAudienceTypes, RoleConstants } from "../../../admin.roles.v2/constants/role-constants";
 import { createApplication, getApplicationList, getApplicationTemplateData } from "../../api";
 import { getInboundProtocolLogos } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
@@ -99,11 +100,13 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { ApplicationShareModal } from "../modals/application-share-modal";
+import "./minimal-application-create-wizard.scss";
 
 /**
  * Prop types of the `MinimalAppCreateWizard` component.
  */
-interface MinimalApplicationCreateWizardPropsInterface extends TestableComponentInterface {
+interface MinimalApplicationCreateWizardPropsInterface extends TestableComponentInterface,
+    IdentifiableComponentInterface {
     title: string;
     closeWizard: () => void;
     template?: ApplicationTemplateInterface;
@@ -155,20 +158,19 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         subTitle,
         templateLoadingStrategy,
         setIsApplicationSharingEnabled,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const { isSuperOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
-    const { UIConfig } = useUIConfig();
-
+    const { isOrganizationManagementEnabled } = useGlobalVariables();
     const tenantName: string = store.getState().config.deployment.tenant;
 
     const [ submit, setSubmit ] = useTrigger();
     const [ submitProtocolForm, setSubmitProtocolForm ] = useTrigger();
-    const { legacyAuthzRuntime } = useAuthorization();
 
     const reservedAppPattern: string = useSelector((state: AppState) => {
         return state.config?.deployment?.extensions?.asgardeoReservedAppRegex as string;
@@ -333,24 +335,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
         application.name = generalFormValues.get("name").toString();
         application.templateId = selectedTemplate.id;
-        // If the application is a OIDC standard-based application
-        if (legacyAuthzRuntime && customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
-            && (selectedTemplate?.templateId === "custom-application"
-                || selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION)) {
-            application.isManagementApp = generalFormValues.get("isManagementApp").length >= 2
-                ? true
-                : false;
-        }
 
         // Adding `APPLICATION` as the default audience for the associated roles,
         // if a value is not set from the template.
-        if (!legacyAuthzRuntime) {
-            if (isEmpty(application.associatedRoles)) {
-                application.associatedRoles = {
-                    allowedAudience: RoleConstants.DEFAULT_ROLE_AUDIENCE as RoleAudienceTypes,
-                    roles: []
-                };
-            }
+        if (isEmpty(application.associatedRoles)) {
+            application.associatedRoles = {
+                allowedAudience: RoleConstants.DEFAULT_ROLE_AUDIENCE as RoleAudienceTypes,
+                roles: []
+            };
         }
 
         // If the selected template is Custom, assign the proper `template ids`.
@@ -1097,55 +1089,35 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         </Grid.Column>
                     </Grid.Row>
                     {
-                        // The Management App checkbox is only present in OIDC Standard-Based apps
-                        (legacyAuthzRuntime && customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC &&
-                            (selectedTemplate?.templateId === "custom-application" ||
-                            selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION)
-                        ) && (
-                            <div className="pt-0 mt-0">
-                                <Field
-                                    data-testid={ `${ testId }-management-app-checkbox` }
-                                    name={ "isManagementApp" }
-                                    required={ false }
-                                    requiredErrorMessage={ "is required" }
-                                    type="checkbox"
-                                    value={ [ "isManagementApp" ] }
-                                    children={ [
-                                        {
-                                            label: t("applications:forms.generalDetails" +
-                                                ".fields.isManagementApp.label" ),
-                                            value: "manageApp"
-                                        }
-                                    ] }
-                                />
-                                <Hint compact>
-                                    { t("applications:forms.generalDetails.fields" +
-                                            ".isManagementApp.hint" ) }
-                                </Hint>
-                            </div>
-                        )
-                    }
-                    {
                         // The FAPI App creation checkbox is only present in OIDC Standard-Based apps
                         customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
                         && selectedTemplate?.name === ApplicationTemplateNames.STANDARD_BASED_APPLICATION
                         && isFAPIAppCreationEnabled
                         && (
                             <div className="pt-0 mt-0">
-                                <Field
-                                    data-componentid={ `${ testId }-fapi-app-checkbox` }
-                                    name={ "isFAPIApp" }
-                                    required={ false }
-                                    type="checkbox"
-                                    value={ [ "isFAPIApp" ] }
-                                    children={ [
-                                        {
-                                            label: t("applications:forms.generalDetails" +
-                                                ".fields.isFapiApp.label" ),
-                                            value: "fapiApp"
-                                        }
-                                    ] }
-                                />
+                                <Box display="flex" alignItems="center">
+                                    <Field
+                                        data-componentid={ `${ testId }-fapi-app-checkbox` }
+                                        name="isFAPIApp"
+                                        required={ false }
+                                        type="checkbox"
+                                        value={ [ "isFAPIApp" ] }
+                                        children={ [
+                                            {
+                                                label: t("applications:forms.generalDetails" +
+                                                    ".fields.isFapiApp.label" ),
+                                                value: "fapiApp"
+                                            }
+                                        ] }
+                                    />
+                                    { applicationConfig.advancedConfigurations.showFapiFeatureStatusChip && (
+                                        <div className="oxygen-chip-div" >
+                                            <Chip
+                                                label={ t(FeatureStatusLabel.BETA) }
+                                                className="oxygen-menu-item-chip oxygen-chip-beta" />
+                                        </div>
+                                    ) }
+                                </Box>
                                 <Hint compact>
                                     { t("applications:forms.generalDetails.fields" +
                                         ".isFapiApp.hint" ) }
@@ -1155,7 +1127,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     }
                     {
                         isOrganizationManagementEnabled
-                        && UIConfig?.legacyMode?.organizations
                         && applicationConfig.editApplication.showApplicationShare
                         && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
                         && orgType !== OrganizationType.SUBORGANIZATION
@@ -1163,7 +1134,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         && !isClientSecretHashEnabled
                         && (
                             <Show
-                                when={ AccessControlConstants.APPLICATION_EDIT }
+                                when={ featureConfig?.applications?.scopes?.update }
                             >
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
@@ -1259,6 +1230,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             return getLink("develop.applications.newApplication.mobileApplication.learnMore");
         }
 
+        if (selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION) {
+            return getLink("develop.applications.newApplication.m2mApplication.learnMore");
+        }
+
+        if (selectedTemplate?.templateId === ApplicationTemplateIdTypes.CUSTOM_APPLICATION) {
+            return getLink("develop.applications.newApplication.customApplication.learnMore");
+        }
+
         // Returns undefined for application which does not have doc links.
         // Used to hide the learn more link.
         return undefined;
@@ -1295,6 +1274,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 closeOnDimmerClick={ false }
                 closeOnEscape
                 data-testid={ `${ testId }-modal` }
+                data-componentid={ `${componentId}-modal` }
             >
                 <ModalWithSidePanel.MainPanel>
                     <ModalWithSidePanel.Header className="wizard-header">
@@ -1358,6 +1338,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
  * Default props for the application creation wizard.
  */
 MinimalAppCreateWizard.defaultProps = {
+    "data-componentid": "minimal-application-create-wizard",
     "data-testid": "minimal-application-create-wizard",
     showHelpPanel: true
 };

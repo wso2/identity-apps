@@ -15,23 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { AlertInterface, AlertLevels, RolesInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import {
-    EmptyPlaceholder,
-    ListLayout,
-    PageLayout,
-    PrimaryButton
-} from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
-import find from "lodash-es/find";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { commonConfig } from "../../admin.extensions.v1/configs";
+
+import { Show } from "@wso2is/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -41,16 +26,33 @@ import {
     UserStoreProperty,
     getAUserStore,
     getEmptyPlaceholderIllustrations
-} from "../../admin.core.v1";
-import { RootOnlyComponent } from "../../admin.organizations.v1/components";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
-import { getUserStoreList } from "../../admin.userstores.v1/api";
-import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../admin.userstores.v1/constants";
-import { UserStorePostData } from "../../admin.userstores.v1/models/user-stores";
+} from "@wso2is/admin.core.v1";
+import { commonConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
+import { RootOnlyComponent } from "@wso2is/admin.organizations.v1/components";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { UserStorePostData } from "@wso2is/admin.userstores.v1/models/user-stores";
+import { AlertInterface, AlertLevels, RolesInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import {
+    DocumentationLink,
+    EmptyPlaceholder,
+    ListLayout,
+    PageLayout,
+    PrimaryButton,
+    useDocumentation
+} from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
+import find from "lodash-es/find";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { deleteGroupById, useGroupList } from "../api";
 import { GroupList } from "../components";
-import { CreateGroupWizardUpdated } from "../components/wizard/create-group-wizard-updated";
-import { GroupConstants } from "../constants";
+import { CreateGroupWizard } from "../components/wizard/create-group-wizard";
 import { GroupsInterface, WizardStepsFormTypes } from "../models";
 
 const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
@@ -79,6 +81,7 @@ const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
 const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -86,6 +89,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ userStoreOptions, setUserStoresList ] = useState<DropdownItemProps[]>([]);
+    const [ isUserStoresListRequestLoading, setUserStoresListRequestLoading ] = useState<boolean>(false);
+    const [ isUserStoreRequestLoading, setUserStoreRequestLoading ] = useState<boolean>(false);
     const [ userStore, setUserStore ] = useState(
         commonConfig?.primaryUserstoreOnly ? PRIMARY_USERSTORE : CONSUMER_USERSTORE);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
@@ -142,7 +147,10 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     },[ groupsError ]);
 
     useEffect(() => {
-        if (!isSuperOrganization()) {
+        if (!(
+            isSuperOrganization()
+            || isFirstLevelOrganization()
+        )) {
             return;
         }
 
@@ -158,8 +166,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         const storeOptions: DropdownItemProps[] = [
             {
                 key: -1,
-                text: "Primary",
-                value: PRIMARY_USERSTORE
+                text: userstoresConfig.primaryUserstoreName,
+                value: userstoresConfig.primaryUserstoreName
             }
         ];
 
@@ -170,6 +178,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         };
 
         if (isSuperOrganization() || isFirstLevelOrganization()) {
+            setUserStoresListRequestLoading(true);
             getUserStoreList()
                 .then((response: AxiosResponse<UserstoreListResponseInterface[]>) => {
                     if (storeOptions?.length === 0) {
@@ -177,23 +186,29 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     }
 
                     response.data.map((store: UserstoreListResponseInterface, index: number) => {
-                        getAUserStore(store.id).then((response: UserStorePostData) => {
-                            const isDisabled: boolean = response.properties.find(
-                                (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
+                        if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName) {
+                            setUserStoreRequestLoading(true);
+                            getAUserStore(store.id).then((response: UserStorePostData) => {
+                                const isDisabled: boolean = response.properties.find(
+                                    (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
 
-                            if (!isDisabled) {
-                                storeOption = {
-                                    key: index,
-                                    text: store.name,
-                                    value: store.name
-                                };
-                                storeOptions.push(storeOption);
-                            }
-                        });
-                    }
-                    );
+                                if (!isDisabled) {
+                                    storeOption = {
+                                        key: index,
+                                        text: store.name,
+                                        value: store.name
+                                    };
+                                    storeOptions.push(storeOption);
+                                }
+                            }).finally(() => {
+                                setUserStoreRequestLoading(false);
+                            });
+                        }
+                    });
 
                     setUserStoresList(storeOptions);
+                }).finally(() => {
+                    setUserStoresListRequestLoading(false);
                 });
         }
 
@@ -224,11 +239,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     };
 
     const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
-        if (data.value === GroupConstants.ALL_USER_STORES_OPTION_VALUE) {
-            setUserStore(null);
-        } else {
-            setUserStore(data.value as string);
-        }
+        setUserStore(data?.value as string);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
@@ -288,7 +299,9 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             action={
                 (!isGroupsListRequestLoading && paginatedGroups?.length > 0)
                 && (
-                    <Show when={ AccessControlConstants.GROUP_WRITE }>
+                    <Show
+                        when={ featureConfig?.groups?.scopes?.create }
+                    >
                         <PrimaryButton
                             data-testid="group-mgt-groups-list-add-button"
                             onClick={ () => setShowWizard(true) }
@@ -301,7 +314,16 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             }
             title={ t("pages:groups.title") }
             pageTitle={ t("pages:groups.title") }
-            description={ t("pages:groups.subTitle") }
+            description={ (
+                <>
+                    { t("pages:groups.subTitle") }
+                    <DocumentationLink
+                        link={ getLink("manage.groups.learnMore") }
+                    >
+                        { t("extensions:common.learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
         >
             <ListLayout
                 advancedSearch={ (
@@ -347,7 +369,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                             options={ userStoreOptions && userStoreOptions }
                             placeholder={ t("console:manage.features.groups.list.storeOptions") }
                             onChange={ handleDomainChange }
-                            defaultValue={ PRIMARY_USERSTORE }
+                            loading={ isUserStoresListRequestLoading || isUserStoreRequestLoading }
+                            defaultValue={ userstoresConfig.primaryUserstoreName }
                         />
                     </RootOnlyComponent>
                 ) }
@@ -412,8 +435,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             </ListLayout>
             {
                 showWizard && (
-                    <CreateGroupWizardUpdated
-                        data-testid="group-mgt-create-group-wizard"
+                    <CreateGroupWizard
+                        data-componentid="group-mgt-create-group-wizard"
                         closeWizard={ () => setShowWizard(false) }
                         onCreate={ () => mutateGroupsFetchRequest() }
                         requiredSteps={ [

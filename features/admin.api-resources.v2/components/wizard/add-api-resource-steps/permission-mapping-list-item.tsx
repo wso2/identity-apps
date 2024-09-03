@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../../../admin.core.v1";
 import { getAPIResourcePermissions } from "../../../api";
 import { APIResourcesConstants } from "../../../constants";
 import { APIResourcePermissionInterface, PermissionMappingInterface } from "../../../models";
@@ -192,13 +192,15 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
                 <Grid.Row columns={ 1 } className="pt-0 pb-0">
                     <Grid.Column width={ 16 }>
                         <Field
-                            type="text"
+                            type="textarea"
                             name="description"
                             label={ t("apiResources:wizard.addApiResource.steps.scopes.form." +
                                 "fields.description.label") }
                             placeholder={ t("apiResources:wizard.addApiResource.steps.scopes." +
                                 "form.fields.description.placeholder") }
                             tabIndex={ 3 }
+                            maxLength={ 300 }
+                            minLength={ 3 }
                             data-testid={ `${componentId}-description` }
                         />
                         <Hint>

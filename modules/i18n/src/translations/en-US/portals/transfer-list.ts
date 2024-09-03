@@ -22,14 +22,14 @@ export const transferList: transferListNS = {
         emptyPlaceholders: {
             default: "There are no items in this list at the moment.",
             groups: {
+                common: "No {{type}} found",
                 selected: "There are no {{type}} assigned to this group.",
-                unselected: "There are no {{type}} available to assign to this group.",
-                common: "No {{type}} found"
+                unselected: "There are no {{type}} available to assign to this group."
             },
             roles: {
+                common: "No {{type}} found",
                 selected: "There are no {{type}} assigned with this role.",
-                unselected: "There are no {{type}} available to assign to this group.",
-                common: "No {{type}} found"
+                unselected: "There are no {{type}} available to assign to this role."
             },
             users: {
                 roles: {

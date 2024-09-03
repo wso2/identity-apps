@@ -1,6 +1,6 @@
 {
+    "name": "validation",
     "$schema": "../../node_modules/nx/schemas/project-schema.json",
-    "root": "modules/validation",
     "sourceRoot": "modules/validation/src",
     "projectType": "library",
     "generators": {},
@@ -8,19 +8,16 @@
     "tags": [],
     "targets": {
         "build": {
-            "executor": "@nrwl/workspace:run-commands",
-            "outputs": [
-                "{options.outputPath}"
-            ],
+            "executor": "nx:run-commands",
+            "outputs": ["{workspaceRoot}/modules/validation/dist"],
             "options": {
-                "outputPath": "modules/validation/dist",
                 "tsconfig": "modules/validation/tsconfig.json",
                 "command": "pnpm build",
                 "cwd": "modules/validation"
             }
         },
         "lint": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm lint",
                 "cwd": "modules/validation",
@@ -28,9 +25,17 @@
             }
         },
         "test": {
-            "executor": "@nrwl/workspace:run-commands",
+            "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm test",
+                "cwd": "modules/validation",
+                "parallel": false
+            }
+        },
+        "test-coverage": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm test -- --coverage --collect-coverage",
                 "cwd": "modules/validation",
                 "parallel": false
             }

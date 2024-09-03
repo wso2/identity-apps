@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,6 @@
 export * from "./access-control";
 export * from "./documentation";
 export * from "./portal-branding";
-export * from "./http-headers";
 export * from "./profile";
 export * from "./user-agent-parser";
 export * from "./common";

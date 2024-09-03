@@ -23,9 +23,15 @@ export interface Extensions {
     common: {
         community: string;
         help: {
-            communityLink: string;
+            communityLinks: {
+                discord: string;
+                stackOverflow: string;
+            };
             docSiteLink: string;
-            helpCenterLink: string;
+            helpCenterLink: {
+                title: string;
+                subtitle: string;
+            };
             helpDropdownLink: string;
         };
         learnMore: string;
@@ -150,6 +156,13 @@ export interface Extensions {
                         };
                     };
                 };
+                m2m: {
+                    customConfig: {
+                        tokenEndpoint: string;
+                        tokenRequest: string;
+                        configurations: string;
+                    };
+                }
             };
         };
         applicationRoles: {
@@ -1128,6 +1141,19 @@ export interface Extensions {
                         skipURIs: string;
                     };
                 };
+                m2m: {
+                    configurations: {
+                        clientId: {
+                            hint: string;
+                        },
+                        clientSecret: {
+                            hint: string;
+                        },
+                        tokenEndpoint: string,
+                        scopes: string,
+                        tokenRequest: string
+                    }
+                }
             };
         };
         branding: {
@@ -1151,11 +1177,13 @@ export interface Extensions {
                 header: string;
                 revertBranding: {
                     actionTitle: string;
+                    disableHint: string;
                     header: string;
                     subheader: string;
                 };
                 unpublishBranding: {
                     actionTitle: string;
+                    disableHint: string;
                     header: string;
                     subheader: string;
                 };
@@ -1727,7 +1755,15 @@ export interface Extensions {
                 };
             };
             pageHeader: {
+                application: string;
+                applicationBrandingtitle: string;
+                applicationBrandingDescription: string;
+                applicationListWarning: string;
+                backButtonText: string;
                 description: string;
+                organization: string;
+                organizationBrandingtitle: string;
+                selectApplication: string;
                 title: string;
             };
             pageResolution: {
@@ -2477,6 +2513,20 @@ export interface Extensions {
                     };
                     title: string;
                 };
+                startTimeGreaterThanCurrentError: {
+                    subtitle: {
+                        0: string;
+                        1: string;
+                    };
+                    title: string;
+                };
+                endTimeGreaterThanStartTimeError: {
+                    subtitle: {
+                        0: string;
+                        1: string;
+                    };
+                    title: string;
+                };
             };
             pageHeader: {
                 description: string;
@@ -2910,6 +2960,7 @@ export interface Extensions {
                                     message: string;
                                 };
                                 description: string;
+                                docsDescription: string;
                                 title: string;
                             };
                             downloadAgent: {
@@ -2987,6 +3038,7 @@ export interface Extensions {
                         usernameLength: string;
                         usernameSymbols: string;
                         usernameSpecialCharSymbols: string;
+                        usernameEmpty: string;
                     };
                     summary: {
                         invitation: string;
@@ -3035,10 +3087,25 @@ export interface Extensions {
                     form: {
                         fields: {
                             enable: FormAttributes;
+                            enableSMSBasedRecovery: FormAttributes;
+                            enableEmailBasedRecovery: FormAttributes;
                             expiryTime: FormAttributes;
                             notifySuccess: FormAttributes;
+                            maxResendCount: FormAttributes;
+                            maxFailedAttemptCount: FormAttributes;
+                            smsOtpExpiryTime: FormAttributes;
+                            passwordRecoveryOtpUseUppercase: FormAttributes;
+                            passwordRecoveryOtpUseLowercase: FormAttributes;
+                            passwordRecoveryOtpUseNumeric: FormAttributes;
+                            passwordRecoveryOtpLength: FormAttributes;
                         };
+                        smsProviderWarning: string;
                     };
+                    recoveryOptionSubHeadingEmailLink: string;
+                    recoveryOptionSubHeadingSMS: string;
+                    recoveryOptionHeading: string;
+                    otpConfigHeading: string;
+                    failedAttemptConfigHeading: string;
                     connectorDescription: string;
                     heading: string;
                     notification: {
@@ -3063,6 +3130,7 @@ export interface Extensions {
                         subSection1: string;
                         subSection2: string;
                         subSection3: string;
+                        subSection4: string;
                     };
                     connectorDescription: string;
                     heading: string;
@@ -3362,9 +3430,18 @@ export interface Extensions {
             }
         }
         invite: {
+            assignAdminUser: {
+                confirmationModal: {
+                    assertionHint: string;
+                    header: string;
+                    message: string;
+                };
+            };
             notifications: {
                 sendInvite: {
+                    inviteAlreadyExistsError: NotificationItem;
                     limitReachError: NotificationItem;
+                    userAlreadyExistsError: NotificationItem;
                 };
             };
         };

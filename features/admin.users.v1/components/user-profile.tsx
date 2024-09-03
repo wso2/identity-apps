@@ -15,17 +15,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { SCIMConfigs, commonConfig, userConfig } from "@wso2is/admin.extensions.v1";
+import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import { searchRoleList, updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
+import {
+    OperationValueInterface,
+    PatchRoleDataInterface,
+    ScimOperationsInterface,
+    SearchRoleInterface
+} from "@wso2is/admin.roles.v2/models/roles";
+import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "@wso2is/admin.server-configurations.v1";
+import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
+import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes, resolveUserEmails } from "@wso2is/core/helpers";
+import { resolveUserEmails } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
     MultiValueAttributeInterface,
     ProfileInfoInterface,
     ProfileSchemaInterface,
-    SBACInterface,
+    RolesMemberInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -49,28 +62,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
-import { SCIMConfigs, commonConfig, userConfig } from "../../admin.extensions.v1";
-import { TenantInfo } from "../../admin.extensions.v1/components/tenants/models";
-import { getAssociationType } from "../../admin.extensions.v1/components/tenants/utils/tenants";
-import { administratorConfig } from "../../admin.extensions.v1/configs/administrator";
-import { AccessControlConstants } from "../../admin.access-control.v1/constants/access-control";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../admin.core.v1";
-import { searchRoleList, updateRoleDetails } from "../../admin.roles.v2/api/roles";
-import {
-    OperationValueInterface,
-    PatchRoleDataInterface,
-    ScimOperationsInterface,
-    SearchRoleInterface
-} from "../../admin.roles.v2/models/roles";
-import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../../admin.server-configurations.v1";
 import { updateUserInfo } from "../api";
-import { AdminAccountTypes, UserManagementConstants } from "../constants";
+import { AdminAccountTypes, LocaleJoiningSymbol, UserManagementConstants } from "../constants";
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
 
 /**
  * Prop types for the basic details component.
  */
-interface UserProfilePropsInterface extends TestableComponentInterface, SBACInterface<FeatureConfigInterface> {
+interface UserProfilePropsInterface extends TestableComponentInterface {
     /**
      * System admin username
      */
@@ -142,7 +141,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         handleUserUpdate,
         isReadOnly,
         allowDeleteOnly,
-        featureConfig,
         connectorProperties,
         isReadOnlyUserStoresLoading,
         isReadOnlyUserStore,
@@ -158,13 +156,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const dispatch: Dispatch = useDispatch();
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const currentOrganization: string =  useSelector((state: AppState) => state?.config?.deployment?.tenant);
     const authUserTenants: TenantInfo[] = useSelector((state: AppState) => state?.auth?.tenants);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
+    );
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const hasUsersUpdatePermissions: boolean = useRequiredScopes(
+        featureConfig?.users?.scopes?.update
     );
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
@@ -188,9 +190,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const createdDate: string = user?.meta?.created;
     const modifiedDate: string = user?.meta?.lastModified;
-    const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked;
+    const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
+    user[userConfig.userProfileSchema]?.accountLocked === true;
     const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true";
     const oneTimePassword: string = user[userConfig.userProfileSchema]?.oneTimePassword;
+    const isCurrentUserAdmin: boolean = user?.roles?.some((role: RolesMemberInterface) =>
+        role.display === administratorConfig.adminRoleName) ?? false;
+
 
     useEffect(() => {
 
@@ -312,10 +318,21 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 return;
                             }
 
-                            if (schema.extended && userInfo[userConfig.userProfileSchema]
-                                && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
+                            if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
+                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[userConfig.userProfileSchema][schemaNames[0]]
+                                    schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
+                                );
+
+                                return;
+                            }
+
+                            if (
+                                schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
+                                && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
+                            ) {
+                                tempProfileInfo.set(
+                                    schema.name, userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
                                 );
 
                                 return;
@@ -393,8 +410,19 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 return;
                             }
 
-                            if (schema.extended && userInfo[userConfig.userProfileSchema]
-                                && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
+                            if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
+                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
+                                tempProfileInfo.set(
+                                    schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
+                                );
+
+                                return;
+                            }
+
+                            if (
+                                schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
+                                && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
+                            ) {
                                 tempProfileInfo.set(
                                     schema.name, userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
                                 );
@@ -515,6 +543,44 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         }
 
         return username;
+    };
+
+    /**
+     * The function returns the normalized format of locale.
+     *
+     * @param locale - locale value.
+     * @param localeJoiningSymbol - symbol used to join language and region parts of locale.
+     * @param updateSupportedLanguage - If supported languages needs to be updated with the given localString or not.
+     */
+    const normalizeLocaleFormat = (
+        locale: string,
+        localeJoiningSymbol: LocaleJoiningSymbol,
+        updateSupportedLanguage: boolean
+    ): string => {
+        if (!locale) {
+            return locale;
+        }
+
+        const separatorIndex: number = locale.search(/[-_]/);
+
+        let normalizedLocale: string = locale;
+
+        if (separatorIndex !== -1) {
+            const language: string = locale.substring(0, separatorIndex).toLowerCase();
+            const region: string = locale.substring(separatorIndex + 1).toUpperCase();
+
+            normalizedLocale = `${language}${localeJoiningSymbol}${region}`;
+        }
+
+        if (updateSupportedLanguage && !supportedI18nLanguages[normalizedLocale]) {
+            supportedI18nLanguages[normalizedLocale] = {
+                code: normalizedLocale,
+                name: UserManagementConstants.GLOBE,
+                namespaces: []
+            };
+        }
+
+        return normalizedLocale;
     };
 
     /**
@@ -680,18 +746,31 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         ? schema.schemaId
                                         : userConfig.userProfileSchema;
 
-                                    opValue = {
-                                        [schemaId]: {
-                                            [schemaNames[0]]: schema.type.toUpperCase() === "BOOLEAN" ?
-                                                !!values.get(schema.name)?.includes(schema.name) :
-                                                values.get(schemaNames[0])
-                                        }
-                                    };
+                                    if (schema.name === "externalId") {
+                                        opValue = {
+                                            [schemaNames[0]]: values.get(schemaNames[0])
+                                        };
+                                    } else {
+                                        opValue = {
+                                            [schemaId]: {
+                                                [schemaNames[0]]: schema.type.toUpperCase() === "BOOLEAN" ?
+                                                    !!values.get(schema.name)?.includes(schema.name) :
+                                                    values.get(schemaNames[0])
+                                            }
+                                        };
+                                    }
                                 } else {
                                     opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
                                         .get("EMAILS")
                                         ? { emails: [ values.get(schema.name) ] }
-                                        : { [schemaNames[0]]: values.get(schemaNames[0]) };
+                                        : schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
+                                            .get("LOCALE")
+                                            ? { [schemaNames[0]]: normalizeLocaleFormat(
+                                                values.get(schemaNames[0]) as string,
+                                                LocaleJoiningSymbol.UNDERSCORE,
+                                                false
+                                            ) }
+                                            : { [schemaNames[0]]: values.get(schemaNames[0]) };
                                 }
                             } else {
                                 if(schema.extended) {
@@ -821,7 +900,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
                                         .get("EMAILS")
                                         ? { emails: [ values.get(schema.name) ] }
-                                        : { [schemaNames[0]]: values.get(schemaNames[0]) };
+                                        : schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
+                                            .get("LOCALE")
+                                            ? { [schemaNames[0]]: normalizeLocaleFormat(
+                                                values.get(schemaNames[0]) as string,
+                                                LocaleJoiningSymbol.UNDERSCORE,
+                                                false
+                                            ) }
+                                            : { [schemaNames[0]]: values.get(schemaNames[0]) };
                                 }
                             } else {
                                 if(schema.extended) {
@@ -1063,22 +1149,21 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     const resolveDangerActions = (): ReactElement => {
-        if (!hasRequiredScopes(
-            featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)) {
+        if (!hasUsersUpdatePermissions) {
             return null;
         }
 
         const resolvedUsername: string = resolveUsernameOrDefaultEmail(user, false);
-        const isUserSystemAdminOrTenantAdminOrCurrentLoggedInUser: boolean =
-            [ tenantAdmin, adminUsername ]?.includes(resolvedUsername) || authenticatedUser?.includes(resolvedUsername);
+        const isUserCurrentLoggedInUser: boolean =
+            authenticatedUser?.includes(resolvedUsername);
 
         return (
             <>
                 {
                     (!isReadOnly || allowDeleteOnly || isUserManagedByParentOrg)
-                    && !isUserSystemAdminOrTenantAdminOrCurrentLoggedInUser ? (
+                    && (!isCurrentUserAdmin || !isUserCurrentLoggedInUser) ? (
                             <Show
-                                when={ AccessControlConstants.USER_DELETE }
+                                when={ featureConfig?.users?.scopes?.delete }
                             >
                                 <DangerZoneGroup
                                     sectionHeader={ t("user:editUser.dangerZoneGroup.header") }
@@ -1090,7 +1175,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             !isUserManagedByParentOrg &&
                                             user.userName !== adminUsername
                                         ) ? (
-                                                <Show when={ AccessControlConstants.USER_EDIT }>
+                                                <Show when={ featureConfig?.users?.scopes?.update }>
                                                     <DangerZone
                                                         data-testid={ `${ testId }-change-password` }
                                                         actionTitle={ t("user:editUser." +
@@ -1102,9 +1187,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                         onActionClick={ (): void => {
                                                             setOpenChangePasswordModal(true);
                                                         } }
-                                                        isButtonDisabled={ accountLocked
-                                                            ? accountLocked
-                                                            : user[ userConfig.userProfileSchema ]?.accountLocked }
+                                                        isButtonDisabled={ accountLocked }
                                                         buttonDisableHint={ t("user:editUser." +
                                                             "dangerZoneGroup.passwordResetZone.buttonHint") }
                                                     />
@@ -1275,7 +1358,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             { fieldName })
                     }
                     type="dropdown"
-                    value={ profileInfo.get(schema?.name) }
+                    value={ normalizeLocaleFormat(profileInfo.get(schema?.name), LocaleJoiningSymbol.HYPHEN, true) }
                     children={ [ {
                         "data-testid": `${ testId }-profile-form-locale-dropdown-empty` as string,
                         key: "empty-locale" as string,
@@ -1288,10 +1371,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 return {
                                     "data-testid": `${ testId }-profile-form-locale-dropdown-`
                                         +  supportedI18nLanguages[key].code as string,
-                                    flag: supportedI18nLanguages[key].flag,
+                                    flag: supportedI18nLanguages[key].flag ?? UserManagementConstants.GLOBE,
                                     key: supportedI18nLanguages[key].code as string,
-                                    text: `${supportedI18nLanguages[key].name as string},
-                                                ${supportedI18nLanguages[key].code as string}`,
+                                    text: supportedI18nLanguages[key].name === UserManagementConstants.GLOBE
+                                        ? supportedI18nLanguages[key].code
+                                        : `${supportedI18nLanguages[key].name as string},
+                                            ${supportedI18nLanguages[key].code as string}`,
                                     value: supportedI18nLanguages[key].code as string
                                 };
                             })
@@ -1306,6 +1391,34 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     fluid
                 />
             );
+        } else if (schema?.name === "dateOfBirth") {
+            return (
+                <Field
+                    data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
+                    name={ schema.name }
+                    label={ fieldName }
+                    required={ schema.required }
+                    requiredErrorMessage={ fieldName + " is required" }
+                    placeholder="YYYY-MM-DD"
+                    type="text"
+                    value={ profileInfo.get(schema.name) }
+                    key={ key }
+                    readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
+                    validation={ (value: string, validation: Validation) => {
+                        if (!RegExp(schema.regEx).test(value)) {
+                            validation.isValid = false;
+                            validation.errorMessages
+                                .push(t("users:forms.validation.dateFormatError", {
+                                    field: fieldName
+                                }));
+                        }
+                    } }
+                    maxLength={ schema.maxLength
+                        ? schema.maxLength
+                        : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                    }
+                />
+            );
         } else {
             return (
                 <Field
@@ -1313,13 +1426,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     name={ schema.name }
                     label={ schema.name === "profileUrl" ? "Profile Image URL" :
                         (  (!commonConfig.userEditSection.showEmail && schema.name === "userName")
-                            ? fieldName +" (Email)"
+                            ? fieldName + " (Email)"
                             : fieldName
                         )
                     }
                     required={ schema.required }
-                    requiredErrorMessage={ fieldName + " " + "is required" }
-                    placeholder={ "Enter your" + " " + fieldName }
+                    requiredErrorMessage={ fieldName + " is required" }
+                    placeholder={ "Enter your " + fieldName }
                     type="text"
                     value={ profileInfo.get(schema.name) }
                     key={ key }

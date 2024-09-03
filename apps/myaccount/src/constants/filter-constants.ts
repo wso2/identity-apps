@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,184 +18,115 @@
 
 /**
  * Features key.
- * @constant
- * @type {string}
- * @default
  */
-export const FEATURES = "features";
+export const FEATURES: string = "features";
 
 /**
  * Overview key.
- * @constant
- * @type {string}
- * @default
  */
-export const OVERVIEW = "overview";
+export const OVERVIEW: string = "overview";
 
 /**
  * Personal info key.
- * @constant
- * @type {string}
- * @default
  */
-export const PERSONAL_INFO = "personalInfo";
+export const PERSONAL_INFO: string = "personalInfo";
 
 /**
  * Profile key.
- * @constant
- * @type {string}
- * @default
  */
-export const PROFILE = "profile";
+export const PROFILE: string = "profile";
 
 /**
  * Linked Accounts key.
- * @constant
- * @type {string}
- * @default
  */
-export const LINKED_ACCOUNTS = "linkedAccounts";
+export const LINKED_ACCOUNTS: string = "linkedAccounts";
 
 /**
  * Export Profile key.
- * @constant
- * @type {string}
- * @default
  */
-export const EXPORT_PROFILE = "exportProfile";
+export const EXPORT_PROFILE: string = "exportProfile";
 
 /**
  * Applications key.
- * @constant
- * @type {string}
- * @default
  */
-export const APPLICATIONS = "applications";
+export const APPLICATIONS: string = "applications";
 
 /**
  * Security key.
- * @constant
- * @type {string}
- * @default
  */
-export const SECURITY = "security";
+export const SECURITY: string = "security";
 
 /**
  * Change password key.
- * @constant
- * @type {string}
- * @default
  */
-export const CHANGE_PASSWORD = "changePassword";
+export const CHANGE_PASSWORD: string = "changePassword";
 
 /**
  * Account Recovery key.
- * @constant
- * @type {string}
- * @default
  */
-export const ACCOUNT_RECOVERY = "accountRecovery";
+export const ACCOUNT_RECOVERY: string = "accountRecovery";
 
 /**
  * Security Questions key.
- * @constant
- * @type {string}
- * @default
  */
-export const SECURITY_QUESTIONS = "securityQuestions";
+export const SECURITY_QUESTIONS: string = "securityQuestions";
 
 /**
  * Email Recovery.
- * @constant
- * @type {string}
- * @default
  */
-export const EMAIL_RECOVERY = "emailRecovery";
+export const EMAIL_RECOVERY: string = "emailRecovery";
 
 /**
  * MFA key.
- * @constant
- * @type {string}
- * @default
  */
-export const MULTI_FACTOR_AUTHENTICATION = "multiFactorAuthentication";
+export const MULTI_FACTOR_AUTHENTICATION: string = "multiFactorAuthentication";
 
 /**
  * SMS OTP key.
- * @constant
- * @type {string}
- * @default
  */
-export const SMS = "sms";
+export const SMS: string = "sms";
 
 /**
  * FIDO key.
- * @constant
- * @type {string}
- * @default
  */
-export const FIDO = "fido";
+export const FIDO: string = "fido";
 
 /**
  * Authenticator app.
- * @constant
- * @type {string}
- * @default
  */
-export const AUTHENTICATOR_APP = "authenticatorApp";
+export const AUTHENTICATOR_APP: string = "authenticatorApp";
 
 /**
  * Active Sessions key.
- * @constant
- * @type {string}
- * @default
  */
-export const ACTIVE_SESSIONS = "activeSessions";
+export const ACTIVE_SESSIONS: string = "activeSessions";
 
 /**
  * Manage Consents key.
- * @constant
- * @type {string}
- * @default
  */
-export const MANAGE_CONSENTS = "manageConsents";
+export const MANAGE_CONSENTS: string = "manageConsents";
 
 /**
  * Account Status.
- * @constant
- * @type {string}
- * @default
  */
-export const ACCOUNT_STATUS = "accountStatus";
+export const ACCOUNT_STATUS: string = "accountStatus";
 
 /**
  * Account Activity.
- * @constant
- * @type {string}
- * @default
  */
-export const ACCOUNT_ACTIVITY = "accountActivity";
+export const ACCOUNT_ACTIVITY: string = "accountActivity";
 
 /**
  * Account Security.
- * @constant
- * @type {string}
- * @default
  */
-export const ACCOUNT_SECURITY = "accountSecurity";
+export const ACCOUNT_SECURITY: string = "accountSecurity";
 
 /**
  * Consents Control key.
- * @constant
- * @type {string}
- * @default
  */
-export const CONSENTS_CONTROL = "consentsControl";
+export const CONSENTS_CONTROL: string = "consentsControl";
 
 /**
  * External Logins key.
- * @constant
- * @type {string}
- * @default
  */
-export const EXTERNAL_LOGINS = "externalLogins";
+export const EXTERNAL_LOGINS: string = "externalLogins";

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,5 +18,5 @@
 
 export * from "./connector-form-factory";
 export * from "./login-attempt-security-form";
-export * from "./password-recovery-form";
+export * from "./password-recovery-form/password-recovery-form";
 export * from "./self-registration-form";

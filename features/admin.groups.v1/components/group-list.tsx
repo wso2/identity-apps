@@ -16,7 +16,15 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
+import {
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    getEmptyPlaceholderIllustrations,
+    history
+} from "@wso2is/admin.core.v1";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { LoadableComponentInterface, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import {
@@ -35,14 +43,6 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../admin.core.v1";
 import { GroupConstants } from "../constants";
 import { GroupsInterface } from "../models";
 
@@ -215,7 +215,9 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 <EmptyPlaceholder
                     data-testid={ `${ testId }-empty-list-empty-placeholder` }
                     action={ !isReadOnlyUserStore && (
-                        <Show when={ AccessControlConstants.GROUP_WRITE }>
+                        <Show
+                            when={ featureConfig?.groups?.scopes?.create }
+                        >
                             <PrimaryButton
                                 data-testid={ `${ testId }-empty-list-empty-placeholder-add-button` }
                                 onClick={ onEmptyListPlaceholderActionClick }

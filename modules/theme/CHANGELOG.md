@@ -1,5 +1,195 @@
 # @wso2is/theme
 
+## 2.1.2
+
+### Patch Changes
+
+- [#6837](https://github.com/wso2/identity-apps/pull/6837) [`a4fb4106bace0826911b8a385bd39167d84f9ac0`](https://github.com/wso2/identity-apps/commit/a4fb4106bace0826911b8a385bd39167d84f9ac0) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add Duo logo in the theme
+
+## 2.1.1
+
+### Patch Changes
+
+- [#6827](https://github.com/wso2/identity-apps/pull/6827) [`19751f62ed1923a0c75b342407c9048148489b25`](https://github.com/wso2/identity-apps/commit/19751f62ed1923a0c75b342407c9048148489b25) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in the user assignment modal in groups edit
+
+## 2.1.0
+
+### Minor Changes
+
+- [#6781](https://github.com/wso2/identity-apps/pull/6781) [`0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a`](https://github.com/wso2/identity-apps/commit/0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a) Thanks [@brionmario](https://github.com/brionmario)! - Separate out `admin.home.v1` feature
+
+## 2.0.99
+
+### Patch Changes
+
+- [#6744](https://github.com/wso2/identity-apps/pull/6744) [`dec724ba75c4937cd84ec7afcd2ec0bc00058d2e`](https://github.com/wso2/identity-apps/commit/dec724ba75c4937cd84ec7afcd2ec0bc00058d2e) Thanks [@brionmario](https://github.com/brionmario)! - Refactor `admin.extensions.v1/components/application`
+
+## 2.0.98
+
+### Patch Changes
+
+- [#6692](https://github.com/wso2/identity-apps/pull/6692) [`d9615827f6e7c2f087c1debdb377e02e66ac4e62`](https://github.com/wso2/identity-apps/commit/d9615827f6e7c2f087c1debdb377e02e66ac4e62) Thanks [@brionmario](https://github.com/brionmario)! - Move `administrators` to a new feature
+
+## 2.0.97
+
+### Patch Changes
+
+- [#6676](https://github.com/wso2/identity-apps/pull/6676) [`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da) Thanks [@Achintha444](https://github.com/Achintha444)! - Update oxygen-ui to `1.13.3`
+
+## 2.0.96
+
+### Patch Changes
+
+- [#6651](https://github.com/wso2/identity-apps/pull/6651) [`6bdf8d9c726e3ee2bf575af014098ee5768ee672`](https://github.com/wso2/identity-apps/commit/6bdf8d9c726e3ee2bf575af014098ee5768ee672) Thanks [@Achintha444](https://github.com/Achintha444)! - Update the oxygen version to 1.13.2
+
+## 2.0.95
+
+### Patch Changes
+
+- [#6637](https://github.com/wso2/identity-apps/pull/6637) [`196e3426e7f99b6741e5aada839d2ee3000f005a`](https://github.com/wso2/identity-apps/commit/196e3426e7f99b6741e5aada839d2ee3000f005a) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with unreadble text in cookie banner
+
+## 2.0.94
+
+### Patch Changes
+
+- [#6635](https://github.com/wso2/identity-apps/pull/6635) [`411658f1efc46cf71ea40b6bae511f42891c7a43`](https://github.com/wso2/identity-apps/commit/411658f1efc46cf71ea40b6bae511f42891c7a43) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix some eslint warnings not being shown in vscode editor
+
+* [#6487](https://github.com/wso2/identity-apps/pull/6487) [`0683e51ac6194dfa54c2a5f508d0a33b487b6ebf`](https://github.com/wso2/identity-apps/commit/0683e51ac6194dfa54c2a5f508d0a33b487b6ebf) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove unnecessary legacy mode configs and its usage
+
+## 2.0.93
+
+### Patch Changes
+
+- [#6632](https://github.com/wso2/identity-apps/pull/6632) [`9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a`](https://github.com/wso2/identity-apps/commit/9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a) Thanks [@Achintha444](https://github.com/Achintha444)! - Update the oxygen version to `1.13.1` to fix the issue in the design of the default Chip design.
+
+## 2.0.92
+
+### Patch Changes
+
+- [#6619](https://github.com/wso2/identity-apps/pull/6619) [`98ae1e51e5e4c1bbaf52ac814af1da1722efb596`](https://github.com/wso2/identity-apps/commit/98ae1e51e5e4c1bbaf52ac814af1da1722efb596) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix overflow issue in secrets dropdown
+
+## 2.0.91
+
+### Patch Changes
+
+- [#6617](https://github.com/wso2/identity-apps/pull/6617) [`7e3bfd46f7a76dc74727dfe23ebbca66675dff85`](https://github.com/wso2/identity-apps/commit/7e3bfd46f7a76dc74727dfe23ebbca66675dff85) Thanks [@Achintha444](https://github.com/Achintha444)! - update the design of the Chip component
+
+## 2.0.90
+
+### Patch Changes
+
+- [#6579](https://github.com/wso2/identity-apps/pull/6579) [`b0e396cc7b02051c9191337dc207a851d1aea360`](https://github.com/wso2/identity-apps/commit/b0e396cc7b02051c9191337dc207a851d1aea360) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add infinite scrolling to tenant association dropdown
+
+## 2.0.89
+
+### Patch Changes
+
+- [#6575](https://github.com/wso2/identity-apps/pull/6575) [`f1d9b7ccbe14f1a42b6d3360da664acf39ba6909`](https://github.com/wso2/identity-apps/commit/f1d9b7ccbe14f1a42b6d3360da664acf39ba6909) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix alignment issues in powered by logo in login page footer
+
+## 2.0.88
+
+### Patch Changes
+
+- [#6409](https://github.com/wso2/identity-apps/pull/6409) [`1201f1179cda981617c35b6d9839abe768d5a394`](https://github.com/wso2/identity-apps/commit/1201f1179cda981617c35b6d9839abe768d5a394) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add app-wise branding feature UI
+
+## 2.0.87
+
+### Patch Changes
+
+- [#6499](https://github.com/wso2/identity-apps/pull/6499) [`85600f55bcb1db924b28681c903a4e98b9558116`](https://github.com/wso2/identity-apps/commit/85600f55bcb1db924b28681c903a4e98b9558116) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Upgrade workspace to nx v15
+
+## 2.0.86
+
+### Patch Changes
+
+- [#6490](https://github.com/wso2/identity-apps/pull/6490) [`b1e9c3064894e54fce5dcaa9c5afcf3be68cde49`](https://github.com/wso2/identity-apps/commit/b1e9c3064894e54fce5dcaa9c5afcf3be68cde49) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Clean up identity-providers feature
+
+## 2.0.85
+
+### Patch Changes
+
+- [#6352](https://github.com/wso2/identity-apps/pull/6352) [`d615c10f5fd308dbfc8b5e14149dd29fcec1b99e`](https://github.com/wso2/identity-apps/commit/d615c10f5fd308dbfc8b5e14149dd29fcec1b99e) Thanks [@savindi7](https://github.com/savindi7)! - Fix header text wrap issue in resource card.
+
+## 2.0.84
+
+### Patch Changes
+
+- [#6300](https://github.com/wso2/identity-apps/pull/6300) [`57974f4691aad11a9cdf13d03a2526c160936e8d`](https://github.com/wso2/identity-apps/commit/57974f4691aad11a9cdf13d03a2526c160936e8d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add enterprise idp logo for saas deployment
+
+## 2.0.83
+
+### Patch Changes
+
+- [#6229](https://github.com/wso2/identity-apps/pull/6229) [`6f04b0edc079c6c784000455cfc12689d2d8644f`](https://github.com/wso2/identity-apps/commit/6f04b0edc079c6c784000455cfc12689d2d8644f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Unify AI feature codebase and UX improvments
+
+## 2.0.82
+
+### Patch Changes
+
+- [#6242](https://github.com/wso2/identity-apps/pull/6242) [`9beedd16003ce305af2a7497652fd35dcd787814`](https://github.com/wso2/identity-apps/commit/9beedd16003ce305af2a7497652fd35dcd787814) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Set a minimum height for the product logo
+
+## 2.0.81
+
+### Patch Changes
+
+- [#6204](https://github.com/wso2/identity-apps/pull/6204) [`763fc4fc5bbddad49df648a0c51038cc945717bb`](https://github.com/wso2/identity-apps/commit/763fc4fc5bbddad49df648a0c51038cc945717bb) Thanks [@brionmario](https://github.com/brionmario)! - Fix CI build
+
+## 2.0.80
+
+### Patch Changes
+
+- [#6192](https://github.com/wso2/identity-apps/pull/6192) [`93751a250f`](https://github.com/wso2/identity-apps/commit/93751a250f63efafafbbbe2f69d773b522d284ee) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add UX improvements to AI features
+
+* [#6192](https://github.com/wso2/identity-apps/pull/6192) [`6ec05095ae`](https://github.com/wso2/identity-apps/commit/6ec05095aea46006d918b4b961a449cab50c6013) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add UX improvements to AI features
+
+## 2.0.79
+
+### Patch Changes
+
+- [#6184](https://github.com/wso2/identity-apps/pull/6184) [`5021749dcc`](https://github.com/wso2/identity-apps/commit/5021749dcc6d477a74a36eaed32ea47802fd482e) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add prompt history to AI Login Flow feature
+
+## 2.0.78
+
+### Patch Changes
+
+- [#6172](https://github.com/wso2/identity-apps/pull/6172) [`4a402cf922`](https://github.com/wso2/identity-apps/commit/4a402cf922f0e6aea7a67bb8718c26f6b3c158b9) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add max width to downtime banner title
+
+## 2.0.77
+
+### Patch Changes
+
+- [#6113](https://github.com/wso2/identity-apps/pull/6113) [`8f9c18b05f`](https://github.com/wso2/identity-apps/commit/8f9c18b05fe577b814d1207b4c5c869ecfa131a3) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add missing doclinks and optimize banner images in AI features
+
+## 2.0.76
+
+### Patch Changes
+
+- [#6093](https://github.com/wso2/identity-apps/pull/6093) [`e74cc7760e`](https://github.com/wso2/identity-apps/commit/e74cc7760e96130510625af061ec523dd0295d26) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add UX improvments to AI features
+
+## 2.0.75
+
+### Patch Changes
+
+- [#5997](https://github.com/wso2/identity-apps/pull/5997) [`bd05cfb945`](https://github.com/wso2/identity-apps/commit/bd05cfb94509ac4e55315e609268fd371daa56ed) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add login flow AI feature
+
+## 2.0.74
+
+### Patch Changes
+
+- [#6058](https://github.com/wso2/identity-apps/pull/6058) [`cc658af874`](https://github.com/wso2/identity-apps/commit/cc658af874921e1095a59cfdb2a28ee6670e4501) Thanks [@lashinijay](https://github.com/lashinijay)! - Update iProov Logo
+
+## 2.0.73
+
+### Patch Changes
+
+- [#5961](https://github.com/wso2/identity-apps/pull/5961) [`76b3eba9bc`](https://github.com/wso2/identity-apps/commit/76b3eba9bc9b53a3a9ab5b699ddf25c87da8e30b) Thanks [@chamathns](https://github.com/chamathns)! - add branding AI implementation
+
+## 2.0.72
+
+### Patch Changes
+
+- [#5963](https://github.com/wso2/identity-apps/pull/5963) [`1c8757adf6`](https://github.com/wso2/identity-apps/commit/1c8757adf6539b13621c656bb91ab7d8f56e0494) Thanks [@brionmario](https://github.com/brionmario)! - Move `apiResources` & `userRoles` to route config
+
 ## 2.0.71
 
 ### Patch Changes

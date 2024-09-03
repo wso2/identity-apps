@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { DocumentationLinksExtensionInterface } from "./models/documentation";
-import { Config } from "../../admin.core.v1/configs/app";
 
 export const getDocumentationLinksExtension = () : DocumentationLinksExtensionInterface => {
     const documentationBaseUrl: string = Config?.getDeploymentConfig()?.docSiteURL;
@@ -30,6 +30,23 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
             termsOfService: "https://wso2.com/terms-of-use"
         },
         develop: {
+            actions:{
+                learnMore: undefined,
+                types: {
+                    preIssueAccessToken: {
+                        learnMore: undefined
+                    },
+                    preRegistration: {
+                        learnMore: undefined
+                    },
+                    preUpdatePassword: {
+                        learnMore: undefined
+                    },
+                    preUpdateProfile: {
+                        learnMore:undefined
+                    }
+                }
+            },
             apiResources: {
                 addAPIResource: {
                     rbacInfoBox: {
@@ -53,6 +70,14 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         }
                     }
                 },
+                applicationsSettings: {
+                    dcr: {
+                        authenticationRequired: {
+                            learnMore: undefined
+                        },
+                        learnMore: undefined
+                    }
+                },
                 editApplication: {
                     asgardeoTryitApplication: {
                         general: {
@@ -63,8 +88,16 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         manageOIDCScopes: undefined
                     },
                     common: {
+                        advanced: {
+                            trustedApps: {
+                                learnMore: undefined
+                            }
+                        },
                         signInMethod: {
                             conditionalAuthenticaion: {
+                                ai: {
+                                    learnMore: undefined
+                                },
                                 apiReference: undefined,
                                 learnMore: undefined,
                                 template: {
@@ -165,9 +198,18 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 },
                 myaccount: {
                     learnMore: undefined,
+                    overview: {
+                        learnMore: undefined
+                    },
                     smsOtp: undefined
                 },
                 newApplication: {
+                    customApplication: {
+                        learnMore: undefined
+                    },
+                    m2mApplication: {
+                        learnMore: undefined
+                    },
                     mobileApplication: {
                         learnMore: undefined
                     },
@@ -183,9 +225,22 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 },
                 roles: {
                     learnMore: undefined
+                },
+                template: {
+                    categories: {
+                        default: {
+                            learnMore: undefined
+                        },
+                        ssoIntegration: {
+                            learnMore: undefined
+                        }
+                    }
                 }
             },
             branding: {
+                ai: {
+                    learnMore: undefined
+                },
                 layout: {
                     custom: {
                         learnMore: undefined
@@ -315,6 +370,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                     learnMore: undefined
                 }
             },
+            insights: {
+                learnMore: undefined
+            },
             loginSecurity: {
                 botDetection: {
                     learnMore: undefined
@@ -322,6 +380,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 loginAttempts: {
                     learnMore: undefined
                 }
+            },
+            logs: {
+                learnMore: undefined
             },
             organizations: {
                 learnMore: undefined
@@ -366,6 +427,7 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 customerAccounts: {
                     learnMore: undefined
                 },
+                learnMore: undefined,
                 newCollaboratorUser: {
                     learnMore: undefined
                 }

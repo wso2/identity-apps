@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,21 +22,21 @@
 export class MultiFactorAuthenticationConstants {
 
     // API errors
-    public static readonly MFA_BACKUP_CODE_RETRIEVE_ERROR: string = "Received an invalid status " + 
+    public static readonly MFA_BACKUP_CODE_RETRIEVE_ERROR: string = "Received an invalid status " +
         "code while retrieving backup codes.";
 
-    public static readonly MFA_BACKUP_CODE_INIT_ERROR: string = "Received an invalid status " + 
+    public static readonly MFA_BACKUP_CODE_INIT_ERROR: string = "Received an invalid status " +
         "code while initializing backup codes.";
 
-    public static readonly MFA_BACKUP_CODE_REFRESH_ERROR: string = "Received an invalid status " + 
+    public static readonly MFA_BACKUP_CODE_REFRESH_ERROR: string = "Received an invalid status " +
         "code while refreshing backup codes.";
-    
-    public static readonly MFA_BACKUP_CODE_DELETE_ERROR: string = "Received an invalid status " + 
+
+    public static readonly MFA_BACKUP_CODE_DELETE_ERROR: string = "Received an invalid status " +
         "code while deleting backup codes.";
 
-    public static readonly MFA_ENABLED_AUTHENTICATOR_RETREIVE_ERROR: string = "Received an invalid status " + 
+    public static readonly MFA_ENABLED_AUTHENTICATOR_RETREIVE_ERROR: string = "Received an invalid status " +
         "code while retreiving enabled authenticators.";
 
-    public static readonly MFA_ENABLED_AUTHENTICATOR_UPDATE_ERROR: string = "Received an invalid status " + 
+    public static readonly MFA_ENABLED_AUTHENTICATOR_UPDATE_ERROR: string = "Received an invalid status " +
         "code while updating enabled authenticators.";
 }

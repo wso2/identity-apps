@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -29,8 +31,6 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
-import { userstoresConfig } from "../../../admin.extensions.v1";
-import { AppConstants, history } from "../../../admin.core.v1";
 import { deleteUserStore, patchUserStore } from "../../api";
 import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID, DISABLED, USERSTORE_VALIDATION_REGEX_PATTERNS }
     from "../../constants";

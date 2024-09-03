@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,7 +30,7 @@ import { HttpRequestConfig } from "../../models";
  * Dispatches an action of type `API_REQUEST_START` with the type
  * of dispatcher as the payload.
  *
- * @param {string} actionType - Type of the dispatcher who initiated the request.
+ * @param actionType - Type of the dispatcher who initiated the request.
  * @returns An action of type `API_REQUEST_START`
  */
 export const apiRequestStart = (actionType: string): ApiRequestStartAction => ({
@@ -42,7 +42,7 @@ export const apiRequestStart = (actionType: string): ApiRequestStartAction => ({
  * Dispatches an action of type `API_REQUEST_END` with the type
  * of dispatcher as the payload.
  *
- * @param {string} actionType - Type of the dispatcher who initiated the request.
+ * @param actionType - Type of the dispatcher who initiated the request.
  * @returns An action of type `API_REQUEST_END`
  */
 export const apiRequestEnd = (actionType: string): ApiRequestEndAction => ({
@@ -54,11 +54,12 @@ export const apiRequestEnd = (actionType: string): ApiRequestEndAction => ({
  * Takes in an config of type `HttpRequestConfig` and dispatches and action of type
  * `API_REQUEST` with data as payload and other configs as meta.
  *
- * @param {HttpRequestConfig} config - Http request configuration
+ * @param config - Http request configuration
  * @returns An action of type `API_REQUEST`
  */
 export const apiRequest = (config: HttpRequestConfig): ApiRequestAction => {
     const { auth, data, dispatcher, headers, method, onSuccess, onError, url  } = config;
+
     return {
         meta: {
             auth,

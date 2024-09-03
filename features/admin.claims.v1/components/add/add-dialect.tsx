@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { WizardStepInterface } from "@wso2is/admin.users.v1/models";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
@@ -25,7 +26,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { WizardStepInterface } from "../../../admin.users.v1/models";
 import { addDialect, addExternalClaim } from "../../api";
 import { getAddDialectWizardStepIcons } from "../../configs";
 import { ClaimManagementConstants } from "../../constants";
@@ -95,7 +95,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
         addDialect(dialectDetailsData?.get("dialectURI").toString())
             .then(() => {
 
-                const dialectID: string = 
+                const dialectID: string =
                     window.btoa(dialectDetailsData?.get("dialectURI").toString()).replace(/=/g, "");
                 const externalClaimPromises: Promise<any>[] = [];
 

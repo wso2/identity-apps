@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -60,7 +60,7 @@ export const toggleApplicationsPageVisibility = (visibility: boolean): ToggleApp
 /**
  * Dispatches an action to initialize the alerting system.
  * @param alertSystem - Alert system object.
- * @return {InitializeAlertSystemAction}
+ * @returns an action to initialize the alerting system.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const initializeAlertSystem = (alertSystem: any): InitializeAlertSystemAction => ({
@@ -70,8 +70,8 @@ export const initializeAlertSystem = (alertSystem: any): InitializeAlertSystemAc
 
 /**
  * Dispatches an action to add a new alert.
- * @param {AlertInterface} alert - Alert
- * @return {AddAlertAction}
+ * @param alert - Alert
+ * @returns an action to add a new alert.
  */
 export const addAlert = (alert: AlertInterface): AddAlertAction => ({
     payload: alert,
@@ -81,20 +81,20 @@ export const addAlert = (alert: AlertInterface): AddAlertAction => ({
 /**
  * Redux action to set the supported i18n languages.
  *
- * @param {SupportedLanguagesMeta} languages - Supported i18n languages.
- * @return {SetSupportedI18nLanguagesActionInterface} An action of type `SET_SUPPORTED_I18N_LANGUAGES`
+ * @param languages - Supported i18n languages.
+ * @returns an action of type `SET_SUPPORTED_I18N_LANGUAGES`
  */
 export const setSupportedI18nLanguages = (
     languages: SupportedLanguagesMeta
 ): SetSupportedI18nLanguagesActionInterface => ({
     payload: languages,
     type: GlobalActionTypes.SET_SUPPORTED_I18N_LANGUAGES
-    });
+});
 
 /**
  * Redux action to set an action to open.
  *
- * @param {string} action - The action to set to open.
+ * @param action - The action to set to open.
  */
 export const setActiveForm = (action: string): SetOpenAction => ({
     payload: action,

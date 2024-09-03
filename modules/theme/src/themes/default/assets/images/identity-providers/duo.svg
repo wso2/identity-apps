@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2024, WSO2 Inc. (http://www.wso2.org).
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_126_52)">
+        <circle cx="7" cy="7" r="7" fill="#62B344"/>
+        <path d="M3.61327 8.5H2V7.0752H5.22453C5.18249 7.86867 4.4772 8.5 3.61327 8.5Z" fill="#E5F1DD"/>
+        <path d="M3.61327 5.50002H2V6.9248H5.22453C5.18249 6.13134 4.4772 5.50002 3.61327 5.50002Z" fill="white"/>
+        <path d="M10.3886 5.50002C9.52467 5.50002 8.81937 6.13134 8.77734 6.9248H11.9999C11.9578 6.13134 11.2525 5.50002 10.3886 5.50002Z" fill="white"/>
+        <path d="M10.3886 8.5C9.52467 8.5 8.81937 7.86867 8.77734 7.0752H11.9999C11.9578 7.86867 11.2525 8.5 10.3886 8.5Z" fill="#E5F1DD"/>
+        <path d="M5.3877 5.50035V7.00013C5.3877 7.80329 6.06679 8.45897 6.9203 8.49805V5.50035H5.3877Z" fill="white"/>
+        <path d="M8.61464 8.5H7.08203V5.50043H8.61464V7.00021V8.5Z" fill="#E5F1DD"/>
+    </g>
+    <defs>
+        <clipPath id="clip0_126_52">
+        <rect width="14" height="14" fill="white"/>
+    </clipPath>
+    </defs>
+</svg>

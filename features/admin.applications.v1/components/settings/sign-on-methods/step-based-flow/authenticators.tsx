@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,26 +17,24 @@
  */
 
 import Chip from "@oxygen-ui/react/Chip";
-import useUIConfig from "../../../../../admin.core.v1/hooks/use-ui-configs";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
+import { AuthenticatorMeta } from "@wso2is/admin.connections.v1/meta/authenticator-meta";
+import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
+import { AppState } from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import {
+    AuthenticatorCategories,
+    GenericAuthenticatorInterface
+} from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, InfoCard, Popup, Text } from "@wso2is/react-components";
-import { AppState } from "../../../../../admin.core.v1";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Icon, Label } from "semantic-ui-react";
-import { applicationConfig } from "../../../../../admin.extensions.v1";
-import { AuthenticatorManagementConstants } from "../../../../../admin.connections.v1";
-import { ConnectionsManagementUtils } from "../../../../../admin.connections.v1/utils/connection-utils";
-import {
-    IdentityProviderManagementConstants
-} from "../../../../../admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { AuthenticatorMeta } from "../../../../../admin.identity-providers.v1/meta/authenticator-meta";
-import {
-    AuthenticatorCategories,
-    GenericAuthenticatorInterface
-} from "../../../../../admin.identity-providers.v1/models/identity-provider";
 import { ApplicationManagementConstants } from "../../../../constants/application-management";
 import { AuthenticationStepInterface } from "../../../../models";
 import { SignInMethodUtils } from "../../../../utils/sign-in-method-utils";
@@ -146,7 +144,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             );
         }
 
-        if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+        if (authenticator.name === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME) {
             // If there is only one step in the flow, backup code authenticator shouldn't be allowed.
             if (currentStep === 0) {
                 return false;
@@ -161,12 +159,13 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         }
 
         if ([
-            IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
-            IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
+            LocalAuthenticatorConstants.AUTHENTICATOR_IDS.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
+            LocalAuthenticatorConstants.AUTHENTICATOR_IDS.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
             return SignInMethodUtils.isFirstFactorValid(currentStep, authenticationSteps);
         }
 
-        if (authenticator.name === IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) {
+        if (authenticator.name === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+            .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME) {
             if (authenticationSteps[currentStep]?.options?.length !== 0) {
                 return false;
             }
@@ -238,7 +237,8 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     ) }
                 </>
             );
-        } else if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+        } else if (authenticator.name === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+            .BACKUP_CODE_AUTHENTICATOR_NAME) {
             return (
                 <>
                     { currentStep === 0 ? (
@@ -279,8 +279,8 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                 </Fragment>
             );
         } else if ([
-            IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
-            IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
+            LocalAuthenticatorConstants.AUTHENTICATOR_IDS.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
+            LocalAuthenticatorConstants.AUTHENTICATOR_IDS.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
             return (
                 <Fragment>
                     { InfoLabel }
@@ -295,7 +295,8 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     </Text>
                 </Fragment>
             );
-        } else if (authenticator.name === IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) {
+        } else if (authenticator.name === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+            .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME) {
             return (
                 <Fragment>
                     { InfoLabel }
@@ -371,13 +372,13 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     const renderFeatureStatusChip = (authenticator: GenericAuthenticatorInterface): ReactElement => {
         if (
             isSAASDeployment &&
-          authenticator?.defaultAuthenticator?.authenticatorId === AuthenticatorManagementConstants
-              .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
+            authenticator?.defaultAuthenticator?.authenticatorId === LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
         ) {
             return (
                 <Chip
                     size="small"
-                    label={ t("common:beta").toUpperCase() }
+                    label={ t(FeatureStatusLabel.BETA) }
                     className="oxygen-chip-beta"
                 />
             );
@@ -390,7 +391,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
         <Fragment data-testid={ testId }>
             { heading && <Heading as="h6">{ heading }</Heading> }
             { authenticators.map((authenticator: GenericAuthenticatorInterface, index: number) => (
-                authenticator.id === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID ?
+                authenticator.id === LocalAuthenticatorConstants.AUTHENTICATOR_IDS.BACKUP_CODE_AUTHENTICATOR_ID ?
                     null :
                     (<Popup
                         hoverable
@@ -422,9 +423,8 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 featureStatus={ renderFeatureStatusChip(authenticator) }
                                 image={
                                     authenticator.idp === AuthenticatorCategories.LOCAL ||
-                                    authenticator
-                                        .defaultAuthenticator?.authenticatorId === AuthenticatorManagementConstants
-                                        .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
+                                    ConnectionsManagementUtils.isOrganizationSSOConnection(authenticator
+                                        .defaultAuthenticator?.authenticatorId)
                                         ? authenticator.image
                                         : ConnectionsManagementUtils
                                             .resolveConnectionResourcePath(connectionResourcesUrl, authenticator.image)

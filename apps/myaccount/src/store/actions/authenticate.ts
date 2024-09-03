@@ -251,8 +251,7 @@ export const getProfileInformation = (
                     })
                 );
             }
-        })
-        .finally(() => {
+
             dispatch(setProfileInfoLoader(false));
         });
 };

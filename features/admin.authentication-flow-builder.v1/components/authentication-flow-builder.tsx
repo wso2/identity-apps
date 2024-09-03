@@ -22,9 +22,24 @@ import Tab from "@oxygen-ui/react/Tab";
 import TabPanel from "@oxygen-ui/react/TabPanel";
 import Tabs from "@oxygen-ui/react/Tabs";
 import Typography from "@oxygen-ui/react/Typography";
+import {
+    updateAuthenticationSequence as updateAuthenticationSequenceFromAPI
+} from "@wso2is/admin.applications.v1/api/application";
+import {
+    ApplicationInterface,
+    AuthenticationSequenceInterface,
+    AuthenticationSequenceType,
+    AuthenticationStepInterface,
+    AuthenticatorInterface
+} from "@wso2is/admin.applications.v1/models/application";
+import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -37,22 +52,6 @@ import AuthenticationFlowVisualEditor from "./authentication-flow-visual-editor"
 import PredefinedFlowsSidePanel from "./predefined-flows-side-panel/predefined-flows-side-panel";
 import ScriptBasedFlowSwitch from "./script-editor-panel/script-based-flow-switch";
 import SidePanelDrawer from "./side-panel-drawer";
-import {
-    updateAuthenticationSequence as updateAuthenticationSequenceFromAPI
-} from "../../admin.applications.v1/api/application";
-import {
-    ApplicationInterface,
-    AuthenticationSequenceInterface,
-    AuthenticationSequenceType,
-    AuthenticationStepInterface,
-    AuthenticatorInterface
-} from "../../admin.applications.v1/models/application";
-import { AdaptiveScriptUtils } from "../../admin.applications.v1/utils/adaptive-script-utils";
-import { AppState } from "../../admin.core.v1/store";
-import {
-    IdentityProviderManagementConstants
-} from "../../admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { OrganizationType } from "../../admin.organizations.v1/constants/organization-constants";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import { AuthenticationFlowBuilderModes, AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
 import "./sign-in-methods.scss";
@@ -258,8 +257,40 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                         )
                     })
                 );
-            })
-            .finally(() => refetchApplication());
+            }).catch((error: AxiosError) => {
+                const INVALID_SCRIPT_CODE: string = "APP-60001";
+
+                if (error?.response?.data?.code === INVALID_SCRIPT_CODE) {
+                    dispatch(addAlert({
+                        description: t("applications:notifications.updateAuthenticationFlow" +
+                            ".invalidScriptError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("applications:notifications.updateAuthenticationFlow" +
+                            ".invalidScriptError.message")
+                    }));
+
+                    return;
+                }
+
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("applications:notifications.updateAuthenticationFlow" +
+                            ".error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("applications:notifications.updateAuthenticationFlow" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:notifications.updateAuthenticationFlow" +
+                        ".genericError.message")
+                }));
+            }).finally(() => refetchApplication());
     };
 
     /**
@@ -274,7 +305,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         if ( steps.length === 1
             && steps[ 0 ].options.length === 1
             && steps[ 0 ].options[ 0 ].authenticator
-                === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR ) {
+                === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME) {
             dispatch(
                 addAlert({
                     description: t(
@@ -327,11 +358,15 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
     const handleIdentifierFirstInStep = (options: AuthenticatorInterface[]): boolean =>
         options.some(
             (option: AuthenticatorInterface) =>
-                option.authenticator === IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+                option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .IDENTIFIER_FIRST_AUTHENTICATOR_NAME
         );
 
     return (
-        <Box className="sign-in-method-split-view">
+        <Box
+            className="sign-in-method-split-view"
+            data-componentid={ componentId }
+        >
             <SidePanelDrawer
                 open={ isPredefinedFlowsSidePanelDrawerOpen }
                 className={
