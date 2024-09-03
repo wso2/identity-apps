@@ -1,5 +1,15 @@
 # @wso2is/admin.api-resources.v1
 
+## 2.20.153
+
+### Patch Changes
+
+- Updated dependencies [[`22dcbbe1383cfdb1b388f3f02e51ccc0dab653dd`](https://github.com/wso2/identity-apps/commit/22dcbbe1383cfdb1b388f3f02e51ccc0dab653dd), [`1cb81cec3954eb14d1e294bed089782c0b8fe3b7`](https://github.com/wso2/identity-apps/commit/1cb81cec3954eb14d1e294bed089782c0b8fe3b7)]:
+  - @wso2is/admin.extensions.v1@2.29.3
+  - @wso2is/react-components@2.4.8
+  - @wso2is/admin.core.v1@2.29.5
+  - @wso2is/form@2.1.9
+
 ## 2.20.152
 
 ### Patch Changes

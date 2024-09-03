@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.1.3
+
+### Patch Changes
+
+- [#6861](https://github.com/wso2/identity-apps/pull/6861) [`22dcbbe1383cfdb1b388f3f02e51ccc0dab653dd`](https://github.com/wso2/identity-apps/commit/22dcbbe1383cfdb1b388f3f02e51ccc0dab653dd) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add config to disable add/delete actions for remote userstores
+
 ## 2.1.2
 
 ### Patch Changes
