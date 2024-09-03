@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import {
     AppConstants,
-    AppState,
     FeatureConfigInterface,
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
 } from "@wso2is/admin.core.v1";
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { LoadableComponentInterface, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar,
@@ -41,7 +41,6 @@ import {
 import moment, { Moment } from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { GroupConstants } from "../constants";
 import { GroupsInterface } from "../models";
@@ -102,6 +101,14 @@ interface GroupListProps extends SBACInterface<FeatureConfigInterface>,
      * Indicates whether the currently selected user store is read-only or not.
      */
     isReadOnlyUserStore?: boolean;
+    /**
+     * Flag to show/hide the delete action in the userstore list.
+     */
+    isUserstoreDeleteDisabled?: boolean;
+    /**
+     * Flag to show/hide the add action in the userstore list.
+     */
+    isUserstoreAddDisabled?: boolean;
 }
 
 /**
@@ -128,15 +135,18 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
         showListItemActions,
         showMetaContent,
         isReadOnlyUserStore,
+        isUserstoreAddDisabled,
+        isUserstoreDeleteDisabled,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-
     const [ showGroupDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedGroup, setCurrentDeletedGroup ] = useState<GroupsInterface>();
+
+    const hasGroupsUpdatePermission: boolean = useRequiredScopes(featureConfig?.groups?.scopes?.update);
+    const hasGroupsDeletePermission: boolean = useRequiredScopes(featureConfig?.groups?.scopes?.delete);
 
     const handleGroupEdit = (groupId: string): void => {
         history.push(AppConstants.getPaths().get("GROUP_EDIT").replace(":id", groupId));
@@ -214,7 +224,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
             return (
                 <EmptyPlaceholder
                     data-testid={ `${ testId }-empty-list-empty-placeholder` }
-                    action={ !isReadOnlyUserStore && (
+                    action={ !isReadOnlyUserStore && !isUserstoreAddDisabled && (
                         <Show
                             when={ featureConfig?.groups?.scopes?.create }
                         >
@@ -231,14 +241,14 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={
-                        isReadOnlyUserStore
+                        (isReadOnlyUserStore || isUserstoreAddDisabled)
                             ? t("roles:list.emptyPlaceholders.emptyRoleList.emptyRoles",
                                 { type: "groups" })
                             : t("roles:list.emptyPlaceholders.emptyRoleList.title",
                                 { type: "group" })
                     }
                     subtitle={
-                        isReadOnlyUserStore
+                        (isReadOnlyUserStore || isUserstoreAddDisabled)
                             ? [
                                 t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.0",
                                     { type: "groups" })
@@ -341,11 +351,11 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 icon: (group: GroupsInterface): SemanticICONS => {
                     const userStore: string = group?.displayName?.split("/").length > 1
                         ? group?.displayName?.split("/")[0]
-                        : "PRIMARY";
+                        : userstoresConfig?.primaryUserstoreName;
 
                     return !isFeatureEnabled(featureConfig?.groups,
                         GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
-                    || !hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.update, allowedScopes)
+                    || !hasGroupsUpdatePermission
                     || readOnlyUserStores?.includes(userStore.toString())
                         ? "eye"
                         : "pencil alternate";
@@ -355,11 +365,11 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 popupText: (group: GroupsInterface): string => {
                     const userStore: string = group?.displayName?.split("/").length > 1
                         ? group?.displayName?.split("/")[0]
-                        : "PRIMARY";
+                        : userstoresConfig?.primaryUserstoreName;
 
                     return !isFeatureEnabled(featureConfig?.groups,
                         GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
-                    || !hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.update, allowedScopes)
+                    || !hasGroupsUpdatePermission
                     || readOnlyUserStores?.includes(userStore.toString())
                         ? t("common:view")
                         : t("common:edit");
@@ -372,10 +382,12 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
             hidden: (group: GroupsInterface): boolean => {
                 const userStore: string = group?.displayName?.split("/").length > 1
                     ? group?.displayName?.split("/")[0]
-                    : "PRIMARY";
+                    : userstoresConfig?.primaryUserstoreName;
 
-                return !hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.delete, allowedScopes)
-                    || readOnlyUserStores?.includes(userStore.toString());
+                return !hasGroupsDeletePermission
+                    || readOnlyUserStores?.includes(userStore.toString())
+                    || isReadOnlyUserStore
+                    || isUserstoreDeleteDisabled;
             },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, group: GroupsInterface): void => {

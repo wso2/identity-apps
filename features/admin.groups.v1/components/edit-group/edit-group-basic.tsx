@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,7 +23,7 @@ import {
     UserStoreProperty,
     history
 } from "@wso2is/admin.core.v1";
-import { userstoresConfig } from "@wso2is/admin.extensions.v1";
+import { groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
 import {
     AlertInterface,
     AlertLevels,
@@ -97,7 +97,10 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
 
     const userStore: string = groupObject?.displayName?.split("/")?.length > 1
         ? groupObject.displayName.split("/")[0]
-        : SharedUserStoreConstants.PRIMARY_USER_STORE;
+        : userstoresConfig.primaryUserstoreName;
+
+    const isUserstoreDeleteDisabled: boolean = !groupConfig?.allowGroupDeleteForRemoteUserstores
+        && userStore !== userstoresConfig.primaryUserstoreName;
 
     useEffect(() => {
         if (groupObject && groupObject.displayName.indexOf("/") !== -1) {
@@ -115,7 +118,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
     const validateGroupNamePattern = async (): Promise<string> => {
         let userStoreRegEx: string = "";
 
-        if (userStore !== SharedUserStoreConstants.PRIMARY_USER_STORE) {
+        if (userStore !== userstoresConfig.primaryUserstoreName) {
             await SharedUserStoreUtils.getUserStoreRegEx(userStore,
                 SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
                 .then((response: string) => {
@@ -352,7 +355,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
             </EmphasizedSegment>
             <Divider hidden />
             {
-                !isReadOnly && (
+                !isReadOnly && !isUserstoreDeleteDisabled && (
                     <DangerZoneGroup sectionHeader="Danger Zone">
                         <DangerZone
                             actionTitle={

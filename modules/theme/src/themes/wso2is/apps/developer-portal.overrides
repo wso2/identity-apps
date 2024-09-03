@@ -1558,7 +1558,6 @@ TODO : Move values to separate variables and cleanup styles.
 
     .scroll-container {
         height: calc(100vh - 450px);
-        min-width: 800px;
         font-family: "Gilmer";
         font-style: normal;
         font-weight: 400;
@@ -1904,6 +1903,7 @@ TODO : Move values to separate variables and cleanup styles.
 .email-template-resource-tab-pane {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
+    pointer-events: none;
 }
 
 .email-template-preview {
