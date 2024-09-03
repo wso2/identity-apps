@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,14 @@
  * under the License.
  */
 
+import { CopyIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Button, Icon, Input } from "semantic-ui-react";
 import { Popup } from "../popup";
+import "./copy-input-field.scss";
 
 /**
  * Copy to clipboard input field props.
@@ -117,7 +119,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
                     data-tooltip={ copied ? "Copied!" : "Copy to clipboard" }
                     data-inverted=""
                     className="copy-input-action"
-                    icon="copy"
+                    icon={ <CopyIcon /> }
                     type="button"
                     onMouseEnter={ () => {
                         setCopied(false);
