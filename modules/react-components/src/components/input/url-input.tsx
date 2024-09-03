@@ -860,7 +860,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                     (
                                         <Button
                                             onClick={ (e) => addFormButton(e) }
-                                            icon={ <PlusIcon /> }
+                                            icon={ PlusIcon }
                                             type="button"
                                             className="add-button"
                                             disabled={ readOnly || disabled || (!allowEmptyValues && !changeUrl) }
