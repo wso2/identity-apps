@@ -224,7 +224,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
         >
             <Grid>
                 {
-                    groupConfig?.addGroupWizard?.showUserstoreDropdown && (
+                    groupConfig?.allowGroupAddForRemoteUserstores && (
                         <GridRow>
                             <RootOnlyComponent>
                                 <GridColumn mobile={ 16 } tablet={ 16 } computer={ 10 }>

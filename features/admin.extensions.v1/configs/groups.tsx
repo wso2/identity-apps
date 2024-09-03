@@ -19,7 +19,6 @@
 import { GroupConfig } from "./models";
 
 export const groupConfig: GroupConfig = {
-    addGroupWizard: {
-        showUserstoreDropdown: true
-    }
+    allowGroupAddForRemoteUserstores: true,
+    allowGroupDeleteForRemoteUserstores: true
 };

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,26 +16,8 @@
  * under the License.
  */
 
-import { GroupsInterface } from "@wso2is/admin.groups.v1";
 
 export interface GroupConfig {
-    addGroupWizard: {
-        requiredSteps?: string[];
-        showUserstoreDropdown?: boolean;
-        subHeading?: string;
-        submitStep?: string;
-    };
-    editGroups?: {
-        basicTab: {
-            showGroupNameLabel: boolean;
-            userstore: (groupObject: GroupsInterface) => string;
-        };
-        basicTabName: string;
-        showRolesTab: boolean;
-    };
-    groupsList?: {
-        description: string;
-        filterGroups: (groupResources: GroupsInterface[]) => GroupsInterface[];
-        showUserstoreDropdown: boolean;
-    };
+    allowGroupAddForRemoteUserstores: boolean;
+    allowGroupDeleteForRemoteUserstores: boolean;
 }

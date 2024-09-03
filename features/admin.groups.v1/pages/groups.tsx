@@ -27,7 +27,7 @@ import {
     getAUserStore,
     getEmptyPlaceholderIllustrations
 } from "@wso2is/admin.core.v1";
-import { commonConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
+import { commonConfig, groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
 import { RootOnlyComponent } from "@wso2is/admin.organizations.v1/components";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
@@ -108,6 +108,11 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         isLoading: isGroupsListRequestLoading,
         mutate: mutateGroupsFetchRequest
     } = useGroupList(userStore, "members,roles", searchQuery, true);
+
+    const isUserstoreDeleteDisabled: boolean = !groupConfig?.allowGroupDeleteForRemoteUserstores
+        && userStore !== userstoresConfig.primaryUserstoreName;
+    const isUserstoreAddDisabled: boolean = !groupConfig?.allowGroupAddForRemoteUserstores
+        && userStore !== userstoresConfig.primaryUserstoreName;
 
     /**
      * Indicates whether the currently selected user store is read-only or not.
@@ -298,6 +303,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         <PageLayout
             action={
                 (!isGroupsListRequestLoading && paginatedGroups?.length > 0)
+                && !isUserstoreAddDisabled
+                && !isReadOnlyUserStore
                 && (
                     <Show
                         when={ featureConfig?.groups?.scopes?.create }
@@ -430,6 +437,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         readOnlyUserStores={ readOnlyUserStoresList }
                         featureConfig={ featureConfig }
                         isReadOnlyUserStore={ isReadOnlyUserStore }
+                        isUserstoreAddDisabled={ isUserstoreAddDisabled }
+                        isUserstoreDeleteDisabled={ isUserstoreDeleteDisabled }
                     />)
                 }
             </ListLayout>

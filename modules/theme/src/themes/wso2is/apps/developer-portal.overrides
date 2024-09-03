@@ -1558,7 +1558,6 @@ TODO : Move values to separate variables and cleanup styles.
 
     .scroll-container {
         height: calc(100vh - 450px);
-        min-width: 800px;
         font-family: "Gilmer";
         font-style: normal;
         font-weight: 400;
