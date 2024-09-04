@@ -584,7 +584,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 <>
                     {
                         applicationConfig.editApplication.getActions(
-                            application?.id,
                             inboundProtocolConfigs?.oidc?.clientId,
                             tenantDomain,
                             componentId
