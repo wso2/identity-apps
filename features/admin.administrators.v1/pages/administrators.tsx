@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { GearIcon } from "@oxygen-ui/react-icons";
 import {
     FeatureAccessConfigInterface,
     FeatureStatus,
@@ -1501,7 +1502,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                                 (
                                     <Button
                                         data-componentid={ `${ componentId }-admin-settings-button` }
-                                        icon="setting"
+                                        icon={ GearIcon }
                                         onClick={ handleSettingsButton }
                                     >
                                     </Button>

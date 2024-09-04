@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { GearIcon } from "@oxygen-ui/react-icons";
 import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import {
     getApplicationDetails,
@@ -401,7 +402,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                                                                         "develop-getting-started-page-cutomize-try-it"
                                                                     }
                                                                     onClick={ onCustomizeLoginFlowNavigate }
-                                                                    icon="setting"
+                                                                    icon={ GearIcon }
                                                                     iconPlacement="right"
                                                                     size="large"
                                                                     className="primary-action-button"

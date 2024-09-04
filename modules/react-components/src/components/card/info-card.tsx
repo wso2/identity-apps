@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,8 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
+import { ChevronRightIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactElement, ReactNode } from "react";
@@ -25,6 +27,7 @@ import { LinkButton } from "../button";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 import { Popup } from "../popup";
 import { Tooltip } from "../typography";
+import "./info-card.scss";
 
 /**
  * Proptypes for the info card component.
@@ -387,18 +390,15 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                     data-componentid={ `${ componentId }-tags` }
                                     data-testid={ `${ testId }-tags` }
                                 >
-                                    <Label.Group size="mini">
-                                        {
-                                            tags.map((tag, index) => (
-                                                <Label key={ index }>#{ tag }</Label>
-                                            ))
-                                        }
-                                    </Label.Group>
+                                    {
+                                        tags.map((tag, index) => (
+                                            <Chip className="tag" key={ index } label={ "#"+tag }  />
+                                        ))
+                                    }
                                 </Card.Content>
                             )
                             : null
                     }
-                    { (showCardAction || showSetupGuideButton) && <div className="ui hidden divider"/> }
                     <div className="instances-container">
                         <div className="conditions-container">
                             <div className="instances-conditionOne">
@@ -436,22 +436,21 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                         {
                             showCardAction && (
                                 <>
-                                    <div className="ui instance divider"/>
                                     <div className="instances-buttons">
                                         { showCardAction ? (
                                             <LinkButton
                                                 className="idp-create-button"
                                                 disabled={ disabled }
+                                                hoverType="underline"
                                                 onClick={ (e: MouseEvent<HTMLButtonElement>) => {
-                                                    onClick(e as unknown as MouseEvent<HTMLAnchorElement>,
-                                                        null);
+                                                    onClick(e as unknown as MouseEvent<HTMLAnchorElement>, null);
                                                 } }
                                                 data-componentid={
                                                     `${ componentId }-${ header.toString().replace(/\s/g, "-") }`
                                                 }
                                             >
-                                        Create
-                                                <i className="arrow right icon"></i>
+                                                Create
+                                                <ChevronRightIcon className="idp-create-button-icon" />
                                             </LinkButton>
                                         ) : null }
                                         { showSetupGuideButton && (<Button
