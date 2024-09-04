@@ -555,7 +555,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 (
                                     <Button
                                         data-componentid={ "applications-settings-button" }
-                                        icon={ <GearIcon /> }
+                                        icon={ GearIcon }
                                         onClick={ handleSettingsButton }
                                     />
                                 )
@@ -585,7 +585,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             (
                                 <Button
                                     data-componentid={ "applications-settings-button" }
-                                    icon={ <GearIcon /> }
+                                    icon={ GearIcon }
                                     onClick={ handleSettingsButton }
                                 />
                             )

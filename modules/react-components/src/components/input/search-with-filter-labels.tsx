@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { CheckIcon, MagnifyingGlassIcon } from "@oxygen-ui/react-icons";
 import {
     IdentifiableComponentInterface,
     LoadableComponentInterface,
@@ -29,7 +30,8 @@ import React, {
     ReactElement,
     useState
 } from "react";
-import { Card, Icon, Input, InputProps, Label, Placeholder } from "semantic-ui-react";
+import { Card, Input, InputProps, Label, Placeholder } from "semantic-ui-react";
+import "./search-with-filter-labels.scss";
 
 /**
  *
@@ -171,7 +173,11 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
                             <Input
                                 fluid
                                 loading={ isLoading }
-                                icon={ icon ?? <Icon name="search"/> }
+                                icon={ icon ?? (
+                                    <i aria-hidden="true" className="search-with-filter-label-icon icon">
+                                        <MagnifyingGlassIcon />
+                                    </i>
+                                ) }
                                 value={ searchQuery }
                                 iconPosition="left"
                                 onChange={ handleQuerySearch }
@@ -206,7 +212,7 @@ export const SearchWithFilterLabels: FunctionComponent<PropsWithChildren<SearchW
                                             onClick={ () => handleFilter(label) }
                                         >
                                             { label }
-                                            { isSelected && <Icon name="check"/> }
+                                            { isSelected && <CheckIcon className="filter-label-check-icon" /> }
                                         </Label>
                                     );
                                 })
