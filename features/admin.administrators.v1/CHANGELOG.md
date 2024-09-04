@@ -1,5 +1,26 @@
 # @wso2is/admin.administrators.v1
 
+## 2.24.12
+
+### Patch Changes
+
+- [#6866](https://github.com/wso2/identity-apps/pull/6866) [`2f1063e00b42e7f5a3886c16812c2240d51f7594`](https://github.com/wso2/identity-apps/commit/2f1063e00b42e7f5a3886c16812c2240d51f7594) Thanks [@Achintha444](https://github.com/Achintha444)! - Change semantic-icons to oxygen design system icons in some sections
+
+- Updated dependencies [[`2f1063e00b42e7f5a3886c16812c2240d51f7594`](https://github.com/wso2/identity-apps/commit/2f1063e00b42e7f5a3886c16812c2240d51f7594)]:
+  - @wso2is/admin.applications.v1@2.25.8
+  - @wso2is/react-components@2.4.10
+  - @wso2is/admin.core.v1@2.29.8
+  - @wso2is/admin.extensions.v1@2.29.6
+  - @wso2is/admin.remote-userstores.v1@1.0.23
+  - @wso2is/admin.roles.v2@2.21.23
+  - @wso2is/admin.server-configurations.v1@2.23.6
+  - @wso2is/admin.tenants.v1@2.22.12
+  - @wso2is/admin.users.v1@2.22.12
+  - @wso2is/admin.userstores.v1@2.20.156
+  - @wso2is/form@2.1.11
+  - @wso2is/admin.authentication.v1@2.20.156
+  - @wso2is/admin.feature-gate.v1@1.0.12
+
 ## 2.24.11
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/react-components
 
+## 2.4.10
+
+### Patch Changes
+
+- [#6866](https://github.com/wso2/identity-apps/pull/6866) [`2f1063e00b42e7f5a3886c16812c2240d51f7594`](https://github.com/wso2/identity-apps/commit/2f1063e00b42e7f5a3886c16812c2240d51f7594) Thanks [@Achintha444](https://github.com/Achintha444)! - Change semantic-icons to oxygen design system icons in some sections
+
 ## 2.4.9
 
 ### Patch Changes
