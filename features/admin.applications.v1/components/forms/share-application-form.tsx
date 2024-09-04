@@ -20,26 +20,24 @@ import Collapse from "@mui/material/Collapse";
 import { AppState } from "@wso2is/admin.core.v1";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import {
-    getOrganizations,
-    getSharedOrganizations,
     shareApplication,
     stopSharingApplication,
     unshareApplication
 } from "@wso2is/admin.organizations.v1/api";
+import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
+import useSharedOrganizations from "@wso2is/admin.organizations.v1/api/use-shared-organizations";
 import {
     OrganizationInterface,
-    OrganizationListInterface,
     OrganizationResponseInterface,
     ShareApplicationRequestInterface
 } from "@wso2is/admin.organizations.v1/models";
-import { IdentityAppsError } from "@wso2is/core/errors";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertLevels,
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    ContentLoader,
     Heading,
     Hint,
     Message,
@@ -48,7 +46,7 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosError } from "axios";
 import differenceBy from "lodash-es/differenceBy";
 import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";
@@ -57,6 +55,7 @@ import React, {
     FunctionComponent,
     useCallback,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -123,6 +122,137 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
     const [ filter, setFilter ] = useState<string>();
     const { isOrganizationManagementEnabled } = useGlobalVariables();
 
+    const {
+        data: organizations,
+        isLoading: isOrganizationsFetchRequestLoading,
+        isValidating: isOrganizationsFetchRequestValidating,
+        error: organizationsFetchRequestError
+    } = useGetOrganizations(
+        isOrganizationManagementEnabled,
+        null,
+        null,
+        null,
+        null,
+        true,
+        false
+    );
+
+    const {
+        data: sharedOrganizations,
+        isLoading: isSharedOrganizationsFetchRequestLoading,
+        isValidating: isSharedOrganizationsFetchRequestValidating,
+        error: sharedOrganizationsFetchRequestError,
+        mutate: mutateSharedOrganizationsFetchRequest
+    } = useSharedOrganizations(
+        application.id,
+        isOrganizationManagementEnabled
+    );
+
+    /**
+     * Check if the organization list is loading.
+     */
+    const isLoading: boolean = useMemo(() => {
+        if (!isOrganizationManagementEnabled) {
+            return false;
+        }
+
+        return isOrganizationsFetchRequestLoading ||
+            isSharedOrganizationsFetchRequestLoading ||
+            isOrganizationsFetchRequestValidating ||
+            isSharedOrganizationsFetchRequestValidating;
+    }, [
+        isOrganizationsFetchRequestLoading,
+        isSharedOrganizationsFetchRequestLoading,
+        isOrganizationsFetchRequestValidating,
+        isSharedOrganizationsFetchRequestValidating
+    ]);
+
+    /**
+     * Fetches the organization list.
+     */
+    useEffect(() => {
+        if (organizations?.organizations) {
+            setSubOrganizationList(organizations.organizations);
+        }
+    }, [ organizations ]);
+
+    /**
+     * Fetches the shared organizations list for the particular application.
+     */
+    useEffect(() => {
+        if (sharedOrganizations?.organizations) {
+            setSharedOrganizationList(sharedOrganizations.organizations);
+        } else {
+            setSharedOrganizationList([]);
+        }
+    }, [ sharedOrganizations ]);
+
+    /**
+     * Dispatches error notifications if organization fetch request fails.
+     */
+    useEffect(() => {
+        if (!organizationsFetchRequestError) {
+            return;
+        }
+
+        if (organizationsFetchRequestError?.response?.data?.description) {
+            dispatch(addAlert({
+                description: organizationsFetchRequestError?.response?.data?.description
+                    ?? t("organizations:notifications.getOrganizationList.error.description"),
+                level: AlertLevels.ERROR,
+                message: organizationsFetchRequestError?.response?.data?.message
+                    ?? t("organizations:notifications.getOrganizationList.error.message")
+            }));
+
+            return;
+        }
+
+        dispatch(
+            addAlert({
+                description: t(
+                    "organizations:notifications.getOrganizationList" +
+                        ".genericError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "organizations:notifications." +
+                        "getOrganizationList.genericError.message"
+                )
+            })
+        );
+    }, [ organizationsFetchRequestError ]);
+
+    /**
+     * Dispatches error notifications if shared organizations fetch request fails.
+     */
+    useEffect(() => {
+        if (!sharedOrganizationsFetchRequestError) {
+            return;
+        }
+
+        if (sharedOrganizationsFetchRequestError?.response?.data?.description) {
+            dispatch(addAlert({
+                description: sharedOrganizationsFetchRequestError?.response?.data?.description
+                    ?? t("applications:edit.sections.shareApplication.getSharedOrganizations.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: sharedOrganizationsFetchRequestError?.response?.data?.message
+                    ?? t("applications:edit.sections.shareApplication.getSharedOrganizations.genericError.message")
+            }));
+
+            return;
+        }
+
+        dispatch(
+            addAlert({
+                description: t("applications:edit.sections.shareApplication" +
+                        ".getSharedOrganizations.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("applications:edit.sections.shareApplication" +
+                        ".getSharedOrganizations.genericError.message")
+            })
+        );
+    }, [ sharedOrganizationsFetchRequestError ]);
+
     useEffect(() => setTempOrganizationList(subOrganizationList || []),
         [ subOrganizationList ]
     );
@@ -170,90 +300,6 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
             handleShareApplication();
         }
     }, [ triggerApplicationShare ]);
-
-    /**
-     * Load the list of sub organizations under the current organization & list of already shared organizations of the
-     * application for application sharing.
-     */
-    useEffect(() => {
-        if (!isOrganizationManagementEnabled) {
-            return;
-        }
-
-        getOrganizations(
-            null,
-            null,
-            null,
-            null,
-            true,
-            false
-        ).then((response: OrganizationListInterface) => {
-            setSubOrganizationList(response.organizations);
-        }).catch((error: IdentityAppsError) => {
-            if (error?.description) {
-                dispatch(
-                    addAlert({
-                        description: error.description,
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "organizations:notifications." +
-                                "getOrganizationList.error.message"
-                        )
-                    })
-                );
-
-                return;
-            }
-
-            dispatch(
-                addAlert({
-                    description: t(
-                        "organizations:notifications.getOrganizationList" +
-                            ".genericError.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: t(
-                        "organizations:notifications." +
-                            "getOrganizationList.genericError.message"
-                    )
-                })
-            );
-        });
-
-        fetchSharedOrganizationsList();
-    }, [ getOrganizations ]);
-
-    const fetchSharedOrganizationsList = (): void => {
-        getSharedOrganizations(
-            currentOrganization.id,
-            application.id
-        ).then((response: AxiosResponse) => {
-            setSharedOrganizationList(response.data.organizations);
-        }).catch((error: IdentityAppsApiException) => {
-            if (error.response.data.description) {
-                dispatch(
-                    addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: t("applications:edit.sections.shareApplication" +
-                                ".getSharedOrganizations.genericError.message")
-                    })
-                );
-
-                return;
-            }
-
-            dispatch(
-                addAlert({
-                    description: t("applications:edit.sections.shareApplication" +
-                            ".getSharedOrganizations.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("applications:edit.sections.shareApplication" +
-                            ".getSharedOrganizations.genericError.message")
-                })
-            );
-        });
-    };
 
     const handleShareApplication: () => Promise<void> = useCallback(async () => {
         let shareAppData: ShareApplicationRequestInterface;
@@ -342,7 +388,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                 })
                 .finally(() => {
                     if (shareType === ShareType.SHARE_SELECTED) {
-                        fetchSharedOrganizationsList();
+                        mutateSharedOrganizationsFetchRequest();
                     }
 
                     onApplicationSharingCompleted();
@@ -513,6 +559,12 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         setTempOrganizationList,
         checkedUnassignedListItems
     ]);
+
+    if (isLoading) {
+        return (
+            <ContentLoader inline="centered" active/>
+        );
+    };
 
     return (
         <>

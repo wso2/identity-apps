@@ -31,32 +31,22 @@ import {
 } from "@wso2is/admin.applications.v1/models";
 import getTryItClientId from "@wso2is/admin.applications.v1/utils/get-try-it-client-id";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
-import { EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { ApplicationRoles } from "@wso2is/admin.roles.v2/components/application-roles";
 import { I18n } from "@wso2is/i18n";
 import {
     Code,
-    DocumentationLink,
-    EmphasizedSegment,
-    GenericIcon,
     Heading,
-    Popup,
-    PrimaryButton,
     ResourceTab,
-    ResourceTabPaneInterface,
-    Text
+    ResourceTabPaneInterface
 } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { Trans } from "react-i18next";
-import { Divider, Icon, Message } from "semantic-ui-react";
-import { ApplicationGeneralTabOverride } from "./components/application-general-tab-overide";
+import { Divider, Icon } from "semantic-ui-react";
 import { MarketingConsentModalWrapper } from "./components/marketing-consent/components";
 import { ApplicationConfig, ExtendedFeatureConfigInterface } from "./models";
 import { ApplicationTabIDs } from "./models/application";
-import {
-    ReactComponent as TryItAppIllustration
-} from "../../themes/default/assets/images/illustrations/rafiki-illustration.svg";
 import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";
 import SamlWebAppTemplate
@@ -210,187 +200,10 @@ export const applicationConfig: ApplicationConfig = {
     },
     editApplication: {
         extendTabs: false,
-        getActions: (applicationId: string, clientId: string, tenant: string, testId: string) => {
-
-            const asgardeoLoginPlaygroundURL: string = window[ "AppUtils" ]?.getConfig()?.extensions?.asgardeoTryItURL;
-
-            if (clientId === getTryItClientId(tenant)) {
-                return (
-                    <PrimaryButton
-                        data-tourid="button"
-                        onClick={ (): void => {
-                            EventPublisher.getInstance().publish("tryit-try-login", {
-                                "client-id": clientId
-                            });
-                            window.open(asgardeoLoginPlaygroundURL+"?client_id="+clientId+"&org="+tenant);
-                        } }
-                        data-testid={ `${ testId }-playground-button` }
-                    >
-                        Try Login
-                        <Icon name="arrow right"/>
-                    </PrimaryButton>
-                );
-            }
-
-            return null;
-        },
-        getOverriddenDescription: (clientId: string, tenantDomain: string, _templateName: string) => {
-            if (clientId === getTryItClientId(tenantDomain)){
-                return (
-                    <div className="ellipsis">
-                        <Popup
-                            content={ (
-                                <Trans
-                                    i18nKey=
-                                        { "extensions:develop.applications.asgardeoTryit.description" }
-                                >
-                                    You can try out different login flows of Asgardeo with our Try It app.
-                                </Trans>
-                            ) }
-                            trigger={ (
-                                <span>
-                                    <Trans
-                                        i18nKey=
-                                            { "extensions:develop.applications.asgardeoTryit.description" }
-                                    >
-                                        You can try out different login flows of Asgardeo with our Try It app.
-                                    </Trans>
-                                </span>
-                            ) }
-                        />
-                    </div>
-                );
-            }
-
-            return null;
-        },
-        getOverriddenImage: (clientId: string, tenantDomain: string) => {
-            if(clientId === getTryItClientId(tenantDomain)) {
-                return (
-                    <GenericIcon
-                        floated="left"
-                        size="tiny"
-                        transparent
-                        icon={ TryItAppIllustration }
-                    />
-                );
-            }
-
-            return null;
-        },
-        getOverriddenTab: (
-            clientId: string,
-            tabName: ApplicationTabTypes,
-            defaultComponent: ReactElement,
-            application: ApplicationInterface,
-            tenantDomain: string,
-            _onUpdate?:(id: string) => void,
-            _readOnly?:boolean
-        ) => {
-            if (clientId === getTryItClientId(tenantDomain) && tabName === ApplicationTabTypes.GENERAL) {
-                return (
-                    <ApplicationGeneralTabOverride
-                        appId={ application?.id }
-                        appName={ application?.name }
-                        clientId={ clientId }
-                    ></ApplicationGeneralTabOverride>
-                );
-            }
-
-            if (clientId === getTryItClientId(tenantDomain) && tabName === ApplicationTabTypes.USER_ATTRIBUTES){
-                return (
-                    <ResourceTab.Pane controlledSegmentation>
-                        <EmphasizedSegment padded="very">
-                            <div className="form-container with-max-width">
-                                <Heading ellipsis as="h4">User Attributes</Heading>
-                                <Heading as="h6" color="grey" compact>
-                                User attributes that are allowed to be shared with this application.
-                                </Heading>
-                                <Divider hidden />
-                                <div className="authenticator-dynamic-properties">
-                                    <div className="authenticator-dynamic-property">
-                                        <div className="authenticator-dynamic-property-name-container">
-                                            <GenericIcon
-                                                square
-                                                inline
-                                                transparent
-                                                icon={ <Icon name="mail"/> }
-                                                size="micro"
-                                                className="scope-icon"
-                                                spaced="right"
-                                                verticalAlign="top"
-                                            />
-                                            <div>
-                                            Email
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="authenticator-dynamic-properties">
-                                    <div className="authenticator-dynamic-property">
-                                        <div className="authenticator-dynamic-property-name-container">
-                                            <GenericIcon
-                                                square
-                                                inline
-                                                transparent
-                                                icon={ <Icon name="user"/> }
-                                                size="micro"
-                                                className="scope-icon"
-                                                spaced="right"
-                                                verticalAlign="top"
-                                            />
-                                            <div>
-                                            First Name
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="authenticator-dynamic-properties">
-                                    <div className="authenticator-dynamic-property">
-                                        <div className="authenticator-dynamic-property-name-container">
-                                            <GenericIcon
-                                                square
-                                                inline
-                                                transparent
-                                                icon={ <Icon name="user"/> }
-                                                size="micro"
-                                                className="scope-icon"
-                                                spaced="right"
-                                                verticalAlign="top"
-                                            />
-                                            <div>
-                                            Last Name
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <Message visible>
-                                    <Text>
-                                        These attributes are pre-configured for the
-                                        { " " }<Text inline weight="bold"> Asgardeo Try It</Text> application.
-                                    You can configure more attributes when you integrate your applications to Asgardeo.
-                                        <DocumentationLink
-                                            link={ "develop.applications"+
-                                            ".editApplication.oidcApplication.attributes.learnMore" }
-                                            isLinkRef={ true }
-                                        >
-                                            <Trans
-                                                i18nKey={ "extensions:common.learnMore" }
-                                            >
-                                                Learn More
-                                            </Trans>
-                                        </DocumentationLink>
-                                    </Text>
-                                </Message>
-                                <Divider hidden />
-                            </div>
-                        </EmphasizedSegment>
-                    </ResourceTab.Pane>
-                );
-            }
-
-            return defaultComponent;
-        },
+        getActions: () => null,
+        getOverriddenDescription: () => null,
+        getOverriddenImage: () => null,
+        getOverriddenTab: () => null,
         getStrongAuthenticationFlowTabIndex: (
             clientId: string,
             tenantDomain: string
