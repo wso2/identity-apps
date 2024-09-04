@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.1.4
+
+### Patch Changes
+
+- [#6864](https://github.com/wso2/identity-apps/pull/6864) [`26785522cc1c6e675cb91e8976d77b75e9dc3ecf`](https://github.com/wso2/identity-apps/commit/26785522cc1c6e675cb91e8976d77b75e9dc3ecf) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Make email template preview non interactive
+
 ## 2.1.3
 
 ### Patch Changes
