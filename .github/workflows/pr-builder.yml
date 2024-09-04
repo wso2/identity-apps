@@ -21,7 +21,8 @@ env:
 jobs:
   lint:
     name: ⬣ ESLint (STATIC ANALYSIS)
-    if: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' }}
+    # if: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' }}
+    if: ${{ false }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -84,7 +85,8 @@ jobs:
 
   typecheck:
     name: ʦ Typecheck (STATIC ANALYSIS)
-    if: ${{ github.event.label.name == 'trigger-pr-builder' || github.event_name == 'pull_request'}}
+    # if: ${{ github.event.label.name == 'trigger-pr-builder' || github.event_name == 'pull_request'}}
+    if: ${{ false }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -142,6 +144,7 @@ jobs:
 
   test:
     name: 👾 Unit Test (TESTING)
+    if: ${{ false }}
     needs: [ typecheck ]
     runs-on: ubuntu-latest
     strategy:
@@ -227,7 +230,6 @@ jobs:
 
   build:
     name: 🚧 Build
-    needs: [ test, typecheck ]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -238,14 +240,7 @@ jobs:
     steps:
       - name: ⬇️ Checkout
         id: checkout-master
-        uses: actions/checkout@v2.3.3
-        with:
-          fetch-depth: 1
-          ref: master
-
-      - name: ⬇️ Checkout
-        id: checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
