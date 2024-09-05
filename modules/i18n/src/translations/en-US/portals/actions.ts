@@ -48,7 +48,7 @@ export const actions: actionsNS = {
                 " secrets of the external endpoint need to be updated.",
                 title: {
                     noneAuthType: "No authentication is configured.",
-                    otherAuthType: "<strong>{{ authType }}</strong> authentication type is configured."
+                    otherAuthType: "<strong>{{ authType }}</strong> authentication scheme is configured."
                 }
             },
             label: "Authentication",
