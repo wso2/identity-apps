@@ -144,7 +144,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
         error: sharedOrganizationsFetchRequestError,
         mutate: mutateSharedOrganizationsFetchRequest
     } = useSharedOrganizations(
-        application.id,
+        application?.id,
         isOrganizationManagementEnabled
     );
 
