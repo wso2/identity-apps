@@ -59,6 +59,8 @@ const DiagnosticLogsPage = (props: DiagnosticPagePropsInterface) : ReactElement 
         ["data-componentid"]: componentId
     } = props;
 
+    const scrollRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+
     const [ isPreviousEmpty, setIsPreviousEmpty ] = useState<boolean>(false);
     const [ isNextEmpty, setIsNextEmpty ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
@@ -78,8 +80,30 @@ const DiagnosticLogsPage = (props: DiagnosticPagePropsInterface) : ReactElement 
     const [ timerRunning, setTimerRunning ] = useState<boolean>(false);
     const [ diagnosticLogList, setDiagnosticLogList ] = useState<InterfaceLogEntry[]>([]);
 
-    const { t } = useTranslation();
     const timeZone: string = "GMT+0000 UTC";
+
+    const { t } = useTranslation();
+
+    const { error, list, loading, next, previous } = useFetch(requestPayload);
+
+    useEffect(() => {
+        const current: number = getDateTimeWithOffset(timeZone);
+        const currentEndTime: string = current.toString();
+        const currentStartTime: string = (current - 3600*1000*timeRange).toString();
+
+        setEndTime(currentEndTime);
+        setStartTime(currentStartTime);
+        setLastDiagnosticLogRequestTime(currentEndTime);
+
+        // Fetch logs automatically during the first render.
+        setRequestPayload({
+            endTime: currentEndTime,
+            filter: "",
+            limit: LogsConstants.LOG_FETCH_COUNT,
+            logType: TabIndex.DIAGNOSTIC_LOGS,
+            startTime: currentStartTime
+        });
+    }, []);
 
     useEffect(() => {
         // Display a message if the logs are not fetched within 15 seconds of the request.
@@ -107,33 +131,9 @@ const DiagnosticLogsPage = (props: DiagnosticPagePropsInterface) : ReactElement 
         setShowRefreshButton(false);
     }, [ endTime, startTime, inputQuery, filterQuery ]);
 
-    useEffect(() => {
-        const current: number = getDateTimeWithOffset(timeZone);
-        const currentEndTime: string = current.toString();
-        const currentStartTime: string = (current - 3600*1000*timeRange).toString();
-
-        setEndTime(currentEndTime);
-        setStartTime(currentStartTime);
-        setLastDiagnosticLogRequestTime(currentEndTime);
-
-        // Fetch logs automatically during the first render.
-        setRequestPayload({
-            endTime: currentEndTime,
-            filter: "",
-            limit: LogsConstants.LOG_FETCH_COUNT,
-            logType: TabIndex.DIAGNOSTIC_LOGS,
-            startTime: currentStartTime
-        });
-    }, []);
-
-    const scrollRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
-
-    const { error, list, loading, next, previous } = useFetch(requestPayload);
-
-
     useEffect (() => {
         if (!loading && list.length > 0) {
-            setDiagnosticLogList(list);
+            setDiagnosticLogList([ ...diagnosticLogList, ...list ]);
         }
     }, [ list, loading ]);
 
@@ -144,24 +144,7 @@ const DiagnosticLogsPage = (props: DiagnosticPagePropsInterface) : ReactElement 
         const element: any = e.target;
 
         setShowDelayMessage(false);
-        /**
-         * When the at the top of the log container
-         */
-        if (element.scrollTop === 0) {
 
-            if (previous) {
-                setRequestPayload({
-                    filter: searchQuery,
-                    limit: LogsConstants.LOG_FETCH_COUNT,
-                    logType: TabIndex.DIAGNOSTIC_LOGS,
-                    previousToken: previous
-                });
-                setIsPreviousEmpty(false);
-                setIsNextEmpty(false);
-            } else {
-                setIsPreviousEmpty(true);
-            }
-        }
         /**
          * When at the bottom of the log container
          */
@@ -258,6 +241,8 @@ const DiagnosticLogsPage = (props: DiagnosticPagePropsInterface) : ReactElement 
      * @param query - search query with filters
      */
     const handleSearch = () => {
+        setDiagnosticLogList([]);
+
         let currentQuery: string = "";
 
         if (inputQuery.length === 0) {
