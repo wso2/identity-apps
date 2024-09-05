@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.5.28
+
+### Patch Changes
+
+- [#6869](https://github.com/wso2/identity-apps/pull/6869) [`fae3342cc1e1e54c44d51ac6deb9e01d2d060720`](https://github.com/wso2/identity-apps/commit/fae3342cc1e1e54c44d51ac6deb9e01d2d060720) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Minor label name change in action ui
+
 ## 2.5.27
 
 ### Patch Changes
