@@ -133,7 +133,7 @@ const DiagnosticLogsPage = (props: DiagnosticPagePropsInterface) : ReactElement 
 
     useEffect (() => {
         if (!loading && list.length > 0) {
-            setDiagnosticLogList([ ...diagnosticLogList, ...list ]);
+            setDiagnosticLogList((previousLogs: InterfaceLogEntry[]) => [ ...previousLogs, ...list ]);
         }
     }, [ list, loading ]);
 
