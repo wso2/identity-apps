@@ -164,61 +164,6 @@ const DiagnosticLogsPage = (props: DiagnosticPagePropsInterface) : ReactElement 
         }
     };
 
-    const renderDiagnosticLogContent = () : ReactElement => {
-
-        return (
-            <div>
-                <div className="top-action-bar">
-                    { advancedSearchFilter() }
-                    <TimeRangeSelector
-                        setFromTime={ (value: string): void => setStartTime(value) }
-                        setToTime={ (value: string): void => setEndTime(value) }
-                        setTimeRange={ (value: number): void => setTimeRange(value) }
-                        data-componentid={ componentId }
-                    />
-                    { showRefreshButton
-                        ? (
-                            <PrimaryButton
-                                onClick={ () => fetchLatestLogs() }
-                                data-componentid={ `${ componentId }-refresh-button` }
-                            >
-                                <Icon name="refresh" />
-                                { t("extensions:develop.monitor.filter.refreshButton.label") }
-                            </PrimaryButton>
-                        ) : (
-                            <PrimaryButton
-                                onClick={ () => handleSearch() }
-                                data-componentid={ `${ componentId }-search-button` }
-                            >
-                                <Icon name="search" />
-                                { t("extensions:develop.monitor.filter.queryButton.label") }
-                            </PrimaryButton>
-                        )
-                    }
-                </div>
-                <div>
-                    <>
-                        <div className="top-toolbar">
-                            { renderRefreshTime() }
-                            <Label.Group>
-                                { filterList && filterList.map(
-                                    (value: { key: string, value:string }, index: number) =>
-                                        (<Label key={ index } className="filter-pill">
-                                            { getLabelTextForFilterPill(value.key) }
-                                            <Label.Detail>{ value.value }</Label.Detail>
-                                            <Icon name="delete" onClick={ () => removeFilter(value.key) }></Icon>
-                                        </Label>)
-                                ) }
-                                { resolveClearAllFilters() }
-                            </Label.Group>
-                        </div>
-                        { resolveDiagnosticLogs() }
-                    </>
-                </div>
-            </div>
-        );
-    };
-
     /**
      * Build filter query
      */
@@ -240,7 +185,7 @@ const DiagnosticLogsPage = (props: DiagnosticPagePropsInterface) : ReactElement 
      *
      * @param query - search query with filters
      */
-    const handleSearch = () => {
+    const handleSearch = (overrideQuery?: string) => {
         setDiagnosticLogList([]);
 
         let currentQuery: string = "";
@@ -253,7 +198,7 @@ const DiagnosticLogsPage = (props: DiagnosticPagePropsInterface) : ReactElement 
                 currentQuery = ` and ${currentQuery}`;
             }
         }
-        setSearchQuery(currentQuery);
+        setSearchQuery(overrideQuery === undefined ? currentQuery : overrideQuery);
 
         // If the custom time range is not defined,
         // start, end times needs to be updated to account for the time it takes to click the search button.
@@ -271,7 +216,7 @@ const DiagnosticLogsPage = (props: DiagnosticPagePropsInterface) : ReactElement 
 
         setRequestPayload({
             endTime: currentEndTime,
-            filter: `${filterQuery}${currentQuery}`,
+            filter: `${filterQuery}${overrideQuery === undefined ? currentQuery : overrideQuery}`,
             limit: LogsConstants.LOG_FETCH_COUNT,
             logType: TabIndex.DIAGNOSTIC_LOGS,
             startTime: currentStartTime
@@ -285,7 +230,7 @@ const DiagnosticLogsPage = (props: DiagnosticPagePropsInterface) : ReactElement 
         setSearchQuery("");
         setInputQuery("");
         setShowRefreshButton(false);
-
+        handleSearch("");
     };
 
     /**
@@ -337,6 +282,60 @@ const DiagnosticLogsPage = (props: DiagnosticPagePropsInterface) : ReactElement 
         setFilterMap(tempMap);
         buildFilterQuery();
         setFilterList([]);
+    };
+
+    const renderDiagnosticLogContent = () : ReactElement => {
+        return (
+            <div>
+                <div className="top-action-bar">
+                    { advancedSearchFilter() }
+                    <TimeRangeSelector
+                        setFromTime={ (value: string): void => setStartTime(value) }
+                        setToTime={ (value: string): void => setEndTime(value) }
+                        setTimeRange={ (value: number): void => setTimeRange(value) }
+                        data-componentid={ componentId }
+                    />
+                    { showRefreshButton
+                        ? (
+                            <PrimaryButton
+                                onClick={ () => fetchLatestLogs() }
+                                data-componentid={ `${ componentId }-refresh-button` }
+                            >
+                                <Icon name="refresh" />
+                                { t("extensions:develop.monitor.filter.refreshButton.label") }
+                            </PrimaryButton>
+                        ) : (
+                            <PrimaryButton
+                                onClick={ () => handleSearch() }
+                                data-componentid={ `${ componentId }-search-button` }
+                            >
+                                <Icon name="search" />
+                                { t("extensions:develop.monitor.filter.queryButton.label") }
+                            </PrimaryButton>
+                        )
+                    }
+                </div>
+                <div>
+                    <>
+                        <div className="top-toolbar">
+                            { renderRefreshTime() }
+                            <Label.Group>
+                                { filterList && filterList.map(
+                                    (value: { key: string, value:string }, index: number) =>
+                                        (<Label key={ index } className="filter-pill">
+                                            { getLabelTextForFilterPill(value.key) }
+                                            <Label.Detail>{ value.value }</Label.Detail>
+                                            <Icon name="delete" onClick={ () => removeFilter(value.key) }></Icon>
+                                        </Label>)
+                                ) }
+                                { resolveClearAllFilters() }
+                            </Label.Group>
+                        </div>
+                        { resolveDiagnosticLogs() }
+                    </>
+                </div>
+            </div>
+        );
     };
 
     /**
