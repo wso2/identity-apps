@@ -32,9 +32,9 @@ import {
     history
 } from "@wso2is/admin.core.v1";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
+import { userConfig } from "@wso2is/admin.extensions.v1/configs";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
-import { userConfig } from "@wso2is/admin.extensions.v1/configs";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     ConnectorPropertyInterface,
@@ -574,6 +574,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             setSelectedUserStore(data.value as string);
         }
         setListOffset(0);
+        setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     };
 
     const onUserDelete = (): void => {
