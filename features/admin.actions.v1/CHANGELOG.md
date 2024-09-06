@@ -1,5 +1,16 @@
 # @wso2is/admin.actions.v1
 
+## 1.1.15
+
+### Patch Changes
+
+- [#6874](https://github.com/wso2/identity-apps/pull/6874) [`5439e797e01c8664d692e73131e2cb8dc0ab7416`](https://github.com/wso2/identity-apps/commit/5439e797e01c8664d692e73131e2cb8dc0ab7416) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix secret show icon issue in action ui
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.29.11
+  - @wso2is/admin.extensions.v1@2.29.9
+  - @wso2is/admin.feature-gate.v1@1.0.15
+
 ## 1.1.14
 
 ### Patch Changes
