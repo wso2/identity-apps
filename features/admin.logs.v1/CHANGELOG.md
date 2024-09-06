@@ -1,5 +1,14 @@
 # @wso2is/admin.logs.v1
 
+## 1.0.34
+
+### Patch Changes
+
+- [#6871](https://github.com/wso2/identity-apps/pull/6871) [`0d88f811734b358df236fc1b98d799266da27d38`](https://github.com/wso2/identity-apps/commit/0d88f811734b358df236fc1b98d799266da27d38) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix bugs in the infinite scrolling mechanism in logs section
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.29.11
+
 ## 1.0.33
 
 ### Patch Changes
