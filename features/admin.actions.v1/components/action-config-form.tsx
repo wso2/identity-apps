@@ -545,7 +545,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                             required={ true }
                                             data-componentid={ `${ _componentId }-authentication-property-value` }
                                             name="valueAuthProperty"
-                                            type={ isShowSecret1 ? "text" : "password" }
+                                            type={ isShowSecret2 ? "text" : "password" }
                                             InputProps={ {
                                                 endAdornment: renderInputAdornmentOfSecret(
                                                     isShowSecret2,
