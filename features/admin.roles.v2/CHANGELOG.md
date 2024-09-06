@@ -1,5 +1,29 @@
 # @wso2is/admin.roles.v2
 
+## 2.21.27
+
+### Patch Changes
+
+- [#6875](https://github.com/wso2/identity-apps/pull/6875) [`a6b8c8c1dd5496ab6aadb7374d412b74cd70dffd`](https://github.com/wso2/identity-apps/commit/a6b8c8c1dd5496ab6aadb7374d412b74cd70dffd) Thanks [@Achintha444](https://github.com/Achintha444)! - bump oxygen-ui to 1.13.10
+
+- Updated dependencies [[`a6b8c8c1dd5496ab6aadb7374d412b74cd70dffd`](https://github.com/wso2/identity-apps/commit/a6b8c8c1dd5496ab6aadb7374d412b74cd70dffd)]:
+  - @wso2is/admin.server-configurations.v1@2.23.10
+  - @wso2is/admin.identity-providers.v1@2.21.90
+  - @wso2is/admin.remote-userstores.v1@1.0.27
+  - @wso2is/admin.api-resources.v2@2.20.160
+  - @wso2is/admin.authorization.v1@2.20.68
+  - @wso2is/admin.organizations.v1@2.21.53
+  - @wso2is/admin.applications.v1@2.25.12
+  - @wso2is/admin.connections.v1@2.22.16
+  - @wso2is/admin.extensions.v1@2.29.10
+  - @wso2is/admin.userstores.v1@2.20.160
+  - @wso2is/admin.groups.v1@2.20.160
+  - @wso2is/react-components@2.4.11
+  - @wso2is/admin.users.v1@2.22.16
+  - @wso2is/dynamic-forms@2.0.104
+  - @wso2is/admin.core.v1@2.29.12
+  - @wso2is/form@2.1.12
+
 ## 2.21.26
 
 ### Patch Changes
