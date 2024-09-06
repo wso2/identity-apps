@@ -1,5 +1,16 @@
 # @wso2is/admin.authorization.v1
 
+## 2.20.68
+
+### Patch Changes
+
+- [#6875](https://github.com/wso2/identity-apps/pull/6875) [`a6b8c8c1dd5496ab6aadb7374d412b74cd70dffd`](https://github.com/wso2/identity-apps/commit/a6b8c8c1dd5496ab6aadb7374d412b74cd70dffd) Thanks [@Achintha444](https://github.com/Achintha444)! - bump oxygen-ui to 1.13.10
+
+- Updated dependencies [[`a6b8c8c1dd5496ab6aadb7374d412b74cd70dffd`](https://github.com/wso2/identity-apps/commit/a6b8c8c1dd5496ab6aadb7374d412b74cd70dffd)]:
+  - @wso2is/react-components@2.4.11
+  - @wso2is/dynamic-forms@2.0.104
+  - @wso2is/form@2.1.12
+
 ## 2.20.67
 
 ### Patch Changes
