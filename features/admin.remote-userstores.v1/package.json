@@ -30,7 +30,7 @@
         "@mui/material": "^5.13.0",
         "@mui/system": "^5.12.3",
         "@mui/utils": "^5.12.3",
-        "@oxygen-ui/react": "^1.13.8",
+        "@oxygen-ui/react": "^1.13.10",
         "@wso2is/admin.applications.v1": "^2.25.11",
         "@wso2is/admin.core.v1": "^2.29.11",
         "@wso2is/admin.claims.v1": "^2.20.159",
