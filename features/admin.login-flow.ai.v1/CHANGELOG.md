@@ -1,5 +1,18 @@
 # @wso2is/admin.login-flow.ai.v1
 
+## 2.21.17
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.25.13
+  - @wso2is/admin.claims.v1@2.20.161
+  - @wso2is/admin.core.v1@2.29.13
+  - @wso2is/admin.organizations.v1@2.21.54
+  - @wso2is/admin.identity-providers.v1@2.21.91
+  - @wso2is/admin.feature-gate.v1@1.0.17
+  - @wso2is/common.ai.v1@2.20.161
+
 ## 2.21.16
 
 ### Patch Changes
