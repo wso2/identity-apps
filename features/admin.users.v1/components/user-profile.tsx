@@ -369,7 +369,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 if (schemaName.includes("addresses")) {
                                     // Ex: addresses#home.streetAddress
                                     const addressSubSchema: string = schema?.name?.split(".")[1];
-                                    const addressSchemaArray: string[] = schemaName?.split(".");
+                                    const addressSchemaArray: string[] = schemaName?.split("#");
 
                                     if (addressSchemaArray.length > 1) {
                                         // Ex: addresses#home
