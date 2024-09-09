@@ -428,7 +428,7 @@ export const extensions: Extensions = {
         },
         marketingConsent: {
             heading: "Let's stay in touch!",
-            description: "Subscribe to our newsletter to get the latest news and product updates straight to your inbox.",
+            description: "Subscribe to get the latest news and product updates straight to your inbox.",
             actions: {
                 subscribe: "Subscribe",
                 decline: "Don't show this again"
