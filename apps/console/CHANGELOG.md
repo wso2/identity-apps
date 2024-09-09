@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.28.13
+
+### Patch Changes
+
+- [#6877](https://github.com/wso2/identity-apps/pull/6877) [`fc756dc1eda5e7cfbcbd97d3103d7c07e9cd96cd`](https://github.com/wso2/identity-apps/commit/fc756dc1eda5e7cfbcbd97d3103d7c07e9cd96cd) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Remove newsletter reference from marketing consent banner
+
 ## 2.28.12
 
 ### Patch Changes
