@@ -61,7 +61,7 @@
             }
 
             if (attributeList.size() > 0) {
-                String orString = AuthenticationEndpointUtil.i18n(resourceBundle, "or"); 
+                String orString = AuthenticationEndpointUtil.i18n(resourceBundle, "or").toLowerCase(); 
                 usernameLabel = String.join(", ", attributeList.subList(0, attributeList.size() - 1))
                     + (attributeList.size() > 1 ? " " + orString + " " : "")
                     + attributeList.get(attributeList.size() - 1);
