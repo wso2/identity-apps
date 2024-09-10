@@ -203,7 +203,15 @@ export const applicationConfig: ApplicationConfig = {
         getActions: () => null,
         getOverriddenDescription: () => null,
         getOverriddenImage: () => null,
-        getOverriddenTab: () => null,
+        getOverriddenTab: (
+            _clientId: string,
+            _tabName: ApplicationTabTypes,
+            defaultComponent: ReactElement,
+            _application: ApplicationInterface,
+            _tenantDomain: string,
+            _onUpdate?:(id: string) => void,
+            _readOnly?:boolean
+        ) => defaultComponent,
         getStrongAuthenticationFlowTabIndex: (
             clientId: string,
             tenantDomain: string
