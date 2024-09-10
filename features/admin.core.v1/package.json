@@ -94,7 +94,7 @@
         "@wso2is/admin.template-core.v1": "^1.0.49"
     },
     "peerDependencies": {
-        "@asgardeo/auth-react": "^5.1.0",
+        "@asgardeo/auth-react": "^5.1.2",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^4.3.1"
