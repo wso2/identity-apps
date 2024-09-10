@@ -1,5 +1,20 @@
 # @wso2is/admin.authorization.v1
 
+## 2.20.69
+
+### Patch Changes
+
+- [#6881](https://github.com/wso2/identity-apps/pull/6881) [`92abc34d6d2586d12b9daa1da208d48451c3c269`](https://github.com/wso2/identity-apps/commit/92abc34d6d2586d12b9daa1da208d48451c3c269) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump auth-react and auth-spa to latest version
+
+- Updated dependencies [[`92abc34d6d2586d12b9daa1da208d48451c3c269`](https://github.com/wso2/identity-apps/commit/92abc34d6d2586d12b9daa1da208d48451c3c269)]:
+  - @wso2is/core@2.0.62
+  - @wso2is/access-control@3.0.22
+  - @wso2is/dynamic-forms@2.0.105
+  - @wso2is/form@2.1.13
+  - @wso2is/forms@2.0.52
+  - @wso2is/i18n@2.5.29
+  - @wso2is/react-components@2.4.12
+
 ## 2.20.68
 
 ### Patch Changes

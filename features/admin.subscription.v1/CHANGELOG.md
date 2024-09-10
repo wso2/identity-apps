@@ -1,5 +1,17 @@
 # @wso2is/admin.subscription.v1
 
+## 1.0.32
+
+### Patch Changes
+
+- [#6881](https://github.com/wso2/identity-apps/pull/6881) [`92abc34d6d2586d12b9daa1da208d48451c3c269`](https://github.com/wso2/identity-apps/commit/92abc34d6d2586d12b9daa1da208d48451c3c269) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump auth-react and auth-spa to latest version
+
+- Updated dependencies [[`92abc34d6d2586d12b9daa1da208d48451c3c269`](https://github.com/wso2/identity-apps/commit/92abc34d6d2586d12b9daa1da208d48451c3c269)]:
+  - @wso2is/admin.organizations.v1@2.21.55
+  - @wso2is/admin.core.v1@2.29.14
+  - @wso2is/core@2.0.62
+  - @wso2is/access-control@3.0.22
+
 ## 1.0.31
 
 ### Patch Changes

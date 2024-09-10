@@ -1,5 +1,42 @@
 # @wso2is/admin.applications.v1
 
+## 2.25.14
+
+### Patch Changes
+
+- [#6881](https://github.com/wso2/identity-apps/pull/6881) [`92abc34d6d2586d12b9daa1da208d48451c3c269`](https://github.com/wso2/identity-apps/commit/92abc34d6d2586d12b9daa1da208d48451c3c269) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump auth-react and auth-spa to latest version
+
+- Updated dependencies [[`92abc34d6d2586d12b9daa1da208d48451c3c269`](https://github.com/wso2/identity-apps/commit/92abc34d6d2586d12b9daa1da208d48451c3c269)]:
+  - @wso2is/admin.server-configurations.v1@2.23.12
+  - @wso2is/admin.wsfed-configuration.v1@2.20.162
+  - @wso2is/admin.identity-providers.v1@2.21.92
+  - @wso2is/admin.console-settings.v1@2.20.162
+  - @wso2is/admin.api-resources.v2@2.20.162
+  - @wso2is/admin.authorization.v1@2.20.69
+  - @wso2is/admin.impersonation.v1@1.1.104
+  - @wso2is/admin.login-flow.ai.v1@2.21.18
+  - @wso2is/admin.organizations.v1@2.21.55
+  - @wso2is/admin.feature-gate.v1@1.0.18
+  - @wso2is/admin.connections.v1@2.22.18
+  - @wso2is/admin.oidc-scopes.v1@2.20.162
+  - @wso2is/admin.extensions.v1@2.29.12
+  - @wso2is/admin.userstores.v1@2.20.162
+  - @wso2is/admin.branding.v1@2.21.18
+  - @wso2is/admin.secrets.v1@2.20.162
+  - @wso2is/admin.claims.v1@2.20.162
+  - @wso2is/admin.roles.v2@2.21.29
+  - @wso2is/admin.users.v1@2.22.18
+  - @wso2is/admin.core.v1@2.29.14
+  - @wso2is/core@2.0.62
+  - @wso2is/admin.authentication-flow-builder.v1@2.20.162
+  - @wso2is/admin.application-templates.v1@1.0.50
+  - @wso2is/admin.template-core.v1@1.0.50
+  - @wso2is/access-control@3.0.22
+  - @wso2is/form@2.1.13
+  - @wso2is/forms@2.0.52
+  - @wso2is/i18n@2.5.29
+  - @wso2is/react-components@2.4.12
+
 ## 2.25.13
 
 ### Patch Changes
