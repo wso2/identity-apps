@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.4.34
+
+### Patch Changes
+
+- [#6884](https://github.com/wso2/identity-apps/pull/6884) [`794a830456b9f995658505e3186fc90d4e0c6999`](https://github.com/wso2/identity-apps/commit/794a830456b9f995658505e3186fc90d4e0c6999) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Converted OR label to lowercase
+
 ## 2.4.33
 
 ### Patch Changes
