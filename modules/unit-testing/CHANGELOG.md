@@ -1,5 +1,11 @@
 # @wso2is/unit-testing
 
+## 0.1.10
+
+### Patch Changes
+
+- [#6881](https://github.com/wso2/identity-apps/pull/6881) [`92abc34d6d2586d12b9daa1da208d48451c3c269`](https://github.com/wso2/identity-apps/commit/92abc34d6d2586d12b9daa1da208d48451c3c269) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump auth-react and auth-spa to latest version
+
 ## 0.1.9
 
 ### Patch Changes

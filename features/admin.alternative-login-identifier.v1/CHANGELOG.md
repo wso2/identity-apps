@@ -1,5 +1,22 @@
 # @wso2is/admin.alternative-login-identifier.v1
 
+## 1.0.50
+
+### Patch Changes
+
+- [#6881](https://github.com/wso2/identity-apps/pull/6881) [`92abc34d6d2586d12b9daa1da208d48451c3c269`](https://github.com/wso2/identity-apps/commit/92abc34d6d2586d12b9daa1da208d48451c3c269) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump auth-react and auth-spa to latest version
+
+- Updated dependencies [[`92abc34d6d2586d12b9daa1da208d48451c3c269`](https://github.com/wso2/identity-apps/commit/92abc34d6d2586d12b9daa1da208d48451c3c269)]:
+  - @wso2is/admin.server-configurations.v1@2.23.12
+  - @wso2is/admin.applications.v1@2.25.14
+  - @wso2is/admin.validation.v1@2.21.12
+  - @wso2is/admin.claims.v1@2.20.162
+  - @wso2is/admin.users.v1@2.22.18
+  - @wso2is/admin.core.v1@2.29.14
+  - @wso2is/core@2.0.62
+  - @wso2is/form@2.1.13
+  - @wso2is/react-components@2.4.12
+
 ## 1.0.49
 
 ### Patch Changes
