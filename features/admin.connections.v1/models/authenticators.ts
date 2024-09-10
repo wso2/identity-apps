@@ -193,17 +193,3 @@ export type CommonAuthenticatorFormPropertyInterface = CommonPluggableComponentP
 export interface CommonAuthenticatorFormFieldInterface extends CommonAuthenticatorFormPropertyInterface {
     meta: CommonPluggableComponentMetaPropertyInterface;
 }
-
-/**
- * Interface for SMS Notification Sender Details.
- **/
-export interface NotificationSenderSMSInterface {
-    name: string;
-    provider: string;
-    providerURL: string;
-    contentType: string;
-    properties?: {
-        key: string;
-        value: string;
-    }[];
-}

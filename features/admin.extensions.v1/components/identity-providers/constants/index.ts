@@ -17,4 +17,3 @@
  */
 
 export * from "./swe-constants";
-export * from "./sms-otp-constants";

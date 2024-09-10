@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,15 +17,37 @@
  */
 
 /**
- * Interface for SMS Notification Sender Details.
- **/
+ * Interface representing an SMS notification sender.
+ */
 export interface NotificationSenderSMSInterface {
+    /**
+     * The name of the SMS notification sender.
+     */
     name: string;
+    /**
+     * The provider of the SMS notification service.
+     */
     provider: string;
+    /**
+     * The URL of the SMS notification provider.
+     */
     providerURL: string;
+    /**
+     * The content type of the SMS notification.
+     */
     contentType: string;
+    /**
+     * Optional properties for the SMS notification sender.
+     */
     properties?: {
+        /**
+         * The key of the property.
+         */
         key: string;
+
+        /**
+         * The value of the property.
+         */
         value: string;
     }[];
 }

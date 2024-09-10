@@ -17,4 +17,4 @@
  */
 
 export * from "./swe";
-export * from "./sms-otp";
+export * from "@wso2is/admin.sms-providers.v1/models/sms-otp";

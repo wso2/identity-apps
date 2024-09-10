@@ -28,7 +28,6 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { ConnectionUIConstants } from "../constants/connection-ui-constants";
-import { NotificationSenderSMSInterface } from "../models/authenticators";
 import {
     ApplicationBasicInterface,
     ConnectedAppsInterface,
@@ -1069,35 +1068,6 @@ export const updateImplicitAssociationConfig = (
                 error.response,
                 error.config);
         });
-};
-
-/**
- * Hook to get all sms notification senders with name SMSPublisher.
- *
- * @returns  A promise containing the response.
- */
-export const useSMSNotificationSenders = <Data = NotificationSenderSMSInterface[], Error = RequestErrorInterface>():
-    RequestResultInterface<Data, Error> => {
-    const { resourceEndpoints } = useResourceEndpoints();
-
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: resourceEndpoints.notificationSendersEndPoint + "/sms"
-    };
-
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
-
-    return {
-        data,
-        error: error,
-        isLoading: !error && !data,
-        isValidating,
-        mutate: mutate
-    };
 };
 
 /**
