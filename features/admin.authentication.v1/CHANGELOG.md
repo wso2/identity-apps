@@ -1,5 +1,21 @@
 # @wso2is/admin.authentication.v1
 
+## 2.20.163
+
+### Patch Changes
+
+- [#6887](https://github.com/wso2/identity-apps/pull/6887) [`cf93bd5d1017bea864075ff2cd80247be3fb27ed`](https://github.com/wso2/identity-apps/commit/cf93bd5d1017bea864075ff2cd80247be3fb27ed) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Downgrade SDK to 5.1.0
+
+- Updated dependencies [[`cf93bd5d1017bea864075ff2cd80247be3fb27ed`](https://github.com/wso2/identity-apps/commit/cf93bd5d1017bea864075ff2cd80247be3fb27ed)]:
+  - @wso2is/admin.authorization.v1@2.20.70
+  - @wso2is/admin.organizations.v1@2.21.56
+  - @wso2is/admin.extensions.v1@2.29.13
+  - @wso2is/admin.userstores.v1@2.20.163
+  - @wso2is/admin.users.v1@2.22.19
+  - @wso2is/admin.core.v1@2.29.15
+  - @wso2is/core@2.0.63
+  - @wso2is/i18n@2.5.30
+
 ## 2.20.162
 
 ### Patch Changes

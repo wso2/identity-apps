@@ -1,5 +1,29 @@
 # @wso2is/admin.administrators.v1
 
+## 2.24.19
+
+### Patch Changes
+
+- [#6887](https://github.com/wso2/identity-apps/pull/6887) [`cf93bd5d1017bea864075ff2cd80247be3fb27ed`](https://github.com/wso2/identity-apps/commit/cf93bd5d1017bea864075ff2cd80247be3fb27ed) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Downgrade SDK to 5.1.0
+
+- Updated dependencies [[`cf93bd5d1017bea864075ff2cd80247be3fb27ed`](https://github.com/wso2/identity-apps/commit/cf93bd5d1017bea864075ff2cd80247be3fb27ed)]:
+  - @wso2is/admin.server-configurations.v1@2.23.13
+  - @wso2is/admin.remote-userstores.v1@1.0.30
+  - @wso2is/admin.authentication.v1@2.20.163
+  - @wso2is/admin.applications.v1@2.25.15
+  - @wso2is/admin.feature-gate.v1@1.0.19
+  - @wso2is/admin.extensions.v1@2.29.13
+  - @wso2is/admin.userstores.v1@2.20.163
+  - @wso2is/admin.tenants.v1@2.22.19
+  - @wso2is/admin.roles.v2@2.21.30
+  - @wso2is/admin.users.v1@2.22.19
+  - @wso2is/admin.core.v1@2.29.15
+  - @wso2is/core@2.0.63
+  - @wso2is/access-control@3.0.23
+  - @wso2is/form@2.1.14
+  - @wso2is/forms@2.0.53
+  - @wso2is/react-components@2.4.13
+
 ## 2.24.18
 
 ### Patch Changes
