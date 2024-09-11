@@ -56,7 +56,7 @@ const addSMSPublisher = (): Promise<NotificationSenderSMSInterface> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.notificationSendersEndPoint + "/sms"
+        url: store.getState().config.endpoints.smsSender
     };
 
     return httpClient(requestConfig)

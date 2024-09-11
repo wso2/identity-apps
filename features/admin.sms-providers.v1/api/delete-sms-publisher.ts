@@ -40,7 +40,7 @@ const deleteSMSPublisher = (): Promise<void> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: store.getState().config.endpoints.notificationSendersEndPoint + "/sms/SMSPublisher"
+        url: store.getState().config.endpoints.smsPublisher
     };
 
     return httpClient(requestConfig)

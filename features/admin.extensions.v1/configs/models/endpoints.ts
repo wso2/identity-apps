@@ -55,11 +55,6 @@ export interface ExtendedFeatureResourceEndpointsInterface {
     emailProviderEndpoint : string;
 
     /**
-     * SMS Publishing API endpoint.
-     */
-    smsProviderEndpoint : string;
-
-    /**
      * Event Publishing API endpoint.
      */
     eventsEndpoint : string;
@@ -68,11 +63,6 @@ export interface ExtendedFeatureResourceEndpointsInterface {
      * Eventing endpoint in Choreo.
      */
     choreoEventingEndpoint : string;
-
-    /**
-     * Notification senders API endpoint.
-     */
-    notificationSendersEndPoint: string;
 
     /**
      * Authorization Service API endpoint.
