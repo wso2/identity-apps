@@ -19,17 +19,14 @@
 /**
  * Class containing Sign In With Ethereum IDP constants.
  */
-export class SIWEConstants {
+class SIWEConstants {
+    /**
+     * Private constructor to avoid object instantiation from outside the class.
+     */
+    private constructor() {}
 
     public static readonly SIWE_REGISTRATION_INVALID_STATUS_CODE_ERROR_CODE: string = "ASG-CON-SIWE-00001";
     public static readonly SIWE_REGISTRATION_ERROR_CODE: string = "ASG-CON-SIWE-00002";
-
-    /**
-     * Private constructor to avoid object instantiation from outside
-     * the class.
-     *
-]     */
-    private constructor() { }
 
     public static readonly SIWE_CLIENT_REGISTRATION_DOCS_URL: string = "https://docs.login.xyz/servers/" +
         "oidc-provider/hosted-oidc-provider#openid-connect-client-registration";
@@ -52,5 +49,7 @@ export class SIWEConstants {
         CALLBACK_URL: "callbackUrl",
         CLIENT_ID: "ClientId",
         CLIENT_SECRET: "ClientSecret"
-    }
+    };
 }
+
+export default SIWEConstants;
