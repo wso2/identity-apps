@@ -384,7 +384,7 @@
     <script>
         if(!authorizationCode) {
             var authSPAJS = document.createElement("script");
-            var authScriptSrc = "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename + '/auth-spa-3.1.2.min.js' : '/auth-spa-3.1.2.min.js'%>";
+            var authScriptSrc = "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename + '/auth-spa-3.0.1.min.js' : '/auth-spa-3.0.1.min.js'%>";
 
             authSPAJS.setAttribute("src", authScriptSrc);
             authSPAJS.setAttribute("async", "false");
