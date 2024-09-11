@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.0.63
+
+### Patch Changes
+
+- [#6887](https://github.com/wso2/identity-apps/pull/6887) [`cf93bd5d1017bea864075ff2cd80247be3fb27ed`](https://github.com/wso2/identity-apps/commit/cf93bd5d1017bea864075ff2cd80247be3fb27ed) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Downgrade SDK to 5.1.0
+
 ## 2.0.62
 
 ### Patch Changes
