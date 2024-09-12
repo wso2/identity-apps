@@ -23,7 +23,7 @@ import { MetaDataInputTypes } from "../../../constants";
 import {
     DropdownOptionsInterface,
     IDVPConfigPropertiesInterface,
-    IdentityVerificationProviderInterface,
+    OldIdentityVerificationProviderInterface,
     InputFieldMetadata
 } from "../../../models";
 
@@ -43,7 +43,7 @@ type InputFieldValue = string | boolean | number | DropdownOptionsInterface ;
  */
 export const renderFormUIWithMetadata = (
     uiMetaData: InputFieldMetadata[],
-    idvp?: IdentityVerificationProviderInterface,
+    idvp?: OldIdentityVerificationProviderInterface,
     isReadOnly: boolean = false,
     padBetweenElements: boolean = false
 ): ReactElement => {

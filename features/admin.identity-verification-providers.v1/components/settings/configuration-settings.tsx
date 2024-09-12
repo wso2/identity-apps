@@ -19,7 +19,7 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Divider } from "semantic-ui-react";
-import { IDVPConfigPropertiesInterface, IdentityVerificationProviderInterface, InputFieldMetadata } from "../../models";
+import { IDVPConfigPropertiesInterface, OldIdentityVerificationProviderInterface, InputFieldMetadata } from "../../models";
 import { updateIDVP } from "../../utils";
 import { ConfigurationSettingsForm } from "../forms";
 
@@ -30,7 +30,7 @@ interface ConfigurationSettingsInterface extends IdentifiableComponentInterface 
     /**
      * IDVP that is being edited.
      */
-    idvp: IdentityVerificationProviderInterface;
+    idvp: OldIdentityVerificationProviderInterface;
     /**
      * Is the IDVP info request loading.
      */

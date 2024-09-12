@@ -26,7 +26,7 @@ import { IdentityVerificationProviderConstants } from "../constants";
 import {
     IDVPClaimMappingInterface,
     IDVPClaimsInterface,
-    IdentityVerificationProviderInterface,
+    OldIdentityVerificationProviderInterface,
     UIMetaDataForIDVP
 } from "../models";
 import { getContentLoader } from "../utils";
@@ -38,7 +38,7 @@ interface EditIdentityVerificationProviderPropsInterface extends IdentifiableCom
     /**
      * IDVP that is being edited.
      */
-    identityVerificationProvider: IdentityVerificationProviderInterface;
+    identityVerificationProvider: OldIdentityVerificationProviderInterface;
     /**
      * Is the data still loading.
      */

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { handleIDVPUpdateError, handleIDVPUpdateSuccess } from "./notification-utils";
 import { updateIdentityVerificationProvider } from "../api";
-import { IdentityVerificationProviderInterface } from "../models";
+import { OldIdentityVerificationProviderInterface } from "../models";
 
 /**
  * Updates an Identity Verification Provider with given data and displays the
@@ -33,7 +33,7 @@ import { IdentityVerificationProviderInterface } from "../models";
  * @returns void.
  */
 export const updateIDVP = (
-    idvp: IdentityVerificationProviderInterface,
+    idvp: OldIdentityVerificationProviderInterface,
     setIsSubmitting: (boolean) => void,
     onUpdate: () => void
 ) : void => {
