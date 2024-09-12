@@ -9,6 +9,7 @@ on:
     paths-ignore:
       - "**.md"
       - "LICENSE"
+  workflow_dispatch:
 
 # Avoid running multiple builds for the same PR.
 concurrency:
