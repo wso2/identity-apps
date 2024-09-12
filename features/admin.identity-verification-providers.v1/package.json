@@ -24,6 +24,7 @@
         "@wso2is/admin.claims.v1": "^2.21.0",
         "@wso2is/admin.core.v1": "^2.30.0",
         "@wso2is/admin.feature-gate.v1": "^1.1.0",
+        "@wso2is/admin.template-core.v1": "workspace:^1.0.52",
         "@wso2is/core": "^2.1.0",
         "@wso2is/dynamic-forms": "^2.0.107",
         "@wso2is/form": "^2.1.15",
