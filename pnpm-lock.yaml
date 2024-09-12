@@ -5081,7 +5081,7 @@ importers:
     dependencies:
       '@asgardeo/auth-react':
         specifier: ^5.1.2
-        version: 5.1.2(@babel/runtime-corejs3@7.25.6)(react-dom@16.14.0)(react@16.14.0)
+        version: 5.1.2(@babel/runtime-corejs3@7.25.6)(react-dom@18.3.1)(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.13.3(@types/react@18.0.18)(react@18.3.1)
@@ -5258,7 +5258,7 @@ importers:
         version: 2.9.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       react-notification-system:
         specifier: ^0.4.0
-        version: 0.4.0(react-dom@16.14.0)(react@16.14.0)
+        version: 0.4.0(react-dom@18.3.1)(react@18.3.1)
       react-redux:
         specifier: ^7.2.9
         version: 7.2.9(react-dom@18.3.1)(react@18.3.1)
@@ -9437,7 +9437,7 @@ importers:
     dependencies:
       '@asgardeo/auth-react':
         specifier: ^5.1.2
-        version: 5.1.2(@babel/runtime-corejs3@7.25.6)(react-dom@18.3.1)(react@18.3.1)
+        version: 5.1.2(@babel/runtime-corejs3@7.25.6)(react-dom@16.14.0)(react@16.14.0)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.13.3(@types/react@18.0.18)(react@18.3.1)
@@ -9489,6 +9489,9 @@ importers:
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.1.18
         version: link:../admin.feature-gate.v1
+      '@wso2is/admin.template-core.v1':
+        specifier: workspace:^1.0.52
+        version: link:../admin.template-core.v1
       '@wso2is/core':
         specifier: ^2.1.0
         version: link:../../modules/core
@@ -9584,7 +9587,7 @@ importers:
         version: 2.9.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       react-notification-system:
         specifier: ^0.4.0
-        version: 0.4.0(react-dom@18.3.1)(react@18.3.1)
+        version: 0.4.0(react-dom@16.14.0)(react@16.14.0)
       react-redux:
         specifier: ^7.2.9
         version: 7.2.9(react-dom@18.3.1)(react@18.3.1)
