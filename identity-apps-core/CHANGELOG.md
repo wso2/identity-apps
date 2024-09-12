@@ -1,5 +1,15 @@
 # @wso2is/identity-apps-core
 
+## 2.4.36
+
+### Patch Changes
+
+- [#6892](https://github.com/wso2/identity-apps/pull/6892) [`000376e06b3e2af65e32062823808ae63cde7f48`](https://github.com/wso2/identity-apps/commit/000376e06b3e2af65e32062823808ae63cde7f48) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Reset password field name to password.
+
+* [#6833](https://github.com/wso2/identity-apps/pull/6833) [`8ea01332ece9e76f6027bf39ead62ff4708b0f24`](https://github.com/wso2/identity-apps/commit/8ea01332ece9e76f6027bf39ead62ff4708b0f24) Thanks [@lashinijay](https://github.com/lashinijay)! - Removing bootstrap library from code base as it is no longer utilized and has reached the EOL
+
+- [#6889](https://github.com/wso2/identity-apps/pull/6889) [`4a0f0dd7d318d5a2bb8af936a039c924aa90efb6`](https://github.com/wso2/identity-apps/commit/4a0f0dd7d318d5a2bb8af936a039c924aa90efb6) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Improve login.jsp to handle custom local authenticators
+
 ## 2.4.35
 
 ### Patch Changes
