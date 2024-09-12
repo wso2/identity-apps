@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import Switch from "@oxygen-ui/react/Switch";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
@@ -29,6 +30,9 @@ import {
     ServerConfigurationsConstants,
     getConnectorDetails
 } from "@wso2is/admin.server-configurations.v1";
+import {
+    GovernanceConnectorConstants
+} from "@wso2is/admin.server-configurations.v1/constants/governance-connector-constants";
 import { getConfiguration } from "@wso2is/admin.users.v1/utils/generate-password.utils";
 import {
     AlertLevels,
@@ -60,6 +64,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Ref } from "semantic-ui-react";
 import { updateValidationConfigData, useValidationConfigData } from "../api";
+import useGetPasswordExpiryProperties from "../api/use-get-password-expiry-properties";
+import useGetPasswordHistoryCount from "../api/use-get-password-history-count";
 import { PasswordExpiryRuleList } from "../components/password-expiry-rule-list";
 import { ValidationConfigConstants } from "../constants/validation-config-constants";
 import {
@@ -142,13 +148,13 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         data: passwordHistoryCountData,
         error: passwordHistoryCountError,
         mutate: mutatePasswordHistoryCount
-    } = serverConfigurationConfig.usePasswordHistory();
+    } = useGetPasswordHistoryCount();
 
     const {
         data: passwordExpiryData,
         error: passwordExpiryError,
         mutate: mutatePasswordExpiry
-    } = serverConfigurationConfig.usePasswordExpiry();
+    } = useGetPasswordExpiryProperties();
 
     const {
         data: validationData,
@@ -1632,6 +1638,124 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         );
     };
 
+    const generatePasswordExpiry = (
+        componentId: string,
+        passwordExpiryEnabled: boolean,
+        setPasswordExpiryEnabled: (value: boolean) => void,
+        isReadOnly: boolean = false
+    ): ReactElement => {
+        return (
+            <>
+                <Heading as="h4">
+                    { t("extensions:manage.serverConfigurations.passwordExpiry.heading") }
+                </Heading>
+                <div className="criteria">
+                    <Field.Checkbox
+                        ariaLabel="Enable/Disable Password Expiry"
+                        name="passwordExpiryEnabled"
+                        label={ t("extensions:manage.serverConfigurations.passwordExpiry.label") }
+                        required={ false }
+                        disabled={ false }
+                        listen={ (value: boolean) => {
+                            setPasswordExpiryEnabled(value);
+                        } }
+                        width={ 16 }
+                        data-testid={ `${ componentId }-password-expiry-toggle` }
+                        readOnly={ isReadOnly }
+                    />
+                    <Field.Input
+                        ariaLabel="Password Expiry Time"
+                        inputType="number"
+                        name="passwordExpiryTime"
+                        width={ 2 }
+                        required={ true }
+                        hidden={ false }
+                        placeholder="30"
+                        min={
+                            GovernanceConnectorConstants.PASSWORD_EXPIRY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE
+                        }
+                        max={
+                            GovernanceConnectorConstants.PASSWORD_EXPIRY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_VALUE
+                        }
+                        maxLength={
+                            GovernanceConnectorConstants.PASSWORD_EXPIRY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_LENGTH
+                        }
+                        minLength={
+                            GovernanceConnectorConstants.PASSWORD_EXPIRY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_LENGTH
+                        }
+                        readOnly={ isReadOnly }
+                        disabled={ !passwordExpiryEnabled }
+                        data-testid={ `${ componentId }-password-expiry-time` }
+                        validation={ (value: string): string | undefined => {
+                            const numValue: number = parseInt(value);
+
+                            if (numValue < 1) {
+                                return t("common:minValidation", { min: 1 });
+                            }
+                        } }
+                    />
+                    <label>{ t("extensions:manage.serverConfigurations.passwordExpiry.timeFormat") }</label>
+                </div>
+            </>
+        );
+    };
+
+    const generatePasswordHistoryCount = (
+        componentId: string,
+        passwordHistoryEnabled: boolean,
+        setPasswordHistoryEnabled: (value: boolean) => void,
+        isReadOnly: boolean = false
+    ): ReactElement => {
+        return (
+            <>
+                <Heading as="h4">
+                    { t("extensions:manage.serverConfigurations.passwordHistoryCount.heading") }
+                </Heading>
+                <Alert severity="info" className="info-box">
+                    { t("extensions:manage.serverConfigurations.passwordHistoryCount.message") }
+                </Alert>
+                <div className="criteria">
+                    <Field.Checkbox
+                        ariaLabel="Enable/Disable Password History Count"
+                        name="passwordHistoryCountEnabled"
+                        label={ t("extensions:manage.serverConfigurations.passwordHistoryCount.label1") }
+                        required={ false }
+                        disabled={ false }
+                        listen={ (value: boolean) => {
+                            setPasswordHistoryEnabled(value);
+                        } }
+                        width={ 16 }
+                        data-testid={ `${ componentId }-password-history-count-toggle` }
+                        readOnly={ isReadOnly }
+                    />
+                    <Field.Input
+                        ariaLabel="Password History Count"
+                        inputType="number"
+                        name="passwordHistoryCount"
+                        min={ 1 }
+                        width={ 2 }
+                        required={ true }
+                        hidden={ false }
+                        placeholder="5"
+                        maxLength={ 2 }
+                        minLength={ 2 }
+                        readOnly={ isReadOnly }
+                        disabled={ !passwordHistoryEnabled }
+                        data-testid={ `${ componentId }-password-history-count` }
+                        validation={ (value: string): string | undefined=> {
+                            const numValue: number = parseInt(value);
+
+                            if (numValue < 1) {
+                                return t("common:minValidation", { min: 1 });
+                            }
+                        } }
+                    />
+                    <label>{ t("extensions:manage.serverConfigurations.passwordHistoryCount.label2") }</label>
+                </div>
+            </>
+        );
+    };
+
     return (
         <PageLayout
             pageTitle={ t("validation:pageTitle") }
@@ -1690,19 +1814,18 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                 { isRuleType && (
                                                     <div className="validation-configurations-form">
                                                         { isRuleBasedPasswordExpiryDisabled
-                                                            ? serverConfigurationConfig.passwordExpiryComponent(
+                                                            ? generatePasswordExpiry(
                                                                 componentId,
                                                                 passwordExpiryEnabled,
                                                                 setPasswordExpiryEnabled,
-                                                                t,
-                                                                isReadOnly )
+                                                                isReadOnly
+                                                            )
                                                             : resolvePasswordExpiration() }
                                                         <Divider className="heading-divider" />
-                                                        { serverConfigurationConfig.passwordHistoryCountComponent(
+                                                        { generatePasswordHistoryCount(
                                                             componentId,
                                                             passwordHistoryEnabled,
                                                             setPasswordHistoryEnabled,
-                                                            t,
                                                             isReadOnly
                                                         ) }
                                                     </div>

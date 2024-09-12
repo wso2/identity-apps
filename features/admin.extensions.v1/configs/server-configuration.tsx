@@ -29,9 +29,11 @@ import {
 import {
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import updatePasswordExpiryProperties from "@wso2is/admin.validation.v1/api/update-password-expiry-properties";
+import updatePasswordHistoryCount from "@wso2is/admin.validation.v1/api/update-password-history-count";
+import updatePasswordPolicyProperties from "@wso2is/admin.validation.v1/api/update-password-policy-properties";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import React, { ReactElement, ReactNode } from "react";
-import { TFunction } from "react-i18next";
 import { Card, Divider, Grid, Header } from "semantic-ui-react";
 import {
     PasswordExpiryInterface,
@@ -39,17 +41,6 @@ import {
     PasswordPoliciesInterface,
     ServerConfigurationConfig
 } from "./models/server-configuration";
-import {
-    updatePasswordExpiryProperties,
-    useGetPasswordExpiryProperties
-} from "../components/password-expiry/api/password-expiry";
-import { generatePasswordExpiry } from "../components/password-expiry/components/password-expiry";
-import {
-    updatePasswordHistoryCount,
-    useGetPasswordHistoryCount
-} from "../components/password-history-count/api";
-import { generatePasswordHistoryCount } from "../components/password-history-count/components";
-import { updatePasswordPolicyProperties } from "../components/password-policies/api/password-policies";
 
 const serverConfigurationConfig: ServerConfigurationConfig = {
     autoEnableConnectorToggleProperty: false,
@@ -98,36 +89,6 @@ const serverConfigurationConfig: ServerConfigurationConfig = {
     dynamicConnectors: true,
     extendedConnectors: [],
     intendSettings: false,
-    passwordExpiryComponent: (
-        componentId: string,
-        passwordExpiryEnabled: boolean,
-        setPasswordExpiryEnabled: (state: boolean) => void,
-        t: TFunction<"translation", undefined>,
-        isReadOnly: boolean = false
-    ): ReactElement => {
-        return generatePasswordExpiry(
-            componentId,
-            passwordExpiryEnabled,
-            setPasswordExpiryEnabled,
-            t,
-            isReadOnly
-        );
-    },
-    passwordHistoryCountComponent: (
-        componentId: string,
-        passwordHistoryEnabled: boolean,
-        setPasswordHistoryEnabled: (state: boolean) => void,
-        t: TFunction<"translation", undefined>,
-        isReadOnly: boolean = false
-    ): ReactElement => {
-        return generatePasswordHistoryCount(
-            componentId,
-            passwordHistoryEnabled,
-            setPasswordHistoryEnabled,
-            t,
-            isReadOnly
-        );
-    },
     predefinedConnectorCategories: [
         "UGFzc3dvcmQgUG9saWNpZXM",
         "VXNlciBPbmJvYXJkaW5n",
@@ -395,10 +356,7 @@ const serverConfigurationConfig: ServerConfigurationConfig = {
     renderConnectorWithinEmphasizedSegment: false,
     showConnectorsOnTheSidePanel: false,
     showGovernanceConnectorCategories: false,
-    showPageHeading: true,
-    usePasswordExpiry: useGetPasswordExpiryProperties,
-    usePasswordHistory: useGetPasswordHistoryCount
+    showPageHeading: true
 };
-
 
 export { serverConfigurationConfig };
