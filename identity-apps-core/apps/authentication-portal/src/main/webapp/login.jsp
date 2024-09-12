@@ -1054,7 +1054,6 @@
                             <br>
                             <%
                                         }
-
                                 for (String localAuthenticator : localAuthenticatorNames) {
                                     if (registeredLocalAuthenticators.contains(localAuthenticator)) {
                                         continue;
@@ -1086,7 +1085,6 @@
                             <br>
                             <%
                                 }
-
                                     }
                                 }
                                 if (isOrgEnterpriseUserLogin) { %>
