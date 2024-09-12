@@ -43,7 +43,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { deleteIDVP } from "../api";
-import { IDVPListResponseInterface, IDVPTemplateItemInterface, IdentityVerificationProviderInterface } from "../models";
+import { IDVPListResponseInterface, IDVPTemplateItemInterface, OldIdentityVerificationProviderInterface } from "../models";
 import { handleIDVPDeleteError, handleIDVPDeleteSuccess } from "../utils";
 
 /**
@@ -77,7 +77,7 @@ interface IdentityVerificationProviderListPropsInterface extends LoadableCompone
      * @param idvp - Selected IDVP
      * @returns void
      */
-    onListItemClick?: (event: SyntheticEvent, idvp: IdentityVerificationProviderInterface) => void;
+    onListItemClick?: (event: SyntheticEvent, idvp: OldIdentityVerificationProviderInterface) => void;
     /**
      * Enable selection styles.
      */
@@ -113,7 +113,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ selectedIdvpToBeDeleted, setSelectedIdvpToBeDeleted ] =
-        useState<IdentityVerificationProviderInterface>(undefined);
+        useState<OldIdentityVerificationProviderInterface>(undefined);
     const [ loading, setLoading ] = useState<boolean>(false);
 
     const { t } = useTranslation();
@@ -138,8 +138,8 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
      * @returns void
      */
     const showIDVPDeleteConfirmationModal = (idvpId: string): void => {
-        const selectedIDVP: IdentityVerificationProviderInterface = idvpList.identityVerificationProviders
-            .find((idvp: IdentityVerificationProviderInterface) => idvp.id === idvpId);
+        const selectedIDVP: OldIdentityVerificationProviderInterface = idvpList.identityVerificationProviders
+            .find((idvp: OldIdentityVerificationProviderInterface) => idvp.id === idvpId);
 
         setSelectedIdvpToBeDeleted(selectedIDVP);
         setShowDeleteConfirmationModal(true);
@@ -213,7 +213,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
                 dataIndex: "name",
                 id: "name",
                 key: "name",
-                render: (idvp: IdentityVerificationProviderInterface): ReactNode => {
+                render: (idvp: OldIdentityVerificationProviderInterface): ReactNode => {
                     const templateType: IDVPTemplateItemInterface= idvpTemplateTypeList?.find(
                         (template:IDVPTemplateItemInterface) => template.id === idvp.Type
                     );
@@ -296,7 +296,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
 
                     return hasUpdateScopes ? "pencil alternate" : "eye";
                 },
-                onClick: (e: SyntheticEvent, idvp: IdentityVerificationProviderInterface): void => {
+                onClick: (e: SyntheticEvent, idvp: OldIdentityVerificationProviderInterface): void => {
                     handleIdentityVerificationProviderEdit(idvp.id);
                 },
                 popupText: (): string => {
@@ -320,7 +320,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
                     );
                 },
                 icon: (): SemanticICONS => "trash alternate",
-                onClick: (e: SyntheticEvent, idvp: IdentityVerificationProviderInterface): void => {
+                onClick: (e: SyntheticEvent, idvp: OldIdentityVerificationProviderInterface): void => {
                     showIDVPDeleteConfirmationModal(idvp.id);
                 },
                 popupText: (): string => t("common:delete"),
@@ -370,7 +370,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
 
     return (
         <>
-            <DataTable<IdentityVerificationProviderInterface>
+            <DataTable<OldIdentityVerificationProviderInterface>
                 className="identity-providers-table"
                 isLoading={ isLoading }
                 loadingStateOptions={ {
@@ -380,7 +380,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
                 actions={ resolveTableActions() }
                 columns={ resolveTableColumns() }
                 data={ idvpList?.identityVerificationProviders }
-                onRowClick={ (e: SyntheticEvent, idvp: IdentityVerificationProviderInterface): void => {
+                onRowClick={ (e: SyntheticEvent, idvp: OldIdentityVerificationProviderInterface): void => {
                     handleIdentityVerificationProviderEdit(idvp.id);
                     onListItemClick && onListItemClick(e, idvp);
                 } }

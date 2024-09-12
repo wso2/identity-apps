@@ -441,6 +441,7 @@ export interface ConnectionTemplateListItemInterface extends ConnectionTemplateI
  */
 export interface ConnectionTemplateItemInterface {
     id?: string;
+    version?: string;
     name?: string;
     description?: string;
     image?: any;

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,22 +19,22 @@
 /**
  * Interface that represent the response returned by the list IDVPs GET request.
  */
-export interface IDVPListResponseInterface {
+export interface OldIDVPListResponseInterface {
     totalResults?: number;
     startIndex?: number;
     count?: number;
-    identityVerificationProviders?: IdentityVerificationProviderInterface[];
+    identityVerificationProviders?: OldIdentityVerificationProviderInterface[];
 }
 
 /**
  * Interface for representing an identity verification provider.
  */
-export interface IdentityVerificationProviderInterface {
+export interface OldIdentityVerificationProviderInterface {
     id?: string;
     Name?: string;
     Type?: string;
     description?: string;
-    isEnabled?: boolean;
+    isEnabled: boolean;
     image?: string;
     templateId?: string;
     claims?: IDVPClaimsInterface[];
@@ -83,7 +83,7 @@ export interface IDVPClaimMappingInterface {
 export interface IDVPConfigPropertiesInterface {
     key: string;
     value: string | boolean;
-    isSecret: boolean;
+    isSecret?: boolean;
 }
 
 export interface IDVPTemplateItemInterface {
@@ -93,7 +93,7 @@ export interface IDVPTemplateItemInterface {
     image?: any;
     category?: string;
     displayOrder?: number;
-    idvp?: IdentityVerificationProviderInterface;
+    idvp?: OldIdentityVerificationProviderInterface;
     disabled?: boolean;
     type?: string;
     templateGroup?: string;
@@ -101,6 +101,13 @@ export interface IDVPTemplateItemInterface {
      * Template identifier.
      */
     templateId?: string;
+}
+
+export interface OldIdVPTemplateInterface {
+    /**
+     * Payload of the IdVP creation.
+     */
+    payload: OldIdentityVerificationProviderInterface;
 }
 
 /**

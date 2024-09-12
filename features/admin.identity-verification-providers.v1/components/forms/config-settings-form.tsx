@@ -22,7 +22,7 @@ import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { renderFormUIWithMetadata } from "./helpers/dynamic-ui-helper";
-import { IdentityVerificationProviderInterface, InputFieldMetadata } from "../../models";
+import { OldIdentityVerificationProviderInterface, InputFieldMetadata } from "../../models";
 
 /**
  * Proptypes for the identity verification provider configuration settings form component.
@@ -31,7 +31,7 @@ interface ConfigurationSettingsFormProps extends IdentifiableComponentInterface 
     /**
      * IDVP that is being currently edited.
      */
-    identityVerificationProvider: IdentityVerificationProviderInterface;
+    identityVerificationProvider: OldIdentityVerificationProviderInterface;
     /**
      * On submit callback.
      */

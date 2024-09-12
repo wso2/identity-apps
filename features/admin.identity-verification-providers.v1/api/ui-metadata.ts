@@ -23,7 +23,7 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { AcceptHeaderValues ,HttpMethods } from "@wso2is/core/models";
-import { IDVPTypeMetadataInterface, IdentityVerificationProviderInterface, UIMetaDataForIDVP } from "../models";
+import { IDVPTypeMetadataInterface, OldIdentityVerificationProviderInterface, UIMetaDataForIDVP } from "../models";
 
 /**
  * Hook to get UI metadata for an identity verification provider type
@@ -111,7 +111,7 @@ export const useIDVPTemplateTypeMetadata = <Data = IDVPTypeMetadataInterface, Er
  * @param idvpType - Type of the IDVP
  * @returns - Template of the IDVP
  */
-export const useIDVPTemplate = <Data = IdentityVerificationProviderInterface, Error = RequestErrorInterface>(
+export const useIDVPTemplate = <Data = OldIdentityVerificationProviderInterface, Error = RequestErrorInterface>(
     idvpType: string
 ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {

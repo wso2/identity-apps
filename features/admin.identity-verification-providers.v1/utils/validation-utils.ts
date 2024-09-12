@@ -18,7 +18,7 @@
 
 import { I18n } from "@wso2is/i18n";
 import { FormValidation } from "@wso2is/validation";
-import { IdentityVerificationProviderInterface } from "../models";
+import { OldIdentityVerificationProviderInterface } from "../models";
 
 /**
  * Performs required, invalid and duplicate validations for IDVP name.
@@ -30,8 +30,8 @@ import { IdentityVerificationProviderInterface } from "../models";
  */
 export const validateIDVPName = (
     value: string,
-    idvpList: IdentityVerificationProviderInterface[],
-    currentIDVP?: IdentityVerificationProviderInterface
+    idvpList: OldIdentityVerificationProviderInterface[],
+    currentIDVP?: OldIdentityVerificationProviderInterface
 ): string => {
 
     if (!value) {
@@ -59,16 +59,16 @@ export const validateIDVPName = (
  */
 const isIDVPNameAlreadyTaken = (
     value: string,
-    idvpList: IdentityVerificationProviderInterface[],
-    currentIDVP?: IdentityVerificationProviderInterface
+    idvpList: OldIdentityVerificationProviderInterface[],
+    currentIDVP?: OldIdentityVerificationProviderInterface
 ):boolean => {
 
     if (!idvpList) {
         return false;
     }
 
-    const existingIDVP: IdentityVerificationProviderInterface = idvpList.find(
-        (idvp: IdentityVerificationProviderInterface) => {
+    const existingIDVP: OldIdentityVerificationProviderInterface = idvpList.find(
+        (idvp: OldIdentityVerificationProviderInterface) => {
             if (currentIDVP) {
                 // Current IDVP is available on edit IDVP scenario. In that case, we need to skip the
                 // current IDVP name when validating the name

@@ -39,7 +39,6 @@ import { Grid, Icon } from "semantic-ui-react";
 import {
     createIdentityVerificationProvider,
     useIDVPTemplate,
-    useIdentityVerificationProviderList,
     useUIMetadata
 } from "../../api";
 import { getIDVPCreateWizardStepIcons } from "../../configs/ui";
@@ -47,7 +46,7 @@ import { IdentityVerificationProviderConstants } from "../../constants";
 import {
     IDVPClaimMappingInterface,
     IDVPTypeMetadataInterface,
-    IdentityVerificationProviderInterface
+    OldIdentityVerificationProviderInterface
 } from "../../models";
 import {
     getInitialClaimMappingsFromTemplate,
@@ -59,6 +58,7 @@ import {
 } from "../../utils";
 import { performValidations, renderFormUIWithMetadata } from "../forms/helpers/dynamic-ui-helper";
 import { AttributesSelectionWizardPage } from "../settings/attribute-management/attribute-selection-wizard-page";
+import { useIdentityVerificationProviderList } from "../../api/use-get-idvp-list";
 
 /**
  * Enum for representing the wizard steps.
@@ -214,7 +214,7 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
      * @param modifiedIDVPTemplate - IDVP template with user modifications.
      * @returns void
      */
-    const createNewIDVP = (modifiedIDVPTemplate: IdentityVerificationProviderInterface): void => {
+    const createNewIDVP = (modifiedIDVPTemplate: OldIdentityVerificationProviderInterface): void => {
 
         setIsSubmitting(true);
 

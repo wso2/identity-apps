@@ -26,7 +26,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { CheckboxProps, Divider } from "semantic-ui-react";
 import { deleteIDVP } from "../../api";
-import { IdentityVerificationProviderInterface } from "../../models";
+import { OldIdentityVerificationProviderInterface } from "../../models";
 import {
     handleIDVPDeleteError,
     handleIDVPDeleteSuccess,
@@ -41,7 +41,7 @@ interface GeneralSettingsInterface extends IdentifiableComponentInterface {
     /**
      * IDVP that is being edited.
      */
-    idvp: IdentityVerificationProviderInterface;
+    idvp: OldIdentityVerificationProviderInterface;
     /**
      * Is the IDVP info request loading.
      */
@@ -127,7 +127,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
      * @param updatedDetails - Form values.
      * @returns void
      */
-    const handleFormSubmit = (updatedDetails: IdentityVerificationProviderInterface): void => {
+    const handleFormSubmit = (updatedDetails: OldIdentityVerificationProviderInterface): void => {
 
         for (const key in updatedDetails) {
             if (updatedDetails[key] !== undefined) {

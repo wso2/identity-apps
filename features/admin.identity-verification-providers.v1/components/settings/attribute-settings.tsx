@@ -31,7 +31,7 @@ import { AttributesSelection } from "./attribute-management/attribute-selection"
 import {
     IDVPClaimMappingInterface,
     IDVPClaimsInterface,
-    IdentityVerificationProviderInterface
+    OldIdentityVerificationProviderInterface
 } from "../../models";
 import { updateIDVP } from "../../utils";
 
@@ -42,7 +42,7 @@ interface AttributeSettingsPropsInterface extends IdentifiableComponentInterface
     /**
      * Identity verification provider that is being edited.
      */
-    idvp: IdentityVerificationProviderInterface;
+    idvp: OldIdentityVerificationProviderInterface;
     /**
      * Initial claims of the IDVP.
      */

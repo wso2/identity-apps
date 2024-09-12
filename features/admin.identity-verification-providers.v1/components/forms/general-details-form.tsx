@@ -21,10 +21,10 @@ import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useIdentityVerificationProviderList } from "../../api";
 import { IdentityVerificationProviderConstants } from "../../constants";
-import { IdentityVerificationProviderInterface } from "../../models";
+import { OldIdentityVerificationProviderInterface } from "../../models";
 import { validateIDVPName } from "../../utils";
+import { useIdentityVerificationProviderList } from "../../api/use-get-idvp-list";
 
 /**
  * Proptypes for the identity verification provider general details form component.
@@ -33,7 +33,7 @@ interface GeneralDetailsFormPopsInterface extends IdentifiableComponentInterface
     /**
      * IDVP that is being currently edited.
      */
-    identityVerificationProvider: IdentityVerificationProviderInterface;
+    identityVerificationProvider: OldIdentityVerificationProviderInterface;
     /**
      * On submit callback.
      */

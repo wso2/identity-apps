@@ -24,7 +24,8 @@ import React, { FunctionComponent, MouseEvent, SyntheticEvent, useEffect, useSta
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { useIDVPTemplateTypeMetadataList, useIdentityVerificationProviderList } from "../api";
+import { useIDVPTemplateTypeMetadataList } from "../api";
+import { useIdentityVerificationProviderList } from "../api/use-get-idvp-list";
 import { IdentityVerificationProviderList } from "../components";
 import { IdentityVerificationProviderConstants } from "../constants";
 import { handleIDVPTemplateRequestError, handleIdvpListFetchRequestError } from "../utils";
