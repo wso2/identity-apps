@@ -170,6 +170,8 @@
     boolean hasLocalLoginOptions = false;
     boolean isBackChannelBasicAuth = false;
     List<String> localAuthenticatorNames = new ArrayList<String>();
+    List<String> registeredLocalAuthenticators = Arrays.asList(BACKUP_CODE_AUTHENTICATOR,TOTP_AUTHENTICATOR,EMAIL_OTP_AUTHENTICATOR,MAGIC_LINK_AUTHENTICATOR,SMS_OTP_AUTHENTICATOR,OPEN_ID_AUTHENTICATOR,IDENTIFIER_EXECUTOR,JWT_BASIC_AUTHENTICATOR,BASIC_AUTHENTICATOR,IWA_AUTHENTICATOR,X509_CERTIFICATE_AUTHENTICATOR,FIDO_AUTHENTICATOR);
+
 
     if (idpAuthenticatorMapping != null && idpAuthenticatorMapping.get(Constants.RESIDENT_IDP_RESERVED_NAME) != null) {
         String authList = idpAuthenticatorMapping.get(Constants.RESIDENT_IDP_RESERVED_NAME);
@@ -1052,6 +1054,39 @@
                             <br>
                             <%
                                         }
+
+                                for (String localAuthenticator : localAuthenticatorNames) {
+                                    if (registeredLocalAuthenticators.contains(localAuthenticator)) {
+                                        continue;
+                                    }
+                            %>
+                                <div class="social-login blurring social-dimmer">
+                                <div class="field">
+                                        <button
+                                            type="button"
+                                            id="icon-<%=iconId%>"
+                                            class="ui button secondary"
+                                            data-testid="login-page-sign-in-with-<%=localAuthenticator%>"
+                                            onclick="handleNoDomain(this,
+                                                    '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
+                                                    '<%=localAuthenticator%>')"
+                                        >
+                                        <img
+                                            class="ui image"
+                                            src="libs/themes/default/assets/images/authenticators/<%=localAuthenticator%>.svg"
+                                            alt="<%=localAuthenticator%> Logo"
+                                            role="presentation">
+                                        <span>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, localAuthenticator)%>
+                                        </span>
+                                        </button>
+                                </div>
+                            </div>
+                            <br>
+                            <%
+                                }
+
                                     }
                                 }
                                 if (isOrgEnterpriseUserLogin) { %>
