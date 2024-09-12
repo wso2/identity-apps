@@ -1065,27 +1065,27 @@
                                     }
                             %>
                                 <div class="social-login blurring social-dimmer">
-                                <div class="field">
-                                        <button
-                                            type="button"
-                                            id="icon-<%=iconId%>"
-                                            class="ui button secondary"
-                                            data-testid="login-page-sign-in-with-<%=localAuthenticator%>"
-                                            onclick="handleNoDomain(this,
-                                                    '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
-                                                    '<%=localAuthenticator%>')"
-                                        >
-                                        <img
-                                            class="ui image"
-                                            src="libs/themes/default/assets/images/authenticators/<%=localAuthenticator%>.svg"
-                                            alt="<%=localAuthenticator%> Logo"
-                                            role="presentation">
-                                        <span>
-                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
-                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, localAuthenticator)%>
-                                        </span>
-                                        </button>
-                                </div>
+                                    <div class="field">
+                                            <button
+                                                type="button"
+                                                id="icon-<%=iconId%>"
+                                                class="ui button secondary"
+                                                data-testid="login-page-sign-in-with-<%=localAuthenticator%>"
+                                                onclick="handleNoDomain(this,
+                                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
+                                                        '<%=localAuthenticator%>')"
+                                            >
+                                            <img
+                                                class="ui image"
+                                                src="libs/themes/default/assets/images/authenticators/<%=localAuthenticator%>.svg"
+                                                alt="<%=localAuthenticator%> Logo"
+                                                role="presentation">
+                                            <span>
+                                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                                <%=localAuthenticator%>
+                                            </span>
+                                            </button>
+                                    </div>
                             </div>
                             <br>
                             <%
