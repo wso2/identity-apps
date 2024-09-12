@@ -37,15 +37,15 @@ class SMSSenderConstants {
         SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS: IdentityAppsError;
         SMS_NOTIFICATION_SENDER_DELETION_ERROR_CONNECTED_APPS: IdentityAppsError;
     } = {
-            SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS: new IdentityAppsError(
-                "NSM-65015",
-                "Failed to delete SMS notification sender due to the existence of active subscriptions"
-            ),
-            SMS_NOTIFICATION_SENDER_DELETION_ERROR_CONNECTED_APPS: new IdentityAppsError(
-                "NSM-60008",
-                "There are applications using this connection."
-            )
-        };
+        SMS_NOTIFICATION_SENDER_DELETION_ERROR_ACTIVE_SUBS: new IdentityAppsError(
+            "NSM-65015",
+            "Failed to delete SMS notification sender due to the existence of active subscriptions"
+        ),
+        SMS_NOTIFICATION_SENDER_DELETION_ERROR_CONNECTED_APPS: new IdentityAppsError(
+            "NSM-60008",
+            "There are applications using this connection."
+        )
+    };
 }
 
 export default SMSSenderConstants;

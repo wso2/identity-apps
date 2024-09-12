@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -34,7 +34,6 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpReque
  * @returns  A promise containing the response.
  */
 const addSMSPublisher = (): Promise<NotificationSenderSMSInterface> => {
-    //SMS Notification sender with name SMSPublisher.
     const smsProvider: NotificationSenderSMSInterface = {
         contentType: "FORM",
         name: "SMSPublisher",
@@ -45,6 +44,7 @@ const addSMSPublisher = (): Promise<NotificationSenderSMSInterface> => {
             }
         ],
         provider: "choreo",
+        // TODO: Get the URL from the Config
         providerURL: "https://console.choreo.dev/"
     };
 

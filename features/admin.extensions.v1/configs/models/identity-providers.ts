@@ -17,7 +17,6 @@
  */
 
 import { ConnectionTabTypes } from "@wso2is/admin.connections.v1/models/connection";
-import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import { ReactElement, ReactNode } from "react";
 
 export interface ExtendedSamlConfigInterface {
