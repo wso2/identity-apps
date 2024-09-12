@@ -1,5 +1,23 @@
 # @wso2is/admin.remote-repository-configuration.v1
 
+## 2.21.0
+
+### Minor Changes
+
+- [#6894](https://github.com/wso2/identity-apps/pull/6894) [`e7bf2ba65101f54e8b32cf75588ce1bf79bb0b07`](https://github.com/wso2/identity-apps/commit/e7bf2ba65101f54e8b32cf75588ce1bf79bb0b07) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump auth-react and auth-spa to latest versions
+
+### Patch Changes
+
+- Updated dependencies [[`e7bf2ba65101f54e8b32cf75588ce1bf79bb0b07`](https://github.com/wso2/identity-apps/commit/e7bf2ba65101f54e8b32cf75588ce1bf79bb0b07)]:
+  - @wso2is/admin.core.v1@2.30.0
+  - @wso2is/core@2.1.0
+  - @wso2is/access-control@3.0.24
+  - @wso2is/dynamic-forms@2.0.107
+  - @wso2is/form@2.1.15
+  - @wso2is/forms@2.0.54
+  - @wso2is/i18n@2.5.31
+  - @wso2is/react-components@2.4.14
+
 ## 2.20.163
 
 ### Patch Changes

@@ -1,5 +1,21 @@
 # @wso2is/admin.username-validation.v1
 
+## 1.1.0
+
+### Minor Changes
+
+- [#6894](https://github.com/wso2/identity-apps/pull/6894) [`e7bf2ba65101f54e8b32cf75588ce1bf79bb0b07`](https://github.com/wso2/identity-apps/commit/e7bf2ba65101f54e8b32cf75588ce1bf79bb0b07) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump auth-react and auth-spa to latest versions
+
+### Patch Changes
+
+- Updated dependencies [[`e7bf2ba65101f54e8b32cf75588ce1bf79bb0b07`](https://github.com/wso2/identity-apps/commit/e7bf2ba65101f54e8b32cf75588ce1bf79bb0b07)]:
+  - @wso2is/admin.applications.v1@2.26.0
+  - @wso2is/admin.validation.v1@2.22.0
+  - @wso2is/admin.core.v1@2.30.0
+  - @wso2is/core@2.1.0
+  - @wso2is/form@2.1.15
+  - @wso2is/react-components@2.4.14
+
 ## 1.0.51
 
 ### Patch Changes
