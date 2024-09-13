@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.8.1
+
+### Patch Changes
+
+- [#6896](https://github.com/wso2/identity-apps/pull/6896) [`825f099f7e77277fb60ad730bd084acb50bc6a30`](https://github.com/wso2/identity-apps/commit/825f099f7e77277fb60ad730bd084acb50bc6a30) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add updated auth-spa min.js file to my account
+
 ## 2.8.0
 
 ### Minor Changes
