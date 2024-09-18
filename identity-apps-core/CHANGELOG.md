@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.4.37
+
+### Patch Changes
+
+- [#6899](https://github.com/wso2/identity-apps/pull/6899) [`fd6d8949b7a2d0226ed74e197d5b0525d0b6f78d`](https://github.com/wso2/identity-apps/commit/fd6d8949b7a2d0226ed74e197d5b0525d0b6f78d) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Revert "Fixed redirection issue in Go Back button in expired password reset error page"
+
 ## 2.4.36
 
 ### Patch Changes
