@@ -321,6 +321,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                             layout
                                         >
                                             <Autocomplete
+                                                data-componentId={ `${componentId}-application-dropdown` }
                                                 sx={ { width: 190 } }
                                                 readOnly={ isBrandingAppsRedirect }
                                                 clearIcon={ null }
