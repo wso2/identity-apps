@@ -278,7 +278,10 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                 value={ brandingMode }
                                                 disabled={ isBrandingAppsRedirect }
                                             >
-                                                <ToggleButton value={ BrandingModes.ORGANIZATION }>
+                                                <ToggleButton
+                                                    data-componentid={ `${componentId}-organization-mode-button` }
+                                                    value={ BrandingModes.ORGANIZATION }
+                                                >
                                                     <BuildingIcon
                                                         className="toggle-button-icon"
                                                         size={ 14 }
@@ -286,6 +289,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                     { t("extensions:develop.branding.pageHeader.organization") }
                                                 </ToggleButton>
                                                 <ToggleButton
+                                                    data-componentid={ `${componentId}-application-mode-button` }
                                                     value={ BrandingModes.APPLICATION }
                                                     onClick={ () => {
                                                         activeTab === BrandingPreferencesConstants.TABS.TEXT_TAB_ID &&
