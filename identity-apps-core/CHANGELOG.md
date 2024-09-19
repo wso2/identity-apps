@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.4.38
+
+### Patch Changes
+
+- [#6901](https://github.com/wso2/identity-apps/pull/6901) [`27597ab01d1bf4c48681a5266e7faddced98bf9b`](https://github.com/wso2/identity-apps/commit/27597ab01d1bf4c48681a5266e7faddced98bf9b) Thanks [@Yoshani](https://github.com/Yoshani)! - set proxy hostname as cookie domain when branded
+
 ## 2.4.37
 
 ### Patch Changes
