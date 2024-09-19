@@ -23,6 +23,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.core.SameSiteCookie" %>
 <%@ page import="org.wso2.carbon.core.util.SignatureUtil" %>
+<%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 <%@ page import="org.wso2.carbon.identity.mgt.constants.SelfRegistrationStatusCodes" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
@@ -358,7 +359,10 @@
             } else {
                 tenantAwareUsername = username + "@" + user.getTenantDomain();
             }
-            String cookieDomain = application.getInitParameter(AUTO_LOGIN_COOKIE_DOMAIN);
+            String domainName = application.getInitParameter(AUTO_LOGIN_COOKIE_DOMAIN);
+            String hostName = ServiceURLBuilder.create().build().getProxyHostName();
+            String cookieDomain = IdentityUtil.isSubdomain(domainName, hostName) ? domainName : hostName;
+
             JSONObject contentValueInJson = new JSONObject();
             contentValueInJson.put("username", tenantAwareUsername);
             contentValueInJson.put("createdTime", System.currentTimeMillis());
