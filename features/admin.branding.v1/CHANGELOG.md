@@ -1,5 +1,20 @@
 # @wso2is/admin.branding.v1
 
+## 2.22.1
+
+### Patch Changes
+
+- [#6898](https://github.com/wso2/identity-apps/pull/6898) [`7d65f7651d111826f024b600f45297f767e298df`](https://github.com/wso2/identity-apps/commit/7d65f7651d111826f024b600f45297f767e298df) Thanks [@savindi7](https://github.com/savindi7)! - Add Test IDs to the Branding mode toggle buttons.
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.ai.v1@2.22.1
+  - @wso2is/admin.core.v1@2.30.1
+  - @wso2is/admin.extensions.v1@2.30.1
+  - @wso2is/admin.organizations.v1@2.22.1
+  - @wso2is/admin.feature-gate.v1@1.1.1
+  - @wso2is/admin.server-configurations.v1@2.24.1
+  - @wso2is/common.branding.v1@2.20.165
+
 ## 2.22.0
 
 ### Minor Changes
