@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.4.39
+
+### Patch Changes
+
+- [#6904](https://github.com/wso2/identity-apps/pull/6904) [`32eeb234b64b11b46d6b31e34632927fcd4e4408`](https://github.com/wso2/identity-apps/commit/32eeb234b64b11b46d6b31e34632927fcd4e4408) Thanks [@Yoshani](https://github.com/Yoshani)! - set root domain of proxy hostname in alor cookie
+
 ## 2.4.38
 
 ### Patch Changes
