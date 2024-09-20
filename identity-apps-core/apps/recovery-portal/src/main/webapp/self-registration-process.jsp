@@ -359,9 +359,8 @@
             } else {
                 tenantAwareUsername = username + "@" + user.getTenantDomain();
             }
-            String domainName = application.getInitParameter(AUTO_LOGIN_COOKIE_DOMAIN);
             String hostName = ServiceURLBuilder.create().build().getProxyHostName();
-            String cookieDomain = IdentityUtil.isSubdomain(domainName, hostName) ? domainName : hostName;
+            String cookieDomain = IdentityUtil.getRootDomain(hostName);
 
             JSONObject contentValueInJson = new JSONObject();
             contentValueInJson.put("username", tenantAwareUsername);
