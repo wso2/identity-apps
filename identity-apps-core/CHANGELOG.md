@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.4.40
+
+### Patch Changes
+
+- [#6907](https://github.com/wso2/identity-apps/pull/6907) [`73065ccd355ade24dd26b2ac064351bd4f533ac8`](https://github.com/wso2/identity-apps/commit/73065ccd355ade24dd26b2ac064351bd4f533ac8) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Fix invalid device success jsp file
+
 ## 2.4.39
 
 ### Patch Changes
