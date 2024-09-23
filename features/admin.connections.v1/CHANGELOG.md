@@ -1,5 +1,23 @@
 # @wso2is/admin.connections.v1
 
+## 2.23.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.30.2
+  - @wso2is/admin.applications.v1@2.26.2
+  - @wso2is/admin.claims.v1@2.21.2
+  - @wso2is/admin.connections.v1@2.23.2
+  - @wso2is/admin.console-settings.v1@2.21.2
+  - @wso2is/admin.extensions.v1@2.30.2
+  - @wso2is/admin.feature-gate.v1@1.1.2
+  - @wso2is/admin.identity-providers.v1@2.22.2
+  - @wso2is/admin.organizations.v1@2.22.2
+  - @wso2is/admin.roles.v2@2.22.2
+  - @wso2is/admin.template-core.v1@1.0.54
+  - @wso2is/admin.userstores.v1@2.21.2
+
 ## 2.23.1
 
 ### Patch Changes
