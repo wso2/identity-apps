@@ -80,6 +80,7 @@
 
     if (StringUtils.isNotBlank(username)) {
         username = (String) request.getAttribute("resolvedUsername");
+        username = StringEscapeUtils.unescapeJava(username);
     }
 
     // Password recovery parameters
