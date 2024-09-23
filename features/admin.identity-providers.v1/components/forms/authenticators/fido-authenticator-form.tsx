@@ -204,32 +204,32 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
 
         updateFidoConfigs(payload)
             .then(() => {
-                addAlert({
+                dispatch(addAlert({
                     description: t("authenticationProvider:" +
                         "notifications.updateFIDOConnectorConfigs." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
                     message: t("authenticationProvider:notifications." +
                         "updateFIDOConnectorConfigs.success.message")
-                });
+                }));
 
                 mutateFIDOConnectorConfigs();
             })
             .catch((error: IdentityAppsApiException) => {
                 if (error?.response?.data?.description) {
-                    addAlert({
+                    dispatch(addAlert({
                         description: t("authenticationProvider:" +
                             "notifications.updateFIDOConnectorConfigs." +
                             "error.description", { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: t("authenticationProvider:notifications." +
                             "updateFIDOConnectorConfigs.error.message")
-                    });
+                    }));
 
                     return;
                 }
 
-                addAlert({
+                dispatch(addAlert({
                     description: t("authenticationProvider:" +
                         "notifications.updateFIDOConnectorConfigs." +
                         "genericError.description"),
@@ -237,7 +237,7 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                     message: t("authenticationProvider:" +
                         "notifications.updateFIDOConnectorConfigs." +
                         "genericError.message")
-                });
+                }));
             })
             .finally(() => setIsFIDOConfigsSubmitting(false));
     };
