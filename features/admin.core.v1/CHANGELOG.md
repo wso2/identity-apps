@@ -1,5 +1,59 @@
 # @wso2is/admin.core.v1
 
+## 2.30.3
+
+### Patch Changes
+
+- [#6909](https://github.com/wso2/identity-apps/pull/6909) [`2310dde3b346c505cacf0189865c1c0959b65b7a`](https://github.com/wso2/identity-apps/commit/2310dde3b346c505cacf0189865c1c0959b65b7a) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Remove trusted app related UI from connection pages
+
+- Updated dependencies [[`2310dde3b346c505cacf0189865c1c0959b65b7a`](https://github.com/wso2/identity-apps/commit/2310dde3b346c505cacf0189865c1c0959b65b7a)]:
+  - @wso2is/admin.identity-providers.v1@2.22.3
+  - @wso2is/admin.connections.v1@2.23.3
+  - @wso2is/admin.extensions.v1@2.30.3
+  - @wso2is/i18n@2.5.32
+  - @wso2is/admin.applications.v1@2.26.3
+  - @wso2is/admin.console-settings.v1@2.21.3
+  - @wso2is/admin.organizations.v1@2.22.3
+  - @wso2is/admin.roles.v2@2.22.3
+  - @wso2is/admin.server-configurations.v1@2.24.3
+  - @wso2is/admin.users.v1@2.23.3
+  - @wso2is/admin.sms-providers.v1@2.21.3
+  - @wso2is/admin.actions.v1@1.2.3
+  - @wso2is/admin.administrators.v1@2.25.3
+  - @wso2is/admin.api-resources.v1@2.21.3
+  - @wso2is/admin.authentication.v1@2.21.3
+  - @wso2is/admin.branding.v1@2.22.3
+  - @wso2is/admin.claims.v1@2.21.3
+  - @wso2is/admin.groups.v1@2.21.3
+  - @wso2is/admin.tenants.v1@2.23.3
+  - @wso2is/admin.userstores.v1@2.21.3
+  - @wso2is/admin.validation.v1@2.22.3
+  - @wso2is/admin.api-resources.v2@2.21.3
+  - @wso2is/admin.application-templates.v1@1.0.55
+  - @wso2is/admin.certificates.v1@2.21.3
+  - @wso2is/admin.email-and-sms.v1@2.21.3
+  - @wso2is/admin.email-management.v1@2.21.3
+  - @wso2is/admin.email-providers.v1@2.21.3
+  - @wso2is/admin.email-templates.v1@2.21.3
+  - @wso2is/admin.feature-gate.v1@1.1.3
+  - @wso2is/admin.identity-verification-providers.v1@2.22.3
+  - @wso2is/admin.impersonation.v1@1.2.3
+  - @wso2is/admin.oidc-scopes.v1@2.21.3
+  - @wso2is/admin.org-insights.v1@2.21.3
+  - @wso2is/admin.organization-discovery.v1@2.21.3
+  - @wso2is/admin.private-key-jwt.v1@2.21.3
+  - @wso2is/admin.remote-repository-configuration.v1@2.21.3
+  - @wso2is/admin.roles.v1@2.21.3
+  - @wso2is/admin.saml2-configuration.v1@2.21.3
+  - @wso2is/admin.secrets.v1@2.21.3
+  - @wso2is/admin.server.v1@2.21.3
+  - @wso2is/admin.session-management.v1@2.21.3
+  - @wso2is/admin.subscription.v1@1.1.3
+  - @wso2is/admin.template-core.v1@1.0.55
+  - @wso2is/admin.workflow-approvals.v1@2.21.3
+  - @wso2is/admin.wsfed-configuration.v1@2.21.3
+  - @wso2is/admin.authorization.v1@2.21.1
+
 ## 2.30.2
 
 ### Patch Changes

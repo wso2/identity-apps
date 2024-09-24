@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.5.32
+
+### Patch Changes
+
+- [#6909](https://github.com/wso2/identity-apps/pull/6909) [`2310dde3b346c505cacf0189865c1c0959b65b7a`](https://github.com/wso2/identity-apps/commit/2310dde3b346c505cacf0189865c1c0959b65b7a) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Remove trusted app related UI from connection pages
+
 ## 2.5.31
 
 ### Patch Changes
