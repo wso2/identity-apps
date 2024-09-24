@@ -438,29 +438,31 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 <MyAccountOverview/>
             </ResourceTab.Pane>
             <Divider hidden />
-            <Show
-                when={ applicationsUpdateScopes }
-            >
-                <DangerZoneGroup
-                    sectionHeader={ t("applications:dangerZoneGroup.header") }
+            { !isSubOrganization() && (
+                <Show
+                    when={ applicationsUpdateScopes }
                 >
-                    <DangerZone
-                        actionTitle={ t("applications:dangerZoneGroup.disableApplication.actionTitle",
-                            { state: application.applicationEnabled ? t("common:disable") : t("common:enable") }) }
-                        header={ t("applications:dangerZoneGroup.disableApplication.header",
-                            { state: application.applicationEnabled ? t("common:disable") : t("common:enable") } ) }
-                        subheader={ application.applicationEnabled
-                            ? t("applications:dangerZoneGroup.disableApplication.subheader")
-                            : t("applications:dangerZoneGroup.disableApplication.subheader2") }
-                        onActionClick={ undefined }
-                        toggle={ {
-                            checked: application.applicationEnabled,
-                            onChange: handleAppEnableDisableToggleChange
-                        } }
-                        data-testid={ `${ componentId }-danger-zone-disable` }
-                    />
-                </DangerZoneGroup>
-            </Show>
+                    <DangerZoneGroup
+                        sectionHeader={ t("applications:dangerZoneGroup.header") }
+                    >
+                        <DangerZone
+                            actionTitle={ t("applications:dangerZoneGroup.disableApplication.actionTitle",
+                                { state: application.applicationEnabled ? t("common:disable") : t("common:enable") }) }
+                            header={ t("applications:dangerZoneGroup.disableApplication.header",
+                                { state: application.applicationEnabled ? t("common:disable") : t("common:enable") } ) }
+                            subheader={ application.applicationEnabled
+                                ? t("applications:dangerZoneGroup.disableApplication.subheader")
+                                : t("applications:dangerZoneGroup.disableApplication.subheader2") }
+                            onActionClick={ undefined }
+                            toggle={ {
+                                checked: application.applicationEnabled,
+                                onChange: handleAppEnableDisableToggleChange
+                            } }
+                            data-testid={ `${ componentId }-danger-zone-disable` }
+                        />
+                    </DangerZoneGroup>
+                </Show>
+            ) }
             <ConfirmationModal
                 onClose={ (): void => setShowDisableConfirmationModal(false) }
                 type="warning"
