@@ -215,8 +215,6 @@ export class ConnectionUIConstants {
         CONNECTION_JIT_PROVISIONING_UPDATE_ERROR: string;
         FIDO_AUTHENTICATOR_CONFIG_UPDATE_ERROR: string;
         FIDO_AUTHENTICATOR_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR: string;
-        FIDO_TRUSTED_APPS_UPDATE_ERROR: string;
-        FIDO_TRUSTED_APPS_UPDATE_INVALID_STATUS_CODE_ERROR: string;
         IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR: string;
         IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR: string;
         LOCAL_AUTHENTICATORS_FETCH_ERROR: string;
@@ -239,8 +237,6 @@ export class ConnectionUIConstants {
             CONNECTION_JIT_PROVISIONING_UPDATE_ERROR: "An error occurred while updating the JIT provisioning configurations of the connection.",
             FIDO_AUTHENTICATOR_CONFIG_UPDATE_ERROR: "An error occurred while updating the Passkey connector configs.",
             FIDO_AUTHENTICATOR_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while updating the Passkey connector configs.",
-            FIDO_TRUSTED_APPS_UPDATE_ERROR: "An error occurred while updating the Passkey trusted apps.",
-            FIDO_TRUSTED_APPS_UPDATE_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while updating the Passkey trusted apps.",
             IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR: "An error occurred while fetching the required connection templates list.",
             IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while fetching connection templates list.",
             LOCAL_AUTHENTICATORS_FETCH_ERROR: "An error occurred while fetching the local authenticators.",
