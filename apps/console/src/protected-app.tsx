@@ -117,7 +117,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
-    const [ isRedirectingToTenantCreation, setRedirectingToTenantCreation ] = useState<boolean>(false);
+    const [ isUserTenantless, setIsUserTenantless ] = useState(undefined);
 
     useEffect(() => {
         dispatch(
@@ -231,11 +231,11 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                                 idToken.sub))
                         ? AppConstants.getAppHomePath()
                         : AuthenticationCallbackUrl;
-
+                setIsUserTenantless(false);
                 history.push(location);
             } else {
-                // If there is no assocation, the user should be redirected to creation flow.
-                setRedirectingToTenantCreation(true);
+                // If there is no association, the user should be redirected to creation flow.
+                setIsUserTenantless(true);
                 history.push({
                     pathname: AppConstants.getPaths().get(
                         "CREATE_TENANT"
@@ -350,12 +350,12 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, [ state.isAuthenticated ]);
 
     useEffect(() => {
-        if (!state.isAuthenticated || isRedirectingToTenantCreation) {
+        if (!state.isAuthenticated || isUserTenantless === undefined) {
             return;
         }
 
-        filterRoutes(() => setRoutesFiltered(true), isFirstLevelOrg);
-    }, [ filterRoutes, state.isAuthenticated, isFirstLevelOrg, isRedirectingToTenantCreation ]);
+        filterRoutes(() => setRoutesFiltered(true), isUserTenantless, isFirstLevelOrg);
+    }, [ filterRoutes, state.isAuthenticated, isFirstLevelOrg, isUserTenantless ]);
 
     return (
         <SecureApp
