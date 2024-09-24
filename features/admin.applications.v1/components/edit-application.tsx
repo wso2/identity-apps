@@ -462,7 +462,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         />
                     </DangerZoneGroup>
                 </Show>
-            )}
+            ) }
             <ConfirmationModal
                 onClose={ (): void => setShowDisableConfirmationModal(false) }
                 type="warning"
