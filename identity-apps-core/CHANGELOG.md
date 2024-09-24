@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.4.41
+
+### Patch Changes
+
+- [#6912](https://github.com/wso2/identity-apps/pull/6912) [`1789e685f5aa66a9b81c3bba5f935589bb9e9b3f`](https://github.com/wso2/identity-apps/commit/1789e685f5aa66a9b81c3bba5f935589bb9e9b3f) Thanks [@dhaura](https://github.com/dhaura)! - Rename "orgDiscovery" param to "login_hint"
+
 ## 2.4.40
 
 ### Patch Changes
