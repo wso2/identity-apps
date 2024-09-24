@@ -351,7 +351,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     }, [ state.isAuthenticated ]);
 
     useEffect(() => {
-        if (!state.isAuthenticated || isUserTenantless === undefined) {
+        if (!state.isAuthenticated) {
             return;
         }
 
