@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.29.5
+
+### Patch Changes
+
+- [#6914](https://github.com/wso2/identity-apps/pull/6914) [`38b68c96f7e5100d7e062421d75893b3a46674bf`](https://github.com/wso2/identity-apps/commit/38b68c96f7e5100d7e062421d75893b3a46674bf) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Fix issue for getting unauthorized for users without tenant association
+
 ## 2.29.4
 
 ### Patch Changes
