@@ -231,6 +231,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                                 idToken.sub))
                         ? AppConstants.getAppHomePath()
                         : AuthenticationCallbackUrl;
+
                 setIsUserTenantless(false);
                 history.push(location);
             } else {
