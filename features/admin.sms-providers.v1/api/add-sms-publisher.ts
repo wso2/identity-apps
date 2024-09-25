@@ -31,7 +31,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpReque
 /**
  * Add sms notification senders with name SMSPublisher.
  *
- * @returns  A promise containing the response.
+ * @returns A promise containing the response.
  */
 const addSMSPublisher = (): Promise<NotificationSenderSMSInterface> => {
     const smsProvider: NotificationSenderSMSInterface = {

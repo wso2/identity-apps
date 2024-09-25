@@ -17,7 +17,7 @@
  */
 import { deleteADialect, getDialects, getExternalClaims } from "@wso2is/admin.claims.v1/api/claims";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
-import {  getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { Claim, ClaimDialect, ExternalClaim } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
