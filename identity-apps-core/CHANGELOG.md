@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.4.42
+
+### Patch Changes
+
+- [#6910](https://github.com/wso2/identity-apps/pull/6910) [`72d1ec4bf2ff6c81cb7e09fa35d7d113dcbce22b`](https://github.com/wso2/identity-apps/commit/72d1ec4bf2ff6c81cb7e09fa35d7d113dcbce22b) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Fix username with special characters by removing escape characters
+
 ## 2.4.41
 
 ### Patch Changes
