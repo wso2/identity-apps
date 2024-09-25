@@ -1257,6 +1257,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onApplicationUpdate: () => {
                     handleApplicationUpdate(application?.id);
                 },
+                onTriggerTabUpdate: (tabIndex: number) => {
+                    history.push({
+                        hash: `#tab=${tabIndex}`
+                    });
+                },
                 template: template
             },
             featureConfig,
