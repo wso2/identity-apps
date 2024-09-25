@@ -75,6 +75,10 @@ import { CommonUtils } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
 import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
 
+// TODO: Remove this once multiple email and mobile support is onboarded.
+const multipleEmailMobileFeatureSpecificSchemaNames: string[] = [ "emailAddresses", "verifiedEmailAddresses",
+    "mobileNumbers", "verifiedMobileNumbers" ];
+
 /**
  * Prop types for the basic details component.
  * Also see {@link Profile.defaultProps}
@@ -738,6 +742,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
          */
         const isProfileUsernameReadonly: boolean = config.ui.isProfileUsernameReadonly;
         const { displayName, name } = schema;
+
+        if (multipleEmailMobileFeatureSpecificSchemaNames?.includes(name)) {
+            return;
+        }
 
         if (isProfileUsernameReadonly) {
             const usernameClaim: string = "username";
