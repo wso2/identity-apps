@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.5.33
+
+### Patch Changes
+
+- [#6926](https://github.com/wso2/identity-apps/pull/6926) [`11e1c9a35285f492abd2aa5990efefd45a1c0f6e`](https://github.com/wso2/identity-apps/commit/11e1c9a35285f492abd2aa5990efefd45a1c0f6e) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Validate API key header field in Pre-Issue Access Token action
+
 ## 2.5.32
 
 ### Patch Changes
