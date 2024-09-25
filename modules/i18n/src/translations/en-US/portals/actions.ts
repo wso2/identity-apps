@@ -63,7 +63,7 @@ export const actions: actionsNS = {
                             placeholder: "Header",
                             validations: {
                                 empty: "Header is a required field.",
-                                invalid: "Please choose a valid name that adheres to the given guidelines."
+                                invalid: "Please choose a valid header name that adheres to the given guidelines."
                             }
                         },
                         value: {
