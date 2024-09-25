@@ -1,5 +1,35 @@
 # @wso2is/admin.applications.v1
 
+## 2.26.5
+
+### Patch Changes
+
+- [#6923](https://github.com/wso2/identity-apps/pull/6923) [`aef4ba7159f6580745b180d3d996671a9db6a34e`](https://github.com/wso2/identity-apps/commit/aef4ba7159f6580745b180d3d996671a9db6a34e) Thanks [@asha15](https://github.com/asha15)! - Add onTriggerTabUpdate function
+
+- Updated dependencies []:
+  - @wso2is/admin.application-templates.v1@1.0.57
+  - @wso2is/admin.authentication-flow-builder.v1@2.20.169
+  - @wso2is/admin.connections.v1@2.23.5
+  - @wso2is/admin.console-settings.v1@2.21.5
+  - @wso2is/admin.core.v1@2.30.5
+  - @wso2is/admin.extensions.v1@2.30.5
+  - @wso2is/admin.identity-providers.v1@2.22.5
+  - @wso2is/admin.login-flow.ai.v1@2.22.5
+  - @wso2is/admin.oidc-scopes.v1@2.21.5
+  - @wso2is/admin.organizations.v1@2.22.5
+  - @wso2is/admin.roles.v2@2.22.5
+  - @wso2is/admin.api-resources.v2@2.21.5
+  - @wso2is/admin.branding.v1@2.22.5
+  - @wso2is/admin.claims.v1@2.21.5
+  - @wso2is/admin.feature-gate.v1@1.1.5
+  - @wso2is/admin.impersonation.v1@1.2.5
+  - @wso2is/admin.secrets.v1@2.21.5
+  - @wso2is/admin.server-configurations.v1@2.24.5
+  - @wso2is/admin.template-core.v1@1.0.57
+  - @wso2is/admin.users.v1@2.23.5
+  - @wso2is/admin.userstores.v1@2.21.5
+  - @wso2is/admin.wsfed-configuration.v1@2.21.5
+
 ## 2.26.4
 
 ### Patch Changes
