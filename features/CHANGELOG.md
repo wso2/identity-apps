@@ -1,5 +1,12 @@
 # @wso2is/features
 
+## 2.22.2
+
+### Patch Changes
+
+- Updated dependencies [[`11e1c9a35285f492abd2aa5990efefd45a1c0f6e`](https://github.com/wso2/identity-apps/commit/11e1c9a35285f492abd2aa5990efefd45a1c0f6e)]:
+  - @wso2is/i18n@2.5.33
+
 ## 2.22.1
 
 ### Patch Changes
