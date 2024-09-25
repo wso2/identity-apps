@@ -1,5 +1,25 @@
 # @wso2is/admin.connections.v1
 
+## 2.23.6
+
+### Patch Changes
+
+- [#6853](https://github.com/wso2/identity-apps/pull/6853) [`06639c2d59fac47ac57a9c10a341af6c711dd461`](https://github.com/wso2/identity-apps/commit/06639c2d59fac47ac57a9c10a341af6c711dd461) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix the update API call failure in outbound provisioning
+
+- Updated dependencies [[`06639c2d59fac47ac57a9c10a341af6c711dd461`](https://github.com/wso2/identity-apps/commit/06639c2d59fac47ac57a9c10a341af6c711dd461)]:
+  - @wso2is/admin.connections.v1@2.23.6
+  - @wso2is/admin.applications.v1@2.26.6
+  - @wso2is/admin.core.v1@2.30.6
+  - @wso2is/admin.extensions.v1@2.30.6
+  - @wso2is/admin.identity-providers.v1@2.22.6
+  - @wso2is/admin.organizations.v1@2.22.6
+  - @wso2is/admin.roles.v2@2.22.6
+  - @wso2is/admin.console-settings.v1@2.21.6
+  - @wso2is/admin.claims.v1@2.21.6
+  - @wso2is/admin.feature-gate.v1@1.1.6
+  - @wso2is/admin.template-core.v1@1.0.58
+  - @wso2is/admin.userstores.v1@2.21.6
+
 ## 2.23.5
 
 ### Patch Changes
