@@ -220,6 +220,8 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
             error.authenticationType = t("actions:fields.authenticationType.validations.empty");
         }
 
+        const apiKeyHeaderRegex: RegExp = /^[a-zA-Z0-9-.]+$/;
+
         switch (authenticationType) {
             case AuthenticationType.BASIC:
                 if(isCreateFormState || isAuthenticationUpdateFormState ||
@@ -250,6 +252,10 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                     if (!values?.headerAuthProperty) {
                         error.headerAuthProperty = t("actions:fields.authentication." +
                             "types.apiKey.properties.header.validations.empty");
+                    }
+                    if (!apiKeyHeaderRegex.test(values?.headerAuthProperty)) {
+                        error.headerAuthProperty = t("actions:fields.authentication." +
+                            "types.apiKey.properties.header.validations.invalid");
                     }
                     if (!values?.valueAuthProperty) {
                         error.valueAuthProperty = t("actions:fields.authentication." +
@@ -529,6 +535,12 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                                 ".types.apiKey.properties.header.label") }
                                             placeholder={ t("actions:fields.authentication" +
                                                 ".types.apiKey.properties.header.placeholder") }
+                                            helperText={ (
+                                                <Hint className="hint" compact>
+                                                    { t("actions:fields.authentication" +
+                                                        ".types.apiKey.properties.header.hint") }
+                                                </Hint>
+                                            ) }
                                             component={ TextFieldAdapter }
                                             maxLength={ 100 }
                                             minLength={ 0 }

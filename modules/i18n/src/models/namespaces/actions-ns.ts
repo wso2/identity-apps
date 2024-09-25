@@ -52,10 +52,12 @@ export interface actionsNS {
                     name: string;
                     properties: {
                         header: {
+                            hint: string;
                             label: string;
                             placeholder: string;
                             validations: {
                                 empty: string
+                                invalid: string
                             };
                         };
                         value: {
