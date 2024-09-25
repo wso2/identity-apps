@@ -57,10 +57,13 @@ export const actions: actionsNS = {
                     name: "API Key",
                     properties: {
                         header: {
+                            hint: "Must be a string containing only letters (a-z, A-Z), numbers (0-9), " +
+                            "period (.) and hyphen (-).",
                             label: "Header",
                             placeholder: "Header",
                             validations: {
-                                empty: "Header is a required field."
+                                empty: "Header is a required field.",
+                                invalid: "Please choose a valid name that adheres to the given guidelines."
                             }
                         },
                         value: {
