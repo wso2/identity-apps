@@ -137,6 +137,18 @@ interface ApplicationsDocumentationLinksInterface {
                 }
             }
         }
+        oudatedApplications: {
+            versions: {
+                version100: {
+                    change1: {
+                        documentationLink: string;
+                    },
+                    change2: {
+                        documentationLink: string;
+                    }
+                }
+            }
+        },
         oidcApplication: {
             advanced: {
                 learnMore: string;

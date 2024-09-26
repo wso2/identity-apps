@@ -144,6 +144,18 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                             }
                         }
                     },
+                    oudatedApplications: {
+                        versions: {
+                            version100: {
+                                change1: {
+                                    documentationLink: undefined
+                                },
+                                change2: {
+                                    documentationLink: undefined
+                                }
+                            }
+                        }
+                    },
                     samlApplication: {
                         advanced: {
                             learnMore: undefined
