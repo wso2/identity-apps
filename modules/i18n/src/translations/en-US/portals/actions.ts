@@ -58,7 +58,7 @@ export const actions: actionsNS = {
                     properties: {
                         header: {
                             hint: "Must be a string containing only letters (a-z, A-Z), numbers (0-9), " +
-                            "period (.) and hyphen (-).",
+                            "period (.) and hyphen (-), and should start with an alphanumeric character.",
                             label: "Header",
                             placeholder: "Header",
                             validations: {
