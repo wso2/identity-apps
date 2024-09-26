@@ -617,6 +617,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      * @returns Alert banner details.
      */
     const resolveBannerViewDetails = (): ReactElement => {
+
         return (
             <Forms
                 onSubmit={ handleBannerCheckBoxUpdate }
@@ -700,7 +701,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      *
      * @returns Confirmation modal.
      */
-    const confirmationModal = () => {
+    const confirmationModal = (): ReactElement => {
         return (
             <ConfirmationModal
                 primaryActionLoading={ bannerUpdateLoading }
@@ -762,10 +763,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     /**
      * Handles the banner data update action.
      */
-    const handleBannerCheckBoxUpdateConfirmation = async (): Promise<void> => {
+    const handleBannerCheckBoxUpdateConfirmation = (): void => {
         setBannerUpdateLoading(true);
 
-        return updateApplicationDetails(formData)
+        updateApplicationDetails(formData)
             .then(() => {
                 dispatch(addAlert({
                     description: t("applications:notifications.updateApplication.success" +
