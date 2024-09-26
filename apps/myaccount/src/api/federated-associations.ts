@@ -39,7 +39,7 @@ export const getFederatedAssociations = (): Promise<FederatedAssociation[]> => {
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse) => {
+        .then((response: HttpResponse<FederatedAssociation[]>) => {
             if (response.status !== 200) {
                 return Promise.reject("Failed to retrieve Federated Associations");
             } else {

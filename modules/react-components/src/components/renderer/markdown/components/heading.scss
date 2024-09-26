@@ -1,0 +1,193 @@
+/**
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+ .markdown-heading-container {
+    display: flex;
+    align-items: center;
+
+    .markdown-heading-number {
+        background-color: #969696;
+        border-radius: 100%;
+        color: #fff;
+        margin: 0 15px 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &.markdown-heading1-number {
+            height: 40px;
+            width: 40px;
+            font-size: 20px;
+        }
+
+        &.markdown-heading2-number {
+            height: 35px;
+            width: 35px;
+            font-size: 17.5px;
+        }
+
+        &.markdown-heading3-number {
+            height: 30px;
+            width: 30px;
+            font-size: 15px;
+        }
+
+        &.markdown-heading4-number {
+            height: 25px;
+            width: 25px;
+            font-size: 12.5px;
+        }
+    }
+
+    &.markdown-heading4-children-indent ~ p,
+    &.markdown-heading4-children-indent ~ div,
+    &.markdown-heading4-children-indent ~ ol,
+    &.markdown-heading4-children-indent ~ ul,
+    &.markdown-heading4-children-indent ~ h5,
+    &.markdown-heading4-children-indent ~ h6 {
+        margin-left: 40px;
+    }
+
+    &.markdown-heading3-children-indent ~ p,
+    &.markdown-heading3-children-indent ~ div,
+    &.markdown-heading3-children-indent ~ ol,
+    &.markdown-heading3-children-indent ~ ul,
+    &.markdown-heading3-children-indent ~ h4,
+    &.markdown-heading3-children-indent ~ h5,
+    &.markdown-heading3-children-indent ~ h6 {
+        margin-left: 45px;
+    }
+
+    &.markdown-heading2-children-indent ~ p,
+    &.markdown-heading2-children-indent ~ div,
+    &.markdown-heading2-children-indent ~ ol,
+    &.markdown-heading2-children-indent ~ ul,
+    &.markdown-heading2-children-indent ~ h3,
+    &.markdown-heading2-children-indent ~ h4,
+    &.markdown-heading2-children-indent ~ h5,
+    &.markdown-heading2-children-indent ~ h6 {
+        margin-left: 50px;
+    }
+
+    &.markdown-heading1-children-indent ~ p,
+    &.markdown-heading1-children-indent ~ div,
+    &.markdown-heading1-children-indent ~ ol,
+    &.markdown-heading1-children-indent ~ ul,
+    &.markdown-heading1-children-indent ~ h2,
+    &.markdown-heading1-children-indent ~ h3,
+    &.markdown-heading1-children-indent ~ h4,
+    &.markdown-heading1-children-indent ~ h5,
+    &.markdown-heading1-children-indent ~ h6 {
+        margin-left: 55px;
+    }
+
+    &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ p,
+    &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ div,
+    &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ ol,
+    &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ ul,
+    &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ h5,
+    &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ h6 {
+        margin-left: 85px;
+    }
+
+    &.markdown-heading2-children-indent ~ &.markdown-heading4-children-indent ~ p,
+    &.markdown-heading2-children-indent ~ &.markdown-heading4-children-indent ~ div,
+    &.markdown-heading2-children-indent ~ &.markdown-heading4-children-indent ~ ol,
+    &.markdown-heading2-children-indent ~ &.markdown-heading4-children-indent ~ ul,
+    &.markdown-heading2-children-indent ~ &.markdown-heading4-children-indent ~ h5,
+    &.markdown-heading2-children-indent ~ &.markdown-heading4-children-indent ~ h6 {
+        margin-left: 90px;
+    }
+
+    &.markdown-heading1-children-indent ~ &.markdown-heading4-children-indent ~ p,
+    &.markdown-heading1-children-indent ~ &.markdown-heading4-children-indent ~ div,
+    &.markdown-heading1-children-indent ~ &.markdown-heading4-children-indent ~ ol,
+    &.markdown-heading1-children-indent ~ &.markdown-heading4-children-indent ~ ul,
+    &.markdown-heading1-children-indent ~ &.markdown-heading4-children-indent ~ h5,
+    &.markdown-heading1-children-indent ~ &.markdown-heading4-children-indent ~ h6 {
+        margin-left: 95px;
+    }
+
+    &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ p,
+    &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ div,
+    &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ ol,
+    &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ ul,
+    &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ h4,
+    &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ h5,
+    &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ h6 {
+        margin-left: 95px;
+    }
+
+    &.markdown-heading1-children-indent ~ &.markdown-heading3-children-indent ~ p,
+    &.markdown-heading1-children-indent ~ &.markdown-heading3-children-indent ~ div,
+    &.markdown-heading1-children-indent ~ &.markdown-heading3-children-indent ~ ol,
+    &.markdown-heading1-children-indent ~ &.markdown-heading3-children-indent ~ ul,
+    &.markdown-heading1-children-indent ~ &.markdown-heading3-children-indent ~ h4,
+    &.markdown-heading1-children-indent ~ &.markdown-heading3-children-indent ~ h5,
+    &.markdown-heading1-children-indent ~ &.markdown-heading3-children-indent ~ h6 {
+        margin-left: 100px;
+    }
+
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ p,
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ div,
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ ol,
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ ul,
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ h3,
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ h4,
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ h5,
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ h6 {
+        margin-left: 105px;
+    }
+
+    &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ p,
+    &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ div,
+    &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ ol,
+    &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ ul,
+    &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ h5,
+    &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ h6 {
+        margin-left: 135px;
+    }
+
+    &.markdown-heading1-children-indent ~ &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ p,
+    &.markdown-heading1-children-indent ~ &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ div,
+    &.markdown-heading1-children-indent ~ &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ ol,
+    &.markdown-heading1-children-indent ~ &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ ul,
+    &.markdown-heading1-children-indent ~ &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ h5,
+    &.markdown-heading1-children-indent ~ &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ h6 {
+        margin-left: 140px;
+    }
+
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ p,
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ div,
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ ol,
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ ul,
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ h4,
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ h5,
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ h6 {
+        margin-left: 150px;
+    }
+
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ p,
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ div,
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ ol,
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ ul,
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ h5,
+    &.markdown-heading1-children-indent ~ &.markdown-heading2-children-indent ~ &.markdown-heading3-children-indent ~ &.markdown-heading4-children-indent ~ h6 {
+        margin-left: 190px;
+    }
+}

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,11 +19,11 @@
 /**
  * Extracts the mime-type from a base64encoded image.
  *
- * @param {string} encodedString - Encoded image.
- * @return {string} - Mime-type as "image/png" | "image/svg+xml" etc.
+ * @param encodedString - Encoded image.
+ * @returns Mime-type as "image/png" | "image/svg+xml" etc.
  */
 export const base64MimeType = (encodedString: string): string => {
-    const mime = encodedString.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
+    const mime: RegExpMatchArray = encodedString.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
 
     return mime && mime.length ? mime[1] : null;
 };

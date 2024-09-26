@@ -45,7 +45,6 @@ export class GovernanceConnectorConstants {
         EXPIRY_TIME_MIN_LENGTH: number;
         EXPIRY_TIME_MIN_VALUE: number;
     } = {
-
         EXPIRY_TIME_MAX_LENGTH: 5,
         EXPIRY_TIME_MAX_VALUE: 10080,
         EXPIRY_TIME_MIN_LENGTH: 1,
@@ -75,7 +74,6 @@ export class GovernanceConnectorConstants {
         SMS_OTP_CODE_LENGTH_MIN_LENGTH: number;
         SMS_OTP_CODE_LENGTH_MIN_VALUE: number;
     } = {
-
         EXPIRY_TIME_MAX_LENGTH: 5,
         EXPIRY_TIME_MAX_VALUE: 10080,
         EXPIRY_TIME_MIN_LENGTH: 1,
@@ -91,7 +89,7 @@ export class GovernanceConnectorConstants {
         SMS_OTP_CODE_LENGTH_MAX_LENGTH: 2,
         SMS_OTP_CODE_LENGTH_MAX_VALUE: 10,
         SMS_OTP_CODE_LENGTH_MIN_LENGTH: 1,
-        SMS_OTP_CODE_LENGTH_MIN_VALUE: 6,
+        SMS_OTP_CODE_LENGTH_MIN_VALUE: 4,
         SMS_OTP_EXPIRY_TIME_MAX_LENGTH: 4,
         SMS_OTP_EXPIRY_TIME_MAX_VALUE: 1440
     };
@@ -113,7 +111,6 @@ export class GovernanceConnectorConstants {
         FAILED_ATTEMPTS_MIN_LENGTH: number;
         FAILED_ATTEMPTS_MIN_VALUE: number;
     } = {
-
         ACCOUNT_LOCK_INCREMENT_FACTOR_MAX_LENGTH: 2,
         ACCOUNT_LOCK_INCREMENT_FACTOR_MAX_VALUE: 10,
         ACCOUNT_LOCK_INCREMENT_FACTOR_MIN_LENGTH: 1,
@@ -136,7 +133,11 @@ export class GovernanceConnectorConstants {
         EXPIRY_TIME_MAX_VALUE: number;
         EXPIRY_TIME_MIN_LENGTH: number;
         EXPIRY_TIME_MIN_VALUE: number;
+        EXPIRY_RULES_MAX_COUNT: number;
+        EXPIRY_RULE_MAX_VALUES_PER_RULE: number;
     } = {
+        EXPIRY_RULES_MAX_COUNT: 10,
+        EXPIRY_RULE_MAX_VALUES_PER_RULE: 5,
         EXPIRY_TIME_MAX_LENGTH: 5,
         EXPIRY_TIME_MAX_VALUE: 10080,
         EXPIRY_TIME_MIN_LENGTH: 1,

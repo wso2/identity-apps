@@ -32,6 +32,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import AIBanner from "@wso2is/common.ai.v1/components/ai-banner";
 import AIBannerTall from "@wso2is/common.ai.v1/components/ai-banner-tall";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -175,7 +176,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                     titleLabel={ (
                         <Chip
                             size="small"
-                            label={ t("common:beta").toUpperCase() }
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-chip-beta mb-1 ml-2"
                         />
                     ) }
@@ -201,7 +202,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                     titleLabel={ (
                         <Chip
                             size="small"
-                            label={ t("common:beta").toUpperCase() }
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-chip-beta mb-1 ml-2"
                         />
                     ) }

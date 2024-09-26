@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -115,6 +115,7 @@ export const common: CommonNS = {
     makePrimary: "Make primary",
     maxValidation: "This value should be less than or equal to {{max}}.",
     maximize: "Maximize",
+    metaAttributes: "Meta Attributes",
     minValidation: "This value should be greater than or equal to {{min}}.",
     minimize: "Minimize",
     more: "More",

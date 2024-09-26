@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 import { store } from "@wso2is/admin.core.v1";
 import useRequest, {
     RequestConfigInterface,
@@ -25,7 +26,6 @@ import useRequest, {
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { IdentityProviderManagementConstants } from "../constants";
 import {
     FederatedAuthenticatorMetaInterface,
     IdentityProviderListResponseInterface,
@@ -147,7 +147,7 @@ export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    IdentityProviderManagementConstants
+                    ConnectionUIConstants.ERROR_MESSAGES
                         .IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR,
                     null,
                     response.status,
@@ -159,7 +159,7 @@ export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
             return Promise.resolve(response.data as IdentityProviderTemplateListResponseInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                IdentityProviderManagementConstants.IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR,
+                ConnectionUIConstants.ERROR_MESSAGES.IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -187,10 +187,10 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
+        .then((response: AxiosResponse<LocalAuthenticatorInterface[]>) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    IdentityProviderManagementConstants.LOCAL_AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR,
+                    ConnectionUIConstants.ERROR_MESSAGES.LOCAL_AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR,
                     null,
                     response.status,
                     response.request,
@@ -201,7 +201,7 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
             return Promise.resolve(response.data);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                IdentityProviderManagementConstants.LOCAL_AUTHENTICATORS_FETCH_ERROR,
+                ConnectionUIConstants.ERROR_MESSAGES.LOCAL_AUTHENTICATORS_FETCH_ERROR,
                 error.stack,
                 error.code,
                 error.request,

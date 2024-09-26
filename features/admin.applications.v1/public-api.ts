@@ -16,7 +16,5 @@
  * under the License.
  */
 
-// public API exports
 export { default as ApplicationEditPage } from "./pages/application-edit";
 export { default as ApplicationsPage } from "./pages/applications";
-export { default as ApplicationTemplatePage } from "./pages/application-template";

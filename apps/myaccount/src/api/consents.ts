@@ -78,7 +78,7 @@ export const fetchConsentedApps = async (
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse) => {
+        .then((response: HttpResponse<ConsentInterface[]>) => {
             return response.data;
         })
         .catch((error: HttpError) => {
@@ -108,7 +108,7 @@ export const fetchConsentReceipt = (
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse) => {
+        .then((response: HttpResponse<ConsentReceiptInterface>) => {
             return response.data;
         })
         .catch((error: HttpError) => {
@@ -242,7 +242,7 @@ export const revokeConsentedApp = (
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse) => {
+        .then((response: HttpResponse<ConsentReceiptInterface>) => {
             // TODO: change the return type
             return response.data;
         })
@@ -300,7 +300,7 @@ export const updateConsentedClaims = (
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse) => {
+        .then((response: HttpResponse<ConsentReceiptInterface>) => {
             return response.data;
         })
         .catch((error: HttpError) => {

@@ -18,14 +18,18 @@
 import { usersNS } from "../../../models";
 
 export const users: usersNS = {
+    addUserDropDown: {
+        addNewUser:  "Single User",
+        bulkImport: "Multiple Users"
+    },
     addUserType: {
         createUser: {
-            title: "Create user",
-            description: "Create a user in your organization."
+            description: "Create a user in your organization.",
+            title: "Create user"
         },
         inviteParentUser: {
-            title: "Invite parent user",
-            description: "Invite user from the parent organization."
+            description: "Invite user from the parent organization.",
+            title: "Invite parent user"
         }
     },
     advancedSearch: {
@@ -59,11 +63,14 @@ export const users: usersNS = {
         assignUserRoleBtn: "Assign roles",
         metaColumnBtn: "Columns"
     },
-    addUserDropDown: {
-        addNewUser:  "Single User",
-        bulkImport: "Multiple Users"
-    },
     confirmations: {
+        addMultipleUser: {
+            assertionHint: "Please confirm your action.",
+            content: "Invite User to Set Password should be enabled to add multiple users. " +
+                "Please enable email invitations for user password setup from <1>Login & Registration settings</1>.",
+            header: "Before you proceed",
+            message: "Invite users option is disabled"
+        },
         terminateAllSessions: {
             assertionHint: "Please confirm your action.",
             content: "If you proceed with this action, the user will be logged out of all active " +
@@ -77,13 +84,6 @@ export const users: usersNS = {
                 "session. They will loose the progress of any ongoing tasks. Please proceed with caution.",
             header: "Are you sure?",
             message: "This action is irreversible and will permanently terminate the session."
-        },
-        addMultipleUser: {
-            header: "Before you proceed",
-            message: "Invite users option is disabled",
-            content: "Invite User to Set Password should be enabled to add multiple users. " +
-                "Please enable email invitations for user password setup from Login & Registration settings.",
-            assertionHint: "Please confirm your action."
         }
     },
     consumerUsers: {
@@ -101,19 +101,19 @@ export const users: usersNS = {
         }
     },
     editUser: {
+        placeholders: {
+            undefinedUser: {
+                action: "Go back to users",
+                subtitles: "It looks like the requested user does not exist.",
+                title: "User not found"
+            }
+        },
         tab: {
             menuItems: {
                 0: "Profile",
                 1: "Groups",
                 2: "Roles",
                 3: "Active Sessions"
-            }
-        },
-        placeholders: {
-            undefinedUser: {
-                action: "Go back to users",
-                subtitles: "It looks like the requested user does not exist.",
-                title: "User not found"
             }
         }
     },
@@ -177,50 +177,6 @@ export const users: usersNS = {
             }
         },
         bulkImportUser: {
-            validation: {
-                emptyRowError: {
-                    description: "Selected file contains no data.",
-                    message: "Empty File"
-                },
-                columnMismatchError: {
-                    description: "Some data rows of the file does not match the required column count. " +
-                        "Please review and correct the data.",
-                    message: "Column Count Mismatch"
-                },
-                emptyHeaderError: {
-                    description: "Ensure that the first row contains the headers for each column.",
-                    message: "Missing Column Headers"
-                },
-                missingRequiredHeaderError: {
-                    description: "The following header(s) are required but are missing in the CSV file: " +
-                    "{{ headers }}.",
-                    message: "Missing Required Column Headers"
-                },
-                blockedHeaderError: {
-                    description: "The following header(s) are not allowed: {{headers}}.",
-                    message: "Blocked Column Headers"
-                },
-                duplicateHeaderError: {
-                    description: "The following headers are duplicated: {{headers}}.",
-                    message: "Duplicate Column Headers"
-                },
-                invalidHeaderError: {
-                    description: "The following headers are invalid: {{headers}}.",
-                    message: "Invalid Column Headers"
-                },
-                emptyDataField: {
-                    description: "The data field '{{dataField}}' must not be empty.",
-                    message: "Empty Data Field"
-                },
-                invalidRole: {
-                    description: "{{role}} does not exist.",
-                    message: "Role Not Found"
-                },
-                invalidGroup: {
-                    description: "{{group}} does not exist.",
-                    message: "Group Not Found"
-                }
-            },
             submit: {
                 error: {
                     description: "{{description}}",
@@ -238,6 +194,50 @@ export const users: usersNS = {
             timeOut: {
                 description: "Some users may not have been created.",
                 message: "The request has timed out"
+            },validation: {
+                blockedHeaderError: {
+                    description: "The following header(s) are not allowed: {{headers}}.",
+                    message: "Blocked Column Headers"
+                },
+                columnMismatchError: {
+                    description: "Some data rows of the file does not match the required column count. " +
+                        "Please review and correct the data.",
+                    message: "Column Count Mismatch"
+                },
+                duplicateHeaderError: {
+                    description: "The following headers are duplicated: {{headers}}.",
+                    message: "Duplicate Column Headers"
+                },
+                emptyDataField: {
+                    description: "The data field '{{dataField}}' must not be empty.",
+                    message: "Empty Data Field"
+                },
+                emptyHeaderError: {
+                    description: "Ensure that the first row contains the headers for each column.",
+                    message: "Missing Column Headers"
+                },
+                emptyRowError: {
+                    description: "Selected file contains no data.",
+                    message: "Empty File"
+                },
+                invalidGroup: {
+                    description: "{{group}} does not exist.",
+                    message: "Group Not Found"
+                },
+                invalidHeaderError: {
+                    description: "The following headers are invalid: {{headers}}.",
+                    message: "Invalid Column Headers"
+                },
+
+                invalidRole: {
+                    description: "{{role}} does not exist.",
+                    message: "Role Not Found"
+                },
+                missingRequiredHeaderError: {
+                    description: "The following header(s) are required but are missing in the CSV file: " +
+                    "{{ headers }}.",
+                    message: "Missing Required Column Headers"
+                }
             }
         },
         deleteUser: {

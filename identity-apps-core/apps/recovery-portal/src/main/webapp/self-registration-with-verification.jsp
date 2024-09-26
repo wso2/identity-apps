@@ -435,9 +435,9 @@
                                         <input
                                             class="form-control"
                                             type="password"
-                                            id="passwordUserInput"
+                                            id="password"
                                             value=""
-                                            name="passwordUserInput"
+                                            name="password"
                                             tabindex="1"
                                             placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.your.password")%>"
                                             required
@@ -886,7 +886,7 @@
     <script type="text/javascript">
         var registrationDataKey = "registrationData";
         var $registerForm = $("#register");
-        var passwordField = $("#passwordUserInput");
+        var passwordField = $("#password");
         var passwordValidationBlock = $("#password-validation-block");
         var validPassword = false;
         var passwordConfig = <%=passwordConfig%>;
@@ -979,14 +979,14 @@
         });
 
         // Fires when password field lose focus.
-        $('#passwordUserInput').bind('blur keyup', function () {
+        $('#password').bind('blur keyup', function () {
             showPasswordValidationStatus();
             showMismatchPasswordValidationStatus();
 
         });
 
         // Fires on password field input.
-        $('#passwordUserInput').bind('input', function () {
+        $('#password').bind('input', function () {
             hidePasswordValidationStatus();
         });
 
@@ -1144,8 +1144,8 @@
                 }
 
                 // Password validation.
-                var passwordUserInput = document.getElementById("passwordUserInput");
-                var password = document.getElementById("passwordUserInput");
+                var passwordUserInput = document.getElementById("password");
+                var password = document.getElementById("password");
 
                 if (showPasswordValidationStatus()) {
                     if (passwordUserInput) {
@@ -1218,7 +1218,7 @@
 
                 var data = $("#register").serializeArray();
                 var filteredData = data.filter(function(row) {
-                    return !(row.name === "passwordUserInput" || row.name === "password2");
+                    return !(row.name === "password" || row.name === "password2");
                 });
 
                 sessionStorage.setItem(registrationDataKey, JSON.stringify(filteredData));
@@ -1589,7 +1589,7 @@
 
         // show password function
         function showPassword() {
-            var passwordField = $('#passwordUserInput');
+            var passwordField = $('#password');
 
             if (passwordField.attr("type") === 'text') {
                 passwordField.attr("type", "password")
@@ -1680,8 +1680,7 @@
         }
 
         function showPasswordValidationStatus() {
-            var password = document.getElementById("passwordUserInput");
-            var passwordUserInput = document.getElementById("passwordUserInput");
+            var passwordUserInput = document.getElementById("password");
             var passwordField = $("#passwordField");
             var password_error_msg = $("#password-error-msg");
             var server_error_msg = $("#server-error-msg");
@@ -1745,7 +1744,7 @@
         }
 
         function showMismatchPasswordValidationStatus() {
-            var passwordInput = document.getElementById("passwordUserInput");
+            var passwordInput = document.getElementById("password");
             var confirmPasswordInput = document.getElementById("password2");
             var password_mismatch_error_msg = $("#password-mismatch-error-msg");
             var password_mismatch_error_msg_text = $("#password-mismatch-error-msg-text");
@@ -2073,7 +2072,7 @@
             if (!isPasswordProvisionEnabled) {
                 return true;
             }
-            var passwordInput = document.getElementById("passwordUserInput");
+            var passwordInput = document.getElementById("password");
             var confirmPasswordInput = document.getElementById("password2");
 
             if ( (!!passwordInput &&  passwordInput.value.trim() == "")

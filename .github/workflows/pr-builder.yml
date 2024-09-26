@@ -9,6 +9,7 @@ on:
     paths-ignore:
       - "**.md"
       - "LICENSE"
+  workflow_dispatch:
 
 # Avoid running multiple builds for the same PR.
 concurrency:
@@ -200,7 +201,7 @@ jobs:
 
       - name: Upload `@wso2is/core` coverage reports to Codecov
         id: upload-wso2is-core-coverage-1
-        uses: codecov/codecov-action@v4.0.1
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./modules/core/coverage/coverage-final.json
@@ -209,7 +210,7 @@ jobs:
 
       - name: Upload `@wso2is/features` coverage reports to Codecov
         id: upload-wso2is-features-coverage-1
-        uses: codecov/codecov-action@v4.0.1
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./features/coverage/coverage-final.json
@@ -218,7 +219,7 @@ jobs:
 
       - name: Upload `@wso2is/i18n` coverage reports to Codecov
         id: upload-wso2is-i18n-coverage-1
-        uses: codecov/codecov-action@v4.0.1
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./modules/i18n/coverage/coverage-final.json

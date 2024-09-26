@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -116,6 +116,7 @@ export const common: CommonNS = {
     makePrimary:"முதன்மை உருவாக்கு",
     maxValidation: "இந்த மதிப்பு {{max}} ஐ விட குறைவாகவோ அல்லது சமமாகவோ இருக்க வேண்டும்.",
     maximize: "பெரிதாக்கு",
+    metaAttributes: "மெட்டா பண்புக்கூறுகள்",
     minValidation: "இந்த மதிப்பு {{min}} ஐ விட அதிகமாகவோ அல்லது சமமாகவோ இருக்க வேண்டும்.",
     minimize: "குறைத்தல்",
     more: "மேலும்",

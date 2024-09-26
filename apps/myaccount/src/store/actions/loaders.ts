@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,7 +20,7 @@ import { LoaderAction, SET_PROFILE_INFO_LOADER, SET_PROFILE_SCHEMA_LOADER } from
 
 /**
  * Sets the state of the profile schema loader
- * @param state
+ * @param state - state to be updated
  */
 export const setProfileSchemaLoader = (state: boolean): LoaderAction => ({
     payload: state,
@@ -29,7 +29,7 @@ export const setProfileSchemaLoader = (state: boolean): LoaderAction => ({
 
 /**
  * Sets the state of the profile info loader
- * @param state
+ * @param state - state to be updated
  */
 export const setProfileInfoLoader = (state: boolean): LoaderAction => ({
     payload: state,

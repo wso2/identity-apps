@@ -20,6 +20,7 @@ import { Show } from "@wso2is/access-control";
 import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getRolesList } from "@wso2is/admin.roles.v2/api";
+import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants";
 import { AlertLevels, RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, Hint, Popup } from "@wso2is/react-components";
@@ -93,8 +94,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                     const allRole: RoleListInterface = response.data;
 
                     setRoleList(allRole?.Resources?.filter((role: RolesInterface) => {
-                        return !(role.displayName
-                            .includes("Application/") || role.displayName.includes("Internal/"));
+                        return (role?.audience?.type?.toUpperCase() === RoleAudienceTypes.ORGANIZATION);
                     }));
                 }
             })
@@ -146,6 +146,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                 <Grid.Column width={ 8 }>
                     <Form className="outbound-provisioning-roles role-select-dropdown">
                         <Form.Select
+                            selectOnBlur={ false }
                             options={ roleList?.map((role: RolesInterface) => {
                                 return {
                                     key: role.id,

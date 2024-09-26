@@ -40,7 +40,7 @@ import {
 } from "@oxygen-ui/react-icons";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
-import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
@@ -242,20 +242,6 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                     onClick={ () => handleConnectorSelection(connector) }
                                                     data-componentid={ connector.testId }
                                                 >
-                                                    {
-                                                        connector.status
-                                                        && (
-                                                            <div
-                                                                className={
-                                                                    "ribbon " + resolveFeatureLabelClass(
-                                                                        connector.status as FeatureStatusLabel
-                                                                    )
-                                                                }
-                                                            >
-                                                                { t(connector.status).toUpperCase() }
-                                                            </div>
-                                                        )
-                                                    }
                                                     <CardContent className="governance-connector-header">
                                                         <Avatar
                                                             variant="square"
@@ -270,6 +256,22 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                                 { connector.header }
                                                             </Typography>
                                                         </div>
+                                                        {
+                                                            connector.status
+                                                            && (
+                                                                <div
+                                                                    className={
+                                                                        "ribbon " + resolveFeatureLabelClass(
+                                                                            connector.status as FeatureStatusLabel
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <span className="MuiChip-label">
+                                                                        { t(connector.status) }
+                                                                    </span>
+                                                                </div>
+                                                            )
+                                                        }
                                                     </CardContent>
                                                     <CardContent>
                                                         <Typography variant="body2" color="text.secondary">

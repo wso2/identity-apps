@@ -21,6 +21,7 @@ import { applicationReducer } from "@wso2is/admin.applications.v1/store";
 import { commonAuthenticateReducerInitialState } from "@wso2is/admin.authentication.v1/store";
 import { identityProviderReducer } from "@wso2is/admin.identity-providers.v1/store";
 import {
+    AlertInterface,
     LinkedAccountInterface,
     ProfileInfoInterface,
     ProfileSchemaInterface
@@ -28,18 +29,20 @@ import {
 import {
     commonAuthenticateReducer,
     commonConfigReducer,
+    commonGlobalReducer,
     commonProfileReducer,
     commonRequestLoadersReducer
 } from "@wso2is/core/store";
-import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+import { I18nModuleOptionsInterface, SupportedLanguagesMeta } from "@wso2is/i18n";
+import { System } from "react-notification-system";
 import { Reducer, combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import {
     accessControlReducer,
     commonConfigReducerInitialState,
+    commonGlobalReducerInitialState,
     commonProfileReducerInitialState,
     commonRequestLoadersInitialState,
-    globalReducer,
     organizationReducer
 } from "./reducers";
 import { routeReducer } from "./reducers/routes";
@@ -68,7 +71,7 @@ export const reducers: Reducer = combineReducers({
         UIConfigInterface
         >(commonConfigReducerInitialState),
     form: formReducer,
-    global: globalReducer,
+    global: commonGlobalReducer<AlertInterface, System, SupportedLanguagesMeta>(commonGlobalReducerInitialState),
     identityProvider: identityProviderReducer,
     loaders: commonRequestLoadersReducer(commonRequestLoadersInitialState),
     organization: organizationReducer,

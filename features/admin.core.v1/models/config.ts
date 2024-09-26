@@ -17,6 +17,8 @@
  */
 
 import { ResponseMode, Storage } from "@asgardeo/auth-react";
+import { ActionsResourceEndpointsInterface } from "@wso2is/admin.actions.v1/models/endpoints";
+import { ApplicationsTemplatesEndpointsInterface } from "@wso2is/admin.application-templates.v1/models/endpoints";
 import {
     ApplicationTemplateLoadingStrategies,
     ApplicationsResourceEndpointsInterface
@@ -27,14 +29,12 @@ import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/
 import { ConnectionResourceEndpointsInterface } from "@wso2is/admin.connections.v1";
 import { ConsoleSettingsResourceEndpointsInterface } from "@wso2is/admin.console-settings.v1/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "@wso2is/admin.groups.v1";
-import { IdentityProviderTemplateLoadingStrategies }
-    from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { ScopesResourceEndpointsInterface } from "@wso2is/admin.oidc-scopes.v1";
 import { OrganizationResourceEndpointsInterface } from "@wso2is/admin.organizations.v1/models";
-import { JWTAuthenticationServiceEndpointsInterface } from "@wso2is/admin.private-key-jwt.v1/models";
 import { RolesResourceEndpointsInterface } from "@wso2is/admin.roles.v2/models/endpoints";
 import { SecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "@wso2is/admin.server-configurations.v1";
+import { ExtensionTemplatesEndpointsInterface } from "@wso2is/admin.template-core.v1/models/endpoints";
 import { TenantResourceEndpointsInterface } from "@wso2is/admin.tenants.v1/models/endpoints";
 import { UsersResourceEndpointsInterface } from "@wso2is/admin.users.v1/models/endpoints";
 import { UserstoreResourceEndpointsInterface } from "@wso2is/admin.userstores.v1/models/endpoints";
@@ -66,6 +66,10 @@ interface ConnectionConfigInterface extends FeatureAccessConfigInterface {
  * Application configuration interface.
  */
 export interface FeatureConfigInterface {
+    /**
+     * Action management feature.
+     */
+    actions?: FeatureAccessConfigInterface;
     /**
      * Admin user management feature.
      */
@@ -335,15 +339,14 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     hiddenConnectionTemplates?: string[];
     /**
+     * Set of application templates to be hidden.
+     * Include the IDs of application templates.
+     */
+    hiddenApplicationTemplates?: string[];
+    /**
      * Configurations for IDP templates.
      */
     identityProviderTemplates: IdentityProviderTemplatesConfigInterface;
-    /**
-     * How should the IDP templates be loaded.
-     * If `LOCAL` is selected, app will resort to in-app templates.
-     * `REMOTE` will fetch templates from the template management REST API.
-     */
-    identityProviderTemplateLoadingStrategy?: IdentityProviderTemplateLoadingStrategies;
     /**
      * Should default dialects be allowed for editing.
      */
@@ -534,9 +537,11 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     OrganizationResourceEndpointsInterface,
     TenantResourceEndpointsInterface,
     ValidationServiceEndpointsInterface,
-    JWTAuthenticationServiceEndpointsInterface,
     BrandingPreferenceResourceEndpointsInterface,
-    ConsoleSettingsResourceEndpointsInterface {
+    ConsoleSettingsResourceEndpointsInterface,
+    ExtensionTemplatesEndpointsInterface,
+    ApplicationsTemplatesEndpointsInterface,
+    ActionsResourceEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details

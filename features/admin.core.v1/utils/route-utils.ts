@@ -22,7 +22,7 @@ import {
     SquareUserIcon
 } from "@oxygen-ui/react-icons";
 import { FeatureStatus } from "@wso2is/access-control";
-import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
+import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { NavCategory, NavRouteInterface, RouteInterface } from "@wso2is/core/models";
 import groupBy from "lodash-es/groupBy";
 import sortBy from "lodash-es/sortBy";
@@ -299,14 +299,19 @@ export class RouteUtils {
             order: 4
         };
 
+        const extensions: NavCategory = {
+            id: "extensions",
+            order: 5
+        };
+
         const monitoring: NavCategory = {
             id: "monitoring",
-            order: 5
+            order: 6
         };
 
         const settings: NavCategory = {
             id: "settings",
-            order: 6
+            order: 7
         };
 
         const loginAndRegPathsToCheck: string[] = [
@@ -464,6 +469,17 @@ export class RouteUtils {
                 id: "server",
                 order: 2,
                 selected: history.location.pathname.includes("server")
+            },
+            {
+                category: extensions,
+                id: "actions",
+                order: 0,
+                selected: history.location.pathname.includes("/actions")
+            },
+            {
+                category: extensions,
+                id: "eventPublishing",
+                order: 1
             }
         ];
 

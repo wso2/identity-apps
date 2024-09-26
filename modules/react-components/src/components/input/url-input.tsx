@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import IconButton from "@oxygen-ui/react/IconButton";
+import { PlusIcon, XMarkIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
@@ -26,6 +28,7 @@ import { LinkButton } from "../button";
 import { LabelWithPopup } from "../label";
 import { Popup } from "../popup";
 import { Hint } from "../typography";
+import "./url-input.scss";
 
 export interface URLInputPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     addURLTooltip?: string;
@@ -753,12 +756,15 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
      */
     const urlRemoveButtonWidget = (url: string): ReactElement => {
         return (
-            <Icon
-                name="delete"
+            <IconButton
+                size="small"
+                className="remove-url-button"
                 onClick={ () => removeValue(url) }
                 data-componentid={ `${ componentId }-${ url }-delete-button` }
                 data-testid={ `${ testId }-${ url }-delete-button` }
-            />
+            >
+                <XMarkIcon />
+            </IconButton>
         );
     };
 
@@ -772,6 +778,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                         { /*Section that contains | https://origin X |*/ }
                         { /*Chip widget with protocol highlights*/ }
                         <Label
+                            className="url-label-chip"
                             data-componentid={ `${ componentId }-${ url }` }
                             data-testid={ `${ testId }-${ url }` }
                         >
@@ -853,8 +860,9 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                     (
                                         <Button
                                             onClick={ (e) => addFormButton(e) }
-                                            icon="add"
+                                            icon={ PlusIcon }
                                             type="button"
+                                            className="add-button"
                                             disabled={ readOnly || disabled || (!allowEmptyValues && !changeUrl) }
                                             data-componentid={ `${ componentId }-add-button` }
                                             data-testid={ `${ testId }-add-button` }
@@ -900,6 +908,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
                                         <p>
                                             <Label
+                                                className="url-label-chip"
                                                 data-componentid={ `${ componentId }-${ url }` }
                                                 data-testid={ `${ testId }-${ url }` }
                                             >

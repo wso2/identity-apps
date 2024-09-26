@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import ApplicationSelectionModal from "@wso2is/admin.applications.v1/components/application-selection-modal";
 import {
     ConnectionInterface,
     ConnectionTemplateInterface
@@ -26,8 +27,6 @@ import {
 } from "@wso2is/admin.core.v1";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import ApplicationSelectionModal
-    from "@wso2is/admin.extensions.v1/components/shared/application-selection-modal";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CodeEditor, GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";

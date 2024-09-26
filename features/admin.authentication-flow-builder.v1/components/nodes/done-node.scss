@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,12 @@
  * under the License.
  */
 
+$done-node-background: var(--oxygen-customComponents-Chip-properties-new-background);
+$done-node-icon-color: var(--oxygen-customComponents-Chip-properties-new-border-color);
+$done-node-icon-stroke-width: var(--oxygen-customComponents-Chip-properties-icon-stroke-width);
+$done-node-icon-height: 30px;
+$done-node-icon-width: 30px;
+
 .done-node.MuiFab-root {
     pointer-events: none;
     box-shadow: none;
@@ -27,7 +33,7 @@
     align-content: center;
     justify-content: center;
     align-items: center;
-    border: 3px solid var(--oxygen-customComponents-Chip-properties-new-background);
+    background: $done-node-background;
 
     .oxygen-typography {
         margin-left: 5px;
@@ -35,12 +41,13 @@
     }
 
     svg {
-        height: 30px;
-        width: 30px;
-        stroke: var(--oxygen-customComponents-Chip-properties-new-background);
+        height: $done-node-icon-height;
+        width: $done-node-icon-width;
+        fill: $done-node-icon-color;
 
         path {
-            fill: var(--oxygen-customComponents-Chip-properties-new-background);
+            stroke: $done-node-icon-color;
+            stroke-width: $done-node-icon-stroke-width;
         }
     }
 }

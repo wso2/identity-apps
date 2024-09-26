@@ -18,12 +18,12 @@
 
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import { IdentityProviderManagementConstants } from "@wso2is/admin.identity-providers.v1/constants";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models";
 import {
     IdentityProviderManagementUtils
 } from "@wso2is/admin.identity-providers.v1/utils/identity-provider-management-utils";
 import { useEffect, useState } from "react";
+import { LocalAuthenticatorConstants } from "../../admin.connections.v1/constants/local-authenticator-constants";
 import AuthenticatorsRecord from "../models/authenticators-record";
 
 const useAvailableAuthenticators = (): {
@@ -81,7 +81,8 @@ const useAvailableAuthenticators = (): {
                         return;
                     }
 
-                    if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
+                    if (authenticator.name === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                        .BACKUP_CODE_AUTHENTICATOR_NAME) {
                         recoveryAuthenticators.push({
                             description: authenticator.description,
                             idp: authenticator.idp,

@@ -21,6 +21,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "@wso2is/admin.core.v1";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader, EmptyPlaceholder,
@@ -310,7 +311,7 @@ const IdentityVerificationProviderTemplateSelectPage: FunctionComponent<IDVPTemp
                                             <ResourceGrid.Card
                                                 key={ templateIndex }
                                                 resourceName={ template.name }
-                                                comingSoonRibbonLabel={ t("common:comingSoon") }
+                                                comingSoonRibbonLabel={ t(FeatureStatusLabel.COMING_SOON) }
                                                 resourceDescription={ template.description }
                                                 resourceImage={
                                                     resolveIDVPImage(template.image)

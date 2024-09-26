@@ -33,14 +33,14 @@ import {
 } from "@wso2is/admin.core.v1";
 import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { RoleAudienceTypes, RoleConstants } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import {
@@ -105,7 +105,8 @@ import "./minimal-application-create-wizard.scss";
 /**
  * Prop types of the `MinimalAppCreateWizard` component.
  */
-interface MinimalApplicationCreateWizardPropsInterface extends TestableComponentInterface {
+interface MinimalApplicationCreateWizardPropsInterface extends TestableComponentInterface,
+    IdentifiableComponentInterface {
     title: string;
     closeWizard: () => void;
     template?: ApplicationTemplateInterface;
@@ -157,14 +158,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         subTitle,
         templateLoadingStrategy,
         setIsApplicationSharingEnabled,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const { isSuperOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
-    const { UIConfig } = useUIConfig();
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const tenantName: string = store.getState().config.deployment.tenant;
 
@@ -1112,7 +1113,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                     { applicationConfig.advancedConfigurations.showFapiFeatureStatusChip && (
                                         <div className="oxygen-chip-div" >
                                             <Chip
-                                                label={ t("common:beta").toUpperCase() }
+                                                label={ t(FeatureStatusLabel.BETA) }
                                                 className="oxygen-menu-item-chip oxygen-chip-beta" />
                                         </div>
                                     ) }
@@ -1126,7 +1127,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     }
                     {
                         isOrganizationManagementEnabled
-                        && UIConfig?.legacyMode?.organizations
                         && applicationConfig.editApplication.showApplicationShare
                         && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
                         && orgType !== OrganizationType.SUBORGANIZATION
@@ -1274,6 +1274,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 closeOnDimmerClick={ false }
                 closeOnEscape
                 data-testid={ `${ testId }-modal` }
+                data-componentid={ `${componentId}-modal` }
             >
                 <ModalWithSidePanel.MainPanel>
                     <ModalWithSidePanel.Header className="wizard-header">
@@ -1337,6 +1338,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
  * Default props for the application creation wizard.
  */
 MinimalAppCreateWizard.defaultProps = {
+    "data-componentid": "minimal-application-create-wizard",
     "data-testid": "minimal-application-create-wizard",
     showHelpPanel: true
 };

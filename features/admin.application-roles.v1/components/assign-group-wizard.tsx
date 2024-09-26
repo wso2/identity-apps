@@ -16,10 +16,6 @@
  * under the License.
  */
 
-import {
-    ApplicationRoleGroupInterface,
-    ApplicationRoleGroupsAPIResponseInterface
-} from "@wso2is/admin.extensions.v1/components/application/models";
 import { getGroupList } from "@wso2is/admin.groups.v1/api";
 import { IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import {
@@ -37,6 +33,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FormEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Modal } from "semantic-ui-react";
+import { ApplicationRoleGroupInterface, ApplicationRoleGroupsAPIResponseInterface } from "../models/application-roles";
 
 /**
  * Interface which captures create group props.

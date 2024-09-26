@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { DynamicBrandingPreferenceThemeInterface, PredefinedThemes } from "@wso2is/common.branding.v1/models";
+import { DynamicBrandingPreferenceThemeInterface } from "@wso2is/common.branding.v1/models";
+import { PredefinedThemes } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { DARK_THEME } from "./dark-theme";
 import { LIGHT_THEME } from "./light-theme";
 

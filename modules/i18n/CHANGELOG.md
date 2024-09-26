@@ -1,5 +1,196 @@
 # @wso2is/i18n
 
+## 2.5.33
+
+### Patch Changes
+
+- [#6926](https://github.com/wso2/identity-apps/pull/6926) [`11e1c9a35285f492abd2aa5990efefd45a1c0f6e`](https://github.com/wso2/identity-apps/commit/11e1c9a35285f492abd2aa5990efefd45a1c0f6e) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Validate API key header field in Pre-Issue Access Token action
+
+## 2.5.32
+
+### Patch Changes
+
+- [#6909](https://github.com/wso2/identity-apps/pull/6909) [`2310dde3b346c505cacf0189865c1c0959b65b7a`](https://github.com/wso2/identity-apps/commit/2310dde3b346c505cacf0189865c1c0959b65b7a) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Remove trusted app related UI from connection pages
+
+## 2.5.31
+
+### Patch Changes
+
+- Updated dependencies [[`e7bf2ba65101f54e8b32cf75588ce1bf79bb0b07`](https://github.com/wso2/identity-apps/commit/e7bf2ba65101f54e8b32cf75588ce1bf79bb0b07)]:
+  - @wso2is/core@2.1.0
+
+## 2.5.30
+
+### Patch Changes
+
+- Updated dependencies [[`cf93bd5d1017bea864075ff2cd80247be3fb27ed`](https://github.com/wso2/identity-apps/commit/cf93bd5d1017bea864075ff2cd80247be3fb27ed)]:
+  - @wso2is/core@2.0.63
+
+## 2.5.29
+
+### Patch Changes
+
+- Updated dependencies [[`92abc34d6d2586d12b9daa1da208d48451c3c269`](https://github.com/wso2/identity-apps/commit/92abc34d6d2586d12b9daa1da208d48451c3c269)]:
+  - @wso2is/core@2.0.62
+
+## 2.5.28
+
+### Patch Changes
+
+- [#6869](https://github.com/wso2/identity-apps/pull/6869) [`fae3342cc1e1e54c44d51ac6deb9e01d2d060720`](https://github.com/wso2/identity-apps/commit/fae3342cc1e1e54c44d51ac6deb9e01d2d060720) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Minor label name change in action ui
+
+## 2.5.27
+
+### Patch Changes
+
+- [#6862](https://github.com/wso2/identity-apps/pull/6862) [`60c435a2288880cab85bcec41f84ab4f707fa101`](https://github.com/wso2/identity-apps/commit/60c435a2288880cab85bcec41f84ab4f707fa101) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Change wordings of rule based password expiry
+
+## 2.5.26
+
+### Patch Changes
+
+- [#6753](https://github.com/wso2/identity-apps/pull/6753) [`ca1acd66b5da706b2e2618a6d19a72dc8967d027`](https://github.com/wso2/identity-apps/commit/ca1acd66b5da706b2e2618a6d19a72dc8967d027) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Introduce rule based password expiry
+
+## 2.5.25
+
+### Patch Changes
+
+- [#6845](https://github.com/wso2/identity-apps/pull/6845) [`47824646cba3146cf7e6561377ca4e6b293dbda8`](https://github.com/wso2/identity-apps/commit/47824646cba3146cf7e6561377ca4e6b293dbda8) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Modify Authentication Type label name in action ui
+
+## 2.5.24
+
+### Patch Changes
+
+- Updated dependencies [[`47a7d939097403b8374324515efa7a5e52977ecc`](https://github.com/wso2/identity-apps/commit/47a7d939097403b8374324515efa7a5e52977ecc)]:
+  - @wso2is/core@2.0.61
+
+## 2.5.23
+
+### Patch Changes
+
+- [#6792](https://github.com/wso2/identity-apps/pull/6792) [`087a548e2f5c4565b6da489ff1632154c566772f`](https://github.com/wso2/identity-apps/commit/087a548e2f5c4565b6da489ff1632154c566772f) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add navigation to Invite User to Set Password in the Multiple User popup
+
+## 2.5.22
+
+### Patch Changes
+
+- [#6787](https://github.com/wso2/identity-apps/pull/6787) [`c35e28e3d811841b3bc4762486b80c255e82a54e`](https://github.com/wso2/identity-apps/commit/c35e28e3d811841b3bc4762486b80c255e82a54e) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Refactor user add feature in groups edit page
+
+## 2.5.21
+
+### Patch Changes
+
+- [#6770](https://github.com/wso2/identity-apps/pull/6770) [`6349ffa59c542b1be0304aabad766455fceabf25`](https://github.com/wso2/identity-apps/commit/6349ffa59c542b1be0304aabad766455fceabf25) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Minor fixes in actions ui
+
+## 2.5.20
+
+### Patch Changes
+
+- [#6768](https://github.com/wso2/identity-apps/pull/6768) [`ec3fae95750df6503d6d6286c4e700e3b66cd18f`](https://github.com/wso2/identity-apps/commit/ec3fae95750df6503d6d6286c4e700e3b66cd18f) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix minor bugs in actions ui
+
+## 2.5.19
+
+### Patch Changes
+
+- [#6764](https://github.com/wso2/identity-apps/pull/6764) [`74e82b2f465d11c02969f7fef52f83a1956214b8`](https://github.com/wso2/identity-apps/commit/74e82b2f465d11c02969f7fef52f83a1956214b8) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix formatting issues in actions ui
+
+## 2.5.18
+
+### Patch Changes
+
+- [#6722](https://github.com/wso2/identity-apps/pull/6722) [`d646c0baa3e0cdba239cc9fd8b4acf60ca336f84`](https://github.com/wso2/identity-apps/commit/d646c0baa3e0cdba239cc9fd8b4acf60ca336f84) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Improvements done along with actions feature
+
+## 2.5.17
+
+### Patch Changes
+
+- [#5896](https://github.com/wso2/identity-apps/pull/5896) [`00ee3fbc87f646c936fcda1534d75f9359ad03db`](https://github.com/wso2/identity-apps/commit/00ee3fbc87f646c936fcda1534d75f9359ad03db) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Update the application section to support SSO integration templates
+
+## 2.5.16
+
+### Patch Changes
+
+- [#6667](https://github.com/wso2/identity-apps/pull/6667) [`dc9ac2782b9faa497d06d376c1e1fcf63168ee85`](https://github.com/wso2/identity-apps/commit/dc9ac2782b9faa497d06d376c1e1fcf63168ee85) Thanks [@HasiniSama](https://github.com/HasiniSama)! - UI support for Filtering Organizations by Metadata Attributes
+
+## 2.5.15
+
+### Patch Changes
+
+- [#6676](https://github.com/wso2/identity-apps/pull/6676) [`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da) Thanks [@Achintha444](https://github.com/Achintha444)! - Update oxygen-ui to `1.13.3`
+
+- Updated dependencies [[`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da)]:
+  - @wso2is/core@2.0.60
+
+## 2.5.14
+
+### Patch Changes
+
+- Updated dependencies [[`ee0dc227a7e86ad7356ec222c1284e66d634d935`](https://github.com/wso2/identity-apps/commit/ee0dc227a7e86ad7356ec222c1284e66d634d935)]:
+  - @wso2is/core@2.0.59
+
+## 2.5.13
+
+### Patch Changes
+
+- [#6651](https://github.com/wso2/identity-apps/pull/6651) [`6bdf8d9c726e3ee2bf575af014098ee5768ee672`](https://github.com/wso2/identity-apps/commit/6bdf8d9c726e3ee2bf575af014098ee5768ee672) Thanks [@Achintha444](https://github.com/Achintha444)! - Update the oxygen version to 1.13.2
+
+- Updated dependencies [[`6bdf8d9c726e3ee2bf575af014098ee5768ee672`](https://github.com/wso2/identity-apps/commit/6bdf8d9c726e3ee2bf575af014098ee5768ee672)]:
+  - @wso2is/core@2.0.58
+
+## 2.5.12
+
+### Patch Changes
+
+- [#6627](https://github.com/wso2/identity-apps/pull/6627) [`9f8577942314da8308aeae398f6d7d0eaf1b93ed`](https://github.com/wso2/identity-apps/commit/9f8577942314da8308aeae398f6d7d0eaf1b93ed) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update application disable warning message
+
+## 2.5.11
+
+### Patch Changes
+
+- [#6635](https://github.com/wso2/identity-apps/pull/6635) [`411658f1efc46cf71ea40b6bae511f42891c7a43`](https://github.com/wso2/identity-apps/commit/411658f1efc46cf71ea40b6bae511f42891c7a43) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix some eslint warnings not being shown in vscode editor
+
+* [#6487](https://github.com/wso2/identity-apps/pull/6487) [`0683e51ac6194dfa54c2a5f508d0a33b487b6ebf`](https://github.com/wso2/identity-apps/commit/0683e51ac6194dfa54c2a5f508d0a33b487b6ebf) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove unnecessary legacy mode configs and its usage
+
+* Updated dependencies [[`411658f1efc46cf71ea40b6bae511f42891c7a43`](https://github.com/wso2/identity-apps/commit/411658f1efc46cf71ea40b6bae511f42891c7a43), [`0683e51ac6194dfa54c2a5f508d0a33b487b6ebf`](https://github.com/wso2/identity-apps/commit/0683e51ac6194dfa54c2a5f508d0a33b487b6ebf)]:
+  - @wso2is/core@2.0.57
+
+## 2.5.10
+
+### Patch Changes
+
+- [#6632](https://github.com/wso2/identity-apps/pull/6632) [`9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a`](https://github.com/wso2/identity-apps/commit/9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a) Thanks [@Achintha444](https://github.com/Achintha444)! - Update the oxygen version to `1.13.1` to fix the issue in the design of the default Chip design.
+
+- Updated dependencies [[`9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a`](https://github.com/wso2/identity-apps/commit/9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a)]:
+  - @wso2is/core@2.0.56
+
+## 2.5.9
+
+### Patch Changes
+
+- [#6505](https://github.com/wso2/identity-apps/pull/6505) [`7071e4f719bbd10ae62f7bfc18fc12e6d9127bc3`](https://github.com/wso2/identity-apps/commit/7071e4f719bbd10ae62f7bfc18fc12e6d9127bc3) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Remove UI elements related to organization-level private key JWT configuration.
+
+## 2.5.8
+
+### Patch Changes
+
+- [#6620](https://github.com/wso2/identity-apps/pull/6620) [`0981cd4b6901ae53119de1bd63f36fba79ebd533`](https://github.com/wso2/identity-apps/commit/0981cd4b6901ae53119de1bd63f36fba79ebd533) Thanks [@ImalshaG](https://github.com/ImalshaG)! - Improvements to Trusted App UI
+
+## 2.5.7
+
+### Patch Changes
+
+- [#6617](https://github.com/wso2/identity-apps/pull/6617) [`7e3bfd46f7a76dc74727dfe23ebbca66675dff85`](https://github.com/wso2/identity-apps/commit/7e3bfd46f7a76dc74727dfe23ebbca66675dff85) Thanks [@Achintha444](https://github.com/Achintha444)! - update the design of the Chip component
+
+- Updated dependencies [[`7e3bfd46f7a76dc74727dfe23ebbca66675dff85`](https://github.com/wso2/identity-apps/commit/7e3bfd46f7a76dc74727dfe23ebbca66675dff85)]:
+  - @wso2is/core@2.0.55
+
+## 2.5.6
+
+### Patch Changes
+
+- Updated dependencies [[`768bb7367149129d198d65d69f07e6f97a6a2ed7`](https://github.com/wso2/identity-apps/commit/768bb7367149129d198d65d69f07e6f97a6a2ed7)]:
+  - @wso2is/core@2.0.54
+
 ## 2.5.5
 
 ### Patch Changes

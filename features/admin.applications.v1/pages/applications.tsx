@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import { GearIcon } from "@oxygen-ui/react-icons";
 import { Show } from "@wso2is/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
     AppState,
-    ConfigReducerStateInterface,
     EventPublisher,
     FeatureConfigInterface,
     UIConstants,
@@ -72,11 +72,9 @@ import {
 import { useApplicationList, useMyAccountApplicationData } from "../api";
 import { useGetApplication } from "../api/use-get-application";
 import { ApplicationList } from "../components/application-list";
-import { MinimalAppCreateWizard } from "../components/wizard/minimal-application-create-wizard";
 import { ApplicationManagementConstants } from "../constants";
-import CustomApplicationTemplate
-    from "../data/application-templates/templates/custom-application/custom-application.json";
 import { ApplicationAccessTypes, ApplicationListInterface, ApplicationListItemInterface } from "../models";
+import "./applications.scss";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -139,8 +137,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-    const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const consumerAccountURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
@@ -404,33 +400,22 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * Navigate to the my account edit page.
      */
     const navigateToMyAccountSettings = (): void => {
-        if (
-            applicationDisabledFeatures?.includes(
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_MYACCOUNT_SAAS_SETTINGS")
-            )
-        ) {
-            if (strongAuth) {
-                history.push({
-                    pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(
-                        ":id", myAccountApplicationData?.applications[0]?.id
-                    ),
-                    search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }=${
-                        ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`
-                });
-            } else {
-                history.push({
-                    pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(
-                        ":id", myAccountApplicationData?.applications[0]?.id
-                    ),
-                    search: myAccountApplicationData?.applications[0]?.access === ApplicationAccessTypes.READ
-                        ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
-                        : ""
-                });
-            }
+        if (strongAuth) {
+            history.push({
+                pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(
+                    ":id", myAccountApplicationData?.applications[0]?.id
+                ),
+                search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }=${
+                    ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`
+            });
         } else {
             history.push({
-                pathname: AppConstants.getPaths().get("MY_ACCOUNT_EDIT"),
-                state: ApplicationManagementConstants.APPLICATION_STATE
+                pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(
+                    ":id", myAccountApplicationData?.applications[0]?.id
+                ),
+                search: myAccountApplicationData?.applications[0]?.access === ApplicationAccessTypes.READ
+                    ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
+                    : ""
             });
         }
     };
@@ -460,43 +445,45 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 floated="left"
                                 mobile={ 16 }
                                 computer={ 9 }
+                                verticalAlign="middle"
                             >
                                 <GenericIcon
                                     icon={ getGeneralIcons().myAccountSolidIcon }
-                                    className="mt-1"
                                     floated="left"
-                                    size="tiny"
+                                    size="mini"
                                     spaced="right"
                                     verticalAlign="middle"
                                     inline
                                     square
                                     transparent
                                 />
-                                <List.Header
-                                    data-componentid="application-consumer-account-link-title"
-                                    className="my-account-title mb-1"
-                                >
-                                    { t("applications:myaccount.title") }
-                                    {
-                                        applicationConfig?.advancedConfigurations?.showMyAccountStatus && (
-                                            <Icon
-                                                color={ isMyAccountEnabled ? "green":"grey" }
-                                                name={ isMyAccountEnabled ? "check circle" : "minus circle" }
-                                                className="middle aligned ml-1"
-                                            />
-                                        )
-                                    }
-                                </List.Header>
-                                <List.Description
-                                    data-componentid="application-consumer-account-link-description"
-                                >
-                                    { t("applications:myaccount.description") }
-                                    <DocumentationLink
-                                        link={ getLink("develop.applications.myaccount.learnMore") }
+                                <List.Content verticalAlign="middle">
+                                    <List.Header
+                                        data-componentid="application-consumer-account-link-title"
+                                        className="my-account-title"
                                     >
-                                        { t("common:learnMore") }
-                                    </DocumentationLink>
-                                </List.Description>
+                                        { t("applications:myaccount.title") }
+                                        {
+                                            applicationConfig?.advancedConfigurations?.showMyAccountStatus && (
+                                                <Icon
+                                                    color={ isMyAccountEnabled ? "green" : "grey" }
+                                                    name={ isMyAccountEnabled ? "check circle" : "minus circle" }
+                                                    className="middle aligned ml-1"
+                                                />
+                                            )
+                                        }
+                                    </List.Header>
+                                    <List.Description
+                                        data-componentid="application-consumer-account-link-description"
+                                    >
+                                        { t("applications:myaccount.description") }
+                                        <DocumentationLink
+                                            link={ getLink("develop.applications.myaccount.learnMore") }
+                                        >
+                                            { t("common:learnMore") }
+                                        </DocumentationLink>
+                                    </List.Description>
+                                </List.Content>
                             </Grid.Column>
                             { isMyAccountEnabled ? (
                                 <Popup
@@ -528,10 +515,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     <Popup
                                         trigger={ (
                                             <Button
+                                                className="my-account-settings-button"
                                                 data-componentid="navigate-to-my-account-settings-button"
-                                                icon="setting"
                                                 onClick={ (): void => navigateToMyAccountSettings() }
-                                            />
+                                            >
+                                                <GearIcon />
+                                            </Button>
                                         ) }
                                         content={ t("common:settings") }
                                         position="top center"
@@ -563,12 +552,13 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 !applicationDisabledFeatures?.includes(
                                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATIONS_SETTINGS")
                                 ) &&
-                                (<Button
-                                    data-componentid={ "applications-settings-button" }
-                                    icon="setting"
-                                    onClick={ handleSettingsButton }
-                                >
-                                </Button>)
+                                (
+                                    <Button
+                                        data-componentid={ "applications-settings-button" }
+                                        icon={ GearIcon }
+                                        onClick={ handleSettingsButton }
+                                    />
+                                )
                             }
                         </Show>
                         <Show
@@ -592,12 +582,13 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             !applicationDisabledFeatures?.includes(
                                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATIONS_SETTINGS")
                             ) &&
-                            (<Button
-                                data-componentid={ "applications-settings-button" }
-                                icon="setting"
-                                onClick={ handleSettingsButton }
-                            >
-                            </Button>)
+                            (
+                                <Button
+                                    data-componentid={ "applications-settings-button" }
+                                    icon={ GearIcon }
+                                    onClick={ handleSettingsButton }
+                                />
+                            )
                         }
                     </Show>
 
@@ -764,22 +755,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     data-componentid="application"
                 />
             </ListLayout>
-            { showWizard && (
-                <MinimalAppCreateWizard
-                    title={ CustomApplicationTemplate?.name }
-                    subTitle={ CustomApplicationTemplate?.description }
-                    closeWizard={ (): void => setShowWizard(false) }
-                    template={ CustomApplicationTemplate }
-                    showHelpPanel={ true }
-                    subTemplates={ CustomApplicationTemplate?.subTemplates }
-                    subTemplatesSectionTitle={ CustomApplicationTemplate?.subTemplatesSectionTitle }
-                    addProtocol={ false }
-                    templateLoadingStrategy={
-                        config.ui.applicationTemplateLoadingStrategy
-                        ?? ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY
-                    }
-                />
-            ) }
         </PageLayout>
     );
 };

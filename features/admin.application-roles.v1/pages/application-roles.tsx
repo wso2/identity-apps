@@ -19,8 +19,6 @@
 import { getApplicationList } from "@wso2is/admin.applications.v1/api";
 import { ApplicationListInterface, ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models";
 import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
-import { getAllApplicationRolesList } from "@wso2is/admin.extensions.v1/components/groups/api";
-import { ApplicationRoleInterface } from "@wso2is/admin.extensions.v1/components/groups/models";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -36,7 +34,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon, Input } from "semantic-ui-react";
+import { getAllApplicationRolesList } from "../api/application-roles";
 import { ApplicationRolesList } from "../components";
+import { ApplicationRoleInterface } from "../models/application-roles";
 
 type ApplicationRolesPageInterface = IdentifiableComponentInterface;
 
