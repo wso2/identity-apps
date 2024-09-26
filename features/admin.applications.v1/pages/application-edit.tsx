@@ -16,6 +16,17 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
+import AlertTitle from "@oxygen-ui/react/AlertTitle";
+import Button from "@oxygen-ui/react/Button";
+import Card from "@oxygen-ui/react/Card";
+import CardContent from "@oxygen-ui/react/CardContent";
+import Grid from "@oxygen-ui/react/Grid";
+import List from "@oxygen-ui/react/List";
+import ListItem from "@oxygen-ui/react/ListItem";
+import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
+import ListItemText from "@oxygen-ui/react/ListItemText";
+import { CheckIcon } from "@oxygen-ui/react-icons";
 import { useRequiredScopes } from "@wso2is/access-control";
 import ApplicationTemplateMetadataProvider from
     "@wso2is/admin.application-templates.v1/provider/application-template-metadata-provider";
@@ -33,20 +44,27 @@ import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/m
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { Forms } from "@wso2is/forms";
 import {
     AnimatedAvatar,
     AppAvatar,
+    ConfirmationModal,
+    DocumentationLink,
     LabelWithPopup,
     Popup,
-    TabPageLayout
+    TabPageLayout,
+    useDocumentation
 } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
+import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
+import { updateApplicationDetails } from "../api/application";
 import { useGetApplication } from "../api/use-get-application";
 import { EditApplication } from "../components/edit-application";
 import { InboundProtocolDefaultFallbackTemplates } from "../components/meta/inbound-protocols.meta";
@@ -93,6 +111,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     const dispatch: Dispatch = useDispatch();
 
+    const { getLink } = useDocumentation();
+
     const appDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     const {
@@ -128,6 +148,30 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         mutate: mutateApplicationGetRequest,
         error: applicationGetRequestError
     } = useGetApplication(applicationId, !!applicationId);
+
+    const [ viewBannerDetails, setViewBannerDetails ] = useState<boolean>(false);
+    const [ displayBanner, setDisplayBanner ] = useState<boolean>(false);
+    const [ bannerUpdateLoading, setBannerUpdateLoading ] = useState<boolean>(false);
+    const [ showConfirmationModal, setShowConfirmationModal ] = useState<boolean>(false);
+    const [ formData, setFormdata ] = useState<ApplicationInterface>(undefined);
+
+    useEffect(() => {
+        if (application != undefined) {
+            const applicationVersionArray: number[] = application?.applicationVersion?.match(/\d+/g).map(Number);
+            const latestApplicationVersionArray: number[] = ApplicationManagementConstants.LATEST_VERSION
+                .match(/\d+/g).map(Number);
+
+            if (applicationVersionArray[0] < latestApplicationVersionArray[0]) {
+                setDisplayBanner(true);
+            } else if (applicationVersionArray[1] < latestApplicationVersionArray[1]) {
+                setDisplayBanner(true);
+            } else if (applicationVersionArray[2] < latestApplicationVersionArray[2]) {
+                setDisplayBanner(true);
+            } else {
+                setDisplayBanner(false);
+            }
+        }
+    }, [ application ]);
 
     /**
      * Load the template that the application is built on.
@@ -506,6 +550,259 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         return null;
     };
 
+    /**
+     * Resolves the application banner content.
+     *
+     * @returns Alert banner.
+     */
+    const resolveAlertBanner = (): ReactElement => {
+        const classes: any = classNames( { "application-outdated-alert-expanded-view": viewBannerDetails } );
+
+        return (
+            displayBanner &&
+                (
+                    <div className="banner-wrapper">
+                        <Alert
+                            className={ classes }
+                            severity="warning"
+                            action={
+                                (
+                                    <>
+                                        <Button onClick={ () => setViewBannerDetails(!viewBannerDetails) }>
+                                            {
+                                                !viewBannerDetails ?
+                                                    t("applications:forms.inboundOIDC.sections"
+                                                            + ".outdatedApplications.alert.viewButton") :
+                                                    t("applications:forms.inboundOIDC.sections"
+                                                            + ".outdatedApplications.alert.hideButton")
+                                            }
+                                        </Button>
+                                        <Button
+                                            className="ignore-once-button"
+                                            onClick={ () => setDisplayBanner(false) }>
+                                            { t("applications:forms.inboundOIDC.sections"
+                                                        + ".outdatedApplications.alert.cancelButton") }
+                                        </Button>
+                                    </>
+                                )
+                            }
+                        >
+                            <AlertTitle className="alert-title">
+                                <Trans components={ { strong: <strong/> } } >
+                                    { t("applications:forms.inboundOIDC.sections.outdatedApplications"
+                                                + ".alert.title") }
+                                </Trans>
+                            </AlertTitle>
+                            <Trans>
+                                { t("applications:forms.inboundOIDC.sections.outdatedApplications"
+                                                    + ".alert.content") }
+                            </Trans>
+                        </Alert>
+                        <Card
+                            className="banner-detail-card"
+                            hidden={ !viewBannerDetails }
+                        >
+                            <CardContent className="banner-detail-content">
+                                { resolveBannerViewDetails() }
+                            </CardContent>
+                        </Card>
+                    </div>
+                )
+        );
+    };
+
+    /**
+     * Resolves the application banner view details section.
+     *
+     * @returns Alert banner details.
+     */
+    const resolveBannerViewDetails = (): ReactElement => {
+        return (
+            <Forms
+                onSubmit={ handleBannerCheckBoxUpdate }
+                data-componentId={ `${componentId}-application-outdated-banner-form` }>
+                <Grid className="banner-grid">
+                    <List>
+                        <ListItem
+                            sx={ {
+                                display: "list-item",
+                                listStyleType: "disc"
+                            } }>
+                            <ListItemText>
+                                <Trans
+                                    i18nKey={
+                                        t("applications:forms.inboundOIDC.sections"
+                                            + ".outdatedApplications.fields."
+                                            + "versions.version100.change1.instruction")
+                                    }
+                                />
+                                <DocumentationLink
+                                    link={
+                                        getLink("develop.applications.oudatedApplications.versions."
+                                            + "version100.change1.documentationLink")
+                                    }
+                                    showEmptyLink={ false }
+                                >
+                                    <Trans
+                                        i18nKey={
+                                            t("applications:forms.inboundOIDC.sections"
+                                                + ".outdatedApplications.documentationHint")
+                                        }
+                                    />
+                                </DocumentationLink>
+                            </ListItemText>
+                        </ListItem>
+                        <ListItem
+                            sx={ {
+                                display: "list-item",
+                                listStyleType: "disc"
+                            } }>
+                            <ListItemText>
+                                <Trans
+                                    i18nKey={
+                                        t("applications:forms.inboundOIDC.sections"
+                                            + ".outdatedApplications.fields."
+                                            + "versions.version100.change2.instruction")
+                                    }
+                                />
+                                <DocumentationLink
+                                    link={
+                                        getLink("develop.applications.oudatedApplications.versions."
+                                            + "version100.change2.documentationLink")
+                                    }
+                                    showEmptyLink={ false }
+                                >
+                                    <Trans
+                                        i18nKey={
+                                            t("applications:forms.inboundOIDC.sections"
+                                                + ".outdatedApplications.documentationHint")
+                                        }
+                                    />
+                                </DocumentationLink>
+                            </ListItemText>
+                        </ListItem>
+                    </List>
+                </Grid>
+                <Button
+                    variant="contained"
+                    type="submit"
+                    data-componentId={ `${componentId}-application-outdated-banner-button` }
+                >
+                    { t("common:update") }
+                </Button>
+                { showConfirmationModal && confirmationModal() }
+            </Forms>
+        );
+    };
+
+    /**
+     * Resolves the update confirmation modal.
+     *
+     * @returns Confirmation modal.
+     */
+    const confirmationModal = () => {
+        return (
+            <ConfirmationModal
+                primaryActionLoading={ bannerUpdateLoading }
+                data-componentId={ `${componentId}-application-version-update-confirmation-modal` }
+                onClose={ (): void => setShowConfirmationModal(false) }
+                type="negative"
+                open={ showConfirmationModal }
+                assertionHint={ t("applications:forms.inboundOIDC.sections.outdatedApplications"
+                    + ".confirmationModal.assertionHint") }
+                assertionType="checkbox"
+                primaryAction="Confirm"
+                secondaryAction="Cancel"
+                onSecondaryActionClick={ (): void =>{
+                    setShowConfirmationModal(false);
+                } }
+                onPrimaryActionClick={ handleBannerCheckBoxUpdateConfirmation }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header
+                    data-componentId={ `${componentId}-application-version-update-confirmation-modal-header` }>
+                    { t("applications:forms.inboundOIDC.sections.outdatedApplications"
+                        + ".confirmationModal.header") }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message
+                    data-componentId={ `${componentId}-application-version-update-confirmation-modal-message` }
+                    attached
+                    negative
+                >
+                    { t("applications:forms.inboundOIDC.sections.outdatedApplications"
+                        + ".confirmationModal.message") }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content
+                    data-componentId={ `${componentId}-application-version-update-confirmation-modal-content` }
+                >
+                    { t("applications:forms.inboundOIDC.sections.outdatedApplications"
+                        + ".confirmationModal.content") }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        );
+    };
+
+    /**
+     * Handles banner content update action which prepares data.
+     */
+    const handleBannerCheckBoxUpdate = () => {
+
+        mutateApplicationGetRequest().then((response: AxiosResponse<ApplicationInterface>) => {
+            const values: ApplicationInterface = {
+                applicationVersion: ApplicationManagementConstants.LATEST_VERSION,
+                id: response.data?.id,
+                name: response.data?.name
+            };
+
+            setFormdata({ ...values });
+            setShowConfirmationModal(true);
+        });
+    };
+
+    /**
+     * Handles the banner data update action.
+     */
+    const handleBannerCheckBoxUpdateConfirmation = async (): Promise<void> => {
+        setBannerUpdateLoading(true);
+
+        return updateApplicationDetails(formData)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("applications:notifications.updateApplication.success" +
+                    ".description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("applications:notifications.updateApplication.success.message")
+                }));
+                setDisplayBanner(false);
+                setShowConfirmationModal(false);
+                setViewBannerDetails(false);
+            })
+            .catch((error: AxiosError) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("applications:notifications.updateApplication.error" +
+                        ".message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("applications:notifications.updateApplication" +
+                    ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:notifications.updateApplication.genericError" +
+                    ".message")
+                }));
+            })
+            .finally(() => {
+                setBannerUpdateLoading(false);
+                mutateApplicationGetRequest();
+            });
+    };
+
     return (
         <TabPageLayout
             pageTitle="Edit Application"
@@ -524,6 +821,21 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     ?? (
                         <div className="with-label ellipsis" ref={ appDescElement }>
                             { resolveTemplateLabel() }
+                            {
+                                ApplicationManagementUtils.getIfAppIsOutdated("v0.0.0") && (
+                                    <Label
+                                        className="no-margin-left application-outdated-label"
+                                        size="small"
+                                    >
+                                        <Trans
+                                            i18nKey={
+                                                t("applications:forms.inboundOIDC.sections"
+                                                    + ".outdatedApplications.label")
+                                            }
+                                        />
+                                    </Label>
+                                )
+                            }
                             {
                                 ApplicationManagementUtils.isChoreoApplication(moderatedApplicationData)
                                     && (<Label
@@ -575,6 +887,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 text: isConnectedAppsRedirect ? t("idp:connectedApps.applicationEdit.back",
                     { idpName: callBackIdpName }) : t("console:develop.pages.applicationsEdit.backButton")
             } }
+            alertBanner={ resolveAlertBanner() }
             titleTextAlign="left"
             bottomMargin={ false }
             pageHeaderMaxWidth={ true }

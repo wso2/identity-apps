@@ -142,6 +142,17 @@
     }
 }
 
+/*******************************
+      Application outdated Label
+*******************************/
+
+.ui.label {
+    &.application-outdated-label {
+        color: #f28753;
+        background-color: #fff4ea;
+    }
+}
+
 /***************************************
     Password Validation Error Labels
 ***************************************/
