@@ -634,13 +634,13 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                     i18nKey={
                                         t("applications:forms.inboundOIDC.sections"
                                             + ".outdatedApplications.fields."
-                                            + "versions.version100.change1.instruction")
+                                            + "versions.version100.useClientIdAsSubClaimOfAppTokens.instruction")
                                     }
                                 />
                                 <DocumentationLink
                                     link={
                                         getLink("develop.applications.oudatedApplications.versions."
-                                            + "version100.change1.documentationLink")
+                                            + "version100.useClientIdAsSubClaimOfAppTokens.documentationLink")
                                     }
                                     showEmptyLink={ false }
                                 >
@@ -663,13 +663,13 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                     i18nKey={
                                         t("applications:forms.inboundOIDC.sections"
                                             + ".outdatedApplications.fields."
-                                            + "versions.version100.change2.instruction")
+                                            + "versions.version100.removeUsernameFromIntrospectionRespForAppTokens.instruction")
                                     }
                                 />
                                 <DocumentationLink
                                     link={
                                         getLink("develop.applications.oudatedApplications.versions."
-                                            + "version100.change2.documentationLink")
+                                            + "version100.removeUsernameFromIntrospectionRespForAppTokens.documentationLink")
                                     }
                                     showEmptyLink={ false }
                                 >

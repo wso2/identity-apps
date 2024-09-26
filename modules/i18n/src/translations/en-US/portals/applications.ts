@@ -1664,11 +1664,11 @@ export const applications: ApplicationsNS = {
                         commonInstruction: "Following behavioral changes will be applied upon update.",
                         versions: {
                             version100: {
-                                change1: {
-                                    instruction: "Application access token sub attribute will be client_id generated for an application."
-                                },
-                                change2: {
+                                removeUsernameFromIntrospectionRespForAppTokens: {
                                     instruction: "Introspection response for application access token will not include the username attribute."
+                                },
+                                useClientIdAsSubClaimOfAppTokens: {
+                                    instruction: "Application access token sub attribute will be client_id generated for an application."
                                 }
                             }
                         }

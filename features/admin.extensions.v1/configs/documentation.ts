@@ -147,10 +147,10 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                     oudatedApplications: {
                         versions: {
                             version100: {
-                                change1: {
+                                removeUsernameFromIntrospectionRespForAppTokens: {
                                     documentationLink: undefined
                                 },
-                                change2: {
+                                useClientIdAsSubClaimOfAppTokens: {
                                     documentationLink: undefined
                                 }
                             }

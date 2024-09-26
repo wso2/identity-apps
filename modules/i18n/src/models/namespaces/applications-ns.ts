@@ -1398,10 +1398,10 @@ export interface ApplicationsNS {
                         commonInstruction: string;
                         versions: {
                             version100: {
-                                change1: {
+                                removeUsernameFromIntrospectionRespForAppTokens: {
                                     instruction: string;
                                 },
-                                change2: {
+                                useClientIdAsSubClaimOfAppTokens: {
                                     instruction: string;
                                 }
                             }

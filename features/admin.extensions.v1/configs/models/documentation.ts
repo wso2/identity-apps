@@ -140,15 +140,15 @@ interface ApplicationsDocumentationLinksInterface {
         oudatedApplications: {
             versions: {
                 version100: {
-                    change1: {
+                    removeUsernameFromIntrospectionRespForAppTokens: {
                         documentationLink: string;
                     },
-                    change2: {
+                    useClientIdAsSubClaimOfAppTokens: {
                         documentationLink: string;
                     }
                 }
             }
-        },
+        }
         oidcApplication: {
             advanced: {
                 learnMore: string;
