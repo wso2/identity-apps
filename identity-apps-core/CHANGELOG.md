@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.4.43
+
+### Patch Changes
+
+- [#6933](https://github.com/wso2/identity-apps/pull/6933) [`b4328e73fa15f07071b26fbbc6506dcedd6692be`](https://github.com/wso2/identity-apps/commit/b4328e73fa15f07071b26fbbc6506dcedd6692be) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Load JQuery from the internally packed distribution in hyprlogin.jsp and iproovlogin.jsp
+
 ## 2.4.42
 
 ### Patch Changes
