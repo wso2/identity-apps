@@ -18,13 +18,16 @@
 
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import {
-    getUserNameWithoutDomain,
-    hasRequiredScopes,
+/**
+ * `useRequiredScopes` is not supported for myaccount.
+ */
+/* eslint-disable no-restricted-imports */
+import { getUserNameWithoutDomain, hasRequiredScopes,
     isFeatureEnabled,
     resolveUserDisplayName,
     resolveUserEmails
 } from "@wso2is/core/helpers";
+/* eslint-enable */
 import {
     ProfileSchemaInterface,
     SBACInterface,
