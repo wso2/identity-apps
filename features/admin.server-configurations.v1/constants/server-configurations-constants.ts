@@ -315,6 +315,15 @@ export class ServerConfigurationsConstants {
     public static readonly PASSWORD_POLICY_ERROR_MESSAGE: string = "passwordPolicy.errorMsg";
 
     /**
+     * User claim update - API Keyword constants.
+     */
+    public static readonly ENABLE_MOBILE_VERIFICATION: string = "UserClaimUpdate.MobileNumber.EnableVerification";
+
+    public static readonly ENABLE_EMAIL_VERIFICATION: string = "UserClaimUpdate.Email.EnableVerification";
+    public static readonly ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER: string
+        = "UserClaimUpdate.MobileNumber.EnableVerificationByPrivilegedUser";
+
+    /**
 	 * Real Configurations constants.
 	 */
     public static readonly HOME_REALM_IDENTIFIER: string = "homeRealmIdentifiers";
