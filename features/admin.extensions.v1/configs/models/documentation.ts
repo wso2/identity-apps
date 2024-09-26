@@ -311,6 +311,9 @@ interface ConnectionsDocumentationLinksInterface {
             learnMore: string;
             setupGuide: string;
         };
+        duo: {
+            learnMore: string;
+        };
         enterprise: {
             oidc: {
                 learnMore: string;
@@ -352,6 +355,9 @@ interface ConnectionsDocumentationLinksInterface {
             };
             learnMore: string;
             setupGuide: string;
+        };
+        iProov: {
+            learnMore: string;
         };
         microsoft: {
             help: {

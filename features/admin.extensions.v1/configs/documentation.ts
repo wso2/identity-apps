@@ -269,6 +269,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         learnMore: undefined,
                         setupGuide: undefined
                     },
+                    duo: {
+                        learnMore: undefined
+                    },
                     enterprise: {
                         oidc: {
                             learnMore: undefined,
@@ -310,6 +313,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         },
                         learnMore: undefined,
                         setupGuide: undefined
+                    },
+                    iProov: {
+                        learnMore: undefined
                     },
                     learnMore: undefined,
                     microsoft: {
