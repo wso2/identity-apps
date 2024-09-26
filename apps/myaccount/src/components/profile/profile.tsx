@@ -1873,10 +1873,32 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
     const generateEditIcon = (schema: ProfileSchema): JSX.Element | null => {
 
+        let attributeValueList: string[] = [];
+        let primaryAttributeValue: string = "";
+
+        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+            attributeValueList = profileInfo.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
+            primaryAttributeValue = profileDetails?.profileInfo?.emails?.length > 0
+                ? profileDetails?.profileInfo?.emails[0]
+                : null;
+
+        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+            attributeValueList = profileInfo.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [];
+            primaryAttributeValue = profileInfo.get(MOBILE_ATTRIBUTE);
+        }
+
+        const isFieldEmpty = (): boolean => {
+            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+                return  attributeValueList.length < 1 && isEmpty(primaryAttributeValue);
+            } else {
+                return isEmpty(profileInfo.get(schema.name));
+            }
+        };
+
         if (!CommonUtils.isProfileReadOnly(isReadOnlyUser)
             && schema.mutability !== ProfileConstants.READONLY_SCHEMA
             && schema.name !== ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")
-            && !isEmpty(profileInfo.get(schema.name))
+            && !isFieldEmpty()
             && hasRequiredScopes(
                 featureConfig?.personalInfo, featureConfig?.personalInfo?.scopes?.update, allowedScopes)
         ) {
@@ -1895,13 +1917,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                 }
                             } }
                             onClick={ () => dispatch(setActiveForm(CommonConstants.PERSONAL_INFO + schema.name)) }
-                            name={ !isEmpty(profileInfo.get(schema.name)) ? "pencil alternate" : null }
+                            name={ !isFieldEmpty() ? "pencil alternate" : null }
                             data-testid={
                                 `${testId}-schema-mobile-editing-section-${schema.name.replace(".", "-")}-edit-button` }
                         />)
                     }
                     position="top center"
-                    content={ !isEmpty(profileInfo.get(schema.name)) ? t("common:edit") : "" }
+                    content={ !isFieldEmpty() ? t("common:edit") : "" }
                     inverted={ true }
                 />
             );
