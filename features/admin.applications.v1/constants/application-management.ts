@@ -42,6 +42,11 @@ export class ApplicationManagementConstants {
     public static readonly DEFAULT_APPS: string[] = [ this.MY_ACCOUNT_APP_NAME ];
 
     /**
+     * Application latest version.
+     */
+    public static readonly LATEST_VERSION: string = "v1.0.0";
+
+    /**
      * Private constructor to avoid object instantiation from outside
      * the class.
      */
