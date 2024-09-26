@@ -107,7 +107,7 @@ export const updateIdentityVerificationProvider = ({ id, ...rest }: OldIdentityV
  * @param rest - Rest of the data.
  * @returns - A promise containing the response from the API call.
  */
-export const createIdentityVerificationProvider = (data: OldIdentityVerificationProviderInterface):
+export const createIdentityVerificationProvider = (data: IdentityVerificationProviderInterface):
     Promise<HttpResponse | undefined> => {
 
     const requestConfig: RequestConfigInterface = {

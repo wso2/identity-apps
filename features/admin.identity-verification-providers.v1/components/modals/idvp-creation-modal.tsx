@@ -27,7 +27,7 @@ import { useGetIdVPTemplate } from "../../api/use-get-idvp-template";
 import useInitializeHandlers from "../../hooks/use-custom-initialize-handlers";
 import useValidationHandlers from "../../hooks/use-custom-validation-handlers";
 import { IDVPConfigPropertiesInterface, OldIdentityVerificationProviderInterface } from "../../models";
-import { IdVPClaimsInterface, IdVPConfigPropertiesInterface } from "../../models/new-models";
+import { IdentityVerificationProviderInterface, IdVPClaimsInterface, IdVPConfigPropertiesInterface } from "../../models/new-models";
 
 interface IdVPCreationModalPropsInterface extends IdentifiableComponentInterface {
     selectedTemplate: ConnectionTemplateInterface
@@ -94,13 +94,13 @@ export const IdVPCreationModal: FunctionComponent<IdVPCreationModalPropsInterfac
             });
         }
 
-        const payload: OldIdentityVerificationProviderInterface = {
-            Name: values.name as string,
-            Type: values.templateId as string,
+        const payload: IdentityVerificationProviderInterface = {
             claims: values.claims as IdVPClaimsInterface[],
             configProperties,
             description: values.description as string,
-            isEnabled: true
+            isEnabled: true,
+            name: values.name as string,
+            type: values.templateId as string
         };
 
         createIdentityVerificationProvider(payload)

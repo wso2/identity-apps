@@ -23,7 +23,6 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { AcceptHeaderValues, HttpMethods } from "@wso2is/core/models";
-import { OldIdVPTemplateInterface } from "../models/identity-verification-provider";
 import { IdVPTemplateInterface } from "../models/new-models";
 
 export const useGetIdVPTemplate = <Data = IdVPTemplateInterface, Error = RequestErrorInterface>(
@@ -41,22 +40,8 @@ export const useGetIdVPTemplate = <Data = IdVPTemplateInterface, Error = Request
         idVPTemplateId ? requestConfig : null
     );
 
-    let modifiedIdVPTemplate: IdVPTemplateInterface = undefined;
-
-    if (data) {
-        const { Name, Type, ...rest } = (data as OldIdVPTemplateInterface).payload;
-
-        modifiedIdVPTemplate = {
-            payload: {
-                name: Name,
-                type: Type,
-                ...rest
-            }
-        };
-    }
-
     return {
-        data: modifiedIdVPTemplate as Data,
+        data,
         error,
         isLoading,
         isValidating,

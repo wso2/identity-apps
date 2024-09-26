@@ -130,7 +130,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
             return [];
         }
 
-        return [ ...fetchedConnectionTemplates, ...fetchedIdVPTemplates ];
+        return [ ...fetchedConnectionTemplates, ...(fetchedIdVPTemplates ?? []) ];
     }, [ isTemplatesLoading, isTemplatesValidating, templatesFetchError ]);
 
     /**
@@ -210,8 +210,6 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
             ({ id: templateId }: { id: string }) => (templateId === id));
 
         if (selectedTemplate) {
-            console.log("selectedTemplate", selectedTemplate);
-
             setSelectedTemplate(selectedTemplate);
             eventPublisher.publish("connections-select-template", {
                 type: selectedTemplate.templateId
