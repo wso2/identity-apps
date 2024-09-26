@@ -1643,6 +1643,37 @@ export const applications: ApplicationsNS = {
                     },
                     heading: "ID Token"
                 },
+                outdatedApplications: {
+                    heading: "Legacy Application Tokens",
+                    alert : {
+                        title: "Application is outdated.",
+                        content: "This application is using an outdated behavior of applications.",
+                        viewButton: "View Details",
+                        hideButton: "Hide Details",
+                        cancelButton: "Ignore Once"
+                    },
+                    label: "outdated",
+                    documentationHint: "More Details",
+                    confirmationModal: {
+                        header: "Have you done the relevant changes?",
+                        message: "Proceeding the action without making relevant change will cause the client application behavior break.",
+                        content: "Confirming the action will,",
+                        assertionHint: "Please confirm your action"
+                    },
+                    fields: {
+                        commonInstruction: "Following behavioral changes will be applied upon update.",
+                        versions: {
+                            version100: {
+                                change1: {
+                                    instruction: "Application access token sub attribute will be client_id generated for an application."
+                                },
+                                change2: {
+                                    instruction: "Introspection response for application access token will not include the username attribute."
+                                }
+                            }
+                        }
+                    }
+                },
                 logoutURLs: {
                     fields: {
                         back: {
