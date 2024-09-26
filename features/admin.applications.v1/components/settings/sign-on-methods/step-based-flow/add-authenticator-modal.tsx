@@ -17,30 +17,30 @@
  */
 
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
-import { ConnectionManagementConstants, ConnectionTemplateCategoryInterface } from "@wso2is/admin.connections.v1";
-import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
+import {
+    ConnectionTemplateInterface
+} from "@wso2is/admin.connections.v1";
+import { useGetConnectionTemplates } from "@wso2is/admin.connections.v1/api/use-get-connection-templates";
+import {
+    CommonAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
+import {
+    FederatedAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
+import { AuthenticatorMeta } from "@wso2is/admin.connections.v1/meta/authenticator-meta";
+import { ConnectionsManagementUtils, resolveConnectionName } from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
-import { getIdPIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
-import {
-    IdentityProviderManagementConstants
-} from "@wso2is/admin.identity-providers.v1/constants/identity-provider-management-constants";
-import { AuthenticatorMeta } from "@wso2is/admin.identity-providers.v1/meta/authenticator-meta";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import {
     AuthenticatorCategories,
-    GenericAuthenticatorInterface,
-    IdentityProviderTemplateInterface,
-    IdentityProviderTemplateItemInterface
+    GenericAuthenticatorInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
-import {
-    IdentityProviderManagementUtils
-} from "@wso2is/admin.identity-providers.v1/utils/identity-provider-management-utils";
-import {
-    IdentityProviderTemplateManagementUtils
-} from "@wso2is/admin.identity-providers.v1/utils/identity-provider-template-management-utils";
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import {
     EmptyPlaceholder,
     GenericIcon,
@@ -55,9 +55,7 @@ import {
 import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
-import orderBy from "lodash-es/orderBy";
 import startCase from "lodash-es/startCase";
-import union from "lodash-es/union";
 import React, {
     ChangeEvent,
     FunctionComponent,
@@ -69,7 +67,8 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import {
     Card,
     Divider,
@@ -177,15 +176,13 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const { getLink } = useDocumentation();
     const { hiddenAuthenticators } = useAuthenticationFlow();
     const { deploymentConfig } = useDeploymentConfig();
+    const { UIConfig } = useUIConfig();
+    const dispatch: Dispatch = useDispatch();
 
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
-    const hiddenConnectionTemplates: string[] = useSelector(
-        (state: AppState) => state.config?.ui?.hiddenConnectionTemplates
-    );
-    const groupedIDPTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
-        (state: AppState) => state.identityProvider?.groupedTemplates
-    );
+    // External connection resources URL from the UI config.
+    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -204,21 +201,53 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const [ showAddNewAuthenticatorView, setShowAddNewAuthenticatorView ] = useState<boolean>(false);
     const [ filterLabels, setFilterLabels ] = useState<string[]>([]);
     const [ selectedFilterLabels, setSelectedFilterLabels ] = useState<string[]>([]);
-    const [
-        categorizedIdPTemplates,
-        setCategorizedIdPTemplates
-    ] = useState<ConnectionTemplateCategoryInterface[]>([]);
 
     /**
-     * Fetches IdP templates if not available.
+     * Fetch connection templates list when the add new authenticator modal is open.
+     */
+    const {
+        data: connectionTemplates,
+        isLoading: isConnectionTemplatesFetchRequestLoading,
+        error: connectionTemplatesFetchRequestError
+    } = useGetConnectionTemplates(null, null, null, showAddNewAuthenticatorView, true);
+
+    /**
+     * Handle error from fetching IdP templates.
      */
     useEffect(() => {
-        if (groupedIDPTemplates) {
-            return;
-        }
+        if (connectionTemplatesFetchRequestError) {
+            if (connectionTemplatesFetchRequestError?.response?.data?.description) {
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "authenticationProvider:notifications.getIDPTemplateList." +
+                                "error.description",
+                            { description: connectionTemplatesFetchRequestError.response.data.description }
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "authenticationProvider:notifications.getIDPTemplateList.error.message"
+                        )
+                    })
+                );
 
-        IdentityProviderTemplateManagementUtils.getIdentityProviderTemplates();
-    }, [ groupedIDPTemplates ]);
+                return;
+            }
+
+            dispatch(
+                addAlert({
+                    description: t(
+                        "authenticationProvider:notifications.getIDPTemplateList." +
+                            "genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "authenticationProvider:notifications.getIDPTemplateList.genericError.message"
+                    )
+                })
+            );
+        }
+    }, [ connectionTemplatesFetchRequestError ]);
 
     /**
      * Update the internal filtered authenticators state when the prop changes.
@@ -250,8 +279,8 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         // should be handled automatically in the login flow, based on whether the app is shared or not.
         _filteredAuthenticators = _filteredAuthenticators.filter((authenticator: GenericAuthenticatorInterface) => {
             return (
-                authenticator.name !==
-                      IdentityProviderManagementConstants.ORGANIZATION_AUTHENTICATOR
+                authenticator.defaultAuthenticator.name !==
+                    FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME
             );
         });
 
@@ -259,41 +288,6 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         setAllAuthenticators(_filteredAuthenticators);
         extractAuthenticatorLabels(_filteredAuthenticators);
     }, [ unfilteredAuthenticators ]);
-
-    /**
-     * Persists the categorized IDP templates.
-     *
-     * @param templates - Templates to persist.
-     * @returns Promise returned from `categorizeTemplates`.
-     */
-    const persistCategorizedTemplates = (
-        templates: IdentityProviderTemplateInterface[]
-    ): Promise<void | ConnectionTemplateCategoryInterface[]> => {
-
-        return IdentityProviderTemplateManagementUtils.categorizeTemplates(templates)
-            .then((response: ConnectionTemplateCategoryInterface[]) => {
-
-                let tags: string[] = [];
-
-                response.filter((category: ConnectionTemplateCategoryInterface) => {
-                    // Order the templates by pushing coming soon items to the end.
-                    category.templates = orderBy(category.templates, [ "comingSoon" ], [ "desc" ]);
-
-                    category.templates.filter((template: IdentityProviderTemplateInterface) => {
-                        if (!(template?.tags && Array.isArray(template.tags) && template.tags.length > 0)) {
-                            return;
-                        }
-
-                        tags = union(tags, template.tags);
-                    });
-                });
-
-                setCategorizedIdPTemplates(response);
-            })
-            .catch(() => {
-                setCategorizedIdPTemplates([]);
-            });
-    };
 
     /**
      * Filter out the displayable set of authenticators by validating against
@@ -343,7 +337,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
         const labels: string[] = [];
 
         authenticators.filter((authenticator: GenericAuthenticatorInterface) => {
-            IdentityProviderManagementUtils.getAuthenticatorLabels(authenticator).filter((label: string) => {
+            AuthenticatorMeta.getAuthenticatorLabels(authenticator).filter((label: string) => {
                 if (!labels.includes(label)) {
                     labels.push(label);
                 }
@@ -433,7 +427,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 return true;
             }
 
-            return IdentityProviderManagementUtils.getAuthenticatorLabels(authenticator)
+            return AuthenticatorMeta.getAuthenticatorLabels(authenticator)
                 .some((selectedLabel: string) => filterLabels.includes(selectedLabel));
         };
 
@@ -446,7 +440,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
             const name: string = authenticator?.displayName?.toLocaleLowerCase();
 
             if (name.includes(query)
-                || IdentityProviderManagementUtils.getAuthenticatorLabels(authenticator)
+                || AuthenticatorMeta.getAuthenticatorLabels(authenticator)
                     .some((tag: string) => tag?.toLocaleLowerCase()?.includes(query)
                         || startCase(tag)?.toLocaleLowerCase()?.includes(query))
                 || authenticator.category?.toLocaleLowerCase()?.includes(query)
@@ -501,106 +495,82 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                     </div>
                 </div>
                 <Divider hidden/>
-                {
-                    categorizedIdPTemplates
-                        .map((category: ConnectionTemplateCategoryInterface, index: number) => {
-                            return (
-                                <ResourceGrid
-                                    key={ index }
-                                    isEmpty={
-                                        !(category?.templates
-                                            && Array.isArray(category.templates)
-                                            && category.templates.length > 0)
-                                    }
-                                    emptyPlaceholder={ (
-                                        <EmptyPlaceholder
-                                            image={ getEmptyPlaceholderIllustrations().newList }
-                                            imageSize="tiny"
-                                            title={
-                                                t("authenticationProvider:" +
+                <ResourceGrid
+                    isLoading={ isConnectionTemplatesFetchRequestLoading }
+                    isEmpty={ connectionTemplates?.length === 0 }
+                    emptyPlaceholder={ (
+                        <EmptyPlaceholder
+                            image={ getEmptyPlaceholderIllustrations().newList }
+                            imageSize="tiny"
+                            title={
+                                t("authenticationProvider:" +
                                                     "placeHolders.emptyConnectionTypeList.title")
-                                            }
-                                            subtitle={ [
-                                                t("authenticationProvider:" +
+                            }
+                            subtitle={ [
+                                t("authenticationProvider:" +
                                                     "placeHolders.emptyConnectionTypeList" +
                                                     ".subtitles.0"),
-                                                t("authenticationProvider:" +
+                                t("authenticationProvider:" +
                                                     "placeHolders.emptyConnectionTypeList" +
                                                     ".subtitles.1")
-                                            ] }
-                                            data-testid={ `${ testId }-empty-placeholder` }
-                                        />
-                                    ) }
-                                >
-                                    {
-                                        category.templates.map((
-                                            template: IdentityProviderTemplateInterface,
-                                            templateIndex: number
-                                        ) => {
+                            ] }
+                            data-testid={ `${ testId }-empty-placeholder` }
+                        />
+                    ) }
+                >
+                    {
+                        connectionTemplates?.map((
+                            template: ConnectionTemplateInterface,
+                            templateIndex: number
+                        ) => {
 
-                                            const hiddenTemplates: string[] = [
-                                                ConnectionManagementConstants.IDP_TEMPLATE_IDS.LINKEDIN,
-                                                ConnectionManagementConstants.IDP_TEMPLATE_IDS
-                                                    .ORGANIZATION_ENTERPRISE_IDP,
-                                                ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID,
-                                                ...hiddenConnectionTemplates
-                                            ];
+                            let isTemplateDisabled: boolean = template.disabled;
+                            let disabledHint: ReactNode = undefined;
 
-                                            if (hiddenTemplates.includes(template?.templateId)) {
-                                                return null;
-                                            }
-
-                                            let isTemplateDisabled: boolean = template.disabled;
-                                            let disabledHint: ReactNode = undefined;
-
-                                            // Disable the Apple template in localhost as it's not supported.
-                                            if (template.id === ConnectionManagementConstants
-                                                .IDP_TEMPLATE_IDS.APPLE &&
+                            // Disable the Apple template in localhost as it's not supported.
+                            if (template.id === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.APPLE &&
                                                     new URL(deploymentConfig?.serverOrigin)?.
-                                                        hostname === ConnectionManagementConstants.LOCAL_SERVER_URL) {
-                                                isTemplateDisabled = true;
-                                                disabledHint = t("console:develop.pages." +
+                                                        hostname === CommonAuthenticatorConstants
+                                                        .LOCAL_SERVER_URL) {
+                                isTemplateDisabled = true;
+                                disabledHint = t("console:develop.pages." +
                                                     "authenticationProviderTemplate.disabledHint.apple");
-                                            }
+                            }
 
-                                            return (
-                                                <ResourceGrid.Card
-                                                    showSetupGuideButton={ !!isSAASDeployment }
-                                                    navigationLink={
-                                                        getLink(ConnectionsManagementUtils
-                                                            .resolveConnectionDocLink(template.id))
-                                                    }
-                                                    key={ templateIndex }
-                                                    resourceName={
-                                                        template?.name === "Expert Mode"
-                                                            ? "Custom Connector"
-                                                            : template?.name
-                                                    }
-                                                    isResourceComingSoon={ template.comingSoon }
-                                                    disabled={ isTemplateDisabled }
-                                                    disabledHint={ disabledHint }
-                                                    comingSoonRibbonLabel={ t("common:comingSoon") }
-                                                    resourceDescription={ template.description }
-                                                    resourceImage={
-                                                        IdentityProviderManagementUtils
-                                                            .resolveTemplateImage(template.image, getIdPIcons())
-                                                    }
-                                                    tags={ template.tags }
-                                                    onClick={ () => {
-                                                        onIDPCreateWizardTrigger(template.id, () => {
-                                                            setShowAddNewAuthenticatorView(false);
-                                                        }, template);
-                                                    } }
-                                                    showTooltips={ false }
-                                                    data-testid={ `${ testId }-${ template.name }` }
-                                                />
-                                            );
-                                        })
+                            return (
+                                <ResourceGrid.Card
+                                    showSetupGuideButton={ !!isSAASDeployment }
+                                    navigationLink={
+                                        getLink(ConnectionsManagementUtils
+                                            .resolveConnectionDocLink(template.id))
                                     }
-                                </ResourceGrid>
+                                    key={ templateIndex }
+                                    resourceName={
+                                        resolveConnectionName(template?.name)
+                                    }
+                                    isResourceComingSoon={ template.comingSoon }
+                                    disabled={ isTemplateDisabled }
+                                    disabledHint={ disabledHint }
+                                    comingSoonRibbonLabel={ t(FeatureStatusLabel.COMING_SOON) }
+                                    resourceDescription={ template.description }
+                                    resourceImage={
+                                        ConnectionsManagementUtils
+                                            .resolveConnectionResourcePath(
+                                                connectionResourcesUrl, template.image)
+                                    }
+                                    tags={ template.tags }
+                                    onClick={ () => {
+                                        onIDPCreateWizardTrigger(template.id, () => {
+                                            setShowAddNewAuthenticatorView(false);
+                                        }, template);
+                                    } }
+                                    showTooltips={ false }
+                                    data-testid={ `${ testId }-${ template.name }` }
+                                />
                             );
                         })
-                }
+                    }
+                </ResourceGrid>
             </Modal.Content>
         );
     };
@@ -641,7 +611,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                             className={ `filter-label ${ isSelected ? "active" : "" }` }
                                             onClick={ () => handleAuthenticatorFilter(label) }
                                         >
-                                            { IdentityProviderManagementUtils.getAuthenticatorLabelDisplayName(label) }
+                                            { label }
                                             { isSelected && <Icon name="check"/> }
                                         </Label>
                                     );
@@ -759,12 +729,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
      * Authenticator add click.
      */
     const handleNewAuthenticatorAddClick = (): void => {
-        if (groupedIDPTemplates) {
-            persistCategorizedTemplates(groupedIDPTemplates)
-                .then(() => setShowAddNewAuthenticatorView(true));
-
-            return;
-        }
+        setShowAddNewAuthenticatorView(true);
     };
 
     return (
@@ -812,7 +777,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 </Modal.Content>
             ) }
             {
-                showAddNewAuthenticatorView && categorizedIdPTemplates
+                showAddNewAuthenticatorView
                     ? renderAddNewAuthenticatorContent()
                     : renderAuthenticatorSelectionContent()
             }

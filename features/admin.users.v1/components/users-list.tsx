@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import {
     AppConstants,
     AppState,
@@ -28,7 +29,7 @@ import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
-import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     LoadableComponentInterface,
@@ -167,9 +168,16 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
     const [ loading, setLoading ] = useState(false);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
     const isAuthUserPrivileged: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+
+    const hasUsersUpdatePermissions: boolean = useRequiredScopes(
+        featureConfig?.users?.scopes?.update
+    );
+
+    const hasUsersDeletePermissions: boolean = useRequiredScopes(
+        featureConfig?.users?.scopes?.delete
+    );
 
     const handleUserEdit = (userId: string) => {
         history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", userId));
@@ -213,40 +221,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     })
                 );
             });
-    };
-
-    /**
-     * Checks whether the username is a UUID.
-     *
-     * @returns If the username is a UUID.
-     */
-    const checkUUID = ( username : string ): boolean => {
-
-        const regexExp: RegExp = new RegExp(
-            /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi
-        );
-
-        return regexExp.test(username);
-    };
-
-    /* Resolves username.
-    *
-    * @returns Username for the user avatar.
-    */
-    const resolveAvatarUsername = ( user: UserBasicInterface ): string => {
-        const usernameUUID: string = getUserNameWithoutDomain(user?.userName);
-
-        if (user?.name?.givenName){
-            return user.name.givenName[0];
-        } else if (user?.name?.familyName) {
-            return user.name.familyName[0];
-        } else if (user?.emails?.length > 0 && user?.emails[0]) {
-            return user.emails[0][0];
-        } else if (!checkUUID(usernameUUID)){
-            return usernameUUID[0];
-        }
-
-        return "";
     };
 
     const renderUserIdp = (user: UserBasicInterface): string => {
@@ -304,7 +278,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         >
                             <UserAvatar
                                 data-componentid="users-list-item-image"
-                                name={ resolveAvatarUsername(user) }
+                                name={ UserManagementUtils.resolveAvatarUsername(user) }
                                 size="mini"
                                 image={ user.profileUrl }
                                 spaced="right"
@@ -446,7 +420,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         ? user?.userName?.split("/")[0]
                         : userstoresConfig.primaryUserstoreName;
 
-                    return !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+                    return !hasUsersUpdatePermissions
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
@@ -461,7 +435,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         ? user?.userName?.split("/")[0]
                         : userstoresConfig.primaryUserstoreName;
 
-                    return !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+                    return !hasUsersUpdatePermissions
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
@@ -483,7 +457,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
                 return !isFeatureEnabled(featureConfig?.users,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
-                    || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)
+                    || !hasUsersDeletePermissions
                     || readOnlyUserStores?.includes(userStore.toString())
                     || authenticatedUser === getUserNameWithoutDomain(user?.userName) && isAuthUserPrivileged;
             },

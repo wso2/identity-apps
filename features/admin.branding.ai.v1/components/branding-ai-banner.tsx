@@ -24,6 +24,7 @@ import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import IconButton from "@oxygen-ui/react/IconButton";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import AIBanner from "@wso2is/common.ai.v1/components/ai-banner";
 import AIBannerTall from "@wso2is/common.ai.v1/components/ai-banner-tall";
 import {
@@ -33,8 +34,8 @@ import {
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
-import useGenerateAIBrandingPreference,
-{ GenerateAIBrandingPreferenceFunc } from "../hooks/use-generate-ai-branding-preference";
+import useGenerateAIBrandingPreference, { GenerateAIBrandingPreferenceFunc }
+    from "../hooks/use-generate-ai-branding-preference";
 import { BannerState } from "../models/types";
 import "./branding-ai-banner.scss";
 
@@ -99,7 +100,7 @@ const BrandingAIBanner: FunctionComponent<PropsWithChildren<BrandingAIBannerProp
                     titleLabel={ (
                         <Chip
                             size="small"
-                            label={ t("common:beta").toUpperCase() }
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-chip-beta mb-1 ml-2"
                         />
                     ) }
@@ -125,7 +126,7 @@ const BrandingAIBanner: FunctionComponent<PropsWithChildren<BrandingAIBannerProp
                     titleLabel={ (
                         <Chip
                             size="small"
-                            label={ t("common:beta").toUpperCase() }
+                            label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-chip-beta mb-1 ml-2"
                         />
                     ) }

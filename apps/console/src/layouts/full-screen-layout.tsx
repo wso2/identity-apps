@@ -76,6 +76,9 @@ const FullScreenLayout: FunctionComponent<FullScreenLayoutPropsInterface> = (
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const appHomePath: string = useSelector(
+        (state: AppState) => state.config.deployment.appHomePath
+    );
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getFullScreenViewRoutes());
 
@@ -164,6 +167,9 @@ const FullScreenLayout: FunctionComponent<FullScreenLayoutPropsInterface> = (
         <FullScreenLayoutSkeleton>
             <ErrorBoundary
                 onChunkLoadError={ AppUtils.onChunkLoadError }
+                handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {
+                    sessionStorage.setItem("auth_callback_url_console", appHomePath);
+                } }
                 fallback={ (
                     <EmptyPlaceholder
                         action={ (

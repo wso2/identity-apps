@@ -17,16 +17,14 @@
  */
 
 import SIWEIdPTemplate from "@wso2is/admin.extensions.v1/identity-provider-templates/templates/swe/swe.json";
-import { I18n } from "@wso2is/i18n";
 import groupBy from "lodash-es/groupBy";
 import { getConnectionTemplatesConfig } from "../configs/templates";
-import { getConnectionCapabilityIcons } from "../configs/ui";
+import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
+import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import {
     ConnectionTemplateCategoryInterface,
     ConnectionTemplateGroupInterface,
     ConnectionTemplateInterface,
-    SupportedServices,
-    SupportedServicesInterface,
     TemplateConfigInterface
 } from "../models/connection";
 
@@ -53,7 +51,7 @@ export class ConnectionTemplateManagementUtils {
         templates: ConnectionTemplateInterface[]
     ): Promise<ConnectionTemplateInterface[]> => {
 
-        return ConnectionTemplateManagementUtils.groupConnectionTemplates(templates)
+        return this.groupConnectionTemplates(templates)
             .then((groupedTemplate: ConnectionTemplateInterface[]) => {
                 templates = ConnectionTemplateManagementUtils
                     .sortConnectionTemplates(groupedTemplate);
@@ -63,42 +61,12 @@ export class ConnectionTemplateManagementUtils {
     };
 
     /**
-     * Build supported services from the given service identifiers.
-     *
-     * @param serviceIdentifiers - Set of service identifiers.
-     */
-    public static buildSupportedServices = (serviceIdentifiers: string[]): SupportedServicesInterface[] => {
-        return serviceIdentifiers?.map((serviceIdentifier: string): SupportedServicesInterface => {
-            switch (serviceIdentifier) {
-                case SupportedServices.AUTHENTICATION:
-                    return {
-                        displayName: I18n.instance.t(
-                            "console:develop.pages.authenticationProviderTemplate.supportServices." +
-                                "authenticationDisplayName"
-                        ),
-                        logo: getConnectionCapabilityIcons()[SupportedServices.AUTHENTICATION],
-                        name: SupportedServices.AUTHENTICATION
-                    };
-                case SupportedServices.PROVISIONING:
-                    return {
-                        displayName: I18n.instance.t(
-                            "console:develop.pages.authenticationProviderTemplate.supportServices." +
-                                "provisioningDisplayName"
-                        ),
-                        logo: getConnectionCapabilityIcons()[SupportedServices.PROVISIONING],
-                        name: SupportedServices.PROVISIONING
-                    };
-            }
-        });
-    };
-
-    /**
      * Sort the IDP templates based on display order.
      *
      * @param templates - App templates.
      * @returns Sorted connection templates.
      */
-    public static sortConnectionTemplates(
+    private static sortConnectionTemplates(
         templates: ConnectionTemplateInterface[]): ConnectionTemplateInterface[] {
 
         const identityProviderTemplates: ConnectionTemplateInterface[] = [ ...templates ];
@@ -210,6 +178,7 @@ export class ConnectionTemplateManagementUtils {
 
         getConnectionTemplatesConfig().groups.forEach(
             async (config: TemplateConfigInterface<ConnectionTemplateGroupInterface>) => {
+
                 if (!config.enabled) return;
                 groups.push(
                     config.resource as (ConnectionTemplateGroupInterface |
@@ -258,3 +227,63 @@ export const getCertificateOptionsForTemplate = (templateId: string): { JWKS: bo
 
     return undefined;
 };
+
+/**
+ * Utility function to load local file based connection template groups.
+ *
+ * @returns Array of connection template groups.
+ */
+const loadLocalFileBasedConnectionTemplateGroups = (): ConnectionTemplateGroupInterface[] => {
+
+    return getConnectionTemplatesConfig().groups.map(
+        (groupConfig: TemplateConfigInterface<ConnectionTemplateGroupInterface>) => {
+            if (groupConfig.enabled) {
+                return groupConfig.resource as ConnectionTemplateGroupInterface;
+            }
+        });
+};
+
+/**
+ * Utility function to group connection templates based on local file based groups.
+ *
+ * @param templates - Templates list to be grouped.
+ * @returns A list of grouped templates.
+ */
+export const groupConnectionTemplates = (
+    templates: ConnectionTemplateInterface[]): ConnectionTemplateInterface[] => {
+
+    // Connection templates are grouped based on local file based groups.
+    const localFileBasedConnectionTemplateGroups: ConnectionTemplateGroupInterface[]
+        = loadLocalFileBasedConnectionTemplateGroups();
+
+    let _templates: ConnectionTemplateInterface[] = [ ...templates ];
+    const groupedTemplates: ConnectionTemplateInterface[] = [];
+
+    for (const group of localFileBasedConnectionTemplateGroups) {
+        const updatedGroup: ConnectionTemplateGroupInterface = { ...group };
+
+        /**
+         * OIDC and SAML are grouped under "Enterprise Protocols".
+         */
+        if (group.id === ConnectionUIConstants.CONNECTION_TEMPLATE_GROUPS.ENTERPRISE_PROTOCOLS) {
+            const subTemplateIds: string[] = [
+                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OIDC,
+                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.SAML
+            ];
+
+            updatedGroup.subTemplates = _templates
+                .filter((template: ConnectionTemplateInterface) => {
+                    return subTemplateIds.includes(template.id);
+                });
+            // Remove grouped sub templates from main template list.
+            _templates = _templates.filter((template: ConnectionTemplateInterface) => {
+                return !subTemplateIds.includes(template.id);
+            });
+        }
+
+        groupedTemplates.push(updatedGroup);
+    }
+
+    return [ ...groupedTemplates, ..._templates ];
+};
+

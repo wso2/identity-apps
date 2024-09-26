@@ -90,7 +90,8 @@
                     "optimization": false,
                     "sourceMap": true,
                     "vendorChunk": true,
-                    "verbose": true
+                    "verbose": true,
+                    "extractCss": false
                 },
                 "production": {
                     "index": "index.jsp",
@@ -100,7 +101,8 @@
                     "outputHashing": "all",
                     "sourceMap": false,
                     "extractLicenses": false,
-                    "verbose": true
+                    "verbose": true,
+                    "extractCss": false
                 }
             }
         },
@@ -199,6 +201,14 @@
             "executor": "nx:run-commands",
             "options": {
                 "command": "pnpm test",
+                "cwd": "apps/console",
+                "parallel": false
+            }
+        },
+        "test-coverage": {
+            "executor": "nx:run-commands",
+            "options": {
+                "command": "pnpm test:coverage",
                 "cwd": "apps/console",
                 "parallel": false
             }

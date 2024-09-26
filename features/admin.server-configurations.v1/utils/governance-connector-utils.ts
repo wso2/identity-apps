@@ -17,7 +17,7 @@
  */
 
 import { AppConstants, store } from "@wso2is/admin.core.v1";
-import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -135,7 +135,7 @@ export class GovernanceConnectorUtils {
             id: "VXNlciBPbmJvYXJkaW5n",
             name: "User Onboarding"
         }
-    ]
+    ];
 
     /**
      * Filter governance categories of a connector for a sub organization.
@@ -260,13 +260,6 @@ export class GovernanceConnectorUtils {
                         id: ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR_ID,
                         route: AppConstants.getPaths().get("SESSION_MANAGEMENT"),
                         testId: "session-management-card"
-                    },
-                    {
-                        description: "Authentication via JWT signed with client's registered key.",
-                        header: "Private Key JWT Client Authentication (OIDC)",
-                        id: ServerConfigurationsConstants.PRIVATE_KEY_JWT_CLIENT_AUTH,
-                        route: AppConstants.getPaths().get("PRIVATE_KEY_JWT_CONFIG_EDIT"),
-                        testId: "private-key-jwt-client-auth-card"
                     }
                 ],
                 displayOrder: 1,

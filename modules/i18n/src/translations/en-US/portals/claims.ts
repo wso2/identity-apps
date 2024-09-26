@@ -325,7 +325,7 @@ export const claims: ClaimsNS = {
         },
         pageLayout: {
             edit: {
-                attributeMappingPrimaryAction: "Add Attribute Mappingg",
+                attributeMappingPrimaryAction: "Add Attribute Mapping",
                 attributePrimaryAction: "New Attribute",
                 header: "Add {{type}} Attribute"
             }

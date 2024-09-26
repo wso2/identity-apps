@@ -48,6 +48,7 @@ import {
     TableColumnInterface
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -59,6 +60,7 @@ import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
 import useOrganizationSwitch from "../hooks/use-organization-switch";
 import { GenericOrganization, OrganizationInterface, OrganizationListInterface } from "../models";
+import "./organization-list.scss";
 
 /**
  *
@@ -287,6 +289,13 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
      * @returns
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
+        // Get the class names for the status icon in the list.
+        const getClassNamesForStatusIcon = (status: string): string => classNames({
+            "active": status === "ACTIVE",
+            "inactive": status !== "ACTIVE",
+            "organization-active-icon": true
+        });
+
         return [
             {
                 allowToggleVisibility: false,
@@ -313,10 +322,9 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                             { organization.id === OrganizationManagementConstants.SUPER_ORGANIZATION_ID
                                && (< Header.Content >
                                    <Icon
-                                       className="mr-2 ml-0 vertical-aligned-baseline"
+                                       className="organization-active-icon active"
                                        size="small"
                                        name="circle"
-                                       color="green"
                                    />
                                </Header.Content>)
                             }
@@ -325,10 +333,9 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                     trigger={
                                         (<Icon
                                             data-componentid={ `${ componentId }-org-status-icon` }
-                                            className="mr-2 ml-0 vertical-aligned-baseline"
+                                            className={ getClassNamesForStatusIcon(organization.status) }
                                             size="small"
                                             name="circle"
-                                            color={ organization.status === "ACTIVE" ? "green" : "orange" }
                                         />)
                                     }
                                     content={
@@ -494,11 +501,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     imageSize="tiny"
                     title={ t("console:manage.placeholders.emptySearchResult.title") }
                     subtitle={ [
-                        t("console:manage.placeholders.emptySearchResult.subtitles.0", {
-                            // searchQuery looks like "name co OrgName", so we only remove the filter string only to get
-                            // the actual user entered query
-                            query: searchQuery.split("name co ")[1]
-                        }),
+                        t("console:manage.placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
                         t("console:manage.placeholders.emptySearchResult.subtitles.1")
                     ] }
                     data-componentid={ `${ componentId }-empty-search-placeholder` }

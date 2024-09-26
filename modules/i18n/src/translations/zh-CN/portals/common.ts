@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -114,6 +114,7 @@ export const common: CommonNS = {
     "logout": "登出",
     "maxValidation": "此值应小于或等于{{max}}。",
     "maximize": "最大化",
+    "metaAttributes": "元属性",
     "minValidation": "该值应大于或等于{{min}}。",
     "minimize": "最小化",
     "more": "更多的",

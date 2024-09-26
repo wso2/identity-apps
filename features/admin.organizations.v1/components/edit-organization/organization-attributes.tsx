@@ -41,6 +41,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import { patchOrganization } from "../../api";
+import { useGetOrganizationsMetaAttributes } from "../../api/use-get-organizations-meta-attributes";
 import {
     OrganizationAttributesInterface,
     OrganizationPatchData,
@@ -81,6 +82,10 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
 
     const [ submit, setSubmit ] = useTrigger();
     const [ isSubmitting, setIsSubmitting ] = useState(false);
+
+    const {
+        mutate: mutateMetaAttributeGetRequest
+    } = useGetOrganizationsMetaAttributes(undefined, 10, undefined, undefined);
 
     const updateOrgAttributes: (data: KeyValue[]) => void = useCallback(
         (data: KeyValue[]) => {
@@ -171,7 +176,10 @@ export const OrganizationAttributes: FunctionComponent<OrganizationAttributesPro
                         })
                     );
                 })
-                .finally(() => setIsSubmitting(false));
+                .finally(() => {
+                    mutateMetaAttributeGetRequest();
+                    setIsSubmitting(false);
+                });
         },
         [ organization ]
     );

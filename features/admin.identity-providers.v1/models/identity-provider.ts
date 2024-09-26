@@ -221,22 +221,6 @@ export interface IdentityProviderTemplateListItemInterface extends IdentityProvi
 }
 
 /**
- * Enum for IDP template loading strategies.
- *
- * @readonly
- */
-export enum IdentityProviderTemplateLoadingStrategies {
-    /**
-     * App will resort to in-app templates.
-     */
-    LOCAL = "LOCAL",
-    /**
-     * App will fetch templates from the template management REST API.
-     */
-    REMOTE = "REMOTE"
-}
-
-/**
  * Enum for the supported authenticator types.
  *
  * @readonly
@@ -622,24 +606,6 @@ export interface IdentityProviderFormValuesInterface {
 }
 
 /**
- * Authenticator Labels.
- * @readonly
- */
-export enum AuthenticatorLabels {
-    SOCIAL = "Social-Login",
-    FIRST_FACTOR = "First Factor",
-    SECOND_FACTOR = "2FA",
-    MULTI_FACTOR = "MFA",
-    OIDC = "OIDC",
-    SAML = "SAML",
-    PASSWORDLESS = "Passwordless",
-    HANDLERS = "Handlers",
-    USERNAMELESS = "Usernameless",
-    PASSKEY = "Passkey",
-    API_AUTHENTICATION = "APIAuth"
-}
-
-/**
  * Authenticator Categories.
  * @readonly
  */
@@ -871,68 +837,4 @@ export interface FIDOConfigsInterface extends FIDOConnectorConfigsInterface{
      * Fido configuration name.
      */
     name: string;
-}
-
-/**
- * Interface for FIDO trusted apps.
- */
-export interface FIDOTrustedAppsValuesInterface {
-    /**
-     * List of FIDO Trusted Android Apps.
-     */
-    android: FIDOTrustedAppTypeInterface;
-    /**
-     * List of FIDO Trusted IOS Apps.
-     */
-    ios: FIDOTrustedAppTypeInterface
-}
-
-/**
- * Interface for FIDO trusted app type.
- */
-export interface FIDOTrustedAppTypeInterface {
-    /**
-     * App names with their corresponding SHA values.
-     */
-    [appName: string]: string[]
-}
-
-/**
- * Interface for FIDO trusted apps response.
- */
-export interface FIDOTrustedAppsResponseInterface {
-    /**
-     * List of FIDO Trusted Android Apps.
-     */
-    android: string[];
-    /**
-     * List of FIDO Trusted IOS Apps.
-     */
-    ios: string[]
-}
-
-/**
- * Types of FIDO trusted apps.
- */
-export enum FIDOTrustedAppTypes {
-    ANDROID = "android",
-    IOS = "ios"
-}
-
-/**
- * FIDO trusted apps list interface.
- */
-export interface FIDOTrustedAppsListInterface {
-    /**
-     * Name of the trusted app.
-     */
-    appName: string;
-    /**
-     * Type of the trusted app.
-     */
-    appType: FIDOTrustedAppTypes;
-    /**
-     * SHA values associated with the current app.
-     */
-    shaValues?: string[];
 }

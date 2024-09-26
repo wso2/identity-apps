@@ -38,10 +38,10 @@ import {
     setOrganizationType,
     setUserOrganizationId
 } from "@wso2is/admin.core.v1/store/actions/organization";
-import { CONSUMER_USERSTORE } from "@wso2is/admin.extensions.v1/components/administrators/constants/users";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import useOrganizationSwitch from "@wso2is/admin.organizations.v1/hooks/use-organization-switch";
 import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
+import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {
     AppConstants as CommonAppConstants,
     CommonConstants as CommonConstantsCore
@@ -238,9 +238,9 @@ const useSignIn = (): UseSignInInterface => {
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
         onAppReady: () => void
     ): Promise<void> => {
-        let logoutRedirectUrl: string;
-
         const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
+
+        let logoutRedirectUrl: string;
         let isPrivilegedUser: boolean =
             idToken?.amr?.length > 0
                 ? idToken?.amr[0] === "EnterpriseIDPAuthenticator"
@@ -248,22 +248,6 @@ const useSignIn = (): UseSignInInterface => {
         const event: Event = new Event(CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT);
 
         dispatchEvent(event);
-
-        const orgIdIdToken: string = idToken.org_id;
-        const orgName: string = idToken.org_name;
-        const userOrganizationId: string = idToken.user_org;
-        const tenantDomainFromSubject: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(
-            response.sub
-        );
-        const isFirstLevelOrg: boolean = !idToken.user_org
-            || idToken.org_name === tenantDomainFromSubject
-            || ((idToken.user_org === idToken.org_id) && idToken.org_name === tenantDomainFromSubject);
-
-        const tenantDomain: string = isFirstLevelOrg ? transformTenantDomain(orgName) : orgIdIdToken;
-
-        const firstName: string = idToken?.given_name;
-        const lastName: string = idToken?.family_name;
-        const fullName: string = firstName ? firstName + (lastName ? " " + lastName : "") : response.email;
 
         const __experimental__platformIdP: {
             enabled: boolean;
@@ -284,8 +268,29 @@ const useSignIn = (): UseSignInInterface => {
                 redirectUrl.searchParams.set("fidp", __experimental__platformIdP.homeRealmId);
 
                 window.location.href = redirectUrl.href;
+
+                // This early return is essential to halt execution after the above redirection is set.
+                // Removing this can cause an intermittent authorize page to be displayed during sign
+                // in process in cloud deployments.
+                return;
             }
         }
+
+        const orgIdIdToken: string = idToken.org_id;
+        const orgName: string = idToken.org_name;
+        const userOrganizationId: string = idToken.user_org;
+        const tenantDomainFromSubject: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(
+            response.sub
+        );
+        const isFirstLevelOrg: boolean = !idToken.user_org
+            || idToken.org_name === tenantDomainFromSubject
+            || ((idToken.user_org === idToken.org_id) && idToken.org_name === tenantDomainFromSubject);
+
+        const tenantDomain: string = isFirstLevelOrg ? transformTenantDomain(orgName) : orgIdIdToken;
+
+        const firstName: string = idToken?.given_name;
+        const lastName: string = idToken?.family_name;
+        const fullName: string = firstName ? firstName + (lastName ? " " + lastName : "") : response.email;
 
         await dispatch(
             setSignIn<AuthenticatedUserInfo & TenantListInterface>(

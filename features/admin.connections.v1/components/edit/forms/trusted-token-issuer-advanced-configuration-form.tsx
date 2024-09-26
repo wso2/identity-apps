@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,7 +28,7 @@ import { Hint, Message } from "@wso2is/react-components";
 import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { ConnectionManagementConstants } from "../../../constants/connection-constants";
+import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import { ImplicitAssociaionConfigInterface } from "../../../models/connection";
 import { SubjectAttributeListItem } from "../settings";
 
@@ -120,7 +120,7 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
         getExternalClaims(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("LOCAL"))
             .then(( response: Claim[] ) => {
                 response.forEach((claim: Claim) => {
-                    if (ConnectionManagementConstants.IMPLICIT_ACCOUNT_LINKING_ATTRIBUTES.includes(claim.claimURI)) {
+                    if (ConnectionUIConstants.IMPLICIT_ACCOUNT_LINKING_ATTRIBUTES.includes(claim.claimURI)) {
                         filteredAttributes.push({
                             key: claim.id,
                             text: <SubjectAttributeListItem

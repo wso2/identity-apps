@@ -49,6 +49,7 @@ const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactElement =
     const isCookieConsentBannerEnabled: boolean = useSelector((state: AppState) => {
         return state.config.ui.isCookieConsentBannerEnabled;
     });
+    const appHomePath: string = useSelector((state: AppState) => state.config.deployment.appHomePath);
 
     /**
      * Listen for base name changes and updated the layout routes.
@@ -61,6 +62,9 @@ const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactElement =
         <>
             <ErrorBoundary
                 onChunkLoadError={ AppUtils.onChunkLoadError }
+                handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {
+                    sessionStorage.setItem("auth_callback_url_console", appHomePath);
+                } }
                 fallback={ (
                     <EmptyPlaceholder
                         action={ (

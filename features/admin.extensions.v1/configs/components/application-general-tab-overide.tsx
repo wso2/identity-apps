@@ -22,17 +22,11 @@ import {
     DocumentationLink,
     EmphasizedSegment,
     Heading,
-    PrimaryButton,
     ResourceTab
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState  } from "react";
+import React, { FunctionComponent, ReactElement  } from "react";
 import { Trans } from "react-i18next";
-import Joyride, { CallBackProps, STATUS } from "react-joyride";
 import { Divider } from "semantic-ui-react";
-import { loginPlaygroundUserTourSteps }
-    from "../../components/application/components/login-playground/playground-user-tour-modal";
-import { TryItApplicationConstants } from "../../components/application/constants/try-it-constants";
-import { persistPlaygroundTourViewedStatus } from "../../components/application/utils/try-it-utils";
 
 interface ApplicationGeneralTabOverridePropsInterface extends IdentifiableComponentInterface {
     appId: string;
@@ -50,8 +44,6 @@ export const ApplicationGeneralTabOverride: FunctionComponent<ApplicationGeneral
         clientId,
         [ "data-componentid" ]: componentId
     } = props ;
-
-    const [ isTriggered, setIsTriggered ] = useState<boolean>(false);
 
     return (
         <ResourceTab.Pane controlledSegmentation>
@@ -72,45 +64,6 @@ export const ApplicationGeneralTabOverride: FunctionComponent<ApplicationGeneral
                         </Trans>
                     </DocumentationLink>
                     </Heading>
-                    { TryItApplicationConstants.TRY_IT_TOUR_ENABLED &&
-                         (
-                             <>
-                                 <Divider hidden />
-                                 <PrimaryButton
-                                     onClick={ () => setIsTriggered(true) }
-                                 >
-                                    Take a Tour?
-                                 </PrimaryButton></>) }
-                    <Joyride
-                        continuous
-                        disableOverlay
-                        callback={ (data: CallBackProps) => {
-                            // If the tour is `done` or `skipped`, set the viewed state in storage.
-                            if ((data.status === STATUS.FINISHED) || (data.status === STATUS.SKIPPED)) {
-                                persistPlaygroundTourViewedStatus(true);
-                                setIsTriggered(false);
-                            }
-                        } }
-                        showSkipButton
-                        run={ isTriggered }
-                        steps={ loginPlaygroundUserTourSteps }
-                        styles={ {
-                            buttonClose: {
-                                display: "none"
-                            },
-                            tooltipContent: {
-                                paddingBottom: 1
-                            }
-                        } }
-                        locale={ {
-                            back: "Back",
-                            close: "Close",
-                            last: "Done",
-                            next: "Next",
-                            skip: "Skip"
-                        } }
-                    />
-                    { /* <PlaygroundUserTour onTakeTour={ () => setIsTriggered(true) }  /> */ }
                 </div>
             </EmphasizedSegment>
             <Divider hidden/>

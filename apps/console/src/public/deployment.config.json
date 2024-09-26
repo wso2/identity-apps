@@ -24,17 +24,6 @@
         "displayName": "Develop",
         "path": "/applications"
     },
-    "documentation": {
-        "baseURL": "https://api.github.com",
-        "contentBaseURL": "https://api.github.com/repos/wso2/docs-is/contents/en/docs",
-        "githubOptions": {
-            "branch": "new_restructure"
-        },
-        "imagePrefixURL": "https://github.com/wso2/docs-is/raw/new_restructure/en/docs/",
-        "provider": "GITHUB",
-        "structureFileType": "YAML",
-        "structureFileURL": "https://api.github.com/repos/wso2/docs-is/contents/en/mkdocs.yml"
-    },
     "extensions": {
         "defaultBrandedLoginScreenCopyright": "${copyright} ${year} WSO2 LLC.",
         "emailTemplates": [
@@ -144,8 +133,6 @@
         "serverOrigin": "https://localhost:9443",
         "storage": "webWorker"
     },
-    "isSaas": false,
-    "legacyMode": false,
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
     "routePaths": {
@@ -228,6 +215,27 @@
                     ]
                 }
             },
+            "actions": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_action_mgt_create"
+                    ],
+                    "delete": [
+                        "internal_action_mgt_delete"
+                    ],
+                    "feature": [
+                        "console:actions"
+                    ],
+                    "read": [
+                        "internal_action_mgt_view"
+                    ],
+                    "update": [
+                        "internal_action_mgt_update"
+                    ]
+                }
+            },
             "adminAdvisoryBanner": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -305,8 +313,7 @@
             "applications": {
                 "disabledFeatures": [
                     "applications.loginFlow.ai",
-                    "applications.loginFlow.legacyEditor",
-                    "applications.myaccount.saasMyaccountSettings"
+                    "applications.loginFlow.legacyEditor"
                 ],
                 "enabled": true,
                 "scopes": {
@@ -684,7 +691,9 @@
                         "console:loginAndRegistration"
                     ],
                     "read": [
-                        "internal_governance_view"
+                        "internal_governance_view",
+                        "internal_group_mgt_view",
+                        "internal_role_mgt_view"
                     ],
                     "update": [
                         "internal_config_update",
@@ -1113,6 +1122,7 @@
         "gravatarConfig": {
             "fallback": "404"
         },
+        "hiddenApplicationTemplates": [],
         "hiddenAuthenticators": [
             "BasicAuthRequestPathAuthenticator",
             "OAuthRequestPathAuthenticator"
@@ -1158,21 +1168,9 @@
         "isTrustedAppConsentRequired": false,
         "isXacmlConnectorEnabled": false,
         "legacyMode": {
-            "apiResourcesV1": false,
-            "apiResourcesV2": true,
             "applicationListSystemApps": false,
-            "applicationOIDCSubjectIdentifier": true,
-            "applicationRequestPathAuthentication": false,
             "applicationSystemAppsSettings": false,
-            "backupCodesForSubOrganizations": true,
-            "certificates": false,
-            "consoleFeatureScopeCheck": true,
-            "loginAndRegistrationEmailDomainDiscovery": true,
-            "organizations": true,
-            "roleMapping": false,
-            "rolesV1": false,
-            "saasApplications": false,
-            "secretsManagement": false
+            "roleMapping": false
         },
         "listAllAttributeDialects": true,
         "privacyPolicyConfigs": {},

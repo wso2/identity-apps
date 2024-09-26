@@ -51,7 +51,7 @@ import {
 import { generatePasswordHistoryCount } from "../components/password-history-count/components";
 import { updatePasswordPolicyProperties } from "../components/password-policies/api/password-policies";
 
-export const serverConfigurationConfig: ServerConfigurationConfig = {
+const serverConfigurationConfig: ServerConfigurationConfig = {
     autoEnableConnectorToggleProperty: false,
     backButtonDisabledConnectorIDs: [
         ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
@@ -241,6 +241,9 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     processPasswordPoliciesSubmitData: (data: PasswordPoliciesInterface, isLegacy: boolean) => {
         let passwordExpiryTime: number | undefined = parseInt((data.passwordExpiryTime as string));
         const passwordExpiryEnabled: boolean | undefined = data.passwordExpiryEnabled;
+        const passwordExpirySkipFallback: boolean | undefined = data.passwordExpirySkipFallback || false;
+        const passwordExpiryRules: Record<string, string> | undefined =
+            data?.passwordExpiryRules || {};
         let passwordHistoryCount: number | undefined = parseInt((data.passwordHistoryCount as string));
         const passwordHistoryCountEnabled: boolean | undefined = data.passwordHistoryCountEnabled;
 
@@ -248,14 +251,39 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         delete data.passwordExpiryEnabled;
         delete data.passwordHistoryCount;
         delete data.passwordHistoryCountEnabled;
+        delete data.skipPasswordExpiryFallback;
+        delete data.passwordExpiryRules;
 
-        if (passwordExpiryEnabled && passwordExpiryTime === 0) {
+        // Default password expiry time.
+        if (passwordExpiryEnabled && !passwordExpirySkipFallback && passwordExpiryTime === 0) {
             passwordExpiryTime = 30;
         }
 
         if (passwordHistoryCountEnabled && passwordHistoryCount === 0) {
             passwordHistoryCount = 1;
         }
+
+        const passwordExpiryProperties: UpdateGovernanceConnectorConfigPropertyInterface[] = [
+            {
+                name: ServerConfigurationsConstants.PASSWORD_EXPIRY_ENABLE,
+                value: passwordExpiryEnabled?.toString()
+            },
+            {
+                name: ServerConfigurationsConstants.PASSWORD_EXPIRY_TIME,
+                value: passwordExpiryTime?.toString()
+            },
+            {
+                name: ServerConfigurationsConstants.PASSWORD_EXPIRY_SKIP_IF_NO_APPLICABLE_RULES,
+                value: passwordExpirySkipFallback?.toString()
+            }
+        ];
+
+        Object.entries(passwordExpiryRules as Record<string, string>).forEach(([ key, value ]: [ string, string ]) => {
+            passwordExpiryProperties.push({
+                name: key,
+                value: value
+            });
+        });
 
         const legacyPasswordPoliciesData: {
             id: string, properties: UpdateGovernanceConnectorConfigPropertyInterface[] } = {
@@ -298,16 +326,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
             connectors: [
                 {
                     id: ServerConfigurationsConstants.PASSWORD_EXPIRY_CONNECTOR_ID,
-                    properties: [
-                        {
-                            name: ServerConfigurationsConstants.PASSWORD_EXPIRY_ENABLE,
-                            value: passwordExpiryEnabled?.toString()
-                        },
-                        {
-                            name: ServerConfigurationsConstants.PASSWORD_EXPIRY_TIME,
-                            value: passwordExpiryTime?.toString()
-                        }
-                    ]
+                    properties: passwordExpiryProperties
                 },
                 {
                     id: ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID,
@@ -380,3 +399,6 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     usePasswordExpiry: useGetPasswordExpiryProperties,
     usePasswordHistory: useGetPasswordHistoryCount
 };
+
+
+export { serverConfigurationConfig };

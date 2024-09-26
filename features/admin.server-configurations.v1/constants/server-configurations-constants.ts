@@ -26,118 +26,118 @@ export class ServerConfigurationsConstants {
     private constructor() { }
 
     /**
-     * UUID of the identity governance account management policies category.
-     *
-     */
+	 * UUID of the identity governance account management policies category.
+	 *
+	 */
     public static readonly IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID: string =
         "QWNjb3VudCBNYW5hZ2VtZW50IFBvbGljaWVz";
 
     /**
-     * Regex matcher to identify if the connector is deprecated.
-     *
-     */
+	 * Regex matcher to identify if the connector is deprecated.
+	 *
+	 */
     public static readonly DEPRECATION_MATCHER: string = "[Deprecated]";
 
     /**
-     * UUID of the identity governance self sign up connector.
-     *
-     */
+	 * UUID of the identity governance self sign up connector.
+	 *
+	 */
     public static readonly SELF_SIGN_UP_CONNECTOR_ID: string = "c2VsZi1zaWduLXVw";
 
     /**
-     * UUID of the identity governance light user registration connector.
-     *
-     */
+	 * UUID of the identity governance light user registration connector.
+	 *
+	 */
     public static readonly LITE_USER_REGISTRATION_CONNECTOR_ID: string = "bGl0ZS11c2VyLXNpZ24tdXA";
 
     /**
-     * UUID of the identity governance account recovery connector.
-     *
-     */
+	 * UUID of the identity governance account recovery connector.
+	 *
+	 */
     public static readonly ACCOUNT_RECOVERY_CONNECTOR_ID: string = "YWNjb3VudC1yZWNvdmVyeQ";
 
     /**
-     * UUID of the identity governance password reset connector.
-     *
-     */
+	 * UUID of the identity governance password reset connector.
+	 *
+	 */
     public static readonly PASSWORD_RESET_CONNECTOR_ID: string = "YWRtaW4tZm9yY2VkLXBhc3N3b3JkLXJlc2V0";
 
     /**
-     * UUID of the identity governance consent information connector.
-     *
-     */
+	 * UUID of the identity governance consent information connector.
+	 *
+	 */
     public static readonly CONSENT_INFO_CONNECTOR_ID: string = "cGlpLWNvbnRyb2xsZXI";
 
     /**
-     * UUID of the identity governance analytics engine connector.
-     *
-     */
+	 * UUID of the identity governance analytics engine connector.
+	 *
+	 */
     public static readonly ANALYTICS_ENGINE_CONNECTOR_ID: string = "ZWxhc3RpYy1hbmFseXRpY3MtZW5naW5l";
 
     /**
-     * UUID of the identity governance user claim update connector.
-     *
-     */
+	 * UUID of the identity governance user claim update connector.
+	 *
+	 */
     public static readonly USER_CLAIM_UPDATE_CONNECTOR_ID: string = "dXNlci1jbGFpbS11cGRhdGU";
 
     /**
-     * UUID of the identity governance login policies category.
-     *
-     */
+	 * UUID of the identity governance login policies category.
+	 *
+	 */
 
     public static readonly IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID: string = "TG9naW4gUG9saWNpZXM";
 
     /**
-     * UUID of the identity governance account locking connector.
-     *
-     */
+	 * UUID of the identity governance account locking connector.
+	 *
+	 */
     public static readonly ACCOUNT_LOCKING_CONNECTOR_ID: string = "YWNjb3VudC5sb2NrLmhhbmRsZXI";
 
     /**
-     * UUID of the identity governance account disabling connector.
-     *
-     */
+	 * UUID of the identity governance account disabling connector.
+	 *
+	 */
     public static readonly ACCOUNT_DISABLING_CONNECTOR_ID: string = "YWNjb3VudC5kaXNhYmxlLmhhbmRsZXI";
 
     /**
-     * UUID of the identity governance captcha for sso login connector.
-     *
-     */
+	 * UUID of the identity governance captcha for sso login connector.
+	 *
+	 */
     public static readonly CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID: string = "c3NvLmxvZ2luLnJlY2FwdGNoYQ";
 
     /**
-     * UUID of the identity governance idle account suspend connector.
-     *
-     */
+	 * UUID of the identity governance idle account suspend connector.
+	 *
+	 */
     public static readonly IDLE_ACCOUNT_SUSPEND_CONNECTOR_ID: string = "c3VzcGVuc2lvbi5ub3RpZmljYXRpb24";
 
     /**
-     * UUID of the identity governance account disable connector.
-     *
-     */
+	 * UUID of the identity governance account disable connector.
+	 *
+	 */
     public static readonly ACCOUNT_DISABLE_CONNECTOR_ID: string = "YWNjb3VudC5kaXNhYmxlLmhhbmRsZXI";
 
     /**
-     * UUID of the identity governance login policies category.
-     *
-     */
+	 * UUID of the identity governance login policies category.
+	 *
+	 */
     public static readonly IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID: string = "UGFzc3dvcmQgUG9saWNpZXM";
 
     /**
-     * UUID of the identity governance captcha for sso login connector.
-     *
-     */
+	 * UUID of the identity governance captcha for sso login connector.
+	 *
+	 */
     public static readonly PASSWORD_HISTORY_CONNECTOR_ID: string = "cGFzc3dvcmRIaXN0b3J5";
 
     /**
-     * UUID of the identity governance password expiry connector.
-     */
+	 * UUID of the identity governance password expiry connector.
+	 */
     public static readonly PASSWORD_EXPIRY_CONNECTOR_ID: string = "cGFzc3dvcmRFeHBpcnk";
 
     /**
-     * UUID of the identity governance captcha for sso login connector.
-     *
-     */
+	 * UUID of the identity governance captcha for sso login connector.
+	 *
+	 */
     public static readonly PASSWORD_POLICY_CONNECTOR_ID: string = "cGFzc3dvcmRQb2xpY3k";
 
     /**
@@ -148,38 +148,38 @@ export class ServerConfigurationsConstants {
         new RegExp("^(?:[a-zA-Z0-9:./]+,)*[a-zA-Z0-9:./]+$");
 
     /**
-     * UUID of the user on boarding connector.
-     */
+	 * UUID of the user on boarding connector.
+	 */
     public static readonly USER_ONBOARDING_CONNECTOR_ID: string = "VXNlciBPbmJvYXJkaW5n";
 
     /**
-     * UUID of the email verification category.
-     */
+	 * UUID of the email verification category.
+	 */
     public static readonly USER_EMAIL_VERIFICATION_CONNECTOR_ID: string = "dXNlci1lbWFpbC12ZXJpZmljYXRpb24";
 
     /**
-     * UUID of the Other Settings governance connector category.
-     */
+	 * UUID of the Other Settings governance connector category.
+	 */
     public static readonly OTHER_SETTINGS_CONNECTOR_CATEGORY_ID: string = "T3RoZXIgU2V0dGluZ3M";
 
     /**
-     * UUID of the ELK Analaytics connector.
-     */
+	 * UUID of the ELK Analaytics connector.
+	 */
     public static readonly ELK_ANALYTICS_CONNECTOR_ID: string = "ZWxhc3RpYy1hbmFseXRpY3MtZW5naW5l";
 
     /**
-     * UUID of the Login Attempt Security governance connector category.
-     */
+	 * UUID of the Login Attempt Security governance connector category.
+	 */
     public static readonly LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID: string = "TG9naW4gQXR0ZW1wdHMgU2VjdXJpdHk";
 
     /**
-     * UUID of the Account Management governance connector category.
-     */
+	 * UUID of the Account Management governance connector category.
+	 */
     public static readonly ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID: string = "QWNjb3VudCBNYW5hZ2VtZW50";
 
     /**
-     * UUID of the Multi-Factor Authenticators governance connector category.
-     */
+	 * UUID of the Multi-Factor Authenticators governance connector category.
+	 */
     public static readonly MFA_CONNECTOR_CATEGORY_ID: string = "TXVsdGkgRmFjdG9yIEF1dGhlbnRpY2F0b3Jz";
 
     /**
@@ -193,8 +193,8 @@ export class ServerConfigurationsConstants {
     public static readonly EMAIL_VERIFICATION_ENABLED: string = "EmailVerification.Enable";
 
     /**
-     * Self registration API Keyword constants.
-     */
+	 * Self registration API Keyword constants.
+	 */
     public static readonly SELF_REGISTRATION_ENABLE: string = "SelfRegistration.Enable";
     public static readonly ACCOUNT_LOCK_ON_CREATION: string = "SelfRegistration.LockOnCreation";
     public static readonly SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED: string =
@@ -207,8 +207,8 @@ export class ServerConfigurationsConstants {
     public static readonly CALLBACK_REGEX: string = "SelfRegistration.CallbackRegex";
 
     /**
-     * Account recovery API Keyword constants.
-     */
+	 * Account recovery API Keyword constants.
+	 */
     public static readonly USERNAME_RECOVERY_ENABLE: string = "Recovery.Notification.Username.Enable";
     public static readonly USERNAME_RECOVERY_RE_CAPTCHA: string = "Recovery.ReCaptcha.Username.Enable";
     public static readonly PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE: string =
@@ -253,8 +253,8 @@ export class ServerConfigurationsConstants {
         "Recovery.Notification.Password.MaxFailedAttempts";
 
     /**
-     * Connector toggle constants.
-     */
+	 * Connector toggle constants.
+	 */
     public static readonly ACCOUNT_RECOVERY: string = "account-recovery";
     public static readonly ACCOUNT_RECOVERY_BY_USERNAME: string = "account-recovery-username";
     public static readonly ACCOUNT_LOCK_HANDLER: string = "account.lock.handler";
@@ -264,8 +264,8 @@ export class ServerConfigurationsConstants {
     public static readonly SSO_LOGIN_RECAPTCHA: string = "sso.login.recaptcha";
 
     /**
-     * Login policies - account locking API Keyword constants.
-     */
+	 * Login policies - account locking API Keyword constants.
+	 */
     public static readonly ACCOUNT_LOCK_ENABLE: string = "account.lock.handler.lock.on.max.failed.attempts.enable";
     public static readonly ANALYTICS_ENGINE_ENABLE: string = "adaptive_authentication.analytics.basicAuth.enabled";
 
@@ -281,15 +281,15 @@ export class ServerConfigurationsConstants {
         "account.lock.handler.notification.notifyOnLockIncrement";
 
     /**
-     * Login policies - account disabling API Keyword constants.
-     */
+	 * Login policies - account disabling API Keyword constants.
+	 */
     public static readonly ACCOUNT_DISABLING_ENABLE: string = "account.disable.handler.enable";
     public static readonly ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT: string =
         "account.disable.handler.notification.manageInternally";
 
     /**
-     * Login policies - captcha for sso login API Keyword constants.
-     */
+	 * Login policies - captcha for sso login API Keyword constants.
+	 */
     public static readonly RE_CAPTCHA_ALWAYS_ENABLE: string = "sso.login.recaptcha.enable.always";
     public static readonly RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE: string =
         "sso.login.recaptcha.enable";
@@ -298,10 +298,14 @@ export class ServerConfigurationsConstants {
         "sso.login.recaptcha.on.max.failed.attempts";
 
     /**
-     * Login policies - API Keyword constants.
-     */
+	 * Login policies - API Keyword constants.
+	 */
     public static readonly PASSWORD_EXPIRY_ENABLE: string = "passwordExpiry.enablePasswordExpiry";
     public static readonly PASSWORD_EXPIRY_TIME: string = "passwordExpiry.passwordExpiryInDays";
+    public static readonly PASSWORD_EXPIRY_SKIP_IF_NO_APPLICABLE_RULES: string =
+        "passwordExpiry.skipIfNoApplicableRules";
+
+    public static readonly PASSWORD_EXPIRY_RULES_PREFIX: string = "passwordExpiry.rule";
     public static readonly PASSWORD_HISTORY_ENABLE: string = "passwordHistory.enable";
     public static readonly PASSWORD_HISTORY_COUNT: string = "passwordHistory.count";
     public static readonly PASSWORD_POLICY_ENABLE: string = "passwordPolicy.enable";
@@ -311,39 +315,30 @@ export class ServerConfigurationsConstants {
     public static readonly PASSWORD_POLICY_ERROR_MESSAGE: string = "passwordPolicy.errorMsg";
 
     /**
-     * User claim update - API Keyword constants.
-     */
-    public static readonly ENABLE_MOBILE_VERIFICATION: string = "UserClaimUpdate.MobileNumber.EnableVerification";
-
-    public static readonly ENABLE_EMAIL_VERIFICATION: string = "UserClaimUpdate.Email.EnableVerification";
-    public static readonly ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER: string
-        = "UserClaimUpdate.MobileNumber.EnableVerificationByPrivilegedUser";
-
-    /**
-     * Real Configurations constants.
-     */
+	 * Real Configurations constants.
+	 */
     public static readonly HOME_REALM_IDENTIFIER: string = "homeRealmIdentifiers";
     public static readonly IDLE_SESSION_TIMEOUT_PERIOD: string = "idleSessionTimeoutPeriod";
     public static readonly REMEMBER_ME_PERIOD: string = "rememberMePeriod";
 
     // API Errors.
     public static readonly CONFIGS_FETCH_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
-        "code while retrieving the configurations.";
+		"code while retrieving the configurations.";
 
     public static readonly CONFIGS_FETCH_REQUEST_ERROR: string = "An error occurred while retrieving the " +
-        "configurations.";
+		"configurations.";
 
     public static readonly CONFIGS_UPDATE_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
-        "code while updating the configurations.";
+		"code while updating the configurations.";
 
     public static readonly CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred while updating the " +
-        "configurations.";
+		"configurations.";
 
     public static readonly ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred " +
         "while updating the admin advisory banner configurations.";
 
     public static readonly ADMIN_ADVISORY_BANNER_CONFIGS_INVALID_INPUT_ERROR: string = "An invalid input value " +
-        "in the request.";
+		"in the request.";
 
     // Idle account suspend names.
     public static readonly ALLOWED_IDLE_TIME_SPAN_IN_DAYS: string = "suspension.notification.account.disable.delay";
@@ -362,8 +357,8 @@ export class ServerConfigurationsConstants {
     public static readonly MULTI_ATTRIBUTE_CLAIM_LIST: string = "account-multiattributelogin-handler-allowedattributes";
 
     /**
-     * Analytics Engine Connector Constants.
-     */
+	 * Analytics Engine Connector Constants.
+	 */
     public static readonly ANALYTICS_HOST: string = "adaptive_authentication.elastic.receiver";
     public static readonly ANALYTICS_BASIC_AUTH_ENABLE: string = "adaptive_authentication.elastic.basicAuth.enabled";
     public static readonly ANALYTICS_BASIC_AUTH_USERNAME: string = "adaptive_authentication.elastic.basicAuth.username";
@@ -380,13 +375,13 @@ export class ServerConfigurationsConstants {
     public static readonly ANALYTICS_HOSTNAME_VERIFICATION: string = "adaptive_authentication.elastic.hostnameVerfier";
 
     /**
-     * Extensions Constants.
-     */
+	 * Extensions Constants.
+	 */
     public static readonly ALL: string = "all";
 
     /**
-     * Custom connector IDs.
-     */
+	 * Custom connector IDs.
+	 */
     public static readonly SAML2_SSO_CONNECTOR_ID: string = "saml2-sso";
     public static readonly SESSION_MANAGEMENT_CONNECTOR_ID: string = "session-management";
     public static readonly WS_FEDERATION_CONNECTOR_ID: string = "ws-fed";
@@ -400,8 +395,8 @@ export class ServerConfigurationsConstants {
     public static readonly OUTBOUND_PROVISIONING_SETTINGS_CONNECTOR_ID: string = "outbound-provisioning-settings";
 
     /**
-     * Multi Attribute Login Constants.
-     */
+	 * Multi Attribute Login Constants.
+	 */
     public static readonly MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID: string = "bXVsdGlhdHRyaWJ1dGUubG9naW4uaGFuZGxlcg";
     public static readonly MULTI_ATTRIBUTE_LOGIN_ENABLE: string = "account.multiattributelogin.handler.enable";
     public static readonly ALTERNATIVE_LOGIN_IDENTIFIER: string = "alternative-login-identifier";
@@ -426,8 +421,8 @@ export class ServerConfigurationsConstants {
     public static readonly LOGIN_ATTEMPT_SECURITY: string = "login-attempt-security";
 
     /**
-     * Organization Settings Category Constants.
-     */
+	 * Organization Settings Category Constants.
+	 */
     public static readonly ORGANIZATION_SETTINGS_CATEGORY_ID: string = "organization-settings";
     public static readonly EMAIL_DOMAIN_DISCOVERY: string = "ZW1haWwtZG9tYWluLWRpc2NvdmVyeQ==";
     public static readonly IMPERSONATION: string = "impersonation";

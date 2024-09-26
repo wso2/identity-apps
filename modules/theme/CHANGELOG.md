@@ -1,5 +1,97 @@
 # @wso2is/theme
 
+## 2.1.4
+
+### Patch Changes
+
+- [#6864](https://github.com/wso2/identity-apps/pull/6864) [`26785522cc1c6e675cb91e8976d77b75e9dc3ecf`](https://github.com/wso2/identity-apps/commit/26785522cc1c6e675cb91e8976d77b75e9dc3ecf) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Make email template preview non interactive
+
+## 2.1.3
+
+### Patch Changes
+
+- [#6861](https://github.com/wso2/identity-apps/pull/6861) [`22dcbbe1383cfdb1b388f3f02e51ccc0dab653dd`](https://github.com/wso2/identity-apps/commit/22dcbbe1383cfdb1b388f3f02e51ccc0dab653dd) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add config to disable add/delete actions for remote userstores
+
+## 2.1.2
+
+### Patch Changes
+
+- [#6837](https://github.com/wso2/identity-apps/pull/6837) [`a4fb4106bace0826911b8a385bd39167d84f9ac0`](https://github.com/wso2/identity-apps/commit/a4fb4106bace0826911b8a385bd39167d84f9ac0) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add Duo logo in the theme
+
+## 2.1.1
+
+### Patch Changes
+
+- [#6827](https://github.com/wso2/identity-apps/pull/6827) [`19751f62ed1923a0c75b342407c9048148489b25`](https://github.com/wso2/identity-apps/commit/19751f62ed1923a0c75b342407c9048148489b25) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in the user assignment modal in groups edit
+
+## 2.1.0
+
+### Minor Changes
+
+- [#6781](https://github.com/wso2/identity-apps/pull/6781) [`0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a`](https://github.com/wso2/identity-apps/commit/0d0fcfee8dd4a48a69ae12690c9382b49bfd0f2a) Thanks [@brionmario](https://github.com/brionmario)! - Separate out `admin.home.v1` feature
+
+## 2.0.99
+
+### Patch Changes
+
+- [#6744](https://github.com/wso2/identity-apps/pull/6744) [`dec724ba75c4937cd84ec7afcd2ec0bc00058d2e`](https://github.com/wso2/identity-apps/commit/dec724ba75c4937cd84ec7afcd2ec0bc00058d2e) Thanks [@brionmario](https://github.com/brionmario)! - Refactor `admin.extensions.v1/components/application`
+
+## 2.0.98
+
+### Patch Changes
+
+- [#6692](https://github.com/wso2/identity-apps/pull/6692) [`d9615827f6e7c2f087c1debdb377e02e66ac4e62`](https://github.com/wso2/identity-apps/commit/d9615827f6e7c2f087c1debdb377e02e66ac4e62) Thanks [@brionmario](https://github.com/brionmario)! - Move `administrators` to a new feature
+
+## 2.0.97
+
+### Patch Changes
+
+- [#6676](https://github.com/wso2/identity-apps/pull/6676) [`43c13ae8c8067f87b65c95f8ec8416cd297024da`](https://github.com/wso2/identity-apps/commit/43c13ae8c8067f87b65c95f8ec8416cd297024da) Thanks [@Achintha444](https://github.com/Achintha444)! - Update oxygen-ui to `1.13.3`
+
+## 2.0.96
+
+### Patch Changes
+
+- [#6651](https://github.com/wso2/identity-apps/pull/6651) [`6bdf8d9c726e3ee2bf575af014098ee5768ee672`](https://github.com/wso2/identity-apps/commit/6bdf8d9c726e3ee2bf575af014098ee5768ee672) Thanks [@Achintha444](https://github.com/Achintha444)! - Update the oxygen version to 1.13.2
+
+## 2.0.95
+
+### Patch Changes
+
+- [#6637](https://github.com/wso2/identity-apps/pull/6637) [`196e3426e7f99b6741e5aada839d2ee3000f005a`](https://github.com/wso2/identity-apps/commit/196e3426e7f99b6741e5aada839d2ee3000f005a) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with unreadble text in cookie banner
+
+## 2.0.94
+
+### Patch Changes
+
+- [#6635](https://github.com/wso2/identity-apps/pull/6635) [`411658f1efc46cf71ea40b6bae511f42891c7a43`](https://github.com/wso2/identity-apps/commit/411658f1efc46cf71ea40b6bae511f42891c7a43) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix some eslint warnings not being shown in vscode editor
+
+* [#6487](https://github.com/wso2/identity-apps/pull/6487) [`0683e51ac6194dfa54c2a5f508d0a33b487b6ebf`](https://github.com/wso2/identity-apps/commit/0683e51ac6194dfa54c2a5f508d0a33b487b6ebf) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove unnecessary legacy mode configs and its usage
+
+## 2.0.93
+
+### Patch Changes
+
+- [#6632](https://github.com/wso2/identity-apps/pull/6632) [`9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a`](https://github.com/wso2/identity-apps/commit/9ad69fa0a41cc3e6ecbfbe26ecdb7f615242ef8a) Thanks [@Achintha444](https://github.com/Achintha444)! - Update the oxygen version to `1.13.1` to fix the issue in the design of the default Chip design.
+
+## 2.0.92
+
+### Patch Changes
+
+- [#6619](https://github.com/wso2/identity-apps/pull/6619) [`98ae1e51e5e4c1bbaf52ac814af1da1722efb596`](https://github.com/wso2/identity-apps/commit/98ae1e51e5e4c1bbaf52ac814af1da1722efb596) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix overflow issue in secrets dropdown
+
+## 2.0.91
+
+### Patch Changes
+
+- [#6617](https://github.com/wso2/identity-apps/pull/6617) [`7e3bfd46f7a76dc74727dfe23ebbca66675dff85`](https://github.com/wso2/identity-apps/commit/7e3bfd46f7a76dc74727dfe23ebbca66675dff85) Thanks [@Achintha444](https://github.com/Achintha444)! - update the design of the Chip component
+
+## 2.0.90
+
+### Patch Changes
+
+- [#6579](https://github.com/wso2/identity-apps/pull/6579) [`b0e396cc7b02051c9191337dc207a851d1aea360`](https://github.com/wso2/identity-apps/commit/b0e396cc7b02051c9191337dc207a851d1aea360) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add infinite scrolling to tenant association dropdown
+
 ## 2.0.89
 
 ### Patch Changes

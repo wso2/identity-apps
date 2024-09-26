@@ -141,6 +141,7 @@ export class AuthenticateUtils {
             displayName: response?.displayName,
             display_name: response?.displayName,
             email: response?.email,
+            orgName: response.orgName,
             providedUsername: response?.username,
             scope: response?.allowedScopes,
             tenantDomain: tenantDomain ? tenantDomain : AuthenticateUtils.deriveTenantDomainFromSubject(response?.sub),

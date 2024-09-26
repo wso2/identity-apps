@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,8 +26,9 @@ import { AxiosError } from "axios";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import { getConnections } from "../api/connections";
-import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
-import { ConnectionManagementConstants } from "../constants/connection-constants";
+import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
+import { ConnectionUIConstants } from "../constants/connection-ui-constants";
+import { FederatedAuthenticatorConstants } from "../constants/federated-authenticator-constants";
 import { MultiFactorAuthenticatorInterface } from "../models/authenticators";
 import {
     ConnectionInterface,
@@ -63,13 +64,13 @@ export class ConnectionsManagementUtils {
         connection?.provisioning?.outboundConnectors?.connectors[ 0 ];
 
         const isGoogleConnector: boolean = get(connector,
-            ConnectionManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME) ===
-            ConnectionManagementConstants.PROVISIONING_CONNECTOR_GOOGLE;
+            CommonAuthenticatorConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY) ===
+            CommonAuthenticatorConstants.PROVISIONING_CONNECTOR_GOOGLE;
 
         // If the outbound connector is Google, remove the displayName from the connector.
         if (connector && isGoogleConnector) {
             delete connector[
-                ConnectionManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME
+                CommonAuthenticatorConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME_KEY
             ];
         }
 
@@ -77,7 +78,7 @@ export class ConnectionsManagementUtils {
         connection.description = templateDescription;
 
         return connection;
-    }
+    };
 
     /**
      * Type-guard to check if the connector is an Identity Provider.
@@ -95,13 +96,13 @@ export class ConnectionsManagementUtils {
     /**
      * Utility method to check if the connector is Organization SSO.
      *
-     * @param name - Connector name.
+     * @param id - Connector id.
      *
      * @returns Whether the connector is Organization SSO.
      */
     public static isOrganizationSSOConnection(id: string): boolean {
 
-        return id === AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
+        return id === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
     }
 
     /**
@@ -188,14 +189,14 @@ export class ConnectionsManagementUtils {
         const templateMapping: Map<string, Set<string>> = new Map<string, Set<string>>([
             [
                 ConnectionTabTypes.USER_ATTRIBUTES, new Set([
-                    ConnectionManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK,
-                    ConnectionManagementConstants.IDP_TEMPLATE_IDS.GOOGLE,
-                    ConnectionManagementConstants.IDP_TEMPLATE_IDS.GITHUB,
-                    ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC,
-                    ConnectionManagementConstants.IDP_TEMPLATE_IDS.MICROSOFT,
-                    ConnectionManagementConstants.IDP_TEMPLATE_IDS.HYPR,
-                    ConnectionManagementConstants.IDP_TEMPLATE_IDS.APPLE,
-                    ConnectionManagementConstants.IDP_TEMPLATE_IDS.SWE
+                    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FACEBOOK,
+                    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE,
+                    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GITHUB,
+                    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OIDC,
+                    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.MICROSOFT,
+                    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.HYPR,
+                    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.APPLE,
+                    CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.SWE
                 ])
             ]
         ]);
@@ -251,7 +252,7 @@ export class ConnectionsManagementUtils {
      */
     public static resolveConnectionDocLink(id: string): string {
 
-        return ConnectionManagementConstants.DOC_LINK_DICTIONARY.get(id);
+        return ConnectionUIConstants.DOC_LINK_DICTIONARY.get(id);
     }
 
     /**
@@ -342,7 +343,8 @@ export const handleConnectionDeleteError = (error: AxiosError): void => {
         error.response &&
         error.response.data &&
         error.response.data.code &&
-        error.response.data.code === ConnectionManagementConstants.CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE
+        error.response.data.code === CommonAuthenticatorConstants.ERROR_CODES
+            .CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE
     ) {
         store.dispatch(
             addAlert({

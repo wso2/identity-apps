@@ -349,16 +349,11 @@ export interface PayloadInterface {
 }
 
 /**
- * Type of the bulk user import operation status.
- */
-export type BulkUserImportOperationStatus = "Success" | "Failed" | "Warning";
-
-/**
  * Interface for the bulk user import operation response.
  */
 export interface BulkUserImportOperationResponse {
     resourceIdentifier: string;
-    status: BulkUserImportOperationStatus;
+    status: string;
     message: string;
     statusCode: BulkUserImportStatus;
     operationType?: BulkImportResponseOperationTypes;

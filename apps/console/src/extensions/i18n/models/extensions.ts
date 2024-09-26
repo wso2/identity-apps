@@ -23,9 +23,15 @@ export interface Extensions {
     common: {
         community: string;
         help: {
-            communityLink: string;
+            communityLinks: {
+                discord: string;
+                stackOverflow: string;
+            };
             docSiteLink: string;
-            helpCenterLink: string;
+            helpCenterLink: {
+                title: string;
+                subtitle: string;
+            };
             helpDropdownLink: string;
         };
         learnMore: string;
@@ -3093,6 +3099,7 @@ export interface Extensions {
                             passwordRecoveryOtpUseNumeric: FormAttributes;
                             passwordRecoveryOtpLength: FormAttributes;
                         };
+                        smsProviderWarning: string;
                     };
                     recoveryOptionSubHeadingEmailLink: string;
                     recoveryOptionSubHeadingSMS: string;

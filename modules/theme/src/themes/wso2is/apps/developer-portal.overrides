@@ -1558,7 +1558,6 @@ TODO : Move values to separate variables and cleanup styles.
 
     .scroll-container {
         height: calc(100vh - 450px);
-        min-width: 800px;
         font-family: "Gilmer";
         font-style: normal;
         font-weight: 400;
@@ -1907,6 +1906,8 @@ TODO : Move values to separate variables and cleanup styles.
 }
 
 .email-template-preview {
+    pointer-events: none;
+
     .email-template-preview-iframe {
         min-height: 800px;
     }
@@ -1927,6 +1928,10 @@ TODO : Move values to separate variables and cleanup styles.
 
 #onetrust-policy-text {
     color: black !important;
+}
+
+#onetrust-policy-text *:not(a) {
+    color: inherit !important;
 }
 
 #onetrust-pc-btn-handler {

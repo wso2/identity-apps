@@ -26,20 +26,17 @@ import {
     AppConstants,
     AppState,
     AppUtils,
-    AppViewTypes,
     ConfigReducerStateInterface,
     Header,
     ProtectedRoute,
     RouteUtils,
-    StrictAppViewTypes,
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
 } from "@wso2is/admin.core.v1";
-import { setActiveView } from "@wso2is/admin.core.v1/store/actions";
 import { CommonUtils as ConsoleCommonUtils } from "@wso2is/admin.core.v1/utils";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
-import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
+import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import {
     AlertInterface,
     AnnouncementBannerInterface,
@@ -119,9 +116,6 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
     const alertSystem: System = useSelector(
         (state: AppState) => state.global.alertSystem
     );
-    const activeView: AppViewTypes = useSelector(
-        (state: AppState) => state.global.activeView
-    );
     const developFilteredRoutes: RouteInterface[] = useSelector(
         (state: AppState) => state.routes.developeRoutes.filteredRoutes
     );
@@ -166,17 +160,6 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
     useEffect(() => {
         isMobileViewport ? setMobileSidePanelVisibility(false) : setMobileSidePanelVisibility(true);
     }, [ isMobileViewport ]);
-
-    /**
-     * Make sure `MANAGE` tab is highlighted when this layout is used.
-     */
-    useEffect(() => {
-        if (activeView === StrictAppViewTypes.MANAGE) {
-            return;
-        }
-
-        dispatch(setActiveView(StrictAppViewTypes.MANAGE));
-    }, [ dispatch, activeView ]);
 
     useEffect(() => {
         if (!location?.pathname) {
@@ -422,6 +405,9 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
             >
                 <ErrorBoundary
                     onChunkLoadError={ AppUtils.onChunkLoadError }
+                    handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {
+                        sessionStorage.setItem("auth_callback_url_console", config.deployment.appHomePath);
+                    } }
                     fallback={
                         (<EmptyPlaceholder
                             action={

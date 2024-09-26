@@ -103,11 +103,30 @@ export class BrandingPreferencesConstants {
         DESIGN_TAB_ID: string;
         GENERAL_TAB_ID: string;
         TEXT_TAB_ID: string;
+        PREVIEW_TAB_ID: string;
     } = {
             ADVANCED_TAB_ID: "advanced",
             DESIGN_TAB_ID: "design",
             GENERAL_TAB_ID: "general",
+            PREVIEW_TAB_ID: "preview",
             TEXT_TAB_ID: "text"
+        };
+
+    /**
+     * Branding preference tab indices.
+     */
+    public static readonly TAB_INDEX: {
+        ADVANCED_TAB_INDEX: number;
+        DESIGN_TAB_INDEX: number;
+        GENERAL_TAB_INDEX: number;
+        PREVIEW_TAB_INDEX: number;
+        TEXT_TAB_INDEX: number;
+    } = {
+            ADVANCED_TAB_INDEX: 2,
+            DESIGN_TAB_INDEX: 1,
+            GENERAL_TAB_INDEX: 0,
+            PREVIEW_TAB_INDEX: 4,
+            TEXT_TAB_INDEX: 3
         };
 
     /**

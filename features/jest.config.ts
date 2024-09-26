@@ -20,7 +20,6 @@ module.exports = {
     displayName: "console",
     moduleDirectories: [
         "node_modules",
-        "test-configs",
         __dirname
     ],
     moduleFileExtensions: [
@@ -48,12 +47,14 @@ module.exports = {
         "@wso2is/form": "<rootDir>/../modules/form/dist",
         "@wso2is/forms": "<rootDir>/../modules/forms/dist",
         "@wso2is/react-components": "<rootDir>/../modules/react-components/dist",
-        "\\.(css|less|scss)$": "<rootDir>/test-configs/__mocks__/style-file.ts",
+        "\\.(css|less|scss)$": "<rootDir>/../modules/unit-testing/__mocks__/style-file.ts",
         "\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|md)$":
-            "<rootDir>/test-configs/__mocks__/file.ts",
-        "\\.svg": "<rootDir>/test-configs/__mocks__/svgr.ts",
+            "<rootDir>/../modules/unit-testing/__mocks__/file.ts",
+        "\\.svg": "<rootDir>/../modules/unit-testing/__mocks__/svgr.ts",
         "^lodash-es/(.*)$": "<rootDir>/../node_modules/lodash/$1",
         "^react($|/.+)": "<rootDir>/node_modules/react$1",
+        "react-markdown": "<rootDir>/../modules/unit-testing/__mocks__/empty-mock.ts",
+        "rehype-attr": "<rootDir>/../modules/unit-testing/__mocks__/empty-mock.ts",
         "uuid": "<rootDir>/node_modules/uuid"
     },
     modulePaths: [
@@ -63,7 +64,7 @@ module.exports = {
         "."
     ],
     setupFilesAfterEnv: [
-        "<rootDir>/test-configs/setup-test.ts"
+        "<rootDir>/../modules/unit-testing/setup-test.ts"
     ],
     testEnvironment: "jest-environment-jsdom-global",
     testMatch: [

@@ -45,6 +45,8 @@
                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
            } else if (errorMessage.equalsIgnoreCase("Can't identify organization")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.discovery.input");
+           } else if (errorMessage.equalsIgnoreCase("invalid.organization.discovery.type")) {
+               errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.discovery.type");
            } else if (isErrorFallbackLocale) {
                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
            }
@@ -106,7 +108,7 @@
                     <div class="field m-0 text-left required">
                         <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "organization.email")%></label>
                     </div>
-                    <input type="text" id='orgDiscovery' name="orgDiscovery" size='30'/>
+                    <input type="text" id='login_hint' name="login_hint" size='30'/>
 
                     <div class="mt-1" id="discoveryInputError" style="display: none;">
                         <i class="red exclamation circle fitted icon"></i>
@@ -169,7 +171,7 @@
 
       <script type="text/javascript">
          function enterOrgName() {
-            document.getElementById("orgDiscovery").disabled = true;
+            document.getElementById("login_hint").disabled = true;
             document.getElementById("org_form").submit();
          }
 
@@ -180,7 +182,7 @@
 
          function submitDiscovery() {
             // Show error message when discovery input is empty.
-            if (document.getElementById("orgDiscovery").value.length <= 0) {
+            if (document.getElementById("login_hint").value.length <= 0) {
                 showEmptyDiscoveryInputErrorMessage();
                 return;
             }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -34,6 +34,27 @@ interface LoginSecurityDocumentationLinksInterface {
     },
     loginAttempts: {
         learnMore: string;
+    }
+}
+
+/**
+ * Interface for the Actions section documentation structure.
+ */
+interface ActionsDocumentationLinksInterface {
+    learnMore: string;
+    types: {
+        preIssueAccessToken: {
+            learnMore: string;
+        }
+        preRegistration: {
+            learnMore: string;
+        }
+        preUpdatePassword: {
+            learnMore: string;
+        }
+        preUpdateProfile: {
+            learnMore: string;
+        }
     }
 }
 
@@ -223,6 +244,16 @@ interface ApplicationsDocumentationLinksInterface {
     roles: {
         learnMore: string;
     }
+    template: {
+        categories: {
+            default: {
+                learnMore: string;
+            }
+            ssoIntegration: {
+                learnMore: string;
+            }
+        }
+    }
 }
 
 /**
@@ -280,6 +311,9 @@ interface ConnectionsDocumentationLinksInterface {
             learnMore: string;
             setupGuide: string;
         };
+        duo: {
+            learnMore: string;
+        };
         enterprise: {
             oidc: {
                 learnMore: string;
@@ -321,6 +355,9 @@ interface ConnectionsDocumentationLinksInterface {
             };
             learnMore: string;
             setupGuide: string;
+        };
+        iProov: {
+            learnMore: string;
         };
         microsoft: {
             help: {
@@ -411,6 +448,7 @@ interface UsersDocumentationLinksInterface {
     customerAccounts: {
         learnMore: string;
     }
+    learnMore: string;
     newCollaboratorUser: {
         learnMore: string;
     }
@@ -462,6 +500,20 @@ interface EmailCustomizationLinksInterface {
 }
 
 /**
+ * Interface for the insights section documentation structure.
+ */
+interface InsightsDocumentationLinksInterface {
+    learnMore: string;
+}
+
+/**
+ * Interface for the logs section documentation structure.
+ */
+interface LogsDocumentationLinksInterface {
+    learnMore: string;
+}
+
+/**
  * Interface for the console documentation structure.
  */
 export interface DocumentationLinksExtensionInterface {
@@ -473,6 +525,10 @@ export interface DocumentationLinksExtensionInterface {
      * Documentation links for develop section elements.
      */
     develop: {
+        /**
+         * Documentation links for actions section elements.
+         */
+        actions: ActionsDocumentationLinksInterface;
         /**
          * Documentation links for API resources section elements.
          */
@@ -520,6 +576,14 @@ export interface DocumentationLinksExtensionInterface {
          * Documentation links for groups section elements.
          */
         groups: GroupsDocumentationLinksInterface;
+        /**
+         * Documentation links for insights section elements.
+         */
+        insights: InsightsDocumentationLinksInterface;
+        /**
+         * Documentation links for logs section elements.
+         */
+        logs: LogsDocumentationLinksInterface;
         /**
          * Documentation links for organization section elements.
          */
