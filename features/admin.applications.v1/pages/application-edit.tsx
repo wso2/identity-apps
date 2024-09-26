@@ -639,7 +639,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                 />
                                 <DocumentationLink
                                     link={
-                                        getLink("develop.applications.oudatedApplications.versions."
+                                        getLink("develop.applications.editApplication.outdatedApplications.versions."
                                             + "version100.useClientIdAsSubClaimOfAppTokens.documentationLink")
                                     }
                                     showEmptyLink={ false }
@@ -662,14 +662,15 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                 <Trans
                                     i18nKey={
                                         t("applications:forms.inboundOIDC.sections"
-                                            + ".outdatedApplications.fields."
-                                            + "versions.version100.removeUsernameFromIntrospectionRespForAppTokens.instruction")
+                                            + ".outdatedApplications.fields.versions.version100."
+                                            + "removeUsernameFromIntrospectionRespForAppTokens.instruction")
                                     }
                                 />
                                 <DocumentationLink
                                     link={
-                                        getLink("develop.applications.oudatedApplications.versions."
-                                            + "version100.removeUsernameFromIntrospectionRespForAppTokens.documentationLink")
+                                        getLink("develop.applications.editApplication.outdatedApplications.versions."
+                                            + "version100.removeUsernameFromIntrospectionRespForAppTokens."
+                                            + "documentationLink")
                                     }
                                     showEmptyLink={ false }
                                 >

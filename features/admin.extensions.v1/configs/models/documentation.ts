@@ -137,7 +137,7 @@ interface ApplicationsDocumentationLinksInterface {
                 }
             }
         }
-        oudatedApplications: {
+        outdatedApplications: {
             versions: {
                 version100: {
                     removeUsernameFromIntrospectionRespForAppTokens: {

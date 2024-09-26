@@ -144,7 +144,7 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                             }
                         }
                     },
-                    oudatedApplications: {
+                    outdatedApplications: {
                         versions: {
                             version100: {
                                 removeUsernameFromIntrospectionRespForAppTokens: {
