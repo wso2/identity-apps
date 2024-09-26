@@ -1,5 +1,25 @@
 # @wso2is/admin.connections.v1
 
+## 2.23.9
+
+### Patch Changes
+
+- [#6927](https://github.com/wso2/identity-apps/pull/6927) [`48c7aa311672c2461288c1551f1966bd7c38dda2`](https://github.com/wso2/identity-apps/commit/48c7aa311672c2461288c1551f1966bd7c38dda2) Thanks [@asha15](https://github.com/asha15)! - Add iproov and duo connection guide.
+
+- Updated dependencies [[`48c7aa311672c2461288c1551f1966bd7c38dda2`](https://github.com/wso2/identity-apps/commit/48c7aa311672c2461288c1551f1966bd7c38dda2)]:
+  - @wso2is/admin.connections.v1@2.23.9
+  - @wso2is/admin.applications.v1@2.26.9
+  - @wso2is/admin.core.v1@2.30.9
+  - @wso2is/admin.extensions.v1@2.30.9
+  - @wso2is/admin.identity-providers.v1@2.22.9
+  - @wso2is/admin.organizations.v1@2.22.9
+  - @wso2is/admin.roles.v2@2.22.9
+  - @wso2is/admin.console-settings.v1@2.21.9
+  - @wso2is/admin.claims.v1@2.21.9
+  - @wso2is/admin.feature-gate.v1@1.1.9
+  - @wso2is/admin.template-core.v1@1.0.61
+  - @wso2is/admin.userstores.v1@2.21.9
+
 ## 2.23.8
 
 ### Patch Changes
