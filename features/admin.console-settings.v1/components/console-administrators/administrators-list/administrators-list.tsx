@@ -16,7 +16,13 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { useEffect } from "react";
+import {
+    FeatureAccessConfigInterface,
+    FeatureStatus,
+    Show,
+    useCheckFeatureStatus
+} from "@wso2is/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -26,11 +32,12 @@ import {
     UserBasicInterface,
     UserRoleInterface,
     getEmptyPlaceholderIllustrations,
-    history
+    history,
+    store
 } from "@wso2is/admin.core.v1";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
+import { AdminAccountTypes, InvitationStatus, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models";
 import {
@@ -39,7 +46,7 @@ import {
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmptyPlaceholder, ListLayout, PrimaryButton } from "@wso2is/react-components";
+import { Button, EmptyPlaceholder, ListLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -50,6 +57,17 @@ import useAdministrators from "../../../hooks/use-administrators";
 import useBulkAssignAdministratorRoles from "../../../hooks/use-bulk-assign-user-roles";
 import AddExistingUserWizard from "../add-existing-user-wizard/add-existing-user-wizard";
 import InviteNewAdministratorWizard from "../invite-new-administrator-wizard/invite-new-administrator-wizard";
+import { GearIcon } from "@oxygen-ui/react-icons";
+import { AdministratorConstants } from "@wso2is/admin.administrators.v1/constants/users"
+import { AddAdministratorWizard } from "@wso2is/admin.administrators.v1/wizard/add-administrator-wizard"
+import { useInvitedUsersList } from "@wso2is/admin.users.v1/api/invite";
+import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import {
+    EventPublisher
+} from "@wso2is/admin.core.v1";
+import { useOrganizationConfigV2 } from "@wso2is/admin.administrators.v1/api/useOrganizationConfigV2";
+import { UseOrganizationConfigType } from "@wso2is/admin.administrators.v1/models/organization";
+import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 
 /**
  * Props interface of {@link AdministratorsList}
@@ -78,7 +96,9 @@ interface AdministratorsListProps extends IdentifiableComponentInterface {
     /**
      * List of available user stores
      */
-    availableUserStores: UserStoreDropdownItem[]
+    availableUserStores: UserStoreDropdownItem[];
+
+    selectedAdministratorGroup: string;
 }
 
 /**
@@ -92,7 +112,9 @@ enum AddAdministratorModes {
     /**
      * To invite a new user as an administrator.
      */
-    InviteParentUser = "inviteParentUser"
+    InviteParentUser = "inviteParentUser",
+
+    AddExternal = "addExternalAdmin"
 }
 
 /**
@@ -110,6 +132,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
         readOnlyUserStores,
         selection,
         showListItemActions,
+        selectedAdministratorGroup,
         availableUserStores,
         ["data-componentid"]: componentId
     } = props;
@@ -118,18 +141,23 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
 
     const dispatch: Dispatch = useDispatch();
 
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const { isSubOrganization, isFirstLevelOrganization, isSuperOrganization } = useGetCurrentOrganizationType();
     const { unassignAdministratorRoles } = useBulkAssignAdministratorRoles();
 
-    const [ listOffset, setListOffset ] = useState<number>(0);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-    const [ searchQuery, setSearchQuery ] = useState<string>("");
-    const [ showAddExistingUserWizard, setShowAddExistingUserWizard ] = useState<boolean>(false);
-    const [ showInviteNewAdministratorModal, setShowInviteNewAdministratorModal ] = useState<boolean>(false);
-    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(userstoresConfig?.primaryUserstoreName);
+    const [listOffset, setListOffset] = useState<number>(0);
+    const [listItemLimit, setListItemLimit] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    const [triggerClearQuery, setTriggerClearQuery] = useState<boolean>(false);
+    const [searchQuery, setSearchQuery] = useState<string>("");
+    const [showAddExistingUserWizard, setShowAddExistingUserWizard] = useState<boolean>(false);
+    const [showInviteNewAdministratorModal, setShowInviteNewAdministratorModal] = useState<boolean>(false);
+    const [ isEnterpriseLoginEnabled, setIsEnterpriseLoginEnabled ] = useState<boolean>(false);
+
+    const [showAddExternalAdminWizard, setShowAddExternalAdminWizard] = useState(false);
+    const [selectedUserStore, setSelectedUserStore] = useState<string>(undefined);
 
     const {
         administrators,
@@ -142,11 +170,46 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
         listOffset,
         searchQuery,
         null,
-        selectedUserStore,
+        selectedUserStore ?? selectedAdministratorGroup === "administrators" ? "PRIMARY" : "DEFAULT",
         UserManagementConstants.GROUPS_ATTRIBUTE
     );
 
-    const [ loading, setLoading ] = useState(false);
+    const useOrgConfig: UseOrganizationConfigType = useOrganizationConfigV2;
+
+    const organizationName: string = store.getState().auth.tenantDomain;
+
+    const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(
+        FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+
+    const {
+        data: OrganizationConfig,
+        isLoading: isOrgConfigRequestLoading,
+        isValidating: isOrgConfigRequestRevalidating,
+        error: orgConfigFetchRequestError
+    } = useOrgConfig(
+        organizationName,
+        {
+            revalidateIfStale: true
+        },
+        saasFeatureStatus === FeatureStatus.ENABLED
+    );
+
+    const [ rolesList ] = useState([]);
+
+    const {
+        data: guestUserList,
+        isLoading: isGuestUserListFetchRequestLoading,
+        error: guestUserListFetchRequestError,
+        mutate: mutateGuestUserListFetchRequest
+    } = useInvitedUsersList(
+        administratorConfig.enableAdminInvite
+    );
+
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        setIsEnterpriseLoginEnabled(OrganizationConfig?.isEnterpriseLoginEnabled);
+    }, [ isOrgConfigRequestLoading, isOrgConfigRequestRevalidating ]);
 
     const handleUserEdit = (user: UserBasicInterface) => {
         history.push(
@@ -209,84 +272,103 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
     };
 
     const renderAdministratorAddOptions = (): ReactElement => {
-        if (isSubOrganization()) {
-            const getAddUserOptions = () => {
-                const options: DropdownItemProps[] = [
-                    {
-                        "data-componentid": `${ componentId }-add-existing-user-dropdown-item`,
-                        key: 1,
-                        text: t("consoleSettings:administrators.add.options.addExistingUser"),
-                        value: AddAdministratorModes.AddExisting
-                    },
-                    {
-                        "data-componentid": `${ componentId }-invite-new-user-dropdown-item`,
-                        key: 2,
-                        text: t("consoleSettings:administrators.add.options.inviteParentUser"),
-                        value: AddAdministratorModes.InviteParentUser
-                    }
-                ];
 
-                return options;
-            };
+        const isCurrentOrgSubOrganization: boolean = isSubOrganization();
 
-            return (
-                <Dropdown
-                    data-componentid={ `${ componentId }-add-administrator-dropdown` }
-                    direction="left"
-                    floating
-                    icon={ null }
-                    trigger={ (
-                        <PrimaryButton
-                            data-componentid={ `${ componentId }-add-button` }
-                            className="add-administrator-dropdown-trigger"
-                        >
-                            <Icon data-componentid={ `${componentId}-add-button-icon` } name="add" />
-                            { t("consoleSettings:administrators.add.action") }
-                            <Icon name="dropdown" className="add-administrator-dropdown-chevron"/>
-                        </PrimaryButton>
-                    ) }
-                >
-                    <Dropdown.Menu >
-                        { getAddUserOptions().map((option: DropdownItemProps) => (
-                            <Dropdown.Item
-                                key={ option.value as string }
-                                onClick={ () => {
-                                    if (option.value === AddAdministratorModes.AddExisting) {
-                                        setShowAddExistingUserWizard(true);
-                                    } else {
-                                        setShowInviteNewAdministratorModal(true);
-                                    }
-                                } }
-                                { ...option }
-                            />
-                        )) }
-                    </Dropdown.Menu>
-                </Dropdown>
-            );
+        const addAdminOptions = [];
+
+        if (!isCurrentOrgSubOrganization) {
+            addAdminOptions.push({
+                "data-componentid": `${componentId}-add-external-admin-dropdown-item`,
+                key: 1,
+                text: "Invite Admins to Asgardeo",
+                value: AddAdministratorModes.AddExternal
+            })
         }
 
-        return (
-            <PrimaryButton
-                data-componentid={ `${componentId}-add-button` }
-                onClick={ () => setShowAddExistingUserWizard(true) }
-            >
-                <Icon data-componentid={ `${componentId}-add-button-icon` } name="add" />
-                { t("consoleSettings:administrators.add.action") }
-            </PrimaryButton>
-        );
+        if (isEnterpriseLoginEnabled || isCurrentOrgSubOrganization) {
+            addAdminOptions.push({
+                "data-componentid": `${componentId}-add-existing-user-dropdown-item`,
+                key: 1,
+                text: t("consoleSettings:administrators.add.options.addExistingUser"),
+                value: AddAdministratorModes.AddExisting
+            })
+        }
+
+        if (isSubOrganization()) {
+            addAdminOptions.push({
+                "data-componentid": `${componentId}-invite-new-user-dropdown-item`,
+                key: 2,
+                text: t("consoleSettings:administrators.add.options.inviteParentUser"),
+                value: AddAdministratorModes.InviteParentUser
+            })
+        };
+
+            if (addAdminOptions.length > 1) {
+                return (
+                    <Dropdown
+                        data-componentid={`${componentId}-add-administrator-dropdown`}
+                        direction="left"
+                        floating
+                        icon={null}
+                        trigger={(
+                            <PrimaryButton
+                                data-componentid={`${componentId}-add-button`}
+                                className="add-administrator-dropdown-trigger"
+                            >
+                                <Icon data-componentid={`${componentId}-add-button-icon`} name="add" />
+                                {t("consoleSettings:administrators.add.action")}
+                                <Icon name="dropdown" className="add-administrator-dropdown-chevron" />
+                            </PrimaryButton>
+                        )}
+                    >
+                        <Dropdown.Menu >
+                            {addAdminOptions.map((option: DropdownItemProps) => (
+                                <Dropdown.Item
+                                    key={option.value as string}
+                                    onClick={() => {
+                                        if (option.value === AddAdministratorModes.AddExisting) {
+                                            setShowAddExistingUserWizard(true);
+                                        } else if (option.value === AddAdministratorModes.AddExternal) {
+                                            setShowAddExternalAdminWizard(true)
+                                        } else {
+                                            setShowInviteNewAdministratorModal(true);
+                                        }
+                                    }}
+                                    {...option}
+                                />
+                            ))}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                );
+            } else if (addAdminOptions.length === 1) {
+                return (
+                    <PrimaryButton
+                        data-componentid={`${componentId}-add-button`}
+                        onClick={() => setShowAddExternalAdminWizard(true)}
+                    >
+                        <Icon data-componentid={`${componentId}-add-button-icon`} name="add" />
+                        {t("consoleSettings:administrators.add.action")}
+                    </PrimaryButton>
+                );   
+            }
+    };
+
+    const handleSettingsButton = () => {
+        history.push(AdministratorConstants.getPaths().get("COLLABORATOR_SETTINGS_EDIT_PATH"));
     };
 
     return (
         <ListLayout
-            advancedSearch={ (
+            advancedSearch={(
                 <AdvancedSearchWithBasicFilters
-                    onFilter={ handleListFilter }
-                    filterAttributeOptions={ [
+                    onFilter={handleListFilter}
+                    filterAttributeOptions={[
                         {
                             key: 0,
                             text: t(
                                 "users:advancedSearch.form.dropdown." +
-                                    "filterAttributeOptions.username"
+                                "filterAttributeOptions.username"
                             ),
                             value: "userName"
                         },
@@ -294,7 +376,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                             key: 1,
                             text: t(
                                 "users:advancedSearch.form.dropdown." +
-                                    "filterAttributeOptions.email"
+                                "filterAttributeOptions.email"
                             ),
                             value: "emails"
                         },
@@ -308,95 +390,123 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                             text: "Last Name",
                             value: "name.familyName"
                         }
-                    ] }
-                    filterAttributePlaceholder={ t(
+                    ]}
+                    filterAttributePlaceholder={t(
                         "users:advancedSearch.form.inputs.filterAttribute. " + "placeholder"
-                    ) }
-                    filterConditionsPlaceholder={ t(
+                    )}
+                    filterConditionsPlaceholder={t(
                         "users:advancedSearch.form.inputs.filterCondition" + ".placeholder"
-                    ) }
-                    filterValuePlaceholder={ t(
+                    )}
+                    filterValuePlaceholder={t(
                         "users:advancedSearch.form.inputs.filterValue" + ".placeholder"
-                    ) }
-                    placeholder={ "Search by Username" }
-                    defaultSearchAttribute={ "userName" }
+                    )}
+                    placeholder={"Search by Username"}
+                    defaultSearchAttribute={"userName"}
                     defaultSearchOperator="co"
-                    triggerClearQuery={ triggerClearQuery }
+                    triggerClearQuery={triggerClearQuery}
                 />
-            ) }
-            currentListSize={ administrators?.Resources?.length }
-            listItemLimit={ listItemLimit }
-            onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-            data-componentid={ `${componentId}-list-layout` }
-            onPageChange={ handlePaginationChange }
-            showPagination={ true }
-            showTopActionPanel={ true }
-            showPaginationPageLimit={ true }
-            totalPages={ Math.ceil(administrators?.totalResults / listItemLimit) }
-            totalListSize={ administrators?.totalResults }
-            isLoading={ isAdministratorsListFetchRequestLoading }
-            onSearchQueryClear={ handleSearchQueryClear }
-            paginationOptions={ {
+            )}
+            currentListSize={administrators?.Resources?.length}
+            listItemLimit={listItemLimit}
+            onItemsPerPageDropdownChange={handleItemsPerPageDropdownChange}
+            data-componentid={`${componentId}-list-layout`}
+            onPageChange={handlePaginationChange}
+            showPagination={true}
+            showTopActionPanel={true}
+            showPaginationPageLimit={true}
+            totalPages={Math.ceil(administrators?.totalResults / listItemLimit)}
+            totalListSize={administrators?.totalResults}
+            isLoading={isAdministratorsListFetchRequestLoading}
+            onSearchQueryClear={handleSearchQueryClear}
+            paginationOptions={{
                 disableNextButton: !isNextPageAvailable
-            } }
+            }}
             rightActionPanel={
-                isFirstLevelOrganization() || isSuperOrganization()
+                !isEnterpriseLoginEnabled && (isFirstLevelOrganization() || isSuperOrganization())
                     ? (
                         <Dropdown
                             data-testid="user-mgt-user-list-userstore-dropdown"
                             selection
-                            options={ availableUserStores }
-                            onChange={ handleSelectedUserStoreChange }
-                            defaultValue={ PRIMARY_USERSTORE.toLocaleLowerCase() }
+                            options={availableUserStores}
+                            onChange={handleSelectedUserStoreChange}
+                            defaultValue={PRIMARY_USERSTORE}
                         />
                     ) : null
             }
             topActionPanelExtension={ (
-                <Show when={ [ ...featureConfig?.users?.scopes?.create, ...featureConfig?.userRoles?.scopes?.update ] }>
-                    { renderAdministratorAddOptions() }
+                <Show when={[...featureConfig?.users?.scopes?.create, ...featureConfig?.userRoles?.scopes?.update]}>
+                    {!isSubOrganization() && isEnterpriseLoginEnabled && <Button
+                        data-componentid={`${componentId}-admin-settings-button`}
+                        icon={GearIcon}
+                        onClick={handleSettingsButton}
+                    >
+                    </Button>}
+                    {renderAdministratorAddOptions()}
                 </Show>
-            ) }
+            )}
         >
-            { adminUserListFetchError
+            {adminUserListFetchError
                 ? (
                     <EmptyPlaceholder
-                        subtitle={ [ t("users:placeholders.userstoreError.subtitles.0"),
-                            t("users:placeholders.userstoreError.subtitles.1") ] }
-                        title={ t("users:placeholders.userstoreError.title") }
-                        image={ getEmptyPlaceholderIllustrations().genericError }
+                        subtitle={[t("users:placeholders.userstoreError.subtitles.0"),
+                        t("users:placeholders.userstoreError.subtitles.1")]}
+                        title={t("users:placeholders.userstoreError.title")}
+                        image={getEmptyPlaceholderIllustrations().genericError}
                         imageSize="tiny"
                     />
-                ): (
+                ) : (
                     <AdministratorsTable
-                        defaultListItemLimit={ defaultListItemLimit }
-                        administrators={ administrators }
-                        onUserEdit={ handleUserEdit }
-                        onUserDelete={ handleUserDelete }
-                        isLoading={ loading }
-                        readOnlyUserStores={ readOnlyUserStores }
-                        onSearchQueryClear={ handleSearchQueryClear }
-                        searchQuery={ searchQuery }
-                        triggerClearQuery={ triggerClearQuery }
-                        onEmptyListPlaceholderActionClick={ () => null }
-                        onIsLoading={ setLoading }
-                        selection={ selection }
-                        showListItemActions={ showListItemActions }
-                        showMetaContent={ showMetaContent }
-                        data-componentid={ `${componentId}-table` }
+                        defaultListItemLimit={defaultListItemLimit}
+                        administrators={administrators}
+                        onUserEdit={handleUserEdit}
+                        onUserDelete={handleUserDelete}
+                        isLoading={loading}
+                        readOnlyUserStores={readOnlyUserStores}
+                        onSearchQueryClear={handleSearchQueryClear}
+                        searchQuery={searchQuery}
+                        triggerClearQuery={triggerClearQuery}
+                        onEmptyListPlaceholderActionClick={() => null}
+                        onIsLoading={setLoading}
+                        selection={selection}
+                        showListItemActions={showListItemActions}
+                        showMetaContent={showMetaContent}
+                        data-componentid={`${componentId}-table`}
                     />
                 )
             }
-            { showAddExistingUserWizard && (
+            {showAddExistingUserWizard && (
                 <AddExistingUserWizard
-                    onSuccess={ () => mutateAdministratorsListFetchRequest() }
-                    onClose={ () => setShowAddExistingUserWizard(false) }
+                    onSuccess={() => mutateAdministratorsListFetchRequest()}
+                    onClose={() => setShowAddExistingUserWizard(false)}
                 />
-            ) }
-            { showInviteNewAdministratorModal && (
+            )}
+            {showInviteNewAdministratorModal && (
                 <InviteNewAdministratorWizard
-                    onClose={ () => setShowInviteNewAdministratorModal(false) }
+                    onClose={() => setShowInviteNewAdministratorModal(false)}
                 />
-            ) }
+            )}
+            {
+                showAddExternalAdminWizard && (
+                    <AddAdministratorWizard
+                    data-componentid={ `${ componentId }-add-admin-wizard-modal` }
+                    closeWizard={ () => {
+                        setShowAddExternalAdminWizard(false);
+                    } }
+                    updateList={ () => mutateGuestUserListFetchRequest() }
+                    rolesList={ rolesList }
+                    emailVerificationEnabled={ true }
+                    onInvitationSendSuccessful={ () => {
+                        mutateGuestUserListFetchRequest();
+                        eventPublisher.publish("manage-users-finish-creating-collaborator-user");
+                    } }
+                    adminTypeSelection={ AdminAccountTypes.EXTERNAL }
+                    onUserUpdate={ () => {
+                         // do something
+                         mutateAdministratorsListFetchRequest()
+                    } }
+                />
+                )
+            } 
         </ListLayout>
     );
 };

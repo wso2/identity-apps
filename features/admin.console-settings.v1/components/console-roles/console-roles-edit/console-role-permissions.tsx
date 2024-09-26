@@ -43,7 +43,7 @@ import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import useGetAPIResourceCollections from "../../../api/use-get-api-resource-collections";
 import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
@@ -57,6 +57,7 @@ import { SelectedPermissionCategoryInterface, SelectedPermissionsInterface } fro
 import transformResourceCollectionToPermissions from "../../../utils/transform-resource-collection-to-permissions";
 import CreateConsoleRoleWizardPermissionsForm from
     "../create-console-role-wizard/create-console-role-wizard-permissions-form";
+import { AppState } from "@wso2is/admin.core.v1/store";
 
 /**
  * Props interface of {@link ConsoleRolePermissions}
@@ -105,6 +106,11 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
+
+    const consoleSettingsFeatureConfig = useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
+    const isConsoleRolesEditable: boolean = !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
+        "consoleSettings.editableConsoleRoles"
+    )
 
     const { data: tenantAPIResourceCollections } = useGetAPIResourceCollections(
         !isSubOrganization,
@@ -352,7 +358,7 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
                     }
                 </Heading>
             </div>
-            { isSubOrganization
+            { isSubOrganization || !isConsoleRolesEditable
                 ? readOnlyPermissionListSubOrganization()
                 : (
                     <CreateConsoleRoleWizardPermissionsForm

@@ -82,6 +82,11 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
     const { t } = useTranslation();
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
+    const consoleSettingsFeatureConfig = useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
+    const isConsoleRolesEditable: boolean = !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
+        "consoleSettings.editableConsoleRoles"
+    )
+
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
@@ -195,7 +200,10 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
             onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
             onPageChange={ handlePaginationChange }
             showTopActionPanel={ (rolesList?.totalResults > 0 || searchQuery?.length !== 0) }
-            topActionPanelExtension={ !isSubOrganization() && (
+            topActionPanelExtension={ 
+                !isSubOrganization() &&
+                // isConsoleRolesEditable && 
+                (
                 <Show when={ featureConfig?.userRoles?.scopes?.create }>
                     <PrimaryButton
                         data-componentid={ `${componentId}-add-button` }
