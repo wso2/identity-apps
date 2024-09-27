@@ -19,8 +19,12 @@
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
+import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
+import { useOrganizationConfigV2 } from "@wso2is/admin.administrators.v1/api/useOrganizationConfigV2";
+import { UseOrganizationConfigType } from "@wso2is/admin.administrators.v1/models/organization";
 import { UserStoreProperty, getAUserStore, store } from "@wso2is/admin.core.v1";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
+import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { useUserStores } from "@wso2is/admin.userstores.v1/api";
 import { UserStoreDropdownItem, UserStoreListItem, UserStorePostData } from "@wso2is/admin.userstores.v1/models";
@@ -34,10 +38,6 @@ import React, {
 } from "react";
 import AdministratorsList from "./administrators-list/administrators-list";
 import InvitedAdministratorsList from "./invited-administrators/invited-administrators-list";
-import { UseOrganizationConfigType } from "@wso2is/admin.administrators.v1/models/organization";
-import { useOrganizationConfigV2 } from "@wso2is/admin.administrators.v1/api/useOrganizationConfigV2";
-import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
-import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 
 /**
  * Props interface of {@link ConsoleAdministrators}
@@ -57,22 +57,22 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
 
     const { isFirstLevelOrganization, isSubOrganization } = useGetCurrentOrganizationType();
 
-    const [ activeAdministratorGroup, setActiveAdministratorGroup ] = useState(isSubOrganization() ? "activeUsers" : "administrators");
+    const [ activeAdministratorGroup, setActiveAdministratorGroup ] =
+        useState(isSubOrganization() ? "activeUsers" : "administrators");
     const [ availableUserStores, setAvailableUserStores ] = useState<UserStoreDropdownItem[]>([]);
     const [ isEnterpriseLoginEnabled, setIsEnterpriseLoginEnabled ] = useState<boolean>(false);
 
     const organizationName: string = store.getState().auth.tenantDomain;
-    
+
     const useOrgConfig: UseOrganizationConfigType = useOrganizationConfigV2;
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(
         FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
-    
+
     const {
         data: OrganizationConfig,
         isLoading: isOrgConfigRequestLoading,
-        isValidating: isOrgConfigRequestRevalidating,
-        error: orgConfigFetchRequestError
+        isValidating: isOrgConfigRequestRevalidating
     } = useOrgConfig(
         organizationName,
         {
@@ -129,7 +129,6 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
     }, [ userStoreList, isUserStoreListFetchRequestLoading ]);
 
     const renderSelectedAdministratorGroup = (): ReactElement => {
-        console.log(activeAdministratorGroup)
         switch (activeAdministratorGroup) {
             case "activeUsers":
                 return (
@@ -176,7 +175,7 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
                     onChange={ (_: ChangeEvent<HTMLInputElement>, value: string) => setActiveAdministratorGroup(value) }
                 >
                     <FormControlLabel value="administrators" control={ <Radio /> } label="Administrators" />
-                    <FormControlLabel value="privilegedUsers" control={ <Radio /> } label="Privileged Users" /> 
+                    <FormControlLabel value="privilegedUsers" control={ <Radio /> } label="Privileged Users" />
                 </RadioGroup>
             );
         }
