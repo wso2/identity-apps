@@ -21,6 +21,8 @@ import Autocomplete, {
     AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import { RenderChip } from "@wso2is/admin.roles.v2/components/edit-role/edit-role-common/render-chip";
 import { Schemas } from "@wso2is/admin.roles.v2/constants/role-constants";
@@ -57,7 +59,6 @@ import { SelectedPermissionCategoryInterface, SelectedPermissionsInterface } fro
 import transformResourceCollectionToPermissions from "../../../utils/transform-resource-collection-to-permissions";
 import CreateConsoleRoleWizardPermissionsForm from
     "../create-console-role-wizard/create-console-role-wizard-permissions-form";
-import { AppState } from "@wso2is/admin.core.v1/store";
 
 /**
  * Props interface of {@link ConsoleRolePermissions}
@@ -107,10 +108,11 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
 
     const { t } = useTranslation();
 
-    const consoleSettingsFeatureConfig = useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
+    const consoleSettingsFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
     const isConsoleRolesEditable: boolean = !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
         "consoleSettings.editableConsoleRoles"
-    )
+    );
 
     const { data: tenantAPIResourceCollections } = useGetAPIResourceCollections(
         !isSubOrganization,

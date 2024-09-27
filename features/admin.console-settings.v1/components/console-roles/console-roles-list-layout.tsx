@@ -82,11 +82,6 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
     const { t } = useTranslation();
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
-    const consoleSettingsFeatureConfig = useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
-    const isConsoleRolesEditable: boolean = !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
-        "consoleSettings.editableConsoleRoles"
-    )
-
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
@@ -200,23 +195,23 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
             onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
             onPageChange={ handlePaginationChange }
             showTopActionPanel={ (rolesList?.totalResults > 0 || searchQuery?.length !== 0) }
-            topActionPanelExtension={ 
+            topActionPanelExtension={
                 !isSubOrganization() &&
-                // isConsoleRolesEditable && 
+                // isConsoleRolesEditable &&
                 (
-                <Show when={ featureConfig?.userRoles?.scopes?.create }>
-                    <PrimaryButton
-                        data-componentid={ `${componentId}-add-button` }
-                        onClick={ () => onRoleCreate() }
-                    >
-                        <Icon
-                            data-componentid={ `${componentId}-add-button-icon` }
-                            name="add"
-                        />
-                        { t("roles:list.buttons.addButton", { type: "Role" }) }
-                    </PrimaryButton>
-                </Show>
-            ) }
+                    <Show when={ featureConfig?.userRoles?.scopes?.create }>
+                        <PrimaryButton
+                            data-componentid={ `${componentId}-add-button` }
+                            onClick={ () => onRoleCreate() }
+                        >
+                            <Icon
+                                data-componentid={ `${componentId}-add-button-icon` }
+                                name="add"
+                            />
+                            { t("roles:list.buttons.addButton", { type: "Role" }) }
+                        </PrimaryButton>
+                    </Show>
+                ) }
             showPagination={ true }
             totalPages={ Math.ceil(rolesList?.totalResults / listItemLimit) }
             totalListSize={ rolesList?.totalResults }

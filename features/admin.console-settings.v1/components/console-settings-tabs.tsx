@@ -81,14 +81,13 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
     const { t } = useTranslation();
 
     const { isFirstLevelOrganization, isSubOrganization, isSuperOrganization } = useGetCurrentOrganizationType();
-    const administratorsFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.administrators);
 
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consoleSettings);
-    const isLoginFlowConfigurationEnabledForFirstLevelOrgs: boolean = !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
-        "consoleSettings.firstLevelOrgloginFlowConfiguration"
-    )
+    const isLoginFlowConfigurationEnabledForFirstLevelOrgs: boolean =
+        !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
+            "consoleSettings.firstLevelOrgloginFlowConfiguration"
+        );
 
     const isLoginFlowEnabled = () => {
         if (isSuperOrganization()) {
@@ -100,11 +99,11 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
         }
 
         if (isSubOrganization()) {
-            return true
+            return true;
         }
 
         return false;
-    }
+    };
 
     const consoleTabs: ConsoleSettingsTabInterface[] = useMemo(
         () =>

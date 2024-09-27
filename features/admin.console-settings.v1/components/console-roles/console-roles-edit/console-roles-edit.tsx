@@ -16,7 +16,11 @@
  * under the License.
  */
 
+import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
+import { useOrganizationConfigV2 } from "@wso2is/admin.administrators.v1/api/useOrganizationConfigV2";
+import { UseOrganizationConfigType } from "@wso2is/admin.administrators.v1/models";
 import { AppState, OrganizationType, store } from "@wso2is/admin.core.v1";
+import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { BasicRoleDetails } from "@wso2is/admin.roles.v2/components/edit-role/edit-role-basic";
 import { RoleConnectedApps } from "@wso2is/admin.roles.v2/components/edit-role/edit-role-connected-apps";
@@ -24,7 +28,6 @@ import { RoleGroupsList } from "@wso2is/admin.roles.v2/components/edit-role/edit
 import { RoleUsersList } from "@wso2is/admin.roles.v2/components/edit-role/edit-role-users";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { RoleConstants } from "@wso2is/core/constants";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -32,10 +35,9 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import ConsoleRolePermissions from "./console-role-permissions";
 import "./console-roles-edit.scss";
-import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
-import { useOrganizationConfigV2 } from "@wso2is/admin.administrators.v1/api/useOrganizationConfigV2";
-import { UseOrganizationConfigType } from "@wso2is/admin.administrators.v1/models";
-import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
+
+
+
 
 /**
  * Captures props needed for edit role component
@@ -77,32 +79,33 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
     const { t } = useTranslation();
     const { isFirstLevelOrganization, isSubOrganization, organizationType } = useGetCurrentOrganizationType();
 
-    const featureConfig: FeatureAccessConfigInterface = useSelector(
+    const userRolesFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRoles);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const hasRolesUpdatePermissions: boolean = useRequiredScopes(userRolesFeatureConfig?.scopes?.update);
+
     const administratorRoleDisplayName: string = useSelector(
         (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
 
-    const consoleSettingsFeatureConfig = useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
+    const consoleSettingsFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
     const isConsoleRolesEditable: boolean = !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
         "consoleSettings.editableConsoleRoles"
-    ) 
+    );
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
     const [ isEnterpriseLoginEnabled, setIsEnterpriseLoginEnabled ] = useState<boolean>(false);
 
     const organizationName: string = store.getState().auth.tenantDomain;
-    
+
     const useOrgConfig: UseOrganizationConfigType = useOrganizationConfigV2;
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(
         FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
-    
+
     const {
         data: OrganizationConfig,
         isLoading: isOrgConfigRequestLoading,
-        isValidating: isOrgConfigRequestRevalidating,
-        error: orgConfigFetchRequestError
+        isValidating: isOrgConfigRequestRevalidating
     } = useOrgConfig(
         organizationName,
         {
@@ -136,8 +139,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <BasicRoleDetails
                             isReadOnly={ isSubOrg || isAdminRole || !isConsoleRolesEditable
-                                || !hasRequiredScopes(
-                                    featureConfig, featureConfig?.scopes?.update, allowedScopes) }
+                                || !hasRolesUpdatePermissions }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 0 }
@@ -155,7 +157,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                                 isSubOrg
                                 || isAdminRole
                                 || !isConsoleRolesEditable
-                                || !hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes)
+                                || !hasRolesUpdatePermissions
                             }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
@@ -170,8 +172,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RoleGroupsList
-                            isReadOnly={ !hasRequiredScopes(
-                                featureConfig, featureConfig?.scopes?.update, allowedScopes) }
+                            isReadOnly={ !hasRolesUpdatePermissions }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 2 }
@@ -184,8 +185,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RoleUsersList
-                            isReadOnly={ !hasRequiredScopes(
-                                featureConfig, featureConfig?.scopes?.update, allowedScopes) }
+                            isReadOnly={ !hasRolesUpdatePermissions }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 3 }
@@ -200,8 +200,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                     render: () => (
                         <ResourceTab.Pane controlledSegmentation attached={ false }>
                             <RoleConnectedApps
-                                isReadOnly={ !hasRequiredScopes(
-                                    featureConfig, featureConfig?.scopes?.update, allowedScopes) }
+                                isReadOnly={ !hasRolesUpdatePermissions }
                                 role={ roleObject }
                                 onRoleUpdate={ onRoleUpdate }
                                 tabIndex={ 4 }
