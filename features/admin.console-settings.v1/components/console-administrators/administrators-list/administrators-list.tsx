@@ -188,8 +188,6 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
         saasFeatureStatus === FeatureStatus.ENABLED
     );
 
-    const [ rolesList ] = useState([]);
-
     const {
         mutate: mutateGuestUserListFetchRequest
     } = useInvitedUsersList(
@@ -484,7 +482,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                             setShowAddExternalAdminWizard(false);
                         } }
                         updateList={ () => mutateGuestUserListFetchRequest() }
-                        rolesList={ rolesList }
+                        rolesList={ [] }
                         emailVerificationEnabled={ true }
                         onInvitationSendSuccessful={ () => {
                             mutateGuestUserListFetchRequest();

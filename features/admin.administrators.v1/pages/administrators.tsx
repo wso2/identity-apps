@@ -176,7 +176,6 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
     const [ currentActivePage, setCurrentActivePage ] = useState<number>(0);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showExtenalAdminWizard, setShowExtenalAdminWizard ] = useState<boolean>(false);
-    const [ rolesList ] = useState([]);
     const [ invitationStatusOption, setInvitationStatusOption ] = useState<string>(InvitationStatus.ACCEPTED);
     const [ isInvitationStatusOptionChanged, setIsInvitationStatusOptionChanged ] = useState<boolean>(false);
     const [ paginatedGuestList, setPaginateGuestList ] = useState<UserInviteInterface[]>([]);
@@ -1435,7 +1434,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                             setShowExtenalAdminWizard(false);
                         } }
                         updateList={ () => mutateGuestUserListFetchRequest() }
-                        rolesList={ rolesList }
+                        rolesList={ [] }
                         emailVerificationEnabled={ true }
                         onInvitationSendSuccessful={ () => {
                             mutateGuestUserListFetchRequest();
@@ -1475,7 +1474,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                     listOffset={ listOffset }
                     listItemLimit={ listItemLimit }
                     updateList={ () => mutateGuestUserListFetchRequest() }
-                    rolesList={ rolesList }
+                    rolesList={ [] }
                     emailVerificationEnabled={ false }
                     isAdminUser={ true }
                     defaultUserTypeSelection={ UserAccountTypes.ADMINISTRATOR }
