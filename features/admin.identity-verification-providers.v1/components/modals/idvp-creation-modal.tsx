@@ -16,18 +16,23 @@
  * under the License.
  */
 
+import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { ResourceCreateWizard } from "@wso2is/admin.template-core.v1/components/resource-create-wizard";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { ConnectionTemplateInterface } from "../../../admin.connections.v1";
 import { createIdentityVerificationProvider } from "../../api/identity-verification-provider";
 import { useGetIdVPMetadata } from "../../api/use-get-idvp-metadata";
 import { useGetIdVPTemplate } from "../../api/use-get-idvp-template";
+import { IdentityVerificationProviderConstants } from "../../constants/identity-verification-provider-constants";
 import useInitializeHandlers from "../../hooks/use-custom-initialize-handlers";
 import useValidationHandlers from "../../hooks/use-custom-validation-handlers";
-import { IDVPConfigPropertiesInterface, OldIdentityVerificationProviderInterface } from "../../models";
-import { IdentityVerificationProviderInterface, IdVPClaimsInterface, IdVPConfigPropertiesInterface } from "../../models/new-models";
+import { IDVPConfigPropertiesInterface } from "../../models";
+import { IdVPClaimsInterface, IdVPConfigPropertiesInterface, IdentityVerificationProviderInterface } from "../../models/new-models";
 
 interface IdVPCreationModalPropsInterface extends IdentifiableComponentInterface {
     selectedTemplate: ConnectionTemplateInterface
@@ -41,6 +46,7 @@ export const IdVPCreationModal: FunctionComponent<IdVPCreationModalPropsInterfac
     ["data-componentid"]: componentId = "idvp-create-modal"
 }: IdVPCreationModalPropsInterface): ReactElement => {
     const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
 
     const {
         data: fetchedTemplateData,
@@ -104,11 +110,25 @@ export const IdVPCreationModal: FunctionComponent<IdVPCreationModalPropsInterfac
         };
 
         createIdentityVerificationProvider(payload)
-            .then(() => {
-                console.log("Identity verification provider created successfully");
+            .then((createdIdVP: IdentityVerificationProviderInterface) => {
                 callback(null, null);
+
+                dispatch(addAlert({
+                    description: t("idvp:notifications.addIDVP.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("idvp:notifications.addIDVP.success.message")
+                }));
+
+                const { id } = createdIdVP;
+
+                history.push({
+                    pathname: AppConstants.getPaths()
+                        .get(IdentityVerificationProviderConstants.IDVP_EDIT_PATH)
+                        .replace(":id", id)
+                });
             })
             .catch((error) => {
+                //TODO: Provide proper error message.
                 console.log("Error occurred while creating identity verification provider", error);
                 callback("Error", null);
             });

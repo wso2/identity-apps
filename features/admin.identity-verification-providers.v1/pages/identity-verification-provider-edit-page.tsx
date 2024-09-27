@@ -33,14 +33,12 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import {
-    useIDVPTemplateTypeMetadata,
-    useIdentityVerificationProvider,
-    useUIMetadata
-} from "../api";
+import { useGetIdentityVerificationProvider } from "../api/use-get-idvp";
+import { useGetIdVPMetadata } from "../api/use-get-idvp-metadata";
+import { useGetIdVPTemplate } from "../api/use-get-idvp-template";
 import { EditIdentityVerificationProvider } from "../components";
 import { IdentityVerificationProviderConstants } from "../constants";
-import { IDVPTemplateItemInterface } from "../models";
+import { IdVPTemplateInterface } from "../models/new-models";
 import { handleIDVPFetchRequestError, handleIDVPTemplateTypesLoadError, handleUIMetadataLoadError } from "../utils";
 
 /**
@@ -75,19 +73,19 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
         error: idvpFetchError,
         isLoading: isIDVPFetchInProgress,
         mutate: refetchIDVP
-    } = useIdentityVerificationProvider(getIDVPId(location.pathname));
+    } = useGetIdentityVerificationProvider(getIDVPId(location.pathname));
 
     const {
         data: uiMetaData,
         error: uiMetaDataLoadError,
         isLoading: isUIMetadataLoading
-    } = useUIMetadata(idvp?.Type);
+    } = useGetIdVPMetadata(idvp?.type);
 
     const {
-        data: idvpTemplateTypeMetadata,
-        error: idvpTemplateTypeMetadataLoadError,
-        isLoading: isIDVPTemplateTypeMetadataLoading
-    } = useIDVPTemplateTypeMetadata(idvp?.Type);
+        data: fetchedTemplateData,
+        error: templateDataFetchRequestError,
+        isLoading: isTemplateDataFetchRequestLoading
+    } = useGetIdVPTemplate(idvp?.type);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -134,11 +132,11 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
      * Show error notification if the API encounters an error while fetching the IDVP template types.
      */
     useEffect(() => {
-        if(!idvpTemplateTypeMetadataLoadError){
+        if(!templateDataFetchRequestError){
             return;
         }
-        handleIDVPTemplateTypesLoadError(idvpTemplateTypeMetadataLoadError);
-    }, [ idvpTemplateTypeMetadataLoadError ]);
+        handleIDVPTemplateTypesLoadError(templateDataFetchRequestError);
+    }, [ templateDataFetchRequestError ]);
 
     /**
      * Handles the back button click event.
@@ -172,12 +170,14 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
     /**
      * Resolves the identity verification provider image.
      *
-     * @param idvpTemplateType - Evaluating idvpTemplateType.
+     * @param idVPTemplate - Evaluating idvpTemplateType.
      * @returns React element containing IDVP image.
      */
-    const resolveIDVPImage = (idvpTemplateType: IDVPTemplateItemInterface): ReactElement => {
+    const resolveIDVPImage = (idVPTemplate: IdVPTemplateInterface): ReactElement => {
 
-        if (!idvpTemplateType) {
+        const { payload } = idVPTemplate || {};
+
+        if (!payload) {
             return (
                 <AppAvatar
                     hoverable={ false }
@@ -187,12 +187,15 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
             );
         }
 
-        if (idvpTemplateType.image) {
+        const { name, image } = payload;
+
+        // Return `AppAvatar` if image exists, otherwise return `AnimatedAvatar`.
+        if (image) {
             return (
                 <AppAvatar
                     hoverable={ false }
-                    name={ idvpTemplateType.name }
-                    image={ idvpTemplateType.image }
+                    name={ name }
+                    image={ image }
                     size="tiny"
                 />
             );
@@ -201,27 +204,25 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
         return (
             <AnimatedAvatar
                 hoverable={ false }
-                name={ idvpTemplateType.name }
+                name={ name }
                 size="tiny"
                 floated="left"
             />
         );
-
-
     };
 
     return (
         <TabPageLayout
             pageTitle="Edit Identity Verification Provider"
-            isLoading={ isIDVPFetchInProgress || isIDVPTemplateTypeMetadataLoading }
+            isLoading={ isIDVPFetchInProgress || isTemplateDataFetchRequestLoading }
             loadingStateOptions={ {
                 count: 5,
                 imageType: "square"
             } }
-            title={ idvp?.Name }
+            title={ idvp?.name }
             contentTopMargin={ true }
             description={ idvp?.description }
-            image={ resolveIDVPImage(idvpTemplateTypeMetadata) }
+            image={ resolveIDVPImage(fetchedTemplateData) }
             backButton={ {
                 "data-componentid": `${ componentId }-page-back-button`,
                 onClick: handleBackButtonClick,
@@ -243,6 +244,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
                     isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
                     tabIdentifier={ tabIdentifier }
                     uiMetaData={ uiMetaData }
+                    templateData={ fetchedTemplateData }
                 />
             }
         </TabPageLayout>

@@ -474,7 +474,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 {
                     component: lazy(() => import(
                         "@wso2is/admin.identity-verification-providers.v1/pages/" +
-                        "identity-verification-provider-edit")
+                        "identity-verification-provider-edit-page")
                     ),
                     exact: true,
                     icon: {

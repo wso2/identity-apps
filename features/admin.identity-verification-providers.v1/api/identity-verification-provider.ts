@@ -103,12 +103,11 @@ export const updateIdentityVerificationProvider = ({ id, ...rest }: OldIdentityV
 
 /**
  * Creates an identity verification provider.
- * @param id - ID of the identity verification provider (can be undefined).
- * @param rest - Rest of the data.
+ * @param data - Identity verification provider data.
  * @returns - A promise containing the response from the API call.
  */
 export const createIdentityVerificationProvider = (data: IdentityVerificationProviderInterface):
-    Promise<HttpResponse | undefined> => {
+    Promise<IdentityVerificationProviderInterface | undefined> => {
 
     const requestConfig: RequestConfigInterface = {
         data: data,
@@ -121,7 +120,20 @@ export const createIdentityVerificationProvider = (data: IdentityVerificationPro
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse) => response)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 201) {
+                throw new IdentityAppsApiException(
+                    "Identity verification provider creation received a non-201 status code.",
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config
+                );
+            }
+
+            return Promise.resolve(response.data as IdentityVerificationProviderInterface);
+        })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 error.message,
@@ -195,7 +207,7 @@ export const getIdentityVerificationProvidersList = (
             const idVPListResponse: OldIDVPListResponseInterface = response.data as OldIDVPListResponseInterface;
             const modifiedIdVPList: IdentityVerificationProviderInterface[] = idVPListResponse
                 .identityVerificationProviders
-                .map((idVP: OldIdentityVerificationProviderInterface) => {
+                ?.map((idVP: OldIdentityVerificationProviderInterface) => {
                     const { Name, Type, ...rest } = idVP;
 
                     return {
@@ -203,7 +215,7 @@ export const getIdentityVerificationProvidersList = (
                         type: Type,
                         ...rest
                     };
-                });
+                }) || [];
 
             return Promise.resolve({
                 ...idVPListResponse,

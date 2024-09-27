@@ -23,15 +23,17 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { AcceptHeaderValues, HttpMethods } from "@wso2is/core/models";
-import { OldIdentityVerificationProviderInterface } from "../models/identity-verification-provider";
+import { IdentityVerificationProviderInterface } from "../models/new-models";
 
 /**
  * Hook to get an identity verification provider.
  * @param id - ID of the identity verification provider.
  * @returns Requested IdVP.
  */
-export const useIdentityVerificationProvider = <Data = OldIdentityVerificationProviderInterface,
-    Error = RequestErrorInterface>(id: string): RequestResultInterface<Data, Error> => {
+export const useGetIdentityVerificationProvider = <
+    Data = IdentityVerificationProviderInterface,
+    Error = RequestErrorInterface
+>(id: string): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -40,7 +42,9 @@ export const useIdentityVerificationProvider = <Data = OldIdentityVerificationPr
         method: HttpMethods.GET,
         url: `${ store.getState().config.endpoints.identityVerificationProviders }/${ id }`
     };
-    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
+        id ? requestConfig : null
+    );
 
     return {
         data,

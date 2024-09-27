@@ -73,7 +73,7 @@ interface AttributeSettingsPropsInterface extends IdentifiableComponentInterface
     /**
      * Loading Component.
      */
-    loader: () => ReactElement;
+    loader?: () => ReactElement;
 }
 
 /**
@@ -146,7 +146,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
 
     if (isLoading) {
-        return <Loader/>;
+        return <div>Loading...</div>;
     }
 
     return (
