@@ -92,7 +92,9 @@ interface AdministratorsListProps extends IdentifiableComponentInterface {
      * List of available user stores
      */
     availableUserStores: UserStoreDropdownItem[];
-
+    /**
+     * Selected administrator user group.
+     */
     selectedAdministratorGroup: string;
 }
 
@@ -108,7 +110,9 @@ enum AddAdministratorModes {
      * To invite a new user as an administrator.
      */
     InviteParentUser = "inviteParentUser",
-
+    /**
+     * To invite an external user as an administrator.
+     */
     AddExternal = "addExternalAdmin"
 }
 
