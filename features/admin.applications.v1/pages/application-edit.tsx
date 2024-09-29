@@ -19,14 +19,11 @@
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Button from "@oxygen-ui/react/Button";
-import Card from "@oxygen-ui/react/Card";
-import CardContent from "@oxygen-ui/react/CardContent";
 import Grid from "@oxygen-ui/react/Grid";
 import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
-import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
-import { CheckIcon } from "@oxygen-ui/react-icons";
+import Typography from "@oxygen-ui/react/Typography";
 import { useRequiredScopes } from "@wso2is/access-control";
 import ApplicationTemplateMetadataProvider from
     "@wso2is/admin.application-templates.v1/provider/application-template-metadata-provider";
@@ -63,7 +60,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { Label } from "semantic-ui-react";
+import { Icon, Label } from "semantic-ui-react";
 import { updateApplicationDetails } from "../api/application";
 import { useGetApplication } from "../api/use-get-application";
 import { EditApplication } from "../components/edit-application";
@@ -567,8 +564,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                             severity="warning"
                             action={
                                 (
-                                    <>
-                                        <Button onClick={ () => setViewBannerDetails(!viewBannerDetails) }>
+                                    <div>
+                                        <Button
+                                            data-componentid={ `${componentId}-outdated-app-view-details-button` }
+                                            onClick={ () => setViewBannerDetails(!viewBannerDetails) }>
                                             {
                                                 !viewBannerDetails ?
                                                     t("applications:forms.inboundOIDC.sections"
@@ -578,34 +577,37 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                             }
                                         </Button>
                                         <Button
+                                            data-componentid={ `${componentId}-outdated-app-ignore-button` }
                                             className="ignore-once-button"
                                             onClick={ () => setDisplayBanner(false) }>
-                                            { t("applications:forms.inboundOIDC.sections"
-                                                        + ".outdatedApplications.alert.cancelButton") }
+                                            <Icon
+                                                link={ true }
+                                                onClick={ () => setDisplayBanner(false) }
+                                                className=""
+                                                size="small"
+                                                color="grey"
+                                                name="close"
+                                                data-componentid={ `${componentId}-close-btn` }
+                                            />
                                         </Button>
-                                    </>
+                                    </div>
                                 )
                             }
                         >
                             <AlertTitle className="alert-title">
                                 <Trans components={ { strong: <strong/> } } >
                                     { t("applications:forms.inboundOIDC.sections.outdatedApplications"
-                                                + ".alert.title") }
+                                        + ".alert.title") }
                                 </Trans>
                             </AlertTitle>
                             <Trans>
                                 { t("applications:forms.inboundOIDC.sections.outdatedApplications"
-                                                    + ".alert.content") }
+                                        + ".alert.content") }
                             </Trans>
+                            {
+                                viewBannerDetails && resolveBannerViewDetails()
+                            }
                         </Alert>
-                        <Card
-                            className="banner-detail-card"
-                            hidden={ !viewBannerDetails }
-                        >
-                            <CardContent className="banner-detail-content">
-                                { resolveBannerViewDetails() }
-                            </CardContent>
-                        </Card>
                     </div>
                 )
         );
@@ -623,20 +625,22 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 onSubmit={ handleBannerCheckBoxUpdate }
                 data-componentId={ `${componentId}-application-outdated-banner-form` }>
                 <Grid className="banner-grid">
-                    <List>
+                    <List dense>
                         <ListItem
                             sx={ {
                                 display: "list-item",
                                 listStyleType: "disc"
                             } }>
                             <ListItemText>
-                                <Trans
-                                    i18nKey={
-                                        t("applications:forms.inboundOIDC.sections"
+                                <Typography variant="body2" >
+                                    <Trans
+                                        i18nKey={
+                                            t("applications:forms.inboundOIDC.sections"
                                             + ".outdatedApplications.fields."
                                             + "versions.version100.useClientIdAsSubClaimOfAppTokens.instruction")
-                                    }
-                                />
+                                        }
+                                    />
+                                </Typography>
                                 <DocumentationLink
                                     link={
                                         getLink("develop.applications.editApplication.outdatedApplications.versions."
@@ -659,13 +663,15 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                 listStyleType: "disc"
                             } }>
                             <ListItemText>
-                                <Trans
-                                    i18nKey={
-                                        t("applications:forms.inboundOIDC.sections"
+                                <Typography variant="body2" >
+                                    <Trans
+                                        i18nKey={
+                                            t("applications:forms.inboundOIDC.sections"
                                             + ".outdatedApplications.fields.versions.version100."
                                             + "removeUsernameFromIntrospectionRespForAppTokens.instruction")
-                                    }
-                                />
+                                        }
+                                    />
+                                </Typography>
                                 <DocumentationLink
                                     link={
                                         getLink("develop.applications.editApplication.outdatedApplications.versions."
@@ -688,7 +694,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 <Button
                     variant="contained"
                     type="submit"
-                    data-componentId={ `${componentId}-application-outdated-banner-button` }
+                    data-componentId={ `${componentId}-outdated-app-update-button` }
                 >
                     { t("common:update") }
                 </Button>
@@ -706,7 +712,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         return (
             <ConfirmationModal
                 primaryActionLoading={ bannerUpdateLoading }
-                data-componentId={ `${componentId}-application-version-update-confirmation-modal` }
+                data-componentId={ `${componentId}-application-update-confirmation-modal` }
                 onClose={ (): void => setShowConfirmationModal(false) }
                 type="negative"
                 open={ showConfirmationModal }
@@ -722,12 +728,12 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header
-                    data-componentId={ `${componentId}-application-version-update-confirmation-modal-header` }>
+                    data-componentId={ `${componentId}-application-update-confirmation-modal-header` }>
                     { t("applications:forms.inboundOIDC.sections.outdatedApplications"
                         + ".confirmationModal.header") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
-                    data-componentId={ `${componentId}-application-version-update-confirmation-modal-message` }
+                    data-componentId={ `${componentId}-application-update-confirmation-modal-message` }
                     attached
                     negative
                 >
@@ -735,7 +741,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         + ".confirmationModal.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content
-                    data-componentId={ `${componentId}-application-version-update-confirmation-modal-content` }
+                    data-componentId={ `${componentId}-application-update-confirmation-modal-content` }
                 >
                     { t("applications:forms.inboundOIDC.sections.outdatedApplications"
                         + ".confirmationModal.content") }
@@ -805,6 +811,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             });
     };
 
+    console.log("application: ", application);
+    console.log("moderatedApplicationData: ", moderatedApplicationData);
+
+
     return (
         <TabPageLayout
             pageTitle="Edit Application"
@@ -824,7 +834,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         <div className="with-label ellipsis" ref={ appDescElement }>
                             { resolveTemplateLabel() }
                             {
-                                ApplicationManagementUtils.getIfAppIsOutdated("v0.0.0") && (
+                                ApplicationManagementUtils.getIfAppIsOutdated(
+                                    moderatedApplicationData?.applicationVersion) && (
                                     <Label
                                         className="no-margin-left application-outdated-label"
                                         size="small"

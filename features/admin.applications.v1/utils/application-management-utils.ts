@@ -106,18 +106,23 @@ export class ApplicationManagementUtils {
 
     public static getIfAppIsOutdated(applicationVersion: string): boolean {
 
-        const appVersionArray: number[] = applicationVersion?.match(/\d+/g).map(Number);
-        const latestAppVersionArray: number[] = ApplicationManagementConstants.LATEST_VERSION.match(/\d+/g).map(Number);
+        if (applicationVersion != undefined) {
+            const appVersionArray: number[] = applicationVersion?.match(/\d+/g).map(Number);
+            const latestAppVersionArray: number[] = ApplicationManagementConstants
+                .LATEST_VERSION.match(/\d+/g).map(Number);
 
-        if (appVersionArray[0] < latestAppVersionArray[0]) {
-            return true;
-        } else if (appVersionArray[1] < latestAppVersionArray[1]) {
-            return true;
-        } else if (appVersionArray[2] < latestAppVersionArray[2]) {
-            return true;
-        } else {
-            return false;
+            if (appVersionArray[0] < latestAppVersionArray[0]) {
+                return true;
+            } else if (appVersionArray[1] < latestAppVersionArray[1]) {
+                return true;
+            } else if (appVersionArray[2] < latestAppVersionArray[2]) {
+                return true;
+            } else {
+                return false;
+            }
         }
+
+        return false;
     }
 
     /**

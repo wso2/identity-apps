@@ -148,8 +148,8 @@
 
 .ui.label {
     &.application-outdated-label {
-        color: #f28753;
-        background-color: #fff4ea;
+        color: #fd9200;
+        background-color: #fff4e5;
     }
 }
 

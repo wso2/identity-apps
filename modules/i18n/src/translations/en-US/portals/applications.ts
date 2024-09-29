@@ -1652,12 +1652,12 @@ export const applications: ApplicationsNS = {
                         hideButton: "Hide Details",
                         cancelButton: "Ignore Once"
                     },
-                    label: "outdated",
+                    label: "Outdated",
                     documentationHint: "More Details",
                     confirmationModal: {
                         header: "Have you done the relevant changes?",
                         message: "Proceeding the action without making relevant change will cause the client application behavior break.",
-                        content: "Confirming the action will,",
+                        content: "This action is irreversible and will permanently update the application.",
                         assertionHint: "Please confirm your action"
                     },
                     fields: {
