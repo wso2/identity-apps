@@ -402,6 +402,8 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                 setConnector(response);
             })
             .catch((error: IdentityAppsApiException) => {
+                console.log(error);
+
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: t("authenticationProvider:" +
@@ -450,6 +452,8 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                     setConnector(response);
                 })
                 .catch((error: IdentityAppsApiException) => {
+                    console.log(error);
+
                     if (error.response && error.response.data && error.response.data.description) {
                         dispatch(addAlert({
                             description: t("authenticationProvider:" +

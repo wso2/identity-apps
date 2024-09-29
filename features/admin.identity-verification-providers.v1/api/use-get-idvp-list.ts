@@ -35,7 +35,7 @@ import { IdVPListResponseInterface } from "../models/new-models";
  *
  * @returns Requested IdVP list.
  */
-export const useIdentityVerificationProviderList = <Data = IdVPListResponseInterface, Error = RequestErrorInterface>(
+export const useGetIdentityVerificationProviderList = <Data = IdVPListResponseInterface, Error = RequestErrorInterface>(
     limit?: number,
     offset?: number,
     filter?: string,

@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { IdentityVerificationProviderConstants } from "../../constants";
 import { OldIdentityVerificationProviderInterface } from "../../models";
 import { validateIDVPName } from "../../utils";
-import { useIdentityVerificationProviderList } from "../../api/use-get-idvp-list";
+import { useGetIdentityVerificationProviderList } from "../../api/use-get-idvp-list";
 
 /**
  * Proptypes for the identity verification provider general details form component.
@@ -72,7 +72,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     } = props;
 
     const { t } = useTranslation();
-    const { data: idvpList } = useIdentityVerificationProviderList();
+    const { data: idvpList } = useGetIdentityVerificationProviderList();
 
     /**
      * Prepare form values for submitting.

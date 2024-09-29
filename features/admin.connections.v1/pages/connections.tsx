@@ -30,6 +30,7 @@ import {
 import {
     AuthenticatorExtensionsConfigInterface
 } from "@wso2is/admin.extensions.v1/configs";
+import { IdVPTemplateTag } from "@wso2is/admin.identity-verification-providers.v1/models/new-models";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
     DocumentationLink,
@@ -54,6 +55,7 @@ import { useGetAuthenticatorTags, useGetAuthenticators } from "../api/authentica
 import { useGetConnections } from "../api/connections";
 import { AuthenticatorGrid } from "../components/authenticator-grid";
 import { LocalAuthenticatorConstants } from "../constants/local-authenticator-constants";
+import { useGetCombinedConnectionList } from "../hooks/use-get-combined-connection-list";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
     AuthenticatorInterface,
@@ -113,7 +115,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         isLoading: isAuthenticatorsFetchRequestLoading,
         error: authenticatorsFetchRequestError,
         mutate: mutateAuthenticatorsFetchRequest
-    } = useGetAuthenticators(filter);
+    } = useGetAuthenticators(filter, false);
 
     const {
         data: connections,
@@ -125,7 +127,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         listOffset,
         filter,
         "federatedAuthenticators",
-        !filterAuthenticatorsOnly,
+        false,
         filterAuthenticatorsOnly
     );
 
@@ -134,6 +136,13 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         isLoading: isAuthenticatorTagsFetchRequestLoading,
         error: authenticatorTagsFetchRequestError
     } = useGetAuthenticatorTags();
+
+    const {
+        data: combinedConnectionList,
+        isLoading: isCombinedConnectionListFetchRequestLoading,
+        error: combinedConnectionListFetchRequestError,
+        mutate: mutateCombinedConnectionListFetchRequest
+    } = useGetCombinedConnectionList(listItemLimit, listOffset);
 
     useEffect(() => {
         if (!connections) {
@@ -236,7 +245,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         });
 
         setLocalAuthenticatorList(moderated);
-        setListItemLimit(UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT - moderated.length);
+        // setListItemLimit(UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT - moderated.length);
     }, [ authenticators ]);
 
     /**
@@ -303,7 +312,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
 
 
             setLocalAuthenticatorList(moderated);
-            setListItemLimit(UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT - moderated.length);
+            // setListItemLimit(UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT - moderated.length);
         }
     }, [ authenticators ]);
 
@@ -322,9 +331,15 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
             return;
         }
 
-        setFilterTags(authenticatorTags.filter((tag: string) =>
-            AuthenticatorMeta.getAllowedFilterTags().includes(tag))
-        );
+        const _filteredTags: string[] = authenticatorTags.filter((tag: string) => {
+            if (Object.values(IdVPTemplateTag).includes(tag as IdVPTemplateTag)) {
+                return true;
+            };
+
+            return AuthenticatorMeta.getAllowedFilterTags().includes(tag);
+        });
+
+        setFilterTags(_filteredTags);
     }, [ authenticatorTags ]);
 
     /**
@@ -335,7 +350,8 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
             return;
         }
 
-        mutateConnectionsFetchRequest();
+        console.log("Mutating");
+        // mutateConnectionsFetchRequest();
     }, [ listOffset, listItemLimit ]);
 
     /**
@@ -377,14 +393,14 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
      * Handles the `onUpdate` callback action.
      */
     const onUpdate = (): void => {
-        mutateAuthenticatorsFetchRequest();
-        mutateConnectionsFetchRequest();
+        mutateCombinedConnectionListFetchRequest();
     };
 
     /**
      * Handles Grid pagination.
      */
     const handlePagination = (): void => {
+
         if (!hasNextPage) {
             return;
         }
@@ -429,7 +445,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
             <GridLayout
                 search={ (
                     <SearchWithFilterLabels
-                        isLoading= { isConnectionsFetchRequestLoading || isAuthenticatorsFetchRequestLoading }
+                        isLoading= { isCombinedConnectionListFetchRequestLoading }
                         searchInput={ (
                             <AdvancedSearchWithBasicFilters
                                 fill="white"
@@ -492,8 +508,8 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                 } }
             >
                 <AuthenticatorGrid
-                    isLoading= { isConnectionsFetchRequestLoading || isAuthenticatorsFetchRequestLoading }
-                    authenticators={ showFilteredList ? filteredAuthenticatorList : connectionsList?.identityProviders }
+                    isLoading= { isCombinedConnectionListFetchRequestLoading }
+                    authenticators={ combinedConnectionList }
                     onEmptyListPlaceholderActionClick={ () => {
                         eventPublisher.publish("connections-click-new-connection-button");
                         history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));

@@ -43,7 +43,7 @@ const httpClient: (
  * @param id - ID of the identity verification provider.
  * @returns - A promise containing the response from the API call.
  */
-export const deleteIDVP = async (id: string): Promise<HttpResponse> => {
+export const deleteIdentityVerificationProvider = async (id: string): Promise<AxiosResponse> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -55,7 +55,7 @@ export const deleteIDVP = async (id: string): Promise<HttpResponse> => {
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse) =>  response)
+        .then((response: AxiosResponse) =>  response)
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 error.message,

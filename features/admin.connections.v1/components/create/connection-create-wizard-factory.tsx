@@ -24,13 +24,9 @@ import React, { FC, ReactElement } from "react";
 import { AuthenticatorCreateWizardFactory } from "./authenticator-create-wizard-factory";
 import {
     ConnectionTemplateInterface,
+    ConnectionTypes,
     GenericConnectionCreateWizardPropsInterface
 } from "../../models/connection";
-
-enum ConnectionType {
-    CONNECTION = "connections",
-    IDVP = "identity-verification-providers"
-}
 
 /**
  * Proptypes for the Authenticator Create Wizard factory.
@@ -53,7 +49,7 @@ interface ConnectionCreateWizardFactoryPropsInterface extends IdentifiableCompon
      * Callback to be triggered on successful IDP create.
      */
     onIDPCreate: GenericConnectionCreateWizardPropsInterface[ "onIDPCreate" ];
-    connectionType: ConnectionType;
+    connectionType: ConnectionTypes;
     /**
      * Type of the wizard.
      */
@@ -89,9 +85,11 @@ export const ConnectionCreateWizardFactory: FC<ConnectionCreateWizardFactoryProp
     if (!isModalOpen) {
         return null;
     }
+    console.log(connectionType);
+
 
     switch (connectionType) {
-        case ConnectionType.IDVP:
+        case ConnectionTypes.IDVP:
             return (
                 <IdVPCreationModal
                     selectedTemplate={ selectedTemplate }
@@ -100,7 +98,7 @@ export const ConnectionCreateWizardFactory: FC<ConnectionCreateWizardFactoryProp
                 />
             );
 
-        case ConnectionType.CONNECTION:
+        default:
             return (
                 <AuthenticatorCreateWizardFactory
                     isModalOpen={ isModalOpen }
@@ -111,8 +109,5 @@ export const ConnectionCreateWizardFactory: FC<ConnectionCreateWizardFactoryProp
                     { ...rest }
                 />
             );
-
-        default:
-            return null;
     };
 };

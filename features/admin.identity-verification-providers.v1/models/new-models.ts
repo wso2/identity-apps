@@ -72,6 +72,7 @@ export interface IdentityVerificationProviderInterface {
     isEnabled: boolean;
     image?: string;
     templateId?: string;
+    tags?: string[];
     claims?: IdVPClaimsInterface[];
     configProperties?: IdVPConfigPropertiesInterface[];
 }
@@ -173,3 +174,7 @@ export interface IdVPTemplateResponseInterface {
         configProperties?: IdVPConfigPropertiesInterface[];
     }
 }
+
+export enum IdVPTemplateTag {
+    IDENTITY_VERIFICATION = "Identity-Verification"
+};

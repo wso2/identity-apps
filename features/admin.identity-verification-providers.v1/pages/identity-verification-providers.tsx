@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { useIDVPTemplateTypeMetadataList } from "../api";
-import { useIdentityVerificationProviderList } from "../api/use-get-idvp-list";
+import { useGetIdentityVerificationProviderList } from "../api/use-get-idvp-list";
 import { IdentityVerificationProviderList } from "../components";
 import { IdentityVerificationProviderConstants } from "../constants";
 import { handleIDVPTemplateRequestError, handleIdvpListFetchRequestError } from "../utils";
@@ -50,7 +50,7 @@ const IdentityVerificationProvidersPage: FunctionComponent<IDVPPropsInterface> =
         isLoading: isIDVPListRequestLoading,
         error: idvpListFetchRequestError,
         mutate: idvpListMutator
-    } = useIdentityVerificationProviderList(listItemLimit, listOffset);
+    } = useGetIdentityVerificationProviderList(listItemLimit, listOffset);
 
     const {
         data: idvpTemplateTypes,

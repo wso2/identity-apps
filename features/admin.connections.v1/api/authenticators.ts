@@ -57,7 +57,8 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * @returns Response as a promise.
  */
 export const useGetAuthenticators = <Data = AuthenticatorInterface[], Error = RequestErrorInterface>(
-    filter?: string
+    filter?: string,
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
     const { resourceEndpoints } = useResourceEndpoints();
@@ -74,12 +75,18 @@ export const useGetAuthenticators = <Data = AuthenticatorInterface[], Error = Re
         url: resourceEndpoints.authenticators
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const {
+        data,
+        error,
+        isLoading,
+        isValidating,
+        mutate
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,
-        error: error,
-        isLoading: !error && !data,
+        error,
+        isLoading,
         isValidating,
         mutate
     };
@@ -165,12 +172,18 @@ export const useGetAuthenticatorTags = <Data = string[], Error = RequestErrorInt
         url: resourceEndpoints.authenticatorTags
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+
+    let modifiedData: string[] = [];
+
+    if (data) {
+        modifiedData = [ ...(data as string[]), "Identity-Verification" ];
+    }
 
     return {
-        data,
-        error: error,
-        isLoading: !error && !data,
+        data: modifiedData as Data,
+        error,
+        isLoading,
         isValidating,
         mutate
     };

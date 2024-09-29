@@ -28,6 +28,7 @@ import {
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import { deleteIdentityVerificationProvider } from "@wso2is/admin.identity-verification-providers.v1/api";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -38,7 +39,7 @@ import {
     PrimaryButton,
     ResourceGrid
 } from "@wso2is/react-components";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -60,14 +61,15 @@ import { getConnectionIcons } from "../configs/ui";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
     AuthenticatorExtensionsConfigInterface,
-    AuthenticatorInterface
+    AuthenticatorInterface,
+    AuthenticatorTypes
 } from "../models/authenticators";
 import {
     ApplicationBasicInterface,
     ConnectedAppInterface,
     ConnectedAppsInterface,
     ConnectionInterface,
-    StrictConnectionInterface
+    ConnectionTypes
 } from "../models/connection";
 import { ConnectionsManagementUtils, handleConnectionDeleteError } from "../utils/connection-utils";
 
@@ -155,7 +157,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     const { UIConfig } = useUIConfig();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
-    const [ deletingIDP, setDeletingIDP ] = useState<StrictConnectionInterface>(undefined);
+    const [ deletingIDP, setDeletingIDP ] = useState<ConnectionInterface>(undefined);
     const [ isDeletionloading, setIsDeletionLoading ] = useState(false);
     const [ connectedApps, setConnectedApps ] = useState<string[]>(undefined);
     const [
@@ -169,6 +171,9 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
     const hasConnectionUpdatePermission: boolean = useRequiredScopes(featureConfig?.identityProviders?.scopes?.update);
     const hasConnectionDeletePermission: boolean = useRequiredScopes(featureConfig?.identityProviders?.scopes?.delete);
+    const hasIdVPDeletePermission: boolean = useRequiredScopes(
+        featureConfig?.identityVerificationProviders?.scopes?.delete
+    );
 
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
@@ -177,8 +182,18 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      *
      * @param id - Authenticator ID.
      */
-    const handleAuthenticatorEdit = (id: string): void => {
-        history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", id));
+    const handleAuthenticatorEdit = (id: string, connectionType: string): void => {
+        switch (connectionType) {
+            case ConnectionTypes.IDVP:
+                history.push(AppConstants.getPaths().get("IDVP_EDIT").replace(":id", id));
+
+                break;
+
+            default:
+                history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", id));
+
+                break;
+        }
     };
 
     /**
@@ -195,7 +210,16 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      *
      * @param idpId - Identity provider id.
      */
-    const handleAuthenticatorDeleteInitiation = async (idpId: string): Promise<void> => {
+    const handleAuthenticatorDeleteInitiation = async (idpId: string, connectionType: string): Promise<void> => {
+        // If the connection is an Identity Verification Provider, then skip checking for connected apps.
+        if (connectionType === ConnectionTypes.IDVP) {
+            setDeletingIDP(authenticators.find(
+                (idp: ConnectionInterface | AuthenticatorInterface) => idp.id === idpId)
+            );
+            setShowDeleteConfirmationModal(true);
+
+            return;
+        }
 
         setIsConnectedAppsLoading(true);
 
@@ -254,13 +278,26 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      *
      * @param id - Authenticator ID.
      */
-    const handleAuthenticatorDelete = (id: string): void => {
+    const handleAuthenticatorDelete = (id: string, connectionType: string): void => {
 
         setIsDeletionLoading(true);
 
-        deleteConnection(id)
+        let deleteAction: (id: string) => Promise<AxiosResponse>;
+
+        switch (connectionType) {
+            case ConnectionTypes.IDVP:
+                deleteAction = deleteIdentityVerificationProvider;
+
+                break;
+
+            default:
+                deleteAction = deleteConnection;
+
+                break;
+        }
+
+        deleteAction(id)
             .then(() => {
-                onConnectionUpdate();
                 dispatch(addAlert({
                     description: t("authenticationProvider:" +
                         "notifications.deleteConnection.success.description"),
@@ -346,8 +383,52 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      */
     const handleGridItemOnClick = (e: SyntheticEvent, authenticator: ConnectionInterface
         | AuthenticatorInterface): void => {
-        handleAuthenticatorEdit(authenticator.id);
+        handleAuthenticatorEdit(authenticator.id, authenticator.type);
         onItemClick && onItemClick(e, authenticator);
+    };
+
+    /**
+     * Checks if the delete button should be enabled.
+     *
+     * @param authenticator - Authenticator.
+     * @returns - True if the delete button is enabled, false otherwise.
+     */
+    const isDeleteEnabled = (authenticator: ConnectionInterface): boolean => {
+        if (authenticator.type === ConnectionTypes.IDVP) {
+            return hasIdVPDeletePermission;
+        }
+
+        if (!hasConnectionDeletePermission) {
+            return false;
+        }
+
+        return ConnectionsManagementUtils.isConnectorIdentityProvider(authenticator)
+            || (authenticator as ConnectionInterface).type === AuthenticatorTypes.FEDERATED;
+    };
+
+    const resolveResourceImage = (
+        authenticator: ConnectionInterface,
+        isIdP: boolean,
+        isOrganizationSSOIDP: boolean
+    ): string => {
+        if (authenticator.type === ConnectionTypes.IDVP) {
+            return ConnectionsManagementUtils
+                .resolveConnectionResourcePath(connectionResourcesUrl, authenticator.image);
+        }
+
+        if ((authenticator?.type === AuthenticatorTypes.FEDERATED || isIdP) && !isOrganizationSSOIDP) {
+            return authenticator?.image
+                ? ConnectionsManagementUtils.resolveConnectionResourcePath(connectionResourcesUrl, authenticator.image)
+                : getConnectionIcons().default;
+        }
+
+        if (isOrganizationSSOIDP) {
+            return AuthenticatorMeta.getAuthenticatorIcon(
+                (authenticator as ConnectionInterface)?.federatedAuthenticators?.defaultAuthenticatorId
+            );
+        }
+
+        return AuthenticatorMeta.getAuthenticatorIcon(authenticator?.id);
     };
 
     return (
@@ -371,10 +452,6 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
                         const isIdP: boolean = ConnectionsManagementUtils
                             .isConnectorIdentityProvider(authenticator);
-
-                        const isIdPDeletable: boolean = ConnectionsManagementUtils
-                            .isConnectorIdentityProvider(authenticator) ||
-                            authenticator.type === "FEDERATED";
 
                         const isOrganizationSSOIDP: boolean = ConnectionsManagementUtils
                             .isOrganizationSSOConnection((authenticator as ConnectionInterface)
@@ -403,13 +480,13 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                         });
                                         handleGridItemOnClick(e, authenticator);
                                     } }
-                                    onDelete={ () => handleAuthenticatorDeleteInitiation(authenticator.id) }
+                                    onDelete={ () => handleAuthenticatorDeleteInitiation(
+                                        authenticator.id,
+                                        authenticator.type
+                                    ) }
                                     showActions={ true }
                                     showResourceEdit={ true }
-                                    showResourceDelete={
-                                        hasConnectionDeletePermission &&
-                                        isIdPDeletable
-                                    }
+                                    showResourceDelete={ isDeleteEnabled(authenticator) }
                                     isResourceComingSoon={ authenticatorConfig?.isComingSoon }
                                     comingSoonRibbonLabel={ t(FeatureStatusLabel.COMING_SOON) }
                                     resourceName={
@@ -434,24 +511,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                                 : ""
                                     }
                                     resourceDocumentationLink = { null }
-                                    resourceImage={
-                                        (authenticator?.type === "FEDERATED" || isIdP) && !isOrganizationSSOIDP
-                                            ? authenticator?.image
-                                                ? ConnectionsManagementUtils.resolveConnectionResourcePath(
-                                                    connectionResourcesUrl, authenticator?.image)
-                                                : getConnectionIcons().default
-                                            : isOrganizationSSOIDP
-                                                ? AuthenticatorMeta.getAuthenticatorIcon(
-                                                    (authenticator as ConnectionInterface)
-                                                        .federatedAuthenticators?.defaultAuthenticatorId)
-                                                : AuthenticatorMeta.getAuthenticatorIcon(authenticator?.id)
-                                    }
-                                    tags={
-                                        isIdP
-                                            ? ConnectionsManagementUtils.resolveConnectionTags(
-                                                (authenticator as ConnectionInterface).federatedAuthenticators)
-                                            : (authenticator as AuthenticatorInterface).tags
-                                    }
+                                    resourceImage={ resolveResourceImage(authenticator, isIdP, isOrganizationSSOIDP) }
+                                    tags={ (authenticator as AuthenticatorInterface).tags }
                                     data-testid={ `${ testId }-${ authenticator.name }` }
                                     showResourceAction={ false }
                                     showSetupGuideButton={ false }
@@ -476,7 +537,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                         secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={
-                            (): void => handleAuthenticatorDelete(deletingIDP.id)
+                            (): void => handleAuthenticatorDelete(deletingIDP.id, deletingIDP.type)
                         }
                         data-testid={ `${ testId }-delete-confirmation-modal` }
                         closeOnDimmerClick={ false }

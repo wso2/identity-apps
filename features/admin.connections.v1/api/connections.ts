@@ -106,7 +106,6 @@ export const useGetConnections = <Data = ConnectionListResponseInterface, Error 
     shouldFetch: boolean = true,
     expectEmpty: boolean = false
 ): RequestResultInterface<Data, Error> => {
-
     const { resourceEndpoints } = useResourceEndpoints();
 
     const requestConfig: RequestConfigInterface = {
@@ -264,7 +263,7 @@ export const useGetConnectionConnectedApps = <Data = ConnectedAppsInterface, Err
  * @param id - ID of the connection.
  * @returns A promise containing the response.
  */
-export const deleteConnection = (id: string): Promise<any> => {
+export const deleteConnection = (id: string): Promise<AxiosResponse> => {
 
     const requestConfig: AxiosRequestConfig = {
         headers: {

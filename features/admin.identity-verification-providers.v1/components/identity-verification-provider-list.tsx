@@ -42,7 +42,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useS
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { deleteIDVP } from "../api";
+import { deleteIdentityVerificationProvider } from "../api";
 import { IDVPListResponseInterface, IDVPTemplateItemInterface, OldIdentityVerificationProviderInterface } from "../models";
 import { handleIDVPDeleteError, handleIDVPDeleteSuccess } from "../utils";
 
@@ -154,7 +154,7 @@ export const IdentityVerificationProviderList: FunctionComponent<IdentityVerific
     const handleIdvpDeletion = (idvpId: string): void => {
 
         setLoading(true);
-        deleteIDVP(idvpId)
+        deleteIdentityVerificationProvider(idvpId)
             .then(handleIDVPDeleteSuccess)
             .catch((error: IdentityAppsApiException) => {
                 handleIDVPDeleteError(error);

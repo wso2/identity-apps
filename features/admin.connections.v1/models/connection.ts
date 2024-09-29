@@ -765,3 +765,11 @@ export interface EnterpriseConnectionCreateWizardGeneralFormValuesInterface {
      */
     name: string;
 }
+
+/**
+ * Enum for the connection type.
+ */
+export enum ConnectionTypes {
+    CONNECTION = "connections",
+    IDVP = "identity-verification-providers"
+}

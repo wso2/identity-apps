@@ -78,6 +78,7 @@ export const IdVPCreationModal: FunctionComponent<IdVPCreationModalPropsInterfac
         return {
             claims: fetchedTemplateData.payload.claims,
             configProperties: configPropertiesInitialValues,
+            description: fetchedTemplateData.payload.description,
             isEnabled: true,
             templateId: selectedTemplate?.id,
             templateVersion: selectedTemplate?.version

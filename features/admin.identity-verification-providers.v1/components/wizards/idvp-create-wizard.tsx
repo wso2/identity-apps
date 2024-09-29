@@ -58,7 +58,7 @@ import {
 } from "../../utils";
 import { performValidations, renderFormUIWithMetadata } from "../forms/helpers/dynamic-ui-helper";
 import { AttributesSelectionWizardPage } from "../settings/attribute-management/attribute-selection-wizard-page";
-import { useIdentityVerificationProviderList } from "../../api/use-get-idvp-list";
+import { useGetIdentityVerificationProviderList } from "../../api/use-get-idvp-list";
 
 /**
  * Enum for representing the wizard steps.
@@ -161,7 +161,7 @@ export const IdvpCreateWizard: FunctionComponent<IDVPCreateWizardInterface> = (
         data: idvpList,
         isLoading: isIDVPListRequestLoading,
         error: idvpListFetchRequestError
-    } = useIdentityVerificationProviderList();
+    } = useGetIdentityVerificationProviderList();
 
     const {
         data: idvpTemplate,

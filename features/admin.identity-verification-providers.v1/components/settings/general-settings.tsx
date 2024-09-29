@@ -25,7 +25,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { CheckboxProps, Divider } from "semantic-ui-react";
-import { deleteIDVP } from "../../api";
+import { deleteIdentityVerificationProvider } from "../../api";
 import { OldIdentityVerificationProviderInterface } from "../../models";
 import {
     handleIDVPDeleteError,
@@ -109,7 +109,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     const handleIdentityVerificationProviderDelete = (): void => {
 
         setLoading(true);
-        deleteIDVP(idvp.id)
+        deleteIdentityVerificationProvider(idvp.id)
             .then(handleIDVPDeleteSuccess)
             .catch((error: IdentityAppsApiException) => {
                 handleIDVPDeleteError(error);
