@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.8.13
+
+### Patch Changes
+
+- [#6931](https://github.com/wso2/identity-apps/pull/6931) [`53359b5a983183f2fba4fced08febe7ad8ff0d1e`](https://github.com/wso2/identity-apps/commit/53359b5a983183f2fba4fced08febe7ad8ff0d1e) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Hide multi email and mobile specifc attributes.
+
+- Updated dependencies [[`711a03040914f2a76d81cb11a06c6c99d50d2cf7`](https://github.com/wso2/identity-apps/commit/711a03040914f2a76d81cb11a06c6c99d50d2cf7)]:
+  - @wso2is/admin.organizations.v1@2.22.12
+  - @wso2is/common.branding.v1@2.20.176
+
 ## 2.8.12
 
 ### Patch Changes
