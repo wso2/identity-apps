@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.5.34
+
+### Patch Changes
+
+- [#6937](https://github.com/wso2/identity-apps/pull/6937) [`a4d2b3686c77e679bcd42432ecb92b4e1995f9df`](https://github.com/wso2/identity-apps/commit/a4d2b3686c77e679bcd42432ecb92b4e1995f9df) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Improve header field regex
+
 ## 2.5.33
 
 ### Patch Changes
