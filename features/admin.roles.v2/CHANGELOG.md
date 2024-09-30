@@ -1,5 +1,25 @@
 # @wso2is/admin.roles.v2
 
+## 2.22.12
+
+### Patch Changes
+
+- [#6942](https://github.com/wso2/identity-apps/pull/6942) [`5c77f2f0425b5861071d160da7f003e0bee052f4`](https://github.com/wso2/identity-apps/commit/5c77f2f0425b5861071d160da7f003e0bee052f4) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix alignment issues between application role option and the new application role button
+
+- Updated dependencies [[`53359b5a983183f2fba4fced08febe7ad8ff0d1e`](https://github.com/wso2/identity-apps/commit/53359b5a983183f2fba4fced08febe7ad8ff0d1e), [`711a03040914f2a76d81cb11a06c6c99d50d2cf7`](https://github.com/wso2/identity-apps/commit/711a03040914f2a76d81cb11a06c6c99d50d2cf7)]:
+  - @wso2is/admin.users.v1@2.23.12
+  - @wso2is/admin.organizations.v1@2.22.12
+  - @wso2is/admin.applications.v1@2.26.12
+  - @wso2is/admin.core.v1@2.30.12
+  - @wso2is/admin.extensions.v1@2.30.12
+  - @wso2is/admin.groups.v1@2.21.12
+  - @wso2is/admin.remote-userstores.v1@1.1.12
+  - @wso2is/admin.server-configurations.v1@2.24.12
+  - @wso2is/admin.connections.v1@2.23.12
+  - @wso2is/admin.identity-providers.v1@2.22.12
+  - @wso2is/admin.api-resources.v2@2.21.12
+  - @wso2is/admin.userstores.v1@2.21.12
+
 ## 2.22.11
 
 ### Patch Changes
