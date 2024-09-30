@@ -323,6 +323,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     <Grid.Row columns={ 2 } className="pb-0">
                                         <Grid.Column width={ 4 }>
                                             <FormControlLabel
+                                                className="mt-1"
                                                 checked={ roleAudience === RoleAudienceTypes.APPLICATION }
                                                 control={ <Radio size="small" /> }
                                                 onChange={ () =>
