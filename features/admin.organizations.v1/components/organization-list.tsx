@@ -167,6 +167,8 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const hasOrganizationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.organizations?.scopes?.update);
+    const hasOrganizationDeletePermissions: boolean = useRequiredScopes(featureConfig?.organizations?.scopes?.delete);
+
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingOrganization, setDeletingOrganization ] = useState<OrganizationInterface>(undefined);
 
@@ -426,33 +428,15 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                         featureConfig?.organizations,
                         OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
                     ),
-                icon: (organization: OrganizationInterface): SemanticICONS => {
-
-                    let isAuthorized: boolean = false;
-
-                    authorizedList?.organizations?.map((org: OrganizationInterface) => {
-                        if (org.id === organization.id) {
-                            isAuthorized = true;
-                        }
-                    });
-
-                    return !hasOrganizationUpdatePermissions || !isAuthorized
+                icon: (_organization: OrganizationInterface): SemanticICONS => {
+                    return !hasOrganizationUpdatePermissions
                         ? "eye"
                         : "pencil alternate";
                 },
                 onClick: (e: SyntheticEvent, organization: OrganizationInterface): void =>
                     handleOrganizationEdit(organization.id),
-                popupText: (organization: OrganizationInterface ): string => {
-
-                    let isAuthorized: boolean = false;
-
-                    authorizedList?.organizations?.map((org: OrganizationInterface) => {
-                        if (org.id === organization.id) {
-                            isAuthorized = true;
-                        }
-                    });
-
-                    return !hasOrganizationUpdatePermissions || !isAuthorized
+                popupText: (_organization: OrganizationInterface ): string => {
+                    return !hasOrganizationUpdatePermissions
                         ? t("common:view")
                         : t("common:edit");
                 },
@@ -460,17 +444,8 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
             },
             {
                 "data-componentid": `${ componentId }-item-delete-button`,
-                hidden: (organization: OrganizationInterface): boolean => {
-
-                    let isAuthorized: boolean = false;
-
-                    authorizedList?.organizations?.map((org: OrganizationInterface) => {
-                        if (org.id === organization.id) {
-                            isAuthorized = true;
-                        }
-                    });
-
-                    return !hasOrganizationUpdatePermissions || !isAuthorized;
+                hidden: (_organization: OrganizationInterface): boolean => {
+                    return !hasOrganizationDeletePermissions;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, organization: OrganizationInterface): void => {
