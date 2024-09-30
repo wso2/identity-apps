@@ -1,5 +1,17 @@
 # @wso2is/admin.actions.v1
 
+## 1.2.11
+
+### Patch Changes
+
+- [#6937](https://github.com/wso2/identity-apps/pull/6937) [`a4d2b3686c77e679bcd42432ecb92b4e1995f9df`](https://github.com/wso2/identity-apps/commit/a4d2b3686c77e679bcd42432ecb92b4e1995f9df) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Improve header field regex
+
+- Updated dependencies [[`a4d2b3686c77e679bcd42432ecb92b4e1995f9df`](https://github.com/wso2/identity-apps/commit/a4d2b3686c77e679bcd42432ecb92b4e1995f9df)]:
+  - @wso2is/i18n@2.5.34
+  - @wso2is/admin.core.v1@2.30.11
+  - @wso2is/admin.extensions.v1@2.30.11
+  - @wso2is/admin.feature-gate.v1@1.1.11
+
 ## 1.2.10
 
 ### Patch Changes
