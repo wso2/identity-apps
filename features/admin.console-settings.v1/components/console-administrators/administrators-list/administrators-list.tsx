@@ -40,6 +40,7 @@ import {
     history,
     store
 } from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -156,7 +157,6 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
         "consoleSettings.invitedExternalAdmins"
     );
 
-
     const { isSubOrganization, isFirstLevelOrganization, isSuperOrganization } = useGetCurrentOrganizationType();
     const { unassignAdministratorRoles } = useBulkAssignAdministratorRoles();
 
@@ -172,7 +172,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>(
         isPrivilegedUsersInConsoleSettingsEnabled
             ? undefined
-            : PRIMARY_USERSTORE
+            : userstoresConfig?.primaryUserstoreName
     );
 
     const {
@@ -291,7 +291,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
             addAdminOptions.push({
                 "data-componentid": `${componentId}-add-external-admin-dropdown-item`,
                 key: 1,
-                text: "Invite Admins to Asgardeo",
+                text: t("consoleSettings:administrators.add.options.addExternalUser"),
                 value: AddAdministratorModes.AddExternal
             });
         }

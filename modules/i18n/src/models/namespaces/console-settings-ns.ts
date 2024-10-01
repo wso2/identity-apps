@@ -21,6 +21,7 @@ export interface ConsoleSettingsNS {
             action: string;
             options: {
                 addExistingUser: string;
+                addExternalUser: string;
                 inviteParentUser: string;
             };
         };

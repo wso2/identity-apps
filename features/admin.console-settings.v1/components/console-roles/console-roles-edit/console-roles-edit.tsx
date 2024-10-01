@@ -36,9 +36,6 @@ import { useSelector } from "react-redux";
 import ConsoleRolePermissions from "./console-role-permissions";
 import "./console-roles-edit.scss";
 
-
-
-
 /**
  * Captures props needed for edit role component
  */

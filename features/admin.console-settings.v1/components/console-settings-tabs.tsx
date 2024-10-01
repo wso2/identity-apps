@@ -89,7 +89,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
             "consoleSettings.firstLevelOrgloginFlowConfiguration"
         );
 
-    const isLoginFlowEnabled = () => {
+    const isLoginFlowEnabled: boolean = useMemo(() => {
         if (isSuperOrganization()) {
             return true;
         }
@@ -103,7 +103,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
         }
 
         return false;
-    };
+    }, [ isSubOrganization, isSuperOrganization, isFirstLevelOrganization ]);
 
     const consoleTabs: ConsoleSettingsTabInterface[] = useMemo(
         () =>
@@ -126,7 +126,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     pane: <ConsoleRolesList />,
                     value: ConsoleSettingsTabIDs.ROLES
                 },
-                isLoginFlowEnabled() && {
+                isLoginFlowEnabled && {
                     className: "console-security",
                     "data-componentid": `${componentId}-tab-login-flow`,
                     "data-tabid": ConsoleSettingsModes.LOGIN_FLOW,
