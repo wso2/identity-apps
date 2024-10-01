@@ -18,6 +18,7 @@
 
 import { GearIcon } from "@oxygen-ui/react-icons";
 import {
+    FeatureAccessConfigInterface,
     FeatureStatus,
     Show,
     useCheckFeatureStatus
@@ -143,6 +144,18 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const consoleSettingsFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state.config.ui.features.consoleSettings);
+
+    const isPrivilegedUsersInConsoleSettingsEnabled: boolean =
+        !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
+            "consoleSettings.privilegedUsers"
+        );
+    const isInvitedAdminInConsoleSettingsEnabled: boolean = !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
+        "consoleSettings.invitedAdmins"
+    );
+
 
     const { isSubOrganization, isFirstLevelOrganization, isSuperOrganization } = useGetCurrentOrganizationType();
     const { unassignAdministratorRoles } = useBulkAssignAdministratorRoles();
@@ -270,7 +283,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
 
         const addAdminOptions: any = [];
 
-        if (!isCurrentOrgSubOrganization) {
+        if (!isCurrentOrgSubOrganization && isInvitedAdminInConsoleSettingsEnabled) {
             addAdminOptions.push({
                 "data-componentid": `${componentId}-add-external-admin-dropdown-item`,
                 key: 1,
@@ -351,6 +364,27 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
         history.push(AdministratorConstants.getPaths().get("COLLABORATOR_SETTINGS_EDIT_PATH"));
     };
 
+    const renderRightActionPanel = () => {
+
+        if (isPrivilegedUsersInConsoleSettingsEnabled) {
+            return null;
+        }
+
+        if (isFirstLevelOrganization() || isSuperOrganization()) {
+            return (
+                <Dropdown
+                    data-testid="user-mgt-user-list-userstore-dropdown"
+                    selection
+                    options={ availableUserStores }
+                    onChange={ handleSelectedUserStoreChange }
+                    defaultValue={ PRIMARY_USERSTORE }
+                />
+            );
+        }
+
+        return null;
+    };
+
     return (
         <ListLayout
             advancedSearch={ (
@@ -414,26 +448,19 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
             paginationOptions={ {
                 disableNextButton: !isNextPageAvailable
             } }
-            rightActionPanel={
-                !isEnterpriseLoginEnabled && (isFirstLevelOrganization() || isSuperOrganization())
-                    ? (
-                        <Dropdown
-                            data-testid="user-mgt-user-list-userstore-dropdown"
-                            selection
-                            options={ availableUserStores }
-                            onChange={ handleSelectedUserStoreChange }
-                            defaultValue={ PRIMARY_USERSTORE }
-                        />
-                    ) : null
-            }
+            rightActionPanel={ renderRightActionPanel() }
             topActionPanelExtension={ (
                 <Show when={ [ ...featureConfig?.users?.scopes?.create, ...featureConfig?.userRoles?.scopes?.update ] }>
-                    { !isSubOrganization() && isEnterpriseLoginEnabled && (<Button
-                        data-componentid={ `${componentId}-admin-settings-button` }
-                        icon={ GearIcon }
-                        onClick={ handleSettingsButton }
-                    >
-                    </Button>) }
+                    { !isSubOrganization() &&
+                      isEnterpriseLoginEnabled &&
+                      isPrivilegedUsersInConsoleSettingsEnabled && (
+                        <Button
+                            data-componentid={ `${componentId}-admin-settings-button` }
+                            icon={ GearIcon }
+                            onClick={ handleSettingsButton }
+                        >
+                        </Button>
+                    ) }
                     { renderAdministratorAddOptions() }
                 </Show>
             ) }

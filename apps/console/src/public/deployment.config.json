@@ -456,7 +456,10 @@
                 }
             },
             "consoleSettings": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "consoleSettings.invitedAdmins",
+                    "consoleSettings.privilegedUsers"
+                ],
                 "enabled": true,
                 "scopes": {
                     "create": [

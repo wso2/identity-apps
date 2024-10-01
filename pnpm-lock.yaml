@@ -5537,7 +5537,7 @@ importers:
         specifier: ^3.0.24
         version: link:../../modules/access-control
       '@wso2is/admin.administrators.v1':
-        specifier: ^2.25.8
+        specifier: ^2.25.12
         version: link:../admin.administrators.v1
       '@wso2is/admin.applications.v1':
         specifier: ^2.26.12

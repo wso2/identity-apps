@@ -19,10 +19,10 @@
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
-import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { useOrganizationConfigV2 } from "@wso2is/admin.administrators.v1/api/useOrganizationConfigV2";
 import { UseOrganizationConfigType } from "@wso2is/admin.administrators.v1/models/organization";
-import { UserStoreProperty, getAUserStore, store } from "@wso2is/admin.core.v1";
+import { AppState, UserStoreProperty, getAUserStore, store } from "@wso2is/admin.core.v1";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -36,6 +36,7 @@ import React, {
     useEffect,
     useState
 } from "react";
+import { useSelector } from "react-redux";
 import AdministratorsList from "./administrators-list/administrators-list";
 import InvitedAdministratorsList from "./invited-administrators/invited-administrators-list";
 
@@ -56,6 +57,13 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
     const { [ "data-componentid" ]: componentId } = props;
 
     const { isFirstLevelOrganization, isSubOrganization } = useGetCurrentOrganizationType();
+
+    const consoleSettingsFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
+    const isPrivilegedUsersInConsoleSettingsEnabled: boolean =
+        !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
+            "consoleSettings.privilegedUsers"
+        );
 
     const [ activeAdministratorGroup, setActiveAdministratorGroup ] =
         useState(isSubOrganization() ? "activeUsers" : "administrators");
@@ -163,7 +171,11 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
     };
 
     const renderActiveAdministratorGroups = (): ReactElement => {
-        if (isFirstLevelOrganization() && isEnterpriseLoginEnabled) {
+        if (
+            isFirstLevelOrganization()
+            && isEnterpriseLoginEnabled
+            && isPrivilegedUsersInConsoleSettingsEnabled
+        ) {
             return (
                 <RadioGroup
                     row
