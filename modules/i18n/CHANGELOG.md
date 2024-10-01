@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.5.35
+
+### Patch Changes
+
+- [#6938](https://github.com/wso2/identity-apps/pull/6938) [`5c51848d9d9861e755224cd412982ff412ae30be`](https://github.com/wso2/identity-apps/commit/5c51848d9d9861e755224cd412982ff412ae30be) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Make console settings UI configurable for managed deployments
+
 ## 2.5.34
 
 ### Patch Changes
