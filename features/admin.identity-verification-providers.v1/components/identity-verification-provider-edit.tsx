@@ -162,6 +162,7 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
                         <AttributeMappings
                             identityVerificationProvider={ identityVerificationProvider }
                             handleUpdate={ handleUpdate }
+                            mandatoryClaims={ templateData?.payload?.claims }
                         />
                     </ResourceTab.Pane>
                 );

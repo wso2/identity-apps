@@ -30,7 +30,6 @@ import {
  * Proptypes for the Authenticator Create Wizard factory.
  */
 interface ConnectionCreateWizardFactoryPropsInterface extends IdentifiableComponentInterface {
-
     /**
      * Show/Hide the wizard
      */
@@ -47,6 +46,9 @@ interface ConnectionCreateWizardFactoryPropsInterface extends IdentifiableCompon
      * Callback to be triggered on successful IDP create.
      */
     onIDPCreate: GenericConnectionCreateWizardPropsInterface[ "onIDPCreate" ];
+    /**
+     * Type of the connection.
+     */
     connectionType: ConnectionTypes;
     /**
      * Type of the wizard.

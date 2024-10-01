@@ -29,10 +29,9 @@ import { Dispatch } from "redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { AttributesSelection } from "./attribute-management/attribute-selection";
 import {
-    IDVPClaimMappingInterface,
-    IDVPClaimsInterface
+    IDVPClaimMappingInterface
 } from "../../models";
-import { IdentityVerificationProviderInterface } from "../../models/new-models";
+import { IdVPClaimsInterface, IdentityVerificationProviderInterface } from "../../models/new-models";
 
 /**
  * Proptypes for the identity verification provider attribute settings component.
@@ -54,6 +53,10 @@ interface AttributeSettingsPropsInterface extends IdentifiableComponentInterface
      * Callback to call on updating the IDVP details.
      */
     handleUpdate: (data: IdentityVerificationProviderInterface) => void;
+    /**
+     * List of mandatory claims.
+     */
+    mandatoryClaims: IdVPClaimsInterface[];
     /**
      * This boolean attribute specifies whether local identity claims
      * should be hidden or not. By default, we will show these attributes
@@ -90,6 +93,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         hideIdentityClaimAttributes = true,
         isReadOnly,
         isUpdating = false,
+        mandatoryClaims,
         ["data-componentid"]: componentId = "idvp-edit-attribute-settings"
     }: AttributeSettingsPropsInterface
 ): ReactElement => {
@@ -136,7 +140,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                 return {
                     idvpClaim: element.idvpClaim,
                     localClaim: element.localClaim.uri
-                } as IDVPClaimsInterface;
+                } as IdVPClaimsInterface;
             })
         };
 
@@ -160,6 +164,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                 hideIdentityClaimAttributes={ hideIdentityClaimAttributes }
                                 mappedAttributesList={ [ ...selectedClaimsWithMapping ] }
                                 isReadOnly={ isReadOnly }
+                                mandatoryClaims={ mandatoryClaims }
                             />
                         </Grid.Column>
                     </Grid.Row>

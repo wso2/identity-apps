@@ -26,9 +26,27 @@ import {
 import { AttributeSettings } from "../settings/attribute-settings";
 
 interface AttributeMappingsPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Editing IdVP.
+     */
     identityVerificationProvider: IdentityVerificationProviderInterface;
+    /**
+     * Callback to handle IdVP update.
+     *
+     * @param data - Updated data.
+     */
     handleUpdate: (data: IdentityVerificationProviderInterface) => void;
+    /**
+     * List of mandatory claims.
+     */
+    mandatoryClaims: IdVPClaimsInterface[];
+    /**
+     * Whether data is loading or not.
+     */
     isLoading?: boolean;
+    /**
+     * Whether the view is read only or not.
+     */
     isReadOnly?: boolean;
 }
 
@@ -36,6 +54,7 @@ const AttributeMappings: FunctionComponent<AttributeMappingsPropsInterface> = (
     {
         identityVerificationProvider,
         handleUpdate,
+        mandatoryClaims,
         isLoading = false,
         isReadOnly = false,
         ["data-componentid"]: componentId = "idvp-edit-attribute-mappings"
@@ -65,6 +84,7 @@ const AttributeMappings: FunctionComponent<AttributeMappingsPropsInterface> = (
             hideIdentityClaimAttributes={ true }
             data-componentid={ componentId }
             isReadOnly={ isReadOnly }
+            mandatoryClaims={ mandatoryClaims }
         />
     );
 };

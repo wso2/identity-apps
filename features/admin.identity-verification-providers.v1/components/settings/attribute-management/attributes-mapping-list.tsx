@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -29,6 +29,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useS
 import { Header, SemanticICONS } from "semantic-ui-react";
 import { AttributeMappingListItem } from "./attribute-mapping-list-item";
 import { IDVPClaimMappingInterface, IDVPLocalClaimInterface } from "../../../models";
+import { IdVPClaimsInterface } from "../../../models/new-models";
 
 /**
  * Proptypes for the attribute mapping list component.
@@ -66,6 +67,10 @@ export interface AttributeMappingListProps extends IdentifiableComponentInterfac
      * If the list is read only or not.
      */
     readOnly?: boolean;
+    /**
+     * List of mandatory claims.
+     */
+    mandatoryClaims?: IdVPClaimsInterface[];
 }
 
 /**
@@ -85,7 +90,8 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
         onMappingDeleted,
         onMappingEdited,
         noDataPlaceholder,
-        readOnly
+        readOnly,
+        mandatoryClaims
     } = props;
 
     const [ editingMappings, setEditingMappings ] = useState<string[]>([]);
@@ -98,6 +104,17 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
      */
     const shouldHideAction = ({ localClaim }: IDVPClaimMappingInterface): boolean => {
         return editingMappings.includes(localClaim.id) || readOnly;
+    };
+
+    const shouldHideDeleteAction = ({ localClaim, idvpClaim }: IDVPClaimMappingInterface): boolean => {
+        const isMandatory: boolean = mandatoryClaims?.some(
+            (claim: IdVPClaimsInterface) => claim.idvpClaim === idvpClaim);
+
+        if (isMandatory) {
+            return true;
+        }
+
+        return shouldHideAction({ idvpClaim, localClaim });
     };
 
     /**
@@ -117,7 +134,7 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
                 renderer: "semantic-icon"
             },
             {
-                hidden: shouldHideAction,
+                hidden: shouldHideDeleteAction,
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, mapping: IDVPClaimMappingInterface) => {
                 // In our interface, once user enter into editing mode they

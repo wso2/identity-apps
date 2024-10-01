@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,6 +28,7 @@ import { AddAttributeSelectionModal } from "./attribute-selection-modal";
 import { AttributeMappingList } from "./attributes-mapping-list";
 import { fetchAllLocalClaims } from "./utils/claim-utils";
 import { IDVPClaimMappingInterface, IDVPLocalClaimInterface } from "../../../models";
+import { IdVPClaimsInterface } from "../../../models/new-models";
 
 /**
  * Properties of {@link AttributesSelection}
@@ -59,6 +60,10 @@ export interface AttributesSelectionProps extends IdentifiableComponentInterface
      * @param status - Loading status.
      */
     setIsClaimsLoading?: (status: boolean) => void;
+    /**
+     * List of mandatory claims.
+     */
+    mandatoryClaims: IdVPClaimsInterface[];
 }
 
 const FORM_ID: string = "idvp-attribute-selection-form";
@@ -79,6 +84,7 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
         setMappedAttributes,
         hideIdentityClaimAttributes,
         isReadOnly,
+        mandatoryClaims,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -316,6 +322,7 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
                 onMappingDeleted={ handleAttributeMappingDeletion }
                 onMappingEdited={ handleEditAttributeMapping }
                 readOnly={ isReadOnly }
+                mandatoryClaims={ mandatoryClaims }
             />
         );
     };
