@@ -27,6 +27,7 @@ import { AttributeSettings } from "../settings/attribute-settings";
 
 interface AttributeMappingsPropsInterface extends IdentifiableComponentInterface {
     identityVerificationProvider: IdentityVerificationProviderInterface;
+    handleUpdate: (data: IdentityVerificationProviderInterface) => void;
     isLoading?: boolean;
     isReadOnly?: boolean;
 }
@@ -34,6 +35,7 @@ interface AttributeMappingsPropsInterface extends IdentifiableComponentInterface
 const AttributeMappings: FunctionComponent<AttributeMappingsPropsInterface> = (
     {
         identityVerificationProvider,
+        handleUpdate,
         isLoading = false,
         isReadOnly = false,
         ["data-componentid"]: componentId = "idvp-edit-attribute-mappings"
@@ -59,7 +61,7 @@ const AttributeMappings: FunctionComponent<AttributeMappingsPropsInterface> = (
             idvp={ identityVerificationProvider }
             initialClaims={ initialClaims }
             isLoading={ isLoading }
-            onUpdate={ () => {} }
+            handleUpdate={ handleUpdate }
             hideIdentityClaimAttributes={ true }
             data-componentid={ componentId }
             isReadOnly={ isReadOnly }

@@ -60,16 +60,14 @@ export const getEmptyAttributeMappingPlaceholder = (): ReactElement => {
     return (
         <EmptyPlaceholder
             title={
-                I18n.instance.t("idvp:forms.attributeSettings.attributeMapping." +
-                    "emptyPlaceholderCreate.title")
+                I18n.instance.t("idvp:edit.attributeSettings.modal.emptyPlaceholder.title")
             }
             subtitle={
                 [
                     <Trans
                         key={ "no-attributes-configured" }
                         i18nKey={
-                            "idvp:forms.attributeSettings.attributeMapping" +
-                            ".emptyPlaceholderCreate.subtitle"
+                            "idvp:edit.attributeSettings.modal.emptyPlaceholder.description"
                         }
                     >
                        Map attributes and click <strong>Add Attribute Mapping</strong> to get started.

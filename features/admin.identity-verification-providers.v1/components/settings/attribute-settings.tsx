@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,10 +30,9 @@ import { Button, Divider, Grid } from "semantic-ui-react";
 import { AttributesSelection } from "./attribute-management/attribute-selection";
 import {
     IDVPClaimMappingInterface,
-    IDVPClaimsInterface,
-    OldIdentityVerificationProviderInterface
+    IDVPClaimsInterface
 } from "../../models";
-import { updateIDVP } from "../../utils";
+import { IdentityVerificationProviderInterface } from "../../models/new-models";
 
 /**
  * Proptypes for the identity verification provider attribute settings component.
@@ -42,7 +41,7 @@ interface AttributeSettingsPropsInterface extends IdentifiableComponentInterface
     /**
      * Identity verification provider that is being edited.
      */
-    idvp: OldIdentityVerificationProviderInterface;
+    idvp: IdentityVerificationProviderInterface;
     /**
      * Initial claims of the IDVP.
      */
@@ -54,7 +53,7 @@ interface AttributeSettingsPropsInterface extends IdentifiableComponentInterface
     /**
      * Callback to call on updating the IDVP details.
      */
-    onUpdate: () => void;
+    handleUpdate: (data: IdentityVerificationProviderInterface) => void;
     /**
      * This boolean attribute specifies whether local identity claims
      * should be hidden or not. By default, we will show these attributes
@@ -71,9 +70,9 @@ interface AttributeSettingsPropsInterface extends IdentifiableComponentInterface
      */
     isReadOnly: boolean;
     /**
-     * Loading Component.
+     * Whether the update is in progress or not.
      */
-    loader?: () => ReactElement;
+    isUpdating?: boolean;
 }
 
 /**
@@ -83,27 +82,23 @@ interface AttributeSettingsPropsInterface extends IdentifiableComponentInterface
  * @returns Attribute settings component.
  */
 export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterface> = (
-    props: AttributeSettingsPropsInterface
-): ReactElement => {
-
-    const {
+    {
         idvp,
         initialClaims,
         isLoading,
-        onUpdate,
-        hideIdentityClaimAttributes,
+        handleUpdate,
+        hideIdentityClaimAttributes = true,
         isReadOnly,
-        loader: Loader,
-        ["data-componentid"]: componentId
-    } = props;
+        isUpdating = false,
+        ["data-componentid"]: componentId = "idvp-edit-attribute-settings"
+    }: AttributeSettingsPropsInterface
+): ReactElement => {
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
-    // Selected local claims in claim mapping.
     const [ selectedClaimsWithMapping, setSelectedClaimsWithMapping ] = useState<IDVPClaimMappingInterface[]>([]);
-    const [ isSubmissionLoading, setIsSubmissionLoading ] = useState<boolean>(false);
 
     /**
      * Evaluates whether the attribute update can be submitted or not.
@@ -122,17 +117,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
      * @returns void
      */
     const handleAttributesUpdate = (): void => {
-
-        idvp.claims = selectedClaimsWithMapping.map((element: IDVPClaimMappingInterface) => {
-            return {
-                idvpClaim: element.idvpClaim,
-                localClaim: element.localClaim.uri
-            } as IDVPClaimsInterface;
-        });
-
-        if (canSubmitAttributeUpdate()) {
-            updateIDVP(idvp, setIsSubmissionLoading, onUpdate);
-        } else {
+        if (!canSubmitAttributeUpdate()) {
             dispatch(addAlert(
                 {
                     description: t("idvp:notifications.submitAttributeSettings" +
@@ -141,7 +126,21 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                     message: t("idvp:notifications.submitAttributeSettings.error.message")
                 }
             ));
+
+            return;
         }
+
+        const updatedData: IdentityVerificationProviderInterface = {
+            ...idvp,
+            claims: selectedClaimsWithMapping.map((element: IDVPClaimMappingInterface) => {
+                return {
+                    idvpClaim: element.idvpClaim,
+                    localClaim: element.localClaim.uri
+                } as IDVPClaimsInterface;
+            })
+        };
+
+        handleUpdate(updatedData);
     };
 
 
@@ -171,8 +170,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                 <Button
                                     primary
                                     size="small"
-                                    loading={ isSubmissionLoading }
-                                    disabled={ isSubmissionLoading }
+                                    loading={ isUpdating }
+                                    disabled={ isUpdating }
                                     onClick={ handleAttributesUpdate }
                                     data-componentid={ `${ componentId }-update-button` }
                                 >
@@ -185,12 +184,4 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             </Grid>
         </EmphasizedSegment>
     );
-};
-
-/**
- * Default proptypes for the IDVP attribute settings component.
- */
-AttributeSettings.defaultProps = {
-    "data-componentid": "idvp-edit-attribute-settings",
-    hideIdentityClaimAttributes: true
 };

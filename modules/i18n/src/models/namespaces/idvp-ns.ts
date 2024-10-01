@@ -15,235 +15,73 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import { Notification } from "../common";
+
 export interface IdvpNS {
-    advancedSearch: {
-        form: {
-            inputs: {
-                filterValue: {
-                    placeholder: string;
-                };
-            };
-        };
-        placeholder: string;
-    };
-    buttons: {
-        addIDVP: string;
-    };
-    placeholders: {
-        emptyIDVPList: {
-            title: string;
-            subtitles: {
-                0: string;
-                1: string;
-                2: string;
-            };
-        };
-        emptyIDVPTypeList: {
-            title: string;
-            subtitles: {
-                0: string;
-                1: string;
-            };
+    create: {
+        notifications: {
+            create: Notification;
         };
     };
-    confirmations: {
-        deleteIDVP: {
-            assertionHint: string;
-            header: string;
-            message: string;
-            content: string;
-        };
-    };
-    notifications: {
-        getIDVPList: {
-            error: {
-                message: string;
+    edit: {
+        backButton: string;
+        dangerZone: {
+            delete: {
                 description: string;
+                header: string;
             };
-            genericError: {
-                message: string;
-                description: string;
-            };
-        };
-        deleteIDVP: {
-            error: {
-                message: string;
-                description: string;
-            };
-            genericError: {
-                message: string;
-                description: string;
-            };
-            success: {
-                message: string;
-                description: string;
-            };
-        };
-        updateIDVP: {
-            error: {
-                message: string;
-                description: string;
-            };
-            genericError: {
-                message: string;
-                description: string;
-            };
-            success: {
-                message: string;
-                description: string;
-            };
-        };
-        addIDVP: {
-            error: {
-                message: string;
-                description: string;
-            };
-            genericError: {
-                message: string;
-                description: string;
-            };
-            success: {
-                message: string;
-                description: string;
-            };
-        };
-        submitAttributeSettings: {
-            error: {
-                message: string;
-                description: string;
-            };
-        };
-        getAllLocalClaims: {
-            error: {
-                message: string;
-                description: string;
-            };
-            genericError: {
-                message: string;
-                description: string;
-            };
-        };
-        getIDVP: {
-            error: {
-                message: string;
-                description: string;
-            };
-            genericError: {
-                message: string;
-                description: string;
-            };
-        };
-        getUIMetadata: {
-            error: {
-                message: string;
-                description: string;
-            };
-            genericError: {
-                message: string;
-                description: string;
-            };
-        };
-        getIDVPTemplateTypes: {
-            error: {
-                message: string;
-                description: string;
-            };
-            genericError: {
-                message: string;
-                description: string;
-            };
-        };
-        getIDVPTemplateType: {
-            error: {
-                message: string;
-                description: string;
-            };
-            genericError: {
-                message: string;
-                description: string;
-            };
-        };
-        getIDVPTemplate: {
-            error: {
-                message: string;
-                description: string;
-            };
-            genericError: {
-                message: string;
-                description: string;
-            };
-        };
-    };
-    forms: {
-        attributeSettings: {
-            attributeMapping: {
-                heading: string;
-                hint: string;
-                addButton: string;
-                emptyPlaceholderEdit: {
-                    title: string;
-                    subtitle: string;
-                };
-                emptyPlaceholderCreate: {
-                    title: string;
-                    subtitle: string;
-                };
-            };
-            attributeMappingListItem: {
-                validation: {
-                    duplicate: string;
-                    required: string;
-                    invalid: string;
-                };
-                placeholders: {
-                    mappedValue: string;
-                    localClaim: string;
-                };
-                labels: {
-                    mappedValue: string;
-                    localClaim: string;
-                };
-            };
-            attributeSelectionModal: {
+            disable: {
+                disabledDescription: string;
+                enabledDescription: string;
                 header: string;
             };
         };
-        generalDetails: {
-            name: {
-                hint: string;
-                label: string;
-                placeholder: string;
-                validations: {
-                    empty: string;
+        attributeSettings: {
+            addButton: string;
+            heading: string;
+            hint: string;
+            modal: {
+                emptyPlaceholder:{
+                    description: string;
+                    title: string;
+                };
+                header: string;
+                labels: {
+                    localClaim: string;
+                    mappedValue: string;
+                };
+                placeholders: {
+                    localClaim: string;
+                    mappedValue: string;
+                };
+                addButton: string;
+                validation: {
                     duplicate: string;
                     invalid: string;
                     required: string;
-                    maxLengthReached: string;
                 };
             };
-            description: {
-                hint: string;
-                label: string;
-                placeholder: string;
-            };
+        };
+        notifications: {
+            update: Notification;
         };
     };
-    dangerZoneGroup: {
-        header: string;
-        disableIDVP: {
-            actionTitle: string;
+    delete: {
+        notifications: {
+            delete: Notification;
+        };
+        confirmation: {
+            assertionHint: string;
+            content: string;
             header: string;
-            subheader: string;
-            subheader2: string;
-        };
-        deleteIDVP: {
-            actionTitle: string;
-            header: string;
-            subheader: string;
+            message: string;
         };
     };
-    list: {
-        actions: string;
-        name: string;
+    fetch: {
+        notifications: {
+            idVP: Notification;
+            metadata: Notification;
+        };
     };
-}
+};

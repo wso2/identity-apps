@@ -16,9 +16,7 @@
  * under the License.
  */
 
-import {
-    IdVPCreationModal
-} from "@wso2is/admin.identity-verification-providers.v1/components/modals/idvp-creation-modal";
+import IdVPCreationModal from "@wso2is/admin.identity-verification-providers.v1/components/modals/idvp-creation-modal";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC, ReactElement } from "react";
 import { AuthenticatorCreateWizardFactory } from "./authenticator-create-wizard-factory";
@@ -85,15 +83,12 @@ export const ConnectionCreateWizardFactory: FC<ConnectionCreateWizardFactoryProp
     if (!isModalOpen) {
         return null;
     }
-    console.log(connectionType);
-
 
     switch (connectionType) {
         case ConnectionTypes.IDVP:
             return (
                 <IdVPCreationModal
                     selectedTemplate={ selectedTemplate }
-                    selectedTemplateId={ selectedTemplate?.id }
                     onClose={ onWizardClose }
                 />
             );

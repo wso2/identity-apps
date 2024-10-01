@@ -455,50 +455,17 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "console:develop.features.sidePanel.categories.application",
-            children: [
-                {
-                    component: lazy(() =>
-                        import("@wso2is/admin.identity-verification-providers.v1/pages/" +
-                        "identity-verification-provider-template")
-                    ),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "identityVerificationProviderTemplate",
-                    name: "Identity Verification Provider Templates",
-                    path: AppConstants.getPaths().get("IDVP_TEMPLATES"),
-                    protected: true,
-                    showOnSidePanel: false
-                },
-                {
-                    component: lazy(() => import(
-                        "@wso2is/admin.identity-verification-providers.v1/pages/" +
-                        "identity-verification-provider-edit-page")
-                    ),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "identityVerificationProvidersEdit",
-                    name: "Identity Verification Providers Edit",
-                    path: AppConstants.getPaths().get("IDVP_EDIT"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ],
-            component: lazy(
-                () => import("@wso2is/admin.identity-verification-providers.v1/pages/" +
-                    "identity-verification-providers")
+            component: lazy(() => import(
+                "@wso2is/admin.identity-verification-providers.v1/pages/identity-verification-provider-edit-page")
             ),
             exact: true,
             icon: { icon: getSidePanelIcons().identityVerificationProviders },
-            id: "identityVerificationProviders",
-            name: "console:develop.features.sidePanel.categories.identityVerificationProviders",
+            id: "identityVerificationProvidersEdit",
+            name: "Identity Verification Providers Edit",
             order: 4,
-            path: AppConstants.getPaths().get("IDVP"),
+            path: AppConstants.getPaths().get("IDVP-EDIT"),
             protected: true,
-            showOnSidePanel: true
+            showOnSidePanel: false
         },
         {
             category: "extensions:manage.sidePanel.categories.attributeManagement",

@@ -189,7 +189,7 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
             size="small"
             closeOnDimmerClick={ false }>
             <Modal.Header>
-                { t("idvp:forms.attributeSettings.attributeSelectionModal.header") }
+                { t("idvp:edit.attributeSettings.modal.header") }
             </Modal.Header>
             <Modal.Content scrolling className="edit-attribute-mapping">
                 <Grid className={ "ui form" }>

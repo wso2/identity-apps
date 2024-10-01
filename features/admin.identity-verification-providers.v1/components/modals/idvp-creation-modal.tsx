@@ -18,9 +18,10 @@
 
 import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { ResourceCreateWizard } from "@wso2is/admin.template-core.v1/components/resource-create-wizard";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -32,15 +33,25 @@ import { IdentityVerificationProviderConstants } from "../../constants/identity-
 import useInitializeHandlers from "../../hooks/use-custom-initialize-handlers";
 import useValidationHandlers from "../../hooks/use-custom-validation-handlers";
 import { IDVPConfigPropertiesInterface } from "../../models";
-import { IdVPClaimsInterface, IdVPConfigPropertiesInterface, IdentityVerificationProviderInterface } from "../../models/new-models";
+import {
+    IdVPClaimsInterface,
+    IdVPConfigPropertiesInterface,
+    IdVPEditTabIDs,
+    IdentityVerificationProviderInterface
+} from "../../models/new-models";
 
 interface IdVPCreationModalPropsInterface extends IdentifiableComponentInterface {
-    selectedTemplate: ConnectionTemplateInterface
-    selectedTemplateId: string;
+    /**
+     * Selected IdVP template.
+     */
+    selectedTemplate: ConnectionTemplateInterface;
+    /**
+     * Callback to close the modal.
+     */
     onClose: () => void;
 }
 
-export const IdVPCreationModal: FunctionComponent<IdVPCreationModalPropsInterface> = ({
+const IdVPCreationModal: FunctionComponent<IdVPCreationModalPropsInterface> = ({
     onClose,
     selectedTemplate,
     ["data-componentid"]: componentId = "idvp-create-modal"
@@ -59,6 +70,21 @@ export const IdVPCreationModal: FunctionComponent<IdVPCreationModalPropsInterfac
         isLoading: isMetadataFetchRequestLoading,
         error: metadataFetchRequestError
     } = useGetIdVPMetadata(selectedTemplate?.id);
+
+    /**
+     * Handles the template data fetch error and metadata fetch error.
+     */
+    useEffect(() => {
+        if (templateDataFetchRequestError || metadataFetchRequestError) {
+            dispatch(addAlert({
+                description: templateDataFetchRequestError.response?.data?.description
+                    ?? metadataFetchRequestError.response?.data?.description
+                    ?? t("idvp:fetch.notifications.metadata.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("idvp:fetch.notifications.metadata.genericError.message")
+            }));
+        }
+    }, [ templateDataFetchRequestError, metadataFetchRequestError ]);
 
     const { customInitializers } = useInitializeHandlers();
     const { customValidations } = useValidationHandlers();
@@ -94,6 +120,7 @@ export const IdVPCreationModal: FunctionComponent<IdVPCreationModalPropsInterfac
             .configProperties as Record<string, string | boolean>;
         const configProperties: IDVPConfigPropertiesInterface[] = [];
 
+        // Convert the form values to the API format.
         for (const [ key, value ] of Object.entries(configPropertiesFormValues)) {
             configProperties.push({
                 key,
@@ -115,23 +142,30 @@ export const IdVPCreationModal: FunctionComponent<IdVPCreationModalPropsInterfac
                 callback(null, null);
 
                 dispatch(addAlert({
-                    description: t("idvp:notifications.addIDVP.success.description"),
+                    description: t("idvp:create.notifications.create.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("idvp:notifications.addIDVP.success.message")
+                    message: t("idvp:create.notifications.create.success.message")
                 }));
 
                 const { id } = createdIdVP;
 
                 history.push({
-                    pathname: AppConstants.getPaths()
+                    pathname: `${AppConstants.getPaths()
                         .get(IdentityVerificationProviderConstants.IDVP_EDIT_PATH)
-                        .replace(":id", id)
+                        .replace(":id", id)}#tab=${IdVPEditTabIDs.GUIDE}`
                 });
             })
-            .catch((error) => {
-                //TODO: Provide proper error message.
-                console.log("Error occurred while creating identity verification provider", error);
-                callback("Error", null);
+            .catch((error: IdentityAppsApiException) => {
+                dispatch(addAlert({
+                    description: t("idvp:create.notifications.create.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("idvp:create.notifications.create.genericError.message")
+                }));
+                callback(
+                    t("idvp:create.notifications.create.genericError.message"),
+                    error?.response?.data?.description
+                        ?? t("idvp:create.notifications.create.genericError.description")
+                );
             });
     };
 
@@ -155,3 +189,5 @@ export const IdVPCreationModal: FunctionComponent<IdVPCreationModalPropsInterfac
         />
     );
 };
+
+export default IdVPCreationModal;

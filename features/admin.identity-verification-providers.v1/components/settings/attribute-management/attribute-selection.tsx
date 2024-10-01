@@ -324,12 +324,12 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
         isLocalClaimsLoading ? <ContentLoader/> : (
             <Grid>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column computer={ 16 } tablet={ 16 } largeScreen={ 16 } widescreen={ 16 }>
+                    <Grid.Column computer={ 16 }>
                         <Heading as="h4">
-                            { t("idvp:forms.attributeSettings.attributeMapping.heading") }
+                            { t("idvp:edit.attributeSettings.heading") }
                         </Heading>
                         <Hint compact>
-                            { t("idvp:forms.attributeSettings.attributeMapping.hint") }
+                            { t("idvp:edit.attributeSettings.hint") }
                         </Hint>
                         <Divider hidden/>
                         { hasMappedAttributes() ? (
@@ -367,8 +367,7 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
                                                 >
                                                     <Icon name="add"/>
                                                     {
-                                                        t("idvp:forms.attributeSettings" +
-                                                        ".attributeMapping.addButton")
+                                                        t("idvp:edit.attributeSettings.addButton")
                                                     }
                                                 </PrimaryButton>
                                             ) }

@@ -20,14 +20,23 @@ import { TemplateDynamicForm } from "@wso2is/admin.template-core.v1/components/t
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { IdVPEditTabMetadataInterface, IdVPTemplateInterface } from "../../models/new-models";
+import IdVPEditDangerZone from "./danger-zone";
 import useInitializeHandlers from "../../hooks/use-custom-initialize-handlers";
 import useValidationHandlers from "../../hooks/use-custom-validation-handlers";
+import {
+    IdVPConfigPropertiesInterface,
+    IdVPEditTabIDs,
+    IdVPEditTabMetadataInterface,
+    IdVPTemplateInterface,
+    IdentityVerificationProviderInterface
+} from "../../models/new-models";
 
 interface DynamicSettingsFormPropsInterface extends IdentifiableComponentInterface {
     tabMetadata: IdVPEditTabMetadataInterface;
     templateData: IdVPTemplateInterface;
     initialValues: Record<string, unknown>;
+    handleUpdate: (data: IdentityVerificationProviderInterface, callback?: () => void) => void;
+    handleDelete: () => void;
     isReadOnly?: boolean;
     isLoading?: boolean;
 }
@@ -37,6 +46,8 @@ const DynamicSettingsForm: FunctionComponent<DynamicSettingsFormPropsInterface> 
         tabMetadata,
         templateData,
         initialValues,
+        handleUpdate,
+        handleDelete,
         isLoading = false,
         isReadOnly = false,
         ["data-componentid"]: componentId = "idvp-edit-general-settings-form"
@@ -47,25 +58,61 @@ const DynamicSettingsForm: FunctionComponent<DynamicSettingsFormPropsInterface> 
     const { customInitializers } = useInitializeHandlers();
     const { customValidations } = useValidationHandlers();
 
-    const handleFormSubmission = (values: Record<string, unknown>): void => {
-        // Do nothing
-        console.log(componentId, values);
+    const handleFormSubmission = (values: Record<string, unknown>, callback?: () => void): void => {
+        const convertedConfigProperties: IdVPConfigPropertiesInterface[] = Object
+            .entries(values.configProperties).map(([ key, value ]: [string, string | boolean]) => {
+                return { key, value };
+            });
 
+        handleUpdate(
+            {
+                ...values,
+                configProperties: convertedConfigProperties
+            } as unknown as IdentityVerificationProviderInterface,
+            callback
+        );
+    };
+
+    const handleIdentityVerificationProviderDisable = (isEnabled: boolean) => {
+        handleFormSubmission(
+            {
+                ...initialValues,
+                isEnabled
+            }
+        );
+    };
+
+    console.log(initialValues);
+
+
+    const resolveDangerZone = () => {
+        if (!isLoading && tabMetadata?.id === IdVPEditTabIDs.GENERAL) {
+            return (
+                <IdVPEditDangerZone
+                    isIdVPEnabled= { initialValues.isEnabled as boolean }
+                    handleUpdate={ handleIdentityVerificationProviderDisable }
+                    handleDelete={ handleDelete }
+                />
+            );
+        }
     };
 
     return (
-        <TemplateDynamicForm
-            customValidations={ customValidations }
-            customInitializers={ customInitializers }
-            form={ tabMetadata?.form }
-            initialFormValues={ initialValues as unknown as Record<string, unknown> }
-            templatePayload={ templateData?.payload as unknown as Record<string, unknown> }
-            buttonText={ t("common:update") }
-            onFormSubmit={ handleFormSubmission }
-            isLoading={ isLoading }
-            readOnly={ isReadOnly }
-            data-componentid={ componentId }
-        />
+        <>
+            <TemplateDynamicForm
+                customValidations={ customValidations }
+                customInitializers={ customInitializers }
+                form={ tabMetadata?.form }
+                initialFormValues={ initialValues as unknown as Record<string, unknown> }
+                templatePayload={ templateData?.payload as unknown as Record<string, unknown> }
+                buttonText={ t("common:update") }
+                onFormSubmit={ handleFormSubmission }
+                isLoading={ isLoading }
+                readOnly={ isReadOnly }
+                data-componentid={ componentId }
+            />
+            { resolveDangerZone() }
+        </>
     );
 };
 

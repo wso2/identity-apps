@@ -210,9 +210,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
             }
             setMappingHasError(true);
 
-            return  t(
-                "idvp:forms.attributeSettings.attributeMappingListItem.validation.required"
-            );
+            return  t("idvp:edit.attributeSettings.modal.validation.required");
         }
         /**
          * Entity category support attribute values MUST be URIs. Such values
@@ -228,9 +226,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
             toBits(!FormValidation.isValidResourceName(mappedInputValue))) {
             setMappingHasError(true);
 
-            return  t(
-                "idvp:forms.attributeSettings.attributeMappingListItem.validation.invalid"
-            );
+            return  t("idvp:edit.attributeSettings.modal.validation.invalid");
         }
         // Check whether this attribute external name is already mapped.
         const mappedValues: any = new Set(
@@ -249,9 +245,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
             }
             setMappingHasError(true);
 
-            return  t(
-                "idvp:forms.attributeSettings.attributeMappingListItem.validation.duplicate"
-            );
+            return  t("idvp:edit.attributeSettings.modal.validation.duplicate");
         }
         // If there's no errors.
         setMappingHasError(false);
@@ -273,10 +267,8 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                             inputType="identifier"
                             maxLength={ 120 }
                             minLength={ 1 }
-                            label={ !editingMode && t("idvp:forms.attributeSettings" +
-                                ".attributeMappingListItem.labels.mappedValue") }
-                            placeholder= { t("idvp:forms.attributeSettings" +
-                                ".attributeMappingListItem.placeholders.mappedValue") }
+                            label={ !editingMode && t("idvp:edit.attributeSettings.modal.labels.mappedValue") }
+                            placeholder= { t("idvp:edit.attributeSettings.modal.placeholders.mappedValue") }
                             aria-label="External IDVP Attribute Mapping Value"
                             value={ mappedInputValue }
                             initialValue={ mappedInputValue }
@@ -297,12 +289,10 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                             value={ selectedLocalAttributeInputValue }
                             initialValue={ selectedLocalAttributeInputValue }
                             options={ getListOfAvailableAttributes() }
-                            label={ !editingMode && t("idvp:forms.attributeSettings" +
-                                ".attributeMappingListItem.labels.localClaim") }
+                            label={ !editingMode && t("idvp:edit.attributeSettings.modal.labels.localClaim") }
                             aria-Label="Local Claim Attribute"
                             name="localClaimId"
-                            placeholder= { t("idvp:forms.attributeSettings" +
-                                ".attributeMappingListItem.placeholders.localClaim") }
+                            placeholder= { t("idvp:edit.attributeSettings.modal.placeholders.localClaim") }
                             onChange={ (e: React.SyntheticEvent<HTMLInputElement>, data: DropdownProps) => {
                                 setSelectedLocalAttributeInputValue(data.value as string);
                             } }
@@ -338,8 +328,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
                                 name="submit-button"
                                 ariaLabel="Attribute Selection Form Submit Button"
                             >
-                                { t("idvp:forms.attributeSettings.attributeMapping" +
-                                    ".addButton") }
+                                { t("idvp:edit.attributeSettings.modal.addButton") }
                             </Button>
                         </Grid.Column>
                     </Grid.Row>

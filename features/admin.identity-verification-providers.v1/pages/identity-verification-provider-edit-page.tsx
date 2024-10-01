@@ -18,7 +18,9 @@
 
 import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
     AppAvatar,
@@ -27,19 +29,18 @@ import {
 import React, {
     FunctionComponent,
     ReactElement,
-    useEffect,
-    useState
+    useEffect
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
+import { Dispatch } from "redux";
+import { deleteIdentityVerificationProvider, updateIdentityVerificationProvider } from "../api";
 import { useGetIdentityVerificationProvider } from "../api/use-get-idvp";
 import { useGetIdVPMetadata } from "../api/use-get-idvp-metadata";
 import { useGetIdVPTemplate } from "../api/use-get-idvp-template";
-import { EditIdentityVerificationProvider } from "../components";
-import { IdentityVerificationProviderConstants } from "../constants";
-import { IdVPTemplateInterface } from "../models/new-models";
-import { handleIDVPFetchRequestError, handleIDVPTemplateTypesLoadError, handleUIMetadataLoadError } from "../utils";
+import { EditIdentityVerificationProvider } from "../components/identity-verification-provider-edit";
+import { IdVPEditTabIDs, IdVPTemplateInterface, IdentityVerificationProviderInterface } from "../models/new-models";
 
 /**
  * Proptypes for the IDVP edit page component.
@@ -58,34 +59,32 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
 }: IDVPEditPagePropsInterface): ReactElement => {
 
     const { t } = useTranslation();
-    const [ tabIdentifier, setTabIdentifier ] = useState<string>();
-    const [ isAutomaticTabRedirectionEnabled, setIsAutomaticTabRedirectionEnabled ] = useState<boolean>(false);
+    const dispatch: Dispatch = useDispatch();
 
     const getIDVPId = (pathname : string): string => {
-
         const path: string[] = pathname.split("/");
 
         return path[ path.length - 1 ];
     };
 
     const {
-        data: idvp,
-        error: idvpFetchError,
-        isLoading: isIDVPFetchInProgress,
-        mutate: refetchIDVP
+        data: fetchedIdVP,
+        error: idvpFetchRequestError,
+        isLoading: isIdVPFetchRequestLoading,
+        mutate: mutateIdVPFetchRequest
     } = useGetIdentityVerificationProvider(getIDVPId(location.pathname));
 
     const {
-        data: uiMetaData,
-        error: uiMetaDataLoadError,
-        isLoading: isUIMetadataLoading
-    } = useGetIdVPMetadata(idvp?.type);
+        data: fetchedIdVPMetadata,
+        error: metadataFetchRequestError,
+        isLoading: isMetadataFetchRequestLoading
+    } = useGetIdVPMetadata(fetchedIdVP?.type);
 
     const {
         data: fetchedTemplateData,
         error: templateDataFetchRequestError,
         isLoading: isTemplateDataFetchRequestLoading
-    } = useGetIdVPTemplate(idvp?.type);
+    } = useGetIdVPTemplate(fetchedIdVP?.type);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -95,48 +94,33 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
         featureConfig?.identityVerificationProviders?.scopes?.delete);
 
     /**
-     * Checks if the user needs to go to a specific tab index.
+     * Handles the IdVP fetch error.
      */
     useEffect(() => {
-        const tabName: string =  location.state as string;
-
-        if (!tabName) {
-            return;
-        } else {
-            setIsAutomaticTabRedirectionEnabled(true);
-            setTabIdentifier(tabName);
+        if (idvpFetchRequestError) {
+            dispatch(addAlert({
+                description: idvpFetchRequestError.response?.data?.description
+                    ?? t("idvp:fetch.notifications.idVP.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("idvp:fetch.notifications.idVP.genericError.message")
+            }));
         }
-    }, []);
-
-    /**
-     * Show error notification if the API encounters an error while fetching the IDVP.
-     */
-    useEffect(() => {
-        if (!idvpFetchError) {
-            return;
-        }
-        handleIDVPFetchRequestError(idvpFetchError);
-    }, [ idvpFetchError ]);
+    }, [ idvpFetchRequestError ]);
 
     /**
-     * Show error notification if the API encounters an error while fetching the UI metadata for IDVP.
+     * Handles the template data fetch error and metadata fetch error.
      */
     useEffect(() => {
-        if(!uiMetaDataLoadError){
-            return;
+        if (templateDataFetchRequestError || metadataFetchRequestError) {
+            dispatch(addAlert({
+                description: templateDataFetchRequestError.response?.data?.description
+                    ?? metadataFetchRequestError.response?.data?.description
+                    ?? t("idvp:fetch.notifications.metadata.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("idvp:fetch.notifications.metadata.genericError.message")
+            }));
         }
-        handleUIMetadataLoadError(uiMetaDataLoadError);
-    }, [ uiMetaDataLoadError ]);
-
-    /**
-     * Show error notification if the API encounters an error while fetching the IDVP template types.
-     */
-    useEffect(() => {
-        if(!templateDataFetchRequestError){
-            return;
-        }
-        handleIDVPTemplateTypesLoadError(templateDataFetchRequestError);
-    }, [ templateDataFetchRequestError ]);
+    }, [ templateDataFetchRequestError, metadataFetchRequestError ]);
 
     /**
      * Handles the back button click event.
@@ -145,26 +129,63 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
      */
     const handleBackButtonClick = (): void => {
 
-        history.push(AppConstants.getPaths().get(IdentityVerificationProviderConstants.IDVP_PATH));
+        history.push(AppConstants.getPaths().get("IDP"));
     };
 
     /**
-     * Called when an identity verification provider is deleted.
-     *
-     * @returns void
+     * Handles the identity verification provider deletion.
      */
-    const onIdentityVerificationProviderDelete = (): void => {
+    const handleIdentityVerificationProviderDelete = (): void => {
+        deleteIdentityVerificationProvider(fetchedIdVP?.id)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("idvp:delete.notifications.delete.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("idvp:delete.notifications.delete.success.message")
+                }));
 
-        history.push(AppConstants.getPaths().get(IdentityVerificationProviderConstants.IDVP_PATH));
+                history.push(AppConstants.getPaths().get("IDP"));
+            })
+            .catch((error: IdentityAppsApiException) => {
+                dispatch(addAlert({
+                    description: error?.response?.data?.description
+                        || t("idvp:delete.notifications.delete.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("idvp:delete.notifications.delete.genericError.message")
+                }));
+            });
     };
 
     /**
-     * Called when an identity verification provider updates.
+     * Handles the identity verification provider update.
      *
-     * @returns void
+     * @param data - Identity verification provider data to be updated.
+     * @param callback - Callback to be called after the update.
      */
-    const onIdentityVerificationProviderUpdate = async () => {
-        await refetchIDVP();
+    const handleIdentityVerificationProviderUpdate = (
+        data: IdentityVerificationProviderInterface,
+        callback?: () => void
+    ) => {
+        updateIdentityVerificationProvider(data)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("idvp:edit.notifications.update.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("idvp:edit.notifications.update.success.message")
+                }));
+            })
+            .catch((error: IdentityAppsApiException) => {
+                dispatch(addAlert({
+                    description: error?.response?.data?.description
+                        || t("idvp:edit.notifications.update.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("idvp:edit.notifications.update.genericError.message")
+                }));
+            })
+            .finally(() => {
+                callback?.();
+                mutateIdVPFetchRequest();
+            });
     };
 
     /**
@@ -214,37 +235,40 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
     return (
         <TabPageLayout
             pageTitle="Edit Identity Verification Provider"
-            isLoading={ isIDVPFetchInProgress || isTemplateDataFetchRequestLoading }
+            isLoading={ isIdVPFetchRequestLoading || isTemplateDataFetchRequestLoading }
             loadingStateOptions={ {
                 count: 5,
                 imageType: "square"
             } }
-            title={ idvp?.name }
+            title={ fetchedIdVP?.name }
             contentTopMargin={ true }
-            description={ idvp?.description }
+            description={ fetchedIdVP?.description }
             image={ resolveIDVPImage(fetchedTemplateData) }
             backButton={ {
-                "data-componentid": `${ componentId }-page-back-button`,
+                "data-componentid": `${ componentId }-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("console:develop.pages.idvpTemplate.backButton")
+                text: t("idvp:edit.backButton")
             } }
             titleTextAlign="left"
             bottomMargin={ false }
-            data-componentid={ `${ componentId }-page-layout` }
+            data-componentid={ `${ componentId }-layout` }
         >
             {
                 <EditIdentityVerificationProvider
-                    identityVerificationProvider={ idvp }
-                    isLoading={ isIDVPFetchInProgress || isUIMetadataLoading }
-                    onDelete={ onIdentityVerificationProviderDelete }
-                    onUpdate={ onIdentityVerificationProviderUpdate }
-                    data-testid={ componentId }
+                    identityVerificationProvider={ fetchedIdVP }
+                    isLoading={
+                        isIdVPFetchRequestLoading
+                        || isMetadataFetchRequestLoading
+                        || isIdVPFetchRequestLoading
+                    }
+                    handleDelete={ handleIdentityVerificationProviderDelete }
+                    handleUpdate={ handleIdentityVerificationProviderUpdate }
+                    data-componentid={ `${componentId}-edit` }
                     isReadOnly={ !hasIdVPUpdatePermissions }
                     isDeletePermitted={ hasIdVPDeletePermissions }
-                    isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
-                    tabIdentifier={ tabIdentifier }
-                    uiMetaData={ uiMetaData }
+                    uiMetaData={ fetchedIdVPMetadata }
                     templateData={ fetchedTemplateData }
+                    tabIdentifier={ fetchedIdVPMetadata?.edit?.defaultActiveTabId ?? IdVPEditTabIDs.GENERAL }
                 />
             }
         </TabPageLayout>
