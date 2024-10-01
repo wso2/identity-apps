@@ -1,5 +1,24 @@
 # @wso2is/admin.administrators.v1
 
+## 2.25.13
+
+### Patch Changes
+
+- [#6938](https://github.com/wso2/identity-apps/pull/6938) [`5c51848d9d9861e755224cd412982ff412ae30be`](https://github.com/wso2/identity-apps/commit/5c51848d9d9861e755224cd412982ff412ae30be) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Make console settings UI configurable for managed deployments
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.26.13
+  - @wso2is/admin.core.v1@2.30.13
+  - @wso2is/admin.authentication.v1@2.21.13
+  - @wso2is/admin.extensions.v1@2.30.13
+  - @wso2is/admin.roles.v2@2.22.13
+  - @wso2is/admin.server-configurations.v1@2.24.13
+  - @wso2is/admin.tenants.v1@2.23.13
+  - @wso2is/admin.users.v1@2.23.13
+  - @wso2is/admin.userstores.v1@2.21.13
+  - @wso2is/admin.remote-userstores.v1@1.1.13
+  - @wso2is/admin.feature-gate.v1@1.1.13
+
 ## 2.25.12
 
 ### Patch Changes
