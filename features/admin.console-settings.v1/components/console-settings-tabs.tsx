@@ -80,9 +80,30 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
 
     const { t } = useTranslation();
 
-    const { isSubOrganization } = useGetCurrentOrganizationType();
-    const administratorsFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.administrators);
+    const { isFirstLevelOrganization, isSubOrganization, isSuperOrganization } = useGetCurrentOrganizationType();
+
+    const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.consoleSettings);
+    const isLoginFlowConfigurationEnabledForFirstLevelOrgs: boolean =
+        !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
+            "consoleSettings.firstLevelOrgloginFlowConfiguration"
+        );
+
+    const isLoginFlowEnabled: boolean = useMemo(() => {
+        if (isSuperOrganization()) {
+            return true;
+        }
+
+        if (isLoginFlowConfigurationEnabledForFirstLevelOrgs && isFirstLevelOrganization()) {
+            return true;
+        }
+
+        if (isSubOrganization()) {
+            return true;
+        }
+
+        return false;
+    }, [ isSubOrganization, isSuperOrganization, isFirstLevelOrganization ]);
 
     const consoleTabs: ConsoleSettingsTabInterface[] = useMemo(
         () =>
@@ -96,8 +117,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     pane: <ConsoleAdministrators />,
                     value: ConsoleSettingsTabIDs.ADMINISTRATORS
                 },
-                ((administratorsFeatureConfig?.enabled && !isSubOrganization())
-                    || !administratorsFeatureConfig?.enabled) && {
+                {
                     className: "console-roles-list",
                     "data-componentid": `${componentId}-tab-roles`,
                     "data-tabid": ConsoleSettingsModes.ROLES,
@@ -106,7 +126,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     pane: <ConsoleRolesList />,
                     value: ConsoleSettingsTabIDs.ROLES
                 },
-                {
+                isLoginFlowEnabled && {
                     className: "console-security",
                     "data-componentid": `${componentId}-tab-login-flow`,
                     "data-tabid": ConsoleSettingsModes.LOGIN_FLOW,

@@ -5536,6 +5536,9 @@ importers:
       '@wso2is/access-control':
         specifier: ^3.0.24
         version: link:../../modules/access-control
+      '@wso2is/admin.administrators.v1':
+        specifier: ^2.25.12
+        version: link:../admin.administrators.v1
       '@wso2is/admin.applications.v1':
         specifier: ^2.26.12
         version: link:../admin.applications.v1
@@ -5548,6 +5551,9 @@ importers:
       '@wso2is/admin.extensions.v1':
         specifier: ^2.30.12
         version: link:../admin.extensions.v1
+      '@wso2is/admin.feature-gate.v1':
+        specifier: ^1.1.10
+        version: link:../admin.feature-gate.v1
       '@wso2is/admin.identity-providers.v1':
         specifier: ^2.22.12
         version: link:../admin.identity-providers.v1
@@ -42939,6 +42945,7 @@ packages:
   /pinkie@2.0.4:
     resolution: {integrity: sha512-MnUuEycAemtSaeFSjXKW/aroV7akBbY+Sv+RkyqFjgAe73F+MR0TBWKBRDkmfWq/HiFmdavfZ1G7h4SPZXaCSg==}
     engines: {node: '>=0.10.0'}
+    requiresBuild: true
 
   /pirates@4.0.6:
     resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}
