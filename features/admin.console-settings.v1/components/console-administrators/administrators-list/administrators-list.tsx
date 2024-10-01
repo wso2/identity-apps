@@ -45,7 +45,7 @@ import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/featur
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { useInvitedUsersList } from "@wso2is/admin.users.v1/api/invite";
 import { AdminAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models";
 import {
     AlertInterface,
@@ -169,7 +169,11 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
     const [ isEnterpriseLoginEnabled, setIsEnterpriseLoginEnabled ] = useState<boolean>(false);
 
     const [ showAddExternalAdminWizard, setShowAddExternalAdminWizard ] = useState(false);
-    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(undefined);
+    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(
+        isPrivilegedUsersInConsoleSettingsEnabled
+            ? undefined
+            : PRIMARY_USERSTORE
+    );
 
     const {
         administrators,
@@ -182,7 +186,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
         listOffset,
         searchQuery,
         null,
-        selectedUserStore ?? selectedAdministratorGroup === "administrators" ? "PRIMARY" : "DEFAULT",
+        selectedUserStore ?? selectedAdministratorGroup === "administrators" ? PRIMARY_USERSTORE : CONSUMER_USERSTORE,
         UserManagementConstants.GROUPS_ATTRIBUTE
     );
 
