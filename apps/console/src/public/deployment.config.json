@@ -457,7 +457,7 @@
             },
             "consoleSettings": {
                 "disabledFeatures": [
-                    "consoleSettings.invitedAdmins",
+                    "consoleSettings.invitedExternalAdmins",
                     "consoleSettings.privilegedUsers"
                 ],
                 "enabled": true,

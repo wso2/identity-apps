@@ -153,7 +153,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
             "consoleSettings.privilegedUsers"
         );
     const isInvitedAdminInConsoleSettingsEnabled: boolean = !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
-        "consoleSettings.invitedAdmins"
+        "consoleSettings.invitedExternalAdmins"
     );
 
 
