@@ -63,6 +63,7 @@ import { Dispatch } from "redux";
 import { Icon, Label } from "semantic-ui-react";
 import { updateApplicationDetails } from "../api/application";
 import { useGetApplication } from "../api/use-get-application";
+import useGetApplicationInboundConfigs from "../api/use-get-application-inbound-configs";
 import { EditApplication } from "../components/edit-application";
 import { InboundProtocolDefaultFallbackTemplates } from "../components/meta/inbound-protocols.meta";
 import { ApplicationManagementConstants } from "../constants";
@@ -73,6 +74,7 @@ import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
     State,
+    SupportedAuthProtocolName,
     SupportedAuthProtocolTypes,
     idpInfoTypeInterface
 } from "../models";
@@ -146,6 +148,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         error: applicationGetRequestError
     } = useGetApplication(applicationId, !!applicationId);
 
+    const {
+        data: applicationInboundConfigs
+    } = useGetApplicationInboundConfigs(applicationId, SupportedAuthProtocolName.OIDC, !!applicationId);
+
     const [ viewBannerDetails, setViewBannerDetails ] = useState<boolean>(false);
     const [ displayBanner, setDisplayBanner ] = useState<boolean>(false);
     const [ bannerUpdateLoading, setBannerUpdateLoading ] = useState<boolean>(false);
@@ -153,22 +159,13 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ formData, setFormdata ] = useState<ApplicationInterface>(undefined);
 
     useEffect(() => {
-        if (application != undefined) {
-            const applicationVersionArray: number[] = application?.applicationVersion?.match(/\d+/g).map(Number);
-            const latestApplicationVersionArray: number[] = ApplicationManagementConstants.LATEST_VERSION
-                .match(/\d+/g).map(Number);
+        if (application != undefined && applicationInboundConfigs != undefined) {
+            const isAppOutdated: boolean = ApplicationManagementUtils.getIfAppIsOutdated(
+                application?.applicationVersion, applicationInboundConfigs?.grantTypes);
 
-            if (applicationVersionArray[0] < latestApplicationVersionArray[0]) {
-                setDisplayBanner(true);
-            } else if (applicationVersionArray[1] < latestApplicationVersionArray[1]) {
-                setDisplayBanner(true);
-            } else if (applicationVersionArray[2] < latestApplicationVersionArray[2]) {
-                setDisplayBanner(true);
-            } else {
-                setDisplayBanner(false);
-            }
+            setDisplayBanner(isAppOutdated);
         }
-    }, [ application ]);
+    }, [ application, applicationInboundConfigs ]);
 
     /**
      * Load the template that the application is built on.
@@ -626,69 +623,79 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 data-componentId={ `${componentId}-application-outdated-banner-form` }>
                 <Grid className="banner-grid">
                     <List dense>
-                        <ListItem
-                            sx={ {
-                                display: "list-item",
-                                listStyleType: "disc"
-                            } }>
-                            <ListItemText>
-                                <Typography variant="body2" >
-                                    <Trans
-                                        i18nKey={
-                                            t("applications:forms.inboundOIDC.sections"
+                        {
+                            applicationInboundConfigs?.grantTypes
+                                .includes(ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT) && (
+                                <ListItem
+                                    sx={ {
+                                        display: "list-item",
+                                        listStyleType: "disc"
+                                    } }>
+                                    <ListItemText>
+                                        <Typography variant="body2" >
+                                            <Trans
+                                                i18nKey={
+                                                    t("applications:forms.inboundOIDC.sections"
                                             + ".outdatedApplications.fields."
                                             + "versions.version100.useClientIdAsSubClaimOfAppTokens.instruction")
-                                        }
-                                    />
-                                </Typography>
-                                <DocumentationLink
-                                    link={
-                                        getLink("develop.applications.editApplication.outdatedApplications.versions."
-                                            + "version100.useClientIdAsSubClaimOfAppTokens.documentationLink")
-                                    }
-                                    showEmptyLink={ false }
-                                >
-                                    <Trans
-                                        i18nKey={
-                                            t("applications:forms.inboundOIDC.sections"
+                                                }
+                                            />
+                                        </Typography>
+                                        <DocumentationLink
+                                            link={
+                                                getLink("develop.applications.editApplication.outdatedApplications."
+                                            + "versions.version100.useClientIdAsSubClaimOfAppTokens.documentationLink")
+                                            }
+                                            showEmptyLink={ false }
+                                        >
+                                            <Trans
+                                                i18nKey={
+                                                    t("applications:forms.inboundOIDC.sections"
                                                 + ".outdatedApplications.documentationHint")
-                                        }
-                                    />
-                                </DocumentationLink>
-                            </ListItemText>
-                        </ListItem>
-                        <ListItem
-                            sx={ {
-                                display: "list-item",
-                                listStyleType: "disc"
-                            } }>
-                            <ListItemText>
-                                <Typography variant="body2" >
-                                    <Trans
-                                        i18nKey={
-                                            t("applications:forms.inboundOIDC.sections"
+                                                }
+                                            />
+                                        </DocumentationLink>
+                                    </ListItemText>
+                                </ListItem>
+                            )
+                        }
+                        {
+                            applicationInboundConfigs?.grantTypes
+                                .includes(ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT) && (
+                                <ListItem
+                                    sx={ {
+                                        display: "list-item",
+                                        listStyleType: "disc"
+                                    } }>
+                                    <ListItemText>
+                                        <Typography variant="body2" >
+                                            <Trans
+                                                i18nKey={
+                                                    t("applications:forms.inboundOIDC.sections"
                                             + ".outdatedApplications.fields.versions.version100."
                                             + "removeUsernameFromIntrospectionRespForAppTokens.instruction")
-                                        }
-                                    />
-                                </Typography>
-                                <DocumentationLink
-                                    link={
-                                        getLink("develop.applications.editApplication.outdatedApplications.versions."
-                                            + "version100.removeUsernameFromIntrospectionRespForAppTokens."
+                                                }
+                                            />
+                                        </Typography>
+                                        <DocumentationLink
+                                            link={
+                                                getLink("develop.applications.editApplication.outdatedApplications."
+                                            + "versions.version100.removeUsernameFromIntrospectionRespForAppTokens."
                                             + "documentationLink")
-                                    }
-                                    showEmptyLink={ false }
-                                >
-                                    <Trans
-                                        i18nKey={
-                                            t("applications:forms.inboundOIDC.sections"
+                                            }
+                                            showEmptyLink={ false }
+                                        >
+                                            <Trans
+                                                i18nKey={
+                                                    t("applications:forms.inboundOIDC.sections"
                                                 + ".outdatedApplications.documentationHint")
-                                        }
-                                    />
-                                </DocumentationLink>
-                            </ListItemText>
-                        </ListItem>
+                                                }
+                                            />
+                                        </DocumentationLink>
+                                    </ListItemText>
+                                </ListItem>
+                            )
+                        }
                     </List>
                 </Grid>
                 <Button
@@ -811,10 +818,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             });
     };
 
-    console.log("application: ", application);
-    console.log("moderatedApplicationData: ", moderatedApplicationData);
-
-
     return (
         <TabPageLayout
             pageTitle="Edit Application"
@@ -833,22 +836,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     ?? (
                         <div className="with-label ellipsis" ref={ appDescElement }>
                             { resolveTemplateLabel() }
-                            {
-                                ApplicationManagementUtils.getIfAppIsOutdated(
-                                    moderatedApplicationData?.applicationVersion) && (
-                                    <Label
-                                        className="no-margin-left application-outdated-label"
-                                        size="small"
-                                    >
-                                        <Trans
-                                            i18nKey={
-                                                t("applications:forms.inboundOIDC.sections"
-                                                    + ".outdatedApplications.label")
-                                            }
-                                        />
-                                    </Label>
-                                )
-                            }
                             {
                                 ApplicationManagementUtils.isChoreoApplication(moderatedApplicationData)
                                     && (<Label

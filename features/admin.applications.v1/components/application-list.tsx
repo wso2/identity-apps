@@ -426,23 +426,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                             ) }
                                         </div>
                                     </Grid>
-                                    <Grid alignItems="flex-end">
-                                        <div>
-                                            { ApplicationManagementUtils.getIfAppIsOutdated(app.applicationVersion) && (
-                                                <Label
-                                                    className="no-margin-left application-outdated-label"
-                                                    size="mini"
-                                                >
-                                                    <Trans
-                                                        i18nKey={
-                                                            t("applications:forms.inboundOIDC.sections"
-                                                                + ".outdatedApplications.label")
-                                                        }
-                                                    />
-                                                </Label>
-                                            ) }
-                                        </div>
-                                    </Grid>
                                     {
                                         ApplicationManagementUtils.isChoreoApplication(app)
                                             && (<Grid>

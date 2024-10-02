@@ -104,9 +104,11 @@ export class ApplicationManagementUtils {
             });
     }
 
-    public static getIfAppIsOutdated(applicationVersion: string): boolean {
+    public static getIfAppIsOutdated(applicationVersion: string, grantTypes?: string[]): boolean {
 
-        if (applicationVersion != undefined) {
+        if (applicationVersion != undefined
+                && grantTypes.includes(ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT)) {
+
             const appVersionArray: number[] = applicationVersion?.match(/\d+/g).map(Number);
             const latestAppVersionArray: number[] = ApplicationManagementConstants
                 .LATEST_VERSION.match(/\d+/g).map(Number);
