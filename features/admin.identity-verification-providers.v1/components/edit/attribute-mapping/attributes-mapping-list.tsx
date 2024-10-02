@@ -28,7 +28,11 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Header, SemanticICONS } from "semantic-ui-react";
 import { AttributeMappingListItem } from "./attribute-mapping-list-item";
-import { IdVPClaimMappingInterface, IdVPClaimsInterface, IdVPLocalClaimInterface } from "../../../models/identity-verification-providers";
+import {
+    IdVPClaimMappingInterface,
+    IdVPClaimsInterface,
+    IdVPLocalClaimInterface
+} from "../../../models/identity-verification-providers";
 
 /**
  * Proptypes for the attribute mapping list component.

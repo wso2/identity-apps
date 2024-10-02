@@ -23,7 +23,7 @@ import {
     IdVPClaimsInterface,
     IdentityVerificationProviderInterface
 } from "../../models/identity-verification-providers";
-import { AttributeSettings } from "../settings/attribute-settings";
+import { AttributeSettings } from "../edit/attribute-mapping/attribute-settings";
 
 interface AttributeMappingsPropsInterface extends IdentifiableComponentInterface {
     /**

@@ -27,12 +27,12 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
-import { AttributesSelection } from "./attribute-management/attribute-selection";
+import { AttributesSelection } from "./attribute-selection";
 import {
     IdVPClaimMappingInterface,
     IdVPClaimsInterface,
     IdentityVerificationProviderInterface
-} from "../../models/identity-verification-providers";
+} from "../../../models/identity-verification-providers";
 
 /**
  * Proptypes for the identity verification provider attribute settings component.

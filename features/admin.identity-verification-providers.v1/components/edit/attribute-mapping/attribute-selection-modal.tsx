@@ -16,15 +16,18 @@
  * under the License.
  */
 
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { EmptyPlaceholder, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Divider, Grid, Modal } from "semantic-ui-react";
 import { AttributeMappingListItem } from "./attribute-mapping-list-item";
 import { AttributeMappingList } from "./attributes-mapping-list";
-import { getEmptyAttributeMappingPlaceholder } from "./utils/attribute-settings-utils";
-import { IdVPClaimMappingInterface, IdVPLocalClaimInterface } from "../../../models/identity-verification-providers";
+import {
+    IdVPClaimMappingInterface,
+    IdVPLocalClaimInterface
+} from "../../../models/identity-verification-providers";
 
 /**
  * Props interface of {@link AddAttributeSelectionModal}
@@ -181,6 +184,28 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
         ]);
     };
 
+    const renderEmptyAttributeMappingPlaceholder = (): ReactElement => {
+        return (
+            <EmptyPlaceholder
+                title={ t("idvp:edit.attributeSettings.modal.emptyPlaceholder.title") }
+                subtitle={
+                    [
+                        <Trans
+                            key={ "no-attributes-configured" }
+                            i18nKey={
+                                "idvp:edit.attributeSettings.modal.emptyPlaceholder.description"
+                            }
+                        >
+                            Map attributes and click <strong>Add Attribute Mapping</strong> to get started.
+                        </Trans>
+                    ]
+                }
+                image={ getEmptyPlaceholderIllustrations().emptyList }
+                imageSize="tiny"
+            />
+        );
+    };
+
     return (
         <Modal
             open={ show }
@@ -215,7 +240,7 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
                                             availableAttributesList={ copyOfAttributes }
                                         />
                                     </React.Fragment>
-                                ) : getEmptyAttributeMappingPlaceholder() }
+                                ) : renderEmptyAttributeMappingPlaceholder() }
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

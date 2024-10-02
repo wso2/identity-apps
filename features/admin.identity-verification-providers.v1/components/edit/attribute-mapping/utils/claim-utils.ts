@@ -17,9 +17,11 @@
  */
 
 import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
+import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { Claim } from "@wso2is/core/models";
-import { handleGetAllLocalClaimsError } from "./attribute-settings-utils";
+import { AlertLevels, Claim } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { I18n } from "@wso2is/i18n";
 import { IdVPLocalClaimInterface } from "../../../../models/identity-verification-providers";
 
 /**
@@ -28,7 +30,7 @@ import { IdVPLocalClaimInterface } from "../../../../models/identity-verificatio
  * @param claim - Local claim.
  * @returns Whether the claim is an identity claim.
  */
-export const isLocalIdentityClaim = (claim: string): boolean => {
+const isLocalIdentityClaim = (claim: string): boolean => {
     return /identity/.test(claim);
 };
 
@@ -39,7 +41,7 @@ export const isLocalIdentityClaim = (claim: string): boolean => {
  * @param hideIdentityClaimAttributes - Whether to hide identity claim attributes.
  * @returns Array of extracted local claims
  */
-export const extractLocalClaimsFromResponse = (
+const extractLocalClaimsFromResponse = (
     response: Claim[],
     hideIdentityClaimAttributes: boolean
 ): IdVPLocalClaimInterface[] => {
@@ -79,7 +81,13 @@ export const fetchAllLocalClaims = (
             setAvailableLocalClaims(localClaims);
         })
         .catch((error: IdentityAppsApiException) => {
-            handleGetAllLocalClaimsError(error);
+            store.dispatch(addAlert({
+                description: error?.response?.data?.description
+                    ?? I18n.instance.t("idvp:notifications.getAllLocalClaims.genericError.description"
+                    ),
+                level: AlertLevels.ERROR,
+                message: I18n.instance.t("idvp:notifications.getAllLocalClaims.genericError.message")
+            }));
         })
         .finally(() => {
             setIsLocalClaimsLoading(false);

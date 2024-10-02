@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import IdVPCreationModal from "@wso2is/admin.identity-verification-providers.v1/components/modals/idvp-creation-modal";
+import IdVPCreationModal from "@wso2is/admin.identity-verification-providers.v1/components/create/idvp-creation-modal";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC, ReactElement } from "react";
 import { AuthenticatorCreateWizardFactory } from "./authenticator-create-wizard-factory";
