@@ -27,7 +27,11 @@ import { Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { AddAttributeSelectionModal } from "./attribute-selection-modal";
 import { AttributeMappingList } from "./attributes-mapping-list";
 import { fetchAllLocalClaims } from "./utils/claim-utils";
-import { IdVPClaimMappingInterface, IdVPClaimsInterface, IdVPLocalClaimInterface } from "../../../models/identity-verification-providers";
+import {
+    IdVPClaimMappingInterface,
+    IdVPClaimsInterface,
+    IdVPLocalClaimInterface
+} from "../../../models/identity-verification-providers";
 
 /**
  * Properties of {@link AttributesSelection}

@@ -39,6 +39,7 @@ export const useGetIdentityVerificationProviderList = <Data = IdVPListResponseIn
     limit?: number,
     offset?: number,
     filter?: string,
+    shouldFetch: boolean = true,
     requiredAttributes?: string
 ): RequestResultInterface<Data, Error> => {
 
@@ -56,7 +57,13 @@ export const useGetIdentityVerificationProviderList = <Data = IdVPListResponseIn
         },
         url: store.getState().config.endpoints.identityVerificationProviders
     };
-    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const {
+        data,
+        error,
+        isLoading,
+        isValidating,
+        mutate
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,

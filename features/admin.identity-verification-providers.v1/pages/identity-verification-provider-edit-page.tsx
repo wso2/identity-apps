@@ -24,8 +24,10 @@ import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
     AppAvatar,
+    LabelWithPopup,
     TabPageLayout
 } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -43,7 +45,13 @@ import { useGetIdentityVerificationProvider } from "../api/use-get-idvp";
 import { useGetIdVPMetadata } from "../api/use-get-idvp-metadata";
 import { useGetIdVPTemplate } from "../api/use-get-idvp-template";
 import { EditIdentityVerificationProvider } from "../components/identity-verification-provider-edit";
-import { IdVPEditTabIDs, IdVPTemplateInterface, IdentityVerificationProviderInterface } from "../models/identity-verification-providers";
+import { IdentityVerificationProviderConstants } from "../constants/identity-verification-provider-constants";
+import {
+    IdVPConfigPropertiesInterface,
+    IdVPEditTabIDs,
+    IdVPTemplateInterface,
+    IdentityVerificationProviderInterface
+} from "../models/identity-verification-providers";
 
 /**
  * Proptypes for the IDVP edit page component.
@@ -235,6 +243,52 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
         );
     };
 
+    /**
+     * Resolves the connector status label.
+     *
+     * @param connector - Evaluating connector.
+     *
+     * @returns React element.
+     */
+    const resolveStatusLabel = (): ReactElement => {
+
+        if (!fetchedIdVP) {
+            return null;
+        }
+
+        const isWebhookConfigured: boolean =
+            !(fetchedIdVP.type === IdentityVerificationProviderConstants.IDVP_TEMPLATE_TYPES.onFido)
+            || fetchedIdVP.configProperties.some((configProperty: IdVPConfigPropertiesInterface) => {
+                return configProperty.key === "webhook_token" && !isEmpty(configProperty.value);
+            });
+
+        if (!isWebhookConfigured) {
+            return (
+                <LabelWithPopup
+                    popupHeader={ t("idvp:edit.status.notConfigured.heading") }
+                    popupSubHeader={ t("idvp:edit.status.notConfigured.description") }
+                    labelColor="red"
+                />
+            );
+        }
+
+        if (fetchedIdVP.isEnabled) {
+            return (
+                <LabelWithPopup
+                    popupHeader={ t("idvp:edit.status.enabled") }
+                    labelColor="green"
+                />
+            );
+        }
+
+        return (
+            <LabelWithPopup
+                popupHeader={ t("idvp:edit.status.disabled") }
+                labelColor="grey"
+            />
+        );
+    };
+
     return (
         <TabPageLayout
             pageTitle="Edit Identity Verification Provider"
@@ -243,7 +297,12 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
                 count: 5,
                 imageType: "square"
             } }
-            title={ fetchedIdVP?.name }
+            title={ (
+                <>
+                    { fetchedIdVP?.name }
+                    { resolveStatusLabel() }
+                </>
+            ) }
             contentTopMargin={ true }
             description={ fetchedIdVP?.description }
             image={ resolveIDVPImage(fetchedTemplateData) }

@@ -66,6 +66,14 @@ export interface IdvpNS {
         notifications: {
             update: Notification;
         };
+        status: {
+            disabled: string;
+            enabled: string;
+            notConfigured: {
+                heading: string;
+                description: string;
+            };
+        };
     };
     delete: {
         notifications: {

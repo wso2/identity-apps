@@ -39,7 +39,6 @@ import {
     SearchWithFilterLabels,
     useDocumentation
 } from "@wso2is/react-components";
-import isEmpty from "lodash-es/isEmpty";
 import React, {
     FC,
     ReactElement,
@@ -53,14 +52,8 @@ import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import { useGetAuthenticatorTags } from "../api/authenticators";
 import { AuthenticatorGrid } from "../components/authenticator-grid";
-import { useGetCombinedConnectionList } from "../hooks/use-get-combined-connection-list";
+import { SearchInputsInterface, useGetCombinedConnectionList } from "../hooks/use-get-combined-connection-list";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
-import {
-    AuthenticatorInterface,
-    AuthenticatorTypes
-} from "../models/authenticators";
-import { ConnectionListResponseInterface } from "../models/connection";
-import { ConnectionsManagementUtils } from "../utils/connection-utils";
 
 /**
  * Proptypes for the Connections page component.
@@ -83,42 +76,16 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
-    const [ searchQuery, setSearchQuery ] = useState<string>("");
-    const [ hasNextPage, setHasNextPage ] = useState<boolean>(undefined);
+    const [ searchInputs, setSearchInputs ] = useState<SearchInputsInterface>({
+        filterTags: [],
+        searchQuery: ""
+    });
     const [ listOffset, setListOffset ] = useState<number>(0);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-    const [ selectedFilterTags, setSelectedFilterTags ] = useState<string[]>([]);
-    const [ showFilteredList, setShowFilteredList ] = useState<boolean>(false);
-    const [ connectionsList, setConnectionsList ] = useState<ConnectionListResponseInterface>({});
-    const [ authenticatorList, setAuththenticatorList ] = useState<AuthenticatorInterface[]>([]);
-    const [ localAuthenticatorList, setLocalAuthenticatorList ] = useState<AuthenticatorInterface[]>([]);
-    const [ filteredAuthenticatorList, setFilteredAuthenticatorList ] = useState<AuthenticatorInterface[]>([]);
-    const [ filter, setFilter ] = useState<string>(null);
-    const [ filterAuthenticatorsOnly, setFilterAuthenticatorsOnly ] = useState<boolean>(false);
-    const [ appendConnections, setAppendConnections ] = useState<boolean>(false);
+    const [ isFiltering, setIsFiltering ] = useState<boolean>(false);
+
     const isPaginating: boolean = false;
-
-    // const {
-    //     data: authenticators,
-    //     isLoading: isAuthenticatorsFetchRequestLoading,
-    //     error: authenticatorsFetchRequestError,
-    //     mutate: mutateAuthenticatorsFetchRequest
-    // } = useGetAuthenticators(filter, false);
-
-    // const {
-    //     data: connections,
-    //     isLoading: isConnectionsFetchRequestLoading,
-    //     error: connectionsFetchRequestError,
-    //     mutate: mutateConnectionsFetchRequest
-    // } = useGetConnections(
-    //     listItemLimit,
-    //     listOffset,
-    //     filter,
-    //     "federatedAuthenticators",
-    //     false,
-    //     filterAuthenticatorsOnly
-    // );
+    const listItemLimit: number = UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT;
 
     const {
         data: fetchedAuthenticatorTags,
@@ -131,7 +98,11 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         isLoading: isCombinedConnectionListFetchRequestLoading,
         error: combinedConnectionListFetchRequestError,
         mutate: mutateCombinedConnectionListFetchRequest
-    } = useGetCombinedConnectionList(listItemLimit, listOffset);
+    } = useGetCombinedConnectionList(
+        listItemLimit,
+        listOffset,
+        searchInputs
+    );
 
     /**
      * Handle the error alert of the get connection list request.
@@ -166,38 +137,6 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
     }, [ authenticatorTagsFetchRequestError ]);
 
     /**
-     * Filters the filtered authenticator list based on the configurable local authenticator list.
-     */
-    useEffect(() => {
-        const filtered: AuthenticatorInterface[] = authenticatorList.filter((authenticator: AuthenticatorInterface) => {
-
-            // Filtered authenticator list should only contain local authenticators that are configurable.
-            if (authenticator.type === AuthenticatorTypes.LOCAL) {
-
-                return localAuthenticatorList.some((localAuthenticator: AuthenticatorInterface) => {
-                    return localAuthenticator.id === authenticator.id;
-                });
-            }
-
-            return true;
-        });
-
-        setFilteredAuthenticatorList(filtered);
-    }, [ authenticatorList, localAuthenticatorList ]);
-
-    /**
-     * Called on every `listOffset` & `listItemLimit` change.
-     */
-    useEffect(() => {
-        if (!listItemLimit) {
-            return;
-        }
-
-        console.log("Mutating");
-        // mutateConnectionsFetchRequest();
-    }, [ listOffset, listItemLimit ]);
-
-    /**
      * Filters the available authenticator tags from the fetched authenticator tags.
      */
     const availableFilterTags: string[] = useMemo(() => {
@@ -220,34 +159,34 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
      * Handles the `onSearchQueryClear` callback action.
      */
     const handleSearchQueryClear = (): void => {
-        setSearchQuery("");
+        setSearchInputs({
+            filterTags: [],
+            searchQuery: ""
+        });
         setTriggerClearQuery(!triggerClearQuery);
-        setShowFilteredList(false);
+        setIsFiltering(false);
     };
 
-    /**
-     * Handles Connection grid filter.
-     *
-     * @param query - Search query.
-     * @param selectedFilters - Selected filters.
-     */
-    const handleConnectionGridFilter = (query: string, selectedFilters: string[]): void => {
-        // Update the internal state to manage placeholders etc.
-        setSearchQuery(query);
+    const handleSearchQueryChange = (query: string): void => {
+        setSearchInputs((prevSearchInputs: SearchInputsInterface) => {
+            return {
+                ...prevSearchInputs,
+                searchQuery: query
+            };
+        });
         setListOffset(0);
+        setIsFiltering(true);
+    };
 
-        // Update the state of selected filterTags.
-        const filterTags: string[] = selectedFilters || selectedFilterTags;
-
-        setSelectedFilterTags(filterTags);
-        setFilter(ConnectionsManagementUtils.buildAuthenticatorsFilterQuery(query, filterTags));
-        setFilterAuthenticatorsOnly(filterTags && filterTags.length > 0);
-
-        if (isEmpty(query) && isEmpty(filterTags)) {
-            setShowFilteredList(false);
-        } else {
-            setShowFilteredList(true);
-        }
+    const handleFilterTagsChange = (selectedFilters: string[]): void => {
+        setSearchInputs((prevSearchInputs: SearchInputsInterface) => {
+            return {
+                ...prevSearchInputs,
+                filterTags: selectedFilters
+            };
+        });
+        setListOffset(0);
+        setIsFiltering(true);
     };
 
     /**
@@ -257,24 +196,12 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         mutateCombinedConnectionListFetchRequest();
     };
 
-    /**
-     * Handles Grid pagination.
-     */
-    const handlePagination = (): void => {
-
-        if (!hasNextPage) {
-            return;
-        }
-
-        setAppendConnections(true);
-    };
-
     return (
         <PageLayout
             pageTitle="Connections"
             action={ (
                 (!isCombinedConnectionListFetchRequestLoading) &&
-                !(!searchQuery && connectionsList?.identityProviders?.length <= 0)) &&
+                !(!searchInputs?.searchQuery && combinedConnectionList?.length <= 0)) &&
                 (
                     <Show when={ featureConfig?.identityProviders?.scopes?.create }>
                         <PrimaryButton
@@ -311,7 +238,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                             <AdvancedSearchWithBasicFilters
                                 fill="white"
                                 onFilter={ (query: string) => {
-                                    handleConnectionGridFilter(query, null);
+                                    handleSearchQueryChange(query);
                                 } }
                                 filterAttributeOptions={ [
                                     {
@@ -357,13 +284,12 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                         ) }
                         filterLabels={ availableFilterTags }
                         onFilter={ (_: string, selectedFilters: string[]) => {
-                            handleConnectionGridFilter(searchQuery, selectedFilters);
+                            handleFilterTagsChange(selectedFilters);
                         } }
                         data-testid={ `${ testId }-search` }
                     />
                 ) }
                 isPaginating={ isPaginating }
-                paginate={ () => handlePagination() }
                 translations={ {
                     loading: t("common:loading")
                 } }
@@ -375,10 +301,10 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                         eventPublisher.publish("connections-click-new-connection-button");
                         history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
                     } }
-                    isFiltering={ showFilteredList }
+                    isFiltering={ isFiltering }
                     isPaginating={ isPaginating }
                     onSearchQueryClear={ handleSearchQueryClear }
-                    searchQuery={ searchQuery }
+                    searchQuery={ searchInputs?.searchQuery }
                     onConnectionUpdate={ onUpdate }
                     data-testid={ `${ testId }-list` }
                 />

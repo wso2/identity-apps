@@ -179,8 +179,6 @@ export const useGetAuthenticatorTags = <Data = string[], Error = RequestErrorInt
     if (data) {
         modifiedData = [ ...(data as string[]), "Identity-Verification" ];
     }
-    console.log("called");
-
 
     return {
         data: modifiedData as Data,

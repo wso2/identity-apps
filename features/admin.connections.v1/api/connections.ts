@@ -106,8 +106,6 @@ export const useGetConnections = <Data = ConnectionListResponseInterface, Error 
     shouldFetch: boolean = true,
     expectEmpty: boolean = false
 ): RequestResultInterface<Data, Error> => {
-    console.log("called useGetConnections");
-
     const { resourceEndpoints } = useResourceEndpoints();
 
     const requestConfig: RequestConfigInterface = {

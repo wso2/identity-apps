@@ -27,16 +27,42 @@ import {
 import { AxiosError } from "axios";
 import get from "lodash-es/get";
 import { useGetAuthenticators } from "../api/authenticators";
-import { useGetConnections } from "../api/connections";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
+import { AuthenticatorTypes } from "../models/authenticators";
 import { ConnectionInterface, ConnectionTypes } from "../models/connection";
 import { ConnectionsManagementUtils } from "../utils/connection-utils";
 
+/**
+ * Interface for the search inputs.
+ */
+export interface SearchInputsInterface {
+    /**
+     * List of selected filters.
+     */
+    filterTags: string[];
+    /**
+     * Search query.
+     * Example: "name+sw+Google"
+     */
+    searchQuery: string;
+};
+
+/**
+ * Fetch the combined list of connections.
+ * - Authenticators
+ * - Identity Providers
+ * - Identity Verification Providers
+ *
+ * @param limit - Limit for pagination.
+ * @param offset - Offset for pagination.
+ * @param searchInputs - Search inputs.
+ *
+ * @returns The fetched and filtered connections list.
+ */
 export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error = RequestErrorInterface>(
     limit?: number,
     offset?: number,
-    filter?: string,
-    filterAuthenticatorsOnly?: boolean
+    searchInputs?: SearchInputsInterface
 ): Omit<RequestResultInterface<Data, Error>, "mutate"> & { mutate: () => void } => {
 
     const {
@@ -46,24 +72,18 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
         error: authenticatorsFetchRequestError,
         mutate: mutateAuthenticatorsFetchRequest
     } = useGetAuthenticators(
-        filter,
+        ConnectionsManagementUtils.buildConnectionsFilterQuery(searchInputs?.searchQuery, searchInputs?.filterTags),
         offset === 0
     );
 
-    const {
-        data: fetchedConnectionsListResponse,
-        isLoading: isConnectionsFetchRequestLoading,
-        isValidating: isConnectionsFetchRequestValidating,
-        error: connectionsFetchRequestError,
-        mutate: mutateConnectionsFetchRequest
-    } = useGetConnections(
-        limit,
-        offset,
-        filter,
-        "federatedAuthenticators",
-        !filterAuthenticatorsOnly,
-        filterAuthenticatorsOnly
-    );
+    // IdVPs API does not support filtering with tags. Hence, we need to treat it separately.
+    const shouldFetchIdVPs = (): boolean => {
+        if (!searchInputs?.filterTags || searchInputs.filterTags.length === 0) {
+            return true;
+        }
+
+        return searchInputs.filterTags.includes(IdVPTemplateTags.IDENTITY_VERIFICATION);
+    };
 
     const {
         data: fetchedIdVPsListResponse,
@@ -73,13 +93,16 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
         mutate: mutateIdVPListFetchRequest
     } = useGetIdentityVerificationProviderList(
         limit,
-        offset
+        offset,
+        ConnectionsManagementUtils.buildConnectionsFilterQuery(searchInputs?.searchQuery, []),
+        shouldFetchIdVPs()
     );
 
     const combinedData: ConnectionInterface[] = [];
 
-    if (!isAuthenticatorsFetchRequestLoading && !isConnectionsFetchRequestLoading && !isIdVPListFetchRequestLoading) {
+    if (!isAuthenticatorsFetchRequestLoading && !isIdVPListFetchRequestLoading) {
 
+        // Add Local Authenticators to the beginning of the list.
         for (const authenticator of fetchedAuthenticatorsList) {
             const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
                 AuthenticatorMeta.getAuthenticators(),
@@ -100,18 +123,15 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
             }
         }
 
-        if (fetchedConnectionsListResponse.identityProviders) {
-            for (const idp of fetchedConnectionsListResponse.identityProviders) {
-                combinedData.push( {
-                    ...idp,
-                    tags: ConnectionsManagementUtils
-                        .resolveConnectionTags((idp as ConnectionInterface).federatedAuthenticators)
-                } as ConnectionInterface);
-            }
-        }
+        // Add Federated Authenticators to the list.
+        combinedData.push(...(fetchedAuthenticatorsList
+            .filter((authenticator: ConnectionInterface) => (
+                authenticator.type === AuthenticatorTypes.FEDERATED
+            ))
+        ));
 
-        if (fetchedIdVPsListResponse.identityVerificationProviders) {
-            // TODO: Remove this once the tags are added to the identity verification providers.
+        if (fetchedIdVPsListResponse?.identityVerificationProviders) {
+            // TODO: Remove image once the IdVP API is updated.
             for (const idVP of fetchedIdVPsListResponse.identityVerificationProviders) {
                 combinedData.push( {
                     ...idVP,
@@ -123,21 +143,16 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
         }
     }
 
-
     return {
         data: combinedData as Data,
         error: authenticatorsFetchRequestError as AxiosError<Error>
-            || connectionsFetchRequestError as AxiosError<Error>
             || idVPListFetchRequestError as AxiosError<Error>,
         isLoading: isAuthenticatorsFetchRequestLoading
-            || isConnectionsFetchRequestLoading
             || isIdVPListFetchRequestLoading,
         isValidating: isAuthenticatorsFetchRequestValidating
-            || isConnectionsFetchRequestValidating
             || isIdVPListFetchRequestValidating,
         mutate: () => {
             mutateAuthenticatorsFetchRequest();
-            mutateConnectionsFetchRequest();
             mutateIdVPListFetchRequest();
         }
     };
