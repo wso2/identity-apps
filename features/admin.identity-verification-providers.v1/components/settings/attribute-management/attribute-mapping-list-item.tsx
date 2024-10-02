@@ -21,7 +21,7 @@ import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DropdownProps, Form, Grid, Header, InputOnChangeData } from "semantic-ui-react";
-import { IDVPClaimMappingInterface, IDVPLocalClaimInterface } from "../../../models";
+import { IdVPClaimMappingInterface, IdVPLocalClaimInterface } from "../../../models/identity-verification-providers";
 
 /**
  * Props interface of {@link AttributeMappingListItem}
@@ -31,13 +31,13 @@ export interface AttributeMappingListItemProps {
      * This is the list of attributes that the user can pick from.
      * It only contains the non-mapped/selected ones.
      */
-    availableAttributeList: Array<IDVPLocalClaimInterface>;
+    availableAttributeList: Array<IdVPLocalClaimInterface>;
     /**
      * Attributes which are already persisted (in model) or mapped locally.
      * What we mean by locally is that, user can open the modal multiple
      * times and map attributes before saving.
      */
-    alreadyMappedAttributesList: Array<IDVPClaimMappingInterface>;
+    alreadyMappedAttributesList: Array<IdVPClaimMappingInterface>;
     /**
      * In the editing mode, the attribute mapping can be edited inplace.
      */
@@ -45,12 +45,12 @@ export interface AttributeMappingListItemProps {
     /**
      * Stores the current IDVP attribute mapping.
      */
-    mapping?: IDVPClaimMappingInterface;
+    mapping?: IdVPClaimMappingInterface;
     /**
      * This is the callback that is triggered when the user clicks the button to submits the form.
      * @param mapping - The current attribute mapping.
      */
-    onSubmit: (mapping: IDVPClaimMappingInterface) => void;
+    onSubmit: (mapping: IdVPClaimMappingInterface) => void;
 }
 
 /**
@@ -96,7 +96,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
         editingMode
     } = props;
 
-    const [ copyOfAttrs, setCopyOfAttrs ] = useState<Array<IDVPLocalClaimInterface>>([]);
+    const [ copyOfAttrs, setCopyOfAttrs ] = useState<Array<IdVPLocalClaimInterface>>([]);
     const [ mappedInputValue, setMappedInputValue ] = useState<string>();
     const [ selectedLocalAttributeInputValue, setSelectedLocalAttributeInputValue ] = useState<string>();
     const [ mappingHasError, setMappingHasError ] = useState<boolean>();
@@ -131,7 +131,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
      */
     useEffect(() => {
         if (availableAttributeList) {
-            const copy: IDVPLocalClaimInterface[]  = [ ...availableAttributeList ];
+            const copy: IdVPLocalClaimInterface[]  = [ ...availableAttributeList ];
 
             // When you enter into editing mode the available attribute list
             // will not contain the mapping itself. We need to manually append
@@ -149,7 +149,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
      * @returns Array of dropdown options.
      */
     const getListOfAvailableAttributes = () => {
-        return copyOfAttrs.map((claim: IDVPLocalClaimInterface, index: number) => ({
+        return copyOfAttrs.map((claim: IdVPLocalClaimInterface, index: number) => ({
             content: (
                 <Header as="h6" key={ `attribute-option-${ index }` }>
                     <Header.Content>
@@ -180,12 +180,12 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
         event.preventDefault();
 
         // Find the claim by id and create an instance of IDVPClaimMappingInterface with the mapping value.
-        const newAttributeMapping: IDVPClaimMappingInterface = {
+        const newAttributeMapping: IdVPClaimMappingInterface = {
             idvpClaim: mappedInputValue,
             localClaim: copyOfAttrs.find(
-                (claim: IDVPLocalClaimInterface) => claim.id === selectedLocalAttributeInputValue
+                (claim: IdVPLocalClaimInterface) => claim.id === selectedLocalAttributeInputValue
             )
-        } as IDVPClaimMappingInterface;
+        } as IdVPClaimMappingInterface;
 
         onSubmit(newAttributeMapping);
 
@@ -230,7 +230,7 @@ export const AttributeMappingListItem: FunctionComponent<AttributeMappingListIte
         }
         // Check whether this attribute external name is already mapped.
         const mappedValues: any = new Set(
-            alreadyMappedAttributesList.map((a: IDVPClaimMappingInterface) => a.idvpClaim)
+            alreadyMappedAttributesList.map((a: IdVPClaimMappingInterface) => a.idvpClaim)
         );
 
         if (mappedValues.has(mappedInputValue)) {

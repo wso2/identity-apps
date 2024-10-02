@@ -18,19 +18,14 @@
 
 import { AsgardeoSPAClient, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1";
-import useRequest, {
-    RequestConfigInterface,
-    RequestErrorInterface,
-    RequestResultInterface
-} from "@wso2is/admin.core.v1/hooks/use-request";
+import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AcceptHeaderValues, ContentTypeHeaderValues, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import {
-    OldIDVPListResponseInterface,
-    OldIdentityVerificationProviderInterface
-} from "../models/identity-verification-provider";
-import { IdVPListResponseInterface, IdentityVerificationProviderInterface } from "../models/new-models";
+    IdVPListResponseInterface,
+    IdentityVerificationProviderInterface
+} from "../models/identity-verification-providers";
 
 const httpClient: (
     config: HttpRequestConfig
@@ -74,7 +69,7 @@ export const deleteIdentityVerificationProvider = async (id: string): Promise<Ax
  * @param rest - Rest of the data.
  * @returns - A promise containing the response from the API call.
  */
-export const updateIdentityVerificationProvider = ({ id, ...rest }: OldIdentityVerificationProviderInterface):
+export const updateIdentityVerificationProvider = ({ id, ...rest }: IdentityVerificationProviderInterface):
     Promise<HttpResponse | undefined> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -147,32 +142,6 @@ export const createIdentityVerificationProvider = (data: IdentityVerificationPro
 };
 
 /**
- * Hook to get an identity verification provider.
- * @param id - ID of the identity verification provider.
- * @returns - Requested IDVP
- */
-export const useIdentityVerificationProvider = <Data = OldIdentityVerificationProviderInterface,
-    Error = RequestErrorInterface>(id: string): RequestResultInterface<Data, Error> => {
-
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            "Accept": AcceptHeaderValues.APP_JSON
-        },
-        method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.identityVerificationProviders }/${ id }`
-    };
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
-
-    return {
-        data,
-        error: error,
-        isLoading: !error && !data,
-        isValidating,
-        mutate
-    };
-};
-
-/**
  * Gets the Identity Verification Providers list with limit and offset.
  *
  * @param limit - Maximum Limit of the application List.
@@ -204,23 +173,7 @@ export const getIdentityVerificationProvidersList = (
                 return Promise.reject(new Error("Failed to get Identity Verification Providers list."));
             }
 
-            const idVPListResponse: OldIDVPListResponseInterface = response.data as OldIDVPListResponseInterface;
-            const modifiedIdVPList: IdentityVerificationProviderInterface[] = idVPListResponse
-                .identityVerificationProviders
-                ?.map((idVP: OldIdentityVerificationProviderInterface) => {
-                    const { Name, Type, ...rest } = idVP;
-
-                    return {
-                        name: Name,
-                        type: Type,
-                        ...rest
-                    };
-                }) || [];
-
-            return Promise.resolve({
-                ...idVPListResponse,
-                identityVerificationProviders: modifiedIdVPList
-            });
+            return Promise.resolve(response.data as IdVPListResponseInterface);
         })
         .catch((error: AxiosError) => {
             return Promise.reject(error);

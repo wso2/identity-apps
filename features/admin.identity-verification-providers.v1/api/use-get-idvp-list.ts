@@ -23,7 +23,7 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { AcceptHeaderValues, ContentTypeHeaderValues, HttpMethods } from "@wso2is/core/models";
-import { IdVPListResponseInterface } from "../models/new-models";
+import { IdVPListResponseInterface } from "../models/identity-verification-providers";
 
 /**
  * Hook to get the identity verification provider list.

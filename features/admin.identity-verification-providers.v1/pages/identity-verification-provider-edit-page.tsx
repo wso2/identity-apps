@@ -35,12 +35,15 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { deleteIdentityVerificationProvider, updateIdentityVerificationProvider } from "../api";
+import {
+    deleteIdentityVerificationProvider,
+    updateIdentityVerificationProvider
+} from "../api/identity-verification-provider";
 import { useGetIdentityVerificationProvider } from "../api/use-get-idvp";
 import { useGetIdVPMetadata } from "../api/use-get-idvp-metadata";
 import { useGetIdVPTemplate } from "../api/use-get-idvp-template";
 import { EditIdentityVerificationProvider } from "../components/identity-verification-provider-edit";
-import { IdVPEditTabIDs, IdVPTemplateInterface, IdentityVerificationProviderInterface } from "../models/new-models";
+import { IdVPEditTabIDs, IdVPTemplateInterface, IdentityVerificationProviderInterface } from "../models/identity-verification-providers";
 
 /**
  * Proptypes for the IDVP edit page component.

@@ -21,6 +21,9 @@ import { AuthenticatorExtensionsConfigInterface } from "@wso2is/admin.extensions
 import {
     useGetIdentityVerificationProviderList
 } from "@wso2is/admin.identity-verification-providers.v1/api/use-get-idvp-list";
+import {
+    IdVPTemplateTags
+} from "@wso2is/admin.identity-verification-providers.v1/models/identity-verification-providers";
 import { AxiosError } from "axios";
 import get from "lodash-es/get";
 import { useGetAuthenticators } from "../api/authenticators";
@@ -28,7 +31,6 @@ import { useGetConnections } from "../api/connections";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import { ConnectionInterface, ConnectionTypes } from "../models/connection";
 import { ConnectionsManagementUtils } from "../utils/connection-utils";
-import { IdVPTemplateTag } from "@wso2is/admin.identity-verification-providers.v1/models/new-models";
 
 export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error = RequestErrorInterface>(
     limit?: number,
@@ -113,7 +115,7 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
             for (const idVP of fetchedIdVPsListResponse.identityVerificationProviders) {
                 combinedData.push( {
                     ...idVP,
-                    tags: [ IdVPTemplateTag.IDENTITY_VERIFICATION ],
+                    tags: [ IdVPTemplateTags.IDENTITY_VERIFICATION ],
                     type: ConnectionTypes.IDVP,
                     image: "https://raw.githubusercontent.com/wso2-extensions/identity-verification-onfido/main/ui-metadata/images/onfido-icon.png"
                 } as ConnectionInterface);

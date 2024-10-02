@@ -29,7 +29,7 @@ import {
     IdVPEditTabMetadataInterface,
     IdVPTemplateInterface,
     IdentityVerificationProviderInterface
-} from "../../models/new-models";
+} from "../../models/identity-verification-providers";
 
 interface DynamicSettingsFormPropsInterface extends IdentifiableComponentInterface {
     tabMetadata: IdVPEditTabMetadataInterface;

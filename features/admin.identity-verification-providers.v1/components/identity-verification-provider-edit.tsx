@@ -30,7 +30,7 @@ import {
     IdVPTemplateInterface,
     IdVPTemplateMetadataInterface,
     IdentityVerificationProviderInterface
-} from "../models/new-models";
+} from "../models/identity-verification-providers";
 
 /**
  * Prop types for the identity verification provider edit component.

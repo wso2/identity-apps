@@ -19,8 +19,11 @@
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import { MutableRefObject, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getIdentityVerificationProvidersList } from "../api";
-import { IdVPListResponseInterface, IdentityVerificationProviderInterface } from "../models/new-models";
+import { getIdentityVerificationProvidersList } from "../api/identity-verification-provider";
+import {
+    IdVPListResponseInterface,
+    IdentityVerificationProviderInterface
+} from "../models/identity-verification-providers";
 
 /**
  * Hook for validate the IdVP name.

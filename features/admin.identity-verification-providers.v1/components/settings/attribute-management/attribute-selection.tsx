@@ -27,8 +27,7 @@ import { Divider, Grid, Icon, Segment } from "semantic-ui-react";
 import { AddAttributeSelectionModal } from "./attribute-selection-modal";
 import { AttributeMappingList } from "./attributes-mapping-list";
 import { fetchAllLocalClaims } from "./utils/claim-utils";
-import { IDVPClaimMappingInterface, IDVPLocalClaimInterface } from "../../../models";
-import { IdVPClaimsInterface } from "../../../models/new-models";
+import { IdVPClaimMappingInterface, IdVPClaimsInterface, IdVPLocalClaimInterface } from "../../../models/identity-verification-providers";
 
 /**
  * Properties of {@link AttributesSelection}
@@ -37,12 +36,12 @@ export interface AttributesSelectionProps extends IdentifiableComponentInterface
     /**
      * List of mapped attributes.
      */
-    mappedAttributesList: Array<IDVPClaimMappingInterface>;
+    mappedAttributesList: Array<IdVPClaimMappingInterface>;
     /**
      * Callback to set the mapped attributes.
      * @param mappingsToBeAdded - List of mapped attributes.
      */
-    setMappedAttributes: (mappingsToBeAdded: IDVPClaimMappingInterface[]) => void;
+    setMappedAttributes: (mappingsToBeAdded: IdVPClaimMappingInterface[]) => void;
     /**
      * Flag to determine if the component is read only.
      */
@@ -50,7 +49,7 @@ export interface AttributesSelectionProps extends IdentifiableComponentInterface
     /**
      * Initial claims that needs to be displayed.
      */
-    initialClaims?: IDVPClaimMappingInterface[];
+    initialClaims?: IdVPClaimMappingInterface[];
     /**
      * Flag to determine if the identity claim attributes should be hidden.
      */
@@ -89,7 +88,7 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
     } = props;
 
     // Manage available local claims.
-    const [ availableLocalClaims, setAvailableLocalClaims ] = useState<IDVPLocalClaimInterface[]>([]);
+    const [ availableLocalClaims, setAvailableLocalClaims ] = useState<IdVPLocalClaimInterface[]>([]);
     const [ isLocalClaimsLoading, setIsLocalClaimsLoading ] = useState<boolean>(true);
     const [ showAddModal, setShowAddModal ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string | undefined>(undefined);
@@ -136,8 +135,8 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
             return;
         }
 
-        initialClaims.forEach((claim: IDVPClaimMappingInterface) => {
-            claim.localClaim = availableLocalClaims.find((localClaim: IDVPLocalClaimInterface) => {
+        initialClaims.forEach((claim: IdVPClaimMappingInterface) => {
+            claim.localClaim = availableLocalClaims.find((localClaim: IdVPLocalClaimInterface) => {
                 return localClaim.uri === claim.localClaim.uri;
             });
         });
@@ -236,7 +235,7 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
      * @param mappingsToBeAdded - Set of mappings.
      * @returns void
      */
-    const onSave = (mappingsToBeAdded: IDVPClaimMappingInterface[]): void => {
+    const onSave = (mappingsToBeAdded: IdVPClaimMappingInterface[]): void => {
 
         setMappedAttributes([ ...mappedAttributesList, ...mappingsToBeAdded ]);
         setShowAddModal(false);
@@ -247,9 +246,9 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
      *
      * @returns Filtered mapped attributes list by the search query.
      */
-    const getFilteredAttributeMappings = (): IDVPClaimMappingInterface[] => {
+    const getFilteredAttributeMappings = (): IdVPClaimMappingInterface[] => {
 
-        return mappedAttributesList.filter((mapping: IDVPClaimMappingInterface) => {
+        return mappedAttributesList.filter((mapping: IdVPClaimMappingInterface) => {
             if (searchQuery) {
                 return mapping.idvpClaim.startsWith(searchQuery) || mapping.localClaim?.id.startsWith(searchQuery);
             }
@@ -264,10 +263,10 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
      *
      * @returns List of the remaining unmapped attributes.
      */
-    const getRemainingUnmappedAttributes = (): IDVPLocalClaimInterface[] => {
+    const getRemainingUnmappedAttributes = (): IdVPLocalClaimInterface[] => {
         return [
             ...availableLocalClaims.filter(
-                (attribute: IDVPLocalClaimInterface) => !mappedAttrIds.includes(attribute.id)
+                (attribute: IdVPLocalClaimInterface) => !mappedAttrIds.includes(attribute.id)
             )
         ];
     };
@@ -278,11 +277,11 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
      * @param deletedMapping - The mapping that is to be deleted.
      * @returns void
      */
-    const handleAttributeMappingDeletion = (deletedMapping: IDVPClaimMappingInterface): void => {
+    const handleAttributeMappingDeletion = (deletedMapping: IdVPClaimMappingInterface): void => {
 
         setMappedAttributes([
             ...mappedAttributesList?.filter(
-                (attribute: IDVPClaimMappingInterface ) => (attribute.localClaim?.id !== deletedMapping.localClaim?.id)
+                (attribute: IdVPClaimMappingInterface ) => (attribute.localClaim?.id !== deletedMapping.localClaim?.id)
             )
         ]);
     };
@@ -295,13 +294,13 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
      * @returns void
      */
     const handleEditAttributeMapping = (
-        previous: IDVPClaimMappingInterface,
-        current:IDVPClaimMappingInterface
+        previous: IdVPClaimMappingInterface,
+        current:IdVPClaimMappingInterface
     ): void => {
 
         setMappedAttributes([
             ...mappedAttributesList.filter(
-                (attribute: IDVPClaimMappingInterface) => ( attribute?.localClaim?.id !== previous.localClaim?.id)
+                (attribute: IdVPClaimMappingInterface) => ( attribute?.localClaim?.id !== previous.localClaim?.id)
             ),
             current
         ]);

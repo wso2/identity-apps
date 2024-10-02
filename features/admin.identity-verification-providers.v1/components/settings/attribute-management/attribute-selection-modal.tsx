@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,7 +24,7 @@ import { Divider, Grid, Modal } from "semantic-ui-react";
 import { AttributeMappingListItem } from "./attribute-mapping-list-item";
 import { AttributeMappingList } from "./attributes-mapping-list";
 import { getEmptyAttributeMappingPlaceholder } from "./utils/attribute-settings-utils";
-import { IDVPClaimMappingInterface, IDVPLocalClaimInterface } from "../../../models";
+import { IdVPClaimMappingInterface, IdVPLocalClaimInterface } from "../../../models/identity-verification-providers";
 
 /**
  * Props interface of {@link AddAttributeSelectionModal}
@@ -33,11 +33,11 @@ interface AddAttributeSelectionModalProps extends IdentifiableComponentInterface
     /**
      * The list of attributes that can be selected.
      */
-    attributeList: Array<IDVPLocalClaimInterface>;
+    attributeList: Array<IdVPLocalClaimInterface>;
     /**
      * The list of attributes that are already mapped.
      */
-    alreadyMappedAttributesList: Array<IDVPClaimMappingInterface>;
+    alreadyMappedAttributesList: Array<IdVPClaimMappingInterface>;
     /**
      * Callback to be called when the modal is closed.
      */
@@ -46,7 +46,7 @@ interface AddAttributeSelectionModalProps extends IdentifiableComponentInterface
      * Callback to be called when the modal is saved.
      * @param mappingsToBeAdded - The list of attributes that are selected.
      */
-    onSave: (mappingsToBeAdded: IDVPClaimMappingInterface[]) => void;
+    onSave: (mappingsToBeAdded: IdVPClaimMappingInterface[]) => void;
     /**
      * Whether the modal should be visible or not.
      */
@@ -77,13 +77,13 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
      * The claims that user picks. All the selecting ones will be
      * pushed to this piece of state.
      */
-    const [ claimsToBeAdded, setClaimsToBeAdded ] = useState<IDVPClaimMappingInterface[]>([]);
+    const [ claimsToBeAdded, setClaimsToBeAdded ] = useState<IdVPClaimMappingInterface[]>([]);
     /**
      * Since this modal is an intermediate step in adding attributes
      * we can't read the records always from {@link attributeList}
      * we need to internally remove selected ones from the dropdown.
      */
-    const [ copyOfAttributes, setCopyOfAttributes ] = useState<IDVPLocalClaimInterface[]>([]);
+    const [ copyOfAttributes, setCopyOfAttributes ] = useState<IdVPLocalClaimInterface[]>([]);
     /**
      * This has the state to tell whether {@link claimsToBeAdded} is empty
      * or not. We need this to control the {@link Transition} state.
@@ -93,7 +93,7 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
     const [
         alreadyLocallyMappedAttributes,
         setAlreadyLocallyMappedAttributes
-    ] = useState<IDVPClaimMappingInterface[]>();
+    ] = useState<IdVPClaimMappingInterface[]>();
 
     const { t } = useTranslation();
 
@@ -119,17 +119,17 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
      * @param mapping - New attribute mapping.
      * @returns void
      */
-    const onAttributeMappingAdd = (mapping: IDVPClaimMappingInterface): void => {
-        const newClaimsToBeAdded: IDVPClaimMappingInterface[] = [ ...claimsToBeAdded, mapping ];
+    const onAttributeMappingAdd = (mapping: IdVPClaimMappingInterface): void => {
+        const newClaimsToBeAdded: IdVPClaimMappingInterface[] = [ ...claimsToBeAdded, mapping ];
         const idsToHide: Set<string> = newClaimsToBeAdded.reduce(
-            (acc: Set<string>, value: IDVPClaimMappingInterface) => acc.add(value.localClaim.id),
+            (acc: Set<string>, value: IdVPClaimMappingInterface) => acc.add(value.localClaim.id),
             new Set<string>()
         );
 
         // Records to be added.
         setClaimsToBeAdded(newClaimsToBeAdded);
         // Remove the added attribute from the attribute list.
-        setCopyOfAttributes([ ...copyOfAttributes.filter(({ id }: IDVPLocalClaimInterface) => !idsToHide.has(id)) ]);
+        setCopyOfAttributes([ ...copyOfAttributes.filter(({ id }: IdVPLocalClaimInterface) => !idsToHide.has(id)) ]);
         // Now reinitialize the already mapped attributes list.
         setAlreadyLocallyMappedAttributes([
             ...alreadyLocallyMappedAttributes,
@@ -143,8 +143,8 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
      * @param mapping - Deleted attribute mapping.
      * @returns void
      */
-    const onMappingDeleted = (mapping: IDVPClaimMappingInterface): void => {
-        const filtered: IDVPClaimMappingInterface[] = claimsToBeAdded.filter((m: IDVPClaimMappingInterface) => (
+    const onMappingDeleted = (mapping: IdVPClaimMappingInterface): void => {
+        const filtered: IdVPClaimMappingInterface[] = claimsToBeAdded.filter((m: IdVPClaimMappingInterface) => (
             m.localClaim.id !== mapping.localClaim.id
         ));
 
@@ -152,7 +152,7 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
         setCopyOfAttributes([ ...copyOfAttributes, mapping.localClaim ]);
         setAlreadyLocallyMappedAttributes([
             ...alreadyLocallyMappedAttributes
-                .filter((e: IDVPClaimMappingInterface) => (e?.localClaim?.id === mapping?.localClaim.id))
+                .filter((e: IdVPClaimMappingInterface) => (e?.localClaim?.id === mapping?.localClaim.id))
         ]);
     };
 
@@ -164,19 +164,19 @@ export const AddAttributeSelectionModal: FunctionComponent<AddAttributeSelection
      * returns void
      */
     const onMappingEdited = (
-        oldMapping: IDVPClaimMappingInterface,
-        newMapping: IDVPClaimMappingInterface
+        oldMapping: IdVPClaimMappingInterface,
+        newMapping: IdVPClaimMappingInterface
     ): void => {
         // If user changed the local mapping of this. Then first
         // go and remove it from {@link claimsToBeAdded} array.
         setClaimsToBeAdded([
             ...claimsToBeAdded
-                .filter(({ localClaim }: IDVPClaimMappingInterface) => (localClaim.id !== oldMapping.localClaim.id)),
+                .filter(({ localClaim }: IdVPClaimMappingInterface) => (localClaim.id !== oldMapping.localClaim.id)),
             newMapping
         ]);
         setAlreadyLocallyMappedAttributes([
             ...alreadyLocallyMappedAttributes
-                .filter((e: IDVPClaimMappingInterface) => e?.localClaim?.id === oldMapping?.localClaim.id),
+                .filter((e: IdVPClaimMappingInterface) => e?.localClaim?.id === oldMapping?.localClaim.id),
             newMapping
         ]);
     };

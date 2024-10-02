@@ -46,7 +46,7 @@ export interface IdVPClaimsInterface {
 /**
  * Interface that represent a local claim in the IDVP context.
  */
-export interface IDVPLocalClaimInterface {
+export interface IdVPLocalClaimInterface {
     id?: string;
     uri: string;
     displayName?: string;
@@ -56,8 +56,8 @@ export interface IDVPLocalClaimInterface {
  * Like the {@link IDVPClaimsInterface} this represents a claim mapping, but this model
  * contains a bit more information about the local claim and used in attribute management components.
  */
-export interface IDVPClaimMappingInterface {
-    localClaim: IDVPLocalClaimInterface;
+export interface IdVPClaimMappingInterface {
+    localClaim: IdVPLocalClaimInterface;
     idvpClaim: string;
 }
 
@@ -175,6 +175,14 @@ export interface IdVPTemplateResponseInterface {
     }
 }
 
-export enum IdVPTemplateTag {
+export enum IdVPTemplateTags {
     IDENTITY_VERIFICATION = "Identity-Verification"
 };
+
+/**
+ * Interface for representing the resource endpoints of an identity verification provider.
+ */
+export interface IdVPResourceEndpointsInterface {
+    identityVerificationProviders: string;
+    IDVPExtensionEndpoint: string;
+}

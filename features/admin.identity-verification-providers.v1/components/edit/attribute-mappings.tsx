@@ -19,10 +19,10 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import {
-    IDVPClaimMappingInterface,
+    IdVPClaimMappingInterface,
     IdVPClaimsInterface,
     IdentityVerificationProviderInterface
-} from "../../models/new-models";
+} from "../../models/identity-verification-providers";
 import { AttributeSettings } from "../settings/attribute-settings";
 
 interface AttributeMappingsPropsInterface extends IdentifiableComponentInterface {
@@ -61,7 +61,7 @@ const AttributeMappings: FunctionComponent<AttributeMappingsPropsInterface> = (
     }: AttributeMappingsPropsInterface
 ): ReactElement => {
 
-    const initialClaims: IDVPClaimMappingInterface[] = useMemo(() => {
+    const initialClaims: IdVPClaimMappingInterface[] = useMemo(() => {
         if (!identityVerificationProvider) {
             return [];
         }

@@ -21,17 +21,16 @@ import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
     AppState,
-    ConfigReducerStateInterface,
     EventPublisher,
     FeatureConfigInterface,
     UIConstants,
     history
 } from "@wso2is/admin.core.v1";
 import {
-    AuthenticatorExtensionsConfigInterface
-} from "@wso2is/admin.extensions.v1/configs";
-import { IdVPTemplateTag } from "@wso2is/admin.identity-verification-providers.v1/models/new-models";
+    IdVPTemplateTags
+} from "@wso2is/admin.identity-verification-providers.v1/models/identity-verification-providers";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import {
     DocumentationLink,
     GridLayout,
@@ -40,7 +39,6 @@ import {
     SearchWithFilterLabels,
     useDocumentation
 } from "@wso2is/react-components";
-import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FC,
@@ -51,29 +49,18 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
-import { useGetAuthenticatorTags, useGetAuthenticators } from "../api/authenticators";
-import { useGetConnections } from "../api/connections";
+import { useGetAuthenticatorTags } from "../api/authenticators";
 import { AuthenticatorGrid } from "../components/authenticator-grid";
-import { LocalAuthenticatorConstants } from "../constants/local-authenticator-constants";
 import { useGetCombinedConnectionList } from "../hooks/use-get-combined-connection-list";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
     AuthenticatorInterface,
-    AuthenticatorLabels,
     AuthenticatorTypes
 } from "../models/authenticators";
-import {
-    ConnectionInterface,
-    ConnectionListResponseInterface
-} from "../models/connection";
-import {
-    ConnectionsManagementUtils,
-    handleGetAuthenticatorTagsError,
-    handleGetConnectionListCallError
-} from "../utils/connection-utils";
-import { addAlert } from "@wso2is/core/store";
-import { Dispatch } from "redux";
+import { ConnectionListResponseInterface } from "../models/connection";
+import { ConnectionsManagementUtils } from "../utils/connection-utils";
 
 /**
  * Proptypes for the Connections page component.
@@ -93,7 +80,6 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -220,7 +206,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         }
 
         const _filteredTags: string[] = fetchedAuthenticatorTags.filter((tag: string) => {
-            if (Object.values(IdVPTemplateTag).includes(tag as IdVPTemplateTag)) {
+            if (Object.values(IdVPTemplateTags).includes(tag as IdVPTemplateTags)) {
                 return true;
             };
 

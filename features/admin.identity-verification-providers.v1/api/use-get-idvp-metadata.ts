@@ -23,7 +23,7 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { AcceptHeaderValues, HttpMethods } from "@wso2is/core/models";
-import { IdVPTemplateMetadataInterface } from "../models/new-models";
+import { IdVPTemplateMetadataInterface } from "../models/identity-verification-providers";
 
 export const useGetIdVPMetadata = <Data = IdVPTemplateMetadataInterface, Error = RequestErrorInterface>(
     idVPTemplateId: string

@@ -28,8 +28,7 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Header, SemanticICONS } from "semantic-ui-react";
 import { AttributeMappingListItem } from "./attribute-mapping-list-item";
-import { IDVPClaimMappingInterface, IDVPLocalClaimInterface } from "../../../models";
-import { IdVPClaimsInterface } from "../../../models/new-models";
+import { IdVPClaimMappingInterface, IdVPClaimsInterface, IdVPLocalClaimInterface } from "../../../models/identity-verification-providers";
 
 /**
  * Proptypes for the attribute mapping list component.
@@ -38,27 +37,27 @@ export interface AttributeMappingListProps extends IdentifiableComponentInterfac
     /**
      * This contains the mapped attributes list.
      */
-    attributeMappingsListToShow: Array<IDVPClaimMappingInterface>;
+    attributeMappingsListToShow: Array<IdVPClaimMappingInterface>;
     /**
      * A list of claims that is available for selecting. This list
      * mostly read only, used for dropdowns and such.
      */
-    availableAttributesList: Array<IDVPLocalClaimInterface>;
+    availableAttributesList: Array<IdVPLocalClaimInterface>;
     /**
      * This contains the already mapped attributes list.
      */
-    alreadyMappedAttributesList: Array<IDVPClaimMappingInterface>;
+    alreadyMappedAttributesList: Array<IdVPClaimMappingInterface>;
     /**
      * Callback to be called when a mapping is deleted.
      * @param mapping - The mapping that is deleted.
      */
-    onMappingDeleted: (mapping: IDVPClaimMappingInterface) => void;
+    onMappingDeleted: (mapping: IdVPClaimMappingInterface) => void;
     /**
      * Callback to be called when a mapping is edited.
      * @param oldMapping - The mapping before editing.
      * @param mapping - The mapping after editing.
      */
-    onMappingEdited: ( oldMapping: IDVPClaimMappingInterface, mapping: IDVPClaimMappingInterface) => void;
+    onMappingEdited: ( oldMapping: IdVPClaimMappingInterface, mapping: IdVPClaimMappingInterface) => void;
     /**
      * Placeholder to show when there is no data.
      */
@@ -102,11 +101,11 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
      * @param localClaim - The local claim that is being checked.
      * @returns Should action be hidden or not.
      */
-    const shouldHideAction = ({ localClaim }: IDVPClaimMappingInterface): boolean => {
+    const shouldHideAction = ({ localClaim }: IdVPClaimMappingInterface): boolean => {
         return editingMappings.includes(localClaim.id) || readOnly;
     };
 
-    const shouldHideDeleteAction = ({ localClaim, idvpClaim }: IDVPClaimMappingInterface): boolean => {
+    const shouldHideDeleteAction = ({ localClaim, idvpClaim }: IdVPClaimMappingInterface): boolean => {
         const isMandatory: boolean = mandatoryClaims?.some(
             (claim: IdVPClaimsInterface) => claim.idvpClaim === idvpClaim);
 
@@ -127,7 +126,7 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
             {
                 hidden: shouldHideAction,
                 icon: (): SemanticICONS => "pencil alternate",
-                onClick: (e: SyntheticEvent, mapping: IDVPClaimMappingInterface) => {
+                onClick: (e: SyntheticEvent, mapping: IdVPClaimMappingInterface) => {
                     setEditingMappings([ ...editingMappings, mapping.localClaim.id ]);
                 },
                 popupText: (): string => "Edit",
@@ -136,7 +135,7 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
             {
                 hidden: shouldHideDeleteAction,
                 icon: (): SemanticICONS => "trash alternate",
-                onClick: (e: SyntheticEvent, mapping: IDVPClaimMappingInterface) => {
+                onClick: (e: SyntheticEvent, mapping: IdVPClaimMappingInterface) => {
                 // In our interface, once user enter into editing mode they
                 // cannot delete it unless its updated. So, no need to remove
                 // or check for `editingMappings` in this function.
@@ -154,7 +153,7 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
      * @param mapping - The mapping to be rendered.
      * @returns The attribute list item in view mode.
      */
-    const getAttributeMappingListItemInViewMode = (mapping: IDVPClaimMappingInterface) => {
+    const getAttributeMappingListItemInViewMode = (mapping: IdVPClaimMappingInterface) => {
         return (
             <Header image as="h6" className="header-with-icon">
                 <AppAvatar
@@ -189,7 +188,7 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
         const attributePreviewTableColumn: TableColumnInterface = {
             dataIndex: "claim",
             id: "column-1",
-            render(mapping: IDVPClaimMappingInterface): ReactNode {
+            render(mapping: IdVPClaimMappingInterface): ReactNode {
                 return editingMappings.includes(mapping.localClaim.id)
                     ? (
                         <AttributeMappingListItem
@@ -197,7 +196,7 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
                             mapping={ mapping }
                             availableAttributeList={ availableAttributesList }
                             alreadyMappedAttributesList={ alreadyMappedAttributesList }
-                            onSubmit={ (editedMapping: IDVPClaimMappingInterface) => {
+                            onSubmit={ (editedMapping: IdVPClaimMappingInterface) => {
                                 // Remove it from currently editing mappings.
                                 setEditingMappings([
                                     ...editingMappings
@@ -228,7 +227,7 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
     };
 
     return (
-        <DataTable<IDVPClaimMappingInterface[]>
+        <DataTable<IdVPClaimMappingInterface[]>
             className="attributes-mapping-list"
             actions={ createTableActions() }
             columns={ createTableColumns() }

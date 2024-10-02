@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,7 +20,7 @@ import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { Claim } from "@wso2is/core/models";
 import { handleGetAllLocalClaimsError } from "./attribute-settings-utils";
-import { IDVPLocalClaimInterface } from "../../../../models";
+import { IdVPLocalClaimInterface } from "../../../../models/identity-verification-providers";
 
 /**
  * Given a local claim it will test whether it contains `identity` in the claim attribute.
@@ -42,7 +42,7 @@ export const isLocalIdentityClaim = (claim: string): boolean => {
 export const extractLocalClaimsFromResponse = (
     response: Claim[],
     hideIdentityClaimAttributes: boolean
-): IDVPLocalClaimInterface[] => {
+): IdVPLocalClaimInterface[] => {
     return response
         ?.filter((claim: Claim) => {
             return hideIdentityClaimAttributes ? !isLocalIdentityClaim(claim.claimURI) : true;
@@ -52,7 +52,7 @@ export const extractLocalClaimsFromResponse = (
                 displayName: claim.displayName,
                 id: claim.id,
                 uri: claim.claimURI
-            } as IDVPLocalClaimInterface;
+            } as IdVPLocalClaimInterface;
         });
 };
 
@@ -66,14 +66,14 @@ export const extractLocalClaimsFromResponse = (
  */
 export const fetchAllLocalClaims = (
     hideIdentityClaimAttributes: boolean,
-    setAvailableLocalClaims: (arg: IDVPLocalClaimInterface[]) => void,
+    setAvailableLocalClaims: (arg: IdVPLocalClaimInterface[]) => void,
     setIsLocalClaimsLoading: (boolean) => void
 ): void => {
 
     setIsLocalClaimsLoading(true);
     getAllLocalClaims(null)
         .then((response: Claim[]) => {
-            const localClaims: IDVPLocalClaimInterface[] = extractLocalClaimsFromResponse(response,
+            const localClaims: IdVPLocalClaimInterface[] = extractLocalClaimsFromResponse(response,
                 hideIdentityClaimAttributes);
 
             setAvailableLocalClaims(localClaims);

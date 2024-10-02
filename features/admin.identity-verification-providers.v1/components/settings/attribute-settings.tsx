@@ -29,9 +29,10 @@ import { Dispatch } from "redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { AttributesSelection } from "./attribute-management/attribute-selection";
 import {
-    IDVPClaimMappingInterface
-} from "../../models";
-import { IdVPClaimsInterface, IdentityVerificationProviderInterface } from "../../models/new-models";
+    IdVPClaimMappingInterface,
+    IdVPClaimsInterface,
+    IdentityVerificationProviderInterface
+} from "../../models/identity-verification-providers";
 
 /**
  * Proptypes for the identity verification provider attribute settings component.
@@ -44,7 +45,7 @@ interface AttributeSettingsPropsInterface extends IdentifiableComponentInterface
     /**
      * Initial claims of the IDVP.
      */
-    initialClaims?: IDVPClaimMappingInterface[];
+    initialClaims?: IdVPClaimMappingInterface[];
     /**
      * Is the IDVP info request loading.
      */
@@ -102,7 +103,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     const { t } = useTranslation();
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
-    const [ selectedClaimsWithMapping, setSelectedClaimsWithMapping ] = useState<IDVPClaimMappingInterface[]>([]);
+    const [ selectedClaimsWithMapping, setSelectedClaimsWithMapping ] = useState<IdVPClaimMappingInterface[]>([]);
 
     /**
      * Evaluates whether the attribute update can be submitted or not.
@@ -111,7 +112,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
      */
     const canSubmitAttributeUpdate = (): boolean => {
         return isEmpty(selectedClaimsWithMapping?.filter(
-            (element: IDVPClaimMappingInterface) => isEmpty(element.idvpClaim)
+            (element: IdVPClaimMappingInterface) => isEmpty(element.idvpClaim)
         ));
     };
 
@@ -136,7 +137,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
         const updatedData: IdentityVerificationProviderInterface = {
             ...idvp,
-            claims: selectedClaimsWithMapping.map((element: IDVPClaimMappingInterface) => {
+            claims: selectedClaimsWithMapping.map((element: IdVPClaimMappingInterface) => {
                 return {
                     idvpClaim: element.idvpClaim,
                     localClaim: element.localClaim.uri

@@ -32,13 +32,12 @@ import { useGetIdVPTemplate } from "../../api/use-get-idvp-template";
 import { IdentityVerificationProviderConstants } from "../../constants/identity-verification-provider-constants";
 import useInitializeHandlers from "../../hooks/use-custom-initialize-handlers";
 import useValidationHandlers from "../../hooks/use-custom-validation-handlers";
-import { IDVPConfigPropertiesInterface } from "../../models";
 import {
     IdVPClaimsInterface,
     IdVPConfigPropertiesInterface,
     IdVPEditTabIDs,
     IdentityVerificationProviderInterface
-} from "../../models/new-models";
+} from "../../models/identity-verification-providers";
 
 interface IdVPCreationModalPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -118,7 +117,7 @@ const IdVPCreationModal: FunctionComponent<IdVPCreationModalPropsInterface> = ({
     ): void => {
         const configPropertiesFormValues: Record<string, string | boolean> = values
             .configProperties as Record<string, string | boolean>;
-        const configProperties: IDVPConfigPropertiesInterface[] = [];
+        const configProperties: IdVPConfigPropertiesInterface[] = [];
 
         // Convert the form values to the API format.
         for (const [ key, value ] of Object.entries(configPropertiesFormValues)) {

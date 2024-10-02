@@ -19,7 +19,10 @@
 import set from "lodash-es/set";
 import { MutableRefObject, useRef } from "react";
 import { getIdentityVerificationProvidersList } from "../api/identity-verification-provider";
-import { IdVPListResponseInterface, IdentityVerificationProviderInterface } from "../models/new-models";
+import {
+    IdVPListResponseInterface,
+    IdentityVerificationProviderInterface
+} from "../models/identity-verification-providers";
 
 /**
  * Interface for duplicate application list cache.
