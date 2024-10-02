@@ -1,5 +1,16 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.0.66
+
+### Patch Changes
+
+- [#6951](https://github.com/wso2/identity-apps/pull/6951) [`54a21cc331dd535c60e7e6c288a3572fd6f74bd9`](https://github.com/wso2/identity-apps/commit/54a21cc331dd535c60e7e6c288a3572fd6f74bd9) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Add sso templated related configs
+
+- Updated dependencies [[`54a21cc331dd535c60e7e6c288a3572fd6f74bd9`](https://github.com/wso2/identity-apps/commit/54a21cc331dd535c60e7e6c288a3572fd6f74bd9)]:
+  - @wso2is/admin.applications.v1@2.26.14
+  - @wso2is/admin.core.v1@2.30.14
+  - @wso2is/admin.template-core.v1@1.0.66
+
 ## 1.0.65
 
 ### Patch Changes
