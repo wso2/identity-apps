@@ -789,7 +789,9 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Row>
 
                             { /*Request Validation*/ }
-                            <Grid.Row columns={ 2 }>
+                            <Grid.Row
+                                columns={ 2 }
+                                data-componentid="application-edit-inbound-saml-form-request-validation">
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Divider/>
                                     <Divider hidden/>
@@ -1856,7 +1858,9 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 )
                             }
                             { /* Certificate Section */ }
-                            <Grid.Row columns={ 1 }>
+                            <Grid.Row
+                                columns={ 1 }
+                                data-componentid="application-edit-inbound-saml-form-certificate">
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <ApplicationCertificateWrapper
                                         protocol={ SupportedAuthProtocolTypes.SAML }
