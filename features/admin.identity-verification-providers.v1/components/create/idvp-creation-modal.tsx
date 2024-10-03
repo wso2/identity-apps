@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ConnectionTemplateInterface } from "@wso2is/admin.connections.v1/models/connection";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { ResourceCreateWizard } from "@wso2is/admin.template-core.v1/components/resource-create-wizard";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -25,7 +26,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo } from "reac
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { ConnectionTemplateInterface } from "../../../admin.connections.v1";
 import { createIdentityVerificationProvider } from "../../api/identity-verification-provider";
 import { useGetIdVPMetadata } from "../../api/use-get-idvp-metadata";
 import { useGetIdVPTemplate } from "../../api/use-get-idvp-template";

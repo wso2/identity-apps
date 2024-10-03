@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ConnectionTemplateInterface } from "@wso2is/admin.connections.v1/models/connection";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
@@ -23,7 +24,6 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { AcceptHeaderValues, HttpMethods } from "@wso2is/core/models";
-import { ConnectionTemplateInterface } from "../../admin.connections.v1";
 
 export const useGetIdVPTemplateList = <
     Data = ConnectionTemplateInterface[], Error = RequestErrorInterface
