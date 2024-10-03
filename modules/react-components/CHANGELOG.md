@@ -1,5 +1,11 @@
 # @wso2is/react-components
 
+## 2.4.15
+
+### Patch Changes
+
+- [#6948](https://github.com/wso2/identity-apps/pull/6948) [`0b0d605e26e4f897713db9c49d880920912fe663`](https://github.com/wso2/identity-apps/commit/0b0d605e26e4f897713db9c49d880920912fe663) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix github repository link text and icon not being horizontally aligned
+
 ## 2.4.14
 
 ### Patch Changes
