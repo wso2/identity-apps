@@ -20,7 +20,7 @@ import { Show } from "@wso2is/access-control";
 import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmphasizedSegment } from "@wso2is/react-components";
+import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -53,7 +53,7 @@ interface AttributeSettingsPropsInterface extends IdentifiableComponentInterface
     /**
      * Callback to call on updating the IDVP details.
      */
-    handleUpdate: (data: IdentityVerificationProviderInterface) => void;
+    handleUpdate: (data: IdentityVerificationProviderInterface, callback: () => void) => void;
     /**
      * List of mandatory claims.
      */
@@ -93,7 +93,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         handleUpdate,
         hideIdentityClaimAttributes = true,
         isReadOnly,
-        isUpdating = false,
+        // isUpdating = true,
         mandatoryClaims,
         ["data-componentid"]: componentId = "idvp-edit-attribute-settings"
     }: AttributeSettingsPropsInterface
@@ -104,6 +104,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ selectedClaimsWithMapping, setSelectedClaimsWithMapping ] = useState<IdVPClaimMappingInterface[]>([]);
+    const [ isUpdating, setIsUpdating ] = useState<boolean>(false);
 
     /**
      * Evaluates whether the attribute update can be submitted or not.
@@ -114,6 +115,13 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         return isEmpty(selectedClaimsWithMapping?.filter(
             (element: IdVPClaimMappingInterface) => isEmpty(element.idvpClaim)
         ));
+    };
+
+    /**
+     * Callback to be called on update success or failure.
+     */
+    const handleUpdateCallback = (): void => {
+        setIsUpdating(false);
     };
 
     /**
@@ -134,6 +142,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
             return;
         }
+        setIsUpdating(true);
 
         const updatedData: IdentityVerificationProviderInterface = {
             ...idvp,
@@ -145,12 +154,18 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             })
         };
 
-        handleUpdate(updatedData);
+        handleUpdate(updatedData, handleUpdateCallback);
     };
 
-
     if (isLoading) {
-        return <div>Loading...</div>;
+        return (
+            <EmphasizedSegment
+                data-componentid={ `${ componentId }-loader` }
+                padded="very"
+            >
+                <ContentLoader inline="centered" active/>
+            </EmphasizedSegment>
+        );
     }
 
     return (

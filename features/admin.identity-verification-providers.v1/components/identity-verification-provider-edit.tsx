@@ -217,7 +217,7 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
         }
 
         return _tabPanes;
-    }, [ uiMetaData ]);
+    }, [ uiMetaData, identityVerificationProvider ]);
 
     /**
      * Resolve the default tab index based on the metadata.

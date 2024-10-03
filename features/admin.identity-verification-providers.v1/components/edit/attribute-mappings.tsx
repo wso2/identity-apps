@@ -35,7 +35,7 @@ interface AttributeMappingsPropsInterface extends IdentifiableComponentInterface
      *
      * @param data - Updated data.
      */
-    handleUpdate: (data: IdentityVerificationProviderInterface) => void;
+    handleUpdate: (data: IdentityVerificationProviderInterface, callback: () => void) => void;
     /**
      * List of mandatory claims.
      */
