@@ -131,13 +131,12 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
         ));
 
         if (fetchedIdVPsListResponse?.identityVerificationProviders) {
-            // TODO: Remove image once the IdVP API is updated.
+            // Manipulate the IdVPs list to match the UI.
             for (const idVP of fetchedIdVPsListResponse.identityVerificationProviders) {
                 combinedData.push( {
                     ...idVP,
                     tags: [ IdVPTemplateTags.IDENTITY_VERIFICATION ],
-                    type: ConnectionTypes.IDVP,
-                    image: "https://raw.githubusercontent.com/wso2-extensions/identity-verification-onfido/main/ui-metadata/images/onfido-icon.png"
+                    type: ConnectionTypes.IDVP
                 } as ConnectionInterface);
             }
         }

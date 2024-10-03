@@ -82,9 +82,6 @@ const DynamicSettingsForm: FunctionComponent<DynamicSettingsFormPropsInterface> 
         );
     };
 
-    console.log(initialValues);
-
-
     const resolveDangerZone = () => {
         if (!isLoading && tabMetadata?.id === IdVPEditTabIDs.GENERAL) {
             return (

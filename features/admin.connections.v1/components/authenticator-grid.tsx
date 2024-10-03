@@ -414,8 +414,9 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         isOrganizationSSOIDP: boolean
     ): string => {
         if (authenticator.type === ConnectionTypes.IDVP) {
-            return ConnectionsManagementUtils
-                .resolveConnectionResourcePath(connectionResourcesUrl, authenticator.image);
+            return authenticator?.image ? ConnectionsManagementUtils
+                .resolveConnectionResourcePath(connectionResourcesUrl, authenticator.image)
+                : getConnectionIcons().default;
         }
 
         if ((authenticator?.type === AuthenticatorTypes.FEDERATED || isIdP) && !isOrganizationSSOIDP) {

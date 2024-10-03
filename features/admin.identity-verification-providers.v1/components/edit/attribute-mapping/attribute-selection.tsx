@@ -24,14 +24,14 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid, Icon, Segment } from "semantic-ui-react";
-import { AddAttributeSelectionModal } from "../../edit/attribute-mapping/attribute-selection-modal";
-import { AttributeMappingList } from "../../edit/attribute-mapping/attributes-mapping-list";
 import { fetchAllLocalClaims } from "./utils/claim-utils";
 import {
     IdVPClaimMappingInterface,
     IdVPClaimsInterface,
     IdVPLocalClaimInterface
 } from "../../../models/identity-verification-providers";
+import { AddAttributeSelectionModal } from "../../edit/attribute-mapping/attribute-selection-modal";
+import { AttributeMappingList } from "../../edit/attribute-mapping/attributes-mapping-list";
 
 /**
  * Properties of {@link AttributesSelection}

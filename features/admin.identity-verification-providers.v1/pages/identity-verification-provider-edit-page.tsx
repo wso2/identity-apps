@@ -49,7 +49,6 @@ import { IdentityVerificationProviderConstants } from "../constants/identity-ver
 import {
     IdVPConfigPropertiesInterface,
     IdVPEditTabIDs,
-    IdVPTemplateInterface,
     IdentityVerificationProviderInterface
 } from "../models/identity-verification-providers";
 
@@ -202,14 +201,14 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
     /**
      * Resolves the identity verification provider image.
      *
-     * @param idVPTemplate - Evaluating idvpTemplateType.
+     * @param _idVP - Evaluating Identity Verification Provider.
      * @returns React element containing IDVP image.
      */
-    const resolveIDVPImage = (idVPTemplate: IdVPTemplateInterface): ReactElement => {
+    const resolveIDVPImage = (_idVP: IdentityVerificationProviderInterface): ReactElement => {
 
-        const { payload } = idVPTemplate || {};
+        const { name, image } = _idVP || {};
 
-        if (!payload) {
+        if (!(name || image)) {
             return (
                 <AppAvatar
                     hoverable={ false }
@@ -218,8 +217,6 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
                 />
             );
         }
-
-        const { name, image } = payload;
 
         // Return `AppAvatar` if image exists, otherwise return `AnimatedAvatar`.
         if (image) {
@@ -305,7 +302,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
             ) }
             contentTopMargin={ true }
             description={ fetchedIdVP?.description }
-            image={ resolveIDVPImage(fetchedTemplateData) }
+            image={ resolveIDVPImage(fetchedIdVP) }
             backButton={ {
                 "data-componentid": `${ componentId }-back-button`,
                 onClick: handleBackButtonClick,

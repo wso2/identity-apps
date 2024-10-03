@@ -24,6 +24,9 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
+import {
+    IdVPTemplateTags
+} from "@wso2is/admin.identity-verification-providers.v1/models/identity-verification-providers";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
@@ -177,7 +180,10 @@ export const useGetAuthenticatorTags = <Data = string[], Error = RequestErrorInt
     let modifiedData: string[] = [];
 
     if (data) {
-        modifiedData = [ ...(data as string[]), "Identity-Verification" ];
+        modifiedData = [
+            ...(data as string[]),
+            IdVPTemplateTags.IDENTITY_VERIFICATION
+        ];
     }
 
     return {
