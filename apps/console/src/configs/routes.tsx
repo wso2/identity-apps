@@ -463,7 +463,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             id: "identityVerificationProvidersEdit",
             name: "Identity Verification Providers Edit",
             order: 4,
-            path: AppConstants.getPaths().get("IDVP-EDIT"),
+            path: AppConstants.getPaths().get("IDVP_EDIT"),
             protected: true,
             showOnSidePanel: false
         },
