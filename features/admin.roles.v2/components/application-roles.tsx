@@ -479,7 +479,10 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 </Grid>
             </EmphasizedSegment>
             <ConfirmationModal
-                onClose={ (): void => setShowSwitchAudienceWarning(false) }
+                onClose={ (): void => {
+                    setTempRoleAudience(undefined);
+                    setShowSwitchAudienceWarning(false);
+                } }
                 type="negative"
                 open={ showSwitchAudienceWarning }
                 assertionHint={ t("extensions:develop.applications.edit.sections." +
@@ -488,6 +491,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ (): void => {
+                    setTempRoleAudience(undefined);
                     setShowSwitchAudienceWarning(false);
                 } }
                 onPrimaryActionClick={ (): void => {
