@@ -114,7 +114,8 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
     const clientOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.clientOrigin);
     const serverOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.idpConfigs?.serverOrigin);
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
-    const accountAppURL: string = useSelector((state: AppState) => state.config.deployment.accountApp.tenantQualifiedPath);
+    const accountAppURL: string = useSelector((state: AppState) =>
+        state?.config?.deployment?.accountApp?.tenantQualifiedPath);
 
     /**
      * Convert certificate into the pem format.
