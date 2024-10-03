@@ -1,5 +1,15 @@
 # @wso2is/common.branding.v1
 
+## 2.20.179
+
+### Patch Changes
+
+- [#6952](https://github.com/wso2/identity-apps/pull/6952) [`15b6ce4fde341d376d15bdfc03a436419d92ee6d`](https://github.com/wso2/identity-apps/commit/15b6ce4fde341d376d15bdfc03a436419d92ee6d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update oxygen ui version
+
+- Updated dependencies [[`15b6ce4fde341d376d15bdfc03a436419d92ee6d`](https://github.com/wso2/identity-apps/commit/15b6ce4fde341d376d15bdfc03a436419d92ee6d)]:
+  - @wso2is/admin.organizations.v1@2.22.15
+  - @wso2is/admin.core.v1@2.30.15
+
 ## 2.20.178
 
 ### Patch Changes
