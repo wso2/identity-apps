@@ -67,6 +67,10 @@ export interface AttributesSelectionProps extends IdentifiableComponentInterface
      * List of mandatory claims.
      */
     mandatoryClaims: IdVPClaimsInterface[];
+    /**
+     * Flag to determine if the update is in progress.
+     */
+    isUpdating?: boolean;
 }
 
 const FORM_ID: string = "idvp-attribute-selection-form";
@@ -88,6 +92,7 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
         hideIdentityClaimAttributes,
         isReadOnly,
         mandatoryClaims,
+        isUpdating = false,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -373,6 +378,8 @@ export const AttributesSelection: FunctionComponent<AttributesSelectionProps> = 
                                                         e.preventDefault();
                                                         setShowAddModal(true);
                                                     } }
+                                                    loading={ isUpdating }
+                                                    disabled={ isUpdating }
                                                     data-componentid={ `${ componentId }-list-layout-add-button` }
                                                 >
                                                     <Icon name="add"/>

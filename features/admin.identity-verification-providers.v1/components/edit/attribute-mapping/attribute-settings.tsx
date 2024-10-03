@@ -181,6 +181,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                 mappedAttributesList={ [ ...selectedClaimsWithMapping ] }
                                 isReadOnly={ isReadOnly }
                                 mandatoryClaims={ mandatoryClaims }
+                                isUpdating={ isUpdating }
                             />
                         </Grid.Column>
                     </Grid.Row>
