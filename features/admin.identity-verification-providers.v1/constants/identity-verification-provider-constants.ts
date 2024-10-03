@@ -27,8 +27,8 @@ export class IdentityVerificationProviderConstants {
     public static readonly IDVP_TEMPLATE_TYPES: {
         onFido: string;
     } = {
-            onFido: "ONFIDO"
-        };
+        onFido: "ONFIDO"
+    };
 
     // data-tabIds of the panes in the IDVP settings
     public static readonly ATTRIBUTES_TAB_ID: string  = "attributes";
