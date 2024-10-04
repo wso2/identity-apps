@@ -5149,7 +5149,7 @@ importers:
         specifier: ^2.22.18
         version: link:../admin.identity-providers.v1
       '@wso2is/admin.identity-verification-providers.v1':
-        specifier: ^2.22.14
+        specifier: ^2.22.18
         version: link:../admin.identity-verification-providers.v1
       '@wso2is/admin.organizations.v1':
         specifier: ^2.22.18
@@ -9484,7 +9484,7 @@ importers:
         specifier: ^2.21.18
         version: link:../admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.23.14
+        specifier: ^2.23.18
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
         specifier: ^2.30.18
@@ -9493,7 +9493,7 @@ importers:
         specifier: ^1.1.18
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.template-core.v1':
-        specifier: ^1.0.66
+        specifier: ^1.0.70
         version: link:../admin.template-core.v1
       '@wso2is/core':
         specifier: ^2.1.0
