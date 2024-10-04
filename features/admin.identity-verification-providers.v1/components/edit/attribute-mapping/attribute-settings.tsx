@@ -93,7 +93,6 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         handleUpdate,
         hideIdentityClaimAttributes = true,
         isReadOnly,
-        // isUpdating = true,
         mandatoryClaims,
         ["data-componentid"]: componentId = "idvp-edit-attribute-settings"
     }: AttributeSettingsPropsInterface
