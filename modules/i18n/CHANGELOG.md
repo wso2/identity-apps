@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.5.36
+
+### Patch Changes
+
+- [#6958](https://github.com/wso2/identity-apps/pull/6958) [`059caf916a569d07cbacbd94b38a6ad696932b73`](https://github.com/wso2/identity-apps/commit/059caf916a569d07cbacbd94b38a6ad696932b73) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken i18n in trusted token issuer advanced tab
+
 ## 2.5.35
 
 ### Patch Changes
