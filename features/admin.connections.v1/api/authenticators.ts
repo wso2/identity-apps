@@ -55,7 +55,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * Hook to get all authenticators in the server.
  *
  * @param filter - Search filter.
- * @param type - Authenticator Type.
+ * @param shouldFetch - Should fetch the data.
  *
  * @returns Response as a promise.
  */

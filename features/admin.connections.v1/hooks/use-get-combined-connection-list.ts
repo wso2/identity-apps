@@ -56,13 +56,17 @@ export interface SearchInputsInterface {
  * @param limit - Limit for pagination.
  * @param offset - Offset for pagination.
  * @param searchInputs - Search inputs.
+ * @param shouldFetchAuthenticators - Should fetch authenticators.
+ * @param shouldFetchIdVPs - Should fetch identity verification providers.
  *
  * @returns The fetched and filtered connections list.
  */
 export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error = RequestErrorInterface>(
     limit?: number,
     offset?: number,
-    searchInputs?: SearchInputsInterface
+    searchInputs?: SearchInputsInterface,
+    shouldFetchAuthenticators: boolean = true,
+    shouldFetchIdVPs: boolean = true
 ): Omit<RequestResultInterface<Data, Error>, "mutate"> & { mutate: () => void } => {
 
     const {
@@ -73,11 +77,11 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
         mutate: mutateAuthenticatorsFetchRequest
     } = useGetAuthenticators(
         ConnectionsManagementUtils.buildConnectionsFilterQuery(searchInputs?.searchQuery, searchInputs?.filterTags),
-        offset === 0
+        shouldFetchAuthenticators && offset === 0
     );
 
     // IdVPs API does not support filtering with tags. Hence, we need to treat it separately.
-    const shouldFetchIdVPs = (): boolean => {
+    const shouldFilterIdVPs = (): boolean => {
         if (!searchInputs?.filterTags || searchInputs.filterTags.length === 0) {
             return true;
         }
@@ -95,7 +99,7 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
         limit,
         offset,
         ConnectionsManagementUtils.buildConnectionsFilterQuery(searchInputs?.searchQuery, []),
-        shouldFetchIdVPs()
+        shouldFetchIdVPs && shouldFilterIdVPs()
     );
 
     const combinedData: ConnectionInterface[] = [];

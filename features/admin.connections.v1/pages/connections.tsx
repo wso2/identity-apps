@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -75,6 +75,10 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
     const { getLink } = useDocumentation();
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const isIdVPFeatureEnabled: boolean = featureConfig?.identityVerificationProviders?.enabled;
+
+    const hasIdVPReadPermissions: boolean = useRequiredScopes(
+        featureConfig?.identityVerificationProviders?.scopes?.read);
 
     const [ searchInputs, setSearchInputs ] = useState<SearchInputsInterface>({
         filterTags: [],
@@ -101,7 +105,9 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
     } = useGetCombinedConnectionList(
         listItemLimit,
         listOffset,
-        searchInputs
+        searchInputs,
+        true,
+        isIdVPFeatureEnabled && hasIdVPReadPermissions
     );
 
     /**
