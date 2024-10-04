@@ -136,10 +136,12 @@ export interface IdpNS {
                 primaryAttribute: {
                     label: string;
                     hint: string;
+                    placeholder: string;
                 };
                 secondaryAttribute: {
                     label: string;
                     hint: string;
+                    placeholder: string;
                 };
                 warning: string;
             };
