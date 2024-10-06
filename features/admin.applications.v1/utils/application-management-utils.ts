@@ -104,7 +104,7 @@ export class ApplicationManagementUtils {
             });
     }
 
-    public static getIfAppIsOutdated(applicationVersion: string, grantTypes?: string[]): boolean {
+    public static isApplicationOutdated(applicationVersion: string, grantTypes?: string[]): boolean {
 
         if (applicationVersion != undefined
                 && grantTypes.includes(ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT)) {

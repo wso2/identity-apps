@@ -1656,8 +1656,8 @@ export const applications: ApplicationsNS = {
                     documentationHint: "More Details",
                     confirmationModal: {
                         header: "Have you done the relevant changes?",
-                        message: "Proceeding the action without making relevant change will cause the client application behavior break.",
-                        content: "This action is irreversible and will permanently update the application.",
+                        message: "Proceeding without making the necessary changes will cause the client application's behavior to break.",
+                        content: "This action is irreversible and will result in a permanent update to the application.",
                         assertionHint: "Please confirm your action"
                     },
                     fields: {
@@ -1665,10 +1665,10 @@ export const applications: ApplicationsNS = {
                         versions: {
                             version100: {
                                 removeUsernameFromIntrospectionRespForAppTokens: {
-                                    instruction: "Introspection response for application access token will not include the username attribute."
+                                    instruction: "The introspection response for an application access token will not include the username attribute."
                                 },
                                 useClientIdAsSubClaimOfAppTokens: {
-                                    instruction: "Application access token sub attribute will be client_id generated for an application."
+                                    instruction: "The sub attribute of the application access token will be the client_id generated for the application."
                                 }
                             }
                         }

@@ -306,9 +306,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                                 )
                         )
                     }
-                    {
-                        alertBanner
-                    }
+                    { alertBanner }
                     {
                         action
                             ? (
