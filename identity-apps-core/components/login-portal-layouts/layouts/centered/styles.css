@@ -31,6 +31,11 @@
   margin-bottom: 50px;
 }
 
+.login-portal.layout .page-wrapper.layout-file .footer a#copyright span {
+  max-width: 300px;
+  overflow-wrap: break-word;
+}
+
 .login-portal.layout .page-wrapper.layout-file .footer .ui.menu {
   flex-direction: column;
   align-items: center;
