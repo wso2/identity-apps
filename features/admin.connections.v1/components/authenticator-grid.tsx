@@ -408,30 +408,38 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             || (authenticator as ConnectionInterface).type === AuthenticatorTypes.FEDERATED;
     };
 
+    /**
+     * Resolves the image path for the given connection.
+     *
+     * @param connection - Connection.
+     * @param isIdP - Whether the connection is an IDP.
+     * @param isOrganizationSSOIDP - Whether the connection is an organization SSO IDP.
+     * @returns - Resolved image element.
+     */
     const resolveResourceImage = (
-        authenticator: ConnectionInterface,
+        connection: ConnectionInterface,
         isIdP: boolean,
         isOrganizationSSOIDP: boolean
     ): string => {
-        if (authenticator.type === ConnectionTypes.IDVP) {
-            return authenticator?.image ? ConnectionsManagementUtils
-                .resolveConnectionResourcePath(connectionResourcesUrl, authenticator.image)
+        if (connection.type === ConnectionTypes.IDVP) {
+            return connection?.image ? ConnectionsManagementUtils
+                .resolveConnectionResourcePath(connectionResourcesUrl, connection.image)
                 : getConnectionIcons().default;
         }
 
-        if ((authenticator?.type === AuthenticatorTypes.FEDERATED || isIdP) && !isOrganizationSSOIDP) {
-            return authenticator?.image
-                ? ConnectionsManagementUtils.resolveConnectionResourcePath(connectionResourcesUrl, authenticator.image)
+        if ((connection?.type === AuthenticatorTypes.FEDERATED || isIdP) && !isOrganizationSSOIDP) {
+            return connection?.image
+                ? ConnectionsManagementUtils.resolveConnectionResourcePath(connectionResourcesUrl, connection.image)
                 : getConnectionIcons().default;
         }
 
         if (isOrganizationSSOIDP) {
             return AuthenticatorMeta.getAuthenticatorIcon(
-                (authenticator as ConnectionInterface)?.federatedAuthenticators?.defaultAuthenticatorId
+                (connection as ConnectionInterface)?.federatedAuthenticators?.defaultAuthenticatorId
             );
         }
 
-        return AuthenticatorMeta.getAuthenticatorIcon(authenticator?.id);
+        return AuthenticatorMeta.getAuthenticatorIcon(connection?.id);
     };
 
     return (
