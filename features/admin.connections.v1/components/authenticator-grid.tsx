@@ -280,7 +280,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
      *
      * @param id - Authenticator ID.
      */
-    const handleAuthenticatorDelete = (id: string, connectionType: string): void => {
+    const handleAuthenticatorDelete = (id: string, connectionType: ConnectionTypes): void => {
 
         setIsDeletionLoading(true);
 
@@ -540,7 +540,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                         secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={
-                            (): void => handleAuthenticatorDelete(deletingIDP.id, deletingIDP.type)
+                            (): void => handleAuthenticatorDelete(deletingIDP.id, deletingIDP.type as ConnectionTypes)
                         }
                         data-testid={ `${ testId }-delete-confirmation-modal` }
                         closeOnDimmerClick={ false }
