@@ -1,5 +1,13 @@
 # @wso2is/admin.subscription.v1
 
+## 1.1.19
+
+### Patch Changes
+
+- Updated dependencies [[`ffab5ff5c160aa6d462919d22d24e169d3a146f9`](https://github.com/wso2/identity-apps/commit/ffab5ff5c160aa6d462919d22d24e169d3a146f9)]:
+  - @wso2is/admin.core.v1@2.31.0
+  - @wso2is/admin.organizations.v1@2.22.19
+
 ## 1.1.18
 
 ### Patch Changes
