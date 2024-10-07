@@ -16,34 +16,27 @@
  * under the License.
  */
 
-import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { PageLayout } from "@wso2is/react-components";
 import React, { FC, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import {
-    useRemoteLogPublishingConfigs
-} from "../api/server";
-import { RemoteLoggingConfigForm } from "../components/remote-logging-config-form";
-import { LogType, RemoteLogPublishingConfigurationInterface } from "../models/server";
+import { RemoteLoggingConfigForm } from "./remote-logging-config-form";
+import useRemoteLogPublishingConfiguration from "../../../api/root-organizations/system-settings/use-remote-log-publishing-configuration";
+import { LogType, RemoteLogPublishingConfigurationInterface } from "../../../models/root-organizations/system-settings/remote-log-publishing";
 
-type RemoteLoggingPageInterface = IdentifiableComponentInterface;
+type RemoteLogPublishingInterface = IdentifiableComponentInterface;
 
-export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
-    props: RemoteLoggingPageInterface
-): ReactElement => {
-
-    const { [ "data-componentid" ]: componentId } = props;
-
+export const RemoteLogPublishing: FC<RemoteLogPublishingInterface> = ({
+    ["data-componentid"]: componentId = "remote-log-publishing"
+}: RemoteLogPublishingInterface): ReactElement => {
     const {
         data: remoteLogPublishingConfigs,
         isLoading: isRemoteLogPublishingConfigsLoading,
         error: remoteLogPublishingConfigRetrievalError,
         mutate: mutateRemoteLoggingRequest
-    } = useRemoteLogPublishingConfigs();
+    } = useRemoteLogPublishingConfiguration();
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -62,27 +55,8 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
         }
     }, [ ]);
 
-    /**
-     * Handles the back button click event.
-     */
-    const handleBackButtonClick = (): void => {
-        history.push(AppConstants.getPaths().get("SERVER"));
-    };
-
     return (
-        <PageLayout
-            title={ t("console:manage.features.serverConfigs.remoteLogPublishing.title") }
-            pageTitle={ t("console:manage.features.serverConfigs.remoteLogPublishing.pageTitle") }
-            description={ <>{ t("console:manage.features.serverConfigs.remoteLogPublishing.description") }</> }
-            data-componentid={ `${ componentId }-page-layout` }
-            backButton={ {
-                "data-testid": `${ componentId }-page-back-button`,
-                onClick: handleBackButtonClick,
-                text: t("pages:rolesEdit.backButton", { type: "Server" })
-            } }
-            bottomMargin={ false }
-            isLoading={ isRemoteLogPublishingConfigsLoading }
-        >
+        <>
             <RemoteLoggingConfigForm
                 mutateRemoteLoggingRequest={ mutateRemoteLoggingRequest }
                 logType={ LogType.AUDIT }
@@ -91,15 +65,8 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
                         config?.logType?.toLowerCase() === LogType.AUDIT.toString()
                 ) }
             />
-        </PageLayout>
+        </>
     );
 };
 
-/**
- * Default props for the component.
- */
-RemoteLoggingPage.defaultProps = {
-    "data-componentid": "remote-logging-page"
-};
-
-export default RemoteLoggingPage;
+export default RemoteLogPublishing;
