@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,18 +17,16 @@
  */
 
 /**
- * Interface for the admin advisory banner configuration.
+ * Enum for the publishing log types.
  */
-export interface AdminAdvisoryBannerConfigurationInterface {
-    bannerContent: string;
-    enableBanner: boolean;
-}
-
 export enum LogType {
     AUDIT = "audit",
     CARBON = "carbon"
 }
 
+/**
+ * Interface for the remote log publishing configuration.
+ */
 export interface RemoteLogPublishingConfigurationInterface {
 	/**
 	 * Destination to where the logs should be published.
