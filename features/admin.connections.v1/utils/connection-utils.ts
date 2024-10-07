@@ -130,10 +130,10 @@ export class ConnectionsManagementUtils {
         return Array.isArray(found.tags) ? found.tags : [];
     }
 
-    public static buildAuthenticatorsFilterQuery(searchQuery: string, filters: string[]): string {
+    public static buildConnectionsFilterQuery(searchQuery: string, filters: string[]): string {
 
         if (isEmpty(filters) || !Array.isArray(filters) || filters.length <= 0) {
-            return searchQuery;
+            return isEmpty(searchQuery) ? null : searchQuery;
         }
 
         let query: string = searchQuery
@@ -818,4 +818,3 @@ export const handleUpdateIDPRoleMappingsError = (error: AxiosError): void => {
         })
     );
 };
-

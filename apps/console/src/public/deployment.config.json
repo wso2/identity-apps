@@ -660,10 +660,10 @@
                 }
             },
             "identityVerificationProviders": {
-                "enabled": false,
+                "enabled": true,
                 "scopes": {
                     "create": [
-                        "internal_idvp_create"
+                        "internal_idvp_add"
                     ],
                     "delete": [
                         "internal_idvp_delete"
