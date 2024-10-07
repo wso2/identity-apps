@@ -56,6 +56,11 @@
     padding: .6rem 0!important;
 }
 
+.login-portal.layout .page-wrapper.layout-file .footer a#copyright span {
+  max-width: 300px;
+  overflow-wrap: break-word;
+}
+
 @media only screen and (max-width: 2000px) {
   .page-wrapper.layout-file .left-side {
     flex: 0.65;
