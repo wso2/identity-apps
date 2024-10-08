@@ -160,7 +160,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ formData, setFormdata ] = useState<ApplicationInterface>(undefined);
 
     useEffect(() => {
-        if (application != undefined && applicationInboundConfigs != undefined) {
+        if (application && applicationInboundConfigs) {
             const isAppOutdated: boolean = ApplicationManagementUtils.isApplicationOutdated(
                 application?.applicationVersion, applicationInboundConfigs?.grantTypes);
 
