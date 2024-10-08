@@ -107,7 +107,7 @@ export class ApplicationManagementUtils {
     public static isApplicationOutdated(applicationVersion: string, grantTypes?: string[]): boolean {
 
         if (applicationVersion != undefined
-                && grantTypes.includes(ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT)) {
+            && grantTypes.includes(ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT)) {
 
             const appVersionArray: number[] = applicationVersion?.match(/\d+/g).map(Number);
             const latestAppVersionArray: number[] = ApplicationManagementConstants

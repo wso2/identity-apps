@@ -18,6 +18,7 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
+import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Grid from "@oxygen-ui/react/Grid";
 import List from "@oxygen-ui/react/List";
@@ -561,8 +562,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                             severity="warning"
                             action={
                                 (
-                                    <div>
+                                    <Box display="flex">
                                         <Button
+                                            className="banner-view-hide-details"
                                             data-componentid={ `${componentId}-outdated-app-view-details-button` }
                                             onClick={ () => setViewBannerDetails(!viewBannerDetails) }>
                                             {
@@ -587,7 +589,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                                 data-componentid={ `${componentId}-close-btn` }
                                             />
                                         </Button>
-                                    </div>
+                                    </Box>
                                 )
                             }
                         >
@@ -636,22 +638,27 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                             <Trans
                                                 i18nKey={
                                                     t("applications:forms.inboundOIDC.sections"
-                                            + ".outdatedApplications.fields."
-                                            + "versions.version100.useClientIdAsSubClaimOfAppTokens.instruction")
+                                                        + ".outdatedApplications.fields.versions.version100."
+                                                        + "removeUsernameFromIntrospectionRespForAppTokens.instruction")
                                                 }
-                                            />
+                                            >
+                                                The <code>sub</code> attribute of an application access token now
+                                                returns the <code>client_id</code> generated for the application,
+                                                instead of the <code>userid</code> of the application owner.
+                                            </Trans>
                                         </Typography>
                                         <DocumentationLink
                                             link={
                                                 getLink("develop.applications.editApplication.outdatedApplications."
-                                            + "versions.version100.useClientIdAsSubClaimOfAppTokens.documentationLink")
+                                                + "versions.version100.removeUsernameFromIntrospectionRespForAppTokens."
+                                                + "documentationLink")
                                             }
                                             showEmptyLink={ false }
                                         >
                                             <Trans
                                                 i18nKey={
                                                     t("applications:forms.inboundOIDC.sections"
-                                                + ".outdatedApplications.documentationHint")
+                                                    + ".outdatedApplications.documentationHint")
                                                 }
                                             />
                                         </DocumentationLink>
@@ -672,23 +679,26 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                             <Trans
                                                 i18nKey={
                                                     t("applications:forms.inboundOIDC.sections"
-                                            + ".outdatedApplications.fields.versions.version100."
-                                            + "removeUsernameFromIntrospectionRespForAppTokens.instruction")
+                                                    + ".outdatedApplications.fields.versions"
+                                                    + ".version100.useClientIdAsSubClaimOfAppTokens.instruction")
                                                 }
-                                            />
+                                            >
+                                                The introspection responses for application access tokens no longer
+                                                return the <code>username</code> attribute.
+                                            </Trans>
                                         </Typography>
                                         <DocumentationLink
                                             link={
                                                 getLink("develop.applications.editApplication.outdatedApplications."
-                                            + "versions.version100.removeUsernameFromIntrospectionRespForAppTokens."
-                                            + "documentationLink")
+                                                + "versions.version100.useClientIdAsSubClaimOfAppTokens."
+                                                + "documentationLink")
                                             }
                                             showEmptyLink={ false }
                                         >
                                             <Trans
                                                 i18nKey={
                                                     t("applications:forms.inboundOIDC.sections"
-                                                + ".outdatedApplications.documentationHint")
+                                                    + ".outdatedApplications.documentationHint")
                                                 }
                                             />
                                         </DocumentationLink>
@@ -698,6 +708,14 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         }
                     </List>
                 </Grid>
+                <Typography variant="body2" className="banner-action">
+                    <Trans
+                        i18nKey={
+                            t("applications:forms.inboundOIDC.sections"
+                            + ".outdatedApplications.alert.action")
+                        }
+                    />
+                </Typography>
                 <Button
                     variant="contained"
                     type="submit"

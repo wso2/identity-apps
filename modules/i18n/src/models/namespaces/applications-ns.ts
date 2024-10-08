@@ -1378,13 +1378,12 @@ export interface ApplicationsNS {
                     };
                 };
                 outdatedApplications: {
-                    heading: string;
                     alert : {
                         title: string;
                         content: string;
                         viewButton: string;
                         hideButton: string;
-                        cancelButton: string;
+                        action: string;
                     }
                     label: string;
                     documentationHint: string;

@@ -1644,13 +1644,12 @@ export const applications: ApplicationsNS = {
                     heading: "ID Token"
                 },
                 outdatedApplications: {
-                    heading: "Legacy Application Tokens",
                     alert : {
-                        title: "Application is outdated.",
-                        content: "This application is using an outdated behavior of applications.",
+                        title: "Update Required.",
+                        content: "We have updated the behavior of applications as follows.",
                         viewButton: "View Details",
                         hideButton: "Hide Details",
-                        cancelButton: "Ignore Once"
+                        action: "Before updating your application, be sure to update any usages of these attributes accordingly."
                     },
                     label: "Outdated",
                     documentationHint: "More Details",
@@ -1665,10 +1664,13 @@ export const applications: ApplicationsNS = {
                         versions: {
                             version100: {
                                 removeUsernameFromIntrospectionRespForAppTokens: {
-                                    instruction: "The introspection response for an application access token will not include the username attribute."
+                                    instruction: "The <1>sub</1> attribute of an application access token now returns the "
+                                        + "<3>client_id</3> generated for the application, instead of the <5>userid</5> of "
+                                        + "the application owner."
                                 },
                                 useClientIdAsSubClaimOfAppTokens: {
-                                    instruction: "The sub attribute of the application access token will be the client_id generated for the application."
+                                    instruction: "The introspection responses for application access tokens no longer "
+                                        + "return the <1>username</1> attribute."
                                 }
                             }
                         }
