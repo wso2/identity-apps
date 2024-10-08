@@ -209,8 +209,8 @@ export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = 
                 "data-componentid": `${ testId }-page-back-button`,
                 onClick:  handleBackButtonClick,
                 text: isPrivilegedUsersInConsoleSettingsEnabled
-                    ? "Go back to console settings"
-                    : "Go back to administrators"
+                    ? t("extensions:manage.users.administratorSettings.backButtonConsoleSettings")
+                    : t("extensions:manage.users.administratorSettings.backButton")
             } }
             bottomMargin={ false }
             contentTopMargin={ true }
