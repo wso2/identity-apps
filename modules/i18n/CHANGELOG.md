@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.6.1
+
+### Patch Changes
+
+- [#6813](https://github.com/wso2/identity-apps/pull/6813) [`8cca5da311d6bd96d3492b21156b925f4580bc77`](https://github.com/wso2/identity-apps/commit/8cca5da311d6bd96d3492b21156b925f4580bc77) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add outdated app banner and labels.
+
 ## 2.6.0
 
 ### Minor Changes
