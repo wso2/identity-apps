@@ -1,5 +1,14 @@
 # @wso2is/react-components
 
+## 2.4.17
+
+### Patch Changes
+
+- [#6813](https://github.com/wso2/identity-apps/pull/6813) [`8cca5da311d6bd96d3492b21156b925f4580bc77`](https://github.com/wso2/identity-apps/commit/8cca5da311d6bd96d3492b21156b925f4580bc77) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add outdated app banner and labels.
+
+- Updated dependencies [[`8cca5da311d6bd96d3492b21156b925f4580bc77`](https://github.com/wso2/identity-apps/commit/8cca5da311d6bd96d3492b21156b925f4580bc77)]:
+  - @wso2is/theme@2.1.5
+
 ## 2.4.16
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @wso2is/admin.home.v1
 
+## 1.2.21
+
+### Patch Changes
+
+- Updated dependencies [[`8cca5da311d6bd96d3492b21156b925f4580bc77`](https://github.com/wso2/identity-apps/commit/8cca5da311d6bd96d3492b21156b925f4580bc77)]:
+  - @wso2is/admin.applications.v1@2.26.21
+  - @wso2is/admin.extensions.v1@2.30.21
+  - @wso2is/react-components@2.4.17
+  - @wso2is/admin.core.v1@2.31.2
+  - @wso2is/i18n@2.6.1
+  - @wso2is/admin.organizations.v1@2.22.21
+  - @wso2is/admin.feature-gate.v1@1.1.21
+
 ## 1.2.20
 
 ### Patch Changes
