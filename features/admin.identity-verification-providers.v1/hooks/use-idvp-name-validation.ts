@@ -52,7 +52,7 @@ const useIdVPNameValidation = (): {
                 const response: IdVPListResponseInterface = await getIdentityVerificationProvidersList(null, null);
 
                 const existingIdVP: IdentityVerificationProviderInterface = response?.identityVerificationProviders
-                    .find((
+                    ?.find((
                         idVP: IdentityVerificationProviderInterface
                     ) => idVP.name.toLocaleLowerCase() === name.toLocaleLowerCase());
 
