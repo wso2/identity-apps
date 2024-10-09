@@ -337,6 +337,7 @@ export interface ApplicationBasicInterface {
     id?: string;
     name: string;
     description?: string;
+    applicationVersion?: string;
     accessUrl?: string;
     clientId?: string;
     issuer?: string;

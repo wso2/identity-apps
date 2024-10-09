@@ -144,6 +144,18 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                             }
                         }
                     },
+                    outdatedApplications: {
+                        versions: {
+                            version100: {
+                                removeUsernameFromIntrospectionRespForAppTokens: {
+                                    documentationLink: undefined
+                                },
+                                useClientIdAsSubClaimOfAppTokens: {
+                                    documentationLink: undefined
+                                }
+                            }
+                        }
+                    },
                     samlApplication: {
                         advanced: {
                             learnMore: undefined

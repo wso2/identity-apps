@@ -1377,6 +1377,36 @@ export interface ApplicationsNS {
                         };
                     };
                 };
+                outdatedApplications: {
+                    alert : {
+                        title: string;
+                        content: string;
+                        viewButton: string;
+                        hideButton: string;
+                        action: string;
+                    }
+                    label: string;
+                    documentationHint: string;
+                    confirmationModal: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    },
+                    fields: {
+                        commonInstruction: string;
+                        versions: {
+                            version100: {
+                                removeUsernameFromIntrospectionRespForAppTokens: {
+                                    instruction: string;
+                                },
+                                useClientIdAsSubClaimOfAppTokens: {
+                                    instruction: string;
+                                }
+                            }
+                        };
+                    }
+                };
                 logoutURLs: {
                     heading: string;
                     fields: {
