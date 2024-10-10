@@ -59,12 +59,12 @@ export const validateSMSOTPCode = (code: string): Promise<any> => {
 /**
  * Resend SMS OTP verification code for the authenticated user.
  */
-export const resendSMSOTPCode = (): Promise<any> => {
+export const resendSMSOTPCode = (recoveryScenario: string = "MOBILE_VERIFICATION_ON_UPDATE"): Promise<any> => {
     const properties: SMSOTPProperty[] = [];
 
     const propertyData: SMSOTPProperty = {
         key: "RecoveryScenario",
-        value: "MOBILE_VERIFICATION_ON_UPDATE"
+        value: recoveryScenario
     };
 
     properties.push(propertyData);

@@ -185,4 +185,7 @@ export interface CommonNS {
     },
     noResultsFound: string;
     pressEnterPrompt: string;
+    verified: string;
+    primary: string;
+    makePrimary: string;
 }
