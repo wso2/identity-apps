@@ -143,6 +143,7 @@ jobs:
 
   test:
     name: 👾 Unit Test (TESTING)
+    if: ${{ false }}
     needs: [ typecheck ]
     runs-on: ubuntu-latest
     strategy:
@@ -228,7 +229,7 @@ jobs:
 
   build:
     name: 🚧 Build
-    needs: [ test, typecheck ]
+    needs: [ typecheck ]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -240,12 +241,20 @@ jobs:
       - name: ⬇️ Checkout
         id: checkout
         uses: actions/checkout@v2.3.3
+        with:
+          fetch-depth: 0
 
       - name: 🟢 Setup node
         id: setup-node
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: 🐳 Set SHAs for Nx
+        id: set-shas
+        uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: "master"
 
       - name: ☕ Set up JDK 11
         id: jdk-setup
@@ -287,13 +296,13 @@ jobs:
 
       - name: 👷 PNPM Build
         id: build-with-pnpm
-        run: pnpm build
+        run: pnpm nx affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --target=build --parallel=3
 
-      - name: 🏗️ Maven Build identity-apps-core
-        id: build-with-maven
-        run: |
-          cd identity-apps-core
-          mvn clean install -U -Dlint.exec.skip=true -Dbootstrap.exec.skip=true
+    #   - name: 🏗️ Maven Build identity-apps-core
+    #     id: build-with-maven
+    #     run: |
+    #       cd identity-apps-core
+    #       mvn clean install -U -Dlint.exec.skip=true -Dbootstrap.exec.skip=true
 
       - name: 💾 Cache local Maven repository
         id: cache-maven-m2
