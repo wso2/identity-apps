@@ -1,5 +1,35 @@
 # @wso2is/i18n
 
+## 2.6.1
+
+### Patch Changes
+
+- [#6813](https://github.com/wso2/identity-apps/pull/6813) [`8cca5da311d6bd96d3492b21156b925f4580bc77`](https://github.com/wso2/identity-apps/commit/8cca5da311d6bd96d3492b21156b925f4580bc77) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add outdated app banner and labels.
+
+## 2.6.0
+
+### Minor Changes
+
+- [#6949](https://github.com/wso2/identity-apps/pull/6949) [`ffab5ff5c160aa6d462919d22d24e169d3a146f9`](https://github.com/wso2/identity-apps/commit/ffab5ff5c160aa6d462919d22d24e169d3a146f9) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve Identity Verification Providers feature
+
+## 2.5.36
+
+### Patch Changes
+
+- [#6958](https://github.com/wso2/identity-apps/pull/6958) [`059caf916a569d07cbacbd94b38a6ad696932b73`](https://github.com/wso2/identity-apps/commit/059caf916a569d07cbacbd94b38a6ad696932b73) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken i18n in trusted token issuer advanced tab
+
+## 2.5.35
+
+### Patch Changes
+
+- [#6938](https://github.com/wso2/identity-apps/pull/6938) [`5c51848d9d9861e755224cd412982ff412ae30be`](https://github.com/wso2/identity-apps/commit/5c51848d9d9861e755224cd412982ff412ae30be) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Make console settings UI configurable for managed deployments
+
+## 2.5.34
+
+### Patch Changes
+
+- [#6937](https://github.com/wso2/identity-apps/pull/6937) [`a4d2b3686c77e679bcd42432ecb92b4e1995f9df`](https://github.com/wso2/identity-apps/commit/a4d2b3686c77e679bcd42432ecb92b4e1995f9df) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Improve header field regex
+
 ## 2.5.33
 
 ### Patch Changes

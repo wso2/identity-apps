@@ -29,6 +29,7 @@ export const consoleSettings: ConsoleSettingsNS = {
             action: "Add Administrator",
             options: {
                 addExistingUser: "Add Existing User",
+                addExternalUser: "Invite Admins to Asgardeo",
                 inviteParentUser: "Invite Parent User"
             }
         },

@@ -353,7 +353,7 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
         let scopes: string[] = [];
 
         try {
-            scopes = rawScopes.trim().split("scope=")[1].split(" ");
+            scopes = new URLSearchParams(rawScopes).get("scope").split(" ");
         } catch(e) {
             // Silent any issues occurred when trying to scroll.
             // Add debug logs here one a logger is added.

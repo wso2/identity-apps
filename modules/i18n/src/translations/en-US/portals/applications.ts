@@ -1643,6 +1643,39 @@ export const applications: ApplicationsNS = {
                     },
                     heading: "ID Token"
                 },
+                outdatedApplications: {
+                    alert : {
+                        title: "Update Required.",
+                        content: "We have updated the behavior of applications as follows.",
+                        viewButton: "View Details",
+                        hideButton: "Hide Details",
+                        action: "Before updating your application, be sure to update any usages of these attributes accordingly."
+                    },
+                    label: "Outdated",
+                    documentationHint: "More Details",
+                    confirmationModal: {
+                        header: "Have you done the relevant changes?",
+                        message: "Proceeding without making the necessary changes will cause the client application's behavior to break.",
+                        content: "This action is irreversible and will result in a permanent update to the application.",
+                        assertionHint: "Please confirm your action"
+                    },
+                    fields: {
+                        commonInstruction: "Following behavioral changes will be applied upon update.",
+                        versions: {
+                            version100: {
+                                removeUsernameFromIntrospectionRespForAppTokens: {
+                                    instruction: "The <1>sub</1> attribute of an application access token now returns the "
+                                        + "<3>client_id</3> generated for the application, instead of the <5>userid</5> of "
+                                        + "the application owner."
+                                },
+                                useClientIdAsSubClaimOfAppTokens: {
+                                    instruction: "The introspection responses for application access tokens no longer "
+                                        + "return the <1>username</1> attribute."
+                                }
+                            }
+                        }
+                    }
+                },
                 logoutURLs: {
                     fields: {
                         back: {

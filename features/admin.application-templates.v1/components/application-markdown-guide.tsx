@@ -87,6 +87,8 @@ interface MarkdownGuideDataInterface {
     tenantDomain?: string;
     clientOrigin?: string;
     serverOrigin?: string;
+    productName?: string;
+    accountAppURL?: string;
     moderatedData?: ModeratedData;
 }
 
@@ -111,6 +113,9 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const clientOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.clientOrigin);
     const serverOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.idpConfigs?.serverOrigin);
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
+    const accountAppURL: string = useSelector((state: AppState) =>
+        state?.config?.deployment?.accountApp?.tenantQualifiedPath);
 
     /**
      * Convert certificate into the pem format.
@@ -172,6 +177,8 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
         markdownDataObject.tenantDomain = tenantDomain;
         markdownDataObject.clientOrigin = clientOrigin;
         markdownDataObject.serverOrigin = serverOrigin;
+        markdownDataObject.productName = productName;
+        markdownDataObject.accountAppURL = accountAppURL;
         markdownDataObject.moderatedData = getModeratedData();
 
         return markdownDataObject;

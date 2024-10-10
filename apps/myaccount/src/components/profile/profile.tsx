@@ -32,13 +32,16 @@ import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon } from "@oxygen-ui/react-icons";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import {
-    getUserNameWithoutDomain,
-    hasRequiredScopes,
+/**
+ * `useRequiredScopes` is not supported for myaccount.
+ */
+/* eslint-disable no-restricted-imports */
+import { getUserNameWithoutDomain, hasRequiredScopes,
     isFeatureEnabled,
     resolveUserDisplayName,
     resolveUserEmails
 } from "@wso2is/core/helpers";
+/* eslint-enable */
 import {
     ProfileSchemaInterface,
     SBACInterface,
@@ -100,6 +103,10 @@ const VERIFIED_MOBILE_NUMBERS_ATTRIBUTE: string =
 const VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE: string =
     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES");
 const EMAIL_MAX_LENGTH: number = 50;
+
+// TODO: Remove this once multiple email and mobile support is onboarded.
+const multipleEmailMobileFeatureSpecificSchemaNames: string[] = [ "emailAddresses", "verifiedEmailAddresses",
+    "mobileNumbers", "verifiedMobileNumbers" ];
 
 /**
  * Prop types for the basic details component.
@@ -1060,6 +1067,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
          */
         const isProfileUsernameReadonly: boolean = config.ui.isProfileUsernameReadonly;
         const { displayName, name } = schema;
+
+        if (multipleEmailMobileFeatureSpecificSchemaNames?.includes(name)) {
+            return;
+        }
 
         if (isProfileUsernameReadonly) {
             const usernameClaim: string = "username";
