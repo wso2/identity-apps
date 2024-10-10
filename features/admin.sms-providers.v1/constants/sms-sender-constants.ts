@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,7 +18,14 @@
 
 import { IdentityAppsError } from "@wso2is/core/errors";
 
-export class SMSOTPConstants {
+/**
+ * Class containing constants related to SMS sender operations.
+ */
+class SMSSenderConstants {
+    /**
+     * Private constructor to avoid object instantiation from outside the class.
+     */
+    private constructor() {}
 
     public static readonly ERROR_IN_CREATING_SMS_NOTIFICATION_SENDER: string = "An error occurred while adding SMS " +
         "Notification Sender";
@@ -38,5 +45,7 @@ export class SMSOTPConstants {
             "NSM-60008",
             "There are applications using this connection."
         )
-    }
+    };
 }
+
+export default SMSSenderConstants;

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,5 +16,17 @@
  * under the License.
  */
 
-export * from "./swe";
-export * from "./sms-otp";
+import { SMSProvidersResourceEndpointsInterface } from "../models/endpoints";
+
+/**
+ * Get the resource endpoints for the SMS Providers feature.
+ *
+ * @param serverHost - Server Host.
+ * @returns Endpoint URLs.
+ */
+export const getSMSProvidersResourceEndpoints = (serverHost: string): SMSProvidersResourceEndpointsInterface => {
+    return {
+        smsPublisher: `${ serverHost }/api/server/v1/notification-senders/sms/SMSPublisher`,
+        smsSender: `${ serverHost }/api/server/v1/notification-senders/sms`
+    };
+};
