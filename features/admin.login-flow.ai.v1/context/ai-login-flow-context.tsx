@@ -39,6 +39,11 @@ export interface AILoginFlowContextProps {
      */
     aiGeneratedLoginFlow: AuthenticationSequenceInterface;
     /**
+     * Set the generated login flow.
+     * @param flow - Login flow to be set.
+     */
+    setAiGeneratedLoginFlow: (flow: AuthenticationSequenceInterface) => void;
+    /**
      * Operation ID of the login flow generation process.
      */
     operationId: string;
