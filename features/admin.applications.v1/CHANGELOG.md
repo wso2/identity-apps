@@ -1,5 +1,35 @@
 # @wso2is/admin.applications.v1
 
+## 2.26.22
+
+### Patch Changes
+
+- [#6968](https://github.com/wso2/identity-apps/pull/6968) [`4a2604ab0ec989c2fcebd12583f8222643f78b61`](https://github.com/wso2/identity-apps/commit/4a2604ab0ec989c2fcebd12583f8222643f78b61) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix bug with AI login flow not reverting properly
+
+- Updated dependencies [[`4a2604ab0ec989c2fcebd12583f8222643f78b61`](https://github.com/wso2/identity-apps/commit/4a2604ab0ec989c2fcebd12583f8222643f78b61)]:
+  - @wso2is/admin.authentication-flow-builder.v1@2.20.186
+  - @wso2is/admin.login-flow.ai.v1@2.22.22
+  - @wso2is/admin.console-settings.v1@2.21.22
+  - @wso2is/admin.application-templates.v1@1.0.74
+  - @wso2is/admin.connections.v1@2.24.3
+  - @wso2is/admin.core.v1@2.31.3
+  - @wso2is/admin.extensions.v1@2.30.22
+  - @wso2is/admin.identity-providers.v1@2.22.22
+  - @wso2is/admin.oidc-scopes.v1@2.21.22
+  - @wso2is/admin.organizations.v1@2.22.22
+  - @wso2is/admin.roles.v2@2.22.22
+  - @wso2is/admin.api-resources.v2@2.21.22
+  - @wso2is/admin.branding.v1@2.22.22
+  - @wso2is/admin.claims.v1@2.21.22
+  - @wso2is/admin.feature-gate.v1@1.1.22
+  - @wso2is/admin.impersonation.v1@1.2.22
+  - @wso2is/admin.secrets.v1@2.21.22
+  - @wso2is/admin.server-configurations.v1@2.24.22
+  - @wso2is/admin.template-core.v1@1.0.74
+  - @wso2is/admin.users.v1@2.23.22
+  - @wso2is/admin.userstores.v1@2.21.22
+  - @wso2is/admin.wsfed-configuration.v1@2.21.22
+
 ## 2.26.21
 
 ### Patch Changes
