@@ -196,7 +196,12 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
     const resendOTOCode = () => {
 
         setIsSubmitting(true);
-        resendSMSOTPCode()
+        let recoveryScenario: string = "MOBILE_VERIFICATION_ON_UPDATE";
+
+        if (isMultipleEmailAndMobileNumberEnabled) {
+            recoveryScenario = "MOBILE_VERIFICATION_ON_VERIFIED_LIST_UPDATE";
+        }
+        resendSMSOTPCode(recoveryScenario)
             .then(() => {
                 setVerificationError(false);
                 setResendSuccess(true);
