@@ -252,7 +252,8 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
      * Moderates the Branding Peference response.
      */
     useEffect(() => {
-        if (!originalBrandingPreference) {
+        if (!originalBrandingPreference || brandingPreferenceFetchRequestError?.response?.data?.code
+            === BrandingPreferencesConstants.BRANDING_NOT_CONFIGURED_ERROR_CODE) {
             return;
         }
 
