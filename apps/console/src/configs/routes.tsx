@@ -74,6 +74,11 @@ export const getAppViewRoutes = (): RouteInterface[] => {
     const showStatusLabelForNewAuthzRuntimeFeatures: boolean =
         window["AppUtils"]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures;
 
+    const isPrivilegedUsersInConsoleSettingsEnabled: boolean =
+        !window["AppUtils"]?.getConfig()?.ui?.features?.consoleSettings?.disabledFeatures?.includes(
+            "consoleSettings.privilegedUsers"
+        );
+
     const defaultRoutes: RouteInterface[] = [
         {
             category: "extensions:manage.sidePanel.categories.userManagement",
@@ -90,7 +95,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     protected: true,
                     showOnSidePanel: false
                 },
-                {
+                !isPrivilegedUsersInConsoleSettingsEnabled && {
                     component: lazy(() => import("@wso2is/admin.administrators.v1/pages/administrator-settings")),
                     exact: true,
                     icon: {
@@ -1189,6 +1194,18 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     id: "consoleAdministratorsEdit",
                     name: "Console Administrators Edit",
                     path: AppConstants.getPaths().get("CONSOLE_ADMINISTRATORS_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                isPrivilegedUsersInConsoleSettingsEnabled && {
+                    component: lazy(() => import("@wso2is/admin.administrators.v1/pages/administrator-settings")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "administrator-settings-edit",
+                    name: "administrator-settings-edit",
+                    path: AppConstants.getPaths().get("ADMINISTRATOR_SETTINGS"),
                     protected: true,
                     showOnSidePanel: false
                 }
