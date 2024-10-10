@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -41,6 +41,10 @@ export interface PageHeaderPropsInterface extends LoadableComponentInterface, Te
      * Column width for the action container grid.
      */
     actionColumnWidth?: SemanticWIDTHS;
+    /**
+     * Alert component displayed in the page header.
+     */
+    alertBanner?: ReactNode;
     /**
      * Go back button.
      */
@@ -127,6 +131,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
     const {
         action,
         actionColumnWidth,
+        alertBanner,
         backButton,
         bottomMargin,
         className,
@@ -301,6 +306,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                                 )
                         )
                     }
+                    { alertBanner }
                     {
                         action
                             ? (

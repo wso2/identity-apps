@@ -18,13 +18,16 @@
 
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import {
-    getUserNameWithoutDomain,
-    hasRequiredScopes,
+/**
+ * `useRequiredScopes` is not supported for myaccount.
+ */
+/* eslint-disable no-restricted-imports */
+import { getUserNameWithoutDomain, hasRequiredScopes,
     isFeatureEnabled,
     resolveUserDisplayName,
     resolveUserEmails
 } from "@wso2is/core/helpers";
+/* eslint-enable */
 import {
     ProfileSchemaInterface,
     SBACInterface,
@@ -74,6 +77,10 @@ import { getProfileInformation, setActiveForm } from "../../store/actions";
 import { CommonUtils } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
 import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
+
+// TODO: Remove this once multiple email and mobile support is onboarded.
+const multipleEmailMobileFeatureSpecificSchemaNames: string[] = [ "emailAddresses", "verifiedEmailAddresses",
+    "mobileNumbers", "verifiedMobileNumbers" ];
 
 /**
  * Prop types for the basic details component.
@@ -738,6 +745,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
          */
         const isProfileUsernameReadonly: boolean = config.ui.isProfileUsernameReadonly;
         const { displayName, name } = schema;
+
+        if (multipleEmailMobileFeatureSpecificSchemaNames?.includes(name)) {
+            return;
+        }
 
         if (isProfileUsernameReadonly) {
             const usernameClaim: string = "username";

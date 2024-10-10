@@ -1,5 +1,26 @@
 # @wso2is/react-components
 
+## 2.4.17
+
+### Patch Changes
+
+- [#6813](https://github.com/wso2/identity-apps/pull/6813) [`8cca5da311d6bd96d3492b21156b925f4580bc77`](https://github.com/wso2/identity-apps/commit/8cca5da311d6bd96d3492b21156b925f4580bc77) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add outdated app banner and labels.
+
+- Updated dependencies [[`8cca5da311d6bd96d3492b21156b925f4580bc77`](https://github.com/wso2/identity-apps/commit/8cca5da311d6bd96d3492b21156b925f4580bc77)]:
+  - @wso2is/theme@2.1.5
+
+## 2.4.16
+
+### Patch Changes
+
+- [#6952](https://github.com/wso2/identity-apps/pull/6952) [`15b6ce4fde341d376d15bdfc03a436419d92ee6d`](https://github.com/wso2/identity-apps/commit/15b6ce4fde341d376d15bdfc03a436419d92ee6d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update oxygen ui version
+
+## 2.4.15
+
+### Patch Changes
+
+- [#6948](https://github.com/wso2/identity-apps/pull/6948) [`0b0d605e26e4f897713db9c49d880920912fe663`](https://github.com/wso2/identity-apps/commit/0b0d605e26e4f897713db9c49d880920912fe663) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix github repository link text and icon not being horizontally aligned
+
 ## 2.4.14
 
 ### Patch Changes

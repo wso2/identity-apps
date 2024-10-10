@@ -337,6 +337,7 @@ export interface ApplicationBasicInterface {
     id?: string;
     name: string;
     description?: string;
+    applicationVersion?: string;
     accessUrl?: string;
     clientId?: string;
     issuer?: string;
@@ -441,6 +442,7 @@ export interface ConnectionTemplateListItemInterface extends ConnectionTemplateI
  */
 export interface ConnectionTemplateItemInterface {
     id?: string;
+    version?: string;
     name?: string;
     description?: string;
     image?: any;
@@ -763,4 +765,12 @@ export interface EnterpriseConnectionCreateWizardGeneralFormValuesInterface {
      * Unique name for the connection.
      */
     name: string;
+}
+
+/**
+ * Enum for the connection type.
+ */
+export enum ConnectionTypes {
+    CONNECTION = "connections",
+    IDVP = "identity-verification-providers"
 }

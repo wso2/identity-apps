@@ -24,6 +24,9 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
+import {
+    IdVPTemplateTags
+} from "@wso2is/admin.identity-verification-providers.v1/models/identity-verification-providers";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
@@ -52,12 +55,13 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * Hook to get all authenticators in the server.
  *
  * @param filter - Search filter.
- * @param type - Authenticator Type.
+ * @param shouldFetch - Should fetch the data.
  *
  * @returns Response as a promise.
  */
 export const useGetAuthenticators = <Data = AuthenticatorInterface[], Error = RequestErrorInterface>(
-    filter?: string
+    filter?: string,
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
     const { resourceEndpoints } = useResourceEndpoints();
@@ -74,12 +78,18 @@ export const useGetAuthenticators = <Data = AuthenticatorInterface[], Error = Re
         url: resourceEndpoints.authenticators
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const {
+        data,
+        error,
+        isLoading,
+        isValidating,
+        mutate
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,
-        error: error,
-        isLoading: !error && !data,
+        error,
+        isLoading,
         isValidating,
         mutate
     };
@@ -165,12 +175,21 @@ export const useGetAuthenticatorTags = <Data = string[], Error = RequestErrorInt
         url: resourceEndpoints.authenticatorTags
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+
+    let modifiedData: string[] = [];
+
+    if (data) {
+        modifiedData = [
+            ...(data as string[]),
+            IdVPTemplateTags.IDENTITY_VERIFICATION
+        ];
+    }
 
     return {
-        data,
-        error: error,
-        isLoading: !error && !data,
+        data: modifiedData as Data,
+        error,
+        isLoading,
         isValidating,
         mutate
     };

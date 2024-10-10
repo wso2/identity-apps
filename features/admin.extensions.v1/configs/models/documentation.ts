@@ -137,6 +137,18 @@ interface ApplicationsDocumentationLinksInterface {
                 }
             }
         }
+        outdatedApplications: {
+            versions: {
+                version100: {
+                    removeUsernameFromIntrospectionRespForAppTokens: {
+                        documentationLink: string;
+                    },
+                    useClientIdAsSubClaimOfAppTokens: {
+                        documentationLink: string;
+                    }
+                }
+            }
+        }
         oidcApplication: {
             advanced: {
                 learnMore: string;

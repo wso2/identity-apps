@@ -309,7 +309,7 @@ export const MicrosoftAuthenticatorForm: FunctionComponent<MicrosoftAuthenticato
         let scopes: string[] = [];
 
         try {
-            scopes = rawScopes.trim().split(" ");
+            scopes = new URLSearchParams(rawScopes).get("scope").split(" ");
         } catch(e) {
             // Silent any issues occurred when trying to scroll.
             // Add debug logs here one a logger is added.

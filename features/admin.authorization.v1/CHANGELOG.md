@@ -1,5 +1,64 @@
 # @wso2is/admin.authorization.v1
 
+## 2.21.9
+
+### Patch Changes
+
+- Updated dependencies [[`8cca5da311d6bd96d3492b21156b925f4580bc77`](https://github.com/wso2/identity-apps/commit/8cca5da311d6bd96d3492b21156b925f4580bc77)]:
+  - @wso2is/react-components@2.4.17
+  - @wso2is/theme@2.1.5
+  - @wso2is/i18n@2.6.1
+  - @wso2is/dynamic-forms@2.0.110
+  - @wso2is/form@2.1.18
+
+## 2.21.8
+
+### Patch Changes
+
+- Updated dependencies [[`ffab5ff5c160aa6d462919d22d24e169d3a146f9`](https://github.com/wso2/identity-apps/commit/ffab5ff5c160aa6d462919d22d24e169d3a146f9)]:
+  - @wso2is/i18n@2.6.0
+
+## 2.21.7
+
+### Patch Changes
+
+- Updated dependencies [[`059caf916a569d07cbacbd94b38a6ad696932b73`](https://github.com/wso2/identity-apps/commit/059caf916a569d07cbacbd94b38a6ad696932b73)]:
+  - @wso2is/i18n@2.5.36
+
+## 2.21.6
+
+### Patch Changes
+
+- [#6952](https://github.com/wso2/identity-apps/pull/6952) [`15b6ce4fde341d376d15bdfc03a436419d92ee6d`](https://github.com/wso2/identity-apps/commit/15b6ce4fde341d376d15bdfc03a436419d92ee6d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update oxygen ui version
+
+- Updated dependencies [[`15b6ce4fde341d376d15bdfc03a436419d92ee6d`](https://github.com/wso2/identity-apps/commit/15b6ce4fde341d376d15bdfc03a436419d92ee6d)]:
+  - @wso2is/react-components@2.4.16
+  - @wso2is/dynamic-forms@2.0.109
+  - @wso2is/form@2.1.17
+
+## 2.21.5
+
+### Patch Changes
+
+- Updated dependencies [[`0b0d605e26e4f897713db9c49d880920912fe663`](https://github.com/wso2/identity-apps/commit/0b0d605e26e4f897713db9c49d880920912fe663)]:
+  - @wso2is/react-components@2.4.15
+  - @wso2is/dynamic-forms@2.0.108
+  - @wso2is/form@2.1.16
+
+## 2.21.4
+
+### Patch Changes
+
+- Updated dependencies [[`5c51848d9d9861e755224cd412982ff412ae30be`](https://github.com/wso2/identity-apps/commit/5c51848d9d9861e755224cd412982ff412ae30be)]:
+  - @wso2is/i18n@2.5.35
+
+## 2.21.3
+
+### Patch Changes
+
+- Updated dependencies [[`a4d2b3686c77e679bcd42432ecb92b4e1995f9df`](https://github.com/wso2/identity-apps/commit/a4d2b3686c77e679bcd42432ecb92b4e1995f9df)]:
+  - @wso2is/i18n@2.5.34
+
 ## 2.21.2
 
 ### Patch Changes

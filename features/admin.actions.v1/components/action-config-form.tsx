@@ -220,7 +220,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
             error.authenticationType = t("actions:fields.authenticationType.validations.empty");
         }
 
-        const apiKeyHeaderRegex: RegExp = /^[a-zA-Z0-9-.]+$/;
+        const apiKeyHeaderRegex: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9-.]+$/;
 
         switch (authenticationType) {
             case AuthenticationType.BASIC:

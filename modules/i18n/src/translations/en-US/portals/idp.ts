@@ -152,11 +152,13 @@ export const idp: IdpNS = {
                 primaryAttribute: {
                     hint: "Select the primary attribute that will be used to check if" +
                     " there is a matching local user account",
-                    label: "Primary lookup attribute"
+                    label: "Primary lookup attribute",
+                    placeholder: "No attributes are selected"
                 },
                 secondaryAttribute: {
                     hint: "Secondary attribute will be used if a unique user is not found using the primary attribute",
-                    label: "Secondary lookup attribute"
+                    label: "Secondary lookup attribute",
+                    placeholder: "No attributes are selected"
                 },
                 warning: "Ensure that the selected attributes are verified by the token issuer"
             }

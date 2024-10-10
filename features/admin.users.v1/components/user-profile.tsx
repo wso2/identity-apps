@@ -81,6 +81,10 @@ import { AdminAccountTypes, LocaleJoiningSymbol, UserManagementConstants } from 
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
 import "./user-profile.scss";
 
+// TODO: Remove this once multiple email and mobile support is onboarded.
+const multipleEmailMobileFeatureSpecificSchemaNames: string[] = [ "emailAddresses", "verifiedEmailAddresses",
+    "mobileNumbers", "verifiedMobileNumbers" ];
+
 /**
  * Prop types for the basic details component.
  */
@@ -2289,6 +2293,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         );
 
         const domainName: string[] = profileInfo?.get(schema.name)?.toString().split("/");
+
+        if (multipleEmailMobileFeatureSpecificSchemaNames?.includes(schema?.name)) {
+            return;
+        }
 
         return (
             <Grid.Row columns={ 1 } key={ key }>

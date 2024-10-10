@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,18 +18,19 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { TabProps } from "semantic-ui-react";
-import { AttributeSettings, GeneralSettings } from "./settings";
-import { ConfigurationSettings } from "./settings/configuration-settings";
-import { IdentityVerificationProviderConstants } from "../constants";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import AttributeMappings from "./edit/attribute-mappings";
+import DynamicSettingsForm from "./edit/dynamic-settings-form";
+import SetupGuide from "./edit/setup-guide";
 import {
-    IDVPClaimMappingInterface,
-    IDVPClaimsInterface,
-    IdentityVerificationProviderInterface,
-    UIMetaDataForIDVP
-} from "../models";
-import { getContentLoader } from "../utils";
+    IdVPConfigPropertiesInterface,
+    IdVPEditTabContentType,
+    IdVPEditTabIDs,
+    IdVPEditTabMetadataInterface,
+    IdVPTemplateInterface,
+    IdVPTemplateMetadataInterface,
+    IdentityVerificationProviderInterface
+} from "../models/identity-verification-providers";
 
 /**
  * Prop types for the identity verification provider edit component.
@@ -46,11 +47,11 @@ interface EditIdentityVerificationProviderPropsInterface extends IdentifiableCom
     /**
      * Callback to be triggered after deleting the identity verification provider.
      */
-    onDelete: () => void;
+    handleDelete: () => void;
     /**
      * Callback to be triggered on updating the identity verification provider details.
      */
-    onUpdate: () => void;
+    handleUpdate: (data: IdentityVerificationProviderInterface, callback?: () => void) => void;
     /**
      * Specifies if the component should only be read-only.
      */
@@ -62,15 +63,15 @@ interface EditIdentityVerificationProviderPropsInterface extends IdentifiableCom
     /**
      * Specifies the UI metadata for the IDVP.
      */
-    uiMetaData: UIMetaDataForIDVP;
-    /**
-     * Specifies if it is needed to redirect to a specific tabindex
-     */
-    isAutomaticTabRedirectionEnabled?: boolean;
+    uiMetaData: IdVPTemplateMetadataInterface;
     /**
      * Specifies, to which tab(tab id) it need to redirect.
      */
     tabIdentifier?: string;
+    /**
+     * Template data related to the editing IdVP.
+     */
+    templateData: IdVPTemplateInterface;
 }
 
 /**
@@ -80,151 +81,165 @@ interface EditIdentityVerificationProviderPropsInterface extends IdentifiableCom
  * @returns React Element
  */
 export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVerificationProviderPropsInterface> = (
-    props: EditIdentityVerificationProviderPropsInterface
-): ReactElement => {
-
-    const {
+    {
         identityVerificationProvider,
         isLoading,
-        onDelete,
-        onUpdate,
         isReadOnly,
-        isDeletePermitted,
-        isAutomaticTabRedirectionEnabled,
-        tabIdentifier,
         uiMetaData,
-        ["data-componentid"]: componentId
-    } = props;
+        templateData,
+        tabIdentifier,
+        handleUpdate,
+        handleDelete,
+        ["data-componentid"]: componentId = "idvp-edit"
+    }: EditIdentityVerificationProviderPropsInterface
+): ReactElement => {
 
-    const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number | string>(0);
-    const [ initialClaims, setInitialClaims ] = useState<IDVPClaimMappingInterface[]>();
+    const initialFormValues: Record<string, unknown> = useMemo(() => {
+        if (!identityVerificationProvider) {
+            return {};
+        }
 
-    /**
-     * Sets the initial claims (attributes).
-     */
-    useEffect(() => {
-        const temp: IDVPClaimMappingInterface[] = identityVerificationProvider.claims.map(
-            (claim: IDVPClaimsInterface) => {
-                return {
-                    idvpClaim: claim.idvpClaim,
-                    localClaim: { uri: claim.localClaim }
-                };
-            }
+        const configPropertiesInitialValues: Record<string, unknown> = identityVerificationProvider.configProperties
+            .reduce((defaultValues: Record<string, unknown>, { key, value }: IdVPConfigPropertiesInterface) => {
+                defaultValues[key] = value;
+
+                return defaultValues;
+            }, {} as Record<string, unknown>);
+
+        return {
+            ...identityVerificationProvider,
+            configProperties: configPropertiesInitialValues
+        };
+
+    }, [ identityVerificationProvider, identityVerificationProvider?.isEnabled ]);
+
+    const MarkdownGuideTabPane = (guideContent: string): ReactElement => {
+        return (
+            <ResourceTab.Pane controlledSegmentation>
+                <SetupGuide
+                    content={ guideContent }
+                    identityVerificationProviderId={ identityVerificationProvider?.id }
+                    data-componentid={ `${ componentId }-setup-guide` }
+                />
+            </ResourceTab.Pane>
         );
-
-        setInitialClaims(temp);
-    }, [ identityVerificationProvider ]);
-
-    /**
-     * Renders the general IDVP settings tab pane.
-     *
-     * @returns General settings tab pane for IDVP
-     */
-    const GeneralIDVPSettingsTabPane = (): ReactElement => (
-        <ResourceTab.Pane controlledSegmentation>
-            <GeneralSettings
-                idvp={ identityVerificationProvider }
-                isLoading={ isLoading }
-                onDelete={ onDelete }
-                onUpdate={ onUpdate }
-                data-componentid={ `${ componentId }-general-settings` }
-                isReadOnly={ isReadOnly }
-                isDeletePermitted={ isDeletePermitted }
-                loader={ getContentLoader }
-            />
-        </ResourceTab.Pane>
-    );
-
-    /**
-     * Renders the configuration settings tab pane.
-     *
-     * @returns Configuration settings tab pane
-     */
-    const IDVPConfigurationSettingsTabPane = (): ReactElement => (
-        <ResourceTab.Pane controlledSegmentation>
-            <ConfigurationSettings
-                idvp={ identityVerificationProvider }
-                isLoading={ isLoading }
-                onUpdate={ onUpdate }
-                data-componentid={ `${ componentId }-configuration-settings` }
-                uiMetaData={ uiMetaData.pages.edit.settings }
-                isReadOnly={ isReadOnly }
-                loader={ getContentLoader }
-            />
-        </ResourceTab.Pane>
-    );
-
-    /**
-     * Renders attribute settings tab pane.
-     *
-     * @returns Attribute settings tab pane
-     */
-    const AttributeSettingsTabPane = (): ReactElement => (
-        <ResourceTab.Pane controlledSegmentation>
-            <AttributeSettings
-                idvp={ identityVerificationProvider }
-                initialClaims={ initialClaims }
-                isLoading={ isLoading }
-                onUpdate={ onUpdate }
-                hideIdentityClaimAttributes={ true }
-                data-componentid={ `${ componentId }-attribute-settings` }
-                isReadOnly={ isReadOnly }
-                loader={ getContentLoader }
-            />
-        </ResourceTab.Pane>
-    );
-
-    /**
-     * Method for getting a collection of tab panes.
-     *
-     * @returns An array of tab panes.
-     */
-    const getPanes = () => {
-        const panes: ResourceTabPaneInterface[] = [];
-
-        panes.push({
-            "data-tabid": IdentityVerificationProviderConstants.GENERAL_TAB_ID,
-            menuItem: "General",
-            render: GeneralIDVPSettingsTabPane
-        });
-
-        panes.push({
-            "data-tabid": IdentityVerificationProviderConstants.SETTINGS_TAB_ID,
-            menuItem: "Settings",
-            render: IDVPConfigurationSettingsTabPane
-        });
-
-        panes.push({
-            "data-tabid": IdentityVerificationProviderConstants.ATTRIBUTES_TAB_ID,
-            menuItem: "Attributes",
-            render: AttributeSettingsTabPane
-        });
-
-        return panes;
     };
 
-    if (!identityVerificationProvider || isLoading) {
-        return getContentLoader();
-    }
+    /**
+     * Renders a dynamic form tab pane. Used for General and Settings tabs.
+     *
+     * @param tab - The metadata for the tab.
+     * @returns The rendered tab pane.
+     */
+    const DynamicFormTabPane = (tab: IdVPEditTabMetadataInterface): ReactElement => {
+        return (
+            <ResourceTab.Pane controlledSegmentation>
+                <DynamicSettingsForm
+                    tabMetadata={ tab }
+                    templateData={ templateData }
+                    initialValues={ initialFormValues }
+                    isReadOnly={ isReadOnly }
+                    handleUpdate={ handleUpdate }
+                    handleDelete={ handleDelete }
+                    isLoading={ isLoading }
+                    data-componentid={ `${ componentId }-${ tab.id }-form` }
+                />
+            </ResourceTab.Pane>
+        );
+    };
+
+    /**
+     * Renders a predefined tab pane. Used for Attributes tab.
+     *
+     * @param tab - The metadata for the tab.
+     * @returns The rendered tab pane.
+     */
+    const PredefinedTabPane = (tab: IdVPEditTabMetadataInterface): ReactElement => {
+        switch (tab.id) {
+            case IdVPEditTabIDs.ATTRIBUTES:
+                return (
+                    <ResourceTab.Pane controlledSegmentation>
+                        <AttributeMappings
+                            identityVerificationProvider={ identityVerificationProvider }
+                            handleUpdate={ handleUpdate }
+                            mandatoryClaims={ templateData?.payload?.claims }
+                        />
+                    </ResourceTab.Pane>
+                );
+
+            default:
+                break;
+        }
+    };
+
+    const tabPanes: ResourceTabPaneInterface[] = useMemo(() => {
+        if (!uiMetaData) {
+            return [];
+        }
+
+        const _tabPanes: ResourceTabPaneInterface[] = [];
+        const { tabs: editTabsMetadata } = uiMetaData.edit;
+
+        for (const tab of editTabsMetadata) {
+            switch (tab.contentType) {
+                case IdVPEditTabContentType.GUIDE:
+                    if (tab?.guide) {
+                        _tabPanes.push({
+                            componentId: tab?.id,
+                            "data-tabid": tab?.id,
+                            menuItem: tab?.displayName,
+                            render: () => MarkdownGuideTabPane(tab?.guide)
+                        });
+                    }
+
+                    break;
+
+                case IdVPEditTabContentType.FORM:
+                    _tabPanes.push({
+                        componentId: tab?.id,
+                        "data-tabid": tab?.id,
+                        menuItem: tab?.displayName,
+                        render: () => DynamicFormTabPane(tab)
+                    });
+
+                    break;
+
+                default:
+                    _tabPanes.push({
+                        componentId: tab?.id,
+                        "data-tabid": tab?.id,
+                        menuItem: tab?.displayName,
+                        render: () => PredefinedTabPane(tab)
+                    });
+
+                    break;
+            }
+        }
+
+        return _tabPanes;
+    }, [ uiMetaData, identityVerificationProvider ]);
+
+    /**
+     * Resolve the default tab index based on the metadata.
+     */
+    const defaultActiveTabIndex: number = useMemo(() => {
+        const selectedTabPaneIndex: number = tabPanes
+            .findIndex((tabPane: ResourceTabPaneInterface) => tabPane["data-tabid"] === tabIdentifier);
+
+        if (selectedTabPaneIndex > -1) {
+            return selectedTabPaneIndex;
+        }
+
+        return 0;
+    }, [ tabIdentifier ]);
 
     return (
         <ResourceTab
             isLoading={ isLoading }
             data-testid={ `${ componentId }-resource-tabs` }
-            panes={ getPanes() }
-            defaultActiveIndex={ defaultActiveIndex }
-            onTabChange={ (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: TabProps) => {
-                setDefaultActiveIndex(data.activeIndex);
-            } }
-            isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
-            tabIdentifier={ tabIdentifier }
+            panes={ tabPanes }
+            defaultActiveTab={ defaultActiveTabIndex }
+            controlTabRedirectionInternally
         />
     );
-};
-
-/**
- * Default prop types for the identity verification provider edit component.
- */
-EditIdentityVerificationProvider.defaultProps = {
-    "data-componentid": "idvp-edit"
 };
