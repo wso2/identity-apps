@@ -186,8 +186,8 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
                     value={ activeAdministratorGroup }
                     onChange={ (_: ChangeEvent<HTMLInputElement>, value: string) => setActiveAdministratorGroup(value) }
                 >
-                    <FormControlLabel value="administrators" control={ <Radio /> } label="Administrators" />
-                    <FormControlLabel value="privilegedUsers" control={ <Radio /> } label="Privileged Users" />
+                    <FormControlLabel value="administrators" control={ <Radio /> } label="Asgardeo" />
+                    <FormControlLabel value="privilegedUsers" control={ <Radio /> } label={ organizationName + " organization" } />
                 </RadioGroup>
             );
         }
