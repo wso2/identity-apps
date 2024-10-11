@@ -29,7 +29,7 @@ import {
     NodesIcon,
     ProgressFlowIcon,
     UserCircleDotIcon,
-    UserGroupIcon
+    UserGroupIcon,
 } from "@oxygen-ui/react-icons";
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
@@ -681,13 +681,29 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             category: "extensions:develop.sidePanel.categories.branding",
             component: lazy(() =>
+                import("@wso2is/admin.sms-templates.v1/" + "pages/email-customization")
+            ),
+            exact: true,
+            icon: {
+                icon: getSidePanelIcons().sms
+            },
+            id: "smsTemplates",
+            name: "SMS Templates",
+            order: 15,
+            path: `${ AppConstants.getDeveloperViewBasePath() }/sms-management`,
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "extensions:develop.sidePanel.categories.branding",
+            component: lazy(() =>
                 import("@wso2is/admin.email-and-sms.v1/" + "pages/email-and-sms")
             ),
             exact: true,
             icon: { icon: <EnvelopeGearIcon fill="black" className="icon" /> },
             id: "notificationChannels",
             name: "Email & SMS",
-            order: 15,
+            order: 16,
             path: `${ AppConstants.getDeveloperViewBasePath() }/email-and-sms`,
             protected: true,
             showOnSidePanel: true
@@ -703,13 +719,13 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             },
             id: "emailProviders",
             name: "extensions:develop.sidePanel.emailProvider",
-            order: 15,
+            order: 16,
             path: AppConstants.getPaths().get("EMAIL_PROVIDER"),
             protected: true,
             showOnSidePanel: false
         },
         {
-            category: "extensions:develop.sidePanel.categories.smsProvider",
+            category: "extensions:develop.sidePanel.categories.branding",
             component: lazy(() =>
                 import("@wso2is/admin.sms-providers.v1" + "/pages/sms-providers")
             ),
@@ -719,7 +735,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             },
             id: "smsProviders",
             name: "SMS",
-            order: 16,
+            order: 17,
             path: AppConstants.getPaths().get("SMS_PROVIDER"),
             protected: true,
             showOnSidePanel: false
