@@ -1,5 +1,20 @@
 # @wso2is/admin.branding.v1
 
+## 2.22.23
+
+### Patch Changes
+
+- [#6972](https://github.com/wso2/identity-apps/pull/6972) [`8f7beb2879212cca75f53f6df3ca2f02bba53d77`](https://github.com/wso2/identity-apps/commit/8f7beb2879212cca75f53f6df3ca2f02bba53d77) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix email templates not updating branding preferences when reverted
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.ai.v1@2.22.23
+  - @wso2is/admin.core.v1@2.31.4
+  - @wso2is/admin.extensions.v1@2.30.23
+  - @wso2is/admin.organizations.v1@2.22.23
+  - @wso2is/admin.feature-gate.v1@1.1.23
+  - @wso2is/admin.server-configurations.v1@2.24.23
+  - @wso2is/common.branding.v1@2.20.187
+
 ## 2.22.22
 
 ### Patch Changes
