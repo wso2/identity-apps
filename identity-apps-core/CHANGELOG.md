@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.4.46
+
+### Patch Changes
+
+- [#6943](https://github.com/wso2/identity-apps/pull/6943) [`ebf9245ab41a4ffe3603f69ecff63ae4f0f265d4`](https://github.com/wso2/identity-apps/commit/ebf9245ab41a4ffe3603f69ecff63ae4f0f265d4) Thanks [@sandushi](https://github.com/sandushi)! - Upgrade the handlebars version to 4.7.7
+
 ## 2.4.45
 
 ### Patch Changes
