@@ -98,7 +98,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const [ activeOption, setActiveOption ] = useState<GroupsInterface|UserBasicInterface>(undefined);
     const [ availableUserStores, setAvailableUserStores ] = useState<UserstoreDisplayItem[]>([]);
     const [ selectedUserStoreDomainName, setSelectedUserStoreDomainName ] = useState<string>(
-        activeUserStore ?? disabledUserstores.includes(RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME) ? "DEFAULT" : "PRIMARY"
+        activeUserStore ??
+        disabledUserstores.includes(RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME) ? "DEFAULT" : "PRIMARY"
     );
     const [ isPlaceholderVisible, setIsPlaceholderVisible ] = useState<boolean>(true);
     const [ selectedUsersFromUserStore, setSelectedUsersFromUserStore ] = useState<UserBasicInterface[]>([]);
@@ -194,7 +195,6 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         if (!isReadOnly && userResponse?.totalResults > 0 && Array.isArray(userResponse?.Resources)) {
             const usersAvailableToSelect: UserBasicInterface[] = userResponse?.Resources?.filter(
                 (user: UserBasicInterface) => {
-                    console.log(selectedUserStoreDomainName, user);
                     const isUserInSelectedUserStore: boolean = isUserBelongToSelectedUserStore(
                         user, selectedUserStoreDomainName
                     );
@@ -301,8 +301,6 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             path: "/v2/Roles/" + role.id
         };
 
-        debugger;
-
         const selectedUsers: UserBasicInterface[] = Object.keys(selectedAllUsers).map((userStoreName: string) => {
             return selectedAllUsers[userStoreName];
         }).flat();
@@ -311,8 +309,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         const removedUsers: RolesMemberInterface[] = role?.users?.filter((user: RolesMemberInterface) => {
             return selectedUsers?.find(
                 (selectedUser: UserBasicInterface) => selectedUser.id === user.value) === undefined;
-        }).filter(user => {
-            console.log(user);
+        }).filter((user: RolesMemberInterface) => {
             const userNameChunks: string[] = user.display.split("/");
 
             return (userNameChunks.length === 1 && selectedUserStoreDomainName === "PRIMARY")
@@ -415,10 +412,14 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                             (e: SelectChangeEvent<unknown>) => {
                                                                 updateSelectedAllUsers();
                                                                 setSelectedUsersFromUserStore([]);
-                                                                setSelectedUserStoreDomainName(e.target.value as string);
+                                                                setSelectedUserStoreDomainName(
+                                                                    e.target.value as string
+                                                                );
                                                             }
                                                         }
-                                                        data-componentid={ `${ componentId }-user-store-domain-dropdown` }
+                                                        data-componentid={
+                                                            `${ componentId }-user-store-domain-dropdown`
+                                                        }
                                                     >
                                                         { isUserStoresLoading
                                                             ? <p>{ t("common:loading") }</p>

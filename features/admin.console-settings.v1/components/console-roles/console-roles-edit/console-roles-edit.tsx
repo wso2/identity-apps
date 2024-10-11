@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
+import Radio from "@oxygen-ui/react/Radio";
+import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { useOrganizationConfigV2 } from "@wso2is/admin.administrators.v1/api/useOrganizationConfigV2";
 import { UseOrganizationConfigType } from "@wso2is/admin.administrators.v1/models";
@@ -35,9 +38,6 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import ConsoleRolePermissions from "./console-role-permissions";
 import "./console-roles-edit.scss";
-import RadioGroup from "@oxygen-ui/react/RadioGroup";
-import { FormControlLabel } from "@mui/material";
-import Radio from "@oxygen-ui/react/Radio";
 
 /**
  * Captures props needed for edit role component
@@ -89,9 +89,10 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
     const isConsoleRolesEditable: boolean = !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
         "consoleSettings.editableConsoleRoles"
     );
-    const isPrivilegedUsersInConsoleSettingsEnabled: boolean = !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
-        "consoleSettings.privilegedUsers"
-    );
+    const isPrivilegedUsersInConsoleSettingsEnabled: boolean =
+        !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
+            "consoleSettings.privilegedUsers"
+        );
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
     const [ isEnterpriseLoginEnabled, setIsEnterpriseLoginEnabled ] = useState<boolean>(false);
@@ -239,7 +240,11 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
         return panes;
     };
 
-    return <ResourceTab isLoading={ isLoading } defaultActiveIndex={ defaultActiveIndex } panes={ resolveResourcePanes() } />;
+    return (<ResourceTab
+        isLoading={ isLoading }
+        defaultActiveIndex={ defaultActiveIndex }
+        panes={ resolveResourcePanes() } />
+    );
 };
 
 ConsoleRolesEdit.defaultProps = {

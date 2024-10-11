@@ -56,7 +56,7 @@ import kebabCase from "lodash-es/kebabCase";
 import React, { FormEvent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider, Dropdown, DropdownDivider, DropdownItem, DropdownMenu, DropdownProps, Grid, Header } from "semantic-ui-react";
+import { Divider, DropdownProps, Grid, Header } from "semantic-ui-react";
 
 /**
  * Proptypes for the add admin user basic component.
@@ -98,7 +98,8 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
+    const consoleSettingsFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
     const isInvitedAdminInConsoleSettingsEnabled: boolean = !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
         "consoleSettings.invitedExternalAdmins"
     );
