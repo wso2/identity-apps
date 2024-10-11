@@ -1323,6 +1323,15 @@ export interface ApplicationsNS {
                                 invalid: string;
                             };
                         };
+                        accessTokenAttributes: {
+                            hint: string;
+                            label:string;
+                            placeholder: string;
+                            enable: {
+                                hint: string;
+                                label: string;
+                            };
+                        };
                     };
                 };
                 idToken: {

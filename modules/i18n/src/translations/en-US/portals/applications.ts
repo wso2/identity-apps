@@ -1574,6 +1574,28 @@ export const applications: ApplicationsNS = {
                                 empty: "Please fill the audience",
                                 invalid: "Please avoid special characters like commas (,)"
                             }
+                        },
+                        accessTokenAttributes: {
+                            hint : "Select the attributes that should be included in the <1>access_token</1>.",
+                            label: "Access Token Attributes",
+                            placeholder: "Search by attribute name",
+                            enable: {
+                                hint : "Previously, all attributes marked as requested in the application's " +
+                                "User Attributes section (referred to as requested attributes) were " +
+                                "automatically included in the access token. With the latest update, " +
+                                "admins can now choose which attributes to include in the access token. " +
+                                "To enable this feature, select Enable Access Token Attributes. To ensure " +
+                                "a smooth transition from the old behavior, selecting it for the first time " +
+                                "will populate the Access Token Attributes section with all the requested " +
+                                "attributes.  Admins can then remove any unwanted attributes. After saving the " +
+                                "changes, only the selected attributes will be included in the access token. " +
+                                "Moving forward, all requested attributes will appear in a dropdown for admins " +
+                                "to manage as needed. Important: Once updated, requested attributes are no " +
+                                "longer automatically included in the access token and this change is " +
+                                "irreversible. Admin-selected attributes will be included in the access token " +
+                                "even without requiring the relevant OIDC scopes. Proceed with caution.",
+                                label: "Enable Access Token Attributes"
+                            }
                         }
                     },
                     heading: "Access Token",
