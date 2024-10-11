@@ -2685,7 +2685,94 @@ export interface Extensions {
                 action: string;
                 actionDisabledHint: string;
             }
-        }
+        };
+        smsTemplates: {
+            page: {
+                header: string;
+                description: string;
+            },
+            tabs: {
+                content: {
+                    label: string;
+                },
+                preview: {
+                    label: string;
+                }
+            },
+            notifications: {
+                getEmailTemplateList: {
+                    error: {
+                        description: string;
+                        message: string;
+                    }
+                },
+                getEmailTemplate: {
+                    error: {
+                        description: string;
+                        message: string;
+                    }
+                },
+                updateEmailTemplate: {
+                    success: {
+                        description: string;
+                        message: string;
+                    },
+                    error: {
+                        description: string;
+                        message: string;
+                    }
+                },
+                deleteEmailTemplate: {
+                    success: {
+                        description: string;
+                        message: string;
+                    },
+                    error: {
+                        description: string;
+                        message: string;
+                    }
+                }
+            },
+            form: {
+                inputs: {
+                    template: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    },
+                    locale: {
+                        label: string;
+                        placeholder: string;
+                    }
+                    subject: {
+                        label: string;
+                        placeholder: string;
+                        hint: string
+                    },
+                    body: {
+                        label: string;
+                        hint: string;
+                    },
+                    footer: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    }
+                }
+            },
+            modal: {
+                replicateContent: {
+                    header: string;
+                    message: string;
+                }
+            },
+            dangerZone: {
+                heading: string;
+                message: string;
+                action: string;
+                actionDisabledHint: string;
+            }
+        };
     };
     manage: {
         accountLogin: {

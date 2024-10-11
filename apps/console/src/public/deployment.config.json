@@ -112,6 +112,13 @@
                 "id": "QWNjb3VudERpc2FibGU"
             }
         ],
+        "smsTemplates": [
+            {
+                "description": "This SMS is sent when the organization admin reinitiates password reset for a user",
+                "displayName": "SMS OTP",
+                "id": "U01TT1RQ"
+            }
+        ],
         "outboundProvisioningConnectors": []
     },
     "getProfileInfoFromIDToken": false,
@@ -960,6 +967,27 @@
                     ],
                     "update": [
                         "internal_notification_senders_update"
+                    ]
+                }
+            },
+            "smsTemplates": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_email_mgt_create"
+                    ],
+                    "delete": [
+                        "internal_email_mgt_delete"
+                    ],
+                    "feature": [
+                        "console:emailTemplates"
+                    ],
+                    "read": [
+                        "internal_email_mgt_view"
+                    ],
+                    "update": [
+                        "internal_email_mgt_update"
                     ]
                 }
             },

@@ -2974,6 +2974,93 @@ export const extensions: Extensions = {
                 action: "Remove Template",
                 actionDisabledHint: "You cannot delete a template with the default locale."
             }
+        },
+        smsTemplates: {
+            page: {
+                header: "SMS Templates",
+                description: "Customize sms templates used in your organization."
+            },
+            tabs: {
+                content: {
+                    label: "Content"
+                },
+                preview: {
+                    label: "Preview"
+                }
+            },
+            notifications: {
+                getEmailTemplateList: {
+                    error: {
+                        description: "An error occurred while retrieving the email templates list.",
+                        message: "An error occurred while retrieving the email templates list"
+                    }
+                },
+                getEmailTemplate: {
+                    error: {
+                        description: "An error occurred while retrieving the email template.",
+                        message: "Error retrieving email template."
+                    }
+                },
+                updateEmailTemplate: {
+                    success: {
+                        description: "Email template updated successfully",
+                        message: "Email template updated successfully"
+                    },
+                    error: {
+                        description: "Error while updating email template. Make sure you have filled all the required fields and try again",
+                        message: "Error while updating email template"
+                    }
+                },
+                deleteEmailTemplate: {
+                    success: {
+                        description: "Email template deleted successfully",
+                        message: "Email template deleted successfully"
+                    },
+                    error: {
+                        description: "Error while deleting email template. Please try again",
+                        message: "Error while deleting the email template"
+                    }
+                }
+            },
+            form: {
+                inputs: {
+                    template: {
+                        label: "Email Template",
+                        placeholder: "Select the email template",
+                        hint: "Select the email template"
+                    },
+                    locale: {
+                        label: "Locale",
+                        placeholder: "Select Locale"
+                    },
+                    subject: {
+                        label: "Subject",
+                        placeholder: "Enter the email subject",
+                        hint: "This will be used as the subject of the email template and will be visible to the user."
+                    },
+                    body: {
+                        label: "Email Body (HTML)",
+                        hint: "You can include any of the available literals placeholders for the email body."
+                    },
+                    footer: {
+                        label: "Footer",
+                        placeholder: "Enter the email footer",
+                        hint: "This will be used as the footer of the email template and will be visible to the user."
+                    }
+                }
+            },
+            modal: {
+                replicateContent: {
+                    header: "Replicate content?",
+                    message: "Seems like you don't have any content for this locale. Do you need to populate the previous locale's content here as a quick start?"
+                }
+            },
+            dangerZone: {
+                heading: "Remove Template",
+                message: "This action will remove the selected template and you will lose any changes you've done to this template.",
+                action: "Remove Template",
+                actionDisabledHint: "You cannot delete a template with the default locale."
+            }
         }
     },
     manage: {
