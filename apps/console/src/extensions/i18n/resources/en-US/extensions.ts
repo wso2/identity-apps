@@ -1353,9 +1353,7 @@ export const extensions: Extensions = {
                     assertionHint: "Please confirm your action.",
                     content: "This action is irreversible and will permanently revert your branding preferences.",
                     header: "Are you sure?",
-                    message:
-                        "If you revert the branding preferences, your users will start to see " +
-                        "{{ productName }} branding on the login flows. Please proceed with caution."
+                    message: "Reverting your branding preferences will apply the default branding from the next available level (such as your organization or parent organization)."
                 },
                 unpublishBranding: {
                     assertionHint: "Please confirm your action.",
