@@ -107,6 +107,11 @@
         return;
     }
 
+
+    String mobileClaimRegex = "";
+    String emailClaimRegex = "";
+
+    // Todo: Replace the mobile claim with the costant.
     for (Claim claim : claims) {
         if (StringUtils.equals(claim.getUri(),
                 IdentityManagementEndpointConstants.ClaimURIs.FIRST_NAME_CLAIM)) {
@@ -118,10 +123,14 @@
         if (StringUtils.equals(claim.getUri(),
                 IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM)) {
             isEmailInClaims = true;
+            emailClaimRegex = claim.getValidationRegex();
+            request.setAttribute("emailClaimRegex", emailClaimRegex);
         }
         if (StringUtils.equals(claim.getUri(),
-                "http://wso2.org/claims/mobile")) {
+                IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM)) {
             isMobileInClaims = true;
+            mobileClaimRegex = claim.getValidationRegex();
+            request.setAttribute("mobileClaimRegex", mobileClaimRegex);
         }
     }
 
@@ -189,7 +198,7 @@
                 <div class="ui divider hidden"></div>
 
                 <div class="segment-form">
-                    <form class="ui large form" method="post" action="channelselection.do" id="recoverDetailsForm">
+                    <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
                         <% if (isFirstNameInClaims || isLastNameInClaims) { %>
                         <div class="field">
                             <label><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "name")%></label>
@@ -253,7 +262,10 @@
                         <% } %>
 
                         <input type="hidden" id="isUsernameRecovery" name="isUsernameRecovery" value="true">
+                        <input type="hidden" id="mobileClaimRegex" name="mobileClaimRegex" value=<%=mobileClaimRegex%>>
+                        <input type="hidden" id="recoveryStage" name="recoveryStage" value="INITIATE">
 
+                        <%--Todo: replace the mobile claim with the constants. --%>
                         <% for (Claim claim : claims) {
                             if (claim.getRequired() &&
                                     !StringUtils.equals(claim.getUri(),
@@ -263,7 +275,7 @@
                                     !StringUtils.equals(claim.getUri(),
                                             IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM) && 
                                     !StringUtils.equals(claim.getUri(),
-                                            "http://wso2.org/claims/mobile")) {
+                                            IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM)) {
                         %>
 
                         <div class="field">
@@ -302,8 +314,8 @@
                             </button>
     
                         </div>
-                        <div class="mt-1">
-                            <a href="javascript:goBack()" class="ui button secondary large fluid">
+                        <div class="mt-1 align-center">
+                            <a href="<%= Encode.forHtml(callback)%>" class="ui button secondary large fluid">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                             </a>
                         </div>
@@ -384,8 +396,7 @@
 
                
                 const contact = $("#contact").val();
-                const mobileRegex = /^\+[0-9]{10,15}$/;
-                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;    
+             
 
                 if (contact === "") {
                     errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Contact.cannot.be.empty")%>");
@@ -393,7 +404,8 @@
                     $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
                     submitButton.removeClass("loading").attr("disabled", false);
                     return false;
-                } else if (!contact.match(mobileRegex) && !contact.match(emailRegex)) {
+
+                } else if (!contact.match(<%=mobileClaimRegex%>) && !contact.match(<%=emailClaimRegex%>)) {
                     errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Invalid.contact")%>");
                     errorMessage.show();
                     $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");

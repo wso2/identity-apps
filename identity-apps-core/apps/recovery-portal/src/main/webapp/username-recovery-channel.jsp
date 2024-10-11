@@ -30,6 +30,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.*" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.HashMap" %>
@@ -46,6 +47,32 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<%!
+
+    public static String getChannelIdFromChannelName(List<RecoveryChannel> channels, String channelName){
+
+        // Check if channels are null.
+        if (channels == null){
+            if (StringUtils.equals(channelName, "EMAIL")){
+                return "1";
+            } else if (StringUtils.equals(channelName, "SMS")){
+                return "2";
+            }
+        }
+       
+       // If channels are not null, loop throught them.
+        for (RecoveryChannel channel : channels) {
+            if (channel.getType().equals(channelName)) {
+                return channel.getId();
+            }
+        }
+
+        // Return null if no matching channel found.
+        return null;
+    }
+
+%>
+
 <%
     if (!Boolean.parseBoolean(application.getInitParameter(
             IdentityManagementEndpointConstants.ConfigConstants.ENABLE_EMAIL_NOTIFICATION))) {
@@ -53,53 +80,29 @@
         return;
     }
 
-    String username = request.getParameter("username");
-    final String SMS = "SMS";
-    final String EMAIL = "EMAIL";
-    String selectedOption = EMAIL;
-
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
+    List<RecoveryChannel> channels = null;
+    if(request.getAttribute("channels") != null){
+        channels = (List<RecoveryChannel>) request.getAttribute("channels");
+    }
+    
+    String recoveryCode = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("recoveryCode"));
+    Boolean isUserFound = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("isUserFound"));
+    Boolean noChannelFound = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("noChannelFound"));
 
-    boolean isMobileInClaims = false;
-    boolean isEmailInClaims = false;
-    boolean isSMSRecoveryAvailable = true;
-    boolean isEmailRecoveryAvailable = true;
-    List<Claim> claims;
-    UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
-    try {
-        claims = usernameRecoveryApi.getClaimsForUsernameRecovery(tenantDomain, true);
-    } catch (ApiException e) {
-        request.setAttribute("error", true);
-        request.setAttribute("errorMsg", e.getMessage());
-        if (!StringUtils.isBlank(username)) {
-            request.setAttribute("username", username);
-        }
-        request.getRequestDispatcher("error.jsp").forward(request, response);
+    String EMAIL = "EMAIL";
+    String SMS = "SMS";
+    String selectedOption = EMAIL;
+
+    // Skipping the channel selection once we don't have channels or only have one channel.
+    if(channels != null && channels.size() == 1){
+        request.setAttribute("usernameRecoveryOption", channels.get(0).getId() + ":" + channels.get(0).getType());
+        request.setAttribute("recoveryStage", "NOTIFY");
+        request.getRequestDispatcher("verify.do").forward(request, response);
         return;
     }
-
-    if (claims == null || claims.size() == 0) {
-        request.setAttribute("error", true);
-        request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                "No.recovery.supported.claims.found"));
-        request.getRequestDispatcher("error.jsp").forward(request, response);
-        return;
-    }
-
-    // todo: Update the email and mobile claims here.
-    for (Claim claim : claims) {
-        if (StringUtils.equals(claim.getUri(),
-                IdentityManagementEndpointConstants.ClaimURIs.FIRST_NAME_CLAIM)) {
-            isMobileInClaims = true;
-        }
-        if (StringUtils.equals(claim.getUri(), IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM)) {
-            isEmailInClaims = true;
-        }
-    }
-
-    boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
-
+    
 %>
 
 <%-- Data for the layout from the page --%>
@@ -152,7 +155,7 @@
                     <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
                   
                         <%
-                            String callback = request.getParameter("callback");
+                            String callback = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("callback"));
 
                             if (StringUtils.isBlank(callback)) {
                                 callback = IdentityManagementEndpointUtil.getUserPortalUrl(
@@ -172,7 +175,7 @@
 
                               <div class="field">
                                 <div class="ui radio checkbox">
-                                    <input type="radio" name="recoveryOption" value="<%=EMAIL%>"
+                                    <input type="radio" name="usernameRecoveryOption" value="<%=getChannelIdFromChannelName(channels, EMAIL) + ":" + EMAIL%>"
                                         <%=EMAIL.equals(selectedOption)?"checked":""%>/>
                                     <label><%=i18n(recoveryResourceBundle, customText, "Send.username.via.email")%>
                                     </label>
@@ -180,7 +183,7 @@
                             </div>
                                   <div class="field">
                                 <div class="ui radio checkbox">
-                                    <input type="radio" name="recoveryOption" value="<%=SMS%>"
+                                    <input type="radio" name="usernameRecoveryOption" value="<%=getChannelIdFromChannelName(channels, SMS) + ":" + SMS%>"
                                         <%=SMS.equals(selectedOption)?"checked":""%>/>
                                     <label><%=i18n(recoveryResourceBundle, customText, "Send.username.via.sms")%>
                                     </label>
@@ -188,20 +191,19 @@
                             </div>
 
                         <input type="hidden" id="isUsernameRecovery" name="isUsernameRecovery" value="true">
+                        <input type="hidden" id="recoveryStage" name="recoveryStage" value="NOTIFY">
+                        <input type="hidden" id="isUserFound" name="isUserFound" value=<%=isUserFound%>>
+                        <input type="hidden" id="recoveryCode" name="recoveryCode" value=<%=recoveryCode%>>
 
                         <div class="ui divider hidden"></div>
                         <div class="mt-4">
-                            <%-- Todo: Replace the button lables witn i8n --%>
-                           <div class="mt-4">
-                            
                             <button id="recoverySubmit" class="ui primary button large fluid" type="submit">
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Next")%>
                             </button>
-    
                         </div>
                         <div class="mt-1 align-center">
                             <a href="javascript:goBack()" class="ui button secondary large fluid">
-                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                             </a>
                         </div>
                     </form>
@@ -252,6 +254,7 @@
                 // is happening in the background.
                 const submitButton = $("#recoverySubmit");
                 submitButton.addClass("loading").attr("disabled", true);
+                
 
                 const errorMessage = $("#error-msg");
                 errorMessage.hide();
