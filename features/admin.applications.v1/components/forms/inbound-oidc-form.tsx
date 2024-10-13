@@ -514,15 +514,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (!initialValues.accessToken.accessTokenAttributes) {
             return;
         }
-
         const selectedAttributes: ExternalClaim[] = initialValues.accessToken.accessTokenAttributes
             .map((claim: string) => accessTokenAttributes
                 .find((claimObj: ExternalClaim) => claimObj.claimURI === claim))
             .filter((claimObj: ExternalClaim | undefined) => claimObj !== undefined);
 
         setSelectedAccessTokenAttributes(selectedAttributes);
-        setAccessTokenAttributesEnabled(initialValues.accessToken.accessTokenAttributesEnabled);
-    }, [ accessTokenAttributes ]);
+        setAccessTokenAttributesEnabled(ApplicationManagementUtils.isGivenAppVersionAllowed(
+            application?.applicationVersion, ApplicationManagementConstants.APP_VERSION_2));
+    }, [ accessTokenAttributes, application ]);
 
     useEffect(() => {
         const isSharedWithAll: additionalSpProperty[] = application?.advancedConfigurations
@@ -1300,7 +1300,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             let inboundConfigFormValues: any = {
                 accessToken: {
                     accessTokenAttributes: selectedAccessTokenAttributes?.map((claim: ExternalClaim) => claim.claimURI),
-                    accessTokenAttributesEnabled: accessTokenAttributesEnabled,
                     applicationAccessTokenExpiryInSeconds: values.get("applicationAccessTokenExpiryInSeconds")
                         ? Number(values.get("applicationAccessTokenExpiryInSeconds"))
                         : Number(metadata?.defaultApplicationAccessTokenExpiryTime),
@@ -2697,7 +2696,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             { isJWTAccessTokenTypeSelected &&
                                 isFeatureEnabled(applicationFeatureConfig, "applications.accessTokenAttributes") ? (
                                     <Grid.Row>
-                                        { !initialValues?.accessToken?.accessTokenAttributesEnabled && (
+                                        { accessTokenAttributesEnabled && (
                                             <Grid.Column className="access-token-attributes-feature-banner">
                                                 <Alert severity="warning">
                                                     <Trans
@@ -2728,35 +2727,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                         <Code withBackground>Proceed with caution.</Code>.
                                                     </Trans>
                                                 </Alert>
-                                                <Field
-                                                    name="accessTokenAttributesEnabledConfig"
-                                                    label=""
-                                                    required={ false }
-                                                    type="checkbox"
-                                                    listen={ (values: Map<string, FormValue>): void => {
-                                                        const accessTokenAttributesEnabled: boolean =
-                                                        values.get("accessTokenAttributesEnabledConfig")
-                                                            .includes("accessTokenAttributesEnabled");
-
-                                                        setAccessTokenAttributesEnabled(accessTokenAttributesEnabled);
-                                                    } }
-                                                    value={
-                                                        initialValues?.accessToken?.accessTokenAttributesEnabled
-                                                            ? [ "accessTokenAttributesEnabled" ]
-                                                            : []
-                                                    }
-                                                    children={ [
-                                                        {
-                                                            label: t("applications:forms.inboundOIDC.sections" +
-                                                            ".accessToken.fields.accessTokenAttributes.enable.label"),
-                                                            value: "accessTokenAttributesEnabled"
-                                                        }
-                                                    ] }
-                                                    readOnly={ readOnly }
-                                                    data-testid={
-                                                        `${ testId }-access-token-attributes-enabled-checkbox`
-                                                    }
-                                                />
                                             </Grid.Column>
                                         ) }
                                         <Grid.Column width={ 8 }>
@@ -2769,7 +2739,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 loading={ isLoading }
                                                 options={ accessTokenAttributes }
                                                 value={ selectedAccessTokenAttributes ?? [] }
-                                                disabled={ !initialValues?.accessToken?.accessTokenAttributesEnabled }
+                                                disabled={ !accessTokenAttributesEnabled }
                                                 data-componentid={
                                                     `${ componentId }-assigned-access-token-attribute-list`
                                                 }
@@ -4373,6 +4343,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
         setIsLoading(false);
     };
+
+    console.log(accessTokenAttributesEnabled);
 
     return (
         !isLoading && metadata ?

@@ -44,7 +44,9 @@ export class ApplicationManagementConstants {
     /**
      * When a new Application version is released, this variable should to be updated.
      */
-    public static readonly LATEST_VERSION: string = "v1.0.0";
+    public static readonly APP_VERSION_1: string = "v1.0.0";
+    public static readonly APP_VERSION_2: string = "v2.0.0";
+    public static readonly LATEST_VERSION: string = ApplicationManagementConstants.APP_VERSION_2;
 
     /**
      * Private constructor to avoid object instantiation from outside

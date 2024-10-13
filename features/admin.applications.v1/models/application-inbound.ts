@@ -128,7 +128,6 @@ interface AccessTokenConfigurationInterface {
     revokeTokensWhenIDPSessionTerminated?: boolean;
     validateTokenBinding?: boolean;
     accessTokenAttributes?: string[];
-    accessTokenAttributesEnabled?: boolean;
 }
 
 interface RefreshTokenConfigurationInterface {
