@@ -162,7 +162,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     useEffect(() => {
         if (application && applicationInboundConfigs) {
             const isAppOutdated: boolean = ApplicationManagementUtils.isApplicationOutdated(
-                application?.applicationVersion, applicationInboundConfigs?.grantTypes);
+                application?.applicationVersion, true);
 
             setDisplayBanner(isAppOutdated);
         }
