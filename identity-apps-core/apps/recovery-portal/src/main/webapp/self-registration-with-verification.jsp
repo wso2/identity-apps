@@ -580,6 +580,10 @@
                                                 !StringUtils.equals(claim.getUri(), "http://wso2.org/claims/groups") &&
                                                 !StringUtils.equals(claim.getUri(), "http://wso2.org/claims/role") &&
                                                 !StringUtils.equals(claim.getUri(), "http://wso2.org/claims/url") &&
+                                                !StringUtils.equals(claim.getUri(), "http://wso2.org/claims/emailAddresses") &&
+                                                !StringUtils.equals(claim.getUri(), "http://wso2.org/claims/verifiedEmailAddresses") &&
+                                                !StringUtils.equals(claim.getUri(), "http://wso2.org/claims/mobileNumbers") &&
+                                                !StringUtils.equals(claim.getUri(), "http://wso2.org/claims/verifiedMobileNumbers") &&
                                                 !(claim.getReadOnly() != null ? claim.getReadOnly() : false)) {
                                             String claimURI = claim.getUri();
                                             String claimValue = request.getParameter(claimURI);
