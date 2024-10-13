@@ -1759,6 +1759,7 @@ export interface Extensions {
                 applicationBrandingtitle: string;
                 applicationBrandingDescription: string;
                 applicationListWarning: string;
+                defaultBrandingAppliedMessage: string;
                 backButtonText: string;
                 description: string;
                 organization: string;

@@ -1353,9 +1353,7 @@ export const extensions: Extensions = {
                     assertionHint: "Please confirm your action.",
                     content: "This action is irreversible and will permanently revert your branding preferences.",
                     header: "Are you sure?",
-                    message:
-                        "If you revert the branding preferences, your users will start to see " +
-                        "{{ productName }} branding on the login flows. Please proceed with caution."
+                    message: "Reverting your branding preferences will apply the default branding from the next available level (such as your organization or parent organization)."
                 },
                 unpublishBranding: {
                     assertionHint: "Please confirm your action.",
@@ -1985,7 +1983,8 @@ export const extensions: Extensions = {
                 application: "Application",
                 applicationBrandingtitle: "Application Branding",
                 applicationBrandingDescription: "Customize consumer-facing user interfaces of applications.",
-                applicationListWarning: "Please select an application from the list above to customize the branding preferences.",
+                applicationListWarning: "Select an application from the list above to customize the branding preferences.",
+                defaultBrandingAppliedMessage: "Organization branding has been applied to this application because no app-specific branding is set.",
                 backButtonText: "Go back to Application Settings",
                 description: "Customize consumer-facing user interfaces of applications in your organization.",
                 organization: "Organization",
