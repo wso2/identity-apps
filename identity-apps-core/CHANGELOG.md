@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.4.47
+
+### Patch Changes
+
+- [#6977](https://github.com/wso2/identity-apps/pull/6977) [`52509e804192975c52190431c63a8321309c6f49`](https://github.com/wso2/identity-apps/commit/52509e804192975c52190431c63a8321309c6f49) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Hide multi emails and mobiles per user feature specific attributes from self-registration page
+
 ## 2.4.46
 
 ### Patch Changes
