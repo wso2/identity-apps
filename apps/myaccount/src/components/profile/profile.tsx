@@ -104,10 +104,6 @@ const VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE: string =
     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES");
 const EMAIL_MAX_LENGTH: number = 50;
 
-// TODO: Remove this once multiple email and mobile support is onboarded.
-const multipleEmailMobileFeatureSpecificSchemaNames: string[] = [ "emailAddresses", "verifiedEmailAddresses",
-    "mobileNumbers", "verifiedMobileNumbers" ];
-
 /**
  * Prop types for the basic details component.
  * Also see {@link Profile.defaultProps}
@@ -305,18 +301,32 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     /**
      * Sort the elements of the profileSchema state according to the displayOrder attribute in the ascending order.
      */
+    /**
+     * Sort the elements of the profileSchema state according to the displayOrder attribute in the ascending order.
+     */
     useEffect(() => {
+
+        const getDisplayOrder = (schema: ProfileSchema): number => {
+            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE && !schema.displayOrder) return 6;
+            if (schema.name === MOBILE_NUMBERS_ATTRIBUTE && !schema.displayOrder) return 7;
+
+            return schema.displayOrder ? parseInt(schema.displayOrder, 10) : -1;
+        };
+
         const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas(
             [ ...profileDetails.profileSchemas ]
         ).filter((item: ProfileSchemaInterface) =>
             item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION")
         ).sort((a: ProfileSchema, b: ProfileSchema) => {
-            if (!a.displayOrder) {
+            const orderA: number = getDisplayOrder(a);
+            const orderB: number = getDisplayOrder(b);
+
+            if (orderA === -1) {
                 return -1;
-            } else if (!b.displayOrder) {
+            } else if (orderB === -1) {
                 return 1;
             } else {
-                return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
+                return orderA - orderB;
             }
         });
 
@@ -1047,6 +1057,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             return;
         }
 
+        if (!showEmail && schema?.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+            return;
+        }
+
         /*
          * Makes the "Username" field a READ_ONLY field. By default the
          * server SCIM2 endpoint sends it as a "READ_WRITE" property.
@@ -1067,10 +1081,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
          */
         const isProfileUsernameReadonly: boolean = config.ui.isProfileUsernameReadonly;
         const { displayName, name } = schema;
-
-        if (multipleEmailMobileFeatureSpecificSchemaNames?.includes(name)) {
-            return;
-        }
 
         if (isProfileUsernameReadonly) {
             const usernameClaim: string = "username";
@@ -1378,6 +1388,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             ? EMAIL_MAX_LENGTH
                             : primaryAttributeSchema.maxLength ?? ProfileConstants.CLAIM_VALUE_MAX_LENGTH
                     }
+                    data-componentid={
+                        `${testId}-editing-section-${
+                            schema.name.replace(".", "-")
+                        }-field`
+                    }
                 />
                 <div hidden={ !showAccordion }>
                     <Accordion
@@ -1390,6 +1405,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                 [schema.name]: !expandMultiAttributeAccordion[schema.name]
                             }
                         ) }
+                        data-componentid={ `${testId}-editing-section-${schema.name.replace(".", "-")}-accordion` }
                     >
                         <AccordionSummary
                             aria-controls="panel1a-content"
@@ -1431,7 +1447,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                 )
                             }
                         </AccordionSummary>
-                        <AccordionDetails className="accordion-details">
+                        <AccordionDetails className="accordion-details" >
                             <TableContainer component={ Paper } elevation={ 0 }>
                                 <Table
                                     className="multi-value-table"
@@ -1450,13 +1466,25 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                         ? "mobile-label"
                                                                         : null}`
                                                                 }
+                                                                data-componentid={
+                                                                    `${testId}-editing-section-${
+                                                                        schema.name.replace(".", "-")
+                                                                    }-value-${index}`
+                                                                }
                                                             >
                                                                 { value }
                                                             </Typography>
                                                             {
                                                                 showPendingEmailPopup(value)
                                                                 && (
-                                                                    <div className="verified-icon" >
+                                                                    <div
+                                                                        className="verified-icon"
+                                                                        data-componentid={
+                                                                            `${testId}-editing-section-${
+                                                                                schema.name.replace(".", "-")
+                                                                            }-pending-email-${index}`
+                                                                        }
+                                                                    >
                                                                         { generatePendingEmailPopup() }
                                                                     </div>
                                                                 )
@@ -1464,7 +1492,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                             {
                                                                 showVerifiedPopup(value)
                                                                 && (
-                                                                    <div className="verified-icon" >
+                                                                    <div
+                                                                        className="verified-icon"
+                                                                        data-componentid={
+                                                                            `${testId}-editing-section-${
+                                                                                schema.name.replace(".", "-")
+                                                                            }-verified-icon-${index}`
+                                                                        }
+                                                                    >
                                                                         { generateVerifiedPopup() }
                                                                     </div>
                                                                 )
@@ -1472,7 +1507,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                             {
                                                                 showPrimaryPopup(value)
                                                                 && (
-                                                                    <div className="verified-icon" >
+                                                                    <div
+                                                                        className="verified-icon"
+                                                                        data-componentid={
+                                                                            `${testId}-editing-section-${
+                                                                                schema.name.replace(".", "-")
+                                                                            }-primary-icon-${index}`
+                                                                        }
+                                                                    >
                                                                         { generatePrimaryPopup() }
                                                                     </div>
                                                                 )
@@ -1489,7 +1531,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                 data-componentid={
                                                                     `${testId}-editing-section-${
                                                                         schema.name.replace(".", "-")
-                                                                    }-verify-button`
+                                                                    }-verify-button-${index}`
                                                                 }
                                                             >
                                                                 <Popup
@@ -1511,7 +1553,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                 data-componentid={
                                                                     `${testId}-editing-section-${
                                                                         schema.name.replace(".", "-")
-                                                                    }-make-primary-button`
+                                                                    }-make-primary-button-${index}`
                                                                 }
                                                             >
                                                                 <Popup
@@ -1538,7 +1580,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                 data-componentid={
                                                                     `${testId}-editing-section-${
                                                                         schema.name.replace(".", "-")
-                                                                    }-delete-button`
+                                                                    }-delete-button-${index}`
                                                                 }
                                                             >
                                                                 <Popup
@@ -1805,6 +1847,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                 className="multi-attribute-dropdown"
                                 value={ attributeValueList[0] }
                                 disableUnderline
+                                data-componentid={ `${testId}-${schema.name.replace(".", "-")}-readonly-dropdown` }
                             >
                                 { attributeValueList?.map(
                                     (value: string, index: number) => (
@@ -1816,13 +1859,21 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                             ? "mobile-label"
                                                             : null}`
                                                     }
+                                                    data-componentid={ `${testId}-readonly-section-
+                                                        ${schema.name.replace(".", "-")}-value-${index}`
+                                                    }
                                                 >
                                                     { value }
                                                 </Typography>
                                                 {
                                                     showPendingEmailPopup(value)
                                                     && (
-                                                        <div className="verified-icon" >
+                                                        <div
+                                                            className="verified-icon"
+                                                            data-componentid={ `${testId}-readonly-section-
+                                                                ${schema.name.replace(".", "-")}-pending-email-icon
+                                                                -${index}` }
+                                                        >
                                                             { generatePendingEmailPopup() }
                                                         </div>
                                                     )
@@ -1830,7 +1881,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                 {
                                                     showVerifiedPopup(value)
                                                     && (
-                                                        <div className="verified-icon" >
+                                                        <div
+                                                            className="verified-icon"
+                                                            data-componentid={ `${testId}-readonly-section-
+                                                                ${schema.name.replace(".", "-")}-verified-icon
+                                                                -${index}` }
+                                                        >
                                                             { generateVerifiedPopup() }
                                                         </div>
                                                     )
@@ -1838,7 +1894,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                 {
                                                     showPrimaryPopup(value)
                                                     && (
-                                                        <div className="verified-icon" >
+                                                        <div
+                                                            className="verified-icon"
+                                                            data-componentid={ `${testId}-readonly-section-
+                                                                ${schema.name.replace(".", "-")}-primary-icon
+                                                                -${index}` }
+                                                        >
                                                             { generatePrimaryPopup() }
                                                         </div>
                                                     )
@@ -2294,7 +2355,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         return (
             <ConfirmationModal
-                data-testid={ `${ testId }-confirmation-modal` }
+                data-testid={ `${ testId }-delete-confirmation-modal` }
+                data-componentid={ `${ testId }-delete-confirmation-modal` }
                 onClose={ handleMultiValuedFieldDeleteModalClose }
                 type="negative"
                 open={ Boolean(selectedAttributeInfo?.value) }
@@ -2410,7 +2472,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                         showMobileVerification(schema)
                                                             ? (
                                                                 < MobileUpdateWizard
-                                                                    data-testid={ `${testId}-mobile-update-wizard` }
+                                                                    data-testid=
+                                                                        { `${testId}-mobile-verification-wizard` }
                                                                     onAlertFired={ onAlertFired }
                                                                     closeWizard={ () =>
                                                                         handleCloseMobileUpdateWizard()
