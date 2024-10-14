@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.30.7
+
+### Patch Changes
+
+- [#6980](https://github.com/wso2/identity-apps/pull/6980) [`239ec661b101a636997196a08909b5a410f3ad25`](https://github.com/wso2/identity-apps/commit/239ec661b101a636997196a08909b5a410f3ad25) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add administrator settings route under console settings route config
+
 ## 2.30.6
 
 ### Patch Changes
