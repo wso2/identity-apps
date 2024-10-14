@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import {
@@ -32,7 +31,6 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { SmsTemplate } from "../models/sms-templates";
 
@@ -134,7 +132,7 @@ export const SmsCustomizationForm: FunctionComponent<SmsCustomizationFormPropsIn
                                         <>
                                             { t("extensions:develop.smsTemplates.form.inputs.body.hint") }
                                             <DocumentationLink
-                                                link={ getLink("develop.emailCustomization.form.emailBody.learnMore") }
+                                                link={ getLink("develop.smsCustomization.form.smsBody.learnMore") }
                                             >
                                                 { t("extensions:common.learnMore") }
                                             </DocumentationLink>

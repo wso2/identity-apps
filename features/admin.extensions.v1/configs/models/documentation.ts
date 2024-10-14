@@ -512,6 +512,18 @@ interface EmailCustomizationLinksInterface {
 }
 
 /**
+ * Interface for the SMS customization section documentation structure.
+ */
+interface SmsCustomizationLinksInterface {
+    learnMore: string,
+    form: {
+        smsBody: {
+            learnMore: string
+        }
+    }
+}
+
+/**
  * Interface for the insights section documentation structure.
  */
 interface InsightsDocumentationLinksInterface {
@@ -567,6 +579,11 @@ export interface DocumentationLinksExtensionInterface {
          * Documentation links for email customization UI elements.
          */
         emailCustomization: EmailCustomizationLinksInterface;
+
+        /**
+         * Documentation links for SMS customization UI elements.
+         */
+        smsCustomization: SmsCustomizationLinksInterface;
     }
     /**
      * Documentation links for manage section elements.

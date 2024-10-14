@@ -363,6 +363,14 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
             },
             eventPublishing: {
                 learnMore: undefined
+            },
+            smsCustomization: {
+                form: {
+                    smsBody: {
+                        learnMore: undefined
+                    }
+                },
+                learnMore: undefined
             }
         },
         manage: {

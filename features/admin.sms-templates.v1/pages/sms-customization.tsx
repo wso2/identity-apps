@@ -32,7 +32,6 @@ import {
     DangerZoneGroup,
     DocumentationLink,
     PageLayout,
-    ResourceTab,
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
@@ -40,7 +39,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import {Divider, Segment, TabProps } from "semantic-ui-react";
+import { Divider, Segment } from "semantic-ui-react";
 import {
     createNewSmsTemplate,
     deleteSmsTemplate,
@@ -53,6 +52,7 @@ import { SmsCustomizationForm } from "../components/sms-customization-form";
 import SmsCustomizationHeader from "../components/sms-customization-header";
 import { SmsTemplatePreview } from "../components/sms-template-preview";
 import { SmsTemplate, SmsTemplateType } from "../models/sms-templates";
+import "./sms-customization.scss";
 
 type SmsCustomizationPageInterface = IdentifiableComponentInterface;
 
@@ -71,7 +71,7 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
 
     const [ availableSmsTemplatesList, setAvailableSmsTemplatesList ] = useState<SmsTemplateType[]>([]);
     const [ currentSmsTemplate, setCurrentSmsTemplate ] = useState<SmsTemplate>();
-    const [ isSystemTemplate, setIsSystemTemplate] = useState(true);
+    const [ isSystemTemplate, setIsSystemTemplate ] = useState(true);
     const [ isTemplateNotAvailable, setIsTemplateNotAvailable ] = useState(false);
     const [ selectedLocale, setSelectedLocale ] = useState(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
     const [ selectedSmsTemplateId, setSelectedSmsTemplateId ] = useState<string>();
@@ -342,7 +342,7 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
                     <>
                         { t("extensions:develop.smsTemplates.page.description") }
                         <DocumentationLink
-                            link={ getLink("develop.emailCustomization.learnMore") }
+                            link={ getLink("develop.smsCustomization.learnMore") }
                         >
                             { t("extensions:common.learnMore") }
                         </DocumentationLink>
@@ -363,8 +363,7 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
 
                 <Segment.Group>
                     <Segment.Group horizontal>
-                        { /* TODO: fix styles into a sheet */ }
-                        <Segment style={ { flex: "0 0 65%" } }>
+                        <Segment className="sms-template-segment-content-header">
                             { t("extensions:develop.smsTemplates.tabs.content.label") }
                         </Segment>
                         <Segment>
@@ -372,8 +371,8 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
                         </Segment>
                     </Segment.Group>
 
-                    <Segment.Group horizontal style={ { backgroundColor: "white" } }>
-                        <Segment style={ { flex: "0 0 65%" } }>
+                    <Segment.Group horizontal>
+                        <Segment className="sms-template-segment-content">
                             <SmsCustomizationForm
                                 isSmsTemplatesListLoading={ isSmsTemplatesListLoading || isSmsTemplateLoading }
                                 selectedSmsTemplate={ currentSmsTemplate }
@@ -387,7 +386,7 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
                                     isReadOnly || (isTemplateNotAvailable && !hasSmsTemplateCreatePermissions) }
                             />
                         </Segment>
-                        <Segment style={{display:'flex', paddingBottom:0}}>
+                        <Segment className="sms-template-segment-preview">
                             <SmsTemplatePreview
                                 smsTemplate={ selectedSmsTemplate || currentSmsTemplate }
                             />
