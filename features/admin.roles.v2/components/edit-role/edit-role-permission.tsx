@@ -666,7 +666,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                     option={ option }
                     activeOption={ null }
                     setActiveOption={ () => null }
-                    variant="solid"
+                    variant="filled"
                 />
             )) }
         />

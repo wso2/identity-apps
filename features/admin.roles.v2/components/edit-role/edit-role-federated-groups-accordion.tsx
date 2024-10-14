@@ -348,7 +348,7 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
                                                         (group: IdentityProviderGroupInterface) =>
                                                             group.id === option.id
                                                     )
-                                                        ? "solid"
+                                                        ? "filled"
                                                         : "outlined"
                                                 }
                                             />

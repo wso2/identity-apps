@@ -117,21 +117,27 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
                         value: ScopeInterface[],
                         getTagProps: AutocompleteRenderGetTagProps
                     ) => value.map((option: ScopeInterface, index: number) => (
-                        <Chip
-                            { ...getTagProps({ index }) }
-                            key={ index }
-                            label={ option.displayName }
-                            option={ option }
-                            activeOption={ activeOption }
-                            setActiveOption={ setActiveOption }
-                            variant={
-                                initialSelectedPermissions?.find(
-                                    (permission: ScopeInterface) => permission.name === option.name
-                                )
-                                    ? "solid"
-                                    : "outlined"
-                            }
-                        />
+                        <>
+                            { /* `activeOption` and `setActiveOption` are not part of Chip API */ }
+                            { /* TODO: Tracker: https://github.com/wso2/product-is/issues/21351 */ }
+                            { /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */ }
+                            { /* @ts-ignore */ }
+                            <Chip
+                                { ...getTagProps({ index }) }
+                                key={ index }
+                                label={ option.displayName }
+                                option={ option }
+                                activeOption={ activeOption }
+                                setActiveOption={ setActiveOption }
+                                variant={
+                                    initialSelectedPermissions?.find(
+                                        (permission: ScopeInterface) => permission.name === option.name
+                                    )
+                                        ? "filled"
+                                        : "outlined"
+                                }
+                            />
+                        </>
                     )) }
                     renderOption={ (
                         props: HTMLAttributes<HTMLLIElement>,

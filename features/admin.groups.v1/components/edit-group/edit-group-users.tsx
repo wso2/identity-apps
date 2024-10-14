@@ -481,7 +481,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
 
     return (
         <EmphasizedSegment padded="very" className="list-group-roles-section">
-            <Box display="flex" direction="row" justifyContent="space-between">
+            <Box display="flex" justifyContent="space-between">
                 <div>
                     <Heading as="h4">
                         { t("groups:edit.users.heading") }

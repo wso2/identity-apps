@@ -23,7 +23,7 @@ import {
     AutocompleteRenderInputParams
 } from "@mui/material";
 import Alert from "@oxygen-ui/react/Alert";
-import Box from "@oxygen-ui/react/Box";
+import Box, { BoxProps } from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
 import Divider from "@oxygen-ui/react/Divider";
 import InputLabel from "@oxygen-ui/react/InputLabel/InputLabel";
@@ -81,7 +81,7 @@ import {
 import { FormValidation } from "@wso2is/validation";
 import Axios,  { AxiosResponse }from "axios";
 import toUpper from "lodash-es/toUpper";
-import React, { FunctionComponent, ReactElement, Suspense, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, HTMLAttributes, ReactElement, Suspense, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -1680,12 +1680,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                             }
                                             getOptionLabel={ (option: GroupsInterface) => option?.displayName }
                                             renderOption={ (
-                                                props: React.HTMLAttributes<HTMLLIElement>,
+                                                props: HTMLAttributes<HTMLLIElement>,
                                                 option: RolesInterface
                                             ) => (
                                                 <Box
                                                     component="li"
-                                                    { ...props }
+                                                    { ...props as unknown as BoxProps }
                                                 >
                                                     <Typography
                                                         sx={ { fontWeight: 500 } }
