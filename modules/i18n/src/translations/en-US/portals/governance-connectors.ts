@@ -18,6 +18,12 @@
 
 import { governanceConnectorsNS } from "../../../models";
 
+/**
+ * NOTES: No need to care about the max-len for this file since it's easier to
+ * translate the strings to other languages easily with editor translation tools.
+ */
+/* eslint-disable max-len */
+/* eslint-disable sort-keys */
 export const governanceConnectors: governanceConnectorsNS = {
     goBackLoginAndRegistration: "Go back to login & registration",
     categories: "Categories",

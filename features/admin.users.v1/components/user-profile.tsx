@@ -81,10 +81,6 @@ import { AdminAccountTypes, LocaleJoiningSymbol, UserManagementConstants } from 
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
 import "./user-profile.scss";
 
-// TODO: Remove this once multiple email and mobile support is onboarded.
-const multipleEmailMobileFeatureSpecificSchemaNames: string[] = [ "emailAddresses", "verifiedEmailAddresses",
-    "mobileNumbers", "verifiedMobileNumbers" ];
-
 /**
  * Prop types for the basic details component.
  */
@@ -319,16 +315,29 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * Sort the elements of the profileSchema state accordingly by the displayOrder attribute in the ascending order.
      */
     useEffect(() => {
+
+        const getDisplayOrder = (schema: ProfileSchema): number => {
+            if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")
+                && !schema.displayOrder) return 6;
+            if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")
+                && !schema.displayOrder) return 7;
+
+            return schema.displayOrder ? parseInt(schema.displayOrder, 10) : -1;
+        };
+
         const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
             .filter((item: ProfileSchemaInterface) =>
                 item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION"))
             .sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
-                if (!a.displayOrder) {
+                const orderA: number = getDisplayOrder(a);
+                const orderB: number = getDisplayOrder(b);
+
+                if (orderA === -1) {
                     return -1;
-                } else if (!b.displayOrder) {
+                } else if (orderB === -1) {
                     return 1;
                 } else {
-                    return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
+                    return orderA - orderB;
                 }
             });
 
@@ -2288,15 +2297,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             return;
         }
 
+        if (!commonConfig.userEditSection.showEmail
+            && schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")) {
+            return;
+        }
+
         const fieldName: string = t("user:profile.fields." +
             schema.name.replace(".", "_"), { defaultValue: schema.displayName }
         );
 
         const domainName: string[] = profileInfo?.get(schema.name)?.toString().split("/");
-
-        if (multipleEmailMobileFeatureSpecificSchemaNames?.includes(schema?.name)) {
-            return;
-        }
 
         return (
             <Grid.Row columns={ 1 } key={ key }>
