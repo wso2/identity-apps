@@ -32,7 +32,6 @@ import {
     DangerZoneGroup,
     DocumentationLink,
     PageLayout,
-    ResourceTab,
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
@@ -40,7 +39,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import {Divider, Segment, TabProps } from "semantic-ui-react";
+import { Divider, Segment } from "semantic-ui-react";
 import {
     createNewSmsTemplate,
     deleteSmsTemplate,
@@ -71,7 +70,7 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
 
     const [ availableSmsTemplatesList, setAvailableSmsTemplatesList ] = useState<SmsTemplateType[]>([]);
     const [ currentSmsTemplate, setCurrentSmsTemplate ] = useState<SmsTemplate>();
-    const [ isSystemTemplate, setIsSystemTemplate] = useState(true);
+    const [ isSystemTemplate, setIsSystemTemplate ] = useState(true);
     const [ isTemplateNotAvailable, setIsTemplateNotAvailable ] = useState(false);
     const [ selectedLocale, setSelectedLocale ] = useState(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
     const [ selectedSmsTemplateId, setSelectedSmsTemplateId ] = useState<string>();
@@ -387,7 +386,7 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
                                     isReadOnly || (isTemplateNotAvailable && !hasSmsTemplateCreatePermissions) }
                             />
                         </Segment>
-                        <Segment style={{display:'flex', paddingBottom:0}}>
+                        <Segment style={ { display: "flex", paddingBottom:0 } }>
                             <SmsTemplatePreview
                                 smsTemplate={ selectedSmsTemplate || currentSmsTemplate }
                             />

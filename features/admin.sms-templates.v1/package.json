@@ -4,7 +4,7 @@
     "version": "0.0.0",
     "description": "SMS templates for Identity Server Console",
     "author": "WSO2",
-    "license": "Apache-2.0", 
+    "license": "Apache-2.0",
     "dependencies": {
         "@asgardeo/auth-react": "^5.1.2",
         "@emotion/react": "^11.11.0",
