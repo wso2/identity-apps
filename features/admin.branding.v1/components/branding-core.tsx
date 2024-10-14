@@ -40,7 +40,6 @@ import {
     ConfirmationModal,
     DangerZone,
     DangerZoneGroup,
-    Message,
     useMediaContext
 } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
