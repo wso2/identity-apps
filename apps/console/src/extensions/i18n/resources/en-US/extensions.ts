@@ -4026,6 +4026,7 @@ export const extensions: Extensions = {
                 administratorSettingsSubtitle: "Settings related to organizational administrators.",
                 administratorSettingsTitle: "Administrator Settings",
                 backButton: "Go back to administrators",
+                backButtonConsoleSettings: "Go back to console settings",
                 disableToggleMessage: "Enable users to manage the organization",
                 enableToggleMessage: "Disable users to manage the organization",
                 error: {

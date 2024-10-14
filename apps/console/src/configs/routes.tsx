@@ -1191,6 +1191,18 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("CONSOLE_ADMINISTRATORS_EDIT"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.administrators.v1/pages/administrator-settings")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "administrator-settings-edit",
+                    name: "administrator-settings-edit",
+                    path: AppConstants.getPaths().get("ADMINISTRATOR_SETTINGS"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() => import("@wso2is/admin.console-settings.v1/pages/console-settings-page")),
