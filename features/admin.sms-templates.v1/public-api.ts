@@ -16,6 +16,4 @@
  * under the License.
  */
 
-export { default as SMSTemplateEditPage } from "./pages/email-template-edit-page";
-export { default as SMSTemplateTypesPage } from "./pages/email-template-types-page";
-export { default as SMSTemplatesPage } from "./pages/email-templates-page";
+export { default as SmsCustomizationPage } from "./pages/sms-customization";

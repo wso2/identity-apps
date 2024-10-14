@@ -2989,77 +2989,69 @@ export const extensions: Extensions = {
                 }
             },
             notifications: {
-                getEmailTemplateList: {
+                getSmsTemplateList: {
                     error: {
-                        description: "An error occurred while retrieving the email templates list.",
-                        message: "An error occurred while retrieving the email templates list"
+                        description: "An error occurred while retrieving the SMS templates list.",
+                        message: "An error occurred while retrieving the SMS templates list"
                     }
                 },
-                getEmailTemplate: {
+                getSmsTemplate: {
                     error: {
-                        description: "An error occurred while retrieving the email template.",
-                        message: "Error retrieving email template."
+                        description: "An error occurred while retrieving the SMS template.",
+                        message: "Error retrieving SMS template."
                     }
                 },
-                updateEmailTemplate: {
+                updateSmsTemplate: {
                     success: {
-                        description: "Email template updated successfully",
-                        message: "Email template updated successfully"
+                        description: "SMS template updated successfully",
+                        message: "SMS template updated successfully"
                     },
                     error: {
-                        description: "Error while updating email template. Make sure you have filled all the required fields and try again",
-                        message: "Error while updating email template"
+                        description: "Error while updating SMS template. Make sure you have filled all the required fields and try again",
+                        message: "Error while updating SMS template"
                     }
                 },
-                deleteEmailTemplate: {
+                deleteSmsTemplate: {
                     success: {
-                        description: "Email template deleted successfully",
-                        message: "Email template deleted successfully"
+                        description: "SMS template deleted successfully",
+                        message: "SMS template deleted successfully"
                     },
                     error: {
-                        description: "Error while deleting email template. Please try again",
-                        message: "Error while deleting the email template"
+                        description: "Error while deleting SMS template. Please try again",
+                        message: "Error while deleting the SMS template"
                     }
                 }
             },
             form: {
                 inputs: {
                     template: {
-                        label: "Email Template",
-                        placeholder: "Select the email template",
-                        hint: "Select the email template"
+                        label: "SMS Template",
+                        placeholder: "Select the SMS template",
+                        hint: "Select the SMS template"
                     },
                     locale: {
                         label: "Locale",
                         placeholder: "Select Locale"
                     },
-                    subject: {
-                        label: "Subject",
-                        placeholder: "Enter the email subject",
-                        hint: "This will be used as the subject of the email template and will be visible to the user."
-                    },
                     body: {
-                        label: "Email Body (HTML)",
-                        hint: "You can include any of the available literals placeholders for the email body."
-                    },
-                    footer: {
-                        label: "Footer",
-                        placeholder: "Enter the email footer",
-                        hint: "This will be used as the footer of the email template and will be visible to the user."
+                        label: "SMS Body",
+                        hint: "You can utilize placeholder variables within the SMS body.",
+                        charLengthWarning: "Consult with you SMS service provider for the maximum character limit.",
+                        placeholder: "Enter the SMS content"
                     }
                 }
             },
-            modal: {
-                replicateContent: {
-                    header: "Replicate content?",
-                    message: "Seems like you don't have any content for this locale. Do you need to populate the previous locale's content here as a quick start?"
-                }
-            },
             dangerZone: {
-                heading: "Remove Template",
-                message: "This action will remove the selected template and you will lose any changes you've done to this template.",
-                action: "Remove Template",
-                actionDisabledHint: "You cannot delete a template with the default locale."
+                remove: {
+                    heading: "Remove Template",
+                    message: "This action will remove the selected template and you will lose any changes you've done to this template.",
+                    action: "Remove Template"
+                },
+                revert: {
+                    heading: "Revert to default",
+                    message: "This action will revert the selected template to default and you will lose any changes you've done to this template.",
+                    action: "Revert"
+                }
             }
         }
     },

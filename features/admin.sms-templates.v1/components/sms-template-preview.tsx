@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,30 +16,25 @@
  * under the License.
  */
 
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Battery60Icon from "@mui/icons-material/Battery60";
+import WifiIcon from "@mui/icons-material/Wifi";
+import Typography from "@oxygen-ui/react/Typography";
 import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants";
-import useBrandingPreference from "@wso2is/admin.branding.v1/hooks/use-branding-preference";
 import { BrandingPreferenceUtils } from "@wso2is/admin.branding.v1/utils";
 import { AppState } from "@wso2is/admin.core.v1";
 import { BrandingPreferenceThemeInterface } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Encode } from "@wso2is/core/utils";
-import { Iframe } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
     useEffect,
-    useMemo,
     useState
 } from "react";
 import { useSelector } from "react-redux";
-import { SmsTemplate } from "../models";
-import { EmailCustomizationUtils } from "../utils";
-import "./sms-template-preview.scss";
 import { Grid } from "semantic-ui-react";
-import WifiIcon from '@mui/icons-material/Wifi';
-import Battery60Icon from '@mui/icons-material/Battery60';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import {Typography} from "@oxygen-ui/react";
+import { SmsTemplate } from "../models/sms-templates";
+import "./sms-template-preview.scss";
 
 interface SmsTemplatePreviewInterface extends IdentifiableComponentInterface {
     /**
@@ -53,7 +48,7 @@ interface SmsTemplatePreviewInterface extends IdentifiableComponentInterface {
  *
  * @param props - Props injected to the component.
  *
- * @returns Preview component of Email Customization.
+ * @returns Preview component of SMS Customization.
  */
 export const SmsTemplatePreview: FunctionComponent<SmsTemplatePreviewInterface> = (
     props: SmsTemplatePreviewInterface
@@ -64,35 +59,12 @@ export const SmsTemplatePreview: FunctionComponent<SmsTemplatePreviewInterface> 
         ["data-componentid"]: testId
     } = props;
 
-    const { preference: brandingPreference, customText } = useBrandingPreference();
-
-    const [ , setIsIframeReady ] = useState(false);
     const [
         predefinedThemes,
         setPredefinedThemes
     ] = useState<BrandingPreferenceThemeInterface>(BrandingPreferencesConstants.DEFAULT_PREFERENCE.theme);
 
-    const organizationName: string = useSelector((state: AppState) => state?.organization?.organization?.name);
     const theme: string = useSelector((state: AppState) => state.config.ui.theme?.name);
-
-    const emailTemplateBody: string = useMemo(() => {
-        if (smsTemplate?.body) {
-            return EmailCustomizationUtils.getTemplateBody(
-                organizationName,
-                brandingPreference?.preference,
-                customText,
-                smsTemplate?.body,
-                predefinedThemes
-            );
-        }
-
-        return "";
-    }, [
-        smsTemplate?.body,
-        organizationName,
-        brandingPreference?.preference,
-        predefinedThemes
-    ]);
 
     /**
      * Resolves the theme variables on component mount.
@@ -136,8 +108,8 @@ export const SmsTemplatePreview: FunctionComponent<SmsTemplatePreviewInterface> 
                             mobile={ 5 }
                             computer={ 5 }
                         >
-                            <WifiIcon fontSize={'small'}/>
-                            <Battery60Icon fontSize={'small'}/>
+                            <WifiIcon fontSize={ "small" }/>
+                            <Battery60Icon fontSize={ "small" }/>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

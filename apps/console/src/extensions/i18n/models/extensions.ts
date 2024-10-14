@@ -2700,19 +2700,19 @@ export interface Extensions {
                 }
             },
             notifications: {
-                getEmailTemplateList: {
+                getSmsTemplateList: {
                     error: {
                         description: string;
                         message: string;
                     }
                 },
-                getEmailTemplate: {
+                getSmsTemplate: {
                     error: {
                         description: string;
                         message: string;
                     }
                 },
-                updateEmailTemplate: {
+                updateSmsTemplate: {
                     success: {
                         description: string;
                         message: string;
@@ -2722,7 +2722,7 @@ export interface Extensions {
                         message: string;
                     }
                 },
-                deleteEmailTemplate: {
+                deleteSmsTemplate: {
                     success: {
                         description: string;
                         message: string;
@@ -2743,34 +2743,26 @@ export interface Extensions {
                     locale: {
                         label: string;
                         placeholder: string;
-                    }
-                    subject: {
-                        label: string;
-                        placeholder: string;
-                        hint: string
                     },
                     body: {
                         label: string;
                         hint: string;
-                    },
-                    footer: {
-                        label: string;
+                        charLengthWarning: string;
                         placeholder: string;
-                        hint: string;
                     }
                 }
             },
-            modal: {
-                replicateContent: {
-                    header: string;
-                    message: string;
-                }
-            },
             dangerZone: {
-                heading: string;
-                message: string;
-                action: string;
-                actionDisabledHint: string;
+                remove : {
+                    heading: string;
+                    message: string;
+                    action: string;
+                },
+                revert : {
+                    heading: string;
+                    message: string;
+                    action: string;
+                }
             }
         };
     };

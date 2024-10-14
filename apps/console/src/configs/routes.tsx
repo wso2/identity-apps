@@ -29,7 +29,7 @@ import {
     NodesIcon,
     ProgressFlowIcon,
     UserCircleDotIcon,
-    UserGroupIcon,
+    UserGroupIcon
 } from "@oxygen-ui/react-icons";
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
@@ -681,7 +681,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             category: "extensions:develop.sidePanel.categories.branding",
             component: lazy(() =>
-                import("@wso2is/admin.sms-templates.v1/" + "pages/email-customization")
+                import("@wso2is/admin.sms-templates.v1/" + "pages/sms-customization")
             ),
             exact: true,
             icon: {
@@ -725,7 +725,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         },
         {
-            category: "extensions:develop.sidePanel.categories.branding",
+            category: "extensions:develop.sidePanel.categories.smsProvider",
             component: lazy(() =>
                 import("@wso2is/admin.sms-providers.v1" + "/pages/sms-providers")
             ),

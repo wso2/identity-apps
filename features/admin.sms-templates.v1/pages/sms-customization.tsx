@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,7 +28,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-    ConfirmationModal, DangerZone,
+    DangerZone,
     DangerZoneGroup,
     DocumentationLink,
     PageLayout,
@@ -40,100 +40,95 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import {TabProps, Segment, Divider} from "semantic-ui-react";
+import {Divider, Segment, TabProps } from "semantic-ui-react";
 import {
-    createNewEmailTemplate,
-    deleteEmailTemplate,
-    updateEmailTemplate,
-    useEmailTemplate,
-    useEmailTemplatesList
-} from "../api";
-import { SmsCustomizationForm, SmsTemplatePreview } from "../components";
-import EmailCustomizationFooter from "../components/email-customization-footer";
+    createNewSmsTemplate,
+    deleteSmsTemplate,
+    updateSmsTemplate,
+    useSmsTemplate,
+    useSmsTemplatesList
+} from "../api/sms-templates";
+import SmsCustomizationFooter from "../components/sms-customization-footer";
+import { SmsCustomizationForm } from "../components/sms-customization-form";
 import SmsCustomizationHeader from "../components/sms-customization-header";
-import { SmsTemplate, SmsTemplateType } from "../models";
-import Img from "./phone.png";
-import {flexbox} from "@mui/system";
-import exports from "webpack";
-import system = exports.RuntimeGlobals.system;
+import { SmsTemplatePreview } from "../components/sms-template-preview";
+import { SmsTemplate, SmsTemplateType } from "../models/sms-templates";
 
-type EmailCustomizationPageInterface = IdentifiableComponentInterface;
+type SmsCustomizationPageInterface = IdentifiableComponentInterface;
 
 /**
- * Email customization page.
+ * SMS customization page.
  *
  * @param props - Props injected to the component.
  *
- * @returns Main Page for Email Customization.
+ * @returns Main Page for SMS Customization.
  */
-const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface> = (
-    props: EmailCustomizationPageInterface
+const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
+    props: SmsCustomizationPageInterface
 ): ReactElement => {
 
     const { ["data-componentid"]: componentId } = props;
-    const [ isSystemTemplate, setIsSystemTemplate] = useState(false);
+
     const [ availableSmsTemplatesList, setAvailableSmsTemplatesList ] = useState<SmsTemplateType[]>([]);
+    const [ currentSmsTemplate, setCurrentSmsTemplate ] = useState<SmsTemplate>();
+    const [ isSystemTemplate, setIsSystemTemplate] = useState(true);
+    const [ isTemplateNotAvailable, setIsTemplateNotAvailable ] = useState(false);
+    const [ selectedLocale, setSelectedLocale ] = useState(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
     const [ selectedSmsTemplateId, setSelectedSmsTemplateId ] = useState<string>();
     const [ selectedSmsTemplateDescription, setSelectedSmsTemplateDescription ] = useState<string>();
-    const [ selectedLocale, setSelectedLocale ] = useState(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
     const [ selectedSmsTemplate, setSelectedSmsTemplate ] = useState<SmsTemplate>();
-    const [ currentSmsTemplate, setCurrentSmsTemplate ] = useState<SmsTemplate>();
-    const [ showReplicatePreviousTemplateModal, setShowReplicatePreviousTemplateModal ] = useState(false);
-    const [ isTemplateNotAvailable, setIsTemplateNotAvailable ] = useState(false);
 
     const smsTemplates: Record<string, string>[] = useSelector(
         (state: AppState) => state.config.deployment.extensions.smsTemplates) as Record<string, string>[];
-    const enableCustomEmailTemplates: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.enableCustomEmailTemplates);
-    const emailTemplatesFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.emailTemplates);
+    const enableCustomSmsTemplates: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.enableCustomSmsTemplates);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const smsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features.smsTemplates);
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
-    const smsFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state.config.ui.features.smsTemplates);
     const hasUpdatePermission : boolean = useRequiredScopes(smsFeatureConfig?.scopes?.update);
     const hasCreatePermission : boolean = useRequiredScopes(smsFeatureConfig?.scopes?.create);
 
     const isReadOnly: boolean = useMemo(() => {
         return !smsFeatureConfig.enabled || !hasUpdatePermission;
-    }, [ emailTemplatesFeatureConfig, allowedScopes ]);
+    }, [ smsFeatureConfig, allowedScopes ]);
 
-    const hasEmailTemplateCreatePermissions: boolean = useMemo(() => {
+    const hasSmsTemplateCreatePermissions: boolean = useMemo(() => {
         return smsFeatureConfig.enabled && hasCreatePermission;
-    }, [ emailTemplatesFeatureConfig, allowedScopes ]);
+    }, [ smsFeatureConfig, allowedScopes ]);
 
     const {
         data: smsTemplatesList,
         isLoading: isSmsTemplatesListLoading,
-        error: emailTemplatesListError
-    } = useEmailTemplatesList();
+        error: smsTemplatesListError
+    } = useSmsTemplatesList();
 
     const {
         data: smsTemplate,
         isLoading: isSmsTemplateLoading,
-        error: emailTemplateError,
-        mutate: emailTemplateMutate
-    } = useEmailTemplate(selectedSmsTemplateId, selectedLocale, setIsSystemTemplate);
+        error: smsTemplateError,
+        mutate: smsTemplateMutate
+    } = useSmsTemplate(selectedSmsTemplateId, selectedLocale, setIsSystemTemplate);
 
     useEffect(() => {
         // we don't have a good displayName and description coming from the backend
         // for the SMS template types. So as we agreed use the displayName and
-        // description from the email template types config defined in
-        // the deployment.toml file. The below code will map the email template
+        // description from the SMS template types config defined in
+        // the deployment.toml file. The below code will map the SMS template
         // types with the config's displayName and description.
         const availableSmsTemplates: SmsTemplateType[] = smsTemplatesList
-            ? (!enableCustomEmailTemplates
+            ? (!enableCustomSmsTemplates
                 ? smsTemplatesList.filter((template: SmsTemplateType) =>
                     smsTemplates?.find((smsTemplate: Record<string, string>) => smsTemplate.id === template.id)
                 )
                 : smsTemplatesList
             ).map((template: SmsTemplateType) => {
                 const mappedTemplate: Record<string, string> = smsTemplates?.find(
-                    (emailTemplate: Record<string, string>) => emailTemplate.id === template.id
+                    (smsTemplate: Record<string, string>) => smsTemplate.id === template.id
                 );
 
                 return {
@@ -162,40 +157,42 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     }, [ smsTemplate ]);
 
     useEffect(() => {
-        if (!emailTemplatesListError) {
+        if (!smsTemplatesListError) {
             return;
         }
 
-        if (emailTemplatesListError.response.data.description) {
+        if (smsTemplatesListError.response.data.description) {
             dispatch(addAlert({
-                description: emailTemplatesListError.response?.data?.description,
+                description: smsTemplatesListError.response?.data?.description,
                 level: AlertLevels.ERROR,
-                message: emailTemplatesListError.response.data.message ??
-                    t("extensions:develop.emailTemplates.notifications.getEmailTemplateList.error.message")
+                message: smsTemplatesListError.response.data.message ??
+                    t("extensions:develop.smsTemplates.notifications.getSmsTemplateList.error.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: t("extensions:develop.emailTemplates.notifications.getEmailTemplateList.error.description"),
+            description: t("extensions:develop.smsTemplates.notifications.getSmsTemplateList.error.description"),
             level: AlertLevels.ERROR,
-            message: t("extensions:develop.emailTemplates.notifications.getEmailTemplateList.error.message")
+            message: t("extensions:develop.smsTemplates.notifications.getSmsTemplateList.error.message")
         }));
-    }, [ emailTemplatesListError ]);
+    }, [ smsTemplatesListError ]);
 
     useEffect(() => {
-        if (!emailTemplateError || !selectedSmsTemplateId) {
+        if (!smsTemplateError || !selectedSmsTemplateId) {
             return;
         }
 
         // Show the replicate previous template modal and set the "isTemplateNotAvailable" flag to identify whether the
         // current template is a new template or not
-        if (emailTemplateError.response.status === 404) {
+        if (smsTemplateError.response.status === 404) {
             setIsTemplateNotAvailable(true);
-            if (hasEmailTemplateCreatePermissions) {
-                setShowReplicatePreviousTemplateModal(!isSystemTemplate ||
-                    selectedLocale !== I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
+            if (hasSmsTemplateCreatePermissions) {
+                if (!isSystemTemplate ||
+                    selectedLocale !== I18nConstants.DEFAULT_FALLBACK_LANGUAGE) {
+                    replicatePreviousTemplate();
+                }
 
                 return;
             } else {
@@ -203,23 +200,23 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
             }
         }
 
-        if (emailTemplateError.response.data.description) {
+        if (smsTemplateError.response.data.description) {
             dispatch(addAlert({
-                description: emailTemplateError.response?.data?.description,
+                description: smsTemplateError.response?.data?.description,
                 level: AlertLevels.ERROR,
-                message: emailTemplateError.response.data.message ??
-                    t("extensions:develop.emailTemplates.notifications.getEmailTemplate.error.message")
+                message: smsTemplateError.response.data.message ??
+                    t("extensions:develop.smsTemplates.notifications.getSmsTemplate.error.message")
             }));
 
             return;
         }
 
         dispatch(addAlert({
-            description: t("extensions:develop.emailTemplates.notifications.getEmailTemplate.error.description"),
+            description: t("extensions:develop.smsTemplates.notifications.getSmsTemplate.error.description"),
             level: AlertLevels.ERROR,
-            message: t("extensions:develop.emailTemplates.notifications.getEmailTemplate.error.message")
+            message: t("extensions:develop.smsTemplates.notifications.getSmsTemplate.error.message")
         }));
-    }, [ emailTemplateError ]);
+    }, [ smsTemplateError ]);
 
     // This is used to check whether the URL contains a template ID, and if so, set it as the selected template.
     useEffect(() => {
@@ -245,6 +242,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
 
     const handleTemplateChange = (updatedTemplateAttributes: Partial<SmsTemplate>) => {
         setSelectedSmsTemplate({ ...selectedSmsTemplate, ...updatedTemplateAttributes });
+        setIsTemplateNotAvailable(false);
     };
 
     const handleLocaleChange = (locale: string) => {
@@ -255,138 +253,91 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     };
 
     const handleSubmit = () => {
+
         const template: SmsTemplate = {
             ...selectedSmsTemplate,
             id: selectedLocale.replace("-", "_")
         };
 
-        console.log(isSystemTemplate);
         if (isTemplateNotAvailable || isSystemTemplate) {
-            createNewEmailTemplate(selectedSmsTemplateId, template)
+            createNewSmsTemplate(selectedSmsTemplateId, template)
                 .then((_response: SmsTemplate) => {
                     dispatch(addAlert<AlertInterface>({
-                        description: t("extensions:develop.emailTemplates.notifications.updateEmailTemplate" +
+                        description: t("extensions:develop.smsTemplates.notifications.updateSmsTemplate" +
                             ".success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("extensions:develop.emailTemplates.notifications.updateEmailTemplate" +
+                        message: t("extensions:develop.smsTemplates.notifications.updateSmsTemplate" +
                             ".success.message")
                     }));
                 }).catch((error: IdentityAppsApiException) => {
                     dispatch(addAlert<AlertInterface>({
-                        description: t("extensions:develop.emailTemplates.notifications.updateEmailTemplate" +
+                        description: t("extensions:develop.smsTemplates.notifications.updateSmsTemplate" +
                             ".error.description"),
                         level: AlertLevels.ERROR,
-                        message: error.message ?? t("extensions:develop.emailTemplates.notifications" +
-                            ".updateEmailTemplate.error.message")
+                        message: error.message ?? t("extensions:develop.smsTemplates.notifications" +
+                            ".updateSmsTemplate.error.message")
                     }));
-                }).finally(() => emailTemplateMutate());
+                }).finally(() => smsTemplateMutate());
         } else {
-            updateEmailTemplate(selectedSmsTemplateId, template, selectedLocale)
+            updateSmsTemplate(selectedSmsTemplateId, template, selectedLocale)
                 .then((_response: SmsTemplate) => {
                     dispatch(addAlert<AlertInterface>({
-                        description: t("extensions:develop.emailTemplates.notifications.updateEmailTemplate" +
+                        description: t("extensions:develop.smsTemplates.notifications.updateSmsTemplate" +
                             ".success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("extensions:develop.emailTemplates.notifications.updateEmailTemplate" +
+                        message: t("extensions:develop.smsTemplates.notifications.updateSmsTemplate" +
                             ".success.message")
                     }));
                 }).catch((error: IdentityAppsApiException) => {
                     dispatch(addAlert<AlertInterface>({
-                        description: t("extensions:develop.emailTemplates.notifications.updateEmailTemplate" +
+                        description: t("extensions:develop.smsTemplates.notifications.updateSmsTemplate" +
                             ".error.description"),
                         level: AlertLevels.ERROR,
-                        message: error.message ?? t("extensions:develop.emailTemplates.notifications" +
-                            ".updateEmailTemplate.error.message")
+                        message: error.message ?? t("extensions:develop.smsTemplates.notifications" +
+                            ".updateSmsTemplate.error.message")
                     }));
-                }).finally(() => emailTemplateMutate());
+                }).finally(() => smsTemplateMutate());
         }
 
         setIsTemplateNotAvailable(false);
+        setIsSystemTemplate(false);
     };
 
     const handleDeleteRequest = () => {
-        deleteEmailTemplate(selectedSmsTemplateId, selectedLocale)
+
+        deleteSmsTemplate(selectedSmsTemplateId, selectedLocale)
             .then((_response: AxiosResponse) => {
                 dispatch(addAlert<AlertInterface>({
-                    description: t("extensions:develop.emailTemplates.notifications.deleteEmailTemplate" +
+                    description: t("extensions:develop.smsTemplates.notifications.deleteSmsTemplate" +
                         ".success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("extensions:develop.emailTemplates.notifications.deleteEmailTemplate" +
+                    message: t("extensions:develop.smsTemplates.notifications.deleteSmsTemplate" +
                         ".success.message")
                 }));
             }).catch((error: IdentityAppsApiException) => {
                 dispatch(addAlert<AlertInterface>({
-                    description: t("extensions:develop.emailTemplates.notifications.deleteEmailTemplate" +
+                    description: t("extensions:develop.smsTemplates.notifications.deleteSmsTemplate" +
                         ".error.description"),
                     level: AlertLevels.ERROR,
-                    message: error.message ?? t("extensions:develop.emailTemplates.notifications" +
-                        ".deleteEmailTemplate.error.message")
+                    message: error.message ?? t("extensions:develop.smsTemplates.notifications" +
+                        ".deleteSmsTemplate.error.message")
                 }));
             }).finally(() => {
                 setSelectedLocale(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
+                setIsSystemTemplate(false);
+                smsTemplateMutate();
             });
     };
 
     const replicatePreviousTemplate = () => {
         setSelectedSmsTemplate(currentSmsTemplate);
-        setShowReplicatePreviousTemplateModal(false);
-    };
-
-    const cancelReplicationOfPreviousTemplate = () => {
-        setSelectedSmsTemplate(undefined);
-        setCurrentSmsTemplate(undefined);
-        setShowReplicatePreviousTemplateModal(false);
-    };
-
-    const resolveTabPanes = ():  TabProps[ "panes" ] => {
-        const panes: TabProps [ "panes" ] = [];
-
-        panes.push({
-            menuItem: t("extensions:develop.emailTemplates.tabs.preview.label"),
-            render: () => (
-                <ResourceTab.Pane
-                    className="email-template-resource-tab-pane"
-                    attached="bottom"
-                    data-componentid="email-customization-template-preview"
-                >
-                    <SmsTemplatePreview
-                        smsTemplate={ selectedSmsTemplate || currentSmsTemplate }
-                    />
-                </ResourceTab.Pane>
-            )
-        });
-
-        panes.push({
-            menuItem: t("extensions:develop.emailTemplates.tabs.content.label"),
-            render: () => (
-                <ResourceTab.Pane
-                    className="email-template-resource-tab-pane"
-                    attached="bottom"
-                    data-componentid="email-customization-template-content"
-                >
-                    <SmsCustomizationForm
-                        isSmsTemplatesListLoading={ isSmsTemplatesListLoading || isSmsTemplateLoading }
-                        selectedSmsTemplate={ currentSmsTemplate }
-                        selectedLocale={ selectedLocale }
-                        onTemplateChanged={
-                            (updatedTemplateAttributes: Partial<SmsTemplate>) =>
-                                handleTemplateChange(updatedTemplateAttributes) }
-                        onSubmit={ handleSubmit }
-                        onDeleteRequested={ handleDeleteRequest }
-                        readOnly={ isReadOnly || (isTemplateNotAvailable && !hasEmailTemplateCreatePermissions) }
-                    />
-                </ResourceTab.Pane>
-            )
-        });
-
-        return panes;
     };
 
     return (
         <BrandingPreferenceProvider>
             <PageLayout
                 title={ t("extensions:develop.smsTemplates.page.header") }
-                pageTitle="Email Templates sssss"
+                pageTitle={ t("extensions:develop.smsTemplates.page.header") }
                 description={ (
                     <>
                         { t("extensions:develop.smsTemplates.page.description") }
@@ -412,10 +363,13 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
 
                 <Segment.Group>
                     <Segment.Group horizontal>
+                        { /* TODO: fix styles into a sheet */ }
                         <Segment style={ { flex: "0 0 65%" } }>
-                            { t("extensions:develop.emailTemplates.tabs.content.label") }
+                            { t("extensions:develop.smsTemplates.tabs.content.label") }
                         </Segment>
-                        <Segment>{ t("extensions:develop.emailTemplates.tabs.preview.label") }</Segment>
+                        <Segment>
+                            { t("extensions:develop.smsTemplates.tabs.preview.label") }
+                        </Segment>
                     </Segment.Group>
 
                     <Segment.Group horizontal style={ { backgroundColor: "white" } }>
@@ -430,7 +384,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                                 onSubmit={ handleSubmit }
                                 onDeleteRequested={ handleDeleteRequest }
                                 readOnly={
-                                    isReadOnly || (isTemplateNotAvailable && !hasEmailTemplateCreatePermissions) }
+                                    isReadOnly || (isTemplateNotAvailable && !hasSmsTemplateCreatePermissions) }
                             />
                         </Segment>
                         <Segment style={{display:'flex', paddingBottom:0}}>
@@ -442,11 +396,11 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
 
                     <Segment padded={ true }>
                         <Show
-                            when={ featureConfig?.emailTemplates?.scopes?.update }
+                            when={ featureConfig?.smsTemplates?.scopes?.update }
                         >
                             {
-                                (!isTemplateNotAvailable || hasEmailTemplateCreatePermissions) && (
-                                    <EmailCustomizationFooter
+                                (!isTemplateNotAvailable || hasSmsTemplateCreatePermissions) && (
+                                    <SmsCustomizationFooter
                                         isSaveButtonLoading={ isSmsTemplatesListLoading || isSmsTemplateLoading }
                                         onSaveButtonClick={ handleSubmit }
                                     />
@@ -458,45 +412,37 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
 
                 <Divider hidden/>
 
-                <Show
-                    when={ featureConfig?.emailTemplates?.scopes?.delete }
+                { smsTemplate && !isSystemTemplate && selectedLocale !== I18nConstants.DEFAULT_FALLBACK_LANGUAGE &&
+                (<Show
+                    when={ featureConfig?.smsTemplates?.scopes?.delete }
                 >
                     <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
                         <DangerZone
-                            data-componentid={ `${ componentId }-revert-email-provider-config` }
-                            actionTitle={ t("extensions:develop.emailTemplates.dangerZone.action") }
-                            header={ t("extensions:develop.emailTemplates.dangerZone.heading") }
-                            subheader={ t("extensions:develop.emailTemplates.dangerZone.message") }
-                            isButtonDisabled={ selectedLocale === I18nConstants.DEFAULT_FALLBACK_LANGUAGE }
-                            buttonDisableHint={ t("extensions:develop.emailTemplates.dangerZone.actionDisabledHint") }
+                            data-componentid={ `${ componentId }-remove-sms-provider-config` }
+                            actionTitle={ t("extensions:develop.smsTemplates.dangerZone.remove.action") }
+                            header={ t("extensions:develop.smsTemplates.dangerZone.remove.heading") }
+                            subheader={ t("extensions:develop.smsTemplates.dangerZone.remove.message") }
                             onActionClick={ handleDeleteRequest }
                         />
                     </DangerZoneGroup>
-                </Show>
+                </Show>)
+                }
 
-                <ConfirmationModal
-                    type="info"
-                    open={ showReplicatePreviousTemplateModal }
-                    primaryAction={ t("common:confirm") }
-                    secondaryAction={ t("common:cancel") }
-                    onSecondaryActionClick={ (): void => cancelReplicationOfPreviousTemplate() }
-                    onPrimaryActionClick={ (): void => replicatePreviousTemplate() }
-                    data-componentid={ `${ componentId }-replicate-previous-template-confirmation-modal` }
-                    closeOnDimmerClick={ false }
+                { smsTemplate && !isSystemTemplate && selectedLocale === I18nConstants.DEFAULT_FALLBACK_LANGUAGE &&
+                (<Show
+                    when={ featureConfig?.smsTemplates?.scopes?.delete }
                 >
-                    <ConfirmationModal.Header
-                        data-componentid={ `${ componentId }-replicate-previous-template-confirmation-modal-header` }
-                    >
-                        { t("extensions:develop.emailTemplates.modal.replicateContent.header") }
-                    </ConfirmationModal.Header>
-                    <ConfirmationModal.Message
-                        attached
-                        info
-                        data-componentid={ `${ componentId }-replicate-previous-template-confirmation-modal-message` }
-                    >
-                        { t("extensions:develop.emailTemplates.modal.replicateContent.message") }
-                    </ConfirmationModal.Message>
-                </ConfirmationModal>
+                    <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                        <DangerZone
+                            data-componentid={ `${ componentId }-revert-sms-provider-config` }
+                            actionTitle={ t("extensions:develop.smsTemplates.dangerZone.revert.action") }
+                            header={ t("extensions:develop.smsTemplates.dangerZone.revert.heading") }
+                            subheader={ t("extensions:develop.smsTemplates.dangerZone.revert.message") }
+                            onActionClick={ handleDeleteRequest }
+                        />
+                    </DangerZoneGroup>
+                </Show>)
+                }
             </PageLayout>
         </BrandingPreferenceProvider>
     );
@@ -505,8 +451,8 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
 /**
  * Default props for the component.
  */
-EmailCustomizationPage.defaultProps = {
-    "data-componentid": "email-customization-page"
+SmsCustomizationPage.defaultProps = {
+    "data-componentid": "sms-customization-page"
 };
 
-export default EmailCustomizationPage;
+export default SmsCustomizationPage;

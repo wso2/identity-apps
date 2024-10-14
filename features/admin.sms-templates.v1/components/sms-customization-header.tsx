@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,9 +24,9 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Segment } from "semantic-ui-react";
-import { SmsTemplateType } from "../models";
+import { SmsTemplateType } from "../models/sms-templates";
 
-const FORM_ID: string = "email-customization-header-form";
+const FORM_ID: string = "sms-customization-header-form";
 
 interface SmsCustomizationHeaderProps extends IdentifiableComponentInterface {
     /**
@@ -63,11 +63,11 @@ interface SmsCustomizationHeaderProps extends IdentifiableComponentInterface {
 }
 
 /**
- * Email customization header.
+ * SMS customization header.
  *
  * @param props - Props injected to the component.
  *
- * @returns Header component for Email Customization.
+ * @returns Header component for SMS Customization.
  */
 const SmsCustomizationHeader: FunctionComponent<SmsCustomizationHeaderProps> = (
     props: SmsCustomizationHeaderProps
@@ -91,7 +91,7 @@ const SmsCustomizationHeader: FunctionComponent<SmsCustomizationHeaderProps> = (
         (state: AppState) => state.global.supportedI18nLanguages
     );
 
-    const emailTemplateListOptions: { text: string, value: string }[] = useMemo(() => {
+    const smsTemplateListOptions: { text: string, value: string }[] = useMemo(() => {
         return smsTemplatesList?.map((template: SmsTemplateType) => {
             return {
                 text: template.displayName,
@@ -140,14 +140,14 @@ const SmsCustomizationHeader: FunctionComponent<SmsCustomizationHeaderProps> = (
                         computer={ 8 }
                     >
                         <Field.Dropdown
-                            ariaLabel="Email Template Dropdown"
+                            ariaLabel="SMS Template Dropdown"
                             name="selectedSmsTemplate"
-                            label={ t("extensions:develop.emailTemplates.form.inputs.template.label") }
-                            options={ emailTemplateListOptions }
+                            label={ t("extensions:develop.smsTemplates.form.inputs.template.label") }
+                            options={ smsTemplateListOptions }
                             required={ true }
-                            data-componentid={ `${ componentId }-email-template-list` }
+                            data-componentid={ `${ componentId }-sms-template-list` }
                             hint={ selectedSmsTemplateDescription ?? null }
-                            placeholder={ t("extensions:develop.emailTemplates.form.inputs.template.placeholder") }
+                            placeholder={ t("extensions:develop.smsTemplates.form.inputs.template.placeholder") }
                             value={ selectedSmsTemplateId }
                             listen={ onTemplateSelected }
                         />
@@ -158,13 +158,13 @@ const SmsCustomizationHeader: FunctionComponent<SmsCustomizationHeaderProps> = (
                         computer={ 8 }
                     >
                         <Field.Dropdown
-                            ariaLabel="Email Template Locale Dropdown"
+                            ariaLabel="SMS Template Locale Dropdown"
                             name="selectedSmsTemplateLocale"
-                            label={ t("extensions:develop.emailTemplates.form.inputs.locale.label") }
+                            label={ t("extensions:develop.smsTemplates.form.inputs.locale.label") }
                             options={ localeList }
                             required={ true }
-                            data-componentid={ `${ componentId }-email-template-locale` }
-                            placeholder={ t("extensions:develop.emailTemplates.form.inputs.locale.placeholder") }
+                            data-componentid={ `${ componentId }-sms-template-locale` }
+                            placeholder={ t("extensions:develop.smsTemplates.form.inputs.locale.placeholder") }
                             defaultValue={ selectedLocale }
                             value={ selectedLocale }
                             listen={ onLocaleChanged }
@@ -180,7 +180,7 @@ const SmsCustomizationHeader: FunctionComponent<SmsCustomizationHeaderProps> = (
  * Default props for the component.
  */
 SmsCustomizationHeader.defaultProps = {
-    "data-componentid": "email-customization-header"
+    "data-componentid": "sms-customization-header"
 };
 
 export default SmsCustomizationHeader;
