@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -254,13 +254,9 @@
                 // is happening in the background.
                 const submitButton = $("#recoverySubmit");
                 submitButton.addClass("loading").attr("disabled", true);
-                
 
                 const errorMessage = $("#error-msg");
                 errorMessage.hide();
-
-      
-
                 return true;
             });
         });

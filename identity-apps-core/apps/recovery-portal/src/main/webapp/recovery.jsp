@@ -49,6 +49,10 @@
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
 <%!
+    /**
+     * UsernameRecoveryStage represents the four steps of recovery in the 
+     * UsernameRecovery V2.
+     */
     public enum UsernameRecoveryStage {
         INITIATE("INITIATE"),
         NOTIFY("NOTIFY");
@@ -186,8 +190,6 @@
             
             // Separate the contact to mobile or email.
             String contact = request.getParameter("contact");
-            // String mobileClaimRegex = request.getParameter("mobileClaimRegex");
-            // String mobileClaimRegex = "^\+?[0-9]{7,15}$";
             String mobileClaimRegex = "^\\s*(?:\\+?(\\d{1,3}))?[\\-. (]*(\\d{2,3})[\\-. )]*(\\d{3})[\\-. ]*(\\d{4,6})(?: *x(\\d+))?\\s*$";
             if(contact.matches(mobileClaimRegex)){
                 request.setAttribute(IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM, contact);
@@ -246,7 +248,9 @@
                 request.setAttribute("tenantDomain", tenantDomain);
                 request.setAttribute("isUserFound", true);
 
-                List<AccountRecoveryType> initiateUsernameRecoveryResponse = recoveryApiV2.initiateUsernameRecovery(recoveryInitRequest, tenantDomain, requestHeaders);
+                List<AccountRecoveryType> initiateUsernameRecoveryResponse = 
+                            recoveryApiV2.initiateUsernameRecovery(recoveryInitRequest, tenantDomain, requestHeaders);
+
                 if(initiateUsernameRecoveryResponse == null || initiateUsernameRecoveryResponse.isEmpty()){
                     request.setAttribute("isUserFound", false);
                     request.getRequestDispatcher("channelselection.do").forward(request, response);
@@ -281,17 +285,22 @@
             }
         } else if (UsernameRecoveryStage.NOTIFY.equalsValue(recoveryStage)) {
             RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
-            String recoveryCode = request.getParameter("recoveryCode") != null ? request.getParameter("recoveryCode") : IdentityManagementEndpointUtil.getStringValue(request.getAttribute("recoveryCode"));
-            String usernameRecoveryOption = request.getParameter("usernameRecoveryOption") != null ? request.getParameter("usernameRecoveryOption") : IdentityManagementEndpointUtil.getStringValue(request.getAttribute("usernameRecoveryOption"));
-            String isUserFoundParam = request.getParameter("isUserFound");
-            Boolean isUserFound = isUserFoundParam != null ? Boolean.parseBoolean(isUserFoundParam) : null;
-            if (isUserFound == null) {
-                isUserFound = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("isUserFound"));
-            }
+            String recoveryCode = request.getParameter("recoveryCode") != null 
+                                ? request.getParameter("recoveryCode") 
+                                : IdentityManagementEndpointUtil.getStringValue(request.getAttribute("recoveryCode"));
 
+            String usernameRecoveryOption = request.getParameter("usernameRecoveryOption") != null 
+                        ? request.getParameter("usernameRecoveryOption") 
+                        : IdentityManagementEndpointUtil.getStringValue(request.getAttribute("usernameRecoveryOption"));
+
+            String isUserFoundParam = request.getParameter("isUserFound");
+            Boolean isUserFound = (isUserFoundParam != null) 
+                                ? Boolean.parseBoolean(isUserFoundParam) 
+                                : IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("isUserFound"));
 
             String recoveryChannelType = null;
             String recoveryChannelId = null;
+            
             // Extract the recovery channel name and id from the recovery option.
             if(usernameRecoveryOption != null){
                 String[] parts = usernameRecoveryOption.split(":");
