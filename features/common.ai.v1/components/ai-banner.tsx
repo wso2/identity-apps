@@ -62,7 +62,7 @@ const AIBanner = (props: AIBannerProps): ReactElement => {
         >
             <div className="ai-banner-text-container">
                 <Typography
-                    as="h3"
+                    component="h3"
                     className="ai-banner-heading"
                 >
                     { title }

@@ -57,7 +57,6 @@ export const AddUserType: FunctionComponent<AddUserTypeProps> = (props: AddUserT
                     <Card
                         key="external-user-selection"
                         onClick={ () => setUserTypeSelection(AdminAccountTypes.EXTERNAL) }
-                        selected={ true }
                         className={ userTypeSelection === AdminAccountTypes.EXTERNAL
                             ? "user-type-card selected-card"
                             : "user-type-card"

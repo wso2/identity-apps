@@ -97,7 +97,8 @@ const Blockquote: FunctionComponent<BlockquoteProps> = ({
                     severity={ dataConfig?.type }
                     className={ classes }
                     icon={ dataConfig?.type ? (dataConfig?.icon === false ? false : undefined) : false }
-                    variant={ dataConfig?.type ? dataConfig?.variant ?? "standard" : "standard" }
+                    // TODO: Remove any casting once https://github.com/wso2/oxygen-ui/issues/292 is addressed.
+                    variant={ (dataConfig?.type ? dataConfig?.variant ?? "standard" : "standard") as any }
                     data-componentid={ componentId }
                 >
                     {
