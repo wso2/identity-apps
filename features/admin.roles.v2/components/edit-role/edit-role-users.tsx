@@ -486,7 +486,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                         option={ option }
                                                         activeOption={ activeOption }
                                                         setActiveOption={ setActiveOption }
-                                                        variant={ "solid" }
+                                                        variant="filled"
                                                     />
                                                 )) }
                                                 renderOption={ (

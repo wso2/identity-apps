@@ -112,7 +112,7 @@ const AIBannerTall = (props: PropsWithChildren<AIBannerTallProps>): ReactElement
                 >
                     <Box className="ai-banner-text-container">
                         <Typography
-                            as="h3"
+                            component="h3"
                             className="ai-banner-heading"
                         >
                             { title }
