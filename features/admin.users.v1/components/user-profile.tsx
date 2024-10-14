@@ -316,7 +316,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      */
     useEffect(() => {
 
-        const getDisplayOrder = (schema: ProfileSchema): number => {
+        const getDisplayOrder = (schema: ProfileSchemaInterface): number => {
             if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")
                 && !schema.displayOrder) return 6;
             if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")
@@ -1904,6 +1904,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             expandIcon={ <ChevronDownIcon /> }
                             id="multi-attribute-header"
                             className="accordion-summary"
+                            data-componentid={ `${ testId }-profile-form-${ schema.name }-accordion-summary` }
                         >
                             <label
                                 className={ `accordion-label ${
@@ -1971,13 +1972,23 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                         ? "mobile-label"
                                                                         : null}`
                                                                 }
+                                                                data-componentid={
+                                                                    `${testId}-profile-form-${schema.name}-value-
+                                                                    ${index}`
+                                                                }
                                                             >
                                                                 { value }
                                                             </label>
                                                             {
                                                                 showVerifiedPopup(value)
                                                                 && (
-                                                                    <div className="verified-icon" >
+                                                                    <div
+                                                                        className="verified-icon"
+                                                                        data-componentid={
+                                                                            `${testId}-profile-form-${schema.name}
+                                                                            -verified-icon-${index}`
+                                                                        }
+                                                                    >
                                                                         <Tooltip
                                                                             trigger={ (
                                                                                 <span> <CheckIcon fill="blue"/></span>
@@ -1991,7 +2002,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                             {
                                                                 showPrimaryPopup(value)
                                                                 && (
-                                                                    <div className="primary-icon" >
+                                                                    <div
+                                                                        className="primary-icon"
+                                                                        data-componentid={
+                                                                            `${testId}-profile-form-${schema.name}
+                                                                            -primary-icon-${index}`
+                                                                        }
+                                                                    >
                                                                         <Tooltip
                                                                             trigger={ (
                                                                                 <span> <StarIcon fill="green"/></span>
@@ -2012,7 +2029,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                 onClick={ () => handleVerify(schema, value) }
                                                                 data-componentid={
                                                                     `${testId}-profile-form
-                                                                    -${schema.name}-verify-button`
+                                                                    -${schema.name}-verify-button-${index}`
                                                                 }
                                                                 disabled={ isSubmitting || isReadOnly }
                                                             >
@@ -2030,7 +2047,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                 onClick={ () => handleMakePrimary(schema, value) }
                                                                 data-componentid={
                                                                     `${testId}-profile-form
-                                                                    -${schema.name}-make-primary-button`
+                                                                    -${schema.name}-make-primary-button-${index}`
                                                                 }
                                                                 disabled={ isSubmitting || isReadOnly }
                                                             >
@@ -2051,7 +2068,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                 } }
                                                                 data-componentid={
                                                                     `${testId}-profile-form
-                                                                    -${schema.name}-delete-button`
+                                                                    -${schema.name}-delete-button-${index}`
                                                                 }
                                                                 disabled={ isSubmitting || isReadOnly }
                                                             >
