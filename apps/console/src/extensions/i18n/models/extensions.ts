@@ -2683,7 +2683,86 @@ export interface Extensions {
                 action: string;
                 actionDisabledHint: string;
             }
-        }
+        };
+        smsTemplates: {
+            page: {
+                header: string;
+                description: string;
+            },
+            tabs: {
+                content: {
+                    label: string;
+                },
+                preview: {
+                    label: string;
+                }
+            },
+            notifications: {
+                getSmsTemplateList: {
+                    error: {
+                        description: string;
+                        message: string;
+                    }
+                },
+                getSmsTemplate: {
+                    error: {
+                        description: string;
+                        message: string;
+                    }
+                },
+                updateSmsTemplate: {
+                    success: {
+                        description: string;
+                        message: string;
+                    },
+                    error: {
+                        description: string;
+                        message: string;
+                    }
+                },
+                deleteSmsTemplate: {
+                    success: {
+                        description: string;
+                        message: string;
+                    },
+                    error: {
+                        description: string;
+                        message: string;
+                    }
+                }
+            },
+            form: {
+                inputs: {
+                    template: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    },
+                    locale: {
+                        label: string;
+                        placeholder: string;
+                    },
+                    body: {
+                        label: string;
+                        hint: string;
+                        charLengthWarning: string;
+                        placeholder: string;
+                    }
+                }
+            },
+            dangerZone: {
+                remove : {
+                    heading: string;
+                    message: string;
+                    action: string;
+                },
+                revert : {
+                    heading: string;
+                    message: string;
+                    action: string;
+                }
+            }
+        };
     };
     manage: {
         accountLogin: {
