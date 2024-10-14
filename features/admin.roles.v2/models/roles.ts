@@ -120,6 +120,13 @@ export interface RoleEditSectionsInterface {
      * Tab index
      */
     tabIndex: number;
+    /**
+     * active user store
+     *
+     * Note: used to conditionally determine whether the userstore is handled
+     * outside the component.
+     */
+    activeUserStore?: string
 }
 
 /**

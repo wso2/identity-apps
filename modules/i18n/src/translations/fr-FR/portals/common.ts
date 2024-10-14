@@ -132,6 +132,7 @@ export const common: CommonNS = {
     okay: "d'accord",
     operatingSystem: "Système d'exploitation",
     operations: "Opérations",
+    organizationName: "{{orgName}} organisation",
     overview: "Vue d'ensemble",
     personalInfo: "Informations personnelles",
     pin: "Épingler",

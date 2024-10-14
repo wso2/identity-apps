@@ -131,6 +131,7 @@ export const common: CommonNS = {
     "okay": "わかった",
     "operatingSystem": "オペレーティング·システム",
     "operations": "オペレーション",
+    "organizationName": "{{orgName}} 組織",
     "overview": "概要",
     "personalInfo": "個人情報",
     "pin": "ピン",
