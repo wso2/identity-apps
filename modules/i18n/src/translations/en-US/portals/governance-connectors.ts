@@ -674,4 +674,4 @@ export const governanceConnectors: governanceConnectorsNS = {
     },
     pageSubHeading: "Configure and manage {{ name }}."
 
-}
+};
