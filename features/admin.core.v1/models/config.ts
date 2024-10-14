@@ -195,6 +195,10 @@ export interface FeatureConfigInterface {
      */
     sessionManagement?: FeatureAccessConfigInterface;
     /**
+     * SMS templates feature.
+     */
+    smsTemplates?: FeatureAccessConfigInterface;
+    /**
      * User store configurations feature.
      */
     userStores?: FeatureAccessConfigInterface;

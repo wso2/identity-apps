@@ -25,8 +25,5 @@ export type SmsTemplateType = {
 
 export type SmsTemplate = {
     id: string;
-    contentType: string;
-    subject: string;
     body: string;
-    footer: string;
 }

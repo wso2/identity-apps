@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,9 +20,9 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { ButtonProps, Segment } from "semantic-ui-react";
+import { ButtonProps } from "semantic-ui-react";
 
-interface EmailCustomizationFooterProps extends IdentifiableComponentInterface {
+interface SmsCustomizationFooterProps extends IdentifiableComponentInterface {
 
     /**
      * Is content loading? So Save button should also depict it's loading
@@ -38,14 +38,14 @@ interface EmailCustomizationFooterProps extends IdentifiableComponentInterface {
 }
 
 /**
- * Email customization footer.
+ * SMS customization footer.
  *
  * @param props - Props injected to the component.
  *
- * @returns Footer component for Email Customization.
+ * @returns Footer component for SMS Customization.
  */
-const EmailCustomizationFooter: FunctionComponent<EmailCustomizationFooterProps> = (
-    props: EmailCustomizationFooterProps
+const SmsCustomizationFooter: FunctionComponent<SmsCustomizationFooterProps> = (
+    props: SmsCustomizationFooterProps
 ): ReactElement => {
 
     const {
@@ -63,7 +63,7 @@ const EmailCustomizationFooter: FunctionComponent<EmailCustomizationFooterProps>
             onClick={ (e: MouseEvent<HTMLButtonElement>, data: ButtonProps) => {
                 onSaveButtonClick(e, data);
             } }
-            ariaLabel="Email Templates form save button"
+            ariaLabel="SMS Templates form save button"
             data-componentid={ `${componentId}-save-button` }
         >
             { t("common:save") }
@@ -74,8 +74,8 @@ const EmailCustomizationFooter: FunctionComponent<EmailCustomizationFooterProps>
 /**
  * Default props for the component.
  */
-EmailCustomizationFooter.defaultProps = {
-    "data-componentid": "email-customization-footer"
+SmsCustomizationFooter.defaultProps = {
+    "data-componentid": "sms-customization-footer"
 };
 
-export default EmailCustomizationFooter;
+export default SmsCustomizationFooter;

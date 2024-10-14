@@ -519,7 +519,7 @@ importers:
         specifier: ^2.21.25
         version: link:../../features/admin.authentication.v1
       '@wso2is/admin.authorization.v1':
-        specifier: ^2.21.9
+        specifier: ^2.21.3
         version: link:../../features/admin.authorization.v1
       '@wso2is/admin.branding.v1':
         specifier: ^2.22.25
@@ -5967,7 +5967,7 @@ importers:
         specifier: ^2.21.25
         version: link:../admin.authentication.v1
       '@wso2is/admin.authorization.v1':
-        specifier: ^2.21.9
+        specifier: ^2.21.3
         version: link:../admin.authorization.v1
       '@wso2is/admin.branding.v1':
         specifier: ^2.22.25
@@ -26614,7 +26614,7 @@ packages:
       '@emotion/styled': ^11.10.5
       '@mui/icons-material': ^5.10.16
       '@mui/lab': 5.0.0-alpha.110
-      '@mui/material': 5.13.0
+      '@mui/material': ^5.10.16
       '@mui/system': ^5.10.16
       '@mui/utils': ^5.10.16
       react: '>=18.0.0'
@@ -26650,7 +26650,7 @@ packages:
       '@emotion/styled': ^11.10.5
       '@mui/icons-material': ^5.10.16
       '@mui/lab': 5.0.0-alpha.110
-      '@mui/material': 5.13.0
+      '@mui/material': ^5.10.16
       '@mui/system': ^5.10.16
       '@mui/utils': ^5.10.16
       react: '>=18.0.0'

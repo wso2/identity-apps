@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,19 +16,15 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
-import { AppState, FeatureConfigInterface, I18nConstants } from "@wso2is/admin.core.v1";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import {
-    CodeEditor,
-    ContentLoader, DangerZone,
+    ContentLoader,
     DocumentationLink,
-    Heading,
     Message,
     useDocumentation
 } from "@wso2is/react-components";
-import * as codemirror from "codemirror";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -38,7 +34,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { SmsTemplate } from "../models";
+import { SmsTemplate } from "../models/sms-templates";
 
 interface SmsCustomizationFormPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -81,11 +77,11 @@ interface SmsCustomizationFormPropsInterface extends IdentifiableComponentInterf
 const FORM_ID: string = "sms-customization-content-form";
 
 /**
- * Email customization form.
+ * SMS customization form.
  *
  * @param props - Props injected to the component.
  *
- * @returns Email template customization form.
+ * @returns SMS template customization form.
  */
 export const SmsCustomizationForm: FunctionComponent<SmsCustomizationFormPropsInterface> = (
     props: SmsCustomizationFormPropsInterface
@@ -94,17 +90,14 @@ export const SmsCustomizationForm: FunctionComponent<SmsCustomizationFormPropsIn
     const {
         isSmsTemplatesListLoading,
         selectedSmsTemplate,
-        selectedLocale,
         onTemplateChanged,
         onSubmit,
-        onDeleteRequested,
         readOnly,
         ["data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     /**
      * Following `key` state and the use of the useEffect are temporary
@@ -139,7 +132,7 @@ export const SmsCustomizationForm: FunctionComponent<SmsCustomizationFormPropsIn
                                     type="info"
                                     content={ (
                                         <>
-                                            { t("extensions:develop.emailTemplates.form.inputs.body.hint") }
+                                            { t("extensions:develop.smsTemplates.form.inputs.body.hint") }
                                             <DocumentationLink
                                                 link={ getLink("develop.emailCustomization.form.emailBody.learnMore") }
                                             >
@@ -156,18 +149,17 @@ export const SmsCustomizationForm: FunctionComponent<SmsCustomizationFormPropsIn
                                 computer={ 12 }
                             >
                                 <Field.Textarea
-                                    ariaLabel="Email Subject Input"
+                                    ariaLabel="SMS Body Input"
                                     inputType="description"
-                                    name="emailSubject"
-                                    label={ t("extensions:develop.emailTemplates.form.inputs.subject.label") }
-                                    placeholder={ t("extensions:develop.emailTemplates.form.inputs" +
-                                        ".subject.placeholder") }
+                                    name="smsBody"
+                                    label={ t("extensions:develop.smsTemplates.form.inputs.body.label") }
+                                    placeholder={ t("extensions:develop.smsTemplates.form.inputs" +
+                                        ".body.placeholder") }
                                     required={ true }
                                     value={ selectedSmsTemplate?.body }
-                                    maxLength={ 255 }
                                     minLength={ 1 }
                                     onKeyPress={ null }
-                                    data-componentid={ `${ componentId }-email-subject` }
+                                    data-componentid={ `${ componentId }-sms-body` }
                                     listen={ (value: string) => {
                                         onTemplateChanged({
                                             body: value
@@ -188,12 +180,7 @@ export const SmsCustomizationForm: FunctionComponent<SmsCustomizationFormPropsIn
                                     type="warning"
                                     content={ (
                                         <>
-                                            { t("extensions:develop.emailTemplates.form.inputs.body.hint") }
-                                            <DocumentationLink
-                                                link={ getLink("develop.emailCustomization.form.emailBody.learnMore") }
-                                            >
-                                                { t("extensions:common.learnMore") }
-                                            </DocumentationLink>
+                                            { t("extensions:develop.smsTemplates.form.inputs.body.charLengthWarning") }
                                         </>
                                     ) }
                                 />

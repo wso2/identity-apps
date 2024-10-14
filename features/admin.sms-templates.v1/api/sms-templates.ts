@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,7 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { SmsTemplate, SmsTemplateType } from "../models/sms-templates";
 
 /**
@@ -36,11 +36,11 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Hook to get the list of email templates available for customization.
+ * Hook to get the list of SMS templates available for customization.
  *
- * @returns Email templates list.
+ * @returns SMS templates list.
  */
-export const useEmailTemplatesList = <Data = SmsTemplateType[], Error = RequestErrorInterface>():
+export const useSmsTemplatesList = <Data = SmsTemplateType[], Error = RequestErrorInterface>():
     RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -73,16 +73,17 @@ export const useEmailTemplatesList = <Data = SmsTemplateType[], Error = RequestE
  *
  * @param templateType - Template type.
  * @param locale - Locale of the template.
+ * @param setIsSystemTemplate - Function to set system template.
  *
- * @param setIsSystemTemplate Function to set system template.
- * @returns Email template.
+ * @returns SMS template.
  */
-export const useEmailTemplate = <Data = SmsTemplate, Error = RequestErrorInterface>(
+export const useSmsTemplate = <Data = SmsTemplate, Error = RequestErrorInterface>(
     templateType: string,
     locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE,
     setIsSystemTemplate: (value: (((prevState: boolean) => boolean) | boolean)) => void)
     : RequestResultInterface<Data, Error> => {
-    const emailLocale: string = locale.replace("-", "_");
+
+    const smsLocale: string = locale.replace("-", "_");
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -91,7 +92,7 @@ export const useEmailTemplate = <Data = SmsTemplate, Error = RequestErrorInterfa
         },
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.smsManagement
-            + `/template-types/${ templateType }/org-templates/${ emailLocale }`
+            + `/template-types/${ templateType }/org-templates/${ smsLocale }`
     };
 
     const {
@@ -109,35 +110,34 @@ export const useEmailTemplate = <Data = SmsTemplate, Error = RequestErrorInterfa
                     setIsSystemTemplate(true);
                     mutate();
                 }
-            },
+            }
         });
 
     return {
         data,
         error,
-        isLoading: !error && !data,
+        isLoading: !data && !error,
         isValidating,
         mutate
     };
 };
 
 /**
- * Update the email template.
+ * Update the SMS template.
  *
  * @param templateType - Template type/id to update.
- * @param emailTemplate - Updated email template.
+ * @param smsTemplate - Updated SMS template.
  * @param locale - Locale of the template.
  *
- * @returns Update Email Template
+ * @returns Updated SMS Template.
  */
-export const updateEmailTemplate = (
+export const updateSmsTemplate = (
     templateType: string,
     smsTemplate: Partial<SmsTemplate>,
     locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
 ): Promise<SmsTemplate> => {
-    console.log("update");
-    console.log(smsTemplate);
-    const emailLocale: string = locale.replace("-", "_");
+
+    const smsLocale: string = locale.replace("-", "_");
 
     const requestConfig: AxiosRequestConfig = {
         data: {
@@ -149,14 +149,14 @@ export const updateEmailTemplate = (
         },
         method: HttpMethods.PUT,
         url: store.getState().config.endpoints.smsManagement +
-            `/template-types/${ templateType }/org-templates/${ emailLocale }`
+            `/template-types/${ templateType }/org-templates/${ smsLocale }`
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200 && response.status !== 201) {
                 throw new IdentityAppsApiException(
-                    "Error occurred while updating the email template.",
+                    "Error occurred while updating the SMS template.",
                     null,
                     response.status,
                     response.request,
@@ -167,7 +167,7 @@ export const updateEmailTemplate = (
             return Promise.resolve(response.data as SmsTemplate);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                "Error occurred while updating the email template.",
+                "Error occurred while updating the SMS template.",
                 error.stack,
                 error.response?.data?.code,
                 error.request,
@@ -177,17 +177,18 @@ export const updateEmailTemplate = (
 };
 
 /**
- * Create new email template.
+ * Create new SMS template.
  *
  * @param templateType - Template type/id to create.
- * @param emailTemplate - New email template.
+ * @param smsTemplate - New SMS template.
  *
- * @returns Create new Email Template
+ * @returns Created SMS Template.
  */
-export const createNewEmailTemplate = (
+export const createNewSmsTemplate = (
     templateType: string,
     smsTemplate: SmsTemplate
 ): Promise<SmsTemplate> => {
+
     const requestConfig: AxiosRequestConfig = {
         data: {
             body: smsTemplate.body,
@@ -206,7 +207,7 @@ export const createNewEmailTemplate = (
         .then((response: AxiosResponse) => {
             if (response.status !== 200 && response.status !== 201) {
                 throw new IdentityAppsApiException(
-                    "Error occurred while creating the email template.",
+                    "Error occurred while creating the SMS template.",
                     null,
                     response.status,
                     response.request,
@@ -217,7 +218,7 @@ export const createNewEmailTemplate = (
             return Promise.resolve(response.data as SmsTemplate);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                "Error occurred while creating the email template.",
+                "Error occurred while creating the SMS template.",
                 error.stack,
                 error.response?.data?.code,
                 error.request,
@@ -227,19 +228,19 @@ export const createNewEmailTemplate = (
 };
 
 /**
- * Delete the email template.
+ * Delete the SMS template.
  *
  * @param templateType - Template type/id to delete.
  * @param locale - Locale of the template.
  *
- * @returns Delete Email Template
+ * @returns Delete SMS Template.
  */
-export const deleteEmailTemplate = (
+export const deleteSmsTemplate = (
     templateType: string,
     locale: string
 ): Promise<AxiosResponse> => {
 
-    const emailLocale: string = locale.replace("-", "_");
+    const smsLocale: string = locale.replace("-", "_");
 
     const requestConfig: AxiosRequestConfig = {
         headers: {
@@ -248,14 +249,14 @@ export const deleteEmailTemplate = (
         },
         method: HttpMethods.DELETE,
         url: store.getState().config.endpoints.smsManagement +
-            `/template-types/${ templateType }/org-templates/${ emailLocale }`
+            `/template-types/${ templateType }/org-templates/${ smsLocale }`
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 204) {
                 throw new IdentityAppsApiException(
-                    "Error occurred while deleting the email template.",
+                    "Error occurred while deleting the SMS template.",
                     null,
                     response.status,
                     response.request,
@@ -266,7 +267,7 @@ export const deleteEmailTemplate = (
             return response;
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                "Error occurred while deleting the email template.",
+                "Error occurred while deleting the SMS template.",
                 error.stack,
                 error.response?.data?.code,
                 error.request,

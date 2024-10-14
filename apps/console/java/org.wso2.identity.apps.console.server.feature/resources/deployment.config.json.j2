@@ -1421,6 +1421,36 @@
                 }
             },
             {% endif %}
+            {% if console.sms_templates is defined %}
+            "smsTemplates": {
+                "disabledFeatures": [
+                    {% if console.sms_templates.disabled_features is defined %}
+                    {% for feature in console.sms_templates.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.sms_templates.enabled is defined %} {{ console.sms_templates.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.sms_templates.scopes is defined %}
+                    {% for operation, scopes in console.sms_templates.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.user_onboarding is defined %}
             "userOnboarding": {
                 "disabledFeatures": [
