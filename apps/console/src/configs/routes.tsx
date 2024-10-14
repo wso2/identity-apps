@@ -690,7 +690,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             id: "smsTemplates",
             name: "SMS Templates",
             order: 15,
-            path: `${ AppConstants.getDeveloperViewBasePath() }/sms-management`,
+            path: AppConstants.getPaths().get("SMS_MANAGEMENT"),
             protected: true,
             showOnSidePanel: true
         },

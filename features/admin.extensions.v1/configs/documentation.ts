@@ -372,6 +372,14 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 systemSettings: {
                     learnMore: undefined
                 }
+            },
+            smsCustomization: {
+                form: {
+                    smsBody: {
+                        learnMore: undefined
+                    }
+                },
+                learnMore: undefined
             }
         },
         manage: {
