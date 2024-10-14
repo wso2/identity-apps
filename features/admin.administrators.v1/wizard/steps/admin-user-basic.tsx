@@ -57,6 +57,7 @@ import React, { FormEvent, ReactElement, useCallback, useEffect, useMemo, useSta
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Header } from "semantic-ui-react";
+import { AdministratorConstants } from "../../constants";
 import { InternalAdminFormDataInterface } from "../../models";
 import { isAdminUser, isCollaboratorUser } from "../../utils/administrators";
 
@@ -219,8 +220,8 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
         document
             ?.getElementById(
                 administratorType === AdminAccountTypes.INTERNAL
-                    ? "inviteInternalUserForm"
-                    : "inviteExternalUserForm"
+                    ? AdministratorConstants.INVITE_INTERNAL_USER_FORM_ID
+                    : AdministratorConstants.INVITE_EXTERNAL_USER_FORM_ID
             )?.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
     }, [ triggerSubmit ]);
 
