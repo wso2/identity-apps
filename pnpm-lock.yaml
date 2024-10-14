@@ -519,7 +519,7 @@ importers:
         specifier: ^2.21.25
         version: link:../../features/admin.authentication.v1
       '@wso2is/admin.authorization.v1':
-        specifier: ^2.21.3
+        specifier: ^2.21.9
         version: link:../../features/admin.authorization.v1
       '@wso2is/admin.branding.v1':
         specifier: ^2.22.25
@@ -5967,7 +5967,7 @@ importers:
         specifier: ^2.21.25
         version: link:../admin.authentication.v1
       '@wso2is/admin.authorization.v1':
-        specifier: ^2.21.3
+        specifier: ^2.21.9
         version: link:../admin.authorization.v1
       '@wso2is/admin.branding.v1':
         specifier: ^2.22.25
