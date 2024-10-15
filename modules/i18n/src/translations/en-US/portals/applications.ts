@@ -1694,6 +1694,12 @@ export const applications: ApplicationsNS = {
                                     instruction: "The introspection responses for application access tokens no longer "
                                         + "return the <1>username</1> attribute."
                                 }
+                            },
+                            version200: {
+                                addAllRequestedClaimsInJWTAccessToken: {
+                                    instruction: "Irrespective of the <1>scopes</1> requested, all the <3>Requested Attributes</3> will "
+                                        + "be included in the JWT Access Token."
+                                }
                             }
                         }
                     }
