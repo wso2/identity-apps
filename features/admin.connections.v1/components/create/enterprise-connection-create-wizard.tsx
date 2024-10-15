@@ -30,7 +30,7 @@ import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
-import { Field, Wizard2, WizardPage } from "@wso2is/form";
+import { Field, Wizard2, WizardPage, composeValidators } from "@wso2is/form";
 import {
     CertFileStrategy,
     ContentLoader,
@@ -1086,13 +1086,6 @@ const XML_FILE_PROCESSING_STRATEGY: XMLFileStrategy = new XMLFileStrategy();
 // Validation Functions.
 // FIXME: These will be removed in the future when
 //        form module validation gets to a stable state.
-
-const composeValidators = ( ...validators: any) => (value: string) => {
-    return validators.reduce(
-        (error: any, validator: any) => error || validator(value),
-        undefined
-    );
-};
 
 /**
  * Given a {@link FormErrors} object, it will check whether

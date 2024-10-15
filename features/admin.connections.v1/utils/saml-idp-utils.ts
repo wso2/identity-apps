@@ -303,13 +303,6 @@ export const ifFieldsHave = (errors: FormErrors): boolean => {
     return !Object.keys(errors).every((k: string) => !errors[ k ]);
 };
 
-export const composeValidators = (...validators: any[]) => (value: string): any => {
-    return validators.reduce(
-        (error: any, validator: any) => error || validator(value),
-        undefined
-    );
-};
-
 export const required = (value: string | any): string | undefined => {
     if (!value) {
         return "This is a required field";

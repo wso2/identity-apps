@@ -289,13 +289,6 @@ export const ifFieldsHave = (errors: FormErrors): boolean => {
     return !Object.keys(errors).every((k) => !errors[ k ]);
 };
 
-export const composeValidators = (...validators: any[]) => (value: string) => {
-    return validators.reduce(
-        (error, validator) => error || validator(value),
-        undefined
-    );
-};
-
 export const required = (value: string | any) => {
     if (!value) {
         return "This is a required field";
