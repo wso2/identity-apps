@@ -1,5 +1,38 @@
 # @wso2is/admin.applications.v1
 
+## 2.26.28
+
+### Patch Changes
+
+- [#6982](https://github.com/wso2/identity-apps/pull/6982) [`f1e54d9187ebecf488222f32aabc60c1c067ad52`](https://github.com/wso2/identity-apps/commit/f1e54d9187ebecf488222f32aabc60c1c067ad52) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with adding callback URLs for traditional web apps
+
+- Updated dependencies [[`f1e54d9187ebecf488222f32aabc60c1c067ad52`](https://github.com/wso2/identity-apps/commit/f1e54d9187ebecf488222f32aabc60c1c067ad52)]:
+  - @wso2is/validation@2.0.10
+  - @wso2is/admin.application-templates.v1@1.0.80
+  - @wso2is/admin.authentication-flow-builder.v1@2.20.192
+  - @wso2is/admin.connections.v1@2.24.9
+  - @wso2is/admin.console-settings.v1@2.21.28
+  - @wso2is/admin.core.v1@2.31.9
+  - @wso2is/admin.extensions.v1@2.30.28
+  - @wso2is/admin.identity-providers.v1@2.22.28
+  - @wso2is/admin.login-flow.ai.v1@2.22.28
+  - @wso2is/admin.oidc-scopes.v1@2.21.28
+  - @wso2is/admin.organizations.v1@2.22.28
+  - @wso2is/admin.roles.v2@2.22.28
+  - @wso2is/admin.authorization.v1@2.21.10
+  - @wso2is/admin.branding.v1@2.22.28
+  - @wso2is/admin.claims.v1@2.21.28
+  - @wso2is/admin.impersonation.v1@1.2.28
+  - @wso2is/admin.secrets.v1@2.21.28
+  - @wso2is/admin.server-configurations.v1@2.24.28
+  - @wso2is/admin.users.v1@2.23.28
+  - @wso2is/admin.userstores.v1@2.21.28
+  - @wso2is/admin.wsfed-configuration.v1@2.21.28
+  - @wso2is/form@2.1.19
+  - @wso2is/admin.api-resources.v2@2.21.28
+  - @wso2is/admin.feature-gate.v1@1.1.28
+  - @wso2is/admin.template-core.v1@1.0.80
+
 ## 2.26.27
 
 ### Patch Changes

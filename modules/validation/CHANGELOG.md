@@ -1,5 +1,11 @@
 # @wso2is/validation
 
+## 2.0.10
+
+### Patch Changes
+
+- [#6982](https://github.com/wso2/identity-apps/pull/6982) [`f1e54d9187ebecf488222f32aabc60c1c067ad52`](https://github.com/wso2/identity-apps/commit/f1e54d9187ebecf488222f32aabc60c1c067ad52) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with adding callback URLs for traditional web apps
+
 ## 2.0.9
 
 ### Patch Changes
