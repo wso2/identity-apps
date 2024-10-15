@@ -456,7 +456,6 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
             topActionPanelExtension={ (
                 <Show when={ [ ...featureConfig?.users?.scopes?.create, ...featureConfig?.userRoles?.scopes?.update ] }>
                     { !isSubOrganization() &&
-                      isEnterpriseLoginEnabled &&
                       isPrivilegedUsersInConsoleSettingsEnabled && (
                         <Button
                             data-componentid={ `${componentId}-admin-settings-button` }
