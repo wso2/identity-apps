@@ -1,5 +1,12 @@
 # @wso2is/dynamic-forms
 
+## 2.0.111
+
+### Patch Changes
+
+- Updated dependencies [[`f1e54d9187ebecf488222f32aabc60c1c067ad52`](https://github.com/wso2/identity-apps/commit/f1e54d9187ebecf488222f32aabc60c1c067ad52)]:
+  - @wso2is/validation@2.0.10
+
 ## 2.0.110
 
 ### Patch Changes
