@@ -16,9 +16,11 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
 import {
+    AppState,
     SharedUserStoreUtils,
     UIConstants,
     UserBasicInterface,
@@ -33,7 +35,9 @@ import { UserInviteInterface, UserListInterface } from "@wso2is/admin.users.v1/m
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
+import { AutocompleteFieldAdapter } from "@wso2is/form/src";
+import { Validation } from "@wso2is/forms";
 import {
     ContentLoader,
     DocumentationLink,
@@ -51,7 +55,9 @@ import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
 import React, { FormEvent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Header } from "semantic-ui-react";
+import { AdministratorConstants } from "../../constants";
 import { InternalAdminFormDataInterface } from "../../models";
 import { isAdminUser, isCollaboratorUser } from "../../utils/administrators";
 
@@ -94,6 +100,12 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+
+    const consoleSettingsFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
+    const isInvitedAdminInConsoleSettingsEnabled: boolean = !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
+        "consoleSettings.invitedExternalAdmins"
+    );
 
     /**
      * Retrieve the application data for the console application, filtering by name.
@@ -150,16 +162,29 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                 .then((response: AxiosResponse) => {
                     setRolesList(response.data.Resources);
                     response.data.Resources.map((role: RolesInterface, index: number) => {
-                        if ((role.meta?.systemRole) &&
-                            role.displayName !== "system" &&
-                            role.displayName !== "everyone" &&
-                            role.displayName !== "selfsignup" &&
-                            (role.displayName?.split("/")?.length < 2 &&
-                            role.displayName?.split("/")[0] !== "Application")
+                        if(role.displayName === "system" ||
+                            role.displayName === "everyone" ||
+                            role.displayName === "selfsignup"
                         ) {
+                            return;
+                        }
+
+                        if (
+                            role.displayName?.split("/")?.length < 2 &&
+                            role.displayName?.split("/")[0] === "Application"
+                        ) {
+                            return;
+                        }
+
+                        if (isInvitedAdminInConsoleSettingsEnabled ||
+                            (
+                                !isInvitedAdminInConsoleSettingsEnabled && role.meta?.systemRole
+                            )
+
+                        ){
                             roleOptions?.push({
                                 key: index,
-                                text: role?.displayName,
+                                label: role?.displayName,
                                 value: role?.displayName
                             });
                         }
@@ -190,6 +215,15 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
             setFinishButtonDisabled(isEmpty(checkedAssignedListItems));
         }
     }, [ checkedAssignedListItems ]);
+
+    useEffect(() => {
+        document
+            ?.getElementById(
+                administratorType === AdminAccountTypes.INTERNAL
+                    ? AdministratorConstants.INVITE_INTERNAL_USER_FORM_ID
+                    : AdministratorConstants.INVITE_EXTERNAL_USER_FORM_ID
+            )?.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+    }, [ triggerSubmit ]);
 
     /**
      * The following method accepts a Map and returns the values as a string.
@@ -238,14 +272,14 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
             });
     };
 
-    const getFormValues = (values: Map<string, FormValue>): void => {
+    const getFormValues = (values: {email: string, roles: DropdownProps[]}): void => {
         eventPublisher.publish("manage-users-collaborator-role", {
-            type: kebabCase(values.get("role").toString())
+            type: kebabCase(values.roles.toString())
         });
 
         const inviteUser: UserInviteInterface = {
-            email: values.get("email").toString(),
-            roles: [ values.get("role").toString() ]
+            email: values.email.toString(),
+            roles: values.roles.map((role: DropdownProps) => role.value as string)
         };
 
         if (triggerSubmit) {
@@ -308,170 +342,200 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
      * The modal to add new user internally.
      */
     const inviteInternalUserForm = () => (
-        <Forms
-            data-componentid={ `${ componentId }-external-form` }
-            onSubmit={ () => processInternalAdminFormData(administratorConfig.adminRoleName) }
-            submitState={ triggerSubmit }
-        >
+        <>
             <Heading as="h5" className="mt-3">
                 { t("extensions:manage.users.wizard.addAdmin.internal.selectUser") }
             </Heading>
-            <Hint>
-                { t("extensions:manage.users.wizard.addAdmin.internal.hint") }
-            </Hint>
-            <TransferComponent
-                compact
-                basic
-                bordered
-                className="one-column-selection"
-                selectionComponent
-                searchPlaceholder={
-                    t("extensions:manage.users.wizard.addAdmin.internal.searchPlaceholder")
+            <Hint>{ t("extensions:manage.users.wizard.addAdmin.internal.hint") }</Hint>
+            <FinalForm
+                data-componentid={ `${componentId}-external-form` }
+                onSubmit={ () => processInternalAdminFormData(administratorConfig.adminRoleName) }
+                render={ ({ handleSubmit }: FormRenderProps) => {
+                    return (<form id="inviteInternalUserForm" onSubmit={ handleSubmit }>
+                        <TransferComponent
+                            compact
+                            basic
+                            bordered
+                            className="one-column-selection"
+                            selectionComponent
+                            searchPlaceholder={
+                                t("extensions:manage.users.wizard.addAdmin.internal.searchPlaceholder")
+                            }
+                            isLoading={ isUserListRequestLoading }
+                            iconPosition="left"
+                            handleUnelectedListSearch={
+                                (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
+                                    handleSearchFieldChange(e, value);
+                                }
+                            }
+                            data-componentid={ `${componentId}-transfer-component` }
+                        >
+                            <TransferList
+                                selectionComponent
+                                isListEmpty={ !isUserListRequestLoading && usersList?.length < 1 }
+                                isLoading={ isUserListRequestLoading }
+                                listType="unselected"
+                                emptyPlaceholderContent={
+                                    isEmpty(searchQuery)
+                                        ? t("extensions:manage.users.wizard.addAdmin.internal." +
+                                            "emptySearchQueryPlaceholder")
+                                        : t(
+                                            "extensions:manage.users.wizard.addAdmin.internal." +
+                                            "emptySearchResultsPlaceholder"
+                                        )
+                                }
+                                data-componentid={ `${componentId}-unselected-transfer-list` }
+                                emptyPlaceholderDefaultContent={ t("transferList:list." + "emptyPlaceholders.default") }
+                            >
+                                { usersList?.map((user: UserBasicInterface, index: number) => {
+                                    const header: string = getUserNameWithoutDomain(user?.userName);
+                                    const subHeader: string = UserManagementUtils.resolveUserListSubheader(user);
+
+                                    return (
+                                        <TransferListItem
+                                            handleItemChange={ () => handleAssignedItemCheckboxChange(user) }
+                                            key={ index }
+                                            listItem={ {
+                                                listItemElement: resolveListItemElement(header),
+                                                listItemValue: subHeader
+                                            } }
+                                            listItemId={ user.id }
+                                            listItemIndex={ index }
+                                            isItemChecked={ checkedAssignedListItems.some(
+                                                (item: UserBasicInterface) => item.id === user.id
+                                            ) }
+                                            showSecondaryActions={ false }
+                                            showListSubItem={ true }
+                                            listSubItem={
+                                                header !== subHeader && (
+                                                    <Header as="h6">
+                                                        <Header.Content>
+                                                            <Header.Subheader
+                                                                data-componentid={ `${componentId}-item-sub-heading` }
+                                                            >
+                                                                { subHeader }
+                                                            </Header.Subheader>
+                                                        </Header.Content>
+                                                    </Header>
+                                                )
+                                            }
+                                            data-componentid={ `${componentId}-unselected-transfer-list-item-${index}` }
+                                        />
+                                    );
+                                }) }
+                            </TransferList>
+                        </TransferComponent>
+                    </form>);
+
                 }
-                isLoading={ isUserListRequestLoading }
-                iconPosition="left"
-                handleUnelectedListSearch={ (e: FormEvent<HTMLInputElement>,
-                    { value }: { value: string; }) => {
-                    handleSearchFieldChange(e, value);
-                } }
-                data-componentid={ `${ componentId }-transfer-component` }
-            >
-                <TransferList
-                    selectionComponent
-                    isListEmpty={ !isUserListRequestLoading && usersList?.length < 1 }
-                    isLoading={ isUserListRequestLoading }
-                    listType="unselected"
-                    emptyPlaceholderContent={ isEmpty(searchQuery)
-                        ? t("extensions:manage.users.wizard.addAdmin.internal.emptySearchQueryPlaceholder")
-                        : t("extensions:manage.users.wizard.addAdmin.internal.emptySearchResultsPlaceholder")
-                    }
-                    data-componentid={ `${ componentId }-unselected-transfer-list` }
-                    emptyPlaceholderDefaultContent={ t("transferList:list."
-                        + "emptyPlaceholders.default") }
-                >
-                    {
-                        usersList?.map((user: UserBasicInterface, index: number) => {
-
-                            const header: string = getUserNameWithoutDomain(user?.userName);
-                            const subHeader: string = UserManagementUtils.resolveUserListSubheader(user);
-
-                            return (
-                                <TransferListItem
-                                    handleItemChange={ () => handleAssignedItemCheckboxChange(user) }
-                                    key={ index }
-                                    listItem={ {
-                                        listItemElement: resolveListItemElement(header),
-                                        listItemValue: subHeader
-                                    } }
-                                    listItemId={ user.id }
-                                    listItemIndex={ index }
-                                    isItemChecked={ checkedAssignedListItems.some((item: UserBasicInterface) =>
-                                        item.id === user.id) }
-                                    showSecondaryActions={ false }
-                                    showListSubItem={ true }
-                                    listSubItem={ header !== subHeader && (
-                                        <Header as="h6">
-                                            <Header.Content>
-                                                <Header.Subheader
-                                                    data-componentid={ `${ componentId }-item-sub-heading` }
-                                                >
-                                                    { subHeader }
-                                                </Header.Subheader>
-                                            </Header.Content>
-                                        </Header>
-                                    ) }
-                                    data-componentid={ `${ componentId }-unselected-transfer-list-item-${ index }` }
-                                />
-                            );
-                        } )
-                    }
-                </TransferList>
-            </TransferComponent>
-        </Forms>
+                }
+            ></FinalForm>
+        </>
     );
 
     /**
      * The modal to add new user externally.
      */
     const inviteExternalUserForm = () => (
-        <Forms
-            data-componentid={ `${ componentId }-external-form` }
-            onSubmit={ (values: Map<string, FormValue>) => {
-                onSubmit(getFormValues(values));
-            } }
-            submitState={ triggerSubmit }
-        >
+        <>
+
             {
                 (isUserRoleOptionsRequestLoading ||
-                    !userRoleOptions ||
-                    userRoleOptions?.length <= 0
-                ) ? (
-                        <ContentLoader/>
-                    ) : (
-                        <Grid>
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                                    <Field
-                                        data-componentid={ `${ componentId }-external-form-email-input` }
-                                        label={ t(
-                                            "user:forms.addUserForm.inputs.email.label"
-                                        ) }
-                                        name="email"
-                                        placeholder={ t(
-                                            "user:forms.addUserForm.inputs." +
-                                            "email.placeholder"
-                                        ) }
-                                        required={ true }
-                                        requiredErrorMessage={ t(
-                                            "user:forms.addUserForm.inputs.email.validations.empty"
-                                        ) }
-                                        validation={ (value: string, validation: Validation) => {
-                                            // Check whether username is a valid email.
-                                            // check username validity against userstore regex
-                                            if (value && (!FormValidation.email(value) || !SharedUserStoreUtils
-                                                .validateInputAgainstRegEx(value, window["AppUtils"]
-                                                    .getConfig().extensions.collaboratorUsernameRegex))) {
-                                                validation.isValid = false;
-                                                validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
-                                            }
-                                        } }
-                                        type="email"
-                                        tabIndex={ 5 }
-                                        maxLength={ 50 }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                                    <Field
-                                        data-componentid={ `${ componentId }-external-form-role-dropdown` }
-                                        type="dropdown"
-                                        label={ "Role" }
-                                        name="role"
-                                        children={ userRoleOptions }
-                                        requiredErrorMessage={ t(
-                                            "user:forms.addUserForm.inputs.domain.validations.empty"
-                                        ) }
-                                        required={ true }
-                                        value={ userRoleOptions[0]?.value }
-                                        tabIndex={ 1 }
-                                    />
-                                    <Hint>
-                                        { "Select a role to assign to the user." +
-                                            " The access level of the user is determined by the role." }
-                                        <DocumentationLink
-                                            link={ getLink("manage.users.newCollaboratorUser.learnMore") }
-                                        >
-                                            { t("extensions:common.learnMore") }
-                                        </DocumentationLink>
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Divider hidden/>
-                        </Grid>
-                    )
+                !userRoleOptions ||
+                userRoleOptions?.length <= 0
+                ) ?
+                    <ContentLoader/>     :
+                    (<FinalForm
+                        data-componentid={ `${ componentId }-external-form` }
+                        onSubmit={ (values: {email: string, roles: DropdownProps[]}) => {
+                            onSubmit(getFormValues(values));
+                        } }
+                        render={ ({ handleSubmit }: FormRenderProps) => {
+                            return (
+                                <form id="inviteExternalUserForm" onSubmit={ handleSubmit }>
+                                    <Grid>
+                                        <Grid.Row columns={ 1 }>
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                                                <FinalFormField
+                                                    data-componentid={ `${ componentId }-external-form-email-input` }
+                                                    label={ t(
+                                                        "user:forms.addUserForm.inputs.email.label"
+                                                    ) }
+                                                    name="email"
+                                                    placeholder={ t(
+                                                        "user:forms.addUserForm.inputs.email.placeholder"
+                                                    ) }
+                                                    required={ true }
+                                                    requiredErrorMessage={ t(
+                                                        "user:forms.addUserForm.inputs.email.validations.empty"
+                                                    ) }
+                                                    validation={ (value: string, validation: Validation) => {
+                                                        // Check whether username is a valid email.
+                                                        // check username validity against userstore regex
+                                                        if (
+                                                            value &&
+                                                            (
+                                                                !FormValidation.email(value) ||
+                                                                !SharedUserStoreUtils.validateInputAgainstRegEx(
+                                                                    value, window["AppUtils"]
+                                                                        .getConfig().extensions.
+                                                                        collaboratorUsernameRegex
+                                                                )
+                                                            )
+                                                        ) {
+                                                            validation.isValid = false;
+                                                            validation.errorMessages.push(
+                                                                USERNAME_REGEX_VIOLATION_ERROR_MESSAGE
+                                                            );
+                                                        }
+                                                    } }
+                                                    type="email"
+                                                    component={ TextFieldAdapter }
+                                                    tabIndex={ 5 }
+                                                    maxLength={ 50 }
+                                                />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                        <Grid.Row columns={ 1 }>
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                                                <FinalFormField
+                                                    data-componentid={ `${ componentId }-external-form-role-dropdown` }
+                                                    label={ "Roles" }
+                                                    name="roles"
+                                                    options={ userRoleOptions }
+                                                    requiredErrorMessage={ t(
+                                                        "user:forms.addUserForm.inputs.domain.validations.empty"
+                                                    ) }
+                                                    placeholder="Select roles"
+                                                    component={ AutocompleteFieldAdapter }
+                                                    required={ true }
+                                                    value={ userRoleOptions[0]?.value }
+                                                    tabIndex={ 1 }
+                                                    multipleValues
+                                                />
+                                                <Hint>
+                                                    { "Select a role to assign to the user." +
+                                    " The access level of the user is determined by the role." }
+                                                    <DocumentationLink
+                                                        link={ getLink("manage.users.newCollaboratorUser.learnMore") }
+                                                    >
+                                                        { t("extensions:common.learnMore") }
+                                                    </DocumentationLink>
+                                                </Hint>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                        <Divider hidden/>
+                                    </Grid>
+                                </form>
+
+                            );
+                        } }
+                    />)
             }
-        </Forms>
+
+
+        </>
+
     );
 
     return (

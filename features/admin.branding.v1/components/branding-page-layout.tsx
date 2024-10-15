@@ -18,7 +18,6 @@
 
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Chip from "@oxygen-ui/react/Chip";
 import Paper from "@oxygen-ui/react/Paper";
@@ -29,8 +28,6 @@ import useAIBrandingPreference from "@wso2is/admin.branding.ai.v1/hooks/use-ai-b
 import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
-import { BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
@@ -78,10 +75,6 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         activeTab,
         updateActiveTab
     } = useBrandingPreference();
-
-    const {
-        data: brandingData
-    } = useGetBrandingPreferenceResolve(selectedApplication, BrandingPreferenceTypes.APP);
 
     const {
         data: applicationList,
@@ -413,30 +406,6 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             className="branding-page"
         >
             <LayoutGroup>
-                <motion.div layout>
-                    {
-                        brandingMode === BrandingModes.APPLICATION && !selectedApplication && (
-                            <Alert
-                                severity="warning"
-                                sx={ { marginBottom: 2 } }
-                            >
-                                { t("extensions:develop.branding.pageHeader.applicationListWarning") }
-                            </Alert>
-                        )
-                    }
-                    {
-                        brandingMode === BrandingModes.APPLICATION &&
-                        selectedApplication &&
-                        brandingData?.type === BrandingPreferenceTypes.ORG && (
-                            <Alert
-                                severity="info"
-                                sx={ { marginBottom: 2 } }
-                            >
-                                { t("extensions:develop.branding.pageHeader.defaultBrandingAppliedMessage") }
-                            </Alert>
-                        )
-                    }
-                </motion.div>
                 {
                     !brandingDisabledFeatures?.includes(AI_BRANDING_FEATURE_ID) &&
                     !isSubOrganization() && (

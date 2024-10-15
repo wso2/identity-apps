@@ -81,6 +81,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         onRoleUpdate,
         isReadOnly,
         tabIndex,
+        activeUserStore,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -97,7 +98,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const [ activeOption, setActiveOption ] = useState<GroupsInterface|UserBasicInterface>(undefined);
     const [ availableUserStores, setAvailableUserStores ] = useState<UserstoreDisplayItem[]>([]);
     const [ selectedUserStoreDomainName, setSelectedUserStoreDomainName ] = useState<string>(
-        disabledUserstores.includes(RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME) ? "DEFAULT" : "Primary"
+        activeUserStore ??
+        disabledUserstores.includes(RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME) ? "DEFAULT" : "PRIMARY"
     );
     const [ isPlaceholderVisible, setIsPlaceholderVisible ] = useState<boolean>(true);
     const [ selectedUsersFromUserStore, setSelectedUsersFromUserStore ] = useState<UserBasicInterface[]>([]);
@@ -125,9 +127,13 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const isUserBelongToSelectedUserStore = (user: UserBasicInterface, userStoreName: string) => {
         const userNameChunks: string[] = user.userName.split("/");
 
-        return (userNameChunks.length === 1 && userStoreName === "Primary")
+        return (userNameChunks.length === 1 && userStoreName === "PRIMARY")
         || (userNameChunks.length === 2 && userNameChunks[0] === userStoreName.toUpperCase());
     };
+
+    useEffect(() => {
+        setSelectedUserStoreDomainName(activeUserStore);
+    }, [ activeUserStore ]);
 
     useEffect(() => {
         if (!role?.users?.length) {
@@ -303,7 +309,14 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         const removedUsers: RolesMemberInterface[] = role?.users?.filter((user: RolesMemberInterface) => {
             return selectedUsers?.find(
                 (selectedUser: UserBasicInterface) => selectedUser.id === user.value) === undefined;
+        }).filter((user: RolesMemberInterface) => {
+            const userNameChunks: string[] = user.display.split("/");
+
+            return (userNameChunks.length === 1 && selectedUserStoreDomainName === "PRIMARY")
+            || (userNameChunks.length === 2 && userNameChunks[0] === selectedUserStoreDomainName.toUpperCase());
         }) ?? [];
+
+
 
         const removeOperations: PatchUserRemoveOpInterface[] = removedUsers?.map((user: RolesMemberInterface) => {
             return ({
@@ -390,33 +403,39 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                             {
                                 users && availableUserStores && !isReadOnly && (
                                     <Grid container spacing={ 1 }>
-                                        <Grid xs={ 12 } sm={ 4 } md={ 2 } alignItems="center">
-                                            <FormControl fullWidth size="medium">
-                                                <Select
-                                                    value={ selectedUserStoreDomainName }
-                                                    onChange={
-                                                        (e: SelectChangeEvent<unknown>) => {
-                                                            updateSelectedAllUsers();
-                                                            setSelectedUsersFromUserStore([]);
-                                                            setSelectedUserStoreDomainName(e.target.value as string);
+                                        { !activeUserStore && (
+                                            <Grid xs={ 12 } sm={ 4 } md={ 2 } alignItems="center">
+                                                <FormControl fullWidth size="medium">
+                                                    <Select
+                                                        value={ selectedUserStoreDomainName }
+                                                        onChange={
+                                                            (e: SelectChangeEvent<unknown>) => {
+                                                                updateSelectedAllUsers();
+                                                                setSelectedUsersFromUserStore([]);
+                                                                setSelectedUserStoreDomainName(
+                                                                    e.target.value as string
+                                                                );
+                                                            }
                                                         }
-                                                    }
-                                                    data-componentid={ `${ componentId }-user-store-domain-dropdown` }
-                                                >
-                                                    { isUserStoresLoading
-                                                        ? <p>{ t("common:loading") }</p>
-                                                        : availableUserStores?.map((userstore: UserStoreListItem) =>
-                                                            (<MenuItem
-                                                                key={ userstore.name }
-                                                                value={ userstore.name }
-                                                            >
-                                                                { userstore.name }
-                                                            </MenuItem>)
-                                                        )
-                                                    }
-                                                </Select>
-                                            </FormControl>
-                                        </Grid>
+                                                        data-componentid={
+                                                            `${ componentId }-user-store-domain-dropdown`
+                                                        }
+                                                    >
+                                                        { isUserStoresLoading
+                                                            ? <p>{ t("common:loading") }</p>
+                                                            : availableUserStores?.map((userstore: UserStoreListItem) =>
+                                                                (<MenuItem
+                                                                    key={ userstore.name }
+                                                                    value={ userstore.name }
+                                                                >
+                                                                    { userstore.name }
+                                                                </MenuItem>)
+                                                            )
+                                                        }
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
+                                        ) }
                                         <Grid xs={ 12 } sm={ 4 } md={ 8 }>
                                             <Autocomplete
                                                 multiple

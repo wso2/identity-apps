@@ -3326,6 +3326,7 @@ export interface Extensions {
                 administratorSettingsSubtitle: string;
                 administratorSettingsTitle: string;
                 backButton: string;
+                backButtonConsoleSettings: string;
                 disableToggleMessage: string;
                 enableToggleMessage: string;
                 error: {
