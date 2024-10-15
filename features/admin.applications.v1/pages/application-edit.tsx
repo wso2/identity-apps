@@ -56,6 +56,7 @@ import {
 import { AxiosError, AxiosResponse } from "axios";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -581,9 +582,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                             className="ignore-once-button"
                                             onClick={ () => setDisplayBanner(false) }>
                                             <Icon
-                                                link={ true }
+                                                link
                                                 onClick={ () => setDisplayBanner(false) }
-                                                className=""
                                                 size="small"
                                                 color="grey"
                                                 name="close"
@@ -627,6 +627,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 <Grid className="banner-grid">
                     <List dense>
                         {
+                            !ApplicationManagementUtils.isGivenAppVersionAllowed(
+                                application?.applicationVersion,
+                                ApplicationManagementConstants.APP_VERSION_1
+                            ) &&
                             applicationInboundConfigs?.grantTypes
                                 .includes(ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT) && (
                                 <ListItem
@@ -668,6 +672,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                             )
                         }
                         {
+                            !ApplicationManagementUtils.isGivenAppVersionAllowed(
+                                application?.applicationVersion,
+                                ApplicationManagementConstants.APP_VERSION_1
+                            ) &&
                             applicationInboundConfigs?.grantTypes
                                 .includes(ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT) && (
                                 <ListItem
@@ -692,6 +700,48 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                             link={
                                                 getLink("develop.applications.editApplication.outdatedApplications."
                                                 + "versions.version100.useClientIdAsSubClaimOfAppTokens."
+                                                + "documentationLink")
+                                            }
+                                            showEmptyLink={ false }
+                                        >
+                                            <Trans
+                                                i18nKey={
+                                                    t("applications:forms.inboundOIDC.sections"
+                                                    + ".outdatedApplications.documentationHint")
+                                                }
+                                            />
+                                        </DocumentationLink>
+                                    </ListItemText>
+                                </ListItem>
+                            )
+                        }
+                        {
+                            !ApplicationManagementUtils.isGivenAppVersionAllowed(
+                                application?.applicationVersion,
+                                ApplicationManagementConstants.APP_VERSION_2
+                            ) && applicationInboundConfigs && (
+                                <ListItem
+                                    sx={ {
+                                        display: "list-item",
+                                        listStyleType: "disc"
+                                    } }>
+                                    <ListItemText>
+                                        <Typography variant="body2" >
+                                            <Trans
+                                                i18nKey={
+                                                    t("applications:forms.inboundOIDC.sections"
+                                                    + ".outdatedApplications.fields.versions"
+                                                    + ".version200.addAllRequestedClaimsInJWTAccessToken.instruction")
+                                                }
+                                            >
+                                                Irrespective of the <code>scopes</code> requested, all the <code>
+                                                Requested Attributes</code> will be included in the JWT Access Token.
+                                            </Trans>
+                                        </Typography>
+                                        <DocumentationLink
+                                            link={
+                                                getLink("develop.applications.editApplication.outdatedApplications."
+                                                + "versions.version200.addAllRequestedClaimsInJWTAccessToken."
                                                 + "documentationLink")
                                             }
                                             showEmptyLink={ false }
@@ -855,6 +905,26 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     ?? (
                         <div className="with-label ellipsis" ref={ appDescElement }>
                             { resolveTemplateLabel() }
+                            {
+                                ApplicationManagementUtils.isApplicationOutdated(
+                                    moderatedApplicationData?.applicationVersion,
+                                    moderatedApplicationData?.clientId
+                                    && !isEmpty(moderatedApplicationData?.clientId)) && (
+                                    <>
+                                        <Label
+                                            className="outdated-app-label"
+                                            size="small"
+                                        >
+                                            <Trans
+                                                i18nKey={
+                                                    t("applications:forms.inboundOIDC.sections"
+                                                    + ".outdatedApplications.label")
+                                                }
+                                            />
+                                        </Label>
+                                    </>
+                                )
+                            }
                             {
                                 ApplicationManagementUtils.isChoreoApplication(moderatedApplicationData)
                                     && (<Label
