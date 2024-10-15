@@ -1,5 +1,26 @@
 # @wso2is/admin.console-settings.v1
 
+## 2.21.27
+
+### Patch Changes
+
+- [#6991](https://github.com/wso2/identity-apps/pull/6991) [`92d184102c4d1875a62d74e0125f49be898826d2`](https://github.com/wso2/identity-apps/commit/92d184102c4d1875a62d74e0125f49be898826d2) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix admin settings button visibility condition in console settings UI in first level orgs for managed deployments
+
+- Updated dependencies [[`3c65c532e454e53dd4fe6f8136837fee2fd688d2`](https://github.com/wso2/identity-apps/commit/3c65c532e454e53dd4fe6f8136837fee2fd688d2)]:
+  - @wso2is/admin.applications.v1@2.26.27
+  - @wso2is/admin.administrators.v1@2.25.27
+  - @wso2is/admin.core.v1@2.31.8
+  - @wso2is/admin.extensions.v1@2.30.27
+  - @wso2is/admin.identity-providers.v1@2.22.27
+  - @wso2is/admin.login-flow.ai.v1@2.22.27
+  - @wso2is/admin.organizations.v1@2.22.27
+  - @wso2is/admin.roles.v2@2.22.27
+  - @wso2is/admin.authentication.v1@2.21.27
+  - @wso2is/admin.feature-gate.v1@1.1.27
+  - @wso2is/admin.server-configurations.v1@2.24.27
+  - @wso2is/admin.users.v1@2.23.27
+  - @wso2is/admin.userstores.v1@2.21.27
+
 ## 2.21.26
 
 ### Patch Changes
