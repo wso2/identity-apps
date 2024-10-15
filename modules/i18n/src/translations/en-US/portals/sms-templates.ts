@@ -36,7 +36,7 @@ export const smsTemplates: smsTemplatesNS = {
     form: {
         inputs: {
             body: {
-                charLengthWarning: "Consult with you SMS service provider for the maximum character limit.",
+                charLengthWarning: "Consult with your SMS service provider for the maximum character limit.",
                 hint: "You can utilize placeholder variables within the SMS body.",
                 label: "SMS Body",
                 placeholder: "Enter the SMS content"
