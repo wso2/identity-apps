@@ -1412,6 +1412,11 @@ export interface ApplicationsNS {
                                 useClientIdAsSubClaimOfAppTokens: {
                                     instruction: string;
                                 }
+                            },
+                            version200: {
+                                addAllRequestedClaimsInJWTAccessToken: {
+                                    instruction: string;
+                                }
                             }
                         };
                     }
