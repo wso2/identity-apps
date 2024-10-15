@@ -71,7 +71,7 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
 
     const [ availableSmsTemplatesList, setAvailableSmsTemplatesList ] = useState<SmsTemplateType[]>([]);
     const [ currentSmsTemplate, setCurrentSmsTemplate ] = useState<SmsTemplate>();
-    const [ isSystemTemplate, setIsSystemTemplate ] = useState(true);
+    const [ isSystemTemplate, setIsSystemTemplate ] = useState(false);
     const [ isTemplateNotAvailable, setIsTemplateNotAvailable ] = useState(false);
     const [ selectedLocale, setSelectedLocale ] = useState(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
     const [ selectedSmsTemplateId, setSelectedSmsTemplateId ] = useState<string>();
@@ -411,7 +411,7 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
 
                 <Divider hidden/>
 
-                { smsTemplate && !isSystemTemplate && selectedLocale !== I18nConstants.DEFAULT_FALLBACK_LANGUAGE &&
+                { !isSystemTemplate && selectedLocale !== I18nConstants.DEFAULT_FALLBACK_LANGUAGE &&
                 (<Show
                     when={ featureConfig?.smsTemplates?.scopes?.delete }
                 >
@@ -427,7 +427,7 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
                 </Show>)
                 }
 
-                { smsTemplate && !isSystemTemplate && selectedLocale === I18nConstants.DEFAULT_FALLBACK_LANGUAGE &&
+                { !isSystemTemplate && selectedLocale === I18nConstants.DEFAULT_FALLBACK_LANGUAGE &&
                 (<Show
                     when={ featureConfig?.smsTemplates?.scopes?.delete }
                 >
