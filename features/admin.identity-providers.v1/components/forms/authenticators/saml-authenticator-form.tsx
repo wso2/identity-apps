@@ -17,7 +17,7 @@
  */
 import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form, composeValidators } from "@wso2is/form";
 import { Code, FormInputLabel, FormSection } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -37,7 +37,6 @@ import {
     LOGOUT_URL_LENGTH,
     SERVICE_PROVIDER_ENTITY_ID_LENGTH,
     SSO_URL_LENGTH,
-    composeValidators,
     fastSearch,
     getAvailableNameIDFormats,
     getAvailableProtocolBindingTypes,
