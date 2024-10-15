@@ -113,14 +113,17 @@ export class ApplicationManagementUtils {
             const latestAppVersionArray: number[] = ApplicationManagementConstants
                 .LATEST_VERSION.match(/\d+/g).map(Number);
 
-            if (appVersionArray.length > 0 && latestAppVersionArray.length > 0 &&
-                appVersionArray[0] < latestAppVersionArray[0]) {
+            // App version and latest version arrays should have at least 3 parts.
+            // Major, Minor and Patch versions.
+            if (appVersionArray?.length < 3 && latestAppVersionArray?.length < 3) {
+                return false;
+            }
+
+            if (appVersionArray[0] < latestAppVersionArray[0]) {
                 return true;
-            } else if (appVersionArray.length > 1 && latestAppVersionArray.length > 1 &&
-                appVersionArray[1] < latestAppVersionArray[1]) {
+            } else if (appVersionArray[1] < latestAppVersionArray[1]) {
                 return true;
-            } else if (appVersionArray.length > 2 && latestAppVersionArray.length > 2 &&
-                appVersionArray[2] < latestAppVersionArray[2]) {
+            } else if (appVersionArray[2] < latestAppVersionArray[2]) {
                 return true;
             } else {
                 return false;

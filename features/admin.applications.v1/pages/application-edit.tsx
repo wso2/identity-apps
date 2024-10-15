@@ -211,7 +211,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      */
     useEffect(() => {
         const path: string[] = history?.location?.pathname?.split("/");
-        const id: string = path[ path?.length - 1 ];
+        // Get the application ID from the URL. Remove the hash if it's present.
+        const id: string = path[ path?.length - 1 ]?.split("#")[ 0 ];
 
         setApplicationId(id);
     }, []);
