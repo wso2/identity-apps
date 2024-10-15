@@ -56,6 +56,7 @@ import {
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -435,6 +436,22 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                                         className="choreo-label no-margin-left"
                                                     >
                                                         { t("extensions:develop.apiResource.managedByChoreoText") }
+                                                    </Label>
+                                                </div>
+                                            </Grid>)
+                                    }
+                                    {
+                                        ApplicationManagementUtils
+                                            .isApplicationOutdated(app.applicationVersion,
+                                                app.clientId != undefined && !isEmpty(app.clientId))
+                                            && (<Grid>
+                                                <div>
+                                                    <Label
+                                                        size="mini"
+                                                        className="outdated-app-label"
+                                                    >
+                                                        { t("applications:forms.inboundOIDC.sections."
+                                                                + "outdatedApplications.label") }
                                                     </Label>
                                                 </div>
                                             </Grid>)
