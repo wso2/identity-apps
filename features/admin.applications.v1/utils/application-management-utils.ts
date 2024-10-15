@@ -107,17 +107,20 @@ export class ApplicationManagementUtils {
     public static isApplicationOutdated(applicationVersion: string, grantTypes?: string[]): boolean {
 
         if (applicationVersion != undefined
-            && grantTypes.includes(ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT)) {
+            && grantTypes?.includes(ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT)) {
 
             const appVersionArray: number[] = applicationVersion?.match(/\d+/g).map(Number);
             const latestAppVersionArray: number[] = ApplicationManagementConstants
                 .LATEST_VERSION.match(/\d+/g).map(Number);
 
-            if (appVersionArray[0] < latestAppVersionArray[0]) {
+            if (appVersionArray.length > 0 && latestAppVersionArray.length > 0 &&
+                appVersionArray[0] < latestAppVersionArray[0]) {
                 return true;
-            } else if (appVersionArray[1] < latestAppVersionArray[1]) {
+            } else if (appVersionArray.length > 1 && latestAppVersionArray.length > 1 &&
+                appVersionArray[1] < latestAppVersionArray[1]) {
                 return true;
-            } else if (appVersionArray[2] < latestAppVersionArray[2]) {
+            } else if (appVersionArray.length > 2 && latestAppVersionArray.length > 2 &&
+                appVersionArray[2] < latestAppVersionArray[2]) {
                 return true;
             } else {
                 return false;
