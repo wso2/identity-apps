@@ -3034,7 +3034,7 @@ export const extensions: Extensions = {
                     body: {
                         label: "SMS Body",
                         hint: "You can utilize placeholder variables within the SMS body.",
-                        charLengthWarning: "Consult with you SMS service provider for the maximum character limit.",
+                        charLengthWarning: "Consult with your SMS service provider for the maximum character limit.",
                         placeholder: "Enter the SMS content"
                     }
                 }
