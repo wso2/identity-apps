@@ -1,5 +1,55 @@
 # @wso2is/admin.core.v1
 
+## 2.31.11
+
+### Patch Changes
+
+- Updated dependencies [[`6ad72e63aa77557782f6c6d25fde402792e026cd`](https://github.com/wso2/identity-apps/commit/6ad72e63aa77557782f6c6d25fde402792e026cd)]:
+  - @wso2is/admin.roles.v2@2.22.30
+  - @wso2is/admin.administrators.v1@2.25.30
+  - @wso2is/admin.applications.v1@2.26.30
+  - @wso2is/admin.connections.v1@2.24.11
+  - @wso2is/admin.console-settings.v1@2.21.30
+  - @wso2is/admin.extensions.v1@2.30.30
+  - @wso2is/admin.groups.v1@2.21.30
+  - @wso2is/admin.identity-providers.v1@2.22.30
+  - @wso2is/admin.organizations.v1@2.22.30
+  - @wso2is/admin.users.v1@2.23.30
+  - @wso2is/admin.validation.v1@2.22.30
+  - @wso2is/admin.application-templates.v1@1.0.82
+  - @wso2is/admin.oidc-scopes.v1@2.21.30
+  - @wso2is/admin.identity-verification-providers.v1@2.23.11
+  - @wso2is/admin.sms-providers.v1@2.21.30
+  - @wso2is/admin.actions.v1@1.2.30
+  - @wso2is/admin.api-resources.v1@2.21.30
+  - @wso2is/admin.api-resources.v2@2.21.30
+  - @wso2is/admin.authentication.v1@2.21.30
+  - @wso2is/admin.branding.v1@2.22.30
+  - @wso2is/admin.certificates.v1@2.21.30
+  - @wso2is/admin.claims.v1@2.21.30
+  - @wso2is/admin.email-and-sms.v1@2.21.30
+  - @wso2is/admin.email-management.v1@2.21.30
+  - @wso2is/admin.email-providers.v1@2.21.30
+  - @wso2is/admin.email-templates.v1@2.21.30
+  - @wso2is/admin.feature-gate.v1@1.1.30
+  - @wso2is/admin.impersonation.v1@1.2.30
+  - @wso2is/admin.org-insights.v1@2.21.30
+  - @wso2is/admin.organization-discovery.v1@2.21.30
+  - @wso2is/admin.private-key-jwt.v1@2.21.30
+  - @wso2is/admin.remote-repository-configuration.v1@2.21.30
+  - @wso2is/admin.roles.v1@2.21.30
+  - @wso2is/admin.saml2-configuration.v1@2.21.30
+  - @wso2is/admin.secrets.v1@2.21.30
+  - @wso2is/admin.server-configurations.v1@2.24.30
+  - @wso2is/admin.server.v1@2.21.30
+  - @wso2is/admin.session-management.v1@2.21.30
+  - @wso2is/admin.subscription.v1@1.1.30
+  - @wso2is/admin.template-core.v1@1.0.82
+  - @wso2is/admin.tenants.v1@2.23.30
+  - @wso2is/admin.userstores.v1@2.21.30
+  - @wso2is/admin.workflow-approvals.v1@2.21.30
+  - @wso2is/admin.wsfed-configuration.v1@2.21.30
+
 ## 2.31.10
 
 ### Patch Changes
