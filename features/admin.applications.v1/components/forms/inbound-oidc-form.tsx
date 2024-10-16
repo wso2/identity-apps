@@ -4369,8 +4369,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         setIsLoading(false);
     };
 
-    console.log(accessTokenAttributesEnabled);
-
     return (
         !isLoading && metadata ?
             (<>
