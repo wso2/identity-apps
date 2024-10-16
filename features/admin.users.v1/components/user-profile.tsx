@@ -1620,6 +1620,24 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             data.Operations[0].value = {
                 [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")]: [ value ]
             };
+
+            const existingPrimaryEmail: string =
+                profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"));
+            const existingEmailList: string[] = profileInfo?.get(
+                ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES"))?.split(",") || [];
+
+            if (existingPrimaryEmail && !existingEmailList.includes(existingPrimaryEmail)) {
+                existingEmailList.push(existingPrimaryEmail);
+                data.Operations.push({
+                    op: "replace",
+                    value: {
+                        [schema.schemaId] : {
+                            [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")]:
+                                existingEmailList.join(",")
+                        }
+                    }
+                });
+            }
         } else if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")) {
 
             data.Operations[0].value = {
@@ -1630,6 +1648,24 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     }
                 ]
             };
+
+            const existingPrimaryMobile: string =
+                profileInfo.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"));
+            const existingMobileList: string[] =
+                profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS"))?.split(",") || [];
+
+            if (existingPrimaryMobile && !existingMobileList.includes(existingPrimaryMobile)) {
+                existingMobileList.push(existingPrimaryMobile);
+                data.Operations.push({
+                    op: "replace",
+                    value: {
+                        [schema.schemaId] : {
+                            [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")]:
+                                existingMobileList.join(",")
+                        }
+                    }
+                });
+            }
         }
         setIsSubmitting(true);
         updateUserInfo(user.id, data)
@@ -1699,6 +1735,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         attributeValues.push(value);
         if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")) {
+            const existingPrimaryEmail: string =
+                profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"));
+
+            if (existingPrimaryEmail && !attributeValues.includes(existingPrimaryEmail)) {
+                attributeValues.push(existingPrimaryEmail);
+            }
 
             data.Operations[0].value = {
                 [schema.schemaId]: {
@@ -1706,6 +1748,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 }
             };
         } else if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")) {
+            const existingPrimaryMobile: string =
+                profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"));
+
+            if (existingPrimaryMobile && !attributeValues.includes(existingPrimaryMobile)) {
+                attributeValues.push(existingPrimaryMobile);
+            }
 
             data.Operations[0].value = {
                 [schema.schemaId]: {
