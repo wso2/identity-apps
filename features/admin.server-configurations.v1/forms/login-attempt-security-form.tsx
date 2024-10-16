@@ -249,7 +249,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
             errors.maxFailedAttempts = t("extensions:manage.serverConfigurations.accountSecurity." +
                 "loginAttemptSecurity.form.fields.maxFailedAttempts.validations.invalid");
         } else if ((parseInt(values.maxFailedAttempts, 10) < GovernanceConnectorConstants
-            .LOGINS_ATTEMPT_SECURITY_FORM_FIELD_CONSTRAINTS.FAILED_ATTEMPTS_MIN_VALUE) 
+            .LOGINS_ATTEMPT_SECURITY_FORM_FIELD_CONSTRAINTS.FAILED_ATTEMPTS_MIN_VALUE)
             || (parseInt(values.maxFailedAttempts, 10) > GovernanceConnectorConstants
                 .LOGINS_ATTEMPT_SECURITY_FORM_FIELD_CONSTRAINTS.FAILED_ATTEMPTS_MAX_VALUE)) {
             // Check for invalid range.
@@ -481,23 +481,23 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                     }
                 </Hint>
                 <Field.Checkbox
-                            ariaLabel="enableIndefiniteUserLockduration"
-                            name="enableIndefiniteUserLockduration"
-                            label={ t("extensions:manage.serverConfigurations.accountSecurity." +
-                    "loginAttemptSecurity.form.fields.enableIndefiniteUserLockduration.label") }
-                            listen={ (value: boolean) => updateEnableIndefiniteAccountLockDuration(value) }
-                            checked={ enableIndefiniteUserLockduration }
-                            required={ false }
-                            readOnly={ readOnly }
-                            disabled={ !isConnectorEnabled }
-                            width={ 10 }
-                            data-testid={ `${testId}-enable-indefinite-user-lock-duration` }
+                    ariaLabel="enableIndefiniteUserLockduration"
+                    name="enableIndefiniteUserLockduration"
+                    label={ t("extensions:manage.serverConfigurations.accountSecurity." +
+                        "loginAttemptSecurity.form.fields.enableIndefiniteUserLockduration.label") }
+                    listen={ (value: boolean) => updateEnableIndefiniteAccountLockDuration(value) }
+                    checked={ enableIndefiniteUserLockduration }
+                    required={ false }
+                    readOnly={ readOnly }
+                    disabled={ !isConnectorEnabled }
+                    width={ 10 }
+                    data-testid={ `${testId}-enable-indefinite-user-lock-duration` }
                 />
                 <Hint className={ "mb-5" }>
-                            {
-                                t("extensions:manage.serverConfigurations.accountSecurity." +
+                    {
+                        t("extensions:manage.serverConfigurations.accountSecurity." +
                             "loginAttemptSecurity.form.fields.enableIndefiniteUserLockduration.hint")
-                            }
+                    }
                 </Hint>
                 <Field.Input
                     ariaLabel="accountLockTime"
