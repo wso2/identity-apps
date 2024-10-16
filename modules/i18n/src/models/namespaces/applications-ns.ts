@@ -1327,10 +1327,10 @@ export interface ApplicationsNS {
                             hint: string;
                             label:string;
                             placeholder: string;
-                            enable: {
-                                hint: string;
-                                label: string;
-                            };
+                            previousBehavior : string;
+                            feature: string;
+                            howToUse: string;
+                            note: string;
                         };
                     };
                 };
