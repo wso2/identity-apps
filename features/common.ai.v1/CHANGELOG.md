@@ -1,5 +1,14 @@
 # @wso2is/common.ai.v1
 
+## 2.21.29
+
+### Patch Changes
+
+- [#6994](https://github.com/wso2/identity-apps/pull/6994) [`46307ebe45202e4f333276f604f487511f122db7`](https://github.com/wso2/identity-apps/commit/46307ebe45202e4f333276f604f487511f122db7) Thanks [@savindi7](https://github.com/savindi7)! - Add margin to banner.
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.31.10
+
 ## 2.21.28
 
 ### Patch Changes
