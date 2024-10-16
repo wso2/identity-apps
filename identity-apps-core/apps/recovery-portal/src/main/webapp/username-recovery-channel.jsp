@@ -31,6 +31,8 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.*" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.HashMap" %>
@@ -88,12 +90,28 @@
     }
     
     String recoveryCode = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("recoveryCode"));
+    String tenantDomain = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("tenantDomain"));
     Boolean isUserFound = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("isUserFound"));
     Boolean noChannelFound = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("noChannelFound"));
+    
 
     String EMAIL = "EMAIL";
     String SMS = "SMS";
     String selectedOption = EMAIL;
+
+    Boolean isEmailEnabled;
+    Boolean isSMSEnabled;
+
+    // Checking the configs. todo: change the comment later.
+    try {
+        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+        isEmailEnabled = preferenceRetrievalClient.checkEmailBasedUsernameRecovery(tenantDomain);
+        isSMSEnabled = preferenceRetrievalClient.checkSMSBasedUsernameRecovery(tenantDomain);
+    } catch (PreferenceRetrievalClientException e) {
+        IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
 
     // Skipping the channel selection once we don't have channels or only have one channel.
     if(channels != null && channels.size() == 1){
@@ -208,6 +226,8 @@
                         </div>
                     </form>
                 </div>
+                <h1>is email enabed<%=isEmailEnabled%></h1>
+                <h1>is sms enabled<%=isSMSEnabled%></h1>
             </div>
         </layout:component>
         <layout:component componentName="ProductFooter">
