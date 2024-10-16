@@ -21,43 +21,51 @@ import { store } from "@wso2is/admin.core.v1";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { I18n } from "@wso2is/i18n";
 import { AxiosError, AxiosResponse } from "axios";
-import {
-    RemoteLogPublishingConfigurationInterface
-} from "../../../models/root-organizations/system-settings/remote-log-publishing";
+import TenantConstants from "../constants/tenant-constants";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
     AsgardeoSPAClient.getInstance()
 );
 
 /**
- * Update remote log publishing configurations.
+ * Deletes the tenant meta data(tenant specific data like tenant domain, tenant owner details).
  *
- * @param config - Data to be updated.
- * @returns a promise containing the response.
+ * This function calls the DELETE method of the following endpoint to update the tenant status.
+ *  - `https://{serverUrl}/t/{tenantDomain}/api/server/v1/tenants/{tenant-id}/metadata`
+ * For more details, refer to the documentation:
+ * {@link https://is.docs.wso2.com/en/latest/apis/tenant-management-rest-api/#tag/Tenants/operation/getOwners}
+ *
+ * @param id - Tenant id.
+ * @returns A promise that resolves when the operation is complete.
+ * @throws Error - Throws an error if the operation fails.
  */
-const updateRemoteLogPublishingConfigurationByLogType = (
-    config: RemoteLogPublishingConfigurationInterface
-): Promise<AxiosResponse> => {
-    const { logType, ...data } = config;
-
+const deleteTenantMetadata = (id: string): Promise<AxiosResponse> => {
     const requestConfig: RequestConfigInterface = {
-        data,
         headers: {
             "Content-Type": "application/json"
         },
-        method: HttpMethods.PUT,
-        url: store.getState().config.endpoints.remoteLogging + "/" + logType
+        method: HttpMethods.DELETE,
+        url: `${store.getState().config.endpoints.tenants}/${id}/metadata`
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
+            if (response.status !== 204) {
+                throw new IdentityAppsApiException(
+                    TenantConstants.TENANT_METADATA_DELETE_INVALID_STATUS_ERROR,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config
+                );
+            }
+
             return Promise.resolve(response.data);
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                I18n.instance.t("console:manage.features.serverConfigs.remoteLogPublishing.errors.genericError"),
+                TenantConstants.TENANT_METADATA_DELETE_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -67,4 +75,4 @@ const updateRemoteLogPublishingConfigurationByLogType = (
         });
 };
 
-export default updateRemoteLogPublishingConfigurationByLogType;
+export default deleteTenantMetadata;

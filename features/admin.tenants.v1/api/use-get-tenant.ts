@@ -23,16 +23,22 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { RootOrganizationsResponse } from "../../models/root-organizations/root-organizations";
+import { Tenant } from "../models/tenants";
 
 /**
- * Hook to get the action types.
+ * Hook to get the tenant details when an id is passed.
  *
+ * This function calls the GET method of the following endpoint to get the tenant details.
+ * - `https://{serverUrl}/t/{tenantDomain}/api/server/v1/tenants/{tenant-id}`
+ * For more details, refer to the documentation:
+ * {@link https://is.docs.wso2.com/en/latest/apis/tenant-management-rest-api/#tag/Tenants/operation/getTenant}
+ *
+ * @param id - Tenant id.
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetRootOrganizations = <Data = RootOrganizationsResponse, Error = RequestErrorInterface>
-    (shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
+const useGetTenant = <Data = Tenant, Error = RequestErrorInterface>
+    (id: string, shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -40,7 +46,7 @@ const useGetRootOrganizations = <Data = RootOrganizationsResponse, Error = Reque
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.rootOrganizations
+        url: `${ store.getState().config.endpoints.tenants }/${id}`
     };
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
@@ -56,4 +62,4 @@ const useGetRootOrganizations = <Data = RootOrganizationsResponse, Error = Reque
     };
 };
 
-export default useGetRootOrganizations;
+export default useGetTenant;

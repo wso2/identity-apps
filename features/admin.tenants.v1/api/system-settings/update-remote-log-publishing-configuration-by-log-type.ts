@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,63 +21,41 @@ import { store } from "@wso2is/admin.core.v1";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
+import { I18n } from "@wso2is/i18n";
 import { AxiosError, AxiosResponse } from "axios";
-import { ServerConstants } from "../../../../admin.server.v1/constants/server";
-import {
-    AdminAdvisoryBannerConfigurationInterface
-} from "../../../models/root-organizations/system-settings/admin-advisory";
+import { RemoteLogPublishingConfigurationInterface } from "../../models/system-settings/remote-log-publishing";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
     AsgardeoSPAClient.getInstance()
 );
 
 /**
- * Update admin advisory banner configurations.
+ * Update remote log publishing configurations.
  *
- * @param data - Data to be updated.
- * @returns a promise containing the server configurations.
+ * @param config - Data to be updated.
+ * @returns a promise containing the response.
  */
-const updateAdminAdvisoryBannerConfiguration = (
-    data: AdminAdvisoryBannerConfigurationInterface
+const updateRemoteLogPublishingConfigurationByLogType = (
+    config: RemoteLogPublishingConfigurationInterface
 ): Promise<AxiosResponse> => {
+    const { logType, ...data } = config;
+
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
             "Content-Type": "application/json"
         },
-        method: HttpMethods.PATCH,
-        url: store.getState().config.endpoints.adminAdvisoryBanner
+        method: HttpMethods.PUT,
+        url: `${store.getState().config.endpoints.remoteLogging}/${logType}`
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
-                if (response.status === 400) {
-                    throw new IdentityAppsApiException(
-                        ServerConstants.ADMIN_ADVISORY_BANNER_CONFIGS_INVALID_INPUT_ERROR,
-                        null,
-                        response.status,
-                        response.request,
-                        response,
-                        response.config
-                    );
-                }
-
-                throw new IdentityAppsApiException(
-                    ServerConstants.ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR,
-                    null,
-                    response.status,
-                    response.request,
-                    response,
-                    response.config
-                );
-            }
-
             return Promise.resolve(response.data);
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                ServerConstants.ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR,
+                I18n.instance.t("console:manage.features.serverConfigs.remoteLogPublishing.errors.genericError"),
                 error.stack,
                 error.code,
                 error.request,
@@ -87,4 +65,4 @@ const updateAdminAdvisoryBannerConfiguration = (
         });
 };
 
-export default updateAdminAdvisoryBannerConfiguration;
+export default updateRemoteLogPublishingConfigurationByLogType;

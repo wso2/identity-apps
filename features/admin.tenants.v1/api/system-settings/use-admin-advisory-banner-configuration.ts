@@ -23,18 +23,16 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { HttpMethods } from "@wso2is/core/models";
-import {
-    RemoteLogPublishingConfigurationInterface
-} from "../../../models/root-organizations/system-settings/remote-log-publishing";
+import { AdminAdvisoryBannerConfigurationInterface } from "../../models/system-settings/admin-advisory";
 
 /**
- * Hook to get the remote log publishing configurations.
+ * Hook to get the admin advisory banner configurations.
  *
  * @param shouldFetch - Should fetch the configurations.
- * @returns remote log publishing configurations.
+ * @returns admin advisory banner configurations.
  */
-const useRemoteLogPublishingConfiguration = <
-    Data = RemoteLogPublishingConfigurationInterface[],
+const useAdminAdvisoryBannerConfiguration = <
+    Data = AdminAdvisoryBannerConfigurationInterface,
     Error = RequestErrorInterface
 >(
         shouldFetch: boolean = true
@@ -44,7 +42,7 @@ const useRemoteLogPublishingConfiguration = <
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.remoteLogging
+        url: store.getState().config.endpoints.adminAdvisoryBanner
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
@@ -58,4 +56,4 @@ const useRemoteLogPublishingConfiguration = <
     };
 };
 
-export default useRemoteLogPublishingConfiguration;
+export default useAdminAdvisoryBannerConfiguration;

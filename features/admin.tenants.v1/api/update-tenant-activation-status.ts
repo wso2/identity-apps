@@ -22,38 +22,42 @@ import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request"
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import RootOrganizationConstants from "../../constants/root-organization-constants";
+import TenantConstants from "../constants/tenant-constants";
+import { TenantLifecycleStatus } from "../models/tenants";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
     AsgardeoSPAClient.getInstance()
 );
 
 /**
- * Deletes the tenant meta data(tenant specific data like tenant domain, tenant owner details).
+ * Activate or Deactivate the tenant.
  *
- * This function calls the DELETE method of the following endpoint to update the tenant status.
- *  - `https://{serverUrl}/t/{tenantDomain}/api/server/v1/tenants/{tenant-id}/metadata`
+ * This function calls the PUT method of the following endpoint to update the tenant status.
+ *  - `https://{serverUrl}/t/{tenantDomain}/api/server/v1/tenants/{tenant-id}/lifecycle-status`
  * For more details, refer to the documentation:
- * {@link https://is.docs.wso2.com/en/latest/apis/tenant-management-rest-api/#tag/Tenants/operation/getOwners}
+ * {@link https://is.docs.wso2.com/en/latest/apis/tenant-management-rest-api/#tag/Tenants/operation/updateTenantStatus}
  *
- * @param id - Root organization id.
+ * @param id - Tenant id.
+ * @param lifecycleStatus - The desired activation status of the tenant.
  * @returns A promise that resolves when the operation is complete.
  * @throws Error - Throws an error if the operation fails.
  */
-const deleteRootOrganizationMetadata = (id: string): Promise<AxiosResponse> => {
+const updateTenantActivationStatus = (id: string, lifecycleStatus: TenantLifecycleStatus): Promise<AxiosResponse> => {
     const requestConfig: RequestConfigInterface = {
+        data: lifecycleStatus,
         headers: {
             "Content-Type": "application/json"
         },
-        method: HttpMethods.DELETE,
-        url: `${store.getState().config.endpoints.rootOrganizations}/${id}/metadata`
+        method: HttpMethods.PUT,
+        url: `${store.getState().config.endpoints.tenants}/${id}/lifecycle-status`
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
-            if (response.status !== 204) {
+            if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    RootOrganizationConstants.ROOT_ORGANIZATION_METADATA_DELETE_INVALID_STATUS_ERROR,
+                    TenantConstants.TENANT_ACTIVATION_UPDATE_INVALID_STATUS_ERROR,
+                    null,
                     response.status,
                     response.request,
                     response,
@@ -65,7 +69,7 @@ const deleteRootOrganizationMetadata = (id: string): Promise<AxiosResponse> => {
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                RootOrganizationConstants.ROOT_ORGANIZATION_METADATA_DELETE_ERROR,
+                TenantConstants.TENANT_ACTIVATION_UPDATE_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -75,4 +79,4 @@ const deleteRootOrganizationMetadata = (id: string): Promise<AxiosResponse> => {
         });
 };
 
-export default deleteRootOrganizationMetadata;
+export default updateTenantActivationStatus;

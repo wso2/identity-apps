@@ -23,7 +23,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import { AxiosError, AxiosResponse } from "axios";
-import { LogType } from "../../../models/root-organizations/system-settings/remote-log-publishing";
+import { LogType } from "../../models/system-settings/remote-log-publishing";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
     AsgardeoSPAClient.getInstance()
@@ -41,7 +41,7 @@ const restoreRemoteLogPublishingConfigurationByLogType = (logType: LogType): Pro
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: store.getState().config.endpoints.remoteLogging + "/" + logType
+        url: `${store.getState().config.endpoints.remoteLogging}/${logType}`
     };
 
     return httpClient(requestConfig)

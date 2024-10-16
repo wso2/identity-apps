@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,47 +19,50 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { ServerConstants } from "@wso2is/admin.server.v1/constants/server";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import RootOrganizationConstants from "../../constants/root-organization-constants";
-import { RootOrganizationLifecycleStatus } from "../../models/root-organizations/root-organizations";
+import { AdminAdvisoryBannerConfigurationInterface } from "../../models/system-settings/admin-advisory";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
     AsgardeoSPAClient.getInstance()
 );
 
 /**
- * Activate or Deactivate the root organization.
+ * Update admin advisory banner configurations.
  *
- * This function calls the PUT method of the following endpoint to update the tenant status.
- *  - `https://{serverUrl}/t/{tenantDomain}/api/server/v1/tenants/{tenant-id}/lifecycle-status`
- * For more details, refer to the documentation:
- * {@link https://is.docs.wso2.com/en/latest/apis/tenant-management-rest-api/#tag/Tenants/operation/updateTenantStatus}
- *
- * @param id - Root organization id.
- * @param lifecycleStatus - The desired activation status of the root organization.
- * @returns A promise that resolves when the operation is complete.
- * @throws Error - Throws an error if the operation fails.
+ * @param data - Data to be updated.
+ * @returns a promise containing the server configurations.
  */
-const updateRootOrganizationActivationStatus = (
-    id: string,
-    lifecycleStatus: RootOrganizationLifecycleStatus
+const updateAdminAdvisoryBannerConfiguration = (
+    data: AdminAdvisoryBannerConfigurationInterface
 ): Promise<AxiosResponse> => {
     const requestConfig: RequestConfigInterface = {
-        data: lifecycleStatus,
+        data,
         headers: {
             "Content-Type": "application/json"
         },
-        method: HttpMethods.PUT,
-        url: `${store.getState().config.endpoints.rootOrganizations}/${id}/lifecycle-status`
+        method: HttpMethods.PATCH,
+        url: store.getState().config.endpoints.adminAdvisoryBanner
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
+                if (response.status === 400) {
+                    throw new IdentityAppsApiException(
+                        ServerConstants.ADMIN_ADVISORY_BANNER_CONFIGS_INVALID_INPUT_ERROR,
+                        null,
+                        response.status,
+                        response.request,
+                        response,
+                        response.config
+                    );
+                }
+
                 throw new IdentityAppsApiException(
-                    RootOrganizationConstants.ROOT_ORGANIZATION_ACTIVATION_UPDATE_INVALID_STATUS_ERROR,
+                    ServerConstants.ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR,
                     null,
                     response.status,
                     response.request,
@@ -72,7 +75,7 @@ const updateRootOrganizationActivationStatus = (
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                RootOrganizationConstants.ROOT_ORGANIZATION_ACTIVATION_UPDATE_ERROR,
+                ServerConstants.ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -82,4 +85,4 @@ const updateRootOrganizationActivationStatus = (
         });
 };
 
-export default updateRootOrganizationActivationStatus;
+export default updateAdminAdvisoryBannerConfiguration;
