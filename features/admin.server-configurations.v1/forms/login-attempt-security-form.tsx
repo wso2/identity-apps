@@ -146,7 +146,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
     const [ lockDuration, setLockDuration ] = useState<string>(undefined);
     const [ lockIncrementRatio, setLockIncrementRatio ] = useState<string>(undefined);
     const [ notifyUserOnAccountLockIncrement, setNotifyUserOnAccountLockIncrement ] = useState<boolean>(undefined);
-    const [ enableIndefiniteUserLockduration, setenableIndefiniteUserLockduration ] = useState<boolean>(undefined);
+    const [ enableIndefiniteUserLockduration, setEnableIndefiniteUserLockduration ] = useState<boolean>(undefined);
     const [ accordionActiveIndex, setAccordionActiveIndex ] = useState<string | number>(undefined);
 
     /**
@@ -174,7 +174,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                         accountLockTime: property.value
                     };
                     setLockDuration(property.value);
-                    setenableIndefiniteUserLockduration(parseInt(property.value) === 0);
+                    setEnableIndefiniteUserLockduration(parseInt(property.value) === 0);
                 } else if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_TIME_INCREMENT_FACTOR) {
                     resolvedInitialValues = {
                         ...resolvedInitialValues,
@@ -329,7 +329,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
     };
 
     const updateEnableIndefiniteAccountLockDuration = (value: any) => {
-        setenableIndefiniteUserLockduration(value);
+        setEnableIndefiniteUserLockduration(value);
         setLockDuration("0");
     };
 
@@ -573,7 +573,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                             .ACCOUNT_LOCK_INCREMENT_FACTOR_MIN_LENGTH
                     }
                     width={ 10 }
-                    disabled={ !isConnectorEnabled }
+                    disabled={ !isConnectorEnabled || enableIndefiniteUserLockduration }
                     data-testid={ `${testId}-account-lock-increment` }
                     readOnly={ readOnly }
                 />
