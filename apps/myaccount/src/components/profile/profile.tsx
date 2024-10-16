@@ -552,7 +552,20 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
                 return;
             }
+
             const currentValues: string[] = resolveProfileInfoSchemaValue(schema)?.split(",") || [];
+            let primaryValue: string | null;
+
+            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+                primaryValue = profileDetails?.profileInfo?.emails?.length > 0
+                    ? profileDetails?.profileInfo?.emails[0]
+                    : null;
+            } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+                primaryValue = profileInfo.get(MOBILE_ATTRIBUTE);
+            }
+            if (primaryValue && !currentValues.includes(primaryValue)) {
+                currentValues.push(primaryValue);
+            }
 
             currentValues.push(values.get(formName) as string);
             values.set(formName, currentValues.join(","));
@@ -859,6 +872,23 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             data.Operations[0].value = {
                 [EMAIL_ATTRIBUTE]: [ value ]
             };
+
+            const existingPrimaryEmail: string = profileDetails?.profileInfo?.emails?.length > 0
+                ? profileDetails?.profileInfo?.emails[0]
+                : null;
+            const existingEmailList: string[] = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
+
+            if (existingPrimaryEmail && !existingEmailList.includes(existingPrimaryEmail)) {
+                existingEmailList.push(existingPrimaryEmail);
+                data.Operations.push({
+                    op: "replace",
+                    value: {
+                        [schema.schemaId] : {
+                            [EMAIL_ADDRESSES_ATTRIBUTE]: existingEmailList.join(",")
+                        }
+                    }
+                });
+            }
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
 
             data.Operations[0].value = {
@@ -869,6 +899,21 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     }
                 ]
             };
+
+            const existingPrimaryMobile: string = profileInfo.get(MOBILE_ATTRIBUTE);
+            const existingMobileList: string[] = profileInfo?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
+
+            if (existingPrimaryMobile && !existingMobileList.includes(existingPrimaryMobile)) {
+                existingMobileList.push(existingPrimaryMobile);
+                data.Operations.push({
+                    op: "replace",
+                    value: {
+                        [schema.schemaId] : {
+                            [MOBILE_NUMBERS_ATTRIBUTE]: existingMobileList.join(",")
+                        }
+                    }
+                });
+            }
         }
         updateProfileInfo(data).then((response: AxiosResponse) => {
             if (response.status === 200) {
