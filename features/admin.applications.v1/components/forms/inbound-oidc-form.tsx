@@ -2699,33 +2699,58 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         { accessTokenAttributesEnabled && (
                                             <Grid.Column className="access-token-attributes-feature-banner">
                                                 <Alert severity="warning">
-                                                    <Trans
-                                                        i18nKey={ "applications:forms.inboundOIDC.sections " +
-                                                            ".accessToken.fields.accessTokenAttributes.enable.hint" }>
-                                                        Previously, all attributes marked as
-                                                        <Code withBackground>requested</Code> in the application&apos;s
-                                                        <Code withBackground>User</Code> Attributes section (referred
-                                                        to as requested attributes) were automatically included in the
-                                                        access token. With the latest update, admins can now choose
-                                                        which attributes to include in the access token. To enable
-                                                        this feature, select
-                                                        <Code withBackground>Enable Access Token Attributes</Code>.
-                                                        To ensure a smooth transition from the old behavior, selecting
-                                                        it for the first time will populate the
-                                                        <Code withBackground>Access Token Attributes</Code>
-                                                        section with all the requested attributes.  Admins can then
-                                                        remove any unwanted attributes. After saving the changes,
-                                                        only the selected attributes will be included in the access
-                                                        token. Moving forward, all requested attributes will appear
-                                                        in a dropdown for admins to manage as needed.
-
-                                                        Important: Once updated, requested attributes are no longer
-                                                        automatically included in the access token and this change is
-                                                        irreversible. Admin-selected attributes will be included in
-                                                        the access token even without requiring the relevant OIDC
-                                                        scopes.
-                                                        <Code withBackground>Proceed with caution.</Code>.
-                                                    </Trans>
+                                                    <span><b>Note:</b></span>
+                                                    <p>
+                                                        <Trans
+                                                            i18nKey={ "applications:forms.inboundOIDC.sections" +
+                                                                ".accessToken.fields.accessTokenAttributes" +
+                                                                ".previousBehavior" }>
+                                                            Previously, all attributes marked as
+                                                            <Code withBackground>requested</Code> in the
+                                                            application&apos;s
+                                                            <Code withBackground>User Attributes</Code>
+                                                            section (referred to as requested attributes) were
+                                                            automatically included in the access token if requested
+                                                            via scopes.
+                                                        </Trans>
+                                                    </p>
+                                                    <p>
+                                                        <Trans
+                                                            i18nKey={ "applications:forms.inboundOIDC.sections" +
+                                                                ".accessToken.fields.accessTokenAttributes" +
+                                                                ".feature" }>
+                                                            With the latest update, admins can now choose
+                                                            which attributes to include in the access token.
+                                                        </Trans>
+                                                    </p>
+                                                    <p>
+                                                        <Trans
+                                                            i18nKey={ "applications:forms.inboundOIDC.sections" +
+                                                                ".accessToken.fields.accessTokenAttributes" +
+                                                                ".howToUse" }>
+                                                            As this application is eligible to use the feature, you
+                                                            can now see the all the <Code withBackground>requested
+                                                            attributes</Code> are listed below. Admins can remove/add
+                                                            any attributes from the dropdown which includes of
+                                                            <Code withBackground> requested attributes</Code>. After
+                                                            saving the changes, only the selected attributes will be
+                                                            included in the access token.
+                                                        </Trans>
+                                                    </p>
+                                                    <span><b>Important:</b></span>
+                                                    <p>
+                                                        <Trans
+                                                            i18nKey={ "applications:forms.inboundOIDC.sections" +
+                                                                ".accessToken.fields.accessTokenAttributes" +
+                                                                ".howToUse" }>
+                                                            Once updated, requested attributes are no longer
+                                                            automatically included in the access token and this change
+                                                            is irreversible. Admin-selected attributes will be included
+                                                            in the access token even without requiring the relevant OIDC
+                                                            scopes.
+                                                            <Code withBackground>Proceed with caution</Code>.
+                                                        </Trans>
+                                                    </p>
                                                 </Alert>
                                             </Grid.Column>
                                         ) }

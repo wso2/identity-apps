@@ -1579,23 +1579,19 @@ export const applications: ApplicationsNS = {
                             hint : "Select the attributes that should be included in the <1>access_token</1>.",
                             label: "Access Token Attributes",
                             placeholder: "Search by attribute name",
-                            enable: {
-                                hint : "Previously, all attributes marked as requested in the application's " +
-                                "User Attributes section (referred to as requested attributes) were " +
-                                "automatically included in the access token. With the latest update, " +
-                                "admins can now choose which attributes to include in the access token. " +
-                                "To enable this feature, select Enable Access Token Attributes. To ensure " +
-                                "a smooth transition from the old behavior, selecting it for the first time " +
-                                "will populate the Access Token Attributes section with all the requested " +
-                                "attributes.  Admins can then remove any unwanted attributes. After saving the " +
-                                "changes, only the selected attributes will be included in the access token. " +
-                                "Moving forward, all requested attributes will appear in a dropdown for admins " +
-                                "to manage as needed. Important: Once updated, requested attributes are no " +
-                                "longer automatically included in the access token and this change is " +
-                                "irreversible. Admin-selected attributes will be included in the access token " +
-                                "even without requiring the relevant OIDC scopes. Proceed with caution.",
-                                label: "Enable Access Token Attributes"
-                            }
+                            previousBehavior : "Previously, all attributes marked as <1>requested</1> in the " +
+                                "application&apos;s <3>User Attributes</3> section (referred to as requested " +
+                                "attributes) were automatically included in the access token if requested via scopes.",
+                            feature: "With the latest update, admins can now choose which attributes "
+                                + "to include in the access token.",
+                            howToUse : "As this application is eligible to use the feature, you can now see the all " +
+                                "the <1>requested attributes</1> are listed below. Admins can remove/add " +
+                                "any attributes from the dropdown which includes of <3> requested attributes</3>. " +
+                                "After saving the changes, only the selected attributes will be included in the access token.",
+                            note: "Once updated, requested attributes are no longer automatically included in the " +
+                                "access token and this change is irreversible. Admin-selected attributes will be " +
+                                "included in the access token even without requiring the relevant OIDC " +
+                                "scopes. <1>Proceed with caution</1>."
                         }
                     },
                     heading: "Access Token",
