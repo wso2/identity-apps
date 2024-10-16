@@ -59,10 +59,12 @@ export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = 
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consoleSettings
     );
-    const isPrivilegedUsersInConsoleSettingsEnabled: boolean = !consoleSettingsFeatureConfig
-        ?.disabledFeatures?.includes(
-            "consoleSettings.privilegedUsers"
-        );
+    const administratorsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.administrators
+    );
+
+    const isAdministratorSettingsInConsoleSettingsEnabled: boolean = consoleSettingsFeatureConfig?.enabled &&
+        !administratorsFeatureConfig?.enabled;
 
     const useOrgConfig: UseOrganizationConfigType = useOrganizationConfigV2;
     const updateOrgConfig: (isEnterpriseLoginEnabled: OrganizationInterface) =>
@@ -164,7 +166,7 @@ export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = 
      * This handles back button navigation
      */
     const handleBackButtonClick = () => {
-        history.push(isPrivilegedUsersInConsoleSettingsEnabled
+        history.push(isAdministratorSettingsInConsoleSettingsEnabled
             ? AppConstants.getPaths().get("CONSOLE_SETTINGS")
             : AdministratorConstants.getPaths().get("COLLABORATOR_USERS_PATH"));
     };
@@ -208,7 +210,7 @@ export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = 
             backButton={ {
                 "data-componentid": `${ testId }-page-back-button`,
                 onClick:  handleBackButtonClick,
-                text: isPrivilegedUsersInConsoleSettingsEnabled
+                text: isAdministratorSettingsInConsoleSettingsEnabled
                     ? t("extensions:manage.users.administratorSettings.backButtonConsoleSettings")
                     : t("extensions:manage.users.administratorSettings.backButton")
             } }
