@@ -272,7 +272,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
             errors.accountLockTime = t("extensions:manage.serverConfigurations.accountSecurity." +
                 "loginAttemptSecurity.form.fields.accountLockTime.validations.invalid");
         } else if (((parseInt(values.accountLockTime, 10) < GovernanceConnectorConstants
-            .LOGINS_ATTEMPT_SECURITY_FORM_FIELD_CONSTRAINTS.ACCOUNT_LOCK_TIME_MIN_VALUE) && 
+            .LOGINS_ATTEMPT_SECURITY_FORM_FIELD_CONSTRAINTS.ACCOUNT_LOCK_TIME_MIN_VALUE) &&
             !enableIndefiniteUserLockduration)
             || (parseInt(values.accountLockTime, 10) > GovernanceConnectorConstants
                 .LOGINS_ATTEMPT_SECURITY_FORM_FIELD_CONSTRAINTS.ACCOUNT_LOCK_TIME_MAX_VALUE)) {
@@ -331,7 +331,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
     const updateEnableIndefiniteAccountLockDuration = (value: any) => {
         setenableIndefiniteUserLockduration(value);
         setLockDuration("0");
-    }
+    };
 
     /**
      * Renders sample info section with example configuration details.
