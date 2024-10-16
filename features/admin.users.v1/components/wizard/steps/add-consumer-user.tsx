@@ -511,7 +511,7 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
                                         ) }
                                         validation={ async (value: string, validation: Validation) => {
 
-                                            const userRegex: string = await validateUserNamePattern();
+                                            const userRegex: string = await getUsertoreUsernameValidationPattern();
 
                                             // Check username validity against userstore regex.
                                             if (value && (
