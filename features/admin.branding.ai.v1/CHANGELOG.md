@@ -1,5 +1,17 @@
 # @wso2is/admin.branding.ai.v1
 
+## 2.22.30
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.31.11
+  - @wso2is/admin.organizations.v1@2.22.30
+  - @wso2is/admin.branding.v1@2.22.30
+  - @wso2is/admin.feature-gate.v1@1.1.30
+  - @wso2is/common.ai.v1@2.21.30
+  - @wso2is/common.branding.v1@2.20.194
+
 ## 2.22.29
 
 ### Patch Changes

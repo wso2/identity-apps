@@ -1,5 +1,15 @@
 # @wso2is/admin.tenants.v1
 
+## 2.23.30
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.31.11
+  - @wso2is/admin.extensions.v1@2.30.30
+  - @wso2is/admin.organizations.v1@2.22.30
+  - @wso2is/admin.feature-gate.v1@1.1.30
+
 ## 2.23.29
 
 ### Patch Changes
