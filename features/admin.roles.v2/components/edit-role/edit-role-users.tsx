@@ -128,11 +128,14 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         const userNameChunks: string[] = user.userName.split("/");
 
         return (userNameChunks.length === 1 && userStoreName === "PRIMARY")
-        || (userNameChunks.length === 2 && userNameChunks[0] === userStoreName.toUpperCase());
+        || (userNameChunks.length === 2 && userNameChunks[0] === userStoreName?.toUpperCase());
     };
 
     useEffect(() => {
-        setSelectedUserStoreDomainName(activeUserStore);
+        const defaultSelectedUserStore: string = activeUserStore ??
+            disabledUserstores.includes(RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME) ? "DEFAULT" : "PRIMARY"
+
+        setSelectedUserStoreDomainName(defaultSelectedUserStore);
     }, [ activeUserStore ]);
 
     useEffect(() => {
