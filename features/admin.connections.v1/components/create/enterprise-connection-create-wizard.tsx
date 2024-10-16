@@ -467,7 +467,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 } }
                 listen={ idpNameValidation }
                 validation={ (value: string) => {
-                    let errors: "";
+                    let errors: string;
 
                     errors = composeValidators(required, length(IDP_NAME_LENGTH))(value);
                     if (value && isUserInputIdpNameAlreadyTaken) {
