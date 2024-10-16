@@ -814,11 +814,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     };
                                 } else if (schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
                                     .get("NAME")) {
-                                    values.get(schema.name) && (
+
+                                    if (!values.get(schema.name) || values.get(schema.name) === "") {
                                         opValue = {
                                             name: { [schemaNames[1]]: values.get(schema.name) }
-                                        }
-                                    );
+                                        };
+                                    }
                                 } else {
                                     if (schemaNames[0].includes("addresses")) {
                                         if (schemaNames[0].split("#").length > 1) {
