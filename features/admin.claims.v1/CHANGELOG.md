@@ -1,5 +1,18 @@
 # @wso2is/admin.claims.v1
 
+## 2.21.31
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.31.12
+  - @wso2is/admin.claims.v1@2.21.31
+  - @wso2is/admin.extensions.v1@2.30.31
+  - @wso2is/admin.server-configurations.v1@2.24.31
+  - @wso2is/admin.users.v1@2.23.31
+  - @wso2is/admin.userstores.v1@2.21.31
+  - @wso2is/admin.validation.v1@2.22.31
+
 ## 2.21.30
 
 ### Patch Changes
