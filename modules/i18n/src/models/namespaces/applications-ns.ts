@@ -1323,6 +1323,15 @@ export interface ApplicationsNS {
                                 invalid: string;
                             };
                         };
+                        accessTokenAttributes: {
+                            hint: string;
+                            label:string;
+                            placeholder: string;
+                            previousBehavior : string;
+                            feature: string;
+                            howToUse: string;
+                            note: string;
+                        };
                     };
                 };
                 idToken: {
@@ -1401,6 +1410,11 @@ export interface ApplicationsNS {
                                     instruction: string;
                                 },
                                 useClientIdAsSubClaimOfAppTokens: {
+                                    instruction: string;
+                                }
+                            },
+                            version200: {
+                                addAllRequestedClaimsInJWTAccessToken: {
                                     instruction: string;
                                 }
                             }

@@ -1574,6 +1574,24 @@ export const applications: ApplicationsNS = {
                                 empty: "Please fill the audience",
                                 invalid: "Please avoid special characters like commas (,)"
                             }
+                        },
+                        accessTokenAttributes: {
+                            hint : "Select the attributes that should be included in the <1>access_token</1>.",
+                            label: "Access Token Attributes",
+                            placeholder: "Search by attribute name",
+                            previousBehavior : "Previously, all attributes marked as <1>requested</1> in the " +
+                                "application&apos;s <3>User Attributes</3> section (referred to as requested " +
+                                "attributes) were automatically included in the access token if requested via scopes.",
+                            feature: "With the latest update, admins can now choose which attributes "
+                                + "to include in the access token.",
+                            howToUse : "As this application is eligible to use the feature, you can now see the all " +
+                                "the <1>requested attributes</1> are listed below. Admins can remove/add " +
+                                "any attributes from the dropdown which includes of <3> requested attributes</3>. " +
+                                "After saving the changes, only the selected attributes will be included in the access token.",
+                            note: "Once updated, requested attributes are no longer automatically included in the " +
+                                "access token and this change is irreversible. Admin-selected attributes will be " +
+                                "included in the access token even without requiring the relevant OIDC " +
+                                "scopes. <1>Proceed with caution</1>."
                         }
                     },
                     heading: "Access Token",
@@ -1671,6 +1689,12 @@ export const applications: ApplicationsNS = {
                                 useClientIdAsSubClaimOfAppTokens: {
                                     instruction: "The introspection responses for application access tokens no longer "
                                         + "return the <1>username</1> attribute."
+                                }
+                            },
+                            version200: {
+                                addAllRequestedClaimsInJWTAccessToken: {
+                                    instruction: "Irrespective of the <1>scopes</1> requested, all the <3>Requested Attributes</3> will "
+                                        + "be included in the JWT Access Token."
                                 }
                             }
                         }
