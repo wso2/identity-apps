@@ -23,11 +23,20 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { RemoteLoggingConfigForm } from "./remote-logging-config-form";
-import useRemoteLogPublishingConfiguration from "../../../api/root-organizations/system-settings/use-remote-log-publishing-configuration";
-import { LogType, RemoteLogPublishingConfigurationInterface } from "../../../models/root-organizations/system-settings/remote-log-publishing";
+import useRemoteLogPublishingConfiguration from "../../api/system-settings/use-remote-log-publishing-configuration";
+import { LogType, RemoteLogPublishingConfigurationInterface } from "../../models/system-settings/remote-log-publishing";
 
-type RemoteLogPublishingInterface = IdentifiableComponentInterface;
+/**
+ * Props interface of {@link RemoteLogPublishing}
+ */
+export type RemoteLogPublishingInterface = IdentifiableComponentInterface;
 
+/**
+ * Component to hold the remote log publishing configurations.
+ *
+ * @param props - Props injected to the component.
+ * @returns Remote log publishing component.
+ */
 export const RemoteLogPublishing: FC<RemoteLogPublishingInterface> = ({
     ["data-componentid"]: componentId = "remote-log-publishing"
 }: RemoteLogPublishingInterface): ReactElement => {
@@ -56,16 +65,15 @@ export const RemoteLogPublishing: FC<RemoteLogPublishingInterface> = ({
     }, [ ]);
 
     return (
-        <>
-            <RemoteLoggingConfigForm
-                mutateRemoteLoggingRequest={ mutateRemoteLoggingRequest }
-                logType={ LogType.AUDIT }
-                logConfig={ remoteLogPublishingConfigs?.find(
-                    (config: RemoteLogPublishingConfigurationInterface) =>
-                        config?.logType?.toLowerCase() === LogType.AUDIT.toString()
-                ) }
-            />
-        </>
+        <RemoteLoggingConfigForm
+            mutateRemoteLoggingRequest={ mutateRemoteLoggingRequest }
+            logType={ LogType.AUDIT }
+            logConfig={ remoteLogPublishingConfigs?.find(
+                (config: RemoteLogPublishingConfigurationInterface) =>
+                    config?.logType?.toLowerCase() === LogType.AUDIT.toString()
+            ) }
+            data-componentid={ `${componentId}-form` }
+        />
     );
 };
 

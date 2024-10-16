@@ -19,24 +19,22 @@
 import Tab from "@oxygen-ui/react/Tab";
 import TabPanel from "@oxygen-ui/react/TabPanel";
 import Tabs from "@oxygen-ui/react/Tabs";
-import { AppState } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { SystemSettingsModes, SystemSettingsTabIDs } from "../../../models/root-organizations/system-settings/ui";
-import RemoteLogPublishing from "./remote-log-publishing";
 import AdminSessionAdvisoryBanner from "./admin-session-advisory-banner";
+import RemoteLogPublishing from "./remote-log-publishing";
+import { SystemSettingsModes, SystemSettingsTabIDs } from "../../models/system-settings/ui";
 
 /**
  * Props interface of {@link SystemSettingsTabs}
  */
-type SystemSettingsTabsInterface = IdentifiableComponentInterface;
+export type SystemSettingsTabsInterface = IdentifiableComponentInterface;
 
 /**
  * System settings tab interface.
  */
-interface SystemSettingsTabInterface extends IdentifiableComponentInterface {
+export interface SystemSettingsTabInterface extends IdentifiableComponentInterface {
     /**
      * Tab id.
      */
@@ -145,7 +143,7 @@ const SystemSettingsTabs: FunctionComponent<SystemSettingsTabsInterface> = ({
     };
 
     return (
-        <div className="console-settings-tabs">
+        <div className="system-settings-tabs">
             <Tabs value={ activeTab } onChange={ onTabChange }>
                 { tabs.map((tab: SystemSettingsTabInterface) => {
                     if (tab.hidden) {

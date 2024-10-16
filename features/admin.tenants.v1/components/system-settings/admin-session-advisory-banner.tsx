@@ -26,18 +26,15 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps } from "semantic-ui-react";
-import updateAdminAdvisoryBannerConfiguration from
-    "../../../api/root-organizations/system-settings/update-admin-advisory-banner-configuration";
-import useAdminAdvisoryBannerConfiguration from
-    "../../../api/root-organizations/system-settings/use-admin-advisory-banner-configuration";
-import {
-    AdminAdvisoryBannerConfigurationInterface
-} from "../../../models/root-organizations/system-settings/admin-advisory";
+import { AdminAdvisoryBannerConfigurationInterface } from "../..//models/system-settings/admin-advisory";
+import updateAdminAdvisoryBannerConfiguration from "../../api/system-settings/update-admin-advisory-banner-configuration";
+import useAdminAdvisoryBannerConfiguration from "../../api/system-settings/use-admin-advisory-banner-configuration";
+import Stack from "@mui/material/Stack";
 
 /**
  * Props interface of {@link SystemSettingsTabs}
  */
-type AdminAdvisoryBannerInterface = IdentifiableComponentInterface;
+export type AdminAdvisoryBannerInterface = IdentifiableComponentInterface;
 
 interface AdminAdvisoryConfigurationInterface {
     /**
@@ -201,63 +198,61 @@ export const AdminSessionAdvisoryBanner: FC<AdminAdvisoryBannerInterface> = ({
     };
 
     return (
-        <>
-            <EmphasizedSegment className="form-wrapper" padded={ "very" }>
-                <Checkbox
-                    label={
-                        adminAdvisoryBannerConfigs?.enableBanner
-                            ? t("console:manage.features.serverConfigs.adminAdvisory.configurationSection.enabled")
-                            : t("console:manage.features.serverConfigs.adminAdvisory.configurationSection.enabled")
-                    }
-                    toggle
-                    onChange={ handleToggleChange }
-                    checked={ adminAdvisoryBannerConfigs?.enableBanner }
-                    readOnly={ null }
-                    data-componentid={ `${componentId}-enable-toggle` }
+        <Stack direction="column" spacing={ 2 }>
+            <Checkbox
+                label={
+                    adminAdvisoryBannerConfigs?.enableBanner
+                        ? t("console:manage.features.serverConfigs.adminAdvisory.configurationSection.enabled")
+                        : t("console:manage.features.serverConfigs.adminAdvisory.configurationSection.enabled")
+                }
+                toggle
+                onChange={ handleToggleChange }
+                checked={ adminAdvisoryBannerConfigs?.enableBanner }
+                readOnly={ null }
+                data-componentid={ `${componentId}-enable-toggle` }
+            />
+            <Form
+                id="admin-advisory-form"
+                initialValues={ adminAdvisoryBannerConfigs }
+                uncontrolledForm={ false }
+                validate={ null }
+                onSubmit={ (values: Record<string, unknown>) => handleBannerContentUpdate(values) }
+            >
+                <Field.Textarea
+                    ariaLabel="Admin Advisory Banner Content"
+                    name="bannerContent"
+                    label={ t(
+                        "console:manage.features.serverConfigs.adminAdvisory" +
+                            ".configurationEditSection.form.bannerContent.label"
+                    ) }
+                    required={ false }
+                    placeholder={ t(
+                        "console:manage.features.serverConfigs.adminAdvisory" +
+                            ".configurationEditSection.form.bannerContent.placeholder"
+                    ) }
+                    initialValue={ adminAdvisoryBannerConfigs?.bannerContent }
+                    readOnly={ !adminAdvisoryBannerConfigs?.enableBanner }
+                    maxLength={ 300 }
+                    minLength={ 3 }
+                    data-componentid={ `${componentId}-content` }
+                    width={ 16 }
+                    hint={ t(
+                        "console:manage.features.serverConfigs.adminAdvisory" +
+                            ".configurationEditSection.form.bannerContent.hint"
+                    ) }
                 />
-                <Form
-                    id={ FORM_ID }
-                    initialValues={ adminAdvisoryBannerConfigs }
-                    uncontrolledForm={ false }
-                    validate={ null }
-                    onSubmit={ (values: Record<string, unknown>) => handleBannerContentUpdate(values) }
-                >
-                    <Field.Textarea
-                        ariaLabel="Admin Advisory Banner Content"
-                        name="bannerContent"
-                        label={ t(
-                            "console:manage.features.serverConfigs.adminAdvisory" +
-                                ".configurationEditSection.form.bannerContent.label"
-                        ) }
-                        required={ false }
-                        placeholder={ t(
-                            "console:manage.features.serverConfigs.adminAdvisory" +
-                                ".configurationEditSection.form.bannerContent.placeholder"
-                        ) }
-                        initialValue={ adminAdvisoryBannerConfigs?.bannerContent }
-                        readOnly={ !adminAdvisoryBannerConfigs?.enableBanner }
-                        maxLength={ 300 }
-                        minLength={ 3 }
-                        data-componentid={ `${componentId}-content` }
-                        width={ 16 }
-                        hint={ t(
-                            "console:manage.features.serverConfigs.adminAdvisory" +
-                                ".configurationEditSection.form.bannerContent.hint"
-                        ) }
-                    />
-                    <Field.Button
-                        form="admin-advisory-form"
-                        size="small"
-                        buttonType="primary_btn"
-                        ariaLabel="Update button"
-                        name="update-button"
-                        data-componentid={ `${componentId}-update-button` }
-                        label={ t("common:update") }
-                        hidden={ !adminAdvisoryBannerConfigs?.enableBanner }
-                    />
-                </Form>
-            </EmphasizedSegment>
-        </>
+                <Field.Button
+                    form="admin-advisory-form"
+                    size="small"
+                    buttonType="primary_btn"
+                    ariaLabel="Update button"
+                    name="update-button"
+                    data-componentid={ `${componentId}-update-button` }
+                    label={ t("common:update") }
+                    hidden={ !adminAdvisoryBannerConfigs?.enableBanner }
+                />
+            </Form>
+        </Stack>
     );
 };
 

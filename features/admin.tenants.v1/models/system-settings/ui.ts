@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,11 +17,29 @@
  */
 
 /**
- * Interface for the Tenant Management feature resource endpoints.
+ * Enum for System Settings modes.
  */
-export interface TenantResourceEndpointsInterface {
-    tenantAssociationApi: string;
-    tenantManagementApi: string;
-    tenantSubscriptionApi: string;
-    tenants: string;
+export enum SystemSettingsModes {
+    /**
+     * Remote log publishing feature.
+     */
+    REMOTE_LOG_PUBLISHING = "remote-log-publishing",
+    /**
+     * Admin advisory banner feature.
+     */
+    ADMIN_ADVISORY_BANNER = "admin-advisory-banner"
+}
+
+/**
+ * Enum for System Settings tab IDs.
+ */
+export enum SystemSettingsTabIDs {
+    /**
+     * Remote log publishing tab ID.
+     */
+    REMOTE_LOG_PUBLISHING = 0,
+    /**
+     * Admin advisory banner tab ID.
+     */
+    ADMIN_ADVISORY_BANNER = 1
 }
