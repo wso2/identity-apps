@@ -3722,7 +3722,22 @@ export const extensions: Extensions = {
                     subHeading:
                     "Enable self-service password recovery for users on the login page."
                 },
-                subHeading: "Account Recovery related settings."
+                usernameRecovery: {
+                    form: {
+                        fields: {
+                            enableEmailBasedRecovery: {
+                                label: "Enable email based recovery"
+                            },
+                            enableSMSBasedRecovery: {
+                                label: "Enable SMS based recovery"
+                            }
+                        },
+                        smsProviderWarning: "Ensure that an <1>SMS Provider</1> is configured for the SMS feature to work properly.",
+                        recoveryOptionHeading: "Recovery Option Selection"
+                    }
+                },
+                subHeading: "Account Recovery related settings.",
+                
             },
             accountSecurity: {
                 backButton: "Go back to Account Security",

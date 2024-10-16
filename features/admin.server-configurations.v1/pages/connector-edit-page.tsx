@@ -413,8 +413,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 </>);
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
                 return type === "username"
-                    ? "Enable self-service username recovery for users on the login page." +
-                        " The user will receive a username reset link via email upon request."
+                    ? "Enable self-service username recovery for users on the login page."
                     : (
                         <div style={ { whiteSpace: "pre-line" } }>
                             { t("extensions:manage.serverConfigurations.accountRecovery.passwordRecovery.subHeading") }

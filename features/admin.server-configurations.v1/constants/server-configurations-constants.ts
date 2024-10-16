@@ -210,6 +210,8 @@ export class ServerConfigurationsConstants {
 	 * Account recovery API Keyword constants.
 	 */
     public static readonly USERNAME_RECOVERY_ENABLE: string = "Recovery.Notification.Username.Enable";
+    public static readonly USERNAME_RECOVERY_EMAIL_ENABLE: string = "Recovery.Notification.Username.Email.Enable";
+    public static readonly USERNAME_RECOVERY_SMS_ENABLE : string = "Recovery.Notification.Username.SMS.Enable";
     public static readonly USERNAME_RECOVERY_RE_CAPTCHA: string = "Recovery.ReCaptcha.Username.Enable";
     public static readonly PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE: string =
         "Recovery.Notification.Password.Enable";
