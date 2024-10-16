@@ -3773,6 +3773,12 @@ export const extensions: Extensions = {
                                         "with 1 or 2 digits."
                                 }
                             },
+                            enableIndefiniteUserLockduration: {
+                                hint:
+                                "The account will be locked indefinitely after max failed attempts until the account " +
+                                "is manually unlocked by an admin",
+                                label: "Enable indefinite user lock duration",
+                            },
                             accountLockTime: {
                                 hint:
                                     "This specifies the initial duration that the account will be locked for. " +
