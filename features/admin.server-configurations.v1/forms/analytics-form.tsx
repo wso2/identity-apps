@@ -17,10 +17,6 @@
  */
 
 import {
-    AnalyticsAPIRequestInterface,
-    AnalyticsFormValuesInterface
-} from "@wso2is/admin.extensions.v1/components/governance-connectors/models/analytics";
-import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     ServerConfigurationsConstants
@@ -33,6 +29,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Label } from "semantic-ui-react";
 import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
+import { AnalyticsAPIRequestInterface, AnalyticsFormValuesInterface } from "../models/analytics";
 
 /**
  * Interface for Password Recovery Configuration Form props.

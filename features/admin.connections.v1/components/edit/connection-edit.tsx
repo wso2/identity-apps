@@ -34,8 +34,10 @@ import React, {
     useEffect,
     useState
 } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { TabProps } from "semantic-ui-react";
+import QuickStartTab from "./quick-start-tab";
 import {
     AdvanceSettings,
     AttributeSettings,
@@ -152,6 +154,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         tabIdentifier,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -375,24 +379,40 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         let extensions: ResourceTabPaneInterface[] = [];
 
         if (typeof connectionSettingsMetaData?.edit?.tabs?.quickStart === "string") {
-            extensions = identityProviderConfig
-                .editIdentityProvider.getTabExtensions({
-                    content: lazy(
-                        () => import(`../../resources/guides/${
-                            connectionSettingsMetaData?.edit?.tabs?.quickStart
-                        }/quick-start.tsx`)
-                    ),
-                    identityProvider: identityProvider,
-                    template: template
-                });
+            extensions = [
+                {
+                    componentId: "quick-start",
+                    menuItem: t("console:develop.componentExtensions.component.application.quickStart.title"),
+                    render: () => (
+                        <QuickStartTab
+                            content={ lazy(() =>
+                                import(
+                                    `../../resources/guides/${
+                                        connectionSettingsMetaData?.edit?.tabs?.quickStart
+                                    }/quick-start.tsx`
+                                )
+                            ) }
+                            identityProvider={ identityProvider }
+                            template={ template }
+                        />
+                    )
+                }
+            ];
         } else {
-            extensions = identityProviderConfig
-                .editIdentityProvider.getTabExtensions({
-                    content: lazy(() => import("./connection-quick-start")),
-                    identityProvider: identityProvider,
-                    quickStartContent: connectionSettingsMetaData?.edit?.tabs?.quickStart,
-                    template: template
-                });
+            extensions = [
+                {
+                    componentId: "quick-start",
+                    menuItem: t("console:develop.componentExtensions.component.application.quickStart.title"),
+                    render: () => (
+                        <QuickStartTab
+                            content={ lazy(() => import("./connection-quick-start")) }
+                            identityProvider={ identityProvider }
+                            quickStartContent={ connectionSettingsMetaData?.edit?.tabs?.quickStart }
+                            template={ template }
+                        />
+                    )
+                }
+            ];
         }
 
         if (Array.isArray(extensions) && extensions.length > 0) {

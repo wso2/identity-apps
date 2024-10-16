@@ -16,10 +16,7 @@
  * under the License.
  */
 
-import {
-    AuthenticatorExtensionsConfigInterface,
-    identityProviderConfig
-} from "@wso2is/admin.extensions.v1";
+import { AuthenticatorExtensionsConfigInterface } from "@wso2is/admin.extensions.v1";
 import { authenticatorConfig } from "@wso2is/admin.extensions.v1/configs/authenticator";
 import { AuthenticatorFormFactory } from "@wso2is/admin.identity-providers.v1/components/forms";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -32,6 +29,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, SemanticShorthandItem, TabPaneProps } from "semantic-ui-react";
+import QuickStartTab from "./quick-start-tab";
 import { updateMultiFactorAuthenticatorDetails } from "../../api/authenticators";
 import { LocalAuthenticatorConstants } from "../../constants/local-authenticator-constants";
 import { AuthenticatorMeta } from "../../meta/authenticator-meta";
@@ -116,10 +114,13 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             return;
         }
 
-        const extensions: ResourceTabPaneInterface[] = identityProviderConfig
-            .editIdentityProvider.getTabExtensions({
-                content: authenticatorConfig.content.quickStart
-            });
+        const extensions: ResourceTabPaneInterface[] = [
+            {
+                componentId: "quick-start",
+                menuItem: t("console:develop.componentExtensions.component.application.quickStart.title"),
+                render: () => <QuickStartTab content={ authenticatorConfig.content.quickStart } />
+            }
+        ];
 
         setTabPaneExtensions(extensions);
     }, [ authenticator, tabPaneExtensions ]);
