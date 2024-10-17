@@ -56,7 +56,7 @@ export const SmsTemplatePreview: FunctionComponent<SmsTemplatePreviewInterface> 
 
     const {
         smsTemplate,
-        ["data-componentid"]: testId
+        ["data-componentid"]: componentId = "sms-customization-preview"
     } = props;
 
     const [
@@ -86,7 +86,7 @@ export const SmsTemplatePreview: FunctionComponent<SmsTemplatePreviewInterface> 
     return (
         <div
             className="sms-template-preview sms-template-mobile"
-            data-componentid={ testId }
+            data-componentid={ componentId }
         >
             <div className="sms-template-mobile-display">
                 <Grid className="sms-template-mobile-display-status-bar">
@@ -114,7 +114,7 @@ export const SmsTemplatePreview: FunctionComponent<SmsTemplatePreviewInterface> 
                     </Grid.Row>
                 </Grid>
                 <div
-                    data-componentid={ `${ testId }-iframe-body-div` }
+                    data-componentid={ `${ componentId }-iframe-body-div` }
                     className="sms-template-mobile-message"
                 >
                     <Typography variant="h6" align="center">Messages</Typography>
@@ -129,11 +129,4 @@ export const SmsTemplatePreview: FunctionComponent<SmsTemplatePreviewInterface> 
             </div>
         </div>
     );
-};
-
-/**
- * Default props for the component.
- */
-SmsTemplatePreview.defaultProps = {
-    "data-componentid": "sms-customization-preview"
 };

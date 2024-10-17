@@ -681,7 +681,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             category: "extensions:develop.sidePanel.categories.branding",
             component: lazy(() =>
-                import("@wso2is/admin.sms-templates.v1/" + "pages/sms-customization")
+                import("@wso2is/admin.sms-templates.v1/pages/sms-customization")
             ),
             exact: true,
             icon: {

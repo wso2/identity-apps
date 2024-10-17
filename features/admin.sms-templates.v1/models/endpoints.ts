@@ -16,14 +16,9 @@
  * under the License.
  */
 
-export type SmsTemplateType = {
-    id: string;
-    displayName: string;
-    self: string;
-    description?: string;
-};
-
-export type SmsTemplate = {
-    id: string;
-    body: string;
-};
+/**
+ * Interface for the SMS Template feature resource endpoints.
+ */
+export interface SMSTemplateResourceEndpointsInterface {
+    smsTemplates: string;
+}

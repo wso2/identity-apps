@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export interface smsTemplatesNS {
+export interface SMSTemplatesNS {
     page: {
         header: string;
         description: string;

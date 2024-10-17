@@ -18,18 +18,8 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import {
-    ContentLoader,
-    DocumentationLink,
-    Message,
-    useDocumentation
-} from "@wso2is/react-components";
-import React, {
-    FunctionComponent,
-    ReactElement,
-    useEffect,
-    useState
-} from "react";
+import { ContentLoader, DocumentationLink, Message, useDocumentation } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { SmsTemplate } from "../models/sms-templates";
@@ -84,14 +74,13 @@ const FORM_ID: string = "sms-customization-content-form";
 export const SmsCustomizationForm: FunctionComponent<SmsCustomizationFormPropsInterface> = (
     props: SmsCustomizationFormPropsInterface
 ): ReactElement => {
-
     const {
         isSmsTemplatesListLoading,
         selectedSmsTemplate,
         onTemplateChanged,
         onSubmit,
         readOnly,
-        ["data-componentid"]: componentId
+        ["data-componentid"]: componentId = "sms-customization-form"
     } = props;
 
     const { t } = useTranslation();
@@ -109,91 +98,68 @@ export const SmsCustomizationForm: FunctionComponent<SmsCustomizationFormPropsIn
         setKey((key + 1) % 100);
     }, [ selectedSmsTemplate ]);
 
+    if (isSmsTemplatesListLoading) {
+        return <ContentLoader />;
+    }
+
     return (
-        (isSmsTemplatesListLoading) ? (
-            <ContentLoader/>
-        ) : (
-            <>
-                <Form
-                    id={ FORM_ID }
-                    uncontrolledForm={ true }
-                    onSubmit={ onSubmit }
-                    data-componentid={ componentId }
-                >
-                    <Grid>
-                        <Grid.Row>
-                            <Grid.Column
-                                mobile={ 16 }
-                                computer={ 12 }
-                            >
-                                <Message
-                                    type="info"
-                                    content={ (
-                                        <>
-                                            { t("extensions:develop.smsTemplates.form.inputs.body.hint") }
-                                            <DocumentationLink
-                                                link={ getLink("develop.smsCustomization.form.smsBody.learnMore") }
-                                            >
-                                                { t("extensions:common.learnMore") }
-                                            </DocumentationLink>
-                                        </>
-                                    ) }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column
-                                mobile={ 16 }
-                                computer={ 12 }
-                            >
-                                <Field.Textarea
-                                    ariaLabel="SMS Body Input"
-                                    inputType="description"
-                                    name="smsBody"
-                                    label={ t("extensions:develop.smsTemplates.form.inputs.body.label") }
-                                    placeholder={ t("extensions:develop.smsTemplates.form.inputs" +
-                                        ".body.placeholder") }
-                                    required={ true }
-                                    value={ selectedSmsTemplate?.body }
-                                    minLength={ 1 }
-                                    onKeyPress={ null }
-                                    data-componentid={ `${ componentId }-sms-body` }
-                                    listen={ (value: string) => {
-                                        onTemplateChanged({
-                                            body: value
-                                        });
-                                    } }
-                                    readOnly={ readOnly }
-                                    key={ key }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
+        <>
+            <Form id={ FORM_ID } uncontrolledForm={ true } onSubmit={ onSubmit } data-componentid={ componentId }>
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column mobile={ 16 } computer={ 12 }>
+                            <Message
+                                type="info"
+                                content={
+                                    (<>
+                                        { t("smsTemplates:form.inputs.body.hint") }
+                                        <DocumentationLink
+                                            link={ getLink("develop.smsCustomization.form.smsBody.learnMore") }
+                                        >
+                                            { t("smsTemplates:common.learnMore") }
+                                        </DocumentationLink>
+                                    </>)
+                                }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column mobile={ 16 } computer={ 12 }>
+                            <Field.Textarea
+                                ariaLabel="SMS Body Input"
+                                inputType="description"
+                                name="smsBody"
+                                label={ t("smsTemplates:form.inputs.body.label") }
+                                placeholder={ t("smsTemplates:form.inputs" + ".body.placeholder") }
+                                required={ true }
+                                value={ selectedSmsTemplate?.body }
+                                minLength={ 1 }
+                                maxLength={ 1024 }
+                                onKeyPress={ null }
+                                data-componentid={ `${componentId}-sms-body` }
+                                listen={ (value: string) => {
+                                    onTemplateChanged({
+                                        body: value
+                                    });
+                                } }
+                                readOnly={ readOnly }
+                                key={ key }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
 
-                        <Grid.Row>
-                            <Grid.Column
-                                mobile={ 16 }
-                                computer={ 12 }
-                            >
-                                <Message
-                                    type="warning"
-                                    content={ (
-                                        <>
-                                            { t("extensions:develop.smsTemplates.form.inputs.body.charLengthWarning") }
-                                        </>
-                                    ) }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </Form>
-            </>
-        )
+                    <Grid.Row>
+                        <Grid.Column mobile={ 16 } computer={ 12 }>
+                            <Message
+                                type="warning"
+                                content={
+                                    <>{ t("smsTemplates:form.inputs.body.charLengthWarning") }</>
+                                }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Form>
+        </>
     );
-};
-
-/**
- * Default props for the component.
- */
-SmsCustomizationForm.defaultProps = {
-    "data-componentid": "sms-customization-form"
 };

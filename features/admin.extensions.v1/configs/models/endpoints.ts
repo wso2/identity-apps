@@ -55,11 +55,6 @@ export interface ExtendedFeatureResourceEndpointsInterface {
     emailProviderEndpoint : string;
 
     /**
-     * SMS Templates API endpoint.
-     */
-    smsManagement : string;
-
-    /**
      * SMS Publishing API endpoint.
      */
     smsProviderEndpoint : string;
