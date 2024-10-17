@@ -213,8 +213,12 @@ export const updateApplicationDetails = (
  *
  * @returns A promise containing the response.
  */
-export const getApplicationList = (limit: number, offset: number,
-    filter: string): Promise<ApplicationListInterface> => {
+export const getApplicationList = (
+    limit: number,
+    offset: number,
+    filter: string,
+    excludeSystemPortals:boolean = true
+): Promise<ApplicationListInterface> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
@@ -225,7 +229,8 @@ export const getApplicationList = (limit: number, offset: number,
         params: {
             filter,
             limit,
-            offset
+            offset,
+            excludeSystemPortals
         },
         url: store.getState().config.endpoints.applications
     };
@@ -255,7 +260,8 @@ export const useApplicationList = <Data = ApplicationListInterface, Error = Requ
     limit?: number,
     offset?: number,
     filter?: string,
-    shouldFetch: boolean = true
+    shouldFetch: boolean = true,
+    excludeSystemPortals: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: AxiosRequestConfig = shouldFetch
@@ -269,7 +275,8 @@ export const useApplicationList = <Data = ApplicationListInterface, Error = Requ
                 attributes,
                 filter,
                 limit,
-                offset
+                offset,
+                excludeSystemPortals
             },
             url: store.getState().config.endpoints.applications
         }
