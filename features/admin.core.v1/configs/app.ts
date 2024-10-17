@@ -39,6 +39,7 @@ import { getRemoteFetchConfigResourceEndpoints } from "@wso2is/admin.remote-repo
 import { getRolesResourceEndpoints } from "@wso2is/admin.roles.v2/configs/endpoints";
 import { getSecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/configs/endpoints";
 import { getServerConfigurationsResourceEndpoints } from "@wso2is/admin.server-configurations.v1";
+import { getSmsTemplateResourceEndpoints } from "@wso2is/admin.sms-templates.v1/configs/endpoints";
 import { getExtensionTemplatesEndpoints } from "@wso2is/admin.template-core.v1/configs/endpoints";
 import { getTenantResourceEndpoints } from "@wso2is/admin.tenants.v1/configs/endpoints";
 import { getUsersResourceEndpoints } from "@wso2is/admin.users.v1/configs/endpoints";
@@ -189,6 +190,7 @@ export class Config {
                 I18nConstants.WS_FEDERATION_CONFIG_NAMESPACE,
                 I18nConstants.INSIGHTS_NAMESPACE,
                 I18nConstants.SMS_PROVIDERS_NAMESPACE,
+                I18nConstants.SMS_TEMPLATES_NAMESPACE,
                 I18nConstants.CLAIMS_NAMESPACE,
                 I18nConstants.EMAIL_LOCALE_NAMESPACE,
                 I18nConstants.HELP_PANEL_NAMESPACE,
@@ -267,6 +269,7 @@ export class Config {
             ...getExtensionTemplatesEndpoints(this.resolveServerHost()),
             ...getApplicationTemplatesResourcesEndpoints(this.resolveServerHost()),
             ...getActionsResourceEndpoints(this.resolveServerHost()),
+            ...getSmsTemplateResourceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,

@@ -49,7 +49,7 @@ const SmsCustomizationFooter: FunctionComponent<SmsCustomizationFooterProps> = (
 ): ReactElement => {
 
     const {
-        ["data-componentid"]: componentId,
+        ["data-componentid"]: componentId = "sms-customization-footer",
         isSaveButtonLoading,
         onSaveButtonClick
     } = props;
@@ -69,13 +69,6 @@ const SmsCustomizationFooter: FunctionComponent<SmsCustomizationFooterProps> = (
             { t("common:save") }
         </PrimaryButton>
     );
-};
-
-/**
- * Default props for the component.
- */
-SmsCustomizationFooter.defaultProps = {
-    "data-componentid": "sms-customization-footer"
 };
 
 export default SmsCustomizationFooter;

@@ -16,14 +16,16 @@
  * under the License.
  */
 
-export type SmsTemplateType = {
-    id: string;
-    displayName: string;
-    self: string;
-    description?: string;
-};
+import { SMSTemplateResourceEndpointsInterface } from "../models/endpoints";
 
-export type SmsTemplate = {
-    id: string;
-    body: string;
+/**
+ * Get the resource endpoints for the actions feature.
+ *
+ * @param serverHost - Server Host.
+ * @returns Interface of Actions Resource Endpoints.
+ */
+export const getSmsTemplateResourceEndpoints = (serverHost: string): SMSTemplateResourceEndpointsInterface => {
+    return {
+        smsTemplates: `${serverHost}/api/server/v1/notification/sms`
+    };
 };

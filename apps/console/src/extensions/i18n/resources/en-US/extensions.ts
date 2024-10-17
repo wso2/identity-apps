@@ -2991,8 +2991,8 @@ export const extensions: Extensions = {
             notifications: {
                 getSmsTemplateList: {
                     error: {
-                        description: "An error occurred while retrieving the SMS templates list.",
-                        message: "An error occurred while retrieving the SMS templates list"
+                        description: "An error occurred while retrieving the SMS templates.",
+                        message: "An error occurred while retrieving the SMS templates"
                     }
                 },
                 getSmsTemplate: {

@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { smsTemplatesNS } from "../../../models";
+import { SMSTemplatesNS } from "../../../models";
 
-export const smsTemplates: smsTemplatesNS = {
+export const smsTemplates: SMSTemplatesNS = {
     dangerZone: {
         remove: {
             action: "Remove Template",
@@ -71,8 +71,8 @@ export const smsTemplates: smsTemplatesNS = {
         },
         getSmsTemplateList: {
             error: {
-                description: "An error occurred while retrieving the SMS templates list.",
-                message: "An error occurred while retrieving the SMS templates list"
+                description: "An error occurred while retrieving the SMS templates.",
+                message: "An error occurred while retrieving the SMS templates"
             }
         },
         updateSmsTemplate: {

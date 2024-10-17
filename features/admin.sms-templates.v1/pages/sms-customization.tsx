@@ -27,26 +27,18 @@ import {
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import {
-    DangerZone,
-    DangerZoneGroup,
-    DocumentationLink,
-    PageLayout,
-    useDocumentation
-} from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
+import { DangerZone, DangerZoneGroup, DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Segment } from "semantic-ui-react";
-import {
-    createNewSmsTemplate,
-    deleteSmsTemplate,
-    updateSmsTemplate,
-    useSmsTemplate,
-    useSmsTemplatesList
-} from "../api/sms-templates";
+import createSmsTemplate from "../api/create-sms-template";
+import deleteSmsTemplate from "../api/delete-sms-template";
+import updateSmsTemplate from "../api/update-sms-template";
+import useGetSmsTemplate from "../api/use-get-sms-template";
+import useGetSmsTemplatesList from "../api/use-get-sms-templates-list";
 import SmsCustomizationFooter from "../components/sms-customization-footer";
 import { SmsCustomizationForm } from "../components/sms-customization-form";
 import SmsCustomizationHeader from "../components/sms-customization-header";
@@ -59,60 +51,57 @@ type SmsCustomizationPageInterface = IdentifiableComponentInterface;
 /**
  * SMS customization page.
  *
- * @param props - Props injected to the component.
+ * @param props - Props injected to the component. { dataComponentId = "sms-customization-page" }
  *
  * @returns Main Page for SMS Customization.
  */
 const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
     props: SmsCustomizationPageInterface
 ): ReactElement => {
-
-    const { ["data-componentid"]: componentId } = props;
+    const { ["data-componentid"]: componentId = "sms-customization-page" } = props;
 
     const [ availableSmsTemplatesList, setAvailableSmsTemplatesList ] = useState<SmsTemplateType[]>([]);
     const [ currentSmsTemplate, setCurrentSmsTemplate ] = useState<SmsTemplate>();
     const [ isSystemTemplate, setIsSystemTemplate ] = useState(false);
+    const [ shouldFetch, setShouldFetch ] = useState(true);
     const [ isTemplateNotAvailable, setIsTemplateNotAvailable ] = useState(false);
     const [ selectedLocale, setSelectedLocale ] = useState(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
     const [ selectedSmsTemplateId, setSelectedSmsTemplateId ] = useState<string>();
     const [ selectedSmsTemplateDescription, setSelectedSmsTemplateDescription ] = useState<string>();
     const [ selectedSmsTemplate, setSelectedSmsTemplate ] = useState<SmsTemplate>();
+    const [ error, setError ] = useState<AxiosError>();
 
     const smsTemplates: Record<string, string>[] = useSelector(
-        (state: AppState) => state.config.deployment.extensions.smsTemplates) as Record<string, string>[];
+        (state: AppState) => state.config.deployment.extensions.smsTemplates
+    ) as Record<string, string>[];
     const enableCustomSmsTemplates: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.enableCustomSmsTemplates);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+        (state: AppState) => state?.config?.ui?.enableCustomSmsTemplates
+    );
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const smsFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state.config.ui.features.smsTemplates);
+        (state: AppState) => state.config.ui.features.smsTemplates
+    );
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
-    const hasUpdatePermission : boolean = useRequiredScopes(smsFeatureConfig?.scopes?.update);
-    const hasCreatePermission : boolean = useRequiredScopes(smsFeatureConfig?.scopes?.create);
+    const hasUpdatePermission: boolean = useRequiredScopes(smsFeatureConfig?.scopes?.update);
+    const hasCreatePermission: boolean = useRequiredScopes(smsFeatureConfig?.scopes?.create);
 
-    const isReadOnly: boolean = useMemo(() => {
-        return !smsFeatureConfig.enabled || !hasUpdatePermission;
-    }, [ smsFeatureConfig, allowedScopes ]);
-
-    const hasSmsTemplateCreatePermissions: boolean = useMemo(() => {
-        return smsFeatureConfig.enabled && hasCreatePermission;
-    }, [ smsFeatureConfig, allowedScopes ]);
+    const isReadOnly: boolean = !smsFeatureConfig.enabled || !hasUpdatePermission;
+    const hasSmsTemplateCreatePermissions: boolean = smsFeatureConfig.enabled && hasCreatePermission;
 
     const {
         data: smsTemplatesList,
         isLoading: isSmsTemplatesListLoading,
         error: smsTemplatesListError
-    } = useSmsTemplatesList();
+    } = useGetSmsTemplatesList();
 
     const {
         data: smsTemplate,
         isLoading: isSmsTemplateLoading,
-        error: smsTemplateError,
-        mutate: smsTemplateMutate
-    } = useSmsTemplate(selectedSmsTemplateId, selectedLocale, setIsSystemTemplate);
+        error: smsTemplateError
+    } = useGetSmsTemplate(selectedSmsTemplateId, selectedLocale, isSystemTemplate, shouldFetch);
 
     useEffect(() => {
         // we don't have a good displayName and description coming from the backend
@@ -161,37 +150,30 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
             return;
         }
 
-        if (smsTemplatesListError.response.data.description) {
-            dispatch(addAlert({
-                description: smsTemplatesListError.response?.data?.description,
+        dispatch(
+            addAlert({
+                description: t("smsTemplates:notifications.getSmsTemplateList.error.description"),
                 level: AlertLevels.ERROR,
-                message: smsTemplatesListError.response.data.message ??
-                    t("extensions:develop.smsTemplates.notifications.getSmsTemplateList.error.message")
-            }));
-
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("extensions:develop.smsTemplates.notifications.getSmsTemplateList.error.description"),
-            level: AlertLevels.ERROR,
-            message: t("extensions:develop.smsTemplates.notifications.getSmsTemplateList.error.message")
-        }));
+                message: t("smsTemplates:notifications.getSmsTemplateList.error.message")
+            })
+        );
     }, [ smsTemplatesListError ]);
 
     useEffect(() => {
-        if (!smsTemplateError || !selectedSmsTemplateId) {
+        if (!smsTemplateError || !selectedSmsTemplateId || smsTemplateError === error) {
             return;
         }
+
+        setError(smsTemplateError);
 
         // Show the replicate previous template modal and set the "isTemplateNotAvailable" flag to identify whether the
         // current template is a new template or not
         if (smsTemplateError.response.status === 404) {
             setIsTemplateNotAvailable(true);
             if (hasSmsTemplateCreatePermissions) {
-                if (!isSystemTemplate ||
-                    selectedLocale !== I18nConstants.DEFAULT_FALLBACK_LANGUAGE) {
-                    replicatePreviousTemplate();
+                if (!isSystemTemplate || selectedLocale !== I18nConstants.DEFAULT_FALLBACK_LANGUAGE) {
+                    // replicatePreviousTemplate();
+                    setIsSystemTemplate(true);
                 }
 
                 return;
@@ -200,23 +182,14 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
             }
         }
 
-        if (smsTemplateError.response.data.description) {
-            dispatch(addAlert({
-                description: smsTemplateError.response?.data?.description,
+        dispatch(
+            addAlert({
+                description: t("smsTemplates:notifications.getSmsTemplate.error.description"),
                 level: AlertLevels.ERROR,
-                message: smsTemplateError.response.data.message ??
-                    t("extensions:develop.smsTemplates.notifications.getSmsTemplate.error.message")
-            }));
-
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t("extensions:develop.smsTemplates.notifications.getSmsTemplate.error.description"),
-            level: AlertLevels.ERROR,
-            message: t("extensions:develop.smsTemplates.notifications.getSmsTemplate.error.message")
-        }));
-    }, [ smsTemplateError ]);
+                message: t("smsTemplates:notifications.getSmsTemplate.error.message")
+            })
+        );
+    }, [ smsTemplateError, isSystemTemplate ]);
 
     // This is used to check whether the URL contains a template ID, and if so, set it as the selected template.
     useEffect(() => {
@@ -226,127 +199,135 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
             const templateId: string = hash.split("=")[1];
 
             setSelectedSmsTemplateId(templateId);
-            setSelectedSmsTemplateDescription(availableSmsTemplatesList?.find(
-                (template: SmsTemplateType) => template.id === templateId)?.description);
+            setSelectedSmsTemplateDescription(
+                availableSmsTemplatesList?.find((template: SmsTemplateType) => template.id === templateId)?.description
+            );
         }
     }, [ window.location.hash ]);
 
-    const handleTemplateIdChange = (templateId: string) => {
+    const handleTemplateIdChange = (templateId: string): void => {
+        setShouldFetch(false);
         setIsTemplateNotAvailable(false);
+        setIsSystemTemplate(false);
         setCurrentSmsTemplate(undefined);
         setSelectedLocale(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
         setSelectedSmsTemplateId(templateId);
-        setSelectedSmsTemplateDescription(availableSmsTemplatesList?.find(
-            (template: SmsTemplateType) => template.id === templateId)?.description);
+        setSelectedSmsTemplateDescription(
+            availableSmsTemplatesList?.find((template: SmsTemplateType) => template.id === templateId)?.description
+        );
+        setShouldFetch(true);
     };
 
-    const handleTemplateChange = (updatedTemplateAttributes: Partial<SmsTemplate>) => {
+    const handleTemplateChange = (updatedTemplateAttributes: Partial<SmsTemplate>): void => {
         setSelectedSmsTemplate({ ...selectedSmsTemplate, ...updatedTemplateAttributes });
         setIsTemplateNotAvailable(false);
     };
 
-    const handleLocaleChange = (locale: string) => {
+    const handleLocaleChange = (locale: string): void => {
+        setShouldFetch(false);
         setCurrentSmsTemplate({ ...selectedSmsTemplate });
-        setIsTemplateNotAvailable(false);
+        setIsTemplateNotAvailable(true);
         setIsSystemTemplate(false);
         setSelectedLocale(locale);
+        setShouldFetch(true);
     };
 
-    const handleSubmit = () => {
-
+    const handleSubmit = (): void => {
+        setShouldFetch(false);
         const template: SmsTemplate = {
             ...selectedSmsTemplate,
             id: selectedLocale.replace("-", "_")
         };
 
-        if (isTemplateNotAvailable || isSystemTemplate) {
-            createNewSmsTemplate(selectedSmsTemplateId, template)
+        if (isSystemTemplate) {
+            createSmsTemplate(selectedSmsTemplateId, template)
                 .then((_response: SmsTemplate) => {
-                    dispatch(addAlert<AlertInterface>({
-                        description: t("extensions:develop.smsTemplates.notifications.updateSmsTemplate" +
-                            ".success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("extensions:develop.smsTemplates.notifications.updateSmsTemplate" +
-                            ".success.message")
-                    }));
-                }).catch((error: IdentityAppsApiException) => {
-                    dispatch(addAlert<AlertInterface>({
-                        description: t("extensions:develop.smsTemplates.notifications.updateSmsTemplate" +
-                            ".error.description"),
-                        level: AlertLevels.ERROR,
-                        message: error.message ?? t("extensions:develop.smsTemplates.notifications" +
-                            ".updateSmsTemplate.error.message")
-                    }));
-                }).finally(() => smsTemplateMutate());
+                    dispatch(
+                        addAlert<AlertInterface>({
+                            description: t("smsTemplates:notifications.updateSmsTemplate" + ".success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("smsTemplates:notifications.updateSmsTemplate" + ".success.message")
+                        })
+                    );
+                    setIsSystemTemplate(false);
+                    setShouldFetch(true);
+                })
+                .catch((error: IdentityAppsApiException) => {
+                    dispatch(
+                        addAlert<AlertInterface>({
+                            description: t("smsTemplates:notifications.updateSmsTemplate.error.description"),
+                            level: AlertLevels.ERROR,
+                            message: error.message ?? t("smsTemplates:notifications.updateSmsTemplate.error.message")
+                        })
+                    );
+                });
         } else {
             updateSmsTemplate(selectedSmsTemplateId, template, selectedLocale)
                 .then((_response: SmsTemplate) => {
-                    dispatch(addAlert<AlertInterface>({
-                        description: t("extensions:develop.smsTemplates.notifications.updateSmsTemplate" +
-                            ".success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("extensions:develop.smsTemplates.notifications.updateSmsTemplate" +
-                            ".success.message")
-                    }));
-                }).catch((error: IdentityAppsApiException) => {
-                    dispatch(addAlert<AlertInterface>({
-                        description: t("extensions:develop.smsTemplates.notifications.updateSmsTemplate" +
-                            ".error.description"),
-                        level: AlertLevels.ERROR,
-                        message: error.message ?? t("extensions:develop.smsTemplates.notifications" +
-                            ".updateSmsTemplate.error.message")
-                    }));
-                }).finally(() => smsTemplateMutate());
+                    dispatch(
+                        addAlert<AlertInterface>({
+                            description: t("smsTemplates:notifications.updateSmsTemplate" + ".success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("smsTemplates:notifications.updateSmsTemplate" + ".success.message")
+                        })
+                    );
+                    setIsSystemTemplate(false);
+                    setShouldFetch(true);
+                })
+                .catch((error: IdentityAppsApiException) => {
+                    dispatch(
+                        addAlert<AlertInterface>({
+                            description: t("smsTemplates:notifications.updateSmsTemplate" + ".error.description"),
+                            level: AlertLevels.ERROR,
+                            message:
+                                error.message ?? t("smsTemplates:notifications" + ".updateSmsTemplate.error.message")
+                        })
+                    );
+                });
         }
 
         setIsTemplateNotAvailable(false);
         setIsSystemTemplate(false);
     };
 
-    const handleDeleteRequest = () => {
-
+    const handleDeleteRequest = (): void => {
+        setShouldFetch(false);
         deleteSmsTemplate(selectedSmsTemplateId, selectedLocale)
             .then((_response: AxiosResponse) => {
-                dispatch(addAlert<AlertInterface>({
-                    description: t("extensions:develop.smsTemplates.notifications.deleteSmsTemplate" +
-                        ".success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("extensions:develop.smsTemplates.notifications.deleteSmsTemplate" +
-                        ".success.message")
-                }));
-            }).catch((error: IdentityAppsApiException) => {
-                dispatch(addAlert<AlertInterface>({
-                    description: t("extensions:develop.smsTemplates.notifications.deleteSmsTemplate" +
-                        ".error.description"),
-                    level: AlertLevels.ERROR,
-                    message: error.message ?? t("extensions:develop.smsTemplates.notifications" +
-                        ".deleteSmsTemplate.error.message")
-                }));
-            }).finally(() => {
+                dispatch(
+                    addAlert<AlertInterface>({
+                        description: t("smsTemplates:notifications.deleteSmsTemplate" + ".success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("smsTemplates:notifications.deleteSmsTemplate" + ".success.message")
+                    })
+                );
                 setSelectedLocale(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
                 setIsSystemTemplate(false);
-                smsTemplateMutate();
+                setShouldFetch(true);
+            })
+            .catch((error: IdentityAppsApiException) => {
+                dispatch(
+                    addAlert<AlertInterface>({
+                        description: t("smsTemplates:notifications.deleteSmsTemplate" + ".error.description"),
+                        level: AlertLevels.ERROR,
+                        message: error.message ?? t("smsTemplates:notifications" + ".deleteSmsTemplate.error.message")
+                    })
+                );
             });
-    };
-
-    const replicatePreviousTemplate = () => {
-        setSelectedSmsTemplate(currentSmsTemplate);
     };
 
     return (
         <BrandingPreferenceProvider>
             <PageLayout
-                title={ t("extensions:develop.smsTemplates.page.header") }
-                pageTitle={ t("extensions:develop.smsTemplates.page.header") }
-                description={ (
-                    <>
-                        { t("extensions:develop.smsTemplates.page.description") }
-                        <DocumentationLink
-                            link={ getLink("develop.smsCustomization.learnMore") }
-                        >
-                            { t("extensions:common.learnMore") }
+                title={ t("smsTemplates:page.header") }
+                pageTitle={ t("smsTemplates:page.header") }
+                description={
+                    (<>
+                        { t("smsTemplates:page.description") }
+                        <DocumentationLink link={ getLink("develop.smsCustomization.learnMore") }>
+                            { t("smsTemplates:common.learnMore") }
                         </DocumentationLink>
-                    </> )
+                    </>)
                 }
                 titleTextAlign="left"
                 bottomMargin={ false }
@@ -364,11 +345,9 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
                 <Segment.Group>
                     <Segment.Group horizontal>
                         <Segment className="sms-template-segment-content-header">
-                            { t("extensions:develop.smsTemplates.tabs.content.label") }
+                            { t("smsTemplates:tabs.content.label") }
                         </Segment>
-                        <Segment>
-                            { t("extensions:develop.smsTemplates.tabs.preview.label") }
-                        </Segment>
+                        <Segment>{ t("smsTemplates:tabs.preview.label") }</Segment>
                     </Segment.Group>
 
                     <Segment.Group horizontal>
@@ -377,81 +356,63 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
                                 isSmsTemplatesListLoading={ isSmsTemplatesListLoading || isSmsTemplateLoading }
                                 selectedSmsTemplate={ currentSmsTemplate }
                                 selectedLocale={ selectedLocale }
-                                onTemplateChanged={
-                                    (updatedTemplateAttributes: Partial<SmsTemplate>) =>
-                                        handleTemplateChange(updatedTemplateAttributes) }
+                                onTemplateChanged={ (updatedTemplateAttributes: Partial<SmsTemplate>) =>
+                                    handleTemplateChange(updatedTemplateAttributes)
+                                }
                                 onSubmit={ handleSubmit }
                                 onDeleteRequested={ handleDeleteRequest }
-                                readOnly={
-                                    isReadOnly || (isTemplateNotAvailable && !hasSmsTemplateCreatePermissions) }
+                                readOnly={ isReadOnly || (isTemplateNotAvailable && !hasSmsTemplateCreatePermissions) }
                             />
                         </Segment>
                         <Segment className="sms-template-segment-preview">
-                            <SmsTemplatePreview
-                                smsTemplate={ selectedSmsTemplate || currentSmsTemplate }
-                            />
+                            <SmsTemplatePreview smsTemplate={ selectedSmsTemplate || currentSmsTemplate } />
                         </Segment>
                     </Segment.Group>
 
                     <Segment padded={ true }>
-                        <Show
-                            when={ featureConfig?.smsTemplates?.scopes?.update }
-                        >
-                            {
-                                (!isTemplateNotAvailable || hasSmsTemplateCreatePermissions) && (
-                                    <SmsCustomizationFooter
-                                        isSaveButtonLoading={ isSmsTemplatesListLoading || isSmsTemplateLoading }
-                                        onSaveButtonClick={ handleSubmit }
-                                    />
-                                )
-                            }
+                        <Show when={ featureConfig?.smsTemplates?.scopes?.update }>
+                            { (!isTemplateNotAvailable || hasSmsTemplateCreatePermissions) && (
+                                <SmsCustomizationFooter
+                                    isSaveButtonLoading={ isSmsTemplatesListLoading || isSmsTemplateLoading }
+                                    onSaveButtonClick={ handleSubmit }
+                                />
+                            ) }
                         </Show>
                     </Segment>
                 </Segment.Group>
 
-                <Divider hidden/>
+                <Divider hidden />
 
-                { !isSystemTemplate && selectedLocale !== I18nConstants.DEFAULT_FALLBACK_LANGUAGE &&
-                (<Show
-                    when={ featureConfig?.smsTemplates?.scopes?.delete }
-                >
-                    <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
-                        <DangerZone
-                            data-componentid={ `${ componentId }-remove-sms-provider-config` }
-                            actionTitle={ t("extensions:develop.smsTemplates.dangerZone.remove.action") }
-                            header={ t("extensions:develop.smsTemplates.dangerZone.remove.heading") }
-                            subheader={ t("extensions:develop.smsTemplates.dangerZone.remove.message") }
-                            onActionClick={ handleDeleteRequest }
-                        />
-                    </DangerZoneGroup>
-                </Show>)
-                }
+                { !isSystemTemplate && selectedLocale !== I18nConstants.DEFAULT_FALLBACK_LANGUAGE && (
+                    <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>
+                        <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                            <DangerZone
+                                data-componentid={ `${componentId}-remove-sms-provider-config` }
+                                actionTitle={ t("smsTemplates:dangerZone.remove.action") }
+                                header={ t("smsTemplates:dangerZone.remove.heading") }
+                                subheader={ t("smsTemplates:dangerZone.remove.message") }
+                                onActionClick={ handleDeleteRequest }
+                            />
+                        </DangerZoneGroup>
+                    </Show>
+                ) }
 
-                { !isSystemTemplate && selectedLocale === I18nConstants.DEFAULT_FALLBACK_LANGUAGE &&
-                (<Show
-                    when={ featureConfig?.smsTemplates?.scopes?.delete }
-                >
-                    <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
-                        <DangerZone
-                            data-componentid={ `${ componentId }-revert-sms-provider-config` }
-                            actionTitle={ t("extensions:develop.smsTemplates.dangerZone.revert.action") }
-                            header={ t("extensions:develop.smsTemplates.dangerZone.revert.heading") }
-                            subheader={ t("extensions:develop.smsTemplates.dangerZone.revert.message") }
-                            onActionClick={ handleDeleteRequest }
-                        />
-                    </DangerZoneGroup>
-                </Show>)
-                }
+                { !isSystemTemplate && selectedLocale === I18nConstants.DEFAULT_FALLBACK_LANGUAGE && (
+                    <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>
+                        <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                            <DangerZone
+                                data-componentid={ `${componentId}-revert-sms-provider-config` }
+                                actionTitle={ t("smsTemplates:dangerZone.revert.action") }
+                                header={ t("smsTemplates:dangerZone.revert.heading") }
+                                subheader={ t("smsTemplates:dangerZone.revert.message") }
+                                onActionClick={ handleDeleteRequest }
+                            />
+                        </DangerZoneGroup>
+                    </Show>
+                ) }
             </PageLayout>
         </BrandingPreferenceProvider>
     );
-};
-
-/**
- * Default props for the component.
- */
-SmsCustomizationPage.defaultProps = {
-    "data-componentid": "sms-customization-page"
 };
 
 export default SmsCustomizationPage;
