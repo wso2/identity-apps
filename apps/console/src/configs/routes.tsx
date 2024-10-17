@@ -1058,34 +1058,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             children: [
                 {
                     component: lazy(() =>
-                        import("@wso2is/admin.server.v1/pages/admin-session-advisory-banner-page")
-                    ),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "admin-session-advisory-banner-edit",
-                    name: "Admin Session Advisory Banner",
-                    path: AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER_EDIT"),
-                    protected: true,
-                    showOnSidePanel: false
-                },
-                {
-                    component: lazy(() =>
-                        import("@wso2is/admin.server.v1/pages/remote-logging-page")
-                    ),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "remote-logging",
-                    name: "Remote Logging",
-                    path: AppConstants.getPaths().get("REMOTE_LOGGING"),
-                    protected: true,
-                    showOnSidePanel: false
-                },
-                {
-                    component: lazy(() =>
                         import("@wso2is/admin.server.v1/pages/internal-notification-sending-page")
                     ),
                     exact: true,
@@ -1421,19 +1393,52 @@ export const getFullScreenViewRoutes = (): RouteInterface[] => {
  * @returns
  */
 export const getDefaultLayoutRoutes = (): RouteInterface[] => {
-    const routes: RouteInterface[] = [];
-
-    routes.push({
-        component: lazy(() => import("@wso2is/admin.core.v1/pages/privacy")),
-        icon: null,
-        id: "privacy",
-        name: "console:common.sidePanel.privacy",
-        path: AppConstants.getPaths().get("PRIVACY"),
-        protected: true,
-        showOnSidePanel: false
-    });
-
-    return routes;
+    return [
+        {
+            component: lazy(() => import("@wso2is/admin.core.v1/pages/privacy")),
+            icon: null,
+            id: "privacy",
+            name: "console:common.sidePanel.privacy",
+            path: AppConstants.getPaths().get("PRIVACY"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
+            children: [
+                {
+                    component: lazy(() => import("@wso2is/admin.tenants.v1/pages/system-settings-page")),
+                    exact: true,
+                    icon: null,
+                    id: "systemSettings",
+                    order: 2,
+                    path: AppConstants.getPaths().get("SYSTEM_SETTINGS"),
+                    protected: true,
+                    showOnSidePanel: true
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.tenants.v1/pages/edit-tenant-page")),
+                    exact: true,
+                    icon: null,
+                    id: "editRootOrganization",
+                    order: 1,
+                    path: AppConstants.getPaths().get("EDIT_TENANT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("@wso2is/admin.tenants.v1/pages/tenants-page")),
+            exact: true,
+            icon: {
+                icon: getSidePanelIcons().administrators
+            },
+            id: "tenants",
+            name: "console:common.sidePanel.tenants",
+            order: 1,
+            path: AppConstants.getPaths().get("TENANTS"),
+            protected: true,
+            showOnSidePanel: false
+        }
+    ];
 };
 
 /**
@@ -1530,17 +1535,19 @@ export const getAuthLayoutRoutes = (): RouteInterface[] => {
  *
  * @returns
  */
-const getLayoutAssignedToRoutes = (routes: RouteInterface[], layout: FunctionComponent) => {
-    let modifiedRoutes: RouteInterface[] = [ ...routes ];
-
-    modifiedRoutes = modifiedRoutes.map((route: RouteInterface) => {
-        return {
+const getLayoutAssignedToRoutes = (routes: RouteInterface[], layout: FunctionComponent): RouteInterface[] => {
+    return routes.map((route: RouteInterface) => {
+        const modifiedRoute: RouteInterface = {
             ...route,
             component: layout
         };
-    });
 
-    return modifiedRoutes;
+        if (route.children) {
+            modifiedRoute.children = getLayoutAssignedToRoutes(route.children, layout);
+        }
+
+        return modifiedRoute;
+    });
 };
 
 /**
@@ -1551,7 +1558,6 @@ const getLayoutAssignedToRoutes = (routes: RouteInterface[], layout: FunctionCom
 export const getAppLayoutRoutes = (): RouteInterface[] => {
     return [
         ...getLayoutAssignedToRoutes(getAuthLayoutRoutes(), AuthLayout),
-        ...getLayoutAssignedToRoutes(getDefaultLayoutRoutes(), DefaultLayout),
         ...getLayoutAssignedToRoutes(getErrorLayoutRoutes(), ErrorLayout),
         {
             component: FullScreenLayout,
@@ -1559,6 +1565,15 @@ export const getAppLayoutRoutes = (): RouteInterface[] => {
             id: "full-screen-view",
             name: "Full Screen View",
             path: AppConstants.getFullScreenViewBasePath(),
+            protected: false,
+            showOnSidePanel: false
+        },
+        {
+            component: DefaultLayout,
+            icon: null,
+            id: "default",
+            name: "Default",
+            path: AppConstants.getDefaultLayoutBasePath(),
             protected: false,
             showOnSidePanel: false
         },

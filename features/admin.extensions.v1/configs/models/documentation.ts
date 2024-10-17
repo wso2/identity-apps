@@ -526,6 +526,19 @@ interface LogsDocumentationLinksInterface {
 }
 
 /**
+ * Interface for the multi tenancy section documentation structure.
+ */
+interface MultiTenancyDocumentationLinksInterface {
+    addTenant: {
+        learnMore: string;
+    };
+    learnMore: string;
+    systemSettings: {
+        learnMore: string;
+    };
+}
+
+/**
  * Interface for the console documentation structure.
  */
 export interface DocumentationLinksExtensionInterface {
@@ -567,6 +580,11 @@ export interface DocumentationLinksExtensionInterface {
          * Documentation links for email customization UI elements.
          */
         emailCustomization: EmailCustomizationLinksInterface;
+
+        /**
+         * Documentation links for multi tenancy feature.
+         */
+        multiTenancy: MultiTenancyDocumentationLinksInterface;
     }
     /**
      * Documentation links for manage section elements.

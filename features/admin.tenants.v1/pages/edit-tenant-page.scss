@@ -1,0 +1,30 @@
+.tenant-edit-page {
+    .page-header-wrapper {
+        .oxygen-avatar {
+            height: 80px;
+            width: 80px;
+            font-size: 3em;
+        }
+
+        .tenant-status {
+            display: flex;
+            gap: 5px;
+            flex-direction: row;
+            align-items: center;
+
+            .status-dot {
+                height: 9px;
+                width: 9px;
+                border-radius: 50%;
+
+                &.active {
+                    background: var(--oxygen-palette-success-main);
+                }
+
+                &.disabled {
+                    background: var(--oxygen-palette-error-main);
+                }
+            }
+        }
+    }
+}

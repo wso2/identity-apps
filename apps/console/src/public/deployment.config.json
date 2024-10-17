@@ -963,6 +963,28 @@
                     ]
                 }
             },
+            "tenants": {
+                "disabledFeatures": [
+                    "tenants.add.tenant.from.dropdown",
+                    "tenants.make.default",
+                    "tenants.organizations.quick.nav.from.dropdown"
+                ],
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_list_tenants"
+                    ],
+                    "delete": [
+                        "internal_modify_tenants"
+                    ],
+                    "read": [
+                        "internal_list_tenants"
+                    ],
+                    "update": [
+                        "internal_modify_tenants"
+                    ]
+                }
+            },
             "tryIt": {
                 "disabledFeatures": [],
                 "enabled": true,

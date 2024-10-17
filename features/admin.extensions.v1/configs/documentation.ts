@@ -363,6 +363,15 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
             },
             eventPublishing: {
                 learnMore: undefined
+            },
+            multiTenancy: {
+                addTenant: {
+                    learnMore: undefined
+                },
+                learnMore: undefined,
+                systemSettings: {
+                    learnMore: undefined
+                }
             }
         },
         manage: {

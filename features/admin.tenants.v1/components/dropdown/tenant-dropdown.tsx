@@ -17,8 +17,16 @@
  */
 
 import { AsgardeoSPAClient, DecodedIDTokenPayload } from "@asgardeo/auth-react";
+import Chip from "@oxygen-ui/react/Chip";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
-import { ArrowLeftArrowRightIcon, BuildingCircleCheckIcon, HierarchyIcon, PlusIcon } from "@oxygen-ui/react-icons";
+import {
+    ArrowLeftArrowRightIcon,
+    BuildingAltIcon,
+    BuildingCircleCheckIcon,
+    BuildingPenIcon,
+    HierarchyIcon,
+    PlusIcon
+} from "@oxygen-ui/react-icons";
 import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { getMiscellaneousIcons } from "@wso2is/admin.core.v1/configs";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
@@ -59,9 +67,11 @@ import {
     SemanticICONS
 } from "semantic-ui-react";
 import { getAssociatedTenants, makeTenantDefault } from "../../api";
+import TenantConstants from "../../constants/tenant-constants";
 import { TenantInfo, TenantRequestResponse, TriggerPropTypesInterface } from "../../models";
 import { handleTenantSwitch } from "../../utils";
 import { AddTenantWizard } from "../add-modal";
+import "./tenant-dropdown.scss";
 
 /**
  * Dashboard layout Prop types.
@@ -101,11 +111,32 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     const username: string = useSelector((state: AppState) => state.auth.username);
     const email: string = useSelector((state: AppState) => state.auth.email);
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const isMakingTenantsDefaultEnabled: boolean = useSelector((state: AppState) => {
+        return !state?.config?.ui?.features?.tenants?.disabledFeatures?.includes(
+            TenantConstants.FEATURE_DICTIONARY.MAKING_TENANTS_DEFAULT
+        );
+    });
+    const isManagingTenantsFromDropdownEnabled: boolean = useSelector((state: AppState) => {
+        return !state?.config?.ui?.features?.tenants?.disabledFeatures?.includes(
+            TenantConstants.FEATURE_DICTIONARY.MANAGING_TENANTS_FROM_DROPDOWN
+        );
+    });
+    const isAddingTenantsFromDropdownEnabled: boolean = useSelector((state: AppState) => {
+        return !state?.config?.ui?.features?.tenants?.disabledFeatures?.includes(
+            TenantConstants.FEATURE_DICTIONARY.ADD_TENANTS_FROM_DROPDOWN
+        );
+    });
+    const isOrganizationsQuickNavFromDropdownEnabled: boolean = useSelector((state: AppState) => {
+        return !state?.config?.ui?.features?.tenants?.disabledFeatures?.includes(
+            TenantConstants.FEATURE_DICTIONARY.ORGANIZATIONS_QUICK_NAV_FROM_DROPDOWN
+        );
+    });
 
     const [ tenantAssociations, setTenantAssociations ] = useState<TenantAssociationsInterface>(undefined);
     const [ tempTenantAssociationsList, setTempTenantAssociationsList ] = useState<string[]>(undefined);
@@ -474,16 +505,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                             ? "header sub-org-header" : "header" }
                                         key={ "current-tenant" }
                                     >
-                                        {
-                                            <GenericIcon
-                                                transparent
-                                                inline
-                                                className="associated-tenant-icon"
-                                                data-testid="associated-tenant-icon"
-                                                icon={ getMiscellaneousIcons().tenantIcon }
-                                                size="mini"
-                                            />
-                                        }
+                                        <BuildingAltIcon size={ 30 } />
                                         <Item.Content verticalAlign="middle">
                                             <Item.Description>
                                                 <div
@@ -503,6 +525,14 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                                     </Placeholder>
                                                                 )
                                                     }
+                                                    { isSuperOrganization() && (
+                                                        <Chip
+                                                            className="primary-chip"
+                                                            label="Primary"
+                                                            color="info"
+                                                            sx={ { ml: 1 } }
+                                                        />
+                                                    ) }
                                                 </div>
                                                 <Grid className="middle aligned content">
                                                     <Grid.Row>
@@ -546,17 +576,9 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                     organizationConfigs.showOrganizationDropdown &&  (
                                         <>
                                             {
-                                                !isSubOrg && (
-                                                    <Dropdown.Header
-                                                        className="tenant-dropdown-links-category-header"
-                                                        content="Primary organizations"
-                                                    />
-                                                )
-                                            }
-                                            {
-                                                !isSubOrg &&
+                                                isMakingTenantsDefaultEnabled && !isSubOrg &&
                                                 organizationType !== OrganizationType.SUBORGANIZATION &&
-                                            tenantAssociations ? (
+                                                tenantAssociations ? (
                                                         tenantAssociations.currentTenant ===
                                                     tenantAssociations.defaultTenant ? (
                                                                 <Dropdown.Item
@@ -611,8 +633,8 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                     : null
                                             }
                                             {
-                                                !isSubOrg &&
-                                            (tenantDropdownLinks
+                                                isAddingTenantsFromDropdownEnabled && !isSubOrg &&
+                                                (tenantDropdownLinks
                                                 && tenantDropdownLinks.length
                                                 && tenantDropdownLinks.length > 0)
                                                     ? tenantDropdownLinks.map(
@@ -649,8 +671,20 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                     )
                                                     : null
                                             }
+                                            { isManagingTenantsFromDropdownEnabled && isSuperOrganization() && (
+                                                <Dropdown.Item
+                                                    className="action-panel"
+                                                    onClick={ (): void => {
+                                                        history.push(AppConstants.getPaths().get("TENANTS"))
+                                                    } }
+                                                    data-compnentid="manage-root-organizations"
+                                                >
+                                                    <BuildingPenIcon />
+                                                    { t("tenants:tenantDropdown.options.manage.label") }
+                                                </Dropdown.Item>
+                                            ) }
                                             {
-                                                !isSubOrg && (
+                                                isOrganizationsQuickNavFromDropdownEnabled && !isSubOrg && (
                                                     <>
                                                         <Divider />
                                                         <Dropdown.Item

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,10 +16,20 @@
  * under the License.
  */
 
-import { OrganizationConfigs } from "./models";
+.organization-breadcrumb-wrapper {
+    margin-bottom: 5px;
 
-export const organizationConfigs: OrganizationConfigs = {
-    allowNavigationInDropdown: false,
-    showOrganizationDropdown: true,
-    showSwitcherInTenants: true
-};
+    .organization-breadcrumb {
+        .organization-breadcrumb-main {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: nowrap;
+        }
+
+        .organization-breadcrumb-label {
+            margin-bottom: 5px;
+        }
+    }
+}
