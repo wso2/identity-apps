@@ -67,6 +67,7 @@ import { Dispatch } from "redux";
 import "moment/locale/si";
 import "moment/locale/fr";
 import { getBaseRoutes } from "./configs/routes";
+import WithFeatureProviders from "./with-feature-providers";
 import "./app.scss";
 
 /**
@@ -470,51 +471,53 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                                 </Trans>)
                                             }
                                         />
-                                        <ExtensionTemplatesProvider
-                                            resourceType={ ResourceTypes.APPLICATIONS }
-                                            categories={ ApplicationTemplateConstants.SUPPORTED_CATEGORIES_INFO }
-                                        >
-                                            <Switch>
-                                                <Redirect
-                                                    exact
-                                                    from="/"
-                                                    to={ AppConstants.getAppHomePath() }
-                                                />
-                                                {
-                                                    baseRoutes.map((route: RouteInterface, index: number) => {
-                                                        return (
-                                                            route.protected ?
-                                                                (
-                                                                    <ProtectedRoute
-                                                                        component={ route.component }
-                                                                        path={ route.path }
-                                                                        key={ index }
-                                                                        exact={ route.exact }
-                                                                    />
-                                                                )
-                                                                :
-                                                                (
-                                                                    <Route
-                                                                        path={ route.path }
-                                                                        render={
-                                                                            (props:  RouteComponentProps<
-                                                                                { [p: string]: string },
-                                                                                StaticContext, unknown
-                                                                            >) => {
-                                                                                return (<route.component
-                                                                                    { ...props }
-                                                                                />);
+                                        <WithFeatureProviders>
+                                            <ExtensionTemplatesProvider
+                                                resourceType={ ResourceTypes.APPLICATIONS }
+                                                categories={ ApplicationTemplateConstants.SUPPORTED_CATEGORIES_INFO }
+                                            >
+                                                <Switch>
+                                                    <Redirect
+                                                        exact
+                                                        from="/"
+                                                        to={ AppConstants.getAppHomePath() }
+                                                    />
+                                                    {
+                                                        baseRoutes.map((route: RouteInterface, index: number) => {
+                                                            return (
+                                                                route.protected ?
+                                                                    (
+                                                                        <ProtectedRoute
+                                                                            component={ route.component }
+                                                                            path={ route.path }
+                                                                            key={ index }
+                                                                            exact={ route.exact }
+                                                                        />
+                                                                    )
+                                                                    :
+                                                                    (
+                                                                        <Route
+                                                                            path={ route.path }
+                                                                            render={
+                                                                                (props:  RouteComponentProps<
+                                                                                    { [p: string]: string },
+                                                                                    StaticContext, unknown
+                                                                                >) => {
+                                                                                    return (<route.component
+                                                                                        { ...props }
+                                                                                    />);
+                                                                                }
                                                                             }
-                                                                        }
-                                                                        key={ index }
-                                                                        exact={ route.exact }
-                                                                    />
-                                                                )
-                                                        );
-                                                    })
-                                                }
-                                            </Switch>
-                                        </ExtensionTemplatesProvider>
+                                                                            key={ index }
+                                                                            exact={ route.exact }
+                                                                        />
+                                                                    )
+                                                            );
+                                                        })
+                                                    }
+                                                </Switch>
+                                            </ExtensionTemplatesProvider>
+                                        </WithFeatureProviders>
                                     </>
                                 </SessionManagementProvider>
                             </AccessControlProvider>
