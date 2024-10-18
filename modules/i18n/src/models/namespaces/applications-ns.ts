@@ -267,7 +267,6 @@ export interface ApplicationsNS {
             actionTitle: string
             header: string;
             subheader: string;
-            subheader2: string
         },
     };
     edit: {
@@ -1053,6 +1052,7 @@ export interface ApplicationsNS {
             };
         };
         applicationsSettings: {
+            title: string;
             fields :{
                 dcrEndpoint: {
                     label: string,
@@ -2126,6 +2126,7 @@ export interface ApplicationsNS {
         };
     };
     myaccount: {
+        settings: string;
         title: string;
         description: string;
         popup: string;

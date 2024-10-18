@@ -303,12 +303,10 @@ export const applications: ApplicationsNS = {
                 "using this application will no longer work."
         },
         disableApplication: {
-            actionTitle: "{{ state }} application",
-            header: "{{ state }} application",
+            actionTitle: "Disable application",
+            header: "Disable application",
             subheader: "Once the application is disabled, it will not be accessible by the consumers." +
-                " And the application also can not access consumer data.",
-            subheader2: "Enable the application to be accessible by the consumers. " +
-            "After enabling, application can access consumer data"
+                " And the application also can not access consumer data."
         },
         header: "Danger Zone"
     },
@@ -1257,6 +1255,7 @@ export const applications: ApplicationsNS = {
         },
 
         applicationsSettings: {
+            title: "Application Settings",
             fields: {
                 dcrEndpoint: {
                     label: "DCR Endpoint",
@@ -2461,6 +2460,7 @@ export const applications: ApplicationsNS = {
         description: "Self-service portal for your users.",
         popup: "Share this link with your users to allow access to My Account" +
         " and to manage their accounts.",
+        settings: "My Account Settings",
         title: "My Account",
         enable: {
             0: "Enabled",
