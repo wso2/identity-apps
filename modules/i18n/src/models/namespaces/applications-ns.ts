@@ -267,7 +267,6 @@ export interface ApplicationsNS {
             actionTitle: string
             header: string;
             subheader: string;
-            subheader2: string
         },
     };
     edit: {

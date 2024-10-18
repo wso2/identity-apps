@@ -303,12 +303,10 @@ export const applications: ApplicationsNS = {
                 "using this application will no longer work."
         },
         disableApplication: {
-            actionTitle: "{{ state }} application",
-            header: "{{ state }} application",
+            actionTitle: "Disable application",
+            header: "Disable application",
             subheader: "Once the application is disabled, it will not be accessible by the consumers." +
-                " And the application also can not access consumer data.",
-            subheader2: "Enable the application to be accessible by the consumers. " +
-            "After enabling, application can access consumer data"
+                " And the application also can not access consumer data."
         },
         header: "Danger Zone"
     },

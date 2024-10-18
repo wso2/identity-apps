@@ -446,13 +446,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         sectionHeader={ t("applications:dangerZoneGroup.header") }
                     >
                         <DangerZone
-                            actionTitle={ t("applications:dangerZoneGroup.disableApplication.actionTitle",
-                                { state: application.applicationEnabled ? t("common:disable") : t("common:enable") }) }
-                            header={ t("applications:dangerZoneGroup.disableApplication.header",
-                                { state: application.applicationEnabled ? t("common:disable") : t("common:enable") } ) }
-                            subheader={ application.applicationEnabled
-                                ? t("applications:dangerZoneGroup.disableApplication.subheader")
-                                : t("applications:dangerZoneGroup.disableApplication.subheader2") }
+                            actionTitle={ t("applications:dangerZoneGroup.disableApplication.actionTitle") }
+                            header={ t("applications:dangerZoneGroup.disableApplication.header") }
+                            subheader={ t("applications:dangerZoneGroup.disableApplication.subheader") }
                             onActionClick={ undefined }
                             toggle={ {
                                 checked: application.applicationEnabled,
