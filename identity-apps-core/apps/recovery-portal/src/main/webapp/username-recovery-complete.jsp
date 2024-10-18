@@ -36,8 +36,21 @@
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
-    String callback = (String) request.getAttribute("callback");
+    String EMAIL = "EMAIL";
+    String callback = request.getParameter("callback");
     String username = request.getParameter("username");
+    String recoveryChannelType = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("recoveryChannelType"));
+
+    String successMessageTitle;
+    String successMessageDescrition;
+
+    if (StringUtils.equals(recoveryChannelType, EMAIL)){
+        successMessageTitle = "check.your.email";
+        successMessageDescrition = "Username.recovery.information.sent.to.your.email";
+    } else {
+        successMessageTitle = "check.your.mobile";
+        successMessageDescrition = "Username.recovery.information.sent.to.your.mobile";
+    }
 %>
 
 <%-- Data for the layout from the page --%>
@@ -74,10 +87,10 @@
         <layout:component componentName="MainSection" >
             <div class="ui green segment mt-3 attached">
                 <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="username-recovery-notify-page-header">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "check.your.email")%>
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, successMessageTitle)%>
                 </h3>
                 <p class="portal-tagline-description">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username.recovery.information.sent.to.your.email")%>
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, successMessageDescrition)%>
                     <br><br>
                     <%
                         if(StringUtils.isNotBlank(callback)) {
@@ -98,7 +111,6 @@
                         <%= StringEscapeUtils.escapeHtml4(supportEmail) %>
                     </span>
                     </a>
-                    .
                 </p>
             </div>
         </layout:component>
