@@ -3736,8 +3736,7 @@ export const extensions: Extensions = {
                         recoveryOptionHeading: "Recovery Option Selection"
                     }
                 },
-                subHeading: "Account Recovery related settings.",
-                
+                subHeading: "Account Recovery related settings."
             },
             accountSecurity: {
                 backButton: "Go back to Account Security",
