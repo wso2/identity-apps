@@ -34,7 +34,7 @@
     String uiLocaleFromURL = request.getParameter("ui_locales");
     String localeFromCookie = null;
     String BUNDLE = "org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources";
-    
+
     // Map to store default supported language codes.
     // TODO: Use this map to generate the `language-switcher.jsp`.
     Map<String, String> supportedLanguages = new HashMap<>();
@@ -56,7 +56,58 @@
     languageSupportedCountries.add("JP");
     languageSupportedCountries.add("BR");
 
-    // Check cookie for the user selected language first
+    // Specify the file path.
+    String filePath = application.getRealPath("/") + "/WEB-INF/classes/LanguageOptions.properties";
+
+    // Use a BufferedReader to read the file content.
+    try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            // Trim the line and ignore comments and empty lines.
+            line = line.trim();
+            if (line.isEmpty() || line.startsWith("#")) {
+                continue;
+            }
+
+            String[] keyValue = line.split("=");
+            if (keyValue.length != 2) {
+                continue;
+            }
+
+            // Split the key further using '.' as the delimiter.
+            String[] parts = keyValue[0].split("\\.");
+            if (parts.length == 0) {
+                continue;
+            }
+
+            // Split the code further using '_' as the delimiter.
+            String[] languageCode = parts[parts.length - 1].split("_");
+            if (languageCode.length != 2) {
+                continue;
+            }
+
+            // Find out whether we have resource bundle for the given locale.
+            Locale tempLocale = new Locale(languageCode[0], languageCode[1]);
+            try {
+                ResourceBundle foundBundle = ResourceBundle.getBundle(BUNDLE, tempLocale);
+
+                if (tempLocale.getLanguage().equals(foundBundle.getLocale().getLanguage()) &&
+                    tempLocale.getCountry().equals(foundBundle.getLocale().getCountry())) {
+                    // If the bundle is found, add the language to the supported list.
+                    supportedLanguages.putIfAbsent(languageCode[0], languageCode[1]);
+                    if (!languageSupportedCountries.contains(languageCode[1])) {
+                        languageSupportedCountries.add(languageCode[1]);
+                    }
+                }
+            } catch (Exception e) {
+                // Bundle not found, do not add this language.
+            }
+        }
+    } catch (Exception e) {
+        throw e;
+    }
+
+    // Check cookie for the user selected language first.
     Cookie[] cookies = request.getCookies();
     if (cookies != null) {
         for (Cookie cookie : cookies) {
@@ -230,7 +281,7 @@
             String COUNTRY_PLACEHOLDER = "{{country}}";
             String LOCALE_PLACEHOLDER = "{{locale}}";
 
-            if (transformedLink.contains(LANGUAGE_PLACEHOLDER) || transformedLink.contains(COUNTRY_PLACEHOLDER) || transformedLink.contains(LOCALE_PLACEHOLDER)) {            
+            if (transformedLink.contains(LANGUAGE_PLACEHOLDER) || transformedLink.contains(COUNTRY_PLACEHOLDER) || transformedLink.contains(LOCALE_PLACEHOLDER)) {
                 transformedLink = transformedLink
                     .replace("{{lang}}", langCode)
                     .replace("{{country}}", countryCode)
