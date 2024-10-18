@@ -112,12 +112,20 @@
         return;
     }
 
+    // Checking for multiple channels enabled.
+    Boolean isMultiChannelsEnabled = isEmailEnabled && isSMSEnabled;
+
     // Skipping the channel selection once we don't have channels or only have one channel.
-    if(channels != null && channels.size() == 1){
+    if (channels != null && channels.size() == 1) {
         request.setAttribute("usernameRecoveryOption", channels.get(0).getId() + ":" + channels.get(0).getType());
         request.setAttribute("recoveryStage", "NOTIFY");
         request.getRequestDispatcher("verify.do").forward(request, response);
         return;
+    } else if (!isMultiChannelsEnabled) {
+        String recoveryOption = isEmailEnabled ? EMAIL : SMS;
+        request.setAttribute("usernameRecoveryOption", getChannelIdFromChannelName(channels, recoveryOption) + ":" + recoveryOption);
+        request.setAttribute("recoveryStage", "NOTIFY");
+        request.getRequestDispatcher("verify.do").forward(request, response);
     }
     
 %>
@@ -225,8 +233,6 @@
                         </div>
                     </form>
                 </div>
-                <h1>is email enabed<%=isEmailEnabled%></h1>
-                <h1>is sms enabled<%=isSMSEnabled%></h1>
             </div>
         </layout:component>
         <layout:component componentName="ProductFooter">
