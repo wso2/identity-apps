@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.6.2
+
+### Patch Changes
+
+- [#7006](https://github.com/wso2/identity-apps/pull/7006) [`f8efa54ea029a676aa6908369e6736a84ae97d5c`](https://github.com/wso2/identity-apps/commit/f8efa54ea029a676aa6908369e6736a84ae97d5c) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add labels to settings icons in applications page
+
 ## 2.6.1
 
 ### Patch Changes
