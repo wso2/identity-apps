@@ -249,7 +249,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
      * @param data - Checkbox data.
      */
     const handleAppEnableDisableToggleChange = (event: FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
-        setEnableStatus(data.checked);
+        setEnableStatus(!data.checked);
         setShowDisableConfirmationModal(true);
     };
 
@@ -329,7 +329,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                 subheader={ t("applications:dangerZoneGroup.disableApplication.subheader") }
                                 onActionClick={ undefined }
                                 toggle={ {
-                                    checked: application.applicationEnabled,
+                                    checked: !application.applicationEnabled,
                                     onChange: handleAppEnableDisableToggleChange
                                 } }
                                 data-testid={ `${ componentId }-danger-zone-disable` }
