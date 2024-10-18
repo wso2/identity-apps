@@ -16,13 +16,19 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Grid from "@oxygen-ui/react/Grid";
+import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
+import InfiniteScroll from "react-infinite-scroll-component";
 import TenantCard from "./tenant-card";
 import WithTenantGridPlaceholders from "./with-tenant-grid-placeholders";
-import useGetTenants from "../api/use-get-tenants";
+import useTenants from "../hooks/use-tenants";
 import { Tenant } from "../models/tenants";
+import "./tenant-grid.scss";
 
 /**
  * Props interface of {@link TenantsPage}
@@ -41,21 +47,74 @@ const TenantGrid: FunctionComponent<TenantGridProps> = ({
     onAddTenantModalTrigger,
     ["data-componentid"]: componentId = "tenant-grid"
 }: TenantGridProps): ReactElement => {
-    const { data: tenantList, isLoading: isTenantListLoading, mutate: mutateTenantList } = useGetTenants();
+    const { t } = useTranslation();
+
+    const { tenantList, tenantListLimit, setTenantListLimit, isTenantListLoading, mutateTenantList } = useTenants();
+
+    const [ hasMore, setHasMore ] = useState<boolean>(true);
+
+    /**
+     * Handles the load more action in the infinite scroll component.
+     */
+    const handleLoadMore = (): void => {
+        if (tenantList?.totalResults && tenantListLimit >= tenantList.totalResults) {
+            setHasMore(false);
+
+            return;
+        }
+
+        setTenantListLimit((prevLimit: number) => prevLimit + 10);
+    };
+
+    const resolveHasMore = (): boolean => {
+        if (tenantList?.totalResults <= 0) {
+            return false;
+        }
+
+        if (tenantList?.tenants?.length >= tenantList?.totalResults) {
+            return false;
+        }
+
+        return hasMore;
+    };
 
     return (
-        <WithTenantGridPlaceholders
-            data-componentid={ componentId }
-            tenantList={ tenantList }
-            isTenantListLoading={ isTenantListLoading }
-            onAddTenantModalTrigger={ onAddTenantModalTrigger }
-        >
-            { tenantList?.tenants?.map((tenant: Tenant) => (
-                <Grid key={ tenant.id } xs={ 12 } sm={ 12 } md={ 6 } lg={ 4 } xl={ 3 }>
-                    <TenantCard tenant={ tenant } onUpdate={ () => mutateTenantList() } />
-                </Grid>
-            )) }
-        </WithTenantGridPlaceholders>
+        <div className="tenant-grid">
+            <InfiniteScroll
+                dataLength={ tenantList?.totalResults ?? 0 }
+                next={ handleLoadMore }
+                hasMore={ resolveHasMore() }
+                loader={
+                    (<Box
+                        display="flex"
+                        alignContent="center"
+                        alignItems="center"
+                        justifyContent="center"
+                        flexDirection="column"
+                        gap={ 2 }
+                        className="loader"
+                        sx={ { mt: 3 } }
+                    >
+                        <CircularProgress size={ 22 } className="tenant-list-item-loader" />
+                        <Typography variant="h6">{ t("common:loading") }...</Typography>
+                    </Box>)
+                }
+                endMessage={ null }
+            >
+                <WithTenantGridPlaceholders
+                    data-componentid={ componentId }
+                    tenantList={ tenantList }
+                    isTenantListLoading={ isTenantListLoading }
+                    onAddTenantModalTrigger={ onAddTenantModalTrigger }
+                >
+                    { tenantList?.tenants?.map((tenant: Tenant) => (
+                        <Grid key={ tenant.id } xs={ 12 } sm={ 12 } md={ 6 } lg={ 4 } xl={ 3 }>
+                            <TenantCard tenant={ tenant } onUpdate={ () => mutateTenantList() } />
+                        </Grid>
+                    )) }
+                </WithTenantGridPlaceholders>
+            </InfiniteScroll>
+        </div>
     );
 };
 

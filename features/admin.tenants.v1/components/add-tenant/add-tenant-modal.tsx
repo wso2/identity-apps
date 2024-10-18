@@ -24,13 +24,18 @@ import Stack from "@mui/material/Stack";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Typography from "@oxygen-ui/react/Typography/Typography";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import AddTenantForm from "./add-tenant-form";
-import useGetTenants from "../../api/use-get-tenants";
+import addTenant from "../../api/add-tenant";
 import TenantConstants from "../../constants/tenant-constants";
+import useTenants from "../../hooks/use-tenants";
+import { AddTenantRequestPayload } from "../../models/tenants";
 
 /**
  * Props interface of {@link AddTenantModal}
@@ -49,8 +54,34 @@ const AddTenantModal: FunctionComponent<AddTenantModalProps> = ({
     ...rest
 }: AddTenantModalProps): ReactElement => {
     const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
-    const { mutate: mutateTenantList } = useGetTenants();
+    const { mutateTenantList } = useTenants();
+
+    const handleSubmit = (payload: AddTenantRequestPayload): void => {
+        addTenant(payload)
+            .then(() => {
+                dispatch(
+                    addAlert({
+                        description: t("tenants:addTenant.notifications.addTenant.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("tenants:addTenant.notifications.addTenant.success.message")
+                    })
+                );
+
+                mutateTenantList();
+                onClose(null, "backdropClick");
+            })
+            .catch(() => {
+                dispatch(
+                    addAlert({
+                        description: t("tenants:addTenant.notifications.addTenant.error.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("tenants:addTenant.notifications.addTenant.error.message")
+                    })
+                );
+            });
+    };
 
     return (
         <Dialog
@@ -64,10 +95,7 @@ const AddTenantModal: FunctionComponent<AddTenantModalProps> = ({
                 <Typography variant="h4">{ t("tenants:addTenant.title") }</Typography>
                 <Typography variant="body2">
                     { t("tenants:addTenant.subTitle") }
-                    <DocumentationLink
-                        link={ getLink("develop.multiTenancy.addTenant.learnMore") }
-                        showEmptyLink={ false }
-                    >
+                    <DocumentationLink link={ getLink("develop.multiTenancy.addTenant.learnMore") } showEmptyLink={ false }>
                         { t("common:learnMore") }
                     </DocumentationLink>
                 </Typography>
@@ -79,12 +107,7 @@ const AddTenantModal: FunctionComponent<AddTenantModalProps> = ({
                 } }
                 dividers
             >
-                <AddTenantForm
-                    onSubmit={ (): void => {
-                        onClose(null, "backdropClick");
-                        mutateTenantList();
-                    } }
-                />
+                <AddTenantForm onSubmit={ handleSubmit } />
             </DialogContent>
             <DialogActions>
                 <Box sx={ { width: "100%" } }>

@@ -159,6 +159,8 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({
                         message: t("tenants:editTenant.notifications.deleteTenantMeta.success.message")
                     })
                 );
+
+                onUpdate && onUpdate();
             })
             .catch(() => {
                 dispatch(

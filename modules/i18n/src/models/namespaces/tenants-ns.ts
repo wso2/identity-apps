@@ -70,6 +70,7 @@ export interface TenantsNS {
                     label: string;
                     placeholder: string;
                     validations: {
+                        domainUnavailable: string;
                         required: string;
                     };
                 };
@@ -197,6 +198,7 @@ export interface TenantsNS {
         };
     };
     listing: {
+        count: string;
         emptyPlaceholder: {
             actions: {
                 configure: {

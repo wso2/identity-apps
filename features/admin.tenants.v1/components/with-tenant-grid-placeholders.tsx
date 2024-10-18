@@ -21,6 +21,7 @@ import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Divider from "@oxygen-ui/react/Divider";
 import Grid from "@oxygen-ui/react/Grid";
+import Typography from "@oxygen-ui/react/Typography";
 import { GearIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { FeatureAccessConfigInterface, Show } from "@wso2is/access-control";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
@@ -33,6 +34,7 @@ import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import TenantCard from "./tenant-card";
+import useTenants from "../hooks/use-tenants";
 import { TenantListResponse } from "../models/tenants";
 import "./with-tenant-grid-placeholders.scss";
 
@@ -69,6 +71,8 @@ const WithTenantGridPlaceholders: FunctionComponent<WithTenantGridPlaceholdersPr
     ["data-componentid"]: componentId = "with-tenant-grid-placeholders"
 }: WithTenantGridPlaceholdersProps): ReactElement => {
     const { t } = useTranslation();
+
+    const { isInitialRenderingComplete } = useTenants();
 
     const tenantFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config?.ui?.features?.tenants
@@ -137,7 +141,7 @@ const WithTenantGridPlaceholders: FunctionComponent<WithTenantGridPlaceholdersPr
         />
     );
 
-    if (isTenantListLoading) {
+    if (!isInitialRenderingComplete && isTenantListLoading) {
         return (
             <Grid container spacing={ 3 } data-componentid={ componentId }>
                 { renderLoadingPlaceholder() }
@@ -145,7 +149,7 @@ const WithTenantGridPlaceholders: FunctionComponent<WithTenantGridPlaceholdersPr
         );
     }
 
-    if (tenantList?.totalResults <= 1) {
+    if (tenantList?.totalResults <= 0) {
         return (
             <Box className="with-tenant-grid-placeholders">
                 { showPlaceholders() }
@@ -154,9 +158,17 @@ const WithTenantGridPlaceholders: FunctionComponent<WithTenantGridPlaceholdersPr
     }
 
     return (
-        <Grid container spacing={ 3 } data-componentid={ componentId }>
-            { children }
-        </Grid>
+        <>
+            <Typography align="right" sx={ { mb: 2 } } variant="body2">
+                { t("tenants:listing.count", {
+                    results: tenantList?.tenants?.length,
+                    totalResults: tenantList?.totalResults
+                }) }
+            </Typography>
+            <Grid container spacing={ 3 } data-componentid={ componentId }>
+                { children }
+            </Grid>
+        </>
     );
 };
 

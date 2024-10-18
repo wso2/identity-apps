@@ -52,6 +52,12 @@ export default class TenantConstants {
 
     public static readonly ADD_TENANT_FORM_ID: string = "add-tenant-form";
 
+    public static readonly TENANT_DOMAIN_AVAILABILITY_CHECK_INVALID_STATUS_ERROR: string =
+        "An invalid status code was received while checking the tenant domain availability.";
+
+    public static readonly TENANT_DOMAIN_AVAILABILITY_CHECK_ERROR: string =
+        "An error occurred while checking the tenant domain availability.";
+
     public static readonly FEATURE_DICTIONARY: {
         ADD_TENANTS_FROM_DROPDOWN: string;
         MAKING_TENANTS_DEFAULT: string;

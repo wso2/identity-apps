@@ -32,11 +32,21 @@ import { TenantListResponse } from "../models/tenants";
  * - `https://{serverUrl}/t/{tenantDomain}/api/server/v1/tenants`
  * For more details, refer to the documentation:
  * {@link https://is.docs.wso2.com/en/latest/apis/tenant-management-rest-api/#tag/Tenants/operation/retrieveTenants}
+ *
+ * @param params - Additional parameters for pagination, sorting, and filtering.
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetTenants = <Data = TenantListResponse, Error = RequestErrorInterface>
-    (shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
+const useGetTenants = <Data = TenantListResponse, Error = RequestErrorInterface>(
+    params?: {
+        limit?: number;
+        offset?: number;
+        sortOrder?: "asc" | "desc";
+        sortBy?: string;
+        filter?: string;
+    },
+    shouldFetch: boolean = true
+): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -44,6 +54,13 @@ const useGetTenants = <Data = TenantListResponse, Error = RequestErrorInterface>
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
+        params: {
+            filter: params?.filter,
+            limit: params?.limit,
+            offset: params?.offset,
+            sortBy: params?.sortBy,
+            sortOrder: params?.sortOrder
+        },
         url: store.getState().config.endpoints.tenants
     };
 

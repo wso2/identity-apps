@@ -74,6 +74,7 @@ export const tenants: TenantsNS = {
                     label: "Domain",
                     placeholder: "Enter a Domain name",
                     validations: {
+                        domainUnavailable: "A domain with the same name already exists.",
                         required: "A domain name is required."
                     }
                 },
@@ -201,6 +202,7 @@ export const tenants: TenantsNS = {
         }
     },
     listing: {
+        count: "Showing {{results}} out of {{totalResults}}",
         emptyPlaceholder: {
             actions: {
                 configure: {

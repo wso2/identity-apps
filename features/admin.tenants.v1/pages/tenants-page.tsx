@@ -26,12 +26,12 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import useGetTenants from "../api/use-get-tenants";
 import AddTenantModal from "../components/add-tenant/add-tenant-modal";
 import TenantGrid from "../components/tenant-grid";
+import useTenants from "../hooks/use-tenants";
 import "./tenants-page.scss";
 
 /**
@@ -50,6 +50,11 @@ const TenantsPage: FunctionComponent<TenantsPageProps> = ({
 }: TenantsPageProps): ReactElement => {
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+    const { tenantList, mutateTenantList } = useTenants();
+
+    useEffect(() => {
+        mutateTenantList();
+    }, []);
 
     const tenantFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config?.ui?.features?.tenants
@@ -60,8 +65,6 @@ const TenantsPage: FunctionComponent<TenantsPageProps> = ({
     const remoteLogPublishing: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config?.ui?.features?.remoteLogging
     );
-
-    const { data: tenantList } = useGetTenants();
 
     const [ addTenantModalOpen, setAddTenantModalOpen ] = useState<boolean>(false);
 

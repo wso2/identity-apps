@@ -28,8 +28,7 @@ import getUsertoreUsernameValidationPattern from "@wso2is/admin.users.v1/utils/g
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api/validation-config";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models/validation-config";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     FinalForm,
     FinalFormField,
@@ -42,9 +41,8 @@ import { Hint, PasswordValidation } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-import addTenant from "../../api/add-tenant";
+import { useSelector } from "react-redux";
+import getTenantDomainAvailability from "../../api/get-tenant-domain-availability";
 import TenantConstants from "../../constants/tenant-constants";
 import { AddTenantRequestPayload, TenantStatus } from "../../models/tenants";
 import "./add-tenant-form.scss";
@@ -55,8 +53,9 @@ import "./add-tenant-form.scss";
 export interface AddTenantFormProps extends IdentifiableComponentInterface {
     /**
      * Callback to trigger when the form is submitted.
+     * @param payload - Payload values.
      */
-    onSubmit?: () => void;
+    onSubmit?: (payload: AddTenantRequestPayload) => void;
 }
 
 const GlobeIcon = () => (
@@ -106,7 +105,6 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
     ...rest
 }: AddTenantFormProps): ReactElement => {
     const { t } = useTranslation();
-    const dispatch: Dispatch = useDispatch();
 
     const { data: validationData } = useValidationConfigData();
 
@@ -161,6 +159,24 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
             } else {
                 return t("tenants:common.form.fields.username.validations.usernameSpecialCharSymbols");
             }
+        }
+    };
+
+    const validateTenantDomainAvailability = async (value: string) => {
+        if (!value) {
+            return undefined;
+        }
+
+        let isAvailable: boolean = true;
+
+        try {
+            isAvailable = await getTenantDomainAvailability(value);
+        } catch (error) {
+            isAvailable = false;
+        }
+
+        if (!isAvailable) {
+            return t("tenants:common.form.fields.domain.validations.domainUnavailable");
         }
     };
 
@@ -248,27 +264,7 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
             } ]
         };
 
-        addTenant(payload)
-            .then(() => {
-                dispatch(
-                    addAlert({
-                        description: t("tenants:addTenant.notifications.addTenant.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("tenants:addTenant.notifications.addTenant.success.message")
-                    })
-                );
-
-                onSubmit && onSubmit();
-            })
-            .catch(() => {
-                dispatch(
-                    addAlert({
-                        description: t("tenants:addTenant.notifications.addTenant.error.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("tenants:addTenant.notifications.addTenant.error.message")
-                    })
-                );
-            });
+        onSubmit(payload);
     };
 
     const handleValidate = (values: AddTenantFormValues): AddTenantFromErrors => {
@@ -366,6 +362,7 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                             maxLength={ 100 }
                             minLength={ 0 }
                             endAdornment={ <InputAdornment position="end"><GlobeIcon /></InputAdornment> }
+                            validate={ validateTenantDomainAvailability }
                         />
                         <Typography variant="h5" sx={ { mb: 2, mt: 3 } }>
                             { t("tenants:addTenant.form.adminDetails.title") }
