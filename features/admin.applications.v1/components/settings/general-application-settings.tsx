@@ -16,10 +16,9 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, UIConfigInterface, history } from "@wso2is/admin.core.v1";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -145,8 +144,11 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
 
     const { t } = useTranslation();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
+
+    const hasApplicationsUpdatePermissions: boolean = useRequiredScopes(
+        featureConfig?.applications?.scopes?.update
+    );
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showDisableConfirmationModal, setShowDisableConfirmationModal ] = useState<boolean>(false);
@@ -300,8 +302,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
      * @returns React.ReactElement DangerZoneGroup element.
      */
     const resolveDangerActions = (): ReactElement => {
-        if (!hasRequiredScopes(
-            featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)) {
+        if (!hasApplicationsUpdatePermissions) {
             return null;
         }
 
@@ -375,14 +376,9 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             accessUrl={ accessUrl }
                             readOnly={
                                 readOnly
-                                || !hasRequiredScopes(
-                                    featureConfig?.applications, featureConfig?.applications?.scopes?.update,
-                                    allowedScopes
-                                )
+                                || !hasApplicationsUpdatePermissions
                             }
-                            hasRequiredScope={ hasRequiredScopes(
-                                featureConfig?.applications, featureConfig?.applications?.scopes?.update,
-                                allowedScopes) }
+                            hasRequiredScope={ hasApplicationsUpdatePermissions }
                             isBrandingSectionHidden={ isBrandingSectionHidden }
                             data-testid={ `${ componentId }-form` }
                             isSubmitting={ isSubmitting }
