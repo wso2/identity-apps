@@ -1257,6 +1257,7 @@ export const applications: ApplicationsNS = {
         },
 
         applicationsSettings: {
+            title: "Application Settings",
             fields: {
                 dcrEndpoint: {
                     label: "DCR Endpoint",
@@ -2461,6 +2462,7 @@ export const applications: ApplicationsNS = {
         description: "Self-service portal for your users.",
         popup: "Share this link with your users to allow access to My Account" +
         " and to manage their accounts.",
+        settings: "My Account Settings",
         title: "My Account",
         enable: {
             0: "Enabled",

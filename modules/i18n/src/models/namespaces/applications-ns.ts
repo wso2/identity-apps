@@ -1053,6 +1053,7 @@ export interface ApplicationsNS {
             };
         };
         applicationsSettings: {
+            title: string;
             fields :{
                 dcrEndpoint: {
                     label: string,
@@ -2126,6 +2127,7 @@ export interface ApplicationsNS {
         };
     };
     myaccount: {
+        settings: string;
         title: string;
         description: string;
         popup: string;

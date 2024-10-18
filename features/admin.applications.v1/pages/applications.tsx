@@ -522,7 +522,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                                 <GearIcon />
                                             </Button>
                                         ) }
-                                        content={ t("common:settings") }
+                                        content={ t("applications:myaccount.settings") }
                                         position="top center"
                                         size="mini"
                                         hideOnScroll
@@ -553,10 +553,19 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATIONS_SETTINGS")
                                 ) &&
                                 (
-                                    <Button
-                                        data-componentid={ "applications-settings-button" }
-                                        icon={ GearIcon }
-                                        onClick={ handleSettingsButton }
+                                    <Popup
+                                        trigger={ (
+                                            <Button
+                                                data-componentid={ "applications-settings-button" }
+                                                icon={ GearIcon }
+                                                onClick={ handleSettingsButton }
+                                            />
+                                        ) }
+                                        content={ t("applications:forms.applicationsSettings.title") }
+                                        position="top center"
+                                        size="mini"
+                                        hideOnScroll
+                                        inverted
                                     />
                                 )
                             }
@@ -583,10 +592,19 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATIONS_SETTINGS")
                             ) &&
                             (
-                                <Button
-                                    data-componentid={ "applications-settings-button" }
-                                    icon={ GearIcon }
-                                    onClick={ handleSettingsButton }
+                                <Popup
+                                    trigger={ (
+                                        <Button
+                                            data-componentid={ "applications-settings-button" }
+                                            icon={ GearIcon }
+                                            onClick={ handleSettingsButton }
+                                        />
+                                    ) }
+                                    content={ t("applications:applicationsSettings.title") }
+                                    position="top center"
+                                    size="mini"
+                                    hideOnScroll
+                                    inverted
                                 />
                             )
                         }
