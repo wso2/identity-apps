@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import {
     AppState,
     AuthenticatorAccordion,
@@ -24,7 +25,6 @@ import {
     store
 } from "@wso2is/admin.core.v1";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue } from "@wso2is/forms";
@@ -216,6 +216,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         isLoading,
         setIsLoading,
         onUpdate,
+        onProtocolUpdate,
         allowedOriginList,
         onAllowedOriginsUpdate,
         onApplicationSecretRegenerate,
@@ -240,11 +241,9 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 
     const authProtocolMeta: AuthProtocolMetaInterface = useSelector(
         (state: AppState) => state.application.meta.protocolMeta);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const tenantName: string = store.getState().config.deployment.tenant;
     const allowMultipleProtocol: boolean = useSelector(
         (state: AppState) => state.config.deployment.allowMultipleAppProtocols);
-    const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const [ selectedProtocol, setSelectedProtocol ] = useState<SupportedAuthProtocolTypes | string>(undefined);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>([]);
@@ -259,6 +258,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 
     const emphasizedSegmentRef: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
     const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>([]);
+
+    const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
 
     /**
      * Handles the inbound config delete action.
@@ -377,7 +378,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         ".genericError.message")
                 }));
             }).finally(() => {
-                onUpdate(appId);
+                onProtocolUpdate();
                 if (!updateError) {
                     createSAMLApplication();
                 }
@@ -791,12 +792,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                             }
                                                             onApplicationRevoke={ handleApplicationRevoke }
                                                             readOnly={
-                                                                readOnly || !hasRequiredScopes(
-                                                                    featureConfig?.applications,
-                                                                    featureConfig?.applications?.scopes?.update,
-                                                                    allowedScopes,
-                                                                    organizationType
-                                                                )
+                                                                readOnly || !hasApplicationUpdatePermissions
                                                             }
                                                             showSAMLCreation={
                                                                 protocol === SupportedAuthProtocolTypes.SAML
@@ -865,12 +861,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                 handleSubmit(values, protocol) }
                                             type={ SupportedAuthProtocolTypes.CUSTOM }
                                             readOnly={
-                                                !hasRequiredScopes(
-                                                    featureConfig?.applications,
-                                                    featureConfig?.applications?.scopes?.update,
-                                                    allowedScopes,
-                                                    organizationType
-                                                )
+                                                !hasApplicationUpdatePermissions
                                             }
                                             template={ template }
                                             data-testid={ `${ componentId }-inbound-custom-form` }
@@ -929,12 +920,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             onApplicationRegenerate={ handleApplicationRegenerate }
                                             onApplicationRevoke={ handleApplicationRevoke }
                                             readOnly={
-                                                readOnly || !hasRequiredScopes(
-                                                    featureConfig?.applications,
-                                                    featureConfig?.applications?.scopes?.update,
-                                                    allowedScopes,
-                                                    organizationType
-                                                )
+                                                readOnly || !hasApplicationUpdatePermissions
                                             }
                                             showSAMLCreation={
                                                 selectedProtocol === SupportedAuthProtocolTypes.SAML
@@ -991,12 +977,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             }
                                             type={ SupportedAuthProtocolTypes.CUSTOM }
                                             readOnly={
-                                                !hasRequiredScopes(
-                                                    featureConfig?.applications,
-                                                    featureConfig?.applications?.scopes?.update,
-                                                    allowedScopes,
-                                                    organizationType
-                                                )
+                                                !hasApplicationUpdatePermissions
                                             }
                                             template={ template }
                                             data-testid={ `${ componentId }-inbound-custom-form` }
