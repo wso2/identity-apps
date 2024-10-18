@@ -18,22 +18,13 @@
 
 import { AsgardeoSPAClient, HttpRequestConfig } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1";
-import useRequest, {
-    RequestConfigInterface,
-    RequestErrorInterface,
-    RequestResultInterface
-} from "@wso2is/admin.core.v1/hooks/use-request";
-import {
-    GovernanceConnectorInterface,
-    UpdateGovernanceConnectorConfigInterface
-} from "@wso2is/admin.server-configurations.v1";
+import { UpdateMultipleGovernanceConnectorsInterface } from "@wso2is/admin.server-configurations.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 /**
  * Initialize an axios Http client.
- *
  */
 const httpClient: (
     config: HttpRequestConfig
@@ -41,49 +32,34 @@ const httpClient: (
     AsgardeoSPAClient.getInstance()
 );
 
-export const useGetPasswordHistoryCount = <
-    Data = GovernanceConnectorInterface,
-    Error = RequestErrorInterface
->(): RequestResultInterface<Data, Error> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: store.getState()?.config?.endpoints?.passwordHistory
-    };
-
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(
-        requestConfig
-    );
-
-    return {
-        data,
-        error,
-        isLoading: !data && !error,
-        isValidating,
-        mutate
-    };
-};
-
-export const updatePasswordHistoryCount = (
-    data: UpdateGovernanceConnectorConfigInterface
-): Promise<any> => {
+/**
+ * Updates the password policy properties.
+ *
+ * @param data - The data to update multiple governance connectors configuration.
+ * @returns A promise that resolves when the update is successful or rejects with an error.
+ *
+ * @throws IdentityAppsApiException If the response status is not 200 or if an error occurs during the request.
+ *
+ * @example
+ * updatePasswordPolicyProperties(data)
+ *  .then(...)
+ *  .catch(...);
+ */
+const updatePasswordPolicyProperties = (data: UpdateMultipleGovernanceConnectorsInterface): Promise<void> => {
     const requestConfig: AxiosRequestConfig = {
         data,
         headers: {
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: store.getState()?.config?.endpoints?.passwordHistory
+        url: store.getState()?.config?.endpoints?.passwordPoliciesUpdate
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    "Received an invalid status code while updating the password validation.",
+                    "Received an invalid status code while updating the password expiry and history properties.",
                     null,
                     response.status,
                     response.request,
@@ -92,11 +68,11 @@ export const updatePasswordHistoryCount = (
                 );
             }
 
-            return Promise.resolve(response.data);
+            return Promise.resolve();
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                "An error ocurred while updating the password validation.",
+                "An error ocurred while updating the password expiry and history properties.",
                 error.stack,
                 error.code,
                 error.request,
@@ -105,3 +81,5 @@ export const updatePasswordHistoryCount = (
             );
         });
 };
+
+export default updatePasswordPolicyProperties;

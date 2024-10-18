@@ -17,7 +17,6 @@
  */
 
 import { ConnectionTabTypes } from "@wso2is/admin.connections.v1/models/connection";
-import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import { ReactElement, ReactNode } from "react";
 
 export interface ExtendedSamlConfigInterface {
@@ -40,12 +39,6 @@ export interface IdentityProviderConfig {
         showIssuerSettings: boolean;
         showJitProvisioning: boolean;
         showOutboundProvisioning: boolean;
-        /**
-         * Get the list of passible tab extensions.
-         * @param props - Props for the component.
-         * @returns Array of tab extensions.
-         */
-        getTabExtensions: (props: Record<string, unknown>) => ResourceTabPaneInterface[];
         /**
          * Used enable/disable certain tabs for certain IDP template type.
          * @param templateId - The IDP Template Type.
