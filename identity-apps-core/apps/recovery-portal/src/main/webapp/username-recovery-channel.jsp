@@ -90,7 +90,6 @@
     }
     
     String recoveryCode = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("recoveryCode"));
-    String tenantDomain = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("tenantDomain"));
     Boolean isUserFound = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("isUserFound"));
     Boolean noChannelFound = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("noChannelFound"));
     
