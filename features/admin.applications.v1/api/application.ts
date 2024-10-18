@@ -227,10 +227,10 @@ export const getApplicationList = (
         },
         method: HttpMethods.GET,
         params: {
+            excludeSystemPortals,
             filter,
             limit,
-            offset,
-            excludeSystemPortals
+            offset
         },
         url: store.getState().config.endpoints.applications
     };
@@ -273,10 +273,10 @@ export const useApplicationList = <Data = ApplicationListInterface, Error = Requ
             method: HttpMethods.GET,
             params: {
                 attributes,
+                excludeSystemPortals,
                 filter,
                 limit,
-                offset,
-                excludeSystemPortals
+                offset
             },
             url: store.getState().config.endpoints.applications
         }
