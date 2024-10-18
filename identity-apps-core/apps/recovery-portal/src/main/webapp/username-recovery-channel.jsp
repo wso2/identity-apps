@@ -101,7 +101,7 @@
     Boolean isEmailEnabled;
     Boolean isSMSEnabled;
 
-    // Checking the configs. todo: change the comment later.
+    // Getting the configs.
     try {
         PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
         isEmailEnabled = preferenceRetrievalClient.checkEmailBasedUsernameRecovery(tenantDomain);
