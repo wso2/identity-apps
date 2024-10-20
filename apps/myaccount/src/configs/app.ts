@@ -159,8 +159,6 @@ export class Config {
             i18nConfigs: window["AppUtils"]?.getConfig()?.ui?.i18nConfigs,
             isCookieConsentBannerEnabled: window["AppUtils"]?.getConfig()?.ui?.isCookieConsentBannerEnabled,
             isHeaderAvatarLabelAllowed: window["AppUtils"]?.getConfig()?.ui?.isHeaderAvatarLabelAllowed,
-            isMultipleEmailsAndMobileNumbersEnabled:
-                window["AppUtils"]?.getConfig()?.ui?.isMultipleEmailsAndMobileNumbersEnabled,
             isPasswordInputValidationEnabled: window["AppUtils"]?.getConfig()?.ui?.isPasswordInputValidationEnabled,
             isProfileUsernameReadonly: window["AppUtils"]?.getConfig()?.ui?.isProfileUsernameReadonly,
             privacyPolicyConfigs: window["AppUtils"]?.getConfig()?.ui?.privacyPolicyConfigs,
