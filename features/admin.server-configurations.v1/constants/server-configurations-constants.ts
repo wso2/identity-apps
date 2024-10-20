@@ -323,6 +323,9 @@ export class ServerConfigurationsConstants {
     public static readonly ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER: string
         = "UserClaimUpdate.MobileNumber.EnableVerificationByPrivilegedUser";
 
+    public static readonly ENABLE_MULTIPLE_EMAILS_AND_MOBILE_NUMBERS: string =
+        "UserClaimUpdate.EnableMultipleEmailsAndMobileNumbers";
+
     /**
 	 * Real Configurations constants.
 	 */

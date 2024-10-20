@@ -29,7 +29,6 @@ import Paper from "@oxygen-ui/react/Paper";
 import { CheckIcon,  ChevronDownIcon, StarIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { SCIMConfigs, commonConfig, userConfig } from "@wso2is/admin.extensions.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { searchRoleList, updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
@@ -179,7 +178,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         (state: AppState) => state.global.supportedI18nLanguages
     );
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const { UIConfig } = useUIConfig();
 
     const hasUsersUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.users?.scopes?.update
@@ -199,7 +197,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         forcePasswordReset: "false",
         isEmailVerificationEnabled: "false",
         isMobileVerificationByPrivilegeUserEnabled: "false",
-        isMobileVerificationEnabled: "false"
+        isMobileVerificationEnabled: "false",
+        isMultipleEmailAndMobileNumberEnabled: "false"
     });
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
@@ -266,6 +265,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         configurationStatuses = {
                             ...configurationStatuses,
                             accountLock: property.value
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.ENABLE_MULTIPLE_EMAILS_AND_MOBILE_NUMBERS:
+                        configurationStatuses = {
+                            ...configurationStatuses,
+                            isMultipleEmailAndMobileNumberEnabled: property.value
                         };
 
                         break;
@@ -2348,10 +2354,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const generateProfileEditForm = (schema: ProfileSchemaInterface, key: number): JSX.Element => {
         // Hide the email and mobile number fields when the multi-valued email and mobile config is enabled.
         const fieldsToHide: string[] = [
-            UIConfig?.isMultipleEmailsAndMobileNumbersEnabled === true
+            configSettings?.isMultipleEmailAndMobileNumberEnabled === "true"
                 ? ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")
                 : ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES"),
-            UIConfig?.isMultipleEmailsAndMobileNumbersEnabled === true
+            configSettings?.isMultipleEmailAndMobileNumberEnabled === "true"
                 ? ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE")
                 : ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS"),
             ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS"),

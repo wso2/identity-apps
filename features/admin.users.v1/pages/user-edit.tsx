@@ -159,7 +159,9 @@ const UserEditPage = (): ReactElement => {
                         if (property.name === ServerConfigurationsConstants.ENABLE_EMAIL_VERIFICATION
                             || property.name === ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION
                             || property.name ===
-                            ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER
+                                ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER
+                            || property.name ===
+                                ServerConfigurationsConstants.ENABLE_MULTIPLE_EMAILS_AND_MOBILE_NUMBERS
                         ) {
                             properties.push(property);
                         }

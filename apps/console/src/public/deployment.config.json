@@ -1163,7 +1163,7 @@
         "isHeaderAvatarLabelAllowed": false,
         "isLeftNavigationCategorized": true,
         "isMarketingConsentBannerEnabled": false,
-        "isMultipleEmailsAndMobileNumbersEnabled": false,
+        "isMultipleEmailsAndMobileNumbersEnabled": true,
         "isPasswordInputValidationEnabled": true,
         "isRequestPathAuthenticationEnabled": false,
         "isSAASDeployment": false,
