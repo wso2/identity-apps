@@ -442,6 +442,8 @@ export class ApplicationManagementConstants {
 
     public static readonly CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY: string = "isConditionalAuthTourViewed";
 
+    public static readonly CONDITIONAL_AUTH_EDITOR_THEME_STORAGE_KEY: string = "conditionalAuthEditorTheme"
+
     public static readonly CUSTOM_APPLICATION_OIDC: string = "custom-application-oidc";
 
     public static readonly CUSTOM_APPLICATION_SAML: string = "custom-application-saml";
