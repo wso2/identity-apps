@@ -31,7 +31,7 @@
         "typecheck": "pnpm compile"
     },
     "dependencies": {
-        "@oxygen-ui/react": "^1.14.1",
+        "@oxygen-ui/react-icons": "^1.15.0",
         "@mui/material": "^5.13.0",
         "@wso2is/core": "^2.1.0",
         "@wso2is/validation": "^2.0.10",
