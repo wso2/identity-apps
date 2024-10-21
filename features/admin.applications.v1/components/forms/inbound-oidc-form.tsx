@@ -2807,7 +2807,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                             accessTokenAttributes?.find(
                                                                 (claim: ExternalClaim) => claim.id === option.id
                                                             )
-                                                                ? "solid"
+                                                                ? "filled"
                                                                 : "outlined"
                                                         }
                                                     />
