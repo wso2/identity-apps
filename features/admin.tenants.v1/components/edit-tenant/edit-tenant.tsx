@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import AlertTitle from "@mui/material/AlertTitle";
 import Collapse from "@mui/material/Collapse";
 import Stack from "@mui/material/Stack";
 import Alert from "@oxygen-ui/react/Alert";
+import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -71,6 +71,9 @@ const EditTenant: FunctionComponent<EditTenantProps> = ({
         return !tenant?.lifecycleStatus?.activated;
     }, [ tenant?.lifecycleStatus?.activated ]);
 
+    /**
+     * Handles the organization status update by invoking the updateTenantActivationStatus API.
+     */
     const handleOrganizationStatusUpdate = (): void => {
         const newLifecycleStatus: TenantLifecycleStatus = {
             activated: !tenant.lifecycleStatus.activated
@@ -80,9 +83,13 @@ const EditTenant: FunctionComponent<EditTenantProps> = ({
             .then(() => {
                 dispatch(
                     addAlert({
-                        description: t("tenants:editTenant.notifications.updateTenant.success.description", { operation: newLifecycleStatus.activated ? "enabled" : "disabled" } ),
+                        description: t("tenants:editTenant.notifications.updateTenantStatus.success.description", {
+                            operation: newLifecycleStatus.activated ? t("common:enabled") : t("common:disabled")
+                        }),
                         level: AlertLevels.SUCCESS,
-                        message: t("tenants:editTenant.notifications.updateTenant.success.message", { operation: newLifecycleStatus.activated ? "Enabled" : "Disabled" })
+                        message: t("tenants:editTenant.notifications.updateTenantStatus.success.message", {
+                            operation: newLifecycleStatus.activated ? t("common:enabled") : t("common:disabled")
+                        })
                     })
                 );
 
@@ -91,20 +98,30 @@ const EditTenant: FunctionComponent<EditTenantProps> = ({
             .catch(() => {
                 dispatch(
                     addAlert({
-                        description: t("tenants:editTenant.notifications.updateTenant.error.description", { operation: newLifecycleStatus.activated ? "enabling" : "disabling", tenantDomain: tenant.domain } ),
+                        description: t("tenants:editTenant.notifications.updateTenantStatus.error.description", {
+                            operation: newLifecycleStatus.activated ? t("common:enable") : t("common:disable"),
+                            tenantDomain: tenant.domain
+                        }),
                         level: AlertLevels.ERROR,
-                        message: t("tenants:editTenant.notifications.updateTenant.error.message", { operation: newLifecycleStatus.activated ? "Enable" : "Disable" })
+                        message: t("tenants:editTenant.notifications.updateTenantStatus.error.message", {
+                            operation: newLifecycleStatus.activated ? t("common:enable") : t("common:disable")
+                        })
                     })
                 );
             });
     };
 
+    /**
+     * Handles the organization delete by invoking the deleteTenantMetadata API.
+     */
     const handleOrganizationDelete = (): void => {
         deleteTenantMetadata(tenant.id)
             .then(() => {
                 dispatch(
                     addAlert({
-                        description: t("tenants:editTenant.notifications.deleteTenantMeta.success.description", { tenantDomain: tenant.domain }),
+                        description: t("tenants:editTenant.notifications.deleteTenantMeta.success.description", {
+                            tenantDomain: tenant.domain
+                        }),
                         level: AlertLevels.SUCCESS,
                         message: t("tenants:editTenant.notifications.deleteTenantMeta.success.message")
                     })
@@ -113,7 +130,9 @@ const EditTenant: FunctionComponent<EditTenantProps> = ({
             .catch(() => {
                 dispatch(
                     addAlert({
-                        description: t("tenants:editTenant.notifications.deleteTenantMeta.error.description", { tenantDomain: tenant.domain }),
+                        description: t("tenants:editTenant.notifications.deleteTenantMeta.error.description", {
+                            tenantDomain: tenant.domain
+                        }),
                         level: AlertLevels.ERROR,
                         message: t("tenants:editTenant.notifications.deleteTenantMeta.error.message")
                     })
@@ -134,14 +153,14 @@ const EditTenant: FunctionComponent<EditTenantProps> = ({
                 >
                     <AlertTitle>{ t("tenants:editTenant.disabledDisclaimer.title") }</AlertTitle>
                     <Trans i18nKey="tenants:editTenant.disabledDisclaimer.content">
-                        This organization is currently in a <strong>disabled</strong> state. Users will not be able to log
-                        in to any of the applications or perform any relevant tasks of the organization until it is enabled
-                        again.
+                        This organization is currently in a <strong>disabled</strong> state. Users will not be able to
+                        log in to any of the applications or perform any relevant tasks of the organization until it is
+                        enabled again.
                     </Trans>
                 </Alert>
             </Collapse>
             <Card data-componentid={ componentId } sx={ { p: "var(--wso2is-admin-tabs-content-spacing)" } }>
-                <EditTenantForm tenant={ tenant } />
+                <EditTenantForm tenant={ tenant } onUpdate={ onUpdate } />
             </Card>
             <DangerZoneGroup sectionHeader={ t("tenants:editTenant.dangerZoneGroup.header") }>
                 { tenant?.lifecycleStatus?.activated && (

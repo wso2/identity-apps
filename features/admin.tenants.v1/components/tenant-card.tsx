@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import Avatar from "@oxygen-ui/react/Avatar";
 import Card from "@oxygen-ui/react/Card";
@@ -26,6 +25,7 @@ import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
+import Skeleton from "@oxygen-ui/react/Skeleton";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography/Typography";
 import {

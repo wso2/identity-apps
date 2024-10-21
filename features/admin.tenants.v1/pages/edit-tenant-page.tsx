@@ -25,10 +25,12 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import classNames from "classnames";
 import moment from "moment";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useGetTenant from "../api/use-get-tenant";
+import useGetTenantOwner from "../api/use-get-tenant-owner";
 import EditTenant from "../components/edit-tenant/edit-tenant";
+import { Tenant, TenantOwner } from "../models/tenants";
 import "./edit-tenant-page.scss";
 
 /**
@@ -56,6 +58,33 @@ const EditTenantPage: FunctionComponent<EditTenantPageProps> = ({
     const { id } = match.params;
 
     const { data: tenant, isLoading: isTenantLoading, mutate: mutateTenant } = useGetTenant(id);
+    const { data: tenantOwner, mutate: mutateTenantOwner } = useGetTenantOwner(
+        tenant?.id,
+        tenant?.owners[0]?.id,
+        !!tenant
+    );
+
+    /**
+     * Merges the tenant and tenant owner data.
+     * @remarks Owner details in the tenant request is limited to just `id` & `username`.
+     * Hence we need to aggregate the owner details from the tenant owner request.
+     */
+    const mergedTenant: Tenant = useMemo(() => {
+        if (!tenant || !tenantOwner) {
+            return null;
+        }
+
+        return {
+            ...tenant,
+            owners: tenant.owners?.map((owner: TenantOwner) => {
+                if (owner.id === tenantOwner.id) {
+                    return tenantOwner;
+                }
+
+                return owner;
+            })
+        };
+    }, [ tenant, tenantOwner ]);
 
     return (
         <PageLayout
@@ -104,7 +133,13 @@ const EditTenantPage: FunctionComponent<EditTenantPageProps> = ({
             className="tenant-edit-page"
             bottomMargin={ false }
         >
-            <EditTenant tenant={ tenant } onUpdate={ () => mutateTenant() } />
+            <EditTenant
+                tenant={ mergedTenant }
+                onUpdate={ (): void => {
+                    mutateTenant();
+                    mutateTenantOwner();
+                } }
+            />
         </PageLayout>
     );
 };

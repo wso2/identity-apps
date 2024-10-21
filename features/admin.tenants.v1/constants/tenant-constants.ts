@@ -58,6 +58,12 @@ export default class TenantConstants {
     public static readonly TENANT_DOMAIN_AVAILABILITY_CHECK_ERROR: string =
         "An error occurred while checking the tenant domain availability.";
 
+    public static readonly TENANT_OWNER_UPDATE_INVALID_STATUS_ERROR: string =
+        "An invalid status code was received while updating the tenant owner's details.";
+
+    public static readonly TENANT_OWNER_UPDATE_ERROR: string =
+        "An error occurred while updating the tenant owner's details.";
+
     public static readonly FEATURE_DICTIONARY: {
         ADD_TENANTS_FROM_DROPDOWN: string;
         MAKING_TENANTS_DEFAULT: string;

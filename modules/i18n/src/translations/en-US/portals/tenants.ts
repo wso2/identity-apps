@@ -191,7 +191,17 @@ export const tenants: TenantsNS = {
             },
             updateTenant: {
                 error: {
-                    description: "An error occurred while {{operation}} the organization",
+                    description: "An error occurred while trying to update the organization",
+                    message: "Couldn't update the organization"
+                },
+                success: {
+                    description: "Successfully updated the organization.",
+                    message: "Organization updated"
+                }
+            },
+            updateTenantStatus: {
+                error: {
+                    description: "An error occurred while trying to {{operation}} the organization",
                     message: "Couldn't {{operation}} the organization"
                 },
                 success: {

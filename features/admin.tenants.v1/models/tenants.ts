@@ -94,7 +94,7 @@ export interface TenantOwner {
     /**
      * The password of the owner.
      */
-    password: string;
+    password?: string;
     /**
      * The email of the owner.
      */
@@ -107,6 +107,13 @@ export interface TenantOwner {
      * The last name of the owner.
      */
     lastname: string;
+    /**
+     * Set of additional user details.
+     */
+    additionalClaims?: {
+        claim: string;
+        value: string;
+    }[];
 }
 
 /**

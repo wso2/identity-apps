@@ -31,14 +31,17 @@ import getUsertoreUsernameValidationPattern from "@wso2is/admin.users.v1/utils/g
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api/validation-config";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models/validation-config";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
 import {
     FinalForm,
     FinalFormField,
     FormRenderProps,
     FormSpy,
+    MutableState,
     TextFieldAdapter,
+    Tools,
     composeValidators
 } from "@wso2is/form";
 import { Hint, PasswordValidation } from "@wso2is/react-components";
@@ -47,8 +50,9 @@ import React, { FunctionComponent, ReactElement, useMemo, useState } from "react
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import updateTenantOwner from "../../api/update-tenant-owner";
 import TenantConstants from "../../constants/tenant-constants";
-import { Tenant } from "../../models/tenants";
+import { Tenant, TenantOwner } from "../../models/tenants";
 import "./edit-tenant-form.scss";
 
 /**
@@ -59,46 +63,30 @@ export type EditTenantFormFormProps = IdentifiableComponentInterface & {
      * Tenant object.
      */
     tenant: Tenant;
-        /**
+    /**
      * Callback to trigger when the form is submitted.
      */
     onSubmit?: () => void;
+    /**
+     * Callback to be triggered on tenant update.
+     */
+    onUpdate?: () => void;
 };
 
 const GlobeIcon = () => (
     <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M11.0227 1.1851C10.5999 1.06098 10.1655 0.980046 9.7263 0.943529C8.75455 0.829241 7.76984 0.905829 6.82746 1.16899L6.77109 1.1851C5.08155 1.64903 3.5912 2.65517 2.52927 4.04876C1.46734 5.44235 0.892641 7.14621 0.893556 8.89829C0.894471 10.6504 1.47095 12.3536 2.53434 13.7461C3.59772 15.1386 5.08912 16.1432 6.77914 16.6053C7.39783 16.7796 8.03677 16.8717 8.67949 16.8791C8.75119 16.8922 8.82407 16.8976 8.89691 16.8952C9.61281 16.8966 10.3255 16.7991 11.0147 16.6053C12.7032 16.1416 14.1929 15.1364 15.2549 13.7441C16.317 12.3518 16.8926 10.6494 16.8936 8.89829C16.8945 7.14718 16.3206 5.44418 15.26 4.05079C14.1994 2.65739 12.7108 1.65063 11.0227 1.1851ZM10.8053 1.95812C11.8479 2.24673 12.812 2.76651 13.6262 3.47887C14.4403 4.19122 15.0834 5.07784 15.5079 6.07287H12.0776C11.6682 4.49199 10.9148 3.02099 9.87124 1.76487C10.1868 1.80683 10.499 1.87142 10.8053 1.95812ZM8.89691 1.88565C9.99701 3.07726 10.7999 4.51199 11.2401 6.07287H6.53757C6.97593 4.50822 7.78527 3.0724 8.89691 1.88726V1.88565ZM11.4414 6.87811C11.6991 8.2105 11.6991 9.57993 11.4414 10.9123H6.35237C6.21608 10.25 6.14862 9.57542 6.15106 8.89924C6.14902 8.22043 6.21648 7.54319 6.35237 6.87811H11.4414ZM6.93214 1.97423L6.9885 1.95812C7.29554 1.87632 7.60755 1.81445 7.92257 1.77292C6.87339 3.02403 6.11685 4.49365 5.70818 6.07448H2.28996C2.7127 5.09049 3.34827 4.21243 4.15095 3.50345C4.95364 2.79448 5.90347 2.27221 6.93214 1.97423ZM1.69811 8.89924C1.69824 8.2146 1.79862 7.53367 1.99605 6.87811H5.53103C5.40843 7.54485 5.34644 8.22132 5.34582 8.89924C5.34607 9.57452 5.40807 10.2483 5.53103 10.9123H1.99605C1.79804 10.2597 1.69764 9.58129 1.69811 8.89924ZM6.9885 15.8323C5.94485 15.546 4.97959 15.0271 4.16515 14.3144C3.3507 13.6018 2.70823 12.714 2.28593 11.7176H5.70013C6.11304 13.3019 6.87515 14.7739 7.93063 16.0256C7.61226 15.9844 7.29736 15.9198 6.9885 15.8323ZM6.53757 11.7176H11.2401C10.8052 13.283 10.0017 14.7215 8.89691 15.9128C7.79217 14.7189 6.98393 13.2817 6.53757 11.7176ZM10.8053 15.8323C10.4948 15.9129 10.1804 15.9774 9.86319 16.0256C10.9091 14.7699 11.6652 13.2989 12.0776 11.7176H15.5079C15.0844 12.7132 14.4415 13.6004 13.6273 14.3128C12.813 15.0253 11.8484 15.5447 10.8053 15.8323ZM12.2547 10.9123C12.5044 9.57917 12.5044 8.21126 12.2547 6.87811H15.7897C15.991 7.53279 16.0915 8.21431 16.0876 8.89924C16.0896 9.58081 15.992 10.259 15.7978 10.9123H12.2547Z" fill="black"/>
+        <path
+            d="M11.0227 1.1851C10.5999 1.06098 10.1655 0.980046 9.7263 0.943529C8.75455 0.829241 7.76984 0.905829 6.82746 1.16899L6.77109 1.1851C5.08155 1.64903 3.5912 2.65517 2.52927 4.04876C1.46734 5.44235 0.892641 7.14621 0.893556 8.89829C0.894471 10.6504 1.47095 12.3536 2.53434 13.7461C3.59772 15.1386 5.08912 16.1432 6.77914 16.6053C7.39783 16.7796 8.03677 16.8717 8.67949 16.8791C8.75119 16.8922 8.82407 16.8976 8.89691 16.8952C9.61281 16.8966 10.3255 16.7991 11.0147 16.6053C12.7032 16.1416 14.1929 15.1364 15.2549 13.7441C16.317 12.3518 16.8926 10.6494 16.8936 8.89829C16.8945 7.14718 16.3206 5.44418 15.26 4.05079C14.1994 2.65739 12.7108 1.65063 11.0227 1.1851ZM10.8053 1.95812C11.8479 2.24673 12.812 2.76651 13.6262 3.47887C14.4403 4.19122 15.0834 5.07784 15.5079 6.07287H12.0776C11.6682 4.49199 10.9148 3.02099 9.87124 1.76487C10.1868 1.80683 10.499 1.87142 10.8053 1.95812ZM8.89691 1.88565C9.99701 3.07726 10.7999 4.51199 11.2401 6.07287H6.53757C6.97593 4.50822 7.78527 3.0724 8.89691 1.88726V1.88565ZM11.4414 6.87811C11.6991 8.2105 11.6991 9.57993 11.4414 10.9123H6.35237C6.21608 10.25 6.14862 9.57542 6.15106 8.89924C6.14902 8.22043 6.21648 7.54319 6.35237 6.87811H11.4414ZM6.93214 1.97423L6.9885 1.95812C7.29554 1.87632 7.60755 1.81445 7.92257 1.77292C6.87339 3.02403 6.11685 4.49365 5.70818 6.07448H2.28996C2.7127 5.09049 3.34827 4.21243 4.15095 3.50345C4.95364 2.79448 5.90347 2.27221 6.93214 1.97423ZM1.69811 8.89924C1.69824 8.2146 1.79862 7.53367 1.99605 6.87811H5.53103C5.40843 7.54485 5.34644 8.22132 5.34582 8.89924C5.34607 9.57452 5.40807 10.2483 5.53103 10.9123H1.99605C1.79804 10.2597 1.69764 9.58129 1.69811 8.89924ZM6.9885 15.8323C5.94485 15.546 4.97959 15.0271 4.16515 14.3144C3.3507 13.6018 2.70823 12.714 2.28593 11.7176H5.70013C6.11304 13.3019 6.87515 14.7739 7.93063 16.0256C7.61226 15.9844 7.29736 15.9198 6.9885 15.8323ZM6.53757 11.7176H11.2401C10.8052 13.283 10.0017 14.7215 8.89691 15.9128C7.79217 14.7189 6.98393 13.2817 6.53757 11.7176ZM10.8053 15.8323C10.4948 15.9129 10.1804 15.9774 9.86319 16.0256C10.9091 14.7699 11.6652 13.2989 12.0776 11.7176H15.5079C15.0844 12.7132 14.4415 13.6004 13.6273 14.3128C12.813 15.0253 11.8484 15.5447 10.8053 15.8323ZM12.2547 10.9123C12.5044 9.57917 12.5044 8.21126 12.2547 6.87811H15.7897C15.991 7.53279 16.0915 8.21431 16.0876 8.89924C16.0896 9.58081 15.992 10.259 15.7978 10.9123H12.2547Z"
+            fill="black"
+        />
     </svg>
 );
 
-interface EditTenantFormValues {
-    /**
-     * Domain name of the tenant.
-     */
-    domain: string;
-    /**
-     * First name of the tenant admin.
-     */
-    firstname: string;
-    /**
-     * Last name of the tenant admin.
-     */
-    lastname: string;
-    /**
-     * Username of the tenant admin.
-     */
-    username: string;
-    /**
-     * Email of the tenant admin.
-     */
-    email: string;
-    /**
-     * Password of the tenant admin.
-     */
-    password: string;
-}
+export type EditTenantFormValues = Pick<Tenant, "domain" | "id"> & Omit<TenantOwner, "additionalDetails">;
 
-type EditTenantFromErrors = Partial<EditTenantFormValues>;
+export type EditTenantFormInitialValues = EditTenantFormValues;
+
+export type EditTenantFromErrors = Partial<EditTenantFormValues>;
 
 /**
  * Component to hold the tenant details edit/update form.
@@ -108,6 +96,7 @@ type EditTenantFromErrors = Partial<EditTenantFormValues>;
  */
 const EditTenantFormForm: FunctionComponent<EditTenantFormFormProps> = ({
     tenant,
+    onUpdate,
     ["data-componentid"]: componentId = "edit-tenant-form",
     ...rest
 }: EditTenantFormFormProps): ReactElement => {
@@ -128,7 +117,12 @@ const EditTenantFormForm: FunctionComponent<EditTenantFormFormProps> = ({
         return getConfiguration(validationData);
     }, [ validationData ]);
 
-    const validateUsernameAgainstUserstoreRegExp = async (value: string) => {
+    /**
+     * Form validator to validate the username against the userstore regex.
+     * @param value - Input value.
+     * @returns An error if the value is not valid else undefined.
+     */
+    const validateUsernameAgainstUserstoreRegExp = async (value: string): Promise<string | undefined> => {
         if (!value) {
             return undefined;
         }
@@ -140,7 +134,12 @@ const EditTenantFormForm: FunctionComponent<EditTenantFormFormProps> = ({
         }
     };
 
-    const validateAlphanumericUsername = (value: string) => {
+    /**
+     * Form validator to validate the username against the alphanumeric regex.
+     * @param value - Input value.
+     * @returns An error if the value is not valid else undefined.
+     */
+    const validateAlphanumericUsername = (value: string): string | undefined => {
         if (!value) {
             return undefined;
         }
@@ -170,6 +169,75 @@ const EditTenantFormForm: FunctionComponent<EditTenantFormFormProps> = ({
         }
     };
 
+    /**
+     * Handles the form submit action.
+     * @param values - Form values.
+     */
+    const handleSubmit = (values: EditTenantFormValues): void => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { domain, id, username, ...rest } = values;
+
+        updateTenantOwner(tenant?.id, { id: tenant?.owners[0]?.id, ...rest } as TenantOwner)
+            .then(() => {
+                dispatch(
+                    addAlert({
+                        description: t("tenants:editTenant.notifications.updateTenant.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("tenants:editTenant.notifications.updateTenant.success.message")
+                    })
+                );
+
+                onUpdate && onUpdate();
+            })
+            .catch(() => {
+                dispatch(
+                    addAlert({
+                        description: t("tenants:editTenant.notifications.updateTenant.error.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("tenants:editTenant.notifications.updateTenant.error.message")
+                    })
+                );
+            });
+    };
+
+    /**
+     * Handles the form level validation.
+     * @param values - Form values.
+     * @returns Form errors.
+     */
+    const handleValidate = (values: EditTenantFormValues): EditTenantFromErrors => {
+        const errors: EditTenantFromErrors = {
+            email: undefined,
+            firstname: undefined,
+            lastname: undefined,
+            password: undefined
+        };
+
+        if (!values.firstname) {
+            errors.firstname = t("tenants:common.form.fields.firstname.validations.required");
+        }
+
+        if (!values.lastname) {
+            errors.lastname = t("tenants:common.form.fields.lastname.validations.required");
+        }
+
+        if (!values.email) {
+            errors.email = t("tenants:common.form.fields.email.validations.required");
+        }
+
+        if (!values.password) {
+            errors.password = t("tenants:common.form.fields.password.validations.required");
+        } else if (!isPasswordValid) {
+            errors.password = "";
+        }
+
+        return errors;
+    };
+
+    /**
+     * Returns an appropriate username field based on the configuration.
+     * @returns Username field.
+     */
     const renderUsernameField = (): ReactElement => {
         if (userNameValidationConfig?.enableValidator === "false") {
             return (
@@ -185,10 +253,9 @@ const EditTenantFormForm: FunctionComponent<EditTenantFormFormProps> = ({
                     helperText={
                         (<Hint>
                             <Typography variant="inherit">
-                                { enableEmailDomain ?
-                                    t("tenants:common.form.fields.emailUsername.helperText")
-                                    : t("tenants:common.form.fields.username.helperText")
-                                }
+                                { enableEmailDomain
+                                    ? t("tenants:common.form.fields.emailUsername.helperText")
+                                    : t("tenants:common.form.fields.username.helperText") }
                             </Typography>
                         </Hint>)
                     }
@@ -223,13 +290,18 @@ const EditTenantFormForm: FunctionComponent<EditTenantFormFormProps> = ({
                 helperText={
                     (<Hint>
                         <Typography variant="inherit">
-                            { userNameValidationConfig?.isAlphanumericOnly ? t("tenants:common.form.fields.alphanumericUsername.validations.usernameHint", {
-                                maxLength: userNameValidationConfig?.maxLength,
-                                minLength: userNameValidationConfig?.minLength
-                            }) : t("tenants:common.form.fields.alphanumericUsername.validations.usernameSpecialCharHint", {
-                                maxLength: userNameValidationConfig?.maxLength,
-                                minLength: userNameValidationConfig?.minLength
-                            }) }
+                            { userNameValidationConfig?.isAlphanumericOnly
+                                ? t("tenants:common.form.fields.alphanumericUsername.validations.usernameHint", {
+                                    maxLength: userNameValidationConfig?.maxLength,
+                                    minLength: userNameValidationConfig?.minLength
+                                })
+                                : t(
+                                    "tenants:common.form.fields.alphanumericUsername.validations.usernameSpecialCharHint",
+                                    {
+                                        maxLength: userNameValidationConfig?.maxLength,
+                                        minLength: userNameValidationConfig?.minLength
+                                    }
+                                ) }
                         </Typography>
                     </Hint>)
                 }
@@ -243,96 +315,115 @@ const EditTenantFormForm: FunctionComponent<EditTenantFormFormProps> = ({
         );
     };
 
-    const handleSubmit = (values: EditTenantFormValues): void => {
-        const { domain, ...rest } = values;
-
-        // const payload: AddTenantRequestPayload = {
-        //     domain,
-        //     owners: [ {
-        //         ...rest,
-        //         provisioningMethod: TenantStatus.INLINE_PASSWORD
-        //     } ]
-        // };
-
-        // addTenant(payload)
-        //     .then(() => {
-        //         dispatch(
-        //             addAlert({
-        //                 description: "Successfully created the root  organization.",
-        //                 level: AlertLevels.SUCCESS,
-        //                 message: "Organization created"
-        //             })
-        //         );
-
-        //         onSubmit && onSubmit();
-        //     })
-        //     .catch(() => {
-        //         dispatch(
-        //             addAlert({
-        //                 description: "An error occurred while creating the organization.",
-        //                 level: AlertLevels.ERROR,
-        //                 message: "Couldn't create"
-        //             })
-        //         );
-        //     });
-    };
-
-    const handleValidate = (values: EditTenantFormValues): EditTenantFromErrors => {
-        const errors: EditTenantFromErrors = {
-            domain: undefined,
-            email: undefined,
-            firstname: undefined,
-            lastname: undefined,
-            password: undefined,
-            username: undefined
-        };
-
-        if (!values.domain) {
-            errors.domain = t("tenants:common.form.fields.domain.validations.required");
-        }
-
-        if (!values.firstname) {
-            errors.firstname = t("tenants:common.form.fields.firstname.validations.required");
-        }
-
-        if (!values.lastname) {
-            errors.lastname = t("tenants:common.form.fields.lastname.validations.required");
-        }
-
-        if (!values.email) {
-            errors.email = t("tenants:common.form.fields.email.validations.required");
-        }
-
-        if (!values.password) {
-            errors.password = t("tenants:common.form.fields.password.validations.required");
-        } else if (!isPasswordValid) {
-            errors.password = "";
-        }
-
-        if (!values.username) {
-            errors.username = t("tenants:common.form.fields.username.validations.required");
-        }
-
-        return errors;
-    };
+    /**
+     * Renders the password validation criteria with the help of `PasswordValidation` component.
+     * @returns Password validation criteria.
+     */
+    const renderPasswordValidationCriteria = (): ReactElement => (
+        <FormSpy subscription={ { values: true } }>
+            { ({ values }: { values: EditTenantFormValues }) => (
+                <PasswordValidation
+                    password={ values?.password ?? "" }
+                    minLength={ Number(passwordValidationConfig.minLength) }
+                    maxLength={ Number(passwordValidationConfig.maxLength) }
+                    minNumbers={ Number(passwordValidationConfig.minNumbers) }
+                    minUpperCase={ Number(passwordValidationConfig.minUpperCaseCharacters) }
+                    minLowerCase={ Number(passwordValidationConfig.minLowerCaseCharacters) }
+                    minSpecialChr={ Number(passwordValidationConfig.minSpecialCharacters) }
+                    minUniqueChr={ Number(passwordValidationConfig.minUniqueCharacters) }
+                    maxConsecutiveChr={ Number(
+                        passwordValidationConfig.maxConsecutiveCharacters
+                    ) }
+                    onPasswordValidate={ (isValid: boolean): void => {
+                        setIsPasswordValid(isValid);
+                    } }
+                    translations={ {
+                        case:
+                            Number(passwordValidationConfig?.minUpperCaseCharacters) > 0 &&
+                            Number(passwordValidationConfig?.minLowerCaseCharacters) > 0
+                                ? t(
+                                    "tenants:common.form.fields.password.validations.criteria.passwordCase",
+                                    {
+                                        minLowerCase:
+                                              passwordValidationConfig.minLowerCaseCharacters,
+                                        minUpperCase:
+                                              passwordValidationConfig.minUpperCaseCharacters
+                                    }
+                                )
+                                : Number(passwordValidationConfig?.minUpperCaseCharacters) > 0
+                                    ? t(
+                                        "tenants:common.form.fields.password.validations.criteria.upperCase",
+                                        {
+                                            minUpperCase:
+                                              passwordValidationConfig.minUpperCaseCharacters
+                                        }
+                                    )
+                                    : t(
+                                        "tenants:common.form.fields.password.validations.criteria.lowerCase",
+                                        {
+                                            minLowerCase:
+                                              passwordValidationConfig.minLowerCaseCharacters
+                                        }
+                                    ),
+                        consecutiveChr: t(
+                            "tenants:common.form.fields.password.validations.criteria.consecutiveCharacters",
+                            {
+                                repeatedChr: passwordValidationConfig.maxConsecutiveCharacters
+                            }
+                        ),
+                        length: t(
+                            "tenants:common.form.fields.password.validations.criteria.passwordLength",
+                            {
+                                max: passwordValidationConfig.maxLength,
+                                min: passwordValidationConfig.minLength
+                            }
+                        ),
+                        numbers: t(
+                            "tenants:common.form.fields.password.validations.criteria.passwordNumeric",
+                            {
+                                min: passwordValidationConfig.minNumbers
+                            }
+                        ),
+                        specialChr: t(
+                            "tenants:common.form.fields.password.validations.criteria.specialCharacter",
+                            {
+                                specialChr: passwordValidationConfig.minSpecialCharacters
+                            }
+                        ),
+                        uniqueChr: t(
+                            "tenants:common.form.fields.password.validations.criteria.uniqueCharacters",
+                            {
+                                uniqueChr: passwordValidationConfig.minUniqueCharacters
+                            }
+                        )
+                    } }
+                />
+            ) }
+        </FormSpy>
+    );
 
     return (
         <FinalForm
             initialValues={ {
                 domain: tenant?.domain,
-                email: tenant?.owners[ 0 ]?.email,
-                firstname: tenant?.owners[ 0 ]?.firstname,
+                email: tenant?.owners[0]?.email,
+                firstname: tenant?.owners[0]?.firstname,
                 id: tenant?.id,
-                lastname: tenant?.owners[ 0 ]?.lastname,
+                lastname: tenant?.owners[0]?.lastname,
                 password: "",
-                username: tenant?.owners[ 0 ]?.username
+                username: tenant?.owners[0]?.username
             } }
             keepDirtyOnReinitialize={ true }
             onSubmit={ handleSubmit }
             validate={ handleValidate }
             mutators={ {
-                setRandomPassword: ([ name ]: [name: string], state, { changeValue }) => {
-                    const randomPass: string = generatePassword(Number(passwordValidationConfig.minLength),
+                setRandomPassword: (
+                    [ name ]: [string],
+                    state: MutableState<Record<string, any>, Partial<Record<string, any>>>,
+                    { changeValue }: Tools<Record<string, any>, Partial<Record<string, any>>>
+                ) => {
+                    const randomPass: string = generatePassword(
+                        Number(passwordValidationConfig.minLength),
                         Number(passwordValidationConfig.minLowerCaseCharacters) > 0,
                         Number(passwordValidationConfig.minUpperCaseCharacters) > 0,
                         Number(passwordValidationConfig.minNumbers) > 0,
@@ -341,7 +432,8 @@ const EditTenantFormForm: FunctionComponent<EditTenantFormFormProps> = ({
                         Number(passwordValidationConfig.minUpperCaseCharacters),
                         Number(passwordValidationConfig.minNumbers),
                         Number(passwordValidationConfig.minSpecialCharacters),
-                        Number(passwordValidationConfig.minUniqueCharacters));
+                        Number(passwordValidationConfig.minUniqueCharacters)
+                    );
 
                     changeValue(state, name, () => randomPass);
                 }
@@ -366,10 +458,12 @@ const EditTenantFormForm: FunctionComponent<EditTenantFormFormProps> = ({
                                 (<Hint>
                                     <Typography variant="inherit">
                                         <Trans i18nKey="tenants:common.form.fields.domain.helperText">
-                                            Enter a unique domain name for your organization. The domain name should be in the format of
+                                            Enter a unique domain name for your organization. The domain name should be
+                                            in the format of
                                             <Typography component="span" variant="inherit" fontWeight="bold">
                                                 example.com
-                                            </Typography>.
+                                            </Typography>
+                                            .
                                         </Trans>
                                     </Typography>
                                 </Hint>)
@@ -379,7 +473,11 @@ const EditTenantFormForm: FunctionComponent<EditTenantFormFormProps> = ({
                             component={ TextFieldAdapter }
                             maxLength={ 100 }
                             minLength={ 0 }
-                            endAdornment={ <InputAdornment position="end"><GlobeIcon /></InputAdornment> }
+                            endAdornment={
+                                (<InputAdornment position="end">
+                                    <GlobeIcon />
+                                </InputAdornment>)
+                            }
                             readOnly={ true }
                         />
                         <FinalFormField
@@ -421,7 +519,7 @@ const EditTenantFormForm: FunctionComponent<EditTenantFormFormProps> = ({
                             { t("tenants:addTenant.form.adminDetails.title") }
                         </Typography>
                         <Stack spacing={ 1 } direction="column">
-                            <Stack spacing={ { sm: 2, xs: 1 } } direction={ { xs: "column", sm: "row" } }>
+                            <Stack spacing={ { sm: 2, xs: 1 } } direction={ { sm: "row", xs: "column" } }>
                                 <div className="inline-flex-field">
                                     <FinalFormField
                                         fullWidth
@@ -475,7 +573,11 @@ const EditTenantFormForm: FunctionComponent<EditTenantFormFormProps> = ({
                                 maxLength={ 100 }
                                 minLength={ 0 }
                             />
-                            <Stack spacing={ { sm: 2, xs: 1 } } direction={ { xs: "column", sm: "row" } } alignItems="flex-end">
+                            <Stack
+                                spacing={ { sm: 2, xs: 1 } }
+                                direction={ { sm: "row", xs: "column" } }
+                                alignItems="flex-end"
+                            >
                                 <div className="inline-flex-field">
                                     <FinalFormField
                                         key="password"
@@ -499,60 +601,7 @@ const EditTenantFormForm: FunctionComponent<EditTenantFormFormProps> = ({
                                     </Button>
                                 ) }
                             </Stack>
-                            { passwordValidationConfig && (
-                                <FormSpy subscription={ { values: true } }>
-                                    { ({ values }: { values }) => (
-                                        <PasswordValidation
-                                            password={ values?.password ?? "" }
-                                            minLength={ Number(passwordValidationConfig.minLength) }
-                                            maxLength={ Number(passwordValidationConfig.maxLength) }
-                                            minNumbers={ Number(passwordValidationConfig.minNumbers) }
-                                            minUpperCase={ Number(passwordValidationConfig.minUpperCaseCharacters) }
-                                            minLowerCase={ Number(passwordValidationConfig.minLowerCaseCharacters) }
-                                            minSpecialChr={ Number(passwordValidationConfig.minSpecialCharacters) }
-                                            minUniqueChr={ Number(passwordValidationConfig.minUniqueCharacters) }
-                                            maxConsecutiveChr={ Number(passwordValidationConfig.maxConsecutiveCharacters) }
-                                            onPasswordValidate={ (isValid: boolean): void => {
-                                                setIsPasswordValid(isValid);
-                                            } }
-                                            translations={ {
-                                                case: (Number(passwordValidationConfig?.minUpperCaseCharacters) > 0 &&
-                                                Number(passwordValidationConfig?.minLowerCaseCharacters) > 0) ?
-                                                    t("tenants:common.form.fields.password.validations.criteria.passwordCase", {
-                                                        minLowerCase: passwordValidationConfig.minLowerCaseCharacters,
-                                                        minUpperCase: passwordValidationConfig.minUpperCaseCharacters
-                                                    }) : (
-                                                        Number(passwordValidationConfig?.minUpperCaseCharacters) > 0 ?
-                                                            t("tenants:common.form.fields.password.validations.criteria.upperCase", {
-                                                                minUpperCase: passwordValidationConfig.minUpperCaseCharacters
-                                                            }) : t("tenants:common.form.fields.password.validations.criteria.lowerCase", {
-                                                                minLowerCase: passwordValidationConfig.minLowerCaseCharacters
-                                                            })
-                                                    ),
-                                                consecutiveChr:
-                                                t("tenants:common.form.fields.password.validations.criteria.consecutiveCharacters", {
-                                                    repeatedChr: passwordValidationConfig.maxConsecutiveCharacters
-                                                }),
-                                                length: t("tenants:common.form.fields.password.validations.criteria.passwordLength", {
-                                                    max: passwordValidationConfig.maxLength, min: passwordValidationConfig.minLength
-                                                }),
-                                                numbers:
-                                                t("tenants:common.form.fields.password.validations.criteria.passwordNumeric", {
-                                                    min: passwordValidationConfig.minNumbers
-                                                }),
-                                                specialChr:
-                                                t("tenants:common.form.fields.password.validations.criteria.specialCharacter", {
-                                                    specialChr: passwordValidationConfig.minSpecialCharacters
-                                                }),
-                                                uniqueChr:
-                                                t("tenants:common.form.fields.password.validations.criteria.uniqueCharacters", {
-                                                    uniqueChr: passwordValidationConfig.minUniqueCharacters
-                                                })
-                                            } }
-                                        />
-                                    ) }
-                                </FormSpy>
-                            ) }
+                            { passwordValidationConfig && renderPasswordValidationCriteria() }
                         </Stack>
                         <Button
                             sx={ { mt: "var(--wso2is-admin-form-submit-action-top-spacing)" } }

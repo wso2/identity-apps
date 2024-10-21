@@ -195,6 +195,16 @@ export interface TenantsNS {
                     message: string;
                 };
             };
+            updateTenantStatus: {
+                error: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
         };
     };
     listing: {
