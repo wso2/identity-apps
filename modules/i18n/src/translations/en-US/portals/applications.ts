@@ -1584,9 +1584,9 @@ export const applications: ApplicationsNS = {
                                 "attributes) were automatically included in the access token if requested via scopes.",
                             feature: "With the latest update, admins can now choose which attributes "
                                 + "to include in the access token.",
-                            howToUse : "As this application is eligible to use the feature, you can now see the all " +
-                                "the <1>requested attributes</1> are listed below. Admins can remove/add " +
-                                "any attributes from the dropdown which includes of <3> requested attributes</3>. " +
+                            howToUse : "As this application is eligible to use the feature, you can now see all " +
+                                "the <1>requested attributes</1> are listed below. Admins can add/remove " +
+                                "any attributes from the dropdown which includes of <3>requested attributes</3>. " +
                                 "After saving the changes, only the selected attributes will be included in the access token.",
                             note: "Once updated, requested attributes are no longer automatically included in the " +
                                 "access token and this change is irreversible. Admin-selected attributes will be " +

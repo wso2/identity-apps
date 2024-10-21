@@ -743,7 +743,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                                 }
                                             >
                                                 Irrespective of the <code>scopes</code> requested, all the <code>
-                                                Requested Attributes</code> will be included in the JWT Access Token.
+                                                requested attributes</code> will be included in the JWT Access Token.
                                             </Trans>
                                         </Typography>
                                         <DocumentationLink
