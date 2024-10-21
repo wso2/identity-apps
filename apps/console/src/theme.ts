@@ -16,7 +16,10 @@
  * under the License.
  */
 
-import { Theme as OxygenTheme } from "@oxygen-ui/react/models";
+// TODO: Take this from `@oxygen-ui/react/style` once the following issue is sorted.
+// https://github.com/wso2/oxygen-ui/issues/290
+// eslint-disable-next-line no-restricted-imports
+import { Theme as OxygenTheme } from "@oxygen-ui/react";
 import { extendTheme } from "@oxygen-ui/react/theme";
 
 const Theme: OxygenTheme = extendTheme({
