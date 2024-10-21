@@ -3969,6 +3969,11 @@ export const extensions: Extensions = {
                                 hint: "This will enable email verification at the self-registration.",
                                 label: "Activate account immediately"
                             },
+                            handleExistingUsername: {
+                                msg: "If selected, both existing and non-existing usernames will be treated the same way, preventing username enumeration.",
+                                hint: "This will enable existing and non-existing usernames to be handled the same way at the self-registration.",
+                                label: "Handle existing username"
+                            },
                             signUpConfirmation: {
                                 recommendationMsg:
                                     "It is recommended to enable account verification for " + "self registration.",

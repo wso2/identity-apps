@@ -50,6 +50,10 @@ interface SelfRegistrationFormInitialValuesInterface {
      */
     verificationLinkExpiryTime: string;
     /**
+     * Handle existing username by adopting the same flow as a new user.
+     */
+    handleExistingUsername: boolean;
+    /**
      * Account lock on creation.
      */
     accountActivateImmediately: boolean;
@@ -94,6 +98,7 @@ const NOTIFY_ACCOUNT_CONFIRMATION: string = "SelfRegistration.NotifyAccountConfi
 const AUTO_LOGIN_ENABLE: string = "SelfRegistration.AutoLogin.Enable";
 const LOCK_ON_CREATION: string = "SelfRegistration.LockOnCreation";
 const ACCOUNT_CONFIRMATION: string = "SelfRegistration.SendConfirmationOnCreation";
+const HANDLE_EXISTING_USERNAME: string = "SelfRegistration.HandleExistingUsername";
 
 const allowedConnectorFields: string[] = [
     ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
@@ -102,7 +107,8 @@ const allowedConnectorFields: string[] = [
     ServerConfigurationsConstants.RE_CAPTCHA,
     NOTIFY_ACCOUNT_CONFIRMATION,
     AUTO_LOGIN_ENABLE,
-    LOCK_ON_CREATION
+    LOCK_ON_CREATION,
+    HANDLE_EXISTING_USERNAME
 ];
 
 const FORM_ID: string = "governance-connectors-self-registration-form";
@@ -244,6 +250,12 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                     };
                 }
             }
+            if (property.name === HANDLE_EXISTING_USERNAME) {
+                resolvedInitialFormValues = {
+                    ...resolvedInitialFormValues,
+                    handleExistingUsername: property.value === "true"
+                };
+            }
             if (property.name === NOTIFY_ACCOUNT_CONFIRMATION) {
                 setEnableConfirmationNotification(property.value === "true");
                 resolvedInitialFormValues = {
@@ -262,9 +274,10 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             };
         }
 
-        // Make accountActivateImmediately false if the account confirmation is false.
+        // Make accountActivateImmediately and handleExistingUsername false if the account confirmation is false.
         if (get(resolvedInitialFormValues, "signUpConfirmation") !== true) {
             resolvedInitialFormValues.accountActivateImmediately = false;
+            resolvedInitialFormValues.handleExistingUsername = false;
         }
         setInitialConnectorValues(resolvedInitialValues);
         setInitialFormValues(resolvedInitialFormValues);
@@ -282,12 +295,17 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             "SelfRegistration.LockOnCreation": string | boolean;
             "SelfRegistration.NotifyAccountConfirmation": string | boolean;
             "SelfRegistration.SendConfirmationOnCreation": string | boolean;
+            "SelfRegistration.HandleExistingUsername": string | boolean;
             "SelfRegistration.VerificationCode.ExpiryTime": string | boolean | unknown;
             "SelfRegistration.Notification.InternallyManage"?: string | boolean;
         } = {
             "SelfRegistration.AutoLogin.Enable": values.autoLogin !== undefined
                 ? !!enableAutoLogin
                 : initialConnectorValues?.get("SelfRegistration.AutoLogin.Enable").value,
+            "SelfRegistration.HandleExistingUsername": values.handleExistingUsername === false ||
+            enableAccountConfirmation == false
+                ? false
+                : true,
             "SelfRegistration.LockOnCreation": values.accountActivateImmediately === true ||
             enableAccountConfirmation == false
                 ? false
@@ -317,6 +335,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 "autoLogin",
                 "accountActivateImmediately",
                 "verificationLinkExpiryTime",
+                "handleExistingUsername",
                 "signUpConfirmation",
                 "notifyAccountConfirmation",
                 "SelfRegistration.LockOnCreation",
@@ -622,6 +641,26 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                         {
                             content: t("extensions:manage.serverConfigurations.userOnboarding." +
                                 "selfRegistration.form.fields.activateImmediately.msg"),
+                            type: "info"
+                        }
+                    }
+                />
+            ) }
+            { enableAccountConfirmation && (
+                <Field.Checkbox
+                    ariaLabel="handleExistingUsername"
+                    className="toggle"
+                    name="handleExistingUsername"
+                    label={ t("extensions:manage.serverConfigurations.userOnboarding." +
+                        "selfRegistration.form.fields.handleExistingUsername.label") }
+                    required={ false }
+                    readOnly={ readOnly }
+                    disabled={ !isConnectorEnabled || isSubmitting }
+                    data-testid={ `${testId}-handle-existing-username` }
+                    message={
+                        {
+                            content: t("extensions:manage.serverConfigurations.userOnboarding." +
+                                "selfRegistration.form.fields.handleExistingUsername.msg"),
                             type: "info"
                         }
                     }

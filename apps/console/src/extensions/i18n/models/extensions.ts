@@ -3221,6 +3221,7 @@ export interface Extensions {
                             expiryTime: FormAttributes;
                             signUpConfirmation: FormAttributes;
                             activateImmediately: FormAttributes;
+                            handleExistingUsername: FormAttributes;
                             enable: FormAttributes;
                         };
                     };
