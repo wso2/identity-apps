@@ -37,6 +37,7 @@ import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/m
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
+    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
     LoadableComponentInterface,
     SBACInterface,
@@ -188,6 +189,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state.config.ui.features?.applications
+    );
 
     /**
      * Fetch the application templates if list is not available in redux.
@@ -441,6 +446,11 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                             </Grid>)
                                     }
                                     {
+                                        isFeatureEnabled(
+                                            applicationFeatureConfig,
+                                            ApplicationManagementConstants.FEATURE_DICTIONARY
+                                                .get("APPLICATION_OUTDATED_APP_BANNER")
+                                        ) &&
                                         ApplicationManagementUtils
                                             .isApplicationOutdated(app.applicationVersion,
                                                 app.clientId != undefined && !isEmpty(app.clientId))

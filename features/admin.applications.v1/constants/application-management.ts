@@ -83,7 +83,9 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_MYACCOUNT_SAAS_SETTINGS", "applications.myaccount.saasMyaccountSettings")
         .set("APPLICATION_ADD_MANAGEMENT_APPLICATIONS", "applications.add.managementApplications")
         .set("APPLICATIONS_SETTINGS", "applications.settings")
-        .set("TRUSTED_APPS", "applications.trustedApps");
+        .set("TRUSTED_APPS", "applications.trustedApps")
+        .set("APPLICATION_ACCESSTOKEN_ATTRIBUTES", "applications.accessTokenAttributes")
+        .set("APPLICATION_OUTDATED_APP_BANNER", "applications.outdatedAppBanner");
 
     /**
      * Key for the URL search param for application state.
