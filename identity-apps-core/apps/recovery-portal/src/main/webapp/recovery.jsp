@@ -102,8 +102,6 @@
 <% } %>
 
 <%
-    
-
     boolean isPasswordRecoveryEmailConfirmation =
             Boolean.parseBoolean(request.getParameter("isPasswordRecoveryEmailConfirmation"));
     boolean isUsernameRecovery = Boolean.parseBoolean(request.getParameter("isUsernameRecovery"));
@@ -335,7 +333,8 @@
             return;
 
         } else {
-            request.setAttribute("errorMsg", "Invalid username recovery stage. recovery Stage: "+recoveryStage);
+            request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                    "Invalid.username.recovery.stage"));
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
 

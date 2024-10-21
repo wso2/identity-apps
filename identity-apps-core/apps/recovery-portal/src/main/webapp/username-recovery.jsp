@@ -111,7 +111,6 @@
     String mobileClaimRegex = "";
     String emailClaimRegex = "";
 
-    // Todo: Replace the mobile claim with the costant.
     for (Claim claim : claims) {
         if (StringUtils.equals(claim.getUri(),
                 IdentityManagementEndpointConstants.ClaimURIs.FIRST_NAME_CLAIM)) {
@@ -265,7 +264,6 @@
                         <input type="hidden" id="mobileClaimRegex" name="mobileClaimRegex" value=<%=mobileClaimRegex%>>
                         <input type="hidden" id="recoveryStage" name="recoveryStage" value="INITIATE">
 
-                        <%--Todo: replace the mobile claim with the constants. --%>
                         <% for (Claim claim : claims) {
                             if (claim.getRequired() &&
                                     !StringUtils.equals(claim.getUri(),
@@ -394,9 +392,8 @@
                     }
                 <% } %>
 
-               
+                // Contact input validation.
                 const contact = $("#contact").val();
-             
 
                 if (contact === "") {
                     errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Contact.cannot.be.empty")%>");
