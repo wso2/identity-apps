@@ -1,5 +1,23 @@
 # @wso2is/admin.email-templates.v1
 
+## 2.22.0
+
+### Minor Changes
+
+- [#6985](https://github.com/wso2/identity-apps/pull/6985) [`4fd710e435d292d59de289f4c71293a330a85267`](https://github.com/wso2/identity-apps/commit/4fd710e435d292d59de289f4c71293a330a85267) Thanks [@brionmario](https://github.com/brionmario)! - Bump `@oxygen-ui` version to `v15.x`
+
+### Patch Changes
+
+- Updated dependencies [[`4fd710e435d292d59de289f4c71293a330a85267`](https://github.com/wso2/identity-apps/commit/4fd710e435d292d59de289f4c71293a330a85267), [`86e236e6bb3fb65bbc186b24d39a8bfead33f30a`](https://github.com/wso2/identity-apps/commit/86e236e6bb3fb65bbc186b24d39a8bfead33f30a)]:
+  - @wso2is/admin.organizations.v1@2.23.0
+  - @wso2is/react-components@2.5.0
+  - @wso2is/admin.core.v1@2.32.0
+  - @wso2is/dynamic-forms@2.1.0
+  - @wso2is/validation@2.1.0
+  - @wso2is/form@2.2.0
+  - @wso2is/i18n@2.7.0
+  - @wso2is/theme@2.1.6
+
 ## 2.21.32
 
 ### Patch Changes

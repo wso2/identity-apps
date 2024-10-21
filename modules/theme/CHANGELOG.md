@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.1.6
+
+### Patch Changes
+
+- [#7009](https://github.com/wso2/identity-apps/pull/7009) [`86e236e6bb3fb65bbc186b24d39a8bfead33f30a`](https://github.com/wso2/identity-apps/commit/86e236e6bb3fb65bbc186b24d39a8bfead33f30a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix subheader in danger zone in myaccount inheriting header color
+
 ## 2.1.5
 
 ### Patch Changes
