@@ -1,5 +1,18 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.1.0
+
+### Minor Changes
+
+- [#6985](https://github.com/wso2/identity-apps/pull/6985) [`4fd710e435d292d59de289f4c71293a330a85267`](https://github.com/wso2/identity-apps/commit/4fd710e435d292d59de289f4c71293a330a85267) Thanks [@brionmario](https://github.com/brionmario)! - Bump `@oxygen-ui` version to `v15.x`
+
+### Patch Changes
+
+- Updated dependencies [[`4fd710e435d292d59de289f4c71293a330a85267`](https://github.com/wso2/identity-apps/commit/4fd710e435d292d59de289f4c71293a330a85267), [`0bfc1223c714427976474a13fda3db0e5bd52daa`](https://github.com/wso2/identity-apps/commit/0bfc1223c714427976474a13fda3db0e5bd52daa)]:
+  - @wso2is/admin.template-core.v1@1.1.0
+  - @wso2is/admin.applications.v1@2.27.0
+  - @wso2is/admin.core.v1@2.32.0
+
 ## 1.0.84
 
 ### Patch Changes

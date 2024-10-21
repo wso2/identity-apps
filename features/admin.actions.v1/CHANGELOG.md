@@ -1,5 +1,21 @@
 # @wso2is/admin.actions.v1
 
+## 1.3.0
+
+### Minor Changes
+
+- [#6985](https://github.com/wso2/identity-apps/pull/6985) [`4fd710e435d292d59de289f4c71293a330a85267`](https://github.com/wso2/identity-apps/commit/4fd710e435d292d59de289f4c71293a330a85267) Thanks [@brionmario](https://github.com/brionmario)! - Bump `@oxygen-ui` version to `v15.x`
+
+### Patch Changes
+
+- Updated dependencies [[`4fd710e435d292d59de289f4c71293a330a85267`](https://github.com/wso2/identity-apps/commit/4fd710e435d292d59de289f4c71293a330a85267)]:
+  - @wso2is/admin.feature-gate.v1@1.2.0
+  - @wso2is/admin.extensions.v1@2.31.0
+  - @wso2is/react-components@2.5.0
+  - @wso2is/admin.core.v1@2.32.0
+  - @wso2is/form@2.2.0
+  - @wso2is/i18n@2.7.0
+
 ## 1.2.32
 
 ### Patch Changes

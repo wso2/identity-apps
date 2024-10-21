@@ -1,5 +1,27 @@
 # @wso2is/admin.authentication-flow-builder.v1
 
+## 2.21.0
+
+### Minor Changes
+
+- [#6985](https://github.com/wso2/identity-apps/pull/6985) [`4fd710e435d292d59de289f4c71293a330a85267`](https://github.com/wso2/identity-apps/commit/4fd710e435d292d59de289f4c71293a330a85267) Thanks [@brionmario](https://github.com/brionmario)! - Bump `@oxygen-ui` version to `v15.x`
+
+### Patch Changes
+
+- [#7007](https://github.com/wso2/identity-apps/pull/7007) [`0bfc1223c714427976474a13fda3db0e5bd52daa`](https://github.com/wso2/identity-apps/commit/0bfc1223c714427976474a13fda3db0e5bd52daa) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Persist selected theme in conditional auth editor
+
+- Updated dependencies [[`4fd710e435d292d59de289f4c71293a330a85267`](https://github.com/wso2/identity-apps/commit/4fd710e435d292d59de289f4c71293a330a85267), [`0bfc1223c714427976474a13fda3db0e5bd52daa`](https://github.com/wso2/identity-apps/commit/0bfc1223c714427976474a13fda3db0e5bd52daa)]:
+  - @wso2is/admin.server-configurations.v1@2.25.0
+  - @wso2is/admin.identity-providers.v1@2.23.0
+  - @wso2is/admin.login-flow.ai.v1@2.23.0
+  - @wso2is/admin.organizations.v1@2.23.0
+  - @wso2is/admin.applications.v1@2.27.0
+  - @wso2is/admin.connections.v1@2.25.0
+  - @wso2is/admin.extensions.v1@2.31.0
+  - @wso2is/admin.secrets.v1@2.22.0
+  - @wso2is/react-components@2.5.0
+  - @wso2is/admin.core.v1@2.32.0
+
 ## 2.20.196
 
 ### Patch Changes

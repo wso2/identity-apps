@@ -1,5 +1,36 @@
 # @wso2is/admin.users.v1
 
+## 2.24.0
+
+### Minor Changes
+
+- [#6985](https://github.com/wso2/identity-apps/pull/6985) [`4fd710e435d292d59de289f4c71293a330a85267`](https://github.com/wso2/identity-apps/commit/4fd710e435d292d59de289f4c71293a330a85267) Thanks [@brionmario](https://github.com/brionmario)! - Bump `@oxygen-ui` version to `v15.x`
+
+### Patch Changes
+
+- Updated dependencies [[`4fd710e435d292d59de289f4c71293a330a85267`](https://github.com/wso2/identity-apps/commit/4fd710e435d292d59de289f4c71293a330a85267), [`86e236e6bb3fb65bbc186b24d39a8bfead33f30a`](https://github.com/wso2/identity-apps/commit/86e236e6bb3fb65bbc186b24d39a8bfead33f30a)]:
+  - @wso2is/admin.server-configurations.v1@2.25.0
+  - @wso2is/admin.identity-providers.v1@2.23.0
+  - @wso2is/admin.authentication.v1@2.22.0
+  - @wso2is/admin.authorization.v1@2.22.0
+  - @wso2is/admin.organizations.v1@2.23.0
+  - @wso2is/admin.feature-gate.v1@1.2.0
+  - @wso2is/admin.extensions.v1@2.31.0
+  - @wso2is/admin.userstores.v1@2.22.0
+  - @wso2is/admin.validation.v1@2.23.0
+  - @wso2is/admin.tenants.v1@2.24.0
+  - @wso2is/admin.claims.v1@2.22.0
+  - @wso2is/admin.groups.v1@2.22.0
+  - @wso2is/react-components@2.5.0
+  - @wso2is/admin.roles.v2@2.23.0
+  - @wso2is/admin.users.v1@2.24.0
+  - @wso2is/admin.core.v1@2.32.0
+  - @wso2is/dynamic-forms@2.1.0
+  - @wso2is/validation@2.1.0
+  - @wso2is/form@2.2.0
+  - @wso2is/i18n@2.7.0
+  - @wso2is/theme@2.1.6
+
 ## 2.23.32
 
 ### Patch Changes
