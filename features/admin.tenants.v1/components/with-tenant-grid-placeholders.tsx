@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import Stack from "@mui/material/Stack";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Divider from "@oxygen-ui/react/Divider";
 import Grid from "@oxygen-ui/react/Grid";
+import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { GearIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { FeatureAccessConfigInterface, Show } from "@wso2is/access-control";

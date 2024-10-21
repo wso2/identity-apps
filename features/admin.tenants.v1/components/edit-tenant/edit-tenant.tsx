@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import Collapse from "@mui/material/Collapse";
-import Stack from "@mui/material/Stack";
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
+import Collapse from "@oxygen-ui/react/Collapse";
+import Stack from "@oxygen-ui/react/Stack";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";

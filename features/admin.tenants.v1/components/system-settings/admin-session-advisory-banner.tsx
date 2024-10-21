@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Stack from "@oxygen-ui/react/Stack";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -29,7 +30,6 @@ import { Checkbox, CheckboxProps } from "semantic-ui-react";
 import { AdminAdvisoryBannerConfigurationInterface } from "../..//models/system-settings/admin-advisory";
 import updateAdminAdvisoryBannerConfiguration from "../../api/system-settings/update-admin-advisory-banner-configuration";
 import useAdminAdvisoryBannerConfiguration from "../../api/system-settings/use-admin-advisory-banner-configuration";
-import Stack from "@mui/material/Stack";
 
 /**
  * Props interface of {@link SystemSettingsTabs}
