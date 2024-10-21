@@ -133,7 +133,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     useEffect(() => {
         if (user[ SCIMConfigs.scim.enterpriseSchema ]?.managedOrg) {
             setIsUserManagedByParentOrg(true);
-            setIsUserProfileReadOnly(true);
         }
     }, [ user ]);
 
