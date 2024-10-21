@@ -40,7 +40,7 @@ import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/applicati
 import useExtensionTemplates from "@wso2is/admin.template-core.v1/hooks/use-extension-templates";
 import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Forms } from "@wso2is/forms";
 import {
@@ -159,6 +159,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ bannerUpdateLoading, setBannerUpdateLoading ] = useState<boolean>(false);
     const [ showConfirmationModal, setShowConfirmationModal ] = useState<boolean>(false);
     const [ formData, setFormdata ] = useState<ApplicationInterface>(undefined);
+
+    const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state.config.ui.features?.applications
+    );
 
     useEffect(() => {
         if (application && applicationInboundConfigs) {
@@ -556,7 +560,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         const classes: any = classNames( { "application-outdated-alert-expanded-view": viewBannerDetails } );
 
         return (
-            displayBanner &&
+            isFeatureEnabled(
+                applicationFeatureConfig,
+                ApplicationManagementConstants.FEATURE_DICTIONARY
+                    .get("APPLICATION_OUTDATED_APP_BANNER")
+            ) && displayBanner &&
                 (
                     <div className="banner-wrapper">
                         <Alert
@@ -906,6 +914,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         <div className="with-label ellipsis" ref={ appDescElement }>
                             { resolveTemplateLabel() }
                             {
+                                isFeatureEnabled(
+                                    applicationFeatureConfig,
+                                    ApplicationManagementConstants.FEATURE_DICTIONARY
+                                        .get("APPLICATION_OUTDATED_APP_BANNER")
+                                ) &&
                                 ApplicationManagementUtils.isApplicationOutdated(
                                     moderatedApplicationData?.applicationVersion,
                                     moderatedApplicationData?.clientId
