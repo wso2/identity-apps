@@ -177,7 +177,7 @@
                 <div class="ui divider hidden"></div>
 
                 <div class="segment-form">
-                    <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
+                    <form class="ui large form" method="post" action="verify.do" id="channelSelectionForm">
                   
                         <%
                             String callback = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("callback"));
@@ -267,12 +267,11 @@
         }
 
         function onCompleted() {
-            $("#recoverDetailsForm").submit();
+            $("#channelSelectionForm").submit();
         }
 
         $(document).ready(function () {
-
-            $("#recoverDetailsForm").submit(function (e) {
+            $("#channelSelectionForm").submit(function (e) {
                 
 
                 // Prevent clicking multiple times, and notify the user something
