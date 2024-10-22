@@ -239,7 +239,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ showCallbackURLField, setShowCallbackURLField ] = useState<boolean>(undefined);
     const [ hideRefreshTokenGrantType, setHideRefreshTokenGrantType ] = useState<boolean>(false);
     const [ selectedGrantTypes, setSelectedGrantTypes ] = useState<string[]>(undefined);
-    const [ isJWTAccessTokenTypeSelected, setJWTAccessTokenTypeSelected ] =useState<boolean>(false);
+    const [ isJWTAccessTokenTypeSelected, setJWTAccessTokenTypeSelected ] = useState<boolean>(false);
     const [ isGrantChanged, setGrantChanged ] = useState<boolean>(false);
     const [ showRegenerateConfirmationModal, setShowRegenerateConfirmationModal ] = useState<boolean>(false);
     const [ showRevokeConfirmationModal, setShowRevokeConfirmationModal ] = useState<boolean>(false);
@@ -519,7 +519,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             .filter((claimObj: ExternalClaim | undefined) => claimObj !== undefined);
 
         setSelectedAccessTokenAttributes(selectedAttributes);
-        setAccessTokenAttributesEnabled(ApplicationManagementUtils.isGivenAppVersionAllowed(
+        setAccessTokenAttributesEnabled(ApplicationManagementUtils.isAppVersionAllowed(
             application?.applicationVersion, ApplicationManagementConstants.APP_VERSION_2));
     }, [ accessTokenAttributes, application ]);
 

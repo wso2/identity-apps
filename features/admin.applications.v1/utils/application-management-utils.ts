@@ -146,7 +146,7 @@ export class ApplicationManagementUtils {
      * @param allowedApplicationVersion - Allowed Application version.
      * @returns True if app is allowed to use the feature.
      */
-    public static isGivenAppVersionAllowed(applicationVersion: string, allowedApplicationVersion: string): boolean {
+    public static isAppVersionAllowed(applicationVersion: string, allowedApplicationVersion: string): boolean {
 
         if (applicationVersion && allowedApplicationVersion) {
 
