@@ -41,17 +41,14 @@ import {
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertLevels, LoadableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { LoadableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import moment from "moment";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-import updateTenantActivationStatus from "../api/update-tenant-activation-status";
+import { useSelector } from "react-redux";
 import useTenants from "../hooks/use-tenants";
-import { Tenant, TenantLifecycleStatus } from "../models/tenants";
+import { Tenant } from "../models/tenants";
 import "./tenant-card.scss";
 
 /**
@@ -62,10 +59,6 @@ export interface TenantCardProps extends LoadableComponentInterface {
      * Tenant object.
      */
     tenant: Tenant;
-    /**
-     * Callback to be fired on updates occur as side effects.
-     */
-    onUpdate?: () => void;
 }
 
 /**
@@ -76,16 +69,13 @@ export interface TenantCardProps extends LoadableComponentInterface {
  */
 const TenantCard: FunctionComponent<TenantCardProps> = ({
     isLoading,
-    tenant,
-    onUpdate
+    tenant
 }: TenantCardProps): ReactElement => {
     const { t } = useTranslation();
 
     const clientHost: string = useSelector((state: AppState) => state.config?.deployment?.clientHost);
 
-    const dispatch: Dispatch = useDispatch();
-
-    const { deleteTenant } = useTenants();
+    const { deleteTenant, disableTenant, enableTenant } = useTenants();
 
     const [ anchorEl, setAnchorEl ] = useState<null | HTMLElement>(null);
 
@@ -107,46 +97,6 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({
      */
     const buildTenantConsoleURL = (tenantDomain: string): string => {
         return clientHost.replace(/\/t\/[^/]+\//, `/t/${tenantDomain}/`);
-    };
-
-    const handleOrganizationStatusUpdate = (): void => {
-        const newLifecycleStatus: TenantLifecycleStatus = {
-            activated: !tenant.lifecycleStatus.activated
-        };
-
-        updateTenantActivationStatus(tenant.id, newLifecycleStatus)
-            .then(() => {
-                dispatch(
-                    addAlert({
-                        description: t("tenants:editTenant.notifications.updateTenant.success.description", {
-                            operation: newLifecycleStatus.activated ? "enabled" : "disabled"
-                        }),
-                        level: AlertLevels.SUCCESS,
-                        message: t("tenants:editTenant.notifications.updateTenant.success.message", {
-                            operation: newLifecycleStatus.activated ? "Enabled" : "Disabled"
-                        })
-                    })
-                );
-
-                onUpdate && onUpdate();
-            })
-            .catch(() => {
-                dispatch(
-                    addAlert({
-                        description: t("tenants:editTenant.notifications.updateTenant.error.description", {
-                            operation: newLifecycleStatus.activated ? "enabling" : "disabling",
-                            tenantDomain: tenant.domain
-                        }),
-                        level: AlertLevels.ERROR,
-                        message: t("tenants:editTenant.notifications.updateTenant.error.message", {
-                            operation: newLifecycleStatus.activated ? "Enable" : "Disable"
-                        })
-                    })
-                );
-            })
-            .finally(() => {
-                handleClose();
-            });
     };
 
     if (isLoading) {
@@ -276,7 +226,15 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({
                                     error: tenant?.lifecycleStatus?.activated,
                                     success: !tenant?.lifecycleStatus?.activated
                                 }) }
-                                onClick={ () => handleOrganizationStatusUpdate() }
+                                onClick={ (): void => {
+                                    if (tenant?.lifecycleStatus?.activated) {
+                                        disableTenant(tenant);
+
+                                        return;
+                                    }
+
+                                    enableTenant(tenant);
+                                } }
                             >
                                 <ListItemIcon>
                                     { tenant?.lifecycleStatus?.activated ? <BanIcon /> : <CircleCheckFilledIcon /> }

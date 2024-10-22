@@ -88,7 +88,17 @@ const EditTenantPage: FunctionComponent<EditTenantPageProps> = ({
     }, [ tenant, tenantOwner ]);
 
     return (
-        <TenantProvider onDeleteTenantSuccess={ () => history.push(AppConstants.getPaths().get("TENANTS")) }>
+        <TenantProvider
+            onTenantDeleteSuccess={ (): void => history.push(AppConstants.getPaths().get("TENANTS")) }
+            onTenantDisableSuccess={ (): void => {
+                mutateTenant();
+                mutateTenantOwner();
+            } }
+            onTenantEnableSuccess={ (): void => {
+                mutateTenant();
+                mutateTenantOwner();
+            } }
+        >
             <PageLayout
                 pageTitle="Edit Root Organizations"
                 title={
@@ -135,13 +145,7 @@ const EditTenantPage: FunctionComponent<EditTenantPageProps> = ({
                 className="tenant-edit-page"
                 bottomMargin={ false }
             >
-                <EditTenant
-                    tenant={ mergedTenant }
-                    onUpdate={ (): void => {
-                        mutateTenant();
-                        mutateTenantOwner();
-                    } }
-                />
+                <EditTenant tenant={ mergedTenant } />
             </PageLayout>
         </TenantProvider>
     );

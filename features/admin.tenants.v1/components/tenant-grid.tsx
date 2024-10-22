@@ -108,7 +108,7 @@ const TenantGrid: FunctionComponent<TenantGridProps> = ({
                 >
                     { tenantList?.tenants?.map((tenant: Tenant) => (
                         <Grid key={ tenant.id } xs={ 12 } sm={ 12 } md={ 6 } lg={ 4 } xl={ 3 }>
-                            <TenantCard tenant={ tenant } onUpdate={ () => mutateTenantList() } />
+                            <TenantCard tenant={ tenant } />
                         </Grid>
                     )) }
                 </WithTenantGridPlaceholders>

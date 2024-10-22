@@ -150,7 +150,15 @@ export interface TenantsNS {
             message: string;
             primaryAction: string;
             secondaryAction: string;
-        }
+        };
+        disableTenant: {
+            assertionHint: string;
+            content: string;
+            header: string;
+            message: string;
+            primaryAction: string;
+            secondaryAction: string;
+        };
     },
     edit: {
         backButton: string;

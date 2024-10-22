@@ -149,9 +149,17 @@ export const tenants: TenantsNS = {
     confirmationModals: {
         deleteTenant: {
             assertionHint: "Please confirm your action.",
-            content: "If you delete this root organization, users will not be able to use the services offered by the organization. Please proceed with caution.",
+            content: "If you delete this organization, users will not be able to use the services offered by the organization. Please proceed with caution.",
             header: "Are you sure?",
-            message: "This action is irreversible and will permanently delete the root organization.",
+            message: "This action is irreversible and will permanently delete the organization.",
+            primaryAction: "Confirm",
+            secondaryAction: "Cancel"
+        },
+        disableTenant: {
+            assertionHint: "Please confirm your action.",
+            content: "If you disable this organization, users will not be able to use the services offered by the organization until it is enabled again. Please proceed with caution.",
+            header: "Are you sure?",
+            message: "This action will temporarily disable the organization.",
             primaryAction: "Confirm",
             secondaryAction: "Cancel"
         }
@@ -211,7 +219,7 @@ export const tenants: TenantsNS = {
             },
             updateTenantStatus: {
                 error: {
-                    description: "An error occurred while trying to {{operation}} the organization",
+                    description: "An error occurred while trying to {{operation}} the {{tenantDomain}} organization",
                     message: "Couldn't {{operation}} the organization"
                 },
                 success: {

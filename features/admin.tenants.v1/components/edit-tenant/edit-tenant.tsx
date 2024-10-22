@@ -22,17 +22,13 @@ import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
 import Collapse from "@oxygen-ui/react/Collapse";
 import Stack from "@oxygen-ui/react/Stack";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import EditTenantForm from "./edit-tenant-form";
-import updateTenantActivationStatus from "../../api/update-tenant-activation-status";
 import useTenants from "../../hooks/use-tenants";
-import { Tenant, TenantLifecycleStatus } from "../../models/tenants";
+import { Tenant } from "../../models/tenants";
 import "./edit-tenant.scss";
 
 /**
@@ -43,10 +39,6 @@ export type EditTenantProps = IdentifiableComponentInterface & {
      * Tenant object.
      */
     tenant: Tenant;
-    /**
-     * Callback to be fired on updates occur as side effects.
-     */
-    onUpdate?: () => void;
 };
 
 /**
@@ -57,13 +49,11 @@ export type EditTenantProps = IdentifiableComponentInterface & {
  */
 const EditTenant: FunctionComponent<EditTenantProps> = ({
     tenant,
-    onUpdate,
     ["data-componentid"]: componentId = "edit-tenant"
 }: EditTenantProps): ReactElement => {
     const { t } = useTranslation();
-    const dispatch: Dispatch = useDispatch();
 
-    const { deleteTenant } = useTenants();
+    const { deleteTenant, disableTenant, enableTenant } = useTenants();
 
     const showDisabledAlert: boolean = useMemo(() => {
         if (!tenant) {
@@ -73,53 +63,13 @@ const EditTenant: FunctionComponent<EditTenantProps> = ({
         return !tenant?.lifecycleStatus?.activated;
     }, [ tenant?.lifecycleStatus?.activated ]);
 
-    /**
-     * Handles the organization status update by invoking the updateTenantActivationStatus API.
-     */
-    const handleOrganizationStatusUpdate = (): void => {
-        const newLifecycleStatus: TenantLifecycleStatus = {
-            activated: !tenant.lifecycleStatus.activated
-        };
-
-        updateTenantActivationStatus(tenant.id, newLifecycleStatus)
-            .then(() => {
-                dispatch(
-                    addAlert({
-                        description: t("tenants:editTenant.notifications.updateTenantStatus.success.description", {
-                            operation: newLifecycleStatus.activated ? t("common:enabled") : t("common:disabled")
-                        }),
-                        level: AlertLevels.SUCCESS,
-                        message: t("tenants:editTenant.notifications.updateTenantStatus.success.message", {
-                            operation: newLifecycleStatus.activated ? t("common:enabled") : t("common:disabled")
-                        })
-                    })
-                );
-
-                onUpdate && onUpdate();
-            })
-            .catch(() => {
-                dispatch(
-                    addAlert({
-                        description: t("tenants:editTenant.notifications.updateTenantStatus.error.description", {
-                            operation: newLifecycleStatus.activated ? t("common:enable") : t("common:disable"),
-                            tenantDomain: tenant.domain
-                        }),
-                        level: AlertLevels.ERROR,
-                        message: t("tenants:editTenant.notifications.updateTenantStatus.error.message", {
-                            operation: newLifecycleStatus.activated ? t("common:enable") : t("common:disable")
-                        })
-                    })
-                );
-            });
-    };
-
     return (
         <Stack spacing={ 3 } className="edit-tenant">
             <Collapse in={ showDisabledAlert }>
                 <Alert
                     severity="warning"
                     action={
-                        (<Button onClick={ () => handleOrganizationStatusUpdate() } color="inherit" size="small">
+                        (<Button onClick={ (): void => enableTenant(tenant) } color="inherit" size="small">
                             { t("tenants:editTenant.disabledDisclaimer.actions.enable.label") }
                         </Button>)
                     }
@@ -136,7 +86,7 @@ const EditTenant: FunctionComponent<EditTenantProps> = ({
                 data-componentid={ componentId }
                 className="edit-tenant-content"
             >
-                <EditTenantForm tenant={ tenant } onUpdate={ onUpdate } />
+                <EditTenantForm tenant={ tenant } />
             </Card>
             <DangerZoneGroup sectionHeader={ t("tenants:editTenant.dangerZoneGroup.header") }>
                 { tenant?.lifecycleStatus?.activated && (
@@ -145,7 +95,7 @@ const EditTenant: FunctionComponent<EditTenantProps> = ({
                         actionTitle={ t("tenants:editTenant.dangerZoneGroup.disable.actionTitle") }
                         header={ t("tenants:editTenant.dangerZoneGroup.disable.header") }
                         subheader={ t("tenants:editTenant.dangerZoneGroup.disable.subheader") }
-                        onActionClick={ (): void => handleOrganizationStatusUpdate() }
+                        onActionClick={ (): void => disableTenant(tenant) }
                     />
                 ) }
                 <DangerZone

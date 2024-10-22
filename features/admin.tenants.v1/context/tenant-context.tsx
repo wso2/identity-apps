@@ -30,6 +30,16 @@ export interface TenantContextProps {
      */
     deleteTenant: (tenant: Tenant) => void;
     /**
+     * Trigger a disable action on a tenant.
+     * @param tenant - Tenant to be disabled.
+     */
+    disableTenant: (tenant: Tenant) => void;
+    /**
+     * Trigger a enable action on a tenant.
+     * @param tenant - Tenant to be enabled.
+     */
+    enableTenant: (tenant: Tenant) => void;
+    /**
      * Flag to indicate if the initial rendering is complete.
      */
     isInitialRenderingComplete: boolean;
@@ -60,6 +70,8 @@ export interface TenantContextProps {
  */
 const TenantContext: Context<TenantContextProps> = createContext<null | TenantContextProps>({
     deleteTenant: () => null,
+    disableTenant: () => null,
+    enableTenant: () => null,
     isInitialRenderingComplete: false,
     isTenantListLoading: false,
     mutateTenantList: () => null,

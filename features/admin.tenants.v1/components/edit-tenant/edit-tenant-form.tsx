@@ -54,6 +54,8 @@ import updateTenantOwner from "../../api/update-tenant-owner";
 import TenantConstants from "../../constants/tenant-constants";
 import { Tenant, TenantOwner } from "../../models/tenants";
 import "./edit-tenant-form.scss";
+import useGetTenant from "../../api/use-get-tenant";
+import useGetTenantOwner from "../../api/use-get-tenant-owner";
 
 /**
  * Props interface of {@link EditTenantForm}
@@ -67,10 +69,6 @@ export type EditTenantFormProps = IdentifiableComponentInterface & {
      * Callback to trigger when the form is submitted.
      */
     onSubmit?: () => void;
-    /**
-     * Callback to be triggered on tenant update.
-     */
-    onUpdate?: () => void;
 };
 
 export type EditTenantFormValues = Pick<Tenant, "domain" | "id"> & Omit<TenantOwner, "additionalDetails">;
@@ -85,13 +83,18 @@ export type EditTenantFromErrors = Partial<EditTenantFormValues>;
  */
 const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
     tenant,
-    onUpdate,
     ["data-componentid"]: componentId = "edit-tenant-form",
     ...rest
 }: EditTenantFormProps): ReactElement => {
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
+    const { mutate: mutateTenant } = useGetTenant(tenant?.id);
+    const { mutate: mutateTenantOwner } = useGetTenantOwner(
+        tenant?.id,
+        tenant?.owners[0]?.id,
+        !!tenant
+    );
     const { data: validationData } = useValidationConfigData();
 
     const enableEmailDomain: boolean = useSelector((state: AppState) => state.config?.ui?.enableEmailDomain);
@@ -176,7 +179,8 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                     })
                 );
 
-                onUpdate && onUpdate();
+                mutateTenant();
+                mutateTenantOwner();
             })
             .catch(() => {
                 dispatch(

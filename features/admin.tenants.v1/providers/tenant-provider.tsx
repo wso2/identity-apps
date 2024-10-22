@@ -25,9 +25,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import deleteTenantMetadata from "../api/delete-tenant-metadata";
+import updateTenantActivationStatus from "../api/update-tenant-activation-status";
 import useGetTenants from "../api/use-get-tenants";
 import TenantContext from "../context/tenant-context";
-import { Tenant } from "../models/tenants";
+import { Tenant, TenantLifecycleStatus } from "../models/tenants";
 
 /**
  * Props interface of {@link TenantProvider}
@@ -36,7 +37,27 @@ export interface TenantProviderProps {
     /**
      * Callback to be fired on successful tenant deletion.
      */
-    onDeleteTenantSuccess?: () => void;
+    onTenantDeleteSuccess?: () => void;
+    /**
+     * Callback to be fired on un-successful tenant deletion.
+     */
+    onTenantDeleteError?: () => void;
+    /**
+     * Callback to be fired on successful tenant disable.
+     */
+    onTenantDisableSuccess?: () => void;
+    /**
+     * Callback to be fired on un-successful tenant disable.
+     */
+    onTenantDisableError?: () => void;
+    /**
+     * Callback to be fired on successful tenant enable.
+     */
+    onTenantEnableSuccess?: () => void;
+    /**
+     * Callback to be fired on un-successful tenant enable.
+     */
+    onTenantEnableError?: () => void;
 };
 
 /**
@@ -47,7 +68,12 @@ export interface TenantProviderProps {
  */
 const TenantProvider = ({
     children,
-    onDeleteTenantSuccess
+    onTenantDeleteError,
+    onTenantDeleteSuccess,
+    onTenantDisableError,
+    onTenantDisableSuccess,
+    onTenantEnableError,
+    onTenantEnableSuccess
 }: PropsWithChildren<TenantProviderProps>): ReactElement => {
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -55,8 +81,11 @@ const TenantProvider = ({
     const [ isInitialRenderingComplete, setIsInitialRenderingComplete ] = useState<boolean>(false);
     const [ tenantListLimit, setTenantListLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ showDisableConfirmationModal, setShowDisableConfirmationModal ] = useState<boolean>(false);
     const [ deletingTenant, setDeletingTenant ] = useState<Tenant>(null);
+    const [ disablingTenant, setDisablingTenant ] = useState<Tenant>(null);
     const [ isTenantDeleteRequestLoading, setIsTenantDeleteRequestLoading ] = useState<boolean>(false);
+    const [ isTenantStatusUpdateRequestLoading, setIsTenantStatusUpdateRequestLoading ] = useState<boolean>(false);
 
     const { data: tenantList, isLoading: isTenantListLoading, mutate: mutateTenantList } = useGetTenants({
         limit: tenantListLimit,
@@ -91,7 +120,7 @@ const TenantProvider = ({
                 );
 
                 mutateTenantList();
-                onDeleteTenantSuccess();
+                onTenantDeleteSuccess && onTenantDeleteSuccess();
             })
             .catch(() => {
                 dispatch(
@@ -103,10 +132,72 @@ const TenantProvider = ({
                         message: t("tenants:editTenant.notifications.deleteTenantMeta.error.message")
                     })
                 );
+
+                onTenantDeleteError && onTenantDeleteError();
             })
             .finally(() => {
                 setShowDeleteConfirmationModal(false);
                 setIsTenantDeleteRequestLoading(false);
+            });
+    };
+
+    /**
+     * Handles the tenant status update after the user confirms the action.
+     * @param tenant - Tenant to be enabled/disabled.
+     */
+    const handleTenantStatusUpdateConfirmation = (tenant: Tenant): void => {
+        setIsTenantStatusUpdateRequestLoading(true);
+
+        const newLifecycleStatus: TenantLifecycleStatus = {
+            activated: !tenant?.lifecycleStatus?.activated
+        };
+
+        updateTenantActivationStatus(tenant.id, newLifecycleStatus)
+            .then(() => {
+                dispatch(
+                    addAlert({
+                        description: t("tenants:editTenant.notifications.updateTenantStatus.success.description", {
+                            operation: newLifecycleStatus.activated ? t("common:enabled") : t("common:disabled"),
+                            tenantDomain: tenant.domain
+                        }),
+                        level: AlertLevels.SUCCESS,
+                        message: t("tenants:editTenant.notifications.updateTenantStatus.success.message", {
+                            operation: newLifecycleStatus.activated ? t("common:enabled") : t("common:disabled")
+                        })
+                    })
+                );
+
+                mutateTenantList();
+
+                if (newLifecycleStatus.activated) {
+                    onTenantEnableSuccess && onTenantEnableSuccess();
+                } else {
+                    onTenantDisableSuccess && onTenantDisableSuccess();
+                }
+            })
+            .catch(() => {
+                dispatch(
+                    addAlert({
+                        description: t("tenants:editTenant.notifications.updateTenantStatus.error.description", {
+                            operation: newLifecycleStatus.activated ? t("common:enable") : t("common:disable"),
+                            tenantDomain: tenant.domain
+                        }),
+                        level: AlertLevels.ERROR,
+                        message: t("tenants:editTenant.notifications.updateTenantStatus.error.message", {
+                            operation: newLifecycleStatus.activated ? t("common:enable") : t("common:disable")
+                        })
+                    })
+                );
+
+                if (newLifecycleStatus.activated) {
+                    onTenantEnableError && onTenantEnableError();
+                } else {
+                    onTenantDisableError && onTenantDisableError();
+                }
+            })
+            .finally(() => {
+                setShowDisableConfirmationModal(false);
+                setIsTenantStatusUpdateRequestLoading(false);
             });
     };
 
@@ -116,6 +207,13 @@ const TenantProvider = ({
                 deleteTenant: (tenant: Tenant): void => {
                     setShowDeleteConfirmationModal(true);
                     setDeletingTenant(tenant);
+                },
+                disableTenant: (tenant: Tenant): void => {
+                    setShowDisableConfirmationModal(true);
+                    setDisablingTenant(tenant);
+                },
+                enableTenant: (tenant: Tenant): void => {
+                    handleTenantStatusUpdateConfirmation(tenant);
                 },
                 isInitialRenderingComplete,
                 isTenantListLoading,
@@ -153,6 +251,36 @@ const TenantProvider = ({
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content data-componentid="tenant-delete-confirmation-modal-content">
                         { t("tenants:confirmationModals.deleteTenant.content") }
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            ) }
+            { showDisableConfirmationModal && (
+                <ConfirmationModal
+                    primaryActionLoading={ isTenantStatusUpdateRequestLoading }
+                    data-componentid="tenant-disable-confirmation-modal"
+                    onClose={ (): void => setShowDisableConfirmationModal(false) }
+                    type="negative"
+                    open={ showDisableConfirmationModal }
+                    assertionHint={ t("tenants:confirmationModals.disableTenant.assertionHint") }
+                    assertionType="checkbox"
+                    primaryAction={ t("tenants:confirmationModals.disableTenant.primaryAction") }
+                    secondaryAction={ t("tenants:confirmationModals.disableTenant.secondaryAction") }
+                    onSecondaryActionClick={ (): void => setShowDisableConfirmationModal(false) }
+                    onPrimaryActionClick={ (): void => handleTenantStatusUpdateConfirmation(disablingTenant) }
+                    closeOnDimmerClick={ false }
+                >
+                    <ConfirmationModal.Header data-componentid="tenant-disable-confirmation-modal-header">
+                        { t("tenants:confirmationModals.disableTenant.header") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message
+                        attached
+                        negative
+                        data-componentid="tenant-disable-confirmation-modal-message"
+                    >
+                        { t("tenants:confirmationModals.disableTenant.message") }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content data-componentid="tenant-disable-confirmation-modal-content">
+                        { t("tenants:confirmationModals.disableTenant.content") }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }
