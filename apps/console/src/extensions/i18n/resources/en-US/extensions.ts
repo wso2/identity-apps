@@ -3969,6 +3969,11 @@ export const extensions: Extensions = {
                                 hint: "This will enable email verification at the self-registration.",
                                 label: "Activate account immediately"
                             },
+                            showUsernameUnavailability: {
+                                msg: "If selected, a descriptive error message will be shown to the user if the username is already taken. However, this may lead to username enumeration.",
+                                hint: "This will enable a descriptive error message to be displayed when the username is unavailable at the self-registration.",
+                                label: "Show username unavailability"
+                            },
                             signUpConfirmation: {
                                 recommendationMsg:
                                     "It is recommended to enable account verification for " + "self registration.",
