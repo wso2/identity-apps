@@ -22,6 +22,8 @@ import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
 import Collapse from "@oxygen-ui/react/Collapse";
 import Stack from "@oxygen-ui/react/Stack";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
@@ -127,6 +129,8 @@ const EditTenant: FunctionComponent<EditTenantProps> = ({
                         message: t("tenants:editTenant.notifications.deleteTenantMeta.success.message")
                     })
                 );
+
+                history.push(AppConstants.getPaths().get("TENANTS"));
             })
             .catch(() => {
                 dispatch(
