@@ -16988,13 +16988,13 @@ importers:
         specifier: ^2.24.2
         version: link:../admin.organizations.v1
       '@wso2is/admin.server.v1':
-        specifier: ^2.22.0
+        specifier: ^2.23.2
         version: link:../admin.server.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.24.0
+        specifier: ^2.25.2
         version: link:../admin.users.v1
       '@wso2is/admin.validation.v1':
-        specifier: ^2.23.0
+        specifier: ^2.24.2
         version: link:../admin.validation.v1
       '@wso2is/core':
         specifier: ^2.2.0
