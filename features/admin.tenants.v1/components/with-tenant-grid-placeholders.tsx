@@ -141,7 +141,7 @@ const WithTenantGridPlaceholders: FunctionComponent<WithTenantGridPlaceholdersPr
         />
     );
 
-    if (!isInitialRenderingComplete && isTenantListLoading) {
+    if (isTenantListLoading) {
         return (
             <Grid container spacing={ 3 } data-componentid={ componentId }>
                 { renderLoadingPlaceholder() }

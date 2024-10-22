@@ -21,7 +21,7 @@ import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Grid from "@oxygen-ui/react/Grid";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
 import TenantCard from "./tenant-card";
@@ -57,18 +57,10 @@ const TenantGrid: FunctionComponent<TenantGridProps> = ({
         isInitialRenderingComplete
     } = useTenants();
 
-    const [ hasMore, setHasMore ] = useState<boolean>(true);
-
     /**
      * Handles the load more action in the infinite scroll component.
      */
     const handleLoadMore = (): void => {
-        if (tenantList?.totalResults && tenantListLimit >= tenantList.totalResults) {
-            setHasMore(false);
-
-            return;
-        }
-
         setTenantListLimit((prevLimit: number) => prevLimit + 10);
     };
 
@@ -90,20 +82,7 @@ const TenantGrid: FunctionComponent<TenantGridProps> = ({
                 dataLength={ tenantList?.totalResults ?? 0 }
                 next={ handleLoadMore }
                 hasMore={ resolveHasMore() }
-                loader={
-                    (<Box
-                        display="flex"
-                        alignContent="center"
-                        alignItems="center"
-                        justifyContent="center"
-                        flexDirection="column"
-                        gap={ 2 }
-                        className="infinite-loader"
-                    >
-                        <CircularProgress size={ 22 } className="tenant-list-item-loader" />
-                        <Typography variant="h6">{ t("common:loading") }...</Typography>
-                    </Box>)
-                }
+                loader={ null }
                 endMessage={ null }
             >
                 <WithTenantGridPlaceholders
