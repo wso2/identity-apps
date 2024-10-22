@@ -16,10 +16,12 @@
  * under the License.
  */
 
+import Card from "@oxygen-ui/react/Card";
 import Checkbox from "@oxygen-ui/react/Checkbox";
-import Divider from "@oxygen-ui/react/Divider";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
+import Skeleton from "@oxygen-ui/react/Skeleton";
+import Stack from "@oxygen-ui/react/Stack";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
@@ -27,7 +29,6 @@ import {
     ConfirmationModal,
     DangerZone,
     DangerZoneGroup,
-    EmphasizedSegment,
     Heading,
     PrimaryButton
 } from "@wso2is/react-components";
@@ -42,7 +43,9 @@ import restoreRemoteLogPublishingConfigurationByLogType from
     "../../api/system-settings/restore-remote-log-publishing-configuration-by-log-type";
 import updateRemoteLogPublishingConfigurationByLogType from
     "../../api/system-settings/update-remote-log-publishing-configuration-by-log-type";
+import useRemoteLogPublishingConfiguration from "../../api/system-settings/use-remote-log-publishing-configuration";
 import { LogType, RemoteLogPublishingConfigurationInterface } from "../../models/system-settings/remote-log-publishing";
+import "./remote-logging-config-form.scss";
 
 /**
  * Props interface of {@link RemoteLoggingConfigForm}
@@ -81,6 +84,8 @@ export const RemoteLoggingConfigForm = ({
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
+
+    const { isLoading: isRemoteLogPublishingConfigsLoading } = useRemoteLogPublishingConfiguration();
 
     const handleRemoteLoggingConfigUpdate = (values: Map<string, string>) => {
         const remoteLogPublishConfig: RemoteLogPublishingConfigurationInterface = {
@@ -166,9 +171,25 @@ export const RemoteLoggingConfigForm = ({
             });
     };
 
+    if (isRemoteLogPublishingConfigsLoading) {
+        return (
+            <Card className="remote-logging-content">
+                <div className="remote-logging-form">
+                    <Stack direction="column" spacing={ 2 }>
+                        <Skeleton variant="rectangular" height={ 7 } width="30%" />
+                        <Skeleton variant="rectangular" height={ 28 } />
+                        <Skeleton variant="rectangular" height={ 7 } width="90%" />
+                        <Skeleton variant="rectangular" height={ 7 } />
+                    </Stack>
+                </div>
+            </Card>
+        );
+    }
+
     return (
         <>
-                <div className="form-container with-max-width">
+            <Card className="remote-logging-content">
+                <div className="remote-logging-form">
                     <Grid xs={ 12 } md={ 8 } lg={ 4 }>
                         <Forms onSubmit={ handleRemoteLoggingConfigUpdate } resetState={ resetForm }>
                             <Field
@@ -306,7 +327,7 @@ export const RemoteLoggingConfigForm = ({
                         </Forms>
                     </Grid>
                 </div>
-            <Divider hidden />
+            </Card>
             <DangerZoneGroup sectionHeader={ t("applications:dangerZoneGroup.header") }>
                 <DangerZone
                     isButtonDisabled={ !logConfig || Object.keys(logConfig).length === 0 }

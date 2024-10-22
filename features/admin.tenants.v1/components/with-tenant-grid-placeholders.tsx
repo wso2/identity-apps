@@ -159,12 +159,14 @@ const WithTenantGridPlaceholders: FunctionComponent<WithTenantGridPlaceholdersPr
 
     return (
         <>
-            <Typography align="right" sx={ { mb: 2 } } variant="body2">
-                { t("tenants:listing.count", {
-                    results: tenantList?.tenants?.length,
-                    totalResults: tenantList?.totalResults
-                }) }
-            </Typography>
+            { !isTenantListLoading && (
+                <Typography align="right" className="tenants-grid-display-count" variant="body2">
+                    { t("tenants:listing.count", {
+                        results: tenantList?.tenants?.length,
+                        totalResults: tenantList?.totalResults
+                    }) }
+                </Typography>
+            ) }
             <Grid container spacing={ 3 } data-componentid={ componentId }>
                 { children }
             </Grid>

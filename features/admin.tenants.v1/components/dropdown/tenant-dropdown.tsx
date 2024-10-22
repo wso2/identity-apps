@@ -527,10 +527,9 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                     }
                                                     { isSuperOrganization() && (
                                                         <Chip
-                                                            className="primary-chip"
+                                                            className="primary-tenant-chip"
                                                             label="Primary"
                                                             color="info"
-                                                            sx={ { ml: 1 } }
                                                         />
                                                     ) }
                                                 </div>

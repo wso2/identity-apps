@@ -92,8 +92,7 @@ const TenantGrid: FunctionComponent<TenantGridProps> = ({
                         justifyContent="center"
                         flexDirection="column"
                         gap={ 2 }
-                        className="loader"
-                        sx={ { mt: 3 } }
+                        className="infinite-loader"
                     >
                         <CircularProgress size={ 22 } className="tenant-list-item-loader" />
                         <Typography variant="h6">{ t("common:loading") }...</Typography>

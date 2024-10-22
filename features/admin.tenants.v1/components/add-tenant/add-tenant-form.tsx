@@ -92,7 +92,12 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
         return getConfiguration(validationData);
     }, [ validationData ]);
 
-    const validateUsernameAgainstUserstoreRegExp = async (value: string) => {
+    /**
+     * Form validator to validate the username against the userstore regex.
+     * @param value - Input value.
+     * @returns An error if the value is not valid else undefined.
+     */
+    const validateUsernameAgainstUserstoreRegExp = async (value: string): Promise<string | undefined> => {
         if (!value) {
             return undefined;
         }
@@ -104,7 +109,12 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
         }
     };
 
-    const validateAlphanumericUsername = (value: string) => {
+    /**
+     * Form validator to validate the username against the alphanumeric regex.
+     * @param value - Input value.
+     * @returns An error if the value is not valid else undefined.
+     */
+    const validateAlphanumericUsername = (value: string): string | undefined => {
         if (!value) {
             return undefined;
         }
@@ -134,7 +144,12 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
         }
     };
 
-    const validateTenantDomainAvailability = async (value: string) => {
+    /**
+     * Form validator to validate the tenant domain availability.
+     * @param value - Input value.
+     * @returns An error if the value is not valid else undefined.
+     */
+    const validateTenantDomainAvailability = async (value: string): Promise<string | undefined> => {
         if (!value) {
             return undefined;
         }
@@ -152,6 +167,72 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
         }
     };
 
+    /**
+     * Handles the form submit action.
+     * @param values - Form values.
+     */
+    const handleSubmit = (values: AddTenantFormValues): void => {
+        const { domain, ...rest } = values;
+
+        const payload: AddTenantRequestPayload = {
+            domain,
+            owners: [ {
+                ...rest,
+                provisioningMethod: TenantStatus.INLINE_PASSWORD
+            } ]
+        };
+
+        onSubmit(payload);
+    };
+
+    /**
+     * Handles the form level validation.
+     * @param values - Form values.
+     * @returns Form errors.
+     */
+    const handleValidate = (values: AddTenantFormValues): AddTenantFromErrors => {
+        const errors: AddTenantFromErrors = {
+            domain: undefined,
+            email: undefined,
+            firstname: undefined,
+            lastname: undefined,
+            password: undefined,
+            username: undefined
+        };
+
+        if (!values.domain) {
+            errors.domain = t("tenants:common.form.fields.domain.validations.required");
+        }
+
+        if (!values.firstname) {
+            errors.firstname = t("tenants:common.form.fields.firstname.validations.required");
+        }
+
+        if (!values.lastname) {
+            errors.lastname = t("tenants:common.form.fields.lastname.validations.required");
+        }
+
+        if (!values.email) {
+            errors.email = t("tenants:common.form.fields.email.validations.required");
+        }
+
+        if (!values.password) {
+            errors.password = t("tenants:common.form.fields.password.validations.required");
+        } else if (!isPasswordValid) {
+            errors.password = "";
+        }
+
+        if (!values.username) {
+            errors.username = t("tenants:common.form.fields.username.validations.required");
+        }
+
+        return errors;
+    };
+
+    /**
+     * Returns an appropriate username field based on the configuration.
+     * @returns Username field.
+     */
     const renderUsernameField = (): ReactElement => {
         if (userNameValidationConfig?.enableValidator === "false") {
             return (
@@ -223,59 +304,6 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                 minLength={ 0 }
             />
         );
-    };
-
-    const handleSubmit = (values: AddTenantFormValues): void => {
-        const { domain, ...rest } = values;
-
-        const payload: AddTenantRequestPayload = {
-            domain,
-            owners: [ {
-                ...rest,
-                provisioningMethod: TenantStatus.INLINE_PASSWORD
-            } ]
-        };
-
-        onSubmit(payload);
-    };
-
-    const handleValidate = (values: AddTenantFormValues): AddTenantFromErrors => {
-        const errors: AddTenantFromErrors = {
-            domain: undefined,
-            email: undefined,
-            firstname: undefined,
-            lastname: undefined,
-            password: undefined,
-            username: undefined
-        };
-
-        if (!values.domain) {
-            errors.domain = t("tenants:common.form.fields.domain.validations.required");
-        }
-
-        if (!values.firstname) {
-            errors.firstname = t("tenants:common.form.fields.firstname.validations.required");
-        }
-
-        if (!values.lastname) {
-            errors.lastname = t("tenants:common.form.fields.lastname.validations.required");
-        }
-
-        if (!values.email) {
-            errors.email = t("tenants:common.form.fields.email.validations.required");
-        }
-
-        if (!values.password) {
-            errors.password = t("tenants:common.form.fields.password.validations.required");
-        } else if (!isPasswordValid) {
-            errors.password = "";
-        }
-
-        if (!values.username) {
-            errors.username = t("tenants:common.form.fields.username.validations.required");
-        }
-
-        return errors;
     };
 
     /**
@@ -399,7 +427,7 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                             endAdornment={ <InputAdornment position="end"><GlobeIcon /></InputAdornment> }
                             validate={ validateTenantDomainAvailability }
                         />
-                        <Typography variant="h5" sx={ { mb: 2, mt: 3 } }>
+                        <Typography variant="h5" className="add-tenant-form-sub-title">
                             { t("tenants:addTenant.form.adminDetails.title") }
                         </Typography>
                         <Stack spacing={ 1 } direction="column">

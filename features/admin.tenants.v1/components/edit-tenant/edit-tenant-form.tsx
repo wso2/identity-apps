@@ -285,7 +285,8 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                                     minLength: userNameValidationConfig?.minLength
                                 })
                                 : t(
-                                    "tenants:common.form.fields.alphanumericUsername.validations.usernameSpecialCharHint",
+                                    "tenants:common.form.fields.alphanumericUsername." +
+                                          "validations.usernameSpecialCharHint",
                                     {
                                         maxLength: userNameValidationConfig?.maxLength,
                                         minLength: userNameValidationConfig?.minLength
@@ -320,9 +321,7 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                     minLowerCase={ Number(passwordValidationConfig.minLowerCaseCharacters) }
                     minSpecialChr={ Number(passwordValidationConfig.minSpecialCharacters) }
                     minUniqueChr={ Number(passwordValidationConfig.minUniqueCharacters) }
-                    maxConsecutiveChr={ Number(
-                        passwordValidationConfig.maxConsecutiveCharacters
-                    ) }
+                    maxConsecutiveChr={ Number(passwordValidationConfig.maxConsecutiveCharacters) }
                     onPasswordValidate={ (isValid: boolean): void => {
                         setIsPasswordValid(isValid);
                     } }
@@ -330,61 +329,36 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                         case:
                             Number(passwordValidationConfig?.minUpperCaseCharacters) > 0 &&
                             Number(passwordValidationConfig?.minLowerCaseCharacters) > 0
-                                ? t(
-                                    "tenants:common.form.fields.password.validations.criteria.passwordCase",
-                                    {
-                                        minLowerCase:
-                                              passwordValidationConfig.minLowerCaseCharacters,
-                                        minUpperCase:
-                                              passwordValidationConfig.minUpperCaseCharacters
-                                    }
-                                )
+                                ? t("tenants:common.form.fields.password.validations.criteria.passwordCase", {
+                                    minLowerCase: passwordValidationConfig.minLowerCaseCharacters,
+                                    minUpperCase: passwordValidationConfig.minUpperCaseCharacters
+                                })
                                 : Number(passwordValidationConfig?.minUpperCaseCharacters) > 0
-                                    ? t(
-                                        "tenants:common.form.fields.password.validations.criteria.upperCase",
-                                        {
-                                            minUpperCase:
-                                              passwordValidationConfig.minUpperCaseCharacters
-                                        }
-                                    )
-                                    : t(
-                                        "tenants:common.form.fields.password.validations.criteria.lowerCase",
-                                        {
-                                            minLowerCase:
-                                              passwordValidationConfig.minLowerCaseCharacters
-                                        }
-                                    ),
+                                    ? t("tenants:common.form.fields.password.validations.criteria.upperCase", {
+                                        minUpperCase: passwordValidationConfig.minUpperCaseCharacters
+                                    })
+                                    : t("tenants:common.form.fields.password.validations.criteria.lowerCase", {
+                                        minLowerCase: passwordValidationConfig.minLowerCaseCharacters
+                                    }),
                         consecutiveChr: t(
                             "tenants:common.form.fields.password.validations.criteria.consecutiveCharacters",
                             {
                                 repeatedChr: passwordValidationConfig.maxConsecutiveCharacters
                             }
                         ),
-                        length: t(
-                            "tenants:common.form.fields.password.validations.criteria.passwordLength",
-                            {
-                                max: passwordValidationConfig.maxLength,
-                                min: passwordValidationConfig.minLength
-                            }
-                        ),
-                        numbers: t(
-                            "tenants:common.form.fields.password.validations.criteria.passwordNumeric",
-                            {
-                                min: passwordValidationConfig.minNumbers
-                            }
-                        ),
-                        specialChr: t(
-                            "tenants:common.form.fields.password.validations.criteria.specialCharacter",
-                            {
-                                specialChr: passwordValidationConfig.minSpecialCharacters
-                            }
-                        ),
-                        uniqueChr: t(
-                            "tenants:common.form.fields.password.validations.criteria.uniqueCharacters",
-                            {
-                                uniqueChr: passwordValidationConfig.minUniqueCharacters
-                            }
-                        )
+                        length: t("tenants:common.form.fields.password.validations.criteria.passwordLength", {
+                            max: passwordValidationConfig.maxLength,
+                            min: passwordValidationConfig.minLength
+                        }),
+                        numbers: t("tenants:common.form.fields.password.validations.criteria.passwordNumeric", {
+                            min: passwordValidationConfig.minNumbers
+                        }),
+                        specialChr: t("tenants:common.form.fields.password.validations.criteria.specialCharacter", {
+                            specialChr: passwordValidationConfig.minSpecialCharacters
+                        }),
+                        uniqueChr: t("tenants:common.form.fields.password.validations.criteria.uniqueCharacters", {
+                            uniqueChr: passwordValidationConfig.minUniqueCharacters
+                        })
                     } }
                 />
             ) }
@@ -504,7 +478,7 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                             minLength={ 0 }
                             value={ tenant?.id }
                         />
-                        <Typography variant="h5" sx={ { mb: 2, mt: 3 } }>
+                        <Typography variant="h5" className="edit-tenant-form-sub-title">
                             { t("tenants:addTenant.form.adminDetails.title") }
                         </Typography>
                         <Stack spacing={ 1 } direction="column">
@@ -593,8 +567,8 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                             { passwordValidationConfig && renderPasswordValidationCriteria() }
                         </Stack>
                         <Button
-                            sx={ { mt: "var(--wso2is-admin-form-submit-action-top-spacing)" } }
                             autoFocus
+                            className="edit-tenant-form-submit-button"
                             variant="contained"
                             color="primary"
                             type="submit"

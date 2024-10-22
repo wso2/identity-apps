@@ -22,8 +22,13 @@
     .oxygen-text-field {
         width: 100%;
     }
-    
+
     .inline-flex-field {
         width: 100%;
+    }
+
+    .add-tenant-form-sub-title {
+        margin-bottom: var(--oxygen-spacing-2);
+        margin-top: var(--oxygen-spacing-3);
     }
 }

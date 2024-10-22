@@ -16,16 +16,11 @@
  * under the License.
  */
 
-:root {
-    // TODO: Move this to `@oxygen` and set the values from MUI theme spacing.
-    --oxygen-spacing: 8px;
-    --oxygen-spacing-1: calc(var(--oxygen-spacing) * 1);
-    --oxygen-spacing-2: calc(var(--oxygen-spacing) * 2);
-    --oxygen-spacing-3: calc(var(--oxygen-spacing) * 3);
-    --oxygen-spacing-4: calc(var(--oxygen-spacing) * 4);
-    --oxygen-spacing-5: calc(var(--oxygen-spacing) * 5);
-    --oxygen-spacing-6: calc(var(--oxygen-spacing) * 6);
+.remote-logging-content {
+    padding: var(--oxygen-spacing-5) var(--oxygen-spacing-6);
+    margin-bottom: var(--oxygen-spacing-4);
 
-    --wso2is-admin-modal-form-max-width: 600px;
-    --wso2is-admin-form-max-width: 750px;
+    .remote-logging-form {
+        max-width: var(--wso2is-admin-form-max-width);
+    }
 }

@@ -19,9 +19,13 @@
 .with-tenant-grid-placeholders {
     .empty-placeholder {
         margin: 0;
-        
+
         .action-container .MuiStack-root {
             min-height: 100px;
         }
     }
+}
+
+.tenants-grid-display-count {
+    margin-bottom: var(--oxygen-spacing-2);
 }

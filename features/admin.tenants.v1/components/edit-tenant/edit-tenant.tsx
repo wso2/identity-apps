@@ -33,6 +33,7 @@ import EditTenantForm from "./edit-tenant-form";
 import deleteTenantMetadata from "../../api/delete-tenant-metadata";
 import updateTenantActivationStatus from "../../api/update-tenant-activation-status";
 import { Tenant, TenantLifecycleStatus } from "../../models/tenants";
+import "./edit-tenant.scss";
 
 /**
  * Props interface of {@link EditTenant}
@@ -141,7 +142,7 @@ const EditTenant: FunctionComponent<EditTenantProps> = ({
     };
 
     return (
-        <Stack spacing={ 3 }>
+        <Stack spacing={ 3 } className="edit-tenant">
             <Collapse in={ showDisabledAlert }>
                 <Alert
                     severity="warning"
@@ -159,7 +160,10 @@ const EditTenant: FunctionComponent<EditTenantProps> = ({
                     </Trans>
                 </Alert>
             </Collapse>
-            <Card data-componentid={ componentId } sx={ { p: "var(--wso2is-admin-tabs-content-spacing)" } }>
+            <Card
+                data-componentid={ componentId }
+                className="edit-tenant-content"
+            >
                 <EditTenantForm tenant={ tenant } onUpdate={ onUpdate } />
             </Card>
             <DangerZoneGroup sectionHeader={ t("tenants:editTenant.dangerZoneGroup.header") }>

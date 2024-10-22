@@ -36,6 +36,7 @@ import addTenant from "../../api/add-tenant";
 import TenantConstants from "../../constants/tenant-constants";
 import useTenants from "../../hooks/use-tenants";
 import { AddTenantRequestPayload } from "../../models/tenants";
+import "./add-tenant-modal.scss";
 
 /**
  * Props interface of {@link AddTenantModal}
@@ -58,6 +59,10 @@ const AddTenantModal: FunctionComponent<AddTenantModalProps> = ({
     const { getLink } = useDocumentation();
     const { mutateTenantList } = useTenants();
 
+    /**
+     * Handles the form submission.
+     * @param payload - Form values.
+     */
     const handleSubmit = (payload: AddTenantRequestPayload): void => {
         addTenant(payload)
             .then(() => {
@@ -89,28 +94,26 @@ const AddTenantModal: FunctionComponent<AddTenantModalProps> = ({
             onClose={ onClose }
             data-componentid={ componentId }
             maxWidth="md"
+            className="add-tenant-modal"
             { ...rest }
         >
             <DialogTitle>
                 <Typography variant="h4">{ t("tenants:addTenant.title") }</Typography>
                 <Typography variant="body2">
-                    { t("tenants:addTenant.subTitle") }
-                    <DocumentationLink link={ getLink("develop.multiTenancy.addTenant.learnMore") } showEmptyLink={ false }>
+                    { t("tenants:addTenant.subtitle") }
+                    <DocumentationLink
+                        showEmptyLink={ false }
+                        link={ getLink("develop.multiTenancy.addTenant.learnMore") }
+                    >
                         { t("common:learnMore") }
                     </DocumentationLink>
                 </Typography>
             </DialogTitle>
-            <DialogContent
-                sx={ {
-                    px: "var(--wso2is-admin-modal-content-x-spacing)",
-                    py: "var(--wso2is-admin-modal-content-y-spacing)"
-                } }
-                dividers
-            >
+            <DialogContent className="add-tenant-modal-content" dividers>
                 <AddTenantForm onSubmit={ handleSubmit } />
             </DialogContent>
             <DialogActions>
-                <Box sx={ { width: "100%" } }>
+                <Box className="add-tenant-modal-actions">
                     <Stack direction="row" justifyContent="space-between">
                         <Button
                             variant="text"
