@@ -326,13 +326,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                                 return (
                                     <>
                                         { generateSuperBreadcrumbItem(breadcrumb) }
-                                        {
-                                            breadcrumbList.length !== 1 && (
-                                                <Breadcrumb.Divider
-                                                    className="organization-breadcrumb-item-divider"
-                                                />
-                                            )
-                                        }
+                                        { resolveBreadcrumbIcon(index) }
                                     </>
                                 );
                             }
