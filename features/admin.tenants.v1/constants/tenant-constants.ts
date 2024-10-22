@@ -70,9 +70,9 @@ export default class TenantConstants {
         MANAGING_TENANTS_FROM_DROPDOWN: string;
         ORGANIZATIONS_QUICK_NAV_FROM_DROPDOWN: string;
     } = {
-            ADD_TENANTS_FROM_DROPDOWN: "tenants.add.tenant.from.dropdown",
-            MAKING_TENANTS_DEFAULT: "tenants.make.default",
-            MANAGING_TENANTS_FROM_DROPDOWN: "tenants.manage.tenants.from.dropdown",
-            ORGANIZATIONS_QUICK_NAV_FROM_DROPDOWN: "tenants.organizations.quick.nav.from.dropdown"
-        };
+        ADD_TENANTS_FROM_DROPDOWN: "tenants.add.tenant.from.dropdown",
+        MAKING_TENANTS_DEFAULT: "tenants.make.default",
+        MANAGING_TENANTS_FROM_DROPDOWN: "tenants.manage.tenants.from.dropdown",
+        ORGANIZATIONS_QUICK_NAV_FROM_DROPDOWN: "tenants.organizations.quick.nav.from.dropdown"
+    };
 }

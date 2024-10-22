@@ -51,11 +51,11 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import updateTenantOwner from "../../api/update-tenant-owner";
+import useGetTenant from "../../api/use-get-tenant";
+import useGetTenantOwner from "../../api/use-get-tenant-owner";
 import TenantConstants from "../../constants/tenant-constants";
 import { Tenant, TenantOwner } from "../../models/tenants";
 import "./edit-tenant-form.scss";
-import useGetTenant from "../../api/use-get-tenant";
-import useGetTenantOwner from "../../api/use-get-tenant-owner";
 
 /**
  * Props interface of {@link EditTenantForm}

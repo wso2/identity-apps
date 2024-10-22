@@ -80,7 +80,7 @@ const SystemSettingsTabs: FunctionComponent<SystemSettingsTabsInterface> = ({
                     "data-componentid": `${componentId}-remote-log-publishing`,
                     "data-tabid": SystemSettingsModes.REMOTE_LOG_PUBLISHING,
                     id: SystemSettingsModes.REMOTE_LOG_PUBLISHING,
-                    label: "Remote Log Publishing",
+                    label: t("server-configs:remoteLogPublishing.title"),
                     pane: <RemoteLogPublishing />,
                     value: SystemSettingsTabIDs.REMOTE_LOG_PUBLISHING
                 },
@@ -89,7 +89,7 @@ const SystemSettingsTabs: FunctionComponent<SystemSettingsTabsInterface> = ({
                     "data-componentid": `${componentId}-"admin-advisory-banner`,
                     "data-tabid": SystemSettingsModes.ADMIN_ADVISORY_BANNER,
                     id: SystemSettingsModes.ADMIN_ADVISORY_BANNER,
-                    label: "Admin Advisory Banner",
+                    label: t("server-configs:adminAdvisory.title"),
                     pane: <AdminSessionAdvisoryBanner />,
                     value: SystemSettingsTabIDs.ADMIN_ADVISORY_BANNER
                 }

@@ -88,7 +88,7 @@ export const getSignatureAlgorithmOptionsMapped = (
     metadata: FederatedAuthenticatorMetaInterface
 ): Array<SamlIdPListItemOption> => {
 
-    const property: CommonPluggableComponentMetaPropertyInterface = 
+    const property: CommonPluggableComponentMetaPropertyInterface =
         metadata.properties.find(({ key }: { key: string }) => key === "SignatureAlgorithm");
     const displayNameMapper = (algorithmPlainString: string): string => {
         switch (algorithmPlainString) {
@@ -139,7 +139,7 @@ export const getDigestAlgorithmOptionsMapped = (
     metadata: FederatedAuthenticatorMetaInterface
 ): Array<SamlIdPListItemOption> => {
 
-    const property: CommonPluggableComponentMetaPropertyInterface = 
+    const property: CommonPluggableComponentMetaPropertyInterface =
         metadata.properties.find(({ key }: { key: string }) => key === "DigestAlgorithm");
     const displayNameMapper = (algorithmPlainString: string): string => {
         switch (algorithmPlainString) {
@@ -204,12 +204,12 @@ export const fastSearch = (
 
     const propertyMap: Map<string, any> = new Map<string, any>();
 
-    authenticator.data?.properties.forEach(({ key, value }: { 
+    authenticator.data?.properties.forEach(({ key, value }: {
         key: string;
         value: string;
     }) => propertyMap.set(key, value));
 
-    const metadataMap: Map<string, CommonPluggableComponentMetaPropertyInterface> = 
+    const metadataMap: Map<string, CommonPluggableComponentMetaPropertyInterface> =
         new Map<string, CommonPluggableComponentMetaPropertyInterface>();
 
     authenticator.meta?.properties.forEach(
