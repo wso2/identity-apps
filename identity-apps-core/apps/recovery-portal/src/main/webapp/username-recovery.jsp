@@ -108,9 +108,6 @@
     }
 
 
-    String mobileClaimRegex = "";
-    String emailClaimRegex = "";
-
     for (Claim claim : claims) {
         if (StringUtils.equals(claim.getUri(),
                 IdentityManagementEndpointConstants.ClaimURIs.FIRST_NAME_CLAIM)) {
@@ -122,14 +119,10 @@
         if (StringUtils.equals(claim.getUri(),
                 IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM)) {
             isEmailInClaims = true;
-            emailClaimRegex = claim.getValidationRegex();
-            request.setAttribute("emailClaimRegex", emailClaimRegex);
         }
         if (StringUtils.equals(claim.getUri(),
                 IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM)) {
             isMobileInClaims = true;
-            mobileClaimRegex = claim.getValidationRegex();
-            request.setAttribute("mobileClaimRegex", mobileClaimRegex);
         }
     }
 
@@ -261,7 +254,6 @@
                         <% } %>
 
                         <input type="hidden" id="isUsernameRecovery" name="isUsernameRecovery" value="true">
-                        <input type="hidden" id="mobileClaimRegex" name="mobileClaimRegex" value=<%=mobileClaimRegex%>>
                         <input type="hidden" id="recoveryStage" name="recoveryStage" value="INITIATE">
 
                         <% for (Claim claim : claims) {
@@ -313,7 +305,7 @@
     
                         </div>
                         <div class="mt-1 align-center">
-                            <a href="<%= Encode.forHtml(callback)%>" class="ui button secondary large fluid">
+                            <a href="javascript:goBack()" class="ui button secondary large fluid">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                             </a>
                         </div>
@@ -347,7 +339,7 @@
         <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
-    <script type="text/javascript">
+     <script type="text/javascript">
         function goBack() {
             window.history.back();
         }
@@ -357,7 +349,6 @@
         }
 
         $(document).ready(function () {
-
             $("#recoverDetailsForm").submit(function (e) {
                 <%
                     if (reCaptchaEnabled) {
@@ -365,7 +356,6 @@
                 if (!grecaptcha.getResponse()) {
                     e.preventDefault();
                     grecaptcha.execute();
-
                     return true;
                 }
                 <%
@@ -394,6 +384,8 @@
 
                 // Contact input validation.
                 const contact = $("#contact").val();
+                const mobileClaimRegex = new RegExp("^\\s*(?:\\+?(\\d{1,3}))?[-. (]*(\\d{2,3})[-. )]*(\\d{3})[-. ]*(\\d{4,6})(?: *x(\\d+))?\\s*$");
+                const emailClaimRegex = new RegExp("^([a-zA-Z0-9!#$'\\+=^_.{|}~\\-&])+@(([a-zA-Z0-9\\-])+\\.)+([a-zA-Z0-9]{2,10})+$");
 
                 if (contact === "") {
                     errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Contact.cannot.be.empty")%>");
@@ -401,15 +393,13 @@
                     $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
                     submitButton.removeClass("loading").attr("disabled", false);
                     return false;
-
-                } else if (!contact.match(<%=mobileClaimRegex%>) && !contact.match(<%=emailClaimRegex%>)) {
+                } else if (!contact.match(mobileClaimRegex) && !contact.match(emailClaimRegex)) {
                     errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Invalid.contact")%>");
                     errorMessage.show();
                     $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
                     submitButton.removeClass("loading").attr("disabled", false);
                     return false;
                 }
-
                 return true;
             });
         });
