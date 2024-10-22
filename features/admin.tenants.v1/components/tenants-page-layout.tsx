@@ -83,7 +83,9 @@ const TenantsPageLayout: FunctionComponent<TenantsPageLayoutProps> = ({
             data-componentid={ componentId }
             action={
                 (<div className="tenants-page-actions">
-                    { tenantList?.totalResults > 1 && (
+                    { /* Sometimes, `tenants` array is undefined but `totalResults` is available. */ }
+                    { /* TODO: Tracker: https://github.com/wso2/product-is/issues/21459 */ }
+                    { tenantList?.tenants && tenantList?.totalResults > 1 && (
                         <>
                             <Show when={ adminAdvisory?.scopes?.read || remoteLogPublishing?.scopes?.read }>
                                 <Tooltip title={ t("tenants:actions.systemSettings.tooltip") }>

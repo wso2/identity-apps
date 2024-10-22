@@ -149,7 +149,9 @@ const WithTenantGridPlaceholders: FunctionComponent<WithTenantGridPlaceholdersPr
         );
     }
 
-    if (tenantList?.totalResults <= 0) {
+    // Sometimes, `tenants` array is undefined but `totalResults` is available.
+    // TODO: Tracker: https://github.com/wso2/product-is/issues/21459
+    if (!tenantList?.tenants || tenantList?.totalResults <= 0) {
         return (
             <Box className="with-tenant-grid-placeholders">
                 { showPlaceholders() }

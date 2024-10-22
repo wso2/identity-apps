@@ -77,15 +77,11 @@ const TenantGrid: FunctionComponent<TenantGridProps> = ({
             return false;
         }
 
-        if (tenantList?.totalResults <= 0) {
+        if (!tenantList?.totalResults || tenantList.totalResults <= 0) {
             return false;
         }
 
-        if (tenantList?.tenants?.length >= tenantList?.totalResults) {
-            return false;
-        }
-
-        return hasMore;
+        return tenantListLimit < tenantList.totalResults;
     };
 
     return (
