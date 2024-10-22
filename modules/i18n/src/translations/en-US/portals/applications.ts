@@ -398,7 +398,9 @@ export const applications: ApplicationsNS = {
                                 }
                             }
                         },
-                        subHeading: "Select which user attributes you want to share with the application."
+                        subHeading: "Select which user attributes you want to share with the application.",
+                        note: "Please note that the user attributes added from this section will only be "
+                            + "included in the ID token."
                     },
                     attributeComponentHint: "Use <1>OpenID Connect Scopes</1> to manage user attribute in a scope. " +
                         "You can add new attributes by navigating to <3>Attributes.</3>",

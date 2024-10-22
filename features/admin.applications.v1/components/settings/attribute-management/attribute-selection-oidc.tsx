@@ -26,7 +26,7 @@ import {
 } from "@wso2is/admin.core.v1";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { OIDCScopesClaimsListInterface } from "@wso2is/admin.oidc-scopes.v1";
-import { ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
+import { ExternalClaim, FeatureAccessConfigInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/src/models";
 import {
     AnimatedAvatar,
@@ -68,6 +68,9 @@ import {
     ClaimMappingInterface,
     RequestedClaimConfigurationInterface
 } from "../../../models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { ApplicationManagementUtils } from "../../../utils/application-management-utils";
+import { ApplicationManagementConstants } from "../../../constants/application-management";
 
 interface AttributeSelectionOIDCPropsInterface extends TestableComponentInterface, IdentifiableComponentInterface {
     claims: ExtendedClaimInterface[];
@@ -94,6 +97,10 @@ interface AttributeSelectionOIDCPropsInterface extends TestableComponentInterfac
     isUserAttributesLoading?: boolean;
     setUserAttributesLoading?: any;
     onlyOIDCConfigured?: boolean;
+    /**
+     * Version of the application.
+     */
+    appVersion?: string;
 }
 
 /**
@@ -124,6 +131,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
         isUserAttributesLoading,
         setUserAttributesLoading,
         onlyOIDCConfigured,
+        appVersion,
         [ "data-testid" ]: testId,
         [ "data-componentid" ]: componentId
     } = props;
@@ -153,6 +161,10 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
     const [ openIDConnectClaims ] = useState<ExtendedExternalClaimInterface[]>(externalClaims);
 
     const [ selectedScopes, setSelectedScopes ] = useState([ OPENID ]);
+
+    const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state.config.ui.features?.applications
+    );
 
     useEffect(() => {
         const tempFilterSelectedExternalClaims: ExtendedExternalClaimInterface[] = [ ...filterSelectedExternalClaims ];
@@ -790,6 +802,21 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                         </Table.Body>
                                     </Table>
                                 </Grid.Row>
+                                {
+                                    isFeatureEnabled(applicationFeatureConfig, "applications.accessTokenAttributes") &&
+                                    ApplicationManagementUtils.isAppVersionAllowed( appVersion,
+                                        ApplicationManagementConstants.APP_VERSION_2 ) &&
+                                    ( <Grid.Row>
+                                        <Hint>
+                                            <Trans
+                                                i18nKey={ t("applications:edit.sections.attributes.selection.note") }
+                                            >
+                                                Please note that the user attributes added from this section 
+                                                will only be included in the ID token.
+                                            </Trans>
+                                        </Hint>
+                                    </Grid.Row> )
+                                }
                                 <Grid.Row className="mb-5">
                                     {
                                         externalClaimsGroupedByScopes.length !== 0
