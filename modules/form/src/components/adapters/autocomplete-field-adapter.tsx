@@ -100,6 +100,10 @@ const AutocompleteFieldAdapter: FunctionComponent<AutocompleteFieldAdapterPropsI
                         >
                             { label }
                         </InputLabel>
+                        { /* `autocomplete`, `capture`, etc. are not part of TextField API */ }
+                        { /* TODO: Tracker: https://github.com/wso2/oxygen-ui/issues/292 */ }
+                        { /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */ }
+                        { /* @ts-ignore */ }
                         <TextField
                             { ...params }
                             id={ `${input.name}-input` }
