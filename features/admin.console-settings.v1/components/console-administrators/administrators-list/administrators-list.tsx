@@ -535,6 +535,7 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
 };
 
 AdministratorsList.defaultProps = {
+    "data-componentid": "console-administrators",
     selection: true,
     showListItemActions: true,
     showMetaContent: true
