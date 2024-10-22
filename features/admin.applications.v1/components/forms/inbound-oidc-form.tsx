@@ -262,7 +262,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         isRefreshTokenWithoutAllowedGrantType,
         setRefreshTokenWithoutAlllowdGrantType
     ] = useState<boolean>(false);
-    const [ activeOption, setActiveOption ] = useState<ExternalClaim>(undefined);
     const [ claims, setClaims ] = useState<Claim[]>([]);
     const [ externalClaims, setExternalClaims ] = useState<ExternalClaim[]>([]);
     const [ selectedAccessTokenAttributes, setSelectedAccessTokenAttributes ] = useState<ExternalClaim[]>(undefined);
@@ -2705,13 +2704,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                             i18nKey={ "applications:forms.inboundOIDC.sections" +
                                                                 ".accessToken.fields.accessTokenAttributes" +
                                                                 ".previousBehavior" }>
-                                                            Previously, all attributes marked as
-                                                            <Code withBackground>requested</Code> in the
+                                                            Previously, if an access token is authorized for a
+                                                            scope, all attributes belonging to that scope and marked
+                                                            as <Code withBackground>requested</Code> in the
                                                             application&apos;s
                                                             <Code withBackground>User Attributes</Code>
-                                                            section (referred to as requested attributes) were
-                                                            automatically included in the access token if requested
-                                                            via scopes.
+                                                            section, will be included in the access token.
                                                         </Trans>
                                                     </p>
                                                     <p>
@@ -2719,8 +2717,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                             i18nKey={ "applications:forms.inboundOIDC.sections" +
                                                                 ".accessToken.fields.accessTokenAttributes" +
                                                                 ".feature" }>
-                                                            With the latest update, admins can now choose
-                                                            which attributes to include in the access token.
+                                                            With the latest update, admins can now selectively
+                                                            include user attributes in the access token.
                                                         </Trans>
                                                     </p>
                                                     <p>
@@ -2728,13 +2726,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                             i18nKey={ "applications:forms.inboundOIDC.sections" +
                                                                 ".accessToken.fields.accessTokenAttributes" +
                                                                 ".howToUse" }>
-                                                            As this application is eligible to use the feature, you
-                                                            can now see the all the <Code withBackground>requested
-                                                            attributes</Code> are listed below. Admins can remove/add
-                                                            any attributes from the dropdown which includes of
-                                                            <Code withBackground> requested attributes</Code>. After
-                                                            saving the changes, only the selected attributes will be
-                                                            included in the access token.
+                                                            As this application is eligible for this change, you may
+                                                            see the <Code withBackground>Access Token Attributes</Code>
+                                                            section below which contains a list of all the requested
+                                                            attributes. If you are an admin, make changes to this
+                                                            list by adding/removing requested attributes.
+                                                            After saving the changes, any future access tokens
+                                                            that are issued will only contain
+                                                            the attributes listed below.
                                                         </Trans>
                                                     </p>
                                                     <span><b>Important:</b></span>
@@ -2743,12 +2742,21 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                             i18nKey={ "applications:forms.inboundOIDC.sections" +
                                                                 ".accessToken.fields.accessTokenAttributes" +
                                                                 ".howToUse" }>
-                                                            Once updated, requested attributes are no longer
-                                                            automatically included in the access token and this change
-                                                            is irreversible. Admin-selected attributes will be included
-                                                            in the access token even without requiring the relevant OIDC
-                                                            scopes.
-                                                            <Code withBackground>Proceed with caution</Code>.
+                                                            Once you make changes to this list and save changes,
+                                                            the previous behavior will be permanently replaced.
+                                                            It means that,
+                                                            <ul>
+                                                                <li>
+                                                                    Access tokens will only contain attributes
+                                                                    chosen by the admin.
+                                                                </li>
+                                                                <li>
+                                                                    Admin-chosen attributes are included in the
+                                                                    access token even if it does not have authorization
+                                                                    to the relevant OIDC scopes.
+                                                                </li>
+                                                            </ul>
+                                                            <Code withBackground>Proceed with caution!</Code>.
                                                         </Trans>
                                                     </p>
                                                 </Alert>
@@ -2801,8 +2809,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                         { ...getTagProps({ index }) }
                                                         key={ index }
                                                         label={ option.claimURI }
-                                                        activeOption={ activeOption }
-                                                        setActiveOption={ setActiveOption }
                                                         variant={
                                                             accessTokenAttributes?.find(
                                                                 (claim: ExternalClaim) => claim.id === option.id

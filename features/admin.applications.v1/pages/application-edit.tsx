@@ -83,6 +83,7 @@ import {
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 import "./application-edit.scss";
+import { Code } from "@wso2is/react-components";
 
 /**
  * Prop types for the applications edit page component.
@@ -655,9 +656,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                                         + "removeUsernameFromIntrospectionRespForAppTokens.instruction")
                                                 }
                                             >
-                                                The <code>sub</code> attribute of an application access token now
-                                                returns the <code>client_id</code> generated for the application,
-                                                instead of the <code>userid</code> of the application owner.
+                                                The <Code withBackground>sub</Code> attribute of
+                                                an application access token now returns the
+                                                <Code withBackground>client_id</Code> generated for the application,
+                                                instead of the <Code withBackground>userid</Code>
+                                                of the application owner.
                                             </Trans>
                                         </Typography>
                                         <DocumentationLink
@@ -701,7 +704,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                                 }
                                             >
                                                 The introspection responses for application access tokens no longer
-                                                return the <code>username</code> attribute.
+                                                return the <Code withBackground>username</Code> attribute.
                                             </Trans>
                                         </Typography>
                                         <DocumentationLink
@@ -742,8 +745,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                                     + ".version200.addAllRequestedClaimsInJWTAccessToken.instruction")
                                                 }
                                             >
-                                                Irrespective of the <code>scopes</code> requested, all the <code>
-                                                requested attributes</code> will be included in the JWT Access Token.
+                                                Irrespective of the <Code withBackground>scopes</Code> requested,
+                                                all the <Code withBackground> requested attributes</Code> will
+                                                be included in the JWT Access Token.
                                             </Trans>
                                         </Typography>
                                         <DocumentationLink
