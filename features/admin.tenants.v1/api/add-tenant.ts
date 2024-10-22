@@ -45,6 +45,7 @@ const addTenant = (payload: AddTenantRequestPayload): Promise<AxiosResponse> => 
     const requestConfig: RequestConfigInterface = {
         data: payload,
         headers: {
+            Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,

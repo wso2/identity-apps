@@ -43,6 +43,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpReque
 const deleteTenantMetadata = (id: string): Promise<AxiosResponse> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
+            Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,

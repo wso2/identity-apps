@@ -46,6 +46,7 @@ const updateTenantActivationStatus = (id: string, lifecycleStatus: TenantLifecyc
     const requestConfig: RequestConfigInterface = {
         data: lifecycleStatus,
         headers: {
+            Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
