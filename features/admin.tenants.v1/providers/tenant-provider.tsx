@@ -95,7 +95,7 @@ const TenantProvider = ({
     });
 
     useEffect(() => {
-        if (tenantList && tenantList.tenants.length > 0) {
+        if (tenantList && tenantList?.tenants?.length > 0) {
             setIsInitialRenderingComplete(true);
         }
     }, [ tenantList ]);
