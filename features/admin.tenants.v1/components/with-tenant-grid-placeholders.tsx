@@ -159,7 +159,7 @@ const WithTenantGridPlaceholders: FunctionComponent<WithTenantGridPlaceholdersPr
 
     return (
         <>
-            { !isTenantListLoading && (
+            { !isTenantListLoading && tenantList?.tenants?.length > 0 && (
                 <Typography align="right" className="tenants-grid-display-count" variant="body2">
                     { t("tenants:listing.count", {
                         results: tenantList?.tenants?.length,
