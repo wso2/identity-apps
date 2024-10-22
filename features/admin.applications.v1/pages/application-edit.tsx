@@ -636,7 +636,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 <Grid className="banner-grid">
                     <List dense>
                         {
-                            !ApplicationManagementUtils.isGivenAppVersionAllowed(
+                            !ApplicationManagementUtils.isAppVersionAllowed(
                                 application?.applicationVersion,
                                 ApplicationManagementConstants.APP_VERSION_1
                             ) &&
@@ -683,7 +683,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                             )
                         }
                         {
-                            !ApplicationManagementUtils.isGivenAppVersionAllowed(
+                            !ApplicationManagementUtils.isAppVersionAllowed(
                                 application?.applicationVersion,
                                 ApplicationManagementConstants.APP_VERSION_1
                             ) &&
@@ -727,7 +727,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                             )
                         }
                         {
-                            !ApplicationManagementUtils.isGivenAppVersionAllowed(
+                            !ApplicationManagementUtils.isAppVersionAllowed(
                                 application?.applicationVersion,
                                 ApplicationManagementConstants.APP_VERSION_2
                             ) && applicationInboundConfigs && (
