@@ -102,6 +102,8 @@
 <% } %>
 
 <%
+    final String MOBILE_CLAIM_REGEX = 
+        "^\\s*(?:\\+?(\\d{1,3}))?[\\-. (]*(\\d{2,3})[\\-. )]*(\\d{3})[\\-. ]*(\\d{4,6})(?: *x(\\d+))?\\s*$";
     boolean isPasswordRecoveryEmailConfirmation =
             Boolean.parseBoolean(request.getParameter("isPasswordRecoveryEmailConfirmation"));
     boolean isUsernameRecovery = Boolean.parseBoolean(request.getParameter("isUsernameRecovery"));
@@ -174,12 +176,10 @@
 
     if (isUsernameRecovery) {
         // Username recovery scenario.
-        String recoveryStage = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("recoveryStage"));
-        if(recoveryStage == "" || recoveryStage == null){
-            recoveryStage = request.getParameter("recoveryStage");
-        }
-
-
+        String recoveryStage = request.getAttribute("recoveryStage") != null 
+                                ? (String) request.getAttribute("recoveryStage") 
+                                : Encode.forJava(request.getParameter("recoveryStage"));
+        
         if (StringUtils.isBlank(tenantDomain)) {
             tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
         }
@@ -187,9 +187,8 @@
         if(UsernameRecoveryStage.INITIATE.equalsValue(recoveryStage)){
             
             // Separate the contact to mobile or email.
-            String contact = request.getParameter("contact");
-            String mobileClaimRegex = "^\\s*(?:\\+?(\\d{1,3}))?[\\-. (]*(\\d{2,3})[\\-. )]*(\\d{3})[\\-. ]*(\\d{4,6})(?: *x(\\d+))?\\s*$";
-            if(contact.matches(mobileClaimRegex)){
+            String contact = Encode.forJava(request.getParameter("contact"));
+            if(contact.matches(MOBILE_CLAIM_REGEX)){
                 request.setAttribute(IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM, contact);
             } else {
                 request.setAttribute(IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM, contact);
@@ -215,15 +214,12 @@
             List<UserClaim> claimDTOList = new ArrayList<UserClaim>();
 
             for (Claim claimDTO : claims) {
-                // Check if the claim is present in the request parameters
-                String claimValue = request.getParameter(claimDTO.getUri());
 
-                // If the parameter is not present or blank, check the attributes
-                if (StringUtils.isBlank(claimValue)) {
-                    Object attributeValue = request.getAttribute(claimDTO.getUri());
-                    if (attributeValue != null) {
-                        claimValue = attributeValue.toString().trim();
-                    }
+                // Check if the claim is present in the request attributes
+                String claimValue = (String) request.getAttribute(claimDTO.getUri());
+
+                if (claimValue == null && request.getParameter(claimDTO.getUri()) != null) {
+                    claimValue = Encode.forJava(request.getParameter(claimDTO.getUri()).toString().trim());
                 }
 
                 // If the claim value is now present (either from parameters or attributes), process it
@@ -239,7 +235,7 @@
             try {
                 Map<String, String> requestHeaders = new HashedMap();
                 if (request.getParameter("g-recaptcha-response") != null) {
-                    requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
+                    requestHeaders.put("g-recaptcha-response", Encode.forJava(request.getParameter("g-recaptcha-response")));
                 }
 
                 request.setAttribute("callback", callback);
@@ -283,13 +279,13 @@
             }
         } else if (UsernameRecoveryStage.NOTIFY.equalsValue(recoveryStage)) {
             RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
-            String recoveryCode = request.getParameter("recoveryCode") != null 
-                                ? request.getParameter("recoveryCode") 
-                                : IdentityManagementEndpointUtil.getStringValue(request.getAttribute("recoveryCode"));
+            String recoveryCode = request.getAttribute("recoveryCode") != null 
+                                ? (String) request.getAttribute("recoveryCode") 
+                                : Encode.forJava(request.getParameter("recoveryCode")); 
 
-            String usernameRecoveryOption = request.getParameter("usernameRecoveryOption") != null 
-                        ? request.getParameter("usernameRecoveryOption") 
-                        : IdentityManagementEndpointUtil.getStringValue(request.getAttribute("usernameRecoveryOption"));
+            String usernameRecoveryOption = request.getAttribute("usernameRecoveryOption") != null 
+                        ? (String) request.getAttribute("usernameRecoveryOption") 
+                        : Encode.forJava(request.getParameter("usernameRecoveryOption"));
 
             String isUserFoundParam = request.getParameter("isUserFound");
             Boolean isUserFound = (isUserFoundParam != null) 
@@ -316,7 +312,7 @@
 
                 Map<String, String> requestHeaders = new HashedMap();
                 if (request.getParameter("g-recaptcha-response") != null) {
-                    requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
+                    requestHeaders.put("g-recaptcha-response", Encode.forJava(request.getParameter("g-recaptcha-response")));
                 }
 
                 try{
