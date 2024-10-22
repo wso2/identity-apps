@@ -814,7 +814,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                 i18nKey={ t("applications:edit.sections.attributes."
                                                         + "selection.note") }
                                             >
-                                                Please note that the user attributes added from this section 
+                                                Please note that the user attributes added from this section
                                                 will only be included in the ID token.
                                             </Trans>
                                         ) }

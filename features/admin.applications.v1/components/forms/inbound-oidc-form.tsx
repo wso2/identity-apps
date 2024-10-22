@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
