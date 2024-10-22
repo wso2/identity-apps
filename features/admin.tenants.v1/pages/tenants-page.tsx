@@ -32,6 +32,7 @@ import { useSelector } from "react-redux";
 import AddTenantModal from "../components/add-tenant/add-tenant-modal";
 import TenantGrid from "../components/tenant-grid";
 import useTenants from "../hooks/use-tenants";
+import TenantProvider from "../providers/tenant-provider";
 import "./tenants-page.scss";
 
 /**
@@ -69,54 +70,58 @@ const TenantsPage: FunctionComponent<TenantsPageProps> = ({
     const [ addTenantModalOpen, setAddTenantModalOpen ] = useState<boolean>(false);
 
     return (
-        <PageLayout
-            pageTitle={ "Root Organizations" }
-            title={ t("tenants:title") }
-            description={
-                (<>
-                    { t("tenants:subtitle") }
-                    <DocumentationLink link={ getLink("develop.multiTenancy.learnMore") } showEmptyLink={ false }>
-                        { t("common:learnMore") }
-                    </DocumentationLink>
-                </>)
-            }
-            data-componentid={ `${componentId}-layout` }
-            action={
-                (<div className="tenants-page-actions">
-                    { tenantList?.totalResults > 1 && (
-                        <>
-                            <Show when={ adminAdvisory?.scopes?.read || remoteLogPublishing?.scopes?.read }>
-                                <Tooltip title={ t("tenants:actions.systemSettings.tooltip") }>
-                                    <IconButton
+        <TenantProvider>
+            <PageLayout
+                pageTitle={ "Root Organizations" }
+                title={ t("tenants:title") }
+                description={
+                    (<>
+                        { t("tenants:subtitle") }
+                        <DocumentationLink link={ getLink("develop.multiTenancy.learnMore") } showEmptyLink={ false }>
+                            { t("common:learnMore") }
+                        </DocumentationLink>
+                    </>)
+                }
+                data-componentid={ `${componentId}-layout` }
+                action={
+                    (<div className="tenants-page-actions">
+                        { tenantList?.totalResults > 1 && (
+                            <>
+                                <Show when={ adminAdvisory?.scopes?.read || remoteLogPublishing?.scopes?.read }>
+                                    <Tooltip title={ t("tenants:actions.systemSettings.tooltip") }>
+                                        <IconButton
+                                            variant="contained"
+                                            aria-label="system-settings-button"
+                                            data-componentid="system-settings-button"
+                                            size="large"
+                                            onClick={ (): void => {
+                                                history.push(AppConstants.getPaths().get("SYSTEM_SETTINGS"))
+                                            } }
+                                        >
+                                            <GearIcon size={ 16 } />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Show>
+                                <Show when={ tenantFeatureConfig?.scopes?.create }>
+                                    <Button
+                                        data-componentid="tenant-create-button"
                                         variant="contained"
-                                        aria-label="system-settings-button"
-                                        data-componentid="system-settings-button"
-                                        size="large"
-                                        onClick={ () => history.push(AppConstants.getPaths().get("SYSTEM_SETTINGS")) }
+                                        startIcon={ <PlusIcon /> }
+                                        onClick={ () => setAddTenantModalOpen(true) }
                                     >
-                                        <GearIcon size={ 16 } />
-                                    </IconButton>
-                                </Tooltip>
-                            </Show>
-                            <Show when={ tenantFeatureConfig?.scopes?.create }>
-                                <Button
-                                    data-componentid="tenant-create-button"
-                                    variant="contained"
-                                    startIcon={ <PlusIcon /> }
-                                    onClick={ () => setAddTenantModalOpen(true) }
-                                >
-                                    { t("tenants:actions.newTenant.title") }
-                                </Button>
-                            </Show>
-                        </>
-                    ) }
-                </div>)
-            }
-            className="tenants-page"
-        >
-            <TenantGrid onAddTenantModalTrigger={ () => setAddTenantModalOpen(true) } />
-            <AddTenantModal open={ addTenantModalOpen } onClose={ () => setAddTenantModalOpen(false) } />
-        </PageLayout>
+                                        { t("tenants:actions.newTenant.title") }
+                                    </Button>
+                                </Show>
+                            </>
+                        ) }
+                    </div>)
+                }
+                className="tenants-page"
+            >
+                <TenantGrid onAddTenantModalTrigger={ () => setAddTenantModalOpen(true) } />
+                <AddTenantModal open={ addTenantModalOpen } onClose={ () => setAddTenantModalOpen(false) } />
+            </PageLayout>
+        </TenantProvider>
     );
 };
 
