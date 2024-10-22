@@ -23,7 +23,6 @@ import Select, { SelectProps } from "@oxygen-ui/react/Select";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, ReactNode } from "react";
 import { FieldRenderProps } from "react-final-form";
-import "./text-field-adapter.scss";
 
 /**
  * Interface for the DropDownItem.
