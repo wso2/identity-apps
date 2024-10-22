@@ -19,28 +19,23 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Battery60Icon from "@mui/icons-material/Battery60";
 import WifiIcon from "@mui/icons-material/Wifi";
+import Grid from "@oxygen-ui/react/Grid";
 import Typography from "@oxygen-ui/react/Typography";
 import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants";
 import { BrandingPreferenceUtils } from "@wso2is/admin.branding.v1/utils";
 import { AppState } from "@wso2is/admin.core.v1";
 import { BrandingPreferenceThemeInterface } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, {
-    FunctionComponent,
-    ReactElement,
-    useEffect,
-    useState
-} from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Grid } from "semantic-ui-react";
-import { SmsTemplate } from "../models/sms-templates";
+import { SMSTemplate } from "../models/sms-templates";
 import "./sms-template-preview.scss";
 
-interface SmsTemplatePreviewInterface extends IdentifiableComponentInterface {
+interface SMSTemplatePreviewInterface extends IdentifiableComponentInterface {
     /**
      * Selected SMS template
      */
-    smsTemplate: SmsTemplate;
+    smsTemplate: SMSTemplate;
 }
 
 /**
@@ -50,19 +45,14 @@ interface SmsTemplatePreviewInterface extends IdentifiableComponentInterface {
  *
  * @returns Preview component of SMS Customization.
  */
-export const SmsTemplatePreview: FunctionComponent<SmsTemplatePreviewInterface> = (
-    props: SmsTemplatePreviewInterface
+export const SMSTemplatePreview: FunctionComponent<SMSTemplatePreviewInterface> = (
+    props: SMSTemplatePreviewInterface
 ): ReactElement => {
+    const { smsTemplate, ["data-componentid"]: componentId = "sms-customization-preview" } = props;
 
-    const {
-        smsTemplate,
-        ["data-componentid"]: componentId = "sms-customization-preview"
-    } = props;
-
-    const [
-        predefinedThemes,
-        setPredefinedThemes
-    ] = useState<BrandingPreferenceThemeInterface>(BrandingPreferencesConstants.DEFAULT_PREFERENCE.theme);
+    const [ predefinedThemes, setPredefinedThemes ] = useState<BrandingPreferenceThemeInterface>(
+        BrandingPreferencesConstants.DEFAULT_PREFERENCE.theme
+    );
 
     const theme: string = useSelector((state: AppState) => state.config.ui.theme?.name);
 
@@ -74,57 +64,45 @@ export const SmsTemplatePreview: FunctionComponent<SmsTemplatePreviewInterface> 
             return;
         }
 
-        BrandingPreferenceUtils.getPredefinedThemePreferences(theme)
-            .then((response: BrandingPreferenceThemeInterface) => {
+        BrandingPreferenceUtils.getPredefinedThemePreferences(theme).then(
+            (response: BrandingPreferenceThemeInterface) => {
                 setPredefinedThemes({
                     ...predefinedThemes,
                     ...response
                 });
-            });
+            }
+        );
     }, [ theme ]);
 
     return (
-        <div
-            className="sms-template-preview sms-template-mobile"
-            data-componentid={ componentId }
-        >
-            <div className="sms-template-mobile-display">
-                <Grid className="sms-template-mobile-display-status-bar">
-                    <Grid.Row>
-                        <Grid.Column
-                            mobile={ 5 }
-                            computer={ 5 }
-                        >
-                            10:10
-                        </Grid.Column>
-                        <Grid.Column
-                            mobile={ 6 }
-                            computer={ 6 }
-                            textAlign="center"
-                        >
-                            <div className="sms-template-mobile-island"/>
-                        </Grid.Column>
-                        <Grid.Column
-                            mobile={ 5 }
-                            computer={ 5 }
-                        >
-                            <WifiIcon fontSize={ "small" }/>
-                            <Battery60Icon fontSize={ "small" }/>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-                <div
-                    data-componentid={ `${ componentId }-iframe-body-div` }
-                    className="sms-template-mobile-message"
-                >
-                    <Typography variant="h6" align="center">Messages</Typography>
-                    <div className="sms-template-mobile-message-line">
-                        <AccountCircleIcon/>
-                        <div className="sms-template-mobile-message-bubble">
-                            <Typography variant="body2" className="preserve-newlines">{ smsTemplate?.body }</Typography>
+        <div data-componentid={ componentId } className="sms-template-preview">
+            <div className="sms-template-mobile">
+                <div className="sms-template-mobile-display">
+                    <Grid container columns={ 16 } className="sms-template-mobile-display-status-bar">
+                        <Grid xs={ 5 }>
+                                10:10
+                        </Grid>
+                        <Grid xs={ 6 } textAlign="center">
+                            <div className="sms-template-mobile-island" />
+                        </Grid>
+                        <Grid xs={ 5 } >
+                            <WifiIcon fontSize={ "small" } />
+                            <Battery60Icon fontSize={ "small" } />
+                        </Grid>
+                    </Grid>
+                    <div data-componentid={ `${componentId}-iframe-body-div` } className="sms-template-mobile-message">
+                        <Typography variant="h6" align="center">
+                            Messages
+                        </Typography>
+                        <div className="sms-template-mobile-message-line">
+                            <AccountCircleIcon />
+                            <div className="sms-template-mobile-message-bubble">
+                                <Typography variant="body2" className="preserve-newlines">
+                                    { smsTemplate?.body }
+                                </Typography>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

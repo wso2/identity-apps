@@ -16,15 +16,15 @@
  * under the License.
  */
 
+import Grid from "@oxygen-ui/react/Grid/Grid";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/form";
-import { ContentLoader, DocumentationLink, Message, useDocumentation } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form/src";
+import { ContentLoader, DocumentationLink, Hint, Message, useDocumentation } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid } from "semantic-ui-react";
-import { SmsTemplate } from "../models/sms-templates";
+import { SMSTemplate } from "../models/sms-templates";
 
-interface SmsCustomizationFormPropsInterface extends IdentifiableComponentInterface {
+interface SMSCustomizationFormPropsInterface extends IdentifiableComponentInterface {
     /**
      * Is SMS templates list loading.
      */
@@ -33,7 +33,7 @@ interface SmsCustomizationFormPropsInterface extends IdentifiableComponentInterf
     /**
      * Selected SMS template
      */
-    selectedSmsTemplate: SmsTemplate;
+    selectedSmsTemplate: SMSTemplate;
 
     /**
      * Selected locale
@@ -44,7 +44,7 @@ interface SmsCustomizationFormPropsInterface extends IdentifiableComponentInterf
      * Callback to be called when the template is changed.
      * @param template - SMS template
      */
-    onTemplateChanged: (updatedTemplateAttributes: Partial<SmsTemplate>) => void;
+    onTemplateChanged: (updatedTemplateAttributes: Partial<SMSTemplate>) => void;
 
     /**
      * Callback to be called when the form is submitted.
@@ -71,8 +71,8 @@ const FORM_ID: string = "sms-customization-content-form";
  *
  * @returns SMS template customization form.
  */
-export const SmsCustomizationForm: FunctionComponent<SmsCustomizationFormPropsInterface> = (
-    props: SmsCustomizationFormPropsInterface
+export const SMSCustomizationForm: FunctionComponent<SMSCustomizationFormPropsInterface> = (
+    props: SMSCustomizationFormPropsInterface
 ): ReactElement => {
     const {
         isSmsTemplatesListLoading,
@@ -86,17 +86,39 @@ export const SmsCustomizationForm: FunctionComponent<SmsCustomizationFormPropsIn
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    /**
-     * Following `key` state and the use of the useEffect are temporary
-     * fixes for the issue of the input not re-rendering when the props change.
-     * The ideal solution is to use Final Form directly without employing
-     * the Final Form wrapper component.
-     */
-    const [ key, setKey ] = useState<number>(0);
+    const onTextUpdate = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        const value: string = event.target.value;
 
-    useEffect(() => {
-        setKey((key + 1) % 100);
-    }, [ selectedSmsTemplate ]);
+        onTemplateChanged({
+            body: value
+        });
+    };
+
+    const renderFormFields = (): ReactElement => {
+        return (
+            <FinalFormField
+                key="smsBody"
+                width={ 16 }
+                FormControlProps={ {
+                    margin: "dense"
+                } }
+                ariaLabel="SMS Body Input"
+                required={ true }
+                data-componentid={ `${componentId}-sms-body` }
+                name="smsBody"
+                type="text"
+                label={ t("smsTemplates:form.inputs.body.label") }
+                placeholder={ t("smsTemplates:form.inputs.body.placeholder") }
+                value={ selectedSmsTemplate?.body }
+                defaultValue={ selectedSmsTemplate?.body }
+                component={ TextFieldAdapter }
+                onChange={ onTextUpdate }
+                readOnly={ readOnly }
+                multiline={ true }
+                minRows={ 4 }
+            />
+        );
+    };
 
     if (isSmsTemplatesListLoading) {
         return <ContentLoader />;
@@ -104,62 +126,35 @@ export const SmsCustomizationForm: FunctionComponent<SmsCustomizationFormPropsIn
 
     return (
         <>
-            <Form id={ FORM_ID } uncontrolledForm={ true } onSubmit={ onSubmit } data-componentid={ componentId }>
-                <Grid>
-                    <Grid.Row>
-                        <Grid.Column mobile={ 16 } computer={ 12 }>
-                            <Message
-                                type="info"
-                                content={
-                                    (<>
-                                        { t("smsTemplates:form.inputs.body.hint") }
-                                        <DocumentationLink
-                                            link={ getLink("develop.smsCustomization.form.smsBody.learnMore") }
-                                        >
-                                            { t("smsTemplates:common.learnMore") }
-                                        </DocumentationLink>
-                                    </>)
-                                }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column mobile={ 16 } computer={ 12 }>
-                            <Field.Textarea
-                                ariaLabel="SMS Body Input"
-                                inputType="description"
-                                name="smsBody"
-                                label={ t("smsTemplates:form.inputs.body.label") }
-                                placeholder={ t("smsTemplates:form.inputs" + ".body.placeholder") }
-                                required={ true }
-                                value={ selectedSmsTemplate?.body }
-                                minLength={ 1 }
-                                maxLength={ 1024 }
-                                onKeyPress={ null }
-                                data-componentid={ `${componentId}-sms-body` }
-                                listen={ (value: string) => {
-                                    onTemplateChanged({
-                                        body: value
-                                    });
-                                } }
-                                readOnly={ readOnly }
-                                key={ key }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-
-                    <Grid.Row>
-                        <Grid.Column mobile={ 16 } computer={ 12 }>
-                            <Message
-                                type="warning"
-                                content={
-                                    <>{ t("smsTemplates:form.inputs.body.charLengthWarning") }</>
-                                }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
+            <Grid container>
+                <Grid xs={ 12 } lg={ 11 } xl={ 10 }>
+                    <Message
+                        type="info"
+                        content={
+                            (<>
+                                { t("smsTemplates:form.inputs.body.hint") }
+                                <DocumentationLink
+                                    link={ getLink("develop.smsCustomization.form.smsBody.learnMore") }
+                                >
+                                    { t("smsTemplates:common.learnMore") }
+                                </DocumentationLink>
+                            </>)
+                        }
+                    />
                 </Grid>
-            </Form>
+                <Grid xs={ 12 } lg={ 11 } xl={ 10 }>
+                    <FinalForm
+                        onSubmit={ onSubmit }
+                        initialValues={ { smsBody: selectedSmsTemplate?.body } }
+                        render={ ({ handleSubmit }: FormRenderProps) => (
+                            <form onSubmit={ handleSubmit } id={ FORM_ID } data-componentid={ componentId }>
+                                { renderFormFields() }
+                            </form>
+                        ) }
+                    ></FinalForm>
+                    <Hint>{ t("smsTemplates:form.inputs.body.charLengthWarning") }</Hint>
+                </Grid>
+            </Grid>
         </>
     );
 };

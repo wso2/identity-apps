@@ -21,7 +21,7 @@ import { store } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { SmsTemplate } from "../models/sms-templates";
+import { SMSTemplate } from "../models/sms-templates";
 
 /**
  * Get an axios instance.
@@ -38,7 +38,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  *
  * @returns Created SMS Template.
  */
-const createSmsTemplate = (templateType: string, smsTemplate: SmsTemplate): Promise<SmsTemplate> => {
+const createSmsTemplate = (templateType: string, smsTemplate: SMSTemplate): Promise<SMSTemplate> => {
     const requestConfig: AxiosRequestConfig = {
         data: {
             body: smsTemplate.body,
@@ -65,7 +65,7 @@ const createSmsTemplate = (templateType: string, smsTemplate: SmsTemplate): Prom
                 );
             }
 
-            return Promise.resolve(response.data as SmsTemplate);
+            return Promise.resolve(response.data as SMSTemplate);
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(

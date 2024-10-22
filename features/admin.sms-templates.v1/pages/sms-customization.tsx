@@ -39,14 +39,19 @@ import deleteSmsTemplate from "../api/delete-sms-template";
 import updateSmsTemplate from "../api/update-sms-template";
 import useGetSmsTemplate from "../api/use-get-sms-template";
 import useGetSmsTemplatesList from "../api/use-get-sms-templates-list";
-import SmsCustomizationFooter from "../components/sms-customization-footer";
-import { SmsCustomizationForm } from "../components/sms-customization-form";
-import SmsCustomizationHeader from "../components/sms-customization-header";
-import { SmsTemplatePreview } from "../components/sms-template-preview";
-import { SmsTemplate, SmsTemplateType } from "../models/sms-templates";
+import SMSCustomizationFooter from "../components/sms-customization-footer";
+import { SMSCustomizationForm } from "../components/sms-customization-form";
+import SMSCustomizationHeader from "../components/sms-customization-header";
+import { SMSTemplatePreview } from "../components/sms-template-preview";
+import { SMSTemplate, SMSTemplateType } from "../models/sms-templates";
 import "./sms-customization.scss";
+import { SelectChangeEvent } from "@mui/material";
+import Card from "@oxygen-ui/react/Card";
+import Grid from "@oxygen-ui/react/Grid";
+import Paper from "@oxygen-ui/react/Paper";
+import Typography from "@oxygen-ui/react/Typography";
 
-type SmsCustomizationPageInterface = IdentifiableComponentInterface;
+type SMSCustomizationPageInterface = IdentifiableComponentInterface;
 
 /**
  * SMS customization page.
@@ -55,20 +60,20 @@ type SmsCustomizationPageInterface = IdentifiableComponentInterface;
  *
  * @returns Main Page for SMS Customization.
  */
-const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
-    props: SmsCustomizationPageInterface
+const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
+    props: SMSCustomizationPageInterface
 ): ReactElement => {
     const { ["data-componentid"]: componentId = "sms-customization-page" } = props;
 
-    const [ availableSmsTemplatesList, setAvailableSmsTemplatesList ] = useState<SmsTemplateType[]>([]);
-    const [ currentSmsTemplate, setCurrentSmsTemplate ] = useState<SmsTemplate>();
+    const [ availableSmsTemplatesList, setAvailableSmsTemplatesList ] = useState<SMSTemplateType[]>([]);
+    const [ currentSmsTemplate, setCurrentSmsTemplate ] = useState<SMSTemplate>();
     const [ isSystemTemplate, setIsSystemTemplate ] = useState(false);
     const [ shouldFetch, setShouldFetch ] = useState(true);
     const [ isTemplateNotAvailable, setIsTemplateNotAvailable ] = useState(false);
     const [ selectedLocale, setSelectedLocale ] = useState(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
     const [ selectedSmsTemplateId, setSelectedSmsTemplateId ] = useState<string>();
     const [ selectedSmsTemplateDescription, setSelectedSmsTemplateDescription ] = useState<string>();
-    const [ selectedSmsTemplate, setSelectedSmsTemplate ] = useState<SmsTemplate>();
+    const [ selectedSmsTemplate, setSelectedSmsTemplate ] = useState<SMSTemplate>();
     const [ error, setError ] = useState<AxiosError>();
 
     const smsTemplates: Record<string, string>[] = useSelector(
@@ -97,11 +102,12 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
         error: smsTemplatesListError
     } = useGetSmsTemplatesList();
 
-    const {
-        data: smsTemplate,
-        isLoading: isSmsTemplateLoading,
-        error: smsTemplateError
-    } = useGetSmsTemplate(selectedSmsTemplateId, selectedLocale, isSystemTemplate, shouldFetch);
+    const { data: smsTemplate, isLoading: isSmsTemplateLoading, error: smsTemplateError } = useGetSmsTemplate(
+        selectedSmsTemplateId,
+        selectedLocale,
+        isSystemTemplate,
+        shouldFetch
+    );
 
     useEffect(() => {
         // we don't have a good displayName and description coming from the backend
@@ -109,13 +115,13 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
         // description from the SMS template types config defined in
         // the deployment.toml file. The below code will map the SMS template
         // types with the config's displayName and description.
-        const availableSmsTemplates: SmsTemplateType[] = smsTemplatesList
+        const availableSmsTemplates: SMSTemplateType[] = smsTemplatesList
             ? (!enableCustomSmsTemplates
-                ? smsTemplatesList.filter((template: SmsTemplateType) =>
+                ? smsTemplatesList.filter((template: SMSTemplateType) =>
                     smsTemplates?.find((smsTemplate: Record<string, string>) => smsTemplate.id === template.id)
                 )
                 : smsTemplatesList
-            ).map((template: SmsTemplateType) => {
+            ).map((template: SMSTemplateType) => {
                 const mappedTemplate: Record<string, string> = smsTemplates?.find(
                     (smsTemplate: Record<string, string>) => smsTemplate.id === template.id
                 );
@@ -200,12 +206,14 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
 
             setSelectedSmsTemplateId(templateId);
             setSelectedSmsTemplateDescription(
-                availableSmsTemplatesList?.find((template: SmsTemplateType) => template.id === templateId)?.description
+                availableSmsTemplatesList?.find((template: SMSTemplateType) => template.id === templateId)?.description
             );
         }
     }, [ window.location.hash ]);
 
-    const handleTemplateIdChange = (templateId: string): void => {
+    const handleTemplateIdChange = (event: SelectChangeEvent<string>): void => {
+        const templateId: string = event.target.value;
+
         setShouldFetch(false);
         setIsTemplateNotAvailable(false);
         setIsSystemTemplate(false);
@@ -213,17 +221,19 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
         setSelectedLocale(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
         setSelectedSmsTemplateId(templateId);
         setSelectedSmsTemplateDescription(
-            availableSmsTemplatesList?.find((template: SmsTemplateType) => template.id === templateId)?.description
+            availableSmsTemplatesList?.find((template: SMSTemplateType) => template.id === templateId)?.description
         );
         setShouldFetch(true);
     };
 
-    const handleTemplateChange = (updatedTemplateAttributes: Partial<SmsTemplate>): void => {
+    const handleTemplateChange = (updatedTemplateAttributes: Partial<SMSTemplate>): void => {
         setSelectedSmsTemplate({ ...selectedSmsTemplate, ...updatedTemplateAttributes });
         setIsTemplateNotAvailable(false);
     };
 
-    const handleLocaleChange = (locale: string): void => {
+    const handleLocaleChange = (event: SelectChangeEvent<string>): void => {
+        const locale: string = event.target.value;
+
         setShouldFetch(false);
         setCurrentSmsTemplate({ ...selectedSmsTemplate });
         setIsTemplateNotAvailable(true);
@@ -234,14 +244,14 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
 
     const handleSubmit = (): void => {
         setShouldFetch(false);
-        const template: SmsTemplate = {
+        const template: SMSTemplate = {
             ...selectedSmsTemplate,
             id: selectedLocale.replace("-", "_")
         };
 
         if (isSystemTemplate) {
             createSmsTemplate(selectedSmsTemplateId, template)
-                .then((_response: SmsTemplate) => {
+                .then((_response: SMSTemplate) => {
                     dispatch(
                         addAlert<AlertInterface>({
                             description: t("smsTemplates:notifications.updateSmsTemplate" + ".success.description"),
@@ -263,7 +273,7 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
                 });
         } else {
             updateSmsTemplate(selectedSmsTemplateId, template, selectedLocale)
-                .then((_response: SmsTemplate) => {
+                .then((_response: SMSTemplate) => {
                     dispatch(
                         addAlert<AlertInterface>({
                             description: t("smsTemplates:notifications.updateSmsTemplate" + ".success.description"),
@@ -333,7 +343,7 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
                 bottomMargin={ false }
                 data-componentid={ componentId }
             >
-                <SmsCustomizationHeader
+                <SMSCustomizationHeader
                     selectedSmsTemplateId={ selectedSmsTemplateId }
                     selectedSmsTemplateDescription={ selectedSmsTemplateDescription }
                     selectedLocale={ selectedLocale }
@@ -342,44 +352,55 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
                     onLocaleChanged={ handleLocaleChange }
                 />
 
-                <Segment.Group>
-                    <Segment.Group horizontal>
-                        <Segment className="sms-template-segment-content-header">
-                            { t("smsTemplates:tabs.content.label") }
-                        </Segment>
-                        <Segment>{ t("smsTemplates:tabs.preview.label") }</Segment>
-                    </Segment.Group>
+                <Card className="p-0">
+                    <Grid container>
+                        <Grid xs={ 8 } className="right-border bottom-border">
+                            <Typography
+                                sx={ {
+                                    padding: 2
+                                } }
+                            >
+                                { t("smsTemplates:tabs.content.label") }
+                            </Typography>
+                        </Grid>
+                        <Grid xs={ 4 } className="bottom-border">
+                            <Typography
+                                sx={ {
+                                    padding: 2
+                                } }
+                            >
+                                { t("smsTemplates:tabs.preview.label") }
+                            </Typography>
+                        </Grid>
 
-                    <Segment.Group horizontal>
-                        <Segment className="sms-template-segment-content">
-                            <SmsCustomizationForm
+                        <Grid xs={ 8 } padding={ 2 } className="right-border bottom-border">
+                            <SMSCustomizationForm
                                 isSmsTemplatesListLoading={ isSmsTemplatesListLoading || isSmsTemplateLoading }
                                 selectedSmsTemplate={ currentSmsTemplate }
                                 selectedLocale={ selectedLocale }
-                                onTemplateChanged={ (updatedTemplateAttributes: Partial<SmsTemplate>) =>
+                                onTemplateChanged={ (updatedTemplateAttributes: Partial<SMSTemplate>) =>
                                     handleTemplateChange(updatedTemplateAttributes)
                                 }
                                 onSubmit={ handleSubmit }
                                 onDeleteRequested={ handleDeleteRequest }
                                 readOnly={ isReadOnly || (isTemplateNotAvailable && !hasSmsTemplateCreatePermissions) }
                             />
-                        </Segment>
-                        <Segment className="sms-template-segment-preview">
-                            <SmsTemplatePreview smsTemplate={ selectedSmsTemplate || currentSmsTemplate } />
-                        </Segment>
-                    </Segment.Group>
-
-                    <Segment padded={ true }>
-                        <Show when={ featureConfig?.smsTemplates?.scopes?.update }>
-                            { (!isTemplateNotAvailable || hasSmsTemplateCreatePermissions) && (
-                                <SmsCustomizationFooter
-                                    isSaveButtonLoading={ isSmsTemplatesListLoading || isSmsTemplateLoading }
-                                    onSaveButtonClick={ handleSubmit }
-                                />
-                            ) }
-                        </Show>
-                    </Segment>
-                </Segment.Group>
+                        </Grid>
+                        <Grid xs={ 4 } padding={ 2 } display={ "flex" } paddingBottom={ 0 } className="bottom-border">
+                            <SMSTemplatePreview smsTemplate={ selectedSmsTemplate || currentSmsTemplate } />
+                        </Grid>
+                        <Grid xs={ 12 } padding={ 2 }>
+                            <Show when={ featureConfig?.smsTemplates?.scopes?.update }>
+                                { (!isTemplateNotAvailable || hasSmsTemplateCreatePermissions) && (
+                                    <SMSCustomizationFooter
+                                        isSaveButtonLoading={ isSmsTemplatesListLoading || isSmsTemplateLoading }
+                                        onSaveButtonClick={ handleSubmit }
+                                    />
+                                ) }
+                            </Show>
+                        </Grid>
+                    </Grid>
+                </Card>
 
                 <Divider hidden />
 
@@ -415,4 +436,4 @@ const SmsCustomizationPage: FunctionComponent<SmsCustomizationPageInterface> = (
     );
 };
 
-export default SmsCustomizationPage;
+export default SMSCustomizationPage;

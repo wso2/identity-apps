@@ -21,7 +21,7 @@ import { I18nConstants, store } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { SmsTemplate } from "../models/sms-templates";
+import { SMSTemplate } from "../models/sms-templates";
 
 /**
  * Get an axios instance.
@@ -37,9 +37,9 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  */
 const updateSmsTemplate = (
     templateType: string,
-    smsTemplate: Partial<SmsTemplate>,
+    smsTemplate: Partial<SMSTemplate>,
     locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
-): Promise<SmsTemplate> => {
+): Promise<SMSTemplate> => {
     const smsLocale: string = locale.replace("-", "_");
 
     const requestConfig: AxiosRequestConfig = {
@@ -69,7 +69,7 @@ const updateSmsTemplate = (
                 );
             }
 
-            return Promise.resolve(response.data as SmsTemplate);
+            return Promise.resolve(response.data as SMSTemplate);
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(

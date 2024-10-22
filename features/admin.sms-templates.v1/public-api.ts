@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export { default as SmsCustomizationPage } from "./pages/sms-customization";
+export { default as SMSCustomizationPage } from "./pages/sms-customization";

@@ -23,7 +23,7 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { HttpMethods } from "@wso2is/core/models";
-import { SmsTemplate } from "../models/sms-templates";
+import { SMSTemplate } from "../models/sms-templates";
 
 /**
  * Hook to get the SMS template for a given template type.
@@ -34,7 +34,7 @@ import { SmsTemplate } from "../models/sms-templates";
  *
  * @returns SMS template.
  */
-const useGetSmsTemplate = <Data = SmsTemplate, Error = RequestErrorInterface>(
+const useGetSmsTemplate = <Data = SMSTemplate, Error = RequestErrorInterface>(
     templateType: string,
     locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE,
     fetchSystemTemplate: boolean = false,

@@ -16,14 +16,14 @@
  * under the License.
  */
 
-export type SmsTemplateType = {
+export type SMSTemplateType = {
     id: string;
     displayName: string;
     self: string;
     description?: string;
 };
 
-export type SmsTemplate = {
+export type SMSTemplate = {
     id: string;
     body: string;
 };

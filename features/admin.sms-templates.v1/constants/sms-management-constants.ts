@@ -19,7 +19,7 @@
 /**
  * Class containing SMS Management constants.
  */
-export class SmsManagementConstants {
+export class SMSManagementConstants {
     /**
      * Private constructor to avoid object instantiation from outside the class.
      */

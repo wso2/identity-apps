@@ -56,6 +56,7 @@ const TextFieldAdapter: FunctionComponent<TextFieldAdapterPropsInterface> = (
         fullWidth = true,
         FormControlProps = {},
         helperText,
+        onChange,
         required,
         readOnly,
         endAdornment,

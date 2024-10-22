@@ -16,19 +16,21 @@
  * under the License.
  */
 
+import { SelectChangeEvent } from "@mui/material";
+import Card from "@oxygen-ui/react/Card";
 import { AppState } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { DropdownChild, Field, Form } from "@wso2is/form";
+import { DropdownChild, FinalForm, FinalFormField, SelectFieldAdapter } from "@wso2is/form";
+import { FormRenderProps } from "@wso2is/form/src";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
+import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Grid, Segment } from "semantic-ui-react";
-import { SmsTemplateType } from "../models/sms-templates";
+import { Grid } from "semantic-ui-react";
+import { SMSTemplateType } from "../models/sms-templates";
 
-const FORM_ID: string = "sms-customization-header-form";
-
-interface SmsCustomizationHeaderProps extends IdentifiableComponentInterface {
+interface SMSCustomizationHeaderProps extends IdentifiableComponentInterface {
     /**
      * Selected SMS template id.
      */
@@ -47,19 +49,19 @@ interface SmsCustomizationHeaderProps extends IdentifiableComponentInterface {
     /**
      * SMS templates list.
      */
-    smsTemplatesList: SmsTemplateType[];
+    smsTemplatesList: SMSTemplateType[];
 
     /**
      * Callback to be called when the template is changed.
-     * @param templateId - selected template id from the dropdown
+     * @param event - Event to extract the selected value.
      */
-    onTemplateSelected: (templateId: string) => void;
+    onTemplateSelected: (event: SelectChangeEvent<string>) => void;
 
     /**
-     * Callback to be called when the locale is change
-     * @param locale - selected locale for template
+     * Callback to be called when the locale is changed.
+     * @param event - Event to extract the selected value.
      */
-    onLocaleChanged: (locale: string) => void;
+    onLocaleChanged: (event: SelectChangeEvent<string>) => void;
 }
 
 /**
@@ -69,8 +71,8 @@ interface SmsCustomizationHeaderProps extends IdentifiableComponentInterface {
  *
  * @returns Header component for SMS Customization.
  */
-const SmsCustomizationHeader: FunctionComponent<SmsCustomizationHeaderProps> = (
-    props: SmsCustomizationHeaderProps
+const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
+    props: SMSCustomizationHeaderProps
 ): ReactElement => {
     const {
         selectedSmsTemplateId,
@@ -84,8 +86,7 @@ const SmsCustomizationHeader: FunctionComponent<SmsCustomizationHeaderProps> = (
 
     const { t } = useTranslation();
 
-    const [ localeList, setLocaleList ] =
-        useState<DropdownChild[]>(undefined);
+    const [ localeList, setLocaleList ] = useState<DropdownChild[]>(undefined);
 
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
@@ -99,8 +100,8 @@ const SmsCustomizationHeader: FunctionComponent<SmsCustomizationHeaderProps> = (
      *
      * @returns Array of dropdown options.
      */
-    const smsTemplateListOptions: { text: string, value: string }[] = useMemo(() => {
-        return smsTemplatesList?.map((template: SmsTemplateType) => {
+    const smsTemplateListOptions: { text: string; value: string }[] = useMemo(() => {
+        return smsTemplatesList?.map((template: SMSTemplateType) => {
             return {
                 text: template.displayName,
                 value: template.id
@@ -131,57 +132,74 @@ const SmsCustomizationHeader: FunctionComponent<SmsCustomizationHeaderProps> = (
         setLocaleList(localeList);
     }, [ supportedI18nLanguages ]);
 
-    return (
-        <Segment
-            className="mb-4 p-4"
-            data-componentid={ componentId }
-            padded={ "very" }
-        >
-            <Form
-                id={ FORM_ID }
-                uncontrolledForm={ true }
-                onSubmit={ () => { return; } }
-            >
-                <Grid>
-                    <Grid.Column
-                        mobile={ 16 }
-                        computer={ 8 }
-                    >
-                        <Field.Dropdown
-                            ariaLabel="SMS Template Dropdown"
-                            name="selectedSmsTemplate"
-                            label={ t("smsTemplates:form.inputs.template.label") }
-                            options={ smsTemplateListOptions }
-                            required={ true }
-                            data-componentid={ `${ componentId }-sms-template-list` }
-                            hint={ selectedSmsTemplateDescription ?? null }
-                            placeholder={ t("smsTemplates:form.inputs.template.placeholder") }
-                            value={ selectedSmsTemplateId }
-                            listen={ onTemplateSelected }
-                        />
-                    </Grid.Column>
+    const renderFormFields = (): ReactElement => {
+        return (
+            <Grid>
+                <Grid.Column mobile={ 16 } computer={ 8 }>
+                    <FinalFormField
+                        key="selectedSmsTemplate"
+                        width={ 16 }
+                        FormControlProps={ {
+                            margin: "dense"
+                        } }
+                        ariaLabel="SMS Template Dropdown"
+                        required={ true }
+                        data-componentid={ `${componentId}-sms-template-list` }
+                        name="selectedSmsTemplate"
+                        type={ "dropdown" }
+                        label={ t("smsTemplates:form.inputs.template.label") }
+                        placeholder={ t("smsTemplates:form.inputs.template.placeholder") }
+                        component={ SelectFieldAdapter }
+                        options={ smsTemplateListOptions }
+                        onChange={ onTemplateSelected }
+                        value={ selectedSmsTemplateId }
+                        defaultValue={ selectedSmsTemplateId }
+                    />
+                    <Hint>{ selectedSmsTemplateDescription ?? null }</Hint>
+                </Grid.Column>
+                <Grid.Column mobile={ 16 } computer={ 8 }>
+                    <FinalFormField
+                        key="selectedSmsTemplateLocale"
+                        width={ 16 }
+                        FormControlProps={ {
+                            margin: "dense"
+                        } }
+                        ariaLabel="SMS Template Locale Dropdown"
+                        required={ true }
+                        data-componentid={ `${componentId}-sms-template-locale` }
+                        name="selectedSmsTemplateLocale"
+                        type={ "dropdown" }
+                        label={ t("smsTemplates:form.inputs.locale.label") }
+                        placeholder={ t("smsTemplates:form.inputs.locale.placeholder") }
+                        value={ selectedLocale }
+                        defaultValue={ selectedLocale }
+                        component={ SelectFieldAdapter }
+                        options={ localeList }
+                        onChange={ onLocaleChanged }
+                    />
+                </Grid.Column>
+            </Grid>
+        );
+    };
 
-                    <Grid.Column
-                        mobile={ 16 }
-                        computer={ 8 }
-                    >
-                        <Field.Dropdown
-                            ariaLabel="SMS Template Locale Dropdown"
-                            name="selectedSmsTemplateLocale"
-                            label={ t("smsTemplates:form.inputs.locale.label") }
-                            options={ localeList }
-                            required={ true }
-                            data-componentid={ `${ componentId }-sms-template-locale` }
-                            placeholder={ t("smsTemplates:form.inputs.locale.placeholder") }
-                            defaultValue={ selectedLocale }
-                            value={ selectedLocale }
-                            listen={ onLocaleChanged }
-                        />
-                    </Grid.Column>
-                </Grid>
-            </Form>
-        </Segment>
+    return (
+        <Card className="mb-4 p-4 pb-2" data-componentid={ componentId } padded={ "very" }>
+            <Grid className="mt-2">
+                <Grid.Column mobile={ 16 } computer={ 10 }>
+                    <FinalForm
+                        onSubmit={ () => {} }
+                        initialValues={ {
+                            selectedSmsTemplate: selectedSmsTemplateId,
+                            selectedSmsTemplateLocale: selectedLocale
+                        } }
+                        render={ ({ handleSubmit }: FormRenderProps) => (
+                            <form onSubmit={ handleSubmit }>{ renderFormFields() }</form>
+                        ) }
+                    ></FinalForm>
+                </Grid.Column>
+            </Grid>
+        </Card>
     );
 };
 
-export default SmsCustomizationHeader;
+export default SMSCustomizationHeader;

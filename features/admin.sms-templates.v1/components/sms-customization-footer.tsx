@@ -16,13 +16,12 @@
  * under the License.
  */
 
+import Button from "@oxygen-ui/react/Button";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { ButtonProps } from "semantic-ui-react";
 
-interface SmsCustomizationFooterProps extends IdentifiableComponentInterface {
+interface SMSCustomizationFooterProps extends IdentifiableComponentInterface {
 
     /**
      * Is content loading? So Save button should also depict it's loading
@@ -34,7 +33,7 @@ interface SmsCustomizationFooterProps extends IdentifiableComponentInterface {
      * @param e - Button Click Event
      * @param data - Button Props
      */
-    onSaveButtonClick: (e: MouseEvent<HTMLButtonElement>, data: ButtonProps) => void;
+    onSaveButtonClick: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 /**
@@ -44,8 +43,8 @@ interface SmsCustomizationFooterProps extends IdentifiableComponentInterface {
  *
  * @returns Footer component for SMS Customization.
  */
-const SmsCustomizationFooter: FunctionComponent<SmsCustomizationFooterProps> = (
-    props: SmsCustomizationFooterProps
+const SMSCustomizationFooter: FunctionComponent<SMSCustomizationFooterProps> = (
+    props: SMSCustomizationFooterProps
 ): ReactElement => {
 
     const {
@@ -57,18 +56,18 @@ const SmsCustomizationFooter: FunctionComponent<SmsCustomizationFooterProps> = (
     const { t } = useTranslation();
 
     return (
-        <PrimaryButton
+        <Button
             size="small"
+            variant="contained"
             loading={ isSaveButtonLoading }
-            onClick={ (e: MouseEvent<HTMLButtonElement>, data: ButtonProps) => {
-                onSaveButtonClick(e, data);
+            onClick={ (e: MouseEvent<HTMLButtonElement>) => {
+                onSaveButtonClick(e);
             } }
-            ariaLabel="SMS Templates form save button"
             data-componentid={ `${componentId}-save-button` }
         >
             { t("common:save") }
-        </PrimaryButton>
+        </Button>
     );
 };
 
-export default SmsCustomizationFooter;
+export default SMSCustomizationFooter;
