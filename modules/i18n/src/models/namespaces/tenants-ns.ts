@@ -251,8 +251,10 @@ export interface TenantsNS {
         };
     };
     status: {
+        activate: string;
         activated: string;
-        notActivated: string;
+        deActivate: string;
+        deActivated: string;
     };
     subtitle: string;
     systemSettings: {

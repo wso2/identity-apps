@@ -255,8 +255,10 @@ export const tenants: TenantsNS = {
         }
     },
     status: {
+        activate: "Enable",
         activated: "Enabled",
-        notActivated: "Disabled"
+        deActivate: "Disable",
+        deActivated: "Disabled"
     },
     subtitle: "Configure and extend you server by creating new root level organizations in your workspace.",
     systemSettings: {

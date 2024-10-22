@@ -217,7 +217,7 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({
                         />
                         { tenant?.lifecycleStatus?.activated
                             ? t("tenants:status.activated")
-                            : t("tenants:status.notActivated") }
+                            : t("tenants:status.deActivated") }
                     </Typography>
                 </div>
             </CardContent>
@@ -312,8 +312,8 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({
                                 </ListItemIcon>
                                 <ListItemText>
                                     { tenant?.lifecycleStatus?.activated
-                                        ? t("tenants:status.notActivated")
-                                        : t("tenants:status.activated") }
+                                        ? t("tenants:status.deActivate")
+                                        : t("tenants:status.activate") }
                                 </ListItemText>
                             </MenuItem>
                             <MenuItem
