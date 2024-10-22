@@ -49,8 +49,8 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import deleteTenantMetadata from "../api/delete-tenant-metadata";
 import updateTenantActivationStatus from "../api/update-tenant-activation-status";
+import useTenants from "../hooks/use-tenants";
 import { Tenant, TenantLifecycleStatus } from "../models/tenants";
 import "./tenant-card.scss";
 
@@ -84,6 +84,8 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({
     const clientHost: string = useSelector((state: AppState) => state.config?.deployment?.clientHost);
 
     const dispatch: Dispatch = useDispatch();
+
+    const { deleteTenant } = useTenants();
 
     const [ anchorEl, setAnchorEl ] = useState<null | HTMLElement>(null);
 
@@ -139,37 +141,6 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({
                         message: t("tenants:editTenant.notifications.updateTenant.error.message", {
                             operation: newLifecycleStatus.activated ? "Enable" : "Disable"
                         })
-                    })
-                );
-            })
-            .finally(() => {
-                handleClose();
-            });
-    };
-
-    const handleOrganizationDelete = (): void => {
-        deleteTenantMetadata(tenant.id)
-            .then(() => {
-                dispatch(
-                    addAlert({
-                        description: t("tenants:editTenant.notifications.deleteTenantMeta.success.description", {
-                            tenantDomain: tenant.domain
-                        }),
-                        level: AlertLevels.SUCCESS,
-                        message: t("tenants:editTenant.notifications.deleteTenantMeta.success.message")
-                    })
-                );
-
-                onUpdate && onUpdate();
-            })
-            .catch(() => {
-                dispatch(
-                    addAlert({
-                        description: t("tenants:editTenant.notifications.deleteTenantMeta.error.description", {
-                            tenantDomain: tenant.domain
-                        }),
-                        level: AlertLevels.ERROR,
-                        message: t("tenants:editTenant.notifications.deleteTenantMeta.error.message")
                     })
                 );
             })
@@ -318,7 +289,7 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({
                             </MenuItem>
                             <MenuItem
                                 className="tenant-card-footer-dropdown-item error"
-                                onClick={ () => handleOrganizationDelete() }
+                                onClick={ () => deleteTenant(tenant) }
                             >
                                 <ListItemIcon>
                                     <TrashIcon size={ 14 } />

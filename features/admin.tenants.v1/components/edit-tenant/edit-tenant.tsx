@@ -22,8 +22,6 @@ import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
 import Collapse from "@oxygen-ui/react/Collapse";
 import Stack from "@oxygen-ui/react/Stack";
-import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
-import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
@@ -32,8 +30,8 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import EditTenantForm from "./edit-tenant-form";
-import deleteTenantMetadata from "../../api/delete-tenant-metadata";
 import updateTenantActivationStatus from "../../api/update-tenant-activation-status";
+import useTenants from "../../hooks/use-tenants";
 import { Tenant, TenantLifecycleStatus } from "../../models/tenants";
 import "./edit-tenant.scss";
 
@@ -63,8 +61,9 @@ const EditTenant: FunctionComponent<EditTenantProps> = ({
     ["data-componentid"]: componentId = "edit-tenant"
 }: EditTenantProps): ReactElement => {
     const { t } = useTranslation();
-
     const dispatch: Dispatch = useDispatch();
+
+    const { deleteTenant } = useTenants();
 
     const showDisabledAlert: boolean = useMemo(() => {
         if (!tenant) {
@@ -114,37 +113,6 @@ const EditTenant: FunctionComponent<EditTenantProps> = ({
             });
     };
 
-    /**
-     * Handles the organization delete by invoking the deleteTenantMetadata API.
-     */
-    const handleOrganizationDelete = (): void => {
-        deleteTenantMetadata(tenant.id)
-            .then(() => {
-                dispatch(
-                    addAlert({
-                        description: t("tenants:editTenant.notifications.deleteTenantMeta.success.description", {
-                            tenantDomain: tenant.domain
-                        }),
-                        level: AlertLevels.SUCCESS,
-                        message: t("tenants:editTenant.notifications.deleteTenantMeta.success.message")
-                    })
-                );
-
-                history.push(AppConstants.getPaths().get("TENANTS"));
-            })
-            .catch(() => {
-                dispatch(
-                    addAlert({
-                        description: t("tenants:editTenant.notifications.deleteTenantMeta.error.description", {
-                            tenantDomain: tenant.domain
-                        }),
-                        level: AlertLevels.ERROR,
-                        message: t("tenants:editTenant.notifications.deleteTenantMeta.error.message")
-                    })
-                );
-            });
-    };
-
     return (
         <Stack spacing={ 3 } className="edit-tenant">
             <Collapse in={ showDisabledAlert }>
@@ -185,7 +153,7 @@ const EditTenant: FunctionComponent<EditTenantProps> = ({
                     actionTitle={ t("tenants:editTenant.dangerZoneGroup.delete.actionTitle") }
                     header={ t("tenants:editTenant.dangerZoneGroup.delete.header") }
                     subheader={ t("tenants:editTenant.dangerZoneGroup.delete.subheader") }
-                    onActionClick={ (): void => handleOrganizationDelete() }
+                    onActionClick={ (): void => deleteTenant(tenant) }
                 />
             </DangerZoneGroup>
         </Stack>

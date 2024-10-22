@@ -142,6 +142,16 @@ export interface TenantsNS {
             };
         };
     };
+    confirmationModals: {
+        deleteTenant: {
+            assertionHint: string;
+            content: string;
+            header: string;
+            message: string;
+            primaryAction: string;
+            secondaryAction: string;
+        }
+    },
     edit: {
         backButton: string;
         subtitle: string;

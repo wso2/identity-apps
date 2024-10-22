@@ -18,12 +18,17 @@
 
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { Context, Dispatch, createContext } from "react";
-import { TenantListResponse } from "../models/tenants";
+import { Tenant, TenantListResponse } from "../models/tenants";
 
 /**
  * Props interface of {@link TenantContext}
  */
 export interface TenantContextProps {
+    /**
+     * Trigger a delete action on a tenant.
+     * @param tenant - Tenant to be deleted.
+     */
+    deleteTenant: (tenant: Tenant) => void;
     /**
      * Flag to indicate if the initial rendering is complete.
      */
@@ -54,6 +59,7 @@ export interface TenantContextProps {
  * Context object for managing the Tenant context.
  */
 const TenantContext: Context<TenantContextProps> = createContext<null | TenantContextProps>({
+    deleteTenant: () => null,
     isInitialRenderingComplete: false,
     isTenantListLoading: false,
     mutateTenantList: () => null,

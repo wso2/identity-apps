@@ -17,14 +17,27 @@
  */
 
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { ConfirmationModal } from "@wso2is/react-components";
 import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import deleteTenantMetadata from "../api/delete-tenant-metadata";
 import useGetTenants from "../api/use-get-tenants";
 import TenantContext from "../context/tenant-context";
+import { Tenant } from "../models/tenants";
 
 /**
  * Props interface of {@link TenantProvider}
  */
-export type TenantProviderProps = unknown;
+export interface TenantProviderProps {
+    /**
+     * Callback to be fired on successful tenant deletion.
+     */
+    onDeleteTenantSuccess?: () => void;
+};
 
 /**
  * This component provides tenant-related context to its children.
@@ -32,11 +45,18 @@ export type TenantProviderProps = unknown;
  * @param props - Props injected to the component.
  * @returns The TenantProvider component.
  */
-const TenantProvider = (props: PropsWithChildren<TenantProviderProps>): ReactElement => {
-    const { children } = props;
+const TenantProvider = ({
+    children,
+    onDeleteTenantSuccess
+}: PropsWithChildren<TenantProviderProps>): ReactElement => {
+    const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
 
     const [ isInitialRenderingComplete, setIsInitialRenderingComplete ] = useState<boolean>(false);
     const [ tenantListLimit, setTenantListLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT);
+    const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ deletingTenant, setDeletingTenant ] = useState<Tenant>(null);
+    const [ isTenantDeleteRequestLoading, setIsTenantDeleteRequestLoading ] = useState<boolean>(false);
 
     const { data: tenantList, isLoading: isTenantListLoading, mutate: mutateTenantList } = useGetTenants({
         limit: tenantListLimit,
@@ -51,9 +71,52 @@ const TenantProvider = (props: PropsWithChildren<TenantProviderProps>): ReactEle
         }
     }, [ tenantList ]);
 
+    /**
+     * Handles the tenant deletion after the user confirms the action.
+     * @param tenant - Tenant to be deleted.
+     */
+    const handleTenantDeletionConfirmation = (tenant: Tenant): void => {
+        setIsTenantDeleteRequestLoading(true);
+
+        deleteTenantMetadata(tenant.id)
+            .then(() => {
+                dispatch(
+                    addAlert({
+                        description: t("tenants:editTenant.notifications.deleteTenantMeta.success.description", {
+                            tenantDomain: tenant.domain
+                        }),
+                        level: AlertLevels.SUCCESS,
+                        message: t("tenants:editTenant.notifications.deleteTenantMeta.success.message")
+                    })
+                );
+
+                mutateTenantList();
+                onDeleteTenantSuccess();
+            })
+            .catch(() => {
+                dispatch(
+                    addAlert({
+                        description: t("tenants:editTenant.notifications.deleteTenantMeta.error.description", {
+                            tenantDomain: tenant.domain
+                        }),
+                        level: AlertLevels.ERROR,
+                        message: t("tenants:editTenant.notifications.deleteTenantMeta.error.message")
+                    })
+                );
+            })
+            .finally(() => {
+                setShowDeleteConfirmationModal(false);
+                setIsTenantDeleteRequestLoading(false);
+            });
+    };
+
     return (
         <TenantContext.Provider
             value={ {
+                deleteTenant: (tenant: Tenant): void => {
+                    setShowDeleteConfirmationModal(true);
+                    setDeletingTenant(tenant);
+                },
                 isInitialRenderingComplete,
                 isTenantListLoading,
                 mutateTenantList,
@@ -63,6 +126,36 @@ const TenantProvider = (props: PropsWithChildren<TenantProviderProps>): ReactEle
             } }
         >
             { children }
+            { showDeleteConfirmationModal && (
+                <ConfirmationModal
+                    primaryActionLoading={ isTenantDeleteRequestLoading }
+                    data-componentid="tenant-delete-confirmation-modal"
+                    onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                    type="negative"
+                    open={ showDeleteConfirmationModal }
+                    assertionHint={ t("tenants:confirmationModals.deleteTenant.assertionHint") }
+                    assertionType="checkbox"
+                    primaryAction={ t("tenants:confirmationModals.deleteTenant.primaryAction") }
+                    secondaryAction={ t("tenants:confirmationModals.deleteTenant.secondaryAction") }
+                    onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                    onPrimaryActionClick={ (): void => handleTenantDeletionConfirmation(deletingTenant) }
+                    closeOnDimmerClick={ false }
+                >
+                    <ConfirmationModal.Header data-componentid="tenant-delete-confirmation-modal-header">
+                        { t("tenants:confirmationModals.deleteTenant.header") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message
+                        attached
+                        negative
+                        data-componentid="tenant-delete-confirmation-modal-message"
+                    >
+                        { t("tenants:confirmationModals.deleteTenant.message") }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content data-componentid="tenant-delete-confirmation-modal-content">
+                        { t("tenants:confirmationModals.deleteTenant.content") }
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            ) }
         </TenantContext.Provider>
     );
 };

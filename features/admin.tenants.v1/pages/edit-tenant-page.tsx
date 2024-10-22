@@ -31,6 +31,7 @@ import useGetTenant from "../api/use-get-tenant";
 import useGetTenantOwner from "../api/use-get-tenant-owner";
 import EditTenant from "../components/edit-tenant/edit-tenant";
 import { Tenant, TenantOwner } from "../models/tenants";
+import TenantProvider from "../providers/tenant-provider";
 import "./edit-tenant-page.scss";
 
 /**
@@ -87,61 +88,64 @@ const EditTenantPage: FunctionComponent<EditTenantPageProps> = ({
     }, [ tenant, tenantOwner ]);
 
     return (
-        <PageLayout
-            pageTitle="Edit Root Organizations"
-            title={
-                (<div className="tenant-status">
-                    { tenant?.domain }
-                    <Tooltip
-                        title={
-                            tenant?.lifecycleStatus?.activated
-                                ? t("tenants:status.activated")
-                                : t("tenants:status.notActivated")
-                        }
+        <TenantProvider onDeleteTenantSuccess={ () => history.push(AppConstants.getPaths().get("TENANTS")) }>
+            <PageLayout
+                pageTitle="Edit Root Organizations"
+                title={
+                    (<div className="tenant-status">
+                        { tenant?.domain }
+                        <Tooltip
+                            title={
+                                tenant?.lifecycleStatus?.activated
+                                    ? t("tenants:status.activated")
+                                    : t("tenants:status.notActivated")
+                            }
+                        >
+                            <span
+                                className={ classNames("status-dot", {
+                                    ["active"]: tenant?.lifecycleStatus?.activated,
+                                    ["disabled"]: !tenant?.lifecycleStatus?.activated
+                                }) }
+                            />
+                        </Tooltip>
+                    </div>)
+                }
+                isLoading={ isTenantLoading }
+                description={
+                    (<Typography>
+                        { t("tenants:edit.subtitle", { date: moment(tenant?.createdDate).format("MMM DD, YYYY") }) }
+                    </Typography>)
+                }
+                image={
+                    (<Avatar
+                        alt={ tenant?.domain }
+                        variant="rounded"
+                        randomBackgroundColor
+                        backgroundColorRandomizer={ tenant?.id }
                     >
-                        <span
-                            className={ classNames("status-dot", {
-                                ["active"]: tenant?.lifecycleStatus?.activated,
-                                ["disabled"]: !tenant?.lifecycleStatus?.activated
-                            }) }
-                        />
-                    </Tooltip>
-                </div>)
-            }
-            isLoading={ isTenantLoading }
-            description={
-                (<Typography>
-                    { t("tenants:edit.subtitle", { date: moment(tenant?.createdDate).format("MMM DD, YYYY") }) }
-                </Typography>)
-            }
-            image={
-                (<Avatar
-                    alt={ tenant?.domain }
-                    variant="rounded"
-                    randomBackgroundColor
-                    backgroundColorRandomizer={ tenant?.id }
-                >
-                    { tenant?.domain?.charAt(0).toUpperCase() }
-                </Avatar>)
-            }
-            data-componentid={ `${componentId}-layout` }
-            backButton={ {
-                "data-componentid": `${componentId}-back-button`,
-                onClick: () => history.push(AppConstants.getPaths().get("TENANTS")),
-                text: t("tenants:edit.backButton")
-            } }
-            className="tenant-edit-page"
-            bottomMargin={ false }
-        >
-            <EditTenant
-                tenant={ mergedTenant }
-                onUpdate={ (): void => {
-                    mutateTenant();
-                    mutateTenantOwner();
+                        { tenant?.domain?.charAt(0).toUpperCase() }
+                    </Avatar>)
+                }
+                data-componentid={ `${componentId}-layout` }
+                backButton={ {
+                    "data-componentid": `${componentId}-back-button`,
+                    onClick: () => history.push(AppConstants.getPaths().get("TENANTS")),
+                    text: t("tenants:edit.backButton")
                 } }
-            />
-        </PageLayout>
+                className="tenant-edit-page"
+                bottomMargin={ false }
+            >
+                <EditTenant
+                    tenant={ mergedTenant }
+                    onUpdate={ (): void => {
+                        mutateTenant();
+                        mutateTenantOwner();
+                    } }
+                />
+            </PageLayout>
+        </TenantProvider>
     );
 };
 
 export default EditTenantPage;
+history;

@@ -146,6 +146,16 @@ export const tenants: TenantsNS = {
             }
         }
     },
+    confirmationModals: {
+        deleteTenant: {
+            assertionHint: "Please confirm your action.",
+            content: "If you delete this root organization, users will not be able to use the services offered by the organization. Please proceed with caution.",
+            header: "Are you sure?",
+            message: "This action is irreversible and will permanently delete the root organization.",
+            primaryAction: "Confirm",
+            secondaryAction: "Cancel"
+        }
+    },
     edit: {
         backButton: "Go back to Root Organizations",
         subtitle: "Crated on {{date}}"
