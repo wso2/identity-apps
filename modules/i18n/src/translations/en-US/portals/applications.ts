@@ -1578,22 +1578,7 @@ export const applications: ApplicationsNS = {
                         accessTokenAttributes: {
                             hint : "Select the attributes that should be included in the <1>access_token</1>.",
                             label: "Access Token Attributes",
-                            placeholder: "Search by attribute name",
-                            previousBehavior : "Previously, if an access token is authorized for a scope, all "
-                                + "attributes belonging to that scope and marked as <1>requested</1> in the application’s "
-                                + "<3>User Attributes</3> section, will be included in the access token.",
-                            feature: "With the latest update, admins can now selectively include user attributes in "
-                                + "the access token.",
-                            howToUse : "As this application is eligible for this change, you may see the <1>Access Token "
-                                + "Attributes</1> section below which contains a list of all the requested attributes. "
-                                + "If you are an admin, make changes to this list by adding/removing requested attributes. "
-                                + "After saving the changes, any future access tokens that are issued will only contain "
-                                + "the attributes listed below.",
-                            note: "Once you make changes to this list and save changes, the previous behavior will be "
-                                + " permanently replaced. It means that, <1><3>Access tokens will only contain attributes "
-                                + "chosen by the admin.</3><5>Admin-chosen attributes are included in the access token "
-                                + "even if it does not have authorization to the relevant OIDC scopes.</5></1><7>Proceed "
-                                + "with caution</7>"
+                            placeholder: "Search by attribute name"
                         }
                     },
                     heading: "Access Token",

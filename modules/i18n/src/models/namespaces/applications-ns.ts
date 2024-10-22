@@ -1327,10 +1327,6 @@ export interface ApplicationsNS {
                             hint: string;
                             label:string;
                             placeholder: string;
-                            previousBehavior : string;
-                            feature: string;
-                            howToUse: string;
-                            note: string;
                         };
                     };
                 };
