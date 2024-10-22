@@ -26,6 +26,7 @@ import {
 } from "@wso2is/admin.core.v1";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { OIDCScopesClaimsListInterface } from "@wso2is/admin.oidc-scopes.v1";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { ExternalClaim, FeatureAccessConfigInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/src/models";
 import {
@@ -38,6 +39,7 @@ import {
     Heading,
     Hint,
     Link,
+    Message,
     SegmentedAccordion,
     SegmentedAccordionTitleActionInterface,
     useDocumentation
@@ -63,14 +65,13 @@ import {
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "./attribute-settings";
+import { ApplicationManagementConstants } from "../../../constants/application-management";
 import {
     ClaimConfigurationInterface,
     ClaimMappingInterface,
     RequestedClaimConfigurationInterface
 } from "../../../models";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { ApplicationManagementUtils } from "../../../utils/application-management-utils";
-import { ApplicationManagementConstants } from "../../../constants/application-management";
 
 interface AttributeSelectionOIDCPropsInterface extends TestableComponentInterface, IdentifiableComponentInterface {
     claims: ExtendedClaimInterface[];
@@ -806,16 +807,18 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                     isFeatureEnabled(applicationFeatureConfig, "applications.accessTokenAttributes") &&
                                     ApplicationManagementUtils.isAppVersionAllowed( appVersion,
                                         ApplicationManagementConstants.APP_VERSION_2 ) &&
-                                    ( <Grid.Row>
-                                        <Hint>
+                                    ( <Message
+                                        type="info"
+                                        content={ (
                                             <Trans
-                                                i18nKey={ t("applications:edit.sections.attributes.selection.note") }
+                                                i18nKey={ t("applications:edit.sections.attributes."
+                                                        + "selection.note") }
                                             >
                                                 Please note that the user attributes added from this section 
                                                 will only be included in the ID token.
                                             </Trans>
-                                        </Hint>
-                                    </Grid.Row> )
+                                        ) }
+                                    /> )
                                 }
                                 <Grid.Row className="mb-5">
                                     {

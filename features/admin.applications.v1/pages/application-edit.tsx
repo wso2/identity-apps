@@ -46,6 +46,7 @@ import { Forms } from "@wso2is/forms";
 import {
     AnimatedAvatar,
     AppAvatar,
+    Code,
     ConfirmationModal,
     DocumentationLink,
     LabelWithPopup,
@@ -83,7 +84,6 @@ import {
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 import "./application-edit.scss";
-import { Code } from "@wso2is/react-components";
 
 /**
  * Prop types for the applications edit page component.
