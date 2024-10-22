@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.5.1
+
+### Patch Changes
+
+- [#7010](https://github.com/wso2/identity-apps/pull/7010) [`ef0a8003626d2f4dcc78997425540f4120346cc9`](https://github.com/wso2/identity-apps/commit/ef0a8003626d2f4dcc78997425540f4120346cc9) Thanks [@Yoshani](https://github.com/Yoshani)! - handle username existence to prevent enumeration
+
 ## 2.5.0
 
 ### Minor Changes

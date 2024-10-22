@@ -1,5 +1,21 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.26.2
+
+### Patch Changes
+
+- [#7010](https://github.com/wso2/identity-apps/pull/7010) [`ef0a8003626d2f4dcc78997425540f4120346cc9`](https://github.com/wso2/identity-apps/commit/ef0a8003626d2f4dcc78997425540f4120346cc9) Thanks [@Yoshani](https://github.com/Yoshani)! - handle username existence to prevent enumeration
+
+- Updated dependencies [[`ef0a8003626d2f4dcc78997425540f4120346cc9`](https://github.com/wso2/identity-apps/commit/ef0a8003626d2f4dcc78997425540f4120346cc9)]:
+  - @wso2is/admin.server-configurations.v1@2.26.2
+  - @wso2is/admin.core.v1@2.32.3
+  - @wso2is/admin.extensions.v1@2.32.2
+  - @wso2is/admin.identity-providers.v1@2.24.2
+  - @wso2is/admin.users.v1@2.25.2
+  - @wso2is/admin.validation.v1@2.24.2
+  - @wso2is/admin.organizations.v1@2.24.2
+  - @wso2is/admin.feature-gate.v1@1.2.3
+
 ## 2.26.1
 
 ### Patch Changes
