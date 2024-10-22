@@ -49,7 +49,13 @@ const TenantGrid: FunctionComponent<TenantGridProps> = ({
 }: TenantGridProps): ReactElement => {
     const { t } = useTranslation();
 
-    const { tenantList, tenantListLimit, setTenantListLimit, isTenantListLoading, mutateTenantList } = useTenants();
+    const {
+        tenantList,
+        tenantListLimit,
+        setTenantListLimit,
+        isTenantListLoading,
+        isInitialRenderingComplete
+    } = useTenants();
 
     const [ hasMore, setHasMore ] = useState<boolean>(true);
 
@@ -67,6 +73,10 @@ const TenantGrid: FunctionComponent<TenantGridProps> = ({
     };
 
     const resolveHasMore = (): boolean => {
+        if (!isInitialRenderingComplete) {
+            return false;
+        }
+
         if (tenantList?.totalResults <= 0) {
             return false;
         }
