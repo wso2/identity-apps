@@ -329,6 +329,7 @@ export interface ApplicationsNS {
                     addWizard: {
                         header: string;
                         subHeading: string;
+                        note: string;
                         steps: {
                             select: {
                                 transfer: {

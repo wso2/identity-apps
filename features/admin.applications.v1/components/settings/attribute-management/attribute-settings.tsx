@@ -103,6 +103,10 @@ interface AttributeSettingsPropsInterface extends SBACInterface<FeatureConfigInt
      */
     appId: string;
     /**
+     * Version of the application.
+     */
+    appVersion: string;
+    /**
      * Application inbound protocol/s.
      */
     technology: InboundProtocolListItemInterface[];
@@ -161,6 +165,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
     const {
         appId,
+        appVersion,
         applicationTemplateId,
         technology,
         featureConfig,
@@ -1269,6 +1274,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                                 onlyOIDCConfigured={ onlyOIDCConfigured }
                                                 data-testid={ `${ componentId }-attribute-selection-oidc` }
                                                 data-componentid={ `${ componentId }-attribute-selection-oidc` }
+                                                appVersion={ appVersion }
                                             />
                                         )
                                         : (
