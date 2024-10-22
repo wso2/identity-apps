@@ -1393,7 +1393,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         };
 
         const showVerifiedPopup = (value: string): boolean => {
-            return verificationEnabled && verifiedAttributeValueList.includes(value);
+            return verificationEnabled &&
+                (verifiedAttributeValueList.includes(value) || value === primaryAttributeValue);
         };
 
         const showPrimaryPopup = (value: string): boolean => {
@@ -1409,7 +1410,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         };
 
         const showVerifyButton = (value: string): boolean =>
-            verificationEnabled && !verifiedAttributeValueList.includes(value);
+            verificationEnabled && !verifiedAttributeValueList.includes(value) && value !== primaryAttributeValue;
 
         const showDeleteButton = (value: string): boolean => {
             return !(primaryAttributeSchema?.required && value === primaryAttributeValue);
@@ -1456,48 +1457,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             }
                         ) }
                         data-componentid={ `${testId}-editing-section-${schema.name.replace(".", "-")}-accordion` }
+                        defaultExpanded
                     >
-                        <AccordionSummary
-                            aria-controls="panel1a-content"
-                            expandIcon={ <ChevronDownIcon /> }
-                            id="multi-attribute-header"
-                            className="oxygen-accordion-summary"
-                        >
-                            <Typography
-                                className={ `accordion-label ${
-                                    schema.name === MOBILE_NUMBERS_ATTRIBUTE
-                                        ? "mobile-label"
-                                        : null}`
-                                }
-                            >
-                                { accordionLabelValue }
-                            </Typography>
-                            {
-                                showPendingEmailPopup(accordionLabelValue)
-                                && (
-                                    <div className="verified-icon" >
-                                        { generatePendingEmailPopup() }
-                                    </div>
-                                )
-                            }
-                            {
-                                showVerifiedPopup(accordionLabelValue)
-                                && (
-                                    <div className="verified-icon" >
-                                        { generateVerifiedPopup() }
-                                    </div>
-                                )
-                            }
-                            {
-                                showPrimaryPopup(accordionLabelValue)
-                                && (
-                                    <div className="primary-icon" >
-                                        { generatePrimaryPopup() }
-                                    </div>
-                                )
-                            }
-                        </AccordionSummary>
-                        <AccordionDetails className="accordion-details" >
+                        <AccordionDetails className="accordion-details">
                             <TableContainer component={ Paper } elevation={ 0 }>
                                 <Table
                                     className="multi-value-table"
@@ -1880,7 +1842,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         };
 
         const showVerifiedPopup = (value: string): boolean => {
-            return verificationEnabled && verifiedAttributeValueList.includes(value);
+            return verificationEnabled &&
+                (verifiedAttributeValueList.includes(value) || value === primaryAttributeValue);
         };
 
         const showPrimaryPopup = (value: string): boolean => {
@@ -1901,7 +1864,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             >
                                 { attributeValueList?.map(
                                     (value: string, index: number) => (
-                                        <MenuItem key={ index } value={ value }>
+                                        <MenuItem key={ index } value={ value } className="read-only-menu-item">
                                             <div className="dropdown-row">
                                                 <Typography
                                                     className={ `dropdown-label ${

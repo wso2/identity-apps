@@ -955,12 +955,13 @@ export const myAccount: MyAccountNS = {
                 "heading": "Sie erhalten eine OTP für Ihre Handynummer zur Überprüfung in Kürze"
             },
             "verifySmsOtp": {
+                "didNotReceive": "No recibiste un código?",
                 "error": "Fallo en la verificación. Inténtalo de nuevo.",
-                "generate": "Bestätigungscode nochmal versenden",
                 "heading": "Überprüfen Sie Ihre Handynummer",
                 "label": "Geben Sie den an Ihre Handynummer gesendeten Bestätigungscode ein",
                 "placeholder": "Ingrese su código de verificación",
-                "requiredError": "Introduzca el código de verificación"
+                "requiredError": "Introduzca el código de verificación",
+                "resend": "Reenviar"
             }
         },
         "overview": {

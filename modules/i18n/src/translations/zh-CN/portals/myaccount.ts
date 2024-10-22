@@ -954,12 +954,13 @@ export const myAccount: MyAccountNS = {
                 heading: "您将在您的手机号码中收到一个OTP，以供验证"
             },
             "verifySmsOtp": {
+                "didNotReceive": "没有收到代码？",
                 "error": "验证失败。 请再试一次。",
-                "generate": "重新发送验证代码",
                 "heading": "验证您的手机号码",
                 "label": "输入发送到您的手机号码的验证代码",
                 "placeholder": "输入您的验证代码",
-                "requiredError": "输入验证码"
+                "requiredError": "输入验证码",
+                "resend": "重新发送"
             }
         },
         "overview": {

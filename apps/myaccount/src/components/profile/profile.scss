@@ -3,79 +3,45 @@
         width: 100%;
     }
 
-    .oxygen-accordion {
-        .oxygen-accordion-summary {
-            display: flex;
-            padding: 0px 24px 0px 8px;
-            flex-wrap: nowrap;
-            align-items: center; 
-            gap: 4px;
-            border-radius: 8px;
+    .accordion-details {
+        border-radius: 8px;
+        padding: 2px;
 
-            .accordion-label {
-                margin: 0 0 0 8px;
-                flex-shrink: 0;
-                padding-right: 12px;
-                min-width: 30ch;
-
-                &.mobile-label {
-                    min-width: 20ch; 
+        .multi-value-table {
+            .multi-value-table-data-row {
+                &:last-child td, &:last-child th {
+                    border: none;
                 }
             }
 
-            .verified-icon, .primary-icon {
+            .table-c1 {
                 display: flex;
+                flex-wrap: nowrap;
                 align-items: center;
-            }
-        }
 
-        .oxygen-accordion-details {
-            border-radius: 8px;
+                .c1-value{
+                    margin-bottom: 0;
+                    flex-shrink: 0;
+                    padding-right: 12px;
+                    min-width: 30ch;
 
-            .multi-value-table {
-                .multi-value-table-data-row {
-                    &:last-child td, &:last-child th {
-                        border: none;
+                    &.mobile-label {
+                        min-width: 20ch; 
                     }
                 }
 
-                .table-c1 {
-                    display: flex;
-                    flex-wrap: nowrap;
+                .verified-icon, .primary-icon {
                     align-items: center;
-
-                    .c1-value{
-                        margin-bottom: 0;
-                        flex-shrink: 0;
-                        padding-right: 12px;
-                        min-width: 30ch;
-
-                        &.mobile-label {
-                            min-width: 20ch; 
-                        }
-                    }
-
-                    .verified-icon, .primary-icon {
-                        align-items: center;
-                    }
-                }
-
-                .table-c2 {
-                    display: flex;
-                    flex-wrap: nowrap;
-                    align-items: center;
-                    justify-content: flex-end;
-                    gap: 4px;
                 }
             }
-        }
 
-        .MuiAccordionDetails-root {
-            padding: 0px;
-        }
-
-        .MuiAccordionSummary-root {
-            min-height: 48px;
+            .table-c2 {
+                display: flex;
+                flex-wrap: nowrap;
+                align-items: center;
+                justify-content: flex-end;
+                gap: 4px;
+            }
         }
     }
 
@@ -88,11 +54,11 @@
     }
 }
 
-.MuiMenuItem-root:hover {
+.read-only-menu-item:hover {
     background-color: transparent !important;
 }
 
-.MuiMenuItem-root.Mui-selected, .MuiMenuItem-root.Mui-selected:hover {
+.read-only-menu-item.Mui-selected, .read-only-menu-item.Mui-selected:hover {
     background-color: transparent !important; 
 }
 
@@ -118,39 +84,25 @@
     }
 }
 
+.resend {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+
+    .resend-button {
+        cursor: pointer;
+        max-width: none !important;
+        position: static !important;
+    
+        &.disabled {
+            cursor: not-allowed;
+        }
+    }
+}
+
 .vertical-align-center {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
     height: 100%;
-}
-
-.resend-button {
-    cursor: pointer;
-    max-width: none !important;
-    position: static !important;
-
-    &.disabled {
-        cursor: not-allowed;
-    }
-}
-
-.mobile-verification-content{
-    display: flex;
-    align-items: center;
-
-    .animated-message {
-        height: 250px;
-        padding: 12px;
-    }
-
-    .inside-content {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-
-        .modal-input, .button-group {
-            padding: 12px 0;
-        }
-    }
 }

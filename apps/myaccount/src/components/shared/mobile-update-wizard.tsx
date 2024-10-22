@@ -21,8 +21,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 import { AxiosError, AxiosResponse } from "axios";
-import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -83,17 +82,6 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
     const [ submit, setSubmit ] = useTrigger();
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const dispatch: Dispatch<any> = useDispatch();
-
-    useEffect(() => {
-
-        if (isMultipleEmailAndMobileNumberEnabled && step === 0) {
-            const timer: NodeJS.Timeout  = setTimeout(() => {
-                setStep(1);
-            }, 3000);
-
-            return () => clearTimeout(timer);
-        }
-    }, []);
 
     /**
      * This checks whether the newly updated mobile number is set as the 'pendingMobileNumber' claim
@@ -177,7 +165,7 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
         validateSMSOTPCode(code).then((isValidCode: boolean) => {
             if (isValidCode) {
                 dispatch(getProfileInformation());
-                setStep(2);
+                isMultipleEmailAndMobileNumberEnabled ? setStep(1) : setStep(2);
             } else {
                 setResendSuccess(false);
                 setVerificationError(true);
@@ -231,10 +219,8 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
         if (isMultipleEmailAndMobileNumberEnabled) {
             switch (stepToDisplay) {
                 case 0:
-                    return null;
-                case 1:
                     return t("myAccount:components.mobileUpdateWizard.verifySmsOtp.heading");
-                case 2:
+                case 1:
                     return null;
             }
         } else {
@@ -260,10 +246,8 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
         if (isMultipleEmailAndMobileNumberEnabled) {
             switch (stepToDisplay) {
                 case 0:
-                    return renderAnimatedMessage();
-                case 1:
                     return renderVerifyCode();
-                case 2:
+                case 1:
                     return renderSuccess();
             }
         } else {
@@ -276,20 +260,6 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
                     return renderSuccess();
             }
         }
-    };
-
-    const renderAnimatedMessage = (): JSX.Element => {
-        return (
-            <motion.div
-                className="vertical-align-center animated-message"
-                initial={ { opacity: 0, y: 50 } }
-                animate={ { opacity: 1, y: 0 } }
-                exit={ { opacity: 0, y: 50 } }
-                transition={ { duration: 1.5 } }
-            >
-                <h3>{ t("myAccount:components.mobileUpdateWizard.verificationSent.heading") }</h3>
-            </motion.div>
-        );
     };
 
     /**
@@ -305,7 +275,6 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
                         handleUpdate(values.get("mobileNumber"));
                     } }
                     submitState={ updateMobile }
-                    className="inside-content"
                 >
                     <div className="modal-input">
                         <Field
@@ -332,28 +301,6 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
                             value={ currentMobileNumber }
                         />
                     </div>
-                    <div className="button-group">
-                        <div className = "totp-verify-step-btn">
-                            <Button
-                                primary
-                                type="submit"
-                                className="totp-verify-action-button"
-                                onClick={ setUpdateMobile }
-                                data-testid={ `${testId}-modal-actions-primary-button` }
-                                disabled={ isSubmitting }
-                            >
-                                { t("common:continue") }
-                            </Button>
-                        </div>
-                        <div className = "totp-verify-step-btn">
-                            <Button
-                                onClick={ () => closeWizard() }
-                                className="link-button totp-verify-action-button"
-                                data-testid={ `${ testId }-modal-actions-cancel-button` }>
-                                { t("common:cancel") }
-                            </Button>
-                        </div>
-                    </div>
                 </Forms>
             </>
         );
@@ -364,7 +311,7 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
      */
     const renderVerifyCode = (): JSX.Element => {
         return (
-            <div className="inside-content">
+            <div>
                 {
                     verificationError
                         ? (
@@ -393,7 +340,6 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
                         verifyCode(values.get("code"));
                     } }
                     submitState={ submit }
-                    className="inside-content"
                 >
 
                     <div className="modal-input">
@@ -407,41 +353,19 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
                             autoFocus={ true }
                         />
                     </div>
-                    <div>
-                        <Segment textAlign="center" className="" basic>
-                            <p
-                                className={ `link resend-button ${isSubmitting ? "disabled" : ""}` }
-                                onClick={ () => {
-                                    if (isSubmitting) return;
-                                    resendOTOCode();
-                                }
-                                }
-                                data-testid={ `${ testId }-resend-button` }>
-                                { t("myAccount:components." +
-                                "mobileUpdateWizard.verifySmsOtp.generate") }</p>
-                        </Segment>
-                    </div>
-                    <div className="button-group">
-                        <div className = "totp-verify-step-btn">
-                            <Button
-                                primary
-                                type="submit"
-                                className="totp-verify-action-button"
-                                onClick={ setSubmit }
-                                disabled={ isSubmitting }
-                                data-testid={ `${ testId }-modal-actions-primary-button` }
-                            >
-                                { t("common:verify") }
-                            </Button>
-                        </div>
-                        <div className = "totp-verify-step-btn">
-                            <Button
-                                onClick={ () => closeWizard() }
-                                className="link-button totp-verify-action-button"
-                                data-testid={ `${ testId }-modal-actions-cancel-button` }>
-                                { t("common:cancel") }
-                            </Button>
-                        </div>
+                    <div className="resend">
+                        { t("myAccount:components." +
+                                    "mobileUpdateWizard.verifySmsOtp.didNotReceive") }
+                        <p
+                            className={ `link resend-button ${isSubmitting ? "disabled" : ""}` }
+                            onClick={ () => {
+                                if (isSubmitting) return;
+                                resendOTOCode();
+                            }
+                            }
+                            data-testid={ `${ testId }-resend-button` }>
+                            { t("myAccount:components.mobileUpdateWizard.verifySmsOtp.resend") }
+                        </p>
                     </div>
                 </Forms>
             </div>
@@ -454,7 +378,7 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
     const renderSuccess = (): JSX.Element => {
 
         return (
-            <Segment basic textAlign="center" className="inside-content">
+            <Segment basic textAlign="center">
                 <div className="modal-input">
                     <div className="svg-box">
                         <svg className="circular positive-stroke">
@@ -480,17 +404,58 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
                     </div>
                     <p>{ t("myAccount:components.mobileUpdateWizard.done") }</p>
                 </div>
-                <div className = "button-group totp-verify-step-btn">
+            </Segment>
+        );
+    };
+
+    const renderModalActions = (): JSX.Element => {
+
+        const showCancelButton: boolean = isMultipleEmailAndMobileNumberEnabled ? step !== 1 : step !== 2;
+        const showDoneButton: boolean = isMultipleEmailAndMobileNumberEnabled ? step === 1 : step === 2;
+        const showSubmitButton: boolean = isMultipleEmailAndMobileNumberEnabled ? step === 0 : step === 0 || step === 1;
+        const submitButtonText: string = isMultipleEmailAndMobileNumberEnabled
+            ? t("common:verify")
+            : step === 0
+                ? t("common:continue")
+                : t("common:verify");
+        const submitBtnAction :() => void = isMultipleEmailAndMobileNumberEnabled
+            ? setSubmit
+            : step === 0
+                ? setUpdateMobile
+                : setSubmit;
+
+        return (
+            <>
+                { showCancelButton && (
+                    <Button
+                        onClick={ () => closeWizard() }
+                        className="link-button"
+                        data-testid={ `${ testId }-modal-actions-cancel-button` }>
+                        { t("common:cancel") }
+                    </Button>
+                ) }
+                { showDoneButton && (
                     <Button
                         primary
-                        className="totp-verify-action-button"
                         onClick={ closeWizard }
                         data-testid={ `${ testId }-modal-actions-success-button` }
                     >
                         { t("common:done") }
                     </Button>
-                </div>
-            </Segment>
+                ) }
+                {
+                    showSubmitButton && (
+                        <Button
+                            primary
+                            type="submit"
+                            onClick={ submitBtnAction }
+                            data-testid={ `${testId}-modal-actions-primary-button` }
+                            disabled={ isSubmitting }
+                        >
+                            { submitButtonText }
+                        </Button>)
+                }
+            </>
         );
     };
 
@@ -509,18 +474,21 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
                 className="totp"
             >
                 {
-                    ((isMultipleEmailAndMobileNumberEnabled && step === 1)
+                    ((isMultipleEmailAndMobileNumberEnabled && step === 0)
                         || (!isMultipleEmailAndMobileNumberEnabled && step !== 2))
                         ? (
-                            < Modal.Header className="wizard-header text-center">
+                            < Modal.Header className="wizard-header">
                                 { stepHeader(step) }
                             </Modal.Header>
                         )
                         : null
                 }
-                <Modal.Content data-testid={ `${testId}-modal-content` } className="mobile-verification-content">
+                <Modal.Content data-testid={ `${testId}-modal-content` }>
                     { stepContent(step) }
                 </Modal.Content>
+                <Modal.Actions data-testid={ `${testId}-modal-actions` }>
+                    { renderModalActions() }
+                </Modal.Actions>
             </Modal>
         );
     };

@@ -983,12 +983,13 @@ export const myAccount: MyAccountNS = {
                 heading: "You will receive an OTP to your mobile number for verification shortly"
             },
             verifySmsOtp: {
+                didNotReceive: "Didn't receive a code?",
                 error: "Verification failed. Please try again.",
-                generate: "Resend verification code",
                 heading: "Verify Your Mobile Number",
                 label: "Enter the verification code sent to your mobile number",
                 placeholder: "Enter your verification code",
-                requiredError: "Enter the verification code"
+                requiredError: "Enter the verification code",
+                resend: "Resend"
             }
         },
         overview: {

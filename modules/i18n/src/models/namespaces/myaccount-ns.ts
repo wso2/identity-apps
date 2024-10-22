@@ -1031,7 +1031,8 @@ export interface MyAccountNS {
             };
             verifySmsOtp: {
                 heading: string;
-                generate: string;
+                didNotReceive: string;
+                resend: string;
                 label: string;
                 placeholder: string;
                 error: string;

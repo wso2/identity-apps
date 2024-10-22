@@ -1014,12 +1014,13 @@ export const myAccount: MyAccountNS = {
                 heading: "Vous recevrez un OTP à votre numéro de mobile pour vérification sous peu"
             },
             verifySmsOtp: {
+                didNotReceive: "Vous n'avez pas reçu le code?",
                 error: "Échec de la vérification. Veuillez réessayer.",
-                generate: "Renvoyer le code de vérification",
                 heading: "Vérifiez votre numéro de mobile",
                 label: "Entrez le code de vérification envoyé à votre numéro de mobile",
                 placeholder: "Entrez votre code de vérification",
-                requiredError: "Entrer le code de vérification"
+                requiredError: "Entrer le code de vérification",
+                resend: "Renvoyer"
             }
         },
         overview: {

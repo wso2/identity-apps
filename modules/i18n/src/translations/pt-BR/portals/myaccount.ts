@@ -957,12 +957,13 @@ export const myAccount: MyAccountNS = {
                 heading: "Você receberá um OTP no seu número de celular para verificação em breve"
             },
             verifySmsOtp: {
+                didNotReceive: "Não recebeu o código?",
                 error: "Verificação falhou. Por favor, tente novamente.",
-                generate: "Reenviar código de verificação",
                 heading: "Verifique o seu número de celular",
                 label: "Digite o código de verificação enviado ao seu número de celular",
                 placeholder: "Insira seu código de verificação",
-                requiredError: "Insira o código de verificação"
+                requiredError: "Insira o código de verificação",
+                resend: "Reenviar"
             }
         },
         overview: {

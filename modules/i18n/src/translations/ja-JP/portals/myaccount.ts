@@ -954,12 +954,13 @@ export const myAccount: MyAccountNS = {
                 heading: "あなたはまもなく検証のためにあなたの携帯電話番号にOTPを受け取ります"
             },
             "verifySmsOtp": {
+                "didNotReceive": "コードを受け取っていませんか?",
                 "error": "検証に失敗しました。もう一度やり直してください。",
-                "generate": "確認コードを再送します",
                 "heading": "携帯電話番号を確認する",
                 "label": "携帯電話番号に送信された検証コードを入力してください",
                 "placeholder": "確認コードを入力します",
-                "requiredError": "確認コードを入力します"
+                "requiredError": "確認コードを入力します",
+                "resend": "再送信"
             }
         },
         "overview": {
