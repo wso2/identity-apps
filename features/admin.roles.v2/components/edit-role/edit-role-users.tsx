@@ -132,10 +132,17 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     };
 
     useEffect(() => {
-        const defaultSelectedUserStore: string = activeUserStore ??
-            disabledUserstores.includes(RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME) ? "DEFAULT" : "PRIMARY";
+        if (activeUserStore) {
+            setSelectedUserStoreDomainName(activeUserStore);
+        } else {
+            const defaultSelectedUserStore: string = disabledUserstores.includes(
+                RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME
+            )
+                ? "DEFAULT"
+                : "PRIMARY";
 
-        setSelectedUserStoreDomainName(defaultSelectedUserStore);
+            setSelectedUserStoreDomainName(defaultSelectedUserStore);
+        }
     }, [ activeUserStore ]);
 
     useEffect(() => {
