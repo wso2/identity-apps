@@ -972,7 +972,7 @@
                 "enabled": true,
                 "scopes": {
                     "create": [
-                        "internal_list_tenants"
+                        "internal_create_tenants"
                     ],
                     "delete": [
                         "internal_modify_tenants"
