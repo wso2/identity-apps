@@ -75,7 +75,7 @@
     PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
     Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterSelfRegistrationEnabled(tenantDomain);
     Boolean isSelfRegistrationLockOnCreationEnabled = preferenceRetrievalClient.checkSelfRegistrationLockOnCreation(tenantDomain);
-    Boolean isHandleExistingUsernameEnabled = preferenceRetrievalClient.checkSelfRegistrationHandleExistingUsername(tenantDomain);
+    Boolean isShowUsernameUnavailabilityEnabled = preferenceRetrievalClient.checkSelfRegistrationShowUsernameUnavailability(tenantDomain);
     Boolean isAccountVerificationEnabled = preferenceRetrievalClient.checkSelfRegistrationSendConfirmationOnCreation(tenantDomain);
 
     boolean isSelfRegistrationWithVerification =
@@ -415,7 +415,7 @@
             }
             request.getRequestDispatcher("register.do").forward(request, response);
             return;
-        } else if (isAccountVerificationEnabled && isHandleExistingUsernameEnabled && usernameAlreadyExistsErrorCode.equals(errorCode)) {
+        } else if (isAccountVerificationEnabled && !isShowUsernameUnavailabilityEnabled && usernameAlreadyExistsErrorCode.equals(errorCode)) {
             request.setAttribute("callback", callback);
             if (StringUtils.isNotBlank(srtenantDomain)) {
                 request.setAttribute("srtenantDomain", srtenantDomain);

@@ -50,9 +50,9 @@ interface SelfRegistrationFormInitialValuesInterface {
      */
     verificationLinkExpiryTime: string;
     /**
-     * Handle existing username by adopting the same flow as a new user.
+     * Show a descriptive error message to the user if the username is already taken.
      */
-    handleExistingUsername: boolean;
+    showUsernameUnavailability: boolean;
     /**
      * Account lock on creation.
      */
@@ -98,7 +98,7 @@ const NOTIFY_ACCOUNT_CONFIRMATION: string = "SelfRegistration.NotifyAccountConfi
 const AUTO_LOGIN_ENABLE: string = "SelfRegistration.AutoLogin.Enable";
 const LOCK_ON_CREATION: string = "SelfRegistration.LockOnCreation";
 const ACCOUNT_CONFIRMATION: string = "SelfRegistration.SendConfirmationOnCreation";
-const HANDLE_EXISTING_USERNAME: string = "SelfRegistration.HandleExistingUsername";
+const SHOW_USERNAME_UNAVAILABILITY: string = "SelfRegistration.ShowUsernameUnavailability";
 
 const allowedConnectorFields: string[] = [
     ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
@@ -108,7 +108,7 @@ const allowedConnectorFields: string[] = [
     NOTIFY_ACCOUNT_CONFIRMATION,
     AUTO_LOGIN_ENABLE,
     LOCK_ON_CREATION,
-    HANDLE_EXISTING_USERNAME
+    SHOW_USERNAME_UNAVAILABILITY
 ];
 
 const FORM_ID: string = "governance-connectors-self-registration-form";
@@ -139,6 +139,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
     const [ initialFormValues, setInitialFormValues ]
         = useState<SelfRegistrationFormInitialValuesInterface>(undefined);
     const [ enableAccountConfirmation, setEnableAccountConfirmation ] = useState<boolean>(false);
+    const [ showUsernameAvailability, setShowUsernameAvailability ] = useState<boolean>(false);
     const [ enableAccountActivateImmediately, setEnableAccountActivateImmediately ] = useState<boolean>(false);
     const [ enableAutoLogin, setEnableAutoLogin ] = useState<boolean>(false);
     const [ enableConfirmationNotification, setEnableConfirmationNotification ] = useState<boolean>(false);
@@ -250,10 +251,11 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                     };
                 }
             }
-            if (property.name === HANDLE_EXISTING_USERNAME) {
+            if (property.name === SHOW_USERNAME_UNAVAILABILITY) {
+                setShowUsernameAvailability(property.value === "true");
                 resolvedInitialFormValues = {
                     ...resolvedInitialFormValues,
-                    handleExistingUsername: property.value === "true"
+                    showUsernameUnavailability: property.value === "true"
                 };
             }
             if (property.name === NOTIFY_ACCOUNT_CONFIRMATION) {
@@ -274,10 +276,9 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             };
         }
 
-        // Make accountActivateImmediately and handleExistingUsername false if the account confirmation is false.
+        // Make accountActivateImmediately false if the account confirmation is false.
         if (get(resolvedInitialFormValues, "signUpConfirmation") !== true) {
             resolvedInitialFormValues.accountActivateImmediately = false;
-            resolvedInitialFormValues.handleExistingUsername = false;
         }
         setInitialConnectorValues(resolvedInitialValues);
         setInitialFormValues(resolvedInitialFormValues);
@@ -295,17 +296,13 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             "SelfRegistration.LockOnCreation": string | boolean;
             "SelfRegistration.NotifyAccountConfirmation": string | boolean;
             "SelfRegistration.SendConfirmationOnCreation": string | boolean;
-            "SelfRegistration.HandleExistingUsername": string | boolean;
+            "SelfRegistration.ShowUsernameUnavailability": string | boolean;
             "SelfRegistration.VerificationCode.ExpiryTime": string | boolean | unknown;
             "SelfRegistration.Notification.InternallyManage"?: string | boolean;
         } = {
             "SelfRegistration.AutoLogin.Enable": values.autoLogin !== undefined
                 ? !!enableAutoLogin
                 : initialConnectorValues?.get("SelfRegistration.AutoLogin.Enable").value,
-            "SelfRegistration.HandleExistingUsername": values.handleExistingUsername === false ||
-            enableAccountConfirmation == false
-                ? false
-                : true,
             "SelfRegistration.LockOnCreation": values.accountActivateImmediately === true ||
             enableAccountConfirmation == false
                 ? false
@@ -316,6 +313,9 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             "SelfRegistration.SendConfirmationOnCreation": enableAccountConfirmation !== undefined
                 ? !!enableAccountConfirmation
                 : initialConnectorValues?.get("SelfRegistration.SendConfirmationOnCreation").value,
+            "SelfRegistration.ShowUsernameUnavailability": showUsernameAvailability !== undefined
+                ? !!showUsernameAvailability
+                : initialConnectorValues?.get("SelfRegistration.ShowUsernameUnavailability").value,
             "SelfRegistration.VerificationCode.ExpiryTime": values.verificationLinkExpiryTime !== undefined
                 ? values.verificationLinkExpiryTime
                 : initialConnectorValues?.get("SelfRegistration.VerificationCode.ExpiryTime").value
@@ -335,7 +335,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 "autoLogin",
                 "accountActivateImmediately",
                 "verificationLinkExpiryTime",
-                "handleExistingUsername",
+                "showUsernameUnavailability",
                 "signUpConfirmation",
                 "notifyAccountConfirmation",
                 "SelfRegistration.LockOnCreation",
@@ -648,19 +648,20 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             ) }
             { enableAccountConfirmation && (
                 <Field.Checkbox
-                    ariaLabel="handleExistingUsername"
+                    ariaLabel="showUsernameUnavailability"
                     className="toggle"
-                    name="handleExistingUsername"
+                    name="showUsernameUnavailability"
                     label={ t("extensions:manage.serverConfigurations.userOnboarding." +
-                        "selfRegistration.form.fields.handleExistingUsername.label") }
+                        "selfRegistration.form.fields.showUsernameUnavailability.label") }
                     required={ false }
+                    listen={ (value: boolean) => setShowUsernameAvailability(value) }
                     readOnly={ readOnly }
                     disabled={ !isConnectorEnabled || isSubmitting }
                     data-testid={ `${testId}-handle-existing-username` }
                     message={
                         {
                             content: t("extensions:manage.serverConfigurations.userOnboarding." +
-                                "selfRegistration.form.fields.handleExistingUsername.msg"),
+                                "selfRegistration.form.fields.showUsernameUnavailability.msg"),
                             type: "info"
                         }
                     }
