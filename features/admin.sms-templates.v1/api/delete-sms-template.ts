@@ -37,21 +37,18 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  *
  * @returns Delete SMS Template.
  */
-const deleteSmsTemplate = (
-    templateType: string,
-    locale: string
-): Promise<AxiosResponse> => {
-
+const deleteSmsTemplate = (templateType: string, locale: string): Promise<AxiosResponse> => {
     const smsLocale: string = locale.replace("-", "_");
 
     const requestConfig: AxiosRequestConfig = {
         headers: {
-            "Accept": "application/json",
+            Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: store.getState().config.endpoints.smsTemplates +
-            `/template-types/${ templateType }/org-templates/${ smsLocale }`
+        url:
+            store.getState().config.endpoints.smsTemplates +
+            `/template-types/${templateType}/org-templates/${smsLocale}`
     };
 
     return httpClient(requestConfig)
@@ -63,18 +60,21 @@ const deleteSmsTemplate = (
                     response.status,
                     response.request,
                     response,
-                    response.config);
+                    response.config
+                );
             }
 
             return response;
-        }).catch((error: AxiosError) => {
+        })
+        .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 "Error occurred while deleting the SMS template.",
                 error.stack,
                 error.response?.data?.code,
                 error.request,
                 error.response,
-                error.config);
+                error.config
+            );
         });
 };
 

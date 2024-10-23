@@ -16,6 +16,11 @@
  * under the License.
  */
 
+import { SelectChangeEvent } from "@mui/material";
+import Card from "@oxygen-ui/react/Card";
+import Divider from "@oxygen-ui/react/Divider";
+import Grid from "@oxygen-ui/react/Grid";
+import Typography from "@oxygen-ui/react/Typography";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/branding-preference-provider";
 import { AppState, FeatureConfigInterface, I18nConstants } from "@wso2is/admin.core.v1";
@@ -29,35 +34,28 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { DangerZone, DangerZoneGroup, DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Segment } from "semantic-ui-react";
 import createSmsTemplate from "../api/create-sms-template";
 import deleteSmsTemplate from "../api/delete-sms-template";
 import updateSmsTemplate from "../api/update-sms-template";
 import useGetSmsTemplate from "../api/use-get-sms-template";
 import useGetSmsTemplatesList from "../api/use-get-sms-templates-list";
 import SMSCustomizationFooter from "../components/sms-customization-footer";
-import { SMSCustomizationForm } from "../components/sms-customization-form";
+import SMSCustomizationForm from "../components/sms-customization-form";
 import SMSCustomizationHeader from "../components/sms-customization-header";
-import { SMSTemplatePreview } from "../components/sms-template-preview";
+import SMSTemplatePreview from "../components/sms-template-preview";
 import { SMSTemplate, SMSTemplateType } from "../models/sms-templates";
 import "./sms-customization.scss";
-import { SelectChangeEvent } from "@mui/material";
-import Card from "@oxygen-ui/react/Card";
-import Grid from "@oxygen-ui/react/Grid";
-import Paper from "@oxygen-ui/react/Paper";
-import Typography from "@oxygen-ui/react/Typography";
 
 type SMSCustomizationPageInterface = IdentifiableComponentInterface;
 
 /**
  * SMS customization page.
  *
- * @param props - Props injected to the component. { dataComponentId = "sms-customization-page" }
- *
+ * @param props - Props injected to the component. \{ dataComponentId = "sms-customization-page" \}
  * @returns Main Page for SMS Customization.
  */
 const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
@@ -172,13 +170,10 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
 
         setError(smsTemplateError);
 
-        // Show the replicate previous template modal and set the "isTemplateNotAvailable" flag to identify whether the
-        // current template is a new template or not
         if (smsTemplateError.response.status === 404) {
             setIsTemplateNotAvailable(true);
             if (hasSmsTemplateCreatePermissions) {
                 if (!isSystemTemplate || selectedLocale !== I18nConstants.DEFAULT_FALLBACK_LANGUAGE) {
-                    // replicatePreviousTemplate();
                     setIsSystemTemplate(true);
                 }
 
@@ -196,20 +191,6 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
             })
         );
     }, [ smsTemplateError, isSystemTemplate ]);
-
-    // This is used to check whether the URL contains a template ID, and if so, set it as the selected template.
-    useEffect(() => {
-        const hash: string = window.location.hash;
-
-        if (hash.startsWith("#templateId=")) {
-            const templateId: string = hash.split("=")[1];
-
-            setSelectedSmsTemplateId(templateId);
-            setSelectedSmsTemplateDescription(
-                availableSmsTemplatesList?.find((template: SMSTemplateType) => template.id === templateId)?.description
-            );
-        }
-    }, [ window.location.hash ]);
 
     const handleTemplateIdChange = (event: SelectChangeEvent<string>): void => {
         const templateId: string = event.target.value;

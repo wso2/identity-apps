@@ -22,7 +22,6 @@ import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 
 interface SMSCustomizationFooterProps extends IdentifiableComponentInterface {
-
     /**
      * Is content loading? So Save button should also depict it's loading
      */
@@ -46,7 +45,6 @@ interface SMSCustomizationFooterProps extends IdentifiableComponentInterface {
 const SMSCustomizationFooter: FunctionComponent<SMSCustomizationFooterProps> = (
     props: SMSCustomizationFooterProps
 ): ReactElement => {
-
     const {
         ["data-componentid"]: componentId = "sms-customization-footer",
         isSaveButtonLoading,

@@ -71,7 +71,7 @@ const FORM_ID: string = "sms-customization-content-form";
  *
  * @returns SMS template customization form.
  */
-export const SMSCustomizationForm: FunctionComponent<SMSCustomizationFormPropsInterface> = (
+const SMSCustomizationForm: FunctionComponent<SMSCustomizationFormPropsInterface> = (
     props: SMSCustomizationFormPropsInterface
 ): ReactElement => {
     const {
@@ -133,16 +133,14 @@ export const SMSCustomizationForm: FunctionComponent<SMSCustomizationFormPropsIn
                         content={
                             (<>
                                 { t("smsTemplates:form.inputs.body.hint") }
-                                <DocumentationLink
-                                    link={ getLink("develop.smsCustomization.form.smsBody.learnMore") }
-                                >
+                                <DocumentationLink link={ getLink("develop.smsCustomization.form.smsBody.learnMore") }>
                                     { t("smsTemplates:common.learnMore") }
                                 </DocumentationLink>
                             </>)
                         }
                     />
                 </Grid>
-                <Grid xs={ 12 } lg={ 11 } xl={ 10 }>
+                <Grid xs={ 12 } lg={ 11 } xl={ 10 } marginTop={ 2 }>
                     <FinalForm
                         onSubmit={ onSubmit }
                         initialValues={ { smsBody: selectedSmsTemplate?.body } }
@@ -158,3 +156,5 @@ export const SMSCustomizationForm: FunctionComponent<SMSCustomizationFormPropsIn
         </>
     );
 };
+
+export default SMSCustomizationForm;

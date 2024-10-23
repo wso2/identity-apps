@@ -45,7 +45,7 @@ interface SMSTemplatePreviewInterface extends IdentifiableComponentInterface {
  *
  * @returns Preview component of SMS Customization.
  */
-export const SMSTemplatePreview: FunctionComponent<SMSTemplatePreviewInterface> = (
+const SMSTemplatePreview: FunctionComponent<SMSTemplatePreviewInterface> = (
     props: SMSTemplatePreviewInterface
 ): ReactElement => {
     const { smsTemplate, ["data-componentid"]: componentId = "sms-customization-preview" } = props;
@@ -76,27 +76,25 @@ export const SMSTemplatePreview: FunctionComponent<SMSTemplatePreviewInterface> 
 
     return (
         <div data-componentid={ componentId } className="sms-template-preview">
-            <div className="sms-template-mobile">
-                <div className="sms-template-mobile-display">
-                    <Grid container columns={ 16 } className="sms-template-mobile-display-status-bar">
-                        <Grid xs={ 5 }>
-                                10:10
-                        </Grid>
+            <div className="mobile">
+                <div className="display">
+                    <Grid container columns={ 16 } className="status-bar">
+                        <Grid xs={ 5 }>10:10</Grid>
                         <Grid xs={ 6 } textAlign="center">
-                            <div className="sms-template-mobile-island" />
+                            <div className="island" />
                         </Grid>
-                        <Grid xs={ 5 } >
+                        <Grid xs={ 5 }>
                             <WifiIcon fontSize={ "small" } />
                             <Battery60Icon fontSize={ "small" } />
                         </Grid>
                     </Grid>
-                    <div data-componentid={ `${componentId}-iframe-body-div` } className="sms-template-mobile-message">
+                    <div data-componentid={ `${componentId}-iframe-body-div` } className="message">
                         <Typography variant="h6" align="center">
                             Messages
                         </Typography>
-                        <div className="sms-template-mobile-message-line">
+                        <div className="line">
                             <AccountCircleIcon />
-                            <div className="sms-template-mobile-message-bubble">
+                            <div className="bubble">
                                 <Typography variant="body2" className="preserve-newlines">
                                     { smsTemplate?.body }
                                 </Typography>
@@ -108,3 +106,5 @@ export const SMSTemplatePreview: FunctionComponent<SMSTemplatePreviewInterface> 
         </div>
     );
 };
+
+export default SMSTemplatePreview;

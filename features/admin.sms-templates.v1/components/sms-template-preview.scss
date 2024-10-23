@@ -16,61 +16,63 @@
  * under the License.
  */
 
+$mobile-outer-border: 2px solid #bbb;
+$mobile-outer-radius: 36px;
+$mobile-frame-padding: 1px;
+$mobile-inner-border: 6px solid #000;
+$mobile-inner-radius: $mobile-outer-radius - $mobile-frame-padding;
+
 .sms-template-preview {
     padding: 0;
     flex-grow: 1;
-}
 
-.sms-template-mobile {
-    display: flex;
-    padding: 1px 1px 0 1px;
-    border-radius: 36px 36px 0 0;
-    border-left: 2px solid #bbbbbb;
-    border-top: 2px solid #bbbbbb;
-    border-right: 2px solid #bbbbbb;
-    width: 100%;
-    height: 100%;
-}
+    .mobile {
+        display: flex;
+        padding: $mobile-frame-padding $mobile-frame-padding 0 $mobile-frame-padding;
+        border-radius: $mobile-outer-radius $mobile-outer-radius 0 0;
+        border-left: $mobile-outer-border;
+        border-top: $mobile-outer-border;
+        border-right: $mobile-outer-border;
+        width: 100%;
+        height: 100%;
 
-.sms-template-mobile-display {
-    border-radius: 35px 35px 0 0;
-    border-left: 6px solid black;
-    border-top: 6px solid black;
-    border-right: 6px solid black;
-    width: 100%;
-}
+        .display {
+            border-radius: $mobile-inner-radius $mobile-inner-radius 0 0;
+            border-left: $mobile-inner-border;
+            border-top: $mobile-inner-border;
+            border-right: $mobile-inner-border;
+            width: 100%;
 
-.sms-template-mobile-display-status-bar {
-    text-align: center !important;
-    padding: 12px 8px !important;
-}
+            .status-bar {
+                text-align: center !important;
+                padding: 12px 8px !important;
 
-.sms-template-mobile-island {
-    height: 1.5rem;
-    background-color: black;
-    border-radius: 0.75rem;
-    max-width: 6rem;
-    margin: auto;
-}
+                .island {
+                    height: 1.5rem;
+                    background-color: black;
+                    border-radius: 0.75rem;
+                    max-width: 6rem;
+                    margin: auto;
+                }
+            }
 
-.preserve-newlines {
-    white-space: pre-wrap;
-}
+            .message {
+                padding: 0 5%;
 
-.sms-template-mobile-message {
-    padding: 0 5%;
-}
+                .line {
+                    display: flex;
+                    margin-top: 12px;
 
-.sms-template-mobile-message-bubble {
-    background-color: #e3e3e3;
-    border-radius: 0 16px 16px 16px;
-    margin-left: 8px;
-    padding: 4px 8px;
-}
-
-.sms-template-mobile-message-line {
-    display: flex;
-    margin-top: 12px;
+                    .bubble {
+                        background-color: #e3e3e3;
+                        border-radius: 0 16px 16px 16px;
+                        margin-left: 8px;
+                        padding: 4px 8px;
+                    }
+                }
+            }
+        }
+    }
 }
 
 @media (min-width: 1400px) {
