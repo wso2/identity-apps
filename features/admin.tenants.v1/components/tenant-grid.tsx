@@ -82,7 +82,20 @@ const TenantGrid: FunctionComponent<TenantGridProps> = ({
                 dataLength={ tenantList?.totalResults ?? 0 }
                 next={ handleLoadMore }
                 hasMore={ resolveHasMore() }
-                loader={ null }
+                loader={
+                    (<Box
+                        display="flex"
+                        alignContent="center"
+                        alignItems="center"
+                        justifyContent="center"
+                        flexDirection="column"
+                        gap={ 2 }
+                        className="infinite-loader"
+                    >
+                        <CircularProgress size={ 22 } className="tenant-list-item-loader" />
+                        <Typography variant="h6">{ t("common:loading") }...</Typography>
+                    </Box>)
+                }
                 endMessage={ null }
             >
                 <WithTenantGridPlaceholders

@@ -34,7 +34,6 @@ import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import TenantCard from "./tenant-card";
-import useTenants from "../hooks/use-tenants";
 import { TenantListResponse } from "../models/tenants";
 import "./with-tenant-grid-placeholders.scss";
 
@@ -71,8 +70,6 @@ const WithTenantGridPlaceholders: FunctionComponent<WithTenantGridPlaceholdersPr
     ["data-componentid"]: componentId = "with-tenant-grid-placeholders"
 }: WithTenantGridPlaceholdersProps): ReactElement => {
     const { t } = useTranslation();
-
-    const { isInitialRenderingComplete } = useTenants();
 
     const tenantFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config?.ui?.features?.tenants

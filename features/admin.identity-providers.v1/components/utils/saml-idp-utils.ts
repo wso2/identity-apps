@@ -223,7 +223,7 @@ export const fastSearch = (
     return [
         /**
          * When you call it like below:
-         *      findPropVal<string>({ defaultValue: "SHA1", key: "DigestAlgorithm" });
+         *      `findPropVal<string>({ defaultValue: "SHA1", key: "DigestAlgorithm" })`;
          *
          * It will get the property value from {@link propertyMap}
          * If it's not in the property map then the {@link defaultValue}
@@ -303,7 +303,7 @@ export const IDENTITY_PROVIDER_AUTHORIZED_REDIRECT_URL_LENGTH: MinMaxLength = { 
  * @param errors - Form errors object.
  */
 export const ifFieldsHave = (errors: FormErrors): boolean => {
-    return !Object.keys(errors).every((k) => !errors[ k ]);
+    return !Object.keys(errors).every((k: string) => !errors[ k ]);
 };
 
 export const required = (value: string | any) => {
