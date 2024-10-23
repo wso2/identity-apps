@@ -266,6 +266,7 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                     validate={ composeValidators(validateUsernameAgainstUserstoreRegExp) }
                     maxLength={ 100 }
                     minLength={ 0 }
+                    readOnly={ true }
                 />
             );
         }
@@ -305,6 +306,7 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                 validate={ composeValidators(validateAlphanumericUsername) }
                 maxLength={ 100 }
                 minLength={ 0 }
+                readOnly={ true }
             />
         );
     };

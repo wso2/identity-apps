@@ -35,7 +35,7 @@ export const tenants: TenantsNS = {
                 label: "Cancel"
             },
             save: {
-                label: "Save changes"
+                label: "Create"
             }
         },
         form: {
@@ -70,7 +70,7 @@ export const tenants: TenantsNS = {
                     }
                 },
                 domain: {
-                    helperText: "Enter a unique domain name for your organization. The domain name should be in the format of <1>example.com</1>.",
+                    helperText: "Enter a unique domain name for your organization. The domain name should be in the format of <1>abc.com</1>.",
                     label: "Domain",
                     placeholder: "Enter a Domain name",
                     validations: {
