@@ -805,7 +805,7 @@ export const extensions: Extensions = {
                                     },
                                     permission: {
                                         emptyValidate: "Permission(scope) cannot be empty",
-                                        uniqueValidate: "This permission (scope) already exists in the organization. Please choose a different one.",,
+                                        uniqueValidate: "This permission (scope) already exists in the organization. Please choose a different one.",
                                         errorOccurred: "An error occurred while validating the permission.",
                                         invalid: "Permission (scope) cannot contain spaces",
                                         label: "Permission (scope)",
