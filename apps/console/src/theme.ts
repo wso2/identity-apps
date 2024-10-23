@@ -106,9 +106,6 @@ const Theme: OxygenTheme = extendTheme({
         },
         MuiOutlinedInput: {
             styleOverrides: {
-                input: {
-                    padding: "0.67857143em 1em"
-                },
                 root: {
                     fontFamily: "Gilmer, sans-serif"
                 }

@@ -182,7 +182,7 @@ export const tenants: TenantsNS = {
             },
             disable: {
                 actionTitle: "Disable",
-                header: "DisableDisable Organization",
+                header: "Disable Organization",
                 subheader: "Users will not be able to log in to any application or perform any relevant tasks of the organization until it is enabled again."
             },
             header: "Danger Zone"
