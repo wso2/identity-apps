@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.9.1
+
+### Patch Changes
+
+- [#7015](https://github.com/wso2/identity-apps/pull/7015) [`35dce8701aa17f55ee3c4fd242da972d1a25f9ab`](https://github.com/wso2/identity-apps/commit/35dce8701aa17f55ee3c4fd242da972d1a25f9ab) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix switching between userstores in console roles in managed deployments
+
 ## 2.9.0
 
 ### Minor Changes

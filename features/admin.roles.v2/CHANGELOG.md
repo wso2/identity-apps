@@ -1,5 +1,27 @@
 # @wso2is/admin.roles.v2
 
+## 2.25.1
+
+### Patch Changes
+
+- [#7015](https://github.com/wso2/identity-apps/pull/7015) [`35dce8701aa17f55ee3c4fd242da972d1a25f9ab`](https://github.com/wso2/identity-apps/commit/35dce8701aa17f55ee3c4fd242da972d1a25f9ab) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix switching between userstores in console roles in managed deployments
+
+- Updated dependencies [[`35dce8701aa17f55ee3c4fd242da972d1a25f9ab`](https://github.com/wso2/identity-apps/commit/35dce8701aa17f55ee3c4fd242da972d1a25f9ab)]:
+  - @wso2is/i18n@2.9.1
+  - @wso2is/admin.applications.v1@2.29.1
+  - @wso2is/admin.connections.v1@2.27.1
+  - @wso2is/admin.core.v1@2.33.1
+  - @wso2is/admin.extensions.v1@2.33.1
+  - @wso2is/admin.groups.v1@2.24.1
+  - @wso2is/admin.identity-providers.v1@2.25.1
+  - @wso2is/admin.organizations.v1@2.25.1
+  - @wso2is/admin.users.v1@2.26.1
+  - @wso2is/admin.authorization.v1@2.24.1
+  - @wso2is/admin.server-configurations.v1@2.27.1
+  - @wso2is/admin.userstores.v1@2.24.1
+  - @wso2is/admin.remote-userstores.v1@1.4.1
+  - @wso2is/admin.api-resources.v2@2.24.1
+
 ## 2.25.0
 
 ### Minor Changes
