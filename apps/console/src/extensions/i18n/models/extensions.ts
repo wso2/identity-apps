@@ -618,6 +618,7 @@ export interface Extensions {
                                     identifier: {
                                         emptyValidate: string;
                                         alreadyExistsError: string;
+                                        errorOccurred: string;
                                         invalid: string;
                                         hint: string;
                                         label: string;
@@ -657,6 +658,7 @@ export interface Extensions {
                                     permission: {
                                         emptyValidate: string;
                                         uniqueValidate: string;
+                                        errorOccurred: string;
                                         invalid: string;
                                         label: string;
                                         placeholder: string;
