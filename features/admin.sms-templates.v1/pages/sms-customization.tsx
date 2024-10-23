@@ -47,6 +47,7 @@ import SMSCustomizationFooter from "../components/sms-customization-footer";
 import SMSCustomizationForm from "../components/sms-customization-form";
 import SMSCustomizationHeader from "../components/sms-customization-header";
 import SMSTemplatePreview from "../components/sms-template-preview";
+import { SMSTemplateConstants } from "../constants/sms-template-constants";
 import { SMSTemplate, SMSTemplateType } from "../models/sms-templates";
 import "./sms-customization.scss";
 
@@ -68,7 +69,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
     const [ isSystemTemplate, setIsSystemTemplate ] = useState(false);
     const [ shouldFetch, setShouldFetch ] = useState(true);
     const [ isTemplateNotAvailable, setIsTemplateNotAvailable ] = useState(false);
-    const [ selectedLocale, setSelectedLocale ] = useState(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
+    const [ selectedLocale, setSelectedLocale ] = useState(SMSTemplateConstants.DEAFULT_LOCALE);
     const [ selectedSmsTemplateId, setSelectedSmsTemplateId ] = useState<string>();
     const [ selectedSmsTemplateDescription, setSelectedSmsTemplateDescription ] = useState<string>();
     const [ selectedSmsTemplate, setSelectedSmsTemplate ] = useState<SMSTemplate>();
@@ -173,7 +174,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         if (smsTemplateError.response.status === 404) {
             setIsTemplateNotAvailable(true);
             if (hasSmsTemplateCreatePermissions) {
-                if (!isSystemTemplate || selectedLocale !== I18nConstants.DEFAULT_FALLBACK_LANGUAGE) {
+                if (!isSystemTemplate || selectedLocale !== SMSTemplateConstants.DEAFULT_LOCALE) {
                     setIsSystemTemplate(true);
                 }
 
@@ -199,7 +200,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         setIsTemplateNotAvailable(false);
         setIsSystemTemplate(false);
         setCurrentSmsTemplate(undefined);
-        setSelectedLocale(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
+        setSelectedLocale(SMSTemplateConstants.DEAFULT_LOCALE);
         setSelectedSmsTemplateId(templateId);
         setSelectedSmsTemplateDescription(
             availableSmsTemplatesList?.find((template: SMSTemplateType) => template.id === templateId)?.description
@@ -292,7 +293,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                         message: t("smsTemplates:notifications.deleteSmsTemplate" + ".success.message")
                     })
                 );
-                setSelectedLocale(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
+                setSelectedLocale(SMSTemplateConstants.DEAFULT_LOCALE);
                 setIsSystemTemplate(false);
                 setShouldFetch(true);
             })
@@ -385,7 +386,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
 
                 <Divider hidden />
 
-                { !isSystemTemplate && selectedLocale !== I18nConstants.DEFAULT_FALLBACK_LANGUAGE && (
+                { !isSystemTemplate && selectedLocale !== SMSTemplateConstants.DEAFULT_LOCALE && (
                     <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>
                         <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
                             <DangerZone
@@ -399,7 +400,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                     </Show>
                 ) }
 
-                { !isSystemTemplate && selectedLocale === I18nConstants.DEFAULT_FALLBACK_LANGUAGE && (
+                { !isSystemTemplate && selectedLocale === SMSTemplateConstants.DEAFULT_LOCALE && (
                     <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>
                         <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
                             <DangerZone

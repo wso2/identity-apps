@@ -16,13 +16,14 @@
  * under the License.
  */
 
-import { I18nConstants, store } from "@wso2is/admin.core.v1";
+import { store } from "@wso2is/admin.core.v1";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { HttpMethods } from "@wso2is/core/models";
+import { SMSTemplateConstants } from "../constants/sms-template-constants";
 import { SMSTemplate } from "../models/sms-templates";
 
 /**
@@ -36,7 +37,7 @@ import { SMSTemplate } from "../models/sms-templates";
  */
 const useGetSmsTemplate = <Data = SMSTemplate, Error = RequestErrorInterface>(
     templateType: string,
-    locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE,
+    locale: string = SMSTemplateConstants.DEAFULT_LOCALE,
     fetchSystemTemplate: boolean = false,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
@@ -56,10 +57,7 @@ const useGetSmsTemplate = <Data = SMSTemplate, Error = RequestErrorInterface>(
     if (fetchSystemTemplate) {
         requestConfig.url =
             store.getState().config.endpoints.smsTemplates +
-            `/template-types/${templateType}/system-templates/${I18nConstants.DEFAULT_FALLBACK_LANGUAGE.replace(
-                "-",
-                "_"
-            )}`;
+            `/template-types/${templateType}/system-templates/${SMSTemplateConstants.DEAFULT_LOCALE_FORMATTED}`;
     }
 
     const { data, error, isValidating, isLoading, mutate } = useRequest<Data, Error>(

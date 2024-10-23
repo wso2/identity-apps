@@ -17,10 +17,11 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { I18nConstants, store } from "@wso2is/admin.core.v1";
+import { store } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { SMSTemplateConstants } from "../constants/sms-template-constants";
 import { SMSTemplate } from "../models/sms-templates";
 
 /**
@@ -38,7 +39,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 const updateSmsTemplate = (
     templateType: string,
     smsTemplate: Partial<SMSTemplate>,
-    locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
+    locale: string = SMSTemplateConstants.DEAFULT_LOCALE
 ): Promise<SMSTemplate> => {
     const smsLocale: string = locale.replace("-", "_");
 

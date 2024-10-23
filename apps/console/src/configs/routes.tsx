@@ -688,7 +688,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 icon: getSidePanelIcons().sms
             },
             id: "smsTemplates",
-            name: "SMS Templates",
+            name: "smsTemplates:page.header",
             order: 15,
             path: AppConstants.getPaths().get("SMS_MANAGEMENT"),
             protected: true,
