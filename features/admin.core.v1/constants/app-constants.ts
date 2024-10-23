@@ -65,6 +65,15 @@ export class AppConstants {
     }
 
     /**
+     * Get the default layout base path.
+     *
+     * @returns The default layout base path.
+     */
+    public static getDefaultLayoutBasePath(): string {
+        return `${this.getMainViewBasePath()}/root`;
+    }
+
+    /**
      * Get the developer view base path.
      *
      * @returns The developer view base path.
@@ -400,7 +409,10 @@ export class AppConstants {
             [ "ACTIONS",
                 `${AppConstants.getAdminViewBasePath()}/actions` ],
             [ "PRE_ISSUE_ACCESS_TOKEN_EDIT",
-                `${ AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ]
+                `${ AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ],
+            [ "TENANTS", `${AppConstants.getDefaultLayoutBasePath()}/organizations` ],
+            [ "EDIT_TENANT", `${AppConstants.getDefaultLayoutBasePath()}/organizations/:id` ],
+            [ "SYSTEM_SETTINGS", `${AppConstants.getDefaultLayoutBasePath()}/organizations/system-settings` ]
         ]);
 
         return paths;

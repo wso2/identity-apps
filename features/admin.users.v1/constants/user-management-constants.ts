@@ -154,6 +154,8 @@ export class UserManagementConstants {
     public static readonly MANAGED_BY_PARENT_TEXT: string = "Parent Organization";
 
     public static readonly GLOBE: string = "globe";
+
+    public static readonly USERNAME_JAVA_REGEX: string = "UsernameJavaRegEx";
 }
 
 /**

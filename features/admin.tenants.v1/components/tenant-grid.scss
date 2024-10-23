@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,16 +16,12 @@
  * under the License.
  */
 
-.reset-field-to-default-adornment {
-    margin-right: 6px;
-}
+.tenant-grid {
+    .infinite-loader {
+        margin-top: var(--oxygen-spacing-3);
+    }
 
-.branding-preference-custom-text-fields {
-
-    .MuiInputBase-root {
-        &.Mui-readOnly {
-            cursor: default;
-            background-color: #e9ecef!important;
-        }
+    .infinite-scroll-component  {
+        overflow: hidden !important;
     }
 }

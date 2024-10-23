@@ -262,6 +262,11 @@ export class I18nConstants {
     public static readonly ACTIONS_NAMESPACE: string = I18nModuleConstants.ACTIONS_NAMESPACE;
 
     /**
+     * Tenants namespace.
+     */
+    public static readonly TENANTS_NAMESPACE: string = I18nModuleConstants.TENANTS_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      */
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
@@ -309,7 +314,8 @@ export class I18nConstants {
         [ I18nConstants.APPLICATION_TEMPLATES_NAMESPACE, "portals" ],
         [ I18nConstants.TEMPLATE_CORE_NAMESPACE, "portals" ],
         [ I18nConstants.IMPERSONATION_CONFIGURATION_NAMESPACE, "portals" ],
-        [ I18nConstants.ACTIONS_NAMESPACE, "portals" ]
+        [ I18nConstants.ACTIONS_NAMESPACE, "portals" ],
+        [ I18nConstants.TENANTS_NAMESPACE, "portals" ]
     ]);
 
     /**

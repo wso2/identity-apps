@@ -207,7 +207,8 @@ export class Config {
                 I18nConstants.AI_NAMESPACE,
                 I18nConstants.TEMPLATE_CORE_NAMESPACE,
                 I18nConstants.APPLICATION_TEMPLATES_NAMESPACE,
-                I18nConstants.ACTIONS_NAMESPACE
+                I18nConstants.ACTIONS_NAMESPACE,
+                I18nConstants.TENANTS_NAMESPACE
             ],
             preload: []
         };

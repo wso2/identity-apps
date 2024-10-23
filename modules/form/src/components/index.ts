@@ -50,6 +50,7 @@ export { Form as FinalForm } from "react-final-form";
 export { Field as FinalFormField } from "react-final-form";
 export { FormRenderProps } from "react-final-form";
 export { FormSpy } from "react-final-form";
+export { FormProps } from "react-final-form";
 
 export * from "final-form";
 export * as ReactFinalForm from "react-final-form";

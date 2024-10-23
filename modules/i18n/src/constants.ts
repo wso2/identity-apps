@@ -320,4 +320,9 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly ACTIONS_NAMESPACE: string = "actions";
+
+    /**
+     * Tenants namespace.
+     */
+    public static readonly TENANTS_NAMESPACE: string = "tenants";
 }

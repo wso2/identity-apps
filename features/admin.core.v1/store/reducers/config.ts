@@ -154,6 +154,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             tenantAssociationApi: "",
             tenantManagementApi: "",
             tenantSubscriptionApi: "",
+            tenants: "",
             updateSecret: "",
             updateSecretType: "",
             userSessions: "",
