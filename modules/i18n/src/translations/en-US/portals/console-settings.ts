@@ -38,6 +38,13 @@ export const consoleSettings: ConsoleSettingsNS = {
         },
         tabLabel: "Administrators"
     },
+    invitations: {
+        filterOptions: {
+            accepted: "Accepted",
+            pending: "Pending",
+            expired: "Expired"
+        }
+    },
     loginFlow: {
         tabLabel: "Login Flow"
     },
