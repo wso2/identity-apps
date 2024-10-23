@@ -87,7 +87,7 @@ const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = 
                 value={ input.value || "" }
                 onChange={ (e: ChangeEvent, child: ReactNode) => {
                     input.onChange((e?.target as any)?.value as string);
-                    onChange(e as any, child);
+                    onChange && onChange(e as any, child);
                 } }
                 margin="dense"
                 label={ label }
