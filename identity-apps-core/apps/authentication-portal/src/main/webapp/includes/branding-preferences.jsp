@@ -235,7 +235,9 @@
     String poweredByLogoURL = "";
     String productWhiteLogoAlt = "WSO2 Identity Server Logo White Variation";
     boolean enableDefaultPreLoader = true;
-    String[] screenNames = {"common", "login", "email-otp", "sms-otp", "email-otp", "totp"};
+
+    final String BRANDING_PREFERENCE_CACHE_KEY = "BrandingPreferenceCache";
+    final String BRANDING_TEXT_PREFERENCE_CACHE_KEY = "BrandingTextPreferenceCache";
 
     // Constants used to create full custom layout name
     String PREFIX_FOR_CUSTOM_LAYOUT_NAME = "custom";
@@ -423,8 +425,18 @@
         }
 
         BrandingPreferenceRetrievalClient brandingPreferenceRetrievalClient = new BrandingPreferenceRetrievalClient();
-        JSONObject brandingPreferenceResponse = brandingPreferenceRetrievalClient.getPreference(tenantRequestingPreferences,
+        JSONObject brandingPreferenceResponse = null;
+        Object cachedBrandingPreferenceResponse = request.getAttribute(BRANDING_PREFERENCE_CACHE_KEY);
+        if (cachedBrandingPreferenceResponse != null && cachedBrandingPreferenceResponse instanceof BrandingPreferenceRetrievalClientException) {
+            throw (BrandingPreferenceRetrievalClientException) cachedBrandingPreferenceResponse;
+        } else {
+            brandingPreferenceResponse = (JSONObject) cachedBrandingPreferenceResponse;
+        }
+        if (brandingPreferenceResponse == null) {
+            brandingPreferenceResponse = brandingPreferenceRetrievalClient.getPreference(tenantRequestingPreferences,
                 preferenceResourceType, applicationRequestingPreferences, DEFAULT_RESOURCE_LOCALE);
+            request.setAttribute(BRANDING_PREFERENCE_CACHE_KEY, brandingPreferenceResponse);
+        }
 
         if (brandingPreferenceResponse.has(PREFERENCE_KEY)) {
             brandingPreference = brandingPreferenceResponse.getJSONObject(PREFERENCE_KEY);
@@ -450,13 +462,20 @@
             if (isBrandingEnabledInTenantPreferences) {
                 // Custom Text
                 for (String screenName : screenNames) {
-                    JSONObject customTextPreferenceResponse = brandingPreferenceRetrievalClient.getCustomTextPreference(
-                        tenantRequestingPreferences,
-                        preferenceResourceType,
-                        applicationRequestingPreferences,
-                        screenName,
-                        locale
-                    );
+                    StringBuilder textBrandingCacheKey = new StringBuilder(BRANDING_TEXT_PREFERENCE_CACHE_KEY);
+                    textBrandingCacheKey.append("-");
+                    textBrandingCacheKey.append(screenName);
+                    JSONObject customTextPreferenceResponse = (JSONObject) request.getAttribute(textBrandingCacheKey.toString());
+                    if (customTextPreferenceResponse == null) {
+                        customTextPreferenceResponse = brandingPreferenceRetrievalClient.getCustomTextPreference(
+                            tenantRequestingPreferences,
+                            preferenceResourceType,
+                            applicationRequestingPreferences,
+                            screenName,
+                            locale
+                        );
+                        request.setAttribute(textBrandingCacheKey.toString(), customTextPreferenceResponse);
+                    }
 
                     // Merge the preferences for the current screen into the customText object
                     if (customTextPreferenceResponse.has(PREFERENCE_KEY)) {
@@ -646,6 +665,7 @@
     } catch (BrandingPreferenceRetrievalClientException e) {
         // Exception is ignored and the variable will use the fallbacks.
         // TODO: Move the duplicated logic to a common place.
+        request.setAttribute(BRANDING_PREFERENCE_CACHE_KEY, e);
     } finally {
 
         // Set fallbacks.
