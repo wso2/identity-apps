@@ -30,6 +30,7 @@ import TextField from "@oxygen-ui/react/TextField";
 import { updateResources } from "@wso2is/admin.core.v1/api/bulk-operations";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { RemoteUserStoreConstants } from "@wso2is/admin.remote-userstores.v1/constants/remote-user-stores";
 import { useUsersList } from "@wso2is/admin.users.v1/api";
@@ -135,13 +136,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         if (activeUserStore) {
             setSelectedUserStoreDomainName(activeUserStore);
         } else {
-            const defaultSelectedUserStore: string = disabledUserstores.includes(
-                RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME
-            )
-                ? "DEFAULT"
-                : "PRIMARY";
-
-            setSelectedUserStoreDomainName(defaultSelectedUserStore);
+            setSelectedUserStoreDomainName(userstoresConfig.primaryUserstoreName);
         }
     }, [ activeUserStore ]);
 

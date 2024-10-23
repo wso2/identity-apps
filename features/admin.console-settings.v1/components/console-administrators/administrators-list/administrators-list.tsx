@@ -57,7 +57,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Button, EmptyPlaceholder, ListLayout, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -126,7 +126,7 @@ enum AddAdministratorModes {
  * @param props - Props injected to the component.
  * @returns Administrators list component.
  */
-const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
+const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
     props: AdministratorsListProps
 ): ReactElement => {
     const {
@@ -225,17 +225,17 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
     const invitationStatusOptions: DropdownItemProps[] = [
         {
             key: 1,
-            text: "Accepted",
+            text: t("consoleSettings:invitations.filterOptions.accepted"),
             value: "Accepted"
         },
         {
             key: 2,
-            text: "Pending",
+            text: t("consoleSettings:invitations.filterOptions.pending"),
             value: "Pending"
         },
         {
             key: 3,
-            text: "Expired",
+            text: t("consoleSettings:invitations.filterOptions.expired"),
             value: "Expired"
         }
     ];
@@ -282,11 +282,11 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
         );
     };
 
-    const handleAccountStatusChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
+    const handleAccountStatusChange = (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
         setInvitationStatusOption(data.value as string);
     };
 
-    const handleSelectedUserStoreChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+    const handleSelectedUserStoreChange = (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setSelectedUserStore(data.value as string);
     };
 
@@ -294,12 +294,12 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
         setSearchQuery(query);
     };
 
-    const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
+    const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
         setListOffset(((data.activePage as number) - 1) * listItemLimit);
     };
 
     const handleItemsPerPageDropdownChange = (
-        event: React.MouseEvent<HTMLAnchorElement>,
+        event: MouseEvent<HTMLAnchorElement>,
         data: DropdownProps
     ): void => {
         setListItemLimit(data.value as number);
@@ -599,7 +599,6 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
                     } }
                     adminTypeSelection={ AdminAccountTypes.EXTERNAL }
                     onUserUpdate={ () => {
-                        // do something
                         mutateAdministratorsListFetchRequest();
                     } }
                 />
