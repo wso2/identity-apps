@@ -113,13 +113,6 @@ export const generateTheme: (branding: ThemeProviderContextProps) => Theme = (
                         boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.08)"
                     }
                 }
-            },
-            MuiOutlinedInput: {
-                styleOverrides: {
-                    input: {
-                        padding: "0.67857143em 1em"
-                    }
-                }
             }
         },
         customComponents: {
