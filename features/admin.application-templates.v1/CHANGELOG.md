@@ -1,5 +1,18 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.3.0
+
+### Minor Changes
+
+- [#6962](https://github.com/wso2/identity-apps/pull/6962) [`d54b53ec37367ea29b822c29985c95fb75418f52`](https://github.com/wso2/identity-apps/commit/d54b53ec37367ea29b822c29985c95fb75418f52) Thanks [@brionmario](https://github.com/brionmario)! - Introduce Multi-Tenancy feature
+
+### Patch Changes
+
+- Updated dependencies [[`d54b53ec37367ea29b822c29985c95fb75418f52`](https://github.com/wso2/identity-apps/commit/d54b53ec37367ea29b822c29985c95fb75418f52), [`9983d3bfdc700b345f9cf70047e497ba7f198e2c`](https://github.com/wso2/identity-apps/commit/9983d3bfdc700b345f9cf70047e497ba7f198e2c)]:
+  - @wso2is/admin.template-core.v1@1.3.0
+  - @wso2is/admin.applications.v1@2.29.0
+  - @wso2is/admin.core.v1@2.33.0
+
 ## 1.2.2
 
 ### Patch Changes

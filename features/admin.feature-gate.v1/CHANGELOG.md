@@ -1,5 +1,19 @@
 # @wso2is/admin.feature-gate.v1
 
+## 1.3.0
+
+### Minor Changes
+
+- [#6962](https://github.com/wso2/identity-apps/pull/6962) [`d54b53ec37367ea29b822c29985c95fb75418f52`](https://github.com/wso2/identity-apps/commit/d54b53ec37367ea29b822c29985c95fb75418f52) Thanks [@brionmario](https://github.com/brionmario)! - Introduce Multi-Tenancy feature
+
+### Patch Changes
+
+- Updated dependencies [[`d54b53ec37367ea29b822c29985c95fb75418f52`](https://github.com/wso2/identity-apps/commit/d54b53ec37367ea29b822c29985c95fb75418f52)]:
+  - @wso2is/admin.organizations.v1@2.25.0
+  - @wso2is/admin.core.v1@2.33.0
+  - @wso2is/access-control@3.2.0
+  - @wso2is/core@2.3.0
+
 ## 1.2.3
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @wso2is/identity-apps-core
 
+## 2.6.0
+
+### Minor Changes
+
+- [#6962](https://github.com/wso2/identity-apps/pull/6962) [`d54b53ec37367ea29b822c29985c95fb75418f52`](https://github.com/wso2/identity-apps/commit/d54b53ec37367ea29b822c29985c95fb75418f52) Thanks [@brionmario](https://github.com/brionmario)! - Introduce Multi-Tenancy feature
+
+### Patch Changes
+
+- Updated dependencies [[`d54b53ec37367ea29b822c29985c95fb75418f52`](https://github.com/wso2/identity-apps/commit/d54b53ec37367ea29b822c29985c95fb75418f52)]:
+  - @wso2is/theme@2.3.0
+
 ## 2.5.1
 
 ### Patch Changes

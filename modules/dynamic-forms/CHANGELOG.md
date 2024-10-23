@@ -1,5 +1,18 @@
 # @wso2is/dynamic-forms
 
+## 2.3.0
+
+### Minor Changes
+
+- [#6962](https://github.com/wso2/identity-apps/pull/6962) [`d54b53ec37367ea29b822c29985c95fb75418f52`](https://github.com/wso2/identity-apps/commit/d54b53ec37367ea29b822c29985c95fb75418f52) Thanks [@brionmario](https://github.com/brionmario)! - Introduce Multi-Tenancy feature
+
+### Patch Changes
+
+- Updated dependencies [[`d54b53ec37367ea29b822c29985c95fb75418f52`](https://github.com/wso2/identity-apps/commit/d54b53ec37367ea29b822c29985c95fb75418f52)]:
+  - @wso2is/react-components@2.7.0
+  - @wso2is/validation@2.3.0
+  - @wso2is/core@2.3.0
+
 ## 2.2.0
 
 ### Minor Changes

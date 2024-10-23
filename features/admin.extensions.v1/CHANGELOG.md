@@ -1,5 +1,44 @@
 # @wso2is/admin.extensions.v1
 
+## 2.33.0
+
+### Minor Changes
+
+- [#6962](https://github.com/wso2/identity-apps/pull/6962) [`d54b53ec37367ea29b822c29985c95fb75418f52`](https://github.com/wso2/identity-apps/commit/d54b53ec37367ea29b822c29985c95fb75418f52) Thanks [@brionmario](https://github.com/brionmario)! - Introduce Multi-Tenancy feature
+
+### Patch Changes
+
+- Updated dependencies [[`d54b53ec37367ea29b822c29985c95fb75418f52`](https://github.com/wso2/identity-apps/commit/d54b53ec37367ea29b822c29985c95fb75418f52), [`e264222a39f0f7fca07549db634a8ed20348ec53`](https://github.com/wso2/identity-apps/commit/e264222a39f0f7fca07549db634a8ed20348ec53), [`9983d3bfdc700b345f9cf70047e497ba7f198e2c`](https://github.com/wso2/identity-apps/commit/9983d3bfdc700b345f9cf70047e497ba7f198e2c)]:
+  - @wso2is/admin.server-configurations.v1@2.27.0
+  - @wso2is/admin.identity-providers.v1@2.25.0
+  - @wso2is/admin.remote-userstores.v1@1.4.0
+  - @wso2is/admin.authentication.v1@2.24.0
+  - @wso2is/admin.api-resources.v1@2.24.0
+  - @wso2is/admin.authorization.v1@2.24.0
+  - @wso2is/admin.organizations.v1@2.25.0
+  - @wso2is/admin.sms-providers.v1@2.24.0
+  - @wso2is/admin.applications.v1@2.29.0
+  - @wso2is/admin.feature-gate.v1@1.3.0
+  - @wso2is/admin.provisioning.v1@2.24.0
+  - @wso2is/admin.connections.v1@2.27.0
+  - @wso2is/admin.userstores.v1@2.24.0
+  - @wso2is/admin.validation.v1@2.25.0
+  - @wso2is/admin.tenants.v1@2.26.0
+  - @wso2is/admin.claims.v1@2.24.0
+  - @wso2is/admin.groups.v1@2.24.0
+  - @wso2is/react-components@2.7.0
+  - @wso2is/admin.roles.v2@2.25.0
+  - @wso2is/admin.users.v1@2.26.0
+  - @wso2is/admin.core.v1@2.33.0
+  - @wso2is/access-control@3.2.0
+  - @wso2is/dynamic-forms@2.3.0
+  - @wso2is/validation@2.3.0
+  - @wso2is/forms@2.2.0
+  - @wso2is/theme@2.3.0
+  - @wso2is/core@2.3.0
+  - @wso2is/form@2.4.0
+  - @wso2is/i18n@2.9.0
+
 ## 2.32.2
 
 ### Patch Changes

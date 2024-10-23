@@ -1,5 +1,20 @@
 # @wso2is/form
 
+## 2.4.0
+
+### Minor Changes
+
+- [#6962](https://github.com/wso2/identity-apps/pull/6962) [`d54b53ec37367ea29b822c29985c95fb75418f52`](https://github.com/wso2/identity-apps/commit/d54b53ec37367ea29b822c29985c95fb75418f52) Thanks [@brionmario](https://github.com/brionmario)! - Introduce Multi-Tenancy feature
+
+### Patch Changes
+
+- [#7014](https://github.com/wso2/identity-apps/pull/7014) [`e264222a39f0f7fca07549db634a8ed20348ec53`](https://github.com/wso2/identity-apps/commit/e264222a39f0f7fca07549db634a8ed20348ec53) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues with passing custom `onChange` to `TextFieldAdapter`
+
+- Updated dependencies [[`d54b53ec37367ea29b822c29985c95fb75418f52`](https://github.com/wso2/identity-apps/commit/d54b53ec37367ea29b822c29985c95fb75418f52)]:
+  - @wso2is/react-components@2.7.0
+  - @wso2is/validation@2.3.0
+  - @wso2is/core@2.3.0
+
 ## 2.3.0
 
 ### Minor Changes
