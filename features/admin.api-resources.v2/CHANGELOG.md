@@ -1,5 +1,15 @@
 # @wso2is/admin.api-resources.v2
 
+## 2.24.2
+
+### Patch Changes
+
+- [#7024](https://github.com/wso2/identity-apps/pull/7024) [`448960012a72a50ddf446e5e5b9061be67fb4881`](https://github.com/wso2/identity-apps/commit/448960012a72a50ddf446e5e5b9061be67fb4881) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add error handling for API resource create wizard
+
+- Updated dependencies [[`d65f0c52ae247af4bb49f602d8f5053648f2edbd`](https://github.com/wso2/identity-apps/commit/d65f0c52ae247af4bb49f602d8f5053648f2edbd)]:
+  - @wso2is/form@2.4.1
+  - @wso2is/admin.core.v1@2.33.2
+
 ## 2.24.1
 
 ### Patch Changes

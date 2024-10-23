@@ -1,5 +1,11 @@
 # @wso2is/form
 
+## 2.4.1
+
+### Patch Changes
+
+- [#7026](https://github.com/wso2/identity-apps/pull/7026) [`d65f0c52ae247af4bb49f602d8f5053648f2edbd`](https://github.com/wso2/identity-apps/commit/d65f0c52ae247af4bb49f602d8f5053648f2edbd) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix null pointer issue in TextFieldAdapter
+
 ## 2.4.0
 
 ### Minor Changes
