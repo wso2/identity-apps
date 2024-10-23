@@ -1006,19 +1006,19 @@
                 "enabled": true,
                 "scopes": {
                     "create": [
-                        "internal_email_mgt_create"
+                        "internal_template_mgt_create"
                     ],
                     "delete": [
-                        "internal_email_mgt_delete"
+                        "internal_template_mgt_delete"
                     ],
                     "feature": [
                         "console:emailTemplates"
                     ],
                     "read": [
-                        "internal_email_mgt_view"
+                        "internal_template_mgt_view"
                     ],
                     "update": [
-                        "internal_email_mgt_update"
+                        "internal_template_mgt_update"
                     ]
                 }
             },

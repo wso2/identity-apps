@@ -18,12 +18,11 @@
 
 import { SelectChangeEvent } from "@mui/material";
 import Card from "@oxygen-ui/react/Card";
-import Divider from "@oxygen-ui/react/Divider";
 import Grid from "@oxygen-ui/react/Grid";
 import Typography from "@oxygen-ui/react/Typography";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/branding-preference-provider";
-import { AppState, FeatureConfigInterface, I18nConstants } from "@wso2is/admin.core.v1";
+import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertInterface,
@@ -50,6 +49,7 @@ import SMSTemplatePreview from "../components/sms-template-preview";
 import { SMSTemplateConstants } from "../constants/sms-template-constants";
 import { SMSTemplate, SMSTemplateType } from "../models/sms-templates";
 import "./sms-customization.scss";
+import { AnyAaaaRecord } from "dns";
 
 type SMSCustomizationPageInterface = IdentifiableComponentInterface;
 
@@ -308,6 +308,32 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
             });
     };
 
+    const renderDangerZone = (): ReactElement => {
+        let zoneType:string = "revert";
+
+        if (isSystemTemplate) {
+            return null;
+        } else if (selectedLocale !== SMSTemplateConstants.DEAFULT_LOCALE) {
+            zoneType = "remove";
+        }
+
+        const props: any = {
+            actionTitle: t(`smsTemplates:dangerZone.${zoneType}.action`),
+            header: t(`smsTemplates:dangerZone.${zoneType}.heading`),
+            subheader: t(`smsTemplates:dangerZone.${zoneType}.message`)
+        };
+
+        return (
+            <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                <DangerZone
+                    { ...props }
+                    data-componentid={ `${componentId}-remove-sms-provider-config` }
+                    onActionClick={ handleDeleteRequest }
+                />
+            </DangerZoneGroup>
+        );
+    };
+
     return (
         <BrandingPreferenceProvider>
             <PageLayout
@@ -334,7 +360,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                     onLocaleChanged={ handleLocaleChange }
                 />
 
-                <Card className="p-0">
+                <Card className="p-0 mb-5">
                     <Grid container>
                         <Grid xs={ 8 } className="right-border bottom-border">
                             <Typography
@@ -384,35 +410,9 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                     </Grid>
                 </Card>
 
-                <Divider hidden />
-
-                { !isSystemTemplate && selectedLocale !== SMSTemplateConstants.DEAFULT_LOCALE && (
-                    <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>
-                        <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
-                            <DangerZone
-                                data-componentid={ `${componentId}-remove-sms-provider-config` }
-                                actionTitle={ t("smsTemplates:dangerZone.remove.action") }
-                                header={ t("smsTemplates:dangerZone.remove.heading") }
-                                subheader={ t("smsTemplates:dangerZone.remove.message") }
-                                onActionClick={ handleDeleteRequest }
-                            />
-                        </DangerZoneGroup>
-                    </Show>
-                ) }
-
-                { !isSystemTemplate && selectedLocale === SMSTemplateConstants.DEAFULT_LOCALE && (
-                    <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>
-                        <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
-                            <DangerZone
-                                data-componentid={ `${componentId}-revert-sms-provider-config` }
-                                actionTitle={ t("smsTemplates:dangerZone.revert.action") }
-                                header={ t("smsTemplates:dangerZone.revert.heading") }
-                                subheader={ t("smsTemplates:dangerZone.revert.message") }
-                                onActionClick={ handleDeleteRequest }
-                            />
-                        </DangerZoneGroup>
-                    </Show>
-                ) }
+                <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>
+                    { renderDangerZone() }
+                </Show>
             </PageLayout>
         </BrandingPreferenceProvider>
     );

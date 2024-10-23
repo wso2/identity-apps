@@ -26121,6 +26121,10 @@ packages:
     resolution: {integrity: sha512-Aq58f5HiWdyDlFffbbSjAlv596h/cOnt2DO1w3DOC7OJ5EHs0hd/nycJfiu9RJbT6Yk6F1knnRRXNSpxoIVZ9Q==}
     dev: true
 
+  /@oxygen-ui/primitives@1.13.10:
+    resolution: {integrity: sha512-onLG8Ka8Q52//1X7Kx6HqS64P4zgEJss83yH++BtMuzAWBIwnnUvFibvFoOMLfaZQIXq2Pm8Nq1p//dayuDylA==}
+    dev: false
+
   /@oxygen-ui/primitives@1.15.1:
     resolution: {integrity: sha512-T8k89ltIcIamuGB5rs+xn9jcgoqdHP8SfdN4jib0BY8NvHR+K4oU5eGveStZ+VxUx9c4lf1oEEoXpqrXvY0G/w==}
     dev: false

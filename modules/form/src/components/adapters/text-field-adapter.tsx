@@ -60,7 +60,6 @@ const TextFieldAdapter: FunctionComponent<TextFieldAdapterPropsInterface> = (
         required,
         readOnly,
         endAdornment,
-        onChange,
         ...rest
     } = props;
 
