@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -142,18 +142,28 @@ export const PermissionMappingListItem: FunctionComponent<PermissionMappingListI
 
                                         const filter: string = "name eq " + value;
 
-                                        const response: APIResourcePermissionInterface[] =
-                                            await getAPIResourcePermissions(filter);
+                                        try {
+                                            const response: APIResourcePermissionInterface[] =
+                                                await getAPIResourcePermissions(filter);
 
-                                        if (response?.length > 0) {
+                                            if (response?.length > 0) {
+                                                validation.isValid = false;
+                                                validation.errorMessages.push(
+                                                    t("extensions:develop.apiResource.wizard.addApiResource." +
+                                                        "steps.permissions.form.fields.permission.uniqueValidate")
+                                                );
+                                            }
+                                        } catch (error) {
                                             validation.isValid = false;
-                                            validation.errorMessages.push(t("extensions:develop.apiResource.wizard." +
-                                            "addApiResource.steps.permissions.form.fields.permission.uniqueValidate"));
+                                            validation.errorMessages.push(
+                                                t("extensions:develop.apiResource.wizard.addApiResource." +
+                                                    "steps.permissions.form.fields.permission.errorOccurred"));
+                                            setPermissionValidationLoading(false);
                                         }
                                     }
-
-                                    setPermissionValidationLoading(false);
                                 }
+
+                                setPermissionValidationLoading(false);
                             } }
                             required={ true }
                             tabIndex={ 1 }
