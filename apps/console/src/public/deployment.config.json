@@ -1012,7 +1012,7 @@
                         "internal_template_mgt_delete"
                     ],
                     "feature": [
-                        "console:emailTemplates"
+                        "console:smsTemplates"
                     ],
                     "read": [
                         "internal_template_mgt_view"

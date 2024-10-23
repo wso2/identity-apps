@@ -49,7 +49,6 @@ import SMSTemplatePreview from "../components/sms-template-preview";
 import { SMSTemplateConstants } from "../constants/sms-template-constants";
 import { SMSTemplate, SMSTemplateType } from "../models/sms-templates";
 import "./sms-customization.scss";
-import { AnyAaaaRecord } from "dns";
 
 type SMSCustomizationPageInterface = IdentifiableComponentInterface;
 
