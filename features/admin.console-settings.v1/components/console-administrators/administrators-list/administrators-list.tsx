@@ -48,7 +48,7 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { useInvitedUsersList } from "@wso2is/admin.users.v1/api/invite";
 import { UserInviteInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
 import { AdminAccountTypes, InvitationStatus, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models";
 import {
     AlertInterface,
