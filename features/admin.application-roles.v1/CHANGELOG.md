@@ -1,5 +1,27 @@
 # @wso2is/admin.application-roles.v1
 
+## 2.26.0
+
+### Minor Changes
+
+- [#7022](https://github.com/wso2/identity-apps/pull/7022) [`8ee127818ea4c8aac46296a1c93b45806ee887c2`](https://github.com/wso2/identity-apps/commit/8ee127818ea4c8aac46296a1c93b45806ee887c2) Thanks [@brionmario](https://github.com/brionmario)! - - Update `@oxygen-ui` version to `v1.15.2`.
+  - Remove unwanted padding in the Oxygen UI text field in the theme config.
+  - Fix typo in tenants feature.
+
+### Patch Changes
+
+- Updated dependencies [[`8ee127818ea4c8aac46296a1c93b45806ee887c2`](https://github.com/wso2/identity-apps/commit/8ee127818ea4c8aac46296a1c93b45806ee887c2)]:
+  - @wso2is/admin.identity-providers.v1@2.26.0
+  - @wso2is/admin.applications.v1@2.30.0
+  - @wso2is/admin.connections.v1@2.28.0
+  - @wso2is/admin.extensions.v1@2.34.0
+  - @wso2is/admin.userstores.v1@2.25.0
+  - @wso2is/admin.groups.v1@2.25.0
+  - @wso2is/react-components@2.8.0
+  - @wso2is/admin.core.v1@2.34.0
+  - @wso2is/access-control@3.3.0
+  - @wso2is/core@2.4.0
+
 ## 2.25.2
 
 ### Patch Changes
