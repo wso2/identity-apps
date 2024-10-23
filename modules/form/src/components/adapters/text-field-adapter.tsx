@@ -78,7 +78,7 @@ const TextFieldAdapter: FunctionComponent<TextFieldAdapterPropsInterface> = (
                 { ...input }
                 onChange={ (e: ChangeEvent<HTMLInputElement>) => {
                     input.onChange((e?.target as any)?.value as string);
-                    onChange(e as any);
+                    onChange && onChange(e as any);
                 } }
                 // TODO: Remove this once the `required` prop is supported by the Oxygen UI TextField component.
                 InputLabelProps={ {
