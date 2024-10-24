@@ -18,7 +18,7 @@
 
 import Grid from "@oxygen-ui/react/Grid/Grid";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form/src";
+import { FinalForm, FinalFormField, FormRenderProps, FormSpy, FormState, TextFieldAdapter } from "@wso2is/form";
 import { ContentLoader, DocumentationLink, Hint, Message, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -84,11 +84,9 @@ const SMSCustomizationForm: FunctionComponent<SMSCustomizationFormPropsInterface
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const onTextUpdate = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        const value: string = event.target.value;
-
+    const onFormUpdate = (state: FormState<Record<string, any>, Partial<Record<string, any>>>) => {
         onTemplateChanged({
-            body: value
+            body: state?.values?.smsBody
         });
     };
 
@@ -110,7 +108,6 @@ const SMSCustomizationForm: FunctionComponent<SMSCustomizationFormPropsInterface
                 value={ selectedSmsTemplate?.body }
                 defaultValue={ selectedSmsTemplate?.body }
                 component={ TextFieldAdapter }
-                onChange={ onTextUpdate }
                 readOnly={ readOnly }
                 multiline={ true }
                 minRows={ 4 }
@@ -143,11 +140,14 @@ const SMSCustomizationForm: FunctionComponent<SMSCustomizationFormPropsInterface
                         onSubmit={ onSubmit }
                         initialValues={ { smsBody: selectedSmsTemplate?.body } }
                         render={ ({ handleSubmit }: FormRenderProps) => (
-                            <form onSubmit={ handleSubmit } data-componentid={ componentId }>
-                                { renderFormFields() }
-                            </form>
+                            <>
+                                <FormSpy subscription={ { values: true } } onChange={ onFormUpdate } />
+                                <form onSubmit={ handleSubmit } data-componentid={ componentId }>
+                                    { renderFormFields() }
+                                </form>
+                            </>
                         ) }
-                    ></FinalForm>
+                    />
                     <Hint>{ t("smsTemplates:form.inputs.body.charLengthWarning") }</Hint>
                 </Grid>
             </Grid>

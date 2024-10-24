@@ -32,7 +32,7 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { DangerZone, DangerZoneGroup, DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -106,7 +106,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         shouldFetch
     );
 
-    useMemo(() => {
+    useEffect(() => {
         // we don't have a good displayName and description coming from the backend
         // for the SMS template types. So as we agreed use the displayName and
         // description from the SMS template types config defined in
