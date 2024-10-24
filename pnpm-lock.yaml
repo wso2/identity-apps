@@ -743,9 +743,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: 11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -1318,9 +1315,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: 11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -3222,9 +3216,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -3674,9 +3665,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -4074,9 +4062,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -4456,9 +4441,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -4853,9 +4835,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -5268,9 +5247,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -6149,9 +6125,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -6528,9 +6501,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -6913,9 +6883,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -7292,9 +7259,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -7674,9 +7638,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -8110,9 +8071,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -8631,9 +8589,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -9212,9 +9167,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -9603,9 +9555,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -10370,9 +10319,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -10888,9 +10834,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -11267,9 +11210,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -11649,9 +11589,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -12061,9 +11998,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -12443,9 +12377,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -12831,9 +12762,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -13210,9 +13138,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -13755,9 +13680,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -14170,9 +14092,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -14549,9 +14468,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -14928,9 +14844,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -15328,9 +15241,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -15710,9 +15620,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -16089,9 +15996,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -16859,9 +16763,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -17489,9 +17390,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -18040,9 +17938,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -18422,9 +18317,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -18819,9 +18711,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -19198,9 +19087,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -19577,9 +19463,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -19956,9 +19839,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
