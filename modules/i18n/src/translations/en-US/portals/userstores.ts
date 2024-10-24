@@ -187,6 +187,10 @@ export const userstores: userstoresNS = {
         },
         list: {
             description: "Create and manage user stores.",
+            newUserStoreDropdown: {
+                connectDirectly: "Connect directly",
+                connectRemotely: "Connect via agent"
+            },
             primaryAction: "New User Store",
             title: "User Stores"
         },

@@ -28,6 +28,7 @@ import {
     sortList
 } from "@wso2is/admin.core.v1";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
+import { RemoteUserStoreConstants } from "@wso2is/admin.remote-userstores.v1/constants/remote-user-stores";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -36,9 +37,11 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { UserAccountTypes } from "../../admin.users.v1/constants";
 import { getUserStores } from "../api";
 import { UserStoresList } from "../components";
+import { UserStoreTypes } from "../constants";
 import { QueryParams, UserStoreListItem } from "../models";
 
 /**
@@ -222,6 +225,50 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
         setFilteredUserStores(userStores);
     };
 
+    const addUserDropdownTrigger: ReactElement = (
+        <PrimaryButton
+            data-componentid={ `${ testId }-add-user-button` }
+            data-testid={ `${ testId }-add-user-button` }
+        >
+            <Icon name="add"/>
+            { t("userstores:pageLayout.list.primaryAction") }
+            <Icon name="dropdown" className="ml-3 mr-0"/>
+        </PrimaryButton>
+    );
+
+    const getAddUserOptions = (): DropdownItemProps[] => {
+        const dropDownOptions: DropdownItemProps[] = [];
+
+        dropDownOptions.push({
+            "data-componentid": `${testId}-add-user-dropdown-item`,
+            key: 1,
+            text: t("userstores:pageLayout.list.newUserStoreDropdown.connectDirectly"),
+            value: UserStoreTypes.DIRECT
+        });
+        dropDownOptions.push({
+            "data-componentid": `${testId}-bulk-import-users-dropdown-item`,
+            "data-testid": `${testId}-bulk-import-users-dropdown-item`,
+            key: 2,
+            text: t("userstores:pageLayout.list.newUserStoreDropdown.connectRemotely"),
+            value: UserStoreTypes.REMOTE
+        });
+
+        return dropDownOptions;
+    };
+
+    const handleDropdownItemChange = (value: string): void => {
+        switch (value) {
+            case UserStoreTypes.DIRECT:
+                history.push(AppConstants.getPaths().get("USERSTORE_TEMPLATES"));
+
+                break;
+            case UserStoreTypes.REMOTE:
+                history.push(RemoteUserStoreConstants.getPaths().get("REMOTE_USER_STORE_CREATE"))
+
+                break;
+        }
+    };
+
     return (
         <PageLayout
             action={
@@ -231,7 +278,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                     <Show
                         when={ featureConfig?.userStores?.scopes?.create }
                     >
-                        <PrimaryButton
+                        { /* <PrimaryButton
                             onClick={ () => {
                                 history.push(AppConstants.getPaths().get("USERSTORE_TEMPLATES"));
                             } }
@@ -239,7 +286,29 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                         >
                             <Icon name="add"/>
                             { t("userstores:pageLayout.list.primaryAction") }
-                        </PrimaryButton>
+                        </PrimaryButton> */ }
+                        <Dropdown
+                            data-componentid={ `${ testId }-add-user-dropdown` }
+                            direction="left"
+                            floating
+                            icon={ null }
+                            trigger={ addUserDropdownTrigger }
+                        >
+                            <Dropdown.Menu >
+                                { getAddUserOptions().map((option: {
+                        "data-componentid": string;
+                        key: number;
+                        text: string;
+                        value: UserAccountTypes;
+                    }) => (
+                                    <Dropdown.Item
+                                        key={ option.value }
+                                        onClick={ ()=> handleDropdownItemChange(option.value) }
+                                        { ...option }
+                                    />
+                                )) }
+                            </Dropdown.Menu>
+                        </Dropdown>
                     </Show>
                 )
             }
