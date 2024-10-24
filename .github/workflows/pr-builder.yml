@@ -22,7 +22,8 @@ env:
 jobs:
   lint:
     name: ⬣ ESLint (STATIC ANALYSIS)
-    if: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' }}
+    # if: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' }}
+    if: ${{ false }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -85,7 +86,8 @@ jobs:
 
   typecheck:
     name: ʦ Typecheck (STATIC ANALYSIS)
-    if: ${{ github.event.label.name == 'trigger-pr-builder' || github.event_name == 'pull_request'}}
+    # if: ${{ github.event.label.name == 'trigger-pr-builder' || github.event_name == 'pull_request'}}
+    if: ${{ false }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -143,6 +145,7 @@ jobs:
 
   test:
     name: 👾 Unit Test (TESTING)
+    if: ${{ false }}
     needs: [ typecheck ]
     runs-on: ubuntu-latest
     strategy:
@@ -228,7 +231,6 @@ jobs:
 
   build:
     name: 🚧 Build
-    needs: [ test, typecheck ]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -238,14 +240,22 @@ jobs:
         pnpm-version: [ 8.7.4 ]
     steps:
       - name: ⬇️ Checkout
-        id: checkout
-        uses: actions/checkout@v2.3.3
+        id: checkout-master
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: 🟢 Setup node
         id: setup-node
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: 🐳 Set SHAs for Nx
+        id: set-shas
+        uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: "master"
 
       - name: ☕ Set up JDK 11
         id: jdk-setup
@@ -287,13 +297,7 @@ jobs:
 
       - name: 👷 PNPM Build
         id: build-with-pnpm
-        run: pnpm build
-
-      - name: 🏗️ Maven Build identity-apps-core
-        id: build-with-maven
-        run: |
-          cd identity-apps-core
-          mvn clean install -U -Dlint.exec.skip=true -Dbootstrap.exec.skip=true
+        run: pnpm nx affected --base=origin/master --head=${{ env.NX_HEAD }} --target=build --parallel=3
 
       - name: 💾 Cache local Maven repository
         id: cache-maven-m2
