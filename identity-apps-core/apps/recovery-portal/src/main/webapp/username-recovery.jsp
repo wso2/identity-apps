@@ -84,6 +84,7 @@
     boolean isFirstNameInClaims = false;
     boolean isLastNameInClaims = false;
     boolean isEmailInClaims = false;
+    boolean isMobileInClaims = false;
     List<Claim> claims;
     UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
     try {
@@ -106,6 +107,7 @@
         return;
     }
 
+
     for (Claim claim : claims) {
         if (StringUtils.equals(claim.getUri(),
                 IdentityManagementEndpointConstants.ClaimURIs.FIRST_NAME_CLAIM)) {
@@ -117,6 +119,10 @@
         if (StringUtils.equals(claim.getUri(),
                 IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM)) {
             isEmailInClaims = true;
+        }
+        if (StringUtils.equals(claim.getUri(),
+                IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM)) {
+            isMobileInClaims = true;
         }
     }
 
@@ -226,13 +232,11 @@
                         <%
                             }
 
-                            if (isEmailInClaims) { %>
-                        <div class="field">
-                            <label for="email" class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                    "Email")%></label>
-                            <input id="email" type="email" name="http://wso2.org/claims/emailaddress"
-                                    class="form-control"
-                                    data-validate="email">
+                            if (isEmailInClaims || isMobileInClaims) { %>
+                        <div class="required field">
+                            <label for="contact" class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                    "Contact")%></label>
+                            <input id="contact" type="text" name="contact" required class="form-control">
                         </div>
                         <% } %>
 
@@ -250,6 +254,7 @@
                         <% } %>
 
                         <input type="hidden" id="isUsernameRecovery" name="isUsernameRecovery" value="true">
+                        <input type="hidden" id="recoveryStage" name="recoveryStage" value="INITIATE">
 
                         <% for (Claim claim : claims) {
                             if (claim.getRequired() &&
@@ -258,7 +263,9 @@
                                     !StringUtils.equals(claim.getUri(),
                                             IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM) &&
                                     !StringUtils.equals(claim.getUri(),
-                                            IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM)) {
+                                            IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM) && 
+                                    !StringUtils.equals(claim.getUri(),
+                                            IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM)) {
                         %>
 
                         <div class="field">
@@ -291,15 +298,16 @@
 
                         <div class="ui divider hidden"></div>
 
-                        <div class="align-right buttons">
-                            <a href="javascript:goBack()" class="ui button secondary">
+                         <div class="mt-0">
+                            <button id="recoverySubmit" class="ui primary button large fluid" type="submit">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Next")%>
+                            </button>
+    
+                        </div>
+                        <div class="mt-1 align-center">
+                            <a href="javascript:goBack()" class="ui button secondary large fluid">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                             </a>
-                            <button id="recoverySubmit"
-                                    class="ui primary button"
-                                    type="submit">
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
-                            </button>
                         </div>
                     </form>
                 </div>
@@ -331,7 +339,7 @@
         <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
-    <script type="text/javascript">
+     <script type="text/javascript">
         function goBack() {
             window.history.back();
         }
@@ -341,7 +349,6 @@
         }
 
         $(document).ready(function () {
-
             $("#recoverDetailsForm").submit(function (e) {
                 <%
                     if (reCaptchaEnabled) {
@@ -349,7 +356,6 @@
                 if (!grecaptcha.getResponse()) {
                     e.preventDefault();
                     grecaptcha.execute();
-
                     return true;
                 }
                 <%
@@ -376,6 +382,24 @@
                     }
                 <% } %>
 
+                // Contact input validation.
+                const contact = $("#contact").val();
+                const mobileClaimRegex = new RegExp("^\\s*(?:\\+?(\\d{1,3}))?[-. (]*(\\d{2,3})[-. )]*(\\d{3})[-. ]*(\\d{4,6})(?: *x(\\d+))?\\s*$");
+                const emailClaimRegex = new RegExp("^([a-zA-Z0-9!#$'\\+=^_.{|}~\\-&])+@(([a-zA-Z0-9\\-])+\\.)+([a-zA-Z0-9]{2,10})+$");
+
+                if (contact === "") {
+                    errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Contact.cannot.be.empty")%>");
+                    errorMessage.show();
+                    $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
+                    submitButton.removeClass("loading").attr("disabled", false);
+                    return false;
+                } else if (!contact.match(mobileClaimRegex) && !contact.match(emailClaimRegex)) {
+                    errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Invalid.contact")%>");
+                    errorMessage.show();
+                    $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
+                    submitButton.removeClass("loading").attr("disabled", false);
+                    return false;
+                }
                 return true;
             });
         });
