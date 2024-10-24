@@ -1,5 +1,32 @@
 # @wso2is/admin.extensions.v1
 
+## 2.34.1
+
+### Patch Changes
+
+- [#6984](https://github.com/wso2/identity-apps/pull/6984) [`60ebbf89887588e81579d4d5ee786dfb4ec6ea0e`](https://github.com/wso2/identity-apps/commit/60ebbf89887588e81579d4d5ee786dfb4ec6ea0e) Thanks [@Avarjana](https://github.com/Avarjana)! - Add SMS template management
+
+- Updated dependencies [[`60ebbf89887588e81579d4d5ee786dfb4ec6ea0e`](https://github.com/wso2/identity-apps/commit/60ebbf89887588e81579d4d5ee786dfb4ec6ea0e)]:
+  - @wso2is/admin.core.v1@2.34.1
+  - @wso2is/admin.api-resources.v1@2.25.1
+  - @wso2is/admin.applications.v1@2.30.1
+  - @wso2is/admin.authentication.v1@2.25.1
+  - @wso2is/admin.claims.v1@2.25.1
+  - @wso2is/admin.connections.v1@2.28.1
+  - @wso2is/admin.feature-gate.v1@1.4.1
+  - @wso2is/admin.groups.v1@2.25.1
+  - @wso2is/admin.identity-providers.v1@2.26.1
+  - @wso2is/admin.organizations.v1@2.26.1
+  - @wso2is/admin.provisioning.v1@2.25.1
+  - @wso2is/admin.remote-userstores.v1@1.5.1
+  - @wso2is/admin.roles.v2@2.26.1
+  - @wso2is/admin.server-configurations.v1@2.28.1
+  - @wso2is/admin.sms-providers.v1@2.25.1
+  - @wso2is/admin.tenants.v1@2.27.1
+  - @wso2is/admin.users.v1@2.27.1
+  - @wso2is/admin.userstores.v1@2.25.1
+  - @wso2is/admin.validation.v1@2.26.1
+
 ## 2.34.0
 
 ### Minor Changes
