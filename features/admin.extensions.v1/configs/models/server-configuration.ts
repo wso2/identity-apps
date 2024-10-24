@@ -16,11 +16,9 @@
  * under the License.
  */
 
-import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { GovernanceConnectorInterface } from "@wso2is/admin.server-configurations.v1";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { ReactElement, ReactNode } from "react";
-import { TFunction } from "react-i18next";
 
 export interface ServerConfigurationConfig {
     autoEnableConnectorToggleProperty: boolean;
@@ -49,28 +47,12 @@ export interface ServerConfigurationConfig {
     showConnectorsOnTheSidePanel: boolean;
     showGovernanceConnectorCategories: boolean;
     showPageHeading: boolean;
-    usePasswordHistory: () => RequestResultInterface<GovernanceConnectorInterface, RequestErrorInterface>;
     processInitialValues: (
         initialValues: ValidationFormInterface,
         passwordHistoryCount: GovernanceConnectorInterface,
         setPasswordHistoryEnabled: (state: boolean) => void
     ) => PasswordHistoryCountInterface;
     processPasswordCountSubmitData: (data: ValidationFormInterface) => Promise<any>;
-    passwordHistoryCountComponent: (
-        componentId: string,
-        passwordHistoryEnabled: boolean,
-        setPasswordHistoryEnabled: (state: boolean) => void,
-        t: TFunction<"translation", undefined>,
-        isReadOnly?: boolean
-    ) => ReactElement;
-    passwordExpiryComponent: (
-        componentId: string,
-        passwordExpiryEnabled: boolean,
-        setPasswordExpiryEnabled: (state: boolean) => void,
-        t: TFunction<"translation", undefined>,
-        isReadOnly?: boolean
-    ) => ReactElement;
-    usePasswordExpiry: () => RequestResultInterface<GovernanceConnectorInterface, RequestErrorInterface>;
     processPasswordExpiryInitialValues: (
         initialValues: ValidationFormInterface,
         passwordExpiryTime: GovernanceConnectorInterface,

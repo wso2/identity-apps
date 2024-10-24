@@ -151,6 +151,8 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             selfSignUp: "",
             serverConfigurations: "",
             serverSupportedSchemas: "",
+            smsPublisher: "",
+            smsSender: "",
             tenantAssociationApi: "",
             tenantManagementApi: "",
             tenantSubscriptionApi: "",
