@@ -2860,6 +2860,9 @@ importers:
       '@wso2is/react-components':
         specifier: ^2.8.0
         version: link:../../modules/react-components
+      '@xyflow/react':
+        specifier: ^12.3.2
+        version: 12.3.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       axios:
         specifier: ^0.19.2
         version: 0.19.2
@@ -2890,9 +2893,6 @@ importers:
       react-redux:
         specifier: ^7.2.9
         version: 7.2.9(react-dom@18.3.1)(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       redux:
         specifier: ^4.0.4
         version: 4.2.1
@@ -5581,6 +5581,9 @@ importers:
       '@wso2is/validation':
         specifier: ^2.4.0
         version: link:../../modules/validation
+      '@xyflow/react':
+        specifier: ^12.3.2
+        version: 12.3.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       axios:
         specifier: ^0.19.2
         version: 0.19.2
@@ -5659,9 +5662,6 @@ importers:
       react-router-dom:
         specifier: ^4.3.1
         version: 4.3.1(react@18.3.1)
-      reactflow:
-        specifier: ^11.7.2
-        version: 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: ^2.6.2
         version: 2.12.7(react-dom@18.3.1)(react@18.3.1)
@@ -26769,114 +26769,6 @@ packages:
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
     dev: false
 
-  /@reactflow/background@11.2.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-gOtae79Zx1zOs9tD4tmKfuiQQOyG0O81BWBCHqlAQgemKlYExElFKOC67lgTDZ4GGFK+4sXrgrWQ5h14hzaFgg==}
-    peerDependencies:
-      react: '>=17'
-      react-dom: '>=17'
-    dependencies:
-      '@reactflow/core': 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      classcat: 5.0.5
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      zustand: 4.5.5(@types/react@18.0.18)(react@18.3.1)
-    transitivePeerDependencies:
-      - '@types/react'
-      - immer
-    dev: false
-
-  /@reactflow/controls@11.1.13(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-rA74+mbt2bnz9Fba6JL1JsKHNNEK6Nl70+ssfOLKMpRFIg512IroayBWufgPJB82X9dgMIzZfx/UcEFFUFJQ8Q==}
-    peerDependencies:
-      react: '>=17'
-      react-dom: '>=17'
-    dependencies:
-      '@reactflow/core': 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      classcat: 5.0.5
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      zustand: 4.5.5(@types/react@18.0.18)(react@18.3.1)
-    transitivePeerDependencies:
-      - '@types/react'
-      - immer
-    dev: false
-
-  /@reactflow/core@11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-AhszxILp1RNk3SwrnC/eYh1XsOil5yzthYG5k+oTpvLH5H3BtIWIVkeLEJwmL611lPKL3JuScfjliUxBm9128w==}
-    peerDependencies:
-      react: '>=17'
-      react-dom: '>=17'
-    dependencies:
-      '@types/d3': 7.4.3
-      '@types/d3-drag': 3.0.7
-      '@types/d3-selection': 3.0.10
-      '@types/d3-zoom': 3.0.8
-      classcat: 5.0.5
-      d3-drag: 3.0.0
-      d3-selection: 3.0.0
-      d3-zoom: 3.0.0
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      zustand: 4.5.5(@types/react@18.0.18)(react@18.3.1)
-    transitivePeerDependencies:
-      - '@types/react'
-      - immer
-    dev: false
-
-  /@reactflow/minimap@11.5.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-564gP/GMZKaJjVRGIrVLv2gIjgc89+qvNwuZzHnQLXjBw5+nS/QkW57Qx/M33MxVAaM+Z5rJ8gKknMSnxekwvQ==}
-    peerDependencies:
-      react: '>=17'
-      react-dom: '>=17'
-    dependencies:
-      '@reactflow/core': 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      '@types/d3-selection': 3.0.10
-      '@types/d3-zoom': 3.0.8
-      classcat: 5.0.5
-      d3-selection: 3.0.0
-      d3-zoom: 3.0.0
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      zustand: 4.5.5(@types/react@18.0.18)(react@18.3.1)
-    transitivePeerDependencies:
-      - '@types/react'
-      - immer
-    dev: false
-
-  /@reactflow/node-resizer@2.1.0(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-DVL8nnWsltP8/iANadAcTaDB4wsEkx2mOLlBEPNE3yc5loSm3u9l5m4enXRcBym61MiMuTtDPzZMyYYQUjuYIg==}
-    peerDependencies:
-      react: '>=17'
-      react-dom: '>=17'
-    dependencies:
-      '@reactflow/core': 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      classcat: 5.0.5
-      d3-drag: 3.0.0
-      d3-selection: 3.0.0
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      zustand: 4.5.5(@types/react@18.0.18)(react@18.3.1)
-    transitivePeerDependencies:
-      - '@types/react'
-      - immer
-    dev: false
-
-  /@reactflow/node-toolbar@1.2.1(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-EcMUMzJGAACYQTiUaBm3zxeiiKCPwU2MaoDeZdnEMbvq+2SfohKOur6JklANjv30kL+Pf3xj8QopEtyKTS4XrA==}
-    peerDependencies:
-      react: '>=17'
-      react-dom: '>=17'
-    dependencies:
-      '@reactflow/core': 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      classcat: 5.0.5
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      zustand: 4.5.5(@types/react@18.0.18)(react@18.3.1)
-    transitivePeerDependencies:
-      - '@types/react'
-      - immer
-    dev: false
-
   /@rollup/plugin-babel@5.3.1(@babel/core@7.25.2)(rollup@2.79.1):
     resolution: {integrity: sha512-WFfdLWU/xVWKeRQnKmIAQULUI7Il0gZnBIH/ZFO069wYIfPu+8zrfp/KMW0atmELoRDq8FbiP3VCss9MhCut7Q==}
     engines: {node: '>= 10.0.0'}
@@ -30070,39 +29962,8 @@ packages:
     resolution: {integrity: sha512-Y2Jn2idRrLzUfAKV2LyRImR+y4oa2AntrgID95SHJxuMUrkNXmanDSed71sRNZysveJVt1hLLemQZIady0FpEg==}
     dev: false
 
-  /@types/d3-axis@3.0.6:
-    resolution: {integrity: sha512-pYeijfZuBd87T0hGn0FO1vQ/cgLk6E1ALJjfkC0oJ8cbwkZl3TpgS8bVBLZN+2jjGgg38epgxb2zmoGtSfvgMw==}
-    dependencies:
-      '@types/d3-selection': 3.0.10
-    dev: false
-
-  /@types/d3-brush@3.0.6:
-    resolution: {integrity: sha512-nH60IZNNxEcrh6L1ZSMNA28rj27ut/2ZmI3r96Zd+1jrZD++zD3LsMIjWlvg4AYrHn/Pqz4CF3veCxGjtbqt7A==}
-    dependencies:
-      '@types/d3-selection': 3.0.10
-    dev: false
-
-  /@types/d3-chord@3.0.6:
-    resolution: {integrity: sha512-LFYWWd8nwfwEmTZG9PfQxd17HbNPksHBiJHaKuY1XeqscXacsS2tyoo6OdRsjf+NQYeB6XrNL3a25E3gH69lcg==}
-    dev: false
-
   /@types/d3-color@3.1.3:
     resolution: {integrity: sha512-iO90scth9WAbmgv7ogoq57O9YpKmFBbmoEoCHDB2xMBY0+/KVrqAaCDyCE16dUspeOvIxFFRI+0sEtqDqy2b4A==}
-    dev: false
-
-  /@types/d3-contour@3.0.6:
-    resolution: {integrity: sha512-BjzLgXGnCWjUSYGfH1cpdo41/hgdWETu4YxpezoztawmqsvCeep+8QGfiY6YbDvfgHz/DkjeIkkZVJavB4a3rg==}
-    dependencies:
-      '@types/d3-array': 3.2.1
-      '@types/geojson': 7946.0.14
-    dev: false
-
-  /@types/d3-delaunay@6.0.4:
-    resolution: {integrity: sha512-ZMaSKu4THYCU6sV64Lhg6qjf1orxBthaC161plr5KuPHo3CNm8DTHiLw/5Eq2b6TsNP0W0iJrUOFscY6Q450Hw==}
-    dev: false
-
-  /@types/d3-dispatch@3.0.6:
-    resolution: {integrity: sha512-4fvZhzMeeuBJYZXRXrRIQnvUYfyXwYmLsdiN7XXmVNQKKw1cM8a5WdID0g1hVFZDqT9ZqZEY5pD44p24VS7iZQ==}
     dev: false
 
   /@types/d3-drag@3.0.7:
@@ -30111,36 +29972,8 @@ packages:
       '@types/d3-selection': 3.0.10
     dev: false
 
-  /@types/d3-dsv@3.0.7:
-    resolution: {integrity: sha512-n6QBF9/+XASqcKK6waudgL0pf/S5XHPPI8APyMLLUHd8NqouBGLsU8MgtO7NINGtPBtk9Kko/W4ea0oAspwh9g==}
-    dev: false
-
   /@types/d3-ease@3.0.2:
     resolution: {integrity: sha512-NcV1JjO5oDzoK26oMzbILE6HW7uVXOHLQvHshBUW4UMdZGfiY6v5BeQwh9a9tCzv+CeefZQHJt5SRgK154RtiA==}
-    dev: false
-
-  /@types/d3-fetch@3.0.7:
-    resolution: {integrity: sha512-fTAfNmxSb9SOWNB9IoG5c8Hg6R+AzUHDRlsXsDZsNp6sxAEOP0tkP3gKkNSO/qmHPoBFTxNrjDprVHDQDvo5aA==}
-    dependencies:
-      '@types/d3-dsv': 3.0.7
-    dev: false
-
-  /@types/d3-force@3.0.10:
-    resolution: {integrity: sha512-ZYeSaCF3p73RdOKcjj+swRlZfnYpK1EbaDiYICEEp5Q6sUiqFaFQ9qgoshp5CzIyyb/yD09kD9o2zEltCexlgw==}
-    dev: false
-
-  /@types/d3-format@3.0.4:
-    resolution: {integrity: sha512-fALi2aI6shfg7vM5KiR1wNJnZ7r6UuggVqtDA+xiEdPZQwy/trcQaHnwShLuLdta2rTymCNpxYTiMZX/e09F4g==}
-    dev: false
-
-  /@types/d3-geo@3.1.0:
-    resolution: {integrity: sha512-856sckF0oP/diXtS4jNsiQw/UuK5fQG8l/a9VVLeSouf1/PPbBE1i1W852zVwKwYCBkFJJB7nCFTbk6UMEXBOQ==}
-    dependencies:
-      '@types/geojson': 7946.0.14
-    dev: false
-
-  /@types/d3-hierarchy@3.1.7:
-    resolution: {integrity: sha512-tJFtNoYBtRtkNysX1Xq4sxtjK8YgoWUNpIiUee0/jHGRwqvzYxkq0hGVbbOGSz+JgFxxRu4K8nb3YpG3CMARtg==}
     dev: false
 
   /@types/d3-interpolate@3.0.4:
@@ -30151,22 +29984,6 @@ packages:
 
   /@types/d3-path@3.1.0:
     resolution: {integrity: sha512-P2dlU/q51fkOc/Gfl3Ul9kicV7l+ra934qBFXCFhrZMOL6du1TM0pm1ThYvENukyOn5h9v+yMJ9Fn5JK4QozrQ==}
-    dev: false
-
-  /@types/d3-polygon@3.0.2:
-    resolution: {integrity: sha512-ZuWOtMaHCkN9xoeEMr1ubW2nGWsp4nIql+OPQRstu4ypeZ+zk3YKqQT0CXVe/PYqrKpZAi+J9mTs05TKwjXSRA==}
-    dev: false
-
-  /@types/d3-quadtree@3.0.6:
-    resolution: {integrity: sha512-oUzyO1/Zm6rsxKRHA1vH0NEDG58HrT5icx/azi9MF1TWdtttWl0UIUsjEQBBh+SIkrpd21ZjEv7ptxWys1ncsg==}
-    dev: false
-
-  /@types/d3-random@3.0.3:
-    resolution: {integrity: sha512-Imagg1vJ3y76Y2ea0871wpabqp613+8/r0mCLEBfdtqC7xMSfj9idOnmBYyMoULfHePJyxMAw3nWhJxzc+LFwQ==}
-    dev: false
-
-  /@types/d3-scale-chromatic@3.0.3:
-    resolution: {integrity: sha512-laXM4+1o5ImZv3RpFAsTRn3TEkzqkytiOY0Dz0sq5cnd1dtNlk6sHLon4OvqaiJb28T0S/TdsBI3Sjsy+keJrw==}
     dev: false
 
   /@types/d3-scale@4.0.8:
@@ -30183,10 +30000,6 @@ packages:
     resolution: {integrity: sha512-5KKk5aKGu2I+O6SONMYSNflgiP0WfZIQvVUMan50wHsLG1G94JlxEVnCpQARfTtzytuY0p/9PXXZb3I7giofIA==}
     dependencies:
       '@types/d3-path': 3.1.0
-    dev: false
-
-  /@types/d3-time-format@4.0.3:
-    resolution: {integrity: sha512-5xg9rC+wWL8kdDj153qZcsJ0FWiFt0J5RB6LYUNZjwSnesfblqrI/bJ1wBdJ8OQfncgbJG5+2F+qfqnqyzYxyg==}
     dev: false
 
   /@types/d3-time@3.0.3:
@@ -30208,41 +30021,6 @@ packages:
     dependencies:
       '@types/d3-interpolate': 3.0.4
       '@types/d3-selection': 3.0.10
-    dev: false
-
-  /@types/d3@7.4.3:
-    resolution: {integrity: sha512-lZXZ9ckh5R8uiFVt8ogUNf+pIrK4EsWrx2Np75WvF/eTpJ0FMHNhjXk8CKEx/+gpHbNQyJWehbFaTvqmHWB3ww==}
-    dependencies:
-      '@types/d3-array': 3.2.1
-      '@types/d3-axis': 3.0.6
-      '@types/d3-brush': 3.0.6
-      '@types/d3-chord': 3.0.6
-      '@types/d3-color': 3.1.3
-      '@types/d3-contour': 3.0.6
-      '@types/d3-delaunay': 6.0.4
-      '@types/d3-dispatch': 3.0.6
-      '@types/d3-drag': 3.0.7
-      '@types/d3-dsv': 3.0.7
-      '@types/d3-ease': 3.0.2
-      '@types/d3-fetch': 3.0.7
-      '@types/d3-force': 3.0.10
-      '@types/d3-format': 3.0.4
-      '@types/d3-geo': 3.1.0
-      '@types/d3-hierarchy': 3.1.7
-      '@types/d3-interpolate': 3.0.4
-      '@types/d3-path': 3.1.0
-      '@types/d3-polygon': 3.0.2
-      '@types/d3-quadtree': 3.0.6
-      '@types/d3-random': 3.0.3
-      '@types/d3-scale': 4.0.8
-      '@types/d3-scale-chromatic': 3.0.3
-      '@types/d3-selection': 3.0.10
-      '@types/d3-shape': 3.1.6
-      '@types/d3-time': 3.0.3
-      '@types/d3-time-format': 4.0.3
-      '@types/d3-timer': 3.0.2
-      '@types/d3-transition': 3.0.8
-      '@types/d3-zoom': 3.0.8
     dev: false
 
   /@types/debug@4.1.12:
@@ -30348,10 +30126,6 @@ packages:
     dependencies:
       '@types/node': 13.13.52
     dev: true
-
-  /@types/geojson@7946.0.14:
-    resolution: {integrity: sha512-WCfD5Ht3ZesJUsONdhvm84dmzWOiOzOAqOncN0++w0lBw1o8OuDNJF2McvvCef/yBqb/HYRahp1BYtODFQ8bRg==}
-    dev: false
 
   /@types/glob@7.2.0:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
@@ -31288,6 +31062,34 @@ packages:
 
   /@xtuc/long@4.2.2:
     resolution: {integrity: sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==}
+
+  /@xyflow/react@12.3.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-+bK3L61BDIvUX++jMiEqIjy5hIIyVmfeiUavpeOZIYKwg6NW0pR5EnHJM2JFfkVqZisFauzS9EgmI+tvTqx9Qw==}
+    peerDependencies:
+      react: '>=17'
+      react-dom: '>=17'
+    dependencies:
+      '@xyflow/system': 0.0.43
+      classcat: 5.0.5
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      zustand: 4.5.5(@types/react@18.0.18)(react@18.3.1)
+    transitivePeerDependencies:
+      - '@types/react'
+      - immer
+    dev: false
+
+  /@xyflow/system@0.0.43:
+    resolution: {integrity: sha512-1zHgad1cWr1mKm2xbFaarK0Jg8WRgaQ8ubSBIo/pRdq3fEgCuqgNkL9NSAP6Rvm8zi3+Lu4JPUMN+EEx5QgX9A==}
+    dependencies:
+      '@types/d3-drag': 3.0.7
+      '@types/d3-selection': 3.0.10
+      '@types/d3-transition': 3.0.8
+      '@types/d3-zoom': 3.0.8
+      d3-drag: 3.0.0
+      d3-selection: 3.0.0
+      d3-zoom: 3.0.0
+    dev: false
 
   /@yarnpkg/esbuild-plugin-pnp@3.0.0-rc.15(esbuild@0.18.20):
     resolution: {integrity: sha512-kYzDJO5CA9sy+on/s2aIW0411AklfCi8Ck/4QDivOqsMKpStZA2SsR+X27VTggGwpStWaLrjJcDcdDMowtG8MA==}
@@ -45245,25 +45047,6 @@ packages:
     dependencies:
       lodash: 4.17.21
       react: 18.3.1
-    dev: false
-
-  /reactflow@11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-HBudD8BwZacOMqX8fbkiXbeBQs3nRezWVLCDurfc+tTeHsA7988uyaIOhrnKgYCcKtlpJaspsnxDZk+5JmmHxA==}
-    peerDependencies:
-      react: '>=17'
-      react-dom: '>=17'
-    dependencies:
-      '@reactflow/background': 11.2.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      '@reactflow/controls': 11.1.13(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      '@reactflow/core': 11.7.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      '@reactflow/minimap': 11.5.2(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      '@reactflow/node-resizer': 2.1.0(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      '@reactflow/node-toolbar': 1.2.1(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-    transitivePeerDependencies:
-      - '@types/react'
-      - immer
     dev: false
 
   /read-cache@1.0.0:
