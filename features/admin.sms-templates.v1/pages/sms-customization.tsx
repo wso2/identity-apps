@@ -23,7 +23,6 @@ import Typography from "@oxygen-ui/react/Typography";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/branding-preference-provider";
 import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertInterface,
     AlertLevels,
