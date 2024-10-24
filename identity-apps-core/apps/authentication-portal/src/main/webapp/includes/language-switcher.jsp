@@ -140,9 +140,6 @@
 <link href="css/language-selector.css" rel="stylesheet">
 
 <%
-    // Specify the file path
-    String filePath = application.getRealPath("/") + "/WEB-INF/classes/LanguageOptions.properties";
-
     // Create a List to store the parsed data
     List<String[]> languageList = new ArrayList<>();
 
@@ -157,12 +154,20 @@
                 // Split the key further using '.' as the delimiter
                 String[] parts = keyValue[0].split("\\.");
                 String languageCode = parts[parts.length - 1];
-                // Split the value further using ',' as the delimiter
+                // Split the code further using '_' as the delimiter.
+                String[] languageCodeParts = languageCode.split("_");
+                if (languageCodeParts.length != 2) {
+                    continue;
+                }
+                // Split the value further using ',' as the delimiter.
                 String[] values = keyValue[1].split(",");
                 String country = values[0];
                 String displayName = values[1];
-                // Add the values to the list
-                languageList.add(new String[]{languageCode, country, displayName});
+
+                if (supportedLanguages.containsKey(languageCodeParts[0]) &&
+                    languageSupportedCountries.contains(languageCodeParts[1])) {
+                    languageList.add(new String[]{languageCode, country, displayName});
+                }
             }
         }
     } catch (Exception e) {
