@@ -32,6 +32,17 @@ import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, Link, useDocumentation } from "@wso2is/react-components";
+import {
+    ReactFlow,
+    Background,
+    BackgroundVariant,
+    Controls,
+    Edge,
+    EdgeTypes,
+    MarkerType,
+    Node,
+    NodeTypes
+} from "@xyflow/react";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, {
@@ -49,16 +60,6 @@ import React, {
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import ReactFlow, {
-    Background,
-    BackgroundVariant,
-    Controls,
-    Edge,
-    EdgeTypes,
-    MarkerType,
-    Node,
-    NodeTypes
-} from "reactflow";
 import { Dispatch } from "redux";
 import AuthenticationFlowOptionAddModal from "./authentication-flow-option-add-modal";
 import AuthenticationFlowRevertDisclaimerModal from "./authentication-flow-revert-disclaimer-modal";
@@ -67,7 +68,7 @@ import DoneNode from "./nodes/done-node";
 import SignInBoxNode from "./nodes/sign-in-box-node/sign-in-box-node";
 import { FIDO_AUTHENTICATOR_ID } from "../constants/template-constants";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
-import "reactflow/dist/style.css";
+import "@xyflow/react/dist/style.css";
 import "./authentication-flow-visual-editor.scss";
 
 /**
