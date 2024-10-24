@@ -2685,7 +2685,7 @@ export interface Extensions {
                 action: string;
                 actionDisabledHint: string;
             }
-        }
+        };
     };
     manage: {
         accountLogin: {

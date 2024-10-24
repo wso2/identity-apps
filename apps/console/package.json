@@ -86,6 +86,7 @@
         "@wso2is/admin.server.v1": "^2.25.0",
         "@wso2is/admin.session-management.v1": "^2.25.0",
         "@wso2is/admin.sms-providers.v1": "^2.25.0",
+        "@wso2is/admin.sms-templates.v1": "^0.0.0",
         "@wso2is/admin.subscription.v1": "^1.5.0",
         "@wso2is/admin.tenants.v1": "^2.27.0",
         "@wso2is/admin.username-validation.v1": "^1.5.0",

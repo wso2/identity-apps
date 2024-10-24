@@ -310,6 +310,7 @@ export class AppConstants {
             [ "EMAIL_AND_SMS", `${ AppConstants.getDeveloperViewBasePath() }/email-and-sms` ],
             [ "EMAIL_MANAGEMENT", `${ AppConstants.getDeveloperViewBasePath() }/email-management` ],
             [ "SMS_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/sms-provider` ],
+            [ "SMS_MANAGEMENT", `${ AppConstants.getDeveloperViewBasePath() }/sms-management` ],
             [ "EMAIL_TEMPLATE_TYPES", `${ AppConstants.getAdminViewBasePath() }/email-templates` ],
             [ "EMAIL_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId` ],
             [

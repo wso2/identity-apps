@@ -190,6 +190,11 @@ export class I18nConstants {
     public static readonly SMS_PROVIDERS_NAMESPACE: string = I18nModuleConstants.SMS_PROVIDERS_NAMESPACE;
 
     /**
+     * SMS Templates namespace.
+     */
+    public static readonly SMS_TEMPLATES_NAMESPACE: string = I18nModuleConstants.SMS_TEMPLATES_NAMESPACE;
+
+    /**
      * Claims namespace.
      */
     public static readonly CLAIMS_NAMESPACE: string = I18nModuleConstants.CLAIMS_NAMESPACE;
@@ -295,6 +300,7 @@ export class I18nConstants {
         [ I18nConstants.WS_FEDERATION_CONFIG_NAMESPACE, "portals" ],
         [ I18nConstants.INSIGHTS_NAMESPACE, "portals" ],
         [ I18nConstants.SMS_PROVIDERS_NAMESPACE, "portals" ],
+        [ I18nConstants.SMS_TEMPLATES_NAMESPACE, "portals" ],
         [ I18nConstants.CLAIMS_NAMESPACE, "portals" ],
         [ I18nConstants.EMAIL_LOCALE_NAMESPACE, "portals" ],
         [ I18nConstants.HELP_PANEL_NAMESPACE, "portals" ],

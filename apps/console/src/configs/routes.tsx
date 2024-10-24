@@ -681,13 +681,29 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             category: "extensions:develop.sidePanel.categories.branding",
             component: lazy(() =>
+                import("@wso2is/admin.sms-templates.v1/pages/sms-customization")
+            ),
+            exact: true,
+            icon: {
+                icon: getSidePanelIcons().sms
+            },
+            id: "smsTemplates",
+            name: "smsTemplates:page.header",
+            order: 15,
+            path: AppConstants.getPaths().get("SMS_MANAGEMENT"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "extensions:develop.sidePanel.categories.branding",
+            component: lazy(() =>
                 import("@wso2is/admin.email-and-sms.v1/" + "pages/email-and-sms")
             ),
             exact: true,
             icon: { icon: <EnvelopeGearIcon fill="black" className="icon" /> },
             id: "notificationChannels",
             name: "Email & SMS",
-            order: 15,
+            order: 16,
             path: `${ AppConstants.getDeveloperViewBasePath() }/email-and-sms`,
             protected: true,
             showOnSidePanel: true
@@ -703,7 +719,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             },
             id: "emailProviders",
             name: "extensions:develop.sidePanel.emailProvider",
-            order: 15,
+            order: 16,
             path: AppConstants.getPaths().get("EMAIL_PROVIDER"),
             protected: true,
             showOnSidePanel: false
@@ -719,7 +735,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             },
             id: "smsProviders",
             name: "SMS",
-            order: 16,
+            order: 17,
             path: AppConstants.getPaths().get("SMS_PROVIDER"),
             protected: true,
             showOnSidePanel: false
