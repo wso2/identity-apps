@@ -15,6 +15,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableRow from "@mui/material/TableRow";
+import Accordion from "@oxygen-ui/react/Accordion";
+import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
+import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
+import IconButton from "@oxygen-ui/react/IconButton";
+import Paper from "@oxygen-ui/react/Paper";
+import { CheckIcon,  ChevronDownIcon, StarIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { SCIMConfigs, commonConfig, userConfig } from "@wso2is/admin.extensions.v1";
@@ -51,6 +63,7 @@ import {
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
+    Tooltip,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
@@ -65,10 +78,7 @@ import { ChangePasswordComponent } from "./user-change-password";
 import { updateUserInfo } from "../api";
 import { AdminAccountTypes, LocaleJoiningSymbol, UserManagementConstants } from "../constants";
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
-
-// TODO: Remove this once multiple email and mobile support is onboarded.
-const multipleEmailMobileFeatureSpecificSchemaNames: string[] = [ "emailAddresses", "verifiedEmailAddresses",
-    "mobileNumbers", "verifiedMobileNumbers" ];
+import "./user-profile.scss";
 
 /**
  * Prop types for the basic details component.
@@ -184,7 +194,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const [ configSettings, setConfigSettings ] = useState<AccountConfigSettingsInterface>({
         accountDisable: "false",
         accountLock: "false",
-        forcePasswordReset: "false"
+        forcePasswordReset: "false",
+        isEmailVerificationEnabled: "false",
+        isMobileVerificationByPrivilegeUserEnabled: "false",
+        isMobileVerificationEnabled: "false",
+        isMultipleEmailAndMobileNumberEnabled: "false"
     });
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
     const [ countryList, setCountryList ] = useState<DropdownItemProps[]>([]);
@@ -200,38 +214,90 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const oneTimePassword: string = user[userConfig.userProfileSchema]?.oneTimePassword;
     const isCurrentUserAdmin: boolean = user?.roles?.some((role: RolesMemberInterface) =>
         role.display === administratorConfig.adminRoleName) ?? false;
+    const [ expandMultiAttributeAccordion, setExpandMultiAttributeAccordion ] = useState<Record<string, boolean>>({
+        [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")]: false,
+        [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")]: false
+    });
+    const [ isFormStale, setIsFormStale ] = useState<boolean>(false);
+    const [ tempMultiValuedItemValue, setTempMultiValuedItemValue ] = useState<Record<string, string>>({});
+    const [ isMultiValuedItemInvalid, setIsMultiValuedItemInvalid ] =  useState<Record<string, boolean>>({});
 
+    // Multi-valued attribute delete confirmation modal related states.
+    const [ selectedAttributeInfo, setSelectedAttributeInfo ] =
+        useState<{ value: string; schema?: ProfileSchemaInterface }>({ value: "" });
+    const [ showMultiValuedItemDeleteConfirmationModal, setShowMultiValuedItemDeleteConfirmationModal ] =
+        useState<boolean>(false);
+    const handleMultiValuedItemDeleteModalClose: () => void = useCallback(() => {
+        setShowMultiValuedItemDeleteConfirmationModal(false);
+        setSelectedAttributeInfo({ value: "" });
+    }, []);
+    const handleMultiValuedItemDeleteConfirmClick: ()=> void = useCallback(() => {
+        handleMultiValuedItemDelete(selectedAttributeInfo.schema, selectedAttributeInfo.value);
+        handleMultiValuedItemDeleteModalClose();
+    }, [ selectedAttributeInfo, handleMultiValuedItemDeleteModalClose ]);
 
     useEffect(() => {
-
         if (connectorProperties && Array.isArray(connectorProperties) && connectorProperties?.length > 0) {
 
             let configurationStatuses: AccountConfigSettingsInterface = { ...configSettings } ;
 
             for (const property of connectorProperties) {
-                if (property.name === ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE) {
-                    configurationStatuses = {
-                        ...configurationStatuses,
-                        accountDisable: property.value
-                    };
-                } else if (property.name === ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET
-                    || property.name === ServerConfigurationsConstants.OTP_PASSWORD_RESET
-                    || property.name === ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET) {
-
-                    if(property.value === "true") {
+                switch (property.name) {
+                    case ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE:
                         configurationStatuses = {
                             ...configurationStatuses,
-                            forcePasswordReset: property.value
+                            accountDisable: property.value
                         };
-                    }
-                } else if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
-                    configurationStatuses = {
-                        ...configurationStatuses,
-                        accountLock: property.value
-                    };
+
+                        break;
+                    case ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET:
+                    case ServerConfigurationsConstants.OTP_PASSWORD_RESET:
+                    case ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET:
+                        if (property.value === "true") {
+                            configurationStatuses = {
+                                ...configurationStatuses,
+                                forcePasswordReset: property.value
+                            };
+                        }
+
+                        break;
+                    case ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION:
+                        configurationStatuses = {
+                            ...configurationStatuses,
+                            accountLock: property.value
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.ENABLE_MULTIPLE_EMAILS_AND_MOBILE_NUMBERS:
+                        configurationStatuses = {
+                            ...configurationStatuses,
+                            isMultipleEmailAndMobileNumberEnabled: property.value
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.ENABLE_EMAIL_VERIFICATION:
+                        configurationStatuses = {
+                            ...configurationStatuses,
+                            isEmailVerificationEnabled: property.value
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION:
+                        configurationStatuses = {
+                            ...configurationStatuses,
+                            isMobileVerificationEnabled: property.value
+                        };
+
+                        break;
+                    case ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER:
+                        configurationStatuses = {
+                            ...configurationStatuses,
+                            isMobileVerificationByPrivilegeUserEnabled: property.value
+                        };
+
+                        break;
                 }
             }
-
             setConfigSettings(configurationStatuses);
         }
     }, [ connectorProperties ]);
@@ -255,16 +321,29 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * Sort the elements of the profileSchema state accordingly by the displayOrder attribute in the ascending order.
      */
     useEffect(() => {
+
+        const getDisplayOrder = (schema: ProfileSchemaInterface): number => {
+            if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")
+                && !schema.displayOrder) return 6;
+            if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")
+                && !schema.displayOrder) return 7;
+
+            return schema.displayOrder ? parseInt(schema.displayOrder, 10) : -1;
+        };
+
         const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ])
             .filter((item: ProfileSchemaInterface) =>
                 item.name !== ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("META_VERSION"))
             .sort((a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
-                if (!a.displayOrder) {
+                const orderA: number = getDisplayOrder(a);
+                const orderB: number = getDisplayOrder(b);
+
+                if (orderA === -1) {
                     return -1;
-                } else if (!b.displayOrder) {
+                } else if (orderB === -1) {
                     return 1;
                 } else {
-                    return parseInt(a.displayOrder, 10) - parseInt(b.displayOrder, 10);
+                    return orderA - orderB;
                 }
             });
 
@@ -1028,7 +1107,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 handleUserUpdate(user.id);
             })
             .catch((error: AxiosError) => {
-
                 if (error?.response?.data?.detail || error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.detail || error?.response?.data?.description,
@@ -1325,6 +1403,753 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         );
     };
 
+    /**
+     * Delete a multi-valued item.
+     *
+     * @param schema - schema of the attribute
+     * @param value - value of the attribute
+     */
+    const handleMultiValuedItemDelete = (schema: ProfileSchemaInterface, value: string) => {
+        const data: {
+            Operations: Array<{
+                op: string, value: Record<string, string
+                    | Record<string, string>
+                    | Array<string>
+                    | Array<Record<string, string>>>
+            }>,
+            schemas: Array<string>
+        } = {
+            Operations: [
+                {
+                    op: "replace",
+                    value: {}
+                }
+            ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        };
+
+        if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")) {
+            const emailList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
+                get("EMAIL_ADDRESSES"))?.split(",") || [];
+            const updatedEmailList: string[] = emailList.filter((email: string) => email !== value);
+            const primaryEmail: string = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"));
+
+            data.Operations[0].value = {
+                [schema.schemaId] : {
+                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")]: updatedEmailList.join(",")
+                }
+            };
+
+            if (value === primaryEmail) {
+                data.Operations.push({
+                    op: "replace",
+                    value: {
+                        [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")]: []
+                    }
+                });
+            }
+        } else if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")) {
+            const mobileList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
+                get("MOBILE_NUMBERS"))?.split(",") || [];
+            const updatedMobileList: string[] = mobileList.filter((mobile: string) => mobile !== value);
+            const primaryMobile: string = profileInfo.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"));
+
+            if (value === primaryMobile) {
+                data.Operations.push({
+                    op: "replace",
+                    value: {
+                        [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [ {
+                            type: "mobile",
+                            value: ""
+                        } ]
+                    }
+                });
+            }
+
+            data.Operations[0].value = {
+                [schema.schemaId]: {
+                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")]: updatedMobileList.join(",")
+                }
+            };
+        }
+
+        setIsSubmitting(true);
+        updateUserInfo(user.id, data)
+            .then(() => {
+                onAlertFired({
+                    description: t(
+                        "user:profile.notifications.updateProfileInfo.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "user:profile.notifications.updateProfileInfo.success.message"
+                    )
+                });
+
+                handleUserUpdate(user.id);
+            })
+            .catch((error: AxiosError) => {
+                if (error?.response?.data?.detail || error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.detail || error?.response?.data?.description,
+                        level: AlertLevels.ERROR,
+                        message: t("user:profile.notifications.updateProfileInfo." +
+                            "error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("user:profile.notifications.updateProfileInfo." +
+                        "genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("user:profile.notifications.updateProfileInfo." +
+                        "genericError.message")
+                }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
+    };
+
+    /**
+     * Verify an email address or mobile number.
+     *
+     * @param schema - Schema of the attribute
+     * @param value - Value of the attribute
+     */
+    const handleVerify = (schema: ProfileSchemaInterface, value: string) => {
+        setIsSubmitting(true);
+        const data: {
+            Operations: Array<{ op: string, value: Record<string, string | Record<string, string>> }>,
+            schemas: Array<string>
+        } = {
+            Operations: [
+                {
+                    op: "replace",
+                    value: {}
+                }
+            ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        };
+        let translationKey: string = "";
+
+        if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")) {
+            translationKey = "user:profile.notifications.verifyEmail.";
+            const verifiedEmailList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
+                get("VERIFIED_EMAIL_ADDRESSES"))?.split(",") || [];
+
+            verifiedEmailList.push(value);
+            data.Operations[0].value = {
+                [schema.schemaId]: {
+                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES")]:
+                        verifiedEmailList.join(",")
+                }
+            };
+        } else if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")) {
+            translationKey = "user:profile.notifications.verifyMobile.";
+            setSelectedAttributeInfo({ schema, value });
+            const verifiedMobileList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
+                get("VERIFIED_MOBILE_NUMBERS"))?.split(",") || [];
+
+            verifiedMobileList.push(value);
+            data.Operations[0].value = {
+                [schema.schemaId]: {
+                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS")]:
+                        verifiedMobileList.join(",")
+                }
+            };
+        }
+
+        setIsSubmitting(true);
+        updateUserInfo(user.id, data)
+            .then(() => {
+                onAlertFired({
+                    description: t(
+                        `${translationKey}success.description`
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        `${translationKey}success.message`
+                    )
+                });
+
+                handleUserUpdate(user.id);
+            })
+            .catch((error: AxiosError) => {
+                if (error?.response?.data?.detail || error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.detail || error?.response?.data?.description,
+                        level: AlertLevels.ERROR,
+                        message: `${translationKey}error.message`
+                    }));
+
+                    return;
+                }
+                dispatch(addAlert({
+                    description: t(`${translationKey}genericError.description`),
+                    level: AlertLevels.ERROR,
+                    message: t(`${translationKey}genericError.message`)
+                }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
+    };
+
+    /**
+     * Assign primary email address or mobile number the multi-valued attribute.
+     *
+     * @param schema - Schema of the attribute
+     * @param value - Value of the attribute
+     */
+    const handleMakePrimary = (schema: ProfileSchemaInterface, value: string) => {
+        const data: {
+            Operations: Array<{
+                op: string,
+                value: Record<string, string | Record<string, string> | Array<string> | Array<Record<string, string>>
+                >
+            }>,
+            schemas: Array<string>
+        } = {
+            Operations: [
+                {
+                    op: "replace",
+                    value: {}
+                }
+            ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        };
+
+        if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")) {
+
+            data.Operations[0].value = {
+                [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")]: [ value ]
+            };
+
+            const existingPrimaryEmail: string =
+                profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"));
+            const existingEmailList: string[] = profileInfo?.get(
+                ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES"))?.split(",") || [];
+
+            if (existingPrimaryEmail && !existingEmailList.includes(existingPrimaryEmail)) {
+                existingEmailList.push(existingPrimaryEmail);
+                data.Operations.push({
+                    op: "replace",
+                    value: {
+                        [schema.schemaId] : {
+                            [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")]:
+                                existingEmailList.join(",")
+                        }
+                    }
+                });
+            }
+        } else if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")) {
+
+            data.Operations[0].value = {
+                [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
+                    {
+                        type: "mobile",
+                        value
+                    }
+                ]
+            };
+
+            const existingPrimaryMobile: string =
+                profileInfo.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"));
+            const existingMobileList: string[] =
+                profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS"))?.split(",") || [];
+
+            if (existingPrimaryMobile && !existingMobileList.includes(existingPrimaryMobile)) {
+                existingMobileList.push(existingPrimaryMobile);
+                data.Operations.push({
+                    op: "replace",
+                    value: {
+                        [schema.schemaId] : {
+                            [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")]:
+                                existingMobileList.join(",")
+                        }
+                    }
+                });
+            }
+        }
+        setIsSubmitting(true);
+        updateUserInfo(user.id, data)
+            .then(() => {
+                onAlertFired({
+                    description: t(
+                        "user:profile.notifications.updateProfileInfo.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "user:profile.notifications.updateProfileInfo.success.message"
+                    )
+                });
+
+                handleUserUpdate(user.id);
+            })
+            .catch((error: AxiosError) => {
+                if (error?.response?.data?.detail || error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.detail || error?.response?.data?.description,
+                        level: AlertLevels.ERROR,
+                        message: t("user:profile.notifications.updateProfileInfo." +
+                            "error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("user:profile.notifications.updateProfileInfo." +
+                        "genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("user:profile.notifications.updateProfileInfo." +
+                        "genericError.message")
+                }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
+    };
+
+    /**
+     * Handle the add multi-valued attribute item.
+     *
+     * @param schema - Schema of the attribute
+     * @param value - Value of the attribute
+     */
+    const handleAddMultiValuedItem = (schema: ProfileSchemaInterface, value: string) => {
+        const data: {
+            Operations: Array<{
+                op: string,
+                value: Record<string, string | Record<string, string> | Array<string> | Array<Record<string, string>>
+                >
+            }>,
+            schemas: Array<string>
+        } = {
+            Operations: [
+                {
+                    op: "replace",
+                    value: {}
+                }
+            ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        };
+
+        const attributeValues: string[] = profileInfo.get(schema.name)?.split(",") || [];
+
+        attributeValues.push(value);
+        if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")) {
+            const existingPrimaryEmail: string =
+                profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"));
+
+            if (existingPrimaryEmail && !attributeValues.includes(existingPrimaryEmail)) {
+                attributeValues.push(existingPrimaryEmail);
+            }
+
+            data.Operations[0].value = {
+                [schema.schemaId]: {
+                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")]: attributeValues.join(",")
+                }
+            };
+        } else if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")) {
+            const existingPrimaryMobile: string =
+                profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"));
+
+            if (existingPrimaryMobile && !attributeValues.includes(existingPrimaryMobile)) {
+                attributeValues.push(existingPrimaryMobile);
+            }
+
+            data.Operations[0].value = {
+                [schema.schemaId]: {
+                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")]: attributeValues.join(",")
+                }
+            };
+        }
+        setIsSubmitting(true);
+        updateUserInfo(user.id, data)
+            .then(() => {
+                onAlertFired({
+                    description: t(
+                        "user:profile.notifications.updateProfileInfo.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "user:profile.notifications.updateProfileInfo.success.message"
+                    )
+                });
+
+                handleUserUpdate(user.id);
+            })
+            .catch((error: AxiosError) => {
+                if (error?.response?.data?.detail || error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.detail || error?.response?.data?.description,
+                        level: AlertLevels.ERROR,
+                        message: t("user:profile.notifications.updateProfileInfo." +
+                            "error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("user:profile.notifications.updateProfileInfo." +
+                        "genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("user:profile.notifications.updateProfileInfo." +
+                        "genericError.message")
+                }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
+    };
+
+    const resolveMultiValuedAttributesFormField = (
+        schema: ProfileSchemaInterface,
+        fieldName: string,
+        key: number
+    ): ReactElement => {
+        let attributeValueList: string[] = [];
+        let verifiedAttributeValueList: string[] = [];
+        let primaryAttributeValue: string = "";
+        let verificationEnabled: boolean = false;
+        let primaryAttributeSchema: ProfileSchemaInterface;
+        let maxAllowedLimit: number = 0;
+
+        if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")) {
+            attributeValueList = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
+                get("EMAIL_ADDRESSES"))?.split(",") ?? [];
+            verifiedAttributeValueList = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
+                get("VERIFIED_EMAIL_ADDRESSES"))?.split(",") ?? [];
+            primaryAttributeValue = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"));
+            verificationEnabled = configSettings?.isEmailVerificationEnabled === "true";
+            primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
+                schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"));
+            maxAllowedLimit = ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED;
+
+        } else if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")) {
+            attributeValueList = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
+                get("MOBILE_NUMBERS"))?.split(",") ?? [];
+            verifiedAttributeValueList = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
+                get("VERIFIED_MOBILE_NUMBERS"))?.split(",") ?? [];
+            primaryAttributeValue = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"));
+            verificationEnabled = configSettings?.isMobileVerificationEnabled === "true"
+                || configSettings?.isMobileVerificationByPrivilegeUserEnabled === "true";
+            primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
+                schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"));
+            maxAllowedLimit = ProfileConstants.MAX_MOBILE_NUMBERS_ALLOWED;
+        }
+
+        // Move the primary attribute value to the top of the list.
+        if (!isEmpty(primaryAttributeValue)) {
+            attributeValueList = attributeValueList.filter((value: string) =>
+                !isEmpty(value)
+                && value !== primaryAttributeValue);
+            attributeValueList.unshift(primaryAttributeValue);
+        }
+        const showAccordion: boolean = attributeValueList.length >= 1;
+        const accordionLabelValue: string = showAccordion ? attributeValueList[0] : "";
+
+        const showVerifiedPopup = (value: string): boolean => {
+            return verificationEnabled && verifiedAttributeValueList.includes(value);
+        };
+
+        const showPrimaryPopup = (value: string): boolean => {
+            return value === primaryAttributeValue;
+        };
+
+        const showMakePrimaryButton = (value: string): boolean => {
+            if (verificationEnabled) {
+                return verifiedAttributeValueList.includes(value) && value !== primaryAttributeValue;
+            } else {
+                return value !== primaryAttributeValue;
+            }
+        };
+
+        const showDeleteButton = (value: string): boolean => {
+            return !(primaryAttributeSchema?.required && value === primaryAttributeValue);
+        };
+
+        const showVerifyButton = (value: string): boolean =>
+            schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")
+            && verificationEnabled
+            && !verifiedAttributeValueList.includes(value);
+
+        return (
+            <div key={ key }>
+                <Field
+                    action={ {
+                        icon: "plus",
+                        onClick: (event: React.MouseEvent) => {
+                            event.preventDefault();
+                            const value: string = tempMultiValuedItemValue[schema.name];
+
+                            if (isMultiValuedItemInvalid[schema.name] || isEmpty(value)) return;
+                            handleAddMultiValuedItem(schema, value);
+                        }
+                    } }
+                    disabled = { isSubmitting || isReadOnly || attributeValueList?.length >= maxAllowedLimit }
+                    data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
+                    name={ schema.name }
+                    label={ schema.name === "profileUrl" ? "Profile Image URL" :
+                        (  (!commonConfig.userEditSection.showEmail && schema.name === "userName")
+                            ? fieldName +" (Email)"
+                            : fieldName
+                        )
+                    }
+                    required={ schema.required }
+                    requiredErrorMessage={ fieldName + " " + "is required" }
+                    placeholder={ "Enter your" + " " + fieldName }
+                    type="text"
+                    readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
+                    validation={ (value: string, validation: Validation) => {
+                        if (!RegExp(primaryAttributeSchema.regEx).test(value)) {
+                            setIsMultiValuedItemInvalid({
+                                ...isMultiValuedItemInvalid,
+                                [schema.name]: true
+                            });
+                            validation.isValid = false;
+                            validation.errorMessages
+                                .push(t("users:forms.validation.formatError", {
+                                    field: fieldName
+                                }));
+                        } else {
+                            setIsMultiValuedItemInvalid({
+                                ...isMultiValuedItemInvalid,
+                                [schema.name]: false
+                            });
+                        }
+                    } }
+                    displayErrorOn = "blur"
+                    listen={ (values: ProfileInfoInterface) => {
+                        setTempMultiValuedItemValue({
+                            ...tempMultiValuedItemValue,
+                            [schema.name]: values.get(schema.name)
+                        });
+                    } }
+                    maxLength={
+                        fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url")
+                            ? ProfileConstants.URI_CLAIM_VALUE_MAX_LENGTH
+                            : (
+                                schema.maxLength
+                                    ? schema.maxLength
+                                    : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                            )
+                    }
+                />
+                <div hidden={ !showAccordion }>
+                    <Accordion
+                        elevation={ 0 }
+                        className="oxygen-accordion"
+                        data-componentid={ `${ testId }-profile-form-${ schema.name }-accordion` }
+                        expanded={ expandMultiAttributeAccordion[schema.name] }
+                        onChange={ () => setExpandMultiAttributeAccordion(
+                            {
+                                ...expandMultiAttributeAccordion,
+                                [schema.name]: !expandMultiAttributeAccordion[schema.name]
+                            }
+                        ) }
+                    >
+                        <AccordionSummary
+                            aria-controls="panel1a-content"
+                            expandIcon={ <ChevronDownIcon /> }
+                            id="multi-attribute-header"
+                            className="accordion-summary"
+                            data-componentid={ `${ testId }-profile-form-${ schema.name }-accordion-summary` }
+                        >
+                            <label
+                                className={ `accordion-label ${
+                                    schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")
+                                        ? "mobile-label"
+                                        : null}`
+                                }
+                            >
+                                { accordionLabelValue }
+
+                            </label>
+                            {
+                                showVerifiedPopup(accordionLabelValue)
+                                && (
+                                    <div
+                                        className="verified-icon"
+                                        data-componentid={ `${ testId }-profile-form-${ schema.name }-verified-icon` }
+                                    >
+                                        <Tooltip
+                                            trigger={ (
+                                                <span> <CheckIcon fill="blue" /></span>
+                                            ) }
+                                            content={ t("common:verified") }
+                                            size="mini"
+                                        />
+                                    </div>
+                                )
+                            }
+                            {
+                                showPrimaryPopup(accordionLabelValue)
+                                && (
+                                    <div
+                                        className="primary-icon"
+                                        data-componentid={ `${ testId }-profile-form-${ schema.name }-primary-icon` }
+                                    >
+                                        <Tooltip
+                                            trigger={ (
+                                                <span> <StarIcon fill="green" /></span>
+                                            ) }
+                                            content={ t("common:primary") }
+                                            size="mini"
+                                        />
+                                    </div>
+                                )
+                            }
+                        </AccordionSummary>
+                        <AccordionDetails className="accordion-details">
+                            <TableContainer component={ Paper } elevation={ 0 }>
+                                <Table
+                                    className="multi-value-table"
+                                    size="small"
+                                    aria-label="multi-attribute value table"
+                                >
+                                    <TableBody>
+                                        { attributeValueList?.map(
+                                            (value: string, index: number) => (
+                                                <TableRow key={ index } className="multi-value-table-data-row">
+                                                    <TableCell align="left">
+                                                        <div className="table-c1">
+                                                            <label
+                                                                className={ `c1-value ${
+                                                                    schema.name
+                                                                    === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
+                                                                        get("MOBILE_NUMBERS")
+                                                                        ? "mobile-label"
+                                                                        : null}`
+                                                                }
+                                                                data-componentid={
+                                                                    `${testId}-profile-form-${schema.name}-value-
+                                                                    ${index}`
+                                                                }
+                                                            >
+                                                                { value }
+                                                            </label>
+                                                            {
+                                                                showVerifiedPopup(value)
+                                                                && (
+                                                                    <div
+                                                                        className="verified-icon"
+                                                                        data-componentid={
+                                                                            `${testId}-profile-form-${schema.name}
+                                                                            -verified-icon-${index}`
+                                                                        }
+                                                                    >
+                                                                        <Tooltip
+                                                                            trigger={ (
+                                                                                <span> <CheckIcon fill="blue"/></span>
+                                                                            ) }
+                                                                            content={ t("common:verified") }
+                                                                            size="mini"
+                                                                        />
+                                                                    </div>
+                                                                )
+                                                            }
+                                                            {
+                                                                showPrimaryPopup(value)
+                                                                && (
+                                                                    <div
+                                                                        className="primary-icon"
+                                                                        data-componentid={
+                                                                            `${testId}-profile-form-${schema.name}
+                                                                            -primary-icon-${index}`
+                                                                        }
+                                                                    >
+                                                                        <Tooltip
+                                                                            trigger={ (
+                                                                                <span> <StarIcon fill="green"/></span>
+                                                                            ) }
+                                                                            content={ t("common:primary") }
+                                                                            size="mini"
+                                                                        />
+                                                                    </div>
+                                                                )
+                                                            }
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell align="right">
+                                                        <div className="table-c2">
+                                                            <IconButton
+                                                                size="small"
+                                                                hidden={ !showVerifyButton(value) }
+                                                                onClick={ () => handleVerify(schema, value) }
+                                                                data-componentid={
+                                                                    `${testId}-profile-form
+                                                                    -${schema.name}-verify-button-${index}`
+                                                                }
+                                                                disabled={ isSubmitting || isReadOnly }
+                                                            >
+                                                                <Tooltip
+                                                                    trigger={ (
+                                                                        <span> <CheckIcon /></span>
+                                                                    ) }
+                                                                    content={ t("common:verify") }
+                                                                    size="mini"
+                                                                />
+                                                            </IconButton>
+                                                            <IconButton
+                                                                size="small"
+                                                                hidden={ !showMakePrimaryButton(value) }
+                                                                onClick={ () => handleMakePrimary(schema, value) }
+                                                                data-componentid={
+                                                                    `${testId}-profile-form
+                                                                    -${schema.name}-make-primary-button-${index}`
+                                                                }
+                                                                disabled={ isSubmitting || isReadOnly }
+                                                            >
+                                                                <Tooltip
+                                                                    trigger={ (
+                                                                        <span> <StarIcon /></span>
+                                                                    ) }
+                                                                    content={ t("common:makePrimary") }
+                                                                    size="mini"
+                                                                />
+                                                            </IconButton>
+                                                            <IconButton
+                                                                size="small"
+                                                                hidden={ !showDeleteButton(value) }
+                                                                onClick={ () => {
+                                                                    setSelectedAttributeInfo({ schema, value });
+                                                                    setShowMultiValuedItemDeleteConfirmationModal(true);
+                                                                } }
+                                                                data-componentid={
+                                                                    `${testId}-profile-form
+                                                                    -${schema.name}-delete-button-${index}`
+                                                                }
+                                                                disabled={ isSubmitting || isReadOnly }
+                                                            >
+                                                                <Tooltip
+                                                                    trigger={ (
+                                                                        <span> <TrashIcon /></span>
+                                                                    ) }
+                                                                    content={ t("common:delete") }
+                                                                    size="mini"
+                                                                />
+                                                            </IconButton>
+                                                        </div>
+                                                    </TableCell>
+                                                </TableRow>
+                                            )
+                                        ) }
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </AccordionDetails>
+                    </Accordion>
+                </div>
+            </div>
+        );
+    };
+
     const resolveFormField = (schema: ProfileSchemaInterface, fieldName: string, key: number): ReactElement => {
         if (schema.type.toUpperCase() === "BOOLEAN") {
             return (
@@ -1432,6 +2257,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     fluid
                 />
             );
+        } else if (
+            schema?.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")
+            || schema?.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")
+        ) {
+            return resolveMultiValuedAttributesFormField(schema, fieldName, key);
         } else if (schema?.name === "dateOfBirth") {
             return (
                 <Field
@@ -1490,7 +2320,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     } }
                     maxLength={
                         fieldName.toLowerCase().includes("uri") || fieldName.toLowerCase().includes("url")
-                            ? 1024
+                            ? ProfileConstants.URI_CLAIM_VALUE_MAX_LENGTH
                             : (
                                 schema.maxLength
                                     ? schema.maxLength
@@ -1523,19 +2353,36 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @returns the form field for the profile schema.
      */
     const generateProfileEditForm = (schema: ProfileSchemaInterface, key: number): JSX.Element => {
+        // Hide the email and mobile number fields when the multi-valued email and mobile config is enabled.
+        const fieldsToHide: string[] = [
+            configSettings?.isMultipleEmailAndMobileNumberEnabled === "true"
+                ? ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")
+                : ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES"),
+            configSettings?.isMultipleEmailAndMobileNumberEnabled === "true"
+                ? ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE")
+                : ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS"),
+            ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS"),
+            ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES")
+        ];
+
+        if (fieldsToHide.some((name: string) => schema.name === name)) {
+            return;
+        }
+
+        if (!commonConfig.userEditSection.showEmail
+            && schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")) {
+            return;
+        }
+
         const fieldName: string = t("user:profile.fields." +
             schema.name.replace(".", "_"), { defaultValue: schema.displayName }
         );
 
         const domainName: string[] = profileInfo?.get(schema.name)?.toString().split("/");
 
-        if (multipleEmailMobileFeatureSpecificSchemaNames?.includes(schema?.name)) {
-            return;
-        }
-
         return (
             <Grid.Row columns={ 1 } key={ key }>
-                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
                     {
                         schema.name === "userName" && domainName.length > 1 ? (
                             <>
@@ -1604,6 +2451,51 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         );
     };
 
+    /**
+     * This methods generates and returns the delete confirmation modal.
+     *
+     * @returns ReactElement Generates the delete confirmation modal.
+     */
+    const generateDeleteConfirmationModalForMultiValuedField = (): JSX.Element => {
+        if (isEmpty(selectedAttributeInfo?.value)) {
+            return null;
+        }
+
+        let translationKey: string = "";
+
+        if (selectedAttributeInfo?.schema?.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")) {
+            translationKey = "user:profile.confirmationModals.emailAddressDeleteConfirmation.";
+        } else {
+            translationKey = "user:profile.confirmationModals.mobileNumberDeleteConfirmation.";
+        }
+
+        return (
+            <ConfirmationModal
+                data-testid={ `${ testId }-confirmation-modal` }
+                onClose={ handleMultiValuedItemDeleteModalClose }
+                type="negative"
+                open={ Boolean(selectedAttributeInfo?.value) }
+                assertionHint={ t(`${translationKey}assertionHint`) }
+                assertionType="checkbox"
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ handleMultiValuedItemDeleteModalClose }
+                onPrimaryActionClick={ handleMultiValuedItemDeleteConfirmClick }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
+                    { t(`${translationKey}heading`) }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message data-testid={ `${ testId }-confirmation-modal-message` } attached negative>
+                    { t(`${translationKey}description`) }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content data-testid={ `${testId}-confirmation-modal-content` }>
+                    { t(`${translationKey}content`) }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        );
+    };
+
     return (
         !isReadOnlyUserStoresLoading
             ? (<>
@@ -1616,12 +2508,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             <Forms
                                 data-testid={ `${ testId }-form` }
                                 onSubmit={ (values: Map<string, string | string[]>) => handleSubmit(values) }
+                                onStaleChange={ (stale: boolean) => setIsFormStale(stale) }
                             >
                                 <Grid>
                                     {
                                         user.id && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
                                                     <Form.Field>
                                                         <label>
                                                             { t("user:profile.fields.userId") }
@@ -1667,7 +2560,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         oneTimePassword && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
                                                     <Field
                                                         data-testid={ `${ testId }-profile-form-one-time-pw }
                                                         -input` }
@@ -1688,7 +2581,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         createdDate && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
                                                     <Form.Field>
                                                         <label>
                                                             { t("user:profile.fields." +
@@ -1709,11 +2602,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         modifiedDate && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
                                                     <Form.Field>
                                                         <label>
-                                                            { t("user:profile.fields." +
-                                                                    "modifiedDate") }
+                                                            { t("user:profile.fields.modifiedDate") }
                                                         </label>
                                                         <Input
                                                             name="modifiedDate"
@@ -1738,9 +2630,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                         size="small"
                                                         className="form-button"
                                                         loading={ isSubmitting }
-                                                        disabled={ isSubmitting }
+                                                        disabled={ isSubmitting || !isFormStale }
                                                     >
-                                                        Update
+                                                        { t("common:update") }
                                                     </Button>
                                                 )
                                             }
@@ -1880,6 +2772,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             </ConfirmationModal.Content>
                         </ConfirmationModal>
                     )
+                }
+                {
+                    showMultiValuedItemDeleteConfirmationModal && generateDeleteConfirmationModalForMultiValuedField()
                 }
                 <ChangePasswordComponent
                     handleForcePasswordResetTrigger={ null }
