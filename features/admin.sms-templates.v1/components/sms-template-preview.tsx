@@ -21,13 +21,8 @@ import Battery60Icon from "@mui/icons-material/Battery60";
 import WifiIcon from "@mui/icons-material/Wifi";
 import Grid from "@oxygen-ui/react/Grid";
 import Typography from "@oxygen-ui/react/Typography";
-import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants";
-import { BrandingPreferenceUtils } from "@wso2is/admin.branding.v1/utils";
-import { AppState } from "@wso2is/admin.core.v1";
-import { BrandingPreferenceThemeInterface } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { FunctionComponent, ReactElement } from "react";
 import { SMSTemplate } from "../models/sms-templates";
 import "./sms-template-preview.scss";
 
@@ -49,30 +44,6 @@ const SMSTemplatePreview: FunctionComponent<SMSTemplatePreviewInterface> = (
     props: SMSTemplatePreviewInterface
 ): ReactElement => {
     const { smsTemplate, ["data-componentid"]: componentId = "sms-customization-preview" } = props;
-
-    const [ predefinedThemes, setPredefinedThemes ] = useState<BrandingPreferenceThemeInterface>(
-        BrandingPreferencesConstants.DEFAULT_PREFERENCE.theme
-    );
-
-    const theme: string = useSelector((state: AppState) => state.config.ui.theme?.name);
-
-    /**
-     * Resolves the theme variables on component mount.
-     */
-    useEffect(() => {
-        if (!theme) {
-            return;
-        }
-
-        BrandingPreferenceUtils.getPredefinedThemePreferences(theme).then(
-            (response: BrandingPreferenceThemeInterface) => {
-                setPredefinedThemes({
-                    ...predefinedThemes,
-                    ...response
-                });
-            }
-        );
-    }, [ theme ]);
 
     return (
         <div data-componentid={ componentId } className="sms-template-preview">

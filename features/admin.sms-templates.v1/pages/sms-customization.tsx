@@ -33,7 +33,7 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { DangerZone, DangerZoneGroup, DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -107,30 +107,34 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         shouldFetch
     );
 
-    useEffect(() => {
+    useMemo(() => {
         // we don't have a good displayName and description coming from the backend
         // for the SMS template types. So as we agreed use the displayName and
         // description from the SMS template types config defined in
         // the deployment.toml file. The below code will map the SMS template
         // types with the config's displayName and description.
-        const availableSmsTemplates: SMSTemplateType[] = smsTemplatesList
-            ? (!enableCustomSmsTemplates
-                ? smsTemplatesList.filter((template: SMSTemplateType) =>
-                    smsTemplates?.find((smsTemplate: Record<string, string>) => smsTemplate.id === template.id)
-                )
-                : smsTemplatesList
-            ).map((template: SMSTemplateType) => {
-                const mappedTemplate: Record<string, string> = smsTemplates?.find(
-                    (smsTemplate: Record<string, string>) => smsTemplate.id === template.id
-                );
+        const availableSmsTemplates: SMSTemplateType[] = [];
 
-                return {
+        if (smsTemplatesList) {
+            const filteredTemplates: SMSTemplateType[] = smsTemplatesList.filter((template: SMSTemplateType) => {
+                if (!enableCustomSmsTemplates) {
+                    return smsTemplates?.some((smsTemplate: Record<string, string>) => smsTemplate.id === template.id);
+                }
+
+                return true;
+            });
+
+            filteredTemplates.forEach((template: SMSTemplateType) => {
+                const mappedTemplate: Record<string, string> =
+                    smsTemplates?.find((smsTemplate: Record<string, string>) => smsTemplate.id === template.id) || {};
+
+                availableSmsTemplates.push({
                     ...template,
-                    description: mappedTemplate?.description || `${template.displayName} Template`,
-                    displayName: mappedTemplate?.displayName || template.displayName
-                };
-            })
-            : [];
+                    description: mappedTemplate.description || `${template.displayName} Template`,
+                    displayName: mappedTemplate.displayName || template.displayName
+                });
+            });
+        }
 
         setAvailableSmsTemplatesList(availableSmsTemplates);
 
@@ -235,20 +239,20 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                 .then((_response: SMSTemplate) => {
                     dispatch(
                         addAlert<AlertInterface>({
-                            description: t("smsTemplates:notifications.updateSmsTemplate" + ".success.description"),
+                            description: t("smsTemplates:notifications.updateSmsTemplate.success.description"),
                             level: AlertLevels.SUCCESS,
-                            message: t("smsTemplates:notifications.updateSmsTemplate" + ".success.message")
+                            message: t("smsTemplates:notifications.updateSmsTemplate.success.message")
                         })
                     );
                     setIsSystemTemplate(false);
                     setShouldFetch(true);
                 })
-                .catch((error: IdentityAppsApiException) => {
+                .catch(() => {
                     dispatch(
                         addAlert<AlertInterface>({
                             description: t("smsTemplates:notifications.updateSmsTemplate.error.description"),
                             level: AlertLevels.ERROR,
-                            message: error.message ?? t("smsTemplates:notifications.updateSmsTemplate.error.message")
+                            message: t("smsTemplates:notifications.updateSmsTemplate.error.message")
                         })
                     );
                 });
@@ -257,21 +261,20 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                 .then((_response: SMSTemplate) => {
                     dispatch(
                         addAlert<AlertInterface>({
-                            description: t("smsTemplates:notifications.updateSmsTemplate" + ".success.description"),
+                            description: t("smsTemplates:notifications.updateSmsTemplate.success.description"),
                             level: AlertLevels.SUCCESS,
-                            message: t("smsTemplates:notifications.updateSmsTemplate" + ".success.message")
+                            message: t("smsTemplates:notifications.updateSmsTemplate.success.message")
                         })
                     );
                     setIsSystemTemplate(false);
                     setShouldFetch(true);
                 })
-                .catch((error: IdentityAppsApiException) => {
+                .catch(() => {
                     dispatch(
                         addAlert<AlertInterface>({
-                            description: t("smsTemplates:notifications.updateSmsTemplate" + ".error.description"),
+                            description: t("smsTemplates:notifications.updateSmsTemplate.error.description"),
                             level: AlertLevels.ERROR,
-                            message:
-                                error.message ?? t("smsTemplates:notifications" + ".updateSmsTemplate.error.message")
+                            message: t("smsTemplates:notifications.updateSmsTemplate.error.message")
                         })
                     );
                 });
@@ -287,28 +290,28 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
             .then((_response: AxiosResponse) => {
                 dispatch(
                     addAlert<AlertInterface>({
-                        description: t("smsTemplates:notifications.deleteSmsTemplate" + ".success.description"),
+                        description: t("smsTemplates:notifications.deleteSmsTemplate.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("smsTemplates:notifications.deleteSmsTemplate" + ".success.message")
+                        message: t("smsTemplates:notifications.deleteSmsTemplate.success.message")
                     })
                 );
                 setSelectedLocale(SMSTemplateConstants.DEAFULT_LOCALE);
                 setIsSystemTemplate(false);
                 setShouldFetch(true);
             })
-            .catch((error: IdentityAppsApiException) => {
+            .catch(() => {
                 dispatch(
                     addAlert<AlertInterface>({
-                        description: t("smsTemplates:notifications.deleteSmsTemplate" + ".error.description"),
+                        description: t("smsTemplates:notifications.deleteSmsTemplate.error.description"),
                         level: AlertLevels.ERROR,
-                        message: error.message ?? t("smsTemplates:notifications" + ".deleteSmsTemplate.error.message")
+                        message: t("smsTemplates:notifications.deleteSmsTemplate.error.message")
                     })
                 );
             });
     };
 
     const renderDangerZone = (): ReactElement => {
-        let zoneType:string = "revert";
+        let zoneType: string = "revert";
 
         if (isSystemTemplate) {
             return null;
@@ -361,21 +364,13 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
 
                 <Card className="p-0 mb-5">
                     <Grid container>
-                        <Grid xs={ 8 } className="right-border bottom-border">
-                            <Typography
-                                sx={ {
-                                    padding: 2
-                                } }
-                            >
+                        <Grid xs={ 8 } className="right-border bottom-border p-3">
+                            <Typography>
                                 { t("smsTemplates:tabs.content.label") }
                             </Typography>
                         </Grid>
-                        <Grid xs={ 4 } className="bottom-border">
-                            <Typography
-                                sx={ {
-                                    padding: 2
-                                } }
-                            >
+                        <Grid xs={ 4 } className="bottom-border p-3">
+                            <Typography>
                                 { t("smsTemplates:tabs.preview.label") }
                             </Typography>
                         </Grid>
@@ -409,9 +404,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                     </Grid>
                 </Card>
 
-                <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>
-                    { renderDangerZone() }
-                </Show>
+                <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>{ renderDangerZone() }</Show>
             </PageLayout>
         </BrandingPreferenceProvider>
     );

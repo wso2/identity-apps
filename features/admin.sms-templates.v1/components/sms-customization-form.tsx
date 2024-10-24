@@ -62,8 +62,6 @@ interface SMSCustomizationFormPropsInterface extends IdentifiableComponentInterf
     readOnly?: boolean;
 }
 
-const FORM_ID: string = "sms-customization-content-form";
-
 /**
  * SMS customization form.
  *
@@ -145,7 +143,7 @@ const SMSCustomizationForm: FunctionComponent<SMSCustomizationFormPropsInterface
                         onSubmit={ onSubmit }
                         initialValues={ { smsBody: selectedSmsTemplate?.body } }
                         render={ ({ handleSubmit }: FormRenderProps) => (
-                            <form onSubmit={ handleSubmit } id={ FORM_ID } data-componentid={ componentId }>
+                            <form onSubmit={ handleSubmit } data-componentid={ componentId }>
                                 { renderFormFields() }
                             </form>
                         ) }

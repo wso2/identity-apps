@@ -1003,7 +1003,7 @@
             },
             "smsTemplates": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "scopes": {
                     "create": [
                         "internal_template_mgt_create"

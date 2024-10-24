@@ -1822,6 +1822,11 @@
         {% else %}
             "enableCustomEmailTemplates": true,
         {% endif %}
+        {% if console.ui.enable_custom_sms_templates is defined %}
+            "enableCustomSmsTemplates": {{ console.ui.enable_custom_sms_templates }},
+        {% else %}
+            "enableCustomSmsTemplates": true,
+        {% endif %}
         {% if console.ui.is_left_navigation_categorized is defined %}
         "isLeftNavigationCategorized": {{ console.ui.is_left_navigation_categorized }},
         {% endif %}
