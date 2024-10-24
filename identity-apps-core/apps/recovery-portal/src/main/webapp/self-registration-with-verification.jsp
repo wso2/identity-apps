@@ -58,6 +58,11 @@
 <%-- Include tenant context --%>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
+<%
+    // Add the sign-up screen to the list to retrieve text branding customizations.
+    screenNames.add("sign-up");
+%>
+
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
