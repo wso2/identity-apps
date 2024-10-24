@@ -217,7 +217,7 @@ export const getApplicationList = (
     limit: number,
     offset: number,
     filter: string,
-    excludeSystemPortals:boolean = true
+    excludeSystemPortals:boolean = false
 ): Promise<ApplicationListInterface> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
@@ -261,7 +261,7 @@ export const useApplicationList = <Data = ApplicationListInterface, Error = Requ
     offset?: number,
     filter?: string,
     shouldFetch: boolean = true,
-    excludeSystemPortals: boolean = true
+    excludeSystemPortals:boolean = false
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: AxiosRequestConfig = shouldFetch
