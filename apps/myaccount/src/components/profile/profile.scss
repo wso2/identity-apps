@@ -1,0 +1,108 @@
+.profile-form {
+    .multi-input-box {
+        width: 100%;
+    }
+
+    .accordion-details {
+        border-radius: 8px;
+        padding: 2px;
+
+        .multi-value-table {
+            .multi-value-table-data-row {
+                &:last-child td, &:last-child th {
+                    border: none;
+                }
+            }
+
+            .table-c1 {
+                display: flex;
+                flex-wrap: nowrap;
+                align-items: center;
+
+                .c1-value{
+                    margin-bottom: 0;
+                    flex-shrink: 0;
+                    padding-right: 12px;
+                    min-width: 30ch;
+
+                    &.mobile-label {
+                        min-width: 20ch; 
+                    }
+                }
+
+                .verified-icon, .primary-icon {
+                    align-items: center;
+                }
+            }
+
+            .table-c2 {
+                display: flex;
+                flex-wrap: nowrap;
+                align-items: center;
+                justify-content: flex-end;
+                gap: 4px;
+            }
+        }
+    }
+
+    .mv-cancel-btn {
+        margin-top: 1em;
+    }
+
+    .multi-attribute-dropdown {
+        width: 100%;
+    }
+}
+
+.read-only-menu-item:hover {
+    background-color: transparent !important;
+}
+
+.read-only-menu-item.Mui-selected, .read-only-menu-item.Mui-selected:hover {
+    background-color: transparent !important; 
+}
+
+.dropdown-row {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+
+    .dropdown-label {
+        display: flex;
+        align-items: center;
+        padding-right: 8px;
+        margin: 0 !important;
+        min-width: 30ch;
+
+        &.mobile-label {
+            min-width: 20ch; 
+        }
+    }
+
+    .verified-icon, .primary-icon {
+        align-items: center;
+    }
+}
+
+.resend {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+
+    .resend-button {
+        cursor: pointer;
+        max-width: none !important;
+        position: static !important;
+    
+        &.disabled {
+            cursor: not-allowed;
+        }
+    }
+}
+
+.vertical-align-center {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    height: 100%;
+}

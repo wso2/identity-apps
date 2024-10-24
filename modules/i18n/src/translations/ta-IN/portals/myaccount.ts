@@ -994,13 +994,17 @@ export const myAccount: MyAccountNS = {
             submitMobile: {
                 heading: "உங்கள் புதிய மொபைல் எண்ணை உள்ளிடவும்"
             },
+            verificationSent: {
+                heading: "சரிபார்ப்புக்காக உங்கள் மொபைல் எண்ணுக்கு ஒரு OTP ஐப் பெறுவீர்கள்"
+            },
             verifySmsOtp: {
+                didNotReceive: "குறியீட்டைப் பெறவில்லையா?",
                 error: "சரிபார்ப்பு தோல்வியுற்றது. தயவுசெய்து மீண்டும் முயற்சி செய்க.",
-                generate: "புதிய சரிபார்ப்புக் குறியீட்டை மீண்டும் அனுப்பவும்",
-                heading: "உங்கள் மொபைல் எண்ணுக்கு அனுப்பப்பட்ட சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்",
-                label: "சரிபார்ப்புக் குறியீடு",
+                heading: "உங்கள் மொபைல் எண்ணை சரிபார்க்கவும்",
+                label: "உங்கள் மொபைல் எண்ணுக்கு அனுப்பப்பட்ட சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்",
                 placeholder: "உங்கள் சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்",
-                requiredError: "சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்"
+                requiredError: "சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்",
+                resend: "மீண்டும் அனுப்பு"
             }
         },
         overview: {
@@ -1305,6 +1309,12 @@ export const myAccount: MyAccountNS = {
             }
         },
         profile: {
+            actions: {
+                "deleteEmail": "மின்னஞ்சல் முகவரியை நீக்கு",
+                "deleteMobile": "மொபைலை நீக்கு",
+                "verifyEmail": "மின்னஞ்சல் முகவரியை சரிபார்க்கவும்",
+                "verifyMobile": "மொபைலை சரிபார்க்கவும்"
+            },
             fields: {
                 "Account Confirmed Time": "கணக்கு உறுதிப்படுத்தப்பட்ட நேரம்",
                 "Account Disabled": "கணக்கு முடக்கப்பட்டது",
@@ -1322,6 +1332,7 @@ export const myAccount: MyAccountNS = {
                 "Disable SMSOTP": "SMSOTP ஐ முடக்கு",
                 "Display Name": "காட்சி பெயர்",
                 "Email": "மின்னஞ்சல்",
+                "Email Addresses": "மின்னஞ்சல் முகவரிகள்",
                 "Email Verified": "மின்னஞ்சல் சரிபார்க்கப்பட்டது",
                 "Enabled Authenticators": "இயக்கப்பட்ட அங்கீகாரங்கள்",
                 "Existing Lite User": "இருக்கும் லைட் பயனர்",
@@ -1354,6 +1365,7 @@ export const myAccount: MyAccountNS = {
                 "Manager - Name": "மேலாளர் - பெயர்",
                 "Middle Name": "நடுத்தர பெயர்",
                 "Mobile": "கைபேசி",
+                "Mobile Numbers": "மொபைல் எண்கள்",
                 "Nick Name": "நிக் பெயர்",
                 "Phone Verified": "தொலைபேசி சரிபார்க்கப்பட்டது",
                 "Photo - Thumbnail": "புகைப்படம் - சிறுபடம்",
@@ -1377,6 +1389,8 @@ export const myAccount: MyAccountNS = {
                 "Username": "பயனர்பெயர்",
                 "Verification Pending Email": "சரிபார்ப்பு நிலுவையில் உள்ளது",
                 "Verification Pending Mobile Number": "சரிபார்ப்பு மொபைல் எண் நிலுவையில் உள்ளது",
+                "Verified Email Addresses": "சரிபார்க்கப்பட்ட மின்னஞ்சல் முகவரிகள்",
+                "Verified Mobile Numbers": "சரிபார்க்கப்பட்ட மொபைல் எண்கள்",
                 "Verify Email": "மின்னஞ்சலை உறுதிசெய்யுங்கள்",
                 "Verify Mobile": "மொபைலை சரிபார்க்கவும்",
                 "Verify Secret Key": "ரகசிய விசையை சரிபார்க்கவும்",
@@ -1498,6 +1512,20 @@ export const myAccount: MyAccountNS = {
                         "நீங்கள் தொடர விரும்பினால் புதுப்பிப்பைக் கிளிக் செய்க."
                 }
             },
+            modals: {
+                emailAddressDeleteConfirmation: {
+                    assertionHint: "தயவுசெய்து உங்கள் செயலை உறுதிப்படுத்தவும்.",
+                    content: "இந்த நடவடிக்கை மீளமுடியாதது மற்றும் மின்னஞ்சல் முகவரியை நிரந்தரமாக நீக்கும்.",
+                    description: "இந்த மின்னஞ்சல் முகவரியை நீங்கள் நீக்கினால், அது உங்கள் சுயவிவரத்திலிருந்து நிரந்தரமாக அகற்றப்படும்.",
+                    heading: "நீ சொல்வது உறுதியா?"
+                },
+                mobileNumberDeleteConfirmation: {
+                    assertionHint: "தயவுசெய்து உங்கள் செயலை உறுதிப்படுத்தவும்.",
+                    content: "இந்த நடவடிக்கை மீளமுடியாதது மற்றும் மொபைல் எண்ணை நிரந்தரமாக நீக்கும்.",
+                    description: "இந்த மொபைல் எண்ணை நீங்கள் நீக்கினால், அது உங்கள் சுயவிவரத்திலிருந்து நிரந்தரமாக அகற்றப்படும்.",
+                    heading: "நீ சொல்வது உறுதியா?"
+                }
+            },
             notifications: {
                 getProfileCompletion: {
                     error: {
@@ -1545,6 +1573,34 @@ export const myAccount: MyAccountNS = {
                     success: {
                         description: "பயனர் சுயவிபரம் வெற்றிகரமாக புதுப்பிக்கபட்டுவிட்டது.",
                         message: "பயனர் சுயவிபரம் புதுப்பிக்கபட்டுவிட்டது"
+                    }
+                },
+                verifyEmail: {
+                    error: {
+                        description: "{{description}}",
+                        message: "சரிபார்ப்பு மின்னஞ்சலை அனுப்பும்போது பிழை ஏற்பட்டது"
+                    },
+                    genericError: {
+                        description: "சரிபார்ப்பு மின்னஞ்சலை அனுப்பும்போது பிழை ஏற்பட்டது",
+                        message: "ஏதோ தவறு நடந்துவிட்டது"
+                    },
+                    success: {
+                        description: "சரிபார்ப்பு மின்னஞ்சல் வெற்றிகரமாக அனுப்பப்பட்டது. தயவுசெய்து உங்கள் இன்பாக்ஸைச் சரிபார்க்கவும்",
+                        message: "சரிபார்ப்பு மின்னஞ்சல் வெற்றிகரமாக அனுப்பப்பட்டது"
+                    }
+                },
+                verifyMobile: {
+                    error: {
+                        description: "{{description}}",
+                        message: "சரிபார்ப்புக் குறியீட்டை அனுப்பும்போது பிழை ஏற்பட்டது"
+                    },
+                    genericError: {
+                        description: "சரிபார்ப்புக் குறியீட்டை அனுப்பும்போது பிழை ஏற்பட்டது",
+                        message: "ஏதோ தவறு நடந்துவிட்டது"
+                    },
+                    success: {
+                        description: "சரிபார்ப்புக் குறியீடு வெற்றிகரமாக அனுப்பப்பட்டது. தயவுசெய்து உங்கள் மொபைலை சரிபார்க்கவும்",
+                        message: "சரிபார்ப்பு குறியீடு வெற்றிகரமாக அனுப்பப்பட்டது"
                     }
                 }
             },

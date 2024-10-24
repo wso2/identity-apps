@@ -950,13 +950,17 @@ export const myAccount: MyAccountNS = {
             "submitMobile": {
                 "heading": "新しい携帯電話番号を入力します"
             },
+            verificationSent: {
+                heading: "あなたはまもなく検証のためにあなたの携帯電話番号にOTPを受け取ります"
+            },
             "verifySmsOtp": {
+                "didNotReceive": "コードを受け取っていませんか?",
                 "error": "検証に失敗しました。もう一度やり直してください。",
-                "generate": "新しい検証コードを再送信します",
-                "heading": "携帯電話番号に送信された検証コードを入力します",
-                "label": "検証コード",
+                "heading": "携帯電話番号を確認する",
+                "label": "携帯電話番号に送信された検証コードを入力してください",
                 "placeholder": "確認コードを入力します",
-                "requiredError": "確認コードを入力します"
+                "requiredError": "確認コードを入力します",
+                "resend": "再送信"
             }
         },
         "overview": {
@@ -1153,6 +1157,12 @@ export const myAccount: MyAccountNS = {
             }
         },
         "profile": {
+            actions: {
+                "deleteEmail": "メールアドレスを削除",
+                "deleteMobile": "モバイルを削除",
+                "verifyEmail": "メールアドレスの確認",
+                "verifyMobile": "モバイルの確認"
+            },
             "fields": {
                 "Account Confirmed Time": "アカウントが確認された時間",
                 "Account Disabled": "アカウントが無効になっています",
@@ -1170,6 +1180,7 @@ export const myAccount: MyAccountNS = {
                 "Disable SMSOTP": "SMSOTPを無効にします",
                 "Display Name": "表示名",
                 "Email": "Eメール",
+                "Email Addresses": "メールアドレス",
                 "Email Verified": "検証済みのメール",
                 "Enabled Authenticators": "有効化された認証機",
                 "Existing Lite User": "既存のLiteユーザー",
@@ -1202,6 +1213,7 @@ export const myAccount: MyAccountNS = {
                 "Manager - Name": "マネージャー - 名前",
                 "Middle Name": "ミドルネーム",
                 "Mobile": "携帯",
+                "Mobile Numbers": "携帯電話番号",
                 "Nick Name": "ニックネーム",
                 "Phone Verified": "電話が検証された",
                 "Photo - Thumbnail": "写真 - サムネイル",
@@ -1225,6 +1237,8 @@ export const myAccount: MyAccountNS = {
                 "Username": "ユーザー名",
                 "Verification Pending Email": "検証保留中のメール",
                 "Verification Pending Mobile Number": "携帯電話番号が保留中の検証",
+                "Verified Email Addresses": "検証済みのメールアドレス",
+                "Verified Mobile Numbers": "検証済みの携帯電話番号",
                 "Verify Email": "Eメールを確認します",
                 "Verify Mobile": "モバイルを確認します",
                 "Verify Secret Key": "シークレットキーを確認します",
@@ -1336,6 +1350,20 @@ export const myAccount: MyAccountNS = {
                     "content": "この携帯電話番号は、2番目の因子認証が有効になったときにSMS OTPを送信し、ユーザー名/パスワードの回復の場合のリカバリコードを送信するために使用されます。この番号を更新するには、新しい番号に送信された検証コードを入力して、新しい番号を確認する必要があります。続行する場合は、[更新]をクリックします。"
                 }
             },
+            modals: {
+                emailAddressDeleteConfirmation: {
+                    assertionHint: "あなたの行動を確認してください。",
+                    content: "このアクションは不可逆的であり、メールアドレスを永久に削除します。",
+                    description: "このメールアドレスを削除すると、プロファイルから永続的に削除されます。",
+                    heading: "本気ですか？"
+                },
+                mobileNumberDeleteConfirmation: {
+                    assertionHint: "あなたの行動を確認してください。",
+                    content: "このアクションは不可逆的であり、携帯電話番号を永久に削除します。",
+                    description: "この携帯電話番号を削除すると、プロファイルから永久に削除されます。",
+                    heading: "本気ですか？"
+                }
+            },
             "notifications": {
                 "getProfileCompletion": {
                     "error": {
@@ -1383,6 +1411,34 @@ export const myAccount: MyAccountNS = {
                     "success": {
                         "description": "必要なユーザープロファイルの詳細が正常に更新されました",
                         "message": "ユーザープロファイルは正常に更新されました"
+                    }
+                },
+                verifyEmail: {
+                    error: {
+                        description: "{{description}}",
+                        message: "検証メールの送信中にエラーが発生しました"
+                    },
+                    genericError: {
+                        description: "検証メールの送信中にエラーが発生しました",
+                        message: "何かがうまくいかなかった"
+                    },
+                    success: {
+                        description: "検証メールが正常に送信されました。受信トレイを確認してください",
+                        message: "確認メールが正常に送信されました"
+                    }
+                },
+                verifyMobile: {
+                    error: {
+                        description: "{{description}}",
+                        message: "検証コードの送信中にエラーが発生しました"
+                    },
+                    genericError: {
+                        description: "検証コードの送信中にエラーが発生しました",
+                        message: "何かがうまくいかなかった"
+                    },
+                    success: {
+                        description: "検証コードが正常に送信されました。携帯電話を確認してください",
+                        message: "検証コードが正常に送信されました"
                     }
                 }
             },

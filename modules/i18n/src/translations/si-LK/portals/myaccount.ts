@@ -978,13 +978,17 @@ export const myAccount: MyAccountNS = {
             submitMobile: {
                 heading: "ඔබගේ නව ජංගම දුරකථන අංකය ඇතුළත් කරන්න"
             },
+            verificationSent: {
+                heading: "සත්‍යාපනය සඳහා ඔබේ ජංගම දුරකථන අංකයට OTP එකක් ලැබෙනු ඇත"
+            },
             verifySmsOtp: {
+                didNotReceive: "කේතයක් නොලැබුනේද?",
                 error: "සත්‍යාපනය අසාර්ථක විය. කරුණාකර නැවත උත්සාහ කරන්න.",
-                generate: "නව සත්‍යාපන කේතයක් යවන්න",
-                heading: "ඔබගේ ජංගම දුරකථන අංකයට යවන ලද සත්‍යාපන කේතය ඇතුළත් කරන්න",
-                label: "සත්යාපන කේතය",
+                heading: "ඔබේ ජංගම දුරකථන අංකය සත්‍යාපනය කරන්න",
+                label: "ඔබගේ ජංගම දුරකථන අංකයට යවන ලද සත්‍යාපනය කේතය ඇතුළත් කරන්න",
                 placeholder: "ඔබගේ සත්‍යාපන කේතය ඇතුළත් කරන්න",
-                requiredError: "සත්‍යාපන කේතය ඇතුළත් කරන්න"
+                requiredError: "සත්‍යාපන කේතය ඇතුළත් කරන්න",
+                resend: "නැවත යවන්න"
             }
         },
         overview: {
@@ -1262,6 +1266,12 @@ export const myAccount: MyAccountNS = {
             }
         },
         profile: {
+            actions: {
+                "deleteEmail": "විද්යුත් තැපැල් ලිපිනය මකන්න",
+                "deleteMobile": "ජංගම දුරකථනය මකන්න",
+                "verifyEmail": "විද්යුත් තැපැල් ලිපිනය සත්‍යාපනය කරන්න",
+                "verifyMobile": "ජංගම දුරකථනය සත්‍යාපනය කරන්න"
+            },
             fields: {
                 "Account Confirmed Time": "ගිණුම තහවුරු කරන කාලය",
                 "Account Disabled": "ගිණුම අක්රීයයි",
@@ -1279,6 +1289,7 @@ export const myAccount: MyAccountNS = {
                 "Disable SMSOTP": "SMSSTP අක්රීය කරන්න",
                 "Display Name": "ප්රදර්ශන නාමය",
                 "Email": "විද්යුත් තැපෑල",
+                "Email Addresses": "විද්යුත් තැපෑල ලිපින",
                 "Email Verified": "විද්යුත් තැපෑල සත්යාපනය",
                 "Enabled Authenticators": "සක්රීය සත්යාපනය",
                 "Existing Lite User": "පවතින ලයිට් පරිශීලක",
@@ -1311,6 +1322,7 @@ export const myAccount: MyAccountNS = {
                 "Manager - Name": "කළමනාකරු - නම",
                 "Middle Name": "මැද නම",
                 "Mobile": "ජංගම",
+                "Mobile Numbers": "ජංගම දුරකථන",
                 "Nick Name": "නික් නම",
                 "Phone Verified": "දුරකථන සත්යාපනය",
                 "Photo - Thumbnail": "ඡායාරූපය - සිඟිති රූ",
@@ -1334,6 +1346,8 @@ export const myAccount: MyAccountNS = {
                 "Username": "පරිශීලක නාමය",
                 "Verification Pending Email": "සත්යාපනය සඳහා විද්යුත් තැපෑල",
                 "Verification Pending Mobile Number": "සත්යාපනය අපේක්ෂිත ජංගම දුරකථන අංකය",
+                "Verified Email Addresses": "සත්‍යාපිත ඊමේල් ලිපින",
+                "Verified Mobile Numbers": "සත්‍යාපිත ජංගම දුරකථන",
                 "Verify Email": "විද්යුත් තැපෑල සත්යාපනය කරන්න",
                 "Verify Mobile": "ජංගම දුරකථනය සත්යාපනය කරන්න",
                 "Verify Secret Key": "රහස් යතුර සත්යාපනය කරන්න",
@@ -1453,6 +1467,20 @@ export const myAccount: MyAccountNS = {
                         "යාවත්කාලීන ක්ලික් කරන්න."
                 }
             },
+            modals: {
+                emailAddressDeleteConfirmation: {
+                    assertionHint: "කරුණාකර ඔබේ ක්රියාව සනාථ කරන්න.",
+                    content: "මෙම ක්රියාව ආපසු හැරවිය නොහැකි වන අතර ඊමේල් ලිපිනය ස්ථිරවම මකා දමනු ඇත.",
+                    description: "ඔබ මෙම විද්යුත් තැපැල් ලිපිනය මකා දැමුවහොත් එය ඔබගේ පරිශීලක පැතිකඩෙන් ස්ථිරවම ඉවත් කරනු ලැබේ.",
+                    heading: "ඔබට විශ්වාසද?"
+                },
+                mobileNumberDeleteConfirmation: {
+                    assertionHint: "කරුණාකර ඔබේ ක්රියාව සනාථ කරන්න.",
+                    content: "මෙම ක්රියාව ආපසු හැරවිය නොහැකි වන අතර ජංගම දුරකථන අංකය ස්ථිරවම මකා දමනු ඇත.",
+                    description: "ඔබ මෙම ජංගම දුරකථන අංකය මකා දැමුවහොත්, එය ඔබගේ පරිශීලක පැතිකඩෙන් ස්ථිරවම ඉවත් කරනු ලැබේ.",
+                    heading: "ඔබට විශ්වාසද?"
+                }
+            },
             notifications: {
                 getProfileCompletion: {
                     error: {
@@ -1500,6 +1528,34 @@ export const myAccount: MyAccountNS = {
                     success: {
                         description: "අවශ්‍ය පරිශීලක පැතිකඩ විස්තර සාර්ථකව යාවත්කාලීන කරන ලදි",
                         message: "පරිශීලක පැතිකඩ සාර්ථකව යාවත්කාලීන කරන ලදි"
+                    }
+                },
+                verifyEmail: {
+                    error: {
+                        description: "{{description}}",
+                        message: "සත්‍යාපන විද්යුත් තැපෑල යැවීමේදී දෝෂයක් ඇතිවිය"
+                    },
+                    genericError: {
+                        description: "සත්‍යාපන විද්යුත් තැපෑල යැවීමේදී දෝෂයක් ඇතිවිය",
+                        message: "දෝෂයක් ඇතිවිය"
+                    },
+                    success: {
+                        description: "සත්‍යාපන විද්යුත් තැපෑල සාර්ථකව යවා ඇත. කරුණාකර ඔබේ එන ලිපි පරීක්ෂා කරන්න",
+                        message: "සත්‍යාපන විද්යුත් තැපෑල සාර්ථකව යවන ලදි"
+                    }
+                },
+                verifyMobile: {
+                    error: {
+                        description: "{{description}}",
+                        message: "සත්‍යාපන කේතය යැවීමේදී දෝෂයක් ඇතිවිය"
+                    },
+                    genericError: {
+                        description: "සත්‍යාපන කේතය යැවීමේදී දෝෂයක් ඇතිවිය",
+                        message: "දෝෂයක් ඇතිවිය"
+                    },
+                    success: {
+                        description: "සත්‍යාපන කේතය සාර්ථකව යවා ඇත. කරුණාකර ඔබේ ජංගම දුරකථනය පරීක්ෂා කරන්න",
+                        message: "සත්‍යාපන කේතය සාර්ථකව යවා ඇත"
                     }
                 }
             },
