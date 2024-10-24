@@ -169,7 +169,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                     </ResourceTab.Pane>
                 )
             },
-            ((isFirstLevelOrganization() && isEnterpriseLoginEnabled) || isSubOrganization()) && {
+            ((isFirstLevelOrganization() && !isPrivilegedUsersInConsoleSettingsEnabled) || isSubOrganization()) && {
                 menuItem: t("roles:edit.menuItems.groups"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
