@@ -154,7 +154,14 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         isLoading: isApplicationListFetchRequestLoading,
         error: applicationListFetchRequestError,
         mutate: mutateApplicationListFetchRequest
-    } = useApplicationList("advancedConfigurations,templateId,clientId,issuer", listItemLimit, listOffset, searchQuery);
+    } = useApplicationList(
+        "advancedConfigurations,templateId,clientId,issuer",
+        listItemLimit,
+        listOffset,
+        searchQuery,
+        true,
+        true
+    );
 
     const {
         data: myAccountApplicationData,
