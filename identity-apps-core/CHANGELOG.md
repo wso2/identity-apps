@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.7.1
+
+### Patch Changes
+
+- [#7027](https://github.com/wso2/identity-apps/pull/7027) [`905abd6b3cec07d2548e64b5706c6b49a3220289`](https://github.com/wso2/identity-apps/commit/905abd6b3cec07d2548e64b5706c6b49a3220289) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enhance the performance of the JSP pages
+
 ## 2.7.0
 
 ### Minor Changes
