@@ -99,6 +99,7 @@ export interface ApiResourcesNS {
                             permission: {
                                 emptyValidate: string;
                                 uniqueValidate: string;
+                                errorOccurred: string;
                                 invalid: string;
                                 label: string;
                                 placeholder: string;
