@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.10.1
+
+### Patch Changes
+
+- [#7037](https://github.com/wso2/identity-apps/pull/7037) [`890bc99c059bb05a70ab1fc27b069fea56600a62`](https://github.com/wso2/identity-apps/commit/890bc99c059bb05a70ab1fc27b069fea56600a62) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add missing 18n strings
+
 ## 2.10.0
 
 ### Minor Changes
