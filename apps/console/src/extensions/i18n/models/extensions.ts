@@ -3117,6 +3117,16 @@ export interface Extensions {
                     };
                     subHeading: string;
                 };
+                usernameRecovery: {
+                    form: {
+                        fields: {
+                            enableEmailBasedRecovery: FormAttributes;
+                            enableSMSBasedRecovery: FormAttributes;
+                        },
+                        smsProviderWarning: string;
+                        recoveryOptionHeading: string;
+                    }
+                }
             };
             accountSecurity: {
                 heading: string;
