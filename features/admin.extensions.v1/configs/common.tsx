@@ -18,9 +18,11 @@
 
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { RemoteUserStoreConstants } from "@wso2is/admin.remote-userstores.v1/constants";
 import { RouteInterface } from "@wso2is/core/models";
 import { lazy } from "react";
 import { CommonConfig } from "./models";
+import { userstoresConfig } from "./userstores";
 
 export const commonConfig: CommonConfig = {
     advancedSearchWithBasicFilters: {
@@ -61,7 +63,36 @@ export const commonConfig: CommonConfig = {
                         path: AppConstants.getPaths().get("USERSTORE_TEMPLATES"),
                         protected: true,
                         showOnSidePanel: false
-                    }
+                    },
+                    {
+                        component: lazy(() =>
+                            import("@wso2is/admin.remote-userstores.v1/pages/remote-customer-user-store-create-page")
+                        ),
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "remote-user-store-create",
+                        name: "userstore create",
+                        path: RemoteUserStoreConstants.getPaths().get("REMOTE_USER_STORE_CREATE"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() =>
+                            import("@wso2is/admin.remote-userstores.v1/pages/remote-user-store-edit-page")
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "remote-edit-user-store",
+                        name: "console:manage.features.sidePanel.editUserstore",
+                        path: AppConstants.getPaths()
+                            .get("USERSTORES_EDIT")
+                            .replace("edit-user-store", userstoresConfig.userstoreEdit.remoteUserStoreEditPath),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
                 ],
                 component: lazy(() => import("@wso2is/admin.userstores.v1/pages/user-stores")),
                 exact: true,

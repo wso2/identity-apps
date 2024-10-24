@@ -196,3 +196,13 @@ export const PRIMARY_USERSTORE: string = "PRIMARY";
  * Character limit for userstore name.
  */
 export const USERSTORE_NAME_CHARACTER_LIMIT: number = 50;
+
+/**
+ * Enum for user store types.
+ *
+ * @readonly
+ */
+export enum UserStoreTypes {
+    DIRECT = "direct",
+    REMOTE = "remote"
+}

@@ -301,8 +301,9 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
         return null;
     };
 
-    const handleUserstoreEdit = (userstoreId: string) => {
-        if (userstoresConfig.onUserstoreEdit(userstoreId)) {
+    const handleUserstoreEdit = (userstoreId: string, typeName: string) => {
+        console.log(typeName);
+        if (userstoresConfig.onUserstoreEdit(userstoreId) && !(typeName === "WSOutboundUserStoreManager")) {
             history.push(AppConstants.getPaths().get("USERSTORES_EDIT").replace(":id", userstoreId));
         } else {
             history.push(AppConstants.getPaths().get("USERSTORES_EDIT").replace(":id", userstoreId).replace(
@@ -409,7 +410,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
             {
                 icon: (): SemanticICONS => hasRequiredScopes(featureConfig?.userStores,
                     featureConfig?.userStores?.scopes?.update, allowedScopes) ?  "pencil alternate" : "eye",
-                onClick: (e: SyntheticEvent, userstore: UserStoreListItem): void => handleUserstoreEdit(userstore?.id),
+                onClick: (e: SyntheticEvent, userstore: UserStoreListItem): void => handleUserstoreEdit(userstore?.id, userstore?.typeName),
                 popupText: (): string => hasRequiredScopes(featureConfig?.userStores,
                     featureConfig?.userStores?.scopes?.update, allowedScopes) ? t("common:edit") : t("common:view"),
                 renderer: "semantic-icon"
@@ -443,7 +444,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                 columns={ resolveTableColumns() }
                 data={ list }
                 onRowClick={ (e: SyntheticEvent, userstore: UserStoreListItem): void => {
-                    handleUserstoreEdit(userstore?.id);
+                    handleUserstoreEdit(userstore?.id, userstore?.typeName);
                 } }
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
