@@ -153,6 +153,11 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                                 useClientIdAsSubClaimOfAppTokens: {
                                     documentationLink: undefined
                                 }
+                            },
+                            version200: {
+                                addAllRequestedClaimsInJWTAccessToken: {
+                                    documentationLink: undefined
+                                }
                             }
                         }
                     },
