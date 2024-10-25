@@ -1,5 +1,14 @@
 # @wso2is/admin.username-validation.v1
 
+## 1.5.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.5
+  - @wso2is/admin.core.v1@2.34.5
+  - @wso2is/admin.validation.v1@2.26.5
+
 ## 1.5.4
 
 ### Patch Changes
