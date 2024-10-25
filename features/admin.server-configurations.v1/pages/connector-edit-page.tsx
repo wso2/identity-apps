@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -35,7 +35,6 @@ import React, {
     ReactElement,
     SyntheticEvent,
     useEffect,
-    useMemo,
     useRef,
     useState
 } from "react";
@@ -77,8 +76,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const applicationFeatureConfig: FeatureConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features.applications);
 
     const [ isConnectorRequestLoading, setConnectorRequestLoading ] = useState<boolean>(false);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
@@ -88,28 +87,13 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ enableBackButton, setEnableBackButton ] = useState<boolean>(true);
 
-    const isReadOnly: boolean = useMemo(
-        () =>
-            !hasRequiredScopes(
-                featureConfig?.governanceConnectors,
-                featureConfig?.governanceConnectors?.scopes?.update,
-                allowedScopes
-            ),
-        [ featureConfig, allowedScopes ]
-    );
-
+    const hasReadOnly: boolean = !useRequiredScopes(applicationFeatureConfig?.governanceConnectors?.scopes?.update);
     const path: string[] = history.location.pathname.split("/");
     const type: string = path[ path.length - 3 ];
 
     useEffect(() => {
         // If Governance Connector read permission is not available, prevent from trying to load the connectors.
-        if (
-            !hasRequiredScopes(
-                featureConfig?.governanceConnectors,
-                featureConfig?.governanceConnectors?.scopes?.read,
-                allowedScopes
-            )
-        ) {
+        if (hasReadOnly) {
             return;
         }
 
@@ -567,7 +551,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                     toggle
                     onChange={ ssoLoginConnectorId ? handleBotDetectionToggle : handleToggle }
                     checked={ enableForm }
-                    readOnly={ isReadOnly }
+                    readOnly={ hasReadOnly }
                     data-testId={ `${ testId }-${ connectorId }-enable-toggle` }
                 />
             </>
