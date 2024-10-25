@@ -206,3 +206,10 @@ export enum UserStoreTypes {
     DIRECT = "direct",
     REMOTE = "remote"
 }
+
+/**
+ * Remote user store types.
+ */
+export const REMOTE_USER_STORE_TYPES: string[] = [
+    "WSOutboundUserStoreManager", "AsgardeoBusinessUserStoreManager"
+];

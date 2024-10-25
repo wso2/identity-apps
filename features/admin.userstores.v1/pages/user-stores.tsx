@@ -98,6 +98,9 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
     const [ searchQuery, setSearchQuery ] = useState("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
+    const disabledFeatures: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.userStores?.disabledFeatures);
+
     const dispatch: Dispatch = useDispatch();
 
     const [ resetPagination, setResetPagination ] = useTrigger();
@@ -263,7 +266,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
 
                 break;
             case UserStoreTypes.REMOTE:
-                history.push(RemoteUserStoreConstants.getPaths().get("REMOTE_USER_STORE_CREATE"))
+                history.push(RemoteUserStoreConstants.getPaths().get("REMOTE_USER_STORE_CREATE"));
 
                 break;
         }
@@ -278,37 +281,39 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                     <Show
                         when={ featureConfig?.userStores?.scopes?.create }
                     >
-                        { /* <PrimaryButton
-                            onClick={ () => {
-                                history.push(AppConstants.getPaths().get("USERSTORE_TEMPLATES"));
-                            } }
-                            data-testid={ `${ testId }-list-layout-add-button` }
-                        >
-                            <Icon name="add"/>
-                            { t("userstores:pageLayout.list.primaryAction") }
-                        </PrimaryButton> */ }
-                        <Dropdown
-                            data-componentid={ `${ testId }-add-user-dropdown` }
-                            direction="left"
-                            floating
-                            icon={ null }
-                            trigger={ addUserDropdownTrigger }
-                        >
-                            <Dropdown.Menu >
-                                { getAddUserOptions().map((option: {
-                        "data-componentid": string;
-                        key: number;
-                        text: string;
-                        value: UserAccountTypes;
-                    }) => (
-                                    <Dropdown.Item
-                                        key={ option.value }
-                                        onClick={ ()=> handleDropdownItemChange(option.value) }
-                                        { ...option }
-                                    />
-                                )) }
-                            </Dropdown.Menu>
-                        </Dropdown>
+                        { disabledFeatures?.includes("userStores.type.remote") ?
+                            (<PrimaryButton
+                                onClick={ () => {
+                                    history.push(AppConstants.getPaths().get("USERSTORE_TEMPLATES"));
+                                } }
+                                data-testid={ `${ testId }-list-layout-add-button` }
+                            >
+                                <Icon name="add"/>
+                                { t("userstores:pageLayout.list.primaryAction") }
+                            </PrimaryButton>) :
+                            (<Dropdown
+                                data-componentid={ `${ testId }-add-user-dropdown` }
+                                direction="left"
+                                floating
+                                icon={ null }
+                                trigger={ addUserDropdownTrigger }
+                            >
+                                <Dropdown.Menu >
+                                    { getAddUserOptions().map((option: {
+                                        "data-componentid": string;
+                                        key: number;
+                                        text: string;
+                                        value: UserAccountTypes;
+                                    }) => (
+                                        <Dropdown.Item
+                                            key={ option.value }
+                                            onClick={ ()=> handleDropdownItemChange(option.value) }
+                                            { ...option }
+                                        />
+                                    )) }
+                                </Dropdown.Menu>
+                            </Dropdown>)
+                        }
                     </Show>
                 )
             }
