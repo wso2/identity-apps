@@ -791,44 +791,49 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
             <Show
                 when={ featureConfig?.branding?.scopes?.delete }
             >
-                <DangerZoneGroup sectionHeader={ t("extensions:develop.branding.dangerZoneGroup.header") }>
-                    { brandingPreference.configs?.isBrandingEnabled && (
-                        <DangerZone
-                            actionTitle={
-                                t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.actionTitle")
-                            }
-                            header={
-                                t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.header")
-                            }
-                            subheader={
-                                t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.subheader",
-                                    { productName: productName })
-                            }
-                            onActionClick={ (): void => handleBrandingUnpublish() }
-                            data-componentid={ `${ componentId }-danger-zone-unpublish` }
-                            isButtonDisabled={ brandingMode === BrandingModes.APPLICATION && !selectedApplication }
-                            buttonDisableHint={
-                                t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.disableHint") }
-                        />
-                    ) }
-                    <DangerZone
-                        actionTitle={
-                            t("extensions:develop.branding.dangerZoneGroup.revertBranding.actionTitle")
-                        }
-                        header={
-                            t("extensions:develop.branding.dangerZoneGroup.revertBranding.header")
-                        }
-                        subheader={
-                            t("extensions:develop.branding.dangerZoneGroup.revertBranding.subheader",
-                                { productName: productName })
-                        }
-                        onActionClick={ (): void => setShowRevertConfirmationModal(true) }
-                        data-componentid={ `${ componentId }-danger-zone` }
-                        isButtonDisabled={ brandingMode === BrandingModes.APPLICATION && !selectedApplication }
-                        buttonDisableHint={
-                            t("extensions:develop.branding.dangerZoneGroup.revertBranding.disableHint") }
-                    />
-                </DangerZoneGroup>
+                {
+                    isBrandingConfigured && (
+                        <DangerZoneGroup sectionHeader={ t("extensions:develop.branding.dangerZoneGroup.header") }>
+                            { brandingPreference.configs?.isBrandingEnabled && (
+                                <DangerZone
+                                    actionTitle={
+                                        t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.actionTitle")
+                                    }
+                                    header={
+                                        t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.header")
+                                    }
+                                    subheader={
+                                        t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.subheader",
+                                            { productName: productName })
+                                    }
+                                    onActionClick={ (): void => handleBrandingUnpublish() }
+                                    data-componentid={ `${ componentId }-danger-zone-unpublish` }
+                                    isButtonDisabled={
+                                        brandingMode === BrandingModes.APPLICATION && !selectedApplication }
+                                    buttonDisableHint={
+                                        t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.disableHint") }
+                                />
+                            ) }
+                            <DangerZone
+                                actionTitle={
+                                    t("extensions:develop.branding.dangerZoneGroup.revertBranding.actionTitle")
+                                }
+                                header={
+                                    t("extensions:develop.branding.dangerZoneGroup.revertBranding.header")
+                                }
+                                subheader={
+                                    t("extensions:develop.branding.dangerZoneGroup.revertBranding.subheader",
+                                        { productName: productName })
+                                }
+                                onActionClick={ (): void => setShowRevertConfirmationModal(true) }
+                                data-componentid={ `${ componentId }-danger-zone` }
+                                isButtonDisabled={ brandingMode === BrandingModes.APPLICATION && !selectedApplication }
+                                buttonDisableHint={
+                                    t("extensions:develop.branding.dangerZoneGroup.revertBranding.disableHint") }
+                            />
+                        </DangerZoneGroup>
+                    )
+                }
             </Show>
             <ConfirmationModal
                 onClose={ (): void => setShowRevertConfirmationModal(false) }
