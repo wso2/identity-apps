@@ -22,6 +22,7 @@ import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
 import Collapse from "@oxygen-ui/react/Collapse";
 import Stack from "@oxygen-ui/react/Stack";
+import { AppState } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
