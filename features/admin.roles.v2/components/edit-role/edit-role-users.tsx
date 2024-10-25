@@ -431,7 +431,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                             : availableUserStores?.map((userstore: UserStoreListItem) =>
                                                                 (<MenuItem
                                                                     key={ userstore.name }
-                                                                    value={ userstore.name }
+                                                                    value={ userstore.id }
                                                                 >
                                                                     { userstore.name }
                                                                 </MenuItem>)
