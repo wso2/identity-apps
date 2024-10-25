@@ -98,10 +98,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ activeOption, setActiveOption ] = useState<GroupsInterface|UserBasicInterface>(undefined);
     const [ availableUserStores, setAvailableUserStores ] = useState<UserstoreDisplayItem[]>([]);
-    const [ selectedUserStoreDomainName, setSelectedUserStoreDomainName ] = useState<string>(
-        activeUserStore ??
-        disabledUserstores.includes(RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME) ? "DEFAULT" : "PRIMARY"
-    );
+    const [ selectedUserStoreDomainName, setSelectedUserStoreDomainName ] = useState<string>();
     const [ isPlaceholderVisible, setIsPlaceholderVisible ] = useState<boolean>(true);
     const [ selectedUsersFromUserStore, setSelectedUsersFromUserStore ] = useState<UserBasicInterface[]>([]);
     const [ selectedAllUsers, setSelectedAllUsers ] = useState<Record<string, UserBasicInterface[] | undefined>>({});

@@ -72,7 +72,8 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
     const { isLoading, roleObject, onRoleUpdate, defaultActiveIndex } = props;
 
     const { t } = useTranslation();
-    const { isFirstLevelOrganization, isSubOrganization, organizationType } = useGetCurrentOrganizationType();
+    const { isSuperOrganization, isFirstLevelOrganization, isSubOrganization, organizationType } =
+        useGetCurrentOrganizationType();
 
     const userRolesFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRoles
@@ -169,7 +170,11 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                     </ResourceTab.Pane>
                 )
             },
-            ((isFirstLevelOrganization() && !isPrivilegedUsersInConsoleSettingsEnabled) || isSubOrganization()) && {
+            (
+                isSuperOrganization() ||
+                (isFirstLevelOrganization() && !isPrivilegedUsersInConsoleSettingsEnabled)
+                || isSubOrganization()
+            ) && {
                 menuItem: t("roles:edit.menuItems.groups"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -213,7 +218,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                             isReadOnly={ !hasRolesUpdatePermissions }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
-                            activeUserStore={ activeUserStore }
+                            activeUserStore={ isPrivilegedUsersInConsoleSettingsEnabled ? activeUserStore : null }
                             tabIndex={ 3 }
                         />
                     </ResourceTab.Pane>
