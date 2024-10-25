@@ -1604,6 +1604,9 @@
             {% if console.tenants is defined %}
             "tenants": {
                 "disabledFeatures": [
+                    {% if tenant_mgt.tenant_deletion is not defined or tenant_mgt.tenant_deletion == false %}
+                        "tenants.deletion"{{ "," if console.tenants.disabled_features is defined }}
+                    {% endif %}
                     {% if console.tenants.disabled_features is defined %}
                     {% for feature in console.tenants.disabled_features %}
                     "{{ feature }}"{{ "," if not loop.last }}

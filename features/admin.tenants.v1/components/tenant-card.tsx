@@ -47,6 +47,7 @@ import moment from "moment";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import TenantConstants from "../constants/tenant-constants";
 import useTenants from "../hooks/use-tenants";
 import { Tenant } from "../models/tenants";
 import "./tenant-card.scss";
@@ -74,6 +75,11 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({
     const { t } = useTranslation();
 
     const clientHost: string = useSelector((state: AppState) => state.config?.deployment?.clientHost);
+    const isTenantDeletionEnabled: boolean = useSelector((state: AppState) => {
+        return !state?.config?.ui?.features?.tenants?.disabledFeatures?.includes(
+            TenantConstants.FEATURE_DICTIONARY.TENANT_DELETION
+        );
+    });
 
     const { deleteTenant, disableTenant, enableTenant } = useTenants();
 
@@ -245,15 +251,17 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({
                                         : t("tenants:status.activate") }
                                 </ListItemText>
                             </MenuItem>
-                            <MenuItem
-                                className="tenant-card-footer-dropdown-item error"
-                                onClick={ () => deleteTenant(tenant) }
-                            >
-                                <ListItemIcon>
-                                    <TrashIcon size={ 14 } />
-                                </ListItemIcon>
-                                <ListItemText>{ t("tenants:listing.item.actions.delete.label") }</ListItemText>
-                            </MenuItem>
+                            { isTenantDeletionEnabled && (
+                                <MenuItem
+                                    className="tenant-card-footer-dropdown-item error"
+                                    onClick={ () => deleteTenant(tenant) }
+                                >
+                                    <ListItemIcon>
+                                        <TrashIcon size={ 14 } />
+                                    </ListItemIcon>
+                                    <ListItemText>{ t("tenants:listing.item.actions.delete.label") }</ListItemText>
+                                </MenuItem>
+                            ) }
                         </Menu>
                     </div>
                 </div>
