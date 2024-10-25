@@ -1,5 +1,20 @@
 # @wso2is/admin.branding.v1
 
+## 2.26.5
+
+### Patch Changes
+
+- [#7043](https://github.com/wso2/identity-apps/pull/7043) [`9ab3d23b78e8a55588ed2b109b0bcc027a327155`](https://github.com/wso2/identity-apps/commit/9ab3d23b78e8a55588ed2b109b0bcc027a327155) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Remove revert branding option when branding is not configured
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.ai.v1@2.26.5
+  - @wso2is/admin.core.v1@2.34.5
+  - @wso2is/admin.extensions.v1@2.34.5
+  - @wso2is/admin.organizations.v1@2.26.5
+  - @wso2is/admin.feature-gate.v1@1.4.5
+  - @wso2is/admin.server-configurations.v1@2.28.5
+  - @wso2is/common.branding.v1@2.24.5
+
 ## 2.26.4
 
 ### Patch Changes
