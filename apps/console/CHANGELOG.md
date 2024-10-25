@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.34.5
+
+### Patch Changes
+
+- [#6975](https://github.com/wso2/identity-apps/pull/6975) [`6187e6aff6cf2cf49ef2fb36eed561feef7eca98`](https://github.com/wso2/identity-apps/commit/6187e6aff6cf2cf49ef2fb36eed561feef7eca98) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Improve case insensitive user attribute handling toggle
+
 ## 2.34.4
 
 ### Patch Changes
