@@ -1025,6 +1025,7 @@
             "tenants": {
                 "disabledFeatures": [
                     "tenants.add.tenant.from.dropdown",
+                    "tenants.deletion",
                     "tenants.make.default",
                     "tenants.organizations.quick.nav.from.dropdown"
                 ],

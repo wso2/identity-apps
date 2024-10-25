@@ -26,7 +26,9 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import EditTenantForm from "./edit-tenant-form";
+import TenantConstants from "../../constants/tenant-constants";
 import useTenants from "../../hooks/use-tenants";
 import { Tenant } from "../../models/tenants";
 import "./edit-tenant.scss";
@@ -52,6 +54,12 @@ const EditTenant: FunctionComponent<EditTenantProps> = ({
     ["data-componentid"]: componentId = "edit-tenant"
 }: EditTenantProps): ReactElement => {
     const { t } = useTranslation();
+
+    const isTenantDeletionEnabled: boolean = useSelector((state: AppState) => {
+        return !state?.config?.ui?.features?.tenants?.disabledFeatures?.includes(
+            TenantConstants.FEATURE_DICTIONARY.TENANT_DELETION
+        );
+    });
 
     const { deleteTenant, disableTenant, enableTenant } = useTenants();
 
@@ -98,13 +106,15 @@ const EditTenant: FunctionComponent<EditTenantProps> = ({
                         onActionClick={ (): void => disableTenant(tenant) }
                     />
                 ) }
-                <DangerZone
-                    data-componentid={ `${componentId}-danger-zone-delete` }
-                    actionTitle={ t("tenants:editTenant.dangerZoneGroup.delete.actionTitle") }
-                    header={ t("tenants:editTenant.dangerZoneGroup.delete.header") }
-                    subheader={ t("tenants:editTenant.dangerZoneGroup.delete.subheader") }
-                    onActionClick={ (): void => deleteTenant(tenant) }
-                />
+                { isTenantDeletionEnabled && (
+                    <DangerZone
+                        data-componentid={ `${componentId}-danger-zone-delete` }
+                        actionTitle={ t("tenants:editTenant.dangerZoneGroup.delete.actionTitle") }
+                        header={ t("tenants:editTenant.dangerZoneGroup.delete.header") }
+                        subheader={ t("tenants:editTenant.dangerZoneGroup.delete.subheader") }
+                        onActionClick={ (): void => deleteTenant(tenant) }
+                    />
+                ) }
             </DangerZoneGroup>
         </Stack>
     );
