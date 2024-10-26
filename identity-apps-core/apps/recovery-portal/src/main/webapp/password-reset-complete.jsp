@@ -126,6 +126,16 @@
         }
     }
 
+    Boolean appEnabledStatus = false;
+
+    // Temporary fix for application name not retrieving from the applicationDataRetrievalClient.
+    if (applicationName.equals("null") || StringUtils.isBlank(applicationName)) {
+        // If application name is not available, fallback to My Account application.
+        appEnabledStatus = applicationDataRetrieval.getApplicationEnabledStatus(tenantDomain, MY_ACCOUNT_APP_NAME);
+    } else {
+        appEnabledStatus = applicationDataRetrieval.getApplicationEnabledStatus(tenantDomain, applicationName);
+    }
+
     // Retrieve application access url to redirect user back to the application.
     String applicationAccessURLWithoutEncoding = null;
     if (StringUtils.isNotBlank(applicationName)) {
@@ -321,14 +331,16 @@
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "successfully.set.a.password")%>.
                         <br/>
                         <br/>
-                        <% if (StringUtils.isNotBlank(applicationName) && applicationName.equals(MY_ACCOUNT_APP_NAME)) {%>
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "manage.profile.via")%>
-                            <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
-                                applicationAccessURLWithoutEncoding)%>"><%=MY_ACCOUNT_APP_NAME%></a>.
-                        <% } else { %>
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "can.sign.in.to")%>
-                            <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
-                                applicationAccessURLWithoutEncoding)%>"><%=APPLICATION%></a>.
+                        <% if (appEnabledStatus) { %>
+                            <% if (StringUtils.isNotBlank(applicationName) && applicationName.equals(MY_ACCOUNT_APP_NAME)) {%>
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "manage.profile.via")%>
+                                <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
+                                    applicationAccessURLWithoutEncoding)%>"><%=MY_ACCOUNT_APP_NAME%></a>.
+                            <% } else { %>
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "can.sign.in.to")%>
+                                <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
+                                    applicationAccessURLWithoutEncoding)%>"><%=APPLICATION%></a>.
+                            <% } %>
                         <% } %>
                     <% } else { %>
                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "successfully.set.a.password.you.can.sign.in.now")%>.
