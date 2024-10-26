@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ApplicationManagementConstants } from "../constants";
+import { ApplicationManagementConstants } from "../constants/application-management";
 
 /**
  * Utility class for adaptive script operations.

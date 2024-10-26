@@ -23,9 +23,11 @@ import Autocomplete, {
 import Button from "@oxygen-ui/react/Button";
 import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
-import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
+import { useAPIResources } from "@wso2is/admin.api-resources.v2/api/api-resources";
 import { useGetAuthorizedAPIList } from "@wso2is/admin.api-resources.v2/api/useGetAuthorizedAPIList";
-import { APIResourceCategories, APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
+import {
+    APIResourceCategories, APIResourcesConstants
+} from "@wso2is/admin.api-resources.v2/constants/api-resources-constants";
 import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {

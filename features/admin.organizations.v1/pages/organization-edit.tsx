@@ -17,7 +17,7 @@
  */
 
 import { BasicUserInfo } from "@asgardeo/auth-react";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
 import { AppConstants, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { isFeatureEnabled } from "@wso2is/core/helpers";

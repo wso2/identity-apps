@@ -17,12 +17,12 @@
  */
 
 import { TemplateConfigInterface, TemplateContentInterface }
-    from "@wso2is/admin.applications.v1/data/application-templates";
+    from "@wso2is/admin.applications.v1/data/application-templates/application-templates-config";
 import {
     ApplicationTemplateCategoryInterface,
     ApplicationTemplateGroupInterface,
     ApplicationTemplateInterface
-} from "@wso2is/admin.applications.v1/models";
+} from "@wso2is/admin.applications.v1/models/application";
 import {
     ConnectionTemplateCategoryInterface,
     ConnectionTemplateGroupInterface

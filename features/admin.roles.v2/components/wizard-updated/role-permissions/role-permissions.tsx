@@ -20,8 +20,10 @@ import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
-import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
-import { APIResourceCategories, APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
+import { useAPIResources } from "@wso2is/admin.api-resources.v2/api/api-resources";
+import {
+    APIResourceCategories, APIResourcesConstants
+} from "@wso2is/admin.api-resources.v2/constants/api-resources-constants";
 import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
 import { Policy } from "@wso2is/admin.applications.v1/constants/api-authorization";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";

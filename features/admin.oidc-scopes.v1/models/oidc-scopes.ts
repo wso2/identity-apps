@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { ExtendedExternalClaimInterface } from "@wso2is/admin.applications.v1/components/settings";
+import {
+    ExtendedExternalClaimInterface
+} from "@wso2is/admin.applications.v1/components/settings/attribute-management/attribute-settings";
 
 /**
  *  OIDC Scopes list model.

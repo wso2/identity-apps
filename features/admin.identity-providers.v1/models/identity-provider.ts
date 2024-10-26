@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ApplicationBasicInterface } from "@wso2is/admin.applications.v1/models";
+import { ApplicationBasicInterface } from "@wso2is/admin.applications.v1/models/application";
 import { CertificateConfigInterface } from "@wso2is/admin.connections.v1";
 import { GovernanceConnectorInterface } from "@wso2is/admin.server-configurations.v1/models";
 import { IdentifiableComponentInterface, LinkInterface, TestableComponentInterface } from "@wso2is/core/models";

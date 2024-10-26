@@ -18,8 +18,10 @@
 
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
-import { APIResourceCategories, APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
-import { APIResourceInterface } from "@wso2is/admin.api-resources.v2/models";
+import {
+    APIResourceCategories, APIResourcesConstants
+} from "@wso2is/admin.api-resources.v2/constants/api-resources-constants";
+import { APIResourceInterface } from "@wso2is/admin.api-resources.v2/models/api-resources";
 import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
 import useSubscribedAPIResources from "@wso2is/admin.applications.v1/api/use-subscribed-api-resources";
 import { AuthorizedAPIListItemInterface } from "@wso2is/admin.applications.v1/models/api-authorization";

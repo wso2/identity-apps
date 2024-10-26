@@ -22,7 +22,7 @@ import {
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { SupportedAuthenticators } from "@wso2is/admin.identity-providers.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } from "../models";
+import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } from "../models/application";
 
 /**
  * Class containing application management constants.

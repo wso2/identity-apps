@@ -20,12 +20,12 @@ import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
-} from "@wso2is/admin.applications.v1/components/settings";
+} from "@wso2is/admin.applications.v1/components/settings/attribute-management/attribute-settings";
 import {
     AdvancedConfigurationsInterface,
     ApplicationInterface,
     ApplicationTabTypes
-} from "@wso2is/admin.applications.v1/models";
+} from "@wso2is/admin.applications.v1/models/application";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { ResourceTabPaneInterface } from "@wso2is/react-components";
