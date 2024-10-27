@@ -178,7 +178,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
     useEffect(() => {
         setSelectedUserStore(
             isPrivilegedUsersInConsoleSettingsEnabled && selectedAdministratorGroup === "administrators"
-                ? undefined
+                ? PRIMARY_USERSTORE
                 : userstoresConfig?.primaryUserstoreName
         );
     },[ isPrivilegedUsersInConsoleSettingsEnabled, selectedAdministratorGroup ]);
