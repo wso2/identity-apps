@@ -1,5 +1,25 @@
 # @wso2is/admin.roles.v2
 
+## 2.26.6
+
+### Patch Changes
+
+- [#7050](https://github.com/wso2/identity-apps/pull/7050) [`4af6a09361ab7f471fd16b6e3b2d7c25085817a4`](https://github.com/wso2/identity-apps/commit/4af6a09361ab7f471fd16b6e3b2d7c25085817a4) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Reuse the business logic for determining available userstores user assign view in individual roles
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.6
+  - @wso2is/admin.connections.v1@2.28.6
+  - @wso2is/admin.core.v1@2.34.6
+  - @wso2is/admin.extensions.v1@2.34.6
+  - @wso2is/admin.groups.v1@2.25.6
+  - @wso2is/admin.identity-providers.v1@2.26.6
+  - @wso2is/admin.organizations.v1@2.26.6
+  - @wso2is/admin.users.v1@2.27.6
+  - @wso2is/admin.remote-userstores.v1@1.5.6
+  - @wso2is/admin.api-resources.v2@2.25.6
+  - @wso2is/admin.server-configurations.v1@2.28.6
+  - @wso2is/admin.userstores.v1@2.25.6
+
 ## 2.26.5
 
 ### Patch Changes
