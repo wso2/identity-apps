@@ -218,7 +218,11 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                             isReadOnly={ !hasRolesUpdatePermissions }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
-                            activeUserStore={ isPrivilegedUsersInConsoleSettingsEnabled ? activeUserStore : null }
+                            activeUserStore={
+                                isPrivilegedUsersInConsoleSettingsEnabled && isFirstLevelOrganization()
+                                    ? activeUserStore
+                                    : null
+                            }
                             tabIndex={ 3 }
                         />
                     </ResourceTab.Pane>
