@@ -195,34 +195,6 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         setSelectedUsersFromUserStore(usersFromSelectedStore);
     },[ role, selectedUserStoreDomainName ]);
 
-    // useEffect(() => {
-    //     if (!userStores) {
-    //         return;
-    //     }
-
-    //     if (userStores) {
-    //         const availableUserStoreList: UserstoreDisplayItem[] = disabledUserstores?.includes(
-    //             RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME)
-    //             ? []
-    //             : [
-    //                 {
-    //                     id: RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME,
-    //                     name: t("users:userstores.userstoreOptions.primary")
-    //                 }
-    //             ];
-
-    //         setAvailableUserStores(
-    //             [
-    //                 ...availableUserStoreList,
-    //                 ...userStores.map((userStore: UserStoreListItem) => ({
-    //                     id: userStore.id,
-    //                     name: userStore.name
-    //                 }))
-    //             ]
-    //         );
-    //     }
-    // }, [ userStores ]);
-
     /**
      * Set available to select users.
      */
