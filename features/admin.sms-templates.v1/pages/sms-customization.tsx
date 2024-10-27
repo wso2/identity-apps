@@ -103,7 +103,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         data: smsTemplate,
         isLoading: isSmsTemplateLoading,
         error: smsTemplateError,
-        mutate: mutate
+        mutate: mutateSmsTemplate
     } = useGetSmsTemplate(
         selectedSmsTemplateId,
         selectedLocale,
@@ -213,7 +213,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
             availableSmsTemplatesList?.find((template: SMSTemplateType) => template.id === templateId)?.description
         );
         setShouldFetch(true);
-        mutate();
+        mutateSmsTemplate();
     };
 
     const handleTemplateChange = (updatedTemplateAttributes: Partial<SMSTemplate>): void => {
@@ -230,7 +230,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         setIsSystemTemplate(false);
         setSelectedLocale(locale);
         setShouldFetch(true);
-        mutate();
+        mutateSmsTemplate();
     };
 
     const handleSubmit = (): void => {
@@ -252,7 +252,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                     );
                     setIsSystemTemplate(false);
                     setShouldFetch(true);
-                    mutate();
+                    mutateSmsTemplate();
                 })
                 .catch(() => {
                     dispatch(
@@ -275,7 +275,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                     );
                     setIsSystemTemplate(false);
                     setShouldFetch(true);
-                    mutate();
+                    mutateSmsTemplate();
                 })
                 .catch(() => {
                     dispatch(
@@ -306,7 +306,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                 setSelectedLocale(SMSTemplateConstants.DEAFULT_LOCALE);
                 setIsSystemTemplate(false);
                 setShouldFetch(true);
-                mutate();
+                mutateSmsTemplate();
             })
             .catch(() => {
                 dispatch(
