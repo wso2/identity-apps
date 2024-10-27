@@ -99,7 +99,12 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         error: smsTemplatesListError
     } = useGetSmsTemplatesList();
 
-    const { data: smsTemplate, isLoading: isSmsTemplateLoading, error: smsTemplateError } = useGetSmsTemplate(
+    const {
+        data: smsTemplate,
+        isLoading: isSmsTemplateLoading,
+        error: smsTemplateError,
+        mutate: mutate
+    } = useGetSmsTemplate(
         selectedSmsTemplateId,
         selectedLocale,
         isSystemTemplate,
@@ -208,6 +213,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
             availableSmsTemplatesList?.find((template: SMSTemplateType) => template.id === templateId)?.description
         );
         setShouldFetch(true);
+        mutate();
     };
 
     const handleTemplateChange = (updatedTemplateAttributes: Partial<SMSTemplate>): void => {
@@ -224,6 +230,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         setIsSystemTemplate(false);
         setSelectedLocale(locale);
         setShouldFetch(true);
+        mutate();
     };
 
     const handleSubmit = (): void => {
@@ -245,6 +252,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                     );
                     setIsSystemTemplate(false);
                     setShouldFetch(true);
+                    mutate();
                 })
                 .catch(() => {
                     dispatch(
@@ -267,6 +275,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                     );
                     setIsSystemTemplate(false);
                     setShouldFetch(true);
+                    mutate();
                 })
                 .catch(() => {
                     dispatch(
@@ -297,6 +306,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                 setSelectedLocale(SMSTemplateConstants.DEAFULT_LOCALE);
                 setIsSystemTemplate(false);
                 setShouldFetch(true);
+                mutate();
             })
             .catch(() => {
                 dispatch(
