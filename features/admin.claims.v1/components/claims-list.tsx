@@ -38,6 +38,7 @@ import {
     ExternalClaim,
     LoadableComponentInterface,
     ProfileSchemaInterface,
+    Property,
     SBACInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
@@ -1100,16 +1101,13 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                             return true;
                         }
 
-                        if (attributeConfig.defaultScimMapping
-                            && Object.keys(attributeConfig.defaultScimMapping).length > 0) {
-                            const defaultSCIMClaims: Map<string, string> = attributeConfig
-                                .defaultScimMapping[claim.claimDialectURI];
-
-                            if (defaultSCIMClaims && defaultSCIMClaims.get(claim.claimURI)) {
-                                return true;
-                            } else {
-                                return false;
-                            }
+                        if (claim?.properties?.some((property: Property) =>
+                            property.key === ClaimManagementConstants.SYSTEM_CLAIM_PROPERTY_NAME
+                            && property.value === "true"
+                        )) {
+                            return true;
+                        } else {
+                            return false;
                         }
                     },
                     icon: (): SemanticICONS => "trash alternate",

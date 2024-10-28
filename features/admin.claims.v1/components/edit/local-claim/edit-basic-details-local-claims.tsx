@@ -69,6 +69,7 @@ import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
 import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
 import { ClaimManagementConstants } from "../../../constants";
+import { Property } from "@wso2is/core/src/models";
 
 /**
  * Prop types for `EditBasicDetailsLocalClaims` component
@@ -130,6 +131,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
     const [ accountVerificationEnabled, setAccountVerificationEnabled ] = useState<boolean>(false);
     const [ selfRegistrationEnabled, setSelfRegistrationEnabledEnabled ] = useState<boolean>(false);
+    const [ isSystemClaim, setIsSystemClaim ] = useState<boolean>(false);
 
     const { t } = useTranslation();
 
@@ -184,6 +186,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         else {
             setHideSpecialClaims(true);
         }
+
+        setIsSystemClaim(
+            claim?.properties?.some((property: Property) =>
+                property.key === ClaimManagementConstants.SYSTEM_CLAIM_PROPERTY_NAME
+                && property.value === "true"
+            )
+        );
     }, [ claim, usernameConfig ]);
 
     useEffect(() => {
@@ -758,6 +767,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
                 && !hideSpecialClaims
                 && claim.claimURI !== ClaimManagementConstants.EMAIL_CLAIM_URI
+                && !isSystemClaim
                 && (
                     <Show
                         when={ featureConfig?.attributeDialects?.scopes?.delete }

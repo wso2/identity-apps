@@ -349,7 +349,9 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
             <Divider hidden />
 
-            { attributeConfig.attributeMappings.showDangerZone && (
+            { attributeConfig.attributeMappings.showDangerZone
+            && !ClaimManagementConstants.SYSTEM_DIALECTS.includes(dialect?.id)
+            && (
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 16 }>

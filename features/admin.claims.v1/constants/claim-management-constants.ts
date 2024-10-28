@@ -110,6 +110,17 @@ export class ClaimManagementConstants {
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM_SCHEMAS_CORE")
     ]
 
+    public static readonly SYSTEM_DIALECTS: string[] = [
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OPENID_NET"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("LOCAL"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OIDC"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE_USER"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM_SCHEMAS_CORE"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP")
+    ];
+
     public static readonly CUSTOM_MAPPING: string = SCIMConfigs.custom;
 
     public static readonly OIDC_MAPPING: string[] = [
@@ -182,6 +193,8 @@ export class ClaimManagementConstants {
     public static readonly APPLICATION_ROLES_CLAIM_NAME: string = "application_roles";
 
     public static readonly EMPTY_STRING: string = "";
+
+    public static readonly SYSTEM_CLAIM_PROPERTY_NAME: string = "isSystemClaim";
 
     /**
      * The error code that is returned when there is no item in the list
