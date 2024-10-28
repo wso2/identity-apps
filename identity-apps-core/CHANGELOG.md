@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.7.2
+
+### Patch Changes
+
+- [#7049](https://github.com/wso2/identity-apps/pull/7049) [`013a49f728b31fa0547ebe62c44a14041f431e81`](https://github.com/wso2/identity-apps/commit/013a49f728b31fa0547ebe62c44a14041f431e81) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Hide my account link in password reset flow when my account is disabled
+
 ## 2.7.1
 
 ### Patch Changes
