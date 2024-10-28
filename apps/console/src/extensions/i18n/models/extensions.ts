@@ -3122,7 +3122,8 @@ export interface Extensions {
                         },
                         smsProviderWarning: string;
                         recoveryOptionHeading: string;
-                    }
+                    },
+                    heading: string;
                 }
             };
             accountSecurity: {

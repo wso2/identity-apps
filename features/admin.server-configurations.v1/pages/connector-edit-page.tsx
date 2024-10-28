@@ -87,13 +87,13 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ enableBackButton, setEnableBackButton ] = useState<boolean>(true);
 
-    const hasReadOnly: boolean = !useRequiredScopes(applicationFeatureConfig?.governanceConnectors?.scopes?.update);
+    const isReadOnly: boolean = !useRequiredScopes(applicationFeatureConfig?.governanceConnectors?.scopes?.update);
     const path: string[] = history.location.pathname.split("/");
     const type: string = path[ path.length - 3 ];
 
     useEffect(() => {
         // If Governance Connector read permission is not available, prevent from trying to load the connectors.
-        if (hasReadOnly) {
+        if (isReadOnly) {
             return;
         }
 
@@ -397,7 +397,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 </>);
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
                 return type === "username"
-                    ? "Enable self-service username recovery for users on the login page."
+                    ? t("extensions:manage.serverConfigurations.accountRecovery.usernameRecovery.heading")
                     : (
                         <div style={ { whiteSpace: "pre-line" } }>
                             { t("extensions:manage.serverConfigurations.accountRecovery.passwordRecovery.subHeading") }
@@ -551,7 +551,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                     toggle
                     onChange={ ssoLoginConnectorId ? handleBotDetectionToggle : handleToggle }
                     checked={ enableForm }
-                    readOnly={ hasReadOnly }
+                    readOnly={ isReadOnly }
                     data-testId={ `${ testId }-${ connectorId }-enable-toggle` }
                 />
             </>

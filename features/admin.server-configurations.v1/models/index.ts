@@ -19,4 +19,3 @@
 export * from "./endpoints";
 export * from "./governance-connectors";
 export * from "./password-recovery";
-export * from "./username-recovery";

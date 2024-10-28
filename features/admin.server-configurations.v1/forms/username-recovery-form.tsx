@@ -18,16 +18,18 @@
 
 import { AppConstants, history } from "@wso2is/admin.core.v1";
 import {
+    UsernameRecoveryFormConstants
+} from "@wso2is/admin.server-configurations.v1/constants/username-recovery-constants";
+import {
     UsernamePasswordRecoveryFormUpdatableConfigsInterface,
     UsernameRecoveryConfigurationFormPropsInterface,
-    UsernameRecoveryFormConstants,
     UsernameRecoveryFormValuesInterface
-} from "@wso2is/admin.server-configurations.v1";
+} from "@wso2is/admin.server-configurations.v1/models/username-recovery";
 import { CommonUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { Heading, Link, Message } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon } from "semantic-ui-react";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
@@ -94,7 +96,6 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
                 }
             }
 
-
         });
 
         setInitialConnectorValues(resolvedInitialValues);
@@ -138,7 +139,7 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
             >
                 <Heading as="h4" className="mb-5">
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
-                            "passwordRecovery.recoveryOptionHeading") as ReactNode }
+                            "passwordRecovery.recoveryOptionHeading") }
                 </Heading>
 
                 <Field.Checkbox
@@ -150,7 +151,6 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
                     required={ false }
                     readOnly={ readOnly }
                     width={ 10 }
-                    data-testid={ `${ testId }-email-based-recovery` }
                     data-componentid={ `${ testId }-email-based-recovery` }
                 />
 
@@ -187,7 +187,6 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
                     required={ false }
                     readOnly={ readOnly }
                     width={ 10 }
-                    data-testid={ `${ testId }-sms-based-recovery` }
                     data-componentid={ `${ testId }-sms-based-recovery` }
                 />
 
@@ -197,7 +196,6 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
                     buttonType="primary_btn"
                     ariaLabel="Username Recovery update button"
                     name="update-button"
-                    data-testid={ `${ testId }-submit-button` }
                     data-componentid={ `${ testId }-submit-button` }
                     disabled={ isSubmitting }
                     loading={ isSubmitting }
