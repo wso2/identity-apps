@@ -684,6 +684,8 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 import("@wso2is/admin.sms-templates.v1/pages/sms-customization")
             ),
             exact: true,
+            featureStatus: "NEW",
+            featureStatusLabel: FeatureStatusLabel.NEW,
             icon: {
                 icon: getSidePanelIcons().sms
             },
