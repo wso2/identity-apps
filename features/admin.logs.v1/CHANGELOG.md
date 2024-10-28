@@ -1,5 +1,11 @@
 # @wso2is/admin.logs.v1
 
+## 1.5.8
+
+### Patch Changes
+
+- [#7051](https://github.com/wso2/identity-apps/pull/7051) [`da5901a1dbba8ca831a0d2974cb6b94baadf9bba`](https://github.com/wso2/identity-apps/commit/da5901a1dbba8ca831a0d2974cb6b94baadf9bba) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide audit logs when the token doesn't has required feature scope
+
 ## 1.5.7
 
 ### Patch Changes
