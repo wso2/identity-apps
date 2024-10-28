@@ -180,10 +180,8 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
 
         if (smsTemplateError.response.status === 404) {
             setIsTemplateNotAvailable(true);
-            if (hasSmsTemplateCreatePermissions) {
-                if (!isSystemTemplate || selectedLocale !== SMSTemplateConstants.DEAFULT_LOCALE) {
-                    setIsSystemTemplate(true);
-                }
+            if (!isSystemTemplate || selectedLocale !== SMSTemplateConstants.DEAFULT_LOCALE) {
+                setIsSystemTemplate(true);
 
                 return;
             } else {

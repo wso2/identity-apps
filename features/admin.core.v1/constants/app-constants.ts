@@ -480,6 +480,7 @@ export class AppConstants {
         "userRoles",
         "applications",
         "emailTemplates",
+        "smsTemplates",
         "governanceConnectors",
         "branding",
         "consoleSettings"
