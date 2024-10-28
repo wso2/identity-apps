@@ -1,5 +1,16 @@
 # @wso2is/admin.sms-templates.v1
 
+## 1.0.6
+
+### Patch Changes
+
+- [#7054](https://github.com/wso2/identity-apps/pull/7054) [`1a3c0682722bcd009197c9cd6f6807d3a1e407f0`](https://github.com/wso2/identity-apps/commit/1a3c0682722bcd009197c9cd6f6807d3a1e407f0) Thanks [@Avarjana](https://github.com/Avarjana)! - Fix state update issue in SMS Templates.
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.7
+  - @wso2is/admin.branding.v1@2.26.7
+  - @wso2is/common.branding.v1@2.24.7
+
 ## 1.0.5
 
 ### Patch Changes
