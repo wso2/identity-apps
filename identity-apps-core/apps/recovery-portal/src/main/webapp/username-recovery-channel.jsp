@@ -91,7 +91,6 @@
     
     String recoveryCode = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("recoveryCode"));
     Boolean isUserFound = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("isUserFound"));
-    Boolean noChannelFound = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("noChannelFound"));
     
 
     String EMAIL = "EMAIL";

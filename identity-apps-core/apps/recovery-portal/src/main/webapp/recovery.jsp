@@ -253,12 +253,7 @@
                 request.setAttribute("recoveryCode", initiateUsernameRecoveryResponse.get(0).getChannelInfo().getRecoveryCode());
 
                 List<RecoveryChannel> firstMatchChannels = initiateUsernameRecoveryResponse.get(0).getChannelInfo().getChannels();
-
-                if(firstMatchChannels == null || firstMatchChannels.isEmpty()){
-                    request.setAttribute("noChannelFound", true);
-                } else { 
-                    request.setAttribute("channels", firstMatchChannels);
-                }
+                request.setAttribute("channels", firstMatchChannels);
 
                 request.getRequestDispatcher("channelselection.do").forward(request, response);
                 return;
