@@ -133,6 +133,9 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
 
+    const disabledFeatures: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.userStores?.disabledFeatures);
+
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
@@ -279,10 +282,14 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                 return (
                     <EmptyPlaceholder
                         action={ (
-                            <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
-                                <Icon name="add" />
-                                { t("userstores:placeholders.emptyList.action") }
-                            </PrimaryButton>
+                            disabledFeatures?.includes("userStores.type.remote")
+                            &&
+                            (
+                                <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
+                                    <Icon name="add" />
+                                    { t("userstores:placeholders.emptyList.action") }
+                                </PrimaryButton>
+                            )
                         ) }
                         image={ getEmptyPlaceholderIllustrations().newList }
                         imageSize="tiny"
