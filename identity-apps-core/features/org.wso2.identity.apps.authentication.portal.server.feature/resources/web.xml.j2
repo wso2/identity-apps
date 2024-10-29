@@ -299,6 +299,7 @@
         {% set _ = values.append(servlet_item) %}
     {% endfor %}
     {% set default_servlets = [
+        {"name": "create-account.do", "jsp": "/create-account.jsp", "url": "/create-account.do"},
         {"name": "retry.do", "jsp": "/retry.jsp", "url": "/retry.do"},
         {"name": "wait.do", "jsp": "/long-wait.jsp", "url": "/wait.do"},
         {"name": "resend-confirmation-captcha.do", "jsp": "/resend-confirmation-captcha.jsp", "url": "/resend-confirmation-captcha.do"},

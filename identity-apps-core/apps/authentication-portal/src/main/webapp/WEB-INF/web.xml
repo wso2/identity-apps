@@ -158,6 +158,11 @@
     </listener>
 
     <servlet>
+        <servlet-name>create-account.do</servlet-name>
+        <jsp-file>/create-account.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
         <servlet-name>retry.do</servlet-name>
         <jsp-file>/retry.jsp</jsp-file>
     </servlet>
@@ -460,6 +465,11 @@
     <servlet-mapping>
         <servlet-name>device_success.do</servlet-name>
         <url-pattern>/device_success.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>create-account.do</servlet-name>
+        <url-pattern>/create-account.do</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
