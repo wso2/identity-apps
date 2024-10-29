@@ -183,11 +183,11 @@
             tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
         }
 
-        if(UsernameRecoveryStage.INITIATE.equalsValue(recoveryStage)){
+        if (UsernameRecoveryStage.INITIATE.equalsValue(recoveryStage)) {
             
             // Separate the contact to mobile or email.
             String contact = Encode.forJava(request.getParameter("contact"));
-            if(contact.matches(MOBILE_CLAIM_REGEX)){
+            if (contact.matches(MOBILE_CLAIM_REGEX)) {
                 request.setAttribute(IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM, contact);
             } else {
                 request.setAttribute(IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM, contact);
@@ -244,7 +244,7 @@
                 List<AccountRecoveryType> initiateUsernameRecoveryResponse = 
                             recoveryApiV2.initiateUsernameRecovery(recoveryInitRequest, tenantDomain, requestHeaders);
 
-                if(initiateUsernameRecoveryResponse == null || initiateUsernameRecoveryResponse.isEmpty()){
+                if (initiateUsernameRecoveryResponse == null || initiateUsernameRecoveryResponse.isEmpty()) {
                     request.setAttribute("isUserFound", false);
                     request.getRequestDispatcher("channelselection.do").forward(request, response);
                     return;
@@ -283,7 +283,7 @@
             String recoveryChannelId = null;
             
             // Extract the recovery channel name and id from the recovery option.
-            if(usernameRecoveryOption != null){
+            if (usernameRecoveryOption != null) {
                 String[] parts = usernameRecoveryOption.split(":");
                 recoveryChannelId = parts[0];
                 recoveryChannelType = parts[1];
