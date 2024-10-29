@@ -50,7 +50,14 @@
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%!
-
+    /**
+     * Retrieves the ID of a specified recovery channel by its name from a list of channels.
+     *
+     * @param channels    A list of {@link RecoveryChannel} objects representing available recovery channels.
+     * @param channelName The name of the recovery channel to search for (e.g., "EMAIL" or "SMS").
+     * @return            The ID of the matching channel if found in the channels list, 
+     *                    "1" for "EMAIL" and "2" for "SMS" if channels list is null, or null if no match is found.
+     */
     public static String getChannelIdFromChannelName(List<RecoveryChannel> channels, String channelName){
 
         // Check if channels are null.
@@ -72,7 +79,6 @@
         // Return null if no matching channel found.
         return null;
     }
-
 %>
 
 <%
@@ -92,7 +98,6 @@
     String recoveryCode = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("recoveryCode"));
     Boolean isUserFound = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("isUserFound"));
     
-
     String EMAIL = "EMAIL";
     String SMS = "SMS";
     String selectedOption = EMAIL;
@@ -177,7 +182,6 @@
 
                 <div class="segment-form">
                     <form class="ui large form" method="post" action="verify.do" id="channelSelectionForm">
-                  
                         <%
                             String callback = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("callback"));
 
@@ -194,7 +198,7 @@
                         <div>
                             <input type="hidden" name="sp" value="<%=Encode.forHtmlAttribute(request.getParameter("sp"))%>"/>
                         </div>
-                                
+
                         <% } %>
 
                               <div class="field">
@@ -272,7 +276,6 @@
         $(document).ready(function () {
             $("#channelSelectionForm").submit(function (e) {
                 
-
                 // Prevent clicking multiple times, and notify the user something
                 // is happening in the background.
                 const submitButton = $("#recoverySubmit");
