@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { useRequiredScopes } from '@wso2is/access-control';
+import { useRequiredScopes } from "@wso2is/access-control";
 import {
     AppConstants,
     AppState,
@@ -130,7 +130,6 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     const [ deleteID, setDeleteID ] = useState<string>(null);
     const [ deleteName, setDeleteName ] = useState<string>("");
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
 
     const disabledFeatures: string[] = useSelector((state: AppState) =>
