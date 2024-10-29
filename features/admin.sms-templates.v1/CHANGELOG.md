@@ -1,5 +1,16 @@
 # @wso2is/admin.sms-templates.v1
 
+## 1.0.7
+
+### Patch Changes
+
+- [#7059](https://github.com/wso2/identity-apps/pull/7059) [`03244f11de49d43a6fc4f19ea646be442683d262`](https://github.com/wso2/identity-apps/commit/03244f11de49d43a6fc4f19ea646be442683d262) Thanks [@Avarjana](https://github.com/Avarjana)! - Introduce SMS Templates for sub orgs.
+
+- Updated dependencies [[`03244f11de49d43a6fc4f19ea646be442683d262`](https://github.com/wso2/identity-apps/commit/03244f11de49d43a6fc4f19ea646be442683d262)]:
+  - @wso2is/admin.core.v1@2.34.8
+  - @wso2is/admin.branding.v1@2.26.8
+  - @wso2is/common.branding.v1@2.24.8
+
 ## 1.0.6
 
 ### Patch Changes
