@@ -214,14 +214,14 @@
 
             for (Claim claimDTO : claims) {
 
-                // Check if the claim is present in the request attributes
+                // Check if the claim is present in the request attributes or parameters.
                 String claimValue = (String) request.getAttribute(claimDTO.getUri());
 
                 if (claimValue == null && request.getParameter(claimDTO.getUri()) != null) {
                     claimValue = Encode.forJava(request.getParameter(claimDTO.getUri()).toString().trim());
                 }
 
-                // If the claim value is now present (either from parameters or attributes), process it
+                // If the claim value is present (either from parameters or attributes), add it.
                 if (StringUtils.isNotBlank(claimValue)) {
                     UserClaim userClaim = new UserClaim();
                     userClaim.setUri(claimDTO.getUri());
