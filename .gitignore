@@ -118,6 +118,7 @@ java/apps/*/src/main/webapp/includes/layouts
 identity-apps-core/apps/*/src/main/webapp/libs/themes
 identity-apps-core/apps/*/src/main/webapp/extensions/layouts
 identity-apps-core/apps/*/src/main/webapp/includes/layouts
+identity-apps-core/apps/*/src/main/webapp/js/react-ui-components.min.js
 
 .classpath
 .settings

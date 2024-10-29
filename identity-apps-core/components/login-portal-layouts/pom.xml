@@ -29,8 +29,8 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>login-portal-layouts</artifactId>
     <packaging>jar</packaging>
-    <name>Asgardeo Apps - Login Portal Layouts</name>
-    <url>https://asgardeo.io</url>
+    <name>WSO2 Identity Server Apps - Login Portal Layouts</name>
+    <url>http://wso2.org</url>
     <description>Layouts for the login portal pages</description>
 
     <dependencies>
