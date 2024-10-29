@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from '@wso2is/access-control';
 import {
     AppConstants,
     AppState,
@@ -27,7 +28,6 @@ import {
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     LoadableComponentInterface,
@@ -135,6 +135,9 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
 
     const disabledFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.userStores?.disabledFeatures);
+
+    const hasUserStoreCreatePermissions: boolean = useRequiredScopes(featureConfig?.userStores?.scopes?.create);
+    const hasUserStoreUpdatePermissions: boolean = useRequiredScopes(featureConfig?.userStores?.scopes?.update);
 
     const dispatch: Dispatch = useDispatch();
 
@@ -263,8 +266,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
         }
 
         if (list?.length === 0) {
-            if (!hasRequiredScopes(featureConfig?.userStores, featureConfig?.userStores?.scopes?.create,
-                allowedScopes)) {
+            if (!hasUserStoreCreatePermissions) {
                 return (
                     <EmptyPlaceholder
                         image={ getEmptyPlaceholderIllustrations().newList }
@@ -414,18 +416,15 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
 
         return [
             {
-                icon: (): SemanticICONS => hasRequiredScopes(featureConfig?.userStores,
-                    featureConfig?.userStores?.scopes?.update, allowedScopes) ?  "pencil alternate" : "eye",
+                icon: (): SemanticICONS => hasUserStoreUpdatePermissions ?  "pencil alternate" : "eye",
                 onClick: (e: SyntheticEvent, userstore: UserStoreListItem): void =>
                     handleUserstoreEdit(userstore?.id, userstore?.typeName),
-                popupText: (): string => hasRequiredScopes(featureConfig?.userStores,
-                    featureConfig?.userStores?.scopes?.update, allowedScopes) ? t("common:edit") : t("common:view"),
+                popupText: (): string => hasUserStoreUpdatePermissions ? t("common:edit") : t("common:view"),
                 renderer: "semantic-icon"
             },
             {
                 hidden: (userstore: UserStoreListItem): boolean => {
-                    return !hasRequiredScopes(featureConfig?.userStores, featureConfig?.userStores?.scopes?.delete,
-                        allowedScopes) || userstore.id == CONSUMER_USERSTORE_ID || isPrivilegedUser;
+                    return !hasUserStoreUpdatePermissions || userstore.id == CONSUMER_USERSTORE_ID || isPrivilegedUser;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, userstore: UserStoreListItem): void =>

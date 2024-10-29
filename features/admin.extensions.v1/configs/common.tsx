@@ -92,7 +92,7 @@ export const commonConfig: CommonConfig = {
                             .replace("edit-user-store", userstoresConfig.userstoreEdit.remoteUserStoreEditPath),
                         protected: true,
                         showOnSidePanel: false
-                    },
+                    }
                 ],
                 component: lazy(() => import("@wso2is/admin.userstores.v1/pages/user-stores")),
                 exact: true,
