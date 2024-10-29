@@ -19,6 +19,7 @@
 import { SelectChangeEvent } from "@mui/material";
 import Card from "@oxygen-ui/react/Card";
 import Grid from "@oxygen-ui/react/Grid";
+import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/branding-preference-provider";
@@ -104,12 +105,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         isLoading: isSmsTemplateLoading,
         error: smsTemplateError,
         mutate: mutateSmsTemplate
-    } = useGetSmsTemplate(
-        selectedSmsTemplateId,
-        selectedLocale,
-        isSystemTemplate,
-        shouldFetch
-    );
+    } = useGetSmsTemplate(selectedSmsTemplateId, selectedLocale, isSystemTemplate, shouldFetch);
 
     useEffect(() => {
         // we don't have a good displayName and description coming from the backend
@@ -360,57 +356,61 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                 bottomMargin={ false }
                 data-componentid={ componentId }
             >
-                <SMSCustomizationHeader
-                    selectedSmsTemplateId={ selectedSmsTemplateId }
-                    selectedSmsTemplateDescription={ selectedSmsTemplateDescription }
-                    selectedLocale={ selectedLocale }
-                    smsTemplatesList={ availableSmsTemplatesList }
-                    onTemplateSelected={ handleTemplateIdChange }
-                    onLocaleChanged={ handleLocaleChange }
-                />
+                <Stack direction="column" spacing={ 3 }>
+                    <SMSCustomizationHeader
+                        selectedSmsTemplateId={ selectedSmsTemplateId }
+                        selectedSmsTemplateDescription={ selectedSmsTemplateDescription }
+                        selectedLocale={ selectedLocale }
+                        smsTemplatesList={ availableSmsTemplatesList }
+                        onTemplateSelected={ handleTemplateIdChange }
+                        onLocaleChanged={ handleLocaleChange }
+                    />
+                    <Card className="sms-customization">
+                        <Grid container>
+                            <Grid xs={ 8 } className="sms-customization-content">
+                                <Typography>{ t("smsTemplates:tabs.content.label") }</Typography>
+                            </Grid>
+                            <Grid xs={ 4 } className="sms-customization-preview">
+                                <Typography>{ t("smsTemplates:tabs.preview.label") }</Typography>
+                            </Grid>
 
-                <Card className="p-0 mb-5">
-                    <Grid container>
-                        <Grid xs={ 8 } className="right-border bottom-border p-3">
-                            <Typography>
-                                { t("smsTemplates:tabs.content.label") }
-                            </Typography>
+                            <Grid xs={ 8 } padding={ 2 } className="sms-customization-content-panel">
+                                <SMSCustomizationForm
+                                    isSmsTemplatesListLoading={ isSmsTemplatesListLoading || isSmsTemplateLoading }
+                                    selectedSmsTemplate={ currentSmsTemplate }
+                                    selectedLocale={ selectedLocale }
+                                    onTemplateChanged={ (updatedTemplateAttributes: Partial<SMSTemplate>) =>
+                                        handleTemplateChange(updatedTemplateAttributes)
+                                    }
+                                    onSubmit={ handleSubmit }
+                                    onDeleteRequested={ handleDeleteRequest }
+                                    readOnly={
+                                        isReadOnly || (isTemplateNotAvailable && !hasSmsTemplateCreatePermissions)
+                                    }
+                                />
+                            </Grid>
+                            <Grid
+                                xs={ 4 }
+                                padding={ 2 }
+                                display={ "flex" }
+                                paddingBottom={ 0 }
+                                className="sms-customization-content-panel"
+                            >
+                                <SMSTemplatePreview smsTemplate={ selectedSmsTemplate || currentSmsTemplate } />
+                            </Grid>
+                            <Grid xs={ 12 } padding={ 2 }>
+                                <Show when={ featureConfig?.smsTemplates?.scopes?.update }>
+                                    { (!isTemplateNotAvailable || hasSmsTemplateCreatePermissions) && (
+                                        <SMSCustomizationFooter
+                                            isSaveButtonLoading={ isSmsTemplatesListLoading || isSmsTemplateLoading }
+                                            onSaveButtonClick={ handleSubmit }
+                                        />
+                                    ) }
+                                </Show>
+                            </Grid>
                         </Grid>
-                        <Grid xs={ 4 } className="bottom-border p-3">
-                            <Typography>
-                                { t("smsTemplates:tabs.preview.label") }
-                            </Typography>
-                        </Grid>
-
-                        <Grid xs={ 8 } padding={ 2 } className="right-border bottom-border">
-                            <SMSCustomizationForm
-                                isSmsTemplatesListLoading={ isSmsTemplatesListLoading || isSmsTemplateLoading }
-                                selectedSmsTemplate={ currentSmsTemplate }
-                                selectedLocale={ selectedLocale }
-                                onTemplateChanged={ (updatedTemplateAttributes: Partial<SMSTemplate>) =>
-                                    handleTemplateChange(updatedTemplateAttributes)
-                                }
-                                onSubmit={ handleSubmit }
-                                onDeleteRequested={ handleDeleteRequest }
-                                readOnly={ isReadOnly || (isTemplateNotAvailable && !hasSmsTemplateCreatePermissions) }
-                            />
-                        </Grid>
-                        <Grid xs={ 4 } padding={ 2 } display={ "flex" } paddingBottom={ 0 } className="bottom-border">
-                            <SMSTemplatePreview smsTemplate={ selectedSmsTemplate || currentSmsTemplate } />
-                        </Grid>
-                        <Grid xs={ 12 } padding={ 2 }>
-                            <Show when={ featureConfig?.smsTemplates?.scopes?.update }>
-                                { (!isTemplateNotAvailable || hasSmsTemplateCreatePermissions) && (
-                                    <SMSCustomizationFooter
-                                        isSaveButtonLoading={ isSmsTemplatesListLoading || isSmsTemplateLoading }
-                                        onSaveButtonClick={ handleSubmit }
-                                    />
-                                ) }
-                            </Show>
-                        </Grid>
-                    </Grid>
-                </Card>
-
+                    </Card>
+                </Stack>
                 <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>{ renderDangerZone() }</Show>
             </PageLayout>
         </BrandingPreferenceProvider>
