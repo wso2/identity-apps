@@ -183,7 +183,7 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
     };
 
     return (
-        <Card className="mb-4 p-4 pb-2" data-componentid={ componentId } padded={ "very" }>
+        <Card className="mb-4 p-4 pb-2" data-componentid={ componentId }>
             <Grid className="mt-2">
                 <Grid.Column mobile={ 16 } computer={ 10 }>
                     <FinalForm
