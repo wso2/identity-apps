@@ -264,18 +264,11 @@
                 return;
             
             } catch (ApiException e) {
-                if (e.getCode() == 204) {
-                    request.setAttribute("error", true);
-                    request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                            "No.valid.user.found"));
-                    request.getRequestDispatcher("recoveraccountrouter.do").forward(request, response);
-                    return;
-                }
-
                 IdentityManagementEndpointUtil.addErrorInformation(request, e);
                 request.getRequestDispatcher("recoveraccountrouter.do").forward(request, response);
                 return;
             }
+            
         } else if (UsernameRecoveryStage.NOTIFY.equalsValue(recoveryStage)) {
             RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
             String recoveryCode = request.getAttribute("recoveryCode") != null 
