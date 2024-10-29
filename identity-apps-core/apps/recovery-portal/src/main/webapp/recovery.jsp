@@ -50,8 +50,7 @@
 
 <%!
     /**
-     * UsernameRecoveryStage represents the four steps of recovery in the 
-     * UsernameRecovery V2.
+     * UsernameRecoveryStage represents the two steps of recovery in the UsernameRecovery V2.
      */
     public enum UsernameRecoveryStage {
         INITIATE("INITIATE"),
