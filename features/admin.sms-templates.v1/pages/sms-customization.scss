@@ -16,27 +16,10 @@
  * under the License.
  */
 
-.sms-customization {
-    padding: 0;
-    margin-bottom: var(--oxygen-spacing-3);
+.bottom-border {
+    border-bottom: 1px solid var(--oxygen-palette-divider);
+}
 
-    .sms-customization-content {
-        padding: var(--oxygen-spacing-2);
-        border-bottom: 1px solid var(--oxygen-palette-divider);
-        border-right: 1px solid var(--oxygen-palette-divider);
-    }
-
-    .sms-customization-preview {
-        padding: var(--oxygen-spacing-2);
-        border-bottom: 1px solid var(--oxygen-palette-divider);
-    }
-
-    .sms-customization-content-panel {
-        border-bottom: 1px solid var(--oxygen-palette-divider);
-        border-right: 1px solid var(--oxygen-palette-divider);
-    }
-
-    .sms-customization-preview-panel {
-        border-bottom: 1px solid var(--oxygen-palette-divider);
-    }
+.right-border {
+    border-right: 1px solid var(--oxygen-palette-divider);
 }
