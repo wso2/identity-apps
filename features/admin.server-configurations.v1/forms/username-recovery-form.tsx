@@ -108,24 +108,24 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
      * @returns Sanitized form values.
      */
     const getUpdatedConfigurations = (values: Record<string, any>) => {
+
         const data: UsernamePasswordRecoveryFormUpdatableConfigsInterface = {
-            "Recovery.Notification.Username.Email.Enable": values.enableEmailBasedRecovery !== undefined
-                ? values.enableEmailBasedRecovery
-                : initialConnectorValues?.enableEmailBasedRecovery,
+            "Recovery.Notification.Username.Email.Enable":
+                values.enableEmailBasedRecovery ?? initialConnectorValues?.enableEmailBasedRecovery,
+
             "Recovery.Notification.Username.Enable":
-                (values.enableEmailBasedRecovery || values.enableSMSBasedRecovery) !== undefined
-                    ? values.enableEmailBasedRecovery || values.enableSMSBasedRecovery
-                    : (initialConnectorValues?.enableEmailBasedRecovery
+                (values.enableEmailBasedRecovery || values.enableSMSBasedRecovery)
+                    ?? (initialConnectorValues?.enableEmailBasedRecovery
                         || initialConnectorValues?.enableSMSBasedRecovery),
-            "Recovery.Notification.Username.SMS.Enable": values.enableSMSBasedRecovery !== undefined
-                ? values.enableSMSBasedRecovery
-                : initialConnectorValues?.enableSMSBasedRecovery
+
+            "Recovery.Notification.Username.SMS.Enable":
+                values.enableSMSBasedRecovery ?? initialConnectorValues?.enableSMSBasedRecovery
         };
 
         return data;
     };
 
-    if (!initialConnectorValues){
+    if (!initialConnectorValues) {
         return null;
     }
 
