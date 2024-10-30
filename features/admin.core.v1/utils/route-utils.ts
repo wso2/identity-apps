@@ -365,7 +365,13 @@ export class RouteUtils {
             {
                 category: organizations,
                 id: "organizations",
+                order: 1,
                 selected: history.location.pathname.includes("/organizations")
+            },
+            {
+                category: organizations,
+                id: "flows",
+                order: 2
             },
             {
                 category: manage,
