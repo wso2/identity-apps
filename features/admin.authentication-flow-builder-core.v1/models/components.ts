@@ -67,46 +67,6 @@ export interface BlockVariantProperties {
 }
 
 /**
- * Interface for a block variant.
- */
-export interface BlockVariant {
-    /**
-     * Type of the block variant.
-     */
-    type: string;
-    /**
-     * Properties of the block variant.
-     */
-    properties?: BlockVariantProperties;
-    /**
-     * Nested variants of the block variant.
-     */
-    variants?: BlockVariant[];
-}
-
-/**
- * Interface for a block.
- */
-export interface Block {
-    /**
-     * Type of the block.
-     */
-    type: string;
-    /**
-     * Display name of the block.
-     */
-    displayName: string;
-    /**
-     * Image URL of the block.
-     */
-    image: string;
-    /**
-     * Variants of the block.
-     */
-    variants: BlockVariant[];
-}
-
-/**
  * Interface for the properties of a field.
  */
 export interface FieldProperties {
@@ -149,28 +109,6 @@ export interface FieldProperties {
 }
 
 /**
- * Interface for a field.
- */
-export interface Field {
-    /**
-     * Type of the field.
-     */
-    type: string;
-    /**
-     * Display name of the field.
-     */
-    displayName: string;
-    /**
-     * Image URL of the field.
-     */
-    image: string;
-    /**
-     * Properties of the field.
-     */
-    properties?: FieldProperties;
-}
-
-/**
  * Interface for the properties of a widget.
  */
 export interface WidgetProperties {
@@ -181,31 +119,13 @@ export interface WidgetProperties {
 }
 
 /**
- * Interface for a widget.
+ * Interface for a component.
  */
-export interface Widget {
+export interface Component<T = {}> {
     /**
-     * Type of the widget.
+     * ID of the component.
      */
-    type: string;
-    /**
-     * Display name of the widget.
-     */
-    displayName: string;
-    /**
-     * Image URL of the widget.
-     */
-    image: string;
-    /**
-     * Properties of the widget.
-     */
-    properties?: WidgetProperties;
-}
-
-/**
- * Interface for a node.
- */
-export interface Node {
+    id: string;
     /**
      * Type of the node.
      */
@@ -218,7 +138,20 @@ export interface Node {
      * Image URL of the node.
      */
     image: string;
+    /**
+     * Properties of the widget.
+     */
+    properties?: T;
+    /**
+     *
+     */
+    Variants?: Component[];
 }
+
+export type Block = Component<BlockVariantProperties>;
+export type Field = Component<FieldProperties>;
+export type Widget = Component<WidgetProperties>;
+export type Node = Component;
 
 /**
  * Interface for the entire JSON structure.

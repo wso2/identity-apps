@@ -19,10 +19,7 @@
 import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
-import Avatar from "@oxygen-ui/react/Avatar";
 import Box from "@oxygen-ui/react/Box";
-import Card from "@oxygen-ui/react/Card";
-import CardContent from "@oxygen-ui/react/CardContent";
 import Drawer from "@oxygen-ui/react/Drawer";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Stack from "@oxygen-ui/react/Stack";
@@ -31,6 +28,7 @@ import { ChevronRightIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps, useState } from "react";
+import AuthenticationFlowVisualEditorComponentsPanelDraggableNode from "./authentication-flow-visual-editor-component-draggable-node";
 import useGetAuthenticationFlowBuilderComponents from "../api/use-get-authentication-flow-builder-components";
 import { Block, Field, Node, Widget } from "../models/components";
 import "./authentication-flow-visual-editor-components-panel.scss";
@@ -195,21 +193,13 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                         >
                             <Stack direction="column" spacing={ 1 }>
                                 { fields.map((field: Field) => (
-                                    <Card
+                                    <AuthenticationFlowVisualEditorComponentsPanelDraggableNode
+                                        id={ field.id }
                                         key={ field.type }
-                                        className="authentication-flow-visual-editor-components-panel-component-display"
-                                    >
-                                        <CardContent>
-                                            <Stack direction="row" spacing={ 1 }>
-                                                <Avatar
-                                                    src={ field.image }
-                                                    variant="rounded"
-                                                    className="authentication-flow-visual-editor-components-panel-component-display-avatar"
-                                                />
-                                                <Typography>{ field.displayName }</Typography>
-                                            </Stack>
-                                        </CardContent>
-                                    </Card>
+                                        type={ field.type }
+                                        displayName={ field.displayName }
+                                        image={ field.image }
+                                    />
                                 )) }
                             </Stack>
                         </AccordionDetails>
@@ -233,21 +223,13 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                         <AccordionDetails className="authentication-flow-visual-editor-components-panel-category-details">
                             <Stack direction="column" spacing={ 1 }>
                                 { nodes.map((node: Node) => (
-                                    <Card
+                                    <AuthenticationFlowVisualEditorComponentsPanelDraggableNode
+                                        id={ node.id }
                                         key={ node.type }
-                                        className="authentication-flow-visual-editor-components-panel-component-display"
-                                    >
-                                        <CardContent>
-                                            <Stack direction="row" spacing={ 1 }>
-                                                <Avatar
-                                                    src={ node.image }
-                                                    variant="rounded"
-                                                    className="authentication-flow-visual-editor-components-panel-component-display-avatar"
-                                                />
-                                                <Typography>{ node.displayName }</Typography>
-                                            </Stack>
-                                        </CardContent>
-                                    </Card>
+                                        type={ node.type }
+                                        displayName={ node.displayName }
+                                        image={ node.image }
+                                    />
                                 )) }
                             </Stack>
                         </AccordionDetails>
@@ -273,21 +255,13 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                         >
                             <Stack direction="column" spacing={ 1 }>
                                 { blocks.map((block: Block) => (
-                                    <Card
+                                    <AuthenticationFlowVisualEditorComponentsPanelDraggableNode
+                                        id={ block.id }
                                         key={ block.type }
-                                        className="authentication-flow-visual-editor-components-panel-component-display"
-                                    >
-                                        <CardContent>
-                                            <Stack direction="row" spacing={ 1 }>
-                                                <Avatar
-                                                    src={ block.image }
-                                                    variant="rounded"
-                                                    className="authentication-flow-visual-editor-components-panel-component-display-avatar"
-                                                />
-                                                <Typography>{ block.displayName }</Typography>
-                                            </Stack>
-                                        </CardContent>
-                                    </Card>
+                                        type={ block.type }
+                                        displayName={ block.displayName }
+                                        image={ block.image }
+                                    />
                                 )) }
                             </Stack>
                         </AccordionDetails>
@@ -311,21 +285,13 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                         <AccordionDetails className="authentication-flow-visual-editor-components-panel-category-details">
                             <Stack direction="column" spacing={ 1 }>
                                 { widgets.map((widget: Widget) => (
-                                    <Card
+                                    <AuthenticationFlowVisualEditorComponentsPanelDraggableNode
+                                        id={ widget.id }
                                         key={ widget.type }
-                                        className="authentication-flow-visual-editor-components-panel-component-display"
-                                    >
-                                        <CardContent>
-                                            <Stack direction="row" spacing={ 1 }>
-                                                <Avatar
-                                                    src={ widget.image }
-                                                    variant="rounded"
-                                                    className="authentication-flow-visual-editor-components-panel-component-display-avatar"
-                                                />
-                                                <Typography>{ widget.displayName }</Typography>
-                                            </Stack>
-                                        </CardContent>
-                                    </Card>
+                                        type={ widget.type }
+                                        displayName={ widget.displayName }
+                                        image={ widget.image }
+                                    />
                                 )) }
                             </Stack>
                         </AccordionDetails>
