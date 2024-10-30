@@ -64,7 +64,7 @@
         }
 
         /**
-         * Returns tye string value of the enum.
+         * Returns the string value of the enum.
          */
         public String getValue() {
 
@@ -72,7 +72,7 @@
         }
 
         /**
-         * Override the toStirng method of the object class.
+         * Override the toString method of the object class.
          */
         @Override
         public String toString() {
@@ -176,9 +176,9 @@
     if (isUsernameRecovery) {
         // Username recovery scenario.
         String recoveryStage = request.getAttribute("recoveryStage") != null 
-                                ? (String) request.getAttribute("recoveryStage") 
-                                : Encode.forJava(request.getParameter("recoveryStage"));
-        
+                    ? (String) request.getAttribute("recoveryStage") 
+                    : Encode.forJava(request.getParameter("recoveryStage"));
+
         if (StringUtils.isBlank(tenantDomain)) {
             tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
         }
@@ -267,8 +267,8 @@
         } else if (UsernameRecoveryStage.NOTIFY.equalsValue(recoveryStage)) {
             RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
             String recoveryCode = request.getAttribute("recoveryCode") != null 
-                                ? (String) request.getAttribute("recoveryCode") 
-                                : Encode.forJava(request.getParameter("recoveryCode")); 
+                        ? (String) request.getAttribute("recoveryCode") 
+                        : Encode.forJava(request.getParameter("recoveryCode")); 
 
             String usernameRecoveryOption = request.getAttribute("usernameRecoveryOption") != null 
                         ? (String) request.getAttribute("usernameRecoveryOption") 
@@ -276,8 +276,8 @@
 
             String isUserFoundParam = request.getParameter("isUserFound");
             Boolean isUserFound = (isUserFoundParam != null) 
-                                ? Boolean.parseBoolean(isUserFoundParam) 
-                                : IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("isUserFound"));
+                        ? Boolean.parseBoolean(isUserFoundParam) 
+                        : IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("isUserFound"));
 
             String recoveryChannelType = null;
             String recoveryChannelId = null;
