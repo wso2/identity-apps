@@ -1,5 +1,16 @@
 # @wso2is/admin.sms-templates.v1
 
+## 1.0.9
+
+### Patch Changes
+
+- [#7065](https://github.com/wso2/identity-apps/pull/7065) [`cb366fc0c60fec5e85554341d8467fe40f99b8f1`](https://github.com/wso2/identity-apps/commit/cb366fc0c60fec5e85554341d8467fe40f99b8f1) Thanks [@Avarjana](https://github.com/Avarjana)! - Remove semantic UI element from SMS templates.
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.10
+  - @wso2is/admin.branding.v1@2.26.10
+  - @wso2is/common.branding.v1@2.24.10
+
 ## 1.0.8
 
 ### Patch Changes
