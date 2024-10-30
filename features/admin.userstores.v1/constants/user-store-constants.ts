@@ -48,6 +48,12 @@ export class UserStoreManagementConstants {
 
     // Name of the readonly DEFAULT userstore property.
     public static readonly USER_STORE_PROPERTY_READ_ONLY: string = "ReadOnly";
+
+    /**
+     * Set of keys used to enable/disable features.
+     */
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("USER_STORE_REMOTE", "userStores.type.remote");
 }
 
 /**

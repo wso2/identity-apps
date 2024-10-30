@@ -53,7 +53,7 @@ import { Dispatch } from "redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { deleteUserStore } from "../api";
 import { getTableIcons } from "../configs";
-import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID } from "../constants";
+import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID, UserStoreManagementConstants } from "../constants";
 import { UserStoreListItem } from "../models";
 
 /**
@@ -283,7 +283,8 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                 return (
                     <EmptyPlaceholder
                         action={ (
-                            disabledFeatures?.includes("userStores.type.remote")
+                            disabledFeatures?.includes(UserStoreManagementConstants.FEATURE_DICTIONARY
+                                .get("USER_STORE_REMOTE"))
                             &&
                             (
                                 <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
@@ -310,7 +311,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     };
 
     const handleUserstoreEdit = (userstoreId: string, typeName: string) => {
-        if (userstoresConfig.onUserstoreEdit(userstoreId) && !(typeName === "WSOutboundUserStoreManager")) {
+        if (userstoresConfig.onUserstoreEdit(userstoreId) && (typeName !== "WSOutboundUserStoreManager")) {
             history.push(AppConstants.getPaths().get("USERSTORES_EDIT").replace(":id", userstoreId));
         } else {
             history.push(AppConstants.getPaths().get("USERSTORES_EDIT").replace(":id", userstoreId).replace(
