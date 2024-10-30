@@ -38,7 +38,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { UserAccountTypes } from "../../admin.users.v1/constants";
 import { getUserStores } from "../api";
 import { UserStoresList } from "../components";
 import { UserStoreTypes } from "../constants";
@@ -230,8 +229,8 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
 
     const addUserDropdownTrigger: ReactElement = (
         <PrimaryButton
-            data-componentid={ `${ testId }-add-user-button` }
-            data-testid={ `${ testId }-add-user-button` }
+            data-componentid={ `${ testId }-add-user-store-button` }
+            data-testid={ `${ testId }-add-user-store-button` }
         >
             <Icon name="add"/>
             { t("userstores:pageLayout.list.primaryAction") }
@@ -239,11 +238,11 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
         </PrimaryButton>
     );
 
-    const getAddUserOptions = (): DropdownItemProps[] => {
+    const getAddUserStoreOptions = (): DropdownItemProps[] => {
         const dropDownOptions: DropdownItemProps[] = [];
 
         dropDownOptions.push({
-            "data-componentid": `${testId}-add-user-dropdown-item`,
+            "data-componentid": `${testId}-add-user-store-dropdown-item`,
             key: 1,
             text: t("userstores:pageLayout.list.newUserStoreDropdown.connectDirectly"),
             value: UserStoreTypes.DIRECT
@@ -294,22 +293,22 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                                 </PrimaryButton>
                             ) : (
                                 <Dropdown
-                                    data-componentid={ `${ testId }-add-user-dropdown` }
+                                    data-componentid={ `${ testId }-add-user-store-dropdown` }
                                     direction="left"
                                     floating
                                     icon={ null }
                                     trigger={ addUserDropdownTrigger }
                                 >
                                     <Dropdown.Menu>
-                                        { getAddUserOptions().map((option: {
+                                        { getAddUserStoreOptions().map((option: {
                                             "data-componentid": string;
                                             key: number;
                                             text: string;
-                                            value: UserAccountTypes;
+                                            value: UserStoreTypes;
                                         }) => (
                                             <Dropdown.Item
                                                 key={ option.value }
-                                                onClick={ ()=> handleDropdownItemChange(option.value) }
+                                                onClick={ () => handleDropdownItemChange(option.value) }
                                                 { ...option }
                                             />
                                         )) }

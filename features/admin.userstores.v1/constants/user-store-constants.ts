@@ -204,6 +204,11 @@ export const PRIMARY_USERSTORE: string = "PRIMARY";
 export const USERSTORE_NAME_CHARACTER_LIMIT: number = 50;
 
 /**
+ * Name of the remote userstore type.
+ */
+export const REMOTE_USERSTORE_TYPE_NAME: string = "WSOutboundUserStoreManager";
+
+/**
  * Enum for user store types.
  *
  * @readonly

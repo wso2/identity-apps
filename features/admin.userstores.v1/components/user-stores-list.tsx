@@ -53,7 +53,12 @@ import { Dispatch } from "redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { deleteUserStore } from "../api";
 import { getTableIcons } from "../configs";
-import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID, UserStoreManagementConstants } from "../constants";
+import { 
+    CONSUMER_USERSTORE,
+    CONSUMER_USERSTORE_ID,
+    REMOTE_USERSTORE_TYPE_NAME,
+    UserStoreManagementConstants
+} from "../constants";
 import { UserStoreListItem } from "../models";
 
 /**
@@ -137,6 +142,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
 
     const hasUserStoreCreatePermissions: boolean = useRequiredScopes(featureConfig?.userStores?.scopes?.create);
     const hasUserStoreUpdatePermissions: boolean = useRequiredScopes(featureConfig?.userStores?.scopes?.update);
+    const hasUserStoreDeletePermissions: boolean = useRequiredScopes(featureConfig?.userStores?.scopes?.delete);
 
     const dispatch: Dispatch = useDispatch();
 
@@ -311,7 +317,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     };
 
     const handleUserstoreEdit = (userstoreId: string, typeName: string) => {
-        if (userstoresConfig.onUserstoreEdit(userstoreId) && (typeName !== "WSOutboundUserStoreManager")) {
+        if (userstoresConfig.onUserstoreEdit(userstoreId) && (typeName !== REMOTE_USERSTORE_TYPE_NAME)) {
             history.push(AppConstants.getPaths().get("USERSTORES_EDIT").replace(":id", userstoreId));
         } else {
             history.push(AppConstants.getPaths().get("USERSTORES_EDIT").replace(":id", userstoreId).replace(
@@ -424,7 +430,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
             },
             {
                 hidden: (userstore: UserStoreListItem): boolean => {
-                    return !hasUserStoreUpdatePermissions || userstore.id == CONSUMER_USERSTORE_ID || isPrivilegedUser;
+                    return !hasUserStoreDeletePermissions || userstore.id == CONSUMER_USERSTORE_ID || isPrivilegedUser;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, userstore: UserStoreListItem): void =>
