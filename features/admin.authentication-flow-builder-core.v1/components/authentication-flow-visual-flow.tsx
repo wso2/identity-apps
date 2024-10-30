@@ -28,9 +28,11 @@ import {
     useNodesState,
     useReactFlow
 } from "@xyflow/react";
-import React, { FunctionComponent, HTMLAttributes, ReactElement, useCallback, useRef } from "react";
-import "@xyflow/react/dist/style.css";
+import React, { FunctionComponent, ReactElement, useCallback } from "react";
 import useDnD from "../hooks/use-dnd";
+import "@xyflow/react/dist/style.css";
+import "./authentication-flow-visual-flow.scss";
+import AuthenticationFlowVisualEditorPrimitivesPanel from "./authentication-flow-visual-editor-primitives-panel";
 
 const initialNodes = [
     {
@@ -116,6 +118,7 @@ const AuthenticationFlowVisualFlow: FunctionComponent<AuthenticationFlowVisualEd
         >
             <Background color="#e1e1e1" gap={ 16 } variant={ BackgroundVariant.Dots } size={ 2 } />
             <Controls position="top-right" />
+            <AuthenticationFlowVisualEditorPrimitivesPanel />
         </ReactFlow>
     );
 };

@@ -25,6 +25,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import DraggableNode from "./draggable-node";
 import { Component } from "../models/components";
+import "./authentication-flow-visual-editor-component-draggable-node.scss";
 
 /**
  * Props interface of {@link AuthenticationFlowVisualEditorComponentsPanelDraggableNode}
@@ -48,7 +49,7 @@ const AuthenticationFlowVisualEditorComponentsPanelDraggableNode: FunctionCompon
     ...rest
 }: AuthenticationFlowVisualEditorComponentsPanelDraggableNodePropsInterface): ReactElement => {
     return (
-        <DraggableNode key={ id } type={ type } data-componentid={ componentId } { ...rest }>
+        <DraggableNode key={ id } id={ id } data-componentid={ componentId } { ...rest }>
             <Card className="authentication-flow-visual-editor-components-panel-component-display">
                 <CardContent>
                     <Stack direction="row" spacing={ 1 }>

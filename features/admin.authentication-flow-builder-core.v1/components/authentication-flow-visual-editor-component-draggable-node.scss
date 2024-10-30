@@ -16,24 +16,18 @@
  * under the License.
  */
 
-import React, { PropsWithChildren, ReactElement, useState } from "react";
-import DnDContext from "../context/dnd-context";
+.authentication-flow-visual-editor-components-panel-component-display {
+    // TODO: `@oxygen-ui/react/Card` declares a default padding which is a bug.
+    // Remove this once it is handled.
+    // Tracker: https://github.com/wso2/oxygen-ui/issues/300
+    padding: 0;
 
-/**
- * Props interface of {@link DnDProvider}
- */
-export interface DnDProviderProps {}
+    .oxygen-card-content:last-child {
+        padding-bottom: var(--oxygen-spacing-2);
+    }
 
-/**
- * This component provides Drag & Drop context to its children.
- *
- * @param props - Props injected to the component.
- * @returns The DnDProvider component.
- */
-const DnDProvider = ({ children }: PropsWithChildren<DnDProviderProps>): ReactElement => {
-    const [ id, setId ] = useState(null);
-
-    return <DnDContext.Provider value={ [ id, setId ] }>{ children }</DnDContext.Provider>;
-};
-
-export default DnDProvider;
+    .authentication-flow-visual-editor-components-panel-component-display-avatar {
+        width: 20px;
+        height: 20px;
+    }
+}

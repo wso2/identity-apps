@@ -19,13 +19,12 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { DragEvent, FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import useDnD from "../hooks/use-dnd";
+import "./draggable-node.scss";
 
 /**
  * Props interface of {@link DraggableNode}
  */
-export interface DraggableNodePropsInterface extends IdentifiableComponentInterface, HTMLAttributes<HTMLDivElement> {
-    type: string;
-}
+export interface DraggableNodePropsInterface extends IdentifiableComponentInterface, HTMLAttributes<HTMLDivElement> {}
 
 /**
  * A component that represents a draggable node.
@@ -36,21 +35,22 @@ export interface DraggableNodePropsInterface extends IdentifiableComponentInterf
 const DraggableNode: FunctionComponent<DraggableNodePropsInterface> = ({
     "data-componentid": componentId = "draggable-node",
     children,
-    type,
+    id,
     ...rest
 }: DraggableNodePropsInterface): ReactElement => {
-    const [ _, setType ] = useDnD();
+    const [ _, setId ] = useDnD();
 
-    const onDragStart = (event: DragEvent, nodeType: string) => {
-        setType(nodeType);
+    const onDragStart = (event: DragEvent, nodeId: string) => {
+        setId(nodeId);
         event.dataTransfer.effectAllowed = "move";
     };
 
     return (
         <div
             draggable
-            onDragStart={ (event: DragEvent) => onDragStart(event, type) }
+            onDragStart={ (event: DragEvent) => onDragStart(event, id) }
             data-componentid={ componentId }
+            className="draggable-node"
             { ...rest }
         >
             { children }

@@ -30,7 +30,7 @@ import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps, useState } from "react";
 import AuthenticationFlowVisualEditorComponentsPanelDraggableNode from "./authentication-flow-visual-editor-component-draggable-node";
 import useGetAuthenticationFlowBuilderComponents from "../api/use-get-authentication-flow-builder-components";
-import { Block, Field, Node, Widget } from "../models/components";
+import { Display, Input, Node, Widget } from "../models/components";
 import "./authentication-flow-visual-editor-components-panel.scss";
 
 /**
@@ -129,7 +129,7 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
     const [ open, setOpen ] = useState(false);
 
     const { data } = useGetAuthenticationFlowBuilderComponents();
-    const { blocks, fields, widgets, nodes } = data;
+    const { display, inputs, widgets, nodes } = data;
 
     return (
         <Box
@@ -186,19 +186,19 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                             <IconButton onClick={ () => setOpen(!open) }>
                                 <FormIcon height={ 16 } width={ 16 } />
                             </IconButton>
-                            <Typography variant="h6">Fields</Typography>
+                            <Typography variant="h6">Inputs</Typography>
                         </AccordionSummary>
                         <AccordionDetails
                             className="authentication-flow-visual-editor-components-panel-category-details"
                         >
                             <Stack direction="column" spacing={ 1 }>
-                                { fields.map((field: Field) => (
+                                { inputs.map((input: Input) => (
                                     <AuthenticationFlowVisualEditorComponentsPanelDraggableNode
-                                        id={ field.id }
-                                        key={ field.type }
-                                        type={ field.type }
-                                        displayName={ field.displayName }
-                                        image={ field.image }
+                                        id={ input.type }
+                                        key={ input.type }
+                                        type={ input.type }
+                                        displayName={ input.displayName }
+                                        image={ input.image }
                                     />
                                 )) }
                             </Stack>
@@ -224,7 +224,7 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                             <Stack direction="column" spacing={ 1 }>
                                 { nodes.map((node: Node) => (
                                     <AuthenticationFlowVisualEditorComponentsPanelDraggableNode
-                                        id={ node.id }
+                                        id={ node.type }
                                         key={ node.type }
                                         type={ node.type }
                                         displayName={ node.displayName }
@@ -248,19 +248,19 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                             <IconButton onClick={ () => setOpen(!open) }>
                                 <CubesIcon height={ 16 } width={ 16 } />
                             </IconButton>
-                            <Typography variant="h6">Blocks</Typography>
+                            <Typography variant="h6">Display</Typography>
                         </AccordionSummary>
                         <AccordionDetails
                             className="authentication-flow-visual-editor-components-panel-category-details"
                         >
                             <Stack direction="column" spacing={ 1 }>
-                                { blocks.map((block: Block) => (
+                                { display.map((display: Display) => (
                                     <AuthenticationFlowVisualEditorComponentsPanelDraggableNode
-                                        id={ block.id }
-                                        key={ block.type }
-                                        type={ block.type }
-                                        displayName={ block.displayName }
-                                        image={ block.image }
+                                        id={ display.type }
+                                        key={ display.type }
+                                        type={ display.type }
+                                        displayName={ display.displayName }
+                                        image={ display.image }
                                     />
                                 )) }
                             </Stack>
@@ -286,7 +286,7 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                             <Stack direction="column" spacing={ 1 }>
                                 { widgets.map((widget: Widget) => (
                                     <AuthenticationFlowVisualEditorComponentsPanelDraggableNode
-                                        id={ widget.id }
+                                        id={ widget.type }
                                         key={ widget.type }
                                         type={ widget.type }
                                         displayName={ widget.displayName }

@@ -16,24 +16,11 @@
  * under the License.
  */
 
-import React, { PropsWithChildren, ReactElement, useState } from "react";
-import DnDContext from "../context/dnd-context";
-
-/**
- * Props interface of {@link DnDProvider}
- */
-export interface DnDProviderProps {}
-
-/**
- * This component provides Drag & Drop context to its children.
- *
- * @param props - Props injected to the component.
- * @returns The DnDProvider component.
- */
-const DnDProvider = ({ children }: PropsWithChildren<DnDProviderProps>): ReactElement => {
-    const [ id, setId ] = useState(null);
-
-    return <DnDContext.Provider value={ [ id, setId ] }>{ children }</DnDContext.Provider>;
-};
-
-export default DnDProvider;
+.draggable-node {
+    &:hover {
+        > div {
+            box-shadow: var(--oxygen-shadows-6);
+            cursor: pointer;
+        }
+    }
+}

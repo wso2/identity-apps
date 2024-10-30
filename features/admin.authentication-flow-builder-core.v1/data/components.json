@@ -1,5 +1,5 @@
 {
-    "blocks": [
+    "display": [
         {
             "type": "typography",
             "displayName": "Typography",
@@ -142,7 +142,7 @@
             ]
         }
     ],
-    "fields": [
+    "inputs": [
         {
             "type": "text",
             "displayName": "Text",

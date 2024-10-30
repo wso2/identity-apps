@@ -148,8 +148,8 @@ export interface Component<T = {}> {
     Variants?: Component[];
 }
 
-export type Block = Component<BlockVariantProperties>;
-export type Field = Component<FieldProperties>;
+export type Display = Component<BlockVariantProperties>;
+export type Input = Component<FieldProperties>;
 export type Widget = Component<WidgetProperties>;
 export type Node = Component;
 
@@ -160,11 +160,11 @@ export interface Components {
     /**
      * List of blocks.
      */
-    blocks: Block[];
+    display: Display[];
     /**
      * List of fields.
      */
-    fields: Field[];
+    inputs: Input[];
     /**
      * List of widgets.
      */
