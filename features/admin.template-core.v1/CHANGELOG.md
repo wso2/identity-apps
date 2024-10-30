@@ -1,5 +1,12 @@
 # @wso2is/admin.template-core.v1
 
+## 1.4.9
+
+### Patch Changes
+
+- Updated dependencies [[`13fc4b33bed8fe69e53268f82a7c95825a2956b1`](https://github.com/wso2/identity-apps/commit/13fc4b33bed8fe69e53268f82a7c95825a2956b1)]:
+  - @wso2is/admin.core.v1@2.34.9
+
 ## 1.4.8
 
 ### Patch Changes

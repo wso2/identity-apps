@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.7.3
+
+### Patch Changes
+
+- [#7066](https://github.com/wso2/identity-apps/pull/7066) [`cc737fc19023749b9cc18367233519cec431211f`](https://github.com/wso2/identity-apps/commit/cc737fc19023749b9cc18367233519cec431211f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Implement possible fix jsp rendering error
+
 ## 2.7.2
 
 ### Patch Changes
