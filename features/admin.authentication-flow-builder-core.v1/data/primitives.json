@@ -1,0 +1,16 @@
+{
+    "primitives": [
+        {
+            "category": "PRIMITIVE",
+            "type": "step",
+            "displayName": "Step",
+            "image": "https://www.svgrepo.com/show/448632/step.svg"
+        },
+        {
+            "category": "PRIMITIVE",
+            "type": "rule",
+            "displayName": "Rule",
+            "image": "https://www.svgrepo.com/show/413199/decide.svg"
+        }
+    ]
+}

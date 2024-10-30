@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { Base } from "./base";
+
 /**
  * Interface for the properties of a block variant.
  */
@@ -121,23 +123,7 @@ export interface WidgetProperties {
 /**
  * Interface for a component.
  */
-export interface Component<T = {}> {
-    /**
-     * ID of the component.
-     */
-    id: string;
-    /**
-     * Type of the node.
-     */
-    type: string;
-    /**
-     * Display name of the node.
-     */
-    displayName: string;
-    /**
-     * Image URL of the node.
-     */
-    image: string;
+export interface Component<T = {}> extends Base {
     /**
      * Properties of the widget.
      */

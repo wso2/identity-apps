@@ -28,7 +28,7 @@ import { ChevronRightIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps, useState } from "react";
-import AuthenticationFlowVisualEditorComponentsPanelDraggableNode from "./authentication-flow-visual-editor-component-draggable-node";
+import AuthenticationFlowVisualEditorDraggableNode from "./authentication-flow-visual-editor-draggable-node";
 import useGetAuthenticationFlowBuilderComponents from "../api/use-get-authentication-flow-builder-components";
 import { Display, Input, Node, Widget } from "../models/components";
 import "./authentication-flow-visual-editor-components-panel.scss";
@@ -193,9 +193,10 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                         >
                             <Stack direction="column" spacing={ 1 }>
                                 { inputs.map((input: Input) => (
-                                    <AuthenticationFlowVisualEditorComponentsPanelDraggableNode
+                                    <AuthenticationFlowVisualEditorDraggableNode
                                         id={ input.type }
                                         key={ input.type }
+                                        category={ input.category }
                                         type={ input.type }
                                         displayName={ input.displayName }
                                         image={ input.image }
@@ -223,9 +224,10 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                         <AccordionDetails className="authentication-flow-visual-editor-components-panel-category-details">
                             <Stack direction="column" spacing={ 1 }>
                                 { nodes.map((node: Node) => (
-                                    <AuthenticationFlowVisualEditorComponentsPanelDraggableNode
+                                    <AuthenticationFlowVisualEditorDraggableNode
                                         id={ node.type }
                                         key={ node.type }
+                                        category={ node.category }
                                         type={ node.type }
                                         displayName={ node.displayName }
                                         image={ node.image }
@@ -255,9 +257,10 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                         >
                             <Stack direction="column" spacing={ 1 }>
                                 { display.map((display: Display) => (
-                                    <AuthenticationFlowVisualEditorComponentsPanelDraggableNode
+                                    <AuthenticationFlowVisualEditorDraggableNode
                                         id={ display.type }
                                         key={ display.type }
+                                        category={ display.category }
                                         type={ display.type }
                                         displayName={ display.displayName }
                                         image={ display.image }
@@ -285,9 +288,10 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                         <AccordionDetails className="authentication-flow-visual-editor-components-panel-category-details">
                             <Stack direction="column" spacing={ 1 }>
                                 { widgets.map((widget: Widget) => (
-                                    <AuthenticationFlowVisualEditorComponentsPanelDraggableNode
+                                    <AuthenticationFlowVisualEditorDraggableNode
                                         id={ widget.type }
                                         key={ widget.type }
+                                        category={ widget.category }
                                         type={ widget.type }
                                         displayName={ widget.displayName }
                                         image={ widget.image }

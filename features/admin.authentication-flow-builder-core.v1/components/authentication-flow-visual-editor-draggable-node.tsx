@@ -25,38 +25,37 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import DraggableNode from "./draggable-node";
 import { Component } from "../models/components";
-import "./authentication-flow-visual-editor-component-draggable-node.scss";
+import "./authentication-flow-visual-editor-draggable-node.scss";
 
 /**
- * Props interface of {@link AuthenticationFlowVisualEditorComponentsPanelDraggableNode}
+ * Props interface of {@link AuthenticationFlowVisualEditorDraggableNode}
  */
-export type AuthenticationFlowVisualEditorComponentsPanelDraggableNodePropsInterface = IdentifiableComponentInterface &
-    HTMLAttributes<HTMLDivElement> &
-    Component;
+export interface AuthenticationFlowVisualEditorDraggableNodePropsInterface extends IdentifiableComponentInterface, Omit<HTMLAttributes<HTMLDivElement>, "id">, Component {
+    type: string;
+}
 
 /**
- * Visual editor component.
+ * Draggable node for the visual editor.
  *
  * @param props - Props injected to the component.
- * @returns Visual editor component.
+ * @returns Draggable Visual Editor node component.
  */
-const AuthenticationFlowVisualEditorComponentsPanelDraggableNode: FunctionComponent<AuthenticationFlowVisualEditorComponentsPanelDraggableNodePropsInterface> = ({
-    "data-componentid": componentId = "authentication-flow-visual-editor-components-panel-draggable-node",
+const AuthenticationFlowVisualEditorDraggableNode: FunctionComponent<AuthenticationFlowVisualEditorDraggableNodePropsInterface> = ({
+    "data-componentid": componentId = "authentication-flow-visual-editor-draggable-node",
     id,
-    type,
     displayName,
     image,
     ...rest
-}: AuthenticationFlowVisualEditorComponentsPanelDraggableNodePropsInterface): ReactElement => {
+}: AuthenticationFlowVisualEditorDraggableNodePropsInterface): ReactElement => {
     return (
         <DraggableNode key={ id } id={ id } data-componentid={ componentId } { ...rest }>
-            <Card className="authentication-flow-visual-editor-components-panel-component-display">
+            <Card className="authentication-flow-visual-editor-draggable-node">
                 <CardContent>
                     <Stack direction="row" spacing={ 1 }>
                         <Avatar
                             src={ image }
                             variant="square"
-                            className="authentication-flow-visual-editor-components-panel-component-display-avatar"
+                            className="authentication-flow-visual-editor-draggable-node-avatar"
                         />
                         <Typography>{ displayName }</Typography>
                     </Stack>
@@ -66,4 +65,4 @@ const AuthenticationFlowVisualEditorComponentsPanelDraggableNode: FunctionCompon
     );
 };
 
-export default AuthenticationFlowVisualEditorComponentsPanelDraggableNode;
+export default AuthenticationFlowVisualEditorDraggableNode;

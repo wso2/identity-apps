@@ -16,18 +16,16 @@
  * under the License.
  */
 
-.authentication-flow-visual-editor-components-panel-component-display {
-    // TODO: `@oxygen-ui/react/Card` declares a default padding which is a bug.
-    // Remove this once it is handled.
-    // Tracker: https://github.com/wso2/oxygen-ui/issues/300
-    padding: 0;
+import { Base } from "./base";
 
-    .oxygen-card-content:last-child {
-        padding-bottom: var(--oxygen-spacing-2);
-    }
+/**
+ * Interface for a primitive.
+ */
+export type Primitive = Base;
 
-    .authentication-flow-visual-editor-components-panel-component-display-avatar {
-        width: 20px;
-        height: 20px;
-    }
-}
+/**
+ * Interface for a set of primitives.
+ */
+export type Primitives = {
+    primitives: Primitive[]
+};

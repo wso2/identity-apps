@@ -16,27 +16,24 @@
  * under the License.
  */
 
-import useRequest, {
-    RequestConfigInterface,
+import {
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
-import { store } from "@wso2is/admin.core.v1/store";
-import { HttpMethods } from "@wso2is/core/models";
-import components from "../data/components.json";
-import { Components } from "../models/components";
+import primitives from "../data/primitives.json";
+import { Primitives } from "../models/primitives";
 
 /**
- * Hook to get the components supported by the authentication flow builder.
+ * Hook to get the primitives supported by the authentication flow builder.
  *
- * This function calls the GET method of the following endpoint to get the components.
+ * This function calls the GET method of the following endpoint to get the primitives.
  * - TODO: Fill this
  * For more details, refer to the documentation:
  * {@link TODO: Fill this}
  *
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetAuthenticationFlowBuilderComponents = <Data = Components, Error = RequestErrorInterface>(
+const useGetAuthenticationFlowBuilderPrimitives = <Data = Primitives, Error = RequestErrorInterface>(
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     // const requestConfig: RequestConfigInterface = {
@@ -53,7 +50,7 @@ const useGetAuthenticationFlowBuilderComponents = <Data = Components, Error = Re
     // );
 
     return {
-        data: components as unknown as Data,
+        data: primitives as unknown as Data,
         error: null,
         isLoading: false,
         isValidating: false,
@@ -61,4 +58,4 @@ const useGetAuthenticationFlowBuilderComponents = <Data = Components, Error = Re
     };
 };
 
-export default useGetAuthenticationFlowBuilderComponents;
+export default useGetAuthenticationFlowBuilderPrimitives;

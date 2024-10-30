@@ -24,8 +24,11 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ReactFlowProps } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
+import AuthenticationFlowVisualEditorDraggableNode from "./authentication-flow-visual-editor-draggable-node";
 import DraggableNode from "./draggable-node";
+import useGetAuthenticationFlowBuilderPrimitives from "../api/use-get-authentication-flow-builder-primitives";
 import "./authentication-flow-visual-editor-primitives-panel.scss";
+import { Primitive } from "../models/primitives";
 
 const StepIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 16 16" fill="none">
@@ -75,32 +78,25 @@ const AuthenticationFlowVisualEditorPrimitivesPanel: FunctionComponent<Authentic
     "data-componentid": componentId = "authentication-flow-visual-editor-primitives-panel",
     ...rest
 }: AuthenticationFlowVisualEditorPropsInterface): ReactElement => {
+    const { data } = useGetAuthenticationFlowBuilderPrimitives();
+    const { primitives } = data;
+
     return (
         <Toolbar className="authentication-flow-visual-editor-primitives-panel">
             <Typography variant="h6" className="authentication-flow-visual-editor-primitives-panel-heading">
                 Primitives
             </Typography>
             <Stack direction="row" spacing={ 2 }>
-                <DraggableNode id="step">
-                    <Card variant="outlined">
-                        <CardContent>
-                            <Stack direction="row" spacing={ 1 } alignItems="center">
-                                <StepIcon />
-                                <Typography>Step</Typography>
-                            </Stack>
-                        </CardContent>
-                    </Card>
-                </DraggableNode>
-                <DraggableNode id="rule">
-                    <Card variant="outlined">
-                        <CardContent>
-                            <Stack direction="row" spacing={ 1 } alignItems="center">
-                                <DecisionIcon />
-                                <Typography>Rule</Typography>
-                            </Stack>
-                        </CardContent>
-                    </Card>
-                </DraggableNode>
+                { primitives?.map((primitive: Primitive) => (
+                    <AuthenticationFlowVisualEditorDraggableNode
+                        id={ primitive.type }
+                        key={ primitive.type }
+                        category={ primitive.category }
+                        type={ primitive.type }
+                        displayName={ primitive.displayName }
+                        image={ primitive.image }
+                    />
+                )) }
             </Stack>
         </Toolbar>
     );
