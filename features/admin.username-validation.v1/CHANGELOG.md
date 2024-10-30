@@ -1,5 +1,16 @@
 # @wso2is/admin.username-validation.v1
 
+## 1.5.9
+
+### Patch Changes
+
+- [#7063](https://github.com/wso2/identity-apps/pull/7063) [`13fc4b33bed8fe69e53268f82a7c95825a2956b1`](https://github.com/wso2/identity-apps/commit/13fc4b33bed8fe69e53268f82a7c95825a2956b1) Thanks [@brionmario](https://github.com/brionmario)! - Fix TS issues due to invalid `@oxygen-ui` properties
+
+- Updated dependencies [[`13fc4b33bed8fe69e53268f82a7c95825a2956b1`](https://github.com/wso2/identity-apps/commit/13fc4b33bed8fe69e53268f82a7c95825a2956b1)]:
+  - @wso2is/admin.core.v1@2.34.9
+  - @wso2is/admin.applications.v1@2.30.9
+  - @wso2is/admin.validation.v1@2.26.9
+
 ## 1.5.8
 
 ### Patch Changes
