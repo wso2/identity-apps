@@ -878,7 +878,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 API keys and other secrets, for use in conditional
                                 authentication scripts. Once stored, these secrets can
                                 be referenced in your scripts using the syntax
-                                <OxygenCode variant="caption">{"secrets.{secret_name}"}
+                                <OxygenCode variant="caption">{ "secrets.{secret_name}" }
                                 </OxygenCode>.
                             </Trans>
                         </Typography>
