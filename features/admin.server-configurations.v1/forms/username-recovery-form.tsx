@@ -113,11 +113,6 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
             "Recovery.Notification.Username.Email.Enable":
                 values.enableEmailBasedRecovery ?? initialConnectorValues?.enableEmailBasedRecovery,
 
-            "Recovery.Notification.Username.Enable":
-                (values.enableEmailBasedRecovery || values.enableSMSBasedRecovery)
-                    ?? (initialConnectorValues?.enableEmailBasedRecovery
-                        || initialConnectorValues?.enableSMSBasedRecovery),
-
             "Recovery.Notification.Username.SMS.Enable":
                 values.enableSMSBasedRecovery ?? initialConnectorValues?.enableSMSBasedRecovery
         };

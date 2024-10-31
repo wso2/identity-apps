@@ -58,10 +58,6 @@ export interface UsernameRecoveryFormValuesInterface {
 
 export interface UsernamePasswordRecoveryFormUpdatableConfigsInterface {
     /**
-     * Enable username recovery.
-     */
-    "Recovery.Notification.Username.Enable": boolean;
-    /**
      * Enable Email based recovery.
      */
     "Recovery.Notification.Username.Email.Enable": boolean;
