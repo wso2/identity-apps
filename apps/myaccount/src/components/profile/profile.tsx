@@ -35,6 +35,7 @@ import {
 } from "@wso2is/core/models";
 import { ProfileUtils, CommonUtils as ReusableCommonUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import {
     EditAvatarModal,
     LinkButton,
@@ -59,7 +60,13 @@ import {
     updateProfileImageURL,
     updateProfileInfo
 } from "../../api";
-import { AppConstants, CommonConstants, UIConstants } from "../../constants";
+import {
+    AppConstants,
+    CommonConstants,
+    LocaleJoiningSymbol,
+    ProfileConstants as MyAccountProfileConstants,
+    UIConstants
+} from "../../constants";
 import { commonConfig, profileConfig } from "../../extensions";
 import {
     AlertInterface,
@@ -119,6 +126,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
+    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
+        (state: AppState) => state.global.supportedI18nLanguages
+    );
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchema[]>();
@@ -718,6 +728,238 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     /**
+     * The function returns the normalized format of locale.
+     *
+     * @param locale - locale value.
+     * @param localeJoiningSymbol - symbol used to join language and region parts of locale.
+     * @param updateSupportedLanguage - If supported languages needs to be updated with the given localString or not.
+     */
+    const normalizeLocaleFormat = (
+        locale: string,
+        localeJoiningSymbol: LocaleJoiningSymbol,
+        updateSupportedLanguage: boolean
+    ): string => {
+        if (!locale) {
+            return locale;
+        }
+
+        const separatorIndex: number = locale.search(/[-_]/);
+
+        let normalizedLocale: string = locale;
+
+        if (separatorIndex !== -1) {
+            const language: string = locale.substring(0, separatorIndex).toLowerCase();
+            const region: string = locale.substring(separatorIndex + 1).toUpperCase();
+
+            normalizedLocale = `${language}${localeJoiningSymbol}${region}`;
+        }
+
+        if (updateSupportedLanguage && !supportedI18nLanguages[normalizedLocale]) {
+            supportedI18nLanguages[normalizedLocale] = {
+                code: normalizedLocale,
+                name: MyAccountProfileConstants.GLOBE,
+                namespaces: []
+            };
+        }
+
+        return normalizedLocale;
+    };
+
+    /**
+     * This function resolves the personal info field in schemas.
+     *
+     * @param schema - Profile schemas.
+     * @returns Schema field
+     */
+    const resolvePersonalInfoFields = (schema: ProfileSchema): JSX.Element => {
+        if (isEmpty(schema)) {
+            return null;
+        }
+
+        const fieldName: string = t("myAccount:components.profile.fields." + schema.displayName,
+            { defaultValue: schema.displayName }
+        );
+
+        // Define the field placeholder for text fields.
+        let innerPlaceholder: string = t("myAccount:components.profile.forms.generic." +
+            "inputs.placeholder",
+        {
+            fieldName: fieldName.toLowerCase()
+        } );
+
+        // Concatenate the date format for the birth date field.
+        if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB")) {
+            innerPlaceholder += " in the format YYYY-MM-DD";
+        }
+
+        if (checkSchemaType(schema.name, "country")) {
+            return (
+                <Field
+                    autoFocus={ true }
+                    label=""
+                    name={ schema.name }
+                    placeholder={ t("myAccount:components.profile.forms." +
+                        "countryChangeForm.inputs.country.placeholder") }
+                    required={ schema.required }
+                    requiredErrorMessage={
+                        t("myAccount:components.profile.forms.generic" +
+                            ".inputs.validations.empty", { fieldName })
+                    }
+                    type="dropdown"
+                    children={ countryList
+                        ? countryList.map((list: DropdownItemProps) => {
+                            return {
+                                "data-testid": `${testId}-${list.value as string}`,
+                                flag: list.flag,
+                                key: list.key as string,
+                                text: list.text as string,
+                                value: list.value as string
+                            };
+                        }) : [] }
+                    value={ resolveProfileInfoSchemaValue(schema) }
+                    disabled={ false }
+                    clearable={ !schema.required }
+                    search
+                    selection
+                    fluid
+                />
+            );
+        }
+
+        if (checkSchemaType(schema.name, "locale")) {
+            return (
+                <Field
+                    autofocus={ true }
+                    name={ schema.name }
+                    placeholder={ innerPlaceholder }
+                    required={ schema.required }
+                    requiredErrorMessage={
+                        t("myAccount:components.profile.forms.generic." +
+                            "inputs.validations.empty", { fieldName })
+                    }
+                    type="dropdown"
+                    value={ normalizeLocaleFormat(profileInfo.get(schema?.name), LocaleJoiningSymbol.HYPHEN, true) }
+                    children={
+                        supportedI18nLanguages
+                            ? Object.keys(supportedI18nLanguages).map((key: string) => {
+                                return {
+                                    "data-testid": `${ testId }-locale-dropdown-`
+                                        +  supportedI18nLanguages[key].code as string,
+                                    flag: supportedI18nLanguages[key].flag ?? MyAccountProfileConstants.GLOBE,
+                                    key: supportedI18nLanguages[key].code as string,
+                                    text: supportedI18nLanguages[key].name === MyAccountProfileConstants.GLOBE
+                                        ? supportedI18nLanguages[key].code
+                                        : `${supportedI18nLanguages[key].name as string},
+                                            ${supportedI18nLanguages[key].code as string}`,
+                                    value: supportedI18nLanguages[key].code as string
+                                };
+                            }) : []
+                    }
+                    disabled={ false }
+                    clearable={ !schema?.required }
+                    search
+                    selection
+                    fluid
+                />
+            );
+        }
+
+        return (
+            <Field
+                autoFocus={ true }
+                label=""
+                name={ schema.name }
+                placeholder={ innerPlaceholder }
+                required={ schema.required }
+                requiredErrorMessage={
+                    t("myAccount:components.profile.forms.generic." +
+                        "inputs.validations.empty", { fieldName })
+                }
+                type="text"
+                validation={ (value: string, validation: Validation) => {
+                    if (!RegExp(schema.regEx).test(value)) {
+                        validation.isValid = false;
+                        if (checkSchemaType(schema.name, "emails")) {
+                            validation.errorMessages.push(
+                                t("myAccount:components.profile.forms." +
+                                "emailChangeForm.inputs.email.validations." +
+                                "invalidFormat")
+                            );
+                        } else if (checkSchemaType(schema.name, ProfileConstants.
+                            SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))) {
+                            validation.errorMessages.push(t(
+                                profileConfig?.attributes?.
+                                    getRegExpValidationError(
+                                        ProfileConstants.SCIM2_SCHEMA_DICTIONARY
+                                            .get("PHONE_NUMBERS")
+                                    ),
+                                {
+                                    fieldName
+                                }
+                            )
+                            );
+                        } else if (checkSchemaType(schema.name,
+                            ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB"))) {
+                            validation.errorMessages.push(
+                                t("myAccount:components.profile.forms." +
+                                "dateChangeForm.inputs.date.validations." +
+                                "invalidFormat", { fieldName })
+                            );
+                        } else {
+                            validation.errorMessages.push(
+                                t(
+                                    "myAccount:components.profile.forms." +
+                                "generic.inputs.validations.invalidFormat",
+                                    {
+                                        fieldName
+                                    }
+                                )
+                            );
+                        }
+                    // Validate date format and the date is before the current date
+                    } else if(checkSchemaType(schema.name,
+                        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB"))){
+                        if (!moment(value, "YYYY-MM-DD",true).isValid()) {
+                            validation.isValid = false;
+                            validation.errorMessages
+                                .push(t("myAccount:components.profile.forms."
+                                + "dateChangeForm.inputs.date.validations."
+                                + "invalidFormat", {
+                                    field: fieldName
+                                }));
+                        } else {
+                            if (moment().isBefore(value)) {
+                                validation.isValid = false;
+                                validation.errorMessages
+                                    .push(t("myAccount:components.profile.forms."
+                                    + "dateChangeForm.inputs.date.validations."
+                                    + "futureDateError", {
+                                        field: fieldName
+                                    }));
+                            }
+                        }
+                    }
+                } }
+                value={ resolveProfileInfoSchemaValue(schema) }
+                maxLength={
+                    schema.name === "emails"
+                        ? 50
+                        : (
+                            fieldName.toLowerCase().includes("uri")
+                            || fieldName.toLowerCase().includes("url")
+                        )
+                            ? 1024
+                            : (
+                                schema.maxLength
+                                    ? schema.maxLength
+                                    : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                            )
+                }
+            />
+        );
+    };
+
+    /**
      * This function generates the Edit Section based on the input Profile Schema.
      *
      * @param schema - Profile schemas.
@@ -771,18 +1013,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             const fieldName: string = t("myAccount:components.profile.fields." + schema.displayName,
                 { defaultValue: schema.displayName }
             );
-
-            // Define the field placeholder for text fields.
-            let innerPlaceholder: string = t("myAccount:components.profile.forms.generic." +
-                "inputs.placeholder",
-            {
-                fieldName: fieldName.toLowerCase()
-            } );
-
-            // Concatenate the date format for the birth date field.
-            if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB")) {
-                innerPlaceholder += " in the format YYYY-MM-DD";
-            }
 
             return (
                 isFeatureEnabled(
@@ -878,130 +1108,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                 handleSubmit(values, schema.name, schema.extended, schema);
                                             } }
                                         >
-                                            { checkSchemaType(schema.name, "country") ? (
-                                                <Field
-                                                    autoFocus={ true }
-                                                    label=""
-                                                    name={ schema.name }
-                                                    placeholder={ t("myAccount:components.profile.forms." +
-                                                        "countryChangeForm.inputs.country.placeholder") }
-                                                    required={ schema.required }
-                                                    requiredErrorMessage={
-                                                        t("myAccount:components.profile.forms.generic" +
-                                                            ".inputs.validations.empty", { fieldName })
-                                                    }
-                                                    type="dropdown"
-                                                    children={ countryList
-                                                        ? countryList.map((list: DropdownItemProps) => {
-                                                            return {
-                                                                "data-testid": `${testId}-${list.value as string}`,
-                                                                flag: list.flag,
-                                                                key: list.key as string,
-                                                                text: list.text as string,
-                                                                value: list.value as string
-                                                            };
-                                                        }) : [] }
-                                                    value={ resolveProfileInfoSchemaValue(schema) }
-                                                    disabled={ false }
-                                                    clearable={ !schema.required }
-                                                    search
-                                                    selection
-                                                    fluid
-                                                />
-                                            ) : (
-                                                <Field
-                                                    autoFocus={ true }
-                                                    label=""
-                                                    name={ schema.name }
-                                                    placeholder={ innerPlaceholder }
-                                                    required={ schema.required }
-                                                    requiredErrorMessage={
-                                                        t("myAccount:components.profile.forms.generic." +
-                                                            "inputs.validations.empty", { fieldName })
-                                                    }
-                                                    type="text"
-                                                    validation={ (value: string, validation: Validation) => {
-                                                        if (!RegExp(schema.regEx).test(value)) {
-                                                            validation.isValid = false;
-                                                            if (checkSchemaType(schema.name, "emails")) {
-                                                                validation.errorMessages.push(
-                                                                    t("myAccount:components.profile.forms." +
-                                                                    "emailChangeForm.inputs.email.validations." +
-                                                                    "invalidFormat")
-                                                                );
-                                                            } else if (checkSchemaType(schema.name, ProfileConstants.
-                                                                SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))) {
-                                                                validation.errorMessages.push(t(
-                                                                    profileConfig?.attributes?.
-                                                                        getRegExpValidationError(
-                                                                            ProfileConstants.SCIM2_SCHEMA_DICTIONARY
-                                                                                .get("PHONE_NUMBERS")
-                                                                        ),
-                                                                    {
-                                                                        fieldName
-                                                                    }
-                                                                )
-                                                                );
-                                                            } else if (checkSchemaType(schema.name,
-                                                                ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB"))) {
-                                                                validation.errorMessages.push(
-                                                                    t("myAccount:components.profile.forms." +
-                                                                    "dateChangeForm.inputs.date.validations." +
-                                                                    "invalidFormat", { fieldName })
-                                                                );
-                                                            } else {
-                                                                validation.errorMessages.push(
-                                                                    t(
-                                                                        "myAccount:components.profile.forms." +
-                                                                    "generic.inputs.validations.invalidFormat",
-                                                                        {
-                                                                            fieldName
-                                                                        }
-                                                                    )
-                                                                );
-                                                            }
-                                                        // Validate date format and the date is before the current date
-                                                        } else if(checkSchemaType(schema.name,
-                                                            ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB"))){
-                                                            if (!moment(value, "YYYY-MM-DD",true).isValid()) {
-                                                                validation.isValid = false;
-                                                                validation.errorMessages
-                                                                    .push(t("myAccount:components.profile.forms."
-                                                                    + "dateChangeForm.inputs.date.validations."
-                                                                    + "invalidFormat", {
-                                                                        field: fieldName
-                                                                    }));
-                                                            } else {
-                                                                if (moment().isBefore(value)) {
-                                                                    validation.isValid = false;
-                                                                    validation.errorMessages
-                                                                        .push(t("myAccount:components.profile.forms."
-                                                                        + "dateChangeForm.inputs.date.validations."
-                                                                        + "futureDateError", {
-                                                                            field: fieldName
-                                                                        }));
-                                                                }
-                                                            }
-                                                        }
-                                                    } }
-                                                    value={ resolveProfileInfoSchemaValue(schema) }
-                                                    maxLength={
-                                                        schema.name === "emails"
-                                                            ? 50
-                                                            : (
-                                                                fieldName.toLowerCase().includes("uri")
-                                                                || fieldName.toLowerCase().includes("url")
-                                                            )
-                                                                ? 1024
-                                                                : (
-                                                                    schema.maxLength
-                                                                        ? schema.maxLength
-                                                                        : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
-                                                                )
-                                                    }
-                                                />
-                                            )
-                                            }
+                                            { resolvePersonalInfoFields(schema) }
                                             <Field
                                                 hidden={ true }
                                                 type="divider"
