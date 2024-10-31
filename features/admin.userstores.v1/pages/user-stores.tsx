@@ -258,7 +258,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
         return dropDownOptions;
     };
 
-    const handleDropdownItemChange = (value: string): void => {
+    const handleDropdownItemChange = (value: string | number | boolean): void => {
         switch (value) {
             case UserStoreTypes.DIRECT:
                 history.push(AppConstants.getPaths().get("USERSTORE_TEMPLATES"));
@@ -300,14 +300,9 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                                     trigger={ addUserDropdownTrigger }
                                 >
                                     <Dropdown.Menu>
-                                        { getAddUserStoreOptions().map((option: {
-                                            "data-componentid": string;
-                                            key: number;
-                                            text: string;
-                                            value: UserStoreTypes;
-                                        }) => (
+                                        { getAddUserStoreOptions().map((option: DropdownItemProps) => (
                                             <Dropdown.Item
-                                                key={ option.value }
+                                                key={ option.value.toString() }
                                                 onClick={ () => handleDropdownItemChange(option.value) }
                                                 { ...option }
                                             />

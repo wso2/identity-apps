@@ -72,7 +72,6 @@ export const commonConfig: CommonConfig = {
                             icon: getSidePanelIcons().childIcon
                         },
                         id: "remote-user-store-create",
-                        name: "userstore create",
                         path: RemoteUserStoreConstants.getPaths().get("REMOTE_USER_STORE_CREATE"),
                         protected: true,
                         showOnSidePanel: false
@@ -86,7 +85,6 @@ export const commonConfig: CommonConfig = {
                             icon: getSidePanelIcons().childIcon
                         },
                         id: "remote-edit-user-store",
-                        name: "console:manage.features.sidePanel.editUserstore",
                         path: AppConstants.getPaths()
                             .get("USERSTORES_EDIT")
                             .replace("edit-user-store", userstoresConfig.userstoreEdit.remoteUserStoreEditPath),
