@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.10.2
+
+### Patch Changes
+
+- [#7031](https://github.com/wso2/identity-apps/pull/7031) [`07379763c3fb80e7c2264b6ebd61b341cf104ff8`](https://github.com/wso2/identity-apps/commit/07379763c3fb80e7c2264b6ebd61b341cf104ff8) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Unify local and remote user stores
+
 ## 2.10.1
 
 ### Patch Changes
