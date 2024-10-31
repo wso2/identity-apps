@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.12.12
+
+### Patch Changes
+
+- [#7072](https://github.com/wso2/identity-apps/pull/7072) [`d8035caa997da32b879ef7bbb75544e9fe5f59b7`](https://github.com/wso2/identity-apps/commit/d8035caa997da32b879ef7bbb75544e9fe5f59b7) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add locale dropdown to local attribute in my account
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.12
+  - @wso2is/common.branding.v1@2.24.12
+
 ## 2.12.11
 
 ### Patch Changes
