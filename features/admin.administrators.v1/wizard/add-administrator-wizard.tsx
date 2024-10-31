@@ -16,9 +16,10 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
-import { UserBasicInterface } from "@wso2is/admin.core.v1";
+import { AppState, UserBasicInterface } from "@wso2is/admin.core.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { updateRoleDetails, useRolesList } from "@wso2is/admin.roles.v2/api/roles";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
@@ -46,7 +47,7 @@ import { AxiosError } from "axios";
 import intersection from "lodash-es/intersection";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import {
@@ -118,6 +119,11 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const administratorsFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state?.config?.ui?.features?.administrators);
+    const consoleSettingsFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
 
@@ -242,10 +248,28 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
             setIsSubmitting(false);
             closeWizard();
         } else {
-            // If not, prompt to assign the admin role to the user.
-            setIsSubmitting(false);
-            setShowAdminRoleAddConfirmationModal(true);
-            setSelectedUser(originalAdminUserList.Resources[ 0 ]);
+            const assignAdminRoleToExistingPrimaryUser: boolean =
+                !administratorsFeatureConfig?.enabled && consoleSettingsFeatureConfig?.enabled;
+
+            // When the user is already in the PRIMARY userstore in managed deployment, administrators is hidden,
+            // and console settings is enabled, assign already selected roles to the user.
+            if (assignAdminRoleToExistingPrimaryUser) {
+                const assignedRoles: RolesInterface[] = invite?.roles.map(
+                    (roleDisplayName: string) => rolesList?.Resources?.find(
+                        (role: RolesInterface) => role.displayName === roleDisplayName
+                    )
+                ).filter(Boolean);
+
+                assignUserRoles(originalAdminUserList.Resources,assignedRoles);
+
+                return;
+            // otherwise, prompt for assigning the admin role back
+            } else {
+                // If not, prompt to assign the admin role to the user.
+                setIsSubmitting(false);
+                setShowAdminRoleAddConfirmationModal(true);
+                setSelectedUser(originalAdminUserList.Resources[ 0 ]);
+            }
         }
     }, [ originalAdminUserList ]);
 
