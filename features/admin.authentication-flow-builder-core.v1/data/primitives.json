@@ -2,15 +2,41 @@
     "primitives": [
         {
             "category": "PRIMITIVE",
-            "type": "step",
-            "displayName": "Step",
-            "image": "https://www.svgrepo.com/show/448632/step.svg"
+            "type": "STEP",
+            "version": "0.1.0",
+            "deprecated": false,
+            "display": {
+                "label": {
+                    "fallback": "Step",
+                    "i18nKey": null
+                },
+                "image": "https://www.svgrepo.com/show/448632/step.svg"
+            },
+            "config": {
+                "field": {
+                    "className": "wso2is-authentication-step"
+                },
+                "styles": {}
+            }
         },
         {
             "category": "PRIMITIVE",
-            "type": "rule",
-            "displayName": "Rule",
-            "image": "https://www.svgrepo.com/show/413199/decide.svg"
+            "type": "RULE",
+            "version": "0.1.0",
+            "deprecated": false,
+            "display": {
+                "label": {
+                    "fallback": "Rule",
+                    "i18nKey": null
+                },
+                "image": "https://www.svgrepo.com/show/413199/decide.svg"
+            },
+            "config": {
+                "field": {
+                    "className": "wso2is-authentication-rule"
+                },
+                "styles": {}
+            }
         }
     ]
 }

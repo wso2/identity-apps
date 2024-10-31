@@ -21,22 +21,23 @@ import {
     Background,
     BackgroundVariant,
     Controls,
+    Edge,
+    Node,
+    OnConnect,
     ReactFlow,
     ReactFlowProps,
+    XYPosition,
     addEdge,
     useEdgesState,
     useNodesState,
     useReactFlow
 } from "@xyflow/react";
-import React, { FunctionComponent, ReactElement, useCallback } from "react";
+import React, { DragEvent, FC, FunctionComponent, ReactElement, ReactNode, useCallback } from "react";
+import AuthenticationFlowVisualEditorPrimitivesPanel from "./authentication-flow-visual-editor-primitives-panel";
+import StepNode, { StepNodePropsInterface } from "./nodes/step-node";
 import useDnD from "../hooks/use-dnd";
 import "@xyflow/react/dist/style.css";
 import "./authentication-flow-visual-flow.scss";
-import AuthenticationFlowVisualEditorPrimitivesPanel from "./authentication-flow-visual-editor-primitives-panel";
-import StepNode from "./nodes/step-node";
-
-let id = 0;
-const getId = () => `dndnode_${id++}`;
 
 /**
  * Props interface of {@link AuthenticationFlowVisualFlow}
@@ -47,7 +48,9 @@ export interface AuthenticationFlowVisualEditorPropsInterface
 
 // we define the nodeTypes outside of the component to prevent re-renderings
 // you could also use useMemo inside the component
-const nodeTypes = { step: StepNode };
+const nodeTypes: {
+    STEP: FC<StepNodePropsInterface>;
+} = { STEP: StepNode };
 
 /**
  * Wrapper component for React Flow used in the Visual Editor.
@@ -62,42 +65,46 @@ const AuthenticationFlowVisualFlow: FunctionComponent<AuthenticationFlowVisualEd
     const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
     const [ edges, setEdges, onEdgesChange ] = useEdgesState([]);
     const { screenToFlowPosition } = useReactFlow();
-    const [ data ] = useDnD();
+    const { node, generateComponentId } = useDnD();
 
-    const onDragOver = useCallback(event => {
+    const onDragOver: (event: DragEvent) => void = useCallback((event: DragEvent) => {
         event.preventDefault();
         event.dataTransfer.dropEffect = "move";
     }, []);
 
-    const onDrop = useCallback(
-        event => {
+    const onDrop: (e: DragEvent) => void = useCallback(
+        (event: DragEvent) => {
             event.preventDefault();
 
             // check if the dropped element is valid
-            if (!data?.type || data?.category !== "PRIMITIVE") {
+            if (!node?.type || node?.category !== "PRIMITIVE") {
                 return;
             }
 
             // project was renamed to screenToFlowPosition
             // and you don't need to subtract the reactFlowBounds.left/top anymore
             // details: https://reactflow.dev/whats-new/2023-11-10
-            const position = screenToFlowPosition({
+            const position: XYPosition = screenToFlowPosition({
                 x: event.clientX,
                 y: event.clientY
             });
-            const newNode = {
-                id: getId(),
-                type: data.type,
+
+            const newNode: Node = {
+                data: {
+                    label: `${node.type} node`,
+                    ...node
+                },
+                id: generateComponentId(),
                 position,
-                data: { label: `${data.type} node` }
+                type: node.type as string
             };
 
-            setNodes(nds => nds.concat(newNode));
+            setNodes((nodes: Node[]) => nodes.concat(newNode));
         },
-        [ screenToFlowPosition, data?.type ]
+        [ screenToFlowPosition, node?.type ]
     );
 
-    const onConnect = useCallback(params => setEdges(eds => addEdge(params, eds)), []);
+    const onConnect: OnConnect = useCallback((params: any) => setEdges((edges: Edge[]) => addEdge(params, edges)), []);
 
     return (
         <ReactFlow
@@ -111,6 +118,7 @@ const AuthenticationFlowVisualFlow: FunctionComponent<AuthenticationFlowVisualEd
             onDragOver={ onDragOver }
             fitView
             proOptions={ { hideAttribution: true } }
+            data-componentid={ componentId }
             { ...rest }
         >
             <Background color="#e1e1e1" gap={ 16 } variant={ BackgroundVariant.Dots } size={ 2 } />

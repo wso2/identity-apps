@@ -25,10 +25,12 @@ import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Node, Position } from "@xyflow/react";
 import React, {
+    DragEvent,
     FunctionComponent,
     MouseEvent,
     MutableRefObject,
     ReactElement,
+    useCallback,
     useRef
 } from "react";
 import "./step-node.scss";
@@ -55,11 +57,31 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = (
 ): ReactElement => {
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
+    const onDragOver: (event: DragEvent) => void = useCallback((event: DragEvent) => {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = "move";
+    }, []);
+
+    const onDrop: (e: DragEvent) => void = useCallback(
+        (event: DragEvent) => {
+            event.preventDefault();
+
+            const droppedData = event.dataTransfer.getData("application/json");
+
+            if (droppedData) {
+                const parsedData = JSON.parse(droppedData);
+            }
+        },
+        [ data?.type ]
+    );
+
     return (
         <div
             ref={ ref }
             className="step-node"
             data-componentid={ componentId }
+            onDrop={ onDrop }
+            onDrag={ onDragOver }
         >
             <div className="step-id">
                 <Typography

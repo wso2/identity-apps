@@ -21,12 +21,30 @@ import { Context, createContext } from "react";
 /**
  * Props interface of {@link DnDContext}
  */
-export type DnDContextProps = any;
+export type DnDContextProps = {
+    /**
+     * Utility function to generate a unique component ID.
+     */
+    generateComponentId: () => string;
+    /**
+     * Node object.
+     */
+    node: Record<string, unknown> | null;
+    /**
+     * Setter for the node object.
+     * @param node - Node object.
+     */
+    setNode: (node: Record<string, unknown>) => void;
+};
 
 /**
  * Context object for managing the Drag & Drop context.
  */
-const DnDContext: Context<DnDContextProps> = createContext<null | DnDContextProps>([ null, (_) => {} ]);
+const DnDContext: Context<DnDContextProps> = createContext<null | DnDContextProps>({
+    generateComponentId: () => "",
+    node: null,
+    setNode: (_: Record<string, unknown>) => {}
+});
 
 DnDContext.displayName = "DnDContext";
 

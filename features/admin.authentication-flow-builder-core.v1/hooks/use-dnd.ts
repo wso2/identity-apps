@@ -37,7 +37,7 @@ export type useDnDInterface = DnDContextProps;
  *
  * @example
  * ```tsx
- * const { type, setType } = useDnD();
+ * const { node, setNode } = useDnD();
  *
  * useEffect(() => {
  *     // Perform drag-and-drop related operations

@@ -37,7 +37,9 @@ export interface AuthenticationFlowVisualEditorPropsInterface extends Identifiab
  * @param props - Props injected to the component.
  * @returns Visual editor flow component.
  */
-const AuthenticationFlowVisualEditorPrimitivesPanel: FunctionComponent<AuthenticationFlowVisualEditorPropsInterface> = ({
+const AuthenticationFlowVisualEditorPrimitivesPanel: FunctionComponent<
+    AuthenticationFlowVisualEditorPropsInterface
+> = ({
     "data-componentid": componentId = "authentication-flow-visual-editor-primitives-panel",
     ...rest
 }: AuthenticationFlowVisualEditorPropsInterface): ReactElement => {
@@ -58,7 +60,7 @@ const AuthenticationFlowVisualEditorPrimitivesPanel: FunctionComponent<Authentic
                     <AuthenticationFlowVisualEditorDraggableNode
                         id={ primitive.type }
                         key={ primitive.type }
-                        data={ primitive }
+                        node={ primitive }
                     />
                 )) }
             </Stack>

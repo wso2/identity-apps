@@ -19,124 +19,13 @@
 import { Base } from "./base";
 
 /**
- * Interface for the properties of a block variant.
- */
-export interface BlockVariantProperties {
-    /**
-     * Font size of the text.
-     */
-    fontSize?: string;
-    /**
-     * Color of the text.
-     */
-    color?: string;
-    /**
-     * Font weight of the text.
-     */
-    fontWeight?: string;
-    /**
-     * Text alignment.
-     */
-    textAlign?: string;
-    /**
-     * Text content.
-     */
-    text?: string;
-    /**
-     * Width of the element.
-     */
-    width?: string;
-    /**
-     * Height of the element.
-     */
-    height?: string;
-    /**
-     * Visibility of the element.
-     */
-    visibility?: string;
-    /**
-     * Border radius of the element.
-     */
-    borderRadius?: string;
-    /**
-     * Border of the element.
-     */
-    border?: string;
-    /**
-     * Padding of the element.
-     */
-    padding?: string;
-}
-
-/**
- * Interface for the properties of a field.
- */
-export interface FieldProperties {
-    /**
-     * Border radius of the field.
-     */
-    borderRadius?: string;
-    /**
-     * Border of the field.
-     */
-    border?: string;
-    /**
-     * Padding of the field.
-     */
-    padding?: string;
-    /**
-     * Width of the field.
-     */
-    width?: string;
-    /**
-     * Height of the field.
-     */
-    height?: string;
-    /**
-     * Font size of the field text.
-     */
-    fontSize?: string;
-    /**
-     * Color of the field text.
-     */
-    color?: string;
-    /**
-     * Font weight of the field text.
-     */
-    fontWeight?: string;
-    /**
-     * Text alignment of the field text.
-     */
-    textAlign?: string;
-}
-
-/**
- * Interface for the properties of a widget.
- */
-export interface WidgetProperties {
-    /**
-     * Version of the widget.
-     */
-    version?: string;
-}
-
-/**
  * Interface for a component.
  */
-export interface Component<T = unknown> extends Base {
-    /**
-     * Properties of the widget.
-     */
-    properties?: T;
-    /**
-     *
-     */
-    Variants?: Component[];
-}
+export type Component<T = unknown> = Base<T>;
 
-export type Display = Component<BlockVariantProperties>;
-export type Input = Component<FieldProperties>;
-export type Widget = Component<WidgetProperties>;
+export type Display = Component;
+export type Input = Component;
+export type Widget = Component<WidgetExtendedConfig>;
 export type Node = Component;
 
 /**
@@ -159,4 +48,14 @@ export interface Components {
      * List of nodes.
      */
     nodes: Node[];
+}
+
+/**
+ * Interface for the properties of a widget.
+ */
+export interface WidgetExtendedConfig {
+    /**
+     * Version of the widget.
+     */
+    version?: string;
 }

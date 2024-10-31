@@ -16,28 +16,57 @@
  * under the License.
  */
 
+import { CSSProperties } from "react";
+
 /**
  * Base interface for a component or a primitive.
  */
-export interface Base {
+export interface Base<T = unknown> {
     /**
      * Category of the component or the primitive.
      */
     category: string;
     /**
-     * ID of the component or the primitive.
-     */
-    id: string;
-    /**
      * Type of the component or the primitive.
      */
     type: string;
     /**
-     * Display name of the component or the primitive.
+     * Version of the component or the primitive.
      */
-    displayName: string;
+    version: string;
+    /**
+     * Is the component or the primitive deprecated.
+     */
+    deprecated: boolean;
+    /**
+     * Display properties of the component or the primitive.
+     */
+    display: BaseDisplay;
+    config: BaseConfig & T;
+    variants: Base<T>[];
+}
+
+export interface BaseDisplay {
+    /**
+     * Fallback & i18n key value of the label.
+     */
+    label: {
+        /**
+         * Fallback value of the label.
+         */
+        fallback: string;
+        /**
+         * i18n key of the label.
+         */
+        i18nKey: string;
+    };
     /**
      * Image URL of the component or the primitive.
      */
     image: string;
+}
+
+export interface BaseConfig {
+    field: Record<string, unknown>;
+    styles: CSSProperties;
 }

@@ -24,10 +24,10 @@ import "./draggable-node.scss";
 /**
  * Props interface of {@link DraggableNode}
  */
-export interface DraggableNodePropsInterface<T = unknown>
+export interface DraggableNodePropsInterface<T = Record<string, unknown>>
     extends IdentifiableComponentInterface,
         HTMLAttributes<HTMLDivElement> {
-    data: T;
+    node: T;
 }
 
 /**
@@ -39,20 +39,21 @@ export interface DraggableNodePropsInterface<T = unknown>
 const DraggableNode: FunctionComponent<DraggableNodePropsInterface> = ({
     "data-componentid": componentId = "draggable-node",
     children,
-    data,
+    node,
     ...rest
 }: DraggableNodePropsInterface): ReactElement => {
-    const [ _, setData ] = useDnD();
+    const { setNode } = useDnD();
 
-    const onDragStart = (event: DragEvent, data: unknown) => {
-        setData(data);
+    const onDragStart = (event: DragEvent, node: Record<string, unknown>) => {
+        setNode(node);
         event.dataTransfer.effectAllowed = "move";
+        event.dataTransfer.setData("application/json", JSON.stringify(node));
     };
 
     return (
         <div
             draggable
-            onDragStart={ (event: DragEvent) => onDragStart(event, data) }
+            onDragStart={ (event: DragEvent) => onDragStart(event, node) }
             data-componentid={ componentId }
             className="draggable-node"
             { ...rest }

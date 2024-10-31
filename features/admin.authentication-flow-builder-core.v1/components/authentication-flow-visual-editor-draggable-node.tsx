@@ -31,8 +31,10 @@ import "./authentication-flow-visual-editor-draggable-node.scss";
 /**
  * Props interface of {@link AuthenticationFlowVisualEditorDraggableNode}
  */
-export interface AuthenticationFlowVisualEditorDraggableNodePropsInterface extends IdentifiableComponentInterface, HTMLAttributes<HTMLDivElement> {
-    data: Component | Primitive;
+export interface AuthenticationFlowVisualEditorDraggableNodePropsInterface
+    extends IdentifiableComponentInterface,
+        HTMLAttributes<HTMLDivElement> {
+    node: Component | Primitive;
 }
 
 /**
@@ -41,23 +43,30 @@ export interface AuthenticationFlowVisualEditorDraggableNodePropsInterface exten
  * @param props - Props injected to the component.
  * @returns Draggable Visual Editor node component.
  */
-const AuthenticationFlowVisualEditorDraggableNode: FunctionComponent<AuthenticationFlowVisualEditorDraggableNodePropsInterface> = ({
+const AuthenticationFlowVisualEditorDraggableNode: FunctionComponent<
+    AuthenticationFlowVisualEditorDraggableNodePropsInterface
+> = ({
     "data-componentid": componentId = "authentication-flow-visual-editor-draggable-node",
     id,
-    data,
+    node,
     ...rest
 }: AuthenticationFlowVisualEditorDraggableNodePropsInterface): ReactElement => {
     return (
-        <DraggableNode key={ id } data={ data } data-componentid={ componentId } { ...rest }>
+        <DraggableNode
+            key={ id }
+            node={ (node as unknown) as Record<string, unknown> }
+            data-componentid={ componentId }
+            { ...rest }
+        >
             <Card className="authentication-flow-visual-editor-draggable-node">
                 <CardContent>
                     <Stack direction="row" spacing={ 1 }>
                         <Avatar
-                            src={ data?.image }
+                            src={ node?.display?.image }
                             variant="square"
                             className="authentication-flow-visual-editor-draggable-node-avatar"
                         />
-                        <Typography>{ data?.displayName }</Typography>
+                        <Typography>{ node?.display?.label?.fallback }</Typography>
                     </Stack>
                 </CardContent>
             </Card>

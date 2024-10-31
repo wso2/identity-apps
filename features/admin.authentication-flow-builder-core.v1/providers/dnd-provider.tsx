@@ -31,9 +31,22 @@ export interface DnDProviderProps {}
  * @returns The DnDProvider component.
  */
 const DnDProvider = ({ children }: PropsWithChildren<DnDProviderProps>): ReactElement => {
-    const [ data, setData ] = useState(null);
+    const [ node, setNode ] = useState<Record<string, unknown>>(null);
+    const [ lastGeneratedNodeId, setLastGeneratedNodeId ] = useState(0);
 
-    return <DnDContext.Provider value={ [ data, setData ] }>{ children }</DnDContext.Provider>;
+    /**
+     * Generates a unique component ID for the node.
+     * @returns Unique component ID.
+     */
+    const generateComponentId = (): string => {
+        const id: number = lastGeneratedNodeId + 1;
+
+        setLastGeneratedNodeId(id);
+
+        return `dndnode_${id}`;
+    };
+
+    return <DnDContext.Provider value={ { generateComponentId, node, setNode } }>{ children }</DnDContext.Provider>;
 };
 
 export default DnDProvider;

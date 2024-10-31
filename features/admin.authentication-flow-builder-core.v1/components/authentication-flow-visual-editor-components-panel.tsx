@@ -196,7 +196,7 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                                     <AuthenticationFlowVisualEditorDraggableNode
                                         id={ input.type }
                                         key={ input.type }
-                                        data={ input }
+                                        node={ input }
                                     />
                                 )) }
                             </Stack>
@@ -224,7 +224,7 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                                     <AuthenticationFlowVisualEditorDraggableNode
                                         id={ node.type }
                                         key={ node.type }
-                                        data={ node }
+                                        node={ node }
                                     />
                                 )) }
                             </Stack>
@@ -254,7 +254,7 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                                     <AuthenticationFlowVisualEditorDraggableNode
                                         id={ display.type }
                                         key={ display.type }
-                                        data={ display }
+                                        node={ display }
                                     />
                                 )) }
                             </Stack>
@@ -282,7 +282,7 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                                     <AuthenticationFlowVisualEditorDraggableNode
                                         id={ widget.type }
                                         key={ widget.type }
-                                        data={ widget }
+                                        node={ widget }
                                     />
                                 )) }
                             </Stack>
