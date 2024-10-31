@@ -1114,7 +1114,7 @@
             },
             "userStores": {
                 "disabledFeatures": [
-                   "userStores.type.remote" 
+                   "userStores.type.remote"
                 ],
                 "enabled": true,
                 "scopes": {
