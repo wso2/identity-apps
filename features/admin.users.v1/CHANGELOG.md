@@ -1,5 +1,27 @@
 # @wso2is/admin.users.v1
 
+## 2.27.13
+
+### Patch Changes
+
+- [#7074](https://github.com/wso2/identity-apps/pull/7074) [`f9090c4fa6aa5f701aee3a23fc929fccdd4c5de8`](https://github.com/wso2/identity-apps/commit/f9090c4fa6aa5f701aee3a23fc929fccdd4c5de8) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix not being able to update user profile
+
+- Updated dependencies [[`f9090c4fa6aa5f701aee3a23fc929fccdd4c5de8`](https://github.com/wso2/identity-apps/commit/f9090c4fa6aa5f701aee3a23fc929fccdd4c5de8)]:
+  - @wso2is/admin.users.v1@2.27.13
+  - @wso2is/admin.authentication.v1@2.25.13
+  - @wso2is/admin.claims.v1@2.25.13
+  - @wso2is/admin.core.v1@2.34.13
+  - @wso2is/admin.extensions.v1@2.34.13
+  - @wso2is/admin.groups.v1@2.25.13
+  - @wso2is/admin.organizations.v1@2.26.13
+  - @wso2is/admin.roles.v2@2.26.13
+  - @wso2is/admin.server-configurations.v1@2.28.13
+  - @wso2is/admin.tenants.v1@2.27.13
+  - @wso2is/admin.validation.v1@2.26.13
+  - @wso2is/admin.identity-providers.v1@2.26.13
+  - @wso2is/admin.feature-gate.v1@1.4.13
+  - @wso2is/admin.userstores.v1@2.25.13
+
 ## 2.27.12
 
 ### Patch Changes
