@@ -248,8 +248,8 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
             value: UserStoreTypes.DIRECT
         });
         dropDownOptions.push({
-            "data-componentid": `${testId}-bulk-import-users-dropdown-item`,
-            "data-testid": `${testId}-bulk-import-users-dropdown-item`,
+            "data-componentid": `${testId}-user-store-dropdown-item`,
+            "data-testid": `${testId}-user-store-dropdown-item`,
             key: 2,
             text: t("userstores:pageLayout.list.newUserStoreDropdown.connectRemotely"),
             value: UserStoreTypes.REMOTE
