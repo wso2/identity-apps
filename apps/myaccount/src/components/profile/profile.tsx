@@ -729,6 +729,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
     /**
      * The function returns the normalized format of locale.
+     * Refer https://github.com/wso2/identity-apps/pull/5980 for more details.
      *
      * @param locale - locale value.
      * @param localeJoiningSymbol - symbol used to join language and region parts of locale.
@@ -763,6 +764,79 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         }
 
         return normalizedLocale;
+    };
+
+    const personalInfoFieldValidation = (
+        value: string,
+        validation: Validation,
+        schema: ProfileSchema
+    ) => {
+        const fieldName: string = t("myAccount:components.profile.fields." + schema.displayName,
+            { defaultValue: schema.displayName }
+        );
+
+        if (!RegExp(schema.regEx).test(value)) {
+            validation.isValid = false;
+            if (checkSchemaType(schema.name, "emails")) {
+                validation.errorMessages.push(
+                    t("myAccount:components.profile.forms." +
+                    "emailChangeForm.inputs.email.validations." +
+                    "invalidFormat")
+                );
+            } else if (checkSchemaType(schema.name, ProfileConstants.
+                SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))) {
+                validation.errorMessages.push(t(
+                    profileConfig?.attributes?.
+                        getRegExpValidationError(
+                            ProfileConstants.SCIM2_SCHEMA_DICTIONARY
+                                .get("PHONE_NUMBERS")
+                        ),
+                    {
+                        fieldName
+                    }
+                )
+                );
+            } else if (checkSchemaType(schema.name,
+                ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB"))) {
+                validation.errorMessages.push(
+                    t("myAccount:components.profile.forms." +
+                    "dateChangeForm.inputs.date.validations." +
+                    "invalidFormat", { fieldName })
+                );
+            } else {
+                validation.errorMessages.push(
+                    t(
+                        "myAccount:components.profile.forms." +
+                    "generic.inputs.validations.invalidFormat",
+                        {
+                            fieldName
+                        }
+                    )
+                );
+            }
+        // Validate date format and the date is before the current date
+        } else if(checkSchemaType(schema.name,
+            ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB"))){
+            if (!moment(value, "YYYY-MM-DD",true).isValid()) {
+                validation.isValid = false;
+                validation.errorMessages
+                    .push(t("myAccount:components.profile.forms."
+                    + "dateChangeForm.inputs.date.validations."
+                    + "invalidFormat", {
+                        field: fieldName
+                    }));
+            } else {
+                if (moment().isBefore(value)) {
+                    validation.isValid = false;
+                    validation.errorMessages
+                        .push(t("myAccount:components.profile.forms."
+                        + "dateChangeForm.inputs.date.validations."
+                        + "futureDateError", {
+                            field: fieldName
+                        }));
+                }
+            }
+        }
     };
 
     /**
@@ -876,70 +950,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         "inputs.validations.empty", { fieldName })
                 }
                 type="text"
-                validation={ (value: string, validation: Validation) => {
-                    if (!RegExp(schema.regEx).test(value)) {
-                        validation.isValid = false;
-                        if (checkSchemaType(schema.name, "emails")) {
-                            validation.errorMessages.push(
-                                t("myAccount:components.profile.forms." +
-                                "emailChangeForm.inputs.email.validations." +
-                                "invalidFormat")
-                            );
-                        } else if (checkSchemaType(schema.name, ProfileConstants.
-                            SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS"))) {
-                            validation.errorMessages.push(t(
-                                profileConfig?.attributes?.
-                                    getRegExpValidationError(
-                                        ProfileConstants.SCIM2_SCHEMA_DICTIONARY
-                                            .get("PHONE_NUMBERS")
-                                    ),
-                                {
-                                    fieldName
-                                }
-                            )
-                            );
-                        } else if (checkSchemaType(schema.name,
-                            ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB"))) {
-                            validation.errorMessages.push(
-                                t("myAccount:components.profile.forms." +
-                                "dateChangeForm.inputs.date.validations." +
-                                "invalidFormat", { fieldName })
-                            );
-                        } else {
-                            validation.errorMessages.push(
-                                t(
-                                    "myAccount:components.profile.forms." +
-                                "generic.inputs.validations.invalidFormat",
-                                    {
-                                        fieldName
-                                    }
-                                )
-                            );
-                        }
-                    // Validate date format and the date is before the current date
-                    } else if(checkSchemaType(schema.name,
-                        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB"))){
-                        if (!moment(value, "YYYY-MM-DD",true).isValid()) {
-                            validation.isValid = false;
-                            validation.errorMessages
-                                .push(t("myAccount:components.profile.forms."
-                                + "dateChangeForm.inputs.date.validations."
-                                + "invalidFormat", {
-                                    field: fieldName
-                                }));
-                        } else {
-                            if (moment().isBefore(value)) {
-                                validation.isValid = false;
-                                validation.errorMessages
-                                    .push(t("myAccount:components.profile.forms."
-                                    + "dateChangeForm.inputs.date.validations."
-                                    + "futureDateError", {
-                                        field: fieldName
-                                    }));
-                            }
-                        }
-                    }
-                } }
+                validation={ (value: string, validation: Validation) =>
+                    personalInfoFieldValidation(value, validation, schema)
+                }
                 value={ resolveProfileInfoSchemaValue(schema) }
                 maxLength={
                     schema.name === "emails"
