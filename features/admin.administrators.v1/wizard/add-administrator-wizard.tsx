@@ -248,19 +248,19 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
             setIsSubmitting(false);
             closeWizard();
         } else {
-            const assignAdminRoleToExistingPrimaryUser: boolean =
-                !administratorsFeatureConfig?.enabled && consoleSettingsFeatureConfig?.enabled;
-
             // When the user is already in the PRIMARY userstore in managed deployment, administrators is hidden,
             // and console settings is enabled, assign already selected roles to the user.
-            if (assignAdminRoleToExistingPrimaryUser) {
+            if (
+                !administratorsFeatureConfig?.enabled &&
+                consoleSettingsFeatureConfig?.enabled
+            ) {
                 const assignedRoles: RolesInterface[] = invite?.roles.map(
                     (roleDisplayName: string) => rolesList?.Resources?.find(
-                        (role: RolesInterface) => role.displayName === roleDisplayName
+                        (role: RolesInterface) => role?.displayName === roleDisplayName
                     )
                 ).filter(Boolean);
 
-                assignUserRoles(originalAdminUserList.Resources,assignedRoles);
+                assignUserRoles(originalAdminUserList.Resources, assignedRoles);
 
                 return;
             // otherwise, prompt for assigning the admin role back
