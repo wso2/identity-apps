@@ -77,7 +77,7 @@ export interface OrganizationAttributesInterface {
 
 export interface OrganizationDiscoveryConfigPropertyInterface {
     key: string;
-    value: boolean;
+    value: string;
 }
 
 export interface OrganizationDiscoveryAttributesInterface {

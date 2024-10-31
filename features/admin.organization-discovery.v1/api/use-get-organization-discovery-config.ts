@@ -36,7 +36,8 @@ import {
  * @returns SWR response object containing the data, error, isValidating, mutate.
  */
 const useGetOrganizationDiscoveryConfig = <
-    Data = OrganizationDiscoveryConfigInterface & { isOrganizationDiscoveryEnabled: boolean },
+    Data = OrganizationDiscoveryConfigInterface & { isOrganizationDiscoveryEnabled: boolean,
+        isEmailDomainBasedSelfRegistrationEnabled: boolean },
     Error = RequestErrorInterface
 >(shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
@@ -53,12 +54,17 @@ const useGetOrganizationDiscoveryConfig = <
     });
 
     let isOrganizationDiscoveryEnabled: boolean = false;
+    let isEmailDomainBasedSelfRegistrationEnabled: boolean = false;
 
     if ((data as OrganizationDiscoveryConfigInterface)?.properties) {
         (data as OrganizationDiscoveryConfigInterface).properties?.forEach(
             (property: OrganizationDiscoveryConfigPropertyInterface) => {
-                if (property.key === "emailDomain.enable") {
+                if (property.key === "emailDomain.enable" && property.value === "true") {
                     isOrganizationDiscoveryEnabled = true;
+                }
+
+                if (property.key === "emailDomainBasedSelfSignup.enable" && property.value === "true") {
+                    isEmailDomainBasedSelfRegistrationEnabled = true;
                 }
             }
         );
@@ -83,6 +89,7 @@ const useGetOrganizationDiscoveryConfig = <
 
     return {
         data: {
+            isEmailDomainBasedSelfRegistrationEnabled,
             isOrganizationDiscoveryEnabled,
             ...data
         },

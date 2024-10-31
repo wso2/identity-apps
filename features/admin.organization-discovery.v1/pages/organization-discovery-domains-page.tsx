@@ -17,12 +17,9 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
-import { Show } from "@wso2is/access-control";
 import {
-    AdvancedSearchWithBasicFilters,
     AppConstants,
     AppState,
-    EventPublisher,
     FeatureConfigInterface,
     UIConstants,
     history
@@ -30,51 +27,36 @@ import {
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { I18n } from "@wso2is/i18n";
-import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
-import find from "lodash-es/find";
-import isEmpty from "lodash-es/isEmpty";
+import { Field, Form } from "@wso2is/form";
+import { EmphasizedSegment, Link, PageLayout } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, {
     FunctionComponent,
-    MouseEvent,
     ReactElement,
-    ReactNode,
     SyntheticEvent,
-    useCallback,
     useEffect,
     useMemo,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import {
     Checkbox,
     CheckboxProps,
-    Divider,
-    DropdownItemProps,
-    DropdownProps,
-    Icon,
-    PaginationProps
+    Divider
 } from "semantic-ui-react";
-import addOrganizationDiscoveryConfig from "../api/add-organization-discovery-config";
-import deleteOrganizationDiscoveryConfig from "../api/delete-organization-discovery-config";
+import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../../admin.connections.v1";
+import {
+    ServerConfigurationsConstants,
+    UpdateGovernanceConnectorConfigPropertyInterface,
+    getConnectorDetails
+} from "../../admin.server-configurations.v1";
+import updateOrganizationDiscoveryConfig from "../api/update-organization-discovery-config";
 import useGetOrganizationDiscovery from "../api/use-get-organization-discovery";
 import useGetOrganizationDiscoveryConfig from "../api/use-get-organization-discovery-config";
-import DiscoverableOrganizationsList from "../components/discoverable-organizations-list";
-import {
-    OrganizationDiscoveryConfigInterface,
-    OrganizationListWithDiscoveryInterface
-} from "../models/organization-discovery";
-
-const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
-    {
-        key: 0,
-        text: I18n.instance.t("organizationDiscovery:advancedSearch." +
-        "form.dropdown.filterAttributeOptions.organizationName") as ReactNode,
-        value: "organizationName"
-    }
-];
+import DiscoverableOrganizationsListLayout from "../components/discoverable-organizations-list-layout";
+import { OrganizationDiscoveryConfigInterface } from "../models/organization-discovery";
 
 /**
  * Props interface of {@link OrganizationDiscoveryDomainsPage}
@@ -110,14 +92,8 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
     );
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
-    const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
-        ORGANIZATIONS_LIST_SORTING_OPTIONS[ 0 ]
-    );
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const filterQuery: string = useMemo(() => {
         let filterQuery: string = "";
@@ -130,7 +106,6 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
     const {
         data: organizationDiscoveryConfig,
         error: organizationDiscoveryConfigFetchRequestError,
-        isLoading: isOrganizationDiscoveryConfigFetchRequestLoading,
         mutate: mutateOrganizationDiscoveryConfigFetchRequest
     } = useGetOrganizationDiscoveryConfig();
 
@@ -140,7 +115,118 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
         isLoading: isDiscoverableOrganizationsFetchRequestLoading
     } = useGetOrganizationDiscovery(true, filterQuery, listOffset, listItemLimit);
 
-    const { isOrganizationDiscoveryEnabled } = organizationDiscoveryConfig;
+    const { isOrganizationDiscoveryEnabled, isEmailDomainBasedSelfRegistrationEnabled } = organizationDiscoveryConfig;
+    const [ isSelfRegEnabled, setIsSelfRegEnabled ] = useState<boolean>(false);
+
+    /**
+     * Fetch the self-registration configuration.
+     */
+    useEffect(() => {
+        getConnectorDetails(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+            ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID)
+            .then((response: GovernanceConnectorInterface) => {
+                const selfRegEnabledProperty: UpdateGovernanceConnectorConfigPropertyInterface =
+                    response?.properties?.find((property: ConnectorPropertyInterface) =>
+                        property.name === ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE
+                    );
+
+                setIsSelfRegEnabled(selfRegEnabledProperty?.value === "true");
+            })
+            .catch((error: AxiosError) => {
+                if (error.response && error.response.data && error.response.data.detail) {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "governanceConnectors:notifications." +
+                                "getConnector.error.description",
+                                { description: error.response.data.description }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "governanceConnectors:notifications." +
+                                "getConnector.error.message"
+                            )
+                        })
+                    );
+                } else {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "governanceConnectors:notifications." +
+                                "getConnector.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "governanceConnectors:notifications." +
+                                "getConnector.genericError.message"
+                            )
+                        })
+                    );
+                }
+            });
+    }, []);
+
+    const handleEmailDomainBasedSelfRegistration = (value: boolean): void => {
+        const updateData: OrganizationDiscoveryConfigInterface = {
+            properties: []
+        };
+
+        updateData.properties.push({
+            key: "emailDomain.enable",
+            value: isOrganizationDiscoveryEnabled ? "true" : "false"
+        });
+
+        updateData.properties.push({
+            key: "emailDomainBasedSelfSignup.enable",
+            value: value ? "true" : "false"
+        });
+
+        updateOrganizationDiscoveryConfig(updateData)
+            .then(() => {
+                dispatch(
+                    addAlert({
+                        description: value ? t(
+                            "organizationDiscovery:notifications." +
+                            "enableEmailDomainBasedSelfRegistration.success.description"
+                        ) : t(
+                            "organizationDiscovery:notifications." +
+                            "disableEmailDomainBasedSelfRegistration.success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: value ? t(
+                            "organizationDiscovery:notifications." +
+                            "enableEmailDomainBasedSelfRegistration.success.message"
+                        ) : t(
+                            "organizationDiscovery:notifications." +
+                            "disableEmailDomainBasedSelfRegistration.success.message"
+                        )
+                    })
+                );
+
+                mutateOrganizationDiscoveryConfigFetchRequest();
+            })
+            .catch(() => {
+                dispatch(
+                    addAlert({
+                        description: value ? t(
+                            "organizationDiscovery:notifications." +
+                            "enableEmailDomainBasedSelfRegistration.error.description"
+                        ) : t(
+                            "organizationDiscovery:notifications." +
+                            "disableEmailDomainBasedSelfRegistration.error.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: value ? t(
+                            "organizationDiscovery:notifications." +
+                            "enableEmailDomainBasedSelfRegistration.error.message"
+                        ) : t(
+                            "organizationDiscovery:notifications." +
+                            "disableEmailDomainBasedSelfRegistration.error.message"
+                        )
+                    })
+                );
+            });
+    };
 
     /**
      * Handle error scenarios of the organization discovery config fetch request.
@@ -193,126 +279,48 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
     }, [ discoverableOrganizationsFetchRequestError ]);
 
     /**
-     * Sets the list sorting strategy.
-     *
-     * @param event - The event.
-     * @param data - Dropdown data.
-     */
-    const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-        setListSortingStrategy(
-            find(ORGANIZATIONS_LIST_SORTING_OPTIONS, (option: DropdownItemProps) => {
-                return data.value === option.value;
-            })
-        );
-    };
-
-    /**
-     * Handles the `onFilter` callback action from the
-     * organization search component.
-     *
-     * @param query - Search query.
-     */
-    const handleOrganizationFilter: (query: string) => void = useCallback(
-        (query: string): void => {
-            setSearchQuery(query);
-        },
-        [ setSearchQuery ]
-    );
-
-    /**
-     * Handles the pagination change.
-     *
-     * @param event - Mouse event.
-     * @param data - Pagination component data.
-     */
-    const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
-        const offsetValue: number = ((data.activePage as number) - 1) * listItemLimit;
-
-        setListOffset(offsetValue);
-    };
-
-    /**
-     * Handles per page dropdown page.
-     *
-     * @param event - Mouse event.
-     * @param data - Dropdown data.
-     */
-    const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
-        setListItemLimit(data.value as number);
-    };
-
-    /**
-     * Handles the `onSearchQueryClear` callback action.
-     */
-    const handleSearchQueryClear: () => void = useCallback((): void => {
-        setTriggerClearQuery(!triggerClearQuery);
-        setSearchQuery("");
-    }, [ setSearchQuery, triggerClearQuery ]);
-
-    /**
      * This is called when the enable toggle changes.
      *
      * @param e - Event object
      * @param data -  The data object.
      */
     const handleToggle = (e: SyntheticEvent, data: CheckboxProps): void => {
-        if (data.checked === true) {
-            const updateData: OrganizationDiscoveryConfigInterface = {
-                properties: []
-            };
+        const updateData: OrganizationDiscoveryConfigInterface = {
+            properties: []
+        };
 
+        if (data.checked === true) {
             updateData.properties.push({
                 key: "emailDomain.enable",
-                value: true
+                value: "true"
+            });
+        } else {
+            updateData.properties.push({
+                key: "emailDomain.enable",
+                value: "false"
             });
 
-            addOrganizationDiscoveryConfig(updateData)
-                .then(() => {
-                    dispatch(
-                        addAlert({
-                            description: t(
-                                "organizationDiscovery:notifications." +
-                                "enableEmailDomainDiscovery.success.description"
-                            ),
-                            level: AlertLevels.SUCCESS,
-                            message: t(
-                                "organizationDiscovery:notifications." +
-                                "enableEmailDomainDiscovery.success.message"
-                            )
-                        })
-                    );
-
-                    mutateOrganizationDiscoveryConfigFetchRequest();
-                })
-                .catch(() => {
-                    dispatch(
-                        addAlert({
-                            description: t(
-                                "organizationDiscovery:notifications." +
-                                "enableEmailDomainDiscovery.error.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "organizationDiscovery:notifications." +
-                                "enableEmailDomainDiscovery.error.message"
-                            )
-                        })
-                    );
-                });
-
-            return;
+            updateData.properties.push({
+                key: "emailDomainBasedSelfSignup.enable",
+                value: "false"
+            });
         }
 
-        deleteOrganizationDiscoveryConfig()
+        updateOrganizationDiscoveryConfig(updateData)
             .then(() => {
                 dispatch(
                     addAlert({
-                        description: t(
+                        description: data.checked ? t(
                             "organizationDiscovery:notifications." +
-                            "disableEmailDomainDiscovery.success.description"
-                        ),
+                            "enableEmailDomainDiscovery.success.description"
+                        ) : t(
+                            "organizationDiscovery:notifications." +
+                            "disableEmailDomainDiscovery.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t(
+                        message: data.checked ? t(
+                            "organizationDiscovery:notifications." +
+                            "enableEmailDomainDiscovery.success.message"
+                        ) : t(
                             "organizationDiscovery:notifications." +
                             "disableEmailDomainDiscovery.success.message"
                         )
@@ -324,12 +332,18 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
             .catch(() => {
                 dispatch(
                     addAlert({
-                        description: t(
+                        description: data.checked ? t(
+                            "organizationDiscovery:notifications." +
+                            "enableEmailDomainDiscovery.error.description"
+                        ) : t(
                             "organizationDiscovery:notifications." +
                             "disableEmailDomainDiscovery.error.description"
                         ),
                         level: AlertLevels.ERROR,
-                        message: t(
+                        message: data.checked ? t(
+                            "organizationDiscovery:notifications." +
+                            "enableEmailDomainDiscovery.error.message"
+                        ) : t(
                             "organizationDiscovery:notifications." +
                             "disableEmailDomainDiscovery.error.message"
                         )
@@ -356,16 +370,6 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
     };
 
     /**
-     * Checks if the `Next` page nav button should be shown.
-     *
-     * @param orgList - List of discoverable organizations.
-     * @returns `true` if `Next` page nav button should be shown.
-     */
-    const shouldShowNextPageNavigation = (orgList: OrganizationListWithDiscoveryInterface): boolean => {
-        return orgList?.startIndex + orgList?.count !== orgList?.totalResults + 1;
-    };
-
-    /**
      * Handle back button click.
      */
     const handleBackButtonClick = () => {
@@ -374,33 +378,6 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
 
     return (
         <PageLayout
-            action={
-                !isOrganizationDiscoveryConfigFetchRequestLoading
-                && isOrganizationDiscoveryEnabled
-                && !(!searchQuery
-                    && (
-                        isEmpty(discoverableOrganizations)
-                        || discoverableOrganizations?.totalResults <= 0
-                    )
-                ) && (
-                    <Show when={ featureConfig?.organizationDiscovery?.scopes?.create }>
-                        <PrimaryButton
-                            disabled={ isDiscoverableOrganizationsFetchRequestLoading }
-                            loading={ isDiscoverableOrganizationsFetchRequestLoading }
-                            onClick={ () => {
-                                eventPublisher.publish("organization-click-assign-email-domain-button");
-                                history.push(
-                                    AppConstants.getPaths().get("ASSIGN_ORGANIZATION_DISCOVERY_DOMAINS")
-                                );
-                            } }
-                            data-componentid={ `${ testId }-list-layout-assign-button` }
-                        >
-                            <Icon name="add" />
-                            { t("organizationDiscovery:emailDomains.actions.assign") }
-                        </PrimaryButton>
-                    </Show>
-                )
-            }
             pageTitle={ t("pages:emailDomainDiscovery.title") }
             title={ t("pages:emailDomainDiscovery.title") }
             description={ t("pages:emailDomainDiscovery.subTitle") }
@@ -418,69 +395,63 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
             </Alert>
             <Divider hidden />
             { isOrganizationDiscoveryEnabled && (
-                <ListLayout
-                    advancedSearch={ (
-                        <AdvancedSearchWithBasicFilters
-                            onFilter={ handleOrganizationFilter }
-                            filterAttributeOptions={ [
-                                {
-                                    key: 0,
-                                    text: t("organizationDiscovery:advancedSearch." +
-                                    "form.dropdown.filterAttributeOptions.organizationName"),
-                                    value: "organizationName"
-                                }
-                            ] }
-                            filterAttributePlaceholder={ t(
-                                "organizationDiscovery:advancedSearch.form" +
-                                        ".inputs.filterAttribute.placeholder"
+                <>
+                    <EmphasizedSegment
+                        padded={ true }
+                    >
+                        <Form>
+                            <Field.Checkbox
+                                ariaLabel="emailDomainBasedSelfRegistration"
+                                name="emailDomainBasedSelfRegistration"
+                                label={ t("organizationDiscovery:selfRegistration.label") }
+                                listen={ (value: boolean) => handleEmailDomainBasedSelfRegistration(value) }
+                                checked={ isEmailDomainBasedSelfRegistrationEnabled }
+                                disabled={ !isSelfRegEnabled }
+                                width={ 16 }
+                                data-testid={ `${testId}-notify-account-confirmation` }
+                                hint={ isSelfRegEnabled && t("organizationDiscovery:selfRegistration.labelHint") }
+                            />
+                            { !isSelfRegEnabled && (
+                                <Alert severity="info">
+                                    <Trans
+                                        i18nKey={ "organizationDiscovery:selfRegistration.message" }
+                                    >
+                                        Enable
+                                        <Link
+                                            external={ false }
+                                            onClick={ () => {
+                                                history.push(
+                                                    AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT").replace(
+                                                        ":categoryId",
+                                                        ServerConfigurationsConstants.
+                                                            USER_ONBOARDING_CONNECTOR_ID
+                                                    ).replace(
+                                                        ":connectorId",
+                                                        ServerConfigurationsConstants.
+                                                            SELF_SIGN_UP_CONNECTOR_ID
+                                                    )
+                                                );
+                                            } }
+                                        >self-registration
+                                        </Link>
+                                        to allow domain discovery for self-registration.
+                                    </Trans>
+                                </Alert>
                             ) }
-                            filterConditionsPlaceholder={ t(
-                                "organizationDiscovery:advancedSearch.form" +
-                                        ".inputs.filterCondition.placeholder"
-                            ) }
-                            filterValuePlaceholder={ t(
-                                "organizationDiscovery:advancedSearch.form" +
-                                ".inputs.filterValue.placeholder"
-                            ) }
-                            placeholder={ t(
-                                "organizationDiscovery:advancedSearch.placeholder"
-                            ) }
-                            defaultSearchAttribute="organizationName"
-                            defaultSearchOperator="co"
-                            triggerClearQuery={ triggerClearQuery }
-                            data-componentid={ `${ testId }-list-advanced-search` }
-                        />
-                    ) }
-                    currentListSize={ discoverableOrganizations?.organizations?.length }
-                    listItemLimit={ listItemLimit }
-                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                    onPageChange={ handlePaginationChange }
-                    onSortStrategyChange={ handleListSortingStrategyOnChange }
-                    showTopActionPanel={
-                        isDiscoverableOrganizationsFetchRequestLoading ||
-                                !(!searchQuery && discoverableOrganizations?.organizations?.length <= 0)
-                    }
-                    sortOptions={ ORGANIZATIONS_LIST_SORTING_OPTIONS }
-                    sortStrategy={ listSortingStrategy }
-                    totalPages={ 10 }
-                    totalListSize={ discoverableOrganizations?.organizations?.length }
-                    isLoading={ isDiscoverableOrganizationsFetchRequestLoading }
-                    paginationOptions={ {
-                        disableNextButton: !shouldShowNextPageNavigation(discoverableOrganizations)
-                    } }
-                    data-componentid={ `${ testId }-list-layout` }
-                    showPagination
-                >
-                    <DiscoverableOrganizationsList
-                        list={ discoverableOrganizations }
-                        onEmptyListPlaceholderActionClick={ () => {
-                            history.push(AppConstants.getPaths().get("ASSIGN_ORGANIZATION_DISCOVERY_DOMAINS"));
-                        } }
-                        onSearchQueryClear={ handleSearchQueryClear }
-                        searchQuery={ searchQuery }
-                        data-componentid="organization-list-with-discovery"
+                        </Form>
+                    </EmphasizedSegment>
+                    <DiscoverableOrganizationsListLayout
+                        discoverableOrganizations={ discoverableOrganizations }
+                        listItemLimit = { listItemLimit }
+                        isDiscoverableOrganizationsFetchRequestLoading = {
+                            isDiscoverableOrganizationsFetchRequestLoading }
+                        featureConfig = { featureConfig }
+                        onListItemLimitChange={ setListItemLimit }
+                        onListOffsetChange={ setListOffset }
+                        searchQuery= { searchQuery }
+                        onSearchQueryChange={ setSearchQuery }
                     />
-                </ListLayout>
+                </>
             ) }
         </PageLayout>
     );

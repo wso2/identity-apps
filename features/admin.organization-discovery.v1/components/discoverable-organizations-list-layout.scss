@@ -1,0 +1,15 @@
+.discoverable-organizations-list-layout {
+    .top-action-panel {
+        display: flex;
+        flex-direction: row-reverse;
+        flex-wrap: nowrap;
+        align-content: center;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+
+        >.ui.grid {
+            flex-grow: 1;
+        }
+    }
+}
