@@ -123,7 +123,7 @@ export interface WidgetProperties {
 /**
  * Interface for a component.
  */
-export interface Component<T = {}> extends Base {
+export interface Component<T = unknown> extends Base {
     /**
      * Properties of the widget.
      */

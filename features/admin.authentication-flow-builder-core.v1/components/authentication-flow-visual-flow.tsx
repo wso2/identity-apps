@@ -33,15 +33,7 @@ import useDnD from "../hooks/use-dnd";
 import "@xyflow/react/dist/style.css";
 import "./authentication-flow-visual-flow.scss";
 import AuthenticationFlowVisualEditorPrimitivesPanel from "./authentication-flow-visual-editor-primitives-panel";
-
-const initialNodes = [
-    {
-        id: "1",
-        type: "input",
-        data: { label: "input node" },
-        position: { x: 250, y: 5 }
-    }
-];
+import StepNode from "./nodes/step-node";
 
 let id = 0;
 const getId = () => `dndnode_${id++}`;
@@ -53,6 +45,10 @@ export interface AuthenticationFlowVisualEditorPropsInterface
     extends IdentifiableComponentInterface,
         ReactFlowProps<any, any> {}
 
+// we define the nodeTypes outside of the component to prevent re-renderings
+// you could also use useMemo inside the component
+const nodeTypes = { step: StepNode };
+
 /**
  * Wrapper component for React Flow used in the Visual Editor.
  *
@@ -63,10 +59,10 @@ const AuthenticationFlowVisualFlow: FunctionComponent<AuthenticationFlowVisualEd
     "data-componentid": componentId = "authentication-flow-visual-flow",
     ...rest
 }: AuthenticationFlowVisualEditorPropsInterface): ReactElement => {
-    const [ nodes, setNodes, onNodesChange ] = useNodesState(initialNodes);
+    const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
     const [ edges, setEdges, onEdgesChange ] = useEdgesState([]);
     const { screenToFlowPosition } = useReactFlow();
-    const [ type ] = useDnD();
+    const [ data ] = useDnD();
 
     const onDragOver = useCallback(event => {
         event.preventDefault();
@@ -78,7 +74,7 @@ const AuthenticationFlowVisualFlow: FunctionComponent<AuthenticationFlowVisualEd
             event.preventDefault();
 
             // check if the dropped element is valid
-            if (!type) {
+            if (!data?.type || data?.category !== "PRIMITIVE") {
                 return;
             }
 
@@ -91,14 +87,14 @@ const AuthenticationFlowVisualFlow: FunctionComponent<AuthenticationFlowVisualEd
             });
             const newNode = {
                 id: getId(),
-                type,
+                type: data.type,
                 position,
-                data: { label: `${type} node` }
+                data: { label: `${data.type} node` }
             };
 
             setNodes(nds => nds.concat(newNode));
         },
-        [ screenToFlowPosition, type ]
+        [ screenToFlowPosition, data?.type ]
     );
 
     const onConnect = useCallback(params => setEdges(eds => addEdge(params, eds)), []);
@@ -107,6 +103,7 @@ const AuthenticationFlowVisualFlow: FunctionComponent<AuthenticationFlowVisualEd
         <ReactFlow
             nodes={ nodes }
             edges={ edges }
+            nodeTypes={ nodeTypes as any }
             onNodesChange={ onNodesChange }
             onEdgesChange={ onEdgesChange }
             onConnect={ onConnect }

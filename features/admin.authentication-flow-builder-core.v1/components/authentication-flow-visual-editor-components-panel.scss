@@ -17,6 +17,7 @@
  */
 
 :root {
+    --wso2is-authentication-flow-visual-editor-components-drawer-background: #f4f4f4;
     --wso2is-authentication-flow-visual-editor-components-drawer-width: 280px;
     --wso2is-authentication-flow-visual-editor-components-drawer-mini-width: 280px;
 }
@@ -25,6 +26,7 @@
     .authentication-flow-visual-editor-components-panel {
         position: absolute;
         width: var(--wso2is-authentication-flow-visual-editor-components-drawer-width);
+        background: var(--wso2is-authentication-flow-visual-editor-components-drawer-background);
     }
 
     &.mini {
@@ -69,7 +71,7 @@
 
             .authentication-flow-visual-editor-components-panel-category-details {
                 padding: var(--oxygen-spacing-2) var(--oxygen-spacing-1);
-                background: #f4f4f4;
+                background: var(--wso2is-authentication-flow-visual-editor-components-drawer-background);
             }
 
             &:not(:first-child) {

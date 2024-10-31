@@ -25,13 +25,14 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import DraggableNode from "./draggable-node";
 import { Component } from "../models/components";
+import { Primitive } from "../models/primitives";
 import "./authentication-flow-visual-editor-draggable-node.scss";
 
 /**
  * Props interface of {@link AuthenticationFlowVisualEditorDraggableNode}
  */
-export interface AuthenticationFlowVisualEditorDraggableNodePropsInterface extends IdentifiableComponentInterface, Omit<HTMLAttributes<HTMLDivElement>, "id">, Component {
-    type: string;
+export interface AuthenticationFlowVisualEditorDraggableNodePropsInterface extends IdentifiableComponentInterface, HTMLAttributes<HTMLDivElement> {
+    data: Component | Primitive;
 }
 
 /**
@@ -43,21 +44,20 @@ export interface AuthenticationFlowVisualEditorDraggableNodePropsInterface exten
 const AuthenticationFlowVisualEditorDraggableNode: FunctionComponent<AuthenticationFlowVisualEditorDraggableNodePropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-editor-draggable-node",
     id,
-    displayName,
-    image,
+    data,
     ...rest
 }: AuthenticationFlowVisualEditorDraggableNodePropsInterface): ReactElement => {
     return (
-        <DraggableNode key={ id } id={ id } data-componentid={ componentId } { ...rest }>
+        <DraggableNode key={ id } data={ data } data-componentid={ componentId } { ...rest }>
             <Card className="authentication-flow-visual-editor-draggable-node">
                 <CardContent>
                     <Stack direction="row" spacing={ 1 }>
                         <Avatar
-                            src={ image }
+                            src={ data?.image }
                             variant="square"
                             className="authentication-flow-visual-editor-draggable-node-avatar"
                         />
-                        <Typography>{ displayName }</Typography>
+                        <Typography>{ data?.displayName }</Typography>
                     </Stack>
                 </CardContent>
             </Card>

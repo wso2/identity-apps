@@ -24,7 +24,11 @@ import "./draggable-node.scss";
 /**
  * Props interface of {@link DraggableNode}
  */
-export interface DraggableNodePropsInterface extends IdentifiableComponentInterface, HTMLAttributes<HTMLDivElement> {}
+export interface DraggableNodePropsInterface<T = unknown>
+    extends IdentifiableComponentInterface,
+        HTMLAttributes<HTMLDivElement> {
+    data: T;
+}
 
 /**
  * A component that represents a draggable node.
@@ -35,20 +39,20 @@ export interface DraggableNodePropsInterface extends IdentifiableComponentInterf
 const DraggableNode: FunctionComponent<DraggableNodePropsInterface> = ({
     "data-componentid": componentId = "draggable-node",
     children,
-    id,
+    data,
     ...rest
 }: DraggableNodePropsInterface): ReactElement => {
-    const [ _, setId ] = useDnD();
+    const [ _, setData ] = useDnD();
 
-    const onDragStart = (event: DragEvent, nodeId: string) => {
-        setId(nodeId);
+    const onDragStart = (event: DragEvent, data: unknown) => {
+        setData(data);
         event.dataTransfer.effectAllowed = "move";
     };
 
     return (
         <div
             draggable
-            onDragStart={ (event: DragEvent) => onDragStart(event, id) }
+            onDragStart={ (event: DragEvent) => onDragStart(event, data) }
             data-componentid={ componentId }
             className="draggable-node"
             { ...rest }

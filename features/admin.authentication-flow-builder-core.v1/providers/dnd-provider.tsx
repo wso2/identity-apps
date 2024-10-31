@@ -31,9 +31,9 @@ export interface DnDProviderProps {}
  * @returns The DnDProvider component.
  */
 const DnDProvider = ({ children }: PropsWithChildren<DnDProviderProps>): ReactElement => {
-    const [ id, setId ] = useState(null);
+    const [ data, setData ] = useState(null);
 
-    return <DnDContext.Provider value={ [ id, setId ] }>{ children }</DnDContext.Provider>;
+    return <DnDContext.Provider value={ [ data, setData ] }>{ children }</DnDContext.Provider>;
 };
 
 export default DnDProvider;

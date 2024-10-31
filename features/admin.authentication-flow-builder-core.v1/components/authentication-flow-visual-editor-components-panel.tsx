@@ -196,10 +196,7 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                                     <AuthenticationFlowVisualEditorDraggableNode
                                         id={ input.type }
                                         key={ input.type }
-                                        category={ input.category }
-                                        type={ input.type }
-                                        displayName={ input.displayName }
-                                        image={ input.image }
+                                        data={ input }
                                     />
                                 )) }
                             </Stack>
@@ -227,10 +224,7 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                                     <AuthenticationFlowVisualEditorDraggableNode
                                         id={ node.type }
                                         key={ node.type }
-                                        category={ node.category }
-                                        type={ node.type }
-                                        displayName={ node.displayName }
-                                        image={ node.image }
+                                        data={ node }
                                     />
                                 )) }
                             </Stack>
@@ -260,10 +254,7 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                                     <AuthenticationFlowVisualEditorDraggableNode
                                         id={ display.type }
                                         key={ display.type }
-                                        category={ display.category }
-                                        type={ display.type }
-                                        displayName={ display.displayName }
-                                        image={ display.image }
+                                        data={ display }
                                     />
                                 )) }
                             </Stack>
@@ -291,10 +282,7 @@ const AuthenticationFlowVisualEditorComponentsPanel: FunctionComponent<
                                     <AuthenticationFlowVisualEditorDraggableNode
                                         id={ widget.type }
                                         key={ widget.type }
-                                        category={ widget.category }
-                                        type={ widget.type }
-                                        displayName={ widget.displayName }
-                                        image={ widget.image }
+                                        data={ widget }
                                     />
                                 )) }
                             </Stack>
