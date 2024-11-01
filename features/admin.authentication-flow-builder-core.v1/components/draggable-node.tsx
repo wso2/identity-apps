@@ -19,12 +19,13 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { DragEvent, FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import useDnD from "../hooks/use-dnd";
+import { SupportedCanvasNodes } from "../models/visual-editor";
 import "./draggable-node.scss";
 
 /**
  * Props interface of {@link DraggableNode}
  */
-export interface DraggableNodePropsInterface<T = Record<string, unknown>>
+export interface DraggableNodePropsInterface<T = SupportedCanvasNodes>
     extends IdentifiableComponentInterface,
         HTMLAttributes<HTMLDivElement> {
     node: T;
@@ -44,7 +45,7 @@ const DraggableNode: FunctionComponent<DraggableNodePropsInterface> = ({
 }: DraggableNodePropsInterface): ReactElement => {
     const { setNode } = useDnD();
 
-    const onDragStart = (event: DragEvent, node: Record<string, unknown>) => {
+    const onDragStart = (event: DragEvent, node: SupportedCanvasNodes) => {
         setNode(node);
         event.dataTransfer.effectAllowed = "move";
         event.dataTransfer.setData("application/json", JSON.stringify(node));

@@ -18,7 +18,7 @@
 
 import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
-import AuthenticationFlowVisualEditor from "@wso2is/admin.authentication-flow-builder-core.v1/components/authentication-flow-visual-editor";
+import Builder from "@wso2is/admin.authentication-flow-builder-core.v1/components/builder";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import "./flows-page.scss";
@@ -44,7 +44,7 @@ const Flows: FunctionComponent<FlowsProps> = ({
                     <Typography variant="h5">Flows</Typography>
                 </Box>
             </div>
-            <AuthenticationFlowVisualEditor />
+            <Builder />
         </div>
     );
 };

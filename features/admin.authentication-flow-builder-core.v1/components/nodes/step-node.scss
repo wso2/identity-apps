@@ -16,12 +16,8 @@
  * under the License.
  */
 
-:root {
-    --asg-auth-flow-builder-flows-basic-sign-in-option-controls-border: 2px dashed var(--oxygen-palette-divider);
-}
-
-.step-node {
-    .oxygen-sign-in {
+.authentication-flow-builder-step {
+    .authentication-flow-builder-step-content {
         display: flex;
         flex-flow: column nowrap;
         align-content: center;
@@ -29,102 +25,19 @@
         align-items: center;
         text-align: left;
 
-        .oxygen-sign-in-box {
+        .authentication-flow-builder-step-content-box {
             padding: 32px;
             width: 350px;
         }
 
-        .oxygen-sign-in-logo {
-            max-height: 50px;
-            margin-bottom: 30px;
-        }
-
-        .oxygen-sign-in-header {
-            margin-bottom: 32px;
-        }
-
-        .oxygen-sign-in-sub-header {
-            margin-bottom: 16px;
-        }
-
-        .oxygen-sign-in-form {
+        .authentication-flow-builder-step-content-form {
             .oxygen-text-field {
-                margin-bottom: 20px;
-            }
-
-            .oxygen-sign-in-cta {
-                margin: 16px 0;
-            }
-
-            .oxygen-sign-in-sign-up-link {
-                font-size: 14px;
-            }
-
-            .oxygen-sign-in-sign-up-link-action {
-                margin-left: 5px;
-            }
-        }
-
-        .oxygen-sign-in-options {
-            margin-top: 16px;
-
-            .oxygen-sign-in-option {
-                .remove-button {
-                    position: absolute;
-                    z-index: 999;
-                    right: 29px;
-                    margin-top: -8px;
-                    background: white;
-                    width: 20px;
-                    border: 1px solid var(--oxygen-palette-divider);
-                    height: 20px;
-
-                    svg {
-                        fill: var(--oxygen-palette-text-secondary);
-                    }
-
-                    &:hover {
-                        box-shadow: var(--oxygen-shadows-0);
-                    }
-                }
-
-                &:not(:last-child) {
-                    margin-bottom: 16px;
-                }
-            }
-
-            .oxygen-button {
-                background: var(--oxygen-palette-common-white);
-                color: var(--oxygen-palette-common-black);
-                width: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 0 1px 0 rgba(0, 0, 0, .12), 0 1px 1px 0 rgba(0, 0, 0, .24);
-
-                &:hover {
-                    color: rgba(0, 0, 0, .8);
-                }
-
-                .oxygen-sign-in-option-image {
-                    height: 20px;
-                }
-
-                &.oxygen-sign-in-option-add {
-                    background: transparent;
-                    box-shadow: none;
-                    border: var(--asg-auth-flow-builder-flows-basic-sign-in-option-controls-border);
-                    animation: pulsing-success 1500ms cubic-bezier(0.0, 0, 0.2, 1) infinite;
-
-                    .pulsating-badge {
-                        margin-left: 14px;
-                    }
-                }
+                margin-bottom: var(--oxygen-spacing-3);
             }
         }
     }
 
-    .remove-button {
+    .authentication-flow-builder-step-remove-button {
         position: absolute;
         z-index: 999;
         right: -12px;
@@ -143,7 +56,7 @@
         }
     }
 
-    .step-id {
+    .authentication-flow-builder-step-id {
         margin-bottom: 10px;
     }
 }

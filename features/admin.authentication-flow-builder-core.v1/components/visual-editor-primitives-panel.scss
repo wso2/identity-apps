@@ -15,8 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- 
- .authentication-flow-visual-editor-primitives-panel {
+
+ .authentication-flow-builder-primitives-panel {
     position: absolute;
     left: 50%;
     display: flex;
@@ -32,7 +32,7 @@
     padding: var(--oxygen-spacing-2);
     z-index: 9;
 
-    .authentication-flow-visual-editor-primitives-panel-heading {
+    .authentication-flow-builder-primitives-panel-heading {
         font-size: 1em;
         margin-bottom: var(--oxygen-spacing-1);
     }

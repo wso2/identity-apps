@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export { default as AuthenticationFlowVisualEditor } from "./components/authentication-flow-visual-editor";
+export { default as DecoratedVisualFlow } from "./components/decorated-visual-flow";

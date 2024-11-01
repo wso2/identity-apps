@@ -33,18 +33,15 @@ import {
     useReactFlow
 } from "@xyflow/react";
 import React, { DragEvent, FC, FunctionComponent, ReactElement, ReactNode, useCallback } from "react";
-import AuthenticationFlowVisualEditorPrimitivesPanel from "./authentication-flow-visual-editor-primitives-panel";
+import VisualEditorPrimitivesPanel from "./visual-editor-primitives-panel";
 import StepNode, { StepNodePropsInterface } from "./nodes/step-node";
 import useDnD from "../hooks/use-dnd";
 import "@xyflow/react/dist/style.css";
-import "./authentication-flow-visual-flow.scss";
 
 /**
- * Props interface of {@link AuthenticationFlowVisualFlow}
+ * Props interface of {@link VisualFlow}
  */
-export interface AuthenticationFlowVisualEditorPropsInterface
-    extends IdentifiableComponentInterface,
-        ReactFlowProps<any, any> {}
+export interface VisualFlowPropsInterface extends IdentifiableComponentInterface, ReactFlowProps<any, any> {}
 
 // we define the nodeTypes outside of the component to prevent re-renderings
 // you could also use useMemo inside the component
@@ -58,10 +55,10 @@ const nodeTypes: {
  * @param props - Props injected to the component.
  * @returns Visual editor flow component.
  */
-const AuthenticationFlowVisualFlow: FunctionComponent<AuthenticationFlowVisualEditorPropsInterface> = ({
+const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-flow",
     ...rest
-}: AuthenticationFlowVisualEditorPropsInterface): ReactElement => {
+}: VisualFlowPropsInterface): ReactElement => {
     const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
     const [ edges, setEdges, onEdgesChange ] = useEdgesState([]);
     const { screenToFlowPosition } = useReactFlow();
@@ -123,9 +120,9 @@ const AuthenticationFlowVisualFlow: FunctionComponent<AuthenticationFlowVisualEd
         >
             <Background color="#e1e1e1" gap={ 16 } variant={ BackgroundVariant.Dots } size={ 2 } />
             <Controls position="top-right" />
-            <AuthenticationFlowVisualEditorPrimitivesPanel />
+            <VisualEditorPrimitivesPanel />
         </ReactFlow>
     );
 };
 
-export default AuthenticationFlowVisualFlow;
+export default VisualFlow;

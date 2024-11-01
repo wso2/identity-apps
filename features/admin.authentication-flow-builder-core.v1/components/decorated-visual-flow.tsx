@@ -20,16 +20,14 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ReactFlowProvider } from "@xyflow/react";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
-import AuthenticationFlowVisualEditorWidgetPanel from "./authentication-flow-visual-editor-components-panel";
-import AuthenticationFlowVisualFlow from "./authentication-flow-visual-flow";
+import AuthenticationFlowVisualEditorWidgetPanel from "./visual-editor-components-panel";
+import VisualFlow from "./visual-flow";
 import DnDProvider from "../providers/dnd-provider";
-import "./authentication-flow-visual-editor.scss";
-import "@xyflow/react/dist/style.css";
 
 /**
- * Props interface of {@link AuthenticationFlowVisualEditor}
+ * Props interface of {@link DecoratedVisualFlow}
  */
-export interface AuthenticationFlowVisualEditorPropsInterface
+export interface DecoratedVisualFlowPropsInterface
     extends IdentifiableComponentInterface,
         HTMLAttributes<HTMLDivElement> {}
 
@@ -39,20 +37,20 @@ export interface AuthenticationFlowVisualEditorPropsInterface
  * @param props - Props injected to the component.
  * @returns Visual editor component.
  */
-const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisualEditorPropsInterface> = ({
+const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-editor",
     ...rest
-}: AuthenticationFlowVisualEditorPropsInterface): ReactElement => {
+}: DecoratedVisualFlowPropsInterface): ReactElement => {
     return (
         <div
-            className={ classNames("react-flow-container", "visual-editor") }
+            className={ classNames("decorated-visual-flow", "react-flow-container", "visual-editor") }
             data-componentid={ componentId }
             { ...rest }
         >
             <ReactFlowProvider>
                 <DnDProvider>
                     <AuthenticationFlowVisualEditorWidgetPanel>
-                        <AuthenticationFlowVisualFlow />
+                        <VisualFlow />
                     </AuthenticationFlowVisualEditorWidgetPanel>
                 </DnDProvider>
             </ReactFlowProvider>
@@ -60,4 +58,4 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
     );
 };
 
-export default AuthenticationFlowVisualEditor;
+export default DecoratedVisualFlow;

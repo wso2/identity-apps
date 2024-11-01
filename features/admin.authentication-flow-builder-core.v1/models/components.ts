@@ -21,7 +21,7 @@ import { Base } from "./base";
 /**
  * Interface for a component.
  */
-export type Component<T = unknown> = Base<T>;
+export type Component<T = any> = Base<T>;
 
 export type Display = Component;
 export type Input = Component;
@@ -58,4 +58,31 @@ export interface WidgetExtendedConfig {
      * Version of the widget.
      */
     version?: string;
+}
+
+export enum ComponentCategories {
+    Display = "DISPLAY",
+    Input = "INPUT",
+    Node = "NODE",
+    Widget = "WIDGET"
+}
+
+export enum InputComponentTypes {
+    Text = "TEXT",
+    Number = "NUMBER",
+    Password = "PASSWORD",
+    Dropdown = "DROPDOWN",
+    Radio = "RADIO",
+    Checkbox = "CHECKBOX",
+    Switch = "SWITCH",
+    TextArea = "TEXTAREA",
+    Date = "DATE",
+    Time = "TIME",
+    DateTime = "DATETIME",
+    File = "FILE",
+    Image = "IMAGE",
+    Video = "VIDEO",
+    Audio = "AUDIO",
+    URL = "URL",
+    Color = "COLOR"
 }

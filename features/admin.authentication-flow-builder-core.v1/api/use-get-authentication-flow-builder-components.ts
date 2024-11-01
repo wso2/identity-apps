@@ -16,13 +16,7 @@
  * under the License.
  */
 
-import useRequest, {
-    RequestConfigInterface,
-    RequestErrorInterface,
-    RequestResultInterface
-} from "@wso2is/admin.core.v1/hooks/use-request";
-import { store } from "@wso2is/admin.core.v1/store";
-import { HttpMethods } from "@wso2is/core/models";
+import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import components from "../data/components.json";
 import { Components } from "../models/components";
 
@@ -37,23 +31,10 @@ import { Components } from "../models/components";
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
 const useGetAuthenticationFlowBuilderComponents = <Data = Components, Error = RequestErrorInterface>(
-    shouldFetch: boolean = true
+    _shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
-    // const requestConfig: RequestConfigInterface = {
-    //     headers: {
-    //         Accept: "application/json",
-    //         "Content-Type": "application/json"
-    //     },
-    //     method: HttpMethods.GET,
-    //     url: `${ store.getState().config.endpoints.tenants }/${tenantId}/owners/${ownerId}`
-    // };
-
-    // const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
-    //     shouldFetch ? requestConfig : null
-    // );
-
     return {
-        data: components as unknown as Data,
+        data: (components as unknown) as Data,
         error: null,
         isLoading: false,
         isValidating: false,

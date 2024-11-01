@@ -31,7 +31,7 @@ export interface DnDProviderProps {}
  * @returns The DnDProvider component.
  */
 const DnDProvider = ({ children }: PropsWithChildren<DnDProviderProps>): ReactElement => {
-    const [ node, setNode ] = useState<Record<string, unknown>>(null);
+    const [ node, setNode ] = useState<any>(null);
     const [ lastGeneratedNodeId, setLastGeneratedNodeId ] = useState(0);
 
     /**

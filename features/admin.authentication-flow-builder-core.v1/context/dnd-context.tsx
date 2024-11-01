@@ -29,12 +29,12 @@ export type DnDContextProps = {
     /**
      * Node object.
      */
-    node: Record<string, unknown> | null;
+    node: any | null;
     /**
      * Setter for the node object.
      * @param node - Node object.
      */
-    setNode: (node: Record<string, unknown>) => void;
+    setNode: (node: any) => void;
 };
 
 /**
@@ -43,7 +43,7 @@ export type DnDContextProps = {
 const DnDContext: Context<DnDContextProps> = createContext<null | DnDContextProps>({
     generateComponentId: () => "",
     node: null,
-    setNode: (_: Record<string, unknown>) => {}
+    setNode: (_: any) => {}
 });
 
 DnDContext.displayName = "DnDContext";

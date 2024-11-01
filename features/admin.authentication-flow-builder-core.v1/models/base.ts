@@ -21,7 +21,7 @@ import { CSSProperties } from "react";
 /**
  * Base interface for a component or a primitive.
  */
-export interface Base<T = unknown> {
+export interface Base<T = any> {
     /**
      * Category of the component or the primitive.
      */
@@ -42,7 +42,13 @@ export interface Base<T = unknown> {
      * Display properties of the component or the primitive.
      */
     display: BaseDisplay;
+    /**
+     * Configuration of the component or the primitive.
+     */
     config: BaseConfig & T;
+    /**
+     * Variants of the component or the primitive.
+     */
     variants: Base<T>[];
 }
 
@@ -67,6 +73,12 @@ export interface BaseDisplay {
 }
 
 export interface BaseConfig {
-    field: Record<string, unknown>;
+    /**
+     * Field properties.
+     */
+    field: any;
+    /**
+     * Styles of the component or the primitive.
+     */
     styles: CSSProperties;
 }

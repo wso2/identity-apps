@@ -383,6 +383,7 @@
             },
             "config": {
                 "field": {
+                    "type": "text",
                     "className": "wso2is-text-input",
                     "hint": {
                         "fallback": null,
@@ -422,6 +423,7 @@
             },
             "config": {
                 "field": {
+                    "type": "password",
                     "className": "wso2is-password-input",
                     "hint": {
                         "fallback": null,
@@ -461,6 +463,7 @@
             },
             "config": {
                 "field": {
+                    "type": "email",
                     "className": "wso2is-email-input",
                     "hint": {
                         "fallback": null,
@@ -500,6 +503,7 @@
             },
             "config": {
                 "field": {
+                    "type": "number",
                     "className": "wso2is-number-input",
                     "hint": {
                         "fallback": null,

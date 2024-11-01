@@ -21,15 +21,15 @@ import Toolbar, { ToolbarProps } from "@oxygen-ui/react/Toolbar";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import AuthenticationFlowVisualEditorDraggableNode from "./authentication-flow-visual-editor-draggable-node";
+import VisualEditorDraggableNode from "./visual-editor-draggable-node";
 import useGetAuthenticationFlowBuilderPrimitives from "../api/use-get-authentication-flow-builder-primitives";
 import { Primitive } from "../models/primitives";
-import "./authentication-flow-visual-editor-primitives-panel.scss";
+import "./visual-editor-primitives-panel.scss";
 
 /**
- * Props interface of {@link AuthenticationFlowVisualEditorPrimitivesPanel}
+ * Props interface of {@link VisualEditorPrimitivesPanel}
  */
-export interface AuthenticationFlowVisualEditorPropsInterface extends IdentifiableComponentInterface, ToolbarProps {}
+export interface VisualEditorPropsInterface extends IdentifiableComponentInterface, ToolbarProps {}
 
 /**
  * Wrapper component for React Flow used in the Visual Editor.
@@ -37,27 +37,25 @@ export interface AuthenticationFlowVisualEditorPropsInterface extends Identifiab
  * @param props - Props injected to the component.
  * @returns Visual editor flow component.
  */
-const AuthenticationFlowVisualEditorPrimitivesPanel: FunctionComponent<
-    AuthenticationFlowVisualEditorPropsInterface
-> = ({
+const VisualEditorPrimitivesPanel: FunctionComponent<VisualEditorPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-editor-primitives-panel",
     ...rest
-}: AuthenticationFlowVisualEditorPropsInterface): ReactElement => {
+}: VisualEditorPropsInterface): ReactElement => {
     const { data } = useGetAuthenticationFlowBuilderPrimitives();
     const { primitives } = data;
 
     return (
         <Toolbar
-            className="authentication-flow-visual-editor-primitives-panel"
+            className="authentication-flow-builder-primitives-panel"
             data-componentid={ componentId }
             { ...rest }
         >
-            <Typography variant="h6" className="authentication-flow-visual-editor-primitives-panel-heading">
+            <Typography variant="h6" className="authentication-flow-builder-primitives-panel-heading">
                 Primitives
             </Typography>
             <Stack direction="row" spacing={ 2 }>
                 { primitives?.map((primitive: Primitive) => (
-                    <AuthenticationFlowVisualEditorDraggableNode
+                    <VisualEditorDraggableNode
                         id={ primitive.type }
                         key={ primitive.type }
                         node={ primitive }
@@ -68,4 +66,4 @@ const AuthenticationFlowVisualEditorPrimitivesPanel: FunctionComponent<
     );
 };
 
-export default AuthenticationFlowVisualEditorPrimitivesPanel;
+export default VisualEditorPrimitivesPanel;

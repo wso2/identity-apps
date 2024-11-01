@@ -31,8 +31,11 @@ import React, {
     MutableRefObject,
     ReactElement,
     useCallback,
-    useRef
+    useRef,
+    useState
 } from "react";
+import NodeFactory from "./node-factory";
+import { Component } from "../../models/components";
 import "./step-node.scss";
 
 /**
@@ -48,14 +51,14 @@ export interface StepNodePropsInterface extends IdentifiableComponentInterface {
  * @param props - Props injected to the component.
  * @returns Step Node component.
  */
-export const StepNode: FunctionComponent<StepNodePropsInterface> = (
-    {
-        stepIndex,
-        data,
-        "data-componentid": componentId = "step-node"
-    }: StepNodePropsInterface & Node
-): ReactElement => {
+export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
+    stepIndex,
+    data,
+    "data-componentid": componentId = "step-node"
+}: StepNodePropsInterface & Node): ReactElement => {
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+
+    const [ droppedComponents, setDroppedComponents ] = useState<Component[]>([]);
 
     const onDragOver: (event: DragEvent) => void = useCallback((event: DragEvent) => {
         event.preventDefault();
@@ -66,10 +69,15 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = (
         (event: DragEvent) => {
             event.preventDefault();
 
-            const droppedData = event.dataTransfer.getData("application/json");
+            const droppedData: string = event.dataTransfer.getData("application/json");
 
             if (droppedData) {
-                const parsedData = JSON.parse(droppedData);
+                const newComponent: Component = JSON.parse(droppedData);
+
+                setDroppedComponents((prevDroppedComponents: Component[]) => [
+                    ...prevDroppedComponents,
+                    newComponent
+                ]);
             }
         },
         [ data?.type ]
@@ -78,16 +86,13 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = (
     return (
         <div
             ref={ ref }
-            className="step-node"
+            className="authentication-flow-builder-step"
             data-componentid={ componentId }
             onDrop={ onDrop }
             onDrag={ onDragOver }
         >
-            <div className="step-id">
-                <Typography
-                    variant="body2"
-                    data-componentid={ `${componentId}-${stepIndex}-heading-text` }
-                >
+            <div className="authentication-flow-builder-step-id">
+                <Typography variant="body2" data-componentid={ `${componentId}-${stepIndex}-heading-text` }>
                     Step { stepIndex + 1 }
                 </Typography>
             </div>
@@ -97,15 +102,18 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = (
                     onClick={ (e: MouseEvent<HTMLButtonElement>) => {
                         // TODO: Implement remove step logic.
                     } }
-                    className="remove-button"
+                    className="authentication-flow-builder-step-remove-button"
                 >
                     <XMarkIcon />
                 </IconButton>
             </Tooltip>
             { stepIndex !== 0 && <Handle type="target" position={ Position.Left } /> }
-            <Box className="oxygen-sign-in" data-componentid={ `${componentId}-inner` }>
-                <Paper className="oxygen-sign-in-box" elevation={ 0 } variant="outlined">
-                    <Box className="oxygen-sign-in-form">
+            <Box className="authentication-flow-builder-step-content" data-componentid={ `${componentId}-inner` }>
+                <Paper className="authentication-flow-builder-step-content-box" elevation={ 0 } variant="outlined">
+                    <Box className="authentication-flow-builder-step-content-form">
+                        { droppedComponents.map((component: Component, index: number) => (
+                            <NodeFactory key={ index } node={ component } />
+                        )) }
                     </Box>
                 </Paper>
             </Box>
