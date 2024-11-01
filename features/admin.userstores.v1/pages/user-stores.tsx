@@ -278,10 +278,8 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                     isLoading
                     || !(
                         !searchQuery
-                        && (
-                            filteredUserStores?.length <= 0
-                            && disabledFeatures?.includes("userStores.type.remote")
-                        )
+                        && filteredUserStores?.length <= 0
+                        && disabledFeatures?.includes("userStores.type.remote")
                     )
                 )
                 && userstoresConfig.userstoreList.allowAddingUserstores
