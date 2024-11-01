@@ -40,7 +40,7 @@ import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getUserStores } from "../api";
 import { UserStoresList } from "../components";
-import { UserStoreTypes } from "../constants";
+import { UserStoreManagementConstants, UserStoreTypes } from "../constants";
 import { QueryParams, UserStoreListItem } from "../models";
 
 /**
@@ -279,15 +279,16 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                     || !(
                         !searchQuery
                         && filteredUserStores?.length <= 0
-                        && disabledFeatures?.includes("userStores.type.remote")
+                        && disabledFeatures?.includes(UserStoreManagementConstants.FEATURE_DICTIONARY
+                            .get("USER_STORE_REMOTE"))
                     )
-                )
-                && userstoresConfig.userstoreList.allowAddingUserstores
+                ) && userstoresConfig.userstoreList.allowAddingUserstores
                 && (
                     <Show
                         when={ featureConfig?.userStores?.scopes?.create }
                     >
-                        { disabledFeatures?.includes("userStores.type.remote")
+                        { disabledFeatures?.includes(UserStoreManagementConstants.FEATURE_DICTIONARY
+                            .get("USER_STORE_REMOTE"))
                             ? (
                                 <PrimaryButton
                                     onClick={ () => {
