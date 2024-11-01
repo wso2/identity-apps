@@ -203,7 +203,8 @@
 
                               <div class="field">
                                 <div class="ui radio checkbox">
-                                    <input type="radio" name="usernameRecoveryOption" value="<%=getChannelIdFromChannelName(channels, EMAIL) + ":" + EMAIL%>"
+                                    <input type="radio" name="usernameRecoveryOption" 
+                                        value="<%=Encode.forHtmlAttribute(getChannelIdFromChannelName(channels, EMAIL) + ":" + EMAIL)%>"
                                         <%=EMAIL.equals(selectedOption)?"checked":""%>/>
                                     <label><%=i18n(recoveryResourceBundle, customText, "Send.username.via.email")%>
                                     </label>
@@ -211,7 +212,8 @@
                             </div>
                                   <div class="field">
                                 <div class="ui radio checkbox">
-                                    <input type="radio" name="usernameRecoveryOption" value="<%=getChannelIdFromChannelName(channels, SMS) + ":" + SMS%>"
+                                    <input type="radio" name="usernameRecoveryOption" 
+                                        value="<%=Encode.forHtmlAttribute(getChannelIdFromChannelName(channels, SMS) + ":" + SMS)%>"
                                         <%=SMS.equals(selectedOption)?"checked":""%>/>
                                     <label><%=i18n(recoveryResourceBundle, customText, "Send.username.via.sms")%>
                                     </label>
