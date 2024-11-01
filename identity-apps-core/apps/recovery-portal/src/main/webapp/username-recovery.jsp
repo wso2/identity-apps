@@ -236,7 +236,9 @@
                         <div class="required field">
                             <label for="contact" class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                     "Contact")%></label>
-                            <input id="contact" type="text" name="contact" required class="form-control">
+                            <input id="contact" type="text" name="contact" 
+                                placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Contact")%>*" 
+                                    required class="form-control" />
                         </div>
                         <% } %>
 
