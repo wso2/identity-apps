@@ -274,7 +274,16 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
     return (
         <PageLayout
             action={
-                (isLoading || !(!searchQuery && filteredUserStores?.length <= 0))
+                (
+                    isLoading
+                    || !(
+                        !searchQuery
+                        && (
+                            filteredUserStores?.length <= 0
+                            && disabledFeatures?.includes("userStores.type.remote")
+                        )
+                    )
+                )
                 && userstoresConfig.userstoreList.allowAddingUserstores
                 && (
                     <Show
