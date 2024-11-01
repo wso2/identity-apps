@@ -32,9 +32,9 @@ import {
     useNodesState,
     useReactFlow
 } from "@xyflow/react";
-import React, { DragEvent, FC, FunctionComponent, ReactElement, ReactNode, useCallback } from "react";
-import VisualEditorPrimitivesPanel from "./visual-editor-primitives-panel";
+import React, { DragEvent, FC, FunctionComponent, ReactElement, useCallback } from "react";
 import StepNode, { StepNodePropsInterface } from "./nodes/step-node";
+import VisualEditorPrimitivesPanel from "./visual-editor-primitives-panel";
 import useDnD from "../hooks/use-dnd";
 import "@xyflow/react/dist/style.css";
 

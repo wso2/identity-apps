@@ -29,7 +29,7 @@ import { Primitives } from "../models/primitives";
  * This function calls the GET method of the following endpoint to get the primitives.
  * - TODO: Fill this
  * For more details, refer to the documentation:
- * {@link TODO: Fill this}
+ * {@link https://TODO:<fillthis>)}
  *
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */

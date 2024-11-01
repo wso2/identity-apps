@@ -99,7 +99,7 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
             <Tooltip title={ "Remove" }>
                 <IconButton
                     size="small"
-                    onClick={ (e: MouseEvent<HTMLButtonElement>) => {
+                    onClick={ (_: MouseEvent<HTMLButtonElement>) => {
                         // TODO: Implement remove step logic.
                     } }
                     className="authentication-flow-builder-step-remove-button"

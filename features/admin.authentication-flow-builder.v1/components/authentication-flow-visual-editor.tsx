@@ -33,7 +33,6 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, Link, useDocumentation } from "@wso2is/react-components";
 import {
-    ReactFlow,
     Background,
     BackgroundVariant,
     Controls,
@@ -41,7 +40,8 @@ import {
     EdgeTypes,
     MarkerType,
     Node,
-    NodeTypes
+    NodeTypes,
+    ReactFlow
 } from "@xyflow/react";
 import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
