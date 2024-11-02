@@ -101,8 +101,6 @@
 <% } %>
 
 <%
-    final String MOBILE_CLAIM_REGEX = 
-        "^\\s*(?:\\+?(\\d{1,3}))?[\\-. (]*(\\d{2,3})[\\-. )]*(\\d{3})[\\-. ]*(\\d{4,6})(?: *x(\\d+))?\\s*$";
     boolean isPasswordRecoveryEmailConfirmation =
             Boolean.parseBoolean(request.getParameter("isPasswordRecoveryEmailConfirmation"));
     boolean isUsernameRecovery = Boolean.parseBoolean(request.getParameter("isUsernameRecovery"));
@@ -187,7 +185,7 @@
             
             // Separate the contact to mobile or email.
             String contact = Encode.forJava(request.getParameter("contact"));
-            if (contact.matches(MOBILE_CLAIM_REGEX)) {
+            if (contact.matches(IdentityManagementEndpointConstants.UserInfoRecovery.MOBILE_CLAIM_REGEX)) {
                 request.setAttribute(IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM, contact);
             } else {
                 request.setAttribute(IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM, contact);

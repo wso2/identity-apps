@@ -108,6 +108,8 @@
     }
 
 
+    String mobileClaimRegex = null;
+    String emailClaimRegex = null;
     for (Claim claim : claims) {
         if (StringUtils.equals(claim.getUri(),
                 IdentityManagementEndpointConstants.ClaimURIs.FIRST_NAME_CLAIM)) {
@@ -119,10 +121,12 @@
         if (StringUtils.equals(claim.getUri(),
                 IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM)) {
             isEmailInClaims = true;
+            emailClaimRegex = Encode.forJava(claim.getValidationRegex());
         }
         if (StringUtils.equals(claim.getUri(),
                 IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM)) {
             isMobileInClaims = true;
+            mobileClaimRegex = Encode.forJava(claim.getValidationRegex());
         }
     }
 
@@ -255,8 +259,8 @@
                         </div>
                         <% } %>
 
-                        <input type="hidden" id="isUsernameRecovery" name="isUsernameRecovery" value="true">
-                        <input type="hidden" id="recoveryStage" name="recoveryStage" value="INITIATE">
+                        <input type="hidden" id="isUsernameRecovery" name="isUsernameRecovery" value="true"/>
+                        <input type="hidden" id="recoveryStage" name="recoveryStage" value="INITIATE"/>
 
                         <% for (Claim claim : claims) {
                             if (claim.getRequired() &&
@@ -386,8 +390,8 @@
 
                 // Contact input validation.
                 const contact = $("#contact").val();
-                const mobileClaimRegex = new RegExp("^\\s*(?:\\+?(\\d{1,3}))?[-. (]*(\\d{2,3})[-. )]*(\\d{3})[-. ]*(\\d{4,6})(?: *x(\\d+))?\\s*$");
-                const emailClaimRegex = new RegExp("^([a-zA-Z0-9!#$'\\+=^_.{|}~\\-&])+@(([a-zA-Z0-9\\-])+\\.)+([a-zA-Z0-9]{2,10})+$");
+                const mobileClaimRegex = new RegExp("<%=mobileClaimRegex%>");
+                const emailClaimRegex = new RegExp("<%=emailClaimRegex%>");
 
                 if (contact === "") {
                     errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Contact.cannot.be.empty")%>");
