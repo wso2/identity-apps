@@ -862,7 +862,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     data-componentid={ `${ componentId }-empty-placeholder` }
                 >
                     <ListItemText>
-                        <Typography variant="body1" align="center" gutterBottom="true">
+                        <Typography variant="body1" align="center" gutterBottom>
                             { t("authenticationFlow:scriptEditor.secretSelector." +
                                 "emptyPlaceholder.header") }
                         </Typography>

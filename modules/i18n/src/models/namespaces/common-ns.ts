@@ -112,6 +112,7 @@ export interface CommonNS {
     name: string;
     new: string;
     next: string;
+    organizationName: string;
     operatingSystem: string;
     operations: string;
     overview: string;

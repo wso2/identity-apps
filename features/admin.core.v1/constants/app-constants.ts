@@ -65,6 +65,15 @@ export class AppConstants {
     }
 
     /**
+     * Get the default layout base path.
+     *
+     * @returns The default layout base path.
+     */
+    public static getDefaultLayoutBasePath(): string {
+        return `${this.getMainViewBasePath()}/root`;
+    }
+
+    /**
      * Get the developer view base path.
      *
      * @returns The developer view base path.
@@ -301,6 +310,7 @@ export class AppConstants {
             [ "EMAIL_AND_SMS", `${ AppConstants.getDeveloperViewBasePath() }/email-and-sms` ],
             [ "EMAIL_MANAGEMENT", `${ AppConstants.getDeveloperViewBasePath() }/email-management` ],
             [ "SMS_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/sms-provider` ],
+            [ "SMS_MANAGEMENT", `${ AppConstants.getDeveloperViewBasePath() }/sms-management` ],
             [ "EMAIL_TEMPLATE_TYPES", `${ AppConstants.getAdminViewBasePath() }/email-templates` ],
             [ "EMAIL_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId` ],
             [
@@ -400,7 +410,10 @@ export class AppConstants {
             [ "ACTIONS",
                 `${AppConstants.getAdminViewBasePath()}/actions` ],
             [ "PRE_ISSUE_ACCESS_TOKEN_EDIT",
-                `${ AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ]
+                `${ AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ],
+            [ "TENANTS", `${AppConstants.getDefaultLayoutBasePath()}/organizations` ],
+            [ "EDIT_TENANT", `${AppConstants.getDefaultLayoutBasePath()}/organizations/:id` ],
+            [ "SYSTEM_SETTINGS", `${AppConstants.getDefaultLayoutBasePath()}/organizations/system-settings` ]
         ]);
 
         return paths;
@@ -467,6 +480,7 @@ export class AppConstants {
         "userRoles",
         "applications",
         "emailTemplates",
+        "smsTemplates",
         "governanceConnectors",
         "branding",
         "consoleSettings"

@@ -133,6 +133,7 @@ export const common: CommonNS = {
     okay: "சரி",
     operatingSystem: "இயங்கு தளம்",
     operations: "செயற்பாடுகள்",
+    organizationName: "{{orgName}} நிறுவனம்",
     overview: "கண்ணோட்டம்",
     personalInfo: "பயனர் விபரம்",
     pin: "பொருத்து",

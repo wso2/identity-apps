@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import { history, store } from "@wso2is/admin.core.v1";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
+import { AppConstants, AppState, history, store } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Icon, Message } from "semantic-ui-react";
 import { updateOrganizationConfigV2 } from "../api/updateOrganizationConfigV2";
@@ -54,6 +55,16 @@ export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = 
     const { ["data-componentid"]: testId } = props;
 
     const dispatch: Dispatch = useDispatch();
+
+    const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.consoleSettings
+    );
+    const administratorsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.administrators
+    );
+
+    const isAdministratorSettingsInConsoleSettingsEnabled: boolean = consoleSettingsFeatureConfig?.enabled &&
+        !administratorsFeatureConfig?.enabled;
 
     const useOrgConfig: UseOrganizationConfigType = useOrganizationConfigV2;
     const updateOrgConfig: (isEnterpriseLoginEnabled: OrganizationInterface) =>
@@ -155,7 +166,9 @@ export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = 
      * This handles back button navigation
      */
     const handleBackButtonClick = () => {
-        history.push(AdministratorConstants.getPaths().get("COLLABORATOR_USERS_PATH"));
+        history.push(isAdministratorSettingsInConsoleSettingsEnabled
+            ? AppConstants.getPaths().get("CONSOLE_SETTINGS")
+            : AdministratorConstants.getPaths().get("COLLABORATOR_USERS_PATH"));
     };
 
     /**
@@ -197,7 +210,9 @@ export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = 
             backButton={ {
                 "data-componentid": `${ testId }-page-back-button`,
                 onClick:  handleBackButtonClick,
-                text: t("extensions:manage.users.administratorSettings.backButton")
+                text: isAdministratorSettingsInConsoleSettingsEnabled
+                    ? t("extensions:manage.users.administratorSettings.backButtonConsoleSettings")
+                    : t("extensions:manage.users.administratorSettings.backButton")
             } }
             bottomMargin={ false }
             contentTopMargin={ true }

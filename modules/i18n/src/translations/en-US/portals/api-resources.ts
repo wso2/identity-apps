@@ -120,7 +120,8 @@ export const apiResources: ApiResourcesNS = {
                                 label: "Scope",
                                 placeholder: "read_bookings",
                                 uniqueValidate: "This scope already exists in the organization. "+
-                                "Please choose a different one."
+                                "Please choose a different one.",
+                                errorOccurred: "An error occurred while validating the scopes."
                             },
                             permissionList: {
                                 label: "Added Scopes"

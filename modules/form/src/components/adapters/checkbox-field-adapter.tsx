@@ -62,12 +62,18 @@ const CheckboxAdapter: FunctionComponent<CheckboxAdapterPropsInterface> = (
         <FormControl required error={ isError } component="fieldset" variant="standard" { ...FormControlProps }>
             <FormControlLabel
                 control={ (
-                    <Checkbox
-                        color="primary"
-                        { ...input }
-                        { ...rest }
-                        checked={ (input.value as unknown) as boolean }
-                    />
+                    <>
+                        { /* `autocomplete`, `capture`, etc. are not part of TextField API */ }
+                        { /* TODO: Tracker: https://github.com/wso2/oxygen-ui/issues/292 */ }
+                        { /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */ }
+                        { /* @ts-ignore */ }
+                        <Checkbox
+                            color="primary"
+                            { ...input }
+                            { ...rest }
+                            checked={ (input.value as unknown) as boolean }
+                        />
+                    </>
                 ) }
                 label={ label }
             />

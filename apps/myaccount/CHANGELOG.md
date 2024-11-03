@@ -1,5 +1,313 @@
 # @wso2is/myaccount
 
+## 2.12.13
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.13
+  - @wso2is/common.branding.v1@2.24.13
+
+## 2.12.12
+
+### Patch Changes
+
+- [#7072](https://github.com/wso2/identity-apps/pull/7072) [`d8035caa997da32b879ef7bbb75544e9fe5f59b7`](https://github.com/wso2/identity-apps/commit/d8035caa997da32b879ef7bbb75544e9fe5f59b7) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add locale dropdown to local attribute in my account
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.12
+  - @wso2is/common.branding.v1@2.24.12
+
+## 2.12.11
+
+### Patch Changes
+
+- Updated dependencies [[`07379763c3fb80e7c2264b6ebd61b341cf104ff8`](https://github.com/wso2/identity-apps/commit/07379763c3fb80e7c2264b6ebd61b341cf104ff8)]:
+  - @wso2is/i18n@2.10.2
+  - @wso2is/admin.organizations.v1@2.26.11
+  - @wso2is/common.branding.v1@2.24.11
+
+## 2.12.10
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.10
+  - @wso2is/common.branding.v1@2.24.10
+
+## 2.12.9
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.9
+  - @wso2is/common.branding.v1@2.24.9
+
+## 2.12.8
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.8
+  - @wso2is/common.branding.v1@2.24.8
+
+## 2.12.7
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.7
+  - @wso2is/common.branding.v1@2.24.7
+
+## 2.12.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.6
+  - @wso2is/common.branding.v1@2.24.6
+
+## 2.12.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.5
+  - @wso2is/common.branding.v1@2.24.5
+
+## 2.12.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.4
+  - @wso2is/common.branding.v1@2.24.4
+
+## 2.12.3
+
+### Patch Changes
+
+- Updated dependencies [[`890bc99c059bb05a70ab1fc27b069fea56600a62`](https://github.com/wso2/identity-apps/commit/890bc99c059bb05a70ab1fc27b069fea56600a62)]:
+  - @wso2is/i18n@2.10.1
+  - @wso2is/admin.organizations.v1@2.26.3
+  - @wso2is/common.branding.v1@2.24.3
+
+## 2.12.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.2
+  - @wso2is/common.branding.v1@2.24.2
+
+## 2.12.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.1
+  - @wso2is/common.branding.v1@2.24.1
+
+## 2.12.0
+
+### Minor Changes
+
+- [#7022](https://github.com/wso2/identity-apps/pull/7022) [`8ee127818ea4c8aac46296a1c93b45806ee887c2`](https://github.com/wso2/identity-apps/commit/8ee127818ea4c8aac46296a1c93b45806ee887c2) Thanks [@brionmario](https://github.com/brionmario)! - - Update `@oxygen-ui` version to `v1.15.2`.
+  - Remove unwanted padding in the Oxygen UI text field in the theme config.
+  - Fix typo in tenants feature.
+
+### Patch Changes
+
+- Updated dependencies [[`8ee127818ea4c8aac46296a1c93b45806ee887c2`](https://github.com/wso2/identity-apps/commit/8ee127818ea4c8aac46296a1c93b45806ee887c2)]:
+  - @wso2is/admin.organizations.v1@2.26.0
+  - @wso2is/common.branding.v1@2.24.0
+  - @wso2is/react-components@2.8.0
+  - @wso2is/access-control@3.3.0
+  - @wso2is/validation@2.4.0
+  - @wso2is/forms@2.3.0
+  - @wso2is/theme@2.4.0
+  - @wso2is/core@2.4.0
+  - @wso2is/i18n@2.10.0
+
+## 2.11.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.25.2
+  - @wso2is/common.branding.v1@2.23.2
+
+## 2.11.1
+
+### Patch Changes
+
+- Updated dependencies [[`35dce8701aa17f55ee3c4fd242da972d1a25f9ab`](https://github.com/wso2/identity-apps/commit/35dce8701aa17f55ee3c4fd242da972d1a25f9ab)]:
+  - @wso2is/i18n@2.9.1
+  - @wso2is/admin.organizations.v1@2.25.1
+  - @wso2is/common.branding.v1@2.23.1
+
+## 2.11.0
+
+### Minor Changes
+
+- [#6962](https://github.com/wso2/identity-apps/pull/6962) [`d54b53ec37367ea29b822c29985c95fb75418f52`](https://github.com/wso2/identity-apps/commit/d54b53ec37367ea29b822c29985c95fb75418f52) Thanks [@brionmario](https://github.com/brionmario)! - Introduce Multi-Tenancy feature
+
+### Patch Changes
+
+- Updated dependencies [[`d54b53ec37367ea29b822c29985c95fb75418f52`](https://github.com/wso2/identity-apps/commit/d54b53ec37367ea29b822c29985c95fb75418f52)]:
+  - @wso2is/admin.organizations.v1@2.25.0
+  - @wso2is/common.branding.v1@2.23.0
+  - @wso2is/react-components@2.7.0
+  - @wso2is/access-control@3.2.0
+  - @wso2is/validation@2.3.0
+  - @wso2is/forms@2.2.0
+  - @wso2is/theme@2.3.0
+  - @wso2is/core@2.3.0
+  - @wso2is/i18n@2.9.0
+
+## 2.10.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.24.2
+  - @wso2is/common.branding.v1@2.22.2
+
+## 2.10.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.24.1
+  - @wso2is/common.branding.v1@2.22.1
+
+## 2.10.0
+
+### Minor Changes
+
+- [#7012](https://github.com/wso2/identity-apps/pull/7012) [`2bae555318c94d93b0e38304c2781e0b5cd8b5b1`](https://github.com/wso2/identity-apps/commit/2bae555318c94d93b0e38304c2781e0b5cd8b5b1) Thanks [@brionmario](https://github.com/brionmario)! - Bump `@oxygen-ui` to `v1.15.1`
+
+### Patch Changes
+
+- Updated dependencies [[`2bae555318c94d93b0e38304c2781e0b5cd8b5b1`](https://github.com/wso2/identity-apps/commit/2bae555318c94d93b0e38304c2781e0b5cd8b5b1)]:
+  - @wso2is/admin.organizations.v1@2.24.0
+  - @wso2is/common.branding.v1@2.22.0
+  - @wso2is/access-control@3.1.0
+  - @wso2is/core@2.2.0
+  - @wso2is/forms@2.1.0
+  - @wso2is/i18n@2.8.0
+  - @wso2is/react-components@2.6.0
+  - @wso2is/theme@2.2.0
+  - @wso2is/validation@2.2.0
+
+## 2.9.0
+
+### Minor Changes
+
+- [#6985](https://github.com/wso2/identity-apps/pull/6985) [`4fd710e435d292d59de289f4c71293a330a85267`](https://github.com/wso2/identity-apps/commit/4fd710e435d292d59de289f4c71293a330a85267) Thanks [@brionmario](https://github.com/brionmario)! - Bump `@oxygen-ui` version to `v15.x`
+
+### Patch Changes
+
+- [#7009](https://github.com/wso2/identity-apps/pull/7009) [`86e236e6bb3fb65bbc186b24d39a8bfead33f30a`](https://github.com/wso2/identity-apps/commit/86e236e6bb3fb65bbc186b24d39a8bfead33f30a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix subheader in danger zone in myaccount inheriting header color
+
+- Updated dependencies [[`4fd710e435d292d59de289f4c71293a330a85267`](https://github.com/wso2/identity-apps/commit/4fd710e435d292d59de289f4c71293a330a85267), [`86e236e6bb3fb65bbc186b24d39a8bfead33f30a`](https://github.com/wso2/identity-apps/commit/86e236e6bb3fb65bbc186b24d39a8bfead33f30a)]:
+  - @wso2is/admin.organizations.v1@2.23.0
+  - @wso2is/common.branding.v1@2.21.0
+  - @wso2is/react-components@2.5.0
+  - @wso2is/validation@2.1.0
+  - @wso2is/i18n@2.7.0
+  - @wso2is/theme@2.1.6
+
+## 2.8.33
+
+### Patch Changes
+
+- Updated dependencies [[`f8efa54ea029a676aa6908369e6736a84ae97d5c`](https://github.com/wso2/identity-apps/commit/f8efa54ea029a676aa6908369e6736a84ae97d5c)]:
+  - @wso2is/i18n@2.6.2
+  - @wso2is/admin.organizations.v1@2.22.32
+  - @wso2is/common.branding.v1@2.20.196
+
+## 2.8.32
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.22.31
+  - @wso2is/common.branding.v1@2.20.195
+
+## 2.8.31
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.22.30
+  - @wso2is/common.branding.v1@2.20.194
+
+## 2.8.30
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.22.29
+  - @wso2is/common.branding.v1@2.20.193
+
+## 2.8.29
+
+### Patch Changes
+
+- Updated dependencies [[`f1e54d9187ebecf488222f32aabc60c1c067ad52`](https://github.com/wso2/identity-apps/commit/f1e54d9187ebecf488222f32aabc60c1c067ad52)]:
+  - @wso2is/validation@2.0.10
+  - @wso2is/admin.organizations.v1@2.22.28
+  - @wso2is/common.branding.v1@2.20.192
+
+## 2.8.28
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.22.27
+  - @wso2is/common.branding.v1@2.20.191
+
+## 2.8.27
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.22.26
+  - @wso2is/common.branding.v1@2.20.190
+
+## 2.8.26
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.22.25
+  - @wso2is/common.branding.v1@2.20.189
+
+## 2.8.25
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.22.24
+  - @wso2is/common.branding.v1@2.20.188
+
+## 2.8.24
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.22.23
+  - @wso2is/common.branding.v1@2.20.187
+
+## 2.8.23
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.22.22
+  - @wso2is/common.branding.v1@2.20.186
+
 ## 2.8.22
 
 ### Patch Changes

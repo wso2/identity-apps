@@ -17,6 +17,9 @@
  */
 import { pagesNS } from "../../../models";
 
+/**
+ * @deprecated Add the relevant page title and description in the respective feature's i18n file.
+ */
 export const pages: pagesNS = {
     actions: {
         subTitle: "Create actions to extend login & registration flows.",
