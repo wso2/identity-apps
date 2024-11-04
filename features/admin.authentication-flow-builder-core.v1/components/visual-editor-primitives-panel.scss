@@ -1,0 +1,48 @@
+/**
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+ .authentication-flow-builder-primitives-panel {
+    position: absolute;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: #fefefe;
+    border: 1px solid #eeeeee;
+    box-shadow: var(--oxygen-shadows-6);
+    border-radius: 10px;
+    background: linear-gradient(180deg, #ffffff 0%, #f7f7f9 100%);
+    box-shadow: inset 0px -1px 0px 0px #dee0e7, 0 1px 1px 0 rgba(0, 0, 0, 0.06);
+    margin-top: 22px;
+    padding: var(--oxygen-spacing-2);
+    z-index: 9;
+
+    .authentication-flow-builder-primitives-panel-heading {
+        font-size: 1em;
+        margin-bottom: var(--oxygen-spacing-1);
+    }
+
+    .oxygen-card {
+        padding: 0;
+        min-width: 120px;
+
+        .oxygen-card-content {
+            padding: var(--oxygen-spacing-2);
+        }
+    }
+}
