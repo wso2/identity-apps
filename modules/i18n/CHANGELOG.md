@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.10.3
+
+### Patch Changes
+
+- [#7078](https://github.com/wso2/identity-apps/pull/7078) [`062fb7ee176b7a96a580fbd7171bf94db99c4d2e`](https://github.com/wso2/identity-apps/commit/062fb7ee176b7a96a580fbd7171bf94db99c4d2e) Thanks [@Sachin-Mamoru](https://github.com/Sachin-Mamoru)! - update secret management script editor placeholder
+
 ## 2.10.2
 
 ### Patch Changes

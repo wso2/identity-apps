@@ -1,5 +1,22 @@
 # @wso2is/admin.authentication-flow-builder.v1
 
+## 2.24.14
+
+### Patch Changes
+
+- [#7078](https://github.com/wso2/identity-apps/pull/7078) [`062fb7ee176b7a96a580fbd7171bf94db99c4d2e`](https://github.com/wso2/identity-apps/commit/062fb7ee176b7a96a580fbd7171bf94db99c4d2e) Thanks [@Sachin-Mamoru](https://github.com/Sachin-Mamoru)! - update secret management script editor placeholder
+
+- Updated dependencies [[`062fb7ee176b7a96a580fbd7171bf94db99c4d2e`](https://github.com/wso2/identity-apps/commit/062fb7ee176b7a96a580fbd7171bf94db99c4d2e)]:
+  - @wso2is/admin.applications.v1@2.30.14
+  - @wso2is/admin.connections.v1@2.28.14
+  - @wso2is/admin.core.v1@2.34.14
+  - @wso2is/admin.extensions.v1@2.34.14
+  - @wso2is/admin.identity-providers.v1@2.26.14
+  - @wso2is/admin.login-flow.ai.v1@2.26.14
+  - @wso2is/admin.organizations.v1@2.26.14
+  - @wso2is/admin.secrets.v1@2.25.14
+  - @wso2is/admin.server-configurations.v1@2.28.14
+
 ## 2.24.13
 
 ### Patch Changes
