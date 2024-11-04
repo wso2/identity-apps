@@ -1,5 +1,16 @@
 # @wso2is/admin.userstores.v1
 
+## 2.25.15
+
+### Patch Changes
+
+- [#7079](https://github.com/wso2/identity-apps/pull/7079) [`c3691192b4104c569bf9009a51030916fa2e72c8`](https://github.com/wso2/identity-apps/commit/c3691192b4104c569bf9009a51030916fa2e72c8) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Conditionally enable the create user store button
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.15
+  - @wso2is/admin.extensions.v1@2.34.15
+  - @wso2is/admin.remote-userstores.v1@1.5.15
+
 ## 2.25.14
 
 ### Patch Changes
