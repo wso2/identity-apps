@@ -154,7 +154,14 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         isLoading: isApplicationListFetchRequestLoading,
         error: applicationListFetchRequestError,
         mutate: mutateApplicationListFetchRequest
-    } = useApplicationList("advancedConfigurations,templateId,clientId,issuer", listItemLimit, listOffset, searchQuery);
+    } = useApplicationList(
+        "advancedConfigurations,templateId,clientId,issuer",
+        listItemLimit,
+        listOffset,
+        searchQuery,
+        true,
+        true
+    );
 
     const {
         data: myAccountApplicationData,
@@ -308,14 +315,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
 
         if (applicationList?.applications) {
             const appList: ApplicationListInterface = cloneDeep(applicationList);
-
-            // Remove the system apps from the application list.
-            if (!UIConfig?.legacyMode?.applicationListSystemApps) {
-                appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
-                    !ApplicationManagementConstants.SYSTEM_APPS.includes(item.name)
-                    && !ApplicationManagementConstants.DEFAULT_APPS.includes(item.name)
-                );
-            }
 
             appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
             appList.totalResults = appList.totalResults -

@@ -98,6 +98,7 @@ export interface ApiResourcesNS {
                             };
                             permission: {
                                 emptyValidate: string;
+                                errorOccurred: string;
                                 uniqueValidate: string;
                                 invalid: string;
                                 label: string;

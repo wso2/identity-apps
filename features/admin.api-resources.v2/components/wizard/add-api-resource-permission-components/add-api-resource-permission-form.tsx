@@ -128,18 +128,25 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                                     } else {
                                         const filter: string = "name eq " + value;
 
-                                        const response: APIResourcePermissionInterface[] =
-                                            await getAPIResourcePermissions(filter);
+                                        try {
+                                            const response: APIResourcePermissionInterface[] =
+                                                await getAPIResourcePermissions(filter);
 
-                                        if (response?.length > 0) {
+                                            if (response?.length > 0) {
+                                                validation.isValid = false;
+                                                validation.errorMessages.push(t("apiResources:wizard." +
+                                                "addApiResource.steps.scopes.form.fields.permission.uniqueValidate"));
+                                            }
+                                        } catch (error) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(t("apiResources:wizard." +
-                                            "addApiResource.steps.scopes.form.fields.permission.uniqueValidate"));
+                                                "addApiResource.steps.scopes.form.fields.permission.errorOccurred"));
+                                            setPermissionValidationLoading(false);
                                         }
                                     }
-
-                                    setPermissionValidationLoading(false);
                                 }
+
+                                setPermissionValidationLoading(false);
                             } }
                             data-testid={ `${componentId}-identifier` }
                             loading={ permissionValidationLoading }

@@ -766,6 +766,7 @@ export const extensions: Extensions = {
                                     identifier: {
                                         emptyValidate: "Identifier cannot be empty",
                                         alreadyExistsError: "Identifier already exists in the organization. Please choose a different one.",
+                                        errorOccurred: "An error occurred while validating the identifier.",
                                         invalid: "Identifier cannot contain spaces",
                                         hint: "We recommend using a URI as the identifier, but you do not need to make the URI publicly available since {{ productName }} will not access your API. {{ productName }} will use this identifier value as the audience(aud) claim in the issued JWT tokens. <1>This field should be unique; once created, it is not editable.</1>",
                                         label: "Identifier",
@@ -805,6 +806,7 @@ export const extensions: Extensions = {
                                     permission: {
                                         emptyValidate: "Permission(scope) cannot be empty",
                                         uniqueValidate: "This permission (scope) already exists in the organization. Please choose a different one.",
+                                        errorOccurred: "An error occurred while validating the permission.",
                                         invalid: "Permission (scope) cannot contain spaces",
                                         label: "Permission (scope)",
                                         placeholder: "read_bookings",
@@ -3968,6 +3970,11 @@ export const extensions: Extensions = {
                                     "without waiting for account confirmation.",
                                 hint: "This will enable email verification at the self-registration.",
                                 label: "Activate account immediately"
+                            },
+                            showUsernameUnavailability: {
+                                msg: "If selected, a descriptive error message will be shown to the user if the chosen username is already taken. However, this may lead to username enumeration.",
+                                hint: "This will enable a descriptive error message to be displayed when the username is unavailable at the self-registration.",
+                                label: "Display message if username unavailable"
                             },
                             signUpConfirmation: {
                                 recommendationMsg:

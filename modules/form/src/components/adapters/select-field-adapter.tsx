@@ -23,7 +23,6 @@ import Select, { SelectProps } from "@oxygen-ui/react/Select";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, ReactNode } from "react";
 import { FieldRenderProps } from "react-final-form";
-import "./text-field-adapter.scss";
 
 /**
  * Interface for the DropDownItem.
@@ -88,7 +87,7 @@ const SelectFieldAdapter: FunctionComponent<SelectFieldAdapterPropsInterface> = 
                 value={ input.value || "" }
                 onChange={ (e: ChangeEvent, child: ReactNode) => {
                     input.onChange((e?.target as any)?.value as string);
-                    onChange(e as any, child);
+                    onChange && onChange(e as any, child);
                 } }
                 margin="dense"
                 label={ label }

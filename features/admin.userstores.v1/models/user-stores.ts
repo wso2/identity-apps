@@ -35,6 +35,7 @@ export interface UserStoreListItem {
     description: string;
     self: string;
     enabled: boolean;
+    typeName?: string;
 }
 
 /**

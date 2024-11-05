@@ -39,6 +39,11 @@
 <%@ include file="includes/localize.jsp" %>
 <%@ include file="includes/init-url.jsp" %>
 
+<%
+    // Add the sms-otp screen to the list to retrieve text branding customizations.
+    screenNames.add("sms-otp");
+%>
+
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
@@ -83,7 +88,7 @@
     String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error");
     boolean authenticationFailed = Boolean.parseBoolean((String)request.getAttribute("isAuthFailure"));
     boolean resendFailed = Boolean.parseBoolean((String)request.getAttribute("isResendFailure"));
-    boolean isMultiRecoveryOptionsAvailable = 
+    boolean isMultiRecoveryOptionsAvailable =
         Boolean.parseBoolean(request.getParameter("isMultiRecoveryOptionsAvailable")) ||
         Boolean.parseBoolean((String)request.getAttribute("isMultiRecoveryOptionsAvailable"));
 
@@ -186,7 +191,7 @@
 
                             <div class="field">
                                 <% if (screenValue != null) { %>
-                                    <input type='hidden' name='screenValue' id='screenValue' 
+                                    <input type='hidden' name='screenValue' id='screenValue'
                                         value='<%=Encode.forHtmlContent(screenValue)%>'/>
                                     <label for="password">
                                         <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
@@ -273,7 +278,7 @@
                             <input id="multiOptionURI" type="hidden" name="multiOptionURI"
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("multiOptionURI"))%>' />
                             <input type='hidden' name='resendFlagElement' id='resendFlagElement' value='false'/>
-                            <input type="hidden" name="isMultiRecoveryOptionsAvailable" 
+                            <input type="hidden" name="isMultiRecoveryOptionsAvailable"
                                 value='<%=isMultiRecoveryOptionsAvailable%>' />
                             <input type="hidden" name="urlQuery" value='<%=urlQuery%>'/>
 
@@ -344,7 +349,7 @@
                                         multiOptionPathWithQuery =
                                             urlQuery.replaceAll("(&username=)[^&]+", "$1" + username);
                                     } else {
-                                        multiOptionPathWithQuery = urlQuery + "&username=" + username 
+                                        multiOptionPathWithQuery = urlQuery + "&username=" + username
                                             + "&selectedOption=SMSOTP";
                                     }
                                 %>
@@ -508,7 +513,7 @@
                 resendButton.disabled = true;
                 const resendButtonText = resendButton.innerHTML;
                 // Update the button text initially to avoid waiting until the first tick to update.
-                resendButton.innerHTML = Math.floor(WAIT_TIME_SECONDS / 60).toString().padStart(2, '0') + " : " 
+                resendButton.innerHTML = Math.floor(WAIT_TIME_SECONDS / 60).toString().padStart(2, '0') + " : "
                     + (WAIT_TIME_SECONDS % 60).toString().padStart(2, '0');
 
                 const countdown = new Countdown(
