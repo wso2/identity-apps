@@ -216,7 +216,7 @@ const DiscoverableOrganizationsListLayout: FunctionComponent<DiscoverableOrganiz
                                     AppConstants.getPaths().get("ASSIGN_ORGANIZATION_DISCOVERY_DOMAINS")
                                 );
                             } }
-                            data-componentid={ `${ componentId }-list-layout-assign-button` }
+                            data-componentid={ `${ componentId }-assign-button` }
                         >
                             <Icon name="add" />
                             { t("organizationDiscovery:emailDomains.actions.assign") }

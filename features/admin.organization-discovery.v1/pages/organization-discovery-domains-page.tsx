@@ -17,6 +17,7 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
+import { useRequiredScopes } from "@wso2is/access-control";
 import {
     AppConstants,
     AppState,
@@ -24,7 +25,6 @@ import {
     UIConstants,
     history
 } from "@wso2is/admin.core.v1";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -81,17 +81,7 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const isEmailDomainDiscoveryForSelfRegFeatureEnabled: boolean = !featureConfig?.organizationDiscovery?.
         disabledFeatures?.includes("organizationDiscovery.emailDomainDiscoveryForSelfReg");
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-
-    const isReadOnly: boolean = useMemo(
-        () =>
-            !hasRequiredScopes(
-                featureConfig?.organizationDiscovery,
-                featureConfig?.organizationDiscovery?.scopes?.update,
-                allowedScopes
-            ),
-        [ featureConfig, allowedScopes ]
-    );
+    const isReadOnly: boolean = !useRequiredScopes(featureConfig?.organizationDiscovery?.scopes?.update);
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
