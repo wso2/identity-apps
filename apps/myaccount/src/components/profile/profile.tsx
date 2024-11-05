@@ -327,7 +327,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         const username: string = profileDetails?.profileInfo["userName"];
 
         if (!username) return;
-        const userStoreDomain: string = resolveUserstore(username);
+        const userStoreDomain: string = resolveUserstore(username)?.toUpperCase();
         // Check each required attribute exists and domain is not excluded in the excluded user store list.
         const attributeCheck: boolean = multipleEmailsAndMobileFeatureRelatedAttributes.every(
             (attribute: string) => {
@@ -338,9 +338,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     return false;
                 }
 
-                const excludedStores: string[] = schema?.excludedUserStores?.split(",") || [];
+                const excludedUserStores: string[] =
+                    schema?.excludedUserStores?.split(",")?.map((store: string) => store.trim().toUpperCase()) || [];
 
-                return !excludedStores.includes(userStoreDomain);
+                return !excludedUserStores.includes(userStoreDomain);
             });
 
         setIsMultipleEmailAndMobileNumberEnabled(attributeCheck);
