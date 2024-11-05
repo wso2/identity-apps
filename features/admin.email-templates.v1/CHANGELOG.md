@@ -1,5 +1,13 @@
 # @wso2is/admin.email-templates.v1
 
+## 2.25.16
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.16
+  - @wso2is/admin.organizations.v1@2.26.16
+
 ## 2.25.15
 
 ### Patch Changes
