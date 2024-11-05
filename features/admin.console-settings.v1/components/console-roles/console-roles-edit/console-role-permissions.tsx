@@ -360,7 +360,7 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
                     }
                 </Heading>
             </div>
-            { isSubOrganization || !isConsoleRolesEditable
+            { isSubOrganization
                 ? readOnlyPermissionListSubOrganization()
                 : (
                     <CreateConsoleRoleWizardPermissionsForm
