@@ -37,7 +37,8 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { getUserNameWithoutDomain, hasRequiredScopes,
     isFeatureEnabled,
     resolveUserDisplayName,
-    resolveUserEmails
+    resolveUserEmails,
+    resolveUserstore
 } from "@wso2is/core/helpers";
 /* eslint-enable */
 import {
@@ -161,6 +162,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const [ showEmail, setShowEmail ] = useState<boolean>(false);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
+    const isMultipleEmailsAndMobilesDeploymentConfigEnabled: boolean
+        = config?.ui?.isMultipleEmailsAndMobileNumbersEnabled;
 
     const [ isMobileVerificationEnabled, setIsMobileVerificationEnabled ] = useState<boolean>(false);
     const [ isEmailVerificationEnabled, setIsEmailVerificationEnabled ] = useState<boolean>(false);
@@ -195,7 +198,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 "connector-name": ProfileConstants.USER_CLAIM_UPDATE_CONNECTOR,
                 properties: [
                     ProfileConstants.ENABLE_EMAIL_VERIFICATION,
-                    ProfileConstants.ENABLE_MULTIPLE_EMAILS_AND_MOBILE_NUMBERS,
                     ProfileConstants.ENABLE_MOBILE_VERIFICATION
                 ]
             }
@@ -213,9 +215,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         }
                         if (prop.name === ProfileConstants.ENABLE_MOBILE_VERIFICATION) {
                             setIsMobileVerificationEnabled(prop.value.toLowerCase() == "true");
-                        }
-                        if (prop.name === ProfileConstants.ENABLE_MULTIPLE_EMAILS_AND_MOBILE_NUMBERS) {
-                            setIsMultipleEmailAndMobileNumberEnabled(prop.value.toLowerCase() == "true");
                         }
                     });
                 } else {
@@ -303,6 +302,54 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             }
         }
     }, [ profileInfo, usernameConfig ]);
+
+    /**
+     * Check if multiple emails and mobile numbers feature is enabled for the given user store domain.
+     *
+     */
+    const isMultipleEmailsAndMobileNumbersEnabled = (): void => {
+
+        if (isEmpty(profileDetails) || isEmpty(profileSchema)) return;
+        if (!isMultipleEmailsAndMobilesDeploymentConfigEnabled) {
+            setIsMultipleEmailAndMobileNumberEnabled(false);
+
+            return;
+        }
+
+        const multipleEmailsAndMobileFeatureRelatedAttributes: string[] = [
+            MOBILE_ATTRIBUTE,
+            EMAIL_ATTRIBUTE,
+            EMAIL_ADDRESSES_ATTRIBUTE,
+            MOBILE_NUMBERS_ATTRIBUTE,
+            VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
+            VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
+        ];
+
+        const username: string = profileDetails?.profileInfo["userName"];
+
+        if (!username) return;
+        const userStoreDomain: string = resolveUserstore(username);
+        // Check each required attribute exists and domain is not excluded in the excluded user store list.
+        const attributeCheck: boolean = multipleEmailsAndMobileFeatureRelatedAttributes.every(
+            (attribute: string) => {
+                const schema: ProfileSchema = profileSchema?.find(
+                    (schema: ProfileSchema) => schema?.name === attribute);
+
+                if (!schema) {
+                    return false;
+                }
+
+                const excludedStores: string[] = schema?.excludedUserStores?.split(",") || [];
+
+                return !excludedStores.includes(userStoreDomain);
+            });
+
+        setIsMultipleEmailAndMobileNumberEnabled(attributeCheck);
+    };
+
+    useEffect(() => {
+        isMultipleEmailsAndMobileNumbersEnabled();
+    }, [ profileSchema, profileDetails ]);
 
     /**
      * Get the configurations.
@@ -401,6 +448,22 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         if (schema.extended
                             && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
                             && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]) {
+
+                            if (schemaNames[0] === EMAIL_ADDRESSES_ATTRIBUTE
+                                || schemaNames[0] === MOBILE_NUMBERS_ATTRIBUTE
+                                || schemaNames[0] === VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE
+                                || schemaNames[0] === VERIFIED_MOBILE_NUMBERS_ATTRIBUTE) {
+                                tempProfileInfo.set(
+                                    schema.name,
+                                    profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
+                                        ? profileDetails?.profileInfo[
+                                            ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA
+                                        ][schemaNames[0]]?.join(",")
+                                        : ""
+                                );
+
+                                return;
+                            }
                             tempProfileInfo.set(
                                 schema.name,
                                 profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
@@ -559,36 +622,59 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             isCanonical = true;
         }
 
-        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-            if (isEmpty(values.get(formName))) {
-                setIsSubmitting(false);
-
-                return;
-            }
-
-            const currentValues: string[] = resolveProfileInfoSchemaValue(schema)?.split(",") || [];
-            let primaryValue: string | null;
-
-            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-                primaryValue = profileDetails?.profileInfo?.emails?.length > 0
-                    ? profileDetails?.profileInfo?.emails[0]
-                    : null;
-            } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-                primaryValue = profileInfo.get(MOBILE_ATTRIBUTE);
-            }
-            if (primaryValue && !currentValues.includes(primaryValue)) {
-                currentValues.push(primaryValue);
-            }
-
-            currentValues.push(values.get(formName) as string);
-            values.set(formName, currentValues.join(","));
-        }
-
         if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0])
             || schemaNames[0] === "phoneNumbers") {
             const attributeValues: string[] = [];
 
-            if (schemaNames.length === 1) {
+            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+                if (isEmpty(values.get(formName))) {
+                    setIsSubmitting(false);
+
+                    return;
+                }
+
+                const currentValues: string[] = resolveProfileInfoSchemaValue(schema)?.split(",") || [];
+                let primaryValue: string | null;
+
+                if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+                    primaryValue = profileDetails?.profileInfo?.emails?.length > 0
+                        ? profileDetails?.profileInfo?.emails[0]
+                        : null;
+                } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+                    primaryValue = profileInfo.get(MOBILE_ATTRIBUTE);
+                }
+                if (primaryValue && !currentValues.includes(primaryValue)) {
+                    currentValues.push(primaryValue);
+                }
+
+                currentValues.push(values.get(formName) as string);
+                values.set(formName, currentValues);
+
+                value = {
+                    [schema.schemaId]: {
+                        [schemaNames[0]]: currentValues
+                    }
+                };
+                // If no primary value is set, set the first value as the primary value.
+                if (isEmpty(primaryValue) && !isEmpty(currentValues)) {
+                    if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
+                        value = {
+                            ...value,
+                            [EMAIL_ATTRIBUTE]: [ currentValues[0] ]
+                        };
+                    } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
+                        value = {
+                            ...value,
+                            [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
+                                {
+                                    type: "mobile",
+                                    value: currentValues[0]
+                                }
+                            ]
+                        };
+                    }
+                }
+            } else if (schemaNames.length === 1) {
                 // List of sub attributes.
                 const subValue: string[] = profileDetails.profileInfo[schemaNames[0]]
                     && profileDetails.profileInfo[schemaNames[0]]
@@ -787,7 +873,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         setIsSubmitting(true);
         const data: {
-            Operations: Array<{ op: string, value: Record<string, string | Record<string, string>> }>,
+            Operations: Array<{ op: string, value: Record<string, string | Record<string, string | string[]>> }>,
             schemas: Array<string>
         } = {
             Operations: [
@@ -807,7 +893,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             verifiedEmailList.push(value);
             data.Operations[0].value = {
                 [schema.schemaId]: {
-                    [VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE]: verifiedEmailList.join(",")
+                    [VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE]: verifiedEmailList
                 }
             };
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
@@ -818,7 +904,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             verifiedMobileList.push(value);
             data.Operations[0].value = {
                 [schema.schemaId]: {
-                    [VERIFIED_MOBILE_NUMBERS_ATTRIBUTE]: verifiedMobileList.join(",")
+                    [VERIFIED_MOBILE_NUMBERS_ATTRIBUTE]: verifiedMobileList
                 }
             };
         }
@@ -866,7 +952,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         const data: {
             Operations: Array<{
                 op: string,
-                value: Record<string, string | Record<string, string> | Array<string> | Array<Record<string, string>>
+                value: Record<string, string
+                | Record<string, string | string[]>
+                | Array<string>
+                | Array<Record<string, string>>
                 >
             }>,
             schemas: Array<string>
@@ -897,7 +986,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     op: "replace",
                     value: {
                         [schema.schemaId] : {
-                            [EMAIL_ADDRESSES_ATTRIBUTE]: existingEmailList.join(",")
+                            [EMAIL_ADDRESSES_ATTRIBUTE]: existingEmailList
                         }
                     }
                 });
@@ -922,7 +1011,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     op: "replace",
                     value: {
                         [schema.schemaId] : {
-                            [MOBILE_NUMBERS_ATTRIBUTE]: existingMobileList.join(",")
+                            [MOBILE_NUMBERS_ATTRIBUTE]: existingMobileList
                         }
                     }
                 });
@@ -970,7 +1059,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         const data: {
             Operations: Array<{
                 op: string, value: Record<string, string
-                    | Record<string, string>
+                    | Record<string, string | string[]>
                     | Array<string>
                     | Array<Record<string, string>>>
             }>,
@@ -994,7 +1083,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
             data.Operations[0].value = {
                 [schema.schemaId] : {
-                    [EMAIL_ADDRESSES_ATTRIBUTE]: updatedEmailList.join(",")
+                    [EMAIL_ADDRESSES_ATTRIBUTE]: updatedEmailList
                 }
             };
 
@@ -1025,7 +1114,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
             data.Operations[0].value = {
                 [schema.schemaId]: {
-                    [MOBILE_NUMBERS_ATTRIBUTE]: updatedMobileList.join(",")
+                    [MOBILE_NUMBERS_ATTRIBUTE]: updatedMobileList
                 }
             };
         }

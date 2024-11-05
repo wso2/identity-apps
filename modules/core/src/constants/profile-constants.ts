@@ -112,7 +112,4 @@ export class ProfileConstants {
     public static readonly ENABLE_MOBILE_VERIFICATION: string = "UserClaimUpdate.MobileNumber.EnableVerification";
 
     public static readonly ENABLE_EMAIL_VERIFICATION: string = "UserClaimUpdate.Email.EnableVerification";
-
-    public static readonly ENABLE_MULTIPLE_EMAILS_AND_MOBILE_NUMBERS: string =
-        "UserClaimUpdate.EnableMultipleEmailsAndMobileNumbers";
 }
