@@ -1270,6 +1270,12 @@
     <script src="util/string-utils.js"></script>
 
     <script>
+
+        <% if (Boolean.parseBoolean(request.getParameter("isSelfRegistration"))) { %>
+                $(".ui.segment").hide();
+                window.location = "<%=getRegistrationUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING))%>";
+        <% } %>
+
         function onMoment(notification) {
             displayGoogleSignIn(notification.isNotDisplayed() || notification.isSkippedMoment());
 
