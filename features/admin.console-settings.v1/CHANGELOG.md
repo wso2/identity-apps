@@ -1,5 +1,26 @@
 # @wso2is/admin.console-settings.v1
 
+## 2.25.16
+
+### Patch Changes
+
+- [#7085](https://github.com/wso2/identity-apps/pull/7085) [`b36f228f386ab8f9765d36f3fa7d7b4ff9c88c1c`](https://github.com/wso2/identity-apps/commit/b36f228f386ab8f9765d36f3fa7d7b4ff9c88c1c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve UX in displaying permissions for read only console roles in first level organizations for managed deployment
+
+- Updated dependencies [[`014b835beeede9e29f7e30525a8cf13ce5a5301d`](https://github.com/wso2/identity-apps/commit/014b835beeede9e29f7e30525a8cf13ce5a5301d)]:
+  - @wso2is/admin.login-flow.ai.v1@2.26.16
+  - @wso2is/admin.applications.v1@2.30.16
+  - @wso2is/admin.core.v1@2.34.16
+  - @wso2is/admin.administrators.v1@2.29.16
+  - @wso2is/admin.extensions.v1@2.34.16
+  - @wso2is/admin.identity-providers.v1@2.26.16
+  - @wso2is/admin.organizations.v1@2.26.16
+  - @wso2is/admin.roles.v2@2.26.16
+  - @wso2is/admin.authentication.v1@2.25.16
+  - @wso2is/admin.feature-gate.v1@1.4.16
+  - @wso2is/admin.server-configurations.v1@2.28.16
+  - @wso2is/admin.users.v1@2.27.16
+  - @wso2is/admin.userstores.v1@2.25.16
+
 ## 2.25.15
 
 ### Patch Changes
