@@ -79,6 +79,8 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
     const dispatch: Dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const isEmailDomainDiscoveryForSelfRegFeatureEnabled: boolean = !featureConfig?.organizationDiscovery?.
+        disabledFeatures?.includes("organizationDiscovery.emailDomainDiscoveryForSelfReg");
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const isReadOnly: boolean = useMemo(
@@ -396,50 +398,53 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
             <Divider hidden />
             { isOrganizationDiscoveryEnabled && (
                 <>
-                    <EmphasizedSegment
-                        padded={ true }
-                    >
-                        <Form>
-                            <Field.Checkbox
-                                ariaLabel="emailDomainBasedSelfRegistration"
-                                name="emailDomainBasedSelfRegistration"
-                                label={ t("organizationDiscovery:selfRegistration.label") }
-                                listen={ (value: boolean) => handleEmailDomainBasedSelfRegistration(value) }
-                                checked={ isEmailDomainBasedSelfRegistrationEnabled }
-                                disabled={ !isSelfRegEnabled }
-                                width={ 16 }
-                                data-testid={ `${testId}-notify-account-confirmation` }
-                                hint={ isSelfRegEnabled && t("organizationDiscovery:selfRegistration.labelHint") }
-                            />
-                            { !isSelfRegEnabled && (
-                                <Alert severity="info">
-                                    <Trans
-                                        i18nKey={ "organizationDiscovery:selfRegistration.message" }
-                                    >
-                                        Enable
-                                        <Link
-                                            external={ false }
-                                            onClick={ () => {
-                                                history.push(
-                                                    AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT").replace(
-                                                        ":categoryId",
-                                                        ServerConfigurationsConstants.
-                                                            USER_ONBOARDING_CONNECTOR_ID
-                                                    ).replace(
-                                                        ":connectorId",
-                                                        ServerConfigurationsConstants.
-                                                            SELF_SIGN_UP_CONNECTOR_ID
-                                                    )
-                                                );
-                                            } }
-                                        >self-registration
-                                        </Link>
-                                        to allow domain discovery for self-registration.
-                                    </Trans>
-                                </Alert>
-                            ) }
-                        </Form>
-                    </EmphasizedSegment>
+                    { isEmailDomainDiscoveryForSelfRegFeatureEnabled && (
+                        <EmphasizedSegment
+                            padded={ true }
+                        >
+                            <Form>
+                                <Field.Checkbox
+                                    ariaLabel="emailDomainBasedSelfRegistration"
+                                    name="emailDomainBasedSelfRegistration"
+                                    label={ t("organizationDiscovery:selfRegistration.label") }
+                                    listen={ (value: boolean) => handleEmailDomainBasedSelfRegistration(value) }
+                                    checked={ isEmailDomainBasedSelfRegistrationEnabled }
+                                    disabled={ !isSelfRegEnabled }
+                                    width={ 16 }
+                                    data-testid={ `${testId}-notify-account-confirmation` }
+                                    hint={ isSelfRegEnabled && t("organizationDiscovery:selfRegistration.labelHint") }
+                                />
+                                { !isSelfRegEnabled && (
+                                    <Alert severity="info">
+                                        <Trans
+                                            i18nKey={ "organizationDiscovery:selfRegistration.message" }
+                                        >
+                                            Enable
+                                            <Link
+                                                external={ false }
+                                                onClick={ () => {
+                                                    history.push(
+                                                        AppConstants.getPaths().get(
+                                                            "GOVERNANCE_CONNECTOR_EDIT").replace(
+                                                            ":categoryId",
+                                                            ServerConfigurationsConstants.
+                                                                USER_ONBOARDING_CONNECTOR_ID
+                                                        ).replace(
+                                                            ":connectorId",
+                                                            ServerConfigurationsConstants.
+                                                                SELF_SIGN_UP_CONNECTOR_ID
+                                                        )
+                                                    );
+                                                } }
+                                            >self-registration
+                                            </Link>
+                                            to allow domain discovery for self-registration.
+                                        </Trans>
+                                    </Alert>
+                                ) }
+                            </Form>
+                        </EmphasizedSegment>
+                    ) }
                     <DiscoverableOrganizationsListLayout
                         discoverableOrganizations={ discoverableOrganizations }
                         listItemLimit = { listItemLimit }
