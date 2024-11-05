@@ -105,7 +105,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const [ hideTermination, setHideTermination ] = useState<boolean>(false);
     const [ adminUsername, setAdminUsername ] = useState<string|null>(null);
     const [ isUserManagedByParentOrg, setIsUserManagedByParentOrg ] = useState<boolean>(false);
-    const [ isUserProfileReadOnly, setIsUserProfileReadOnly ] = useState<boolean>(false);
 
     useEffect(() => {
         const userStore: string = user?.userName?.split("/").length > 1
@@ -205,7 +204,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         onAlertFired={ handleAlerts }
                         user={ user }
                         handleUserUpdate={ handleUserUpdate }
-                        isReadOnly={ isReadOnly || isUserProfileReadOnly }
+                        isReadOnly={ isReadOnly }
                         connectorProperties={ connectorProperties }
                         isReadOnlyUserStoresLoading={ isReadOnlyUserStoresLoading }
                         isUserManagedByParentOrg={ isUserManagedByParentOrg }
