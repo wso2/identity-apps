@@ -52,8 +52,6 @@ import useGenerateAILoginFlow, { GenerateLoginFlowFunction } from "../hooks/use-
 import { BannerState } from "../models/banner-state";
 import "./login-flow-ai-banner.scss";
 
-
-
 const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
     props: IdentifiableComponentInterface
 ): ReactElement => {
