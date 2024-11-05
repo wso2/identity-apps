@@ -1,5 +1,26 @@
 # @wso2is/admin.console-settings.v1
 
+## 2.25.18
+
+### Patch Changes
+
+- [#7087](https://github.com/wso2/identity-apps/pull/7087) [`f182ffa423a8b95e46cef7220be8ef73639ddfbd`](https://github.com/wso2/identity-apps/commit/f182ffa423a8b95e46cef7220be8ef73639ddfbd) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Only show api resources for enabled features under console role permissions
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.18
+  - @wso2is/admin.core.v1@2.34.18
+  - @wso2is/admin.administrators.v1@2.29.18
+  - @wso2is/admin.extensions.v1@2.34.18
+  - @wso2is/admin.identity-providers.v1@2.26.18
+  - @wso2is/admin.login-flow.ai.v1@2.26.18
+  - @wso2is/admin.organizations.v1@2.26.18
+  - @wso2is/admin.roles.v2@2.26.18
+  - @wso2is/admin.authentication.v1@2.25.18
+  - @wso2is/admin.feature-gate.v1@1.4.18
+  - @wso2is/admin.server-configurations.v1@2.28.18
+  - @wso2is/admin.users.v1@2.27.18
+  - @wso2is/admin.userstores.v1@2.25.18
+
 ## 2.25.17
 
 ### Patch Changes
