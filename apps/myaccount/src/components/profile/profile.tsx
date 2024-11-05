@@ -304,8 +304,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     }, [ profileInfo, usernameConfig ]);
 
     /**
-     * Check if multiple emails and mobile numbers feature is enabled for the given user store domain.
-     *
+     * Check if multiple emails and mobile numbers feature is enabled.
      */
     const isMultipleEmailsAndMobileNumbersEnabled = (): void => {
 
