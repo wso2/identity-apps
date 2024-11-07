@@ -45,10 +45,10 @@
     String successMessageDescrition;
 
     if (StringUtils.equals(recoveryChannelType, EMAIL)){
-        successMessageTitle = "username.recovery.email.success.header";
+        successMessageTitle = "username.recovery.email.success.heading";
         successMessageDescrition = "username.recovery.email.success.body";
     } else {
-        successMessageTitle = "username.recovery.sms.success.header";
+        successMessageTitle = "username.recovery.sms.success.heading";
         successMessageDescrition = "username.recovery.sms.success.body";
     }
 %>

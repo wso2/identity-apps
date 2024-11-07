@@ -201,7 +201,7 @@
 
                         <% } %>
 
-                              <div class="field">
+                            <div class="field">
                                 <div class="ui radio checkbox">
                                     <input type="radio" name="usernameRecoveryOption" 
                                         value="<%=Encode.forHtmlAttribute(getChannelIdFromChannelName(channels, EMAIL) + ":" + EMAIL)%>"
@@ -210,7 +210,7 @@
                                     </label>
                                 </div>
                             </div>
-                                  <div class="field">
+                            <div class="field">
                                 <div class="ui radio checkbox">
                                     <input type="radio" name="usernameRecoveryOption" 
                                         value="<%=Encode.forHtmlAttribute(getChannelIdFromChannelName(channels, SMS) + ":" + SMS)%>"
