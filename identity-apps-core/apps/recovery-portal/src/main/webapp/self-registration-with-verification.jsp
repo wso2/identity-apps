@@ -153,6 +153,7 @@
     } catch (Exception e) {
         usernameConfig = null;
     }
+
     Boolean isAlphanumericUsernameEnabled = false;
     if (usernameConfig.has("alphanumericFormatValidator")) {
         isAlphanumericUsernameEnabled = (Boolean) usernameConfig.get("alphanumericFormatValidator");
