@@ -320,7 +320,7 @@ export enum LocaleJoiningSymbol {
  *
  * @readonly
  */
-export const LOCKED_REASON_MAP: Record<string, string> = {
+export const ACCOUNT_LOCK_REASON_MAP: Record<string, string> = {
     ADMIN_INITIATED: "user:profile.accountLockReason.adminInitiated",
     DEFAULT: "user:profile.accountLockReason.default",
     MAX_ATTEMPTS_EXCEEDED: "user:profile.accountLockReason.maxAttemptsExceeded",

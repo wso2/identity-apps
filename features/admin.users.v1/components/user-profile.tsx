@@ -65,7 +65,7 @@ import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
 import { updateUserInfo } from "../api";
-import { AdminAccountTypes, LOCKED_REASON_MAP, LocaleJoiningSymbol, UserManagementConstants } from "../constants";
+import { ACCOUNT_LOCK_REASON_MAP, AdminAccountTypes, LocaleJoiningSymbol, UserManagementConstants } from "../constants";
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
 
 // TODO: Remove this once multiple email and mobile support is onboarded.
@@ -1612,7 +1612,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      */
     const resolveUserAccountLockedReason = (): string => {
         if (accountLockedReason) {
-            return LOCKED_REASON_MAP[accountLockedReason] ?? LOCKED_REASON_MAP["DEFAULT"];
+            return ACCOUNT_LOCK_REASON_MAP[accountLockedReason] ?? ACCOUNT_LOCK_REASON_MAP["DEFAULT"];
         }
 
         return "";
