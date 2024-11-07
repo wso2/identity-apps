@@ -42,6 +42,7 @@ import { getUserNameWithoutDomain, hasRequiredScopes,
 } from "@wso2is/core/helpers";
 /* eslint-enable */
 import {
+    PatchOperationRequest,
     ProfileSchemaInterface,
     SBACInterface,
     TestableComponentInterface
@@ -90,6 +91,7 @@ import {
     PreferenceConnectorResponse,
     PreferenceProperty,
     PreferenceRequest,
+    ProfilePatchOperationValue,
     ProfileSchema,
     ValidationFormInterface
 } from "../../models";
@@ -162,8 +164,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const [ showEmail, setShowEmail ] = useState<boolean>(false);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
-    const isMultipleEmailsAndMobilesDeploymentConfigEnabled: boolean
-        = config?.ui?.isMultipleEmailsAndMobileNumbersEnabled;
+    const isMultipleEmailsAndMobileConfigEnabled: boolean = config?.ui?.isMultipleEmailsAndMobileNumbersEnabled;
 
     const [ isMobileVerificationEnabled, setIsMobileVerificationEnabled ] = useState<boolean>(false);
     const [ isEmailVerificationEnabled, setIsEmailVerificationEnabled ] = useState<boolean>(false);
@@ -309,7 +310,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const isMultipleEmailsAndMobileNumbersEnabled = (): void => {
 
         if (isEmpty(profileDetails) || isEmpty(profileSchema)) return;
-        if (!isMultipleEmailsAndMobilesDeploymentConfigEnabled) {
+        if (!isMultipleEmailsAndMobileConfigEnabled) {
             setIsMultipleEmailAndMobileNumberEnabled(false);
 
             return;
@@ -358,9 +359,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         getConfigurations();
     }, [ profileSchema ]);
 
-    /**
-     * Sort the elements of the profileSchema state according to the displayOrder attribute in the ascending order.
-     */
     /**
      * Sort the elements of the profileSchema state according to the displayOrder attribute in the ascending order.
      */
@@ -449,10 +447,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
                             && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]) {
 
-                            if (schemaNames[0] === EMAIL_ADDRESSES_ATTRIBUTE
-                                || schemaNames[0] === MOBILE_NUMBERS_ATTRIBUTE
-                                || schemaNames[0] === VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE
-                                || schemaNames[0] === VERIFIED_MOBILE_NUMBERS_ATTRIBUTE) {
+                            const multiValuedAttributes: string[] = [
+                                EMAIL_ADDRESSES_ATTRIBUTE,
+                                MOBILE_NUMBERS_ATTRIBUTE,
+                                VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
+                                VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
+                            ];
+
+                            if (multiValuedAttributes.includes(schemaNames[0])) {
 
                                 const attributeValue: string | string[] =
                                     profileDetails?.profileInfo[
@@ -872,12 +874,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * @param value - Value of the attribute
      */
     const handleVerify = (schema: ProfileSchema, value: string) => {
-
         setIsSubmitting(true);
-        const data: {
-            Operations: Array<{ op: string, value: Record<string, string | Record<string, string | string[]>> }>,
-            schemas: Array<string>
-        } = {
+        const data: PatchOperationRequest<ProfilePatchOperationValue> = {
             Operations: [
                 {
                     op: "replace",
@@ -886,6 +884,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             ],
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
+
         let translationKey: string = "";
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
@@ -911,7 +910,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             };
         }
 
-        updateProfileInfo(data).then((response: AxiosResponse) => {
+        updateProfileInfo(data as unknown as Record<string, unknown>).then((response: AxiosResponse) => {
             if (response.status === 200) {
                 onAlertFired({
                     description: t(
@@ -951,17 +950,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const handleMakePrimary = (schema: ProfileSchema, value: string) => {
 
         setIsSubmitting(true);
-        const data: {
-            Operations: Array<{
-                op: string,
-                value: Record<string, string
-                | Record<string, string | string[]>
-                | Array<string>
-                | Array<Record<string, string>>
-                >
-            }>,
-            schemas: Array<string>
-        } = {
+        const data: PatchOperationRequest<ProfilePatchOperationValue> = {
             Operations: [
                 {
                     op: "replace",
@@ -1019,7 +1008,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 });
             }
         }
-        updateProfileInfo(data).then((response: AxiosResponse) => {
+        updateProfileInfo(data as unknown as Record<string, unknown>).then((response: AxiosResponse) => {
             if (response.status === 200) {
                 onAlertFired({
                     description: t(
@@ -1058,15 +1047,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const handleMultiValuedItemDelete = (schema: ProfileSchema, value: string) => {
 
         setIsSubmitting(true);
-        const data: {
-            Operations: Array<{
-                op: string, value: Record<string, string
-                    | Record<string, string | string[]>
-                    | Array<string>
-                    | Array<Record<string, string>>>
-            }>,
-            schemas: Array<string>
-        } = {
+        const data: PatchOperationRequest<ProfilePatchOperationValue> = {
             Operations: [
                 {
                     op: "replace",
@@ -1120,7 +1101,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 }
             };
         }
-        updateProfileInfo(data).then((response: AxiosResponse) => {
+        updateProfileInfo(data as unknown as Record<string, unknown>).then((response: AxiosResponse) => {
             if (response.status === 200) {
                 onAlertFired({
                     description: t(
@@ -1267,7 +1248,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
          * and `schema.displayName` to a lowercase string and then check
          * the value matches.
          */
-        const isProfileUsernameReadonly: boolean = config.ui.isProfileUsernameReadonly;
+        const isProfileUsernameReadonly: boolean = config?.ui?.isProfileUsernameReadonly;
         const { displayName, name } = schema;
 
         if (isProfileUsernameReadonly) {
@@ -1310,7 +1291,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     /**
-     * This function generate mobile verification section for mobile schema.
+     * This function generates mobile verification section for mobile schema.
      *
      * @param schema - The schema to generate the form for.
      * @param fieldName - The field name to get the placeholder text for.
