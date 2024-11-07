@@ -473,16 +473,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     || schemaNames[0] === MOBILE_NUMBERS_ATTRIBUTE
                                     || schemaNames[0] === VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE
                                     || schemaNames[0] === VERIFIED_MOBILE_NUMBERS_ATTRIBUTE) {
-    
+
                                     const attributeValue: string | string[] =
                                         userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]?.[schemaNames[0]];
-    
+
                                     const formattedValue: string = Array.isArray(attributeValue)
                                         ? attributeValue.join(",")
                                         : "";
-    
+
                                     tempProfileInfo.set(schema.name, formattedValue);
-    
+
                                     return;
                                 }
                                 tempProfileInfo.set(
