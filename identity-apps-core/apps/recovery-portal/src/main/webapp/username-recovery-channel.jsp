@@ -168,7 +168,7 @@
         </layout:component>
         <layout:component componentName="MainSection" >
             <div class="ui segment">
-                <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.username")%></h2>
+                <h2><%=i18n(recoveryResourceBundle, customText, "username.recovery.channel.selection.heading")%></h2>
                 <% if (error) { %>
                     <div class="ui visible negative message" id="server-error-msg">
                         <%= IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg) %>
@@ -176,7 +176,7 @@
                 <% } %>
                 <div class="ui negative message" id="error-msg" hidden="hidden"></div>
 
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Select.the.recovery.option")%>
+                <%=i18n(recoveryResourceBundle, customText, "username.recovery.channel.selection.body")%>
 
                 <div class="ui divider hidden"></div>
 
@@ -206,7 +206,7 @@
                                     <input type="radio" name="usernameRecoveryOption" 
                                         value="<%=Encode.forHtmlAttribute(getChannelIdFromChannelName(channels, EMAIL) + ":" + EMAIL)%>"
                                         <%=EMAIL.equals(selectedOption)?"checked":""%>/>
-                                    <label><%=i18n(recoveryResourceBundle, customText, "Send.username.via.email")%>
+                                    <label><%=i18n(recoveryResourceBundle, customText, "send.username.via.email")%>
                                     </label>
                                 </div>
                             </div>
@@ -215,7 +215,7 @@
                                     <input type="radio" name="usernameRecoveryOption" 
                                         value="<%=Encode.forHtmlAttribute(getChannelIdFromChannelName(channels, SMS) + ":" + SMS)%>"
                                         <%=SMS.equals(selectedOption)?"checked":""%>/>
-                                    <label><%=i18n(recoveryResourceBundle, customText, "Send.username.via.sms")%>
+                                    <label><%=i18n(recoveryResourceBundle, customText, "send.username.via.sms")%>
                                     </label>
                                 </div>
                             </div>
@@ -228,12 +228,12 @@
                         <div class="ui divider hidden"></div>
                         <div class="mt-4">
                             <button id="recoverySubmit" class="ui primary button large fluid" type="submit">
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Next")%>
+                                    <%=i18n(recoveryResourceBundle, customText, "username.recovery.channel.selection.next.button")%>
                             </button>
                         </div>
                         <div class="mt-1 align-center">
                             <a href="javascript:goBack()" class="ui button secondary large fluid">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
+                                <%=i18n(recoveryResourceBundle, customText, "username.recovery.channel.selection.cancel.button")%>
                             </a>
                         </div>
                     </form>

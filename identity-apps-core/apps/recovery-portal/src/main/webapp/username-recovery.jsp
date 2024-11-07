@@ -181,7 +181,7 @@
         </layout:component>
         <layout:component componentName="MainSection" >
             <div class="ui segment">
-                <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.username")%></h2>
+                <h2><%=i18n(recoveryResourceBundle, customText, "username.recovery.heading")%></h2>
                 <% if (error) { %>
                     <div class="ui visible negative message" id="server-error-msg">
                         <%= IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg) %>
@@ -189,7 +189,7 @@
                 <% } %>
                 <div class="ui negative message" id="error-msg" hidden="hidden"></div>
 
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.detail.to.recover.uname")%>
+                <%=i18n(recoveryResourceBundle, customText, "username.recovery.body")%>
 
                 <div class="ui divider hidden"></div>
 
@@ -238,10 +238,10 @@
 
                             if (isEmailInClaims || isMobileInClaims) { %>
                         <div class="required field">
-                            <label for="contact" class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                    "Contact")%></label>
+                            <label for="contact" class="control-label"><%=i18n(recoveryResourceBundle, customText,
+                                    "contact")%></label>
                             <input id="contact" type="text" name="contact" 
-                                placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Contact")%>*" 
+                                placeholder="<%=i18n(recoveryResourceBundle, customText, "contact")%>*" 
                                     required class="form-control" />
                         </div>
                         <% } %>
@@ -306,13 +306,13 @@
 
                          <div class="mt-0">
                             <button id="recoverySubmit" class="ui primary button large fluid" type="submit">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Next")%>
+                                <%=i18n(recoveryResourceBundle, customText, "username.recovery.next.button")%>
                             </button>
     
                         </div>
                         <div class="mt-1 align-center">
                             <a href="javascript:goBack()" class="ui button secondary large fluid">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
+                                <%=i18n(recoveryResourceBundle, customText, "username.recovery.cancel.button")%>
                             </a>
                         </div>
                     </form>

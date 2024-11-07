@@ -45,11 +45,11 @@
     String successMessageDescrition;
 
     if (StringUtils.equals(recoveryChannelType, EMAIL)){
-        successMessageTitle = "check.your.email";
-        successMessageDescrition = "Username.recovery.information.sent.to.your.email";
+        successMessageTitle = "username.recovery.email.success.header";
+        successMessageDescrition = "username.recovery.email.success.body";
     } else {
-        successMessageTitle = "check.your.mobile";
-        successMessageDescrition = "Username.recovery.information.sent.to.your.mobile";
+        successMessageTitle = "username.recovery.sms.success.header";
+        successMessageDescrition = "username.recovery.sms.success.body";
     }
 %>
 
@@ -87,10 +87,10 @@
         <layout:component componentName="MainSection" >
             <div class="ui green segment mt-3 attached">
                 <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="username-recovery-notify-page-header">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, successMessageTitle)%>
+                    <%=i18n(recoveryResourceBundle, customText, successMessageTitle)%>
                 </h3>
                 <p class="portal-tagline-description">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, successMessageDescrition)%>
+                    <%=i18n(recoveryResourceBundle, customText, successMessageDescrition)%>
                     <br><br>
                     <%
                         if(StringUtils.isNotBlank(callback)) {
@@ -98,7 +98,7 @@
                         <br/><br/>
                         <i class="caret left icon primary"></i>
                         <a href="<%= Encode.forHtml(callback)%>">
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Back.to.application")%>
+                            <%=i18n(recoveryResourceBundle, customText, "username.recovery.success.action")%>
                         </a>
                     <% } %>
                 </p>
