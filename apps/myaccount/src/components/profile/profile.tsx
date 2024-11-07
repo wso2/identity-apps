@@ -871,9 +871,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * Verify an email address or mobile number.
      *
      * @param schema - Schema of the attribute
-     * @param value - Value of the attribute
+     * @param attributeValue - Value of the attribute
      */
-    const handleVerify = (schema: ProfileSchema, value: string) => {
+    const handleVerify = (schema: ProfileSchema, attributeValue: string) => {
         setIsSubmitting(true);
         const data: PatchOperationRequest<ProfilePatchOperationValue> = {
             Operations: [
@@ -891,7 +891,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             translationKey = "myAccount:components.profile.notifications.verifyEmail.";
             const verifiedEmailList: string[] = profileInfo?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
 
-            verifiedEmailList.push(value);
+            verifiedEmailList.push(attributeValue);
             data.Operations[0].value = {
                 [schema.schemaId]: {
                     [VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE]: verifiedEmailList
@@ -899,10 +899,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             };
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             translationKey = "myAccount:components.profile.notifications.verifyMobile.";
-            setSelectedAttributeInfo({ schema, value });
+            setSelectedAttributeInfo({ schema, value: attributeValue });
             const verifiedMobileList: string[] = profileInfo?.get(VERIFIED_MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
 
-            verifiedMobileList.push(value);
+            verifiedMobileList.push(attributeValue);
             data.Operations[0].value = {
                 [schema.schemaId]: {
                     [VERIFIED_MOBILE_NUMBERS_ATTRIBUTE]: verifiedMobileList
@@ -945,9 +945,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * Assign primary email address or mobile number the multi-valued attribute.
      *
      * @param schema - Schema of the attribute
-     * @param value - Value of the attribute
+     * @param attributeValue - Value of the attribute
      */
-    const handleMakePrimary = (schema: ProfileSchema, value: string) => {
+    const handleMakePrimary = (schema: ProfileSchema, attributeValue: string) => {
 
         setIsSubmitting(true);
         const data: PatchOperationRequest<ProfilePatchOperationValue> = {
@@ -963,7 +963,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
 
             data.Operations[0].value = {
-                [EMAIL_ATTRIBUTE]: [ value ]
+                [EMAIL_ATTRIBUTE]: [ attributeValue ]
             };
 
             const existingPrimaryEmail: string = profileDetails?.profileInfo?.emails?.length > 0
@@ -988,7 +988,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
                     {
                         type: "mobile",
-                        value
+                        value: attributeValue
                     }
                 ]
             };
@@ -1042,9 +1042,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * Delete a multi-valued attribute value.
      *
      * @param schema - schema of the attribute
-     * @param value - value of the attribute
+     * @param attributeValue - value of the attribute
      */
-    const handleMultiValuedItemDelete = (schema: ProfileSchema, value: string) => {
+    const handleMultiValuedItemDelete = (schema: ProfileSchema, attributeValue: string) => {
 
         setIsSubmitting(true);
         const data: PatchOperationRequest<ProfilePatchOperationValue> = {
@@ -1059,7 +1059,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             const emailList: string[] = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") || [];
-            const updatedEmailList: string[] = emailList.filter((email: string) => email !== value);
+            const updatedEmailList: string[] = emailList.filter((email: string) => email !== attributeValue);
             const primaryEmail: string = profileDetails?.profileInfo?.emails?.length > 0
                 ? profileDetails?.profileInfo?.emails[0]
                 : null;
@@ -1070,7 +1070,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 }
             };
 
-            if (value === primaryEmail) {
+            if (attributeValue === primaryEmail) {
                 data.Operations.push({
                     op: "replace",
                     value: {
@@ -1080,10 +1080,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             }
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             const mobileList: string[] = profileInfo?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") || [];
-            const updatedMobileList: string[] = mobileList.filter((mobile: string) => mobile !== value);
+            const updatedMobileList: string[] = mobileList.filter((mobile: string) => mobile !== attributeValue);
             const primaryMobile: string = profileInfo.get(MOBILE_ATTRIBUTE);
 
-            if (value === primaryMobile) {
+            if (attributeValue === primaryMobile) {
                 data.Operations.push({
                     op: "replace",
                     value: {
