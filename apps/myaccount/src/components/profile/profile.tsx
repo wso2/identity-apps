@@ -453,14 +453,16 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                 || schemaNames[0] === MOBILE_NUMBERS_ATTRIBUTE
                                 || schemaNames[0] === VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE
                                 || schemaNames[0] === VERIFIED_MOBILE_NUMBERS_ATTRIBUTE) {
-                                tempProfileInfo.set(
-                                    schema.name,
-                                    profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
-                                        ? profileDetails?.profileInfo[
-                                            ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA
-                                        ][schemaNames[0]]?.join(",")
-                                        : ""
-                                );
+
+                                const attributeValue: string | string[] =
+                                    profileDetails?.profileInfo[
+                                        ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]?.[schemaNames[0]];
+
+                                const formattedValue: string = Array.isArray(attributeValue)
+                                    ? attributeValue.join(",")
+                                    : "";
+
+                                tempProfileInfo.set(schema.name, formattedValue);
 
                                 return;
                             }
