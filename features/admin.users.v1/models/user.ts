@@ -396,6 +396,14 @@ export interface PatchUserAddOpInterface {
 }
 
 /**
+ * Interface for the user patch operation value.
+ */
+export type PatchUserOperationValue = Record<string, string
+    | Record<string, string | string[]>
+    | Array<string>
+    | Array<Record<string, string>>>;
+
+/**
  * Enum for the multiple invites modes.
  *
  */

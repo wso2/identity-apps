@@ -50,6 +50,7 @@ import {
     AlertInterface,
     AlertLevels,
     MultiValueAttributeInterface,
+    PatchOperationRequest,
     ProfileInfoInterface,
     ProfileSchemaInterface,
     RolesMemberInterface,
@@ -79,7 +80,12 @@ import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Input } 
 import { ChangePasswordComponent } from "./user-change-password";
 import { updateUserInfo } from "../api";
 import { AdminAccountTypes, LocaleJoiningSymbol, UserManagementConstants } from "../constants";
-import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
+import {
+    AccountConfigSettingsInterface,
+    PatchUserOperationValue,
+    SchemaAttributeValueInterface,
+    SubValueInterface
+} from "../models";
 import "./user-profile.scss";
 
 const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
@@ -469,10 +475,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
                                 && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
                             ) {
-                                if (schemaNames[0] === EMAIL_ADDRESSES_ATTRIBUTE
-                                    || schemaNames[0] === MOBILE_NUMBERS_ATTRIBUTE
-                                    || schemaNames[0] === VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE
-                                    || schemaNames[0] === VERIFIED_MOBILE_NUMBERS_ATTRIBUTE) {
+                                const multiValuedAttributes: string[] = [
+                                    EMAIL_ADDRESSES_ATTRIBUTE,
+                                    MOBILE_NUMBERS_ATTRIBUTE,
+                                    VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
+                                    VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
+                                ];
+
+                                if (multiValuedAttributes.includes(schemaNames[0])) {
 
                                     const attributeValue: string | string[] =
                                         userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]?.[schemaNames[0]];
@@ -1489,18 +1499,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * Delete a multi-valued item.
      *
      * @param schema - schema of the attribute
-     * @param value - value of the attribute
+     * @param attributeValue - value of the attribute
      */
-    const handleMultiValuedItemDelete = (schema: ProfileSchemaInterface, value: string) => {
-        const data: {
-            Operations: Array<{
-                op: string, value: Record<string, string
-                    | Record<string, string | string[]>
-                    | Array<string>
-                    | Array<Record<string, string>>>
-            }>,
-            schemas: Array<string>
-        } = {
+    const handleMultiValuedItemDelete = (schema: ProfileSchemaInterface, attributeValue: string) => {
+        const data: PatchOperationRequest<PatchUserOperationValue> = {
             Operations: [
                 {
                     op: "replace",
@@ -1513,7 +1515,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             const emailList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
                 get("EMAIL_ADDRESSES"))?.split(",") || [];
-            const updatedEmailList: string[] = emailList.filter((email: string) => email !== value);
+            const updatedEmailList: string[] = emailList.filter((email: string) => email !== attributeValue);
             const primaryEmail: string = profileInfo?.get(EMAIL_ATTRIBUTE);
 
             data.Operations[0].value = {
@@ -1522,7 +1524,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 }
             };
 
-            if (value === primaryEmail) {
+            if (attributeValue === primaryEmail) {
                 data.Operations.push({
                     op: "replace",
                     value: {
@@ -1533,10 +1535,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             const mobileList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
                 get("MOBILE_NUMBERS"))?.split(",") || [];
-            const updatedMobileList: string[] = mobileList.filter((mobile: string) => mobile !== value);
+            const updatedMobileList: string[] = mobileList.filter((mobile: string) => mobile !== attributeValue);
             const primaryMobile: string = profileInfo.get(MOBILE_ATTRIBUTE);
 
-            if (value === primaryMobile) {
+            if (attributeValue === primaryMobile) {
                 data.Operations.push({
                     op: "replace",
                     value: {
@@ -1599,14 +1601,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * Verify an email address or mobile number.
      *
      * @param schema - Schema of the attribute
-     * @param value - Value of the attribute
+     * @param attributeValue - Value of the attribute
      */
-    const handleVerify = (schema: ProfileSchemaInterface, value: string) => {
+    const handleVerify = (schema: ProfileSchemaInterface, attributeValue: string) => {
         setIsSubmitting(true);
-        const data: {
-            Operations: Array<{ op: string, value: Record<string, string | Record<string, string | string[]>> }>,
-            schemas: Array<string>
-        } = {
+        const data: PatchOperationRequest<PatchUserOperationValue> = {
             Operations: [
                 {
                     op: "replace",
@@ -1622,7 +1621,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             const verifiedEmailList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
                 get("VERIFIED_EMAIL_ADDRESSES"))?.split(",") || [];
 
-            verifiedEmailList.push(value);
+            verifiedEmailList.push(attributeValue);
             data.Operations[0].value = {
                 [schema.schemaId]: {
                     [VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE]:
@@ -1631,11 +1630,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             };
         } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
             translationKey = "user:profile.notifications.verifyMobile.";
-            setSelectedAttributeInfo({ schema, value });
+            setSelectedAttributeInfo({ schema, value: attributeValue });
             const verifiedMobileList: string[] = profileInfo?.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
                 get("VERIFIED_MOBILE_NUMBERS"))?.split(",") || [];
 
-            verifiedMobileList.push(value);
+            verifiedMobileList.push(attributeValue);
             data.Operations[0].value = {
                 [schema.schemaId]: {
                     [VERIFIED_MOBILE_NUMBERS_ATTRIBUTE]:
@@ -1684,18 +1683,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * Assign primary email address or mobile number the multi-valued attribute.
      *
      * @param schema - Schema of the attribute
-     * @param value - Value of the attribute
+     * @param attributeValue - Value of the attribute
      */
-    const handleMakePrimary = (schema: ProfileSchemaInterface, value: string) => {
-        const data: {
-            Operations: Array<{
-                op: string,
-                value: Record<string, string
-                    | Record<string, string | string[]> | Array<string> | Array<Record<string, string>>
-                >
-            }>,
-            schemas: Array<string>
-        } = {
+    const handleMakePrimary = (schema: ProfileSchemaInterface, attributeValue: string) => {
+        const data: PatchOperationRequest<PatchUserOperationValue> = {
             Operations: [
                 {
                     op: "replace",
@@ -1708,7 +1699,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
 
             data.Operations[0].value = {
-                [EMAIL_ATTRIBUTE]: [ value ]
+                [EMAIL_ATTRIBUTE]: [ attributeValue ]
             };
 
             const existingPrimaryEmail: string =
@@ -1733,7 +1724,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
                     {
                         type: "mobile",
-                        value
+                        value: attributeValue
                     }
                 ]
             };
@@ -1799,19 +1790,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * Handle the add multi-valued attribute item.
      *
      * @param schema - Schema of the attribute
-     * @param value - Value of the attribute
+     * @param attributeValue - Value of the attribute
      */
-    const handleAddMultiValuedItem = (schema: ProfileSchemaInterface, value: string) => {
-        const data: {
-            Operations: Array<{
-                op: string,
-                value: Record<string, string
-                    | Record<string, string | string[]>
-                    | Array<string> | Array<Record<string, string>>
-                >
-            }>,
-            schemas: Array<string>
-        } = {
+    const handleAddMultiValuedItem = (schema: ProfileSchemaInterface, attributeValue: string) => {
+        const data: PatchOperationRequest<PatchUserOperationValue> = {
             Operations: [
                 {
                     op: "replace",
@@ -1823,7 +1805,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         const attributeValues: string[] = profileInfo.get(schema.name)?.split(",") || [];
 
-        attributeValues.push(value);
+        attributeValues.push(attributeValue);
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             const existingPrimaryEmail: string = profileInfo?.get(EMAIL_ATTRIBUTE);
 
