@@ -15,6 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import Alert from "@oxygen-ui/react/Alert";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { SCIMConfigs, commonConfig, userConfig } from "@wso2is/admin.extensions.v1";
@@ -63,7 +65,7 @@ import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
 import { updateUserInfo } from "../api";
-import { AdminAccountTypes, LocaleJoiningSymbol, UserManagementConstants } from "../constants";
+import { AdminAccountTypes, LOCKED_REASON_MAP, LocaleJoiningSymbol, UserManagementConstants } from "../constants";
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
 
 // TODO: Remove this once multiple email and mobile support is onboarded.
@@ -195,12 +197,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const createdDate: string = user?.meta?.created;
     const modifiedDate: string = user?.meta?.lastModified;
     const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
-    user[userConfig.userProfileSchema]?.accountLocked === true;
+        user[userConfig.userProfileSchema]?.accountLocked === true;
+    const accountLockedReason: string = user[userConfig.userProfileSchema]?.lockedReason;
     const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true";
     const oneTimePassword: string = user[userConfig.userProfileSchema]?.oneTimePassword;
     const isCurrentUserAdmin: boolean = user?.roles?.some((role: RolesMemberInterface) =>
         role.display === administratorConfig.adminRoleName) ?? false;
-
 
     useEffect(() => {
 
@@ -1604,9 +1606,28 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         );
     };
 
+    /**
+     * Resolves the user account locked reason text.
+     * @returns The resolved account locked reason in readable text.
+     */
+    const resolveUserAccountLockedReason = (): string => {
+        if (accountLockedReason) {
+            return LOCKED_REASON_MAP[accountLockedReason] ?? LOCKED_REASON_MAP["DEFAULT"];
+        }
+
+        return "";
+    };
+
     return (
         !isReadOnlyUserStoresLoading
             ? (<>
+                {
+                    accountLocked && accountLockedReason && (
+                        <Alert severity="warning">
+                            { t(resolveUserAccountLockedReason()) }
+                        </Alert>
+                    )
+                }
                 {
                     !isEmpty(profileInfo) && (
                         <EmphasizedSegment padded="very">

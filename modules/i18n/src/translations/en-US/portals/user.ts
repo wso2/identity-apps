@@ -358,6 +358,19 @@ export const user: userNS = {
         }
     },
     profile: {
+        accountLockReason: {
+            adminInitiated: "The account has been manually locked by an administrator and requires " +
+                "administrator intervention.",
+            default: "The account is locked.",
+            maxAttemptsExceeded: "The account is locked due to multiple failed login attempts and will " +
+                "require intervention to unlock.",
+            pendingAdminForcedUserPasswordReset: "The account is locked until the user completes an " +
+                "administrator-initiated password reset.",
+            pendingAskPassword: "The account is locked until the user creates a password via the setup email sent.",
+            pendingEmailVerification: "The account is locked and requires email verification from the " +
+                "user to be activated.",
+            pendingSelfRegistration: "The account is locked pending user verification via the self-registration email."
+        },
         fields: {
             createdDate: "Created Date",
             emails: "Email",
