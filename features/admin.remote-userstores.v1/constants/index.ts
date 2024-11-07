@@ -16,5 +16,5 @@
  * under the License.
  */
 
-export * from "./remote-user-stores";
+export * from "./remote-user-stores-constants";
 export * from "./remote-user-store-meta";

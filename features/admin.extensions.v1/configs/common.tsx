@@ -66,7 +66,7 @@ export const commonConfig: CommonConfig = {
                     },
                     {
                         component: lazy(() =>
-                            import("@wso2is/admin.remote-userstores.v1/pages/remote-customer-user-store-create-page")
+                            import("@wso2is/admin.remote-userstores.v1/pages/remote-user-store-create-page")
                         ),
                         icon: {
                             icon: getSidePanelIcons().childIcon

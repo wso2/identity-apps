@@ -16,5 +16,32 @@
  * under the License.
  */
 
-export * from "./general-user-store-details-form";
-export * from "./attribute-mappings";
+/**
+ * Class containing user store constants.
+ */
+export class RemoteUserStoreUIConstants {
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private constructor() {}
+
+    public static readonly REMOTE_USER_STORE_TYPE_QUERY_PARAM: string = "type";
+
+}
+
+/**
+ * Remote user store implementation types, passed in query param.
+ */
+export enum RemoteUserStoreImplType {
+    /**
+     * Latest implementation.
+     */
+    OPTIMIZED = "optimized",
+    /**
+     * Old implementation.
+     */
+    CLASSIC = "classic"
+}

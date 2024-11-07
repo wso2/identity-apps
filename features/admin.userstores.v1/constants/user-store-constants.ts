@@ -225,3 +225,12 @@ export enum UserStoreTypes {
 export const REMOTE_USER_STORE_TYPES: string[] = [
     "WSOutboundUserStoreManager", "AsgardeoBusinessUserStoreManager"
 ];
+
+/**
+ * Enum for user store manager types.
+ */
+export enum RemoteUserStoreManagerType {
+    WSOutboundUserStoreManager = "WSOutboundUserStoreManager",
+    RemoteUserStoreManager = "RemoteUserStoreManager",
+    AsgardeoBusinessUserStoreManager = "AsgardeoBusinessUserStoreManager"
+}

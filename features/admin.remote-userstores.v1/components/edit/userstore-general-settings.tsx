@@ -53,7 +53,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, Grid, Icon, List, Segment } from "semantic-ui-react";
 import { disconnectAgentConnection, generateToken, getAgentConnections, regenerateToken } from "../../api";
-import { USERSTORE_VALIDATION_REGEX_PATTERNS } from "../../constants/remote-user-stores";
+import { USERSTORE_VALIDATION_REGEX_PATTERNS } from "../../constants/remote-user-stores-constants";
 import { AgentConnectionInterface, RegenerateTokenInterface } from "../../models/remote-user-stores";
 import { validateInputWithRegex } from "../../utils/userstore-utils";
 
