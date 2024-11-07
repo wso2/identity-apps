@@ -81,7 +81,6 @@
     JSONObject usernameValidityResponse;
     String username = request.getParameter("username");
     String password = request.getParameter("password");
-    String emailValue = request.getParameter("username");
     String consentPurposeGroupName = "SELF-SIGNUP";
     String consentPurposeGroupType = "SYSTEM";
     String[] missingClaimList = new String[0];
@@ -147,10 +146,16 @@
     // Get validation configuration.
     ValidationConfigurationRetrievalClient validationConfigurationRetrievalClient = new ValidationConfigurationRetrievalClient();
     JSONObject passwordConfig = null;
+    JSONObject usernameConfig = null;
     try {
         passwordConfig = validationConfigurationRetrievalClient.getPasswordConfiguration(tenantDomain);
+        usernameConfig = validationConfigurationRetrievalClient.getUsernameConfiguration(tenantDomain);
     } catch (Exception e) {
-        passwordConfig = null;
+        usernameConfig = null;
+    }
+    Boolean isAlphanumericUsernameEnabled = false;
+    if (usernameConfig.has("alphanumericFormatValidator")) {
+        isAlphanumericUsernameEnabled = (Boolean) usernameConfig.get("alphanumericFormatValidator");
     }
 
     try {
@@ -435,7 +440,7 @@
                                            class="form-control required usrName usrNameLength">
                                 </div>
                                 <div id="passwordField" class="field required">
-                                    <label for="passwordUserInput" class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Password")%></label>
+                                    <label for="password" class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Password")%></label>
                                     <div class="ui fluid left icon input addon-wrapper">
                                         <input
                                             class="form-control"
@@ -525,26 +530,39 @@
                                 <% Claim emailNamePII =
                                         uniquePIIs.get(IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM);
                                     if (emailNamePII != null) {
+                                        String emailValue = request.getParameter("username");
+                                        if (isAlphanumericUsernameEnabled) {
+                                            emailValue = request.getParameter(IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM);
+                                        }
                                 %>
-                                <input type="hidden" name="http://wso2.org/claims/emailaddress" class="form-control"
-                                    data-validate="email"
-                                <% if (MultitenantUtils.isEmailUserName()) { %>
-                                    value="<%=  Encode.forHtmlAttribute(user.getUsername())%>" readonly
-                                <% } %>
-                                    <% if (emailNamePII.getValidationRegex() != null) {
-                                            String pattern = Encode.forHtmlContent(emailNamePII.getValidationRegex());
-                                            String[] patterns = pattern.split("\\\\@");
-                                            String regex = StringUtils.join(patterns, "@");
-                                    %>
-                                    pattern="<%= regex %>"
-                                    <% } %>
-                                    <% if (emailNamePII.getRequired() || !piisConfigured) {%> required <%}%>
-                                    <% if
-                                        (skipSignUpEnableCheck && StringUtils.isNotEmpty(emailValue)) {%>
-                                    disabled<%}%>
-                                    value="<%= Encode.forHtmlAttribute(emailValue)%>"
-                                    placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Email")%>"
-                                />
+                                <div class="<% if (emailNamePII.getRequired() || !piisConfigured) {%> required <%}%> field">
+                                    <label for="email" class="control-label">
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Email")%>
+                                    </label>
+                                    <input
+                                        id="email"
+                                        type="<% if (isAlphanumericUsernameEnabled) {%>email<%} else {%>hidden<%}%>"
+                                        name="http://wso2.org/claims/emailaddress"
+                                        class="form-control"
+                                        data-validate="email"
+                                        <% if (MultitenantUtils.isEmailUserName()) { %>
+                                        value="<%=  Encode.forHtmlAttribute(user.getUsername())%>" readonly
+                                        <% } %>
+                                        <% if (emailNamePII.getValidationRegex() != null) {
+                                                String pattern = Encode.forHtmlContent(emailNamePII.getValidationRegex());
+                                                String[] patterns = pattern.split("\\\\@");
+                                                String regex = StringUtils.join(patterns, "@");
+                                        %>
+                                        pattern="<%= regex %>"
+                                        <% } %>
+                                        <% if (emailNamePII.getRequired() || !piisConfigured) {%> required <%}%>
+                                        <% if
+                                            (skipSignUpEnableCheck && StringUtils.isNotEmpty(emailValue)) {%>
+                                        disabled<%}%>
+                                        value="<% if (StringUtils.isNotEmpty(emailValue)) { %><%=Encode.forHtmlAttribute(emailValue)%><% } %>"
+                                        placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Email")%>"
+                                    />
+                                </div>
                                 <%
                                     }
 
