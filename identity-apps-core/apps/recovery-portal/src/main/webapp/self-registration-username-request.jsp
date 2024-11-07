@@ -1602,6 +1602,10 @@
                         var error_msg = $("#error-msg");
                         var server_error_msg = $("#server-error-msg");
 
+                        if (<%=isEmailUsernameEnabled%> && <%=hideUsernameFieldWhenEmailAsUsernameIsEnabled%>) {
+                            alphanumericUsernameUserInput.value = usernameUserInput.value;
+                        }
+
                         if (!<%=isUsernameValidationEnabled%>) {
                             if (showUsernameRegexValidationStatus()) {
                                 userName.value = alphanumericUsernameUserInput.value.trim();
@@ -1711,6 +1715,10 @@
                 var elements = document.getElementsByTagName("input");
                 var error_msg = $("#error-msg");
                 var server_error_msg = $("#server-error-msg");
+
+                if (<%=isEmailUsernameEnabled%> && <%=hideUsernameFieldWhenEmailAsUsernameIsEnabled%>) {
+                    alphanumericUsernameUserInput.value = usernameUserInput.value;
+                }
 
                 // Username validation.
                 if (!<%=isUsernameValidationEnabled%>) {
