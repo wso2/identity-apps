@@ -16,13 +16,16 @@
  * under the License.
  */
 
+import { Typography } from "@mui/material";
+import Button from "@oxygen-ui/react/Button";
+import Step from "@oxygen-ui/react/Step";
+import StepContent from "@oxygen-ui/react/StepContent";
+import StepLabel from "@oxygen-ui/react/StepLabel";
+import Stepper from "@oxygen-ui/react/Stepper";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
-import {
-    VerticalStepper,
-    VerticalStepperStepInterface
-} from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
+import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { addUserStore, getAType } from "@wso2is/admin.userstores.v1/api/user-stores";
 import {
@@ -38,6 +41,7 @@ import {
     UserstoreType
 } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, Claim, ClaimsGetParams, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
@@ -46,35 +50,24 @@ import { AxiosError } from "axios";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-import { Divider, Grid } from "semantic-ui-react";
-import { AttributeMappingsComponent } from "../components";
-import {
-    RemoteUserStoreAccessTypes,
-    RemoteUserStoreConstants,
-    ConnectedUserStoreTypes,
-    UserStoresFeatureDictionaryKeys
-} from "../constants";
 import { RouteComponentProps } from "react-router";
-import { RemoteUserStoreImplType, RemoteUserStoreUIConstants } from "../constants/ui-constants";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
-import RadioGroup from "@oxygen-ui/react/RadioGroup";
-import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
-import Radio from "@oxygen-ui/react/Radio";
+import { Dispatch } from "redux";
+import { Divider } from "semantic-ui-react";
+import { AttributeMappingsComponent } from "../components";
+import ConfigurationsForm from "../components/create/configurations-form";
 import GeneralUserStoreDetailsForm, {
     GeneralUserStoreDetailsFormRef
 } from "../components/create/general-user-store-details-form";
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
-import Stepper from "@oxygen-ui/react/Stepper";
-import Step from "@oxygen-ui/react/Step";
-import StepLabel from "@oxygen-ui/react/StepLabel";
-import StepContent from "@oxygen-ui/react/StepContent";
-import { Typography } from "@mui/material";
+import {
+    ConnectedUserStoreTypes,
+    RemoteUserStoreAccessTypes,
+    RemoteUserStoreConstants,
+    UserStoresFeatureDictionaryKeys
+} from "../constants";
+import { RemoteUserStoreImplType, RemoteUserStoreUIConstants } from "../constants/ui-constants";
 import { GeneralDetailsFormValuesInterface } from "../models/ui";
-import ConfigurationsForm from "../components/create/configurations-form";
-import Button from "@oxygen-ui/react/Button";
 
-import "./remote-user-store-edit-page.scss";
+import "./remote-user-store-create-page.scss";
 
 /**
  * Props for the remote customer user store page.
@@ -93,8 +86,10 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
 ): ReactElement => {
     const { location, ["data-testid"]: testId } = props;
 
-    const queryParams = new URLSearchParams(location.search);
-    const userStoreImplTypeQueryParam = queryParams.get(RemoteUserStoreUIConstants.REMOTE_USER_STORE_TYPE_QUERY_PARAM);
+    const queryParams: URLSearchParams = new URLSearchParams(location.search);
+    const userStoreImplTypeQueryParam: string = queryParams.get(
+        RemoteUserStoreUIConstants.REMOTE_USER_STORE_TYPE_QUERY_PARAM
+    );
 
     const { t } = useTranslation();
 
@@ -107,7 +102,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
     const userStoreFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userStores
     );
-    const isOptimizedImplEnabled = isFeatureEnabled(
+    const isOptimizedImplEnabled: boolean = isFeatureEnabled(
         userStoreFeatureConfig,
         RemoteUserStoreConstants.FEATURE_DICTIONARY.get(UserStoresFeatureDictionaryKeys.OptimizedUserStore)
     );
@@ -119,49 +114,51 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
 
     const enableIdentityClaims: boolean = useSelector((state: AppState) => state?.config?.ui?.enableIdentityClaims);
 
-    const [triggerBasicDetailsSubmit, setTriggerBasicDetailsSubmit] = useTrigger();
-    const [triggerAttributeMappingsSubmit, setTriggerAttributeMappingsSubmit] = useTrigger();
+    const [ triggerAttributeMappingsSubmit, setTriggerAttributeMappingsSubmit ] = useTrigger();
 
-    const [userStoreImplType, setUserStoreImplType] = useState<RemoteUserStoreImplType>(undefined);
-    const [userStoreDetails, setUserStoreDetails] = useState<UserstoreType>(null);
-    const [basicDetails, setBasicDetails] = useState({ description: "", name: "" });
-    const [userStoreType, setUserStoreType] = useState<string>(ConnectedUserStoreTypes.LDAP);
-    const [userStoreAccessType, setUserStoreAccessType] = useState<string>(RemoteUserStoreAccessTypes.ReadOnly);
-    const [isUserStoreNameValid, setUserStoreNameValid] = useState(false);
-    const [isUserStoreDescriptionValid, setUserStoreDescriptionValid] = useState(false);
-    const [inputDescription, setInputDescription] = useState<string>("");
-    const [isAttributesListRequestLoading, setAttributesListRequestLoading] = useState<boolean>(false);
-    const [mandatoryAttributes, setMandatoryAttributes] = useState<Claim[]>(null);
-    const [activeStep, setActiveStep] = useState<number>(0);
+    const [ userStoreImplType, setUserStoreImplType ] = useState<RemoteUserStoreImplType>(undefined);
+    const [ userStoreDetails, setUserStoreDetails ] = useState<UserstoreType>(null);
+    const [ basicDetails, setBasicDetails ] = useState({ description: "", name: "" });
+    const [ userStoreType, setUserStoreType ] = useState<string>(ConnectedUserStoreTypes.LDAP);
+    const [ userStoreAccessType, setUserStoreAccessType ] = useState<string>(RemoteUserStoreAccessTypes.ReadOnly);
+    const [ isUserStoreNameValid, setUserStoreNameValid ] = useState(false);
+    const [ isUserStoreDescriptionValid, setUserStoreDescriptionValid ] = useState(false);
+    const [ inputDescription, setInputDescription ] = useState<string>("");
+    const [ isAttributesListRequestLoading, setAttributesListRequestLoading ] = useState<boolean>(false);
+    const [ mandatoryAttributes, setMandatoryAttributes ] = useState<Claim[]>(null);
+    const [ activeStep, setActiveStep ] = useState<number>(0);
 
     /**
      * Checks and validate the user store type query parameter.
      */
     useEffect(() => {
-        const remoteUserStoreCreatePath = RemoteUserStoreConstants.getPaths().get("REMOTE_USER_STORE_CREATE");
-        const queryParamKey = RemoteUserStoreUIConstants.REMOTE_USER_STORE_TYPE_QUERY_PARAM;
+        const remoteUserStoreCreatePath: string = RemoteUserStoreConstants.getPaths().get("REMOTE_USER_STORE_CREATE");
+        const queryParamKey: string = RemoteUserStoreUIConstants.REMOTE_USER_STORE_TYPE_QUERY_PARAM;
 
         // Check if the provided query parameter is a valid enum value.
-        const isValidType = Object.values(RemoteUserStoreImplType).includes(
+        const isValidType: boolean = Object.values(RemoteUserStoreImplType).includes(
             userStoreImplTypeQueryParam as RemoteUserStoreImplType
         );
 
         if (!isValidType) {
-            const fallbackType = isOptimizedImplEnabled
+            const fallbackType: RemoteUserStoreImplType = isOptimizedImplEnabled
                 ? RemoteUserStoreImplType.OPTIMIZED
                 : RemoteUserStoreImplType.CLASSIC;
+
             history.replace(`${remoteUserStoreCreatePath}?${queryParamKey}=${fallbackType}`);
+
             return;
         }
 
         // If the query parameter is OPTIMIZED but it’s disabled, fallback to CLASSIC.
         if (userStoreImplTypeQueryParam === RemoteUserStoreImplType.OPTIMIZED && !isOptimizedImplEnabled) {
             history.replace(`${remoteUserStoreCreatePath}?${queryParamKey}=${RemoteUserStoreImplType.CLASSIC}`);
+
             return;
         }
 
         setUserStoreImplType(userStoreImplTypeQueryParam as RemoteUserStoreImplType);
-    }, [userStoreImplTypeQueryParam]);
+    }, [ userStoreImplTypeQueryParam ]);
 
     useEffect(() => {
         getLocalClaims(null, null, null, null, !enableIdentityClaims);
@@ -321,13 +318,6 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
             });
     };
 
-    const handleBasicDetailsSubmit = (values: Map<string, FormValue>) => {
-        setBasicDetails({
-            description: values.get("description").toString(),
-            name: values.get("name").toString()
-        });
-    };
-
     const preventBasicDetailsNext = (): boolean => {
         if (inputDescription) {
             return !isUserStoreNameValid || !isUserStoreDescriptionValid;
@@ -336,47 +326,6 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
         }
     };
 
-    const handleAttributeMappingsSubmit = (values: Map<string, FormValue>) => {
-        if (preventBasicDetailsNext()) {
-            return;
-        }
-
-        const attributeMappings: AttributeMapping[] = [];
-        const userStoreProperties: UserStoreProperty[] = serializeProperties();
-
-        values.forEach((value: string, key: string) => {
-            attributeMappings.push({
-                claimURI: key,
-                mappedAttribute: value
-            });
-        });
-
-        const userStoreData: UserStorePostData = {
-            claimAttributeMappings: attributeMappings,
-            description: basicDetails.description,
-            name: basicDetails.name,
-            properties: userStoreProperties,
-            typeId: RemoteUserStoreConstants.OUTBOUND_USER_STORE_TYPE_ID
-        };
-
-        handleUserStoreRegistration(userStoreData);
-    };
-
-    const resolveAttributeMappingSection = () => (
-        <>
-            <Text className="section-description">
-                {t("extensions:manage.features.userStores.create.pageLayout.steps.attributeMappings.subTitle")}
-            </Text>
-            <Divider hidden />
-            <AttributeMappingsComponent
-                isAttributesListRequestLoading={isAttributesListRequestLoading}
-                triggerSubmit={triggerAttributeMappingsSubmit}
-                mandatoryAttributes={mandatoryAttributes}
-                handleAttributeMappingsSubmit={handleAttributeMappingsSubmit}
-            />
-        </>
-    );
-
     const onGeneralDetailsFormSubmit = (values: GeneralDetailsFormValuesInterface) => {
         console.log(values);
         setActiveStep(1);
@@ -384,53 +333,53 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
 
     return (
         <PageLayout
-            title={t("extensions:manage.features.userStores.create.pageLayout.title")}
-            contentTopMargin={true}
-            description={t("extensions:manage.features.userStores.create.pageLayout.description")}
-            backButton={{
+            title={ t("extensions:manage.features.userStores.create.pageLayout.title") }
+            contentTopMargin={ true }
+            description={ t("extensions:manage.features.userStores.create.pageLayout.description") }
+            backButton={ {
                 "data-testid": `${testId}-page-back-button`,
                 onClick: () => {
                     history.push(AppConstants.getPaths().get("USERSTORES"));
                 },
                 text: t("userstores:pageLayout.edit.back")
-            }}
+            } }
             titleTextAlign="left"
-            bottomMargin={false}
+            bottomMargin={ false }
             showBottomDivider
-            data-testid={`${testId}-page-layout`}
+            data-testid={ `${testId}-page-layout` }
         >
             <EmphasizedSegment padded="very">
-                <Stepper activeStep={activeStep} orientation="vertical" className="remote-user-store-create-stepper">
+                <Stepper activeStep={ activeStep } orientation="vertical" className="remote-user-store-create-stepper">
                     <Step>
                         <StepLabel
                             optional={
-                                <Typography variant="body2">
+                                (<Typography variant="body2">
                                     Provide the basic details to identify and connect your user store.
-                                </Typography>
+                                </Typography>)
                             }
                         >
                             <Typography variant="h4">General Details</Typography>
                         </StepLabel>
                         <StepContent>
                             <GeneralUserStoreDetailsForm
-                                ref={generalUserStoreDetailsFormRef}
+                                ref={ generalUserStoreDetailsFormRef }
                                 userStoreManager={
                                     userStoreImplType === RemoteUserStoreImplType.OPTIMIZED
                                         ? RemoteUserStoreManagerType.RemoteUserStoreManager
                                         : RemoteUserStoreManagerType.WSOutboundUserStoreManager
                                 }
-                                isReadOnly={!hasUserStoreCreatePermissions}
-                                isReadWriteUserStoresEnabled={isReadWriteUserStoresEnabled}
-                                onSubmit={onGeneralDetailsFormSubmit}
+                                isReadOnly={ !hasUserStoreCreatePermissions }
+                                isReadWriteUserStoresEnabled={ isReadWriteUserStoresEnabled }
+                                onSubmit={ onGeneralDetailsFormSubmit }
                             />
                             <Button
                                 variant="contained"
-                                disabled={!hasUserStoreCreatePermissions}
-                                data-componentid={`${testId}-next-button`}
-                                onClick={() => {
+                                disabled={ !hasUserStoreCreatePermissions }
+                                data-componentid={ `${testId}-next-button` }
+                                onClick={ () => {
                                     if (generalUserStoreDetailsFormRef?.current?.triggerSubmit)
                                         generalUserStoreDetailsFormRef.current.triggerSubmit();
-                                }}
+                                } }
                             >
                                 Next
                             </Button>
@@ -440,10 +389,10 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
                     <Step>
                         <StepLabel
                             optional={
-                                <Typography variant="body2">
+                                (<Typography variant="body2">
                                     Complete the required settings to integrate your connected user store, enabling
                                     smooth user access to applications.
-                                </Typography>
+                                </Typography>)
                             }
                         >
                             <Typography variant="h4">Configurations</Typography>
@@ -455,26 +404,26 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
                                         ? RemoteUserStoreManagerType.RemoteUserStoreManager
                                         : RemoteUserStoreManagerType.WSOutboundUserStoreManager
                                 }
-                                isReadOnly={!hasUserStoreCreatePermissions}
+                                isReadOnly={ !hasUserStoreCreatePermissions }
                             />
                             <div className="step-actions-container">
                                 <Button
                                     variant="outlined"
-                                    disabled={!hasUserStoreCreatePermissions}
-                                    data-componentid={`${testId}-next-button`}
-                                    onClick={() => {
+                                    disabled={ !hasUserStoreCreatePermissions }
+                                    data-componentid={ `${testId}-next-button` }
+                                    onClick={ () => {
                                         setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
-                                    }}
+                                    } }
                                 >
                                     Previous
                                 </Button>
                                 <Button
                                     variant="contained"
-                                    disabled={!hasUserStoreCreatePermissions}
-                                    data-componentid={`${testId}-next-button`}
-                                    onClick={() => {
+                                    disabled={ !hasUserStoreCreatePermissions }
+                                    data-componentid={ `${testId}-next-button` }
+                                    onClick={ () => {
                                         setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
-                                    }}
+                                    } }
                                 >
                                     Finish
                                 </Button>
