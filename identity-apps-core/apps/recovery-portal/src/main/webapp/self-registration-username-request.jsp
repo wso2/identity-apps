@@ -114,6 +114,9 @@
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
     String consentPurposeGroupName = "SELF-SIGNUP";
     String consentPurposeGroupType = "SYSTEM";
+    boolean isEmailUsernameEnabled = MultitenantUtils.isEmailUserName();
+    boolean hideUsernameFieldWhenEmailAsUsernameIsEnabled = Boolean.parseBoolean(config.getServletContext().getInitParameter(
+        "HideUsernameWhenEmailAsUsernameEnabled"));
 
     String[] missingClaimList = new String[0];
     String[] missingClaimDisplayName = new String[0];
