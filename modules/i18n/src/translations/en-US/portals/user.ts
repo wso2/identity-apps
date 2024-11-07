@@ -201,7 +201,8 @@ export const user: userNS = {
                 alphanumericUsernameEnabled: "To invite users to set the password, disable " +
                     "alphanumeric username feature.",
                 emailInvalid: "To invite users to set the password, please enter a valid email address.",
-                emailVerificationDisabled: "To invite users to set the password, enable email invitations for user password setup from <1>Login & Registration settings</1>.",
+                emailVerificationDisabled: "To invite users to set the password, enable email invitations " +
+                    "for user password setup from <1>Login & Registration settings</1>.",
                 inviteOffline: "Invite offline",
                 inviteViaEmail: "Invite via email"
             },
@@ -241,7 +242,7 @@ export const user: userNS = {
             sidePanel: {
                 fileBased: "File Based",
                 fileFormatContent: "Headers of the CSV file should be user attributes that are " +
-                    "mapped to <1>local attributes</1>.",
+                "mapped to <1>local attributes</1>.",
                 fileFormatSampleHeading: "Sample CSV file format:",
                 fileFormatTitle: "CSV File Format",
                 manual: "Manual"
@@ -273,7 +274,8 @@ export const user: userNS = {
                 fileBased: {
                     hint: "Bulk invite multiple users using a CSV file."
                 },
-                inviteEmailInfo: "An email with a confirmation link will be sent to the provided email address for the user to set their own password.",
+                inviteEmailInfo: "An email with a confirmation link will be " +
+                    "sent to the provided email address for the user to set their own password.",
                 manualCreation: {
                     alerts: {
                         creationSuccess: {
@@ -281,7 +283,8 @@ export const user: userNS = {
                             message: "User Creation Successful"
                         }
                     },
-                    disabledHint: "The manual option is disabled due to the usage of alphanumeric usernames in your organization.",
+                    disabledHint: "The manual option is disabled due to the usage of " +
+                        "alphanumeric usernames in your organization.",
                     emailsLabel: "Emails",
                     emailsPlaceholder: "Enter email addresses",
                     groupsLabel: "Groups",
@@ -322,7 +325,7 @@ export const user: userNS = {
                     success: "Success",
                     warning: "Warning"
                 },
-                totalUserAssignmentCount: "Total group assignment count ",
+                totalUserAssignmentCount: "Total group assigment count ",
                 totalUserCreationCount: "Total user creation count",
                 userstoreMessage: "The created users will be added to the <1>{{ userstore }}</1> user store."
             }
@@ -363,6 +366,19 @@ export const user: userNS = {
         }
     },
     profile: {
+        accountLockReason: {
+            adminInitiated: "The account has been manually locked by an administrator and requires " +
+                "administrator intervention.",
+            default: "The account is locked and requires intervention to unlock.",
+            maxAttemptsExceeded: "The account is locked due to multiple failed login attempts and will " +
+                "require intervention to unlock.",
+            pendingAdminForcedUserPasswordReset: "The account is locked until the user completes an " +
+                "administrator-initiated password reset.",
+            pendingAskPassword: "The account is locked until the user creates a password via the setup email sent.",
+            pendingEmailVerification: "The account is locked and requires email verification from the " +
+                "user to be activated.",
+            pendingSelfRegistration: "The account is locked pending user verification via the self-registration email."
+        },
         confirmationModals: {
             emailAddressDeleteConfirmation: {
                 assertionHint: "Please confirm your action.",

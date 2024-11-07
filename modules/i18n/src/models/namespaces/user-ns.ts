@@ -353,6 +353,15 @@ export interface userNS {
                 heading: string;
             }
         },
+        accountLockReason: {
+            adminInitiated: string;
+            default: string;
+            maxAttemptsExceeded: string;
+            pendingAdminForcedUserPasswordReset: string;
+            pendingAskPassword: string;
+            pendingEmailVerification: string;
+            pendingSelfRegistration: string;
+        };
         fields: {
             createdDate: string;
             generic: {
