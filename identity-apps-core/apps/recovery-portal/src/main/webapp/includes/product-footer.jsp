@@ -22,14 +22,14 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Arrays" %>
 
+<%-- Localization --%>
+<jsp:directive.include file="localize.jsp" />
+
 <%-- Include tenant context --%>
 <jsp:directive.include file="../tenant-resolve.jsp"/>
 
 <%-- Branding Preferences --%>
 <jsp:directive.include file="branding-preferences.jsp"/>
-
-<%-- Localization --%>
-<jsp:directive.include file="localize.jsp" />
 
 <%-- Cookie Consent Banner --%>
 <%

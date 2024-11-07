@@ -766,6 +766,7 @@ export const extensions: Extensions = {
                                     identifier: {
                                         emptyValidate: "Identifier cannot be empty",
                                         alreadyExistsError: "Identifier already exists in the organization. Please choose a different one.",
+                                        errorOccurred: "An error occurred while validating the identifier.",
                                         invalid: "Identifier cannot contain spaces",
                                         hint: "We recommend using a URI as the identifier, but you do not need to make the URI publicly available since {{ productName }} will not access your API. {{ productName }} will use this identifier value as the audience(aud) claim in the issued JWT tokens. <1>This field should be unique; once created, it is not editable.</1>",
                                         label: "Identifier",
@@ -805,6 +806,7 @@ export const extensions: Extensions = {
                                     permission: {
                                         emptyValidate: "Permission(scope) cannot be empty",
                                         uniqueValidate: "This permission (scope) already exists in the organization. Please choose a different one.",
+                                        errorOccurred: "An error occurred while validating the permission.",
                                         invalid: "Permission (scope) cannot contain spaces",
                                         label: "Permission (scope)",
                                         placeholder: "read_bookings",
@@ -1353,9 +1355,7 @@ export const extensions: Extensions = {
                     assertionHint: "Please confirm your action.",
                     content: "This action is irreversible and will permanently revert your branding preferences.",
                     header: "Are you sure?",
-                    message:
-                        "If you revert the branding preferences, your users will start to see " +
-                        "{{ productName }} branding on the login flows. Please proceed with caution."
+                    message: "Reverting your branding preferences will apply the default branding from the next available level (such as your organization or parent organization)."
                 },
                 unpublishBranding: {
                     assertionHint: "Please confirm your action.",
@@ -1985,7 +1985,8 @@ export const extensions: Extensions = {
                 application: "Application",
                 applicationBrandingtitle: "Application Branding",
                 applicationBrandingDescription: "Customize consumer-facing user interfaces of applications.",
-                applicationListWarning: "Please select an application from the list above to customize the branding preferences.",
+                applicationListWarning: "Select an application from the list above to customize the branding preferences.",
+                defaultBrandingAppliedMessage: "Organization branding has been applied to this application because no app-specific branding is set.",
                 backButtonText: "Go back to Application Settings",
                 description: "Customize consumer-facing user interfaces of applications in your organization.",
                 organization: "Organization",
@@ -3970,6 +3971,11 @@ export const extensions: Extensions = {
                                 hint: "This will enable email verification at the self-registration.",
                                 label: "Activate account immediately"
                             },
+                            showUsernameUnavailability: {
+                                msg: "If selected, a descriptive error message will be shown to the user if the chosen username is already taken. However, this may lead to username enumeration.",
+                                hint: "This will enable a descriptive error message to be displayed when the username is unavailable at the self-registration.",
+                                label: "Display message if username unavailable"
+                            },
                             signUpConfirmation: {
                                 recommendationMsg:
                                     "It is recommended to enable account verification for " + "self registration.",
@@ -4027,6 +4033,7 @@ export const extensions: Extensions = {
                 administratorSettingsSubtitle: "Settings related to organizational administrators.",
                 administratorSettingsTitle: "Administrator Settings",
                 backButton: "Go back to administrators",
+                backButtonConsoleSettings: "Go back to console settings",
                 disableToggleMessage: "Enable users to manage the organization",
                 enableToggleMessage: "Disable users to manage the organization",
                 error: {

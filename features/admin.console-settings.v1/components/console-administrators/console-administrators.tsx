@@ -36,6 +36,7 @@ import React, {
     useEffect,
     useState
 } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import AdministratorsList from "./administrators-list/administrators-list";
 import InvitedAdministratorsList from "./invited-administrators/invited-administrators-list";
@@ -57,6 +58,7 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
     const { [ "data-componentid" ]: componentId } = props;
 
     const { isFirstLevelOrganization, isSubOrganization } = useGetCurrentOrganizationType();
+    const { t } = useTranslation();
 
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
@@ -71,6 +73,7 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
     const [ isEnterpriseLoginEnabled, setIsEnterpriseLoginEnabled ] = useState<boolean>(false);
 
     const organizationName: string = store.getState().auth.tenantDomain;
+    const productName: string = useSelector((state: AppState) => state.config.ui.productName);
 
     const useOrgConfig: UseOrganizationConfigType = useOrganizationConfigV2;
 
@@ -186,8 +189,12 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
                     value={ activeAdministratorGroup }
                     onChange={ (_: ChangeEvent<HTMLInputElement>, value: string) => setActiveAdministratorGroup(value) }
                 >
-                    <FormControlLabel value="administrators" control={ <Radio /> } label="Administrators" />
-                    <FormControlLabel value="privilegedUsers" control={ <Radio /> } label="Privileged Users" />
+                    <FormControlLabel value="administrators" control={ <Radio /> } label={ productName } />
+                    <FormControlLabel
+                        value="privilegedUsers"
+                        control={ <Radio /> }
+                        label={ t("common:organizationName", { orgName: organizationName }) }
+                    />
                 </RadioGroup>
             );
         }

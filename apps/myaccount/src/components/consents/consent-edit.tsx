@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import flatten from "lodash-es/flatten";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,7 +31,7 @@ import {
     ServiceInterface
 } from "../../models";
 import { toSentenceCase } from "../../utils";
-import { DangerZone, DangerZoneGroup, EditSection } from "../shared";
+import { EditSection } from "../shared";
 
 /**
  * Proptypes for the application consent edit component.

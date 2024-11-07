@@ -28,6 +28,11 @@
 <%@ include file="includes/localize.jsp" %>
 <jsp:directive.include file="includes/init-url.jsp"/>
 
+<%
+    // Add the totp screen to the list to retrieve text branding customizations.
+    screenNames.add("totp");
+%>
+
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 

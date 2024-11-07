@@ -34,7 +34,11 @@
     String uiLocaleFromURL = request.getParameter("ui_locales");
     String localeFromCookie = null;
     String BUNDLE = "org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources";
-    
+
+    // List of screen names for retrieving text branding customizations.
+    List<String> screenNames = new ArrayList<>();
+    screenNames.add("common");
+
     // Map to store default supported language codes.
     // TODO: Use this map to generate the `language-switcher.jsp`.
     Map<String, String> supportedLanguages = new HashMap<>();
@@ -230,7 +234,7 @@
             String COUNTRY_PLACEHOLDER = "{{country}}";
             String LOCALE_PLACEHOLDER = "{{locale}}";
 
-            if (transformedLink.contains(LANGUAGE_PLACEHOLDER) || transformedLink.contains(COUNTRY_PLACEHOLDER) || transformedLink.contains(LOCALE_PLACEHOLDER)) {            
+            if (transformedLink.contains(LANGUAGE_PLACEHOLDER) || transformedLink.contains(COUNTRY_PLACEHOLDER) || transformedLink.contains(LOCALE_PLACEHOLDER)) {
                 transformedLink = transformedLink
                     .replace("{{lang}}", langCode)
                     .replace("{{country}}", countryCode)

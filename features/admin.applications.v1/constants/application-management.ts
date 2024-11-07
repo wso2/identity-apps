@@ -433,7 +433,7 @@ export class ApplicationManagementConstants {
             "\\${UserTenantHint}",
             "\\${organizationIdHint}"
         ],
-        ACCESS_URL_MAX_LENGTH: 200,
+        ACCESS_URL_MAX_LENGTH: 1024,
         ACCESS_URL_MIN_LENGTH: 3,
         APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),
         APP_NAME_MAX_LENGTH: 50,
@@ -441,6 +441,8 @@ export class ApplicationManagementConstants {
     };
 
     public static readonly CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY: string = "isConditionalAuthTourViewed";
+
+    public static readonly CONDITIONAL_AUTH_EDITOR_THEME_STORAGE_KEY: string = "conditionalAuthEditorTheme"
 
     public static readonly CUSTOM_APPLICATION_OIDC: string = "custom-application-oidc";
 

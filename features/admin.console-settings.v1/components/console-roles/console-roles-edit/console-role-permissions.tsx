@@ -21,8 +21,6 @@ import Autocomplete, {
     AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
-import { FeatureAccessConfigInterface } from "@wso2is/access-control";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import { RenderChip } from "@wso2is/admin.roles.v2/components/edit-role/edit-role-common/render-chip";
 import { Schemas } from "@wso2is/admin.roles.v2/constants/role-constants";
@@ -45,7 +43,7 @@ import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import useGetAPIResourceCollections from "../../../api/use-get-api-resource-collections";
 import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
@@ -107,12 +105,6 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
-
-    const consoleSettingsFeatureConfig: FeatureAccessConfigInterface =
-        useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
-    const isConsoleRolesEditable: boolean = !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
-        "consoleSettings.editableConsoleRoles"
-    );
 
     const { data: tenantAPIResourceCollections } = useGetAPIResourceCollections(
         !isSubOrganization,
@@ -340,7 +332,7 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
                     option={ option }
                     activeOption={ null }
                     setActiveOption={ () => null }
-                    variant="solid"
+                    variant="filled"
                 />
             )) }
         />
@@ -360,7 +352,7 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
                     }
                 </Heading>
             </div>
-            { isSubOrganization || !isConsoleRolesEditable
+            { isSubOrganization
                 ? readOnlyPermissionListSubOrganization()
                 : (
                     <CreateConsoleRoleWizardPermissionsForm

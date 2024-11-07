@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,7 @@ import Axios from "axios";
 import Joi, { ValidationResult } from "joi";
 
 type ValidationFunction = (value: string) => boolean;
+type ValidationFunctionWithScheme = (value: string, options?: Joi.UriOptions) => boolean;
 
 /**
  * This validates domains. Returns true if valid. False if not valid.
@@ -79,13 +80,17 @@ export const mobileNumber: ValidationFunction = (value: string): boolean => {
  * Check is the satisfies RFC 3986 specifications.
  *
  * @param value - string to be validated.
+ * @param scheme - (optional) scheme used to be validated.
  */
-export const url: ValidationFunction = (value: string): boolean => {
-    if (
-        Joi.string()
-            .uri()
-            .validate(value).error
-    ) {
+export const url: ValidationFunctionWithScheme = (
+    value: string,
+    options?: Joi.UriOptions
+): boolean => {
+    const schema = options
+        ? Joi.string().uri(options)
+        : Joi.string().uri();
+
+    if (schema.validate(value).error) {
         return false;
     }
 

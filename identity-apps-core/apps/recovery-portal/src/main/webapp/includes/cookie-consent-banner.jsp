@@ -20,14 +20,14 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 
+<%-- Localization --%>
+<jsp:directive.include file="./localize.jsp" />
+
 <%-- Include tenant context --%>
 <jsp:directive.include file="../tenant-resolve.jsp"/>
 
 <%-- Branding Preferences --%>
 <jsp:directive.include file="./branding-preferences.jsp"/>
-
-<%-- Localization --%>
-<jsp:directive.include file="./localize.jsp" />
 
 <%
     if (!StringUtils.isBlank(cookiePolicyURL)) {

@@ -20,6 +20,6 @@ import { OrganizationConfigs } from "./models";
 
 export const organizationConfigs: OrganizationConfigs = {
     allowNavigationInDropdown: false,
-    showOrganizationDropdown: false,
-    showSwitcherInTenants: false
+    showOrganizationDropdown: true,
+    showSwitcherInTenants: true
 };

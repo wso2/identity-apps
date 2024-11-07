@@ -34,6 +34,7 @@ import { OrganizationResourceEndpointsInterface } from "@wso2is/admin.organizati
 import { RolesResourceEndpointsInterface } from "@wso2is/admin.roles.v2/models/endpoints";
 import { SecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "@wso2is/admin.server-configurations.v1";
+import { SMSTemplateResourceEndpointsInterface } from "@wso2is/admin.sms-templates.v1/models/endpoints";
 import { ExtensionTemplatesEndpointsInterface } from "@wso2is/admin.template-core.v1/models/endpoints";
 import { TenantResourceEndpointsInterface } from "@wso2is/admin.tenants.v1/models/endpoints";
 import { UsersResourceEndpointsInterface } from "@wso2is/admin.users.v1/models/endpoints";
@@ -194,6 +195,10 @@ export interface FeatureConfigInterface {
      * Session management Configurations feature
      */
     sessionManagement?: FeatureAccessConfigInterface;
+    /**
+     * SMS templates feature.
+     */
+    smsTemplates?: FeatureAccessConfigInterface;
     /**
      * User store configurations feature.
      */
@@ -545,6 +550,7 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     ConsoleSettingsResourceEndpointsInterface,
     ExtensionTemplatesEndpointsInterface,
     ApplicationsTemplatesEndpointsInterface,
+    SMSTemplateResourceEndpointsInterface,
     ActionsResourceEndpointsInterface {
 
     CORSOrigins: string;

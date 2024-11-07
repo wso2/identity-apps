@@ -429,20 +429,26 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                         value: BasicRoleInterface[],
                                         getTagProps: AutocompleteRenderGetTagProps
                                     ) => value.map((option: BasicRoleInterface, index: number) => (
-                                        <Chip
-                                            { ...getTagProps({ index }) }
-                                            key={ index }
-                                            label={ option.name }
-                                            activeOption={ activeOption }
-                                            setActiveOption={ setActiveOption }
-                                            variant={
-                                                initialSelectedRoles?.find(
-                                                    (role: BasicRoleInterface) => role.id === option.id
-                                                )
-                                                    ? "solid"
-                                                    : "outlined"
-                                            }
-                                        />
+                                        <>
+                                            { /* `activeOption` and `setActiveOption` are not part of Chip API */ }
+                                            { /* TODO: Tracker: https://github.com/wso2/product-is/issues/21351 */ }
+                                            { /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */ }
+                                            { /* @ts-ignore */ }
+                                            <Chip
+                                                { ...getTagProps({ index }) }
+                                                key={ index }
+                                                label={ option.name }
+                                                activeOption={ activeOption }
+                                                setActiveOption={ setActiveOption }
+                                                variant={
+                                                    initialSelectedRoles?.find(
+                                                        (role: BasicRoleInterface) => role.id === option.id
+                                                    )
+                                                        ? "filled"
+                                                        : "outlined"
+                                                }
+                                            />
+                                        </>
                                     )) }
                                     renderOption={ (
                                         props: HTMLAttributes<HTMLLIElement>,

@@ -1,5 +1,74 @@
 # @wso2is/dynamic-forms
 
+## 2.4.1
+
+### Patch Changes
+
+- [#7091](https://github.com/wso2/identity-apps/pull/7091) [`050facbeac627265737d11bcd18b5ac2f0c32d72`](https://github.com/wso2/identity-apps/commit/050facbeac627265737d11bcd18b5ac2f0c32d72) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bump `@oxygen-ui/react` and `@oxygen-ui/react-icons` to v2.0.0
+
+- Updated dependencies [[`050facbeac627265737d11bcd18b5ac2f0c32d72`](https://github.com/wso2/identity-apps/commit/050facbeac627265737d11bcd18b5ac2f0c32d72)]:
+  - @wso2is/react-components@2.8.1
+
+## 2.4.0
+
+### Minor Changes
+
+- [#7022](https://github.com/wso2/identity-apps/pull/7022) [`8ee127818ea4c8aac46296a1c93b45806ee887c2`](https://github.com/wso2/identity-apps/commit/8ee127818ea4c8aac46296a1c93b45806ee887c2) Thanks [@brionmario](https://github.com/brionmario)! - - Update `@oxygen-ui` version to `v1.15.2`.
+  - Remove unwanted padding in the Oxygen UI text field in the theme config.
+  - Fix typo in tenants feature.
+
+### Patch Changes
+
+- Updated dependencies [[`8ee127818ea4c8aac46296a1c93b45806ee887c2`](https://github.com/wso2/identity-apps/commit/8ee127818ea4c8aac46296a1c93b45806ee887c2)]:
+  - @wso2is/react-components@2.8.0
+  - @wso2is/validation@2.4.0
+  - @wso2is/core@2.4.0
+
+## 2.3.0
+
+### Minor Changes
+
+- [#6962](https://github.com/wso2/identity-apps/pull/6962) [`d54b53ec37367ea29b822c29985c95fb75418f52`](https://github.com/wso2/identity-apps/commit/d54b53ec37367ea29b822c29985c95fb75418f52) Thanks [@brionmario](https://github.com/brionmario)! - Introduce Multi-Tenancy feature
+
+### Patch Changes
+
+- Updated dependencies [[`d54b53ec37367ea29b822c29985c95fb75418f52`](https://github.com/wso2/identity-apps/commit/d54b53ec37367ea29b822c29985c95fb75418f52)]:
+  - @wso2is/react-components@2.7.0
+  - @wso2is/validation@2.3.0
+  - @wso2is/core@2.3.0
+
+## 2.2.0
+
+### Minor Changes
+
+- [#7012](https://github.com/wso2/identity-apps/pull/7012) [`2bae555318c94d93b0e38304c2781e0b5cd8b5b1`](https://github.com/wso2/identity-apps/commit/2bae555318c94d93b0e38304c2781e0b5cd8b5b1) Thanks [@brionmario](https://github.com/brionmario)! - Bump `@oxygen-ui` to `v1.15.1`
+
+### Patch Changes
+
+- Updated dependencies [[`2bae555318c94d93b0e38304c2781e0b5cd8b5b1`](https://github.com/wso2/identity-apps/commit/2bae555318c94d93b0e38304c2781e0b5cd8b5b1)]:
+  - @wso2is/core@2.2.0
+  - @wso2is/react-components@2.6.0
+  - @wso2is/validation@2.2.0
+
+## 2.1.0
+
+### Minor Changes
+
+- [#6985](https://github.com/wso2/identity-apps/pull/6985) [`4fd710e435d292d59de289f4c71293a330a85267`](https://github.com/wso2/identity-apps/commit/4fd710e435d292d59de289f4c71293a330a85267) Thanks [@brionmario](https://github.com/brionmario)! - Bump `@oxygen-ui` version to `v15.x`
+
+### Patch Changes
+
+- Updated dependencies [[`4fd710e435d292d59de289f4c71293a330a85267`](https://github.com/wso2/identity-apps/commit/4fd710e435d292d59de289f4c71293a330a85267)]:
+  - @wso2is/react-components@2.5.0
+  - @wso2is/validation@2.1.0
+
+## 2.0.111
+
+### Patch Changes
+
+- Updated dependencies [[`f1e54d9187ebecf488222f32aabc60c1c067ad52`](https://github.com/wso2/identity-apps/commit/f1e54d9187ebecf488222f32aabc60c1c067ad52)]:
+  - @wso2is/validation@2.0.10
+
 ## 2.0.110
 
 ### Patch Changes

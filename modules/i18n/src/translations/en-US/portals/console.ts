@@ -456,7 +456,8 @@ export const console: ConsoleNS = {
             },
             userAttributesAndStores: "User Attributes & Stores",
             userManagement: "User Management",
-            branding: "Branding"
+            branding: "Branding",
+            tenants: "Root Organizations"
         },
         validations: {
             inSecureURL: {
