@@ -1,5 +1,26 @@
 # @wso2is/admin.administrators.v1
 
+## 2.29.19
+
+### Patch Changes
+
+- [#7091](https://github.com/wso2/identity-apps/pull/7091) [`050facbeac627265737d11bcd18b5ac2f0c32d72`](https://github.com/wso2/identity-apps/commit/050facbeac627265737d11bcd18b5ac2f0c32d72) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bump `@oxygen-ui/react` and `@oxygen-ui/react-icons` to v2.0.0
+
+- Updated dependencies [[`050facbeac627265737d11bcd18b5ac2f0c32d72`](https://github.com/wso2/identity-apps/commit/050facbeac627265737d11bcd18b5ac2f0c32d72)]:
+  - @wso2is/admin.server-configurations.v1@2.28.19
+  - @wso2is/admin.remote-userstores.v1@1.5.19
+  - @wso2is/admin.applications.v1@2.30.19
+  - @wso2is/admin.feature-gate.v1@1.4.19
+  - @wso2is/admin.extensions.v1@2.34.19
+  - @wso2is/admin.userstores.v1@2.25.19
+  - @wso2is/admin.tenants.v1@2.27.19
+  - @wso2is/react-components@2.8.1
+  - @wso2is/admin.roles.v2@2.26.19
+  - @wso2is/admin.users.v1@2.27.19
+  - @wso2is/admin.core.v1@2.34.19
+  - @wso2is/form@2.5.1
+  - @wso2is/admin.authentication.v1@2.25.19
+
 ## 2.29.18
 
 ### Patch Changes
