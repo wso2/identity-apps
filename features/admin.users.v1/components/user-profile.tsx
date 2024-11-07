@@ -24,10 +24,11 @@ import TableRow from "@mui/material/TableRow";
 import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
+import Alert from "@oxygen-ui/react/Alert";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
 import { CheckIcon,  ChevronDownIcon, StarIcon, TrashIcon } from "@oxygen-ui/react-icons";
-import Alert from "@oxygen-ui/react/Alert";
+
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
@@ -80,7 +81,7 @@ import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
 import { updateUserInfo } from "../api";
-import { AdminAccountTypes, LocaleJoiningSymbol, UserManagementConstants } from "../constants";
+import { ACCOUNT_LOCK_REASON_MAP, AdminAccountTypes, LocaleJoiningSymbol, UserManagementConstants } from "../constants";
 import {
     AccountConfigSettingsInterface,
     PatchUserOperationValue,
@@ -88,8 +89,6 @@ import {
     SubValueInterface
 } from "../models";
 import "./user-profile.scss";
-import { ACCOUNT_LOCK_REASON_MAP, AdminAccountTypes, LocaleJoiningSymbol, UserManagementConstants } from "../constants";
-import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
 
 const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
 const MOBILE_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
@@ -2557,31 +2556,31 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         return (
             <ConfirmationModal
-                data-testid={`${testId}-confirmation-modal`}
-                onClose={handleMultiValuedItemDeleteModalClose}
+                data-testid={ `${testId}-confirmation-modal` }
+                onClose={ handleMultiValuedItemDeleteModalClose }
                 type="negative"
-                open={Boolean(selectedAttributeInfo?.value)}
-                assertionHint={t(`${translationKey}assertionHint`)}
+                open={ Boolean(selectedAttributeInfo?.value) }
+                assertionHint={ t(`${translationKey}assertionHint`) }
                 assertionType="checkbox"
-                primaryAction={t("common:confirm")}
-                secondaryAction={t("common:cancel")}
-                onSecondaryActionClick={handleMultiValuedItemDeleteModalClose}
-                onPrimaryActionClick={handleMultiValuedItemDeleteConfirmClick}
-                closeOnDimmerClick={false}
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ handleMultiValuedItemDeleteModalClose }
+                onPrimaryActionClick={ handleMultiValuedItemDeleteConfirmClick }
+                closeOnDimmerClick={ false }
             >
-                <ConfirmationModal.Header data-testid={`${testId}-confirmation-modal-header`}>
-                    {t(`${translationKey}heading`)}
+                <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
+                    { t(`${translationKey}heading`) }
                 </ConfirmationModal.Header>
-                <ConfirmationModal.Message data-testid={`${testId}-confirmation-modal-message`} attached negative>
-                    {t(`${translationKey}description`)}
+                <ConfirmationModal.Message data-testid={ `${testId}-confirmation-modal-message` } attached negative>
+                    { t(`${translationKey}description`) }
                 </ConfirmationModal.Message>
-                <ConfirmationModal.Content data-testid={`${testId}-confirmation-modal-content`}>
-                    {t(`${translationKey}content`)}
+                <ConfirmationModal.Content data-testid={ `${testId}-confirmation-modal-content` }>
+                    { t(`${translationKey}content`) }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         );
     };
-    
+
     /*
      * Resolves the user account locked reason text.
      * @returns The resolved account locked reason in readable text.
