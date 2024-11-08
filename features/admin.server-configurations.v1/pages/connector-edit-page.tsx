@@ -77,7 +77,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     const { getLink } = useDocumentation();
 
     const applicationFeatureConfig: FeatureConfigInterface = useSelector(
-        (state: AppState) => state.config.ui.features.applications);
+        (state: AppState) => state?.config?.ui?.features?.applications);
 
     const [ isConnectorRequestLoading, setConnectorRequestLoading ] = useState<boolean>(false);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
