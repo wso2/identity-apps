@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.4.1
+
+### Patch Changes
+
+- [#6563](https://github.com/wso2/identity-apps/pull/6563) [`4b477833d0178b12ceba5c8623505c33c288b3c6`](https://github.com/wso2/identity-apps/commit/4b477833d0178b12ceba5c8623505c33c288b3c6) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add multi-valued email, mobile support to my account
+
 ## 2.4.0
 
 ### Minor Changes
