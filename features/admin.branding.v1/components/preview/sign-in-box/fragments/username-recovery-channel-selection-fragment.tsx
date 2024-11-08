@@ -27,8 +27,7 @@ import useBrandingPreference from "../../../../hooks/use-branding-preference";
 export type UsernameRecoveryChannelSelectionFragmentInterface = IdentifiableComponentInterface;
 
 /**
- * Usernam
- * e recovery channel selection fragment component for the branding preview of Username Recovery box.
+ * Username recovery channel selection fragment component for the branding preview of Username Recovery box.
  *
  * @param props - Props injected to the component.
  * @returns Username recovery fragment component.
@@ -36,7 +35,7 @@ export type UsernameRecoveryChannelSelectionFragmentInterface = IdentifiableComp
 const UsernameRecoveryChannelSelectionFragment: FunctionComponent<UsernameRecoveryChannelSelectionFragmentInterface> = (
     props: UsernameRecoveryChannelSelectionFragmentInterface
 ): ReactElement => {
-    const { ["data-componentid"]: componentId } = props;
+    const { ["data-componentid"]: componentId = "username-recovery-channel-selection" } = props;
 
     const { i18n } = useBrandingPreference();
 
@@ -95,12 +94,4 @@ const UsernameRecoveryChannelSelectionFragment: FunctionComponent<UsernameRecove
     );
 };
 
-/**
- * Default proptypes for the component.
- */
-UsernameRecoveryChannelSelectionFragment.defaultProps = {
-    "data-componentid": "username-recovery-channel-selection"
-};
-
 export default UsernameRecoveryChannelSelectionFragment;
-

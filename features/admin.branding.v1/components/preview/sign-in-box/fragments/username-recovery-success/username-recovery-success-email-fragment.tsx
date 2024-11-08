@@ -40,8 +40,9 @@ interface UsernameRecoverySuccessEmailFragmentInterface extends IdentifiableComp
 const UsernameRecoverySuccessEmailFragment: FunctionComponent<UsernameRecoverySuccessEmailFragmentInterface> = (
     props: UsernameRecoverySuccessEmailFragmentInterface
 ): ReactElement => {
-    const { brandingPreference,
-        ["data-componentid"]: componentId
+    const {
+        brandingPreference,
+        ["data-componentid"]: componentId = "username-recovery-success-email"
     } = props;
 
     const { i18n } = useBrandingPreference();
@@ -82,14 +83,6 @@ const UsernameRecoverySuccessEmailFragment: FunctionComponent<UsernameRecoverySu
             </p>
         </div>
     );
-};
-
-/**
- * Default proptypes for the component.
- * See type definitions in interfaces.
- */
-UsernameRecoverySuccessEmailFragment.defaultProps = {
-    "data-componentid": "username-recovery-success-email"
 };
 
 export default UsernameRecoverySuccessEmailFragment;

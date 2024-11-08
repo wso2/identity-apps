@@ -232,7 +232,6 @@ export class CustomTextPreferenceConstants {
                 SMS_OTP: "send.code.via.sms"
             }
         },
-
         PASSWORD_RESET: {
             BUTTON: "password.reset.button",
             HEADING: "password.reset.heading"

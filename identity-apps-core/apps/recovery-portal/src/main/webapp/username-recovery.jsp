@@ -48,7 +48,6 @@
     screenNames.add("username-recovery-claim");
 %>
 
-
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
@@ -112,7 +111,6 @@
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
-
 
     String mobileClaimRegex = null;
     String emailClaimRegex = null;
@@ -351,7 +349,7 @@
         <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
-     <script type="text/javascript">
+    <script type="text/javascript">
         function goBack() {
             window.history.back();
         }

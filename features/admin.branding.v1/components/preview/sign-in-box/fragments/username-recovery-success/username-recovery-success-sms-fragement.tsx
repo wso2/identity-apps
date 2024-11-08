@@ -24,7 +24,6 @@ import { useSelector } from "react-redux";
 import { CustomTextPreferenceConstants } from "../../../../../constants/custom-text-preference-constants";
 import useBrandingPreference from "../../../../../hooks/use-branding-preference";
 
-
 /**
  * Proptypes for the username-recovery-success-sms fragment of login screen skeleton.
  */
@@ -43,14 +42,13 @@ const UsernameRecoverySuccessSmsFragment: FunctionComponent<UsernameRecoverySucc
 ): ReactElement => {
     const {
         brandingPreference,
-        ["data-componentid"]: componentId
+        ["data-componentid"]: componentId = "username-recovery-success-email"
     } = props;
 
     const { i18n } = useBrandingPreference();
     const supportEmail: string = useSelector((state: AppState) => {
         return state.config.deployment.extensions?.supportEmail as string;
     });
-
 
     return (
         <div data-componentid={ componentId } className="ui green attached">
@@ -85,14 +83,6 @@ const UsernameRecoverySuccessSmsFragment: FunctionComponent<UsernameRecoverySucc
             </p>
         </div>
     );
-};
-
-/**
- * Default proptypes for the component.
- * See type definitions in interfaces.
- */
-UsernameRecoverySuccessSmsFragment.defaultProps = {
-    "data-componentid": "username-recovery-success-email"
 };
 
 export default UsernameRecoverySuccessSmsFragment;

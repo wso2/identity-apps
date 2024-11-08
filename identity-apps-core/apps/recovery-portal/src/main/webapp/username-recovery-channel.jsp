@@ -96,7 +96,7 @@
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
     List<RecoveryChannel> channels = null;
-    if(request.getAttribute("channels") != null){
+    if (request.getAttribute("channels") != null) {
         channels = (List<RecoveryChannel>) request.getAttribute("channels");
     }
     

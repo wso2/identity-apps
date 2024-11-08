@@ -67,8 +67,9 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (
     props: SignInBoxInterface
 ): ReactElement => {
 
-    const { brandingPreference,
-        ["data-componentid"]: componentId
+    const {
+        brandingPreference,
+        ["data-componentid"]: componentId = "login-screen-skeleton-login-box"
     } = props;
 
     const { selectedScreen, selectedScreenVariation } = useBrandingPreference();
@@ -121,13 +122,6 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (
             { renderFragment() }
         </div>
     );
-};
-
-/**
- * Default props for the component.
- */
-SignInBox.defaultProps = {
-    "data-componentid": "login-screen-skeleton-login-box"
 };
 
 export default SignInBox;
