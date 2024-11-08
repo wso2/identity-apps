@@ -540,6 +540,14 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
                     <ImagePreview
                         label={ t("extensions:develop.branding.forms.design.theme.images.favicon.preview") }
                         data-componentid={ `${componentId}-favicon-image-preview` }
+                        style={
+                            layout.activeLayout !== PredefinedLayouts.CUSTOM
+                                ? {
+                                    background: theme[ theme?.activeTheme ]?.colors?.background?.body?.main,
+                                    color: theme[theme.activeTheme]?.colors?.text?.primary
+                                }
+                                : null
+                        }
                     >
                         <GenericIcon
                             square
@@ -632,8 +640,8 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
                                     style={
                                         layout.activeLayout !== PredefinedLayouts.CUSTOM
                                             ? {
-                                                background: theme[ theme?.activeTheme ]?.
-                                                    colors?.background?.surface?.inverted
+                                                background: theme[ theme?.activeTheme ]?.colors?.background?.body?.main,
+                                                color: `${theme[theme.activeTheme]?.colors?.text?.primary} !important`
                                             }
                                             : null
                                     }

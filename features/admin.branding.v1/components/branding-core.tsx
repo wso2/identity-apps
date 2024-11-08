@@ -40,7 +40,6 @@ import {
     ConfirmationModal,
     DangerZone,
     DangerZoneGroup,
-    Message,
     useMediaContext
 } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -158,6 +157,10 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         brandingPreference,
         setBrandingPreference
     ] = useState<BrandingPreferenceInterface>(DEFAULT_PREFERENCE);
+    const [
+        returnedBrandingMode,
+        setReturnedBrandingMode
+    ] = useState<BrandingPreferenceTypes>(undefined);
     const [
         isBrandingPreferenceUpdateRequestLoading,
         setIsBrandingPreferenceUpdateRequestLoading
@@ -334,6 +337,33 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
             setBrandingPreference(overridenBrandingPreference);
         }
     }, [ overridenBrandingPreference ]);
+
+    /**
+     * Moderates the Branding Peference response and set the branding mode returned in the response.
+     */
+    useEffect(() => {
+        if (!originalBrandingPreference || brandingPreferenceFetchRequestError?.response?.data?.code
+            === BrandingPreferencesConstants.BRANDING_NOT_CONFIGURED_ERROR_CODE) {
+            setReturnedBrandingMode(undefined);
+
+            return;
+        }
+
+        if (originalBrandingPreference instanceof IdentityAppsApiException) {
+            dispatch(addAlert<AlertInterface>({
+                description: t("extensions:develop.branding.notifications.fetch.invalidStatus.description",
+                    { tenant: tenantName }),
+                level: AlertLevels.ERROR,
+                message: t("extensions:develop.branding.notifications.fetch.invalidStatus.message")
+            }));
+
+            setReturnedBrandingMode(undefined);
+
+            return;
+        }
+
+        setReturnedBrandingMode(originalBrandingPreference?.type);
+    }, [ originalBrandingPreference, brandingPreferenceFetchRequestError ]);
 
     /**
      * Handles preference form submit action.
@@ -636,15 +666,38 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
     return (
         <>
             {
+                brandingMode === BrandingModes.APPLICATION && !selectedApplication && (
+                    <Alert
+                        className="branding-alert"
+                        severity="warning"
+                    >
+                        { t("extensions:develop.branding.pageHeader.applicationListWarning") }
+                    </Alert>
+                )
+            }
+            {
+                brandingMode === BrandingModes.APPLICATION &&
+                selectedApplication &&
+                returnedBrandingMode === BrandingPreferenceTypes.ORG && (
+                    <Alert
+                        className="branding-alert"
+                        severity="info"
+                    >
+                        { t("extensions:develop.branding.pageHeader.defaultBrandingAppliedMessage") }
+                    </Alert>
+                )
+            }
+            {
                 !isBrandingPageLoading && !brandingPreference.configs?.isBrandingEnabled && (
-                    <Message
-                        info
-                        floating
-                        attached="top"
-                        className="preview-disclaimer"
-                        content={ t("extensions:develop.branding.publishToggle.hint") }
+                    (brandingMode === BrandingModes.APPLICATION && selectedApplication) ||
+                    brandingMode === BrandingModes.ORGANIZATION) && (
+                    <Alert
+                        className="branding-alert"
+                        severity="info"
                         data-componentid="branding-preference-preview-disclaimer"
-                    />
+                    >
+                        { t("extensions:develop.branding.publishToggle.hint") }
+                    </Alert>
                 )
             }
             {
@@ -667,20 +720,13 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
             }
             {
                 showResolutionDisclaimerMessage && (
-                    <Message
-                        info
-                        floating
-                        attached="top"
-                        className="preview-disclaimer"
-                        content={
-                            (
-                                <>
-                                    { t("extensions:develop.branding.pageResolution.hint") }
-                                </>
-                            )
-                        }
+                    <Alert
+                        className="branding-alert"
+                        severity="info"
                         data-componentid="branding-preference-resolution-disclaimer"
-                    />
+                    >
+                        { t("extensions:develop.branding.pageResolution.hint") }
+                    </Alert>
                 )
             }
             <BrandingPreferenceTabs
@@ -745,44 +791,49 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
             <Show
                 when={ featureConfig?.branding?.scopes?.delete }
             >
-                <DangerZoneGroup sectionHeader={ t("extensions:develop.branding.dangerZoneGroup.header") }>
-                    { brandingPreference.configs?.isBrandingEnabled && (
-                        <DangerZone
-                            actionTitle={
-                                t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.actionTitle")
-                            }
-                            header={
-                                t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.header")
-                            }
-                            subheader={
-                                t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.subheader",
-                                    { productName: productName })
-                            }
-                            onActionClick={ (): void => handleBrandingUnpublish() }
-                            data-componentid={ `${ componentId }-danger-zone-unpublish` }
-                            isButtonDisabled={ brandingMode === BrandingModes.APPLICATION && !selectedApplication }
-                            buttonDisableHint={
-                                t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.disableHint") }
-                        />
-                    ) }
-                    <DangerZone
-                        actionTitle={
-                            t("extensions:develop.branding.dangerZoneGroup.revertBranding.actionTitle")
-                        }
-                        header={
-                            t("extensions:develop.branding.dangerZoneGroup.revertBranding.header")
-                        }
-                        subheader={
-                            t("extensions:develop.branding.dangerZoneGroup.revertBranding.subheader",
-                                { productName: productName })
-                        }
-                        onActionClick={ (): void => setShowRevertConfirmationModal(true) }
-                        data-componentid={ `${ componentId }-danger-zone` }
-                        isButtonDisabled={ brandingMode === BrandingModes.APPLICATION && !selectedApplication }
-                        buttonDisableHint={
-                            t("extensions:develop.branding.dangerZoneGroup.revertBranding.disableHint") }
-                    />
-                </DangerZoneGroup>
+                {
+                    isBrandingConfigured && (
+                        <DangerZoneGroup sectionHeader={ t("extensions:develop.branding.dangerZoneGroup.header") }>
+                            { brandingPreference.configs?.isBrandingEnabled && (
+                                <DangerZone
+                                    actionTitle={
+                                        t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.actionTitle")
+                                    }
+                                    header={
+                                        t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.header")
+                                    }
+                                    subheader={
+                                        t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.subheader",
+                                            { productName: productName })
+                                    }
+                                    onActionClick={ (): void => handleBrandingUnpublish() }
+                                    data-componentid={ `${ componentId }-danger-zone-unpublish` }
+                                    isButtonDisabled={
+                                        brandingMode === BrandingModes.APPLICATION && !selectedApplication }
+                                    buttonDisableHint={
+                                        t("extensions:develop.branding.dangerZoneGroup.unpublishBranding.disableHint") }
+                                />
+                            ) }
+                            <DangerZone
+                                actionTitle={
+                                    t("extensions:develop.branding.dangerZoneGroup.revertBranding.actionTitle")
+                                }
+                                header={
+                                    t("extensions:develop.branding.dangerZoneGroup.revertBranding.header")
+                                }
+                                subheader={
+                                    t("extensions:develop.branding.dangerZoneGroup.revertBranding.subheader",
+                                        { productName: productName })
+                                }
+                                onActionClick={ (): void => setShowRevertConfirmationModal(true) }
+                                data-componentid={ `${ componentId }-danger-zone` }
+                                isButtonDisabled={ brandingMode === BrandingModes.APPLICATION && !selectedApplication }
+                                buttonDisableHint={
+                                    t("extensions:develop.branding.dangerZoneGroup.revertBranding.disableHint") }
+                            />
+                        </DangerZoneGroup>
+                    )
+                }
             </Show>
             <ConfirmationModal
                 onClose={ (): void => setShowRevertConfirmationModal(false) }

@@ -303,12 +303,10 @@ export const applications: ApplicationsNS = {
                 "using this application will no longer work."
         },
         disableApplication: {
-            actionTitle: "{{ state }} application",
-            header: "{{ state }} application",
+            actionTitle: "Disable application",
+            header: "Disable application",
             subheader: "Once the application is disabled, it will not be accessible by the consumers." +
-                " And the application also can not access consumer data.",
-            subheader2: "Enable the application to be accessible by the consumers. " +
-            "After enabling, application can access consumer data"
+                " And the application also can not access consumer data."
         },
         header: "Danger Zone"
     },
@@ -643,9 +641,10 @@ export const applications: ApplicationsNS = {
                                     emptyPlaceholder: "No secrets available",
                                     search: "Search by secret name",
                                     tooltips: {
-                                        keyIcon: "Securely store access keys as secrets. A secret can " +
-                                            "replace the consumer secret in <1>callChoreo()</1> function " +
-                                            "in the conditional authentication scripts.",
+                                        keyIcon: "You can securely store sensitive information, such as " +
+                                            "API keys and other secrets, for use in conditional " +
+                                            "authentication scripts. Once stored, these secrets can " +
+                                            "be referenced in your scripts using the syntax <1>secrets.{secret name}</1>",
                                         plusIcon: "Add to the script"
                                     }
                                 }
@@ -1257,6 +1256,7 @@ export const applications: ApplicationsNS = {
         },
 
         applicationsSettings: {
+            title: "Application Settings",
             fields: {
                 dcrEndpoint: {
                     label: "DCR Endpoint",
@@ -1642,6 +1642,39 @@ export const applications: ApplicationsNS = {
                         }
                     },
                     heading: "ID Token"
+                },
+                outdatedApplications: {
+                    alert : {
+                        title: "Update Required.",
+                        content: "We have updated the behavior of applications as follows.",
+                        viewButton: "View Details",
+                        hideButton: "Hide Details",
+                        action: "Before updating your application, be sure to update any usages of these attributes accordingly."
+                    },
+                    label: "Outdated",
+                    documentationHint: "More Details",
+                    confirmationModal: {
+                        header: "Have you done the relevant changes?",
+                        message: "Proceeding without making the necessary changes will cause the client application's behavior to break.",
+                        content: "This action is irreversible and will result in a permanent update to the application.",
+                        assertionHint: "Please confirm your action"
+                    },
+                    fields: {
+                        commonInstruction: "Following behavioral changes will be applied upon update.",
+                        versions: {
+                            version100: {
+                                removeUsernameFromIntrospectionRespForAppTokens: {
+                                    instruction: "The <1>sub</1> attribute of an application access token now returns the "
+                                        + "<3>client_id</3> generated for the application, instead of the <5>userid</5> of "
+                                        + "the application owner."
+                                },
+                                useClientIdAsSubClaimOfAppTokens: {
+                                    instruction: "The introspection responses for application access tokens no longer "
+                                        + "return the <1>username</1> attribute."
+                                }
+                            }
+                        }
+                    }
                 },
                 logoutURLs: {
                     fields: {
@@ -2428,6 +2461,7 @@ export const applications: ApplicationsNS = {
         description: "Self-service portal for your users.",
         popup: "Share this link with your users to allow access to My Account" +
         " and to manage their accounts.",
+        settings: "My Account Settings",
         title: "My Account",
         enable: {
             0: "Enabled",

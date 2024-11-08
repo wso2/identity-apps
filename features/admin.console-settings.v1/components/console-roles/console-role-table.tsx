@@ -16,12 +16,11 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { RoleConstants } from "@wso2is/core/constants";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
@@ -101,12 +100,20 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
 
     const { t } = useTranslation();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const userRolesFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRoles);
+    const hasRoleUpdatePermissions: boolean = useRequiredScopes(userRolesFeatureConfig?.scopes?.update);
+    const hasRoleDeletePermissions: boolean = useRequiredScopes(userRolesFeatureConfig?.scopes?.delete);
+
     const administratorRoleDisplayName: string = useSelector(
         (state: AppState) => state?.config?.ui?.administratorRoleDisplayName);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const consoleSettingsFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
+    const isConsoleRolesEditable: boolean = !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
+        "consoleSettings.editableConsoleRoles"
+    );
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedRole, setCurrentDeletedRole ] = useState<RolesInterface>();
@@ -264,26 +271,38 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
     const resolveTableActions = (): TableActionsInterface[] => {
         return [
             {
-                icon: (): SemanticICONS =>
-                    hasRequiredScopes(userRolesFeatureConfig, userRolesFeatureConfig?.scopes?.update, allowedScopes)
-                        ? "pencil alternate"
-                        : "eye",
+                hidden: (_role: RolesInterface) => {
+                    return hasRoleUpdatePermissions;
+                },
+                icon: (): SemanticICONS => "eye",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void =>
-                    hasRequiredScopes(userRolesFeatureConfig, userRolesFeatureConfig?.scopes?.update, allowedScopes)
-                        && onRoleEdit(role),
-                popupText: (): string =>
-                    hasRequiredScopes(userRolesFeatureConfig, userRolesFeatureConfig?.scopes?.update, allowedScopes)
-                        ? t("roles:list.popups.edit",
-                            { type: "Role" })
-                        : t("common:view"),
+                    hasRoleUpdatePermissions    && onRoleEdit(role),
+                popupText: (): string => t("common:view"),
                 renderer: "semantic-icon"
             },
             {
-                hidden: (role: RolesInterface) => isSubOrg || (role?.displayName === RoleConstants.ADMIN_ROLE ||
-                    role?.displayName === RoleConstants.ADMIN_GROUP ||
-                    role?.displayName === administratorRoleDisplayName)
-                    || !hasRequiredScopes(userRolesFeatureConfig, userRolesFeatureConfig?.scopes?.delete,
-                        allowedScopes),
+                hidden: (_role: RolesInterface) => {
+                    return !hasRoleUpdatePermissions || !isConsoleRolesEditable;
+                },
+                icon: (): SemanticICONS => "pencil alternate",
+                onClick: (e: SyntheticEvent, role: RolesInterface): void =>
+                    hasRoleUpdatePermissions
+                        && onRoleEdit(role),
+                popupText: (): string =>
+                    t("roles:list.popups.edit",
+                        { type: "Role" }),
+                renderer: "semantic-icon"
+            },
+            {
+                hidden: (role: RolesInterface) => {
+                    return isSubOrg ||
+                    !isConsoleRolesEditable ||
+                    (
+                        role?.displayName === RoleConstants.ADMIN_ROLE ||
+                        role?.displayName === RoleConstants.ADMIN_GROUP ||
+                        role?.displayName === administratorRoleDisplayName
+                    ) ||
+                    !hasRoleDeletePermissions;},
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {
                     setCurrentDeletedRole(role);

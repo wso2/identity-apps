@@ -267,7 +267,6 @@ export interface ApplicationsNS {
             actionTitle: string
             header: string;
             subheader: string;
-            subheader2: string
         },
     };
     edit: {
@@ -1053,6 +1052,7 @@ export interface ApplicationsNS {
             };
         };
         applicationsSettings: {
+            title: string;
             fields :{
                 dcrEndpoint: {
                     label: string,
@@ -1376,6 +1376,36 @@ export interface ApplicationsNS {
                             };
                         };
                     };
+                };
+                outdatedApplications: {
+                    alert : {
+                        title: string;
+                        content: string;
+                        viewButton: string;
+                        hideButton: string;
+                        action: string;
+                    }
+                    label: string;
+                    documentationHint: string;
+                    confirmationModal: {
+                        assertionHint: string;
+                        header: string;
+                        message: string;
+                        content: string;
+                    },
+                    fields: {
+                        commonInstruction: string;
+                        versions: {
+                            version100: {
+                                removeUsernameFromIntrospectionRespForAppTokens: {
+                                    instruction: string;
+                                },
+                                useClientIdAsSubClaimOfAppTokens: {
+                                    instruction: string;
+                                }
+                            }
+                        };
+                    }
                 };
                 logoutURLs: {
                     heading: string;
@@ -2096,6 +2126,7 @@ export interface ApplicationsNS {
         };
     };
     myaccount: {
+        settings: string;
         title: string;
         description: string;
         popup: string;

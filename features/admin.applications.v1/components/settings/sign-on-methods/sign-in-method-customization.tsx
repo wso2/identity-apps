@@ -28,6 +28,7 @@ import {
 } from "@wso2is/admin.core.v1";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import {
     ConnectorPropertyInterface,
@@ -156,6 +157,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const dispatch: Dispatch = useDispatch();
 
     const { isSystemApplication } = useAuthenticationFlow();
+
+    const { setAiGeneratedLoginFlow } = useAILoginFlow();
 
     const orgType: OrganizationType = useSelector((state: AppState) =>
         state?.organization?.organizationType);
@@ -390,6 +393,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             })
             .finally(() => {
                 setIsLoading(false);
+                setAiGeneratedLoginFlow(undefined);
             });
     };
 

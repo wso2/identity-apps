@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, Show } from "@wso2is/access-control";
 import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -81,6 +81,12 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
 
     const { t } = useTranslation();
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const consoleSettingsFeatureConfig : FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state.config.ui.features.consoleSettings);
+    const isConsoleRolesEditable: boolean = !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
+        "consoleSettings.editableConsoleRoles"
+    );
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
@@ -195,20 +201,23 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
             onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
             onPageChange={ handlePaginationChange }
             showTopActionPanel={ (rolesList?.totalResults > 0 || searchQuery?.length !== 0) }
-            topActionPanelExtension={ !isSubOrganization() && (
-                <Show when={ featureConfig?.userRoles?.scopes?.create }>
-                    <PrimaryButton
-                        data-componentid={ `${componentId}-add-button` }
-                        onClick={ () => onRoleCreate() }
-                    >
-                        <Icon
-                            data-componentid={ `${componentId}-add-button-icon` }
-                            name="add"
-                        />
-                        { t("roles:list.buttons.addButton", { type: "Role" }) }
-                    </PrimaryButton>
-                </Show>
-            ) }
+            topActionPanelExtension={
+                !isSubOrganization() &&
+                isConsoleRolesEditable &&
+                (
+                    <Show when={ featureConfig?.userRoles?.scopes?.create }>
+                        <PrimaryButton
+                            data-componentid={ `${componentId}-add-button` }
+                            onClick={ () => onRoleCreate() }
+                        >
+                            <Icon
+                                data-componentid={ `${componentId}-add-button-icon` }
+                                name="add"
+                            />
+                            { t("roles:list.buttons.addButton", { type: "Role" }) }
+                        </PrimaryButton>
+                    </Show>
+                ) }
             showPagination={ true }
             totalPages={ Math.ceil(rolesList?.totalResults / listItemLimit) }
             totalListSize={ rolesList?.totalResults }

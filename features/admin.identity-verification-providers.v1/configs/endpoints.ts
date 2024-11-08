@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IDVPResourceEndpointsInterface } from "../models";
+import { IdVPResourceEndpointsInterface } from "../models/identity-verification-providers";
 
 /**
  * Get the resource endpoints for managing the Identity Verification Providers
@@ -24,7 +24,7 @@ import { IDVPResourceEndpointsInterface } from "../models";
  * @param serverHost - Server Host.
  * @returns The endpoints related to the Identity Verification Providers.
  */
-export const getIDVPResourceEndpoints = (serverHost: string): IDVPResourceEndpointsInterface => {
+export const getIDVPResourceEndpoints = (serverHost: string): IdVPResourceEndpointsInterface => {
     return {
         IDVPExtensionEndpoint: `${ serverHost }/api/server/v1/extensions/identity-verification-providers`,
         identityVerificationProviders: `${ serverHost }/api/server/v1/idv-providers`

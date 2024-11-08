@@ -16,41 +16,39 @@
  * under the License.
  */
 
+import AppShell from "@oxygen-ui/react/AppShell";
+import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
 import {
     AppConstants,
     AppState,
-    Footer,
+    AppUtils,
+    FeatureConfigInterface,
     Header,
     ProtectedRoute,
-    UIConstants
+    RouteUtils,
+    UIConstants,
+    getEmptyPlaceholderIllustrations
 } from "@wso2is/admin.core.v1";
-import { AlertInterface, RouteInterface } from "@wso2is/core/models";
+import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { AlertInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
-import {
-    Alert,
-    ContentLoader,
-    DefaultLayout as DefaultLayoutSkeleton,
-    TopLoadingBar,
-    useUIElementSizes
-} from "@wso2is/react-components";
-import React, {
-    FunctionComponent,
-    ReactElement,
-    Suspense,
-    useEffect,
-    useState
-} from "react";
+import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
+import { Alert, ContentLoader, EmptyPlaceholder, ErrorBoundary, LinkButton } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
+import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
-import { StaticContext } from "react-router";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
-import { Dispatch } from "redux";
+import { Action } from "reduce-reducers";
+import { ThunkDispatch } from "redux-thunk";
 import { getDefaultLayoutRoutes } from "../configs/routes";
+import "./default-layout.scss";
 
 /**
  * Default page layout component Prop types.
  */
-export interface DefaultLayoutPropsInterface {
+export interface DefaultLayoutPropsInterface extends RouteComponentProps {
     /**
      * Is layout fluid.
      */
@@ -64,112 +62,153 @@ export interface DefaultLayoutPropsInterface {
  *
  * @returns Dashboard Layout.
  */
-export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
-    props: DefaultLayoutPropsInterface
-): ReactElement => {
+export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
+    location
+}: DefaultLayoutPropsInterface): ReactElement => {
+    const { t } = useTranslation();
+    const dispatch: ThunkDispatch<AppState, void, Action> = useDispatch();
 
-    const { fluid } = props;
-
-    const dispatch: Dispatch = useDispatch();
-    const { headerHeight, footerHeight } = useUIElementSizes({
-        footerHeight: UIConstants.DEFAULT_FOOTER_HEIGHT,
-        headerHeight: UIConstants.DEFAULT_HEADER_HEIGHT,
-        topLoadingBarHeight: UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT
+    const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile?.profileInfo);
+    const alert: AlertInterface = useSelector((state: AppState) => state.global?.alert);
+    const alertSystem: System = useSelector((state: AppState) => state.global?.alertSystem);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config?.ui?.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const appHomePath: string = useSelector((state: AppState) => state.config?.deployment?.appHomePath);
+    const isMarketingConsentBannerEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.ui?.isMarketingConsentBannerEnabled;
     });
 
-    const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
-    const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
-    const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
+    const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getDefaultLayoutRoutes());
 
-    const [ defaultLayoutRoutes, setDefaultLayoutRoutes ] = useState<RouteInterface[]>(getDefaultLayoutRoutes());
+    useEffect(() => {
+        if (!isEmpty(profileInfo)) {
+            return;
+        }
+
+        dispatch(getProfileInformation());
+    }, [ dispatch, profileInfo ]);
+
+    useEffect(() => {
+        // Allowed scopes is never empty. Wait until it's defined to filter the routes.
+        if (isEmpty(allowedScopes)) {
+            return;
+        }
+
+        const [ routes, _sanitizedRoutes ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+            getDefaultLayoutRoutes(),
+            featureConfig,
+            allowedScopes
+        );
+
+        // Try to handle any un-expected routing issues. Returns a void if no issues are found.
+        RouteUtils.gracefullyHandleRouting(routes, AppConstants.getFullScreenViewBasePath(), location.pathname);
+
+        // Filter the routes and get only the enabled routes defined in the app config.
+        setFilteredRoutes(routes);
+    }, [ featureConfig, getDefaultLayoutRoutes, allowedScopes ]);
 
     /**
-     * Listen for base name changes and updated the layout routes.
+     * Conditionally renders a route. If a route has defined a Redirect to
+     * URL, it will be directed to the specified one. If the route is stated
+     * as protected, It'll be rendered using the `ProtectedRoute`.
+     *
+     * @param route - Route to be rendered.
+     * @param key - Index of the route.
+     * @returns Resolved route to be rendered.
      */
-    useEffect(() => {
-        setDefaultLayoutRoutes(getDefaultLayoutRoutes());
-    }, [ AppConstants.getTenantQualifiedAppBasename() ]);
+    const renderRoute = (route: RouteInterface, key: number): ReactNode =>
+        route.redirectTo ? (
+            <Redirect key={ key } to={ route.redirectTo } />
+        ) : route.protected ? (
+            <ProtectedRoute
+                component={ route.component ? route.component : null }
+                path={ route.path }
+                key={ key }
+                exact={ route.exact }
+            />
+        ) : (
+            <Route
+                path={ route.path }
+                render={ (renderProps: RouteComponentProps): ReactNode =>
+                    route.component ? <route.component { ...renderProps } /> : null
+                }
+                key={ key }
+                exact={ route.exact }
+            />
+        );
 
-    const handleAlertSystemInitialize = (system: any) => {
-        dispatch(initializeAlertSystem(system));
+    /**
+     * Resolves the set of routes for the react router.
+     * This function recursively adds any child routes
+     * defined.
+     *
+     * @returns Set of resolved routes.
+     */
+    const resolveRoutes = (): ReactNode[] => {
+        const resolvedRoutes: ReactNode[] = [];
+
+        const recurse = (routesArr: RouteInterface[]): void => {
+            routesArr.forEach((route: RouteInterface, key: number) => {
+                if (route.path) {
+                    resolvedRoutes.push(renderRoute(route, key));
+                }
+
+                if (route.children && route.children instanceof Array && route.children.length > 0) {
+                    recurse(route.children);
+                }
+            });
+        };
+
+        recurse([ ...filteredRoutes ]);
+
+        return resolvedRoutes;
     };
 
     return (
-        <DefaultLayoutSkeleton
-            fluid={ fluid }
-            alert={ (
-                <Alert
-                    dismissInterval={ UIConstants.ALERT_DISMISS_INTERVAL }
-                    alertsPosition="br"
-                    alertSystem={ alertSystem }
-                    alert={ alert }
-                    onAlertSystemInitialize={ handleAlertSystemInitialize }
-                    withIcon={ true }
-                />
-            ) }
-            topLoadingBar={ (
-                <TopLoadingBar
-                    height={ UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT }
-                    visibility={ isAJAXTopLoaderVisible }
-                />
-            ) }
-            footerHeight={ footerHeight }
-            headerHeight={ headerHeight }
-            desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
-            header={ (
-                <Header
-                    handleSidePanelToggleClick={ ()=> null }
-                />
-            ) }
-            footer={ (
-                <Footer
-                    fluid={ fluid }
-                />
-            ) }
-        >
-            <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
-                <Switch>
-                    {
-                        defaultLayoutRoutes.map((route: RouteInterface, index: number) => (
-                            route.redirectTo
-                                ? <Redirect to={ route.redirectTo } key={ index } />
-                                : route.protected
-                                    ? (
-                                        <ProtectedRoute
-                                            component={ route.component ? route.component : null }
-                                            path={ route.path }
-                                            key={ index }
-                                            exact={ route.exact }
-                                        />
-                                    )
-                                    : (
-                                        <Route
-                                            path={ route.path }
-                                            render={
-                                                (renderProps: RouteComponentProps<{
-                                                    [x: string]: string; },
-                                                    StaticContext, unknown>
-                                                ) => route.component
-                                                    ? <route.component { ...renderProps } />
-                                                    : null
-                                            }
-                                            key={ index }
-                                            exact={ route.exact }
-                                        />
-                                    )
-                        ))
+        <>
+            <Alert
+                dismissInterval={ UIConstants.ALERT_DISMISS_INTERVAL }
+                alertsPosition="br"
+                alertSystem={ alertSystem }
+                alert={ alert }
+                onAlertSystemInitialize={ (system: System) => {
+                    dispatch(initializeAlertSystem(system));
+                } }
+                withIcon={ true }
+            />
+            <AppShell header={ <Header handleSidePanelToggleClick={ () => null } /> }>
+                <ErrorBoundary
+                    onChunkLoadError={ AppUtils.onChunkLoadError }
+                    handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {
+                        sessionStorage.setItem("auth_callback_url_console", appHomePath);
+                    } }
+                    fallback={
+                        (<EmptyPlaceholder
+                            action={
+                                (<LinkButton onClick={ () => CommonUtils.refreshPage() }>
+                                    { t("console:common.placeholders.brokenPage.action") }
+                                </LinkButton>)
+                            }
+                            image={ getEmptyPlaceholderIllustrations().brokenPage }
+                            imageSize="tiny"
+                            subtitle={ [
+                                t("console:common.placeholders.brokenPage.subtitles.0"),
+                                t("console:common.placeholders.brokenPage.subtitles.1")
+                            ] }
+                            title={ t("console:common.placeholders.brokenPage.title") }
+                        />)
                     }
-                </Switch>
-            </Suspense>
-        </DefaultLayoutSkeleton>
+                >
+                    <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
+                        { isMarketingConsentBannerEnabled && applicationConfig.marketingConsent.getBannerComponent() }
+                        <div className="default-layout-content">
+                            <Switch>{ resolveRoutes() as ReactNode[] }</Switch>
+                        </div>
+                    </Suspense>
+                </ErrorBoundary>
+            </AppShell>
+        </>
     );
-};
-
-/**
- * Default props for the default layout.
- */
-DefaultLayout.defaultProps = {
-    fluid: true
 };
 
 export default DefaultLayout;

@@ -144,6 +144,18 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                             }
                         }
                     },
+                    outdatedApplications: {
+                        versions: {
+                            version100: {
+                                removeUsernameFromIntrospectionRespForAppTokens: {
+                                    documentationLink: undefined
+                                },
+                                useClientIdAsSubClaimOfAppTokens: {
+                                    documentationLink: undefined
+                                }
+                            }
+                        }
+                    },
                     samlApplication: {
                         advanced: {
                             learnMore: undefined
@@ -269,6 +281,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         learnMore: undefined,
                         setupGuide: undefined
                     },
+                    duo: {
+                        learnMore: undefined
+                    },
                     enterprise: {
                         oidc: {
                             learnMore: undefined,
@@ -311,6 +326,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         learnMore: undefined,
                         setupGuide: undefined
                     },
+                    iProov: {
+                        learnMore: undefined
+                    },
                     learnMore: undefined,
                     microsoft: {
                         help: {
@@ -344,6 +362,23 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 learnMore: undefined
             },
             eventPublishing: {
+                learnMore: undefined
+            },
+            multiTenancy: {
+                addTenant: {
+                    learnMore: undefined
+                },
+                learnMore: undefined,
+                systemSettings: {
+                    learnMore: undefined
+                }
+            },
+            smsCustomization: {
+                form: {
+                    smsBody: {
+                        learnMore: undefined
+                    }
+                },
                 learnMore: undefined
             }
         },

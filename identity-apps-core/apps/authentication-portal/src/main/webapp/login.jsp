@@ -52,6 +52,11 @@
 <%-- Include tenant context --%>
 <jsp:directive.include file="includes/init-url.jsp"/>
 
+<%
+    // Add the login screen to the list to retrieve text branding customizations.
+    screenNames.add("login");
+%>
+
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
@@ -170,7 +175,7 @@
     boolean hasLocalLoginOptions = false;
     boolean isBackChannelBasicAuth = false;
     List<String> localAuthenticatorNames = new ArrayList<String>();
-    List<String> registeredLocalAuthenticators = Arrays.asList(   
+    List<String> registeredLocalAuthenticators = Arrays.asList(
         BACKUP_CODE_AUTHENTICATOR, TOTP_AUTHENTICATOR, EMAIL_OTP_AUTHENTICATOR,
         MAGIC_LINK_AUTHENTICATOR,SMS_OTP_AUTHENTICATOR,OPEN_ID_AUTHENTICATOR,
         IDENTIFIER_EXECUTOR,JWT_BASIC_AUTHENTICATOR,BASIC_AUTHENTICATOR,

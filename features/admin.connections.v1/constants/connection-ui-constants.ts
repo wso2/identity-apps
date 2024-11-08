@@ -295,11 +295,13 @@ export class ConnectionUIConstants {
      */
     public static readonly DOC_LINK_DICTIONARY: Map<string, string> = new Map<string, string>([
         [ "apple-idp", "develop.connections.newConnection.apple.learnMore" ],
+        [ "duo-idp", "develop.connections.newConnection.duo.learnMore" ],
         [ "enterprise-protocols", "develop.connections.newConnection.learnMore" ],
         [ "facebook-idp", "develop.connections.newConnection.facebook.learnMore" ],
         [ "github-idp", "develop.connections.newConnection.github.learnMore" ],
         [ "google-idp", "develop.connections.newConnection.google.learnMore" ],
         [ "hypr-idp", "develop.connections.newConnection.hypr.learnMore" ],
+        [ "iproov-idp", "develop.connections.newConnection.iProov.learnMore" ],
         [ "microsoft-idp", "develop.connections.newConnection.microsoft.learnMore" ],
         [ "enterprise-oidc-idp", "develop.connections.newConnection.enterprise.oidcLearnMore.learnMore" ],
         [ "enterprise-saml-idp", "develop.connections.newConnection.enterprise.samlLearnMore.learnMore" ],

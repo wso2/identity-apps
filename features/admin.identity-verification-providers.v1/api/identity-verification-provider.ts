@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,28 +16,29 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient, HttpClientInstance, HttpResponse } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1";
-import useRequest, {
-    RequestConfigInterface,
-    RequestErrorInterface,
-    RequestResultInterface
-} from "@wso2is/admin.core.v1/hooks/use-request";
+import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AcceptHeaderValues, ContentTypeHeaderValues, HttpMethods } from "@wso2is/core/models";
-import { AxiosError } from "axios";
-import { IDVPListResponseInterface, IdentityVerificationProviderInterface } from "../models";
+import { AxiosError, AxiosResponse } from "axios";
+import {
+    IdVPListResponseInterface,
+    IdentityVerificationProviderInterface
+} from "../models/identity-verification-providers";
 
-const httpClient: HttpClientInstance = AsgardeoSPAClient
-    .getInstance()
-    .httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient: (
+    config: HttpRequestConfig
+) => Promise<AxiosResponse> = AsgardeoSPAClient.getInstance().httpRequest.bind(
+    AsgardeoSPAClient.getInstance()
+);
 
 /**
  * Delete an identity verification provider.
  * @param id - ID of the identity verification provider.
  * @returns - A promise containing the response from the API call.
  */
-export const deleteIDVP = async (id: string): Promise<HttpResponse> => {
+export const deleteIdentityVerificationProvider = async (id: string): Promise<AxiosResponse> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -49,7 +50,7 @@ export const deleteIDVP = async (id: string): Promise<HttpResponse> => {
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse) =>  response)
+        .then((response: AxiosResponse) =>  response)
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 error.message,
@@ -97,12 +98,11 @@ export const updateIdentityVerificationProvider = ({ id, ...rest }: IdentityVeri
 
 /**
  * Creates an identity verification provider.
- * @param id - ID of the identity verification provider (can be undefined).
- * @param rest - Rest of the data.
+ * @param data - Identity verification provider data.
  * @returns - A promise containing the response from the API call.
  */
 export const createIdentityVerificationProvider = (data: IdentityVerificationProviderInterface):
-    Promise<HttpResponse | undefined> => {
+    Promise<IdentityVerificationProviderInterface> => {
 
     const requestConfig: RequestConfigInterface = {
         data: data,
@@ -115,7 +115,20 @@ export const createIdentityVerificationProvider = (data: IdentityVerificationPro
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse) =>  response)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 201) {
+                throw new IdentityAppsApiException(
+                    "Identity verification provider creation received a non-201 status code.",
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config
+                );
+            }
+
+            return Promise.resolve(response.data as IdentityVerificationProviderInterface);
+        })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 error.message,
@@ -129,69 +142,40 @@ export const createIdentityVerificationProvider = (data: IdentityVerificationPro
 };
 
 /**
- * Hook to get an identity verification provider.
- * @param id - ID of the identity verification provider.
- * @returns - Requested IDVP
- */
-export const useIdentityVerificationProvider = <Data = IdentityVerificationProviderInterface,
-    Error = RequestErrorInterface>(id: string): RequestResultInterface<Data, Error> => {
-
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            "Accept": AcceptHeaderValues.APP_JSON
-        },
-        method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.identityVerificationProviders }/${ id }`
-    };
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
-
-    return {
-        data,
-        error: error,
-        isLoading: !error && !data,
-        isValidating,
-        mutate
-    };
-};
-
-/**
- * Hook to get the identity verification provider list with limit and offset.
+ * Gets the Identity Verification Providers list with limit and offset.
  *
- * @param limit - Maximum Limit of the identity verification provider List.
+ * @param limit - Maximum Limit of the application List.
  * @param offset - Offset for get to start.
- * @param filter - Search filter.
- * @param requiredAttributes - Extra attribute to be included in the list response. ex:`isFederationHub`
  *
- * @returns - Requested IDVP list.
+ * @returns A promise containing the response.
  */
-export const useIdentityVerificationProviderList = <Data = IDVPListResponseInterface, Error = RequestErrorInterface>(
-    limit?: number,
-    offset?: number,
-    filter?: string,
-    requiredAttributes?: string
-): RequestResultInterface<Data, Error> => {
-
+export const getIdentityVerificationProvidersList = (
+    limit: number,
+    offset: number
+): Promise<IdVPListResponseInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Accept": AcceptHeaderValues.APP_JSON,
-            "Content-Type": ContentTypeHeaderValues.APP_JSON
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
         params: {
-            filter,
             limit,
-            offset,
-            requiredAttributes
+            offset
         },
         url: store.getState().config.endpoints.identityVerificationProviders
     };
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
 
-    return {
-        data,
-        error: error,
-        isLoading: !error && !data,
-        isValidating,
-        mutate
-    };
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to get Identity Verification Providers list."));
+            }
+
+            return Promise.resolve(response.data as IdVPListResponseInterface);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
 };

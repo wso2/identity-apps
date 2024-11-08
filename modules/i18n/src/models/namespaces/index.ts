@@ -61,3 +61,5 @@ export * from "./api-resources-ns";
 export * from "./ai-ns";
 export * from "./impersonation-ns";
 export * from "./actions-ns";
+export * from "./tenants-ns";
+export * from "./sms-templates-ns";

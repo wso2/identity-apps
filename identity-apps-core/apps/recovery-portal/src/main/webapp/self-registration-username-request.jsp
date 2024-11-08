@@ -75,6 +75,11 @@
 <%-- Include tenant context --%>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
+<%
+    // Add the sign-up screen to the list to retrieve text branding customizations.
+    screenNames.add("sign-up");
+%>
+
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
@@ -115,6 +120,9 @@
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
     String consentPurposeGroupName = "SELF-SIGNUP";
     String consentPurposeGroupType = "SYSTEM";
+    boolean isEmailUsernameEnabled = MultitenantUtils.isEmailUserName();
+    boolean hideUsernameFieldWhenEmailAsUsernameIsEnabled = Boolean.parseBoolean(config.getServletContext().getInitParameter(
+        "HideUsernameWhenEmailAsUsernameEnabled"));
 
     String[] missingClaimList = new String[0];
     String[] missingClaimDisplayName = new String[0];
@@ -986,6 +994,10 @@
                                                 !StringUtils.equals(claim.getUri(), "http://wso2.org/claims/groups") &&
                                                 !StringUtils.equals(claim.getUri(), "http://wso2.org/claims/role") &&
                                                 !StringUtils.equals(claim.getUri(), "http://wso2.org/claims/url") &&
+                                                !StringUtils.equals(claim.getUri(), "http://wso2.org/claims/emailAddresses") &&
+                                                !StringUtils.equals(claim.getUri(), "http://wso2.org/claims/verifiedEmailAddresses") &&
+                                                !StringUtils.equals(claim.getUri(), "http://wso2.org/claims/mobileNumbers") &&
+                                                !StringUtils.equals(claim.getUri(), "http://wso2.org/claims/verifiedMobileNumbers") &&
                                                 !(claim.getReadOnly() != null ? claim.getReadOnly() : false)) {
                                             String claimURI = claim.getUri();
                                             String claimValue = request.getParameter(claimURI);
@@ -1596,6 +1608,10 @@
                         var error_msg = $("#error-msg");
                         var server_error_msg = $("#server-error-msg");
 
+                        if (<%=isEmailUsernameEnabled%> && <%=hideUsernameFieldWhenEmailAsUsernameIsEnabled%>) {
+                            alphanumericUsernameUserInput.value = usernameUserInput.value;
+                        }
+
                         if (!<%=isUsernameValidationEnabled%>) {
                             if (showUsernameRegexValidationStatus()) {
                                 userName.value = alphanumericUsernameUserInput.value.trim();
@@ -1705,6 +1721,10 @@
                 var elements = document.getElementsByTagName("input");
                 var error_msg = $("#error-msg");
                 var server_error_msg = $("#server-error-msg");
+
+                if (<%=isEmailUsernameEnabled%> && <%=hideUsernameFieldWhenEmailAsUsernameIsEnabled%>) {
+                    alphanumericUsernameUserInput.value = usernameUserInput.value;
+                }
 
                 // Username validation.
                 if (!<%=isUsernameValidationEnabled%>) {

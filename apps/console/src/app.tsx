@@ -67,6 +67,7 @@ import { Dispatch } from "redux";
 import "moment/locale/si";
 import "moment/locale/fr";
 import { getBaseRoutes } from "./configs/routes";
+import "./app.scss";
 
 /**
  * Main App component.

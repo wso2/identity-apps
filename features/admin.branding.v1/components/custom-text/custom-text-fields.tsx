@@ -42,7 +42,6 @@ import { CustomTextPreferenceConstants } from "../../constants/custom-text-prefe
 import useBrandingPreference from "../../hooks/use-branding-preference";
 import { CustomTextInterface } from "../../models/custom-text-preference";
 import replaceObjectKeySymbols from "../../utils/replace-object-key-symbols";
-import "./custom-text-fields.scss";
 
 /**
  * Prop types for the text customization fields component.
@@ -309,9 +308,6 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
                                         <FinalFormField
                                             key={ fieldName }
                                             fullWidth
-                                            FormControlProps={ {
-                                                margin: "dense"
-                                            } }
                                             ariaLabel={ fieldName }
                                             required={ false }
                                             data-componentid={ `${componentId}-${fieldName}` }
@@ -325,7 +321,6 @@ const CustomTextFields: FunctionComponent<CustomTextFieldsProps> = (props: Custo
                                             component={ TextFieldAdapter }
                                             multiline={ customTextScreenMeta &&
                                                 customTextScreenMeta[fieldName.replaceAll("_", ".")]?.MULTI_LINE }
-                                            size="small"
                                             maxLength={
                                                 CustomTextPreferenceConstants.FORM_FIELD_CONSTRAINTS.MAX_LENGTH
                                             }

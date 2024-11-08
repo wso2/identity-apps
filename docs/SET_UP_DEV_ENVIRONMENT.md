@@ -19,7 +19,7 @@ To build and write code, make sure you have the following set of tools on your l
 * [Node.js](https://nodejs.org/en/download/) - JavaScript runtime with node package manager ([npm](https://www.npmjs.com/)).
 * [pnpm](https://pnpm.io/) - Alternate npm client for faster package installs.
 * [Maven](https://maven.apache.org/download.cgi) - Build automation tool for Java projects.
-* [Java Development Kit 1.8](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html) - Development environment for building applications using the Java programming language.
+* [OpenJDK 23](https://jdk.java.net/23/) - Development environment for building applications using the Java programming language.
 
 ## Setting up Development Tools
 

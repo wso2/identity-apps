@@ -20,6 +20,9 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 
+<%-- Localization --%>
+<jsp:directive.include file="localize.jsp" />
+
 <%-- Include tenant context --%>
 <jsp:directive.include file="../tenant-resolve.jsp"/>
 
@@ -1128,7 +1131,7 @@
     .tabs.resource-tabs>.ui.menu .item.active {
         border-bottom-color: var(--asg-colors-primary-main);
         color: var(--asg-colors-primary-main);
-    }    
+    }
 
     .tabs.resource-tabs>.ui.menu:not(.secondary) .item.active {
         border-bottom-color: var(--asg-colors-primary-main);
@@ -1142,7 +1145,7 @@
         color: var(--asg-colors-primary-main);
     }
     /*-----------------------------
-                Step Indicator 
+                Step Indicator
     ------------------------------*/
 
     .steps .step.active {
@@ -1208,25 +1211,25 @@
         color: var(--asg-colors-primary-main) !important;
         box-shadow: inset 0 0 0 1px var(--asg-colors-primary-main) !important;
         filter: brightness(0.85);
-    } 
+    }
 
     .ui.basic.primary.button:focus,.ui.basic.primary.buttons .button:focus {
         background: 0 0!important;
         box-shadow: inset 0 0 0 1px var(--asg-colors-primary-main) !important;
         color: var(--asg-colors-primary-main) !important
     }
-    
+
     .ui.basic.primary.active.button,.ui.basic.primary.buttons .active.button {
         background: 0 0!important;
         box-shadow: inset 0 0 0 1px var(--asg-colors-primary-main) !important;
         color: var(--asg-colors-primary-main) !important
     }
-    
+
     .ui.basic.primary.button:active,.ui.basic.primary.buttons .button:active {
         box-shadow: inset 0 0 0 1px var(--asg-colors-primary-main) !important;
         color: var(--asg-colors-primary-main) !important
     }
-    
+
     /* Link Button:Hover */
     .ui.button.basic.link-button,.ui.button.basic.link-button.primary {
         box-shadow: none!important

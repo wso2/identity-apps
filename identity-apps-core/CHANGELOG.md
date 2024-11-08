@@ -1,5 +1,110 @@
 # @wso2is/identity-apps-core
 
+## 2.7.4
+
+### Patch Changes
+
+- [#7097](https://github.com/wso2/identity-apps/pull/7097) [`4cb70f7fea193b10a2e3ccf6ec74d0496de470e9`](https://github.com/wso2/identity-apps/commit/4cb70f7fea193b10a2e3ccf6ec74d0496de470e9) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Hide username filed with deployment.toml change
+
+* [#7095](https://github.com/wso2/identity-apps/pull/7095) [`dda31e60b1a56e3226b32e8c068c9bacc3c7cea6`](https://github.com/wso2/identity-apps/commit/dda31e60b1a56e3226b32e8c068c9bacc3c7cea6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix incorrect i18n key for app disabled error message
+
+## 2.7.3
+
+### Patch Changes
+
+- [#7066](https://github.com/wso2/identity-apps/pull/7066) [`cc737fc19023749b9cc18367233519cec431211f`](https://github.com/wso2/identity-apps/commit/cc737fc19023749b9cc18367233519cec431211f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Implement possible fix jsp rendering error
+
+## 2.7.2
+
+### Patch Changes
+
+- [#7049](https://github.com/wso2/identity-apps/pull/7049) [`013a49f728b31fa0547ebe62c44a14041f431e81`](https://github.com/wso2/identity-apps/commit/013a49f728b31fa0547ebe62c44a14041f431e81) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Hide my account link in password reset flow when my account is disabled
+
+## 2.7.1
+
+### Patch Changes
+
+- [#7027](https://github.com/wso2/identity-apps/pull/7027) [`905abd6b3cec07d2548e64b5706c6b49a3220289`](https://github.com/wso2/identity-apps/commit/905abd6b3cec07d2548e64b5706c6b49a3220289) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enhance the performance of the JSP pages
+
+## 2.7.0
+
+### Minor Changes
+
+- [#7022](https://github.com/wso2/identity-apps/pull/7022) [`8ee127818ea4c8aac46296a1c93b45806ee887c2`](https://github.com/wso2/identity-apps/commit/8ee127818ea4c8aac46296a1c93b45806ee887c2) Thanks [@brionmario](https://github.com/brionmario)! - - Update `@oxygen-ui` version to `v1.15.2`.
+  - Remove unwanted padding in the Oxygen UI text field in the theme config.
+  - Fix typo in tenants feature.
+
+### Patch Changes
+
+- Updated dependencies [[`8ee127818ea4c8aac46296a1c93b45806ee887c2`](https://github.com/wso2/identity-apps/commit/8ee127818ea4c8aac46296a1c93b45806ee887c2)]:
+  - @wso2is/theme@2.4.0
+
+## 2.6.0
+
+### Minor Changes
+
+- [#6962](https://github.com/wso2/identity-apps/pull/6962) [`d54b53ec37367ea29b822c29985c95fb75418f52`](https://github.com/wso2/identity-apps/commit/d54b53ec37367ea29b822c29985c95fb75418f52) Thanks [@brionmario](https://github.com/brionmario)! - Introduce Multi-Tenancy feature
+
+### Patch Changes
+
+- Updated dependencies [[`d54b53ec37367ea29b822c29985c95fb75418f52`](https://github.com/wso2/identity-apps/commit/d54b53ec37367ea29b822c29985c95fb75418f52)]:
+  - @wso2is/theme@2.3.0
+
+## 2.5.1
+
+### Patch Changes
+
+- [#7010](https://github.com/wso2/identity-apps/pull/7010) [`ef0a8003626d2f4dcc78997425540f4120346cc9`](https://github.com/wso2/identity-apps/commit/ef0a8003626d2f4dcc78997425540f4120346cc9) Thanks [@Yoshani](https://github.com/Yoshani)! - handle username existence to prevent enumeration
+
+## 2.5.0
+
+### Minor Changes
+
+- [#7012](https://github.com/wso2/identity-apps/pull/7012) [`2bae555318c94d93b0e38304c2781e0b5cd8b5b1`](https://github.com/wso2/identity-apps/commit/2bae555318c94d93b0e38304c2781e0b5cd8b5b1) Thanks [@brionmario](https://github.com/brionmario)! - Bump `@oxygen-ui` to `v1.15.1`
+
+### Patch Changes
+
+- Updated dependencies [[`2bae555318c94d93b0e38304c2781e0b5cd8b5b1`](https://github.com/wso2/identity-apps/commit/2bae555318c94d93b0e38304c2781e0b5cd8b5b1)]:
+  - @wso2is/theme@2.2.0
+
+## 2.4.48
+
+### Patch Changes
+
+- Updated dependencies [[`86e236e6bb3fb65bbc186b24d39a8bfead33f30a`](https://github.com/wso2/identity-apps/commit/86e236e6bb3fb65bbc186b24d39a8bfead33f30a)]:
+  - @wso2is/theme@2.1.6
+
+## 2.4.47
+
+### Patch Changes
+
+- [#6977](https://github.com/wso2/identity-apps/pull/6977) [`52509e804192975c52190431c63a8321309c6f49`](https://github.com/wso2/identity-apps/commit/52509e804192975c52190431c63a8321309c6f49) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Hide multi emails and mobiles per user feature specific attributes from self-registration page
+
+## 2.4.46
+
+### Patch Changes
+
+- [#6943](https://github.com/wso2/identity-apps/pull/6943) [`ebf9245ab41a4ffe3603f69ecff63ae4f0f265d4`](https://github.com/wso2/identity-apps/commit/ebf9245ab41a4ffe3603f69ecff63ae4f0f265d4) Thanks [@sandushi](https://github.com/sandushi)! - Upgrade the handlebars version to 4.7.7
+
+## 2.4.45
+
+### Patch Changes
+
+- Updated dependencies [[`8cca5da311d6bd96d3492b21156b925f4580bc77`](https://github.com/wso2/identity-apps/commit/8cca5da311d6bd96d3492b21156b925f4580bc77)]:
+  - @wso2is/theme@2.1.5
+
+## 2.4.44
+
+### Patch Changes
+
+- [#6960](https://github.com/wso2/identity-apps/pull/6960) [`8f5ad6516b7e1171572de29c324050e2c8b6e7b9`](https://github.com/wso2/identity-apps/commit/8f5ad6516b7e1171572de29c324050e2c8b6e7b9) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Wrap long copyright texts on authentication and recovery portals
+
+## 2.4.43
+
+### Patch Changes
+
+- [#6933](https://github.com/wso2/identity-apps/pull/6933) [`b4328e73fa15f07071b26fbbc6506dcedd6692be`](https://github.com/wso2/identity-apps/commit/b4328e73fa15f07071b26fbbc6506dcedd6692be) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Load JQuery from the internally packed distribution in hyprlogin.jsp and iproovlogin.jsp
+
 ## 2.4.42
 
 ### Patch Changes

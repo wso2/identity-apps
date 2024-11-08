@@ -104,6 +104,34 @@ export class ApplicationManagementUtils {
             });
     }
 
+    public static isApplicationOutdated(applicationVersion: string, grantTypes?: string[]): boolean {
+
+        if (applicationVersion && grantTypes
+            && grantTypes?.includes(ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT)) {
+
+            const appVersionArray: number[] = applicationVersion?.match(/\d+/g).map(Number);
+            const latestAppVersionArray: number[] = ApplicationManagementConstants
+                .LATEST_VERSION.match(/\d+/g).map(Number);
+
+            // App version and latest version arrays should have at least 3 parts.
+            // Major, Minor and Patch versions.
+            if (appVersionArray?.length < 3 && latestAppVersionArray?.length < 3) {
+                return false;
+            }
+
+            if (appVersionArray[0] < latestAppVersionArray[0]) {
+                return true;
+            } else if (appVersionArray[1] < latestAppVersionArray[1]) {
+                return true;
+            } else if (appVersionArray[2] < latestAppVersionArray[2]) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return false;
+    }
 
     /**
      * Gets the list of available custom inbound protocols list and sets them in the redux store.

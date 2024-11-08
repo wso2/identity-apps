@@ -18,16 +18,16 @@
     // The `request` object contains the tenantDomain, which can be directly provided to the init-url.jsp code.
 %>
 
+<%-- Localization --%>
+<jsp:directive.include file="includes/localize.jsp" />
+
 <%-- Include tenant context --%>
 <jsp:directive.include file="includes/init-url.jsp"/>
 
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
-<%-- Localization --%>
-<jsp:directive.include file="includes/localize.jsp" />
-
-<%! 
+<%!
     private static final String AUTHENTICATION_ENDPOINT = "/authenticationendpoint";
     private static final String CONSOLE_APP_NAME = "Console";
 %>
@@ -205,7 +205,7 @@
             box-shadow: 0 0 0 1px transparent;
             top: 0;
             left: 0;
-        } 
+        }
 
         .trifacta-pre-loader {
             margin-top: 41px;
@@ -524,8 +524,8 @@
                                 </g>
                             </svg>
                         </div>
-                    <% 
-                        } else { 
+                    <%
+                        } else {
                             if (!StringUtils.startsWith(logoURL, "http")) {
                                 logoURL = ServiceURLBuilder.create().addPath(AUTHENTICATION_ENDPOINT + "/" + logoURL).build().getAbsolutePublicURL();
                             }
@@ -536,7 +536,7 @@
                                 <div class="ui loader"></div>
                             </div>
                         </div>
-                    <% } %> 
+                    <% } %>
                 </div>
                 <p class="message-description">
                     <a class="primary-color-btn button"

@@ -332,7 +332,7 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
                     option={ option }
                     activeOption={ null }
                     setActiveOption={ () => null }
-                    variant="solid"
+                    variant="filled"
                 />
             )) }
         />

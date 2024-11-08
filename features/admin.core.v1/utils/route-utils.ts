@@ -328,6 +328,11 @@ export class RouteUtils {
             AppConstants.getPaths().get("PRIVATE_KEY_JWT_CONFIG_EDIT")
         ];
 
+        const isConnectionsMenuItemSelected = (): boolean => {
+            return history.location.pathname.includes("/connections")
+                || history.location.pathname.includes("/identity-verification-providers");
+        };
+
         const CategoryMappedRoutes: Omit<RouteInterface, "showOnSidePanel">[] = [
             {
                 category: overview,
@@ -349,7 +354,7 @@ export class RouteUtils {
                 category: build,
                 id: "identityProviders",
                 order: 1,
-                selected: history.location.pathname.includes("/connections")
+                selected: isConnectionsMenuItemSelected()
             },
             {
                 category: build,
@@ -431,6 +436,11 @@ export class RouteUtils {
             {
                 category: build,
                 id: "emailTemplates",
+                parent: branding
+            },
+            {
+                category: build,
+                id: "smsTemplates",
                 parent: branding
             },
             {

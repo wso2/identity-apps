@@ -37,6 +37,7 @@ import {
     Message
 } from "semantic-ui-react";
 import { UserManagementConstants } from "../../../constants";
+import getUsertoreUsernameValidationPattern from "../../../utils/get-usertore-usernam-validation-pattern";
 
 /**
  * Proptypes for the add consumer user component.
@@ -88,7 +89,6 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
         "username.validations.regExViolation");
     const USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE: string = t("user:forms.addUserForm." +
         "inputs.username.validations.invalidCharacters");
-    const USERNAME_JAVA_REGEX: string = "UsernameJavaRegEx";
     const USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE: string = t("extensions:manage.features.user.addUser.validation." +
         "usernameSymbols");
     const USERNAME_HAS_INVALID_SPECIAL_SYMBOLS_ERROR_MESSAGE: string = t("extensions:manage.features.user.addUser." +
@@ -357,27 +357,6 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
     };
 
     /**
-     * The following function validates user name against the user store regEx.
-     */
-    const validateUserNamePattern = async (): Promise<string> => {
-        try {
-            let regex: string = await SharedUserStoreUtils.getUserStoreRegEx(
-                userstoresConfig.primaryUserstoreName, USERNAME_JAVA_REGEX);
-
-            if (!regex.startsWith("^")) {
-                regex = "^" + regex;
-            }
-            if (!regex.endsWith("$")) {
-                regex = regex + "$";
-            }
-
-            return regex;
-        } catch (error) {
-            return Promise.reject("");
-        }
-    };
-
-    /**
      * The modal to add new user.
      */
     const addUserBasicForm = () => (
@@ -412,7 +391,7 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
                                                 return;
                                             }
 
-                                            const userRegex: string = await validateUserNamePattern();
+                                            const userRegex: string = await getUsertoreUsernameValidationPattern();
 
                                             if (!SharedUserStoreUtils.validateInputAgainstRegEx(value, userRegex) ||
                                             !FormValidation.email(value)) {
@@ -532,7 +511,7 @@ export const AddConsumerUser: React.FunctionComponent<AddConsumerUserProps> = (
                                         ) }
                                         validation={ async (value: string, validation: Validation) => {
 
-                                            const userRegex: string = await validateUserNamePattern();
+                                            const userRegex: string = await getUsertoreUsernameValidationPattern();
 
                                             // Check username validity against userstore regex.
                                             if (value && (

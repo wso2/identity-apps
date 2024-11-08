@@ -18,7 +18,6 @@
 
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Chip from "@oxygen-ui/react/Chip";
 import Paper from "@oxygen-ui/react/Paper";
@@ -407,18 +406,6 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
             className="branding-page"
         >
             <LayoutGroup>
-                <motion.div layout>
-                    {
-                        brandingMode === BrandingModes.APPLICATION && !selectedApplication && (
-                            <Alert
-                                severity="warning"
-                                sx={ { marginBottom: 2 } }
-                            >
-                                { t("extensions:develop.branding.pageHeader.applicationListWarning") }
-                            </Alert>
-                        )
-                    }
-                </motion.div>
                 {
                     !brandingDisabledFeatures?.includes(AI_BRANDING_FEATURE_ID) &&
                     !isSubOrganization() && (
