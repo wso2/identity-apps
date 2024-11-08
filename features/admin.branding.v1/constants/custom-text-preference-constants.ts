@@ -48,54 +48,54 @@ export class CustomTextPreferenceConstants {
         CUSTOM_TEXT_PREFERENCE_UPDATE_ERROR: IdentityAppsError;
         CUSTOM_TEXT_PREFERENCE_UPDATE_INVALID_STATUS_CODE_ERROR: IdentityAppsError;
     } = {
-        CUSTOM_TEXT_PREFERENCE_DELETE_ERROR: new IdentityAppsError(
-            CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_DELETE_ERROR_CODE,
-            "An error occurred while deleting the Text Customizations for the requested resource.",
-            "Error while deleting Text Customizations",
-            null
-        ),
-        CUSTOM_TEXT_PREFERENCE_DELETE_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
-            CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_DELETE_INVALID_STATUS_CODE_ERROR_CODE,
-            "Received an invalid status code while deleting the Text Customizations for the requested resource.",
-            "Invalid Error Code while deleting Text Customizations",
-            null
-        ),
-        CUSTOM_TEXT_PREFERENCE_FETCH_ERROR: new IdentityAppsError(
-            CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_FETCH_ERROR_CODE,
-            "An error occurred while fetching the Text Customizations for the requested resource.",
-            "Error while fetching Text Customizations",
-            null
-        ),
-        CUSTOM_TEXT_PREFERENCE_FETCH_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
-            CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_FETCH_INVALID_STATUS_CODE_ERROR_CODE,
-            "Received an invalid status code while fetching the Text Customizations for the requested resource.",
-            "Invalid Error Code while fetching Text Customizations",
-            null
-        ),
-        CUSTOM_TEXT_PREFERENCE_UPDATE_ERROR: new IdentityAppsError(
-            CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_UPDATE_ERROR_CODE,
-            "An error occurred while updating the Text Customizations for the requested resource.",
-            "Error while updating Text Customizations",
-            null
-        ),
-        CUSTOM_TEXT_PREFERENCE_UPDATE_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
-            CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_UPDATE_INVALID_STATUS_CODE_ERROR_CODE,
-            "Received an invalid status code while updating the Text Customizations for the requested resource.",
-            "Invalid Error Code while updating Text Customizations",
-            null
-        )
-    };
+            CUSTOM_TEXT_PREFERENCE_DELETE_ERROR: new IdentityAppsError(
+                CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_DELETE_ERROR_CODE,
+                "An error occurred while deleting the Text Customizations for the requested resource.",
+                "Error while deleting Text Customizations",
+                null
+            ),
+            CUSTOM_TEXT_PREFERENCE_DELETE_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
+                CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_DELETE_INVALID_STATUS_CODE_ERROR_CODE,
+                "Received an invalid status code while deleting the Text Customizations for the requested resource.",
+                "Invalid Error Code while deleting Text Customizations",
+                null
+            ),
+            CUSTOM_TEXT_PREFERENCE_FETCH_ERROR: new IdentityAppsError(
+                CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_FETCH_ERROR_CODE,
+                "An error occurred while fetching the Text Customizations for the requested resource.",
+                "Error while fetching Text Customizations",
+                null
+            ),
+            CUSTOM_TEXT_PREFERENCE_FETCH_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
+                CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_FETCH_INVALID_STATUS_CODE_ERROR_CODE,
+                "Received an invalid status code while fetching the Text Customizations for the requested resource.",
+                "Invalid Error Code while fetching Text Customizations",
+                null
+            ),
+            CUSTOM_TEXT_PREFERENCE_UPDATE_ERROR: new IdentityAppsError(
+                CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_UPDATE_ERROR_CODE,
+                "An error occurred while updating the Text Customizations for the requested resource.",
+                "Error while updating Text Customizations",
+                null
+            ),
+            CUSTOM_TEXT_PREFERENCE_UPDATE_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
+                CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_UPDATE_INVALID_STATUS_CODE_ERROR_CODE,
+                "Received an invalid status code while updating the Text Customizations for the requested resource.",
+                "Invalid Error Code while updating Text Customizations",
+                null
+            )
+        };
 
     /**
      * Text customization form element constraints.
      */
     public static readonly FORM_FIELD_CONSTRAINTS: {
-        MAX_LENGTH: number;
-        MIN_LENGTH: number;
-    } = {
-        MAX_LENGTH: 1024,
-        MIN_LENGTH: 0
-    };
+            MAX_LENGTH: number;
+            MIN_LENGTH: number;
+        } = {
+            MAX_LENGTH: 1024,
+            MIN_LENGTH: 0
+        };
 
     public static readonly FORM_ID: string = "branding-preference-custom-text-form";
 
@@ -115,6 +115,42 @@ export class CustomTextPreferenceConstants {
                     LABEL: string;
                 }
             }
+        };
+        USERNAME_RECOVERY_CLAIM: {
+            HEADING: string;
+            BODY: string;
+            IDENTIFIER: {
+                INPUT: {
+                    LABEL: string;
+                    PLACEHOLDER: string;
+                }
+            },
+            BUTTON: {
+                NEXT: string;
+                CANCEL: string;
+            }
+        };
+        USERNAME_RECOVERY_CHANNEL_SELECTION: {
+            HEADING: string;
+            BODY: string;
+            RADIO_BUTTON: {
+                EMAIL: string;
+                SMS: string;
+            },
+            BUTTON: {
+                NEXT: string;
+                CANCEL: string;
+            }
+        };
+        USERNAME_RECOVERY_SUCCESS_EMAIL : {
+            HEADING: string;
+            BODY: string;
+            BUTTON: string;
+        };
+        USERNAME_RECOVERY_SUCCESS_SMS : {
+            HEADING: string;
+            BODY: string;
+            BUTTON: string;
         };
         PASSWORD_RECOVERY: {
             HEADING: string;
@@ -161,65 +197,102 @@ export class CustomTextPreferenceConstants {
             HEADING: string;
         }
     } = {
-        COPYRIGHT: "copyright",
-        EMAIL_LINK_EXPIRY: {
-            MESSAGE: "email.link.expiry.message"
-        },
-        EMAIL_OTP: {
-            HEADING: "email.otp.heading"
-        },
-        LOGIN: {
-            BUTTON: "login.button",
-            HEADING: "login.heading",
-            IDENTIFIER: {
-                INPUT: {
-                    LABEL: "login.identifier.input.label"
-                }
-            }
-        },
-        PASSWORD_RECOVERY: {
-            BODY: "password.recovery.body",
-            BUTTON: {
-                EMAIL_LINK: "password.recovery.button.email.link",
-                MULTI: "password.recovery.button.multi",
-                SMS_OTP: "password.recovery.button.smsotp"
+            COPYRIGHT: "copyright",
+            EMAIL_LINK_EXPIRY: {
+                MESSAGE: "email.link.expiry.message"
             },
-            HEADING: "password.recovery.heading",
-            IDENTIFIER: {
-                INPUT: {
-                    LABEL: "Username",
-                    PLACEHOLDER: "password.recovery.identifier.input.placeholder"
+            EMAIL_OTP: {
+                HEADING: "email.otp.heading"
+            },
+            LOGIN: {
+                BUTTON: "login.button",
+                HEADING: "login.heading",
+                IDENTIFIER: {
+                    INPUT: {
+                        LABEL: "login.identifier.input.label"
+                    }
                 }
             },
-            RADIO_BUTTON: {
-                EMAIL_LINK: "send.email.link",
-                SMS_OTP: "send.code.via.sms"
+            PASSWORD_RECOVERY: {
+                BODY: "password.recovery.body",
+                BUTTON: {
+                    EMAIL_LINK: "password.recovery.button.email.link",
+                    MULTI: "password.recovery.button.multi",
+                    SMS_OTP: "password.recovery.button.smsotp"
+                },
+                HEADING: "password.recovery.heading",
+                IDENTIFIER: {
+                    INPUT: {
+                        LABEL: "Username",
+                        PLACEHOLDER: "password.recovery.identifier.input.placeholder"
+                    }
+                },
+                RADIO_BUTTON: {
+                    EMAIL_LINK: "send.email.link",
+                    SMS_OTP: "send.code.via.sms"
+                }
+            },
+
+            PASSWORD_RESET: {
+                BUTTON: "password.reset.button",
+                HEADING: "password.reset.heading"
+            },
+            PASSWORD_RESET_SUCCESS: {
+                ACTION: "password.reset.success.action",
+                BODY: "password.reset.success.body",
+                HEADING: "password.reset.success.heading"
+            },
+            PRIVACY_POLICY: "privacy.policy",
+            REGISTER_TEXT: {
+                MESSAGE: "dont.have.an.account",
+                REGISTER: "register"
+            },
+            SIGN_UP: {
+                BUTTON: "sign.up.button",
+                HEADING: "sign.up.heading"
+            },
+            SMS_OTP: {
+                HEADING: "sms.otp.heading"
+            },
+            TERMS_OF_SERVICE: "terms.of.service",
+            TOTP: {
+                HEADING: "totp.heading"
+            },
+            USERNAME_RECOVERY_CHANNEL_SELECTION: {
+                BODY: "username.recovery.channel.selection.body",
+                BUTTON: {
+                    CANCEL: "username.recovery.channel.selection.cancel.button",
+                    NEXT: "username.recovery.channel.selection.next.button"
+                },
+                HEADING: "username.recovery.channel.selection.heading",
+                RADIO_BUTTON: {
+                    EMAIL: "send.username.via.email",
+                    SMS: "send.username.via.sms"
+                }
+            },
+            USERNAME_RECOVERY_CLAIM: {
+                BODY: "username.recovery.body",
+                BUTTON: {
+                    CANCEL: "username.recovery.cancel.button",
+                    NEXT: "username.recovery.next.button"
+                },
+                HEADING: "username.recovery.heading",
+                IDENTIFIER: {
+                    INPUT: {
+                        LABEL: "contact",
+                        PLACEHOLDER: "contact"
+                    }
+                }
+            },
+            USERNAME_RECOVERY_SUCCESS_EMAIL: {
+                BODY: "username.recovery.email.success.body",
+                BUTTON: "username.recovery.success.action",
+                HEADING: "username.recovery.email.success.heading"
+            },
+            USERNAME_RECOVERY_SUCCESS_SMS: {
+                BODY: "username.recovery.sms.success.body",
+                BUTTON: "username.recovery.success.action",
+                HEADING: "username.recovery.sms.success.heading"
             }
-        },
-        PASSWORD_RESET: {
-            BUTTON: "password.reset.button",
-            HEADING: "password.reset.heading"
-        },
-        PASSWORD_RESET_SUCCESS: {
-            ACTION: "password.reset.success.action",
-            BODY: "password.reset.success.body",
-            HEADING: "password.reset.success.heading"
-        },
-        PRIVACY_POLICY: "privacy.policy",
-        REGISTER_TEXT: {
-            MESSAGE: "dont.have.an.account",
-            REGISTER: "register"
-        },
-        SIGN_UP: {
-            BUTTON: "sign.up.button",
-            HEADING: "sign.up.heading"
-        },
-        SMS_OTP: {
-            HEADING: "sms.otp.heading"
-        },
-        TERMS_OF_SERVICE: "terms.of.service",
-        TOTP: {
-            HEADING: "totp.heading"
-        }
-    };
+        };
 }

@@ -38,6 +38,13 @@ import PasswordResetSuccessFragment from "./fragments/password-reset-success-fra
 import SignUpFragment from "./fragments/sign-up-fragment";
 import SMSOTPFragment from "./fragments/sms-otp-fragment";
 import TOTPFragment from "./fragments/totp-fragment";
+import UsernameRecoveryChannelSelectionFragment from
+    "./fragments/username-recovery-channel-selection-fragment";
+import UsernameRecoveryClaimsFragment from "./fragments/username-recovery-claims-fragment";
+import UsernameRecoverySuccessEmailFragment from
+    "./fragments/username-recovery-success/username-recovery-success-email-fragment";
+import UsernameRecoverySuccessSmsFragment from
+    "./fragments/username-recovery-success/username-recovery-success-sms-fragement";
 import useBrandingPreference from "../../../hooks/use-branding-preference";
 
 /**
@@ -60,7 +67,7 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (
     props: SignInBoxInterface
 ): ReactElement => {
 
-    const {
+    const { brandingPreference,
         ["data-componentid"]: componentId
     } = props;
 
@@ -95,6 +102,17 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (
             return <PasswordResetSuccessFragment />;
         } else if (selectedScreen === PreviewScreenType.EMAIL_LINK_EXPIRY) {
             return <EmailLinkExpiryFragment />;
+        } else if (selectedScreen === PreviewScreenType.USERNAME_RECOVERY_CLAIM) {
+            return <UsernameRecoveryClaimsFragment />;
+        } else if (selectedScreen === PreviewScreenType.USERNAME_RECOVERY_CHANNEL_SELECTION) {
+            return <UsernameRecoveryChannelSelectionFragment />;
+        } else if (selectedScreen === PreviewScreenType.USERNAME_RECOVERY_SUCCESS) {
+            if (selectedScreenVariation === PreviewScreenVariationType.EMAIL ||
+                selectedScreenVariation === PreviewScreenVariationType.BASE) {
+                return <UsernameRecoverySuccessEmailFragment brandingPreference={ brandingPreference }/>;
+            } else if (selectedScreenVariation === PreviewScreenVariationType.SMS) {
+                return <UsernameRecoverySuccessSmsFragment brandingPreference={ brandingPreference }/>;
+            }
         }
     };
 

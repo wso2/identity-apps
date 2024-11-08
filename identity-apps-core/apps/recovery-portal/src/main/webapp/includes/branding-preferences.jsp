@@ -234,7 +234,8 @@
     String productWhiteLogoAlt = "WSO2 Identity Server Logo White Variation";
     String poweredByLogoURL = "";
     String[] screenNames = {"common", "sign-up", "password-recovery", "password-reset",
-        "password-reset-success", "email-link-expiry", "sms-otp"};
+        "password-reset-success", "email-link-expiry", "sms-otp", "username-recovery-claim",
+        "username-recovery-channel-selection", "username-recovery-success"};
 
     // Constants used to create full custom layout name
     String PREFIX_FOR_CUSTOM_LAYOUT_NAME = "custom";
