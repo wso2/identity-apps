@@ -28,7 +28,7 @@ import {
 } from "@wso2is/admin.server-configurations.v1/models/username-recovery";
 import { CommonUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
-import { Heading, Link, Message } from "@wso2is/react-components";
+import { Heading, Link } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
