@@ -46,6 +46,11 @@
 <%-- Include tenant context --%>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
+<%
+    // Add the user-recovery-channel-selection screen to the list to retrieve text branding customizations.
+    screenNames.add("username-recovery-channel-selection");
+%>
+
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
