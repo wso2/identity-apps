@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import  Alert  from "@oxygen-ui/react/Alert";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
 import {
     UsernameRecoveryFormConstants
@@ -31,7 +32,6 @@ import { Heading, Link, Message } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Icon } from "semantic-ui-react";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface
@@ -150,15 +150,13 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
                 />
 
                 {
-                    <Message info>
-                        <Icon name="info circle" />
+                    <Alert severity="info">
                         <Trans
                             i18nKey={
                                 "extensions:manage.serverConfigurations.accountRecovery." +
-                                "passwordRecovery.form.smsProviderWarning"
-                            }
-                        >
-                            Ensure that an
+                                "usernameRecovery.form.smsProviderWarning"
+                            }>
+                          Ensure that an
                             <Link
                                 external={ false }
                                 onClick={ () => {
@@ -168,9 +166,9 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
                                 } }
                             >SMS Provider
                             </Link>
-                            &nbsp;is configured for the OTP feature to work properly.
+                                &nbsp;is configured for the SMS feature to work properly.
                         </Trans>
-                    </Message>
+                    </Alert>
                 }
 
                 <Field.Checkbox

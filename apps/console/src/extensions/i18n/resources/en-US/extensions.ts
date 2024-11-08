@@ -3733,7 +3733,7 @@ export const extensions: Extensions = {
                             }
                         },
                         smsProviderWarning: "Ensure that an <1>SMS Provider</1> is configured for the SMS feature to work properly.",
-                        recoveryOptionHeading: " Select Recovery Option"
+                        recoveryOptionHeading: "Select Recovery Option"
                     },
                     heading: "Enable self-service username recovery for users on the login page."
                 },
