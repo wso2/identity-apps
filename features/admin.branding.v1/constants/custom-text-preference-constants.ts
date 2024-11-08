@@ -48,43 +48,43 @@ export class CustomTextPreferenceConstants {
         CUSTOM_TEXT_PREFERENCE_UPDATE_ERROR: IdentityAppsError;
         CUSTOM_TEXT_PREFERENCE_UPDATE_INVALID_STATUS_CODE_ERROR: IdentityAppsError;
 } = {
-        CUSTOM_TEXT_PREFERENCE_DELETE_ERROR: new IdentityAppsError(
-            CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_DELETE_ERROR_CODE,
-            "An error occurred while deleting the Text Customizations for the requested resource.",
-            "Error while deleting Text Customizations",
-            null
-        ),
-        CUSTOM_TEXT_PREFERENCE_DELETE_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
-            CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_DELETE_INVALID_STATUS_CODE_ERROR_CODE,
-            "Received an invalid status code while deleting the Text Customizations for the requested resource.",
-            "Invalid Error Code while deleting Text Customizations",
-            null
-        ),
-        CUSTOM_TEXT_PREFERENCE_FETCH_ERROR: new IdentityAppsError(
-            CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_FETCH_ERROR_CODE,
-            "An error occurred while fetching the Text Customizations for the requested resource.",
-            "Error while fetching Text Customizations",
-            null
-        ),
-        CUSTOM_TEXT_PREFERENCE_FETCH_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
-            CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_FETCH_INVALID_STATUS_CODE_ERROR_CODE,
-            "Received an invalid status code while fetching the Text Customizations for the requested resource.",
-            "Invalid Error Code while fetching Text Customizations",
-            null
-        ),
-        CUSTOM_TEXT_PREFERENCE_UPDATE_ERROR: new IdentityAppsError(
-            CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_UPDATE_ERROR_CODE,
-            "An error occurred while updating the Text Customizations for the requested resource.",
-            "Error while updating Text Customizations",
-            null
-        ),
-        CUSTOM_TEXT_PREFERENCE_UPDATE_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
-            CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_UPDATE_INVALID_STATUS_CODE_ERROR_CODE,
-            "Received an invalid status code while updating the Text Customizations for the requested resource.",
-            "Invalid Error Code while updating Text Customizations",
-            null
-        )
-    };
+    CUSTOM_TEXT_PREFERENCE_DELETE_ERROR: new IdentityAppsError(
+        CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_DELETE_ERROR_CODE,
+        "An error occurred while deleting the Text Customizations for the requested resource.",
+        "Error while deleting Text Customizations",
+        null
+    ),
+    CUSTOM_TEXT_PREFERENCE_DELETE_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
+        CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_DELETE_INVALID_STATUS_CODE_ERROR_CODE,
+        "Received an invalid status code while deleting the Text Customizations for the requested resource.",
+        "Invalid Error Code while deleting Text Customizations",
+        null
+    ),
+    CUSTOM_TEXT_PREFERENCE_FETCH_ERROR: new IdentityAppsError(
+        CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_FETCH_ERROR_CODE,
+        "An error occurred while fetching the Text Customizations for the requested resource.",
+        "Error while fetching Text Customizations",
+        null
+    ),
+    CUSTOM_TEXT_PREFERENCE_FETCH_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
+        CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_FETCH_INVALID_STATUS_CODE_ERROR_CODE,
+        "Received an invalid status code while fetching the Text Customizations for the requested resource.",
+        "Invalid Error Code while fetching Text Customizations",
+        null
+    ),
+    CUSTOM_TEXT_PREFERENCE_UPDATE_ERROR: new IdentityAppsError(
+        CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_UPDATE_ERROR_CODE,
+        "An error occurred while updating the Text Customizations for the requested resource.",
+        "Error while updating Text Customizations",
+        null
+    ),
+    CUSTOM_TEXT_PREFERENCE_UPDATE_INVALID_STATUS_CODE_ERROR: new IdentityAppsError(
+        CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_UPDATE_INVALID_STATUS_CODE_ERROR_CODE,
+        "Received an invalid status code while updating the Text Customizations for the requested resource.",
+        "Invalid Error Code while updating Text Customizations",
+        null
+    )
+};
 
     /**
      * Text customization form element constraints.
