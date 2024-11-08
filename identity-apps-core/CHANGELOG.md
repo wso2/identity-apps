@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.7.4
+
+### Patch Changes
+
+- [#7097](https://github.com/wso2/identity-apps/pull/7097) [`4cb70f7fea193b10a2e3ccf6ec74d0496de470e9`](https://github.com/wso2/identity-apps/commit/4cb70f7fea193b10a2e3ccf6ec74d0496de470e9) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Hide username filed with deployment.toml change
+
+* [#7095](https://github.com/wso2/identity-apps/pull/7095) [`dda31e60b1a56e3226b32e8c068c9bacc3c7cea6`](https://github.com/wso2/identity-apps/commit/dda31e60b1a56e3226b32e8c068c9bacc3c7cea6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix incorrect i18n key for app disabled error message
+
 ## 2.7.3
 
 ### Patch Changes

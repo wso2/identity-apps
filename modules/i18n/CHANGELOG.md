@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.10.4
+
+### Patch Changes
+
+- [#7093](https://github.com/wso2/identity-apps/pull/7093) [`526596d57622f00f332376ee9a1414c166a7bfd2`](https://github.com/wso2/identity-apps/commit/526596d57622f00f332376ee9a1414c166a7bfd2) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Implement displaying locked account reason in user profile
+
 ## 2.10.3
 
 ### Patch Changes
