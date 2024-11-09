@@ -340,13 +340,7 @@ export interface userNS {
     };
     profile: {
         confirmationModals: {
-            emailAddressDeleteConfirmation: {
-                assertionHint: string;
-                content: string;
-                description: string;
-                heading: string;
-            },
-            mobileNumberDeleteConfirmation: {
+            deleteAttributeConfirmation: {
                 assertionHint: string;
                 content: string;
                 description: string;

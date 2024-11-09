@@ -380,16 +380,10 @@ export const user: userNS = {
             pendingSelfRegistration: "The account is locked pending user verification via the self-registration email."
         },
         confirmationModals: {
-            emailAddressDeleteConfirmation: {
+            deleteAttributeConfirmation: {
                 assertionHint: "Please confirm your action.",
-                content: "This action is irreversible and will permanently delete the email address.",
-                description: "If you delete this email address, it will be permanently removed from the user profile.",
-                heading: "Are you sure?"
-            },
-            mobileNumberDeleteConfirmation: {
-                assertionHint: "Please confirm your action.",
-                content: "This action is irreversible and will permanently delete the mobile number.",
-                description: "If you delete this mobile number, it will be permanently removed from the user profile.",
+                content: "This action is irreversible and will permanently delete the {{attributeDisplayName}}.",
+                description: "If you delete this {{attributeDisplayName}}, it will be permanently removed from the user profile.",
                 heading: "Are you sure?"
             }
         },

@@ -2528,13 +2528,18 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             return null;
         }
 
-        let translationKey: string = "";
+        const translationKey: string = "user:profile.confirmationModals.deleteAttributeConfirmation.";
+        let attributeDisplayName: string = "";
+        let primaryAttributeSchema: ProfileSchemaInterface;
 
         if (selectedAttributeInfo?.schema?.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-            translationKey = "user:profile.confirmationModals.emailAddressDeleteConfirmation.";
-        } else {
-            translationKey = "user:profile.confirmationModals.mobileNumberDeleteConfirmation.";
+            primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
+                schema.name === EMAIL_ATTRIBUTE);
+        } else if (selectedAttributeInfo?.schema?.name === MOBILE_NUMBERS_ATTRIBUTE) {
+            primaryAttributeSchema = profileSchema.find((schema: ProfileSchemaInterface) =>
+                schema.name === MOBILE_ATTRIBUTE);
         }
+        attributeDisplayName = primaryAttributeSchema?.displayName;
 
         return (
             <ConfirmationModal
@@ -2554,10 +2559,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     { t(`${translationKey}heading`) }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message data-testid={ `${testId}-confirmation-modal-message` } attached negative>
-                    { t(`${translationKey}description`) }
+                    { t(`${translationKey}description`, { attributeDisplayName }) }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content data-testid={ `${testId}-confirmation-modal-content` }>
-                    { t(`${translationKey}content`) }
+                    { t(`${translationKey}content`, { attributeDisplayName }) }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         );
