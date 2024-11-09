@@ -44,9 +44,7 @@
 
     .accordion-details {
         border-radius: 8px;
-
         .multi-value-table {
-
             .multi-value-table-data-row {
                 &:last-child td, &:last-child th {
                     border: none;
@@ -88,9 +86,5 @@
 
     .MuiAccordionDetails-root {
         padding: 0px;
-    }
-
-    .MuiAccordionSummary-root {
-        min-height: 48px;
     }
 }

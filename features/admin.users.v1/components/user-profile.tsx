@@ -261,54 +261,36 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     useEffect(() => {
         if (connectorProperties && Array.isArray(connectorProperties) && connectorProperties?.length > 0) {
 
-            let configurationStatuses: AccountConfigSettingsInterface = { ...configSettings } ;
+            const configurationStatuses: AccountConfigSettingsInterface = { ...configSettings } ;
 
             for (const property of connectorProperties) {
                 switch (property.name) {
                     case ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE:
-                        configurationStatuses = {
-                            ...configurationStatuses,
-                            accountDisable: property.value
-                        };
+                        configurationStatuses.accountDisable = property.value;
 
                         break;
                     case ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET:
                     case ServerConfigurationsConstants.OTP_PASSWORD_RESET:
                     case ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET:
                         if (property.value === "true") {
-                            configurationStatuses = {
-                                ...configurationStatuses,
-                                forcePasswordReset: property.value
-                            };
+                            configurationStatuses.forcePasswordReset = property.value;
                         }
 
                         break;
                     case ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION:
-                        configurationStatuses = {
-                            ...configurationStatuses,
-                            accountLock: property.value
-                        };
+                        configurationStatuses.accountLock = property.value;
 
                         break;
                     case ServerConfigurationsConstants.ENABLE_EMAIL_VERIFICATION:
-                        configurationStatuses = {
-                            ...configurationStatuses,
-                            isEmailVerificationEnabled: property.value
-                        };
+                        configurationStatuses.isEmailVerificationEnabled = property.value;
 
                         break;
                     case ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION:
-                        configurationStatuses = {
-                            ...configurationStatuses,
-                            isMobileVerificationEnabled: property.value
-                        };
+                        configurationStatuses.isMobileVerificationEnabled = property.value;
 
                         break;
                     case ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER:
-                        configurationStatuses = {
-                            ...configurationStatuses,
-                            isMobileVerificationByPrivilegeUserEnabled: property.value
-                        };
+                        configurationStatuses.isMobileVerificationByPrivilegeUserEnabled = property.value;
 
                         break;
                 }
@@ -321,8 +303,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * Check if multiple emails and mobile numbers feature is enabled.
      */
     const isMultipleEmailsAndMobileNumbersEnabled = (): void => {
-
         if (isEmpty(profileInfo) || isEmpty(profileSchema)) return;
+
         if (!UIConfig?.isMultipleEmailsAndMobileNumbersEnabled) {
             setIsMultipleEmailAndMobileNumberEnabled(false);
 
@@ -2011,7 +1993,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             });
                         }
                     } }
-                    displayErrorOn = "blur"
+                    displayErrorOn="blur"
                     listen={ (values: ProfileInfoInterface) => {
                         setTempMultiValuedItemValue({
                             ...tempMultiValuedItemValue,
@@ -2066,7 +2048,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     >
                                         <Tooltip
                                             trigger={ (
-                                                <span> <CheckIcon fill="blue" /></span>
+                                                <CheckIcon fill="blue" />
                                             ) }
                                             content={ t("common:verified") }
                                             size="mini"
@@ -2083,7 +2065,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     >
                                         <Tooltip
                                             trigger={ (
-                                                <span> <StarIcon fill="green" /></span>
+                                                <StarIcon fill="green" />
                                             ) }
                                             content={ t("common:primary") }
                                             size="mini"
@@ -2132,7 +2114,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                     >
                                                                         <Tooltip
                                                                             trigger={ (
-                                                                                <span> <CheckIcon fill="blue"/></span>
+                                                                                <CheckIcon fill="blue"/>
                                                                             ) }
                                                                             content={ t("common:verified") }
                                                                             size="mini"
@@ -2152,7 +2134,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                     >
                                                                         <Tooltip
                                                                             trigger={ (
-                                                                                <span> <StarIcon fill="green"/></span>
+                                                                                <StarIcon fill="green"/>
                                                                             ) }
                                                                             content={ t("common:primary") }
                                                                             size="mini"
@@ -2176,7 +2158,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                             >
                                                                 <Tooltip
                                                                     trigger={ (
-                                                                        <span> <CheckIcon /></span>
+                                                                        <CheckIcon />
                                                                     ) }
                                                                     content={ t("common:verify") }
                                                                     size="mini"
@@ -2194,7 +2176,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                             >
                                                                 <Tooltip
                                                                     trigger={ (
-                                                                        <span> <StarIcon /></span>
+                                                                        <StarIcon />
                                                                     ) }
                                                                     content={ t("common:makePrimary") }
                                                                     size="mini"
@@ -2215,7 +2197,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                             >
                                                                 <Tooltip
                                                                     trigger={ (
-                                                                        <span> <TrashIcon /></span>
+                                                                        <TrashIcon />
                                                                     ) }
                                                                     content={ t("common:delete") }
                                                                     size="mini"
