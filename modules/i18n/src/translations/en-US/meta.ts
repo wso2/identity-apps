@@ -69,6 +69,7 @@ export const meta: LocaleMeta = {
         I18nModuleConstants.AI_NAMESPACE,
         I18nModuleConstants.ACTIONS_NAMESPACE,
         I18nModuleConstants.TENANTS_NAMESPACE,
-        I18nModuleConstants.SMS_TEMPLATES_NAMESPACE
+        I18nModuleConstants.SMS_TEMPLATES_NAMESPACE,
+        I18nModuleConstants.REMOTE_USER_STORES_NAMESPACE
     ]
 };

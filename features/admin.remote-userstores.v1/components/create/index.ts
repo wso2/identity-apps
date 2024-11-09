@@ -17,4 +17,3 @@
  */
 
 export * from "./general-user-store-details-form";
-export * from "./attribute-mappings";

@@ -169,7 +169,7 @@ const GeneralUserStoreDetailsForm: ForwardRefExoticComponent<RefAttributes<Gener
                 const error: Partial<GeneralDetailsFormValuesInterface> = {};
 
                 if (!values?.name) {
-                    error.name = "required";
+                    error.name = t("remoteUserStores:form.fields.name.validation.required");
                 } else {
                     const nameValue: string = values?.name.toUpperCase();
                     // Regular expression to validate having no symbols in the user store name.
@@ -178,14 +178,14 @@ const GeneralUserStoreDetailsForm: ForwardRefExoticComponent<RefAttributes<Gener
                     const regExpAllSymbols: RegExp = new RegExp("^([^a-zA-Z0-9]+$)");
 
                     // Already created/restricted user store names.
-                    const restrictedUserstores: string[] = [
+                    const restrictedUserStores: string[] = [
                         RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME,
                         RemoteUserStoreConstants.FEDERATION_USER_STORE_NAME,
                         RemoteUserStoreConstants.DEFAULT_USER_STORE_NAME
                     ];
 
                     // Reserved user store names.
-                    const reservedUserstores: string[] = [
+                    const reservedUserStores: string[] = [
                         RemoteUserStoreConstants.INTERNAL_USER_STORE_NAME,
                         RemoteUserStoreConstants.APPLICATION_USER_STORE_NAME
                     ];
@@ -201,13 +201,13 @@ const GeneralUserStoreDetailsForm: ForwardRefExoticComponent<RefAttributes<Gener
                             "extensions:manage.features.userStores.edit." +
                             "general.form.validations.invalidSymbolsErrorMessage"
                         );
-                    } else if (restrictedUserstores.includes(nameValue.trim().toUpperCase())) {
+                    } else if (restrictedUserStores.includes(nameValue.trim().toUpperCase())) {
                         error.name = t(
                             "extensions:manage.features.userStores.edit." +
                             "general.form.validations.restrictedNamesErrorMessage",
                             { name: nameValue }
                         );
-                    } else if (reservedUserstores.includes(nameValue.trim().toUpperCase())) {
+                    } else if (reservedUserStores.includes(nameValue.trim().toUpperCase())) {
                         error.name = t(
                             "extensions:manage.features.userStores.edit." +
                             "general.form.validations.reservedNamesErrorMessage",
@@ -222,10 +222,8 @@ const GeneralUserStoreDetailsForm: ForwardRefExoticComponent<RefAttributes<Gener
                         const invalidString: string = validityResult.get("invalidStringValue").toString();
 
                         error.name = t(
-                            "console:manage.features.userstores." +
-                            "forms.general.name.validationErrorMessages." +
-                            "invalidInputErrorMessage",
-                            { invalidString: invalidString }
+                            "userstores:forms.general.name.validationErrorMessages.invalidInputErrorMessage",
+                            { invalidString }
                         );
                     }
                 }
@@ -241,25 +239,23 @@ const GeneralUserStoreDetailsForm: ForwardRefExoticComponent<RefAttributes<Gener
                         const invalidString: string = validityResult.get("invalidStringValue").toString();
 
                         error.description = t(
-                            "console:manage.features.userstores.forms.general.description" +
-                            ".validationErrorMessages.invalidInputErrorMessage",
-                            {
-                                invalidString: invalidString
-                            }
+                            "userstores:forms.general.description.validationErrorMessages.invalidInputErrorMessage",
+                            { invalidString }
                         );
                     }
                 }
 
                 if (!values?.accessType) {
-                    error.accessType = "Required";
+                    error.accessType = t("remoteUserStores:form.fields.accessType.validation.required");
                 }
 
                 if (
                     isReadWriteUserStoresEnabled &&
-                userStoreManager === RemoteUserStoreManagerType.WSOutboundUserStoreManager &&
-                !values?.connectedUserStoreType
+                    userStoreManager === RemoteUserStoreManagerType.WSOutboundUserStoreManager &&
+                    !values?.connectedUserStoreType
                 ) {
-                    error.connectedUserStoreType = "Required";
+                    error.connectedUserStoreType = t(
+                        "remoteUserStores:form.fields.connectedUserStoreType.validation.required");
                 }
 
                 return error;
@@ -282,12 +278,11 @@ const GeneralUserStoreDetailsForm: ForwardRefExoticComponent<RefAttributes<Gener
                                     FormControlProps={ {
                                         margin: "dense"
                                     } }
-                                    ariaLabel="userStoreName"
                                     data-componentid={ `${testId}-field-name` }
                                     name="name"
                                     type="text"
-                                    label={ "User Store Name" }
-                                    placeholder="Ex: MY USERTORE"
+                                    label={ t("remoteUserStores:form.fields.name.label") }
+                                    placeholder={ t("remoteUserStores:form.fields.name.placeholder") }
                                     component={ TextFieldAdapter }
                                     disabled={ isReadOnly }
                                     required
@@ -304,26 +299,21 @@ const GeneralUserStoreDetailsForm: ForwardRefExoticComponent<RefAttributes<Gener
                                     data-componentid={ `${testId}-field-description` }
                                     name="description"
                                     type="text"
-                                    label={ "User Store Description" }
-                                    placeholder="Describe the purpose or scope of this user store"
+                                    label={ t("remoteUserStores:form.fields.description.label") }
+                                    placeholder={ t("remoteUserStores:form.fields.description.placeholder") }
                                     component={ TextFieldAdapter }
                                     disabled={ isReadOnly }
                                 />
 
                                 <FinalFormField
                                     className="text-field-container"
-                                    label={ t(
-                                        "extensions:manage.features.userStores." +
-                                        "create.pageLayout.steps.generalSettings." +
-                                        "form.fields.userStoreType.label"
-                                    ) }
+                                    label={ t("remoteUserStores:form.fields.connectedUserStoreType.label") }
                                     name="connectedUserStoreType"
                                     FormControlProps={ {
                                         fullWidth: true,
                                         margin: "dense"
                                     } }
-                                    ariaLabel="connectedUserStoreType"
-                                    data-componentid={ `${testId}-field-description` }
+                                    data-componentid={ `${testId}-field-connectedUserStoreType` }
                                     component={ RadioGroupFieldAdapter }
                                     disabled={ isReadOnly }
                                     options={ userStoreOptions.map((option: RadioChild) => ({
@@ -334,21 +324,16 @@ const GeneralUserStoreDetailsForm: ForwardRefExoticComponent<RefAttributes<Gener
                                 />
 
                                 { isReadWriteUserStoresEnabled &&
-                                userStoreManager === RemoteUserStoreManagerType.WSOutboundUserStoreManager && (
+                                        userStoreManager === RemoteUserStoreManagerType.WSOutboundUserStoreManager && (
                                     <FinalFormField
                                         className="text-field-container"
-                                        label={ t(
-                                            "extensions:manage.features.userStores.create." +
-                                            "pageLayout.steps.generalSettings." +
-                                            "form.fields.accessType.label"
-                                        ) }
+                                        label={ t("remoteUserStores:form.fields.accessType.label") }
                                         name="accessType"
                                         FormControlProps={ {
                                             fullWidth: true,
                                             margin: "dense"
                                         } }
-                                        ariaLabel="accessType"
-                                        data-componentid={ `${testId}-field-description` }
+                                        data-componentid={ `${testId}-field-accessType` }
                                         component={ RadioGroupFieldAdapter }
                                         disabled={ isReadOnly }
                                         options={ accessTypeOptions.map((option: RadioChild) => ({

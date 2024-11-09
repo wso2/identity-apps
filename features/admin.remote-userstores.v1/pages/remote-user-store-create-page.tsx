@@ -46,7 +46,7 @@ import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, Message, PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
@@ -92,7 +92,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
     const remoteUserStoreCreatePath: string = RemoteUserStoreConstants.getPaths().get("REMOTE_USER_STORE_CREATE");
 
     const { t } = useTranslation();
-
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const dispatch: Dispatch = useDispatch();
 
     const generalUserStoreDetailsFormRef: MutableRefObject<GeneralUserStoreDetailsFormRef> = useRef<
@@ -190,12 +190,11 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
      */
     useEffect(() => {
         if (userStoreTypeRequestError) {
-            //FIXME: update error message.
             dispatch(
                 addAlert({
-                    description: t("userstores:notifications.fetchUserstoreTypes.error.description"),
+                    description: t("remoteUserStores:notifications.typesFetchError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("userstores:notifications.fetchUserstoreTypes.error.message")
+                    message: t("remoteUserStores:notifications.typesFetchError.message")
                 })
             );
         }
@@ -212,9 +211,10 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
             .then((response: UserStore) => {
                 dispatch(
                     addAlert({
-                        description: t("userstores:notifications.addUserstore.success.description"),
+                        description: t(
+                            "remoteUserStores:pages.create.notifications.createUserStore.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("userstores:notifications.addUserstore.success.message")
+                        message: t("remoteUserStores:pages.create.notifications.createUserStore.success.message")
                     })
                 );
                 dispatch(
@@ -253,9 +253,10 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
 
                 dispatch(
                     addAlert({
-                        description: t("userstores:notifications." + "addUserstore.genericError.description"),
+                        description: t(
+                            "remoteUserStores:pages.create.notifications.createUserStore.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: error?.message ?? t("userstores:notifications.addUserstore" + ".genericError.message")
+                        message: t("remoteUserStores:pages.create.notifications.createUserStore.genericError.message")
                     })
                 );
 
@@ -367,19 +368,19 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
 
         if (userStoreImplType === RemoteUserStoreImplType.OPTIMIZED) {
             return (
-                <>
+                <Trans i18nKey="remoteUserStores:pages.create.message.optimized">
                     This configuration supports Authentication Only. User and group management features are not
                     available in this setup. If user management is an essential requirement, please use
                     the <a onClick={ onNavigate }>Classic User Store Connection</a> instead.
-                </>
+                </Trans>
             );
         }
 
         return (
-            <>
+            <Trans i18nKey="remoteUserStores:pages.create.message.classic">
                 If your requirement is only for authentication, we recommend using
                 the <a onClick={ onNavigate }>Optimized User Store Connection</a> for efficiency.
-            </>
+            </Trans>
         );
     };
 
@@ -404,16 +405,18 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
 
     return (
         <PageLayout
-            title={ t("extensions:manage.features.userStores.create.pageLayout.title") }
+            title={ t("remoteUserStores:pages.create.title") }
             contentTopMargin={ true }
-            description={ t("extensions:manage.features.userStores.create.pageLayout.description") }
+            description={ t("remoteUserStores:pages.create.description", {
+                productName
+            }) }
             className="remote-user-store-create-page-layout"
             backButton={ {
                 "data-testid": `${testId}-page-back-button`,
                 onClick: () => {
                     history.push(AppConstants.getPaths().get("USERSTORES"));
                 },
-                text: t("userstores:pageLayout.edit.back")
+                text: t("remoteUserStores:pages.create.backButton")
             } }
             titleTextAlign="left"
             bottomMargin={ false }
@@ -441,11 +444,13 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
                                 <StepLabel
                                     optional={
                                         (<Typography variant="body2">
-                                            Provide the basic details to identify and connect your user store.
+                                            { t("remoteUserStores:pages.create.stepper.step1.description") }
                                         </Typography>)
                                     }
                                 >
-                                    <Typography variant="h4">General Details</Typography>
+                                    <Typography variant="h4">
+                                        { t("remoteUserStores:pages.create.stepper.step1.title") }
+                                    </Typography>
                                 </StepLabel>
                                 <StepContent>
                                     <GeneralUserStoreDetailsForm
@@ -470,7 +475,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
                                         } }
                                         loading={ isUserStoreCreateRequestLoading }
                                     >
-                                Next
+                                        { t("common:next") }
                                     </Button>
                                 </StepContent>
                             </Step>
@@ -479,12 +484,13 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
                                 <StepLabel
                                     optional={
                                         (<Typography variant="body2">
-                                    Complete the required settings to integrate your connected user store, enabling
-                                    smooth user access to applications.
+                                            { t("remoteUserStores:pages.create.stepper.step2.description") }
                                         </Typography>)
                                     }
                                 >
-                                    <Typography variant="h4">Configurations</Typography>
+                                    <Typography variant="h4">
+                                        { t("remoteUserStores:pages.create.stepper.step2.title") }
+                                    </Typography>
                                 </StepLabel>
                                 <StepContent>
                                     <ConfigurationsForm
@@ -510,7 +516,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
                                                 setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
                                             } }
                                         >
-                                    Previous
+                                            { t("common:previous") }
                                         </Button>
                                         <Button
                                             variant="contained"
@@ -522,7 +528,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
                                             } }
                                             loading={ isUserStoreCreateRequestLoading }
                                         >
-                                    Finish
+                                            { t("common:finish") }
                                         </Button>
                                     </div>
                                 </StepContent>
