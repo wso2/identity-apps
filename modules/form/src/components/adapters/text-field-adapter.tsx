@@ -84,7 +84,7 @@ const TextFieldAdapter: FunctionComponent<TextFieldAdapterPropsInterface> = (
                 } }
                 inputProps={ {
                     style: { textTransform: uppercase ? "uppercase" : "none" }
-                }}
+                } }
                 { ...rest }
             />
             { isError && <FormHelperText error>{ meta.error || meta.submitError }</FormHelperText> }

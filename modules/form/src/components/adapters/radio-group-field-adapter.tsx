@@ -19,13 +19,12 @@
 import FormControl, { FormControlProps } from "@oxygen-ui/react/FormControl";
 import FormControlLabel, { FormControlLabelProps } from "@oxygen-ui/react/FormControlLabel";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
+import FormLabel, { FormLabelProps } from "@oxygen-ui/react/FormLabel";
 import Radio from "@oxygen-ui/react/Radio";
-import RadioGroup, { RadioGroupProps } from "@oxygen-ui/react/RadioGroup";
+import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { FieldRenderProps } from "react-final-form";
-import FormLabel, { FormLabelProps } from "@oxygen-ui/react/FormLabel";
-import InputLabel from "@oxygen-ui/react/InputLabel";
 
 /**
  * Interface for the DropDownItem.
@@ -88,22 +87,23 @@ const RadioGroupFieldAdapter: FunctionComponent<RadioGroupFieldAdapterPropsInter
             { ...formControlProps }
             { ...rest }
         >
-            <FormLabel id={ `${ name }-radio-buttons-group`} { ...formLabelProps }>{ label }</FormLabel>
+            <FormLabel id={ `${ name }-radio-buttons-group` } { ...formLabelProps }>{ label }</FormLabel>
             <RadioGroup
-                aria-labelledby={ `${ name }-radio-buttons-group`}
+                aria-labelledby={ `${ name }-radio-buttons-group` }
                 { ...input }
             >
-                { options.map((option: RadioGroupOptionProps) => {
+                { options.map((option: RadioGroupOptionProps, index: number) => {
                     const { label, value, ...restRadioGroupOptionProps } = option;
 
                     return (
                         <FormControlLabel
+                            key={ `option-${ index }` }
                             value={ value }
                             label={ label }
                             control={ <Radio /> }
                             { ...restRadioGroupOptionProps }
                         />
-                    )
+                    );
                 }) }
             </RadioGroup>
             { isError && <FormHelperText error>{ meta.error || meta.submitError }</FormHelperText> }
