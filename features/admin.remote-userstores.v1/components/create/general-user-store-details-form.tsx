@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -66,6 +66,10 @@ interface GeneralUserStoreDetailsPropsInterface extends TestableComponentInterfa
      * @returns void
      */
     onSubmit: (values: GeneralDetailsFormValuesInterface) => void;
+    /**
+     * Initial values for the form.
+     */
+    initialValues?: Partial<GeneralDetailsFormValuesInterface>;
 }
 
 export interface GeneralUserStoreDetailsFormRef {
@@ -87,12 +91,11 @@ const GeneralUserStoreDetailsForm: ForwardRefExoticComponent<RefAttributes<Gener
                 isReadOnly,
                 isReadWriteUserStoresEnabled,
                 onSubmit,
+                initialValues,
                 ["data-testid"]: testId = "asgardeo-customer-userstore-general-details"
             }: GeneralUserStoreDetailsPropsInterface,
             ref: ForwardedRef<GeneralUserStoreDetailsFormRef>
         ): ReactElement => {
-        // ref
-
             const { t } = useTranslation();
 
             const triggerFormSubmit: MutableRefObject<() => void> = useRef<(() => void) | null>(null);
@@ -159,11 +162,6 @@ const GeneralUserStoreDetailsForm: ForwardRefExoticComponent<RefAttributes<Gener
                     value: RemoteUserStoreAccessTypes.ReadWrite
                 }
             ];
-
-            const initialValues: Partial<GeneralDetailsFormValuesInterface> = {
-                accessType: RemoteUserStoreAccessTypes.ReadOnly,
-                connectedUserStoreType: ConnectedUserStoreTypes.LDAP
-            };
 
             const validateForm = (
                 values: GeneralDetailsFormValuesInterface
@@ -289,7 +287,7 @@ const GeneralUserStoreDetailsForm: ForwardRefExoticComponent<RefAttributes<Gener
                                     name="name"
                                     type="text"
                                     label={ "User Store Name" }
-                                    placeholder={ "Ex: MY USERTORE" }
+                                    placeholder="Ex: MY USERTORE"
                                     component={ TextFieldAdapter }
                                     disabled={ isReadOnly }
                                     required
@@ -307,7 +305,7 @@ const GeneralUserStoreDetailsForm: ForwardRefExoticComponent<RefAttributes<Gener
                                     name="description"
                                     type="text"
                                     label={ "User Store Description" }
-                                    placeholder={ "Ex: MY USERTORE" }
+                                    placeholder="Describe the purpose or scope of this user store"
                                     component={ TextFieldAdapter }
                                     disabled={ isReadOnly }
                                 />

@@ -1,7 +1,13 @@
-.remote-user-store-create-stepper {
-
+.remote-user-store-create-page-layout {
+    .remote-user-store-impl-message {
+        a:hover {
+            cursor: pointer;
+        }
+    }
+    .remote-user-store-create-stepper {
         .step-actions-container {
             display: flex;
             gap: 8px;
         }
     }
+}

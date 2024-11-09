@@ -18,43 +18,39 @@
 
 import { Typography } from "@mui/material";
 import Button from "@oxygen-ui/react/Button";
+import Skeleton from "@oxygen-ui/react/Skeleton";
+import Stack from "@oxygen-ui/react/Stack";
 import Step from "@oxygen-ui/react/Step";
 import StepContent from "@oxygen-ui/react/StepContent";
 import StepLabel from "@oxygen-ui/react/StepLabel";
 import Stepper from "@oxygen-ui/react/Stepper";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
-import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
-import { addUserStore, getAType } from "@wso2is/admin.userstores.v1/api/user-stores";
+import useGetUserStoreTypes from "@wso2is/admin.userstores.v1/api/use-get-user-store-types";
+import { addUserStore } from "@wso2is/admin.userstores.v1/api/user-stores";
 import {
     RemoteUserStoreManagerType,
     UserStoreManagementConstants
 } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {
-    AttributeMapping,
-    TypeProperty,
     UserStore,
     UserStorePostData,
     UserStoreProperty,
-    UserstoreType
+    UserStoreType
 } from "@wso2is/admin.userstores.v1/models/user-stores";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, Claim, ClaimsGetParams, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FormValue, useTrigger } from "@wso2is/forms";
-import { EmphasizedSegment, PageLayout, Text } from "@wso2is/react-components";
+import { EmphasizedSegment, Message, PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { Divider } from "semantic-ui-react";
-import { AttributeMappingsComponent } from "../components";
-import ConfigurationsForm from "../components/create/configurations-form";
+import ConfigurationsForm, { ConfigurationsFormRef } from "../components/create/configurations-form";
 import GeneralUserStoreDetailsForm, {
     GeneralUserStoreDetailsFormRef
 } from "../components/create/general-user-store-details-form";
@@ -65,7 +61,11 @@ import {
     UserStoresFeatureDictionaryKeys
 } from "../constants";
 import { RemoteUserStoreImplType, RemoteUserStoreUIConstants } from "../constants/ui-constants";
-import { GeneralDetailsFormValuesInterface } from "../models/ui";
+import {
+    ConfigurationsFormValuesInterface,
+    GeneralDetailsFormValuesInterface,
+    UserStoreFormDataInterface
+} from "../models/ui";
 
 import "./remote-user-store-create-page.scss";
 
@@ -87,9 +87,9 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
     const { location, ["data-testid"]: testId } = props;
 
     const queryParams: URLSearchParams = new URLSearchParams(location.search);
-    const userStoreImplTypeQueryParam: string = queryParams.get(
-        RemoteUserStoreUIConstants.REMOTE_USER_STORE_TYPE_QUERY_PARAM
-    );
+    const queryParamKey: string = RemoteUserStoreUIConstants.REMOTE_USER_STORE_TYPE_QUERY_PARAM;
+    const userStoreImplTypeQueryParam: string = queryParams.get(queryParamKey);
+    const remoteUserStoreCreatePath: string = RemoteUserStoreConstants.getPaths().get("REMOTE_USER_STORE_CREATE");
 
     const { t } = useTranslation();
 
@@ -98,6 +98,19 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
     const generalUserStoreDetailsFormRef: MutableRefObject<GeneralUserStoreDetailsFormRef> = useRef<
         GeneralUserStoreDetailsFormRef
     >(null);
+    const configurationsFormRef: MutableRefObject<ConfigurationsFormRef> = useRef<
+        ConfigurationsFormRef
+    >(null);
+
+    const initialUserStoreFormData: UserStoreFormDataInterface = {
+        configurations: {
+            readGroups: true
+        },
+        generalDetails: {
+            accessType: RemoteUserStoreAccessTypes.ReadOnly,
+            connectedUserStoreType: ConnectedUserStoreTypes.LDAP
+        }
+    };
 
     const userStoreFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userStores
@@ -112,29 +125,39 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
     );
     const hasUserStoreCreatePermissions: boolean = useRequiredScopes(userStoreFeatureConfig?.scopes?.update);
 
-    const enableIdentityClaims: boolean = useSelector((state: AppState) => state?.config?.ui?.enableIdentityClaims);
-
-    const [ triggerAttributeMappingsSubmit, setTriggerAttributeMappingsSubmit ] = useTrigger();
-
     const [ userStoreImplType, setUserStoreImplType ] = useState<RemoteUserStoreImplType>(undefined);
-    const [ userStoreDetails, setUserStoreDetails ] = useState<UserstoreType>(null);
-    const [ basicDetails, setBasicDetails ] = useState({ description: "", name: "" });
-    const [ userStoreType, setUserStoreType ] = useState<string>(ConnectedUserStoreTypes.LDAP);
-    const [ userStoreAccessType, setUserStoreAccessType ] = useState<string>(RemoteUserStoreAccessTypes.ReadOnly);
-    const [ isUserStoreNameValid, setUserStoreNameValid ] = useState(false);
-    const [ isUserStoreDescriptionValid, setUserStoreDescriptionValid ] = useState(false);
-    const [ inputDescription, setInputDescription ] = useState<string>("");
-    const [ isAttributesListRequestLoading, setAttributesListRequestLoading ] = useState<boolean>(false);
-    const [ mandatoryAttributes, setMandatoryAttributes ] = useState<Claim[]>(null);
     const [ activeStep, setActiveStep ] = useState<number>(0);
+    const [ userStoreFormData, setUserStoreFormData ] = useState<UserStoreFormDataInterface>(initialUserStoreFormData);
+    const [ isUserStoreCreateRequestLoading, setIsUserStoreCreateRequestLoading ] = useState<boolean>(false);
+
+    const {
+        data: userStoreTypeList,
+        isLoading: isUserStoreTypesRequestLoading,
+        error: userStoreTypeRequestError
+    } = useGetUserStoreTypes();
+
+    /**
+     * Resolve the user store type ID from the available user store types.
+     */
+    const userStoreTypeID: string = useMemo(() => {
+        if (!userStoreTypeList) {
+            return null;
+        }
+
+        const _userStoreType: RemoteUserStoreManagerType = userStoreImplType === RemoteUserStoreImplType.OPTIMIZED
+            ? RemoteUserStoreManagerType.RemoteUserStoreManager
+            : RemoteUserStoreManagerType.WSOutboundUserStoreManager;
+
+        return userStoreTypeList.find(
+            (userStoreType: UserStoreType) => userStoreType.typeName === _userStoreType
+        )?.typeId;
+    }, [ userStoreTypeList, userStoreImplType ]);
 
     /**
      * Checks and validate the user store type query parameter.
+     * If the query parameter is invalid or the user store type is not supported, redirects.
      */
     useEffect(() => {
-        const remoteUserStoreCreatePath: string = RemoteUserStoreConstants.getPaths().get("REMOTE_USER_STORE_CREATE");
-        const queryParamKey: string = RemoteUserStoreUIConstants.REMOTE_USER_STORE_TYPE_QUERY_PARAM;
-
         // Check if the provided query parameter is a valid enum value.
         const isValidType: boolean = Object.values(RemoteUserStoreImplType).includes(
             userStoreImplTypeQueryParam as RemoteUserStoreImplType
@@ -158,113 +181,33 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
         }
 
         setUserStoreImplType(userStoreImplTypeQueryParam as RemoteUserStoreImplType);
+        setActiveStep(0);
+        setUserStoreFormData(initialUserStoreFormData);
     }, [ userStoreImplTypeQueryParam ]);
 
+    /**
+     * Handles the user store type request error.
+     */
     useEffect(() => {
-        getLocalClaims(null, null, null, null, !enableIdentityClaims);
-    }, []);
-
-    useEffect(() => {
-        getAType(RemoteUserStoreConstants.OUTBOUND_USER_STORE_TYPE_ID, null).then((response: UserstoreType) => {
-            setUserStoreDetails(response);
-        });
-    }, []);
+        if (userStoreTypeRequestError) {
+            //FIXME: update error message.
+            dispatch(
+                addAlert({
+                    description: t("userstores:notifications.fetchUserstoreTypes.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("userstores:notifications.fetchUserstoreTypes.error.message")
+                })
+            );
+        }
+    }, [ userStoreTypeRequestError ]);
 
     /**
-     * Fetches all the local claims.
+     * Handles the user store creation.
      *
-     * @param limit - number
-     * @param offset - number
-     * @param sort - string
-     * @param filter - string
-     * @param excludeIdentity - boolean
+     * @param data - User store creation data.
      */
-    const getLocalClaims = (
-        limit?: number,
-        sort?: string,
-        offset?: number,
-        filter?: string,
-        excludeIdentity?: boolean
-    ) => {
-        setAttributesListRequestLoading(true);
-        const params: ClaimsGetParams = {
-            "exclude-identity-claims": excludeIdentity,
-            filter: filter || null,
-            limit: limit || null,
-            offset: offset || null,
-            sort: sort || null
-        };
-
-        getAllLocalClaims(params)
-            .then((attributes: Claim[]) => {
-                // Set mandatory attributes that the user needs to update.
-                setMandatoryAttributes(
-                    attributes.filter(
-                        (attribute: Claim) =>
-                            attribute.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI ||
-                            attribute.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI
-                    )
-                );
-            })
-            .catch((error: IdentityAppsApiException) => {
-                dispatch(
-                    addAlert({
-                        description:
-                            error?.response?.data?.description ||
-                            t("claims:local.notifications.getClaims.genericError.description"),
-                        level: AlertLevels.ERROR,
-                        message:
-                            error?.response?.data?.message ||
-                            t("claims:local.notifications.getClaims.genericError.message")
-                    })
-                );
-            })
-            .finally(() => {
-                setAttributesListRequestLoading(false);
-            });
-    };
-
-    const serializeProperties = (): UserStoreProperty[] => {
-        const userStoreProperties: UserStoreProperty[] = [];
-
-        userStoreDetails?.properties?.Mandatory.map((property: TypeProperty) => {
-            userStoreProperties.push({
-                name: property?.name,
-                value: getValueForUserStoreProperty(property?.name)
-            });
-        });
-
-        userStoreDetails?.properties?.Optional.map((property: TypeProperty) => {
-            userStoreProperties.push({
-                name: property?.name,
-                value: property?.defaultValue
-            });
-        });
-        // todo : Need to move this property to either `userStoreDetails.properties.Mandatory` or
-        // `userStoreDetails.properties.Optional`. This can be done after the necessary backend fix is complete
-        userStoreProperties.push({
-            name: RemoteUserStoreConstants.PROPERTY_NAME_READ_ONLY,
-            value: getValueForUserStoreProperty(RemoteUserStoreConstants.PROPERTY_NAME_READ_ONLY)
-        });
-
-        return userStoreProperties;
-    };
-
-    const getValueForUserStoreProperty = (propertyName: string): string => {
-        switch (propertyName) {
-            case RemoteUserStoreConstants.PROPERTY_NAME_CONNECTED_USERSTORE_TYPE:
-                return userStoreType.toString();
-
-            case RemoteUserStoreConstants.PROPERTY_NAME_READ_ONLY:
-                return userStoreAccessType.toString();
-
-            default:
-                break;
-        }
-    };
-
     const handleUserStoreRegistration = (data: UserStorePostData) => {
-        // Create the user store in Asgardeo.
+        setIsUserStoreCreateRequestLoading(true);
         addUserStore(data)
             .then((response: UserStore) => {
                 dispatch(
@@ -315,20 +258,148 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
                         message: error?.message ?? t("userstores:notifications.addUserstore" + ".genericError.message")
                     })
                 );
+
+                setIsUserStoreCreateRequestLoading(false);
             });
     };
 
-    const preventBasicDetailsNext = (): boolean => {
-        if (inputDescription) {
-            return !isUserStoreNameValid || !isUserStoreDescriptionValid;
-        } else {
-            return !isUserStoreNameValid;
-        }
+    /**
+     * Handles the general details form submission.
+     * @param values - Step 01 form values.
+     */
+    const onGeneralDetailsFormSubmit = (values: GeneralDetailsFormValuesInterface) => {
+        setUserStoreFormData((prevData: UserStoreFormDataInterface) => ({
+            ...prevData,
+            generalDetails: values
+        }));
+        setActiveStep(1);
     };
 
-    const onGeneralDetailsFormSubmit = (values: GeneralDetailsFormValuesInterface) => {
-        console.log(values);
-        setActiveStep(1);
+    /**
+     * Handles the configurations form submission.
+     * @param values - Step 02 form values.
+     */
+    const onConfigurationsFormSubmit = (values: ConfigurationsFormValuesInterface) => {
+        const _userStoreManager: RemoteUserStoreManagerType = userStoreImplType === RemoteUserStoreImplType.OPTIMIZED
+            ? RemoteUserStoreManagerType.RemoteUserStoreManager
+            : RemoteUserStoreManagerType.WSOutboundUserStoreManager;
+
+        setUserStoreFormData((prevData: UserStoreFormDataInterface) => ({
+            ...prevData,
+            configurations: values
+        }));
+
+        const userStoreProperties: UserStoreProperty[] = [
+            {
+                name: RemoteUserStoreConstants.PROPERTY_NAME_CONNECTED_USER_STORE_TYPE,
+                value: userStoreFormData.generalDetails.connectedUserStoreType
+            },
+            {
+                name: RemoteUserStoreConstants.PROPERTY_NAME_READ_ONLY,
+                value: userStoreFormData.generalDetails.accessType
+            },
+            {
+                name: RemoteUserStoreConstants.PROPERTY_NAME_DISABLED,
+                value: "false"
+            },
+            {
+                name: RemoteUserStoreConstants.PROPERTY_NAME_READ_GROUPS,
+                value: values.readGroups.toString()
+            }
+        ];
+
+        if (_userStoreManager === RemoteUserStoreManagerType.RemoteUserStoreManager) {
+            userStoreProperties.push(...[
+                {
+                    name: RemoteUserStoreConstants.PROPERTY_NAME_USERNAME,
+                    value: values.usernameMapping
+                },
+                {
+                    name: RemoteUserStoreConstants.PROPERTY_NAME_USERID,
+                    value: values.userIdMapping
+                }
+            ]);
+
+            if (values.readGroups) {
+                userStoreProperties.push(...[
+                    {
+                        name: RemoteUserStoreConstants.PROPERTY_NAME_GROUPNAME,
+                        value: values.groupnameMapping
+                    },
+                    {
+                        name: RemoteUserStoreConstants.PROPERTY_NAME_GROUPID,
+                        value: values.groupIdMapping
+                    }
+                ]);
+            }
+        }
+
+        const userStorePayload: UserStorePostData = {
+            claimAttributeMappings: [
+                {
+                    claimURI: ClaimManagementConstants.USER_NAME_CLAIM_URI,
+                    mappedAttribute: values.usernameMapping
+                },
+                {
+                    claimURI: ClaimManagementConstants.USER_ID_CLAIM_URI,
+                    mappedAttribute: values.userIdMapping
+                }
+            ],
+            description: userStoreFormData.generalDetails.description ?? "",
+            name: userStoreFormData.generalDetails.name,
+            properties: userStoreProperties,
+            typeId: userStoreTypeID
+        };
+
+        handleUserStoreRegistration(userStorePayload);
+    };
+
+    const renderUserStoreImplMessageContent = () => {
+        const onNavigate = () => {
+            history.push(
+                `${remoteUserStoreCreatePath}?${queryParamKey}=${
+                    userStoreImplType === RemoteUserStoreImplType.OPTIMIZED
+                        ? RemoteUserStoreImplType.CLASSIC
+                        : RemoteUserStoreImplType.OPTIMIZED
+                }`
+            );
+        };
+
+        if (userStoreImplType === RemoteUserStoreImplType.OPTIMIZED) {
+            return (
+                <>
+                    This configuration supports Authentication Only. User and group management features are not
+                    available in this setup. If user management is an essential requirement, please use
+                    the <a onClick={ onNavigate }>Classic User Store Connection</a> instead.
+                </>
+            );
+        }
+
+        return (
+            <>
+                If your requirement is only for authentication, we recommend using
+                the <a onClick={ onNavigate }>Optimized User Store Connection</a> for efficiency.
+            </>
+        );
+    };
+
+    /**
+     * Renders the loading placeholder.
+     */
+    const renderLoadingPlaceholder = () => {
+        return (
+            <Stack spacing={ 3 }>
+                <Skeleton variant="rectangular" height={ 40 } />
+                <Stack spacing={ 1 }>
+                    <Skeleton variant="rectangular" width={ 210 } height={ 10 } />
+                    <Skeleton variant="text" />
+                    <Skeleton variant="rectangular" width={ 210 } height={ 10 } />
+                    <Skeleton variant="text" />
+                    <Skeleton variant="rectangular" width={ 210 } height={ 10 } />
+                    <Skeleton variant="text" />
+                </Stack>
+            </Stack>
+        );
     };
 
     return (
@@ -336,6 +407,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
             title={ t("extensions:manage.features.userStores.create.pageLayout.title") }
             contentTopMargin={ true }
             description={ t("extensions:manage.features.userStores.create.pageLayout.description") }
+            className="remote-user-store-create-page-layout"
             backButton={ {
                 "data-testid": `${testId}-page-back-button`,
                 onClick: () => {
@@ -348,89 +420,116 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
             showBottomDivider
             data-testid={ `${testId}-page-layout` }
         >
+            { userStoreImplType && (
+                <Message
+                    content={ renderUserStoreImplMessageContent() }
+                    type="info"
+                    data-componentid={ `${testId}-configuration-message` }
+                    className="remote-user-store-impl-message"
+                />
+            ) }
             <EmphasizedSegment padded="very">
-                <Stepper activeStep={ activeStep } orientation="vertical" className="remote-user-store-create-stepper">
-                    <Step>
-                        <StepLabel
-                            optional={
-                                (<Typography variant="body2">
-                                    Provide the basic details to identify and connect your user store.
-                                </Typography>)
-                            }
+                { isUserStoreTypesRequestLoading || userStoreTypeRequestError
+                    ? renderLoadingPlaceholder()
+                    : (
+                        <Stepper
+                            activeStep={ activeStep }
+                            orientation="vertical"
+                            className="remote-user-store-create-stepper"
                         >
-                            <Typography variant="h4">General Details</Typography>
-                        </StepLabel>
-                        <StepContent>
-                            <GeneralUserStoreDetailsForm
-                                ref={ generalUserStoreDetailsFormRef }
-                                userStoreManager={
-                                    userStoreImplType === RemoteUserStoreImplType.OPTIMIZED
-                                        ? RemoteUserStoreManagerType.RemoteUserStoreManager
-                                        : RemoteUserStoreManagerType.WSOutboundUserStoreManager
-                                }
-                                isReadOnly={ !hasUserStoreCreatePermissions }
-                                isReadWriteUserStoresEnabled={ isReadWriteUserStoresEnabled }
-                                onSubmit={ onGeneralDetailsFormSubmit }
-                            />
-                            <Button
-                                variant="contained"
-                                disabled={ !hasUserStoreCreatePermissions }
-                                data-componentid={ `${testId}-next-button` }
-                                onClick={ () => {
-                                    if (generalUserStoreDetailsFormRef?.current?.triggerSubmit)
-                                        generalUserStoreDetailsFormRef.current.triggerSubmit();
-                                } }
-                            >
+                            <Step>
+                                <StepLabel
+                                    optional={
+                                        (<Typography variant="body2">
+                                            Provide the basic details to identify and connect your user store.
+                                        </Typography>)
+                                    }
+                                >
+                                    <Typography variant="h4">General Details</Typography>
+                                </StepLabel>
+                                <StepContent>
+                                    <GeneralUserStoreDetailsForm
+                                        ref={ generalUserStoreDetailsFormRef }
+                                        userStoreManager={
+                                            userStoreImplType === RemoteUserStoreImplType.OPTIMIZED
+                                                ? RemoteUserStoreManagerType.RemoteUserStoreManager
+                                                : RemoteUserStoreManagerType.WSOutboundUserStoreManager
+                                        }
+                                        isReadOnly={ !hasUserStoreCreatePermissions }
+                                        isReadWriteUserStoresEnabled={ isReadWriteUserStoresEnabled }
+                                        initialValues={ userStoreFormData.generalDetails ?? {} }
+                                        onSubmit={ onGeneralDetailsFormSubmit }
+                                    />
+                                    <Button
+                                        variant="contained"
+                                        disabled={ !hasUserStoreCreatePermissions }
+                                        data-componentid={ `${testId}-next-button` }
+                                        onClick={ () => {
+                                            if (generalUserStoreDetailsFormRef?.current?.triggerSubmit)
+                                                generalUserStoreDetailsFormRef.current.triggerSubmit();
+                                        } }
+                                        loading={ isUserStoreCreateRequestLoading }
+                                    >
                                 Next
-                            </Button>
-                        </StepContent>
-                    </Step>
+                                    </Button>
+                                </StepContent>
+                            </Step>
 
-                    <Step>
-                        <StepLabel
-                            optional={
-                                (<Typography variant="body2">
+                            <Step>
+                                <StepLabel
+                                    optional={
+                                        (<Typography variant="body2">
                                     Complete the required settings to integrate your connected user store, enabling
                                     smooth user access to applications.
-                                </Typography>)
-                            }
-                        >
-                            <Typography variant="h4">Configurations</Typography>
-                        </StepLabel>
-                        <StepContent>
-                            <ConfigurationsForm
-                                userStoreManager={
-                                    userStoreImplType === RemoteUserStoreImplType.OPTIMIZED
-                                        ? RemoteUserStoreManagerType.RemoteUserStoreManager
-                                        : RemoteUserStoreManagerType.WSOutboundUserStoreManager
-                                }
-                                isReadOnly={ !hasUserStoreCreatePermissions }
-                            />
-                            <div className="step-actions-container">
-                                <Button
-                                    variant="outlined"
-                                    disabled={ !hasUserStoreCreatePermissions }
-                                    data-componentid={ `${testId}-next-button` }
-                                    onClick={ () => {
-                                        setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
-                                    } }
+                                        </Typography>)
+                                    }
                                 >
+                                    <Typography variant="h4">Configurations</Typography>
+                                </StepLabel>
+                                <StepContent>
+                                    <ConfigurationsForm
+                                        ref={ configurationsFormRef }
+                                        userStoreManager={
+                                            userStoreImplType === RemoteUserStoreImplType.OPTIMIZED
+                                                ? RemoteUserStoreManagerType.RemoteUserStoreManager
+                                                : RemoteUserStoreManagerType.WSOutboundUserStoreManager
+                                        }
+                                        isReadOnly={ !hasUserStoreCreatePermissions }
+                                        initialValues={ userStoreFormData.configurations ?? {} }
+                                        onSubmit={ onConfigurationsFormSubmit }
+                                    />
+                                    <div className="step-actions-container">
+                                        <Button
+                                            variant="outlined"
+                                            disabled={
+                                                !hasUserStoreCreatePermissions
+                                                || isUserStoreCreateRequestLoading
+                                            }
+                                            data-componentid={ `${testId}-next-button` }
+                                            onClick={ () => {
+                                                setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
+                                            } }
+                                        >
                                     Previous
-                                </Button>
-                                <Button
-                                    variant="contained"
-                                    disabled={ !hasUserStoreCreatePermissions }
-                                    data-componentid={ `${testId}-next-button` }
-                                    onClick={ () => {
-                                        setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
-                                    } }
-                                >
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            disabled={ !hasUserStoreCreatePermissions }
+                                            data-componentid={ `${testId}-next-button` }
+                                            onClick={ () => {
+                                                if (configurationsFormRef?.current?.triggerSubmit)
+                                                    configurationsFormRef.current.triggerSubmit();
+                                            } }
+                                            loading={ isUserStoreCreateRequestLoading }
+                                        >
                                     Finish
-                                </Button>
-                            </div>
-                        </StepContent>
-                    </Step>
-                </Stepper>
+                                        </Button>
+                                    </div>
+                                </StepContent>
+                            </Step>
+                        </Stepper>
+                    )
+                }
             </EmphasizedSegment>
         </PageLayout>
     );

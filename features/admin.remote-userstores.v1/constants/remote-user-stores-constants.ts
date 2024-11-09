@@ -59,8 +59,14 @@ export class RemoteUserStoreConstants {
     public static readonly DISPLAY_NAME_VALUE: string = "displayName";
 
     // Userstore propery names
-    public static readonly PROPERTY_NAME_CONNECTED_USERSTORE_TYPE: string = "ConnectedUserstoreType";
+    public static readonly PROPERTY_NAME_CONNECTED_USER_STORE_TYPE: string = "ConnectedUserstoreType";
     public static readonly PROPERTY_NAME_READ_ONLY: string = "ReadOnly";
+    public static readonly PROPERTY_NAME_DISABLED: string = "Disabled";
+    public static readonly PROPERTY_NAME_READ_GROUPS: string = "ReadGroups";
+    public static readonly PROPERTY_NAME_USERID: string = "UserIDAttribute";
+    public static readonly PROPERTY_NAME_USERNAME: string = "UserNameAttribute";
+    public static readonly PROPERTY_NAME_GROUPID: string = "GroupIdAttribute";
+    public static readonly PROPERTY_NAME_GROUPNAME: string = "GroupNameAttribute";
 
     /**
      * Set of keys used to enable/disable sub-features.
