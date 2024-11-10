@@ -16,11 +16,12 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppState, FeatureConfigInterface, OrganizationType } from "@wso2is/admin.core.v1";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { RoleConstants } from "@wso2is/core/constants";
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, RolesInterface, SBACInterface } from "@wso2is/core/models";
 import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
@@ -71,7 +72,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     const { t } = useTranslation();
     const { organizationType } = useGetCurrentOrganizationType();
 
-    const featureConfig: FeatureAccessConfigInterface = useSelector(
+    const userRolesFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRoles);
     const usersFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.users);
@@ -82,19 +83,20 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         return state.config.ui.features?.userRoles?.disabledFeatures;
     });
 
+    const hasUserRoleUpdatePermissions: boolean = useRequiredScopes(userRolesFeatureConfig?.scopes.update);
+    const hasUserUpdatePermissions: boolean = useRequiredScopes(usersFeatureConfig?.scopes?.update);
+
     const isReadOnly: boolean = useMemo(() => {
-        return !isFeatureEnabled(featureConfig,
+        return !isFeatureEnabled(userRolesFeatureConfig,
             LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_UPDATE"))
-            || !hasRequiredScopes(featureConfig,
-                featureConfig?.scopes?.update, allowedScopes)
+            || !hasUserRoleUpdatePermissions
             || roleObject?.meta?.systemRole;
-    }, [ featureConfig, allowedScopes ]);
+    }, [ userRolesFeatureConfig, allowedScopes ]);
 
     const isUserReadOnly: boolean = useMemo(() => {
         return !isFeatureEnabled(usersFeatureConfig,
-            UserManagementConstants.FEATURE_DICTIONARY.get("USER_CREATE")) ||
-            !hasRequiredScopes(usersFeatureConfig,
-                usersFeatureConfig?.scopes?.update, allowedScopes);
+            UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE")) ||
+            !hasUserUpdatePermissions;
     }, [ usersFeatureConfig, allowedScopes ]);
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
@@ -148,7 +150,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RoleGroupsList
-                            isReadOnly={ isReadOnly }
+                            isReadOnly={ isReadOnly && isUserReadOnly }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 2 }
@@ -167,7 +169,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                     render: () => (
                         <ResourceTab.Pane controlledSegmentation attached={ false }>
                             <RoleUsersList
-                                isReadOnly={ isReadOnly || isUserReadOnly }
+                                isReadOnly={ isReadOnly && isUserReadOnly }
                                 role={ roleObject }
                                 onRoleUpdate={ onRoleUpdate }
                                 tabIndex={ 3 }
