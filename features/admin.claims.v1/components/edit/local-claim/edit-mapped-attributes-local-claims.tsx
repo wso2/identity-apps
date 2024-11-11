@@ -15,11 +15,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { AccordionDetails } from "@mui/material";
+import Accordion from "@oxygen-ui/react/Accordion";
+import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
+import Checkbox from "@oxygen-ui/react/Checkbox";
+import Typography from "@oxygen-ui/react/Typography";
+import { ChevronDownIcon } from "@oxygen-ui/react-icons";
 import { Show } from "@wso2is/access-control";
 import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
+// import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, AttributeMapping, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
@@ -31,6 +37,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { updateAClaim } from "../../../api";
+// import "./edit-mapped-attributes-local-claims.scss";
 
 /**
  * Prop types of `EditMappedAttributesLocalClaims` component
@@ -97,15 +104,16 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
     }, []);
 
     const isReadOnly: boolean = useMemo(() => (
-        !hasRequiredScopes(
-            featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
+        // !hasRequiredScopes(
+        //     featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
+        false
     ), [ featureConfig, allowedScopes ]);
 
     return (
         <EmphasizedSegment padded="very">
             <Grid data-testid={ testId }>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
+                    <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 12 } widescreen={ 9 } mobile={ 16 }>
                         <p>
                             { t("claims:local.mappedAttributes.hint") }
                         </p>
@@ -162,37 +170,60 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                     });
                             } }
                         >
-                            <Grid>
-                                { userStore.map((store: UserStoreListItem, index: number) => {
-                                    return (
-                                        <Grid.Row columns={ 2 } key={ index }>
-                                            <Grid.Column width={ 4 }>
-                                                { store.name }
-                                            </Grid.Column>
-                                            <Grid.Column width={ 12 }>
-                                                <Field
-                                                    type="text"
-                                                    name={ store.name }
-                                                    placeholder={ t("claims:local.forms." +
-                                                        "attribute.placeholder") }
-                                                    required={ true }
-                                                    requiredErrorMessage={
-                                                        t("claims:local.forms." +
-                                                        "attribute.requiredErrorMessage")
-                                                    }
-                                                    value={ claim?.attributeMapping?.find(
-                                                        (attribute: AttributeMapping) => {
-                                                            return attribute.userstore
-                                                                .toLowerCase() === store.name.toLowerCase();
-                                                        })?.mappedAttribute }
-                                                    data-testid={ `${ testId }-form-store-name-input` }
-                                                    readOnly={ isReadOnly }
-                                                />
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    );
-                                }) }
-                            </Grid>
+                            { userStore.map((store: UserStoreListItem, index: number) => {
+                                return (
+                                    <>
+                                        <Accordion
+                                            className="userstore-acordion"
+                                            defaultExpanded
+                                            expanded={ true }
+                                        >
+                                            <AccordionSummary
+                                                // expandIcon={ <ChevronDownIcon /> }
+                                            >
+                                                <Typography variant="h6"> { store.name } </Typography>
+                                            </AccordionSummary>
+                                            <AccordionDetails>
+                                                <Grid>
+                                                    <Grid.Row columns={ 2 } key={ index }>
+                                                        <Grid.Column width={ 6 }>
+                                                            Mapped attribute name
+                                                        </Grid.Column>
+                                                        <Grid.Column width={ 6 }>
+                                                            <Field
+                                                                type="text"
+                                                                name={ store.name }
+                                                                placeholder={ t("claims:local.forms." +
+                                                                     "attribute.placeholder") }
+                                                                required={ true }
+                                                                requiredErrorMessage={
+                                                                    t("claims:local.forms." +
+                                                                    "attribute.requiredErrorMessage")
+                                                                }
+                                                                value={ claim?.attributeMapping?.find(
+                                                                    (attribute: AttributeMapping) => {
+                                                                        return attribute.userstore
+                                                                            .toLowerCase() === store.name.toLowerCase();
+                                                                    })?.mappedAttribute }
+                                                                data-testid={ `${ testId }-form-store-name-input` }
+                                                                readOnly={ isReadOnly }
+                                                            />
+                                                        </Grid.Column>
+                                                    </Grid.Row>
+                                                    <Grid.Row columns={ 2 } key={ index }>
+                                                        <Grid.Column width={ 6 }>
+                                                            Supported by user store
+                                                        </Grid.Column>
+                                                        <Grid.Column width={ 6 }>
+                                                            <Checkbox />
+                                                        </Grid.Column>
+                                                    </Grid.Row>
+                                                </Grid>
+                                            </AccordionDetails>
+                                        </Accordion>
+                                    </>
+                                );
+                            }) }
                         </Forms>
 
                     </Grid.Column>
