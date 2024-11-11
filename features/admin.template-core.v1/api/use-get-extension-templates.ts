@@ -33,7 +33,7 @@ import { ExtensionTemplateListInterface, ResourceTypes } from "../models/templat
 const useGetExtensionTemplates = <
     Data = ExtensionTemplateListInterface[],
     Error = RequestErrorInterface
->(type: ResourceTypes): RequestResultInterface<Data, Error> => {
+>(type: ResourceTypes, shouldFetch?: boolean): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
@@ -43,7 +43,7 @@ const useGetExtensionTemplates = <
         url: store?.getState()?.config?.endpoints?.extensionTemplates?.replace("{{type}}", `${type?.toString()}s`)
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     if (Array.isArray(data)) {
         data.sort(

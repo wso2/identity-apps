@@ -17,7 +17,12 @@
  */
 
 import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
-import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
+import {
+    AccessControlProvider,
+    AllFeatureInterface,
+    FeatureAccessConfigInterface,
+    FeatureGateInterface
+} from "@wso2is/access-control";
 import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
 import { EventPublisher, PreLoader } from "@wso2is/admin.core.v1";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components";
@@ -39,7 +44,8 @@ import { ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
 import ExtensionTemplatesProvider from "@wso2is/admin.template-core.v1/provider/extension-templates-provider";
 import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
+// eslint-disable-next-line no-restricted-imports
+import { CommonHelpers, hasRequiredScopes, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, StorageIdentityAppsSettingsInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import { setI18nConfigs, setServiceResourceEndpoints } from "@wso2is/core/store";
 import { AuthenticateUtils, LocalStorageUtils } from "@wso2is/core/utils";
@@ -57,7 +63,7 @@ import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
 import set from "lodash-es/set";
 import * as moment from "moment";
-import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, Suspense, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Trans } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -104,6 +110,16 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
         data: allFeatures,
         error: featureGateAPIException
     } = useGetAllFeatures();
+
+    const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.applications
+    );
+
+    const hasExtensionTemplateViewPermissions: boolean = useMemo(() => hasRequiredScopes(
+        applicationsFeatureConfig,
+        applicationsFeatureConfig?.scopes?.read,
+        allowedScopes
+    ), [ applicationsFeatureConfig, allowedScopes ]);
 
     /**
      * Set the deployment configs in redux state.
@@ -471,6 +487,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                             }
                                         />
                                         <ExtensionTemplatesProvider
+                                            fetchTemplatesOnLoad={ hasExtensionTemplateViewPermissions }
                                             resourceType={ ResourceTypes.APPLICATIONS }
                                             categories={ ApplicationTemplateConstants.SUPPORTED_CATEGORIES_INFO }
                                         >
