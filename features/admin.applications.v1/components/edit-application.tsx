@@ -229,6 +229,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     const handleApplicationUpdate = (id: string): void => {
         setIsApplicationUpdated(true);
+        handleProtocolUpdate();
         onUpdate(id);
     };
 

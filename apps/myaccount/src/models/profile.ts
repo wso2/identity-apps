@@ -120,6 +120,7 @@ export interface ProfileSchema {
      * Maximum length limit.
      */
     maxLength?: number;
+    excludedUserStores?: string;
 }
 
 /**
@@ -218,3 +219,11 @@ export const createEmptyProfile = (): BasicProfileInterface => ({
     userImage: "",
     userName: ""
 });
+
+/**
+ * Interface for the profile patch operation value.
+ */
+export type ProfilePatchOperationValue = Record<string, string
+    | Record<string, string | string[]>
+    | Array<string>
+    | Array<Record<string, string>>>;

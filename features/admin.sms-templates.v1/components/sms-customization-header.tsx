@@ -18,6 +18,7 @@
 
 import { SelectChangeEvent } from "@mui/material";
 import Card from "@oxygen-ui/react/Card";
+import Grid from "@oxygen-ui/react/Grid";
 import { AppState } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DropdownChild, FinalForm, FinalFormField, SelectFieldAdapter } from "@wso2is/form";
@@ -27,7 +28,6 @@ import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Grid } from "semantic-ui-react";
 import { SMSTemplateType } from "../models/sms-templates";
 
 interface SMSCustomizationHeaderProps extends IdentifiableComponentInterface {
@@ -134,8 +134,8 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
 
     const renderFormFields = (): ReactElement => {
         return (
-            <Grid>
-                <Grid.Column mobile={ 16 } computer={ 8 }>
+            <Grid container spacing={ 2 } marginTop={ 2 }>
+                <Grid xs={ 12 } md={ 6 } lg={ 5 } xl={ 4 }>
                     <FinalFormField
                         key="selectedSmsTemplate"
                         width={ 16 }
@@ -156,8 +156,8 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
                         defaultValue={ selectedSmsTemplateId }
                     />
                     <Hint>{ selectedSmsTemplateDescription ?? null }</Hint>
-                </Grid.Column>
-                <Grid.Column mobile={ 16 } computer={ 8 }>
+                </Grid>
+                <Grid xs={ 12 } md={ 6 } lg={ 5 } xl={ 4 }>
                     <FinalFormField
                         key="selectedSmsTemplateLocale"
                         width={ 16 }
@@ -177,27 +177,23 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
                         options={ localeList }
                         onChange={ onLocaleChanged }
                     />
-                </Grid.Column>
+                </Grid>
             </Grid>
         );
     };
 
     return (
-        <Card className="mb-4 p-4 pb-2" data-componentid={ componentId } padded={ "very" }>
-            <Grid className="mt-2">
-                <Grid.Column mobile={ 16 } computer={ 10 }>
-                    <FinalForm
-                        onSubmit={ () => {} }
-                        initialValues={ {
-                            selectedSmsTemplate: selectedSmsTemplateId,
-                            selectedSmsTemplateLocale: selectedLocale
-                        } }
-                        render={ ({ handleSubmit }: FormRenderProps) => (
-                            <form onSubmit={ handleSubmit }>{ renderFormFields() }</form>
-                        ) }
-                    ></FinalForm>
-                </Grid.Column>
-            </Grid>
+        <Card className="mb-4 p-4 pb-2" data-componentid={ componentId }>
+            <FinalForm
+                onSubmit={ () => {} }
+                initialValues={ {
+                    selectedSmsTemplate: selectedSmsTemplateId,
+                    selectedSmsTemplateLocale: selectedLocale
+                } }
+                render={ ({ handleSubmit }: FormRenderProps) => (
+                    <form onSubmit={ handleSubmit }>{ renderFormFields() }</form>
+                ) }
+            />
         </Card>
     );
 };

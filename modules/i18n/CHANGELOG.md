@@ -1,5 +1,32 @@
 # @wso2is/i18n
 
+## 2.10.5
+
+### Patch Changes
+
+- [#6563](https://github.com/wso2/identity-apps/pull/6563) [`4b477833d0178b12ceba5c8623505c33c288b3c6`](https://github.com/wso2/identity-apps/commit/4b477833d0178b12ceba5c8623505c33c288b3c6) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add multi-valued email, mobile support to my account
+
+- Updated dependencies [[`4b477833d0178b12ceba5c8623505c33c288b3c6`](https://github.com/wso2/identity-apps/commit/4b477833d0178b12ceba5c8623505c33c288b3c6)]:
+  - @wso2is/core@2.4.1
+
+## 2.10.4
+
+### Patch Changes
+
+- [#7093](https://github.com/wso2/identity-apps/pull/7093) [`526596d57622f00f332376ee9a1414c166a7bfd2`](https://github.com/wso2/identity-apps/commit/526596d57622f00f332376ee9a1414c166a7bfd2) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Implement displaying locked account reason in user profile
+
+## 2.10.3
+
+### Patch Changes
+
+- [#7078](https://github.com/wso2/identity-apps/pull/7078) [`062fb7ee176b7a96a580fbd7171bf94db99c4d2e`](https://github.com/wso2/identity-apps/commit/062fb7ee176b7a96a580fbd7171bf94db99c4d2e) Thanks [@Sachin-Mamoru](https://github.com/Sachin-Mamoru)! - update secret management script editor placeholder
+
+## 2.10.2
+
+### Patch Changes
+
+- [#7031](https://github.com/wso2/identity-apps/pull/7031) [`07379763c3fb80e7c2264b6ebd61b341cf104ff8`](https://github.com/wso2/identity-apps/commit/07379763c3fb80e7c2264b6ebd61b341cf104ff8) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Unify local and remote user stores
+
 ## 2.10.1
 
 ### Patch Changes

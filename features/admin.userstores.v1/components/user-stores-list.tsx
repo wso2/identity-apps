@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import {
     AppConstants,
     AppState,
@@ -27,7 +28,6 @@ import {
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     LoadableComponentInterface,
@@ -53,7 +53,12 @@ import { Dispatch } from "redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { deleteUserStore } from "../api";
 import { getTableIcons } from "../configs";
-import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID } from "../constants";
+import {
+    CONSUMER_USERSTORE,
+    CONSUMER_USERSTORE_ID,
+    REMOTE_USERSTORE_TYPE_NAME,
+    UserStoreManagementConstants
+} from "../constants";
 import { UserStoreListItem } from "../models";
 
 /**
@@ -130,8 +135,14 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     const [ deleteID, setDeleteID ] = useState<string>(null);
     const [ deleteName, setDeleteName ] = useState<string>("");
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+
+    const disabledFeatures: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.userStores?.disabledFeatures);
+
+    const hasUserStoreCreatePermissions: boolean = useRequiredScopes(featureConfig?.userStores?.scopes?.create);
+    const hasUserStoreUpdatePermissions: boolean = useRequiredScopes(featureConfig?.userStores?.scopes?.update);
+    const hasUserStoreDeletePermissions: boolean = useRequiredScopes(featureConfig?.userStores?.scopes?.delete);
 
     const dispatch: Dispatch = useDispatch();
 
@@ -260,8 +271,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
         }
 
         if (list?.length === 0) {
-            if (!hasRequiredScopes(featureConfig?.userStores, featureConfig?.userStores?.scopes?.create,
-                allowedScopes)) {
+            if (!hasUserStoreCreatePermissions) {
                 return (
                     <EmptyPlaceholder
                         image={ getEmptyPlaceholderIllustrations().newList }
@@ -279,10 +289,15 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                 return (
                     <EmptyPlaceholder
                         action={ (
-                            <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
-                                <Icon name="add" />
-                                { t("userstores:placeholders.emptyList.action") }
-                            </PrimaryButton>
+                            disabledFeatures?.includes(UserStoreManagementConstants.FEATURE_DICTIONARY
+                                .get("USER_STORE_REMOTE"))
+                            &&
+                            (
+                                <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
+                                    <Icon name="add" />
+                                    { t("userstores:placeholders.emptyList.action") }
+                                </PrimaryButton>
+                            )
                         ) }
                         image={ getEmptyPlaceholderIllustrations().newList }
                         imageSize="tiny"
@@ -301,8 +316,8 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
         return null;
     };
 
-    const handleUserstoreEdit = (userstoreId: string) => {
-        if (userstoresConfig.onUserstoreEdit(userstoreId)) {
+    const handleUserstoreEdit = (userstoreId: string, typeName: string) => {
+        if (userstoresConfig.onUserstoreEdit(userstoreId) && (typeName !== REMOTE_USERSTORE_TYPE_NAME)) {
             history.push(AppConstants.getPaths().get("USERSTORES_EDIT").replace(":id", userstoreId));
         } else {
             history.push(AppConstants.getPaths().get("USERSTORES_EDIT").replace(":id", userstoreId).replace(
@@ -407,17 +422,15 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
 
         return [
             {
-                icon: (): SemanticICONS => hasRequiredScopes(featureConfig?.userStores,
-                    featureConfig?.userStores?.scopes?.update, allowedScopes) ?  "pencil alternate" : "eye",
-                onClick: (e: SyntheticEvent, userstore: UserStoreListItem): void => handleUserstoreEdit(userstore?.id),
-                popupText: (): string => hasRequiredScopes(featureConfig?.userStores,
-                    featureConfig?.userStores?.scopes?.update, allowedScopes) ? t("common:edit") : t("common:view"),
+                icon: (): SemanticICONS => hasUserStoreUpdatePermissions ?  "pencil alternate" : "eye",
+                onClick: (e: SyntheticEvent, userstore: UserStoreListItem): void =>
+                    handleUserstoreEdit(userstore?.id, userstore?.typeName),
+                popupText: (): string => hasUserStoreUpdatePermissions ? t("common:edit") : t("common:view"),
                 renderer: "semantic-icon"
             },
             {
                 hidden: (userstore: UserStoreListItem): boolean => {
-                    return !hasRequiredScopes(featureConfig?.userStores, featureConfig?.userStores?.scopes?.delete,
-                        allowedScopes) || userstore.id == CONSUMER_USERSTORE_ID || isPrivilegedUser;
+                    return !hasUserStoreDeletePermissions || userstore.id == CONSUMER_USERSTORE_ID || isPrivilegedUser;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, userstore: UserStoreListItem): void =>
@@ -443,7 +456,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                 columns={ resolveTableColumns() }
                 data={ list }
                 onRowClick={ (e: SyntheticEvent, userstore: UserStoreListItem): void => {
-                    handleUserstoreEdit(userstore?.id);
+                    handleUserstoreEdit(userstore?.id, userstore?.typeName);
                 } }
                 placeholders={ showPlaceholders() }
                 selectable={ selection }

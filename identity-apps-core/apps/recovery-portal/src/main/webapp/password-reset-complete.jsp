@@ -129,7 +129,7 @@
     Boolean appEnabledStatus = false;
 
     // Temporary fix for application name not retrieving from the applicationDataRetrievalClient.
-    if (applicationName.equals("null") || StringUtils.isBlank(applicationName)) {
+    if (StringUtils.isBlank(applicationName) || applicationName.equals("null")) {
         // If application name is not available, fallback to My Account application.
         appEnabledStatus = applicationDataRetrieval.getApplicationEnabledStatus(tenantDomain, MY_ACCOUNT_APP_NAME);
     } else {

@@ -48,6 +48,12 @@
                 <param-value>{{ accountrecoveryendpoint.auto_login_cookie_domain }}</param-value>
         </context-param>
     {% endif %}
+    {% if accountrecoveryendpoint.hide_username_when_email_as_username_enabled is defined %}
+        <context-param>
+           <param-name>HideUsernameWhenEmailAsUsernameEnabled</param-name>
+           <param-value>{{ accountrecoveryendpoint.hide_username_when_email_as_username_enabled }}</param-value>
+       </context-param>
+    {% endif %}
     {% if event.default_listener.validation.enable is defined %}
         <context-param>
             <param-name>isPasswordInputValidationEnabled</param-name>

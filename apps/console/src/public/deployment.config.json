@@ -1113,7 +1113,9 @@
                 }
             },
             "userStores": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                   "userStores.type.remote"
+                ],
                 "enabled": true,
                 "scopes": {
                     "create": [

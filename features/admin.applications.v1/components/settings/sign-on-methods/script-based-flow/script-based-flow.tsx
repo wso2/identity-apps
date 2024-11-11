@@ -874,10 +874,12 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     "emptyPlaceholder.description"
                                 }
                             >
-                                    Securely store access keys as secrets. A secret can
-                                    replace the consumer secret in <OxygenCode variant="caption">
-                                        callChoreo()</OxygenCode> function
-                                    in the conditional authentication scripts.
+                                You can securely store sensitive information, such as
+                                API keys and other secrets, for use in conditional
+                                authentication scripts. Once stored, these secrets can
+                                be referenced in your scripts using the syntax
+                                <OxygenCode variant="caption">{ "secrets.{secret_name}" }
+                                </OxygenCode>.
                             </Trans>
                         </Typography>
                     </ListItemText>

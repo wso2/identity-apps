@@ -153,20 +153,20 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
 
         const userStoreProperties: UserStoreProperty[] = [];
 
-        userStoreDetails.properties.Mandatory.map((property: TypeProperty) => {
+        userStoreDetails?.properties?.Mandatory.map((property: TypeProperty) => {
 
             userStoreProperties.push({
-                name: property.name,
-                value: getValueForUserStoreProperty(property.name)
+                name: property?.name,
+                value: getValueForUserStoreProperty(property?.name)
             });
 
         });
 
-        userStoreDetails.properties.Optional.map((property: TypeProperty) => {
+        userStoreDetails?.properties?.Optional.map((property: TypeProperty) => {
 
             userStoreProperties.push({
-                name: property.name,
-                value: property.defaultValue
+                name: property?.name,
+                value: property?.defaultValue
             });
 
         });

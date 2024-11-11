@@ -68,6 +68,11 @@ $mobile-inner-radius: $mobile-outer-radius - $mobile-frame-padding;
                         border-radius: 0 16px 16px 16px;
                         margin-left: 8px;
                         padding: 4px 8px;
+
+                        .preserve-newlines {
+                            overflow-wrap: anywhere;
+                            white-space: pre-wrap;
+                        }
                     }
                 }
             }
