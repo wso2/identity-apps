@@ -466,6 +466,15 @@ export interface ClaimsNS {
                     invalidName: string;
                 };
             };
+            uniquenessScope: {
+                label: string;
+                options: {
+                    acrossUserstores: string;
+                    none: string;
+                    withinUserstore: string;
+                };
+            };
+            uniquenessScopeHint: string;
             nameHint: string;
             description: {
                 label: string;

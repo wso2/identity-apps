@@ -361,6 +361,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isDialectAddingEnabled?: boolean;
     /**
+     * Flag to check if the claims uniqueness validation is enabled.
+     */
+    isClaimUniquenessValidationEnabled?: boolean;
+    /**
      * Flag to check if the `OAuth.EnableClientSecretHash` is enabled in the `identity.xml`.
      */
     isClientSecretHashEnabled?: boolean;

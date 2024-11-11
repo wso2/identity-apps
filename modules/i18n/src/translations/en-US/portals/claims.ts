@@ -494,7 +494,16 @@ export const claims: ClaimsNS = {
                 "you need to disable account verification for your organization.",
             supportedByDefault: {
                 label: "Display this attribute on the user's profile"
-            }
+            },
+            uniquenessScope: {
+                label: "Uniqueness Validation",
+                options: {
+                    acrossUserstores: "Across User Stores",
+                    none: "None",
+                    withinUserstore: "Within User Store"
+                }
+            },
+            uniquenessScopeHint: "Select the scope to validate the uniqueness of the attribute value."
         },
         mappedAttributes: {
             hint: "Enter the attribute from each user store that you want to map to this attribute."

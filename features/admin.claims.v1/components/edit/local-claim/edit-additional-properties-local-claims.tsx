@@ -17,13 +17,19 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { AppState, FeatureConfigInterface, AppConstants, history } from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DynamicField , KeyValue, useTrigger } from "@wso2is/forms";
-import { EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
+import {
+    EmphasizedSegment,
+    Link,
+    Message,
+    PrimaryButton
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -79,9 +85,43 @@ export const EditAdditionalPropertiesLocalClaims:
             [ featureConfig, allowedScopes ]
         );
 
+        const RESTRICTED_PROPERTY_KEYS: string[] = [ "isUnique" ];
+
+        const [ showWarning, setShowWarning ] = useState<boolean>(false);
+
+        const { UIConfig } = useUIConfig();
+
         return (
             <EmphasizedSegment>
                 <Grid>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 16 }>
+                            { showWarning && UIConfig?.isClaimUniquenessValidationEnabled && (
+                                <Message
+                                    type="warning"
+                                    content={ (
+                                        <>
+                                            The &apos;isUnique&apos; property is deprecated. Please use the &nbsp;
+                                            <Link
+                                                external={ false }
+                                                onClick={ () => {
+                                                    history.push({
+                                                        pathname: AppConstants.getPaths()
+                                                            .get("LOCAL_CLAIMS_EDIT")
+                                                            .replace(":id", claim.id)
+                                                    });
+                                                } }
+                                            >
+                                                Uniqueness Validation Dropdown
+                                            </Link>
+                                                &nbsp; to configure claim uniqueness.
+                                        </>
+                                    ) }
+                                    data-componentid={ `${ testId }-restricted-warning` }
+                                />
+                            ) }
+                        </Grid.Column>
+                    </Grid.Row>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
                             <p>{ t("claims:local.additionalProperties.hint") }</p>
@@ -101,13 +141,27 @@ export const EditAdditionalPropertiesLocalClaims:
                                 ) }
                                 requiredField={ true }
                                 update={ (data: KeyValue[]) => {
+                                    const hasRestrictedKey: boolean = data.some(
+                                        (item: KeyValue) => item.key === RESTRICTED_PROPERTY_KEYS[0]
+                                    );
+
+                                    setShowWarning(hasRestrictedKey);
+
+                                    const filteredData: KeyValue[] = data.filter(
+                                        (item: KeyValue) => item.key !== RESTRICTED_PROPERTY_KEYS[0]
+                                    );
+
+                                    if (hasRestrictedKey) {
+                                        return;
+                                    }
+
                                     const claimData: Claim = { ...claim };
 
                                     delete claimData.id;
                                     delete claimData.dialectURI;
                                     const submitData: Claim = {
                                         ...claimData,
-                                        properties: [ ...data ]
+                                        properties: [ ...filteredData ]
                                     };
 
                                     setIsSubmitting(true);
