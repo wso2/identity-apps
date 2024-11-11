@@ -1670,12 +1670,12 @@ export const applications: ApplicationsNS = {
                         commonInstruction: "Following behavioral changes will be applied upon update.",
                         versions: {
                             version100: {
-                                removeUsernameFromIntrospectionRespForAppTokens: {
+                                useClientIdAsSubClaimOfAppTokens: {
                                     instruction: "The <1>sub</1> attribute of an application access token now returns the "
                                         + "<3>client_id</3> generated for the application, instead of the <5>userid</5> of "
                                         + "the application owner."
                                 },
-                                useClientIdAsSubClaimOfAppTokens: {
+                                removeUsernameFromIntrospectionRespForAppTokens: {
                                     instruction: "The introspection responses for application access tokens no longer "
                                         + "return the <1>username</1> attribute."
                                 }

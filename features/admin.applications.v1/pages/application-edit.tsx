@@ -652,8 +652,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                             <Trans
                                                 i18nKey={
                                                     t("applications:forms.inboundOIDC.sections"
-                                                        + ".outdatedApplications.fields.versions.version100."
-                                                        + "removeUsernameFromIntrospectionRespForAppTokens.instruction")
+                                                    + ".outdatedApplications.fields.versions"
+                                                    + ".version100.useClientIdAsSubClaimOfAppTokens.instruction")
                                                 }
                                             >
                                                 The <Code withBackground>sub</Code> attribute of
@@ -666,7 +666,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                         <DocumentationLink
                                             link={
                                                 getLink("develop.applications.editApplication.outdatedApplications."
-                                                + "versions.version100.removeUsernameFromIntrospectionRespForAppTokens."
+                                                + "versions.version100.useClientIdAsSubClaimOfAppTokens."
                                                 + "documentationLink")
                                             }
                                             showEmptyLink={ false }
@@ -699,8 +699,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                             <Trans
                                                 i18nKey={
                                                     t("applications:forms.inboundOIDC.sections"
-                                                    + ".outdatedApplications.fields.versions"
-                                                    + ".version100.useClientIdAsSubClaimOfAppTokens.instruction")
+                                                        + ".outdatedApplications.fields.versions.version100."
+                                                        + "removeUsernameFromIntrospectionRespForAppTokens.instruction")
                                                 }
                                             >
                                                 The introspection responses for application access tokens no longer
@@ -710,7 +710,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                         <DocumentationLink
                                             link={
                                                 getLink("develop.applications.editApplication.outdatedApplications."
-                                                + "versions.version100.useClientIdAsSubClaimOfAppTokens."
+                                                + "versions.version100.removeUsernameFromIntrospectionRespForAppTokens."
                                                 + "documentationLink")
                                             }
                                             showEmptyLink={ false }
