@@ -37,9 +37,13 @@ import {
  */
 export interface ExtensionTemplatesProviderProps {
     /**
+     * Should fetch the extension templates on loading the application.
+     */
+    fetchTemplatesOnLoad: boolean;
+    /**
      * Templates type need to be retrieved from the API.
      */
-    resourceType: ResourceTypes
+    resourceType: ResourceTypes;
     /**
      * Metadata describing the supported categories in the current extension templates.
      */
@@ -55,6 +59,7 @@ export interface ExtensionTemplatesProviderProps {
 const ExtensionTemplatesProvider: FunctionComponent<
     PropsWithChildren<ExtensionTemplatesProviderProps>
 > = ({
+    fetchTemplatesOnLoad,
     categories,
     children,
     resourceType
@@ -68,7 +73,7 @@ const ExtensionTemplatesProvider: FunctionComponent<
         data: extensionTemplates,
         isLoading: isExtensionTemplatesFetchRequestLoading,
         error: extensionTemplatesFetchRequestError
-    } = useGetExtensionTemplates(resourceType);
+    } = useGetExtensionTemplates(resourceType,fetchTemplatesOnLoad);
 
     /**
      * Categorize extension templates based on the `category` attribute.
