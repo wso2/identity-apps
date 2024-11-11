@@ -73,7 +73,7 @@ const ExtensionTemplatesProvider: FunctionComponent<
         data: extensionTemplates,
         isLoading: isExtensionTemplatesFetchRequestLoading,
         error: extensionTemplatesFetchRequestError
-    } = useGetExtensionTemplates(resourceType,fetchTemplatesOnLoad);
+    } = useGetExtensionTemplates(resourceType, fetchTemplatesOnLoad);
 
     /**
      * Categorize extension templates based on the `category` attribute.
