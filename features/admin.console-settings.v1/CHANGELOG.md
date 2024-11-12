@@ -1,5 +1,28 @@
 # @wso2is/admin.console-settings.v1
 
+## 2.25.22
+
+### Patch Changes
+
+- [#7094](https://github.com/wso2/identity-apps/pull/7094) [`34709e98e3fcc87c0659d49f6a202c190a649cfd`](https://github.com/wso2/identity-apps/commit/34709e98e3fcc87c0659d49f6a202c190a649cfd) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix api resource collection endpoint path
+
+* [#7107](https://github.com/wso2/identity-apps/pull/7107) [`a1ee2568f3fedfb81a6b24b7cd57022e44e8074c`](https://github.com/wso2/identity-apps/commit/a1ee2568f3fedfb81a6b24b7cd57022e44e8074c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix several roles not being visible in the console roles permissions
+
+* Updated dependencies [[`5abc80550e535bcace8a4d2338d89bcf9c72e7a6`](https://github.com/wso2/identity-apps/commit/5abc80550e535bcace8a4d2338d89bcf9c72e7a6), [`34709e98e3fcc87c0659d49f6a202c190a649cfd`](https://github.com/wso2/identity-apps/commit/34709e98e3fcc87c0659d49f6a202c190a649cfd), [`a1ee2568f3fedfb81a6b24b7cd57022e44e8074c`](https://github.com/wso2/identity-apps/commit/a1ee2568f3fedfb81a6b24b7cd57022e44e8074c)]:
+  - @wso2is/admin.roles.v2@2.26.22
+  - @wso2is/admin.core.v1@2.34.22
+  - @wso2is/admin.administrators.v1@2.29.22
+  - @wso2is/admin.applications.v1@2.30.22
+  - @wso2is/admin.extensions.v1@2.34.22
+  - @wso2is/admin.identity-providers.v1@2.26.22
+  - @wso2is/admin.organizations.v1@2.26.22
+  - @wso2is/admin.users.v1@2.27.22
+  - @wso2is/admin.authentication.v1@2.25.22
+  - @wso2is/admin.feature-gate.v1@1.4.22
+  - @wso2is/admin.login-flow.ai.v1@2.26.22
+  - @wso2is/admin.server-configurations.v1@2.28.22
+  - @wso2is/admin.userstores.v1@2.25.22
+
 ## 2.25.21
 
 ### Patch Changes
