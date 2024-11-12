@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
-import { APIResourceInterface } from "@wso2is/admin.api-resources.v2/models";
+import { APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants/api-resources-constants";
+import { APIResourceInterface } from "@wso2is/admin.api-resources.v2/models/api-resources";
 import { FeatureConfigInterface, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
 import { RequestErrorInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
@@ -45,11 +45,11 @@ import { Form, Grid, Header, Icon, Input } from "semantic-ui-react";
 import { ScopeForm } from "./scope-form";
 import useScopesOfAPIResources from "../../api/use-scopes-of-api-resources";
 import { Policy } from "../../constants/api-authorization";
-import { ApplicationTemplateIdTypes } from "../../models";
 import {
     AuthorizedAPIListItemInterface,
     AuthorizedPermissionListItemInterface
 } from "../../models/api-authorization";
+import { ApplicationTemplateIdTypes } from "../../models/application";
 
 /**
  * Prop types for the API resources list component.

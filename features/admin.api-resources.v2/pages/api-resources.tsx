@@ -43,11 +43,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Icon, List, PaginationProps } from "semantic-ui-react";
-import { useAPIResources } from "../api";
-import { APIResourcesList } from "../components";
-import { AddAPIResource } from "../components/wizard";
-import { APIResourceType, APIResourcesConstants } from "../constants";
-import { APIResourceInterface } from "../models";
+import { useAPIResources } from "../api/api-resources";
+import { APIResourcesList } from "../components/api-resources-list";
+import { AddAPIResource } from "../components/wizard/add-api-resource";
+import { APIResourceType, APIResourcesConstants } from "../constants/api-resources-constants";
+import { APIResourceInterface } from "../models/api-resources";
 import { APIResourceUtils } from "../utils/api-resource-utils";
 
 /**

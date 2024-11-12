@@ -38,7 +38,7 @@ import {
     ApplicationTemplateCategoryInterface,
     ApplicationTemplateGroupInterface,
     ApplicationTemplateInterface
-} from "../../models";
+} from "../../models/application";
 
 export interface ApplicationTemplatesConfigInterface {
     categories: TemplateConfigInterface<ApplicationTemplateCategoryInterface>[];

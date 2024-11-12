@@ -21,9 +21,13 @@ import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Au
 import Button from "@oxygen-ui/react/Button";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
-import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
-import { APIResourceCategories, APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
-import { APIResourceInterface, APIResourcePermissionInterface } from "@wso2is/admin.api-resources.v2/models";
+import { useAPIResources } from "@wso2is/admin.api-resources.v2/api/api-resources";
+import {
+    APIResourceCategories, APIResourcesConstants
+} from "@wso2is/admin.api-resources.v2/constants/api-resources-constants";
+import {
+    APIResourceInterface, APIResourcePermissionInterface
+} from "@wso2is/admin.api-resources.v2/models/api-resources";
 import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -46,8 +50,8 @@ import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Grid, Header, Label, Modal } from "semantic-ui-react";
 import useScopesOfAPIResources from "../../../api/use-scopes-of-api-resources";
 import { Policy, PolicyInfo, policyDetails } from "../../../constants/api-authorization";
-import { ApplicationTemplateIdTypes } from "../../../models";
 import { AuthorizedAPIListItemInterface } from "../../../models/api-authorization";
+import { ApplicationTemplateIdTypes } from "../../../models/application";
 
 interface AuthorizeAPIResourcePropsInterface extends IdentifiableComponentInterface {
     /**

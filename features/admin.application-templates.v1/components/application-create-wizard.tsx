@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { createApplication } from "@wso2is/admin.applications.v1/api";
+import { createApplication } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationShareModal } from "@wso2is/admin.applications.v1/components/modals/application-share-modal";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import useApplicationSharingEligibility from "@wso2is/admin.applications.v1/hooks/use-application-sharing-eligibility";
-import { MainApplicationInterface, URLFragmentTypes } from "@wso2is/admin.applications.v1/models";
+import { MainApplicationInterface, URLFragmentTypes } from "@wso2is/admin.applications.v1/models/application";
 import { AppState, TierLimitReachErrorModal } from "@wso2is/admin.core.v1";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";

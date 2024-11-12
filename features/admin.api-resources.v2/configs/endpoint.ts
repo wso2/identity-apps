@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { APIResourceEndpointsInterface } from "../models";
+import { APIResourceEndpointsInterface } from "../models/api-resources";
 
 /**
  * Get the resource endpoints for the API Resource Management feature.

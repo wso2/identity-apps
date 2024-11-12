@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import {
     AppState,
     FeatureConfigInterface,
@@ -29,7 +30,7 @@ import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
 import { UserAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserBasicInterface, UserListInterface } from "@wso2is/admin.users.v1/models";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
-import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled, resolveUserstore } from "@wso2is/core/helpers";
+import { getUserNameWithoutDomain, isFeatureEnabled, resolveUserstore } from "@wso2is/core/helpers";
 import {
     LoadableComponentInterface,
     SBACInterface,
@@ -50,7 +51,7 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } f
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, ListItemProps, SemanticICONS } from "semantic-ui-react";
-import { AdministratorConstants } from "../constants";
+import { AdministratorConstants } from "../constants/users";
 
 /**
  * Prop types for the all users list component.
@@ -162,6 +163,9 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
 
     const { t } = useTranslation();
 
+    const hasUserUpdatePermissions: boolean = useRequiredScopes(featureConfig?.users?.scopes?.update);
+    const hasUserDeletePermissions: boolean = useRequiredScopes(featureConfig?.users?.scopes?.delete);
+
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
@@ -192,8 +196,6 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
 
         setUsersList(allUsersList);
     }, [ allUsersList ]);
-
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const handleUserEdit = (user: UserBasicInterface) => {
         if (resolveUserstore(user.userName) === userstoresConfig.primaryUserstoreName) {
@@ -453,7 +455,7 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                         ? user?.userName?.split("/")[0]
                         : AdministratorConstants.ASGARDEO_USERSTORE;
 
-                    return !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+                    return !hasUserUpdatePermissions
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
@@ -467,7 +469,7 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                         ? user?.userName?.split("/")[0]
                         : AdministratorConstants.ASGARDEO_USERSTORE;
 
-                    return !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+                    return !hasUserUpdatePermissions
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
@@ -487,7 +489,7 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
 
                 return !isFeatureEnabled(featureConfig?.users,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
-                    || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)
+                    || !hasUserDeletePermissions
                     || readOnlyUserStores?.includes(userStore.toString())
                     || user.userName === realmConfigs?.adminUser || authenticatedUser.includes(user.userName);
             },

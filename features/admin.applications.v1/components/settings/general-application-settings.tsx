@@ -35,13 +35,13 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider } from "semantic-ui-react";
-import { deleteApplication, disableApplication, updateApplicationDetails } from "../../api";
+import { deleteApplication, disableApplication, updateApplicationDetails } from "../../api/application";
 import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface
-} from "../../models";
+} from "../../models/application";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
-import { GeneralDetailsForm } from "../forms";
+import { GeneralDetailsForm } from "../forms/general-details-form";
 
 /**
  * Proptypes for the applications general details component.

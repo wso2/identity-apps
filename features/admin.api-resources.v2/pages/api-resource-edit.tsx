@@ -24,9 +24,9 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { useAPIResourceDetails } from "../api";
-import { EditAPIResource } from "../components";
-import { APIResourceType, APIResourcesConstants } from "../constants";
+import { useAPIResourceDetails } from "../api/api-resources";
+import { EditAPIResource } from "../components/edit-api-resource";
+import { APIResourceType, APIResourcesConstants } from "../constants/api-resources-constants";
 import { APIResourceUtils } from "../utils/api-resource-utils";
 
 /**

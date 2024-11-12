@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ApplicationManagementConstants } from "../../constants";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import {
     AuthProtocolMetaListItemInterface,
     SAMLConfigModes,
@@ -24,7 +24,7 @@ import {
     SupportedAuthProtocolTypes,
     SupportedAuthProtocolTypesInterface,
     SupportedCustomAuthProtocolTypes
-} from "../../models";
+} from "../../models/application-inbound";
 
 export const InboundProtocolDefaultFallbackTemplates: Map<string, string> = new Map<string, string>([
     [ "passivests", ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS ],
