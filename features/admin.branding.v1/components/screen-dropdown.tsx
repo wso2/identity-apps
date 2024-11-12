@@ -16,11 +16,14 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { DropdownProps, Form, Select } from "semantic-ui-react";
+import { BRANDING_PREVIEW_SCREEN_ID } from "../constants/preview-screen-constants";
 
 /**
  * Prop types for the language dropdown component.
@@ -57,6 +60,7 @@ const ScreenDropdown: FunctionComponent<ScreenDropdownPropsInterface> = (
 ): ReactElement => {
     const { onChange, defaultScreen, screens, required, ["data-componentid"]: componentId } = props;
 
+
     const { t } = useTranslation();
 
     const [ selectedScreen, setSelectedScreen ] = useState<PreviewScreenType>(defaultScreen);
@@ -65,6 +69,9 @@ const ScreenDropdown: FunctionComponent<ScreenDropdownPropsInterface> = (
         setSelectedScreen(defaultScreen);
         onChange(defaultScreen);
     }, [ defaultScreen ]);
+
+    const disabledFeatures: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.branding?.disabledFeatures) || [];
 
     const supportedScreens: {
         key: string;
@@ -75,13 +82,14 @@ const ScreenDropdown: FunctionComponent<ScreenDropdownPropsInterface> = (
             return [];
         }
 
-        return screens.map((screen: string) => {
-            return {
-                key: screen,
-                text: t(`branding:screens.${ screen }`),
-                value: screen
-            };
-        });
+        return screens.filter((screen: string) => !disabledFeatures.includes(BRANDING_PREVIEW_SCREEN_ID+screen)).
+            map((screen: string) => {
+                return {
+                    key: screen,
+                    text: t(`branding:screens.${ screen }`),
+                    value: screen
+                };
+            });
     }, [ screens ]);
 
     return (
