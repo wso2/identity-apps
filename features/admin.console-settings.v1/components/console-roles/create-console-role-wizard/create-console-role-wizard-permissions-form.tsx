@@ -418,7 +418,8 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                                             )
                                                         }
                                                         inputProps={ {
-                                                            "aria-label": `Select ${collection.displayName} permission`
+                                                            "aria-label":
+                                                                    `Select ${collection.displayName} permission`
                                                         } }
                                                     />
                                                 </TableCell>
@@ -432,7 +433,10 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                                             Object.keys(selectedPermissions.tenant).includes(
                                                                 collection.id
                                                             )
-                                                                ? get(selectedPermissions.tenant, collection.id)?.write
+                                                                ? get(
+                                                                    selectedPermissions.tenant,
+                                                                    collection.id
+                                                                )?.write
                                                                     ? "write"
                                                                     : "read"
                                                                 : null
