@@ -16,4 +16,5 @@
  * under the License.
  */
 
-export const BRANDING_PREVIEW_SCREEN_ID: string = "branding.preview.screens.";
+// Feature keys.
+export const BRANDING_PREVIEW_SCREEN_ID_PREFIX: string = "branding.preview.screens.";

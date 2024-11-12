@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { DropdownProps, Form, Select } from "semantic-ui-react";
-import { BRANDING_PREVIEW_SCREEN_ID } from "../constants/preview-screen-constants";
+import { BRANDING_PREVIEW_SCREEN_ID_PREFIX } from "../constants/preview-screen-constants";
 
 /**
  * Prop types for the language dropdown component.
@@ -60,7 +60,6 @@ const ScreenDropdown: FunctionComponent<ScreenDropdownPropsInterface> = (
 ): ReactElement => {
     const { onChange, defaultScreen, screens, required, ["data-componentid"]: componentId } = props;
 
-
     const { t } = useTranslation();
 
     const [ selectedScreen, setSelectedScreen ] = useState<PreviewScreenType>(defaultScreen);
@@ -70,7 +69,7 @@ const ScreenDropdown: FunctionComponent<ScreenDropdownPropsInterface> = (
         onChange(defaultScreen);
     }, [ defaultScreen ]);
 
-    const disabledFeatures: string[] = useSelector((state: AppState) =>
+    const disabledBrandingFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.branding?.disabledFeatures) || [];
 
     const supportedScreens: {
@@ -82,14 +81,14 @@ const ScreenDropdown: FunctionComponent<ScreenDropdownPropsInterface> = (
             return [];
         }
 
-        return screens.filter((screen: string) => !disabledFeatures.includes(BRANDING_PREVIEW_SCREEN_ID+screen)).
-            map((screen: string) => {
-                return {
-                    key: screen,
-                    text: t(`branding:screens.${ screen }`),
-                    value: screen
-                };
-            });
+        return screens.filter((screen: string) => !disabledBrandingFeatures.
+            includes(BRANDING_PREVIEW_SCREEN_ID_PREFIX+screen)).map((screen: string) => {
+            return {
+                key: screen,
+                text: t(`branding:screens.${ screen }`),
+                value: screen
+            };
+        });
     }, [ screens ]);
 
     return (
