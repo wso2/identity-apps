@@ -30,7 +30,7 @@ import Checkbox from "@oxygen-ui/react/Checkbox";
 import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon } from "@oxygen-ui/react-icons";
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { AppState, FeatureConfigInterface, UIConstants } from "@wso2is/admin.core.v1";
 import { CreateRolePermissionInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -166,7 +166,11 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                 clonedTenantAPIResourceCollections?.apiResourceCollections?.filter(
                     (item: APIResourceCollectionInterface) =>
                         !filteringAPIResourceCollectionNames.includes(item?.name) &&
-                        featureConfig?.[item?.name]?.enabled
+                        (
+                            featureConfig?.[item?.name]?.enabled
+                            || featureConfig?.[UIConstants.CONSOLE_FEATURE_MAP[item?.name]]?.enabled
+                        )
+
                 );
 
         return clonedTenantAPIResourceCollections;

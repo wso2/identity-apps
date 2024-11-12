@@ -475,7 +475,7 @@
             },
             "certificates": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "create": [
                         "internal_keystore_update"
