@@ -19,7 +19,7 @@
 import { FormControlProps } from "@oxygen-ui/react/FormControl";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import TextField from "@oxygen-ui/react/TextField";
-import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { FieldRenderProps } from "react-final-form";
 
 /**
@@ -56,7 +56,6 @@ const TextFieldAdapter: FunctionComponent<TextFieldAdapterPropsInterface> = (
         fullWidth = true,
         FormControlProps = {},
         helperText,
-        onChange,
         required,
         readOnly,
         endAdornment,
@@ -74,10 +73,6 @@ const TextFieldAdapter: FunctionComponent<TextFieldAdapterPropsInterface> = (
                 margin="dense"
                 { ...FormControlProps }
                 { ...input }
-                onChange={ (e: ChangeEvent<HTMLInputElement>) => {
-                    input.onChange((e?.target as any)?.value as string);
-                    onChange && onChange(e as any);
-                } }
                 // TODO: Remove this once the `required` prop is supported by the Oxygen UI TextField component.
                 InputLabelProps={ {
                     required

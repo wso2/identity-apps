@@ -1,5 +1,108 @@
 # @wso2is/admin.logs.v1
 
+## 1.5.22
+
+### Patch Changes
+
+- Updated dependencies [[`4b477833d0178b12ceba5c8623505c33c288b3c6`](https://github.com/wso2/identity-apps/commit/4b477833d0178b12ceba5c8623505c33c288b3c6)]:
+  - @wso2is/core@2.4.1
+  - @wso2is/i18n@2.10.5
+  - @wso2is/admin.core.v1@2.34.21
+  - @wso2is/form@2.5.2
+  - @wso2is/forms@2.3.1
+  - @wso2is/react-components@2.8.2
+
+## 1.5.21
+
+### Patch Changes
+
+- Updated dependencies [[`526596d57622f00f332376ee9a1414c166a7bfd2`](https://github.com/wso2/identity-apps/commit/526596d57622f00f332376ee9a1414c166a7bfd2)]:
+  - @wso2is/i18n@2.10.4
+  - @wso2is/admin.core.v1@2.34.20
+
+## 1.5.20
+
+### Patch Changes
+
+- [#7091](https://github.com/wso2/identity-apps/pull/7091) [`050facbeac627265737d11bcd18b5ac2f0c32d72`](https://github.com/wso2/identity-apps/commit/050facbeac627265737d11bcd18b5ac2f0c32d72) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bump `@oxygen-ui/react` and `@oxygen-ui/react-icons` to v2.0.0
+
+- Updated dependencies [[`050facbeac627265737d11bcd18b5ac2f0c32d72`](https://github.com/wso2/identity-apps/commit/050facbeac627265737d11bcd18b5ac2f0c32d72)]:
+  - @wso2is/react-components@2.8.1
+  - @wso2is/admin.core.v1@2.34.19
+  - @wso2is/form@2.5.1
+
+## 1.5.19
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.18
+
+## 1.5.18
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.17
+
+## 1.5.17
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.16
+
+## 1.5.16
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.15
+
+## 1.5.15
+
+### Patch Changes
+
+- Updated dependencies [[`062fb7ee176b7a96a580fbd7171bf94db99c4d2e`](https://github.com/wso2/identity-apps/commit/062fb7ee176b7a96a580fbd7171bf94db99c4d2e)]:
+  - @wso2is/i18n@2.10.3
+  - @wso2is/admin.core.v1@2.34.14
+
+## 1.5.14
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.13
+
+## 1.5.13
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.12
+
+## 1.5.12
+
+### Patch Changes
+
+- Updated dependencies [[`07379763c3fb80e7c2264b6ebd61b341cf104ff8`](https://github.com/wso2/identity-apps/commit/07379763c3fb80e7c2264b6ebd61b341cf104ff8)]:
+  - @wso2is/i18n@2.10.2
+  - @wso2is/admin.core.v1@2.34.11
+
+## 1.5.11
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.10
+
+## 1.5.10
+
+### Patch Changes
+
+- Updated dependencies [[`13fc4b33bed8fe69e53268f82a7c95825a2956b1`](https://github.com/wso2/identity-apps/commit/13fc4b33bed8fe69e53268f82a7c95825a2956b1)]:
+  - @wso2is/admin.core.v1@2.34.9
+
 ## 1.5.9
 
 ### Patch Changes

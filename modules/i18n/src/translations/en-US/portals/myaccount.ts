@@ -979,13 +979,17 @@ export const myAccount: MyAccountNS = {
             submitMobile: {
                 heading: "Enter your new mobile number"
             },
+            verificationSent: {
+                heading: "You will receive an OTP to your mobile number for verification shortly"
+            },
             verifySmsOtp: {
+                didNotReceive: "Didn't receive a code?",
                 error: "Verification failed. Please try again.",
-                generate: "Resend a new verification code",
-                heading: "Enter the verification code sent to your mobile number",
-                label: "Verification Code",
+                heading: "Verify Your Mobile Number",
+                label: "Enter the verification code sent to your mobile number",
                 placeholder: "Enter your verification code",
-                requiredError: "Enter the verification code"
+                requiredError: "Enter the verification code",
+                resend: "Resend"
             }
         },
         overview: {
@@ -1268,6 +1272,12 @@ export const myAccount: MyAccountNS = {
             }
         },
         profile: {
+            actions: {
+                "deleteEmail": "Delete email address",
+                "deleteMobile": "Delete mobile",
+                "verifyEmail": "Verify email address",
+                "verifyMobile": "Verify mobile"
+            },
             fields: {
                 "Account Confirmed Time": "Account Confirmed Time",
                 "Account Disabled": "Account Disabled",
@@ -1285,6 +1295,7 @@ export const myAccount: MyAccountNS = {
                 "Disable SMSOTP": "Disable SMSOTP",
                 "Display Name": "Display Name",
                 "Email": "Email",
+                "Email Addresses": "Email Addresses",
                 "Email Verified": "Email Verified",
                 "Enabled Authenticators": "Enabled Authenticators",
                 "Existing Lite User": "Existing Lite User",
@@ -1317,6 +1328,7 @@ export const myAccount: MyAccountNS = {
                 "Manager - Name": "Manager - Name",
                 "Middle Name": "Middle Name",
                 "Mobile": "Mobile",
+                "Mobile Numbers": "Mobile Numbers",
                 "Nick Name": "Nick Name",
                 "Phone Verified": "Phone Verified",
                 "Photo - Thumbnail": "Photo - Thumbnail",
@@ -1340,6 +1352,8 @@ export const myAccount: MyAccountNS = {
                 "Username": "Username",
                 "Verification Pending Email": "Verification Pending Email",
                 "Verification Pending Mobile Number": "Verification Pending Mobile Number",
+                "Verified Email Addresses": "Verified Email Addresses",
+                "Verified Mobile Numbers": "Verified Mobile Numbers",
                 "Verify Email": "Verify Email",
                 "Verify Mobile": "Verify Mobile",
                 "Verify Secret Key": "Verify Secret Key",
@@ -1458,6 +1472,20 @@ export const myAccount: MyAccountNS = {
                         "code sent to your new number. Click update if you wish to proceed."
                 }
             },
+            modals: {
+                emailAddressDeleteConfirmation: {
+                    assertionHint: "Please confirm your action.",
+                    content: "This action is irreversible and will permanently delete the email address.",
+                    description: "If you delete this email address, it will be permanently removed from your profile.",
+                    heading: "Are you sure?"
+                },
+                mobileNumberDeleteConfirmation: {
+                    assertionHint: "Please confirm your action.",
+                    content: "This action is irreversible and will permanently delete the mobile number.",
+                    description: "If you delete this mobile number, it will be permanently removed from your profile.",
+                    heading: "Are you sure?"
+                }
+            },
             notifications: {
                 getProfileCompletion: {
                     error: {
@@ -1505,6 +1533,34 @@ export const myAccount: MyAccountNS = {
                     success: {
                         description: "The required user profile details were successfully updated",
                         message: "User profile updated successfully"
+                    }
+                },
+                verifyEmail: {
+                    error: {
+                        description: "{{description}}",
+                        message: "An error occurred while sending the verification email"
+                    },
+                    genericError: {
+                        description: "An error occurred while sending the verification email",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The verification email was sent successfully. Please check your inbox",
+                        message: "Verification email sent successfully"
+                    }
+                },
+                verifyMobile: {
+                    error: {
+                        description: "{{description}}",
+                        message: "An error occurred while sending the verification code"
+                    },
+                    genericError: {
+                        description: "An error occurred while sending the verification code",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The verification code was sent successfully. Please check your mobile",
+                        message: "Verification code sent successfully"
                     }
                 }
             },

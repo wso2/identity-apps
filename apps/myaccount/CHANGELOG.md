@@ -1,5 +1,126 @@
 # @wso2is/myaccount
 
+## 2.13.0
+
+### Minor Changes
+
+- [#6563](https://github.com/wso2/identity-apps/pull/6563) [`4b477833d0178b12ceba5c8623505c33c288b3c6`](https://github.com/wso2/identity-apps/commit/4b477833d0178b12ceba5c8623505c33c288b3c6) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add multi-valued email, mobile support to my account
+
+### Patch Changes
+
+- Updated dependencies [[`4b477833d0178b12ceba5c8623505c33c288b3c6`](https://github.com/wso2/identity-apps/commit/4b477833d0178b12ceba5c8623505c33c288b3c6)]:
+  - @wso2is/core@2.4.1
+  - @wso2is/i18n@2.10.5
+  - @wso2is/admin.organizations.v1@2.26.21
+  - @wso2is/common.branding.v1@2.24.21
+  - @wso2is/access-control@3.3.1
+  - @wso2is/forms@2.3.1
+  - @wso2is/react-components@2.8.2
+
+## 2.12.20
+
+### Patch Changes
+
+- Updated dependencies [[`526596d57622f00f332376ee9a1414c166a7bfd2`](https://github.com/wso2/identity-apps/commit/526596d57622f00f332376ee9a1414c166a7bfd2)]:
+  - @wso2is/i18n@2.10.4
+  - @wso2is/admin.organizations.v1@2.26.20
+  - @wso2is/common.branding.v1@2.24.20
+
+## 2.12.19
+
+### Patch Changes
+
+- [#7091](https://github.com/wso2/identity-apps/pull/7091) [`050facbeac627265737d11bcd18b5ac2f0c32d72`](https://github.com/wso2/identity-apps/commit/050facbeac627265737d11bcd18b5ac2f0c32d72) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bump `@oxygen-ui/react` and `@oxygen-ui/react-icons` to v2.0.0
+
+- Updated dependencies [[`050facbeac627265737d11bcd18b5ac2f0c32d72`](https://github.com/wso2/identity-apps/commit/050facbeac627265737d11bcd18b5ac2f0c32d72)]:
+  - @wso2is/admin.organizations.v1@2.26.19
+  - @wso2is/common.branding.v1@2.24.19
+  - @wso2is/react-components@2.8.1
+
+## 2.12.18
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.18
+  - @wso2is/common.branding.v1@2.24.18
+
+## 2.12.17
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.17
+  - @wso2is/common.branding.v1@2.24.17
+
+## 2.12.16
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.16
+  - @wso2is/common.branding.v1@2.24.16
+
+## 2.12.15
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.15
+  - @wso2is/common.branding.v1@2.24.15
+
+## 2.12.14
+
+### Patch Changes
+
+- Updated dependencies [[`062fb7ee176b7a96a580fbd7171bf94db99c4d2e`](https://github.com/wso2/identity-apps/commit/062fb7ee176b7a96a580fbd7171bf94db99c4d2e)]:
+  - @wso2is/i18n@2.10.3
+  - @wso2is/admin.organizations.v1@2.26.14
+  - @wso2is/common.branding.v1@2.24.14
+
+## 2.12.13
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.13
+  - @wso2is/common.branding.v1@2.24.13
+
+## 2.12.12
+
+### Patch Changes
+
+- [#7072](https://github.com/wso2/identity-apps/pull/7072) [`d8035caa997da32b879ef7bbb75544e9fe5f59b7`](https://github.com/wso2/identity-apps/commit/d8035caa997da32b879ef7bbb75544e9fe5f59b7) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add locale dropdown to local attribute in my account
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.12
+  - @wso2is/common.branding.v1@2.24.12
+
+## 2.12.11
+
+### Patch Changes
+
+- Updated dependencies [[`07379763c3fb80e7c2264b6ebd61b341cf104ff8`](https://github.com/wso2/identity-apps/commit/07379763c3fb80e7c2264b6ebd61b341cf104ff8)]:
+  - @wso2is/i18n@2.10.2
+  - @wso2is/admin.organizations.v1@2.26.11
+  - @wso2is/common.branding.v1@2.24.11
+
+## 2.12.10
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.10
+  - @wso2is/common.branding.v1@2.24.10
+
+## 2.12.9
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.9
+  - @wso2is/common.branding.v1@2.24.9
+
 ## 2.12.8
 
 ### Patch Changes
