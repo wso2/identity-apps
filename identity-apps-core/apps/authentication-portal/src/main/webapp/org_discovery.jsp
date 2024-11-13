@@ -44,14 +44,13 @@
            errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
            if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
-            } else if (isSelfRegistration && errorMessage.equalsIgnoreCase("Can't identify organization")) {
+            } else if (isSelfRegistration && (errorMessage.equalsIgnoreCase("Can't identify organization") 
+               || errorMessage.equalsIgnoreCase("Organization is not associated with this application."))) {
                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.discovery.input.self.registration");
             } else if (errorMessage.equalsIgnoreCase("Can't identify organization")) {
                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.discovery.input");
             } else if (errorMessage.equalsIgnoreCase("invalid.organization.discovery.type")) {
                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invalid.organization.discovery.type");
-            } else if (isSelfRegistration && errorMessage.equalsIgnoreCase("Organization is not associated with this application.")) {
-               errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "self.registration.application.not.shared");
             } else if (isErrorFallbackLocale) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
             }

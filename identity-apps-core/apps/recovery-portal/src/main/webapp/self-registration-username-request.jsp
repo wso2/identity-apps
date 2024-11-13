@@ -245,6 +245,7 @@
                             } else {
                                 isSSOLoginAuthenticatorConfigured = true;
                             }
+                            break;
                         }
                     }   
                 
