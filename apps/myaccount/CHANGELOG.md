@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.13.3
+
+### Patch Changes
+
+- Updated dependencies [[`7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70`](https://github.com/wso2/identity-apps/commit/7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70)]:
+  - @wso2is/theme@2.4.2
+  - @wso2is/admin.organizations.v1@2.26.24
+  - @wso2is/react-components@2.8.4
+  - @wso2is/common.branding.v1@2.24.24
+
 ## 2.13.2
 
 ### Patch Changes

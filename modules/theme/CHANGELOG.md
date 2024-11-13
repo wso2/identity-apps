@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.4.2
+
+### Patch Changes
+
+- [#7113](https://github.com/wso2/identity-apps/pull/7113) [`7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70`](https://github.com/wso2/identity-apps/commit/7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add locked status for locked users in user list
+
 ## 2.4.1
 
 ### Patch Changes

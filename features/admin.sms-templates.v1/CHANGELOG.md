@@ -1,5 +1,18 @@
 # @wso2is/admin.sms-templates.v1
 
+## 1.0.23
+
+### Patch Changes
+
+- Updated dependencies [[`7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70`](https://github.com/wso2/identity-apps/commit/7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70)]:
+  - @wso2is/theme@2.4.2
+  - @wso2is/admin.core.v1@2.34.24
+  - @wso2is/admin.branding.v1@2.26.24
+  - @wso2is/react-components@2.8.4
+  - @wso2is/common.branding.v1@2.24.24
+  - @wso2is/dynamic-forms@2.4.4
+  - @wso2is/form@2.5.4
+
 ## 1.0.22
 
 ### Patch Changes
