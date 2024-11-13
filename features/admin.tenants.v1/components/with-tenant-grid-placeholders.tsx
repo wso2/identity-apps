@@ -115,7 +115,7 @@ const WithTenantGridPlaceholders: FunctionComponent<WithTenantGridPlaceholdersPr
                 <EmptyPlaceholder
                     action={
                         (<Button variant="text" onClick={ handleSearchQueryClear }>
-                            Clear search query
+                            { t("tenants:listing.emptySearchResult.actions.clearSearchQuery.label") }
                         </Button>)
                     }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
