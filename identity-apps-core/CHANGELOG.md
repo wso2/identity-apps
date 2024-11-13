@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.7.6
+
+### Patch Changes
+
+- [#7098](https://github.com/wso2/identity-apps/pull/7098) [`252656fabda8b35f6e52fb8834dab91be9dbaaf2`](https://github.com/wso2/identity-apps/commit/252656fabda8b35f6e52fb8834dab91be9dbaaf2) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue in the self-registration flow when the email address is configured as a unique value
+
 ## 2.7.5
 
 ### Patch Changes
