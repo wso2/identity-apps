@@ -58,22 +58,22 @@
             JSONArray scopeArray = new JSONArray (jsonObj.get("scopes").toString());
             for (int scopeCount = 0; scopeCount < scopeArray.length(); scopeCount++) {
                 JSONObject scope = (JSONObject) scopeArray.get(scopeCount);
-
+            
                 // Get the displayName.
                 String displayName = (String) scope.get("displayName");
-
+            
                 // Use optString to get description; it returns "" if the key is not found.
                 String description = scope.optString("description", "");
 
                 // Check if description is not empty, otherwise use displayName.
                 String scopeName = !StringUtils.isBlank(description) ? description : displayName;
-
+            
                 // Add the determined scopeName to the scopes list.
                 scopes.add(scopeName);
-
+            
                 // Add the identifier to the scopesWithMetadata list
                 scopesWithMetadata.add((String) scope.get("identifier"));
-            }
+            }            
             scopeDetails.put(key,scopes);
         }
     }
@@ -248,7 +248,7 @@
                             </h4>
                         </div>
                     </div>
-
+                    
                         <p class="login-portal-app-consent-request larger-font">
                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "this.will.allow.application.to")%>:
                         </p>
