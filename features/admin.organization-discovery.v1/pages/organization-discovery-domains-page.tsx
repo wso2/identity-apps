@@ -25,11 +25,11 @@ import {
     UIConstants,
     history
 } from "@wso2is/admin.core.v1";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment, Link, PageLayout } from "@wso2is/react-components";
-import { AxiosError } from "axios";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -46,16 +46,18 @@ import {
     CheckboxProps,
     Divider
 } from "semantic-ui-react";
-import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../../admin.connections.v1";
+import { ConnectorPropertyInterface } from "../../admin.connections.v1";
 import {
     ServerConfigurationsConstants,
     UpdateGovernanceConnectorConfigPropertyInterface,
-    getConnectorDetails
+    useGovernanceConnectorDetails
 } from "../../admin.server-configurations.v1";
 import updateOrganizationDiscoveryConfig from "../api/update-organization-discovery-config";
 import useGetOrganizationDiscovery from "../api/use-get-organization-discovery";
 import useGetOrganizationDiscoveryConfig from "../api/use-get-organization-discovery-config";
 import DiscoverableOrganizationsListLayout from "../components/discoverable-organizations-list-layout";
+import { OrganizationDiscoveryConfigConstants } from "../constants/organization-discovery-config-constants";
+import { OrganizationDiscoveryConstants } from "../constants/organization-discovery-constants";
 import { OrganizationDiscoveryConfigInterface } from "../models/organization-discovery";
 
 /**
@@ -79,8 +81,9 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
     const dispatch: Dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
-    const isEmailDomainDiscoveryForSelfRegFeatureEnabled: boolean = !featureConfig?.organizationDiscovery?.
-        disabledFeatures?.includes("organizationDiscovery.emailDomainDiscoveryForSelfReg");
+    const isEmailDomainDiscoveryForSelfRegFeatureEnabled: boolean = isFeatureEnabled(
+        featureConfig?.organizationDiscovery,
+        OrganizationDiscoveryConstants.FEATURE_DICTIONARY.get("ORGANIZATION_DISCOVERY_EMAIL_DOMAIN_FOR_SELF_REG"));
     const isReadOnly: boolean = !useRequiredScopes(featureConfig?.organizationDiscovery?.scopes?.update);
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
@@ -107,56 +110,22 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
         isLoading: isDiscoverableOrganizationsFetchRequestLoading
     } = useGetOrganizationDiscovery(true, filterQuery, listOffset, listItemLimit);
 
+    const {
+        data: selfRegistrationConnectorDetetails
+    } = useGovernanceConnectorDetails(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+        ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID);
+
     const { isOrganizationDiscoveryEnabled, isEmailDomainBasedSelfRegistrationEnabled } = organizationDiscoveryConfig;
     const [ isSelfRegEnabled, setIsSelfRegEnabled ] = useState<boolean>(false);
 
-    /**
-     * Fetch the self-registration configuration.
-     */
     useEffect(() => {
-        getConnectorDetails(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
-            ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID)
-            .then((response: GovernanceConnectorInterface) => {
-                const selfRegEnabledProperty: UpdateGovernanceConnectorConfigPropertyInterface =
-                    response?.properties?.find((property: ConnectorPropertyInterface) =>
-                        property.name === ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE
-                    );
+        const selfRegEnabledProperty: UpdateGovernanceConnectorConfigPropertyInterface =
+            selfRegistrationConnectorDetetails?.properties?.find((property: ConnectorPropertyInterface) =>
+                property.name === ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE
+            );
 
-                setIsSelfRegEnabled(selfRegEnabledProperty?.value === "true");
-            })
-            .catch((error: AxiosError) => {
-                if (error.response && error.response.data && error.response.data.detail) {
-                    dispatch(
-                        addAlert({
-                            description: t(
-                                "governanceConnectors:notifications." +
-                                "getConnector.error.description",
-                                { description: error.response.data.description }
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "governanceConnectors:notifications." +
-                                "getConnector.error.message"
-                            )
-                        })
-                    );
-                } else {
-                    dispatch(
-                        addAlert({
-                            description: t(
-                                "governanceConnectors:notifications." +
-                                "getConnector.genericError.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "governanceConnectors:notifications." +
-                                "getConnector.genericError.message"
-                            )
-                        })
-                    );
-                }
-            });
-    }, []);
+        setIsSelfRegEnabled(selfRegEnabledProperty?.value === "true");
+    }, [ selfRegistrationConnectorDetetails ]);
 
     const handleEmailDomainBasedSelfRegistration = (value: boolean): void => {
         const updateData: OrganizationDiscoveryConfigInterface = {
@@ -164,13 +133,13 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
         };
 
         updateData.properties.push({
-            key: "emailDomain.enable",
-            value: isOrganizationDiscoveryEnabled ? "true" : "false"
+            key: OrganizationDiscoveryConfigConstants.EMAIL_DOMAIN_DISCOVERY_PROPERTY_KEY,
+            value: isOrganizationDiscoveryEnabled.toString()
         });
 
         updateData.properties.push({
-            key: "emailDomainBasedSelfSignup.enable",
-            value: value ? "true" : "false"
+            key: OrganizationDiscoveryConfigConstants.EMAIL_DOMAIN_DISCOVERY_SELF_REG_PROPERTY_KEY,
+            value: value.toString()
         });
 
         updateOrganizationDiscoveryConfig(updateData)
@@ -283,17 +252,17 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
 
         if (data.checked === true) {
             updateData.properties.push({
-                key: "emailDomain.enable",
+                key: OrganizationDiscoveryConfigConstants.EMAIL_DOMAIN_DISCOVERY_PROPERTY_KEY,
                 value: "true"
             });
         } else {
             updateData.properties.push({
-                key: "emailDomain.enable",
+                key: OrganizationDiscoveryConfigConstants.EMAIL_DOMAIN_DISCOVERY_PROPERTY_KEY,
                 value: "false"
             });
 
             updateData.properties.push({
-                key: "emailDomainBasedSelfSignup.enable",
+                key: OrganizationDiscoveryConfigConstants.EMAIL_DOMAIN_DISCOVERY_SELF_REG_PROPERTY_KEY,
                 value: "false"
             });
         }

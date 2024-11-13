@@ -51,7 +51,6 @@ export interface DiscoverableOrganizationsListLayoutPropsInterface extends Ident
     onListItemLimitChange: (limit: number) => void;
     onListOffsetChange: (offset: number) => void;
     onSearchQueryChange: (query: string) => void;
-
 }
 
 /**
@@ -60,21 +59,17 @@ export interface DiscoverableOrganizationsListLayoutPropsInterface extends Ident
  * @param props - Props injected to the component.
  * @returns Discoverable organization list layout component.
  */
-const DiscoverableOrganizationsListLayout: FunctionComponent<DiscoverableOrganizationsListLayoutPropsInterface> = (
-    props: DiscoverableOrganizationsListLayoutPropsInterface
-): ReactElement => {
-
-    const {
-        discoverableOrganizations,
-        listItemLimit,
-        isDiscoverableOrganizationsFetchRequestLoading,
-        featureConfig,
-        searchQuery,
-        onListItemLimitChange,
-        onListOffsetChange,
-        onSearchQueryChange,
-        [ "data-componentid" ]: componentId
-    } = props;
+const DiscoverableOrganizationsListLayout: FunctionComponent<DiscoverableOrganizationsListLayoutPropsInterface> = ({
+    discoverableOrganizations,
+    listItemLimit,
+    isDiscoverableOrganizationsFetchRequestLoading,
+    featureConfig,
+    searchQuery,
+    onListItemLimitChange,
+    onListOffsetChange,
+    onSearchQueryChange,
+    ["data-componentid"]: componentId = "discoverable-organizations-list-layout"
+}: DiscoverableOrganizationsListLayoutPropsInterface): ReactElement => {
 
     const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
         {
@@ -244,13 +239,6 @@ const DiscoverableOrganizationsListLayout: FunctionComponent<DiscoverableOrganiz
             />
         </ListLayout>
     );
-};
-
-/**
- * Default props for the component.
- */
-DiscoverableOrganizationsListLayout.defaultProps = {
-    "data-componentid": "discoverable-organizations-list-layout"
 };
 
 export default DiscoverableOrganizationsListLayout;
