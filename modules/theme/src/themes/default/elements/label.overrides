@@ -131,25 +131,19 @@
 
 .ui.label {
     &.issuer-label {
-        color: #e68e00;
+        color: #449b13;
         font-weight: 500;
-        background-color: #faebcd;
+        background-color: #3d8c1036;
     }
     &.client-id-label {
         color: #0082c3;
         font-weight: 500;
         background-color: #dcf0fa;
     }
-}
-
-/*******************************
-      Application outdated Label
-*******************************/
-
-.ui.label {
-    &.application-outdated-label {
-        color: #fd9200;
-        background-color: #fff4e5;
+    &.outdated-app-label {
+        color: #e68e00;
+        font-weight: 500;
+        background-color: #faebcd;
     }
 }
 

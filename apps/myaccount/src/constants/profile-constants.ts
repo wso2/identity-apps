@@ -45,3 +45,8 @@ export enum LocaleJoiningSymbol {
     HYPHEN = "-",
     UNDERSCORE = "_"
 }
+
+export enum MobileVerificationRecoveryScenario {
+    MOBILE_VERIFICATION_ON_UPDATE = "MOBILE_VERIFICATION_ON_UPDATE",
+    MOBILE_VERIFICATION_ON_VERIFIED_LIST_UPDATE = "MOBILE_VERIFICATION_ON_VERIFIED_LIST_UPDATE"
+}

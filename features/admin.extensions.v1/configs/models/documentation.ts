@@ -146,6 +146,11 @@ interface ApplicationsDocumentationLinksInterface {
                     useClientIdAsSubClaimOfAppTokens: {
                         documentationLink: string;
                     }
+                },
+                version200: {
+                    addAllRequestedClaimsInJWTAccessToken: {
+                        documentationLink: string;
+                    }
                 }
             }
         }
