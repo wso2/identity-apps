@@ -1,5 +1,32 @@
 # @wso2is/admin.users.v1
 
+## 2.27.24
+
+### Patch Changes
+
+- [#7113](https://github.com/wso2/identity-apps/pull/7113) [`7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70`](https://github.com/wso2/identity-apps/commit/7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add locked status for locked users in user list
+
+- Updated dependencies [[`7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70`](https://github.com/wso2/identity-apps/commit/7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70)]:
+  - @wso2is/admin.users.v1@2.27.24
+  - @wso2is/theme@2.4.2
+  - @wso2is/admin.authentication.v1@2.25.24
+  - @wso2is/admin.claims.v1@2.25.24
+  - @wso2is/admin.core.v1@2.34.24
+  - @wso2is/admin.extensions.v1@2.34.24
+  - @wso2is/admin.groups.v1@2.25.24
+  - @wso2is/admin.organizations.v1@2.26.24
+  - @wso2is/admin.roles.v2@2.26.24
+  - @wso2is/admin.server-configurations.v1@2.28.24
+  - @wso2is/admin.tenants.v1@2.27.24
+  - @wso2is/admin.validation.v1@2.26.24
+  - @wso2is/admin.authorization.v1@2.25.8
+  - @wso2is/admin.identity-providers.v1@2.26.24
+  - @wso2is/admin.userstores.v1@2.25.24
+  - @wso2is/react-components@2.8.4
+  - @wso2is/admin.feature-gate.v1@1.4.24
+  - @wso2is/dynamic-forms@2.4.4
+  - @wso2is/form@2.5.4
+
 ## 2.27.23
 
 ### Patch Changes
