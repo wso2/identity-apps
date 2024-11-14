@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.4.3
+
+### Patch Changes
+
+- [#7122](https://github.com/wso2/identity-apps/pull/7122) [`cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453`](https://github.com/wso2/identity-apps/commit/cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update user profile lock icon
+
 ## 2.4.2
 
 ### Patch Changes
