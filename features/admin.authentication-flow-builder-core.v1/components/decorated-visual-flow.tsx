@@ -20,7 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ReactFlowProvider } from "@xyflow/react";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
-import AuthenticationFlowVisualEditorWidgetPanel from "./visual-editor-components-panel";
+import VisualEditorElementsPanel from "./visual-editor-elements-panel";
 import VisualFlow from "./visual-flow";
 import DnDProvider from "../providers/dnd-provider";
 
@@ -49,9 +49,9 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         >
             <ReactFlowProvider>
                 <DnDProvider>
-                    <AuthenticationFlowVisualEditorWidgetPanel>
+                    <VisualEditorElementsPanel>
                         <VisualFlow />
-                    </AuthenticationFlowVisualEditorWidgetPanel>
+                    </VisualEditorElementsPanel>
                 </DnDProvider>
             </ReactFlowProvider>
         </div>

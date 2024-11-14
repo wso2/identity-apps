@@ -27,7 +27,7 @@ export type useDnDInterface = DnDContextProps;
 /**
  * Hook that provides Drag & Drop context.
  *
- * This hook allows components to access drag-and-drop related data and functions
+ * This hook allows elements to access drag-and-drop related data and functions
  * provided by the Drag & Drop context. It returns an object containing
  * the context values defined in the Drag & Drop context.
  *

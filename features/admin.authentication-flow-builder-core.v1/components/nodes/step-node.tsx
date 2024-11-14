@@ -59,7 +59,7 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
 }: StepNodePropsInterface & Node): ReactElement => {
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
-    const [ droppedComponents, setDroppedComponents ] = useState<Component[]>([]);
+    const [ droppedElements, setDroppedElements ] = useState<Component[]>([]);
 
     const onDragOver: (event: DragEvent) => void = useCallback((event: DragEvent) => {
         event.preventDefault();
@@ -75,8 +75,8 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
             if (droppedData) {
                 const newComponent: Component = JSON.parse(droppedData);
 
-                setDroppedComponents((prevDroppedComponents: Component[]) => [
-                    ...prevDroppedComponents,
+                setDroppedElements((prevDroppedElements: Component[]) => [
+                    ...prevDroppedElements,
                     newComponent
                 ]);
             }
@@ -113,7 +113,7 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
                 <Paper className="authentication-flow-builder-step-content-box" elevation={ 0 } variant="outlined">
                     <Box className="authentication-flow-builder-step-content-form">
                         <FormGroup>
-                            { droppedComponents.map((component: Component, index: number) => (
+                            { droppedElements.map((component: Component, index: number) => (
                                 <NodeFactory key={ index } node={ component } />
                             )) }
                         </FormGroup>
