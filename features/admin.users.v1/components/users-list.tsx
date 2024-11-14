@@ -54,6 +54,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
+import {
+    ReactComponent as RoundedLockSolidIcon
+} from "../../themes/default/assets/images/icons/solid-icons/rounded-lock.svg";
 import { deleteUser } from "../api";
 import { ACCOUNT_LOCK_REASON_MAP, UserManagementConstants } from "../constants";
 import { UserBasicInterface, UserListInterface } from "../models";
@@ -271,10 +274,10 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     trigger={ (
                         <Icon
                             className="locked-icon"
-                            name="lock"
                             size="small"
-                            color="grey"
-                        />
+                        >
+                            <RoundedLockSolidIcon/>
+                        </Icon>
                     ) }
                     content={ t(accountLockedReasonContent) }
                     inverted
