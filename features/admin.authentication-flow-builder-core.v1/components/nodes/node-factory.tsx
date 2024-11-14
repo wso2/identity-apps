@@ -58,25 +58,29 @@ export const NodeFactory: FunctionComponent<NodeFactoryPropsInterface> = ({
             return (
                 <TextField
                     fullWidth
-                    className={ node.config?.className }
-                    defaultValue={ node.config?.defaultValue?.i18nKey || node.config?.defaultValue?.fallback }
-                    helperText={ node.config?.hint?.i18nKey || node.config?.hint?.fallback }
+                    className={ node.config?.field?.className }
+                    defaultValue={
+                        node.config?.field?.defaultValue?.i18nKey || node.config?.field?.defaultValue?.fallback
+                    }
+                    helperText={ node.config?.field?.hint?.i18nKey || node.config?.field?.hint?.fallback }
                     inputProps={ {
-                        maxLength: node.config?.maxLength,
-                        minLength: node.config?.minLength
+                        maxLength: node.config?.field?.maxLength,
+                        minLength: node.config?.field?.minLength
                     } }
-                    label={ node.config?.label?.i18nKey || node.config?.label?.fallback }
-                    multiline={ node.config?.multiline }
-                    placeholder={ node.config?.placeholder?.i18nKey || node.config?.placeholder?.fallback || "" }
-                    required={ node.config?.required }
+                    label={ node.config?.field?.label?.i18nKey || node.config?.field?.label?.fallback }
+                    multiline={ node.config?.field?.multiline }
+                    placeholder={
+                        node.config?.field?.placeholder?.i18nKey || node.config?.field?.placeholder?.fallback || ""
+                    }
+                    required={ node.config?.field?.required }
+                    type={ node.config?.field?.type }
                     style={ node.config?.styles }
-                    type={ node.config?.type }
                 />
             );
         } else if (node.type === ComponentTypes.Telephone) {
             return (
                 <PhoneNumberInput
-                    className={ node.config?.className }
+                    className={ node.config?.field?.className }
                     label={ node.config?.field?.label?.i18nKey || node.config?.field?.label?.fallback }
                     placeholder={
                         node.config?.field?.placeholder?.i18nKey || node.config?.field?.placeholder?.fallback || ""
@@ -87,11 +91,15 @@ export const NodeFactory: FunctionComponent<NodeFactoryPropsInterface> = ({
             return (
                 <FormControlLabel
                     control={ <Checkbox defaultChecked /> }
-                    className= { node.config?.className }
-                    defaultValue={ node.config?.defaultValue?.i18nKey || node.config?.defaultValue?.fallback }
-                    label={ node.config?.label?.i18nKey || node.config?.label?.fallback }
-                    placeholder={ node.config?.placeholder?.i18nKey || node.config?.placeholder?.fallback || "" }
-                    required={ node.config?.required }
+                    className={ node.config?.field?.className }
+                    defaultValue={
+                        node.config?.field?.defaultValue?.i18nKey || node.config?.field?.defaultValue?.fallback
+                    }
+                    label={ node.config?.field?.label?.i18nKey || node.config?.field?.label?.fallback }
+                    placeholder={
+                        node.config?.field?.placeholder?.i18nKey || node.config?.field?.placeholder?.fallback || ""
+                    }
+                    required={ node.config?.field?.required }
                     style={ node.config?.styles }
                 />
             );
