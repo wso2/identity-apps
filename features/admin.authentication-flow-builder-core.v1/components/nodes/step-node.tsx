@@ -92,22 +92,22 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
             onDrop={ onDrop }
             onDrag={ onDragOver }
         >
-            <div className="authentication-flow-builder-step-id">
-                <Typography variant="body2" data-componentid={ `${componentId}-${stepIndex}-heading-text` }>
+            <Box display="flex" justifyContent="space-between" className="authentication-flow-builder-step-action-panel">
+                <Typography variant="body2" data-componentid={ `${componentId}-${stepIndex}-heading-text` } className="authentication-flow-builder-step-id">
                     Step { stepIndex && stepIndex + 1 }
                 </Typography>
-            </div>
-            <Tooltip title={ "Remove" }>
-                <IconButton
-                    size="small"
-                    onClick={ (_: MouseEvent<HTMLButtonElement>) => {
+                <Tooltip title={ "Remove" }>
+                    <IconButton
+                        size="small"
+                        onClick={ (_: MouseEvent<HTMLButtonElement>) => {
                         // TODO: Implement remove step logic.
-                    } }
-                    className="authentication-flow-builder-step-remove-button"
-                >
-                    <XMarkIcon />
-                </IconButton>
-            </Tooltip>
+                        } }
+                        className="authentication-flow-builder-step-remove-button"
+                    >
+                        <XMarkIcon />
+                    </IconButton>
+                </Tooltip>
+            </Box>
             { stepIndex !== 0 && <Handle type="target" position={ Position.Left } /> }
             <Box className="authentication-flow-builder-step-content" data-componentid={ `${componentId}-inner` }>
                 <Paper className="authentication-flow-builder-step-content-box" elevation={ 0 } variant="outlined">

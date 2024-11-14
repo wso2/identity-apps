@@ -37,6 +37,7 @@ import StepNode, { StepNodePropsInterface } from "./nodes/step-node";
 import useDnD from "../hooks/use-dnd";
 import "@xyflow/react/dist/style.css";
 import { ElementCategories } from "../models/elements";
+import "./visual-flow.scss";
 
 /**
  * Props interface of {@link VisualFlow}
@@ -105,6 +106,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
 
     return (
         <ReactFlow
+            fitView
             nodes={ nodes }
             edges={ edges }
             nodeTypes={ nodeTypes as any }
@@ -113,12 +115,12 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
             onConnect={ onConnect }
             onDrop={ onDrop }
             onDragOver={ onDragOver }
-            fitView
             proOptions={ { hideAttribution: true } }
             data-componentid={ componentId }
+            colorMode="dark"
             { ...rest }
         >
-            <Background color="#e1e1e1" gap={ 16 } variant={ BackgroundVariant.Dots } size={ 2 } />
+            <Background gap={ 16 } variant={ BackgroundVariant.Dots } size={ 2 } />
             <Controls position="top-right" />
         </ReactFlow>
     );

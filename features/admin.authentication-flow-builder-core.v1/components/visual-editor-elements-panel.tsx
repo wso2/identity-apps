@@ -198,7 +198,6 @@ const VisualEditorElementsPanel: FunctionComponent<VisualEditorElementsPanelProp
                     <Accordion
                         square
                         disableGutters
-                        defaultExpanded
                         className={ classNames("authentication-flow-builder-elements-panel-categories") }
                     >
                         <AccordionSummary
