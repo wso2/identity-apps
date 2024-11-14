@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import  Alert  from "@oxygen-ui/react/Alert";
+import Alert from "@oxygen-ui/react/Alert";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
 import {
     UsernameRecoveryFormConstants
@@ -107,7 +107,7 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
      * @param values - Form values.
      * @returns Sanitized form values.
      */
-    const getUpdatedConfigurations = (values: Record<string, any>) => {
+    const getUpdatedConfigurations = (values: Record<string, boolean>) => {
 
         const data: UsernamePasswordRecoveryFormUpdatableConfigsInterface = {
             "Recovery.Notification.Username.Email.Enable":
@@ -128,7 +128,7 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
         <div className={ "connector-form" }>
             <Form
                 id={ FORM_ID }
-                onSubmit={ (values: Record<string, any>) => onSubmit(getUpdatedConfigurations(values)) }
+                onSubmit={ (values: Record<string, boolean>) => onSubmit(getUpdatedConfigurations(values)) }
                 uncontrolledForm={ false }
                 initialValues={ initialConnectorValues }
             >
