@@ -37,7 +37,7 @@ const Builder: FunctionComponent<BuilderPropsInterface> = ({
     ...rest
 }: BuilderPropsInterface): ReactElement => (
     <AuthenticationFlowBuilderCoreProvider>
-        <DecoratedVisualFlow data-componentid={componentId} {...rest} />
+        <DecoratedVisualFlow data-componentid={ componentId } { ...rest } />
     </AuthenticationFlowBuilderCoreProvider>
 );
 

@@ -45,8 +45,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
     const {
         isElementPanelOpen,
-        isElementPropertiesPanelOpen,
-        setIsOpenElementPropertiesPanel
+        isElementPropertiesPanelOpen
     } = useAuthenticationFlowBuilderCore();
 
     return (
@@ -59,7 +58,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                 <DnDProvider>
                     <VisualEditorElementsPanel open={ isElementPanelOpen }>
                         <VisualEditorElementPropertiesPanel open={ isElementPropertiesPanelOpen }>
-                            <VisualFlow onElementDrop={ () => setIsOpenElementPropertiesPanel(true) } />
+                            <VisualFlow />
                         </VisualEditorElementPropertiesPanel>
                     </VisualEditorElementsPanel>
                 </DnDProvider>

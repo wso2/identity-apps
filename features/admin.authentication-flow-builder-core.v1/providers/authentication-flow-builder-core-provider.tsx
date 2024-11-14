@@ -16,8 +16,13 @@
  * under the License.
  */
 
-import React, { PropsWithChildren, ReactElement, useState } from "react";
+import Avatar from "@oxygen-ui/react/Avatar";
+import Typography from "@oxygen-ui/react/Typography";
+import Stack from "@oxygen-ui/react/Stack";
+import capitalize from "lodash-es/capitalize";
+import React, { PropsWithChildren, ReactElement, ReactNode, useState } from "react";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
+import { Base } from "../models/base";
 
 /**
  * Props interface of {@link AuthenticationFlowBuilderCoreProvider}
@@ -35,12 +40,33 @@ const AuthenticationFlowBuilderCoreProvider = ({
 }: PropsWithChildren<AuthenticationFlowBuilderProviderProps>): ReactElement => {
     const [ isElementPanelOpen, setIsElementPanelOpen ] = useState<boolean>(true);
     const [ isElementPropertiesPanelOpen, setIsOpenElementPropertiesPanel ] = useState<boolean>(false);
+    const [ elementPropertiesPanelHeading, setElementPropertiesPanelHeading ] = useState<ReactNode>(null);
+
+    const onElementDropOnCanvas = (element: Base): void  => {
+        // TODO: Internationalize this string and get from a mapping.
+        setElementPropertiesPanelHeading(
+            <Stack>
+                <Typography variant="h6">{ capitalize(element.category) } Properties</Typography>
+                <Stack direction="row" className="sub-title" gap={ 1 } alignItems="center">
+                    <Avatar
+                        src={ element?.display?.image }
+                        variant="square"
+                    />
+                    <Typography variant="body2">{ capitalize(element.type) }</Typography>
+                </Stack>
+            </Stack>
+        );
+        setIsOpenElementPropertiesPanel(true);
+    };
 
     return (
         <AuthenticationFlowBuilderCoreContext.Provider
             value={ {
+                elementPropertiesPanelHeading,
                 isElementPanelOpen,
                 isElementPropertiesPanelOpen,
+                onElementDropOnCanvas,
+                setElementPropertiesPanelHeading,
                 setIsElementPanelOpen,
                 setIsOpenElementPropertiesPanel
             } }

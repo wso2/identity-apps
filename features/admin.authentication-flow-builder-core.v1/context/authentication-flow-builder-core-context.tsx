@@ -16,12 +16,17 @@
  * under the License.
  */
 
-import { Context, createContext } from "react";
+import { Context, Dispatch, ReactNode, SetStateAction, createContext } from "react";
+import { Base } from "../models/base";
 
 /**
  * Props interface of {@link AuthenticationFlowBuilderCoreContext}
  */
 export interface AuthenticationFlowBuilderCoreContextProps {
+    /**
+     * The heading for the element properties panel.
+     */
+    elementPropertiesPanelHeading: ReactNode;
     /**
      * Indicates whether the element panel is open.
      */
@@ -31,17 +36,28 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      */
     isElementPropertiesPanelOpen: boolean;
     /**
+     * Function to be called when an element is dropped on the canvas.
+     * @param element - The element that was dropped on the canvas.
+     */
+    onElementDropOnCanvas: (element: Base) => void;
+    /**
+     * Sets the heading for the element properties panel.
+     *
+     * @param heading - The heading to set for the element properties panel.
+     */
+    setElementPropertiesPanelHeading: Dispatch<SetStateAction<ReactNode>>;
+    /**
      * Function to set the state of the element panel.
      *
      * @param isOpen - Boolean indicating whether the element panel should be open.
      */
-    setIsElementPanelOpen: (isOpen: boolean) => void;
+    setIsElementPanelOpen: Dispatch<SetStateAction<boolean>>;
     /**
      * Function to set the state of the element properties panel.
      *
      * @param isOpen - Boolean indicating whether the element properties panel should be open.
      */
-    setIsOpenElementPropertiesPanel: (isOpen: boolean) => void;
+    setIsOpenElementPropertiesPanel: Dispatch<SetStateAction<boolean>>;
 }
 
 /**
@@ -51,10 +67,13 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
     null | AuthenticationFlowBuilderCoreContextProps
 >(
     {
+        elementPropertiesPanelHeading: null,
         isElementPanelOpen: true,
         isElementPropertiesPanelOpen: false,
-        setIsElementPanelOpen: (_: boolean) => {},
-        setIsOpenElementPropertiesPanel: (_: boolean) => {}
+        onElementDropOnCanvas: () => {},
+        setElementPropertiesPanelHeading: () => {},
+        setIsElementPanelOpen: () => {},
+        setIsOpenElementPropertiesPanel: () => {}
     }
 );
 

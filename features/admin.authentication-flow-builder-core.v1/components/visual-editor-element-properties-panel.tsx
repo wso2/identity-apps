@@ -18,9 +18,11 @@
 
 import Box from "@oxygen-ui/react/Box";
 import Drawer, { DrawerProps } from "@oxygen-ui/react/Drawer";
+import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
+import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
 import "./visual-editor-element-properties-panel.scss";
 
 /**
@@ -44,6 +46,8 @@ const VisualEditorElementPropertiesPanel: FunctionComponent<VisualEditorElementP
     anchor = "right",
     ...rest
 }: VisualEditorElementPropertiesPanelPropsInterface): ReactElement => {
+    const { elementPropertiesPanelHeading } = useAuthenticationFlowBuilderCore();
+
     return (
         <Box
             width="100%"
@@ -80,12 +84,15 @@ const VisualEditorElementPropertiesPanel: FunctionComponent<VisualEditorElementP
                 className={ classNames("authentication-flow-builder-element-properties-drawer", { mini: !open }) }
                 variant={ open ? "permanent" : "temporary" }
             >
+                <Box display="flex" justifyContent="space-between" className="authentication-flow-builder-element-properties-panel-header">
+                    { elementPropertiesPanelHeading }
+                </Box>
                 <div
                     className={ classNames("authentication-flow-builder-element-properties-panel-content", {
                         "full-height": true
                     }) }
                 >
-                    Test
+                    Content
                 </div>
             </Drawer>
         </Box>

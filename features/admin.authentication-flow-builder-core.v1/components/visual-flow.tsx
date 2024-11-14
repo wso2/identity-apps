@@ -34,20 +34,16 @@ import {
 } from "@xyflow/react";
 import React, { DragEvent, FC, FunctionComponent, ReactElement, useCallback } from "react";
 import StepNode, { StepNodePropsInterface } from "./nodes/step-node";
+import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
 import useDnD from "../hooks/use-dnd";
-import "@xyflow/react/dist/style.css";
 import { ElementCategories } from "../models/elements";
+import "@xyflow/react/dist/style.css";
 import "./visual-flow.scss";
 
 /**
  * Props interface of {@link VisualFlow}
  */
-export interface VisualFlowPropsInterface extends IdentifiableComponentInterface, ReactFlowProps<any, any> {
-    /**
-     * Callback to be fired when an element is dropped in to the canvas.
-     */
-    onElementDrop: () => void;
-}
+export interface VisualFlowPropsInterface extends IdentifiableComponentInterface, ReactFlowProps<any, any> {}
 
 // we define the nodeTypes outside of the component to prevent re-renderings
 // you could also use useMemo inside the component
@@ -63,13 +59,13 @@ const nodeTypes: {
  */
 const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-flow",
-    onElementDrop,
     ...rest
 }: VisualFlowPropsInterface): ReactElement => {
     const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
     const [ edges, setEdges, onEdgesChange ] = useEdgesState([]);
     const { screenToFlowPosition } = useReactFlow();
     const { node, generateComponentId } = useDnD();
+    const { onElementDropOnCanvas } = useAuthenticationFlowBuilderCore();
 
     const onDragOver: (event: DragEvent) => void = useCallback((event: DragEvent) => {
         event.preventDefault();
@@ -104,8 +100,8 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
             };
 
             setNodes((nodes: Node[]) => nodes.concat(newNode));
-debugger
-            onElementDrop && onElementDrop();
+
+            onElementDropOnCanvas(node);
         },
         [ screenToFlowPosition, node?.type ]
     );

@@ -42,6 +42,21 @@
 .authentication-flow-builder-element-properties-drawer {
     .authentication-flow-builder-element-properties-panel {
 
+        .authentication-flow-builder-element-properties-panel-header {
+            padding: var(--oxygen-spacing-1) var(--oxygen-spacing-2);
+            border-bottom: 1px solid var(--oxygen-palette-divider);
+
+            .sub-title {
+                margin-top: 5px;
+
+                .oxygen-avatar {
+                    height: 15px;
+                    width: 15px;
+                    color: var(--oxygen-palette-text-secondary);
+                }
+            }
+        }
+
         .authentication-flow-builder-element-properties-panel-content {
             padding: var(--oxygen-spacing-1) var(--oxygen-spacing-2);
 

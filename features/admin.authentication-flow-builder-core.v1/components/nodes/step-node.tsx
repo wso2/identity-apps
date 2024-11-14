@@ -36,6 +36,7 @@ import React, {
     useState
 } from "react";
 import NodeFactory from "./node-factory";
+import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import { Component } from "../../models/component";
 import "./step-node.scss";
 
@@ -57,6 +58,8 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
     data,
     "data-componentid": componentId = "step-node"
 }: StepNodePropsInterface & Node): ReactElement => {
+    const { onElementDropOnCanvas } = useAuthenticationFlowBuilderCore();
+
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     const [ droppedElements, setDroppedElements ] = useState<Component[]>([]);
@@ -76,6 +79,8 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
                 const newComponent: Component = JSON.parse(droppedData);
 
                 setDroppedElements((prevDroppedElements: Component[]) => [ ...prevDroppedElements, newComponent ]);
+
+                onElementDropOnCanvas(newComponent);
             }
         },
         [ data?.type ]
