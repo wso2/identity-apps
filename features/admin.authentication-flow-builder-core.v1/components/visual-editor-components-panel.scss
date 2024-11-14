@@ -18,8 +18,8 @@
 
 :root {
     --wso2is-authentication-flow-builder-components-drawer-background: #f4f4f4;
-    --wso2is-authentication-flow-builder-components-drawer-width: 280px;
-    --wso2is-authentication-flow-builder-components-drawer-mini-width: 280px;
+    --wso2is-authentication-flow-builder-components-drawer-width: 350px;
+    --wso2is-authentication-flow-builder-components-drawer-mini-width: 350px;
 }
 
 .authentication-flow-builder-components-drawer {
@@ -43,6 +43,8 @@
     .authentication-flow-builder-components-panel {
 
         .authentication-flow-builder-components-panel-content {
+            padding: var(--oxygen-spacing-1) var(--oxygen-spacing-2);
+
             &.full-height {
                 height: 100%;
             }
@@ -55,9 +57,6 @@
             transition: height 0.3s ease-in-out;
 
             .authentication-flow-builder-components-panel-category-heading {
-                background: linear-gradient(180deg, #ffffff 0%, #f7f7f9 100%);
-                box-shadow: inset 0px -1px 0px 0px #dee0e7, 0 1px 1px 0 rgba(0, 0, 0, 0.06);
-
                 .MuiAccordionSummary-content {
                     display: flex;
                     flex-direction: row;
@@ -73,8 +72,11 @@
             }
 
             .authentication-flow-builder-components-panel-category-details {
-                padding: var(--oxygen-spacing-2) var(--oxygen-spacing-1);
                 background: var(--wso2is-authentication-flow-builder-components-drawer-background);
+
+                > .OxygenStack-root {
+                    margin-top: var(--oxygen-spacing-2);
+                }
             }
 
             &:not(:first-child) {

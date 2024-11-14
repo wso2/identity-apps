@@ -16,38 +16,26 @@
  * under the License.
  */
 
-import { Base } from "./base";
-
-/**
- * Interface for a component.
- */
-export type Component<T = any> = Base<T>;
-
-export type Display = Component;
-export type Input = Component;
-export type Widget = Component<WidgetExtendedConfig>;
-export type Node = Component;
+import { Component } from "./component";
+import { Node } from "./node";
+import { Widget } from "./widget";
 
 /**
  * Interface for the entire JSON structure.
  */
-export interface Components {
+export interface Elements {
     /**
      * List of blocks.
      */
-    display: Display[];
-    /**
-     * List of fields.
-     */
-    inputs: Input[];
-    /**
-     * List of widgets.
-     */
-    widgets: Widget[];
+    components: Component[];
     /**
      * List of nodes.
      */
     nodes: Node[];
+    /**
+     * List of widgets.
+     */
+    widgets: Widget[];
 }
 
 /**
@@ -60,29 +48,8 @@ export interface WidgetExtendedConfig {
     version?: string;
 }
 
-export enum ComponentCategories {
-    Display = "DISPLAY",
-    Input = "INPUT",
-    Node = "NODE",
+export enum ElementCategories {
+    Component = "COMPONENT",
+    Nodes = "NODE",
     Widget = "WIDGET"
-}
-
-export enum InputComponentTypes {
-    Text = "TEXT",
-    Number = "NUMBER",
-    Password = "PASSWORD",
-    Dropdown = "DROPDOWN",
-    Radio = "RADIO",
-    Checkbox = "CHECKBOX",
-    Switch = "SWITCH",
-    TextArea = "TEXTAREA",
-    Date = "DATE",
-    Time = "TIME",
-    DateTime = "DATETIME",
-    File = "FILE",
-    Image = "IMAGE",
-    Video = "VIDEO",
-    Audio = "AUDIO",
-    URL = "URL",
-    Color = "COLOR"
 }

@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import { Base } from "./base";
+import { Component } from "./component";
+
+export type Widget = Component<WidgetExtendedConfig>;
 
 /**
- * Interface for a primitive.
+ * Interface for the properties of a widget.
  */
-export type Primitive = Base;
-
-/**
- * Interface for a set of primitives.
- */
-export type Primitives = {
-    primitives: Primitive[]
-};
+export interface WidgetExtendedConfig {
+    /**
+     * Version of the widget.
+     */
+    version?: string;
+}

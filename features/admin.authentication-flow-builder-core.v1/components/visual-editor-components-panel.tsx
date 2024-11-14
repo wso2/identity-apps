@@ -29,8 +29,9 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps, useState } from "react";
 import VisualEditorDraggableNode from "./visual-editor-draggable-node";
-import useGetAuthenticationFlowBuilderComponents from "../api/use-get-authentication-flow-builder-components";
-import { Display, Input, Node, Widget } from "../models/components";
+import useGetAuthenticationFlowBuilderElements from "../api/use-get-authentication-flow-builder-elements";
+import { Component } from "../models/component";
+import { Widget } from "../models/widget";
 import "./visual-editor-components-panel.scss";
 
 /**
@@ -54,16 +55,6 @@ const CubesIcon = ({ ...rest }: SVGProps<SVGSVGElement>): ReactElement => (
                 d="M6.5,10.5 L12,13.5 L17.5,10.5 L17.5,4.5 L12,1.5 L6.5,4.5 L6.5,10.5 Z M6.5,4.5 L12,7.5 L17.5,4.5 M12,7.5 L12,13.5 L12,7.5 Z M1,19.5 L6.5,22.5 L12,19.5 L12,13.5 L6.5,10.5 L1,13.5 L1,19.5 Z M1,13.5 L6.5,16.5 L12,13.5 M6.5,16.5 L6.5,22.5 L6.5,16.5 Z M12,19.5 L17.5,22.5 L23,19.5 L23,13.5 L17.5,10.5 L12,13.5 L12,19.5 Z M12,13.5 L17.5,16.5 L23,13.5 M17.5,16.5 L17.5,22.5 L17.5,16.5 Z"
             />
         </g>
-    </svg>
-);
-
-// TODO: Move this to Oxygen UI.
-const FormIcon = ({ ...rest }: SVGProps<SVGSVGElement>): ReactElement => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" viewBox="0 0 24 24" { ...rest }>
-        <path
-            fillRule="evenodd"
-            d="M3.81818182,11 L20.1818182,11 C21.1859723,11 22,11.8954305 22,13 L22,15 C22,16.1045695 21.1859723,17 20.1818182,17 L3.81818182,17 C2.81402773,17 2,16.1045695 2,15 L2,13 C2,11.8954305 2.81402773,11 3.81818182,11 Z M4,13 L4,15 L20,15 L20,13 L4,13 Z M3.81818182,3 L20.1818182,3 C21.1859723,3 22,3.8954305 22,5 L22,7 C22,8.1045695 21.1859723,9 20.1818182,9 L3.81818182,9 C2.81402773,9 2,8.1045695 2,7 L2,5 C2,3.8954305 2.81402773,3 3.81818182,3 Z M4,5 L4,7 L20,7 L20,5 L4,5 Z M2,19 L14,19 L14,21 L2,21 L2,19 Z"
-        />
     </svg>
 );
 
@@ -127,8 +118,8 @@ const VisualEditorComponentsPanel: FunctionComponent<VisualEditorComponentsPanel
     ...rest
 }: VisualEditorComponentsPanelPropsInterface): ReactElement => {
     const [ open, setOpen ] = useState(false);
-    const { data } = useGetAuthenticationFlowBuilderComponents();
-    const { display, inputs, widgets, nodes } = data;
+    const { data } = useGetAuthenticationFlowBuilderElements();
+    const { components, widgets, nodes } = data;
 
     return (
         <Box
@@ -183,36 +174,6 @@ const VisualEditorComponentsPanel: FunctionComponent<VisualEditorComponentsPanel
                             id="panel1-header"
                         >
                             <IconButton onClick={ () => setOpen(!open) }>
-                                <FormIcon height={ 16 } width={ 16 } />
-                            </IconButton>
-                            <Typography variant="h6">Inputs</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails
-                            className="authentication-flow-builder-components-panel-category-details"
-                        >
-                            <Stack direction="column" spacing={ 1 }>
-                                { inputs.map((input: Input) => (
-                                    <VisualEditorDraggableNode
-                                        id={ input.type }
-                                        key={ input.type }
-                                        node={ input }
-                                    />
-                                )) }
-                            </Stack>
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion
-                        square
-                        disableGutters
-                        className={ classNames("authentication-flow-builder-components-panel-categories") }
-                    >
-                        <AccordionSummary
-                            className="authentication-flow-builder-components-panel-category-heading"
-                            expandIcon={ <ChevronRightIcon size={ 14 } /> }
-                            aria-controls="panel1-content"
-                            id="panel1-header"
-                        >
-                            <IconButton onClick={ () => setOpen(!open) }>
                                 <NodesIcon height={ 16 } width={ 16 } />
                             </IconButton>
                             <Typography variant="h6">Nodes</Typography>
@@ -220,8 +181,11 @@ const VisualEditorComponentsPanel: FunctionComponent<VisualEditorComponentsPanel
                         <AccordionDetails
                             className="authentication-flow-builder-components-panel-category-details"
                         >
+                            <Typography variant="body2">
+                                Use these nodes as building blocks of your flow
+                            </Typography>
                             <Stack direction="column" spacing={ 1 }>
-                                { nodes.map((node: Node) => (
+                                { nodes.map((node: Component) => (
                                     <VisualEditorDraggableNode
                                         id={ node.type }
                                         key={ node.type }
@@ -234,6 +198,7 @@ const VisualEditorComponentsPanel: FunctionComponent<VisualEditorComponentsPanel
                     <Accordion
                         square
                         disableGutters
+                        defaultExpanded
                         className={ classNames("authentication-flow-builder-components-panel-categories") }
                     >
                         <AccordionSummary
@@ -245,17 +210,20 @@ const VisualEditorComponentsPanel: FunctionComponent<VisualEditorComponentsPanel
                             <IconButton onClick={ () => setOpen(!open) }>
                                 <CubesIcon height={ 16 } width={ 16 } />
                             </IconButton>
-                            <Typography variant="h6">Display</Typography>
+                            <Typography variant="h6">Components</Typography>
                         </AccordionSummary>
                         <AccordionDetails
                             className="authentication-flow-builder-components-panel-category-details"
                         >
+                            <Typography variant="body2">
+                                Use these components to build up custom UI blocks
+                            </Typography>
                             <Stack direction="column" spacing={ 1 }>
-                                { display.map((display: Display) => (
+                                { components.map((node: Component) => (
                                     <VisualEditorDraggableNode
-                                        id={ display.type }
-                                        key={ display.type }
-                                        node={ display }
+                                        id={ node.type }
+                                        key={ node.type }
+                                        node={ node }
                                     />
                                 )) }
                             </Stack>
@@ -280,6 +248,9 @@ const VisualEditorComponentsPanel: FunctionComponent<VisualEditorComponentsPanel
                         <AccordionDetails
                             className="authentication-flow-builder-components-panel-category-details"
                         >
+                            <Typography variant="body2">
+                                Use these widgets to build up custom UI prompts and collect data
+                            </Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { widgets.map((widget: Widget) => (
                                     <VisualEditorDraggableNode

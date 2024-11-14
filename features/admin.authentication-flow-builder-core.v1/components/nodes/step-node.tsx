@@ -17,6 +17,7 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
+import FormGroup from "@oxygen-ui/react/FormGroup";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
 import Tooltip from "@oxygen-ui/react/Tooltip";
@@ -35,7 +36,7 @@ import React, {
     useState
 } from "react";
 import NodeFactory from "./node-factory";
-import { Component } from "../../models/components";
+import { Component } from "../../models/component";
 import "./step-node.scss";
 
 /**
@@ -93,7 +94,7 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
         >
             <div className="authentication-flow-builder-step-id">
                 <Typography variant="body2" data-componentid={ `${componentId}-${stepIndex}-heading-text` }>
-                    Step { stepIndex + 1 }
+                    Step { stepIndex && stepIndex + 1 }
                 </Typography>
             </div>
             <Tooltip title={ "Remove" }>
@@ -111,9 +112,11 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
             <Box className="authentication-flow-builder-step-content" data-componentid={ `${componentId}-inner` }>
                 <Paper className="authentication-flow-builder-step-content-box" elevation={ 0 } variant="outlined">
                     <Box className="authentication-flow-builder-step-content-form">
-                        { droppedComponents.map((component: Component, index: number) => (
-                            <NodeFactory key={ index } node={ component } />
-                        )) }
+                        <FormGroup>
+                            { droppedComponents.map((component: Component, index: number) => (
+                                <NodeFactory key={ index } node={ component } />
+                            )) }
+                        </FormGroup>
                     </Box>
                 </Paper>
             </Box>

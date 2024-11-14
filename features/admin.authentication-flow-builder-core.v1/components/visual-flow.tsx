@@ -34,9 +34,9 @@ import {
 } from "@xyflow/react";
 import React, { DragEvent, FC, FunctionComponent, ReactElement, useCallback } from "react";
 import StepNode, { StepNodePropsInterface } from "./nodes/step-node";
-import VisualEditorPrimitivesPanel from "./visual-editor-primitives-panel";
 import useDnD from "../hooks/use-dnd";
 import "@xyflow/react/dist/style.css";
+import { ElementCategories } from "../models/elements";
 
 /**
  * Props interface of {@link VisualFlow}
@@ -74,7 +74,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
             event.preventDefault();
 
             // check if the dropped element is valid
-            if (!node?.type || node?.category !== "PRIMITIVE") {
+            if (!node?.type || node?.category !== ElementCategories.Nodes) {
                 return;
             }
 
@@ -120,7 +120,6 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
         >
             <Background color="#e1e1e1" gap={ 16 } variant={ BackgroundVariant.Dots } size={ 2 } />
             <Controls position="top-right" />
-            <VisualEditorPrimitivesPanel />
         </ReactFlow>
     );
 };

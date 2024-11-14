@@ -50,7 +50,7 @@ const VisualEditorDraggableNode: FunctionComponent<VisualEditorDraggableNodeProp
 }: VisualEditorDraggableNodePropsInterface): ReactElement => {
     return (
         <DraggableNode key={ id } node={ node } data-componentid={ componentId } { ...rest }>
-            <Card className="authentication-flow-builder-draggable-node">
+            <Card className="authentication-flow-builder-draggable-node" variant="elevation">
                 <CardContent>
                     <Stack direction="row" spacing={ 1 }>
                         <Avatar

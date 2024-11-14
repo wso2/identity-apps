@@ -16,28 +16,25 @@
  * under the License.
  */
 
-import {
-    RequestErrorInterface,
-    RequestResultInterface
-} from "@wso2is/admin.core.v1/hooks/use-request";
-import primitives from "../data/primitives.json";
-import { Primitives } from "../models/primitives";
+import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import elements from "../data/elements.json";
+import { Elements } from "../models/elements";
 
 /**
- * Hook to get the primitives supported by the authentication flow builder.
+ * Hook to get the elements supported by the authentication flow builder.
  *
- * This function calls the GET method of the following endpoint to get the primitives.
+ * This function calls the GET method of the following endpoint to get the elements.
  * - TODO: Fill this
  * For more details, refer to the documentation:
  * {@link https://TODO:<fillthis>)}
  *
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetAuthenticationFlowBuilderPrimitives = <Data = Primitives, Error = RequestErrorInterface>(
+const useGetAuthenticationFlowBuilderElements = <Data = Elements, Error = RequestErrorInterface>(
     _shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     return {
-        data: primitives as unknown as Data,
+        data: (elements as unknown) as Data,
         error: null,
         isLoading: false,
         isValidating: false,
@@ -45,4 +42,4 @@ const useGetAuthenticationFlowBuilderPrimitives = <Data = Primitives, Error = Re
     };
 };
 
-export default useGetAuthenticationFlowBuilderPrimitives;
+export default useGetAuthenticationFlowBuilderElements;

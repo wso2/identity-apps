@@ -16,12 +16,20 @@
  * under the License.
  */
 
+import Button from "@oxygen-ui/react/Button";
+import Checkbox from "@oxygen-ui/react/Checkbox";
+import FormControl from "@oxygen-ui/react/FormControl";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
+import FormLabel from "@oxygen-ui/react/FormLabel";
+import PhoneNumberInput from "@oxygen-ui/react/PhoneNumberInput";
+import Radio from "@oxygen-ui/react/Radio";
+import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Component, ComponentCategories, InputComponentTypes } from "../../models/components";
-import transformConfigForTextField from "../../utils/transform-config-for-text-field";
+import { Component, ComponentTypes } from "../../models/component";
+import { ElementCategories } from "../../models/elements";
 import "./step-node.scss";
 
 /**
@@ -40,13 +48,81 @@ export interface NodeFactoryPropsInterface extends IdentifiableComponentInterfac
 export const NodeFactory: FunctionComponent<NodeFactoryPropsInterface> = ({
     node
 }: NodeFactoryPropsInterface & Node): ReactElement => {
-    if (node.category === ComponentCategories.Input) {
+    if (node.category === ElementCategories.Component) {
         if (
-            node.type === InputComponentTypes.Text ||
-            node.type === InputComponentTypes.Password ||
-            node.type === InputComponentTypes.Number
+            node.type === ComponentTypes.Text ||
+            node.type === ComponentTypes.Password ||
+            node.type === ComponentTypes.Number ||
+            node.type === ComponentTypes.Email
         ) {
-            return <TextField { ...transformConfigForTextField(node.config) } />;
+            return (
+                <TextField
+                    fullWidth
+                    className={ node.config?.className }
+                    defaultValue={ node.config?.defaultValue?.i18nKey || node.config?.defaultValue?.fallback }
+                    helperText={ node.config?.hint?.i18nKey || node.config?.hint?.fallback }
+                    inputProps={ {
+                        maxLength: node.config?.maxLength,
+                        minLength: node.config?.minLength
+                    } }
+                    label={ node.config?.label?.i18nKey || node.config?.label?.fallback }
+                    multiline={ node.config?.multiline }
+                    placeholder={ node.config?.placeholder?.i18nKey || node.config?.placeholder?.fallback || "" }
+                    required={ node.config?.required }
+                    style={ node.config?.styles }
+                    type={ node.config?.type }
+                />
+            );
+        } else if (node.type === ComponentTypes.Telephone) {
+            return (
+                <PhoneNumberInput
+                    className={ node.config?.className }
+                    label={ node.config?.field?.label?.i18nKey || node.config?.field?.label?.fallback }
+                    placeholder={
+                        node.config?.field?.placeholder?.i18nKey || node.config?.field?.placeholder?.fallback || ""
+                    }
+                />
+            );
+        } else if (node.type === ComponentTypes.Checkbox) {
+            return (
+                <FormControlLabel
+                    control={ <Checkbox defaultChecked /> }
+                    className= { node.config?.className }
+                    defaultValue={ node.config?.defaultValue?.i18nKey || node.config?.defaultValue?.fallback }
+                    label={ node.config?.label?.i18nKey || node.config?.label?.fallback }
+                    placeholder={ node.config?.placeholder?.i18nKey || node.config?.placeholder?.fallback || "" }
+                    required={ node.config?.required }
+                    style={ node.config?.styles }
+                />
+            );
+        } else if (node.type === ComponentTypes.Choice) {
+            return (
+                <FormControl sx={ { my: 2 } }>
+                    <FormLabel id={ node.config?.field?.id }>
+                        { node.config?.field?.label?.i18nKey || node.config?.field?.label?.fallback }
+                    </FormLabel>
+                    <RadioGroup
+                        defaultValue={
+                            node.config?.field?.defaultValue?.i18nKey || node.config?.field?.defaultValue?.fallback
+                        }
+                    >
+                        { node.config?.field?.options?.map((option, index) => (
+                            <FormControlLabel
+                                key={ option?.id }
+                                value={ option.value }
+                                control={ <Radio /> }
+                                label={ option.label?.i18nKey || option.label?.fallback }
+                            />
+                        )) }
+                    </RadioGroup>
+                </FormControl>
+            );
+        } else if (node.type === ComponentTypes.Button) {
+            return (
+                <Button variant="contained" sx={ { my: 2 } }>
+                    { node.config?.field?.label?.i18nKey || node.config?.field?.label?.fallback }
+                </Button>
+            );
         }
     }
 

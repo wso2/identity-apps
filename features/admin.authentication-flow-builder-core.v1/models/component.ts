@@ -16,7 +16,21 @@
  * under the License.
  */
 
-import { Component } from "./component";
-import { Node } from "./node";
+import { Base } from "./base";
 
-export type SupportedCanvasNodes = Component | Node;
+/**
+ * Interface for a component.
+ */
+export type Component<T = any> = Base<T>;
+
+export enum ComponentTypes {
+    Button = "BUTTON",
+    Email = "EMAIL",
+    Text = "TEXT",
+    Number = "NUMBER",
+    Password = "PASSWORD",
+    Telephone = "TELEPHONE",
+    Choice = "CHOICE",
+    Checkbox = "CHECKBOX",
+    Image = "IMAGE"
+}
