@@ -17,6 +17,8 @@
  */
 
 .with-tenant-grid-placeholders {
+    margin-top: var(--oxygen-spacing-6);
+
     .empty-placeholder {
         margin: 0;
 
@@ -28,4 +30,8 @@
 
 .tenants-grid-display-count {
     margin-bottom: var(--oxygen-spacing-2);
+    
+    &.hidden {
+        visibility: hidden;
+    }
 }
