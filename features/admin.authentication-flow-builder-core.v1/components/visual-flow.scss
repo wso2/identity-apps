@@ -1,9 +1,41 @@
 .react-flow {
     --xy-background-pattern-color-props: #e1e1e1;
+    --xy-edge-stroke-width-default: 3;
+    --xy-handle-height: 15px;
+    --xy-handle-width: 15px;
 }
 
 
 .react-flow.dark {
     --xy-background-pattern-color-props: #848484;
     --xy-background-color-default: #48484C;
+    --xy-edge-stroke-default: var(--oxygen-palette-grey-200);
+    --xy-edge-stroke-width-default: 3;
+    --xy-handle-background-color-default: var(--oxygen-palette-grey-200);
+    --xy-handle-border-color-default: var(--oxygen-palette-grey-400);
+    --xy-handle-border-width-default: 2px;
+}
+
+.react-flow {
+    .react-flow__edge {
+        &:hover {
+            .react-flow__edge-path {
+                stroke: var(--oxygen-palette-primary-main);
+            }
+
+            .react-flow__handle {
+                border-color: var(--oxygen-palette-primary-main);
+            }
+        }
+    }
+
+    .react-flow__handle {
+        height: var(--xy-handle-height);
+        width: var(--xy-handle-width);
+        border-width: var(--xy-handle-border-width-default);
+
+        &:hover {
+            border-color: var(--oxygen-palette-primary-main);
+        }
+    }
 }

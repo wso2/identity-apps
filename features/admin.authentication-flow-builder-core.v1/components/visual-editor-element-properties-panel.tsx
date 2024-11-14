@@ -17,17 +17,18 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
-import Drawer from "@oxygen-ui/react/Drawer";
+import Drawer, { DrawerProps } from "@oxygen-ui/react/Drawer";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, HTMLAttributes, ReactElement, useState } from "react";
+import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import "./visual-editor-element-properties-panel.scss";
 
 /**
  * Props interface of {@link VisualEditorElementPropertiesPanel}
  */
 export interface VisualEditorElementPropertiesPanelPropsInterface
-    extends IdentifiableComponentInterface,
+    extends DrawerProps,
+        IdentifiableComponentInterface,
         HTMLAttributes<HTMLDivElement> {}
 
 /**
@@ -39,10 +40,10 @@ export interface VisualEditorElementPropertiesPanelPropsInterface
 const VisualEditorElementPropertiesPanel: FunctionComponent<VisualEditorElementPropertiesPanelPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-builder-elements-panel",
     children,
+    open,
+    anchor = "right",
     ...rest
 }: VisualEditorElementPropertiesPanelPropsInterface): ReactElement => {
-    const [ open, setOpen ] = useState(false);
-
     return (
         <Box
             width="100%"
@@ -58,7 +59,7 @@ const VisualEditorElementPropertiesPanel: FunctionComponent<VisualEditorElementP
             { children }
             <Drawer
                 open={ open }
-                anchor="right"
+                anchor={ anchor }
                 onClose={ () => {} }
                 elevation={ 5 }
                 PaperProps={ { className: "authentication-flow-builder-element-properties-panel" } }

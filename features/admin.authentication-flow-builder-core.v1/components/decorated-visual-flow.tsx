@@ -52,7 +52,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                 <DnDProvider>
                     <VisualEditorElementsPanel>
                         <VisualEditorElementPropertiesPanel>
-                            <VisualFlow />
+                            <VisualFlow onElementDrop={() => null} />
                         </VisualEditorElementPropertiesPanel>
                     </VisualEditorElementsPanel>
                 </DnDProvider>

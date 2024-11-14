@@ -20,14 +20,14 @@ import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
 import Box from "@oxygen-ui/react/Box";
-import Drawer from "@oxygen-ui/react/Drawer";
+import Drawer, { DrawerProps } from "@oxygen-ui/react/Drawer";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronRightIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps, useState } from "react";
+import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps } from "react";
 import VisualEditorDraggableNode from "./visual-editor-draggable-node";
 import useGetAuthenticationFlowBuilderElements from "../api/use-get-authentication-flow-builder-elements";
 import { Component } from "../models/component";
@@ -38,7 +38,8 @@ import "./visual-editor-elements-panel.scss";
  * Props interface of {@link VisualEditorElementsPanel}
  */
 export interface VisualEditorElementsPanelPropsInterface
-    extends IdentifiableComponentInterface,
+    extends DrawerProps,
+        IdentifiableComponentInterface,
         HTMLAttributes<HTMLDivElement> {}
 
 // TODO: Move this to Oxygen UI.
@@ -115,9 +116,9 @@ const WidgetsIcon = ({ ...rest }: SVGProps<SVGSVGElement>): ReactElement => (
 const VisualEditorElementsPanel: FunctionComponent<VisualEditorElementsPanelPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-builder-elements-panel",
     children,
+    open,
     ...rest
 }: VisualEditorElementsPanelPropsInterface): ReactElement => {
-    const [ open, setOpen ] = useState(false);
     const { data } = useGetAuthenticationFlowBuilderElements();
     const { components, widgets, nodes } = data;
 
@@ -173,7 +174,7 @@ const VisualEditorElementsPanel: FunctionComponent<VisualEditorElementsPanelProp
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
-                            <IconButton onClick={ () => setOpen(!open) }>
+                            <IconButton>
                                 <NodesIcon height={ 16 } width={ 16 } />
                             </IconButton>
                             <Typography variant="h6">Nodes</Typography>
@@ -206,7 +207,7 @@ const VisualEditorElementsPanel: FunctionComponent<VisualEditorElementsPanelProp
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
-                            <IconButton onClick={ () => setOpen(!open) }>
+                            <IconButton>
                                 <CubesIcon height={ 16 } width={ 16 } />
                             </IconButton>
                             <Typography variant="h6">Components</Typography>
@@ -239,7 +240,7 @@ const VisualEditorElementsPanel: FunctionComponent<VisualEditorElementsPanelProp
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
-                            <IconButton onClick={ () => setOpen(!open) }>
+                            <IconButton>
                                 <WidgetsIcon height={ 16 } width={ 16 } />
                             </IconButton>
                             <Typography variant="h6">Widgets</Typography>

@@ -42,7 +42,12 @@ import "./visual-flow.scss";
 /**
  * Props interface of {@link VisualFlow}
  */
-export interface VisualFlowPropsInterface extends IdentifiableComponentInterface, ReactFlowProps<any, any> {}
+export interface VisualFlowPropsInterface extends IdentifiableComponentInterface, ReactFlowProps<any, any> {
+    /**
+     * Callback to be fired when an element is dropped in to the canvas.
+     */
+    onElementDrop: () => void;
+}
 
 // we define the nodeTypes outside of the component to prevent re-renderings
 // you could also use useMemo inside the component
@@ -58,6 +63,7 @@ const nodeTypes: {
  */
 const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-flow",
+    onElementDrop,
     ...rest
 }: VisualFlowPropsInterface): ReactElement => {
     const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
@@ -98,6 +104,8 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
             };
 
             setNodes((nodes: Node[]) => nodes.concat(newNode));
+
+            onElementDrop && onElementDrop();
         },
         [ screenToFlowPosition, node?.type ]
     );

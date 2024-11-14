@@ -75,10 +75,7 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
             if (droppedData) {
                 const newComponent: Component = JSON.parse(droppedData);
 
-                setDroppedElements((prevDroppedElements: Component[]) => [
-                    ...prevDroppedElements,
-                    newComponent
-                ]);
+                setDroppedElements((prevDroppedElements: Component[]) => [ ...prevDroppedElements, newComponent ]);
             }
         },
         [ data?.type ]
@@ -92,15 +89,23 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
             onDrop={ onDrop }
             onDrag={ onDragOver }
         >
-            <Box display="flex" justifyContent="space-between" className="authentication-flow-builder-step-action-panel">
-                <Typography variant="body2" data-componentid={ `${componentId}-${stepIndex}-heading-text` } className="authentication-flow-builder-step-id">
+            <Box
+                display="flex"
+                justifyContent="space-between"
+                className="authentication-flow-builder-step-action-panel"
+            >
+                <Typography
+                    variant="body2"
+                    data-componentid={ `${componentId}-${stepIndex}-heading-text` }
+                    className="authentication-flow-builder-step-id"
+                >
                     Step { stepIndex && stepIndex + 1 }
                 </Typography>
                 <Tooltip title={ "Remove" }>
                     <IconButton
                         size="small"
                         onClick={ (_: MouseEvent<HTMLButtonElement>) => {
-                        // TODO: Implement remove step logic.
+                            // TODO: Implement remove step logic.
                         } }
                         className="authentication-flow-builder-step-remove-button"
                     >
