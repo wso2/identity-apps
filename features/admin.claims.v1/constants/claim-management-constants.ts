@@ -108,7 +108,7 @@ export class ClaimManagementConstants {
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE_USER"),
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"),
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM_SCHEMAS_CORE")
-    ]
+    ];
 
     public static readonly CUSTOM_MAPPING: string = SCIMConfigs.custom;
 
@@ -130,39 +130,39 @@ export class ClaimManagementConstants {
         isAttributeButtonEnabled: boolean;
         attributeButtonText: string;
     }[] = [
-        {
-            attributeButtonText: "",
-            isAttributeButtonEnabled: false,
-            name: "Core Schema",
-            uri: "urn:ietf:params:scim:schemas:core:2.0"
-        },
-        {
-            attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction",
-            isAttributeButtonEnabled: true,
-            name: "User Schema",
-            uri: "urn:ietf:params:scim:schemas:core:2.0:User"
-        },
-        {
-            attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction" ,
-            isAttributeButtonEnabled: true,
-            name: "Enterprise Schema",
-            uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
-        },
-        {
-            attributeButtonText: "",
-            isAttributeButtonEnabled: true,
-            name: "Core 1.0 Schema",
-            uri: "urn:scim:schemas:core:1.0"
-        }
-    ];
+            {
+                attributeButtonText: "",
+                isAttributeButtonEnabled: false,
+                name: "Core Schema",
+                uri: "urn:ietf:params:scim:schemas:core:2.0"
+            },
+            {
+                attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction",
+                isAttributeButtonEnabled: true,
+                name: "User Schema",
+                uri: "urn:ietf:params:scim:schemas:core:2.0:User"
+            },
+            {
+                attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction" ,
+                isAttributeButtonEnabled: true,
+                name: "Enterprise Schema",
+                uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
+            },
+            {
+                attributeButtonText: "",
+                isAttributeButtonEnabled: true,
+                name: "Core 1.0 Schema",
+                uri: "urn:scim:schemas:core:1.0"
+            }
+        ];
 
     public static readonly EIDAS_TABS: {
         name: string;
         uri: string;
     }[] = [
-        { name: "eIDAS/Legal Person", uri: "http://eidas.europa.eu/attributes/legalperson" },
-        { name: "eIDAS/Natural Person", uri: "http://eidas.europa.eu/attributes/naturalperson" }
-    ];
+            { name: "eIDAS/Legal Person", uri: "http://eidas.europa.eu/attributes/legalperson" },
+            { name: "eIDAS/Natural Person", uri: "http://eidas.europa.eu/attributes/naturalperson" }
+        ];
 
     /**
      * Display names of User Id & Username to
@@ -175,22 +175,27 @@ export class ClaimManagementConstants {
     public static readonly APPLICATION_ROLES_CLAIM_URI: string = "http://wso2.org/claims/applicationRoles";
     public static readonly LOCATION_CLAIM_URI: string = "http://wso2.org/claims/location";
     public static readonly EMAIL_CLAIM_URI: string = "http://wso2.org/claims/emailaddress";
+    public static readonly EMAIL_ADDRESSES_CLAIM_URI: string = "http://wso2.org/claims/emailAddresses";
+    public static readonly VERIFIED_EMAIL_ADDRESSES_CLAIM_URI: string = "http://wso2.org/claims/verifiedEmailAddresses";
     public static readonly MOBILE_CLAIM_URI: string = "http://wso2.org/claims/mobile";
+    public static readonly MOBILE_NUMBERS_CLAIM_URI: string = "http://wso2.org/claims/mobileNumbers";
+    public static readonly VERIFIED_MOBILE_NUMBERS_CLAIM_URI: string = "http://wso2.org/claims/verifiedMobileNumbers";
 
     public static readonly GROUPS_CLAIM_NAME: string = "groups";
     public static readonly ROLES_CLAIM_NAME: string = "roles";
     public static readonly APPLICATION_ROLES_CLAIM_NAME: string = "application_roles";
 
     public static readonly EMPTY_STRING: string = "";
+    public static readonly EXCLUDED_USER_STORES_CLAIM_PROPERTY: string = "ExcludedUserStores";
 
     /**
      * The error code that is returned when there is no item in the list
      */
-     public static readonly RESOURCE_NOT_FOUND_ERROR_CODE: string = "CMT-50017";
+    public static readonly RESOURCE_NOT_FOUND_ERROR_CODE: string = "CMT-50017";
 
-     /**
+    /**
      * The character length of the regex field.
      */
-     public static readonly REGEX_FIELD_MAX_LENGTH: number = 255;
-     public static readonly REGEX_FIELD_MIN_LENGTH: number = 3;
+    public static readonly REGEX_FIELD_MAX_LENGTH: number = 255;
+    public static readonly REGEX_FIELD_MIN_LENGTH: number = 3;
 }

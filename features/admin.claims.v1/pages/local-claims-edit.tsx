@@ -126,7 +126,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                     <EditMappedAttributesLocalClaims
                         claim={ claim }
                         update={ getClaim }
-                        data-testid={ `${ testId }-edit-local-claims-mapped-attributes` }
+                        data-componentid={ `${ testId }-edit-local-claims-mapped-attributes` }
                     />
                 </ResourceTab.Pane>
             )
