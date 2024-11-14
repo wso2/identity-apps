@@ -543,14 +543,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                             }
 
                                             if (URLUtils.isURLValid(value)) {
-                                                if (FormValidation.url(value, {
-                                                    domain: {
-                                                        allowUnicode: true,
-                                                        minDomainSegments: 1,
-                                                        tlds: false
-                                                    },
-                                                    scheme: [ "http", "https" ]
-                                                })) {
+                                                if (URLUtils.isHttpUrl(value, false) ||
+                                                URLUtils.isHttpsUrl(value, false)) {
                                                     setCallbackURLsErrorLabel(null);
 
                                                     return true;
