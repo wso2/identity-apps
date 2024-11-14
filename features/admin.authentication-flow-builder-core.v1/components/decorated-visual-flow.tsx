@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,10 +19,11 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ReactFlowProvider } from "@xyflow/react";
 import classNames from "classnames";
-import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
+import React, { FunctionComponent, HTMLAttributes, ReactElement, useState } from "react";
 import VisualEditorElementPropertiesPanel from "./visual-editor-element-properties-panel";
 import VisualEditorElementsPanel from "./visual-editor-elements-panel";
 import VisualFlow from "./visual-flow";
+import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
 import DnDProvider from "../providers/dnd-provider";
 
 /**
@@ -33,15 +34,21 @@ export interface DecoratedVisualFlowPropsInterface
         HTMLAttributes<HTMLDivElement> {}
 
 /**
- * Visual editor component.
+ * Component to decorate the visual flow editor with the necessary providers.
  *
  * @param props - Props injected to the component.
- * @returns Visual editor component.
+ * @returns Decorated visual flow component.
  */
 const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-editor",
     ...rest
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
+    const {
+        isElementPanelOpen,
+        isElementPropertiesPanelOpen,
+        setIsOpenElementPropertiesPanel
+    } = useAuthenticationFlowBuilderCore();
+
     return (
         <div
             className={ classNames("decorated-visual-flow", "react-flow-container", "visual-editor") }
@@ -50,9 +57,9 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         >
             <ReactFlowProvider>
                 <DnDProvider>
-                    <VisualEditorElementsPanel>
-                        <VisualEditorElementPropertiesPanel>
-                            <VisualFlow onElementDrop={() => null} />
+                    <VisualEditorElementsPanel open={ isElementPanelOpen }>
+                        <VisualEditorElementPropertiesPanel open={ isElementPropertiesPanelOpen }>
+                            <VisualFlow onElementDrop={ () => setIsOpenElementPropertiesPanel(true) } />
                         </VisualEditorElementPropertiesPanel>
                     </VisualEditorElementsPanel>
                 </DnDProvider>

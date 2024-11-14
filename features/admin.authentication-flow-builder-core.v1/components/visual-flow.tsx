@@ -104,7 +104,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
             };
 
             setNodes((nodes: Node[]) => nodes.concat(newNode));
-
+debugger
             onElementDrop && onElementDrop();
         },
         [ screenToFlowPosition, node?.type ]

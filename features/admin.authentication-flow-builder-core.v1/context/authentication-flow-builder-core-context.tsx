@@ -21,13 +21,41 @@ import { Context, createContext } from "react";
 /**
  * Props interface of {@link AuthenticationFlowBuilderCoreContext}
  */
-export interface AuthenticationFlowBuilderCoreContextProps {}
+export interface AuthenticationFlowBuilderCoreContextProps {
+    /**
+     * Indicates whether the element panel is open.
+     */
+    isElementPanelOpen: boolean;
+    /**
+     * Indicates whether the element properties panel is open.
+     */
+    isElementPropertiesPanelOpen: boolean;
+    /**
+     * Function to set the state of the element panel.
+     *
+     * @param isOpen - Boolean indicating whether the element panel should be open.
+     */
+    setIsElementPanelOpen: (isOpen: boolean) => void;
+    /**
+     * Function to set the state of the element properties panel.
+     *
+     * @param isOpen - Boolean indicating whether the element properties panel should be open.
+     */
+    setIsOpenElementPropertiesPanel: (isOpen: boolean) => void;
+}
 
 /**
  * Context object for managing the Authentication flow builder core context.
  */
-const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCoreContextProps> = createContext<null | AuthenticationFlowBuilderCoreContextProps>(
-    {}
+const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCoreContextProps> = createContext<
+    null | AuthenticationFlowBuilderCoreContextProps
+>(
+    {
+        isElementPanelOpen: true,
+        isElementPropertiesPanelOpen: false,
+        setIsElementPanelOpen: (_: boolean) => {},
+        setIsOpenElementPropertiesPanel: (_: boolean) => {}
+    }
 );
 
 AuthenticationFlowBuilderCoreContext.displayName = "AuthenticationFlowBuilderCoreContext";

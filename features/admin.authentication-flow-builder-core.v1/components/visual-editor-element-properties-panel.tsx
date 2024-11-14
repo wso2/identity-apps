@@ -78,7 +78,7 @@ const VisualEditorElementPropertiesPanel: FunctionComponent<VisualEditorElementP
                 } }
                 hideBackdrop={ true }
                 className={ classNames("authentication-flow-builder-element-properties-drawer", { mini: !open }) }
-                variant="permanent"
+                variant={ open ? "permanent" : "temporary" }
             >
                 <div
                     className={ classNames("authentication-flow-builder-element-properties-panel-content", {

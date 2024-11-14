@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { PropsWithChildren, ReactElement } from "react";
+import React, { PropsWithChildren, ReactElement, useState } from "react";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
 
 /**
@@ -33,9 +33,17 @@ export type AuthenticationFlowBuilderProviderProps = unknown;
 const AuthenticationFlowBuilderCoreProvider = ({
     children
 }: PropsWithChildren<AuthenticationFlowBuilderProviderProps>): ReactElement => {
+    const [ isElementPanelOpen, setIsElementPanelOpen ] = useState<boolean>(true);
+    const [ isElementPropertiesPanelOpen, setIsOpenElementPropertiesPanel ] = useState<boolean>(false);
+
     return (
         <AuthenticationFlowBuilderCoreContext.Provider
-            value={ {} }
+            value={ {
+                isElementPanelOpen,
+                isElementPropertiesPanelOpen,
+                setIsElementPanelOpen,
+                setIsOpenElementPropertiesPanel
+            } }
         >
             { children }
         </AuthenticationFlowBuilderCoreContext.Provider>

@@ -18,6 +18,7 @@
 
 :root {
     --wso2is-authentication-flow-builder-step-background-color: #252525;
+    --wso2is-authentication-flow-builder-step-action-panel-height: 44px;
     --wso2is-authentication-flow-builder-step-remove-button-color: var(--oxygen-palette-grey-500);
     --wso2is-authentication-flow-builder-step-remove-button-hover-color: var(--oxygen-palette-primary-contrastText);
 }
@@ -48,6 +49,7 @@
 
     .authentication-flow-builder-step-action-panel {
         padding: 10px 14px;
+        height: var(--wso2is-authentication-flow-builder-step-action-panel-height);
 
         .authentication-flow-builder-step-id {
             color: var(--oxygen-palette-primary-contrastText);
