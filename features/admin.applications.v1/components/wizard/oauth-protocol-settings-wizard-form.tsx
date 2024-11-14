@@ -21,7 +21,6 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { ContentLoader, Hint, LinkButton, Message, URLInput } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import intersection from "lodash-es/intersection";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
