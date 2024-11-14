@@ -31,7 +31,7 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
