@@ -43,6 +43,11 @@
 <%-- Include tenant context --%>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
+<%
+    // Add the user-recovery-claim screen to the list to retrieve text branding customizations.
+    screenNames.add("username-recovery-claim");
+%>
+
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
@@ -84,6 +89,7 @@
     boolean isFirstNameInClaims = false;
     boolean isLastNameInClaims = false;
     boolean isEmailInClaims = false;
+    boolean isMobileInClaims = false;
     List<Claim> claims;
     UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
     try {
@@ -106,6 +112,8 @@
         return;
     }
 
+    String mobileClaimRegex = null;
+    String emailClaimRegex = null;
     for (Claim claim : claims) {
         if (StringUtils.equals(claim.getUri(),
                 IdentityManagementEndpointConstants.ClaimURIs.FIRST_NAME_CLAIM)) {
@@ -117,6 +125,12 @@
         if (StringUtils.equals(claim.getUri(),
                 IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM)) {
             isEmailInClaims = true;
+            emailClaimRegex = Encode.forJava(claim.getValidationRegex());
+        }
+        if (StringUtils.equals(claim.getUri(),
+                IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM)) {
+            isMobileInClaims = true;
+            mobileClaimRegex = Encode.forJava(claim.getValidationRegex());
         }
     }
 
@@ -171,7 +185,7 @@
         </layout:component>
         <layout:component componentName="MainSection" >
             <div class="ui segment">
-                <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.username")%></h2>
+                <h2><%=i18n(recoveryResourceBundle, customText, "username.recovery.heading")%></h2>
                 <% if (error) { %>
                     <div class="ui visible negative message" id="server-error-msg">
                         <%= IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg) %>
@@ -179,7 +193,7 @@
                 <% } %>
                 <div class="ui negative message" id="error-msg" hidden="hidden"></div>
 
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.detail.to.recover.uname")%>
+                <%=i18n(recoveryResourceBundle, customText, "username.recovery.body")%>
 
                 <div class="ui divider hidden"></div>
 
@@ -226,13 +240,13 @@
                         <%
                             }
 
-                            if (isEmailInClaims) { %>
-                        <div class="field">
-                            <label for="email" class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                    "Email")%></label>
-                            <input id="email" type="email" name="http://wso2.org/claims/emailaddress"
-                                    class="form-control"
-                                    data-validate="email">
+                            if (isEmailInClaims || isMobileInClaims) { %>
+                        <div class="required field">
+                            <label for="contact" class="control-label"><%=i18n(recoveryResourceBundle, customText,
+                                    "contact")%></label>
+                            <input id="contact" type="text" name="contact" 
+                                placeholder="<%=i18n(recoveryResourceBundle, customText, "contact")%>*" 
+                                    required class="form-control" />
                         </div>
                         <% } %>
 
@@ -249,7 +263,8 @@
                         </div>
                         <% } %>
 
-                        <input type="hidden" id="isUsernameRecovery" name="isUsernameRecovery" value="true">
+                        <input type="hidden" id="isUsernameRecovery" name="isUsernameRecovery" value="true"/>
+                        <input type="hidden" id="recoveryStage" name="recoveryStage" value="INITIATE"/>
 
                         <% for (Claim claim : claims) {
                             if (claim.getRequired() &&
@@ -258,7 +273,9 @@
                                     !StringUtils.equals(claim.getUri(),
                                             IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM) &&
                                     !StringUtils.equals(claim.getUri(),
-                                            IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM)) {
+                                            IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM) && 
+                                    !StringUtils.equals(claim.getUri(),
+                                            IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM)) {
                         %>
 
                         <div class="field">
@@ -291,15 +308,16 @@
 
                         <div class="ui divider hidden"></div>
 
-                        <div class="align-right buttons">
-                            <a href="javascript:goBack()" class="ui button secondary">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
-                            </a>
-                            <button id="recoverySubmit"
-                                    class="ui primary button"
-                                    type="submit">
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
+                         <div class="mt-0">
+                            <button id="recoverySubmit" class="ui primary button large fluid" type="submit">
+                                <%=i18n(recoveryResourceBundle, customText, "username.recovery.next.button")%>
                             </button>
+    
+                        </div>
+                        <div class="mt-1 align-center">
+                            <a href="javascript:goBack()" class="ui button secondary large fluid">
+                                <%=i18n(recoveryResourceBundle, customText, "username.recovery.cancel.button")%>
+                            </a>
                         </div>
                     </form>
                 </div>
@@ -341,7 +359,6 @@
         }
 
         $(document).ready(function () {
-
             $("#recoverDetailsForm").submit(function (e) {
                 <%
                     if (reCaptchaEnabled) {
@@ -349,7 +366,6 @@
                 if (!grecaptcha.getResponse()) {
                     e.preventDefault();
                     grecaptcha.execute();
-
                     return true;
                 }
                 <%
@@ -376,6 +392,24 @@
                     }
                 <% } %>
 
+                // Contact input validation.
+                const contact = $("#contact").val();
+                const mobileClaimRegex = new RegExp("<%=mobileClaimRegex%>");
+                const emailClaimRegex = new RegExp("<%=emailClaimRegex%>");
+
+                if (contact === "") {
+                    errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Contact.cannot.be.empty")%>");
+                    errorMessage.show();
+                    $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
+                    submitButton.removeClass("loading").attr("disabled", false);
+                    return false;
+                } else if (!contact.match(mobileClaimRegex) && !contact.match(emailClaimRegex)) {
+                    errorMessage.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Invalid.contact")%>");
+                    errorMessage.show();
+                    $("html, body").animate({scrollTop: errorMessage.offset().top}, "slow");
+                    submitButton.removeClass("loading").attr("disabled", false);
+                    return false;
+                }
                 return true;
             });
         });
