@@ -16,6 +16,15 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
+import AlertTitle from "@oxygen-ui/react/AlertTitle";
+import Box from "@oxygen-ui/react/Box";
+import Button from "@oxygen-ui/react/Button";
+import Grid from "@oxygen-ui/react/Grid";
+import List from "@oxygen-ui/react/List";
+import ListItem from "@oxygen-ui/react/ListItem";
+import ListItemText from "@oxygen-ui/react/ListItemText";
+import Typography from "@oxygen-ui/react/Typography";
 import { useRequiredScopes } from "@wso2is/access-control";
 import ApplicationTemplateMetadataProvider from
     "@wso2is/admin.application-templates.v1/provider/application-template-metadata-provider";
@@ -31,23 +40,33 @@ import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/applicati
 import useExtensionTemplates from "@wso2is/admin.template-core.v1/hooks/use-extension-templates";
 import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { Forms } from "@wso2is/forms";
 import {
     AnimatedAvatar,
     AppAvatar,
+    Code,
+    ConfirmationModal,
+    DocumentationLink,
     LabelWithPopup,
     Popup,
-    TabPageLayout
+    TabPageLayout,
+    useDocumentation
 } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
+import classNames from "classnames";
 import cloneDeep from "lodash-es/cloneDeep";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { Label } from "semantic-ui-react";
+import { Icon, Label } from "semantic-ui-react";
+import { updateApplicationDetails } from "../api/application";
 import { useGetApplication } from "../api/use-get-application";
+import useGetApplicationInboundConfigs from "../api/use-get-application-inbound-configs";
 import { EditApplication } from "../components/edit-application";
 import { InboundProtocolDefaultFallbackTemplates } from "../components/meta/inbound-protocols.meta";
 import { ApplicationManagementConstants } from "../constants";
@@ -58,6 +77,7 @@ import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
     State,
+    SupportedAuthProtocolName,
     SupportedAuthProtocolTypes,
     idpInfoTypeInterface
 } from "../models";
@@ -92,6 +112,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
+
+    const { getLink } = useDocumentation();
 
     const appDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
@@ -128,6 +150,29 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         mutate: mutateApplicationGetRequest,
         error: applicationGetRequestError
     } = useGetApplication(applicationId, !!applicationId);
+
+    const {
+        data: applicationInboundConfigs
+    } = useGetApplicationInboundConfigs(applicationId, SupportedAuthProtocolName.OIDC, !!applicationId);
+
+    const [ viewBannerDetails, setViewBannerDetails ] = useState<boolean>(false);
+    const [ displayBanner, setDisplayBanner ] = useState<boolean>(false);
+    const [ bannerUpdateLoading, setBannerUpdateLoading ] = useState<boolean>(false);
+    const [ showConfirmationModal, setShowConfirmationModal ] = useState<boolean>(false);
+    const [ formData, setFormdata ] = useState<ApplicationInterface>(undefined);
+
+    const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state.config.ui.features?.applications
+    );
+
+    useEffect(() => {
+        if (application && applicationInboundConfigs) {
+            const isAppOutdated: boolean = ApplicationManagementUtils.isApplicationOutdated(
+                application?.applicationVersion, true);
+
+            setDisplayBanner(isAppOutdated);
+        }
+    }, [ application, applicationInboundConfigs ]);
 
     /**
      * Load the template that the application is built on.
@@ -172,7 +217,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      */
     useEffect(() => {
         const path: string[] = history?.location?.pathname?.split("/");
-        const id: string = path[ path?.length - 1 ];
+        // Get the application ID from the URL. Remove the hash if it's present.
+        const id: string = path[ path?.length - 1 ]?.split("#")[ 0 ];
 
         setApplicationId(id);
     }, []);
@@ -221,6 +267,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
         setApplicationTemplate(template);
 
+        setApplicationRequestLoading(false);
+
         return applicationData;
     };
 
@@ -262,10 +310,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 return determineApplicationTemplate(clonedApplication);
             }
 
+            setApplicationRequestLoading(false);
+
             return clonedApplication;
         }
-
-        setApplicationRequestLoading(false);
 
         return determineApplicationTemplate(clonedApplication);
     }, [
@@ -504,6 +552,353 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         return null;
     };
 
+    /**
+     * Resolves the application banner content.
+     *
+     * @returns Alert banner.
+     */
+    const resolveAlertBanner = (): ReactElement => {
+        const classes: any = classNames( { "application-outdated-alert-expanded-view": viewBannerDetails } );
+
+        return (
+            isFeatureEnabled(
+                applicationFeatureConfig,
+                ApplicationManagementConstants.FEATURE_DICTIONARY
+                    .get("APPLICATION_OUTDATED_APP_BANNER")
+            ) && displayBanner &&
+                (
+                    <div className="banner-wrapper">
+                        <Alert
+                            className={ classes }
+                            severity="warning"
+                            action={
+                                (
+                                    <Box display="flex">
+                                        <Button
+                                            className="banner-view-hide-details"
+                                            data-componentid={ `${componentId}-outdated-app-view-details-button` }
+                                            onClick={ () => setViewBannerDetails(!viewBannerDetails) }>
+                                            {
+                                                !viewBannerDetails ?
+                                                    t("applications:forms.inboundOIDC.sections"
+                                                            + ".outdatedApplications.alert.viewButton") :
+                                                    t("applications:forms.inboundOIDC.sections"
+                                                            + ".outdatedApplications.alert.hideButton")
+                                            }
+                                        </Button>
+                                        <Button
+                                            data-componentid={ `${componentId}-outdated-app-ignore-button` }
+                                            className="ignore-once-button"
+                                            onClick={ () => setDisplayBanner(false) }>
+                                            <Icon
+                                                link
+                                                onClick={ () => setDisplayBanner(false) }
+                                                size="small"
+                                                color="grey"
+                                                name="close"
+                                                data-componentid={ `${componentId}-close-btn` }
+                                            />
+                                        </Button>
+                                    </Box>
+                                )
+                            }
+                        >
+                            <AlertTitle className="alert-title">
+                                <Trans components={ { strong: <strong/> } } >
+                                    { t("applications:forms.inboundOIDC.sections.outdatedApplications"
+                                        + ".alert.title") }
+                                </Trans>
+                            </AlertTitle>
+                            <Trans>
+                                { t("applications:forms.inboundOIDC.sections.outdatedApplications"
+                                        + ".alert.content") }
+                            </Trans>
+                            {
+                                viewBannerDetails && resolveBannerViewDetails()
+                            }
+                        </Alert>
+                    </div>
+                )
+        );
+    };
+
+    /**
+     * Resolves the application banner view details section.
+     *
+     * @returns Alert banner details.
+     */
+    const resolveBannerViewDetails = (): ReactElement => {
+
+        return (
+            <Forms
+                onSubmit={ handleBannerCheckBoxUpdate }
+                data-componentId={ `${componentId}-application-outdated-banner-form` }>
+                <Grid className="banner-grid">
+                    <List dense>
+                        {
+                            !ApplicationManagementUtils.isAppVersionAllowed(
+                                application?.applicationVersion,
+                                ApplicationManagementConstants.APP_VERSION_1
+                            ) &&
+                            applicationInboundConfigs?.grantTypes
+                                .includes(ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT) && (
+                                <ListItem
+                                    sx={ {
+                                        display: "list-item",
+                                        listStyleType: "disc"
+                                    } }>
+                                    <ListItemText>
+                                        <Typography variant="body2" >
+                                            <Trans
+                                                i18nKey={
+                                                    t("applications:forms.inboundOIDC.sections"
+                                                    + ".outdatedApplications.fields.versions"
+                                                    + ".version100.useClientIdAsSubClaimOfAppTokens.instruction")
+                                                }
+                                            >
+                                                The <Code withBackground>sub</Code> attribute of
+                                                an application access token now returns the
+                                                <Code withBackground>client_id</Code> generated for the application,
+                                                instead of the <Code withBackground>userid</Code>
+                                                of the application owner.
+                                            </Trans>
+                                        </Typography>
+                                        <DocumentationLink
+                                            link={
+                                                getLink("develop.applications.editApplication.outdatedApplications."
+                                                + "versions.version100.useClientIdAsSubClaimOfAppTokens."
+                                                + "documentationLink")
+                                            }
+                                            showEmptyLink={ false }
+                                        >
+                                            <Trans
+                                                i18nKey={
+                                                    t("applications:forms.inboundOIDC.sections"
+                                                    + ".outdatedApplications.documentationHint")
+                                                }
+                                            />
+                                        </DocumentationLink>
+                                    </ListItemText>
+                                </ListItem>
+                            )
+                        }
+                        {
+                            !ApplicationManagementUtils.isAppVersionAllowed(
+                                application?.applicationVersion,
+                                ApplicationManagementConstants.APP_VERSION_1
+                            ) &&
+                            applicationInboundConfigs?.grantTypes
+                                .includes(ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT) && (
+                                <ListItem
+                                    sx={ {
+                                        display: "list-item",
+                                        listStyleType: "disc"
+                                    } }>
+                                    <ListItemText>
+                                        <Typography variant="body2" >
+                                            <Trans
+                                                i18nKey={
+                                                    t("applications:forms.inboundOIDC.sections"
+                                                        + ".outdatedApplications.fields.versions.version100."
+                                                        + "removeUsernameFromIntrospectionRespForAppTokens.instruction")
+                                                }
+                                            >
+                                                The introspection responses for application access tokens no longer
+                                                return the <Code withBackground>username</Code> attribute.
+                                            </Trans>
+                                        </Typography>
+                                        <DocumentationLink
+                                            link={
+                                                getLink("develop.applications.editApplication.outdatedApplications."
+                                                + "versions.version100.removeUsernameFromIntrospectionRespForAppTokens."
+                                                + "documentationLink")
+                                            }
+                                            showEmptyLink={ false }
+                                        >
+                                            <Trans
+                                                i18nKey={
+                                                    t("applications:forms.inboundOIDC.sections"
+                                                    + ".outdatedApplications.documentationHint")
+                                                }
+                                            />
+                                        </DocumentationLink>
+                                    </ListItemText>
+                                </ListItem>
+                            )
+                        }
+                        {
+                            !ApplicationManagementUtils.isAppVersionAllowed(
+                                application?.applicationVersion,
+                                ApplicationManagementConstants.APP_VERSION_2
+                            ) && applicationInboundConfigs && (
+                                <ListItem
+                                    sx={ {
+                                        display: "list-item",
+                                        listStyleType: "disc"
+                                    } }>
+                                    <ListItemText>
+                                        <Typography variant="body2" >
+                                            <Trans
+                                                i18nKey={
+                                                    t("applications:forms.inboundOIDC.sections"
+                                                    + ".outdatedApplications.fields.versions"
+                                                    + ".version200.addAllRequestedClaimsInJWTAccessToken.instruction")
+                                                }
+                                            >
+                                                Irrespective of the <Code withBackground>scopes</Code> requested,
+                                                all the <Code withBackground> requested attributes</Code> will
+                                                be included in the JWT Access Token.
+                                            </Trans>
+                                        </Typography>
+                                        <DocumentationLink
+                                            link={
+                                                getLink("develop.applications.editApplication.outdatedApplications."
+                                                + "versions.version200.addAllRequestedClaimsInJWTAccessToken."
+                                                + "documentationLink")
+                                            }
+                                            showEmptyLink={ false }
+                                        >
+                                            <Trans
+                                                i18nKey={
+                                                    t("applications:forms.inboundOIDC.sections"
+                                                    + ".outdatedApplications.documentationHint")
+                                                }
+                                            />
+                                        </DocumentationLink>
+                                    </ListItemText>
+                                </ListItem>
+                            )
+                        }
+                    </List>
+                </Grid>
+                <Typography variant="body2" className="banner-action">
+                    <Trans
+                        i18nKey={
+                            t("applications:forms.inboundOIDC.sections"
+                            + ".outdatedApplications.alert.action")
+                        }
+                    />
+                </Typography>
+                <Button
+                    variant="contained"
+                    type="submit"
+                    data-componentId={ `${componentId}-outdated-app-update-button` }
+                >
+                    { t("common:update") }
+                </Button>
+                { showConfirmationModal && confirmationModal() }
+            </Forms>
+        );
+    };
+
+    /**
+     * Resolves the update confirmation modal.
+     *
+     * @returns Confirmation modal.
+     */
+    const confirmationModal = (): ReactElement => {
+        return (
+            <ConfirmationModal
+                primaryActionLoading={ bannerUpdateLoading }
+                data-componentId={ `${componentId}-application-update-confirmation-modal` }
+                onClose={ (): void => setShowConfirmationModal(false) }
+                type="negative"
+                open={ showConfirmationModal }
+                assertionHint={ t("applications:forms.inboundOIDC.sections.outdatedApplications"
+                    + ".confirmationModal.assertionHint") }
+                assertionType="checkbox"
+                primaryAction="Confirm"
+                secondaryAction="Cancel"
+                onSecondaryActionClick={ (): void =>{
+                    setShowConfirmationModal(false);
+                } }
+                onPrimaryActionClick={ handleBannerCheckBoxUpdateConfirmation }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header
+                    data-componentId={ `${componentId}-application-update-confirmation-modal-header` }>
+                    { t("applications:forms.inboundOIDC.sections.outdatedApplications"
+                        + ".confirmationModal.header") }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message
+                    data-componentId={ `${componentId}-application-update-confirmation-modal-message` }
+                    attached
+                    negative
+                >
+                    { t("applications:forms.inboundOIDC.sections.outdatedApplications"
+                        + ".confirmationModal.message") }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content
+                    data-componentId={ `${componentId}-application-update-confirmation-modal-content` }
+                >
+                    { t("applications:forms.inboundOIDC.sections.outdatedApplications"
+                        + ".confirmationModal.content") }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        );
+    };
+
+    /**
+     * Handles banner content update action which prepares data.
+     */
+    const handleBannerCheckBoxUpdate = () => {
+
+        mutateApplicationGetRequest().then((response: AxiosResponse<ApplicationInterface>) => {
+            const values: ApplicationInterface = {
+                applicationVersion: ApplicationManagementConstants.LATEST_VERSION,
+                id: response.data?.id,
+                name: response.data?.name
+            };
+
+            setFormdata({ ...values });
+            setShowConfirmationModal(true);
+        });
+    };
+
+    /**
+     * Handles the banner data update action.
+     */
+    const handleBannerCheckBoxUpdateConfirmation = (): void => {
+        setBannerUpdateLoading(true);
+
+        updateApplicationDetails(formData)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("applications:notifications.updateApplication.success" +
+                    ".description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("applications:notifications.updateApplication.success.message")
+                }));
+                setDisplayBanner(false);
+                setShowConfirmationModal(false);
+                setViewBannerDetails(false);
+            })
+            .catch((error: AxiosError) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("applications:notifications.updateApplication.error" +
+                        ".message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("applications:notifications.updateApplication" +
+                    ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:notifications.updateApplication.genericError" +
+                    ".message")
+                }));
+            })
+            .finally(() => {
+                setBannerUpdateLoading(false);
+                mutateApplicationGetRequest();
+            });
+    };
+
     return (
         <TabPageLayout
             pageTitle="Edit Application"
@@ -522,6 +917,31 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     ?? (
                         <div className="with-label ellipsis" ref={ appDescElement }>
                             { resolveTemplateLabel() }
+                            {
+                                isFeatureEnabled(
+                                    applicationFeatureConfig,
+                                    ApplicationManagementConstants.FEATURE_DICTIONARY
+                                        .get("APPLICATION_OUTDATED_APP_BANNER")
+                                ) &&
+                                ApplicationManagementUtils.isApplicationOutdated(
+                                    moderatedApplicationData?.applicationVersion,
+                                    moderatedApplicationData?.clientId
+                                    && !isEmpty(moderatedApplicationData?.clientId)) && (
+                                    <>
+                                        <Label
+                                            className="outdated-app-label"
+                                            size="small"
+                                        >
+                                            <Trans
+                                                i18nKey={
+                                                    t("applications:forms.inboundOIDC.sections"
+                                                    + ".outdatedApplications.label")
+                                                }
+                                            />
+                                        </Label>
+                                    </>
+                                )
+                            }
                             {
                                 ApplicationManagementUtils.isChoreoApplication(moderatedApplicationData)
                                     && (<Label
@@ -573,6 +993,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 text: isConnectedAppsRedirect ? t("idp:connectedApps.applicationEdit.back",
                     { idpName: callBackIdpName }) : t("console:develop.pages.applicationsEdit.backButton")
             } }
+            alertBanner={ resolveAlertBanner() }
             titleTextAlign="left"
             bottomMargin={ false }
             pageHeaderMaxWidth={ true }
@@ -582,7 +1003,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 <>
                     {
                         applicationConfig.editApplication.getActions(
-                            application?.id,
                             inboundProtocolConfigs?.oidc?.clientId,
                             tenantDomain,
                             componentId

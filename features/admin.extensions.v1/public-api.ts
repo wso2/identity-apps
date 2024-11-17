@@ -20,7 +20,6 @@ export * from "./extensions-manager";
 export * from "./models";
 export * from "./configs";
 
-export { useGetAllFeatures } from "./components/feature-gate/api/feature-gate";
 export { featureGateConfig } from "./configs/feature-gate";
 export { TenantTier } from "./components/subscription/models/subscription";
 export { default as useTenantTier } from "./components/subscription/api/subscription";

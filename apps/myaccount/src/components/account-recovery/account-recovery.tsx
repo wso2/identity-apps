@@ -16,6 +16,10 @@
  * under the License.
  */
 
+/**
+ * `useRequiredScopes` is not supported for myaccount.
+ */
+// eslint-disable-next-line no-restricted-imports
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { EmphasizedSegment } from "@wso2is/react-components";
@@ -188,7 +192,8 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                             featureConfig?.security,
                             featureConfig?.security?.scopes?.read,
                             allowedScopes
-                        )  &&
+                        )
+                          &&
                         isFeatureEnabled(
                             featureConfig?.security,
                             AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY_CHALLENGE_QUESTIONS")

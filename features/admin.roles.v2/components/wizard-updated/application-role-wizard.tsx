@@ -25,7 +25,6 @@ import useSubscribedAPIResources from "@wso2is/admin.applications.v1/api/use-sub
 import { AuthorizedAPIListItemInterface } from "@wso2is/admin.applications.v1/models/api-authorization";
 import { ApplicationInterface } from "@wso2is/admin.applications.v1/models/application";
 import { history } from "@wso2is/admin.core.v1";
-import { Policy } from "@wso2is/admin.extensions.v1/components/application/constants";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
@@ -47,6 +46,7 @@ import { DropdownItemProps, DropdownProps, Grid, Header, Label, Modal } from "se
 import { createRole, useRolesList } from "../../api";
 import { RoleAudienceTypes, RoleConstants } from "../../constants";
 import { ScopeInterface } from "../../models/apiResources";
+import { Policy } from "../../models/policies";
 import {
     CreateRoleFormData,
     CreateRoleInterface,

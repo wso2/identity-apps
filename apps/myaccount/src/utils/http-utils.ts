@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -64,6 +64,7 @@ export const onHttpRequestError = (error: any): null => {
     ) {
         if (error.response.status === 400) {
             history.push(AppConstants.getAppLogoutPath());
+
             return;
         }
     }
@@ -71,6 +72,7 @@ export const onHttpRequestError = (error: any): null => {
     // If the user doesn't have login permission, redirect to login error page.
     if (store.getState()?.auth?.scope && !AuthenticateUtils.hasLoginPermission(store.getState().auth.scope)) {
         history.push(AppConstants.getPaths().get("LOGIN_ERROR"));
+
         return;
     }
 

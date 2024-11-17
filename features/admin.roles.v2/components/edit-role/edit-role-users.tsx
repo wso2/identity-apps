@@ -29,8 +29,7 @@ import Select from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
 import { updateResources } from "@wso2is/admin.core.v1/api/bulk-operations";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { RemoteUserStoreConstants } from "@wso2is/admin.extensions.v1/components/user-stores/constants";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { useUsersList } from "@wso2is/admin.users.v1/api";
 import {
@@ -40,8 +39,10 @@ import {
     PatchUserRemoveOpInterface,
     UserBasicInterface
 } from "@wso2is/admin.users.v1/models";
-import { useUserStores } from "@wso2is/admin.userstores.v1/api";
-import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
+import { getAUserStore, useUserStores } from "@wso2is/admin.userstores.v1/api";
+import {
+    UserStoreDropdownItem, UserStoreListItem, UserStorePostData, UserStoreProperty
+} from "@wso2is/admin.userstores.v1/models/user-stores";
 import { AlertLevels, IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
@@ -58,7 +59,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import { AutoCompleteRenderOption } from "./edit-role-common/auto-complete-render-option";
@@ -67,8 +68,6 @@ import { RoleConstants, Schemas } from "../../constants";
 import { RoleEditSectionsInterface } from "../../models/roles";
 import { RoleManagementUtils } from "../../utils/role-management-utils";
 import "./edit-role.scss";
-
-type UserstoreDisplayItem = Omit<UserStoreListItem,"description" | "self" | "enabled">
 
 type RoleUsersPropsInterface = IdentifiableComponentInterface & RoleEditSectionsInterface;
 
@@ -81,24 +80,20 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         onRoleUpdate,
         isReadOnly,
         tabIndex,
+        activeUserStore,
         [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const disabledUserstores: string[] = useSelector(
-        (state: AppState) => state.config.ui.features.userStores.disabledFeatures);
-
     const [ userSearchValue, setUserSearchValue ] = useState<string>(undefined);
     const [ isUserSearchLoading, setUserSearchLoading ] = useState<boolean>(false);
     const [ users, setUsers ] = useState<UserBasicInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ activeOption, setActiveOption ] = useState<GroupsInterface|UserBasicInterface>(undefined);
-    const [ availableUserStores, setAvailableUserStores ] = useState<UserstoreDisplayItem[]>([]);
-    const [ selectedUserStoreDomainName, setSelectedUserStoreDomainName ] = useState<string>(
-        disabledUserstores.includes(RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME) ? "DEFAULT" : "Primary"
-    );
+    const [ availableUserStores, setAvailableUserStores ] = useState<UserStoreDropdownItem[]>([]);
+    const [ selectedUserStoreDomainName, setSelectedUserStoreDomainName ] = useState<string>();
     const [ isPlaceholderVisible, setIsPlaceholderVisible ] = useState<boolean>(true);
     const [ selectedUsersFromUserStore, setSelectedUsersFromUserStore ] = useState<UserBasicInterface[]>([]);
     const [ selectedAllUsers, setSelectedAllUsers ] = useState<Record<string, UserBasicInterface[] | undefined>>({});
@@ -107,6 +102,44 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         data: userStores,
         isLoading: isUserStoresLoading
     } = useUserStores(null);
+
+    useEffect(() => {
+        if (userStores && !isUserStoresLoading) {
+            const storeOptions: UserStoreDropdownItem[] = [
+                {
+                    key: -1,
+                    text: userstoresConfig?.primaryUserstoreName,
+                    value: userstoresConfig?.primaryUserstoreName
+                }
+            ];
+
+            let storeOption: UserStoreDropdownItem = {
+                key: null,
+                text: "",
+                value: ""
+            };
+
+            userStores?.forEach((store: UserStoreListItem, index: number) => {
+                if (store?.name?.toUpperCase() !== userstoresConfig?.primaryUserstoreName) {
+                    getAUserStore(store.id).then((response: UserStorePostData) => {
+                        const isDisabled: boolean = response.properties.find(
+                            (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
+
+                        if (!isDisabled) {
+                            storeOption = {
+                                key: index,
+                                text: store.name,
+                                value: store.name
+                            };
+                            storeOptions.push(storeOption);
+                        }
+                    });
+                }
+            });
+
+            setAvailableUserStores(storeOptions);
+        }
+    }, [ userStores, isUserStoresLoading ]);
 
     const {
         data: userResponse,
@@ -125,9 +158,17 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const isUserBelongToSelectedUserStore = (user: UserBasicInterface, userStoreName: string) => {
         const userNameChunks: string[] = user.userName.split("/");
 
-        return (userNameChunks.length === 1 && userStoreName === "Primary")
-        || (userNameChunks.length === 2 && userNameChunks[0] === userStoreName.toUpperCase());
+        return (userNameChunks.length === 1 && userStoreName === "PRIMARY")
+        || (userNameChunks.length === 2 && userNameChunks[0] === userStoreName?.toUpperCase());
     };
+
+    useEffect(() => {
+        if (activeUserStore) {
+            setSelectedUserStoreDomainName(activeUserStore);
+        } else {
+            setSelectedUserStoreDomainName(userstoresConfig.primaryUserstoreName);
+        }
+    }, [ activeUserStore ]);
 
     useEffect(() => {
         if (!role?.users?.length) {
@@ -153,34 +194,6 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
         setSelectedUsersFromUserStore(usersFromSelectedStore);
     },[ role, selectedUserStoreDomainName ]);
-
-    useEffect(() => {
-        if (!userStores) {
-            return;
-        }
-
-        if (userStores) {
-            const availableUserStoreList: UserstoreDisplayItem[] = disabledUserstores?.includes(
-                RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME)
-                ? []
-                : [
-                    {
-                        id: RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME,
-                        name: t("users:userstores.userstoreOptions.primary")
-                    }
-                ];
-
-            setAvailableUserStores(
-                [
-                    ...availableUserStoreList,
-                    ...userStores.map((userStore: UserStoreListItem) => ({
-                        id: userStore.id,
-                        name: userStore.name
-                    }))
-                ]
-            );
-        }
-    }, [ userStores ]);
 
     /**
      * Set available to select users.
@@ -303,7 +316,14 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         const removedUsers: RolesMemberInterface[] = role?.users?.filter((user: RolesMemberInterface) => {
             return selectedUsers?.find(
                 (selectedUser: UserBasicInterface) => selectedUser.id === user.value) === undefined;
+        }).filter((user: RolesMemberInterface) => {
+            const userNameChunks: string[] = user.display.split("/");
+
+            return (userNameChunks.length === 1 && selectedUserStoreDomainName === "PRIMARY")
+            || (userNameChunks.length === 2 && userNameChunks[0] === selectedUserStoreDomainName.toUpperCase());
         }) ?? [];
+
+
 
         const removeOperations: PatchUserRemoveOpInterface[] = removedUsers?.map((user: RolesMemberInterface) => {
             return ({
@@ -390,33 +410,40 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                             {
                                 users && availableUserStores && !isReadOnly && (
                                     <Grid container spacing={ 1 }>
-                                        <Grid xs={ 12 } sm={ 4 } md={ 2 } alignItems="center">
-                                            <FormControl fullWidth size="medium">
-                                                <Select
-                                                    value={ selectedUserStoreDomainName }
-                                                    onChange={
-                                                        (e: SelectChangeEvent<unknown>) => {
-                                                            updateSelectedAllUsers();
-                                                            setSelectedUsersFromUserStore([]);
-                                                            setSelectedUserStoreDomainName(e.target.value as string);
+                                        { !activeUserStore && (
+                                            <Grid xs={ 12 } sm={ 4 } md={ 2 } alignItems="center">
+                                                <FormControl fullWidth size="medium">
+                                                    <Select
+                                                        value={ selectedUserStoreDomainName }
+                                                        onChange={
+                                                            (e: SelectChangeEvent<unknown>) => {
+                                                                updateSelectedAllUsers();
+                                                                setSelectedUsersFromUserStore([]);
+                                                                setSelectedUserStoreDomainName(
+                                                                    e.target.value as string
+                                                                );
+                                                            }
                                                         }
-                                                    }
-                                                    data-componentid={ `${ componentId }-user-store-domain-dropdown` }
-                                                >
-                                                    { isUserStoresLoading
-                                                        ? <p>{ t("common:loading") }</p>
-                                                        : availableUserStores?.map((userstore: UserStoreListItem) =>
-                                                            (<MenuItem
-                                                                key={ userstore.name }
-                                                                value={ userstore.name }
-                                                            >
-                                                                { userstore.name }
-                                                            </MenuItem>)
-                                                        )
-                                                    }
-                                                </Select>
-                                            </FormControl>
-                                        </Grid>
+                                                        data-componentid={
+                                                            `${ componentId }-user-store-domain-dropdown`
+                                                        }
+                                                    >
+                                                        { isUserStoresLoading
+                                                            ? <p>{ t("common:loading") }</p>
+                                                            : availableUserStores?.map(
+                                                                (userstore: UserStoreDropdownItem) =>
+                                                                    (<MenuItem
+                                                                        key={ userstore.key }
+                                                                        value={ userstore.value }
+                                                                    >
+                                                                        { userstore.text }
+                                                                    </MenuItem>)
+                                                            )
+                                                        }
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
+                                        ) }
                                         <Grid xs={ 12 } sm={ 4 } md={ 8 }>
                                             <Autocomplete
                                                 multiple
@@ -467,7 +494,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                         option={ option }
                                                         activeOption={ activeOption }
                                                         setActiveOption={ setActiveOption }
-                                                        variant={ "solid" }
+                                                        variant="filled"
                                                     />
                                                 )) }
                                                 renderOption={ (

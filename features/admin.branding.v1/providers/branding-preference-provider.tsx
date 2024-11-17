@@ -252,7 +252,8 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
      * Moderates the Branding Peference response.
      */
     useEffect(() => {
-        if (!originalBrandingPreference) {
+        if (!originalBrandingPreference || brandingPreferenceFetchRequestError?.response?.data?.code
+            === BrandingPreferencesConstants.BRANDING_NOT_CONFIGURED_ERROR_CODE) {
             return;
         }
 
@@ -478,8 +479,8 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
 
                         if (brandingMode === BrandingModes.ORGANIZATION) {
                             meta.push(PreviewScreenType.MY_ACCOUNT);
+                            meta.push(PreviewScreenType.EMAIL_TEMPLATE);
                         }
-                        meta.push(PreviewScreenType.EMAIL_TEMPLATE);
                     }
 
                     return meta;

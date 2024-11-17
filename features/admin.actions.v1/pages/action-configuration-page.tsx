@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { Show, useRequiredScopes } from "@wso2is/access-control";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/access-control";
+import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -59,9 +59,10 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     [ "data-componentid" ]: _componentId = "action-configuration-page"
 }: ActionConfigurationPageInterface): ReactElement => {
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features.actions);
-
+    const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features.actions);
     const [ isOpenRevertConfigModal, setOpenRevertConfigModal ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState(false);
     const [ isActive, setIsActive ] = useState<boolean>(false);
     const [ showCreateForm, setShowCreateForm ] = useState<boolean>(false);
 
@@ -69,7 +70,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const hasActionUpdatePermissions: boolean = useRequiredScopes(featureConfig?.actions?.scopes?.update);
+    const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
 
     const actionTypeApiPath: string = useMemo(() => {
         const path: string[] = history.location.pathname.split("/");
@@ -242,19 +243,23 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
      */
     const actionToggle = (): ReactElement => {
         const handleToggle = (e: SyntheticEvent, data: CheckboxProps) => {
+            const toggleOperation: string = data.checked ? ActionsConstants.ACTIVATE : ActionsConstants.DEACTIVATE;
+
             setIsActive(data.checked);
+            setIsSubmitting(true);
             changeActionStatus(
                 actionTypeApiPath,
                 actionInitialValues.id,
-                data.checked ? ActionsConstants.ACTIVATE : ActionsConstants.DEACTIVATE)
+                toggleOperation)
                 .then(() => {
-                    handleSuccess(ActionsConstants.UPDATE);
+                    handleSuccess(toggleOperation);
                 })
                 .catch((error: AxiosError) => {
-                    handleError(error, ActionsConstants.UPDATE);
+                    handleError(error, toggleOperation);
                 })
                 .finally(() => {
                     mutateActions();
+                    setIsSubmitting(false);
                 });
         };
 
@@ -276,9 +281,11 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     };
 
     const handleDelete = (): void => {
+        setIsSubmitting(true);
         deleteAction(actionTypeApiPath, actionInitialValues.id)
             .then(() => {
                 handleSuccess(ActionsConstants.DELETE);
+                mutateActions();
                 history.push(AppConstants.getPaths().get("ACTIONS"));
             })
             .catch((error: AxiosError) => {
@@ -286,6 +293,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
             })
             .finally(() => {
                 setOpenRevertConfigModal(false);
+                setIsSubmitting(false);
             });
     };
 
@@ -329,7 +337,6 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 onClick: () => handleBackButtonClick(),
                 text: t("actions:goBackActions")
             } }
-            isLoading={ isLoading }
             bottomMargin={ false }
             contentTopMargin={ true }
             pageHeaderMaxWidth={ false }
@@ -352,13 +359,13 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
             }
             { !isLoading && !showCreateForm && (
                 <Show
-                    when={ featureConfig?.actions?.scopes?.delete }
+                    when={ actionsFeatureConfig?.scopes?.delete }
                 >
                     <DangerZoneGroup
                         sectionHeader={ t("actions:dangerZoneGroup.header") }
                     >
                         <DangerZone
-                            data-componentid={ `${ _componentId }-delete-action-of-type-${ actionTypeApiPath}` }
+                            data-componentid={ `${ _componentId }-danger-zone` }
                             actionTitle={
                                 t("actions:dangerZoneGroup.revertConfig.actionTitle")
                             }
@@ -372,7 +379,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                         />
                     </DangerZoneGroup>
                     <ConfirmationModal
-                        primaryActionLoading={ isActionsLoading || !actions || !Array.isArray(actions) }
+                        primaryActionLoading={ isSubmitting }
                         data-componentid={ `${ _componentId }-revert-confirmation-modal` }
                         onClose={ (): void => setOpenRevertConfigModal(false) }
                         type="negative"

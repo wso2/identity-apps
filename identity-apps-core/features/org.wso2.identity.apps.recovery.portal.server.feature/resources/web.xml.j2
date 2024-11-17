@@ -48,6 +48,12 @@
                 <param-value>{{ accountrecoveryendpoint.auto_login_cookie_domain }}</param-value>
         </context-param>
     {% endif %}
+    {% if accountrecoveryendpoint.hide_username_when_email_as_username_enabled is defined %}
+        <context-param>
+           <param-name>HideUsernameWhenEmailAsUsernameEnabled</param-name>
+           <param-value>{{ accountrecoveryendpoint.hide_username_when_email_as_username_enabled }}</param-value>
+       </context-param>
+    {% endif %}
     {% if event.default_listener.validation.enable is defined %}
         <context-param>
             <param-name>isPasswordInputValidationEnabled</param-name>
@@ -164,196 +170,66 @@
         <url-pattern>*</url-pattern>
     </filter-mapping>
 
-    <servlet>
-        <servlet-name>recoveraccountrouter.do</servlet-name>
-        <jsp-file>/account-recovery-router.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>recoverusername.do</servlet-name>
-        <jsp-file>/username-recovery.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>recoverusernamecomplete.do</servlet-name>
-        <jsp-file>/username-recovery-complete.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>recoverpassword.do</servlet-name>
-        <jsp-file>/password-recovery.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>processsecurityquestions.do</servlet-name>
-        <jsp-file>/challenge-question-process.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>viewsecurityquestions.do</servlet-name>
-        <jsp-file>/challenge-question-view.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>confirmrecovery.do</servlet-name>
-        <jsp-file>/password-recovery-confirm.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>passwordrecoveryotp.do</servlet-name>
-        <jsp-file>/password-recovery-otp.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>completepasswordreset.do</servlet-name>
-        <jsp-file>/password-reset-complete.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>passwordreset.do</servlet-name>
-        <jsp-file>/password-reset.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>register.do</servlet-name>
-        <jsp-file>/self-registration-username-request.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>signup.do</servlet-name>
-        <jsp-file>/self-registration.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>processregistration.do</servlet-name>
-        <jsp-file>/self-registration-process.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>confirmregistration.do</servlet-name>
-        <jsp-file>/self-registration-with-verification-confirm.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>completeregistration.do</servlet-name>
-        <jsp-file>/self-registration-complete.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>verify.do</servlet-name>
-        <jsp-file>/recovery.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>confirmliteuserregistration.do</servlet-name>
-        <jsp-file>/lite-user-confirm.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>acceptinvitation.do</servlet-name>
-        <jsp-file>/accept-invitation.jsp</jsp-file>
-    </servlet>
-
-    {% for custom_servlet in accountrecoveryendpoint.servlet %}
-    <servlet>
-        <servlet-name>{{custom_servlet.name}}</servlet-name>
-        <jsp-file>{{custom_servlet.jsp}}</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>{{custom_servlet.name}}</servlet-name>
-        <url-pattern>{{custom_servlet.url}}</url-pattern>
-    </servlet-mapping>
+    {% set keys = [] %}
+    {% set values = [] %}
+    {% for servlet_item in accountrecoveryendpoint.servlet %}
+        {% set _ = keys.append(servlet_item['name']) %}
+        {% set _ = values.append(servlet_item) %}
     {% endfor %}
+    {% set default_servlets = [
+        {"name": "recoveraccountrouter.do", "jsp": "/account-recovery-router.jsp", "url": "/recoveraccountrouter.do"},
+        {"name": "recoverusername.do", "jsp": "/username-recovery.jsp", "url": "/recoverusername.do"},
+        {"name": "recoverusernamecomplete.do", "jsp": "/username-recovery-complete.jsp", "url": "/recoverusernamecomplete.do"},
+        {"name": "recoverpassword.do", "jsp": "/password-recovery.jsp", "url": "/recoverpassword.do"},
+        {"name": "processsecurityquestions.do", "jsp": "/challenge-question-process.jsp", "url": "/processsecurityquestions.do"},
+        {"name": "viewsecurityquestions.do", "jsp": "/challenge-question-view.jsp", "url": "/viewsecurityquestions.do"},
+        {"name": "confirmrecovery.do", "jsp": "/password-recovery-confirm.jsp", "url": "/confirmrecovery.do"},
+        {"name": "passwordrecoveryotp.do", "jsp": "/password-recovery-otp.jsp", "url": "/passwordrecoveryotp.do"},
+        {"name": "completepasswordreset.do", "jsp": "/password-reset-complete.jsp", "url": "/completepasswordreset.do"},
+        {"name": "passwordreset.do", "jsp": "/password-reset.jsp", "url": "/passwordreset.do"},
+        {"name": "register.do", "jsp": "/self-registration-username-request.jsp", "url": "/register.do"},
+        {"name": "signup.do", "jsp": "/self-registration.jsp", "url": "/signup.do"},
+        {"name": "processregistration.do", "jsp": "/self-registration-process.jsp", "url": "/processregistration.do"},
+        {"name": "confirmregistration.do", "jsp": "/self-registration-with-verification-confirm.jsp", "url": "/confirmregistration.do"},
+        {"name": "completeregistration.do", "jsp": "/self-registration-complete.jsp", "url": "/completeregistration.do"},
+        {"name": "verify.do", "jsp": "/recovery.jsp", "url": "/verify.do"},
+        {"name": "channelselection.do", "jsp": "/username-recovery-channel.jsp", "url": "/channelselection.do"},
+        {"name": "confirmliteuserregistration.do", "jsp": "/lite-user-confirm.jsp", "url": "/confirmliteuserregistration.do"},
+        {"name": "acceptinvitation.do", "jsp": "/accept-invitation.jsp", "url": "/acceptinvitation.do"}
+    ] %}
+     {% for servlet_item in default_servlets %}
+        {% set key_name = servlet_item['name'] %}
+        {% set custom_servlet = servlet_item %}
+        {% if key_name in keys %}
+            {% set index = keys.index(key_name) %}
+            {% set custom_servlet = values[index] %}
+        {% endif %}
+    <servlet>
+        <servlet-name>{{ custom_servlet['name'] }}</servlet-name>
+        <jsp-file>{{ custom_servlet['jsp'] }}</jsp-file>
+    </servlet>
 
     <servlet-mapping>
-        <servlet-name>recoveraccountrouter.do</servlet-name>
-        <url-pattern>/recoveraccountrouter.do</url-pattern>
+        <servlet-name>{{ custom_servlet['name'] }}</servlet-name>
+        <url-pattern>{{ custom_servlet['url'] }}</url-pattern>
     </servlet-mapping>
 
-    <servlet-mapping>
-        <servlet-name>recoverusername.do</servlet-name>
-        <url-pattern>/recoverusername.do</url-pattern>
-    </servlet-mapping>
+    {% endfor %}
+    {% set default_keys = default_servlets | map(attribute='name') | list %}
+    {% for servlet_item in accountrecoveryendpoint.servlet %}
+        {% if servlet_item['name'] not in default_keys %}
+    <servlet>
+        <servlet-name>{{ servlet_item['name'] }}</servlet-name>
+        <jsp-file>{{ servlet_item['jsp'] }}</jsp-file>
+    </servlet>
 
     <servlet-mapping>
-        <servlet-name>recoverusernamecomplete.do</servlet-name>
-        <url-pattern>/recoverusernamecomplete.do</url-pattern>
+        <servlet-name>{{ servlet_item['name'] }}</servlet-name>
+        <url-pattern>{{ servlet_item['url'] }}</url-pattern>
     </servlet-mapping>
 
-    <servlet-mapping>
-        <servlet-name>recoverpassword.do</servlet-name>
-        <url-pattern>/recoverpassword.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>processsecurityquestions.do</servlet-name>
-        <url-pattern>/processsecurityquestions.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>viewsecurityquestions.do</servlet-name>
-        <url-pattern>/viewsecurityquestions.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>confirmrecovery.do</servlet-name>
-        <url-pattern>/confirmrecovery.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>passwordrecoveryotp.do</servlet-name>
-        <url-pattern>/passwordrecoveryotp.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>completepasswordreset.do</servlet-name>
-        <url-pattern>/completepasswordreset.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>passwordreset.do</servlet-name>
-        <url-pattern>/passwordreset.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>register.do</servlet-name>
-        <url-pattern>/register.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>signup.do</servlet-name>
-        <url-pattern>/signup.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>processregistration.do</servlet-name>
-        <url-pattern>/processregistration.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>confirmregistration.do</servlet-name>
-        <url-pattern>/confirmregistration.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>completeregistration.do</servlet-name>
-        <url-pattern>/completeregistration.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>verify.do</servlet-name>
-        <url-pattern>/verify.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>confirmliteuserregistration.do</servlet-name>
-        <url-pattern>/confirmliteuserregistration.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>acceptinvitation.do</servlet-name>
-        <url-pattern>/acceptinvitation.do</url-pattern>
-    </servlet-mapping>
+        {% endif %}
+    {% endfor %}
 
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>

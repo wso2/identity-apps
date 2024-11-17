@@ -22,4 +22,6 @@
 export interface TenantResourceEndpointsInterface {
     tenantAssociationApi: string;
     tenantManagementApi: string;
+    tenantSubscriptionApi: string;
+    tenants: string;
 }

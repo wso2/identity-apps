@@ -72,6 +72,7 @@
 
         .sub-header {
             margin-top: 5px;
+            color: @textColor !important;
         }
     }
 }
@@ -198,7 +199,6 @@
 .ui.segment {
     &.transfer-segment {
         margin-top: @userRolesListSegmentMarginTop;
-        height: @userRolesListSegmentHeight;
         width: @TransferComponentSegmentWidth;
     }
 

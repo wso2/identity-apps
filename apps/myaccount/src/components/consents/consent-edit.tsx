@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,19 +17,21 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import flatten from "lodash-es/flatten";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Checkbox, Divider, Grid, List } from "semantic-ui-react";
 import {
     ConsentInterface,
+    PIICategory,
     PIICategoryClaimToggleItem,
     PIICategoryWithStatus,
     PurposeInterface,
     ServiceInterface
 } from "../../models";
 import { toSentenceCase } from "../../utils";
-import { DangerZone, DangerZoneGroup, EditSection } from "../shared";
+import { EditSection } from "../shared";
 
 /**
  * Proptypes for the application consent edit component.
@@ -47,8 +49,8 @@ interface EditConsentProps extends TestableComponentInterface {
 /**
  * Application consent edit component.
  *
- * @param {EditConsentProps} props - Props injected to the application consent edit component.
- * @return {JSX.Element}
+ * @param props - Props injected to the application consent edit component.
+ * @returns application consent edit component
  */
 export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
     props: EditConsentProps
@@ -73,13 +75,13 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
      * Important Note: -
      * We don't use a separate predicate function to check non-revoked
      * or accepted PII categories. The functionality can be achieved via this
-     * function itself because if a {@code PIICategoryClaimToggleItem} is
+     * function itself because if a `PIICategoryClaimToggleItem` is
      * not available in {@link deniedPIIClaimList} it is guaranteed that
      * it is available in {@link acceptedPIIClaimList} vice versa.
      *
-     * @param {number} piiCategoryId - PII Claim ID {@code purposes.each(purpose.piiCategory.each(pii.id))}
-     * @param {number} purposeId - Purpose ID {@code services.each(purposes.each(purpose.purposeId))}
-     * @param {number} consentReceiptID - This Component's {@code editingConsent} Model
+     * @param piiCategoryId - PII Claim ID
+     * @param purposeId - Purpose ID
+     * @param consentReceiptID - Consent receipt ID
      */
     const isRevoked = (piiCategoryId: number, purposeId: number, consentReceiptID: string): boolean => {
         for (const deniedPIIItem of deniedPIIClaimList) {
@@ -87,29 +89,38 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
                 purposeId === deniedPIIItem.purposeId &&
                 consentReceiptID === deniedPIIItem.receiptId) return true;
         }
+
         return false;
     };
 
     /**
      * Checks if the consent is updatable.
      *
-     * @return {boolean}
+     * @returns whether the consent is updatable.
      */
     const isUpdatable = (): boolean => {
 
         // This consent editing view's model {@link editingConsent}
-        const purposes = (editingConsent.consentReceipt?.services || [])
+        const purposes: PurposeInterface[][] = (editingConsent.consentReceipt?.services || [])
             .map((service: ServiceInterface) => service.purposes);
-        const piiCategoriesOfAllPurposes = flatten(purposes)
+
+        const piiCategoriesOfAllPurposes: Array<{
+            piiCategory: PIICategoryWithStatus[],
+            purposeId: number
+        }> = flatten(purposes)
             .map((purpose: PurposeInterface) => ({
                 piiCategory: purpose.piiCategory as PIICategoryWithStatus[],
                 purposeId: purpose.purposeId
             }));
-        const recordOnModelReceipt = flatten(piiCategoriesOfAllPurposes);
+
+        const recordOnModelReceipt: {
+            piiCategory: PIICategoryWithStatus[];
+            purposeId: number;
+        }[] = flatten(piiCategoriesOfAllPurposes);
 
         // Filter out the piiClaims of this receipt.
-        const recordOnUserInterface = [ ...deniedPIIClaimList, ...acceptedPIIClaimList ]
-            .filter((piiClaim) => piiClaim.receiptId === editingConsent.consentReceiptID);
+        const recordOnUserInterface: PIICategoryClaimToggleItem[] = [ ...deniedPIIClaimList, ...acceptedPIIClaimList ]
+            .filter((piiClaim: PIICategoryClaimToggleItem) => piiClaim.receiptId === editingConsent.consentReceiptID);
 
         // TODO: solve in linear time
         for (const uiRecord of recordOnUserInterface) {
@@ -135,12 +146,12 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
      * is optional and will only fetch asynchronously once the user click the detail view.
      *
      * {@link ConsentInterface} must: -
-     * 1. not be {@code null | undefined }
+     * 1. not be `null | undefined`
      * 2. contain the {@link ConsentReceiptInterface}
      * 3. contain a list of {@link ServiceInterface} in {@link ConsentReceiptInterface}
      * 4. contain least 1 {@link ConsentReceiptInterface.services} entry
      *
-     * @param {ConsentInterface} editingConsent
+     * @param editingConsent - consent details being edited
      */
     const hasConsentDetails = (editingConsent: ConsentInterface): boolean => {
         return editingConsent &&
@@ -153,7 +164,7 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
      * A predicate that checks whether a particular service inside
      * a {@link ConsentReceiptInterface} has purposes to show.
      *
-     * @param {ServiceInterface} service
+     * @param service - service to be checked
      */
     const hasPurposesInService = (service: ServiceInterface): boolean => {
         return service &&
@@ -163,9 +174,9 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
 
     /**
      * A predicate that checks whether a particular {@link PurposeInterface}
-     * has a list of {@link PIICategory[]} and is not empty.
+     * has a list of `PIICategory[]` and is not empty.
      *
-     * @param {PurposeInterface} purpose
+     * @param purpose - purpose to be checked
      */
     const hasPIICategoriesInPurpose = (purpose: PurposeInterface): boolean => {
         return purpose.piiCategory && purpose.piiCategory.length > 0;
@@ -174,13 +185,13 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
     /**
      * JSX Builder method. Invoked within the scope of {@link this}
      *
-     * @param {PurposeInterface} purpose
+     * @param purpose - purpose to be converted to jsx
      */
     const eachPurposeToJSX = (purpose: PurposeInterface) => {
 
         /**
          * JSX Builder method. Invoked within the scope of {@link eachPurposeToJSX}
-         * @param {PIICategoryWithStatus} piiCat
+         * @param piiCat - PII category
          */
         const eachPIICategoryItem = (piiCat: PIICategoryWithStatus) => {
             return (<List.Item key={ piiCat.piiCategoryId }>
@@ -224,7 +235,7 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
                             verticalAlign="middle"
                             relaxed="very">
                             {
-                                hasPIICategoriesInPurpose(purpose) && purpose.piiCategory.map((piiCat) => {
+                                hasPIICategoriesInPurpose(purpose) && purpose.piiCategory.map((piiCat: PIICategory) => {
                                     return eachPIICategoryItem(piiCat as PIICategoryWithStatus);
                                 })
                             }
@@ -248,7 +259,7 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
                 {
                     hasConsentDetails(editingConsent) ?
                         editingConsent.consentReceipt.services.map(
-                            (service) => hasPurposesInService(service) &&
+                            (service: ServiceInterface) => hasPurposesInService(service) &&
                                 service.purposes.map(eachPurposeToJSX)
                         )
                         : null
@@ -260,7 +271,7 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
                             onClick={ () => onClaimUpdate(editingConsent.consentReceiptID) }
                             data-testid={ `${ testId }-` +
                                 `${ editingConsent.spDisplayName.replace(" ", "-") }` +
-                                `-editing-section-update-button` }
+                                "-editing-section-update-button" }
                             disabled={ !isUpdatable() }
                         >
                             { t("common:update") }

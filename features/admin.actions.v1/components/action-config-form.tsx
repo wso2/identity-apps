@@ -24,8 +24,8 @@ import Button from "@oxygen-ui/react/Button";
 import Divider from "@oxygen-ui/react/Divider";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import Skeleton from "@oxygen-ui/react/Skeleton";
-import { useRequiredScopes } from "@wso2is/access-control";
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import { AppState } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
@@ -39,7 +39,7 @@ import {
 } from "@wso2is/form";
 import { EmphasizedSegment, Heading, Hint } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -88,7 +88,8 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     [ "data-componentid" ]: _componentId = "action-config-form"
 }: ActionConfigFormInterface): ReactElement => {
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features.actions);
+    const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features.actions);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
     const [ isSubmitting, setIsSubmitting ] = useState(false);
@@ -98,8 +99,8 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const hasActionUpdatePermissions: boolean = useRequiredScopes(featureConfig?.actions?.scopes?.update);
-    const hasActionCreatePermissions: boolean = useRequiredScopes(featureConfig?.actions?.scopes?.create);
+    const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
+    const hasActionCreatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.create);
 
     const {
         mutate: mutateActions
@@ -132,12 +133,12 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     );
 
     const renderLoadingPlaceholders = (): ReactElement => (
-        <>
-            <Skeleton variant="rectangular" className="placeholder label" />
-            <Skeleton variant="rectangular" className="placeholder text-field with-max-width" />
-            <Skeleton variant="rectangular" className="placeholder label" />
-            <Skeleton variant="rectangular" className="placeholder text-field with-max-width" />
-        </>
+        <Box className="placeholder-box">
+            <Skeleton variant="rectangular" height={ 7 } width="30%" />
+            <Skeleton variant="rectangular" height={ 28 } />
+            <Skeleton variant="rectangular" height={ 7 } width="90%" />
+            <Skeleton variant="rectangular" height={ 7 } />
+        </Box>
     );
 
     /**
@@ -219,6 +220,8 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
             error.authenticationType = t("actions:fields.authenticationType.validations.empty");
         }
 
+        const apiKeyHeaderRegex: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9-.]+$/;
+
         switch (authenticationType) {
             case AuthenticationType.BASIC:
                 if(isCreateFormState || isAuthenticationUpdateFormState ||
@@ -249,6 +252,10 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                     if (!values?.headerAuthProperty) {
                         error.headerAuthProperty = t("actions:fields.authentication." +
                             "types.apiKey.properties.header.validations.empty");
+                    }
+                    if (!apiKeyHeaderRegex.test(values?.headerAuthProperty)) {
+                        error.headerAuthProperty = t("actions:fields.authentication." +
+                            "types.apiKey.properties.header.validations.invalid");
                     }
                     if (!values?.valueAuthProperty) {
                         error.valueAuthProperty = t("actions:fields.authentication." +
@@ -367,7 +374,9 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                 return (
                     <Alert severity="info">
                         <AlertTitle
-                            className="alert-title">
+                            className="alert-title"
+                            data-componentid={ `${ _componentId }-authentication-info-box-title` }
+                        >
                             <Trans
                                 i18nKey={
                                     authenticationType === AuthenticationType.NONE ?
@@ -480,6 +489,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                         { showAuthSecretsHint() }
                                         <FinalFormField
                                             key="accessToken"
+                                            className="text-field-container"
                                             width={ 16 }
                                             FormControlProps={ {
                                                 margin: "dense"
@@ -511,6 +521,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                         { showAuthSecretsHint() }
                                         <FinalFormField
                                             key="header"
+                                            className="text-field-container"
                                             width={ 16 }
                                             FormControlProps={ {
                                                 margin: "dense"
@@ -524,6 +535,12 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                                 ".types.apiKey.properties.header.label") }
                                             placeholder={ t("actions:fields.authentication" +
                                                 ".types.apiKey.properties.header.placeholder") }
+                                            helperText={ (
+                                                <Hint className="hint" compact>
+                                                    { t("actions:fields.authentication" +
+                                                        ".types.apiKey.properties.header.hint") }
+                                                </Hint>
+                                            ) }
                                             component={ TextFieldAdapter }
                                             maxLength={ 100 }
                                             minLength={ 0 }
@@ -531,6 +548,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                         />
                                         <FinalFormField
                                             key="value"
+                                            className="text-field-container"
                                             width={ 16 }
                                             FormControlProps={ {
                                                 margin: "dense"
@@ -539,7 +557,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                                             required={ true }
                                             data-componentid={ `${ _componentId }-authentication-property-value` }
                                             name="valueAuthProperty"
-                                            type={ isShowSecret1 ? "text" : "password" }
+                                            type={ isShowSecret2 ? "text" : "password" }
                                             InputProps={ {
                                                 endAdornment: renderInputAdornmentOfSecret(
                                                     isShowSecret2,
@@ -684,7 +702,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                     } }
                     ariaLabel="endpointUri"
                     required={ true }
-                    data-componentid={ `${ _componentId }-action-name` }
+                    data-componentid={ `${ _componentId }-action-endpointUri` }
                     name="endpointUri"
                     type="text"
                     label={ t("actions:fields.endpoint.label") }

@@ -24,11 +24,11 @@ import { ConsoleSettingsResourceEndpointsInterface } from "../models/endpoints";
  * @param serverHost - Server Host.
  * @returns Endpoint URLs.
  */
-export const getConsoleSettingsResourceEndpoints = (
-    serverHost: string
-): ConsoleSettingsResourceEndpointsInterface => {
+export const getConsoleSettingsResourceEndpoints = (): ConsoleSettingsResourceEndpointsInterface => {
     return {
-        apiResourceCollection: `${serverHost}/api/server/v1/meta/api-resource-collections/:id`,
-        apiResourceCollections: `${serverHost}/api/server/v1/meta/api-resource-collections`
+        apiResourceCollection:
+            `${window["AppUtils"].getServerOriginWithTenant(false)}/api/server/v1/meta/api-resource-collections/:id`,
+        apiResourceCollections:
+            `${window["AppUtils"].getServerOriginWithTenant(false)}/api/server/v1/meta/api-resource-collections`
     };
 };

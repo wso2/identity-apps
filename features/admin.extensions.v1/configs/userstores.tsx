@@ -36,7 +36,7 @@ export const userstoresConfig: UserstoresConfig = {
             showAdditionalProperties: true,
             showToggles: true
         },
-        remoteUserStoreEditPath: "",
+        remoteUserStoreEditPath: "edit-remote-user-store",
         userDetails: {
             showAdditionalProperties: true,
             showDisplayName: true

@@ -112,6 +112,7 @@ export interface CommonNS {
     name: string;
     new: string;
     next: string;
+    organizationName: string;
     operatingSystem: string;
     operations: string;
     overview: string;
@@ -185,4 +186,7 @@ export interface CommonNS {
     },
     noResultsFound: string;
     pressEnterPrompt: string;
+    verified: string;
+    primary: string;
+    makePrimary: string;
 }

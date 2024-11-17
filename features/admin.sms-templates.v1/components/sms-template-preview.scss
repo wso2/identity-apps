@@ -1,0 +1,93 @@
+/**
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+$mobile-outer-border: 2px solid #bbb;
+$mobile-outer-radius: 36px;
+$mobile-frame-padding: 1px;
+$mobile-inner-border: 6px solid #000;
+$mobile-inner-radius: $mobile-outer-radius - $mobile-frame-padding;
+
+.sms-template-preview {
+    padding: 0;
+    flex-grow: 1;
+
+    .mobile {
+        display: flex;
+        padding: $mobile-frame-padding $mobile-frame-padding 0 $mobile-frame-padding;
+        border-radius: $mobile-outer-radius $mobile-outer-radius 0 0;
+        border-left: $mobile-outer-border;
+        border-top: $mobile-outer-border;
+        border-right: $mobile-outer-border;
+        width: 100%;
+        height: 100%;
+
+        .display {
+            border-radius: $mobile-inner-radius $mobile-inner-radius 0 0;
+            border-left: $mobile-inner-border;
+            border-top: $mobile-inner-border;
+            border-right: $mobile-inner-border;
+            width: 100%;
+
+            .status-bar {
+                text-align: center !important;
+                padding: 12px 8px !important;
+
+                .island {
+                    height: 1.5rem;
+                    background-color: black;
+                    border-radius: 0.75rem;
+                    max-width: 6rem;
+                    margin: auto;
+                }
+            }
+
+            .message {
+                padding: 0 5%;
+
+                .line {
+                    display: flex;
+                    margin-top: 12px;
+
+                    .bubble {
+                        background-color: #e3e3e3;
+                        border-radius: 0 16px 16px 16px;
+                        margin-left: 8px;
+                        padding: 4px 8px;
+
+                        .preserve-newlines {
+                            overflow-wrap: anywhere;
+                            white-space: pre-wrap;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 1400px) {
+    .sms-template-preview {
+        padding: 0 10%;
+    }
+}
+
+@media (min-width: 1700px) {
+    .sms-template-preview {
+        padding: 0 20%;
+    }
+}

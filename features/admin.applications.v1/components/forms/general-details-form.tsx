@@ -16,12 +16,14 @@
  * under the License.
  */
 
+import Chip from "@oxygen-ui/react/Chip";
 import Link from "@oxygen-ui/react/Link";
 import { PaletteIcon } from "@oxygen-ui/react-icons";
 import { ApplicationTabComponentsFilter } from
     "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
 import { AppConstants, AppState, UIConfigInterface, history } from "@wso2is/admin.core.v1";
 import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
@@ -380,7 +382,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             </Grid.Column>
                         </Grid.Row>
                     ) }
-                    { !UIConfig.systemAppsIdentifiers.includes(name) && (
+                    { !UIConfig.systemAppsIdentifiers.includes(name) && !isSubOrganizationType && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field.Input
@@ -397,7 +399,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                             ".placeholder")
                                     }
                                     value={ name }
-                                    hidden={ isSubOrganizationType }
                                     readOnly={ readOnly || isSubOrganizationType }
                                     validation ={ (value: string) => validateName(value.toString().trim()) }
                                     maxLength={
@@ -410,7 +411,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         </Grid.Row>
                     ) }
                     {
-                        name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME && (
+                        name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME && !isSubOrganizationType && (
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Field.Textarea
@@ -426,7 +427,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                                 ".placeholder")
                                         }
                                         value={ description }
-                                        hidden={ isSubOrganizationType }
                                         readOnly={ readOnly }
                                         validation ={ (value: string) => validateDescription(value.toString().trim()) }
                                         maxLength={ 300 }
@@ -439,35 +439,36 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         )
                     }
                     {
-                        <Grid.Row columns={ 1 } data-componentid="application-edit-general-details-form-image-url">
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Field.Input
-                                    ariaLabel="Application image URL"
-                                    inputType="url"
-                                    name="imageUrl"
-                                    label={
-                                        t("applications:forms.generalDetails" +
-                                            ".fields.imageUrl.label")
-                                    }
-                                    required={ false }
-                                    placeholder={
-                                        t("applications:forms.generalDetails" +
-                                            ".fields.imageUrl.placeholder")
-                                    }
-                                    value={ imageUrl }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-application-image-url-input` }
-                                    maxLength={ 200 }
-                                    minLength={ 3 }
-                                    hint={
-                                        t("applications:forms.generalDetails" +
-                                            ".fields.imageUrl.hint")
-                                    }
-                                    width={ 16 }
-                                    hidden={ isSubOrganizationType || hiddenFields?.includes("imageUrl") }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
+                        !isSubOrganizationType && !hiddenFields?.includes("imageUrl") && (
+                            <Grid.Row columns={ 1 } data-componentid="application-edit-general-details-form-image-url">
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Field.Input
+                                        ariaLabel="Application image URL"
+                                        inputType="url"
+                                        name="imageUrl"
+                                        label={
+                                            t("applications:forms.generalDetails" +
+                                                ".fields.imageUrl.label")
+                                        }
+                                        required={ false }
+                                        placeholder={
+                                            t("applications:forms.generalDetails" +
+                                                ".fields.imageUrl.placeholder")
+                                        }
+                                        value={ imageUrl }
+                                        readOnly={ readOnly }
+                                        data-testid={ `${ testId }-application-image-url-input` }
+                                        maxLength={ 200 }
+                                        minLength={ 3 }
+                                        hint={
+                                            t("applications:forms.generalDetails" +
+                                                ".fields.imageUrl.hint")
+                                        }
+                                        width={ 16 }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                        )
                     }
                     { (
                         !isM2MApplication
@@ -475,6 +476,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             isMyAccountEnabled
                             || isSubOrg
                         )
+                        && !isSubOrganizationType
                     ) ? (
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -528,7 +530,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                                 }
                                             </Trans>
                                         ) }
-                                        hidden={ isSubOrganizationType }
                                         width={ 16 }
                                     />
                                 </Grid.Column>
@@ -536,7 +537,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         ) : null
                     }
                     {
-                        !isM2MApplication && (
+                        !isM2MApplication && !isSubOrganizationType && (
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Field.Input
@@ -563,7 +564,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                             )
                                         }
                                         validation={ validateAccessURL }
-                                        hidden={ isSubOrganizationType }
                                         maxLength={ ApplicationManagementConstants
                                             .FORM_FIELD_CONSTRAINTS.ACCESS_URL_MAX_LENGTH }
                                         minLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS
@@ -586,8 +586,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             {
                                 (!isBrandingSectionHidden && !isM2MApplication) && (
                                     <>
-                                        <Heading as="h5">
+                                        <Heading as="h4">
                                             { t("applications:forms.generalDetails.sections.branding.title") }
+                                            <Chip
+                                                size="small"
+                                                label={ t(FeatureStatusLabel.BETA) }
+                                                className="oxygen-chip-beta mb-1 ml-2"
+                                            />
                                         </Heading>
                                         <PaletteIcon fill="#ff7300" /> &nbsp;
                                         <Link

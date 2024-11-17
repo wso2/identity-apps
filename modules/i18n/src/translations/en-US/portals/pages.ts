@@ -17,11 +17,12 @@
  */
 import { pagesNS } from "../../../models";
 
+/**
+ * @deprecated Add the relevant page title and description in the respective feature's i18n file.
+ */
 export const pages: pagesNS = {
     actions: {
-        subTitle: "Actions are executed as in-line hooks at specific points in the Login, Registration, " +
-        "Self Account Management, and User Management flows (e.g., when an access token is issued). " +
-        "Use these points to extend or integrate.",
+        subTitle: "Create actions to extend login & registration flows.",
         title: "Actions"
     },
     addEmailTemplate: {

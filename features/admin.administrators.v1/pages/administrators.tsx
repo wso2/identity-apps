@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { GearIcon } from "@oxygen-ui/react-icons";
 import {
     FeatureAccessConfigInterface,
     FeatureStatus,
@@ -36,16 +37,16 @@ import {
     history,
     store
 } from "@wso2is/admin.core.v1";
-import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
-import { TenantInfo } from "@wso2is/admin.extensions.v1/components/tenants/models/tenant";
-import { getAssociationType } from "@wso2is/admin.extensions.v1/components/tenants/utils/tenants";
-import { getAgentConnections } from "@wso2is/admin.extensions.v1/components/user-stores/api/remote-user-stores";
-import { AgentConnectionInterface } from "@wso2is/admin.extensions.v1/components/user-stores/models/remote-user-stores";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
+import { getAgentConnections } from "@wso2is/admin.remote-userstores.v1/api/remote-user-stores";
+import { AgentConnectionInterface } from "@wso2is/admin.remote-userstores.v1/models/remote-user-stores";
 import { getRoleById, searchRoleList } from "@wso2is/admin.roles.v2/api/roles";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants";
 import { RolesV2Interface, SearchRoleInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
+import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
+import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { useInvitedUsersList, useUsersList } from "@wso2is/admin.users.v1/api";
 import { AddUserWizard } from "@wso2is/admin.users.v1/components/wizard/add-user-wizard";
 import {
@@ -169,11 +170,12 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
     const [ searchInternalAdminQuery, setSearchInternalAdminQuery ] = useState<string>("");
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    const [ modifiedLimit, setModifiedLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT
+        + TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET);
     const [ listItemAdditionalLimit, setListItemAdditionalLimit ] = useState<number>(0);
     const [ currentActivePage, setCurrentActivePage ] = useState<number>(0);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showExtenalAdminWizard, setShowExtenalAdminWizard ] = useState<boolean>(false);
-    const [ rolesList ] = useState([]);
     const [ invitationStatusOption, setInvitationStatusOption ] = useState<string>(InvitationStatus.ACCEPTED);
     const [ isInvitationStatusOptionChanged, setIsInvitationStatusOptionChanged ] = useState<boolean>(false);
     const [ paginatedGuestList, setPaginateGuestList ] = useState<UserInviteInterface[]>([]);
@@ -216,10 +218,6 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
     const organizationName: string = store.getState().auth.tenantDomain;
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-
-    const modifiedLimit: number = useMemo(() => {
-        return listItemLimit + TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET;
-    }, [ listItemLimit ]);
     // Excluding groups and roles from getUserList API call to improve performance.
     const excludedAttributes: string = UserManagementConstants.GROUPS_ATTRIBUTE;
 
@@ -244,7 +242,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         error: adminUserListFetchRequestError,
         mutate: mutateAdminUserListFetchRequest
     } = useUsersList(
-        modifiedLimit + listItemAdditionalLimit,
+        modifiedLimit,
         listOffset + TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET,
         (
             searchQuery === ""
@@ -663,7 +661,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
 
             const moderated: UserListInterface = cloneDeep(list);
 
-            if (moderated.Resources?.length === requestedLimit) {
+            if (moderated.Resources?.length > listItemLimit) {
                 moderated.Resources?.splice(-1, popCount);
                 setIsGuestUsersNextPageAvailable(true);
             } else {
@@ -683,9 +681,14 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
 
         // Check if clonedUserList length is less than the requested limit.
         // If so, fetch the next page.
-        if (clonedUserListDeficit > 0 && usersList?.itemsPerPage >= modifiedLimit) {
+        if (
+            clonedUserListDeficit > 0
+            && usersList?.itemsPerPage >= modifiedLimit
+            && usersList?.totalResults >= modifiedLimit
+        ) {
             // Fetch the next page.
-            setListItemAdditionalLimit(clonedUserListDeficit);
+            setModifiedLimit(modifiedLimit + clonedUserListDeficit);
+            setListItemAdditionalLimit(usersList?.Resources?.length - clonedUserList.Resources?.length);
             moderatedUsersList = moderateUsersList(
                 clonedUserList, modifiedLimit - clonedUserListDeficit, TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET);
         } else {
@@ -856,6 +859,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         if (currentActivePage > dataActivePage) {
             // When going back, we need to do not need to offset for the additional items.
             setListOffset((dataActivePage - 1) * listItemLimit);
+            setModifiedLimit(listItemLimit + TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET);
         } else {
             // When going forward, we need to offset for the additional items requested if any.
             setListOffset(((dataActivePage - 1) * listItemLimit) + listItemAdditionalLimit);
@@ -1430,7 +1434,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                             setShowExtenalAdminWizard(false);
                         } }
                         updateList={ () => mutateGuestUserListFetchRequest() }
-                        rolesList={ rolesList }
+                        rolesList={ [] }
                         emailVerificationEnabled={ true }
                         onInvitationSendSuccessful={ () => {
                             mutateGuestUserListFetchRequest();
@@ -1470,7 +1474,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                     listOffset={ listOffset }
                     listItemLimit={ listItemLimit }
                     updateList={ () => mutateGuestUserListFetchRequest() }
-                    rolesList={ rolesList }
+                    rolesList={ [] }
                     emailVerificationEnabled={ false }
                     isAdminUser={ true }
                     defaultUserTypeSelection={ UserAccountTypes.ADMINISTRATOR }
@@ -1501,7 +1505,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                                 (
                                     <Button
                                         data-componentid={ `${ componentId }-admin-settings-button` }
-                                        icon="setting"
+                                        icon={ GearIcon }
                                         onClick={ handleSettingsButton }
                                     >
                                     </Button>

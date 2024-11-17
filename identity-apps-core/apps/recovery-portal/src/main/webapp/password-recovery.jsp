@@ -48,6 +48,11 @@
 <%-- Include tenant context --%>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
+<%
+    // Add the password-recovery screen to the list to retrieve text branding customizations.
+    screenNames.add("password-recovery");
+%>
+
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
@@ -560,6 +565,8 @@
                         "Please.enter.valid.email")%>";
             const emptyUsernameErrorMsg = "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                         "Please.enter.your.username")%>";
+            const emptyUserIdentifierMsg = "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                        "Please.enter.your.identifier")%>";
             let errorMsgContent = document.getElementById("error-message");
 
             let userName = document.getElementById("username");
@@ -569,7 +576,8 @@
             }
 
             if ($("#username").val() === "") {
-                errorMsgContent.innerHTML = emptyUsernameErrorMsg;
+                errorMsgContent.innerHTML =
+                    <%=isMultiAttributeLoginEnabledInTenant? "emptyUserIdentifierMsg" : "emptyUsernameErrorMsg"%>;
                 errorMessage.show();
                 submitBtnState( { disabled: true } );
 

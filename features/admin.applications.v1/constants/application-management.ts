@@ -42,6 +42,13 @@ export class ApplicationManagementConstants {
     public static readonly DEFAULT_APPS: string[] = [ this.MY_ACCOUNT_APP_NAME ];
 
     /**
+     * When a new Application version is released, this variable should to be updated.
+     */
+    public static readonly APP_VERSION_1: string = "v1.0.0";
+    public static readonly APP_VERSION_2: string = "v2.0.0";
+    public static readonly LATEST_VERSION: string = ApplicationManagementConstants.APP_VERSION_2;
+
+    /**
      * Private constructor to avoid object instantiation from outside
      * the class.
      */
@@ -76,7 +83,9 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_MYACCOUNT_SAAS_SETTINGS", "applications.myaccount.saasMyaccountSettings")
         .set("APPLICATION_ADD_MANAGEMENT_APPLICATIONS", "applications.add.managementApplications")
         .set("APPLICATIONS_SETTINGS", "applications.settings")
-        .set("TRUSTED_APPS", "applications.trustedApps");
+        .set("TRUSTED_APPS", "applications.trustedApps")
+        .set("APPLICATION_ACCESSTOKEN_ATTRIBUTES", "applications.accessTokenAttributes")
+        .set("APPLICATION_OUTDATED_APP_BANNER", "applications.outdatedAppBanner");
 
     /**
      * Key for the URL search param for application state.
@@ -347,7 +356,9 @@ export class ApplicationManagementConstants {
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID,
         FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.IPROOV_AUTHENTICATOR_NAME,
-        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.IPROOV_AUTHENTICATOR_ID
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.IPROOV_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.DUO_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.DUO_AUTHENTICATOR_ID
     ];
 
     // Known social authenticators.
@@ -426,7 +437,7 @@ export class ApplicationManagementConstants {
             "\\${UserTenantHint}",
             "\\${organizationIdHint}"
         ],
-        ACCESS_URL_MAX_LENGTH: 200,
+        ACCESS_URL_MAX_LENGTH: 1024,
         ACCESS_URL_MIN_LENGTH: 3,
         APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),
         APP_NAME_MAX_LENGTH: 50,
@@ -434,6 +445,8 @@ export class ApplicationManagementConstants {
     };
 
     public static readonly CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY: string = "isConditionalAuthTourViewed";
+
+    public static readonly CONDITIONAL_AUTH_EDITOR_THEME_STORAGE_KEY: string = "conditionalAuthEditorTheme"
 
     public static readonly CUSTOM_APPLICATION_OIDC: string = "custom-application-oidc";
 

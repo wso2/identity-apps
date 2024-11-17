@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { AssociatedRolesInterface } from "@wso2is/admin.roles.v2/models";
 import { LinkInterface } from "@wso2is/core/models";
@@ -36,6 +36,7 @@ export interface ApplicationBasicInterface {
     id?: string;
     name: string;
     description?: string;
+    applicationVersion?: string;
     accessUrl?: string;
     clientId?: string;
     issuer?: string;
@@ -331,6 +332,7 @@ export interface ApplicationTemplateListItemInterface {
     id: string;
     name: string;
     description?: string;
+    applicationVersion?: string;
     image?: string;
     authenticationProtocol?: string;
     /**

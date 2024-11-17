@@ -16,6 +16,8 @@
  * under the License.
  */
 
+/* eslint-disable sort-keys */
+
 /**
  * Stubs files such as .jpg, .png, etc.
  *

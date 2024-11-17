@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -43,7 +43,7 @@
                 String i18nKey = null;
         
                 if (StringUtils.equals(attribute, USERNAME_CLAIM_URI)) {
-                    i18nKey = "Username";
+                    i18nKey = "username";
                 } else if (StringUtils.equals(attribute, EMAIL_CLAIM_URI )) {
                     i18nKey = "email";
                 } else if (StringUtils.equals(attribute, MOBILE_CLAIM_URI)) {
@@ -59,8 +59,9 @@
                 }
             }
             if (attributeList.size() > 0) {
+                String orString = AuthenticationEndpointUtil.i18n(resourceBundle, "or").toLowerCase(); 
                 usernameLabel = String.join(", ", attributeList.subList(0, attributeList.size() - 1))
-                    + (attributeList.size() > 1 ? " or " : "")
+                    + (attributeList.size() > 1 ? " " + orString + " " : "")
                     + attributeList.get(attributeList.size() - 1);
             }
         return usernameLabel;

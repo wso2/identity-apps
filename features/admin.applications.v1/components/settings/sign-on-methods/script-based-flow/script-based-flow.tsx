@@ -34,7 +34,7 @@ import {
 } from "@wso2is/admin.authentication-flow-builder.v1/constants/template-constants";
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import { AppState, AppUtils, EventPublisher, FeatureConfigInterface, getOperationIcons } from "@wso2is/admin.core.v1";
-import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
 import { deleteSecret, getSecretList } from "@wso2is/admin.secrets.v1/api/secret";
@@ -862,7 +862,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                     data-componentid={ `${ componentId }-empty-placeholder` }
                 >
                     <ListItemText>
-                        <Typography variant="body1" align="center" gutterBottom="true">
+                        <Typography variant="body1" align="center" gutterBottom>
                             { t("authenticationFlow:scriptEditor.secretSelector." +
                                 "emptyPlaceholder.header") }
                         </Typography>
@@ -874,10 +874,12 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     "emptyPlaceholder.description"
                                 }
                             >
-                                    Securely store access keys as secrets. A secret can
-                                    replace the consumer secret in <OxygenCode variant="caption">
-                                        callChoreo()</OxygenCode> function
-                                    in the conditional authentication scripts.
+                                You can securely store sensitive information, such as
+                                API keys and other secrets, for use in conditional
+                                authentication scripts. Once stored, these secrets can
+                                be referenced in your scripts using the syntax
+                                <OxygenCode variant="caption">{ "secrets.{secret_name}" }
+                                </OxygenCode>.
                             </Trans>
                         </Typography>
                     </ListItemText>

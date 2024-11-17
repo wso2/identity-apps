@@ -24,6 +24,7 @@ import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import IconButton from "@oxygen-ui/react/IconButton";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import AIBanner from "@wso2is/common.ai.v1/components/ai-banner";
 import AIBannerTall from "@wso2is/common.ai.v1/components/ai-banner-tall";
 import {
@@ -32,7 +33,6 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import FeatureStatusLabel from "../../admin.extensions.v1/components/feature-gate/models/feature-gate";
 import useAIBrandingPreference from "../hooks/use-ai-branding-preference";
 import useGenerateAIBrandingPreference, { GenerateAIBrandingPreferenceFunc }
     from "../hooks/use-generate-ai-branding-preference";

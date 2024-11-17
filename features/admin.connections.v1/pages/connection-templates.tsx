@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppState, EventPublisher, history } from "@wso2is/admin.core.v1";
 import {
     getEmptyPlaceholderIllustrations
@@ -24,8 +25,12 @@ import {
     AppConstants
 } from "@wso2is/admin.core.v1/constants/app-constants";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-app-configs";
+import { RequestErrorInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import {
+    useGetIdVPTemplateList
+} from "@wso2is/admin.identity-verification-providers.v1/api/use-get-idvp-template-list";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     DocumentationLink,
@@ -36,15 +41,14 @@ import {
     SearchWithFilterLabels,
     useDocumentation
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import union from "lodash-es/union";
-import React, { FC, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
+import React, { FC, ReactElement, ReactNode, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { useGetConnectionTemplates } from "../api/use-get-connection-templates";
-import {
-    AuthenticatorCreateWizardFactory
-} from "../components/create/authenticator-create-wizard-factory";
+import { ConnectionCreateWizardFactory } from "../components/create/connection-create-wizard-factory";
 import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../constants/connection-ui-constants";
 import {
@@ -86,6 +90,9 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
     const { UIConfig } = useUIConfig();
 
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
+    const idVPFeatureConfig: FeatureAccessConfigInterface = UIConfig?.features?.identityVerificationProviders;
+    const isIdVPFeatureEnabled: boolean = idVPFeatureConfig?.enabled;
+    const hasIdVPCreatePermissions: boolean = useRequiredScopes(idVPFeatureConfig?.scopes?.create);
 
     // External connection resources URL from the UI config.
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
@@ -106,25 +113,47 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
         isValidating: isConnectionTemplatesRequestValidating
     } = useGetConnectionTemplates(null, null, null);
 
+    const {
+        data: fetchedIdVPTemplates,
+        isLoading: isIdVPTemplatesFetchRequestLoading,
+        error: idVPTemplatesFetchRequestError,
+        isValidating: isIdVPTemplatesRequestValidating
+    } = useGetIdVPTemplateList(isIdVPFeatureEnabled && hasIdVPCreatePermissions);
+
+    const isTemplatesLoading: boolean = isConnectionTemplatesFetchRequestLoading || isIdVPTemplatesFetchRequestLoading;
+    const isTemplatesValidating: boolean = isConnectionTemplatesRequestValidating || isIdVPTemplatesRequestValidating;
+    const templatesFetchError: AxiosError<RequestErrorInterface> = connectionTemplatesFetchRequestError
+        || idVPTemplatesFetchRequestError;
+
+    const combinedConnectionTemplates: ConnectionTemplateInterface[] = useMemo(() => {
+        if (isTemplatesLoading || templatesFetchError) {
+            return [];
+        }
+
+        return [ ...fetchedConnectionTemplates, ...(fetchedIdVPTemplates ?? []) ];
+    }, [ isTemplatesLoading, isTemplatesValidating, templatesFetchError ]);
+
     /**
      * Set the filtered connection templates to the component state
      * and set the filter tags lit based on the fetched templates.
      */
     useEffect(() => {
-        if (fetchedConnectionTemplates?.length > 0) {
-            setFilteredConnectionTemplates(fetchedConnectionTemplates);
-
-            let _filterTagsList: string[] = [];
-
-            for (const template of fetchedConnectionTemplates) {
-                if (template.tags?.length > 0) {
-                    _filterTagsList = union(_filterTagsList, template.tags);
-                }
-            }
-            setFilterTags(_filterTagsList);
+        if (isTemplatesLoading) {
+            return;
         }
 
-    }, [ isConnectionTemplatesRequestValidating, connectionTemplatesFetchRequestError ]);
+        setFilteredConnectionTemplates(combinedConnectionTemplates);
+
+        let _filterTagsList: string[] = [];
+
+        for (const template of combinedConnectionTemplates) {
+            if (template.tags?.length > 0) {
+                _filterTagsList = union(_filterTagsList, template.tags);
+            }
+        }
+        setFilterTags(_filterTagsList);
+
+    }, [ isConnectionTemplatesFetchRequestLoading, isIdVPTemplatesFetchRequestLoading ]);
 
     /**
      * Handles the connection template fetch request errors.
@@ -224,13 +253,13 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
 
         if (filterLabels.length > 0) {
             // Filter out the templates based on the selected filter labels.
-            for (const connectionTemplate of fetchedConnectionTemplates) {
+            for (const connectionTemplate of combinedConnectionTemplates) {
                 if (connectionTemplate.tags.some((tag: string) => filterLabels.includes(tag))) {
                     _filteredCategorizedTemplates.push(connectionTemplate);
                 }
             }
         } else {
-            _filteredCategorizedTemplates = [ ...fetchedConnectionTemplates ];
+            _filteredCategorizedTemplates = [ ...combinedConnectionTemplates ];
         }
 
         if (query) {
@@ -352,13 +381,14 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                         onSearch={ handleConnectionTypeSearch }
                         onFilter={ handleConnectionTypeFilter }
                         filterLabels={ filterTags }
+                        isLoading={ isTemplatesLoading }
                     />
                 ) }
-                isLoading={ isConnectionTemplatesFetchRequestLoading }
             >
                 <ResourceGrid
                     isEmpty={ filteredConnectionTemplates?.length === 0 }
                     emptyPlaceholder={ showPlaceholders(filteredConnectionTemplates) }
+                    isLoading={ isTemplatesLoading }
                 >
                     {
                         filteredConnectionTemplates?.map((
@@ -431,9 +461,10 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
             </GridLayout>
             {
                 showWizard && (
-                    <AuthenticatorCreateWizardFactory
+                    <ConnectionCreateWizardFactory
                         isModalOpen={ showWizard }
                         handleModalVisibility={ (isOpen: boolean) => setShowWizard(isOpen) }
+                        connectionType={ selectedTemplate?.type }
                         type={ templateType }
                         selectedTemplate={ selectedTemplate }
                         onIDPCreate={ handleSuccessfulIDPCreation }

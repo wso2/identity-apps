@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import { I18n } from "@wso2is/i18n";
+import { AxiosError } from "axios";
 import { addAlert } from "./global";
 import { ProfileActionTypes, ProfileBaseActionWithCommonPayload, ToggleSCIMEnabledAction } from "./types/profile";
 import { getAssociations } from "../../api";
@@ -50,15 +51,14 @@ export const toggleSCIMEnabled = (isEnabled: boolean): ToggleSCIMEnabledAction =
 
 /**
  * Action to fetch the linked accounts and set the response in redux state.
- * @return {(dispatch) => void}
  */
-export const getProfileLinkedAccounts = () => (dispatch): void => {
+export const getProfileLinkedAccounts = () => (dispatch: any): void => {
 
     getAssociations()
-        .then((linkedAccountsResponse) => {
+        .then((linkedAccountsResponse: LinkedAccountInterface[]) => {
             dispatch(setProfileLinkedAccounts(linkedAccountsResponse));
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             if (error.response && error.response.data && error.response.data.detail) {
                 dispatch(
                     addAlert({

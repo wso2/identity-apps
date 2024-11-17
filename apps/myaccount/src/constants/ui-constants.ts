@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -39,17 +39,17 @@ export class UIConstants extends CommonUIConstants {
     /**
      * Add local linked account form identifier.
      */
-     public static readonly ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER: string = "addLocalLinkedAccountForm";
+    public static readonly ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER: string = "addLocalLinkedAccountForm";
 
-     /**
+    /**
      * Error Account status upper limit.
      */
-    public static readonly ERROR_ACCOUNT_STATUS_UPPER_LIMIT = 40;
+    public static readonly ERROR_ACCOUNT_STATUS_UPPER_LIMIT: number = 40;
 
     /**
      * Warning Account status upper limit.
      */
-    public static readonly WARNING_ACCOUNT_STATUS_UPPER_LIMIT = 70;
+    public static readonly WARNING_ACCOUNT_STATUS_UPPER_LIMIT: number = 70;
 
     /**
      * Default theme of the portal.

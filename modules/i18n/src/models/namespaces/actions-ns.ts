@@ -52,10 +52,12 @@ export interface actionsNS {
                     name: string;
                     properties: {
                         header: {
+                            hint: string;
                             label: string;
                             placeholder: string;
                             validations: {
                                 empty: string
+                                invalid: string
                             };
                         };
                         value: {
@@ -137,7 +139,15 @@ export interface actionsNS {
     goBackActions: string,
     notification: {
         error: {
+            activate: {
+                description: string;
+                message: string;
+            };
             create: {
+                description: string;
+                message: string;
+            };
+            deactivate: {
                 description: string;
                 message: string;
             };
@@ -159,7 +169,15 @@ export interface actionsNS {
             };
         };
         genericError: {
+            activate: {
+                description: string;
+                message: string;
+            };
             create: {
+                description: string;
+                message: string;
+            };
+            deactivate: {
                 description: string;
                 message: string;
             };
@@ -181,7 +199,15 @@ export interface actionsNS {
             };
         };
         success: {
+            activate: {
+                description: string;
+                message: string;
+            };
             create: {
+                description: string;
+                message: string;
+            };
+            deactivate: {
                 description: string;
                 message: string;
             };

@@ -95,4 +95,6 @@ export interface PasswordPoliciesInterface extends ValidationFormInterface {
     passwordExpiryEnabled?: boolean;
     passwordHistoryCount?: number | string;
     passwordHistoryCountEnabled?: boolean;
+    passwordExpiryRules?: Record<string, string>;
+    passwordExpirySkipFallback?: boolean;
 }

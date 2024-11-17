@@ -41,7 +41,7 @@
 <!doctype html>
 <html lang="en-US">
 <head>
-    <script language="JavaScript" type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
     <%-- header --%>
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));

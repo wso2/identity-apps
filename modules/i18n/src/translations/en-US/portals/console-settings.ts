@@ -29,6 +29,7 @@ export const consoleSettings: ConsoleSettingsNS = {
             action: "Add Administrator",
             options: {
                 addExistingUser: "Add Existing User",
+                addExternalUser: "Invite Admins to Asgardeo",
                 inviteParentUser: "Invite Parent User"
             }
         },
@@ -36,6 +37,13 @@ export const consoleSettings: ConsoleSettingsNS = {
             backButton: "Go back to Administrators"
         },
         tabLabel: "Administrators"
+    },
+    invitations: {
+        filterOptions: {
+            accepted: "Accepted",
+            pending: "Pending",
+            expired: "Expired"
+        }
     },
     loginFlow: {
         tabLabel: "Login Flow"

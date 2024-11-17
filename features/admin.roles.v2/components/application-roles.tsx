@@ -25,6 +25,7 @@ import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormGroup from "@oxygen-ui/react/FormGroup";
 import Radio from "@oxygen-ui/react/Radio";
 import TextField from "@oxygen-ui/react/TextField";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { updateApplicationDetails } from "@wso2is/admin.applications.v1/api";
 import { useGetApplication } from "@wso2is/admin.applications.v1/api/use-get-application";
 import { ApplicationInterface } from "@wso2is/admin.applications.v1/models";
@@ -33,7 +34,6 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -123,8 +123,9 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const isReadOnly: boolean = readOnly || organizationType === OrganizationType.SUBORGANIZATION;
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+
+    const hasRoleCreatePermissions: boolean = useRequiredScopes(featureConfig?.userRoles?.scopes?.create);
 
     /**
      * Fetch application roles on component load and audience switch.
@@ -323,6 +324,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     <Grid.Row columns={ 2 } className="pb-0">
                                         <Grid.Column width={ 4 }>
                                             <FormControlLabel
+                                                className="mt-1"
                                                 checked={ roleAudience === RoleAudienceTypes.APPLICATION }
                                                 control={ <Radio size="small" /> }
                                                 onChange={ () =>
@@ -338,8 +340,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                         <Grid.Column width={ 6 }>
                                             {
                                                 roleAudience === RoleAudienceTypes.APPLICATION &&
-                                                hasRequiredScopes(featureConfig?.userRoles,
-                                                    featureConfig?.userRoles?.scopes?.create, allowedScopes)
+                                                hasRoleCreatePermissions
                                                     && (
                                                         <LinkButton
                                                             fluid
@@ -428,20 +429,26 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                         value: BasicRoleInterface[],
                                         getTagProps: AutocompleteRenderGetTagProps
                                     ) => value.map((option: BasicRoleInterface, index: number) => (
-                                        <Chip
-                                            { ...getTagProps({ index }) }
-                                            key={ index }
-                                            label={ option.name }
-                                            activeOption={ activeOption }
-                                            setActiveOption={ setActiveOption }
-                                            variant={
-                                                initialSelectedRoles?.find(
-                                                    (role: BasicRoleInterface) => role.id === option.id
-                                                )
-                                                    ? "solid"
-                                                    : "outlined"
-                                            }
-                                        />
+                                        <>
+                                            { /* `activeOption` and `setActiveOption` are not part of Chip API */ }
+                                            { /* TODO: Tracker: https://github.com/wso2/product-is/issues/21351 */ }
+                                            { /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */ }
+                                            { /* @ts-ignore */ }
+                                            <Chip
+                                                { ...getTagProps({ index }) }
+                                                key={ index }
+                                                label={ option.name }
+                                                activeOption={ activeOption }
+                                                setActiveOption={ setActiveOption }
+                                                variant={
+                                                    initialSelectedRoles?.find(
+                                                        (role: BasicRoleInterface) => role.id === option.id
+                                                    )
+                                                        ? "filled"
+                                                        : "outlined"
+                                                }
+                                            />
+                                        </>
                                     )) }
                                     renderOption={ (
                                         props: HTMLAttributes<HTMLLIElement>,
@@ -478,7 +485,10 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 </Grid>
             </EmphasizedSegment>
             <ConfirmationModal
-                onClose={ (): void => setShowSwitchAudienceWarning(false) }
+                onClose={ (): void => {
+                    setTempRoleAudience(undefined);
+                    setShowSwitchAudienceWarning(false);
+                } }
                 type="negative"
                 open={ showSwitchAudienceWarning }
                 assertionHint={ t("extensions:develop.applications.edit.sections." +
@@ -487,6 +497,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ (): void => {
+                    setTempRoleAudience(undefined);
                     setShowSwitchAudienceWarning(false);
                 } }
                 onPrimaryActionClick={ (): void => {

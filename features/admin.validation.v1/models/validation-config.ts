@@ -55,5 +55,24 @@ export interface ValidationFormInterface {
     maxConsecutiveCharacters?: string;
     enableValidator?: string;
     isAlphanumericOnly?: boolean;
-    [key: string]: string | boolean | number;
+    [key: string]: string | boolean | number | Record<string, string>;
+}
+
+export enum PasswordExpiryRuleOperator {
+    EQ = "eq",
+    NE = "ne"
+}
+
+export enum PasswordExpiryRuleAttribute {
+    ROLES = "roles",
+    GROUPS = "groups"
+}
+
+export interface PasswordExpiryRule {
+    id: string;
+    priority: number;
+    expiryDays: number;
+    attribute: PasswordExpiryRuleAttribute;
+    operator: PasswordExpiryRuleOperator;
+    values: string[];
 }

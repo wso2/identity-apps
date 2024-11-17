@@ -20,6 +20,7 @@ import useRequest, { RequestErrorInterface, RequestResultInterface } from "@wso2
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosRequestConfig } from "axios";
+import { OIDCDataInterface } from "../models";
 
 /**
  * Hook to get the protocol configurations of an application.
@@ -29,7 +30,7 @@ import { AxiosRequestConfig } from "axios";
  * @param shouldFetch - Condition to check if data should be fetched.
  * @returns Response as a promise.
  */
-const useGetApplicationInboundConfigs = <Data = unknown, Error = RequestErrorInterface>(
+const useGetApplicationInboundConfigs = <Data = OIDCDataInterface, Error = RequestErrorInterface>(
     id: string,
     protocol: string,
     shouldFetch: boolean = true

@@ -30,6 +30,23 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
             termsOfService: "https://wso2.com/terms-of-use"
         },
         develop: {
+            actions:{
+                learnMore: undefined,
+                types: {
+                    preIssueAccessToken: {
+                        learnMore: undefined
+                    },
+                    preRegistration: {
+                        learnMore: undefined
+                    },
+                    preUpdatePassword: {
+                        learnMore: undefined
+                    },
+                    preUpdateProfile: {
+                        learnMore:undefined
+                    }
+                }
+            },
             apiResources: {
                 addAPIResource: {
                     rbacInfoBox: {
@@ -124,6 +141,23 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                             mavenDownload: undefined,
                             mobileApp: {
                                 learnMore: undefined
+                            }
+                        }
+                    },
+                    outdatedApplications: {
+                        versions: {
+                            version100: {
+                                removeUsernameFromIntrospectionRespForAppTokens: {
+                                    documentationLink: undefined
+                                },
+                                useClientIdAsSubClaimOfAppTokens: {
+                                    documentationLink: undefined
+                                }
+                            },
+                            version200: {
+                                addAllRequestedClaimsInJWTAccessToken: {
+                                    documentationLink: undefined
+                                }
                             }
                         }
                     },
@@ -252,6 +286,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         learnMore: undefined,
                         setupGuide: undefined
                     },
+                    duo: {
+                        learnMore: undefined
+                    },
                     enterprise: {
                         oidc: {
                             learnMore: undefined,
@@ -294,6 +331,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         learnMore: undefined,
                         setupGuide: undefined
                     },
+                    iProov: {
+                        learnMore: undefined
+                    },
                     learnMore: undefined,
                     microsoft: {
                         help: {
@@ -327,6 +367,23 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 learnMore: undefined
             },
             eventPublishing: {
+                learnMore: undefined
+            },
+            multiTenancy: {
+                addTenant: {
+                    learnMore: undefined
+                },
+                learnMore: undefined,
+                systemSettings: {
+                    learnMore: undefined
+                }
+            },
+            smsCustomization: {
+                form: {
+                    smsBody: {
+                        learnMore: undefined
+                    }
+                },
                 learnMore: undefined
             }
         },

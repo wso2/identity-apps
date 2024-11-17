@@ -16,21 +16,21 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
     AppState,
-    ConfigReducerStateInterface,
     EventPublisher,
     FeatureConfigInterface,
     UIConstants,
     history
 } from "@wso2is/admin.core.v1";
 import {
-    AuthenticatorExtensionsConfigInterface
-} from "@wso2is/admin.extensions.v1/configs";
-import { TestableComponentInterface } from "@wso2is/core/models";
+    IdVPTemplateTags
+} from "@wso2is/admin.identity-verification-providers.v1/models/identity-verification-providers";
+import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import {
     DocumentationLink,
     GridLayout,
@@ -39,36 +39,21 @@ import {
     SearchWithFilterLabels,
     useDocumentation
 } from "@wso2is/react-components";
-import get from "lodash-es/get";
-import isEmpty from "lodash-es/isEmpty";
 import React, {
     FC,
     ReactElement,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
-import { useGetAuthenticatorTags, useGetAuthenticators } from "../api/authenticators";
-import { useGetConnections } from "../api/connections";
+import { useGetAuthenticatorTags } from "../api/authenticators";
 import { AuthenticatorGrid } from "../components/authenticator-grid";
-import { LocalAuthenticatorConstants } from "../constants/local-authenticator-constants";
+import { SearchInputsInterface, useGetCombinedConnectionList } from "../hooks/use-get-combined-connection-list";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
-import {
-    AuthenticatorInterface,
-    AuthenticatorLabels,
-    AuthenticatorTypes
-} from "../models/authenticators";
-import {
-    ConnectionInterface,
-    ConnectionListResponseInterface
-} from "../models/connection";
-import {
-    ConnectionsManagementUtils,
-    handleGetAuthenticatorTagsError,
-    handleGetConnectionListCallError
-} from "../utils/connection-utils";
 
 /**
  * Proptypes for the Connections page component.
@@ -86,318 +71,143 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
     const { [ "data-testid" ]: testId } = props;
 
     const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const isIdVPFeatureEnabled: boolean = featureConfig?.identityVerificationProviders?.enabled;
 
-    const [ searchQuery, setSearchQuery ] = useState<string>("");
-    const [ hasNextPage, setHasNextPage ] = useState<boolean>(undefined);
+    const hasIdVPReadPermissions: boolean = useRequiredScopes(
+        featureConfig?.identityVerificationProviders?.scopes?.read);
+
+    const [ searchInputs, setSearchInputs ] = useState<SearchInputsInterface>({
+        filterTags: [],
+        searchQuery: ""
+    });
     const [ listOffset, setListOffset ] = useState<number>(0);
-    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-    const [ filterTags, setFilterTags ] = useState<string[]>([]);
-    const [ selectedFilterTags, setSelectedFilterTags ] = useState<string[]>([]);
-    const [ showFilteredList, setShowFilteredList ] = useState<boolean>(false);
-    const [ connectionsList, setConnectionsList ] = useState<ConnectionListResponseInterface>({});
-    const [ authenticatorList, setAuththenticatorList ] = useState<AuthenticatorInterface[]>([]);
-    const [ localAuthenticatorList, setLocalAuthenticatorList ] = useState<AuthenticatorInterface[]>([]);
-    const [ filteredAuthenticatorList, setFilteredAuthenticatorList ] = useState<AuthenticatorInterface[]>([]);
-    const [ filter, setFilter ] = useState<string>(null);
-    const [ filterAuthenticatorsOnly, setFilterAuthenticatorsOnly ] = useState<boolean>(false);
-    const [ appendConnections, setAppendConnections ] = useState<boolean>(false);
+    const [ isFiltering, setIsFiltering ] = useState<boolean>(false);
+
     const isPaginating: boolean = false;
+    const listItemLimit: number = UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT;
 
     const {
-        data: authenticators,
-        isLoading: isAuthenticatorsFetchRequestLoading,
-        error: authenticatorsFetchRequestError,
-        mutate: mutateAuthenticatorsFetchRequest
-    } = useGetAuthenticators(filter);
-
-    const {
-        data: connections,
-        isLoading: isConnectionsFetchRequestLoading,
-        error: connectionsFetchRequestError,
-        mutate: mutateConnectionsFetchRequest
-    } = useGetConnections(
-        listItemLimit,
-        listOffset,
-        filter,
-        "federatedAuthenticators",
-        !filterAuthenticatorsOnly,
-        filterAuthenticatorsOnly
-    );
-
-    const {
-        data: authenticatorTags,
+        data: fetchedAuthenticatorTags,
         isLoading: isAuthenticatorTagsFetchRequestLoading,
         error: authenticatorTagsFetchRequestError
     } = useGetAuthenticatorTags();
 
-    useEffect(() => {
-        if (!connections) {
-
-            return;
-        }
-
-        if (!localAuthenticatorList || localAuthenticatorList?.length === 0) {
-
-            return;
-        }
-
-        if (connectionsFetchRequestError) {
-            handleGetConnectionListCallError(connectionsFetchRequestError);
-
-            return;
-        }
-
-        const initialConnectionsList: ConnectionListResponseInterface = {};
-
-        setHasNextPage(
-            connections?.links &&
-            Array.isArray(connections.links) &&
-            connections?.links[ 0 ] &&
-            connections?.links[ 0 ].rel === "next"
-        );
-
-        const oldConnectionsList: ConnectionInterface[] =
-            connectionsList?.identityProviders &&
-                Array.isArray(connectionsList.identityProviders) &&
-                connectionsList.identityProviders.length > 0
-                ? connectionsList.identityProviders
-                : [];
-
-        const connectionsData: ConnectionInterface[] = connections?.identityProviders
-            ? connections.identityProviders
-            : [];
-
-        if (appendConnections) {
-            initialConnectionsList.identityProviders = [ ...oldConnectionsList, ...connectionsData ];
-        } else {
-            initialConnectionsList.identityProviders = [ ...localAuthenticatorList, ...connectionsData ];
-        }
-
-        setConnectionsList(initialConnectionsList);
-    }, [ connections ]);
+    const {
+        data: combinedConnectionList,
+        isLoading: isCombinedConnectionListFetchRequestLoading,
+        error: combinedConnectionListFetchRequestError,
+        mutate: mutateCombinedConnectionListFetchRequest
+    } = useGetCombinedConnectionList(
+        listItemLimit,
+        listOffset,
+        searchInputs,
+        true,
+        isIdVPFeatureEnabled && hasIdVPReadPermissions
+    );
 
     /**
-     * Moderates the response of the request to get authenticators.
+     * Handle the error alert of the get connection list request.
      */
     useEffect(() => {
-
-        if (!authenticators) {
-            return;
-        }
-
-        setAuththenticatorList(authenticators);
-
-        // Handle the authenticator list fetch request error.
-        if (authenticatorsFetchRequestError) {
-            handleGetConnectionListCallError(authenticatorsFetchRequestError);
-        }
-
-        const moderated: AuthenticatorInterface[] = [];
-
-        authenticators.forEach((authenticator: AuthenticatorInterface) => {
-
-            // If type is not local return.
-            if (authenticator.type !== AuthenticatorTypes.LOCAL) {
-                return;
-            }
-
-            // Set the FIDO authenticator display name and tags.
-            if (authenticator.id === LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID) {
-                authenticator.displayName = "Passkey";
-            }
-
-            // Set the magic link authenticator tags.
-            if (authenticator.id === LocalAuthenticatorConstants.AUTHENTICATOR_IDS.MAGIC_LINK_AUTHENTICATOR_ID) {
-                authenticator.tags = [ AuthenticatorLabels.API_AUTHENTICATION, AuthenticatorLabels.PASSWORDLESS ];
-            }
-
-            const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
-                AuthenticatorMeta.getAuthenticators(),
-                authenticator.id
+        if (combinedConnectionListFetchRequestError) {
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: combinedConnectionListFetchRequestError?.response?.data?.description
+                        ?? t("authenticationProvider:notifications.getIDPList.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("authenticationProvider:notifications.getIDPList.genericError.message")
+                })
             );
-
-            // If authenticator is configurable, evaluate...
-            if (authenticatorConfig && authenticatorConfig.isEnabled) {
-                // If configurations are not available for the moment, push to the end of the array.
-                if (authenticatorConfig.isComingSoon) {
-                    moderated.push(authenticator);
-
-                    return;
-                }
-
-                // If configs are available, keep at the beginning of array.
-                moderated.unshift(authenticator);
-            }
-        });
-
-        setLocalAuthenticatorList(moderated);
-        setListItemLimit(UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT - moderated.length);
-    }, [ authenticators ]);
-
-    /**
-     * Filters the filtered authenticator list based on the configurable local authenticator list.
-     */
-    useEffect(() => {
-        const filtered: AuthenticatorInterface[] = authenticatorList.filter((authenticator: AuthenticatorInterface) => {
-
-            // Filtered authenticator list should only contain local authenticators that are configurable.
-            if (authenticator.type === AuthenticatorTypes.LOCAL) {
-
-                return localAuthenticatorList.some((localAuthenticator: AuthenticatorInterface) => {
-                    return localAuthenticator.id === authenticator.id;
-                });
-            }
-
-            return true;
-        });
-
-        setFilteredAuthenticatorList(filtered);
-    }, [ authenticatorList, localAuthenticatorList ]);
-
-    /**
-     * Fetches the local authenticators and stores them in the internal state.
-     */
-    useEffect(() => {
-        if (authenticators?.length > 0) {
-            const moderated: AuthenticatorInterface[] = [];
-
-            authenticators.forEach((authenticator: AuthenticatorInterface) => {
-                // If type is not local return.
-                if (authenticator.type !== AuthenticatorTypes.LOCAL) {
-                    return;
-                }
-
-                // Removes hidden authenticators.
-                if (config?.ui?.hiddenAuthenticators?.includes(authenticator.name)) {
-                    return;
-                }
-
-                if (authenticator.id === LocalAuthenticatorConstants.AUTHENTICATOR_IDS.MAGIC_LINK_AUTHENTICATOR_ID) {
-                    authenticator.tags = [ AuthenticatorLabels.API_AUTHENTICATION, AuthenticatorLabels.PASSWORDLESS ];
-                }
-
-                const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
-                    AuthenticatorMeta.getAuthenticators(),
-                    authenticator.id
-                );
-
-                // If authenticator is configurable, evaluate...
-                if (authenticatorConfig && authenticatorConfig.isEnabled) {
-                    // If configurations are not available for the moment, push to the end of the array.
-                    if (authenticatorConfig.isComingSoon) {
-                        moderated.push(authenticator);
-
-                        return;
-                    }
-
-                    // If configs are available, keep at the beginning of array.
-                    moderated.unshift(authenticator);
-                }
-            });
-
-
-
-            setLocalAuthenticatorList(moderated);
-            setListItemLimit(UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT - moderated.length);
         }
-    }, [ authenticators ]);
+    }, [ combinedConnectionListFetchRequestError ]);
 
     /**
-     * Fetches the available filter tags from the authenticators meta API.
+     * Handle the error alert of the get authenticator tags request.
      */
     useEffect(() => {
-        if (isAuthenticatorTagsFetchRequestLoading || !authenticatorTags) {
-            return;
-        }
-
         if (authenticatorTagsFetchRequestError) {
-            handleGetAuthenticatorTagsError(authenticatorTagsFetchRequestError);
-            setFilterTags([]);
-
-            return;
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: authenticatorTagsFetchRequestError?.response?.data?.description
+                        ?? t("authenticationProvider:notifications.getAuthenticatorTags.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("authenticationProvider:notifications.getAuthenticatorTags.genericError.description")
+                })
+            );
         }
-
-        setFilterTags(authenticatorTags.filter((tag: string) =>
-            AuthenticatorMeta.getAllowedFilterTags().includes(tag))
-        );
-    }, [ authenticatorTags ]);
+    }, [ authenticatorTagsFetchRequestError ]);
 
     /**
-     * Called on every `listOffset` & `listItemLimit` change.
+     * Filters the available authenticator tags from the fetched authenticator tags.
      */
-    useEffect(() => {
-        if (!listItemLimit) {
-            return;
+    const availableFilterTags: string[] = useMemo(() => {
+        if (isAuthenticatorTagsFetchRequestLoading || authenticatorTagsFetchRequestError || !fetchedAuthenticatorTags) {
+            return [];
         }
 
-        mutateConnectionsFetchRequest();
-    }, [ listOffset, listItemLimit ]);
+        const _filteredTags: string[] = fetchedAuthenticatorTags.filter((tag: string) => {
+            if (Object.values(IdVPTemplateTags).includes(tag as IdVPTemplateTags)) {
+                return true;
+            };
+
+            return AuthenticatorMeta.getAllowedFilterTags().includes(tag);
+        });
+
+        return _filteredTags;
+    }, [ isAuthenticatorTagsFetchRequestLoading ]);
 
     /**
      * Handles the `onSearchQueryClear` callback action.
      */
     const handleSearchQueryClear = (): void => {
-        setSearchQuery("");
-        setFilterTags([]);
+        setSearchInputs({
+            filterTags: [],
+            searchQuery: ""
+        });
         setTriggerClearQuery(!triggerClearQuery);
-        setShowFilteredList(false);
+        setIsFiltering(false);
     };
 
-    /**
-     * Handles Connection grid filter.
-     *
-     * @param query - Search query.
-     * @param selectedFilters - Selected filters.
-     */
-    const handleConnectionGridFilter = (query: string, selectedFilters: string[]): void => {
-        // Update the internal state to manage placeholders etc.
-        setSearchQuery(query);
+    const handleSearchQueryChange = (query: string): void => {
+        setSearchInputs((prevSearchInputs: SearchInputsInterface) => {
+            return {
+                ...prevSearchInputs,
+                searchQuery: query
+            };
+        });
         setListOffset(0);
+        setIsFiltering(true);
+    };
 
-        // Update the state of selected filterTags.
-        const filterTags: string[] = selectedFilters || selectedFilterTags;
-
-        setSelectedFilterTags(filterTags);
-        setFilter(ConnectionsManagementUtils.buildAuthenticatorsFilterQuery(query, filterTags));
-        setFilterAuthenticatorsOnly(filterTags && filterTags.length > 0);
-
-        if (isEmpty(query) && isEmpty(filterTags)) {
-            setShowFilteredList(false);
-        } else {
-            setShowFilteredList(true);
-        }
+    const handleFilterTagsChange = (selectedFilters: string[]): void => {
+        setSearchInputs((prevSearchInputs: SearchInputsInterface) => {
+            return {
+                ...prevSearchInputs,
+                filterTags: selectedFilters
+            };
+        });
+        setListOffset(0);
+        setIsFiltering(true);
     };
 
     /**
      * Handles the `onUpdate` callback action.
      */
     const onUpdate = (): void => {
-        mutateAuthenticatorsFetchRequest();
-        mutateConnectionsFetchRequest();
-    };
-
-    /**
-     * Handles Grid pagination.
-     */
-    const handlePagination = (): void => {
-        if (!hasNextPage) {
-            return;
-        }
-
-        setAppendConnections(true);
+        mutateCombinedConnectionListFetchRequest();
     };
 
     return (
         <PageLayout
             pageTitle="Connections"
             action={ (
-                (!isConnectionsFetchRequestLoading || !isAuthenticatorsFetchRequestLoading) &&
-                !(!searchQuery && connectionsList?.identityProviders?.length <= 0)) &&
+                (!isCombinedConnectionListFetchRequestLoading) &&
+                !(!searchInputs?.searchQuery && combinedConnectionList?.length <= 0)) &&
                 (
                     <Show when={ featureConfig?.identityProviders?.scopes?.create }>
                         <PrimaryButton
@@ -429,12 +239,12 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
             <GridLayout
                 search={ (
                     <SearchWithFilterLabels
-                        isLoading= { isConnectionsFetchRequestLoading || isAuthenticatorsFetchRequestLoading }
+                        isLoading= { isCombinedConnectionListFetchRequestLoading }
                         searchInput={ (
                             <AdvancedSearchWithBasicFilters
                                 fill="white"
                                 onFilter={ (query: string) => {
-                                    handleConnectionGridFilter(query, null);
+                                    handleSearchQueryChange(query);
                                 } }
                                 filterAttributeOptions={ [
                                     {
@@ -478,30 +288,29 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                                 data-testid={ `${ testId }-advance-search` }
                             />
                         ) }
-                        filterLabels={ filterTags }
+                        filterLabels={ availableFilterTags }
                         onFilter={ (_: string, selectedFilters: string[]) => {
-                            handleConnectionGridFilter(searchQuery, selectedFilters);
+                            handleFilterTagsChange(selectedFilters);
                         } }
                         data-testid={ `${ testId }-search` }
                     />
                 ) }
                 isPaginating={ isPaginating }
-                paginate={ () => handlePagination() }
                 translations={ {
                     loading: t("common:loading")
                 } }
             >
                 <AuthenticatorGrid
-                    isLoading= { isConnectionsFetchRequestLoading || isAuthenticatorsFetchRequestLoading }
-                    authenticators={ showFilteredList ? filteredAuthenticatorList : connectionsList?.identityProviders }
+                    isLoading= { isCombinedConnectionListFetchRequestLoading }
+                    authenticators={ combinedConnectionList }
                     onEmptyListPlaceholderActionClick={ () => {
                         eventPublisher.publish("connections-click-new-connection-button");
                         history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
                     } }
-                    isFiltering={ showFilteredList }
+                    isFiltering={ isFiltering }
                     isPaginating={ isPaginating }
                     onSearchQueryClear={ handleSearchQueryClear }
-                    searchQuery={ searchQuery }
+                    searchQuery={ searchInputs?.searchQuery }
                     onConnectionUpdate={ onUpdate }
                     data-testid={ `${ testId }-list` }
                 />

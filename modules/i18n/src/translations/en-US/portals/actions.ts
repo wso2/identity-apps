@@ -48,7 +48,7 @@ export const actions: actionsNS = {
                 " secrets of the external endpoint need to be updated.",
                 title: {
                     noneAuthType: "No authentication is configured.",
-                    otherAuthType: "<strong>{{ authType }}</strong> authentication type is configured."
+                    otherAuthType: "<strong>{{ authType }}</strong> authentication scheme is configured."
                 }
             },
             label: "Authentication",
@@ -57,10 +57,13 @@ export const actions: actionsNS = {
                     name: "API Key",
                     properties: {
                         header: {
+                            hint: "Must be a string containing only letters (a-z, A-Z), numbers (0-9), " +
+                            "period (.) and hyphen (-), and should start with an alphanumeric character.",
                             label: "Header",
                             placeholder: "Header",
                             validations: {
-                                empty: "Header is a required field."
+                                empty: "Header is a required field.",
+                                invalid: "Please choose a valid header name that adheres to the given guidelines."
                             }
                         },
                         value: {
@@ -113,10 +116,10 @@ export const actions: actionsNS = {
                 create: "Once added, these secrets will not be displayed. You will only be able to reset them.",
                 update: "Once updated, these secrets will not be displayed. You will only be able to reset them again."
             },
-            label: "Authentication Type",
-            placeholder: "Select Authentication Type",
+            label: "Authentication Scheme",
+            placeholder: "Select Authentication Scheme",
             validations: {
-                empty: "Authentication Type is a required field."
+                empty: "Authentication Scheme is a required field."
             }
         },
         endpoint: {
@@ -143,9 +146,17 @@ export const actions: actionsNS = {
     goBackActions: "Go back to Actions",
     notification: {
         error: {
+            activate: {
+                description: "{{description}}",
+                message: "Error activating the new action."
+            },
             create: {
                 description: "{{description}}",
                 message: "Error creating the new action."
+            },
+            deactivate: {
+                description: "{{description}}",
+                message: "Error deactivating the action."
             },
             delete: {
                 description: "{{description}}",
@@ -165,8 +176,16 @@ export const actions: actionsNS = {
             }
         },
         genericError: {
+            activate: {
+                description: "Couldn't activate the new action.",
+                message: "Something went wrong."
+            },
             create: {
                 description: "Couldn't add the new action.",
+                message: "Something went wrong."
+            },
+            deactivate: {
+                description: "Couldn't deactivate the new action.",
                 message: "Something went wrong."
             },
             delete: {
@@ -187,16 +206,24 @@ export const actions: actionsNS = {
             }
         },
         success: {
+            activate: {
+                description: "The action was activated successfully.",
+                message: "Action activated successfully."
+            },
             create: {
                 description: "The new action was added successfully.",
                 message: "Action added successfully."
             },
+            deactivate: {
+                description: "The action was deactivated successfully.",
+                message: "Action deactivated successfully."
+            },
             delete: {
-                description: "The  action was added successfully.",
+                description: "The action was deleted successfully.",
                 message: "Action deleted successfully."
             },
             update: {
-                description: "The action configurations were updated successfully.",
+                description: "The action was updated successfully.",
                 message: "Action updated successfully."
             }
         }
@@ -210,9 +237,7 @@ export const actions: actionsNS = {
     types: {
         preIssueAccessToken: {
             description: {
-                expanded: "This action is executed before issuing the access token to an application. " +
-                "Use this action to manage claims and scopes of the access token. " +
-                "Refer the documentation for the API definition to implement.",
+                expanded:  "Use this action to update claims and scopes of the access token.",
                 shortened: "This action is executed before issuing the access token to an application."
             },
             heading: "Pre Issue Access Token"

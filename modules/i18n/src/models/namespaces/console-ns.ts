@@ -352,6 +352,7 @@ export interface ConsoleNS {
             userAttributesAndStores: string;
             userManagement: string;
             branding: string;
+            tenants: string;
         };
     };
     develop: {

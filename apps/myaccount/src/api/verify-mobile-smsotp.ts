@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import { AsgardeoSPAClient, HttpError, HttpInstance, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
+import { MobileVerificationRecoveryScenario } from "../constants";
 import { HttpMethods, SMSOTPProperty } from "../models";
 import { store } from "../store";
 
@@ -59,12 +60,14 @@ export const validateSMSOTPCode = (code: string): Promise<any> => {
 /**
  * Resend SMS OTP verification code for the authenticated user.
  */
-export const resendSMSOTPCode = (): Promise<any> => {
+export const resendSMSOTPCode = (
+    recoveryScenario: string = MobileVerificationRecoveryScenario.MOBILE_VERIFICATION_ON_UPDATE
+): Promise<any> => {
     const properties: SMSOTPProperty[] = [];
 
     const propertyData: SMSOTPProperty = {
         key: "RecoveryScenario",
-        value: "MOBILE_VERIFICATION_ON_UPDATE"
+        value: recoveryScenario
     };
 
     properties.push(propertyData);

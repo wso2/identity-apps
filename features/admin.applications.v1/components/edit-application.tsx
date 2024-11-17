@@ -37,7 +37,6 @@ import {
 } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
-import { MyAccountOverview } from "@wso2is/admin.extensions.v1/configs/components/my-account-overview";
 import AILoginFlowProvider from "@wso2is/admin.login-flow.ai.v1/providers/ai-login-flow-provider";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -64,6 +63,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, Form, Grid, Menu, TabProps } from "semantic-ui-react";
 import { InboundProtocolsMeta } from "./meta";
+import MyAccountOverview from "./my-account/my-account-overview";
 import {
     AccessConfiguration,
     AdvancedSettings,
@@ -229,6 +229,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     const handleApplicationUpdate = (id: string): void => {
         setIsApplicationUpdated(true);
+        handleProtocolUpdate();
         onUpdate(id);
     };
 
@@ -385,7 +386,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * @param data - Checkbox data.
      */
     const handleAppEnableDisableToggleChange = (event: FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
-        setEnableStatus(data?.checked);
+        setEnableStatus(!data?.checked);
         setShowDisableConfirmationModal(true);
     };
 
@@ -438,29 +439,27 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 <MyAccountOverview/>
             </ResourceTab.Pane>
             <Divider hidden />
-            <Show
-                when={ applicationsUpdateScopes }
-            >
-                <DangerZoneGroup
-                    sectionHeader={ t("applications:dangerZoneGroup.header") }
+            { !isSubOrganization() && (
+                <Show
+                    when={ applicationsUpdateScopes }
                 >
-                    <DangerZone
-                        actionTitle={ t("applications:dangerZoneGroup.disableApplication.actionTitle",
-                            { state: application.applicationEnabled ? t("common:disable") : t("common:enable") }) }
-                        header={ t("applications:dangerZoneGroup.disableApplication.header",
-                            { state: application.applicationEnabled ? t("common:disable") : t("common:enable") } ) }
-                        subheader={ application.applicationEnabled
-                            ? t("applications:dangerZoneGroup.disableApplication.subheader")
-                            : t("applications:dangerZoneGroup.disableApplication.subheader2") }
-                        onActionClick={ undefined }
-                        toggle={ {
-                            checked: application.applicationEnabled,
-                            onChange: handleAppEnableDisableToggleChange
-                        } }
-                        data-testid={ `${ componentId }-danger-zone-disable` }
-                    />
-                </DangerZoneGroup>
-            </Show>
+                    <DangerZoneGroup
+                        sectionHeader={ t("applications:dangerZoneGroup.header") }
+                    >
+                        <DangerZone
+                            actionTitle={ t("applications:dangerZoneGroup.disableApplication.actionTitle") }
+                            header={ t("applications:dangerZoneGroup.disableApplication.header") }
+                            subheader={ t("applications:dangerZoneGroup.disableApplication.subheader") }
+                            onActionClick={ undefined }
+                            toggle={ {
+                                checked: !application.applicationEnabled,
+                                onChange: handleAppEnableDisableToggleChange
+                            } }
+                            data-testid={ `${ componentId }-danger-zone-disable` }
+                        />
+                    </DangerZoneGroup>
+                </Show>
+            ) }
             <ConfirmationModal
                 onClose={ (): void => setShowDisableConfirmationModal(false) }
                 type="warning"
@@ -591,6 +590,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         <ResourceTab.Pane controlledSegmentation>
             <AttributeSettings
                 appId={ application.id }
+                appVersion={ application?.applicationVersion }
                 technology={ application.inboundProtocols }
                 claimConfigurations={ application.claimConfiguration }
                 featureConfig={ featureConfig }
@@ -783,12 +783,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                                  </Menu.Item>,
                         render: () =>
                             applicationConfig.editApplication.
-                                getOveriddenTab(
+                                getOverriddenTab(
                                     inboundProtocolConfig?.oidc?.clientId,
                                     ApplicationTabTypes.GENERAL,
                                     GeneralApplicationSettingsTabPane(),
-                                    application?.name,
-                                    application?.id,
+                                    application,
                                     tenantDomain
                                 )
                     });
@@ -831,12 +830,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         </Menu.Item>,
                     render: () =>
                         applicationConfig.editApplication.
-                            getOveriddenTab(
+                            getOverriddenTab(
                                 inboundProtocolConfig?.oidc?.clientId,
                                 ApplicationTabTypes.USER_ATTRIBUTES,
                                 AttributeSettingTabPane(),
-                                application?.name,
-                                application?.id,
+                                application,
                                 tenantDomain
                             )
                 });
@@ -892,7 +890,17 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                           <Menu.Item data-tourid="advanced">
                               { t("applications:edit.sections.advanced.tabName") }
                           </Menu.Item> ),
-                      render: AdvancedSettingsTabPane
+                      render: () =>
+                          applicationConfig.editApplication.
+                              getOverriddenTab(
+                                  inboundProtocolConfig?.oidc?.clientId,
+                                  ApplicationTabTypes.ADVANCED,
+                                  AdvancedSettingsTabPane(),
+                                  application,
+                                  tenantDomain,
+                                  handleApplicationUpdate,
+                                  readOnly
+                              )
                   });
             }
             if (isFeatureEnabled(featureConfig?.applications,
@@ -1095,7 +1103,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         let defaultTab: number | string = 0;
 
-        if(applicationConfig.editApplication.extendTabs && template?.id !== CustomApplicationTemplate.id) {
+        if(applicationConfig.editApplication.extendTabs
+            && template?.id !== CustomApplicationTemplate.id
+            && !isSubOrganization()) {
             defaultTab = 1;
         }
 
@@ -1244,6 +1254,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 inboundProtocols: inboundProtocolList,
                 onApplicationUpdate: () => {
                     handleApplicationUpdate(application?.id);
+                },
+                onTriggerTabUpdate: (tabIndex: number) => {
+                    history.push({
+                        hash: `#tab=${tabIndex}`
+                    });
                 },
                 template: template
             },

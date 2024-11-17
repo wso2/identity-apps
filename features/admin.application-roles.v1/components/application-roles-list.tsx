@@ -17,7 +17,6 @@
  */
 
 import { AppConstants, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
-import { ApplicationRoleInterface } from "@wso2is/admin.extensions.v1/components/groups/models";
 import {
     IdentifiableComponentInterface,
     LoadableComponentInterface
@@ -33,6 +32,7 @@ import React, { Fragment, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, Grid } from "semantic-ui-react";
 import RolesList from "./roles-list";
+import { ApplicationRoleInterface } from "../models/application-roles";
 
 interface ApplicationRolesListProps extends LoadableComponentInterface, IdentifiableComponentInterface {
     /**

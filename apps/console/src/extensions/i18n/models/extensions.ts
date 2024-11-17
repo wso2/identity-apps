@@ -618,6 +618,7 @@ export interface Extensions {
                                     identifier: {
                                         emptyValidate: string;
                                         alreadyExistsError: string;
+                                        errorOccurred: string;
                                         invalid: string;
                                         hint: string;
                                         label: string;
@@ -657,6 +658,7 @@ export interface Extensions {
                                     permission: {
                                         emptyValidate: string;
                                         uniqueValidate: string;
+                                        errorOccurred: string;
                                         invalid: string;
                                         label: string;
                                         placeholder: string;
@@ -1759,6 +1761,7 @@ export interface Extensions {
                 applicationBrandingtitle: string;
                 applicationBrandingDescription: string;
                 applicationListWarning: string;
+                defaultBrandingAppliedMessage: string;
                 backButtonText: string;
                 description: string;
                 organization: string;
@@ -2682,7 +2685,7 @@ export interface Extensions {
                 action: string;
                 actionDisabledHint: string;
             }
-        }
+        };
     };
     manage: {
         accountLogin: {
@@ -3099,6 +3102,7 @@ export interface Extensions {
                             passwordRecoveryOtpUseNumeric: FormAttributes;
                             passwordRecoveryOtpLength: FormAttributes;
                         };
+                        smsProviderWarning: string;
                     };
                     recoveryOptionSubHeadingEmailLink: string;
                     recoveryOptionSubHeadingSMS: string;
@@ -3113,6 +3117,17 @@ export interface Extensions {
                     };
                     subHeading: string;
                 };
+                usernameRecovery: {
+                    form: {
+                        fields: {
+                            enableEmailBasedRecovery: FormAttributes;
+                            enableSMSBasedRecovery: FormAttributes;
+                        },
+                        smsProviderWarning: string;
+                        recoveryOptionHeading: string;
+                    },
+                    heading: string;
+                }
             };
             accountSecurity: {
                 heading: string;
@@ -3219,6 +3234,7 @@ export interface Extensions {
                             expiryTime: FormAttributes;
                             signUpConfirmation: FormAttributes;
                             activateImmediately: FormAttributes;
+                            showUsernameUnavailability: FormAttributes;
                             enable: FormAttributes;
                         };
                     };
@@ -3324,6 +3340,7 @@ export interface Extensions {
                 administratorSettingsSubtitle: string;
                 administratorSettingsTitle: string;
                 backButton: string;
+                backButtonConsoleSettings: string;
                 disableToggleMessage: string;
                 enableToggleMessage: string;
                 error: {

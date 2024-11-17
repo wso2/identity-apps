@@ -19,7 +19,7 @@
 import { SelectChangeEvent } from "@mui/material";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
-import { DocumentationLink, Hint, PageLayout } from "@wso2is/react-components";
+import { DocumentationLink, Hint, PageLayout, useDocumentation } from "@wso2is/react-components";
 import moment from "moment";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -42,6 +42,7 @@ const OrgInsightsPage: FunctionComponent = () => {
     const [ selectedActivityType, setSelectedActivityType ] = useState<ActivityType>(ActivityType.LOGIN);
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const handleDurationChange = (event: SelectChangeEvent) => {
         setDuration(Number(event.target.value));
@@ -75,8 +76,7 @@ const OrgInsightsPage: FunctionComponent = () => {
                 <>
                     { t("insights:description") }
                     <DocumentationLink
-                        link="manage.insights.learnMore"
-                        isLinkRef
+                        link={ getLink("manage.insights.learnMore") }
                     >
                         { t("extensions:common.learnMore") }
                     </DocumentationLink>

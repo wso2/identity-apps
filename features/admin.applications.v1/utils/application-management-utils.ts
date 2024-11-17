@@ -104,6 +104,74 @@ export class ApplicationManagementUtils {
             });
     }
 
+    /**
+     * Compared the current app version with the give app version and return if app is lower or not.
+     *
+     * @param currentApplicationVersion - Application current version.
+     * @param isOIDCApp - Whether the app is OIDC or not.
+     * @returns True if app version is lower or not.
+     */
+    public static isApplicationOutdated(currentApplicationVersion: string, isOIDCApp?: boolean): boolean {
+
+        if (currentApplicationVersion && isOIDCApp) {
+
+            const appVersion: number[] = currentApplicationVersion?.match(/\d+/g).map(Number);
+            const latestAppVersion: number[] = ApplicationManagementConstants
+                .LATEST_VERSION.match(/\d+/g).map(Number);
+
+            // App version or latest version arrays should have at least 3 parts.
+            // Major, Minor and Patch versions.
+            if (appVersion?.length < 3 || latestAppVersion?.length < 3) {
+                return false;
+            }
+
+            if (appVersion[0] < latestAppVersion[0]) {
+                return true;
+            } else if (appVersion[1] < latestAppVersion[1]) {
+                return true;
+            } else if (appVersion[2] < latestAppVersion[2]) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Compared the current app version with the give app version and return if app is allowed to use the feature.
+     *
+     * @param applicationVersion - Application current version.
+     * @param allowedApplicationVersion - Allowed Application version.
+     * @returns True if app is allowed to use the feature.
+     */
+    public static isAppVersionAllowed(applicationVersion: string, allowedApplicationVersion: string): boolean {
+
+        if (applicationVersion && allowedApplicationVersion) {
+
+            const appVersionArray: number[] = applicationVersion?.match(/\d+/g).map(Number);
+            const allowedAppVersionArray: number[] = allowedApplicationVersion?.match(/\d+/g).map(Number);
+
+            // App version or latest version arrays should have at least 3 parts.
+            // Major, Minor and Patch versions.
+            if (appVersionArray?.length < 3 || allowedAppVersionArray?.length < 3) {
+                return false;
+            }
+
+            for (let i = 0; i < appVersionArray.length; i++) {
+                if (appVersionArray[i] > allowedAppVersionArray[i]) {
+                    return true;
+                } else if (appVersionArray[i] < allowedAppVersionArray[i]) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * Gets the list of available custom inbound protocols list and sets them in the redux store.

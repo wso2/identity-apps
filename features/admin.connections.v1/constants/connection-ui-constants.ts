@@ -215,8 +215,6 @@ export class ConnectionUIConstants {
         CONNECTION_JIT_PROVISIONING_UPDATE_ERROR: string;
         FIDO_AUTHENTICATOR_CONFIG_UPDATE_ERROR: string;
         FIDO_AUTHENTICATOR_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR: string;
-        FIDO_TRUSTED_APPS_UPDATE_ERROR: string;
-        FIDO_TRUSTED_APPS_UPDATE_INVALID_STATUS_CODE_ERROR: string;
         IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR: string;
         IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR: string;
         LOCAL_AUTHENTICATORS_FETCH_ERROR: string;
@@ -239,8 +237,6 @@ export class ConnectionUIConstants {
             CONNECTION_JIT_PROVISIONING_UPDATE_ERROR: "An error occurred while updating the JIT provisioning configurations of the connection.",
             FIDO_AUTHENTICATOR_CONFIG_UPDATE_ERROR: "An error occurred while updating the Passkey connector configs.",
             FIDO_AUTHENTICATOR_CONFIG_UPDATE_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while updating the Passkey connector configs.",
-            FIDO_TRUSTED_APPS_UPDATE_ERROR: "An error occurred while updating the Passkey trusted apps.",
-            FIDO_TRUSTED_APPS_UPDATE_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while updating the Passkey trusted apps.",
             IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR: "An error occurred while fetching the required connection templates list.",
             IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_INVALID_STATUS_CODE_ERROR: "Received an invalid status code while fetching connection templates list.",
             LOCAL_AUTHENTICATORS_FETCH_ERROR: "An error occurred while fetching the local authenticators.",
@@ -299,11 +295,13 @@ export class ConnectionUIConstants {
      */
     public static readonly DOC_LINK_DICTIONARY: Map<string, string> = new Map<string, string>([
         [ "apple-idp", "develop.connections.newConnection.apple.learnMore" ],
+        [ "duo-idp", "develop.connections.newConnection.duo.learnMore" ],
         [ "enterprise-protocols", "develop.connections.newConnection.learnMore" ],
         [ "facebook-idp", "develop.connections.newConnection.facebook.learnMore" ],
         [ "github-idp", "develop.connections.newConnection.github.learnMore" ],
         [ "google-idp", "develop.connections.newConnection.google.learnMore" ],
         [ "hypr-idp", "develop.connections.newConnection.hypr.learnMore" ],
+        [ "iproov-idp", "develop.connections.newConnection.iProov.learnMore" ],
         [ "microsoft-idp", "develop.connections.newConnection.microsoft.learnMore" ],
         [ "enterprise-oidc-idp", "develop.connections.newConnection.enterprise.oidcLearnMore.learnMore" ],
         [ "enterprise-saml-idp", "develop.connections.newConnection.enterprise.samlLearnMore.learnMore" ],

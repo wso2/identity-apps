@@ -112,7 +112,44 @@
                 "id": "QWNjb3VudERpc2FibGU"
             }
         ],
-        "outboundProvisioningConnectors": []
+        "outboundProvisioningConnectors": [],
+        "smsTemplates": [
+            {
+                "description": "This SMS is sent when a user registers and needs to confirm their account.",
+                "displayName": "Account Confirmation",
+                "id": "YWNjb3VudGNvbmZpcm1hdGlvbg"
+            },
+            {
+                "description": "This SMS is sent when a user requests to recover their username.",
+                "displayName": "Account ID Recovery",
+                "id": "YWNjb3VudElkUmVjb3Zlcnk"
+            },
+            {
+                "description": "This SMS is sent to notify the user of a successful password reset.",
+                "displayName": "Password Reset Success",
+                "id": "cGFzc3dvcmRSZXNldFN1Y2Vzcw"
+            },
+            {
+                "description": "This SMS is sent when a user initiates a password reset.",
+                "displayName": "Password Reset",
+                "id": "cGFzc3dvcmRSZXNldA"
+            },
+            {
+                "description": "This SMS is sent when a user requests to resend the OTP for password reset.",
+                "displayName": "Resend Password Reset",
+                "id": "cmVzZW5kUGFzc3dvcmRSZXNldA"
+            },
+            {
+                "description": "This SMS is sent to provide a one-time password for verification.",
+                "displayName": "SMS OTP",
+                "id": "U01TT1RQ"
+            },
+            {
+                "description": "This SMS is sent to verify the user's mobile number after an update.",
+                "displayName": "Verify Mobile On Update",
+                "id": "dmVyaWZ5TW9iaWxlT25VcGRhdGU"
+            }
+        ]
     },
     "getProfileInfoFromIDToken": false,
     "i18nResourcePath": "",
@@ -169,6 +206,7 @@
             "defaultWhiteLogoUrl": "/libs/themes/default/assets/images/branding/logo-inverted.svg"
         },
         "enableCustomEmailTemplates": true,
+        "enableCustomSmsTemplates": true,
         "enableEmailDomain": false,
         "enableIdentityClaims": true,
         "features": {
@@ -216,16 +254,26 @@
                 }
             },
             "actions": {
-               "disabledFeatures": [],
-               "enabled": true,
-               "scopes": {
-                 "create": [ "internal_action_mgt_create" ],
-                 "delete": [ "internal_action_mgt_delete" ],
-                 "feature": [ "console:actions" ],
-                 "read": [ "internal_action_mgt_view" ],
-                 "update": [ "internal_action_mgt_update" ]
-               }
-           },
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_action_mgt_create"
+                    ],
+                    "delete": [
+                        "internal_action_mgt_delete"
+                    ],
+                    "feature": [
+                        "console:actions"
+                    ],
+                    "read": [
+                        "internal_action_mgt_view"
+                    ],
+                    "update": [
+                        "internal_action_mgt_update"
+                    ]
+                }
+            },
             "adminAdvisoryBanner": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -303,8 +351,7 @@
             "applications": {
                 "disabledFeatures": [
                     "applications.loginFlow.ai",
-                    "applications.loginFlow.legacyEditor",
-                    "applications.myaccount.saasMyaccountSettings"
+                    "applications.loginFlow.legacyEditor"
                 ],
                 "enabled": true,
                 "scopes": {
@@ -427,7 +474,7 @@
             },
             "certificates": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "create": [
                         "internal_keystore_update"
@@ -447,7 +494,10 @@
                 }
             },
             "consoleSettings": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "consoleSettings.invitedExternalAdmins",
+                    "consoleSettings.privilegedUsers"
+                ],
                 "enabled": true,
                 "scopes": {
                     "create": [
@@ -648,10 +698,10 @@
                 }
             },
             "identityVerificationProviders": {
-                "enabled": false,
+                "enabled": true,
                 "scopes": {
                     "create": [
-                        "internal_idvp_create"
+                        "internal_idvp_add"
                     ],
                     "delete": [
                         "internal_idvp_delete"
@@ -682,7 +732,9 @@
                         "console:loginAndRegistration"
                     ],
                     "read": [
-                        "internal_governance_view"
+                        "internal_governance_view",
+                        "internal_group_mgt_view",
+                        "internal_role_mgt_view"
                     ],
                     "update": [
                         "internal_config_update",
@@ -949,6 +1001,50 @@
                     ]
                 }
             },
+            "smsTemplates": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_template_mgt_create"
+                    ],
+                    "delete": [
+                        "internal_template_mgt_delete"
+                    ],
+                    "feature": [
+                        "console:smsTemplates"
+                    ],
+                    "read": [
+                        "internal_template_mgt_view"
+                    ],
+                    "update": [
+                        "internal_template_mgt_update"
+                    ]
+                }
+            },
+            "tenants": {
+                "disabledFeatures": [
+                    "tenants.add.tenant.from.dropdown",
+                    "tenants.deletion",
+                    "tenants.make.default",
+                    "tenants.organizations.quick.nav.from.dropdown"
+                ],
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_create_tenants"
+                    ],
+                    "delete": [
+                        "internal_modify_tenants"
+                    ],
+                    "read": [
+                        "internal_list_tenants"
+                    ],
+                    "update": [
+                        "internal_modify_tenants"
+                    ]
+                }
+            },
             "tryIt": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -1017,7 +1113,9 @@
                 }
             },
             "userStores": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                   "userStores.type.remote"
+                ],
                 "enabled": true,
                 "scopes": {
                     "create": [

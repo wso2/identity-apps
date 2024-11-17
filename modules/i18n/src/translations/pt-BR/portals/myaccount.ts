@@ -953,13 +953,17 @@ export const myAccount: MyAccountNS = {
             submitMobile: {
                 heading: "Insira seu novo número de celular"
             },
+            verificationSent: {
+                heading: "Você receberá um OTP no seu número de celular para verificação em breve"
+            },
             verifySmsOtp: {
+                didNotReceive: "Não recebeu o código?",
                 error: "Verificação falhou. Por favor, tente novamente.",
-                generate: "Reenviar um novo código de verificação",
-                heading: "Insira o código de verificação enviado para o seu número de celular",
-                label: "Código de Verificação",
+                heading: "Verifique o seu número de celular",
+                label: "Digite o código de verificação enviado ao seu número de celular",
                 placeholder: "Insira seu código de verificação",
-                requiredError: "Insira o código de verificação"
+                requiredError: "Insira o código de verificação",
+                resend: "Reenviar"
             }
         },
         overview: {
@@ -1156,6 +1160,12 @@ export const myAccount: MyAccountNS = {
             }
         },
         profile: {
+            actions: {
+                "deleteEmail": "Excluir endereço de e -mail",
+                "deleteMobile": "Excluir móvel",
+                "verifyEmail": "Verifique o endereço de e -mail",
+                "verifyMobile": "Verifique o celular"
+            },
             fields: {
                 "Account Confirmed Time": "Hora da Confirmação da Conta",
                 "Account Disabled": "Conta Desativada",
@@ -1173,6 +1183,7 @@ export const myAccount: MyAccountNS = {
                 "Disable SMSOTP": "Desabilitar OTP de SMS",
                 "Display Name": "Nome de Exibição",
                 "Email": "E-mail",
+                "Email Addresses": "Endereço de e-mail",
                 "Email Verified": "E-mail Verificado",
                 "Enabled Authenticators": "Autenticadores Habilitados",
                 "Existing Lite User": "Usuário Lite Existente",
@@ -1205,6 +1216,7 @@ export const myAccount: MyAccountNS = {
                 "Manager - Name": "Gerente - Nome",
                 "Middle Name": "Nome do Meio",
                 "Mobile": "Celular",
+                "Mobile Numbers": "Números de celular",
                 "Nick Name": "Apelido",
                 "Phone Verified": "Telefone Verificado",
                 "Photo - Thumbnail": "Foto - Miniatura",
@@ -1228,6 +1240,8 @@ export const myAccount: MyAccountNS = {
                 "Username": "Nome de Usuário",
                 "Verification Pending Email": "E-mail Pendente de Verificação",
                 "Verification Pending Mobile Number": "Número de Celular Pendente de Verificação",
+                "Verified Email Addresses": "Endereços de e -mail verificados",
+                "Verified Mobile Numbers": "Números de celular verificados",
                 "Verify Email": "Verificar E-mail",
                 "Verify Mobile": "Verificar Celular",
                 "Verify Secret Key": "Verificar Chave Secreta",
@@ -1339,6 +1353,20 @@ export const myAccount: MyAccountNS = {
                     content: "Este número de celular é usado para enviar OTPs de SMS quando a autenticação de segundo fator estiver habilitada e para enviar códigos de recuperação em caso de recuperação de nome de usuário/senha. Para atualizar este número, você deve verificar o novo número inserindo o código de verificação enviado para seu novo número. Clique em atualizar se desejar prosseguir."
                 }
             },
+            modals: {
+                emailAddressDeleteConfirmation: {
+                    assertionHint: "Por favor, confirme sua ação.",
+                    content: "Esta ação é irreversível e excluirá permanentemente o endereço de e -mail.",
+                    description: "Se você excluir este endereço de e -mail, ele será removido permanentemente do seu perfil.",
+                    heading: "Tem certeza?"
+                },
+                mobileNumberDeleteConfirmation: {
+                    assertionHint: "Por favor, confirme sua ação.",
+                    content: "Esta ação é irreversível e excluirá permanentemente o número de celular.",
+                    description: "Se você excluir esse número de celular, ele será removido permanentemente do seu perfil.",
+                    heading: "Tem certeza?"
+                }
+            },
             notifications: {
                 getProfileCompletion: {
                     error: {
@@ -1386,6 +1414,34 @@ export const myAccount: MyAccountNS = {
                     success: {
                         description: "Os detalhes necessários do perfil do usuário foram atualizados com sucesso",
                         message: "Perfil do usuário atualizado com sucesso"
+                    }
+                },
+                verifyEmail: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Ocorreu um erro ao enviar o email de verificação"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao enviar o email de verificação",
+                        message: "Algo deu errado"
+                    },
+                    success: {
+                        description: "O email de verificação foi enviado com sucesso. Verifique sua caixa de entrada",
+                        message: "Email de verificação enviado com sucesso"
+                    }
+                },
+                verifyMobile: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Ocorreu um erro ao enviar o código de verificação"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao enviar o código de verificação ",
+                        message: "Algo deu errado"
+                    },
+                    success: {
+                        description: "O código de verificação foi enviado com sucesso. Verifique seu celular",
+                        message: "Código de verificação enviado com sucesso"
                     }
                 }
             },

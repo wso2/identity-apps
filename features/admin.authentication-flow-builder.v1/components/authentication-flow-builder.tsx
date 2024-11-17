@@ -35,6 +35,7 @@ import {
 import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -109,6 +110,8 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         isSystemApplication,
         onActiveFlowModeChange
     } = useAuthenticationFlow();
+
+    const { setAiGeneratedLoginFlow } = useAILoginFlow();
 
     const FlowModes: AuthenticationFlowBuilderModesInterface[] = readOnly ? [
         {
@@ -290,7 +293,10 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                     message: t("applications:notifications.updateAuthenticationFlow" +
                         ".genericError.message")
                 }));
-            }).finally(() => refetchApplication());
+            }).finally(() => {
+                setAiGeneratedLoginFlow(undefined);
+                refetchApplication();
+            });
     };
 
     /**

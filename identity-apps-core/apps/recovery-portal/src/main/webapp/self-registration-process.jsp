@@ -23,6 +23,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.core.SameSiteCookie" %>
 <%@ page import="org.wso2.carbon.core.util.SignatureUtil" %>
+<%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 <%@ page import="org.wso2.carbon.identity.mgt.constants.SelfRegistrationStatusCodes" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
@@ -67,12 +68,15 @@
     String SELF_REGISTRATION_WITHOUT_VERIFICATION_PAGE = "* self-registration-without-verification.jsp";
     String passwordPatternErrorCode = "20035";
     String usernamePatternErrorCode = "20045";
+    String usernameAlreadyExistsErrorCode = "20030";
     String AUTO_LOGIN_COOKIE_NAME = "ALOR";
     String AUTO_LOGIN_COOKIE_DOMAIN = "AutoLoginCookieDomain";
     String AUTO_LOGIN_FLOW_TYPE = "SIGNUP";
     PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
     Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterSelfRegistrationEnabled(tenantDomain);
     Boolean isSelfRegistrationLockOnCreationEnabled = preferenceRetrievalClient.checkSelfRegistrationLockOnCreation(tenantDomain);
+    Boolean isShowUsernameUnavailabilityEnabled = preferenceRetrievalClient.checkSelfRegistrationShowUsernameUnavailability(tenantDomain);
+    Boolean isAccountVerificationEnabled = preferenceRetrievalClient.checkSelfRegistrationSendConfirmationOnCreation(tenantDomain);
 
     boolean isSelfRegistrationWithVerification =
             Boolean.parseBoolean(request.getParameter("isSelfRegistrationWithVerification"));
@@ -358,7 +362,9 @@
             } else {
                 tenantAwareUsername = username + "@" + user.getTenantDomain();
             }
-            String cookieDomain = application.getInitParameter(AUTO_LOGIN_COOKIE_DOMAIN);
+            String hostName = ServiceURLBuilder.create().build().getProxyHostName();
+            String cookieDomain = IdentityUtil.getRootDomain(hostName);
+
             JSONObject contentValueInJson = new JSONObject();
             contentValueInJson.put("username", tenantAwareUsername);
             contentValueInJson.put("createdTime", System.currentTimeMillis());
@@ -409,6 +415,13 @@
             }
             request.getRequestDispatcher("register.do").forward(request, response);
             return;
+        } else if (isAccountVerificationEnabled && !isShowUsernameUnavailabilityEnabled && usernameAlreadyExistsErrorCode.equals(errorCode)) {
+            request.setAttribute("callback", callback);
+            if (StringUtils.isNotBlank(srtenantDomain)) {
+                request.setAttribute("srtenantDomain", srtenantDomain);
+            }
+            request.setAttribute("sessionDataKey", sessionDataKey);
+            request.getRequestDispatcher("self-registration-complete.jsp").forward(request, response);
         } else {
             if (!StringUtils.isBlank(username)) {
                 request.setAttribute("username", username);

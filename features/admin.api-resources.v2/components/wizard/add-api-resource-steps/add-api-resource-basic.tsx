@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -130,13 +130,22 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
                                 } else {
                                     const filter: string = "identifier eq " + value;
 
-                                    const response: APIResourcesListInterface =
-                                        await getAPIResourcesForIdenitifierValidation(filter);
+                                    try {
+                                        const response: APIResourcesListInterface =
+                                            await getAPIResourcesForIdenitifierValidation(filter);
 
-                                    if (response?.apiResources?.length > 0) {
+                                        if (response?.apiResources?.length > 0) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(
+                                                t("extensions:develop.apiResource.wizard.addApiResource." +
+                                                "steps.basic.form.fields.identifier.alreadyExistsError")
+                                            );
+                                        }
+                                    } catch (error) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(t("extensions:develop.apiResource.wizard." +
-                                            "addApiResource.steps.basic.form.fields.identifier.alreadyExistsError"));
+                                            "addApiResource.steps.basic.form.fields.identifier.errorOccurred"));
+                                        setIdentifierValidationLoading(false);
                                     }
                                 }
 

@@ -15,11 +15,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import Alert from "@oxygen-ui/react/Alert";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import { SCIMConfigs, commonConfig, userConfig } from "@wso2is/admin.extensions.v1";
-import { TenantInfo } from "@wso2is/admin.extensions.v1/components/tenants/models";
-import { getAssociationType } from "@wso2is/admin.extensions.v1/components/tenants/utils/tenants";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { searchRoleList, updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import {
@@ -29,6 +29,8 @@ import {
     SearchRoleInterface
 } from "@wso2is/admin.roles.v2/models/roles";
 import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "@wso2is/admin.server-configurations.v1";
+import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
+import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { resolveUserEmails } from "@wso2is/core/helpers";
@@ -63,8 +65,12 @@ import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
 import { updateUserInfo } from "../api";
-import { AdminAccountTypes, LocaleJoiningSymbol, UserManagementConstants } from "../constants";
+import { ACCOUNT_LOCK_REASON_MAP, AdminAccountTypes, LocaleJoiningSymbol, UserManagementConstants } from "../constants";
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
+
+// TODO: Remove this once multiple email and mobile support is onboarded.
+const multipleEmailMobileFeatureSpecificSchemaNames: string[] = [ "emailAddresses", "verifiedEmailAddresses",
+    "mobileNumbers", "verifiedMobileNumbers" ];
 
 /**
  * Prop types for the basic details component.
@@ -191,12 +197,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const createdDate: string = user?.meta?.created;
     const modifiedDate: string = user?.meta?.lastModified;
     const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
-    user[userConfig.userProfileSchema]?.accountLocked === true;
+        user[userConfig.userProfileSchema]?.accountLocked === true;
+    const accountLockedReason: string = user[userConfig.userProfileSchema]?.lockedReason;
     const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true";
     const oneTimePassword: string = user[userConfig.userProfileSchema]?.oneTimePassword;
     const isCurrentUserAdmin: boolean = user?.roles?.some((role: RolesMemberInterface) =>
         role.display === administratorConfig.adminRoleName) ?? false;
-
 
     useEffect(() => {
 
@@ -366,11 +372,32 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         .find((subAttribute: MultiValueAttributeInterface) =>
                                             subAttribute.type === schemaSecondaryProperty);
 
-                                if (schemaName === "addresses") {
-                                    tempProfileInfo.set(
-                                        schema.name,
-                                        subValue ? subValue.formatted : ""
-                                    );
+                                if (schemaName.includes("addresses")) {
+                                    // Ex: addresses#home.streetAddress
+                                    const addressSubSchema: string = schema?.name?.split(".")[1];
+                                    const addressSchemaArray: string[] = schemaName?.split("#");
+
+                                    if (addressSchemaArray.length > 1) {
+                                        // Ex: addresses#home
+                                        const addressSchema: string = addressSchemaArray[0];
+                                        const addressType: string = addressSchemaArray[1];
+
+                                        const subValue: SubValueInterface = userInfo[addressSchema] &&
+                                            Array.isArray(userInfo[addressSchema]) &&
+                                            userInfo[addressSchema]
+                                                .find((subAttribute: MultiValueAttributeInterface) =>
+                                                    subAttribute.type === addressType);
+
+                                        tempProfileInfo.set(
+                                            schema.name,
+                                            (subValue && subValue[addressSubSchema]) ? subValue[addressSubSchema] : ""
+                                        );
+                                    } else {
+                                        tempProfileInfo.set(
+                                            schema.name,
+                                            subValue ? subValue.formatted : ""
+                                        );
+                                    }
                                 } else {
                                     tempProfileInfo.set(
                                         schema.name,
@@ -789,21 +816,37 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     };
                                 } else if (schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
                                     .get("NAME")) {
-                                    values.get(schema.name) && (
+
+                                    if (values.get(schema.name) || values.get(schema.name) === "") {
                                         opValue = {
                                             name: { [schemaNames[1]]: values.get(schema.name) }
-                                        }
-                                    );
-                                } else {
-                                    if (schemaNames[0] === "addresses") {
-                                        opValue = {
-                                            [schemaNames[0]]: [
-                                                {
-                                                    formatted: values.get(schema.name),
-                                                    type: schemaNames[1]
-                                                }
-                                            ]
                                         };
+                                    }
+                                } else {
+                                    if (schemaNames[0].includes("addresses")) {
+                                        if (schemaNames[0].split("#").length > 1) {
+                                            // Ex: addresses#home
+                                            const addressSchema: string = schemaNames[0]?.split("#")[0];
+                                            const addressType: string = schemaNames[0]?.split("#")[1];
+
+                                            opValue = {
+                                                [addressSchema]: [
+                                                    {
+                                                        type: addressType,
+                                                        [schemaNames[1]]: values.get(schema.name)
+                                                    }
+                                                ]
+                                            };
+                                        } else {
+                                            opValue = {
+                                                [schemaNames[0]]: [
+                                                    {
+                                                        formatted: values.get(schema.name),
+                                                        type: schemaNames[1]
+                                                    }
+                                                ]
+                                            };
+                                        }
                                     } else if (schemaNames[0] !== "emails" && schemaNames[0] !== "phoneNumbers") {
                                         opValue = {
                                             [schemaNames[0]]: [
@@ -828,7 +871,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 };
                 // This is required as the api doesn't support patching the address attributes at the
                 // sub attribute level using 'replace' operation.
-                if (schemaNames[0] === "addresses") {
+                if (schemaNames[0].includes("addresses")) {
                     operation.op = "add";
                 }
                 data.Operations.push(operation);
@@ -1391,6 +1434,34 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     fluid
                 />
             );
+        } else if (schema?.name === "dateOfBirth") {
+            return (
+                <Field
+                    data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
+                    name={ schema.name }
+                    label={ fieldName }
+                    required={ schema.required }
+                    requiredErrorMessage={ fieldName + " is required" }
+                    placeholder="YYYY-MM-DD"
+                    type="text"
+                    value={ profileInfo.get(schema.name) }
+                    key={ key }
+                    readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
+                    validation={ (value: string, validation: Validation) => {
+                        if (!RegExp(schema.regEx).test(value)) {
+                            validation.isValid = false;
+                            validation.errorMessages
+                                .push(t("users:forms.validation.dateFormatError", {
+                                    field: fieldName
+                                }));
+                        }
+                    } }
+                    maxLength={ schema.maxLength
+                        ? schema.maxLength
+                        : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
+                    }
+                />
+            );
         } else {
             return (
                 <Field
@@ -1398,13 +1469,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     name={ schema.name }
                     label={ schema.name === "profileUrl" ? "Profile Image URL" :
                         (  (!commonConfig.userEditSection.showEmail && schema.name === "userName")
-                            ? fieldName +" (Email)"
+                            ? fieldName + " (Email)"
                             : fieldName
                         )
                     }
                     required={ schema.required }
-                    requiredErrorMessage={ fieldName + " " + "is required" }
-                    placeholder={ "Enter your" + " " + fieldName }
+                    requiredErrorMessage={ fieldName + " is required" }
+                    placeholder={ "Enter your " + fieldName }
                     type="text"
                     value={ profileInfo.get(schema.name) }
                     key={ key }
@@ -1459,6 +1530,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         );
 
         const domainName: string[] = profileInfo?.get(schema.name)?.toString().split("/");
+
+        if (multipleEmailMobileFeatureSpecificSchemaNames?.includes(schema?.name)) {
+            return;
+        }
 
         return (
             <Grid.Row columns={ 1 } key={ key }>
@@ -1531,9 +1606,28 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         );
     };
 
+    /**
+     * Resolves the user account locked reason text.
+     * @returns The resolved account locked reason in readable text.
+     */
+    const resolveUserAccountLockedReason = (): string => {
+        if (accountLockedReason) {
+            return ACCOUNT_LOCK_REASON_MAP[accountLockedReason] ?? ACCOUNT_LOCK_REASON_MAP["DEFAULT"];
+        }
+
+        return "";
+    };
+
     return (
         !isReadOnlyUserStoresLoading
             ? (<>
+                {
+                    accountLocked && accountLockedReason && (
+                        <Alert severity="warning">
+                            { t(resolveUserAccountLockedReason()) }
+                        </Alert>
+                    )
+                }
                 {
                     !isEmpty(profileInfo) && (
                         <EmphasizedSegment padded="very">

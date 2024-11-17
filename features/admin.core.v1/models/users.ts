@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { 
+import {
     LinkInterface,
     MultiValueAttributeInterface,
     NameInterface
@@ -52,6 +52,7 @@ export interface UserBasicInterface {
     meta?: UserMetaInterface;
     profileUrl?: string;
     roles?: UserRoleInterface[];
+    groups?: UserRoleInterface[];
 }
 
 /**

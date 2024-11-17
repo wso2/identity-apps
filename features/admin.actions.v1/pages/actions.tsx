@@ -17,9 +17,9 @@
  */
 
 import Avatar from "@oxygen-ui/react/Avatar";
+import Box from "@oxygen-ui/react/Box";
 import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
-import Grid from "@oxygen-ui/react/Grid";
 import Typography from "@oxygen-ui/react/Typography";
 import {
     CircleCheckFilledIcon,
@@ -29,7 +29,7 @@ import {
     UserFlowIcon
 } from "@oxygen-ui/react-icons";
 import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
-import FeatureStatusLabel from "@wso2is/admin.extensions.v1/components/feature-gate/models/feature-gate";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
@@ -38,7 +38,8 @@ import {
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { DocumentationLink, GenericIcon, PageLayout, ResourceGrid, useDocumentation } from "@wso2is/react-components";
+import { DocumentationLink, GenericIcon, PageLayout, useDocumentation } from "@wso2is/react-components";
+import classNames from "classnames";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -49,6 +50,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import { Placeholder } from "semantic-ui-react";
 import useGetActionTypes from "../api/use-get-action-types";
 import { ActionsConstants } from "../constants/actions-constants";
 import { ActionType, ActionTypeCardInterface, ActionTypesCountInterface } from "../models/actions";
@@ -207,7 +209,10 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
 
         if (count > 0) {
             return (
-                <div className="status-tag">
+                <div
+                    className="status-tag"
+                    data-componentid={ `${ _componentId }-${ actionType }-configured-status-tag` }
+                >
                     <CircleCheckFilledIcon className="icon-configured"/>
                     <Typography  className="text-configured" variant="h6">
                         { t("actions:status.configured") }
@@ -216,7 +221,10 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             );
         } else {
             return (
-                <div className="status-tag">
+                <div
+                    className="status-tag"
+                    data-componentid={ `${ _componentId }-${ actionType }-not-configured-status-tag` }
+                >
                     <Typography  className="text-not-configured" variant="h6">
                         {  t("actions:status.notConfigured") }
                     </Typography>
@@ -265,6 +273,51 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             } ];
     };
 
+    /**
+     * This function returns loading placeholders.
+     */
+    const renderLoadingPlaceholder = (): ReactElement => {
+        const placeholders: ReactElement[] = [];
+        const cardsPerRow: number[] = [ 3, 1 ];
+
+        for (let rowIndex: number = 0; rowIndex < cardsPerRow.length; rowIndex++) {
+            const cardsInRow: number = cardsPerRow[ rowIndex ];
+            const cards: ReactElement[] = [];
+
+            for (let columnIndex: number = 0; columnIndex < cardsInRow; columnIndex++) {
+                cards.push(
+                    <Box
+                        className="placeholder-box"
+                        data-componentid={ `${ _componentId }-loading-card` }
+                    >
+                        <Placeholder>
+                            <Placeholder.Header>
+                                <Placeholder.Line length="medium" />
+                                <Placeholder.Line length="full" />
+                            </Placeholder.Header>
+                            <Placeholder.Paragraph>
+                                <Placeholder.Line />
+                                <Placeholder.Line />
+                            </Placeholder.Paragraph>
+                        </Placeholder>
+                    </Box>
+                );
+            }
+
+            placeholders.push(
+                <div key={ rowIndex }>
+                    <div className="action-types-grid-wrapper">
+                        <div className="action-types-grid">
+                            { cards }
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        return <>{ placeholders }</>;
+    };
+
     return (
         <PageLayout
             pageTitle={ t("pages:actions.title") }
@@ -275,36 +328,18 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             contentTopMargin={ true }
             pageHeaderMaxWidth={ false }
         >
-            <ResourceGrid
-                isLoading={ isActionTypesConfigsLoading }
-                isEmpty={
-                    (!actionTypesConfigs
-                        || !Array.isArray(actionTypesConfigs)
-                        || actionTypesConfigs.length <= 0)
-                }
-                data-componentid={ `${ _componentId }-resource-grid` }
-            >
-                <Grid
-                    container
-                    spacing={ { md: 3, xs: 2 } }
-                    className="actions-page"
-                >
-                    { actionTypesCardsInfo().map((cardProps: ActionTypeCardInterface) => {
-                        return checkFeatureEnabledStatus(cardProps.identifier) && (
-                            <Grid
-                                xs={ 12 }
-                                sm={ 6 }
-                                md={ 4 }
-                                lg={ 4 }
-                            >
+            { isActionTypesConfigsLoading ? renderLoadingPlaceholder() : (
+                <div className="action-types-grid-wrapper" data-componentid={ `${ _componentId }-grid` }>
+                    <div className="action-types-grid">
+                        { actionTypesCardsInfo().map((cardProps: ActionTypeCardInterface) => {
+                            return checkFeatureEnabledStatus(cardProps.identifier) && (
                                 <Card
                                     key={ cardProps.identifier }
-                                    className={ cardProps.disabled ? "action-card disabled" : "action-card" }
+                                    className={ classNames("action-type", { "disabled": cardProps.disabled }) }
                                     data-componentid={ `${ cardProps.identifier }-action-type-card` }
                                     onClick={ () => history.push(cardProps.route) }
                                 >
-                                    <CardContent
-                                        className="action-type-header">
+                                    <CardContent className="action-type-header">
                                         <div>
                                             <GenericIcon
                                                 size="micro"
@@ -345,11 +380,11 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
                                         </Typography>
                                     </CardContent>
                                 </Card>
-                            </Grid>
-                        );
-                    }) }
-                </Grid>
-            </ResourceGrid>
+                            );
+                        }) }
+                    </div>
+                </div>
+            ) }
         </PageLayout>
     );
 };

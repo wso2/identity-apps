@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,15 @@
  * under the License.
  */
 
+import IconButton from "@oxygen-ui/react/IconButton";
+import { ChevronRightIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactElement, ReactNode } from "react";
-import { ButtonProps, Icon } from "semantic-ui-react";
+import { ButtonProps } from "semantic-ui-react";
 import { LinkButton } from "../../button";
 import { InfoCard, InfoCardPropsInterface } from "../../card";
-import { GenericIcon } from "../../icon";
+import "./resource-grid-card.scss";
 
 /**
  * Interface for the Resource Grid Card component.
@@ -136,6 +138,17 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
         className
     );
 
+    /**
+     * Handles the resource delete action.
+     *
+     * @param e - Click event.
+     */
+    const onDeleteResource = (e): void => {
+        if (onDelete) {
+            onDelete(e);
+        }
+    };
+
     return (
         <InfoCard
             className={ classes }
@@ -164,7 +177,7 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
                                         data-testid={ `${ testId }-item-edit-button` }
                                     >
                                         { editButtonLabel }
-                                        <Icon name="chevron right"/>
+                                        <ChevronRightIcon className="info-card-inner-action-icon" />
                                     </LinkButton>
                                 )
                             }
@@ -172,17 +185,14 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
                         <div className="right">
                             {
                                 showResourceDelete && onDelete && !(isResourceComingSoon || disabled) && (
-                                    <GenericIcon
-                                        square
-                                        hoverable
-                                        transparent
-                                        floated="right"
-                                        className="info-card-inner-action delete-button"
-                                        icon={ <Icon name="trash alternate"/> }
+                                    <IconButton
+                                        onClick={ onDeleteResource }
+                                        className="delete-button"
                                         data-componentid={ `${ componentId }-item-delete-button` }
                                         data-testid={ `${ testId }-item-delete-button` }
-                                        onClick={ onDelete }
-                                    />
+                                    >
+                                        <TrashIcon />
+                                    </IconButton>
                                 )
                             }
                         </div>

@@ -24,7 +24,6 @@ export interface ConnectionResourceEndpointsInterface {
     authenticatorTags: string;
     extensions: string;
     fidoConfigs: string;
-    fidoTrustedApps: string;
     identityProviders: string;
     localAuthenticators: string;
     multiFactorAuthenticators: string;

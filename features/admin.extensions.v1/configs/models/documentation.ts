@@ -38,6 +38,27 @@ interface LoginSecurityDocumentationLinksInterface {
 }
 
 /**
+ * Interface for the Actions section documentation structure.
+ */
+interface ActionsDocumentationLinksInterface {
+    learnMore: string;
+    types: {
+        preIssueAccessToken: {
+            learnMore: string;
+        }
+        preRegistration: {
+            learnMore: string;
+        }
+        preUpdatePassword: {
+            learnMore: string;
+        }
+        preUpdateProfile: {
+            learnMore: string;
+        }
+    }
+}
+
+/**
  * Interface for the API Resources section documentation structure.
  */
 interface APIResourcesDocumentationLinksInterface {
@@ -112,6 +133,23 @@ interface ApplicationsDocumentationLinksInterface {
                         userAgeBased: {
                             learnMore: string;
                         }
+                    }
+                }
+            }
+        }
+        outdatedApplications: {
+            versions: {
+                version100: {
+                    removeUsernameFromIntrospectionRespForAppTokens: {
+                        documentationLink: string;
+                    },
+                    useClientIdAsSubClaimOfAppTokens: {
+                        documentationLink: string;
+                    }
+                },
+                version200: {
+                    addAllRequestedClaimsInJWTAccessToken: {
+                        documentationLink: string;
                     }
                 }
             }
@@ -290,6 +328,9 @@ interface ConnectionsDocumentationLinksInterface {
             learnMore: string;
             setupGuide: string;
         };
+        duo: {
+            learnMore: string;
+        };
         enterprise: {
             oidc: {
                 learnMore: string;
@@ -331,6 +372,9 @@ interface ConnectionsDocumentationLinksInterface {
             };
             learnMore: string;
             setupGuide: string;
+        };
+        iProov: {
+            learnMore: string;
         };
         microsoft: {
             help: {
@@ -473,6 +517,18 @@ interface EmailCustomizationLinksInterface {
 }
 
 /**
+ * Interface for the SMS customization section documentation structure.
+ */
+interface SmsCustomizationLinksInterface {
+    learnMore: string,
+    form: {
+        smsBody: {
+            learnMore: string
+        }
+    }
+}
+
+/**
  * Interface for the insights section documentation structure.
  */
 interface InsightsDocumentationLinksInterface {
@@ -487,6 +543,19 @@ interface LogsDocumentationLinksInterface {
 }
 
 /**
+ * Interface for the multi tenancy section documentation structure.
+ */
+interface MultiTenancyDocumentationLinksInterface {
+    addTenant: {
+        learnMore: string;
+    };
+    learnMore: string;
+    systemSettings: {
+        learnMore: string;
+    };
+}
+
+/**
  * Interface for the console documentation structure.
  */
 export interface DocumentationLinksExtensionInterface {
@@ -498,6 +567,10 @@ export interface DocumentationLinksExtensionInterface {
      * Documentation links for develop section elements.
      */
     develop: {
+        /**
+         * Documentation links for actions section elements.
+         */
+        actions: ActionsDocumentationLinksInterface;
         /**
          * Documentation links for API resources section elements.
          */
@@ -524,6 +597,16 @@ export interface DocumentationLinksExtensionInterface {
          * Documentation links for email customization UI elements.
          */
         emailCustomization: EmailCustomizationLinksInterface;
+
+        /**
+         * Documentation links for multi tenancy feature.
+         */
+        multiTenancy: MultiTenancyDocumentationLinksInterface;
+
+        /**
+         * Documentation links for SMS customization UI elements.
+         */
+        smsCustomization: SmsCustomizationLinksInterface;
     }
     /**
      * Documentation links for manage section elements.

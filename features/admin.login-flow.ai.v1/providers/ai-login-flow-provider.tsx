@@ -139,6 +139,7 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
                 loginFlowGenerationCompleted,
                 operationId,
                 promptHistory,
+                setAiGeneratedLoginFlow,
                 setBannerState,
                 setGeneratingLoginFlow,
                 setLoginFlowGenerationCompleted,

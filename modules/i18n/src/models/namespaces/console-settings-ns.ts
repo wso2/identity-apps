@@ -21,6 +21,7 @@ export interface ConsoleSettingsNS {
             action: string;
             options: {
                 addExistingUser: string;
+                addExternalUser: string;
                 inviteParentUser: string;
             };
         };
@@ -28,6 +29,13 @@ export interface ConsoleSettingsNS {
             backButton: string;
         };
         tabLabel: string;
+    };
+    invitations: {
+        filterOptions: {
+            accepted: string;
+            pending: string;
+            expired: string;
+        }
     };
     loginFlow: {
         tabLabel: string;

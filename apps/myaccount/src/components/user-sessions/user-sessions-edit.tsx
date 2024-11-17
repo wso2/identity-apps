@@ -17,12 +17,13 @@
  */
 
 import { IBrowser, IDevice, IOS, TestableComponentInterface } from "@wso2is/core/models";
+import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import moment from "moment";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid, Icon, List, SemanticICONS, Table } from "semantic-ui-react";
 import { ApplicationSession, UserSession } from "../../models";
-import { DangerZone, DangerZoneGroup, EditSection } from "../shared";
+import { EditSection } from "../shared";
 
 /**
  * Prop-types for the user sessions edit component.

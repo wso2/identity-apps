@@ -950,13 +950,17 @@ export const myAccount: MyAccountNS = {
             "submitMobile": {
                 "heading": "输入您的新手机号码"
             },
+            verificationSent: {
+                heading: "您将在您的手机号码中收到一个OTP，以供验证"
+            },
             "verifySmsOtp": {
+                "didNotReceive": "没有收到代码？",
                 "error": "验证失败。 请再试一次。",
-                "generate": "重新发送新的验证代码",
-                "heading": "输入发送到您的手机号码的验证代码",
-                "label": "验证码",
+                "heading": "验证您的手机号码",
+                "label": "输入发送到您的手机号码的验证代码",
                 "placeholder": "输入您的验证代码",
-                "requiredError": "输入验证码"
+                "requiredError": "输入验证码",
+                "resend": "重新发送"
             }
         },
         "overview": {
@@ -1153,6 +1157,12 @@ export const myAccount: MyAccountNS = {
             }
         },
         "profile": {
+            actions: {
+                "deleteEmail": "删除电子邮件地址",
+                "deleteMobile": "删除手机",
+                "verifyEmail": "确认电子邮件地址",
+                "verifyMobile": "验证手"
+            },
             "fields": {
                 "Account Confirmed Time": "帐户确认时间",
                 "Account Disabled": "帐户已禁用",
@@ -1170,6 +1180,7 @@ export const myAccount: MyAccountNS = {
                 "Disable SMSOTP": "禁用SMSOTP",
                 "Display Name": "显示名称",
                 "Email": "电子邮件",
+                "Email Addresses": "电子邮件地址",
                 "Email Verified": "电子邮件已验证",
                 "Enabled Authenticators": "启用了身份验证者",
                 "Existing Lite User": "现有的Lite用户",
@@ -1202,6 +1213,7 @@ export const myAccount: MyAccountNS = {
                 "Manager - Name": "经理 - 名称",
                 "Middle Name": "中间名字",
                 "Mobile": "移动的",
+                "Mobile Numbers": "手机号码",
                 "Nick Name": "昵称",
                 "Phone Verified": "电话已验证",
                 "Photo - Thumbnail": "照片 - 缩略图",
@@ -1225,6 +1237,8 @@ export const myAccount: MyAccountNS = {
                 "Username": "用户名",
                 "Verification Pending Email": "验证等待电子邮件",
                 "Verification Pending Mobile Number": "验证待处理电话号码",
+                "Verified Email Addresses": "已验证的电子邮件地址",
+                "Verified Mobile Numbers": "已验证的手机号码",
                 "Verify Email": "验证邮件",
                 "Verify Mobile": "验证手机",
                 "Verify Secret Key": "验证秘密键",
@@ -1336,6 +1350,20 @@ export const myAccount: MyAccountNS = {
                     "content": "当启用第二个因子身份验证并在用户名/密码恢复时发送恢复代码时，该手机号码用于发送SMS OTP。要更新此数字，您必须通过输入发送到您的新号码的验证代码来验证新号码。如果您愿意，请单击更新。"
                 }
             },
+            modals: {
+                emailAddressDeleteConfirmation: {
+                    assertionHint: "请确认您的行动。",
+                    content: "此操作是不可逆转的，将永久删除电子邮件地址。",
+                    description: "如果删除此电子邮件地址，它将永久从您的个人资料中删除。",
+                    heading: "你确定吗？"
+                },
+                mobileNumberDeleteConfirmation: {
+                    assertionHint: "请确认您的行动。",
+                    content: "此操作是不可逆的，将永久删除手机号码。",
+                    description: "如果删除此手机号码，它将被永久从您的个人资料中删除。",
+                    heading: "你确定吗？"
+                }
+            },
             "notifications": {
                 "getProfileCompletion": {
                     "error": {
@@ -1383,6 +1411,34 @@ export const myAccount: MyAccountNS = {
                     "success": {
                         "description": "所需的用户个人资料详细信息已成功更新",
                         "message": "用户个人资料成功更新了"
+                    }
+                },
+                verifyEmail: {
+                    error: {
+                        description: "{{description}}",
+                        message: "发送验证电子邮件时发生了错误"
+                    },
+                    genericError: {
+                        description: "发送验证电子邮件时发生错误",
+                        message: "出了些问题"
+                    },
+                    success: {
+                        description: "验证电子邮件已成功发送。请检查您的收件箱",
+                        message: "验证电子邮件成功发送"
+                    }
+                },
+                verifyMobile: {
+                    error: {
+                        description: "{{description}}",
+                        message: "发送验证代码时发生错误"
+                    },
+                    genericError: {
+                        description: "发送验证代码时发生错误",
+                        message: "出了些问题"
+                    },
+                    success: {
+                        description: "验证代码已成功发送。请检查您的手机",
+                        message: "验证代码成功发送"
                     }
                 }
             },

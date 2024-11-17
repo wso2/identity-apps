@@ -99,6 +99,7 @@ export interface serverConfigsNS {
         };
         pageHeading: string;
         pageSubheading: string;
+        title: string;
     };
     manageNotificationSendingInternally: {
         title: string;

@@ -22,7 +22,7 @@ import {
     SquareUserIcon
 } from "@oxygen-ui/react-icons";
 import { FeatureStatus } from "@wso2is/access-control";
-import { FeatureGateConstants } from "@wso2is/admin.extensions.v1/components/feature-gate/constants/feature-gate";
+import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { NavCategory, NavRouteInterface, RouteInterface } from "@wso2is/core/models";
 import groupBy from "lodash-es/groupBy";
 import sortBy from "lodash-es/sortBy";
@@ -299,13 +299,13 @@ export class RouteUtils {
             order: 4
         };
 
-        const monitoring: NavCategory = {
-            id: "monitoring",
+        const extensions: NavCategory = {
+            id: "extensions",
             order: 5
         };
 
-        const extensions: NavCategory = {
-            id: "extensions",
+        const monitoring: NavCategory = {
+            id: "monitoring",
             order: 6
         };
 
@@ -328,6 +328,11 @@ export class RouteUtils {
             AppConstants.getPaths().get("PRIVATE_KEY_JWT_CONFIG_EDIT")
         ];
 
+        const isConnectionsMenuItemSelected = (): boolean => {
+            return history.location.pathname.includes("/connections")
+                || history.location.pathname.includes("/identity-verification-providers");
+        };
+
         const CategoryMappedRoutes: Omit<RouteInterface, "showOnSidePanel">[] = [
             {
                 category: overview,
@@ -349,7 +354,7 @@ export class RouteUtils {
                 category: build,
                 id: "identityProviders",
                 order: 1,
-                selected: history.location.pathname.includes("/connections")
+                selected: isConnectionsMenuItemSelected()
             },
             {
                 category: build,
@@ -434,6 +439,11 @@ export class RouteUtils {
                 parent: branding
             },
             {
+                category: build,
+                id: "smsTemplates",
+                parent: branding
+            },
+            {
                 category: preferences,
                 id: "loginAndRegistration",
                 selected: loginAndRegPathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
@@ -473,7 +483,13 @@ export class RouteUtils {
             {
                 category: extensions,
                 id: "actions",
-                order: 0
+                order: 0,
+                selected: history.location.pathname.includes("/actions")
+            },
+            {
+                category: extensions,
+                id: "eventPublishing",
+                order: 1
             }
         ];
 

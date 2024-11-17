@@ -154,6 +154,8 @@ export class UserManagementConstants {
     public static readonly MANAGED_BY_PARENT_TEXT: string = "Parent Organization";
 
     public static readonly GLOBE: string = "globe";
+
+    public static readonly USERNAME_JAVA_REGEX: string = "UsernameJavaRegEx";
 }
 
 /**
@@ -312,3 +314,19 @@ export enum LocaleJoiningSymbol {
     HYPHEN = "-",
     UNDERSCORE = "_"
 }
+
+/**
+ *  user account locked reason.
+ *
+ * @readonly
+ */
+export const ACCOUNT_LOCK_REASON_MAP: Record<string, string> = {
+    ADMIN_INITIATED: "user:profile.accountLockReason.adminInitiated",
+    DEFAULT: "user:profile.accountLockReason.default",
+    MAX_ATTEMPTS_EXCEEDED: "user:profile.accountLockReason.maxAttemptsExceeded",
+    PENDING_ADMIN_FORCED_USER_PASSWORD_RESET: "user:profile.accountLockReason.pendingAdminForcedUserPasswordReset",
+    PENDING_ASK_PASSWORD: "user:profile.accountLockReason.pendingAskPassword",
+    PENDING_EMAIL_VERIFICATION: "user:profile.accountLockReason.pendingEmailVerification",
+    PENDING_SELF_REGISTRATION: "user:profile.accountLockReason.pendingSelfRegistration"
+};
+

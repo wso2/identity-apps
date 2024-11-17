@@ -25,12 +25,11 @@ import { getBrandingResourceEndpoints } from "@wso2is/admin.branding.v1/configs/
 import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1";
 import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpoints";
 import { getConnectionResourceEndpoints } from "@wso2is/admin.connections.v1";
-import { getConsoleSettingsResourceEndpoints } from "@wso2is/admin.console-settings.v1/configs/endpoints";
 import { getEmailTemplatesResourceEndpoints } from "@wso2is/admin.email-templates.v1";
-import { getFeatureGateResourceEndpoints } from "@wso2is/admin.extensions.v1/components/feature-gate/configs";
 import { getExtendedFeatureResourceEndpoints } from "@wso2is/admin.extensions.v1/configs/endpoints";
+import { getFeatureGateResourceEndpoints } from "@wso2is/admin.feature-gate.v1/configs/endpoints";
 import { getGroupsResourceEndpoints } from "@wso2is/admin.groups.v1";
-import { getIDVPResourceEndpoints } from "@wso2is/admin.identity-verification-providers.v1";
+import { getIDVPResourceEndpoints } from "@wso2is/admin.identity-verification-providers.v1/configs/endpoints";
 import { getScopesResourceEndpoints } from "@wso2is/admin.oidc-scopes.v1";
 import { getInsightsResourceEndpoints } from "@wso2is/admin.org-insights.v1/config/org-insights";
 import { getOrganizationsResourceEndpoints } from "@wso2is/admin.organizations.v1/configs";
@@ -39,6 +38,7 @@ import { getRemoteFetchConfigResourceEndpoints } from "@wso2is/admin.remote-repo
 import { getRolesResourceEndpoints } from "@wso2is/admin.roles.v2/configs/endpoints";
 import { getSecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/configs/endpoints";
 import { getServerConfigurationsResourceEndpoints } from "@wso2is/admin.server-configurations.v1";
+import { getSmsTemplateResourceEndpoints } from "@wso2is/admin.sms-templates.v1/configs/endpoints";
 import { getExtensionTemplatesEndpoints } from "@wso2is/admin.template-core.v1/configs/endpoints";
 import { getTenantResourceEndpoints } from "@wso2is/admin.tenants.v1/configs/endpoints";
 import { getUsersResourceEndpoints } from "@wso2is/admin.users.v1/configs/endpoints";
@@ -189,6 +189,7 @@ export class Config {
                 I18nConstants.WS_FEDERATION_CONFIG_NAMESPACE,
                 I18nConstants.INSIGHTS_NAMESPACE,
                 I18nConstants.SMS_PROVIDERS_NAMESPACE,
+                I18nConstants.SMS_TEMPLATES_NAMESPACE,
                 I18nConstants.CLAIMS_NAMESPACE,
                 I18nConstants.EMAIL_LOCALE_NAMESPACE,
                 I18nConstants.HELP_PANEL_NAMESPACE,
@@ -207,7 +208,8 @@ export class Config {
                 I18nConstants.AI_NAMESPACE,
                 I18nConstants.TEMPLATE_CORE_NAMESPACE,
                 I18nConstants.APPLICATION_TEMPLATES_NAMESPACE,
-                I18nConstants.ACTIONS_NAMESPACE
+                I18nConstants.ACTIONS_NAMESPACE,
+                I18nConstants.TENANTS_NAMESPACE
             ],
             preload: []
         };
@@ -262,10 +264,10 @@ export class Config {
             ...getTenantResourceEndpoints(this.getDeploymentConfig().serverOrigin),
             ...getFeatureGateResourceEndpoints(this.resolveServerHostforFG(false)),
             ...getInsightsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
-            ...getConsoleSettingsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtensionTemplatesEndpoints(this.resolveServerHost()),
             ...getApplicationTemplatesResourcesEndpoints(this.resolveServerHost()),
             ...getActionsResourceEndpoints(this.resolveServerHost()),
+            ...getSmsTemplateResourceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,

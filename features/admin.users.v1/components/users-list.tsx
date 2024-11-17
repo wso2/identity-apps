@@ -54,8 +54,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
+import {
+    ReactComponent as RoundedLockSolidIcon
+} from "../../themes/default/assets/images/icons/solid-icons/rounded-lock.svg";
 import { deleteUser } from "../api";
-import { UserManagementConstants } from "../constants";
+import { ACCOUNT_LOCK_REASON_MAP, UserManagementConstants } from "../constants";
 import { UserBasicInterface, UserListInterface } from "../models";
 import { UserManagementUtils } from "../utils/user-management-utils";
 
@@ -223,40 +226,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             });
     };
 
-    /**
-     * Checks whether the username is a UUID.
-     *
-     * @returns If the username is a UUID.
-     */
-    const checkUUID = ( username : string ): boolean => {
-
-        const regexExp: RegExp = new RegExp(
-            /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi
-        );
-
-        return regexExp.test(username);
-    };
-
-    /* Resolves username.
-    *
-    * @returns Username for the user avatar.
-    */
-    const resolveAvatarUsername = ( user: UserBasicInterface ): string => {
-        const usernameUUID: string = getUserNameWithoutDomain(user?.userName);
-
-        if (user?.name?.givenName){
-            return user.name.givenName[0];
-        } else if (user?.name?.familyName) {
-            return user.name.familyName[0];
-        } else if (user?.emails?.length > 0 && user?.emails[0]) {
-            return user.emails[0][0];
-        } else if (!checkUUID(usernameUUID)){
-            return usernameUUID[0];
-        }
-
-        return "";
-    };
-
     const renderUserIdp = (user: UserBasicInterface): string => {
         if (user[SCIMConfigs?.scim?.enterpriseSchema]?.managedOrg) {
             return UserManagementConstants.MANAGED_BY_PARENT_TEXT;
@@ -286,6 +255,40 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     };
 
     /**
+     * Returns a locked icon if the account is locked.
+     *
+     * @param user - each admin user belonging to a row of the table.
+     * @returns the locked icon.
+     */
+    const resolveAccountLockStatus = (user: UserBasicInterface): ReactNode => {
+        const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
+            user[userConfig.userProfileSchema]?.accountLocked === true;
+        const accountLockedReason: string = user[userConfig.userProfileSchema]?.lockedReason;
+
+        const accountLockedReasonContent: string = ACCOUNT_LOCK_REASON_MAP[accountLockedReason]
+            ?? ACCOUNT_LOCK_REASON_MAP["DEFAULT"];
+
+        if (accountLocked) {
+            return (
+                <Popup
+                    trigger={ (
+                        <Icon
+                            className="locked-icon"
+                            size="small"
+                        >
+                            <RoundedLockSolidIcon/>
+                        </Icon>
+                    ) }
+                    content={ t(accountLockedReasonContent) }
+                    inverted
+                />
+            );
+        }
+
+        return null;
+    };
+
+    /**
      * Resolves data table columns.
      *
      * @returns the data table columns.
@@ -312,13 +315,14 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         >
                             <UserAvatar
                                 data-componentid="users-list-item-image"
-                                name={ resolveAvatarUsername(user) }
+                                name={ UserManagementUtils.resolveAvatarUsername(user) }
                                 size="mini"
                                 image={ user.profileUrl }
                                 spaced="right"
                                 data-suppress=""
                             />
-                            <Header.Content>
+                            { resolveAccountLockStatus(user) }
+                            <Header.Content className="pl-0">
                                 <div>
                                     { header as ReactNode }
                                     {

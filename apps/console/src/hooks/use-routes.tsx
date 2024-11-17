@@ -42,6 +42,7 @@ import { getAppViewRoutes } from "../configs/routes";
 export type useRoutesInterface = {
     filterRoutes: (
         onRoutesFilterComplete: () => void,
+        isUserTenantless: boolean,
         isFirstLevelOrg?: boolean
     ) => void;
 };
@@ -67,11 +68,12 @@ const useRoutes = (): useRoutesInterface => {
      * Filter the routes based on the user roles and permissions.
      *
      * @param onRoutesFilterComplete - Callback to be called after the routes are filtered.
+     * @param isUserTenantless - Indicates whether the user have any associated tenant.
      * @param isFirstLevelOrg - Is the current organization the first level organization.
      *
      * @returns A promise containing void.
      */
-    const filterRoutes = async (onRoutesFilterComplete: () => void): Promise<void> => {
+    const filterRoutes = async (onRoutesFilterComplete: () => void, isUserTenantless: boolean): Promise<void> => {
         if (
             isEmpty(allowedScopes) ||
             !featureConfig.applications ||
@@ -154,7 +156,7 @@ const useRoutes = (): useRoutesInterface => {
             dispatch(setDeveloperVisibility(false));
         }
 
-        if (sanitizedAppRoutes.length < 1) {
+        if (sanitizedAppRoutes.length < 1 && !isUserTenantless) {
             history.push({
                 pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
                 search:
