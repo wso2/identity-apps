@@ -132,34 +132,40 @@ const TenantsPageLayout: FunctionComponent<TenantsPageLayoutProps> = ({
             }
             className="tenants-page"
         >
-            <Grid container>
-                <Grid xs={ 12 } sm={ 12 } md={ 6 } lg={ 6 } xl={ 4 }>
-                    <AdvancedSearchWithBasicFilters
-                        fill="white"
-                        onFilter={ handleListFilter }
-                        filterAttributeOptions={ [
-                            {
-                                key: 0,
-                                text: t("tenants:listing.advancedSearch.form.dropdown.filterAttributeOptions.domain"),
-                                value: "domainName"
-                            }
-                        ] }
-                        filterAttributePlaceholder={ t(
-                            "tenants:listing.advancedSearch.form.inputs.filterAttribute.placeholder"
-                        ) }
-                        filterConditionsPlaceholder={ t(
-                            "tenants:listing.advancedSearch.form.inputs.filterCondition.placeholder"
-                        ) }
-                        filterValuePlaceholder={ t(
-                            "tenants:listing.advancedSeasrch.form.inputs.filterValue.placeholder"
-                        ) }
-                        placeholder={ t("tenants:listing.advancedSearch.placeholder") }
-                        defaultSearchAttribute={ "domainName" }
-                        defaultSearchOperator="co"
-                        triggerClearQuery={ searchQueryClearTrigger }
-                    />
+            { /* Sometimes, `tenants` array is undefined but `totalResults` is available. */ }
+            { /* TODO: Tracker: https://github.com/wso2/product-is/issues/21459 */ }
+            { tenantList?.tenants && tenantList?.totalResults >= 1 && (
+                <Grid container>
+                    <Grid xs={ 12 } sm={ 12 } md={ 6 } lg={ 6 } xl={ 4 }>
+                        <AdvancedSearchWithBasicFilters
+                            fill="white"
+                            onFilter={ handleListFilter }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: t(
+                                        "tenants:listing.advancedSearch.form.dropdown.filterAttributeOptions.domain"
+                                    ),
+                                    value: "domainName"
+                                }
+                            ] }
+                            filterAttributePlaceholder={ t(
+                                "tenants:listing.advancedSearch.form.inputs.filterAttribute.placeholder"
+                            ) }
+                            filterConditionsPlaceholder={ t(
+                                "tenants:listing.advancedSearch.form.inputs.filterCondition.placeholder"
+                            ) }
+                            filterValuePlaceholder={ t(
+                                "tenants:listing.advancedSearch.form.inputs.filterValue.placeholder"
+                            ) }
+                            placeholder={ t("tenants:listing.advancedSearch.placeholder") }
+                            defaultSearchAttribute={ "domainName" }
+                            defaultSearchOperator="co"
+                            triggerClearQuery={ searchQueryClearTrigger }
+                        />
+                    </Grid>
                 </Grid>
-            </Grid>
+            ) }
             <TenantGrid onAddTenantModalTrigger={ () => setAddTenantModalOpen(true) } />
             <AddTenantModal open={ addTenantModalOpen } onClose={ () => setAddTenantModalOpen(false) } />
         </PageLayout>
