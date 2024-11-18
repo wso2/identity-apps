@@ -416,6 +416,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param userInfo - BasicProfileInterface
      */
     const mapUserToSchema = (proSchema: ProfileSchemaInterface[], userInfo: ProfileInfoInterface): void => {
+        const multiValuedAttributes: string[] = [
+            EMAIL_ADDRESSES_ATTRIBUTE,
+            MOBILE_NUMBERS_ATTRIBUTE,
+            VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
+            VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
+        ];
+
         if (!isEmpty(profileSchema) && !isEmpty(userInfo)) {
             const tempProfileInfo: Map<string, string> = new Map<string, string>();
 
@@ -440,6 +447,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                             if (schema.extended && userInfo[userConfig.userProfileSchema]
                                 && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
+                                if (multiValuedAttributes.includes(schemaNames[0])) {
+                                    const attributeValue: string | string[] =
+                                        userInfo[userConfig.userProfileSchema]?.[schemaNames[0]];
+                                    const formattedValue: string = Array.isArray(attributeValue)
+                                        ? attributeValue.join(",")
+                                        : "";
+
+                                    tempProfileInfo.set(schema.name, formattedValue);
+
+                                    return;
+                                }
                                 tempProfileInfo.set(
                                     schema.name, userInfo[userConfig.userProfileSchema][schemaNames[0]]
                                 );
@@ -460,18 +478,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
                                 && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
                             ) {
-                                const multiValuedAttributes: string[] = [
-                                    EMAIL_ADDRESSES_ATTRIBUTE,
-                                    MOBILE_NUMBERS_ATTRIBUTE,
-                                    VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
-                                    VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
-                                ];
-
                                 if (multiValuedAttributes.includes(schemaNames[0])) {
-
                                     const attributeValue: string | string[] =
                                         userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]?.[schemaNames[0]];
-
                                     const formattedValue: string = Array.isArray(attributeValue)
                                         ? attributeValue.join(",")
                                         : "";
@@ -573,6 +582,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                             if (schema.extended && userInfo[userConfig.userProfileSchema]
                                 && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
+                                if (multiValuedAttributes.includes(schemaNames[0])) {
+                                    const attributeValue: string | string[] =
+                                        userInfo[userConfig.userProfileSchema]?.[schemaNames[0]];
+                                    const formattedValue: string = Array.isArray(attributeValue)
+                                        ? attributeValue.join(",")
+                                        : "";
+
+                                    tempProfileInfo.set(schema.name, formattedValue);
+
+                                    return;
+                                }
                                 tempProfileInfo.set(
                                     schema.name, userInfo[userConfig.userProfileSchema][schemaNames[0]]
                                 );
@@ -593,15 +613,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
                                 && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
                             ) {
-                                if (schemaNames[0] === EMAIL_ADDRESSES_ATTRIBUTE
-                                    || schemaNames[0] === MOBILE_NUMBERS_ATTRIBUTE
-                                    || schemaNames[0] === VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE
-                                    || schemaNames[0] === VERIFIED_MOBILE_NUMBERS_ATTRIBUTE) {
+                                if (multiValuedAttributes.includes(schemaNames[0])) {
+                                    const attributeValue: string | string[] =
+                                        userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]?.[schemaNames[0]];
+                                    const formattedValue: string = Array.isArray(attributeValue)
+                                        ? attributeValue.join(",")
+                                        : "";
 
-                                    tempProfileInfo.set(
-                                        schema.name,
-                                        userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]?.join(",")
-                                    );
+                                    tempProfileInfo.set(schema.name, formattedValue);
 
                                     return;
                                 }
