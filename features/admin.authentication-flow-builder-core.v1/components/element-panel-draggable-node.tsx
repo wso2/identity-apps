@@ -25,38 +25,38 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import DraggableNode from "./draggable-node";
 import { SupportedCanvasNodes } from "../models/visual-editor";
-import "./visual-editor-draggable-node.scss";
+import "./element-panel-draggable-node.scss";
 
 /**
- * Props interface of {@link VisualEditorDraggableNode}
+ * Props interface of {@link ElementPanelDraggableNode}
  */
-export interface VisualEditorDraggableNodePropsInterface
+export interface ElementPanelDraggableNodePropsInterface
     extends IdentifiableComponentInterface,
         HTMLAttributes<HTMLDivElement> {
     node: SupportedCanvasNodes;
 }
 
 /**
- * Draggable node for the visual editor.
+ * Draggable node for the visual editor element panel.
  *
  * @param props - Props injected to the component.
  * @returns Draggable Visual Editor node component.
  */
-const VisualEditorDraggableNode: FunctionComponent<VisualEditorDraggableNodePropsInterface> = ({
+const ElementPanelDraggableNode: FunctionComponent<ElementPanelDraggableNodePropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-editor-draggable-node",
     id,
     node,
     ...rest
-}: VisualEditorDraggableNodePropsInterface): ReactElement => {
+}: ElementPanelDraggableNodePropsInterface): ReactElement => {
     return (
         <DraggableNode key={ id } node={ node } data-componentid={ componentId } { ...rest }>
-            <Card className="authentication-flow-builder-draggable-node" variant="elevation">
+            <Card className="authentication-flow-builder-element-panel-draggable-node" variant="elevation">
                 <CardContent>
                     <Stack direction="row" spacing={ 1 }>
                         <Avatar
                             src={ node?.display?.image }
                             variant="square"
-                            className="authentication-flow-builder-draggable-node-avatar"
+                            className="authentication-flow-builder-element-panel-draggable-node-avatar"
                         />
                         <Typography>{ node?.display?.label?.fallback }</Typography>
                     </Stack>
@@ -66,4 +66,4 @@ const VisualEditorDraggableNode: FunctionComponent<VisualEditorDraggableNodeProp
     );
 };
 
-export default VisualEditorDraggableNode;
+export default ElementPanelDraggableNode;

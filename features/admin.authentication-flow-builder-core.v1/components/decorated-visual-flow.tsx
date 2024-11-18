@@ -19,9 +19,9 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ReactFlowProvider } from "@xyflow/react";
 import classNames from "classnames";
-import React, { FunctionComponent, HTMLAttributes, ReactElement, useState } from "react";
-import VisualEditorElementPropertiesPanel from "./visual-editor-element-properties-panel";
-import VisualEditorElementsPanel from "./visual-editor-elements-panel";
+import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
+import ElementPropertiesPanel from "./element-properties-panel";
+import ElementsPanel from "./elements-panel";
 import VisualFlow from "./visual-flow";
 import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
 import DnDProvider from "../providers/dnd-provider";
@@ -56,11 +56,11 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         >
             <ReactFlowProvider>
                 <DnDProvider>
-                    <VisualEditorElementsPanel open={ isElementPanelOpen }>
-                        <VisualEditorElementPropertiesPanel open={ isElementPropertiesPanelOpen }>
+                    <ElementsPanel open={ isElementPanelOpen }>
+                        <ElementPropertiesPanel open={ isElementPropertiesPanelOpen }>
                             <VisualFlow />
-                        </VisualEditorElementPropertiesPanel>
-                    </VisualEditorElementsPanel>
+                        </ElementPropertiesPanel>
+                    </ElementsPanel>
                 </DnDProvider>
             </ReactFlowProvider>
         </div>

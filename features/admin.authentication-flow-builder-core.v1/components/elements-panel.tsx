@@ -28,16 +28,16 @@ import { ChevronRightIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps } from "react";
-import VisualEditorDraggableNode from "./visual-editor-draggable-node";
+import ElementPanelDraggableNode from "./element-panel-draggable-node";
 import useGetAuthenticationFlowBuilderElements from "../api/use-get-authentication-flow-builder-elements";
 import { Component } from "../models/component";
 import { Widget } from "../models/widget";
-import "./visual-editor-elements-panel.scss";
+import "./elements-panel.scss";
 
 /**
- * Props interface of {@link VisualEditorElementsPanel}
+ * Props interface of {@link ElementsPanel}
  */
-export interface VisualEditorElementsPanelPropsInterface
+export interface ElementsPanelPropsInterface
     extends DrawerProps,
         IdentifiableComponentInterface,
         HTMLAttributes<HTMLDivElement> {}
@@ -113,12 +113,12 @@ const WidgetsIcon = ({ ...rest }: SVGProps<SVGSVGElement>): ReactElement => (
  * @param props - Props injected to the component.
  * @returns Visual editor elements panel.
  */
-const VisualEditorElementsPanel: FunctionComponent<VisualEditorElementsPanelPropsInterface> = ({
+const ElementsPanel: FunctionComponent<ElementsPanelPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-builder-elements-panel",
     children,
     open,
     ...rest
-}: VisualEditorElementsPanelPropsInterface): ReactElement => {
+}: ElementsPanelPropsInterface): ReactElement => {
     const { data } = useGetAuthenticationFlowBuilderElements();
     const { components, widgets, nodes } = data;
 
@@ -130,7 +130,7 @@ const VisualEditorElementsPanel: FunctionComponent<VisualEditorElementsPanelProp
             position="relative"
             bgcolor="white"
             component="div"
-            style={ { overflowX: "hidden", overflowY: "scroll" } }
+            // style={ { overflowX: "hidden", overflowY: "scroll" } }
             data-componentid={ componentId }
             { ...rest }
         >
@@ -187,7 +187,7 @@ const VisualEditorElementsPanel: FunctionComponent<VisualEditorElementsPanelProp
                             </Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { nodes.map((node: Component) => (
-                                    <VisualEditorDraggableNode
+                                    <ElementPanelDraggableNode
                                         id={ node.type }
                                         key={ node.type }
                                         node={ node }
@@ -220,7 +220,7 @@ const VisualEditorElementsPanel: FunctionComponent<VisualEditorElementsPanelProp
                             </Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { components.map((node: Component) => (
-                                    <VisualEditorDraggableNode
+                                    <ElementPanelDraggableNode
                                         id={ node.type }
                                         key={ node.type }
                                         node={ node }
@@ -253,7 +253,7 @@ const VisualEditorElementsPanel: FunctionComponent<VisualEditorElementsPanelProp
                             </Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { widgets.map((widget: Widget) => (
-                                    <VisualEditorDraggableNode
+                                    <ElementPanelDraggableNode
                                         id={ widget.type }
                                         key={ widget.type }
                                         node={ widget }
@@ -268,4 +268,4 @@ const VisualEditorElementsPanel: FunctionComponent<VisualEditorElementsPanelProp
     );
 };
 
-export default VisualEditorElementsPanel;
+export default ElementsPanel;
