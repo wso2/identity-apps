@@ -156,7 +156,7 @@ const TenantsPageLayout: FunctionComponent<TenantsPageLayoutProps> = ({
                                 "tenants:listing.advancedSearch.form.inputs.filterCondition.placeholder"
                             ) }
                             filterValuePlaceholder={ t(
-                                "tenants:listing.advancedSeasrch.form.inputs.filterValue.placeholder"
+                                "tenants:listing.advancedSearch.form.inputs.filterValue.placeholder"
                             ) }
                             placeholder={ t("tenants:listing.advancedSearch.placeholder") }
                             defaultSearchAttribute={ "domainName" }
