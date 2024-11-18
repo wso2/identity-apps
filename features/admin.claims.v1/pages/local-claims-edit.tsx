@@ -219,19 +219,11 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
             bottomMargin={ false }
             data-testid={ `${ testId }-page-layout` }
         >
-            { attributeConfig.attributes.showEditTabs
-                ? (
-                    <ResourceTab
-                        isLoading={ isLocalClaimDetailsRequestLoading }
-                        panes={ panes }
-                        data-testid={ `${ testId }-tabs` } />
-                ) : (
-                    <ResourceTab
-                        isLoading={ isLocalClaimDetailsRequestLoading }
-                        panes={ basicPanes }
-                        data-testid={ `${ testId }-tabs` } />
-                )
-            }
+            <ResourceTab
+                isLoading={ isLocalClaimDetailsRequestLoading }
+                panes={  attributeConfig?.attributes?.showEditTabs ? panes : basicPanes }
+                data-testid={ `${testId}-tabs` }
+            />
         </TabPageLayout>
     );
 };
