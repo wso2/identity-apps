@@ -31,6 +31,7 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -52,13 +53,6 @@ interface EditMappedAttributesLocalClaimsPropsInterface extends IdentifiableComp
      */
     update: () => void;
 }
-
-const USER_STORE_CONFIG_SUPPORTED_CLAIMS: string[] = [
-    ClaimManagementConstants.EMAIL_ADDRESSES_CLAIM_URI,
-    ClaimManagementConstants.VERIFIED_EMAIL_ADDRESSES_CLAIM_URI,
-    ClaimManagementConstants.MOBILE_NUMBERS_CLAIM_URI,
-    ClaimManagementConstants.VERIFIED_MOBILE_NUMBERS_CLAIM_URI
-];
 
 /**
  * This component renders the Mapped Attribute pane of
@@ -88,7 +82,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
     const { t } = useTranslation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
+    const hiddenUserStores: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
 
     const isReadOnly: boolean = !useRequiredScopes(
         featureConfig?.attributeDialects?.scopes?.update
@@ -187,7 +181,8 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                         ) || []),
                                         {
                                             key: ClaimManagementConstants.EXCLUDED_USER_STORES_CLAIM_PROPERTY,
-                                            value: excludedUserStores.join(",")
+                                            value: excludedUserStores?.filter(
+                                                (store: string) => !isEmpty(store)).join(",")
                                         }
                                     ]
                                 };
@@ -262,7 +257,8 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                                             />
                                                         </Grid.Column>
                                                     </Grid.Row>
-                                                    { USER_STORE_CONFIG_SUPPORTED_CLAIMS.includes(claim.claimURI) && (
+                                                    { ClaimManagementConstants.USER_STORE_CONFIG_SUPPORTED_CLAIMS
+                                                        .includes(claim.claimURI) && (
                                                         <Grid.Row columns={ 2 } key={ index } verticalAlign="middle">
                                                             <Grid.Column width={ 6 }>
                                                                 <p>{ t("claims:local.mappedAttributes." +
@@ -273,15 +269,18 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                                                     checked={ !excludedUserStores.includes(store.name) }
                                                                     onChange={
                                                                         (e: React.ChangeEvent<HTMLInputElement>) => {
-                                                                            const newExcludedStores: string[]
-                                                                                = e.target.checked
-                                                                                    ? excludedUserStores.filter(
+                                                                            if (e.target.checked) {
+                                                                                setExcludedUserStores(
+                                                                                    excludedUserStores.filter(
                                                                                         (name: string) =>
                                                                                             name !== store.name)
-                                                                                    : [ ...excludedUserStores,
-                                                                                        store.name ];
-
-                                                                            setExcludedUserStores(newExcludedStores);
+                                                                                );
+                                                                            } else {
+                                                                                setExcludedUserStores([
+                                                                                    ...excludedUserStores,
+                                                                                    store.name
+                                                                                ]);
+                                                                            }
                                                                         } }
                                                                     disabled={ isReadOnly }
                                                                     data-componentid={

@@ -188,6 +188,13 @@ export class ClaimManagementConstants {
     public static readonly EMPTY_STRING: string = "";
     public static readonly EXCLUDED_USER_STORES_CLAIM_PROPERTY: string = "ExcludedUserStores";
 
+    public static readonly USER_STORE_CONFIG_SUPPORTED_CLAIMS: string[] = [
+        ClaimManagementConstants.EMAIL_ADDRESSES_CLAIM_URI,
+        ClaimManagementConstants.VERIFIED_EMAIL_ADDRESSES_CLAIM_URI,
+        ClaimManagementConstants.MOBILE_NUMBERS_CLAIM_URI,
+        ClaimManagementConstants.VERIFIED_MOBILE_NUMBERS_CLAIM_URI
+    ];
+
     /**
      * The error code that is returned when there is no item in the list
      */
