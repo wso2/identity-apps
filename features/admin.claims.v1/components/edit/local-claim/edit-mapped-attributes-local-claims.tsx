@@ -70,7 +70,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
     const {
         claim,
         update,
-        [ "data-componentid" ]: componentId
+        [ "data-componentid" ]: componentId = "edit-local-claims-mapped-attributes"
     } = props;
 
     const dispatch: Dispatch = useDispatch();
