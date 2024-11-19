@@ -2115,8 +2115,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                         : null}`
                                                                 }
                                                                 data-componentid={
-                                                                    `${testId}-profile-form-${schema.name}-value-
-                                                                    ${index}`
+                                                                    `${testId}-profile-form-${schema.name}` +
+                                                                    `-value-${index}`
                                                                 }
                                                             >
                                                                 { value }
@@ -2127,8 +2127,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                     <div
                                                                         className="verified-icon"
                                                                         data-componentid={
-                                                                            `${testId}-profile-form-${schema.name}
-                                                                            -verified-icon-${index}`
+                                                                            `${testId}-profile-form-${schema.name}` +
+                                                                            `-verified-icon-${index}`
                                                                         }
                                                                     >
                                                                         <Tooltip
@@ -2147,8 +2147,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                     <div
                                                                         className="primary-icon"
                                                                         data-componentid={
-                                                                            `${testId}-profile-form-${schema.name}
-                                                                            -primary-icon-${index}`
+                                                                            `${testId}-profile-form-${schema.name}` +
+                                                                            `-primary-icon-${index}`
                                                                         }
                                                                     >
                                                                         <Tooltip
@@ -2170,8 +2170,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                 hidden={ !showVerifyButton(value) }
                                                                 onClick={ () => handleVerify(schema, value) }
                                                                 data-componentid={
-                                                                    `${testId}-profile-form
-                                                                    -${schema.name}-verify-button-${index}`
+                                                                    `${testId}-profile-form` +
+                                                                    `-${schema.name}-verify-button-${index}`
                                                                 }
                                                                 disabled={ isSubmitting || isReadOnly }
                                                             >
@@ -2188,8 +2188,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                 hidden={ !showMakePrimaryButton(value) }
                                                                 onClick={ () => handleMakePrimary(schema, value) }
                                                                 data-componentid={
-                                                                    `${testId}-profile-form
-                                                                    -${schema.name}-make-primary-button-${index}`
+                                                                    `${testId}-profile-form` +
+                                                                    `-${schema.name}-make-primary-button-${index}`
                                                                 }
                                                                 disabled={ isSubmitting || isReadOnly }
                                                             >
@@ -2209,8 +2209,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                     setShowMultiValuedItemDeleteConfirmationModal(true);
                                                                 } }
                                                                 data-componentid={
-                                                                    `${testId}-profile-form
-                                                                    -${schema.name}-delete-button-${index}`
+                                                                    `${testId}-profile-form` +
+                                                                    `-${schema.name}-delete-button-${index}`
                                                                 }
                                                                 disabled={ isSubmitting || isReadOnly }
                                                             >
