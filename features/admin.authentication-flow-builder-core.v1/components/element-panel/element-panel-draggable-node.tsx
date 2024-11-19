@@ -23,8 +23,8 @@ import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
-import DraggableNode from "./draggable-node";
-import { SupportedCanvasNodes } from "../models/visual-editor";
+import { SupportedCanvasNodes } from "../../models/visual-editor";
+import DraggableNode from "../draggable-node";
 import "./element-panel-draggable-node.scss";
 
 /**

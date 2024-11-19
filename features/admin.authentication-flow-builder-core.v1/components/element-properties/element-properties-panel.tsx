@@ -23,7 +23,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import ElementProperties from "./element-properties";
-import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
+import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import "./element-properties-panel.scss";
 
 /**

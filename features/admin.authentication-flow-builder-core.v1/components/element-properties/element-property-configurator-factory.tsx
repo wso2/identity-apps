@@ -25,9 +25,9 @@ import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import startCase from "lodash-es/startCase";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Element, ElementCategories } from "../models/elements";
-import getKnownElementProperties from "../utils/get-known-element-properties";
-import isTextValueWithFallback from "../utils/is-text-value-with-fallback";
+import { Element, ElementCategories } from "../../models/elements";
+import getKnownElementProperties from "../../utils/get-known-element-properties";
+import isTextValueWithFallback from "../../utils/is-text-value-with-fallback";
 
 /**
  * Props interface of {@link ElementPropertyConfiguratorFactory}

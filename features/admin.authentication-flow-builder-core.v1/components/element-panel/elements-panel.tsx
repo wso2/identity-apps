@@ -29,9 +29,9 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps } from "react";
 import ElementPanelDraggableNode from "./element-panel-draggable-node";
-import useGetAuthenticationFlowBuilderElements from "../api/use-get-authentication-flow-builder-elements";
-import { Component } from "../models/component";
-import { Widget } from "../models/widget";
+import useGetAuthenticationFlowBuilderElements from "../../api/use-get-authentication-flow-builder-elements";
+import { Component } from "../../models/component";
+import { Widget } from "../../models/widget";
 import "./elements-panel.scss";
 
 /**
