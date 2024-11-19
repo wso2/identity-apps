@@ -22,7 +22,7 @@ import { updateUserStoreAttributeMappings } from "@wso2is/admin.userstores.v1/ap
 import { DISABLED } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {
     AttributeMapping,
-    UserStore,
+    UserStoreDetails,
     UserStoreProperty
 } from "@wso2is/admin.userstores.v1/models/user-stores";
 import {
@@ -63,7 +63,7 @@ interface AttributeMappingsPropsInterface extends TestableComponentInterface {
     /**
      * User store object.
      */
-    userStore: UserStore;
+    userStore: UserStoreDetails;
     /**
      * User store ID
      */

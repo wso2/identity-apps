@@ -41,7 +41,7 @@ import {
     UserStoreType
 } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, Message, PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -72,7 +72,7 @@ import "./remote-user-store-create-page.scss";
 /**
  * Props for the remote customer user store page.
  */
-type RemoteCustomerUserStoreCreatePageInterface = TestableComponentInterface & RouteComponentProps;
+type RemoteCustomerUserStoreCreatePageInterface = IdentifiableComponentInterface & RouteComponentProps;
 
 /**
  * Remote customer user store create page.
@@ -84,7 +84,7 @@ type RemoteCustomerUserStoreCreatePageInterface = TestableComponentInterface & R
 const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserStoreCreatePageInterface> = (
     props: RemoteCustomerUserStoreCreatePageInterface
 ): ReactElement => {
-    const { location, ["data-testid"]: testId } = props;
+    const { location, ["data-componentid"]: testId = "remote-userstore-create-page" } = props;
 
     const queryParams: URLSearchParams = new URLSearchParams(location.search);
     const queryParamKey: string = RemoteUserStoreUIConstants.REMOTE_USER_STORE_TYPE_QUERY_PARAM;
@@ -423,7 +423,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
             showBottomDivider
             data-testid={ `${testId}-page-layout` }
         >
-            { userStoreImplType && (
+            { isOptimizedImplEnabled && userStoreImplType && (
                 <Message
                     content={ renderUserStoreImplMessageContent() }
                     type="info"
@@ -432,110 +432,106 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
                 />
             ) }
             <EmphasizedSegment padded="very">
-                { isUserStoreTypesRequestLoading || userStoreTypeRequestError
-                    ? renderLoadingPlaceholder()
-                    : (
-                        <Stepper
-                            activeStep={ activeStep }
-                            orientation="vertical"
-                            className="remote-user-store-create-stepper"
-                        >
-                            <Step>
-                                <StepLabel
-                                    optional={
-                                        (<Typography variant="body2">
-                                            { t("remoteUserStores:pages.create.stepper.step1.description") }
-                                        </Typography>)
+                { isUserStoreTypesRequestLoading || userStoreTypeRequestError ? (
+                    renderLoadingPlaceholder()
+                ) : (
+                    <Stepper
+                        activeStep={ activeStep }
+                        orientation="vertical"
+                        className="remote-user-store-create-stepper"
+                    >
+                        <Step>
+                            <StepLabel
+                                optional={
+                                    (<Typography variant="body2">
+                                        { t("remoteUserStores:pages.create.stepper.step1.description") }
+                                    </Typography>)
+                                }
+                            >
+                                <Typography variant="h4">
+                                    { t("remoteUserStores:pages.create.stepper.step1.title") }
+                                </Typography>
+                            </StepLabel>
+                            <StepContent>
+                                <GeneralUserStoreDetailsForm
+                                    ref={ generalUserStoreDetailsFormRef }
+                                    userStoreManager={
+                                        userStoreImplType === RemoteUserStoreImplType.OPTIMIZED
+                                            ? RemoteUserStoreManagerType.RemoteUserStoreManager
+                                            : RemoteUserStoreManagerType.WSOutboundUserStoreManager
                                     }
+                                    isReadOnly={ !hasUserStoreCreatePermissions }
+                                    isReadWriteUserStoresEnabled={ isReadWriteUserStoresEnabled }
+                                    initialValues={ userStoreFormData.generalDetails ?? {} }
+                                    onSubmit={ onGeneralDetailsFormSubmit }
+                                />
+                                <Button
+                                    variant="contained"
+                                    disabled={ !hasUserStoreCreatePermissions }
+                                    data-componentid={ `${testId}-next-button` }
+                                    onClick={ () => {
+                                        if (generalUserStoreDetailsFormRef?.current?.triggerSubmit)
+                                            generalUserStoreDetailsFormRef.current.triggerSubmit();
+                                    } }
+                                    loading={ isUserStoreCreateRequestLoading }
                                 >
-                                    <Typography variant="h4">
-                                        { t("remoteUserStores:pages.create.stepper.step1.title") }
-                                    </Typography>
-                                </StepLabel>
-                                <StepContent>
-                                    <GeneralUserStoreDetailsForm
-                                        ref={ generalUserStoreDetailsFormRef }
-                                        userStoreManager={
-                                            userStoreImplType === RemoteUserStoreImplType.OPTIMIZED
-                                                ? RemoteUserStoreManagerType.RemoteUserStoreManager
-                                                : RemoteUserStoreManagerType.WSOutboundUserStoreManager
-                                        }
-                                        isReadOnly={ !hasUserStoreCreatePermissions }
-                                        isReadWriteUserStoresEnabled={ isReadWriteUserStoresEnabled }
-                                        initialValues={ userStoreFormData.generalDetails ?? {} }
-                                        onSubmit={ onGeneralDetailsFormSubmit }
-                                    />
+                                    { t("common:next") }
+                                </Button>
+                            </StepContent>
+                        </Step>
+
+                        <Step>
+                            <StepLabel
+                                optional={
+                                    (<Typography variant="body2">
+                                        { t("remoteUserStores:pages.create.stepper.step2.description") }
+                                    </Typography>)
+                                }
+                            >
+                                <Typography variant="h4">
+                                    { t("remoteUserStores:pages.create.stepper.step2.title") }
+                                </Typography>
+                            </StepLabel>
+                            <StepContent>
+                                <ConfigurationsForm
+                                    ref={ configurationsFormRef }
+                                    userStoreManager={
+                                        userStoreImplType === RemoteUserStoreImplType.OPTIMIZED
+                                            ? RemoteUserStoreManagerType.RemoteUserStoreManager
+                                            : RemoteUserStoreManagerType.WSOutboundUserStoreManager
+                                    }
+                                    isReadOnly={ !hasUserStoreCreatePermissions }
+                                    initialValues={ userStoreFormData.configurations ?? {} }
+                                    onSubmit={ onConfigurationsFormSubmit }
+                                />
+                                <div className="step-actions-container">
+                                    <Button
+                                        variant="outlined"
+                                        disabled={ !hasUserStoreCreatePermissions || isUserStoreCreateRequestLoading }
+                                        data-componentid={ `${testId}-previous-button` }
+                                        onClick={ () => {
+                                            setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
+                                        } }
+                                    >
+                                        { t("common:previous") }
+                                    </Button>
                                     <Button
                                         variant="contained"
                                         disabled={ !hasUserStoreCreatePermissions }
-                                        data-componentid={ `${testId}-next-button` }
+                                        data-componentid={ `${testId}-finish-button` }
                                         onClick={ () => {
-                                            if (generalUserStoreDetailsFormRef?.current?.triggerSubmit)
-                                                generalUserStoreDetailsFormRef.current.triggerSubmit();
+                                            if (configurationsFormRef?.current?.triggerSubmit)
+                                                configurationsFormRef.current.triggerSubmit();
                                         } }
                                         loading={ isUserStoreCreateRequestLoading }
                                     >
-                                        { t("common:next") }
+                                        { t("common:finish") }
                                     </Button>
-                                </StepContent>
-                            </Step>
-
-                            <Step>
-                                <StepLabel
-                                    optional={
-                                        (<Typography variant="body2">
-                                            { t("remoteUserStores:pages.create.stepper.step2.description") }
-                                        </Typography>)
-                                    }
-                                >
-                                    <Typography variant="h4">
-                                        { t("remoteUserStores:pages.create.stepper.step2.title") }
-                                    </Typography>
-                                </StepLabel>
-                                <StepContent>
-                                    <ConfigurationsForm
-                                        ref={ configurationsFormRef }
-                                        userStoreManager={
-                                            userStoreImplType === RemoteUserStoreImplType.OPTIMIZED
-                                                ? RemoteUserStoreManagerType.RemoteUserStoreManager
-                                                : RemoteUserStoreManagerType.WSOutboundUserStoreManager
-                                        }
-                                        isReadOnly={ !hasUserStoreCreatePermissions }
-                                        initialValues={ userStoreFormData.configurations ?? {} }
-                                        onSubmit={ onConfigurationsFormSubmit }
-                                    />
-                                    <div className="step-actions-container">
-                                        <Button
-                                            variant="outlined"
-                                            disabled={
-                                                !hasUserStoreCreatePermissions
-                                                || isUserStoreCreateRequestLoading
-                                            }
-                                            data-componentid={ `${testId}-next-button` }
-                                            onClick={ () => {
-                                                setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
-                                            } }
-                                        >
-                                            { t("common:previous") }
-                                        </Button>
-                                        <Button
-                                            variant="contained"
-                                            disabled={ !hasUserStoreCreatePermissions }
-                                            data-componentid={ `${testId}-next-button` }
-                                            onClick={ () => {
-                                                if (configurationsFormRef?.current?.triggerSubmit)
-                                                    configurationsFormRef.current.triggerSubmit();
-                                            } }
-                                            loading={ isUserStoreCreateRequestLoading }
-                                        >
-                                            { t("common:finish") }
-                                        </Button>
-                                    </div>
-                                </StepContent>
-                            </Step>
-                        </Stepper>
-                    )
-                }
+                                </div>
+                            </StepContent>
+                        </Step>
+                    </Stepper>
+                ) }
             </EmphasizedSegment>
         </PageLayout>
     );

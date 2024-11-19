@@ -260,16 +260,3 @@ export interface UserStoreItem {
     text: string;
     value: string;
 }
-
-/**
- * User store details object
- */
-export interface UserStoreDetails {
-    id?: string,
-    enabled?: boolean,
-    typeName: string;
-    typeId: string;
-    name: string;
-    className: string;
-    properties: UserStoreProperty[];
-}

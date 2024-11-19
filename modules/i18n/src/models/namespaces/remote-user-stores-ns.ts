@@ -35,7 +35,7 @@ export interface RemoteUserStoresNS {
                     genericError: NotificationItem;
                     success: NotificationItem;
                 };
-            }
+            };
             title: string;
             stepper: {
                 step1: {
@@ -45,6 +45,69 @@ export interface RemoteUserStoresNS {
                 step2: {
                     description: string;
                     title: string;
+                };
+            };
+        };
+        edit: {
+            tabs: {
+                guide: string;
+                general: string;
+                configurations: string;
+            };
+            guide: {
+                heading: string;
+                subHeading: string;
+                steps: {
+                    download: {
+                        heading: string;
+                        onPrem: {
+                            description: string;
+                            action: string;
+                        };
+                        remote: {
+                            description: string;
+                        };
+                    };
+                    configure: {
+                        heading: string;
+                        description: string;
+                        docsDescription: string;
+                    };
+                    token: {
+                        heading: string;
+                        description: string;
+                        action: string;
+                        generatedToken: {
+                            message: string;
+                            label: string;
+                        };
+                    };
+                    run: {
+                        heading: string;
+                        description: {
+                            onPrem: string;
+                            remote: string;
+                        };
+                        commands: {
+                            unix: string;
+                            windows: string;
+                        };
+                        successMessage: {
+                            onPrem: string;
+                            remote: string;
+                        };
+                        checkConnection: {
+                            action: string;
+                            successAction: string;
+                            errorAction: string;
+                            errorMessage: string;
+                            errorHeading: string;
+                        };
+                    };
+                    attributeMapping: {
+                        heading: string;
+                        description: string;
+                    };
                 };
             };
         };
@@ -119,6 +182,8 @@ export interface RemoteUserStoresNS {
         };
     };
     notifications: {
-        typeFetchError: NotificationItem
-    }
+        typeFetchError: NotificationItem;
+        tokenGenerateError: NotificationItem;
+        connectionStatusCheckError: NotificationItem;
+    };
 }

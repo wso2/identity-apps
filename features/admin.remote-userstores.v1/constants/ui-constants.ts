@@ -45,3 +45,12 @@ export enum RemoteUserStoreImplType {
      */
     CLASSIC = "classic"
 }
+
+/**
+ * Remote user store edit tab IDs.
+ */
+export enum RemoteUserStoreEditTabIDs {
+    GENERAL = "general",
+    CONFIGURATIONS = "configurations",
+    GUIDE = "guide"
+}

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,15 +18,13 @@
 
 import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
 import { deleteUserStore, patchUserStore } from "@wso2is/admin.userstores.v1/api/user-stores";
-import { DISABLED } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import { DISABLED, RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import { PatchData, UserStoreDetails, UserStoreProperty } from "@wso2is/admin.userstores.v1/models/user-stores";
 import {
-    CategorizedProperties,
-    PatchData,
-    TypeProperty,
-    UserStore,
-    UserStoreProperty
-} from "@wso2is/admin.userstores.v1/models/user-stores";
-import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+    AlertInterface,
+    AlertLevels,
+    IdentifiableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue } from "@wso2is/form";
 import { Field, Forms, Validation } from "@wso2is/forms";
@@ -47,28 +45,37 @@ import {
     useDocumentation,
     useMediaContext
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, Grid, Icon, List, Segment } from "semantic-ui-react";
-import { disconnectAgentConnection, generateToken, getAgentConnections, regenerateToken } from "../../api";
-import { USERSTORE_VALIDATION_REGEX_PATTERNS } from "../../constants/remote-user-stores-constants";
+import { disconnectAgentConnection, generateToken, regenerateToken } from "../../api";
+import useGetUserStoreAgentConnections from "../../api/use-get-user-store-agent-connections";
+import {
+    RemoteUserStoreConstants,
+    USERSTORE_VALIDATION_REGEX_PATTERNS
+} from "../../constants/remote-user-stores-constants";
 import { AgentConnectionInterface, RegenerateTokenInterface } from "../../models/remote-user-stores";
 import { validateInputWithRegex } from "../../utils/userstore-utils";
+import isEmpty from "lodash-es/isEmpty";
 
 /**
  * Props for the user store general settings component.
  */
-interface UserStoreGeneralSettingsInterface extends TestableComponentInterface {
+interface UserStoreGeneralSettingsInterface extends IdentifiableComponentInterface {
     /**
      * User store object.
      */
-    userStore: UserStore;
+    userStore: UserStoreDetails;
     /**
      * User store ID
      */
     userStoreId: string;
+    /**
+     * User store manager.
+     */
+    userStoreManager: RemoteUserStoreManagerType;
     /**
      * Flag to hold if the user store is disabled.
      */
@@ -77,10 +84,6 @@ interface UserStoreGeneralSettingsInterface extends TestableComponentInterface {
      * Call back to handle disabling/enabling the user store.
      */
     handleUserStoreDisabled: (value: string) => void;
-    /**
-     * User store properties.
-     */
-    userStoreProperties: CategorizedProperties;
 }
 
 /**
@@ -93,14 +96,13 @@ interface UserStoreGeneralSettingsInterface extends TestableComponentInterface {
 export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSettingsInterface> = (
     props: UserStoreGeneralSettingsInterface
 ): ReactElement => {
-
     const {
         isDisabled,
         userStore,
         userStoreId,
+        userStoreManager,
         handleUserStoreDisabled,
-        userStoreProperties,
-        [ "data-testid" ]: testId
+        ["data-componentid"]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -108,10 +110,10 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
     const { getLink } = useDocumentation();
     const { isMobileViewport } = useMediaContext();
 
-    const AGENT_CONNECTION_DESCRIPTION: string = "Users with an account in this user store connected via this agent, " +
+    const AGENT_CONNECTION_DESCRIPTION: string =
+        "Users with an account in this user store connected via this agent, " +
         "can sign in to the My Account and other business applications registered in the organization.";
 
-    const [ agentConnections, setAgentConnections ] = useState<AgentConnectionInterface[]>([]);
     const [ agentIndex, setAgentIndex ] = useState<number>(null);
     const [ agentOneToken, setAgentOneToken ] = useState<string>("");
     const [ agentTwoToken, setAgentTwoToken ] = useState<string>("");
@@ -126,28 +128,31 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
     const [ showGenerateTokenModal, setShowGenerateTokenModal ] = useState<boolean>(false);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showTokenModal, setShowTokenModal ] = useState<boolean>(false);
-    const [ isAgentConnectionsRequestLoading, setIsAgentConnectionsRequestLoading ] = useState<boolean>(false);
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
 
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
 
-    useEffect(() => {
-        setIsAgentConnectionsRequestLoading(true);
-        getAgentConnections(userStoreId)
-            .then((response: AgentConnectionInterface[]) => {
-                setAgentConnections(response.filter((connection: AgentConnectionInterface) => connection?.agent));
-            })
-            .finally(() => {
-                setIsAgentConnectionsRequestLoading(false);
-            });
-    }, [ userStoreId ]);
+    const {
+        data: agentConnectionsData,
+        isLoading: isAgentConnectionsRequestLoading,
+        error: agentConnectionsRequestError,
+        mutate: mutateAgentConnectionsRequest
+    } = useGetUserStoreAgentConnections(userStoreId, userStoreManager);
+
+    const agentConnections: AgentConnectionInterface[] = useMemo(() => {
+        const _agentConnections: AgentConnectionInterface[] = agentConnectionsData?.filter(
+            (connection: AgentConnectionInterface) => connection?.agent && !isEmpty(connection?.agent?.displayName)
+        );
+
+        return _agentConnections;
+    }, [ agentConnectionsData ]);
 
     useEffect(() => {
         if (!isAgentOneTokenGenerated && !isAgentTwoTokenGenerated) {
             return;
         }
 
-        handleAgentConnectionList();
+        mutateAgentConnectionsRequest();
     }, [ regeneratingAgentConnection ]);
 
     useEffect(() => {
@@ -169,30 +174,23 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
     }, [ agentTwoToken ]);
 
     /**
-     * The following function handles fetching the agent connections.
-     */
-    const handleAgentConnectionList = () => {
-        setIsAgentConnectionsRequestLoading(true);
-        getAgentConnections(userStoreId)
-            .then((response: AgentConnectionInterface[]) => {
-                setAgentConnections(response.filter((connection: AgentConnectionInterface) => connection?.agent));
-            })
-            .finally(() => {
-                setIsAgentConnectionsRequestLoading(false);
-            });
-    };
-
-    /**
      * The following function handles token generation.
      */
     const handleGenerateToken = () => {
 
-        const data: { userStoreId: string; } = { userStoreId: userStoreId };
-
-        generateToken(data)
-            .then((response: { token: string; }) => {
+        generateToken(userStoreId, userStoreManager)
+            .then((response: { token: string }) => {
                 setAgentHAToken(response.token);
                 setShowGenerateTokenModal(true);
+            })
+            .catch(() => {
+                dispatch(addAlert(
+                    {
+                        description: t("remoteUserStores:notifications.tokenGenerateError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("userstores:notifications.tokenGenerateError.message")
+                    }
+                ));
             });
     };
 
@@ -203,9 +201,9 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
      */
     const resolveConnectionStatusIcon = (status: boolean) => {
         if (status) {
-            return <Icon name="check circle" color="green" className="mr-1"/>;
+            return <Icon name="check circle" color="green" className="mr-1" />;
         } else {
-            return <Icon name="times circle" color="red" className="mr-1"/>;
+            return <Icon name="times circle" color="red" className="mr-1" />;
         }
     };
 
@@ -216,11 +214,10 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
      * connection object.
      */
     const handleAgentDisconnect = (disconnectingAgentConnection: AgentConnectionInterface) => {
-        disconnectAgentConnection(userStoreId, disconnectingAgentConnection.agent.Id)
-            .then(() => {
-                setShowDisconnectConfirmationModal(false);
-                handleAgentConnectionList();
-            });
+        disconnectAgentConnection(userStoreId, disconnectingAgentConnection.agent.Id).then(() => {
+            setShowDisconnectConfirmationModal(false);
+            mutateAgentConnectionsRequest();
+        });
     };
 
     /**
@@ -229,23 +226,21 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
      * @param regeneratingAgentConnection - Agent connection object.
      */
     const handleRegenerateAgentConnectionToken = (regeneratingAgentConnection: AgentConnectionInterface) => {
-
         const tokenData: RegenerateTokenInterface = {
             existingTokenId: regeneratingAgentConnection.tokenId,
             userStoreId: userStoreId
         };
 
-        regenerateToken(tokenData)
-            .then((response: { token: string }) => {
-                if (agentIndex === 0) {
-                    setAgentOneToken(response.token);
-                } else {
-                    setAgentTwoToken(response.token);
-                }
-                setShowRegenerateConfirmationModal(false);
-                setShowTokenModal(true);
-                setRegeneratingAgentConnection(null);
-            });
+        regenerateToken(tokenData).then((response: { token: string }) => {
+            if (agentIndex === 0) {
+                setAgentOneToken(response.token);
+            } else {
+                setAgentTwoToken(response.token);
+            }
+            setShowRegenerateConfirmationModal(false);
+            setShowTokenModal(true);
+            setRegeneratingAgentConnection(null);
+        });
     };
 
     /**
@@ -259,10 +254,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
             type="negative"
             open={ showDeleteConfirmationModal }
             assertion={ userStore?.name }
-            assertionHint={
-                t("extensions:manage.features.userStores.delete." +
-                    "assertionHint")
-            }
+            assertionHint={ t("extensions:manage.features.userStores.delete." + "assertionHint") }
             assertionType="checkbox"
             primaryAction={ t("userstores:confirmation.confirm") }
             secondaryAction={ t("common:cancel") }
@@ -270,55 +262,50 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
             onPrimaryActionClick={ (): void => {
                 deleteUserStore(userStoreId)
                     .then(() => {
-                        dispatch(addAlert({
-                            description: t("userstores:notifications." +
-                                "deleteUserstore.success.description"),
-                            level: AlertLevels.SUCCESS,
-                            message: t("userstores:notifications." +
-                                "deleteUserstore.success.message")
-
-                        }));
-                        dispatch(addAlert({
-                            description: t("userstores:notifications." +
-                                "delay.description"),
-                            level: AlertLevels.WARNING,
-                            message: t("userstores:notifications." +
-                                "delay.message")
-                        }));
+                        dispatch(
+                            addAlert({
+                                description: t("userstores:notifications." + "deleteUserstore.success.description"),
+                                level: AlertLevels.SUCCESS,
+                                message: t("userstores:notifications." + "deleteUserstore.success.message")
+                            })
+                        );
+                        dispatch(
+                            addAlert({
+                                description: t("userstores:notifications." + "delay.description"),
+                                level: AlertLevels.WARNING,
+                                message: t("userstores:notifications." + "delay.message")
+                            })
+                        );
 
                         history.push(AppConstants.getPaths().get("USERSTORES"));
                     })
-                    .catch((error: { description: string, message: string}) => {
-                        dispatch(addAlert({
-                            description: error?.description
-                                ?? t("userstores:notifications." +
-                                    "deleteUserstore.genericError.description"),
-                            level: AlertLevels.ERROR,
-                            message: error?.message ?? t("userstores:notifications." +
-                                "deleteUserstore.genericError.message")
-                        }));
-                    }).finally(() => {
+                    .catch((error: { description: string; message: string }) => {
+                        dispatch(
+                            addAlert({
+                                description:
+                                    error?.description ??
+                                    t("userstores:notifications." + "deleteUserstore.genericError.description"),
+                                level: AlertLevels.ERROR,
+                                message:
+                                    error?.message ??
+                                    t("userstores:notifications." + "deleteUserstore.genericError.message")
+                            })
+                        );
+                    })
+                    .finally(() => {
                         setShowDeleteConfirmationModal(false);
                     });
             } }
-            data-testid={ `${ testId }-delete-confirmation-modal` }
+            data-testid={ `${testId}-delete-confirmation-modal` }
             closeOnDimmerClick={ false }
         >
-            <ConfirmationModal.Header
-                data-testid={ `${ testId }-delete-confirmation-modal-header` }
-            >
+            <ConfirmationModal.Header data-testid={ `${testId}-delete-confirmation-modal-header` }>
                 { t("userstores:confirmation.header") }
             </ConfirmationModal.Header>
-            <ConfirmationModal.Message
-                attached
-                negative
-                data-testid={ `${ testId }-delete-confirmation-modal-message` }
-            >
+            <ConfirmationModal.Message attached negative data-testid={ `${testId}-delete-confirmation-modal-message` }>
                 { t("userstores:confirmation.message") }
             </ConfirmationModal.Message>
-            <ConfirmationModal.Content
-                data-testid={ `${ testId }-delete-confirmation-modal-content` }
-            >
+            <ConfirmationModal.Content data-testid={ `${testId}-delete-confirmation-modal-content` }>
                 { t("userstores:confirmation.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
@@ -341,60 +328,48 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                 setIsAgentTwoTokenGenerated(null);
             } }
         >
-            <ConfirmationModal.Header
-                data-testid={ `${ testId }-delete-confirmation-modal-header` }
-            >
+            <ConfirmationModal.Header data-testid={ `${testId}-delete-confirmation-modal-header` }>
                 New Installation Token
             </ConfirmationModal.Header>
-            <ConfirmationModal.Content
-                data-testid={ `${ testId }-delete-confirmation-modal-content` }
-            >
-                {
-                    isAgentOneTokenGenerated && (
-                        <Grid className="mt-2 mb-2">
-                            <Grid.Row>
-                                <Grid.Column width={ 16 }>
-                                    <Message
-                                        content="Make sure to note down the installation token as it
+            <ConfirmationModal.Content data-testid={ `${testId}-delete-confirmation-modal-content` }>
+                { isAgentOneTokenGenerated && (
+                    <Grid className="mt-2 mb-2">
+                        <Grid.Row>
+                            <Grid.Column width={ 16 }>
+                                <Message
+                                    content="Make sure to note down the installation token as it
                                                         will be required when running the user store agent. You won’t
                                                         be able to see it again!"
-                                        type="warning"
-                                    />
-                                    <label>
-                                        Installation token
-                                    </label>
-                                    <CopyInputField
-                                        value={ agentOneToken ? agentOneToken : "" }
-                                        data-testid={ `${ testId }-client-secret-readonly-input` }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    )
-                }
-                {
-                    isAgentTwoTokenGenerated && (
-                        <Grid className="mt-2 mb-2">
-                            <Grid.Row>
-                                <Grid.Column width={ 16 }>
-                                    <Message
-                                        content="Make sure to note down the installation token as it
+                                    type="warning"
+                                />
+                                <label>Installation token</label>
+                                <CopyInputField
+                                    value={ agentOneToken ? agentOneToken : "" }
+                                    data-testid={ `${testId}-client-secret-readonly-input` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                ) }
+                { isAgentTwoTokenGenerated && (
+                    <Grid className="mt-2 mb-2">
+                        <Grid.Row>
+                            <Grid.Column width={ 16 }>
+                                <Message
+                                    content="Make sure to note down the installation token as it
                                                         will be required when running the user store agent. You won't
                                                         be able to see it again!"
-                                        type="info"
-                                    />
-                                    <label>
-                                        Installation token
-                                    </label>
-                                    <CopyInputField
-                                        value={ agentTwoToken ? agentTwoToken : "" }
-                                        data-testid={ `${ testId }-client-secret-readonly-input` }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    )
-                }
+                                    type="info"
+                                />
+                                <label>Installation token</label>
+                                <CopyInputField
+                                    value={ agentTwoToken ? agentTwoToken : "" }
+                                    data-testid={ `${testId}-client-secret-readonly-input` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                ) }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
@@ -415,37 +390,29 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                 setIsAgentHATokenGenerated(null);
             } }
         >
-            <ConfirmationModal.Header
-                data-testid={ `${ testId }-delete-confirmation-modal-header` }
-            >
+            <ConfirmationModal.Header data-testid={ `${testId}-delete-confirmation-modal-header` }>
                 New Installation Token
             </ConfirmationModal.Header>
-            <ConfirmationModal.Content
-                data-testid={ `${ testId }-delete-confirmation-modal-content` }
-            >
-                {
-                    isAgentHATokenGenerated && (
-                        <Grid className="mt-2 mb-2">
-                            <Grid.Row>
-                                <Grid.Column width={ 16 }>
-                                    <Message
-                                        content="Make sure to note down the installation token as it
+            <ConfirmationModal.Content data-testid={ `${testId}-delete-confirmation-modal-content` }>
+                { isAgentHATokenGenerated && (
+                    <Grid className="mt-2 mb-2">
+                        <Grid.Row>
+                            <Grid.Column width={ 16 }>
+                                <Message
+                                    content="Make sure to note down the installation token as it
                                                         will be required when running the user store agent. You won't
                                                         be able to see it again!"
-                                        type="warning"
-                                    />
-                                    <label>
-                                        Installation token
-                                    </label>
-                                    <CopyInputField
-                                        value={ agentHAToken ? agentHAToken : "" }
-                                        data-testid={ `${ testId }-client-secret-readonly-input` }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    )
-                }
+                                    type="warning"
+                                />
+                                <label>Installation token</label>
+                                <CopyInputField
+                                    value={ agentHAToken ? agentHAToken : "" }
+                                    data-testid={ `${testId}-client-secret-readonly-input` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                ) }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
@@ -457,49 +424,49 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
      * @param data - The checkbox data.
      */
     const handleUserStoreDisable = (event: any, data: CheckboxProps): void => {
-        const name: string = userStoreProperties?.basic.required?.find(
-            (property: TypeProperty) => property?.name === DISABLED
-        )?.name;
-
         const patchData: PatchData = {
             operation: "REPLACE",
-            path: `/properties/${ name }`,
-            value: data.checked ? "true" : "false"
+            path: `/properties/${RemoteUserStoreConstants.PROPERTY_NAME_DISABLED}`,
+            value: data.checked.toString()
         };
 
         patchUserStore(userStoreId, [ patchData ])
             .then(() => {
                 handleUserStoreDisabled(data.checked.toString());
 
-                dispatch(addAlert<AlertInterface>({
-                    description: t("userstores:notifications." +
-                        "updateUserstore.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("userstores:notifications." +
-                        "updateUserstore.success.message")
-                }));
+                dispatch(
+                    addAlert<AlertInterface>({
+                        description: t("userstores:notifications." + "updateUserstore.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("userstores:notifications." + "updateUserstore.success.message")
+                    })
+                );
 
                 // ATM, userstore operations run as an async task in the backend. Hence, The changes aren't
                 // applied at once. As a temp solution, a notification informing the delay is shown here.
                 // See https://github.com/wso2/product-is/issues/9767 for updates on the backend improvement.
                 // TODO: Remove delay notification once backend is fixed.
-                dispatch(addAlert<AlertInterface>({
-                    description: t("userstores:notifications.updateDelay.description"),
-                    level: AlertLevels.WARNING,
-                    message: t("userstores:notifications.updateDelay.message")
-                }));
+                dispatch(
+                    addAlert<AlertInterface>({
+                        description: t("userstores:notifications.updateDelay.description"),
+                        level: AlertLevels.WARNING,
+                        message: t("userstores:notifications.updateDelay.message")
+                    })
+                );
 
                 // Re-fetch the user store details
             })
-            .catch((error: { description: string, message: string; }) => {
-                dispatch(addAlert<AlertInterface>({
-                    description: error?.description
-                        || t("userstores:notifications." +
-                            "updateUserstore.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.message || t("userstores:notifications." +
-                        "updateUserstore.genericError.message")
-                }));
+            .catch((error: { description: string; message: string }) => {
+                dispatch(
+                    addAlert<AlertInterface>({
+                        description:
+                            error?.description ||
+                            t("userstores:notifications." + "updateUserstore.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message:
+                            error?.message || t("userstores:notifications." + "updateUserstore.genericError.message")
+                    })
+                );
             });
     };
 
@@ -508,7 +475,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
      *
      * @param values - Form values.
      */
-    const handleUpdateDescription = (values: Map<string,FormValue>): void => {
+    const handleUpdateDescription = (values: Map<string, FormValue>): void => {
         const patchData: PatchData = {
             operation: "REPLACE",
             path: "/description",
@@ -517,354 +484,337 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
 
         patchUserStore(userStoreId, [ patchData ])
             .then(() => {
-                dispatch(addAlert<AlertInterface>({
-                    description: t("userstores:notifications." +
-                        "updateUserstore.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("userstores:notifications." +
-                        "updateUserstore.success.message")
-                }));
+                dispatch(
+                    addAlert<AlertInterface>({
+                        description: t("userstores:notifications." + "updateUserstore.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("userstores:notifications." + "updateUserstore.success.message")
+                    })
+                );
 
                 // ATM, userstore operations run as an async task in the backend. Hence, The changes aren't
                 // applied at once. As a temp solution, a notification informing the delay is shown here.
                 // See https://github.com/wso2/product-is/issues/9767 for updates on the backend improvement.
                 // TODO: Remove delay notification once backend is fixed.
-                dispatch(addAlert<AlertInterface>({
-                    description: t("userstores:notifications.updateDelay.description"),
-                    level: AlertLevels.WARNING,
-                    message: t("userstores:notifications.updateDelay.message")
-                }));
+                dispatch(
+                    addAlert<AlertInterface>({
+                        description: t("userstores:notifications.updateDelay.description"),
+                        level: AlertLevels.WARNING,
+                        message: t("userstores:notifications.updateDelay.message")
+                    })
+                );
 
                 // Re-fetch the user store details
             })
-            .catch((error: { description: string, message: string }) => {
-                dispatch(addAlert<AlertInterface>({
-                    description: error?.description
-                        || t("userstores:notifications." +
-                            "updateUserstore.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.message || t("userstores:notifications." +
-                        "updateUserstore.genericError.message")
-                }));
+            .catch((error: { description: string; message: string }) => {
+                dispatch(
+                    addAlert<AlertInterface>({
+                        description:
+                            error?.description ||
+                            t("userstores:notifications." + "updateUserstore.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message:
+                            error?.message || t("userstores:notifications." + "updateUserstore.genericError.message")
+                    })
+                );
             });
     };
 
     return (
         <>
-            { !isAgentConnectionsRequestLoading
-                ? (
-                    <EmphasizedSegment padded="very">
-                        <Grid>
-                            <Grid.Row>
-                                <Grid.Column width={ 6 }>
-                                    <Forms
-                                        onSubmit={ (values: Map<string, FormValue>) => {
-                                            handleUpdateDescription(values);
-                                        } }
-                                    >
-                                        <Field
-                                            requiredErrorMessage={ null }
-                                            type="text"
-                                            name="description"
-                                            label="Description"
-                                            required={ false }
-                                            placeholder="Enter the description of the user store"
-                                            maxLength={ 300 }
-                                            minLength={ 3 }
-                                            width={ 14 }
-                                            data-testid={ `${ testId }-user-store-description-textarea` }
-                                            value={
-                                                userStore?.description
-                                                    ? userStore?.description
-                                                    : ""
+            { !isAgentConnectionsRequestLoading ? (
+                <EmphasizedSegment padded="very">
+                    <Grid>
+                        <Grid.Row>
+                            <Grid.Column width={ 6 }>
+                                <Forms
+                                    onSubmit={ (values: Map<string, FormValue>) => {
+                                        handleUpdateDescription(values);
+                                    } }
+                                >
+                                    <Field
+                                        requiredErrorMessage={ null }
+                                        type="text"
+                                        name="description"
+                                        label="Description"
+                                        required={ false }
+                                        placeholder="Enter the description of the user store"
+                                        maxLength={ 300 }
+                                        minLength={ 3 }
+                                        width={ 14 }
+                                        data-testid={ `${testId}-user-store-description-textarea` }
+                                        value={ userStore?.description ? userStore?.description : "" }
+                                        validation={ (value: string, validation: Validation) => {
+                                            let isMatch: boolean = true;
+                                            let validationErrorMessage: string;
+
+                                            const validityResult: Map<
+                                                string,
+                                                string | boolean
+                                            > = validateInputWithRegex(
+                                                value,
+                                                USERSTORE_VALIDATION_REGEX_PATTERNS.EscapeRegEx
+                                            );
+                                            const validationMatch: boolean =
+                                                validityResult.get("isMatch").toString() === "true";
+
+                                            if (validationMatch) {
+                                                isMatch = false;
+                                                const invalidString: string = validityResult
+                                                    .get("invalidStringValue")
+                                                    .toString();
+
+                                                validationErrorMessage = t(
+                                                    "console:manage.features.userstores.forms.general.description" +
+                                                        ".validationErrorMessages.invalidInputErrorMessage",
+                                                    {
+                                                        invalidString: invalidString
+                                                    }
+                                                );
+                                            } else {
+                                                isMatch = true;
                                             }
-                                            validation={ (value: string, validation: Validation) => {
 
-                                                let isMatch: boolean = true;
-                                                let validationErrorMessage: string;
-
-                                                const validityResult: Map<string, string | boolean> =
-                                                    validateInputWithRegex(value,
-                                                        USERSTORE_VALIDATION_REGEX_PATTERNS.EscapeRegEx);
-                                                const validationMatch: boolean = (
-                                                    validityResult.get("isMatch").toString() === "true");
-
-                                                if (validationMatch) {
-                                                    isMatch = false;
-                                                    const invalidString: string = validityResult.get(
-                                                        "invalidStringValue").toString();
-
-                                                    validationErrorMessage =
-                                                        t("console:manage.features.userstores.forms.general.description"
-                                                            + ".validationErrorMessages.invalidInputErrorMessage", {
-                                                            invalidString: invalidString
-                                                        });
-                                                } else {
-                                                    isMatch = true;
+                                            if (!isMatch) {
+                                                validation.isValid = false;
+                                                validation.errorMessages.push(validationErrorMessage);
+                                            }
+                                        } }
+                                    />
+                                    <Popup
+                                        trigger={
+                                            (<div
+                                                className={
+                                                    isMobileViewport
+                                                        ? "mb-1x mt-1x inline-button button-width"
+                                                        : "inline-button"
                                                 }
-
-                                                if (!isMatch) {
-                                                    validation.isValid = false;
-                                                    validation.errorMessages.push(
-                                                        validationErrorMessage
-                                                    );
-                                                }
-                                            } }
-                                        />
-                                        <Popup
-                                            trigger={ (
-                                                <div
-                                                    className={
-                                                        isMobileViewport
-                                                            ? "mb-1x mt-1x inline-button button-width"
-                                                            : "inline-button"
+                                            >
+                                                <PrimaryButton
+                                                    type="submit"
+                                                    disabled={
+                                                        !(
+                                                            userStore?.properties?.find(
+                                                                (property: UserStoreProperty) =>
+                                                                    property.name === DISABLED
+                                                            )?.value === "false"
+                                                        )
                                                     }
                                                 >
-                                                    <PrimaryButton
-                                                        type="submit"
-                                                        disabled={ !(userStore?.properties?.find(
-                                                            (property: UserStoreProperty) =>
-                                                                property.name === DISABLED)?.value === "false") }>
-                                                        { t("common:update") }
-                                                    </PrimaryButton>
-                                                </div>
-                                            ) }
-                                            content={ t("extensions:manage.features.userStores.edit." +
-                                                "general.disable.buttonDisableHint") }
-                                            size="mini"
-                                            wide
-                                            disabled={ !!(userStore?.properties?.find(
-                                                (property: UserStoreProperty) =>
-                                                    property.name === DISABLED)?.value === "false") }
-                                        />
-                                    </Forms>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                        <Divider hidden/>
-                        <Divider/>
-                        <Divider hidden/>
-                        <Heading as="h4">User Store Agent Connection(s)</Heading>
-                        <Segment className="agent-connections-section" padded="very">
-                            <List divided verticalAlign="middle" relaxed="very" width={ 10 }>
-                                {
-                                    !isAgentConnectionsRequestLoading
-                                        ? agentConnections.length > 0
-                                            ? agentConnections.map(
-                                                (connection: AgentConnectionInterface, index: number) => (
-                                                    <List.Item key={ index } columns={ 2 } verticalAlign="middle">
-                                                        <List.Content floated="right">
-                                                            {
-                                                                connection?.connected
-                                                                    ? (<Button
-                                                                        basic
-                                                                        color="red"
-                                                                        onClick={
-                                                                            () => {
-                                                                                setDisconnectingAgentConnection(
-                                                                                    connection
-                                                                                );
-                                                                                setShowDisconnectConfirmationModal(
-                                                                                    true
-                                                                                );
-                                                                            }
-                                                                        }
-                                                                    >
-                                                                    Disconnect
-                                                                    </Button>
-                                                                    ) : null
-                                                            }
-                                                            <Button
-                                                                className={
-                                                                    !connection.connected
-                                                                        ? index === 1 ? "ml-4 mt-4" : "ml-4"
-                                                                        : index === 1 ? "mt-4" : ""
-                                                                }
-                                                                color={ connection.connected ? "red" : "orange" }
-                                                                onClick={ () => {
-                                                                    setAgentIndex(index);
-                                                                    setRegeneratingAgentConnection(connection);
-                                                                    setShowRegenerateConfirmationModal(true);
-                                                                } }
-                                                            >
-                                                            Regenerate token
-                                                            </Button>
-                                                        </List.Content>
-                                                        <List.Content>
-                                                            <List.Header className={ index == 1 ? "mt-4" : "" }>
-                                                                { resolveConnectionStatusIcon(connection?.connected) }
-                                                                <strong>{ connection?.agent?.displayName }</strong>
-                                                            </List.Header>
-                                                            <List.Description className="mt-2 ml-1">
-                                                                { AGENT_CONNECTION_DESCRIPTION }
-                                                            </List.Description>
-                                                        </List.Content>
-                                                    </List.Item>
-                                                ))
-                                            : (
-                                                <EmptyPlaceholder
-                                                    title="No Agents Connected"
-                                                    subtitle={ [
-                                                        "There are no user store agent connections.",
-                                                        "Please go through the setup guide to configure " +
-                                                        "the user store agent(s)."
-                                                    ] }
-                                                />
+                                                    { t("common:update") }
+                                                </PrimaryButton>
+                                            </div>)
+                                        }
+                                        content={ t(
+                                            "extensions:manage.features.userStores.edit." +
+                                                "general.disable.buttonDisableHint"
+                                        ) }
+                                        size="mini"
+                                        wide
+                                        disabled={
+                                            !!(
+                                                userStore?.properties?.find(
+                                                    (property: UserStoreProperty) => property.name === DISABLED
+                                                )?.value === "false"
                                             )
-                                        : <ContentLoader/>
-                                }
-                                {
-                                    agentConnections.length === 1 && (
-                                        <List.Item columns={ 2 } verticalAlign="middle">
+                                        }
+                                    />
+                                </Forms>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                    <Divider hidden />
+                    <Divider />
+                    <Divider hidden />
+                    <Heading as="h4">User Store Agent Connection(s)</Heading>
+                    <Segment className="agent-connections-section" padded="very">
+                        <List divided verticalAlign="middle" relaxed="very" width={ 10 }>
+                            { !isAgentConnectionsRequestLoading ? (
+                                agentConnections.length > 0 ? (
+                                    agentConnections.map((connection: AgentConnectionInterface, index: number) => (
+                                        <List.Item key={ index } columns={ 2 } verticalAlign="middle">
                                             <List.Content floated="right">
+                                                { connection?.connected ? (
+                                                    <Button
+                                                        basic
+                                                        color="red"
+                                                        onClick={ () => {
+                                                            setDisconnectingAgentConnection(connection);
+                                                            setShowDisconnectConfirmationModal(true);
+                                                        } }
+                                                    >
+                                                        Disconnect
+                                                    </Button>
+                                                ) : null }
                                                 <Button
-                                                    className="mt-4"
-                                                    color="orange"
-                                                    onClick={ handleGenerateToken }
+                                                    className={
+                                                        !connection.connected
+                                                            ? index === 1
+                                                                ? "ml-4 mt-4"
+                                                                : "ml-4"
+                                                            : index === 1
+                                                                ? "mt-4"
+                                                                : ""
+                                                    }
+                                                    color={ connection.connected ? "red" : "orange" }
+                                                    onClick={ () => {
+                                                        setAgentIndex(index);
+                                                        setRegeneratingAgentConnection(connection);
+                                                        setShowRegenerateConfirmationModal(true);
+                                                    } }
                                                 >
-                                                    Generate token
+                                                    Regenerate token
                                                 </Button>
                                             </List.Content>
                                             <List.Content>
-                                                <List.Header className="mt-4">
-                                                    <Icon name="times circle" color="red" className="mr-1"/>
-                                                    <strong>On-Prem-Agent-2</strong>
+                                                <List.Header className={ index == 1 ? "mt-4" : "" }>
+                                                    { resolveConnectionStatusIcon(connection?.connected) }
+                                                    <strong>{ connection?.agent?.displayName }</strong>
                                                 </List.Header>
                                                 <List.Description className="mt-2 ml-1">
-                                                    { t("extensions:manage.features.userStores.edit." +
-                                                        "general.connectionsSections.agents.agentTwo.description") }
-                                                    <DocumentationLink
-                                                        link={ getLink("manage.userStores.highAvailability.learnMore") }
-                                                    >
-                                                        { t("extensions:common.learnMore") }
-                                                    </DocumentationLink>
+                                                    { AGENT_CONNECTION_DESCRIPTION }
                                                 </List.Description>
                                             </List.Content>
                                         </List.Item>
-                                    )
-                                }
-                            </List>
-                        </Segment>
-                    </EmphasizedSegment>
-                ) :
-                <ContentLoader/>
-            }
+                                    ))
+                                ) : (
+                                    <EmptyPlaceholder
+                                        title="No Agents Connected"
+                                        subtitle={ [
+                                            "There are no user store agent connections.",
+                                            "Please go through the setup guide to configure " +
+                                                "the user store agent(s)."
+                                        ] }
+                                    />
+                                )
+                            ) : (
+                                <ContentLoader />
+                            ) }
+                            { agentConnections.length === 1 && (
+                                <List.Item columns={ 2 } verticalAlign="middle">
+                                    <List.Content floated="right">
+                                        <Button className="mt-4" color="orange" onClick={ handleGenerateToken }>
+                                            Generate token
+                                        </Button>
+                                    </List.Content>
+                                    <List.Content>
+                                        <List.Header className="mt-4">
+                                            <Icon name="times circle" color="red" className="mr-1" />
+                                            <strong>On-Prem-Agent-2</strong>
+                                        </List.Header>
+                                        <List.Description className="mt-2 ml-1">
+                                            { t(
+                                                "extensions:manage.features.userStores.edit." +
+                                                    "general.connectionsSections.agents.agentTwo.description"
+                                            ) }
+                                            <DocumentationLink
+                                                link={ getLink("manage.userStores.highAvailability.learnMore") }
+                                            >
+                                                { t("extensions:common.learnMore") }
+                                            </DocumentationLink>
+                                        </List.Description>
+                                    </List.Content>
+                                </List.Item>
+                            ) }
+                        </List>
+                    </Segment>
+                </EmphasizedSegment>
+            ) : (
+                <ContentLoader />
+            ) }
             <Divider hidden />
             <Divider hidden />
-            {
-                disconnectingAgentConnection && (
-                    <ConfirmationModal
-                        data-testid={ `${ testId }-confirmation-modal` }
-                        onClose={ (): void => setShowDisconnectConfirmationModal(false) }
-                        type="warning"
-                        open={ showDisconnectConfirmationModal }
-                        assertionHint={ t("user:deleteUser.confirmationModal." +
-                            "assertionHint") }
-                        assertionType="checkbox"
-                        primaryAction={ t("common:confirm") }
-                        secondaryAction={ t("common:cancel") }
-                        onSecondaryActionClick={ (): void => {
-                            setShowDisconnectConfirmationModal(false);
-                            setAlert(null);
-                        } }
-                        onPrimaryActionClick={ (): void => handleAgentDisconnect(disconnectingAgentConnection) }
-                        closeOnDimmerClick={ false }
-                    >
-                        <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            { t("user:deleteUser.confirmationModal.header") }
-                        </ConfirmationModal.Header>
-                        <ConfirmationModal.Message
-                            data-testid={ `${ testId }-confirmation-modal-message` }
-                            attached
-                            warning
-                        >
-                            This action is irreversible and will disconnect the user store agent connection.
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
-                            <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                            If you disconnect the user store agent connection users onboarded from the remote user store
-                            will not be able to log in to My Account or any other applications onboarded in Asgardeo.
-                        </ConfirmationModal.Content>
-                    </ConfirmationModal>
-                )
-            }
-            {
-                regeneratingAgentConnection && (
-                    <ConfirmationModal
-                        data-testid={ `${ testId }-confirmation-modal` }
-                        onClose={ (): void => setShowRegenerateConfirmationModal(false) }
-                        type="warning"
-                        open={ showRegenerateConfirmationModal }
-                        assertionHint={ t("user:deleteUser.confirmationModal." +
-                            "assertionHint") }
-                        assertionType="checkbox"
-                        primaryAction={ t("common:confirm") }
-                        secondaryAction={ t("common:cancel") }
-                        onSecondaryActionClick={ (): void => {
-                            setShowRegenerateConfirmationModal(false);
-                            setAlert(null);
-                        } }
-                        onPrimaryActionClick={
-                            (): void => handleRegenerateAgentConnectionToken(regeneratingAgentConnection)
-                        }
-                        closeOnDimmerClick={ false }
-                    >
-                        <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
-                            { t("user:deleteUser.confirmationModal.header") }
-                        </ConfirmationModal.Header>
-                        <ConfirmationModal.Message
-                            data-testid={ `${ testId }-confirmation-modal-message` }
-                            attached
-                            warning
-                        >
-                            This action is irreversible and will revoke the previously used installation token.
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
-                            <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                            If you regenerate the token the users with the previous token will no longer be
-                            authorised to run the user store agent with that token. You will also need to restart the
-                            user store agent as revoking the previous token will disconnect the agent..
-                        </ConfirmationModal.Content>
-                    </ConfirmationModal>
-                )
-            }
-            {
-                !isPrivilegedUser && (
-                    <DangerZoneGroup
-                        sectionHeader={ t("common:dangerZone") }
-                        ata-testid={ `${ testId }-danger-zone-group` }
-                    >
-                        <DangerZone
-                            actionTitle={ t("userstores:dangerZone.disable.actionTitle") }
-                            header="Disable User Store"
-                            subheader={ t("userstores:dangerZone.disable.subheader") }
-                            onActionClick={ undefined }
-                            data-testid={ `${ testId }-delete-danger-zone` }
-                            toggle={ {
-                                checked: isDisabled !== undefined
+            { disconnectingAgentConnection && (
+                <ConfirmationModal
+                    data-testid={ `${testId}-confirmation-modal` }
+                    onClose={ (): void => setShowDisconnectConfirmationModal(false) }
+                    type="warning"
+                    open={ showDisconnectConfirmationModal }
+                    assertionHint={ t("user:deleteUser.confirmationModal." + "assertionHint") }
+                    assertionType="checkbox"
+                    primaryAction={ t("common:confirm") }
+                    secondaryAction={ t("common:cancel") }
+                    onSecondaryActionClick={ (): void => {
+                        setShowDisconnectConfirmationModal(false);
+                        setAlert(null);
+                    } }
+                    onPrimaryActionClick={ (): void => handleAgentDisconnect(disconnectingAgentConnection) }
+                    closeOnDimmerClick={ false }
+                >
+                    <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
+                        { t("user:deleteUser.confirmationModal.header") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message data-testid={ `${testId}-confirmation-modal-message` } attached warning>
+                        This action is irreversible and will disconnect the user store agent connection.
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content>
+                        <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
+                        If you disconnect the user store agent connection users onboarded from the remote user store
+                        will not be able to log in to My Account or any other applications onboarded in Asgardeo.
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            ) }
+            { regeneratingAgentConnection && (
+                <ConfirmationModal
+                    data-testid={ `${testId}-confirmation-modal` }
+                    onClose={ (): void => setShowRegenerateConfirmationModal(false) }
+                    type="warning"
+                    open={ showRegenerateConfirmationModal }
+                    assertionHint={ t("user:deleteUser.confirmationModal." + "assertionHint") }
+                    assertionType="checkbox"
+                    primaryAction={ t("common:confirm") }
+                    secondaryAction={ t("common:cancel") }
+                    onSecondaryActionClick={ (): void => {
+                        setShowRegenerateConfirmationModal(false);
+                        setAlert(null);
+                    } }
+                    onPrimaryActionClick={
+                        (): void => handleRegenerateAgentConnectionToken(regeneratingAgentConnection) }
+                    closeOnDimmerClick={ false }
+                >
+                    <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
+                        { t("user:deleteUser.confirmationModal.header") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message data-testid={ `${testId}-confirmation-modal-message` } attached warning>
+                        This action is irreversible and will revoke the previously used installation token.
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content>
+                        <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
+                        If you regenerate the token the users with the previous token will no longer be authorised to
+                        run the user store agent with that token. You will also need to restart the user store agent as
+                        revoking the previous token will disconnect the agent..
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            ) }
+            { !isPrivilegedUser && (
+                <DangerZoneGroup sectionHeader={ t("common:dangerZone") } ata-testid={ `${testId}-danger-zone-group` }>
+                    <DangerZone
+                        actionTitle={ t("userstores:dangerZone.disable.actionTitle") }
+                        header="Disable User Store"
+                        subheader={ t("userstores:dangerZone.disable.subheader") }
+                        onActionClick={ undefined }
+                        data-testid={ `${testId}-delete-danger-zone` }
+                        toggle={ {
+                            checked:
+                                isDisabled !== undefined
                                     ? isDisabled === "true"
                                     : userStore?.properties?.find(
-                                        (property: UserStoreProperty) =>
-                                            property.name === DISABLED)?.value === "false",
-                                onChange: handleUserStoreDisable
-                            } }
-                        />
-                        <DangerZone
-                            actionTitle={ t("userstores:dangerZone.delete.actionTitle") }
-                            header={ t("userstores:dangerZone.delete.header") }
-                            subheader={ t("userstores:dangerZone.delete.subheader") }
-                            onActionClick={ () => setShowDeleteConfirmationModal(true) }
-                            data-testid={ `${ testId }-delete-danger-zone` }
-                        />
-                    </DangerZoneGroup>
-                )
-            }
+                                        (property: UserStoreProperty) => property.name === DISABLED
+                                    )?.value === "false",
+                            onChange: handleUserStoreDisable
+                        } }
+                    />
+                    <DangerZone
+                        actionTitle={ t("userstores:dangerZone.delete.actionTitle") }
+                        header={ t("userstores:dangerZone.delete.header") }
+                        subheader={ t("userstores:dangerZone.delete.subheader") }
+                        onActionClick={ () => setShowDeleteConfirmationModal(true) }
+                        data-testid={ `${testId}-delete-danger-zone` }
+                    />
+                </DangerZoneGroup>
+            ) }
             { showDeleteConfirmationModal && deleteConfirmation() }
-            {
-                (
-                    isAgentOneTokenGenerated || isAgentTwoTokenGenerated
-                ) && tokenRegenerationModal()
-            }
+            { (isAgentOneTokenGenerated || isAgentTwoTokenGenerated) && tokenRegenerationModal() }
             { isAgentHATokenGenerated && tokenGenerationModal() }
         </>
     );
