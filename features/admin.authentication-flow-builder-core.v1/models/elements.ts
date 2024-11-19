@@ -20,6 +20,8 @@ import { Component } from "./component";
 import { Node } from "./node";
 import { Widget } from "./widget";
 
+export type Element = Component | Node | Widget;
+
 /**
  * Interface for the entire JSON structure.
  */

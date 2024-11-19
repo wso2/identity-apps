@@ -31,6 +31,7 @@ import React, {
     MouseEvent,
     MutableRefObject,
     ReactElement,
+    SVGProps,
     useCallback,
     useRef,
     useState
@@ -46,6 +47,21 @@ import "./step-node.scss";
 export interface StepNodePropsInterface extends IdentifiableComponentInterface {
     stepIndex: number;
 }
+
+// TODO: Move this to Oxygen UI.
+/* eslint-disable max-len */
+const GridDotsVerticalIcon = ({ ...rest }: SVGProps<SVGSVGElement>): ReactElement => (
+    <svg fill="#a0a0a0" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg" { ...rest }>
+        <g id="SVGRepo_bgCarrier" strokeWidth="0" />
+        <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" />
+        <g id="SVGRepo_iconCarrier">
+            <path
+                d="M686.211 137.143v-.137l68.572.137H686.21Zm0 1508.571c75.566 0 137.143 61.577 137.143 137.143S761.777 1920 686.211 1920c-75.702 0-137.142-61.577-137.142-137.143s61.44-137.143 137.142-137.143Zm548.572 0c75.566 0 137.143 61.577 137.143 137.143S1310.349 1920 1234.783 1920c-75.703 0-137.143-61.577-137.143-137.143s61.44-137.143 137.143-137.143ZM686.21 1097.143c75.566 0 137.143 61.577 137.143 137.143 0 75.565-61.577 137.143-137.143 137.143-75.702 0-137.142-61.578-137.142-137.143 0-75.566 61.44-137.143 137.142-137.143Zm548.572 0c75.566 0 137.143 61.577 137.143 137.143 0 75.565-61.577 137.143-137.143 137.143-75.703 0-137.143-61.578-137.143-137.143 0-75.566 61.44-137.143 137.143-137.143ZM686.21 548.57c75.566 0 137.143 61.578 137.143 137.143 0 75.566-61.577 137.143-137.143 137.143-75.702 0-137.142-61.577-137.142-137.143 0-75.565 61.44-137.143 137.142-137.143Zm548.572 0c75.566 0 137.143 61.578 137.143 137.143 0 75.566-61.577 137.143-137.143 137.143-75.703 0-137.143-61.577-137.143-137.143 0-75.565 61.44-137.143 137.143-137.143ZM686.21 0c75.566 0 137.143 61.577 137.143 137.143S761.776 274.286 686.21 274.286c-75.702 0-137.142-61.577-137.142-137.143S610.509 0 686.21 0Zm548.503 0c75.566 0 137.143 61.577 137.143 137.143s-61.577 137.143-137.143 137.143c-75.565 0-137.143-61.577-137.143-137.143S1159.15 0 1234.714 0Z"
+                fillRule="evenodd"
+            />
+        </g>
+    </svg>
+);
 
 /**
  * Node for representing an empty step in the authentication flow.
@@ -124,7 +140,19 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
                     <Box className="authentication-flow-builder-step-content-form">
                         <FormGroup>
                             { droppedElements.map((component: Component, index: number) => (
-                                <NodeFactory key={ index } node={ component } />
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    key={ index }
+                                    className="authentication-flow-builder-step-content-form-field"
+                                >
+                                    <div className="authentication-flow-builder-step-content-form-field-drag-handle">
+                                        <GridDotsVerticalIcon height={ 20 } />
+                                    </div>
+                                    <div className="authentication-flow-builder-step-content-form-field-content">
+                                        <NodeFactory node={ component } />
+                                    </div>
+                                </Box>
                             )) }
                         </FormGroup>
                     </Box>

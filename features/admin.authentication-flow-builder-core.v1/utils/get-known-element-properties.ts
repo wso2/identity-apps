@@ -16,23 +16,18 @@
  * under the License.
  */
 
-import { Base } from "./base";
+import { ComponentTypes } from "../models/component";
+import { Element } from "../models/elements";
 
-/**
- * Interface for a component.
- */
-export type Component<T = any> = Base<T>;
+const getKnownElementProperties = (element: Element): Record<string, string[]> => {
+    if (element.type === ComponentTypes.Button) {
+        return {
+            color: [ "primary", "secondary", "success", "error", "info", "warning" ],
+            variant: [ "contained", "outlined", "text" ]
+        };
+    }
 
-export enum ComponentTypes {
-    Button = "BUTTON",
-    Divider = "DIVIDER",
-    Email = "EMAIL",
-    Text = "TEXT",
-    Number = "NUMBER",
-    Password = "PASSWORD",
-    Telephone = "TELEPHONE",
-    Choice = "CHOICE",
-    Checkbox = "CHECKBOX",
-    Image = "IMAGE",
-    Typography = "TYPOGRAPHY"
-}
+    return {};
+};
+
+export default getKnownElementProperties;

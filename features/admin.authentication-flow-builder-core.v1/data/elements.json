@@ -145,7 +145,6 @@
                         "i18nKey": null
                     },
                     "required": false,
-                    "multiline": false,
                     "placeholder": {
                         "fallback": "Enter phone number",
                         "i18nKey": null
@@ -266,6 +265,7 @@
                                 "fallback": "Option 1",
                                 "i18nKey": null
                             },
+                            "key": "option1",
                             "value": "option1"
                         },
                         {
@@ -273,6 +273,7 @@
                                 "fallback": "Option 2",
                                 "i18nKey": null
                             },
+                            "key": "option2",
                             "value": "option2"
                         },
                         {
@@ -280,6 +281,7 @@
                                 "fallback": "Option 3",
                                 "i18nKey": null
                             },
+                            "key": "option3",
                             "value": "option3"
                         }
                     ]
@@ -301,8 +303,10 @@
             },
             "config": {
                 "field": {
+                    "fullWidth": true,
                     "className": "wso2is-button",
-                    "type": "submit",
+                    "variant": "contained",
+                    "color": "primary",
                     "label": {
                         "fallback": "Button",
                         "i18nKey": null
@@ -338,6 +342,7 @@
                     },
                     "config": {
                         "field": {
+                            "variant": "h1",
                             "className": "wso2is-typography-h1"
                         },
                         "styles": {
@@ -362,6 +367,7 @@
                     },
                     "config": {
                         "field": {
+                            "variant": "h2",
                             "className": "wso2is-typography-h2"
                         },
                         "styles": {
@@ -386,6 +392,7 @@
                     },
                     "config": {
                         "field": {
+                            "variant": "h3",
                             "className": "wso2is-typography-h3"
                         },
                         "styles": {
@@ -410,6 +417,7 @@
                     },
                     "config": {
                         "field": {
+                            "variant": "h4",
                             "className": "wso2is-typography-h4"
                         },
                         "styles": {
@@ -434,6 +442,7 @@
                     },
                     "config": {
                         "field": {
+                            "variant": "h5",
                             "className": "wso2is-typography-h5"
                         },
                         "styles": {
@@ -458,6 +467,7 @@
                     },
                     "config": {
                         "field": {
+                            "variant": "h6",
                             "className": "wso2is-typography-h6"
                         },
                         "styles": {
@@ -482,6 +492,7 @@
                     },
                     "config": {
                         "field": {
+                            "type": "body1",
                             "className": "wso2is-typography-body1"
                         },
                         "styles": {
@@ -506,6 +517,7 @@
                     },
                     "config": {
                         "field": {
+                            "type": "body2",
                             "className": "wso2is-typography-body2"
                         },
                         "styles": {
@@ -530,6 +542,7 @@
                     },
                     "config": {
                         "field": {
+                            "type": "caption",
                             "className": "wso2is-typography-caption"
                         },
                         "styles": {
@@ -571,9 +584,10 @@
                         "field": {
                             "className": "wso2is-divider-horizontal",
                             "label": {
-                                "fallback": "Text",
+                                "fallback": "",
                                 "i18nKey": null
-                            }
+                            },
+                            "orientation": "horizontal"
                         },
                         "styles": {
                             "fontSize": "24px",
@@ -599,9 +613,10 @@
                         "field": {
                             "className": "wso2is-divider-vertical",
                             "label": {
-                                "fallback": "Text",
+                                "fallback": "",
                                 "i18nKey": null
-                            }
+                            },
+                            "orientation": "vertical"
                         },
                         "styles": {
                             "fontSize": "24px",
@@ -628,6 +643,30 @@
             "variants": [
                 {
                     "category": "IMAGE",
+                    "type": "LOGO",
+                    "version": "0.1.0",
+                    "deprecated": false,
+                    "display": {
+                        "label": {
+                            "fallback": "Logo",
+                            "i18nKey": null
+                        },
+                        "image": null
+                    },
+                    "config": {
+                        "field": {
+                            "src": "https://www.svgrepo.com/show/508699/landscape-placeholder.svg",
+                            "className": "wso2is-image-logo"
+                        },
+                        "styles": {
+                            "borderRadius": "0",
+                            "width": "inherit",
+                            "height": "40px"
+                        }
+                    }
+                },
+                {
+                    "category": "IMAGE",
                     "type": "AVATAR",
                     "version": "0.1.0",
                     "deprecated": false,
@@ -645,33 +684,6 @@
                         "styles": {
                             "borderRadius": "50%",
                             "width": "40px",
-                            "height": "40px"
-                        }
-                    }
-                },
-                {
-                    "category": "IMAGE",
-                    "type": "LOGO",
-                    "version": "0.1.0",
-                    "deprecated": false,
-                    "display": {
-                        "label": {
-                            "fallback": "Logo",
-                            "i18nKey": null
-                        },
-                        "image": null
-                    },
-                    "config": {
-                        "field": {
-                            "className": "wso2is-image-logo",
-                            "label": {
-                                "fallback": "Text",
-                                "i18nKey": null
-                            }
-                        },
-                        "styles": {
-                            "borderRadius": "0",
-                            "width": "100px",
                             "height": "40px"
                         }
                     }

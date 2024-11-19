@@ -41,6 +41,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
     const [ isElementPanelOpen, setIsElementPanelOpen ] = useState<boolean>(true);
     const [ isElementPropertiesPanelOpen, setIsOpenElementPropertiesPanel ] = useState<boolean>(false);
     const [ elementPropertiesPanelHeading, setElementPropertiesPanelHeading ] = useState<ReactNode>(null);
+    const [ activeElement, setActiveElement ] = useState<Base>(null);
 
     const onElementDropOnCanvas = (element: Base): void  => {
         // TODO: Internationalize this string and get from a mapping.
@@ -57,15 +58,18 @@ const AuthenticationFlowBuilderCoreProvider = ({
             </Stack>
         );
         setIsOpenElementPropertiesPanel(true);
+        setActiveElement(element);
     };
 
     return (
         <AuthenticationFlowBuilderCoreContext.Provider
             value={ {
+                activeElement,
                 elementPropertiesPanelHeading,
                 isElementPanelOpen,
                 isElementPropertiesPanelOpen,
                 onElementDropOnCanvas,
+                setActiveElement,
                 setElementPropertiesPanelHeading,
                 setIsElementPanelOpen,
                 setIsOpenElementPropertiesPanel

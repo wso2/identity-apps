@@ -41,8 +41,32 @@
         }
 
         .authentication-flow-builder-step-content-form {
-            .oxygen-text-field {
-                margin-bottom: var(--oxygen-spacing-3);
+            .oxygen-form-group {
+                .authentication-flow-builder-step-content-form-field {
+                    border: 2px dashed transparent;
+
+                    .authentication-flow-builder-step-content-form-field-drag-handle {
+                        display: flex;
+                        visibility: hidden;
+
+                        svg {
+                            margin: 5px 0;
+                        }
+                    }
+
+                    .authentication-flow-builder-step-content-form-field-content {
+                        width: 100%;
+                    }
+
+                    &:hover {
+                        border-color: var(--oxygen-palette-grey-200);
+                        cursor: move;
+
+                        .authentication-flow-builder-step-content-form-field-drag-handle {
+                            visibility: visible;
+                        }
+                    }
+                }
             }
         }
     }

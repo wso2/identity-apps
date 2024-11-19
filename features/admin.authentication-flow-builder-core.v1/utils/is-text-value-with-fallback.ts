@@ -16,23 +16,22 @@
  * under the License.
  */
 
-import { Base } from "./base";
+import { ValueWithFallback } from "../models/base";
 
 /**
- * Interface for a component.
+ * Type-guard to check if the given value is of type `ValueWithFallback`.
+ * @param value - Value to be checked.
+ * @returns `true` if the value is of type `ValueWithFallback`, else `false`.
  */
-export type Component<T = any> = Base<T>;
+const isTextValueWithFallback = (value: any): value is ValueWithFallback => {
+    return (
+        value !== null &&
+        typeof value === "object" &&
+        "fallback" in value &&
+        "i18nKey" in value &&
+        (value.fallback === null || typeof value.fallback === "string") &&
+        (value.i18nKey === null || typeof value.i18nKey === "string")
+    );
+};
 
-export enum ComponentTypes {
-    Button = "BUTTON",
-    Divider = "DIVIDER",
-    Email = "EMAIL",
-    Text = "TEXT",
-    Number = "NUMBER",
-    Password = "PASSWORD",
-    Telephone = "TELEPHONE",
-    Choice = "CHOICE",
-    Checkbox = "CHECKBOX",
-    Image = "IMAGE",
-    Typography = "TYPOGRAPHY"
-}
+export default isTextValueWithFallback;

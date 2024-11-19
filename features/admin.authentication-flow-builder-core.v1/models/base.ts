@@ -17,6 +17,7 @@
  */
 
 import { CSSProperties } from "react";
+import { ComponentTypes } from "./component";
 
 /**
  * Base interface for a component or a primitive.
@@ -52,31 +53,73 @@ export interface Base<T = any> {
     variants: Base<T>[];
 }
 
+export interface ValueWithFallback {
+    /**
+     * Fallback value of the label.
+     */
+    fallback: string;
+    /**
+     * i18n key of the label.
+     */
+    i18nKey: string;
+}
+
 export interface BaseDisplay {
     /**
      * Fallback & i18n key value of the label.
      */
-    label: {
-        /**
-         * Fallback value of the label.
-         */
-        fallback: string;
-        /**
-         * i18n key of the label.
-         */
-        i18nKey: string;
-    };
+    label: ValueWithFallback;
     /**
      * Image URL of the component or the primitive.
      */
     image: string;
 }
 
+/**
+ * Interface representing an option for a field.
+ */
+export interface FieldOption {
+    /**
+     * The key of the field option.
+     */
+    key: string;
+
+    /**
+     * The value of the field option.
+     */
+    value: string;
+
+    /**
+     * The label of the field option.
+     */
+    label: ValueWithFallback;
+}
+
+/**
+ * Interface representing a strict field.
+ */
+export interface StrictField {
+    /**
+     * The name of the field.
+     */
+    name: string;
+    /**
+     * The type of the field.
+     */
+    type: ComponentTypes;
+    /**
+     * Options of the field.
+     */
+    options?: FieldOption[];
+}
+
+export type Field = StrictField & Record<string, any>;
+
 export interface BaseConfig {
     /**
      * Field properties.
      */
-    field: any;
+    field: Field;
     /**
      * Styles of the component or the primitive.
      */

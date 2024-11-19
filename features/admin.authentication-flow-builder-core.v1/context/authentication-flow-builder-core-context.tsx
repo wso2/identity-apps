@@ -24,6 +24,10 @@ import { Base } from "../models/base";
  */
 export interface AuthenticationFlowBuilderCoreContextProps {
     /**
+     * The properties of the active element.
+     */
+    activeElement: Base;
+    /**
      * The heading for the element properties panel.
      */
     elementPropertiesPanelHeading: ReactNode;
@@ -40,6 +44,10 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * @param element - The element that was dropped on the canvas.
      */
     onElementDropOnCanvas: (element: Base) => void;
+    /**
+     * Sets the active element in the canvas.
+     */
+    setActiveElement: Dispatch<SetStateAction<Base>>;
     /**
      * Sets the heading for the element properties panel.
      *
@@ -67,10 +75,12 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
     null | AuthenticationFlowBuilderCoreContextProps
 >(
     {
+        activeElement: null,
         elementPropertiesPanelHeading: null,
         isElementPanelOpen: true,
         isElementPropertiesPanelOpen: false,
         onElementDropOnCanvas: () => {},
+        setActiveElement: () => {},
         setElementPropertiesPanelHeading: () => {},
         setIsElementPanelOpen: () => {},
         setIsOpenElementPropertiesPanel: () => {}

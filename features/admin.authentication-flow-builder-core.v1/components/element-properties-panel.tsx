@@ -58,11 +58,7 @@ const ElementPropertiesPanel: FunctionComponent<ElementPropertiesPanelPropsInter
     anchor = "right",
     ...rest
 }: ElementPropertiesPanelPropsInterface): ReactElement => {
-    const {
-        elementPropertiesPanelHeading,
-        setIsOpenElementPropertiesPanel,
-        activeElementProperties
-    } = useAuthenticationFlowBuilderCore();
+    const { elementPropertiesPanelHeading, setIsOpenElementPropertiesPanel } = useAuthenticationFlowBuilderCore();
 
     return (
         <Box
@@ -72,7 +68,6 @@ const ElementPropertiesPanel: FunctionComponent<ElementPropertiesPanelPropsInter
             position="relative"
             bgcolor="white"
             component="div"
-            // style={ { overflowX: "hidden", overflowY: "scroll" } }
             data-componentid={ componentId }
             { ...rest }
         >

@@ -16,8 +16,10 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
+import Divider from "@oxygen-ui/react/Divider";
 import FormControl from "@oxygen-ui/react/FormControl";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormLabel from "@oxygen-ui/react/FormLabel";
@@ -25,9 +27,11 @@ import PhoneNumberInput from "@oxygen-ui/react/PhoneNumberInput";
 import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import TextField from "@oxygen-ui/react/TextField";
+import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
+import { FieldOption } from "../../models/base";
 import { Component, ComponentTypes } from "../../models/component";
 import { ElementCategories } from "../../models/elements";
 import "./step-node.scss";
@@ -114,12 +118,12 @@ export const NodeFactory: FunctionComponent<NodeFactoryPropsInterface> = ({
                             node.config?.field?.defaultValue?.i18nKey || node.config?.field?.defaultValue?.fallback
                         }
                     >
-                        { node.config?.field?.options?.map((option, index) => (
+                        { node.config?.field?.options?.map((option: FieldOption) => (
                             <FormControlLabel
-                                key={ option?.id }
-                                value={ option.value }
+                                key={ option?.key }
+                                value={ option?.value }
                                 control={ <Radio /> }
-                                label={ option.label?.i18nKey || option.label?.fallback }
+                                label={ option?.label?.i18nKey || option?.label?.fallback }
                             />
                         )) }
                     </RadioGroup>
@@ -127,9 +131,30 @@ export const NodeFactory: FunctionComponent<NodeFactoryPropsInterface> = ({
             );
         } else if (node.type === ComponentTypes.Button) {
             return (
-                <Button variant="contained" sx={ { my: 2 } }>
+                <Button variant="contained" fullWidth={ node.config?.field?.fullWidth }>
                     { node.config?.field?.label?.i18nKey || node.config?.field?.label?.fallback }
                 </Button>
+            );
+        } else if (node.type === ComponentTypes.Typography) {
+            return (
+                <Typography
+                    variant={ node?.variants?.[0]?.config?.field?.variant }
+                    color={ node?.variants?.[0]?.config?.field?.color }
+                >
+                    Text
+                </Typography>
+            );
+        } else if (node.type === ComponentTypes.Divider) {
+            return <Divider />;
+        } else if (node.type === ComponentTypes.Image) {
+            return (
+                <Box display="flex" alignItems="center" justifyContent="center">
+                    <img
+                        src={ node?.variants?.[0]?.config?.field?.src }
+                        alt={ node?.variants?.[0]?.config?.field?.alt }
+                        style={ node?.variants?.[0]?.config?.styles }
+                    />
+                </Box>
             );
         }
     }
