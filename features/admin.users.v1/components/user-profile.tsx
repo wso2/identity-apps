@@ -2468,7 +2468,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         return (
             <Grid.Row columns={ 1 } key={ key }>
-                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
+                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 10 }>
                     {
                         schema.name === "userName" && domainName.length > 1 ? (
                             <>
@@ -2562,7 +2562,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         return (
             <ConfirmationModal
-                data-testid={ `${testId}-confirmation-modal` }
+                data-componentid={ `${testId}-confirmation-modal` }
                 onClose={ handleMultiValuedItemDeleteModalClose }
                 type="negative"
                 open={ Boolean(selectedAttributeInfo?.value) }
@@ -2574,13 +2574,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 onPrimaryActionClick={ handleMultiValuedItemDeleteConfirmClick }
                 closeOnDimmerClick={ false }
             >
-                <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
+                <ConfirmationModal.Header data-componentid={ `${testId}-confirmation-modal-header` }>
                     { t(`${translationKey}heading`) }
                 </ConfirmationModal.Header>
-                <ConfirmationModal.Message data-testid={ `${testId}-confirmation-modal-message` } attached negative>
+                <ConfirmationModal.Message
+                    data-componentid={ `${testId}-confirmation-modal-message` }
+                    attached
+                    negative
+                >
                     { t(`${translationKey}description`, { attributeDisplayName }) }
                 </ConfirmationModal.Message>
-                <ConfirmationModal.Content data-testid={ `${testId}-confirmation-modal-content` }>
+                <ConfirmationModal.Content data-componentid={ `${testId}-confirmation-modal-content` }>
                     { t(`${translationKey}content`, { attributeDisplayName }) }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
@@ -2624,7 +2628,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         user.id && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 10 }>
                                                     <Form.Field>
                                                         <label>
                                                             { t("user:profile.fields.userId") }
@@ -2670,7 +2674,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         oneTimePassword && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 10 }>
                                                     <Field
                                                         data-testid={ `${ testId }-profile-form-one-time-pw }
                                                         -input` }
@@ -2691,7 +2695,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         createdDate && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 10 }>
                                                     <Form.Field>
                                                         <label>
                                                             { t("user:profile.fields." +
@@ -2712,7 +2716,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         modifiedDate && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 10 }>
                                                     <Form.Field>
                                                         <label>
                                                             { t("user:profile.fields.modifiedDate") }
@@ -2730,7 +2734,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         )
                                     }
                                     <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                             {
                                                 !isReadOnly && (
                                                     <Button
