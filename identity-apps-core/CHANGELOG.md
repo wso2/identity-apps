@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.8.1
+
+### Patch Changes
+
+- [#7130](https://github.com/wso2/identity-apps/pull/7130) [`08669ad434c35921e0a8c502adc2dd37ec600d3c`](https://github.com/wso2/identity-apps/commit/08669ad434c35921e0a8c502adc2dd37ec600d3c) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix incorrect french translations in UI
+
 ## 2.8.0
 
 ### Minor Changes

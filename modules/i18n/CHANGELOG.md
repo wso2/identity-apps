@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.12.1
+
+### Patch Changes
+
+- [#7124](https://github.com/wso2/identity-apps/pull/7124) [`8773370130811defa922868d08c4f1ac1e006eda`](https://github.com/wso2/identity-apps/commit/8773370130811defa922868d08c4f1ac1e006eda) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Introduce enable for user store config in attribute mappings
+
 ## 2.12.0
 
 ### Minor Changes
