@@ -54,8 +54,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
+import {
+    ReactComponent as RoundedLockSolidIcon
+} from "../../themes/default/assets/images/icons/solid-icons/rounded-lock.svg";
 import { deleteUser } from "../api";
-import { UserManagementConstants } from "../constants";
+import { ACCOUNT_LOCK_REASON_MAP, UserManagementConstants } from "../constants";
 import { UserBasicInterface, UserListInterface } from "../models";
 import { UserManagementUtils } from "../utils/user-management-utils";
 
@@ -252,6 +255,40 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     };
 
     /**
+     * Returns a locked icon if the account is locked.
+     *
+     * @param user - each admin user belonging to a row of the table.
+     * @returns the locked icon.
+     */
+    const resolveAccountLockStatus = (user: UserBasicInterface): ReactNode => {
+        const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
+            user[userConfig.userProfileSchema]?.accountLocked === true;
+        const accountLockedReason: string = user[userConfig.userProfileSchema]?.lockedReason;
+
+        const accountLockedReasonContent: string = ACCOUNT_LOCK_REASON_MAP[accountLockedReason]
+            ?? ACCOUNT_LOCK_REASON_MAP["DEFAULT"];
+
+        if (accountLocked) {
+            return (
+                <Popup
+                    trigger={ (
+                        <Icon
+                            className="locked-icon"
+                            size="small"
+                        >
+                            <RoundedLockSolidIcon/>
+                        </Icon>
+                    ) }
+                    content={ t(accountLockedReasonContent) }
+                    inverted
+                />
+            );
+        }
+
+        return null;
+    };
+
+    /**
      * Resolves data table columns.
      *
      * @returns the data table columns.
@@ -284,7 +321,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 spaced="right"
                                 data-suppress=""
                             />
-                            <Header.Content>
+                            { resolveAccountLockStatus(user) }
+                            <Header.Content className="pl-0">
                                 <div>
                                     { header as ReactNode }
                                     {

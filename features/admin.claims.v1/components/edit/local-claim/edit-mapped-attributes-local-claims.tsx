@@ -15,27 +15,36 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Show } from "@wso2is/access-control";
+
+import Accordion from "@oxygen-ui/react/Accordion";
+import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
+import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
+import Checkbox from "@oxygen-ui/react/Checkbox";
+import Typography from "@oxygen-ui/react/Typography";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, AttributeMapping, Claim, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, AttributeMapping, Claim, IdentifiableComponentInterface, Property } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import isEmpty from "lodash-es/isEmpty";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { updateAClaim } from "../../../api";
+import { ClaimManagementConstants } from "../../../constants";
 
 /**
  * Prop types of `EditMappedAttributesLocalClaims` component
  */
-interface EditMappedAttributesLocalClaimsPropsInterface extends TestableComponentInterface {
+interface EditMappedAttributesLocalClaimsPropsInterface extends IdentifiableComponentInterface {
     /**
      * Claim to be edited
      */
@@ -61,7 +70,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
     const {
         claim,
         update,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId = "edit-local-claims-mapped-attributes"
     } = props;
 
     const dispatch: Dispatch = useDispatch();
@@ -73,22 +82,47 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
 
     const { t } = useTranslation();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const hiddenUserStores: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
+
+    const isReadOnly: boolean = !useRequiredScopes(
+        featureConfig?.attributeDialects?.scopes?.update
+    );
+
+    const getExcludedStoresFromClaim = (claim: Claim): string[] => {
+        const property: Property = claim?.properties?.find(
+            (prop: Property) => prop?.key?.toLowerCase()
+                === ClaimManagementConstants.EXCLUDED_USER_STORES_CLAIM_PROPERTY.toLowerCase()
+        );
+
+        return property?.value?.split(",") || [];
+    };
+    const [ excludedUserStores, setExcludedUserStores ] = useState<string[]>(
+        getExcludedStoresFromClaim(claim)
+    );
 
     useEffect(() => {
         //TODO: [Type Fix] Cannot use `UserStoreListItem[]` here
         // because in line 74 some attributes are missing.
         const userstore: any[] = [];
 
-        userstore.push({
-            id: "PRIMARY",
-            name: "PRIMARY"
-        });
+        if (userstoresConfig?.primaryUserstoreName === PRIMARY_USERSTORE) {
+            userstore.push({
+                id: PRIMARY_USERSTORE,
+                name: PRIMARY_USERSTORE
+            });
+        }
 
         getUserStoreList()
             .then((response: AxiosResponse) => {
-                userstore.push(...response.data);
+                const userStoresData: UserStoreListItem[] = response?.data || [];
+
+                const filteredUserStores: UserStoreListItem[] = hiddenUserStores?.length > 0
+                    ? userStoresData.filter((store: UserStoreListItem) =>
+                        !hiddenUserStores?.includes(store?.name))
+                    : userStoresData;
+
+                userstore.push(...filteredUserStores);
                 setUserStore(userstore);
             })
             .catch(() => {
@@ -96,16 +130,36 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
             });
     }, []);
 
-    const isReadOnly: boolean = useMemo(() => (
-        !hasRequiredScopes(
-            featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
-    ), [ featureConfig, allowedScopes ]);
+    const getMappedAttributeForUserStore = (userStore: string): string | undefined => {
+        const mappingForGivenUserStore: string = claim?.attributeMapping?.find(
+            (attribute: AttributeMapping) =>
+                attribute.userstore.toLowerCase() === userStore.toLowerCase()
+        )?.mappedAttribute;
+
+        // If no specific mapping found, use PRIMARY userstore mapping.
+        if (!mappingForGivenUserStore && userStore !== PRIMARY_USERSTORE) {
+            return claim?.attributeMapping?.find(
+                (attribute: AttributeMapping) =>
+                    attribute.userstore.toLowerCase() === PRIMARY_USERSTORE.toLowerCase()
+            )?.mappedAttribute;
+        }
+
+        return mappingForGivenUserStore;
+    };
+
+    const handleEnableForUserStore = (storeName: string, isChecked: boolean) => {
+        if (isChecked) {
+            setExcludedUserStores(excludedUserStores.filter((name: string) => name !== storeName));
+        } else {
+            setExcludedUserStores([ ...excludedUserStores, storeName ]);
+        }
+    };
 
     return (
         <EmphasizedSegment padded="very">
-            <Grid data-testid={ testId }>
+            <Grid data-componentid={ componentId }>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
+                    <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 12 } widescreen={ 9 } mobile={ 16 }>
                         <p>
                             { t("claims:local.mappedAttributes.hint") }
                         </p>
@@ -126,7 +180,19 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                                 mappedAttribute: attribute.toString(),
                                                 userstore: userstore.toString()
                                             };
-                                        })
+                                        }),
+                                    properties: [
+                                        ...(claimData.properties?.filter((prop: Property) =>
+                                            prop.key.toLowerCase() !==
+                                            ClaimManagementConstants.EXCLUDED_USER_STORES_CLAIM_PROPERTY
+                                                .toLowerCase()
+                                        ) || []),
+                                        {
+                                            key: ClaimManagementConstants.EXCLUDED_USER_STORES_CLAIM_PROPERTY,
+                                            value: excludedUserStores?.filter(
+                                                (store: string) => !isEmpty(store)).join(",")
+                                        }
+                                    ]
                                 };
 
                                 setIsSubmitting(true);
@@ -162,39 +228,72 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                     });
                             } }
                         >
-                            <Grid>
-                                { userStore.map((store: UserStoreListItem, index: number) => {
-                                    return (
-                                        <Grid.Row columns={ 2 } key={ index }>
-                                            <Grid.Column width={ 4 }>
-                                                { store.name }
-                                            </Grid.Column>
-                                            <Grid.Column width={ 12 }>
-                                                <Field
-                                                    type="text"
-                                                    name={ store.name }
-                                                    placeholder={ t("claims:local.forms." +
-                                                        "attribute.placeholder") }
-                                                    required={ true }
-                                                    requiredErrorMessage={
-                                                        t("claims:local.forms." +
-                                                        "attribute.requiredErrorMessage")
-                                                    }
-                                                    value={ claim?.attributeMapping?.find(
-                                                        (attribute: AttributeMapping) => {
-                                                            return attribute.userstore
-                                                                .toLowerCase() === store.name.toLowerCase();
-                                                        })?.mappedAttribute }
-                                                    data-testid={ `${ testId }-form-store-name-input` }
-                                                    readOnly={ isReadOnly }
-                                                />
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    );
-                                }) }
-                            </Grid>
+                            { userStore.map((store: UserStoreListItem, index: number) => {
+                                return (
+                                    <Accordion
+                                        defaultExpanded
+                                        expanded={ true }
+                                        key={ index }
+                                        data-componentid={ `${componentId}-form-accordion-${store.name}` }
+                                    >
+                                        <AccordionSummary>
+                                            <Typography variant="h6"> { store.name } </Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <Grid>
+                                                <Grid.Row columns={ 2 } key={ index } verticalAlign="middle">
+                                                    <Grid.Column width={ 6 }>
+                                                        <p> {
+                                                            t("claims:local.mappedAttributes.mappedAttributeName")
+                                                        }</p>
+                                                    </Grid.Column>
+                                                    <Grid.Column width={ 6 }>
+                                                        <Field
+                                                            type="text"
+                                                            name={ store.name }
+                                                            placeholder={ t("claims:local.forms.attribute." +
+                                                                "placeholder") }
+                                                            required={ true }
+                                                            requiredErrorMessage={
+                                                                t("claims:local.forms." +
+                                                                    "attribute.requiredErrorMessage")
+                                                            }
+                                                            value={ getMappedAttributeForUserStore(store.name) }
+                                                            data-componentid={
+                                                                `${componentId}-form-attribute-name-input-
+                                                                    ${store.name}` }
+                                                            readOnly={ isReadOnly }
+                                                        />
+                                                    </Grid.Column>
+                                                </Grid.Row>
+                                                { ClaimManagementConstants.USER_STORE_CONFIG_SUPPORTED_CLAIMS
+                                                    .includes(claim.claimURI) && (
+                                                    <Grid.Row columns={ 2 } key={ index } verticalAlign="middle">
+                                                        <Grid.Column width={ 6 }>
+                                                            <p>{ t("claims:local.mappedAttributes." +
+                                                                    "enableForUserStore") }</p>
+                                                        </Grid.Column>
+                                                        <Grid.Column width={ 6 }>
+                                                            <Checkbox
+                                                                checked={ !excludedUserStores.includes(store.name) }
+                                                                onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                                                    handleEnableForUserStore(
+                                                                        store.name, e.target.checked
+                                                                    ) }
+                                                                disabled={ isReadOnly }
+                                                                data-componentid={
+                                                                    `${componentId}-form-userstore-support-checkbox-
+                                                                        ${store.name}` }
+                                                            />
+                                                        </Grid.Column>
+                                                    </Grid.Row>
+                                                ) }
+                                            </Grid>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                );
+                            }) }
                         </Forms>
-
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
@@ -206,7 +305,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                 onClick={ () => {
                                     setSubmit();
                                 } }
-                                data-testid={ `${ testId }-form-submit-button` }
+                                data-componentid={ `${ componentId }-form-submit-button` }
                                 loading={ isSubmitting }
                                 disabled={ isSubmitting }
                             >
@@ -218,11 +317,4 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
             </Grid>
         </EmphasizedSegment>
     );
-};
-
-/**
- * Default props for the component.
- */
-EditMappedAttributesLocalClaims.defaultProps = {
-    "data-testid": "edit-local-claims-mapped-attributes"
 };

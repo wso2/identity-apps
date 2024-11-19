@@ -1,5 +1,77 @@
 # @wso2is/admin.home.v1
 
+## 1.6.27
+
+### Patch Changes
+
+- Updated dependencies [[`825c12b034fa8db01857a10b3fb9ff36314bce1a`](https://github.com/wso2/identity-apps/commit/825c12b034fa8db01857a10b3fb9ff36314bce1a)]:
+  - @wso2is/i18n@2.12.0
+  - @wso2is/admin.applications.v1@2.30.27
+  - @wso2is/admin.core.v1@2.34.27
+  - @wso2is/admin.extensions.v1@2.34.27
+  - @wso2is/admin.organizations.v1@2.26.27
+  - @wso2is/admin.feature-gate.v1@1.4.27
+
+## 1.6.26
+
+### Patch Changes
+
+- Updated dependencies [[`7e2588d91b8c20927219c6e6fa36daf87a18a0f6`](https://github.com/wso2/identity-apps/commit/7e2588d91b8c20927219c6e6fa36daf87a18a0f6)]:
+  - @wso2is/admin.organizations.v1@2.26.26
+  - @wso2is/i18n@2.11.0
+  - @wso2is/admin.applications.v1@2.30.26
+  - @wso2is/admin.core.v1@2.34.26
+  - @wso2is/admin.extensions.v1@2.34.26
+  - @wso2is/react-components@2.8.5
+  - @wso2is/admin.feature-gate.v1@1.4.26
+
+## 1.6.25
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.25
+  - @wso2is/admin.core.v1@2.34.25
+  - @wso2is/admin.extensions.v1@2.34.25
+  - @wso2is/admin.organizations.v1@2.26.25
+  - @wso2is/admin.feature-gate.v1@1.4.25
+
+## 1.6.24
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.24
+  - @wso2is/admin.core.v1@2.34.24
+  - @wso2is/admin.extensions.v1@2.34.24
+  - @wso2is/admin.organizations.v1@2.26.24
+  - @wso2is/react-components@2.8.4
+  - @wso2is/admin.feature-gate.v1@1.4.24
+
+## 1.6.23
+
+### Patch Changes
+
+- Updated dependencies [[`33dbbd9f8461a6a2001aa8a8189a48d24991e87b`](https://github.com/wso2/identity-apps/commit/33dbbd9f8461a6a2001aa8a8189a48d24991e87b)]:
+  - @wso2is/admin.applications.v1@2.30.23
+  - @wso2is/i18n@2.10.6
+  - @wso2is/admin.core.v1@2.34.23
+  - @wso2is/admin.extensions.v1@2.34.23
+  - @wso2is/admin.organizations.v1@2.26.23
+  - @wso2is/react-components@2.8.3
+  - @wso2is/admin.feature-gate.v1@1.4.23
+
+## 1.6.22
+
+### Patch Changes
+
+- Updated dependencies [[`34709e98e3fcc87c0659d49f6a202c190a649cfd`](https://github.com/wso2/identity-apps/commit/34709e98e3fcc87c0659d49f6a202c190a649cfd), [`a1ee2568f3fedfb81a6b24b7cd57022e44e8074c`](https://github.com/wso2/identity-apps/commit/a1ee2568f3fedfb81a6b24b7cd57022e44e8074c)]:
+  - @wso2is/admin.core.v1@2.34.22
+  - @wso2is/admin.applications.v1@2.30.22
+  - @wso2is/admin.extensions.v1@2.34.22
+  - @wso2is/admin.organizations.v1@2.26.22
+  - @wso2is/admin.feature-gate.v1@1.4.22
+
 ## 1.6.21
 
 ### Patch Changes

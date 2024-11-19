@@ -25,7 +25,6 @@ import { getBrandingResourceEndpoints } from "@wso2is/admin.branding.v1/configs/
 import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1";
 import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpoints";
 import { getConnectionResourceEndpoints } from "@wso2is/admin.connections.v1";
-import { getConsoleSettingsResourceEndpoints } from "@wso2is/admin.console-settings.v1/configs/endpoints";
 import { getEmailTemplatesResourceEndpoints } from "@wso2is/admin.email-templates.v1";
 import { getExtendedFeatureResourceEndpoints } from "@wso2is/admin.extensions.v1/configs/endpoints";
 import { getFeatureGateResourceEndpoints } from "@wso2is/admin.feature-gate.v1/configs/endpoints";
@@ -265,7 +264,6 @@ export class Config {
             ...getTenantResourceEndpoints(this.getDeploymentConfig().serverOrigin),
             ...getFeatureGateResourceEndpoints(this.resolveServerHostforFG(false)),
             ...getInsightsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
-            ...getConsoleSettingsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtensionTemplatesEndpoints(this.resolveServerHost()),
             ...getApplicationTemplatesResourcesEndpoints(this.resolveServerHost()),
             ...getActionsResourceEndpoints(this.resolveServerHost()),

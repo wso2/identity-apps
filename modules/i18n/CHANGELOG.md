@@ -1,5 +1,23 @@
 # @wso2is/i18n
 
+## 2.12.0
+
+### Minor Changes
+
+- [#7005](https://github.com/wso2/identity-apps/pull/7005) [`825c12b034fa8db01857a10b3fb9ff36314bce1a`](https://github.com/wso2/identity-apps/commit/825c12b034fa8db01857a10b3fb9ff36314bce1a) Thanks [@Malith-19](https://github.com/Malith-19)! - Add the username recovery multiple channel support with branding.
+
+## 2.11.0
+
+### Minor Changes
+
+- [#7120](https://github.com/wso2/identity-apps/pull/7120) [`7e2588d91b8c20927219c6e6fa36daf87a18a0f6`](https://github.com/wso2/identity-apps/commit/7e2588d91b8c20927219c6e6fa36daf87a18a0f6) Thanks [@brionmario](https://github.com/brionmario)! - Add search capabilities to Tenant listing UI
+
+## 2.10.6
+
+### Patch Changes
+
+- [#6993](https://github.com/wso2/identity-apps/pull/6993) [`33dbbd9f8461a6a2001aa8a8189a48d24991e87b`](https://github.com/wso2/identity-apps/commit/33dbbd9f8461a6a2001aa8a8189a48d24991e87b) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add Access Token Attributes
+
 ## 2.10.5
 
 ### Patch Changes

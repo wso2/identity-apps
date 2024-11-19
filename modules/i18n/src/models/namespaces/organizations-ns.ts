@@ -299,6 +299,7 @@ export interface organizationsNS {
         subOrganizations: string;
         goBack: string;
         switchLabel: string;
+        switchLabelAlt: string;
         switchButton: string;
         notifications: {
             switchOrganization: {

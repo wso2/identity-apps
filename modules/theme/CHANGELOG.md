@@ -1,5 +1,23 @@
 # @wso2is/theme
 
+## 2.4.3
+
+### Patch Changes
+
+- [#7122](https://github.com/wso2/identity-apps/pull/7122) [`cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453`](https://github.com/wso2/identity-apps/commit/cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update user profile lock icon
+
+## 2.4.2
+
+### Patch Changes
+
+- [#7113](https://github.com/wso2/identity-apps/pull/7113) [`7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70`](https://github.com/wso2/identity-apps/commit/7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add locked status for locked users in user list
+
+## 2.4.1
+
+### Patch Changes
+
+- [#6993](https://github.com/wso2/identity-apps/pull/6993) [`33dbbd9f8461a6a2001aa8a8189a48d24991e87b`](https://github.com/wso2/identity-apps/commit/33dbbd9f8461a6a2001aa8a8189a48d24991e87b) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add Access Token Attributes
+
 ## 2.4.0
 
 ### Minor Changes

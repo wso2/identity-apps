@@ -16,11 +16,14 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { DropdownProps, Form, Select } from "semantic-ui-react";
+import { BRANDING_PREVIEW_SCREEN_ID_PREFIX } from "../constants/preview-screen-constants";
 
 /**
  * Prop types for the language dropdown component.
@@ -66,6 +69,9 @@ const ScreenDropdown: FunctionComponent<ScreenDropdownPropsInterface> = (
         onChange(defaultScreen);
     }, [ defaultScreen ]);
 
+    const disabledBrandingFeatures: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.branding?.disabledFeatures) || [];
+
     const supportedScreens: {
         key: string;
         text: string;
@@ -75,7 +81,8 @@ const ScreenDropdown: FunctionComponent<ScreenDropdownPropsInterface> = (
             return [];
         }
 
-        return screens.map((screen: string) => {
+        return screens.filter((screen: string) => !disabledBrandingFeatures.
+            includes(BRANDING_PREVIEW_SCREEN_ID_PREFIX+screen)).map((screen: string) => {
             return {
                 key: screen,
                 text: t(`branding:screens.${ screen }`),

@@ -1,5 +1,38 @@
 # @wso2is/identity-apps-core
 
+## 2.8.0
+
+### Minor Changes
+
+- [#7005](https://github.com/wso2/identity-apps/pull/7005) [`825c12b034fa8db01857a10b3fb9ff36314bce1a`](https://github.com/wso2/identity-apps/commit/825c12b034fa8db01857a10b3fb9ff36314bce1a) Thanks [@Malith-19](https://github.com/Malith-19)! - Add the username recovery multiple channel support with branding.
+
+## 2.7.8
+
+### Patch Changes
+
+- Updated dependencies [[`cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453`](https://github.com/wso2/identity-apps/commit/cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453)]:
+  - @wso2is/theme@2.4.3
+
+## 2.7.7
+
+### Patch Changes
+
+- Updated dependencies [[`7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70`](https://github.com/wso2/identity-apps/commit/7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70)]:
+  - @wso2is/theme@2.4.2
+
+## 2.7.6
+
+### Patch Changes
+
+- [#7098](https://github.com/wso2/identity-apps/pull/7098) [`252656fabda8b35f6e52fb8834dab91be9dbaaf2`](https://github.com/wso2/identity-apps/commit/252656fabda8b35f6e52fb8834dab91be9dbaaf2) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue in the self-registration flow when the email address is configured as a unique value
+
+## 2.7.5
+
+### Patch Changes
+
+- Updated dependencies [[`33dbbd9f8461a6a2001aa8a8189a48d24991e87b`](https://github.com/wso2/identity-apps/commit/33dbbd9f8461a6a2001aa8a8189a48d24991e87b)]:
+  - @wso2is/theme@2.4.1
+
 ## 2.7.4
 
 ### Patch Changes

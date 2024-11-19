@@ -52,6 +52,22 @@ export interface TenantContextProps {
      */
     mutateTenantList: () => void;
     /**
+     * The search query.
+     */
+    searchQuery: string;
+    /**
+     * Trigger to clear the search query.
+     */
+    searchQueryClearTrigger: boolean;
+    /**
+     * Sets the search query from outside.
+     */
+    setSearchQuery: Dispatch<any>;
+    /**
+     * Sets the search query clear trigger from outside.
+     */
+    setSearchQueryClearTrigger: Dispatch<any>;
+    /**
      * Set tenant list limit from outside.
      */
     setTenantListLimit: Dispatch<any>;
@@ -75,6 +91,10 @@ const TenantContext: Context<TenantContextProps> = createContext<null | TenantCo
     isInitialRenderingComplete: false,
     isTenantListLoading: false,
     mutateTenantList: () => null,
+    searchQuery: "",
+    searchQueryClearTrigger: false,
+    setSearchQuery: () => null,
+    setSearchQueryClearTrigger: () => null,
     setTenantListLimit: () => null,
     tenantList: null,
     tenantListLimit: UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT

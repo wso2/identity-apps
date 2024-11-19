@@ -398,7 +398,9 @@ export const applications: ApplicationsNS = {
                                 }
                             }
                         },
-                        subHeading: "Select which user attributes you want to share with the application."
+                        subHeading: "Select which user attributes you want to share with the application.",
+                        note: "Please note that the user attributes added from this section will only be "
+                            + "included in the ID token."
                     },
                     attributeComponentHint: "Use <1>OpenID Connect Scopes</1> to manage user attribute in a scope. " +
                         "You can add new attributes by navigating to <3>Attributes.</3>",
@@ -1574,6 +1576,11 @@ export const applications: ApplicationsNS = {
                                 empty: "Please fill the audience",
                                 invalid: "Please avoid special characters like commas (,)"
                             }
+                        },
+                        accessTokenAttributes: {
+                            hint : "Select the attributes that should be included in the <1>access_token</1>.",
+                            label: "Access Token Attributes",
+                            placeholder: "Search by attribute name"
                         }
                     },
                     heading: "Access Token",
@@ -1663,14 +1670,20 @@ export const applications: ApplicationsNS = {
                         commonInstruction: "Following behavioral changes will be applied upon update.",
                         versions: {
                             version100: {
-                                removeUsernameFromIntrospectionRespForAppTokens: {
+                                useClientIdAsSubClaimOfAppTokens: {
                                     instruction: "The <1>sub</1> attribute of an application access token now returns the "
                                         + "<3>client_id</3> generated for the application, instead of the <5>userid</5> of "
                                         + "the application owner."
                                 },
-                                useClientIdAsSubClaimOfAppTokens: {
+                                removeUsernameFromIntrospectionRespForAppTokens: {
                                     instruction: "The introspection responses for application access tokens no longer "
                                         + "return the <1>username</1> attribute."
+                                }
+                            },
+                            version200: {
+                                addAllRequestedClaimsInJWTAccessToken: {
+                                    instruction: "Irrespective of the <1>scopes</1> requested, all the <3>Requested Attributes</3> will "
+                                        + "be included in the JWT Access Token."
                                 }
                             }
                         }
