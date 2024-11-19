@@ -497,7 +497,9 @@ export const claims: ClaimsNS = {
             }
         },
         mappedAttributes: {
-            hint: "Enter the attribute from each user store that you want to map to this attribute."
+            enableForUserStore: "Enable for this user store",
+            hint: "Enter the attribute from the respective user stores that will be mapped to this attribute.",
+            mappedAttributeName: "Mapped Attribute Name"
         },
         notifications: {
             addLocalClaim: {
@@ -571,7 +573,7 @@ export const claims: ClaimsNS = {
                 tabs: {
                     additionalProperties: "Additional Properties",
                     general: "General",
-                    mappedAttributes: "Mapped Attributes"
+                    mappedAttributes: "Attribute Mappings"
                 }
             },
             local: {

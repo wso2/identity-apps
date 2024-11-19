@@ -126,7 +126,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                     <EditMappedAttributesLocalClaims
                         claim={ claim }
                         update={ getClaim }
-                        data-testid={ `${ testId }-edit-local-claims-mapped-attributes` }
+                        data-componentid={ `${ testId }-edit-local-claims-mapped-attributes` }
                     />
                 </ResourceTab.Pane>
             )
@@ -139,6 +139,39 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                         claim={ claim }
                         update={ getClaim }
                         data-testid={ `${ testId }-edit-local-claims-additional-properties` }
+                    />
+                </ResourceTab.Pane>
+            )
+        }
+    ];
+
+    /**
+     * Contains the data of the basic panes.
+     */
+    const basicPanes: {
+        menuItem: string;
+        render: () => JSX.Element;
+    }[] = [
+        {
+            menuItem: t("claims:local.pageLayout.edit.tabs.general"),
+            render: () => (
+                <ResourceTab.Pane controlledSegmentation>
+                    <EditBasicDetailsLocalClaims
+                        claim={ claim }
+                        update={ getClaim }
+                        data-testid="local-claims-basic-details-edit"
+                    />
+                </ResourceTab.Pane>
+            )
+        },
+        {
+            menuItem: t("claims:local.pageLayout.edit.tabs.mappedAttributes"),
+            render: () => (
+                <ResourceTab.Pane controlledSegmentation>
+                    <EditMappedAttributesLocalClaims
+                        claim={ claim }
+                        update={ getClaim }
+                        data-componentid={ `${ testId }-edit-local-claims-mapped-attributes` }
                     />
                 </ResourceTab.Pane>
             )
@@ -186,20 +219,11 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
             bottomMargin={ false }
             data-testid={ `${ testId }-page-layout` }
         >
-            { attributeConfig.attributes.showEditTabs
-                ? (
-                    <ResourceTab
-                        isLoading={ isLocalClaimDetailsRequestLoading }
-                        panes={ panes }
-                        data-testid={ `${ testId }-tabs` } />
-                ) : (
-                    <EditBasicDetailsLocalClaims
-                        claim={ claim }
-                        update={ getClaim }
-                        data-testid="local-claims-basic-details-edit"
-                    />
-                )
-            }
+            <ResourceTab
+                isLoading={ isLocalClaimDetailsRequestLoading }
+                panes={  attributeConfig?.attributes?.showEditTabs ? panes : basicPanes }
+                data-testid={ `${testId}-tabs` }
+            />
         </TabPageLayout>
     );
 };
