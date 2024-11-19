@@ -1,5 +1,21 @@
 # @wso2is/admin.tenants.v1
 
+## 2.28.2
+
+### Patch Changes
+
+- [#7126](https://github.com/wso2/identity-apps/pull/7126) [`bcd36a04c3cd47f4d8493dee451e5a4a14086de8`](https://github.com/wso2/identity-apps/commit/bcd36a04c3cd47f4d8493dee451e5a4a14086de8) Thanks [@brionmario](https://github.com/brionmario)! - Fix minor issues in Tenants feature
+
+- Updated dependencies [[`8773370130811defa922868d08c4f1ac1e006eda`](https://github.com/wso2/identity-apps/commit/8773370130811defa922868d08c4f1ac1e006eda)]:
+  - @wso2is/i18n@2.12.1
+  - @wso2is/admin.core.v1@2.34.28
+  - @wso2is/admin.extensions.v1@2.34.28
+  - @wso2is/admin.organizations.v1@2.26.28
+  - @wso2is/admin.users.v1@2.27.28
+  - @wso2is/admin.server.v1@2.25.28
+  - @wso2is/admin.validation.v1@2.26.28
+  - @wso2is/admin.feature-gate.v1@1.4.28
+
 ## 2.28.1
 
 ### Patch Changes

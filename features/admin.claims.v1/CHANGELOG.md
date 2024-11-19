@@ -1,5 +1,21 @@
 # @wso2is/admin.claims.v1
 
+## 2.25.28
+
+### Patch Changes
+
+- [#7124](https://github.com/wso2/identity-apps/pull/7124) [`8773370130811defa922868d08c4f1ac1e006eda`](https://github.com/wso2/identity-apps/commit/8773370130811defa922868d08c4f1ac1e006eda) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Introduce enable for user store config in attribute mappings
+
+- Updated dependencies [[`8773370130811defa922868d08c4f1ac1e006eda`](https://github.com/wso2/identity-apps/commit/8773370130811defa922868d08c4f1ac1e006eda)]:
+  - @wso2is/admin.claims.v1@2.25.28
+  - @wso2is/i18n@2.12.1
+  - @wso2is/admin.core.v1@2.34.28
+  - @wso2is/admin.extensions.v1@2.34.28
+  - @wso2is/admin.users.v1@2.27.28
+  - @wso2is/admin.server-configurations.v1@2.29.1
+  - @wso2is/admin.userstores.v1@2.25.28
+  - @wso2is/admin.validation.v1@2.26.28
+
 ## 2.25.27
 
 ### Patch Changes
