@@ -28,7 +28,6 @@ import Alert from "@oxygen-ui/react/Alert";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
 import { CheckIcon,  ChevronDownIcon, StarIcon, TrashIcon } from "@oxygen-ui/react-icons";
-
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
@@ -41,7 +40,7 @@ import {
     ScimOperationsInterface,
     SearchRoleInterface
 } from "@wso2is/admin.roles.v2/models/roles";
-import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "@wso2is/admin.server-configurations.v1";
+import { ConnectorPropertyInterface  } from "@wso2is/admin.server-configurations.v1";
 import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
 import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
@@ -81,7 +80,14 @@ import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, DropdownItemProps, Form, Grid, Input } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
 import { updateUserInfo } from "../api";
-import { ACCOUNT_LOCK_REASON_MAP, AdminAccountTypes, LocaleJoiningSymbol, UserManagementConstants } from "../constants";
+import {
+    ACCOUNT_LOCK_REASON_MAP,
+    AdminAccountTypes,
+    CONNECTOR_PROPERTY_TO_CONFIG_STATUS_MAP,
+    LocaleJoiningSymbol,
+    PASSWORD_RESET_PROPERTIES,
+    UserManagementConstants
+} from "../constants";
 import {
     AccountConfigSettingsInterface,
     PatchUserOperationValue,
@@ -261,41 +267,23 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     useEffect(() => {
         if (connectorProperties && Array.isArray(connectorProperties) && connectorProperties?.length > 0) {
 
-            const configurationStatuses: AccountConfigSettingsInterface = { ...configSettings } ;
+            const accountConfigSettings: AccountConfigSettingsInterface = { ...configSettings } ;
 
             for (const property of connectorProperties) {
-                switch (property.name) {
-                    case ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE:
-                        configurationStatuses.accountDisable = property.value;
+                if (PASSWORD_RESET_PROPERTIES.includes(property.name)) {
+                    if (property.value === "true") {
+                        accountConfigSettings.forcePasswordReset = property.value;
+                    }
 
-                        break;
-                    case ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET:
-                    case ServerConfigurationsConstants.OTP_PASSWORD_RESET:
-                    case ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET:
-                        if (property.value === "true") {
-                            configurationStatuses.forcePasswordReset = property.value;
-                        }
+                    continue;
+                }
+                const configKey: string = CONNECTOR_PROPERTY_TO_CONFIG_STATUS_MAP[property.name];
 
-                        break;
-                    case ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION:
-                        configurationStatuses.accountLock = property.value;
-
-                        break;
-                    case ServerConfigurationsConstants.ENABLE_EMAIL_VERIFICATION:
-                        configurationStatuses.isEmailVerificationEnabled = property.value;
-
-                        break;
-                    case ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION:
-                        configurationStatuses.isMobileVerificationEnabled = property.value;
-
-                        break;
-                    case ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER:
-                        configurationStatuses.isMobileVerificationByPrivilegeUserEnabled = property.value;
-
-                        break;
+                if (configKey) {
+                    accountConfigSettings[configKey] = property.value;
                 }
             }
-            setConfigSettings(configurationStatuses);
+            setConfigSettings(accountConfigSettings);
         }
     }, [ connectorProperties ]);
 
@@ -416,12 +404,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param userInfo - BasicProfileInterface
      */
     const mapUserToSchema = (proSchema: ProfileSchemaInterface[], userInfo: ProfileInfoInterface): void => {
-        const multiValuedAttributes: string[] = [
-            EMAIL_ADDRESSES_ATTRIBUTE,
-            MOBILE_NUMBERS_ATTRIBUTE,
-            VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
-            VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
-        ];
+
 
         if (!isEmpty(profileSchema) && !isEmpty(userInfo)) {
             const tempProfileInfo: Map<string, string> = new Map<string, string>();
@@ -447,7 +430,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                             if (schema.extended && userInfo[userConfig.userProfileSchema]
                                 && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
-                                if (multiValuedAttributes.includes(schemaNames[0])) {
+                                if (UserManagementConstants.MULTI_VALUED_ATTRIBUTES.includes(schemaNames[0])) {
                                     const attributeValue: string | string[] =
                                         userInfo[userConfig.userProfileSchema]?.[schemaNames[0]];
                                     const formattedValue: string = Array.isArray(attributeValue)
@@ -478,7 +461,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
                                 && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
                             ) {
-                                if (multiValuedAttributes.includes(schemaNames[0])) {
+                                if (UserManagementConstants.MULTI_VALUED_ATTRIBUTES.includes(schemaNames[0])) {
                                     const attributeValue: string | string[] =
                                         userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]?.[schemaNames[0]];
                                     const formattedValue: string = Array.isArray(attributeValue)
@@ -582,7 +565,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                             if (schema.extended && userInfo[userConfig.userProfileSchema]
                                 && userInfo[userConfig.userProfileSchema][schemaNames[0]]) {
-                                if (multiValuedAttributes.includes(schemaNames[0])) {
+                                if (UserManagementConstants.MULTI_VALUED_ATTRIBUTES.includes(schemaNames[0])) {
                                     const attributeValue: string | string[] =
                                         userInfo[userConfig.userProfileSchema]?.[schemaNames[0]];
                                     const formattedValue: string = Array.isArray(attributeValue)
@@ -613,7 +596,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
                                 && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
                             ) {
-                                if (multiValuedAttributes.includes(schemaNames[0])) {
+                                if (UserManagementConstants.MULTI_VALUED_ATTRIBUTES.includes(schemaNames[0])) {
                                     const attributeValue: string | string[] =
                                         userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]?.[schemaNames[0]];
                                     const formattedValue: string = Array.isArray(attributeValue)
@@ -2468,7 +2451,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         return (
             <Grid.Row columns={ 1 } key={ key }>
-                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 10 }>
+                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
                     {
                         schema.name === "userName" && domainName.length > 1 ? (
                             <>
@@ -2628,7 +2611,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         user.id && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 10 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
                                                     <Form.Field>
                                                         <label>
                                                             { t("user:profile.fields.userId") }
@@ -2674,7 +2657,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         oneTimePassword && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 10 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
                                                     <Field
                                                         data-testid={ `${ testId }-profile-form-one-time-pw }
                                                         -input` }
@@ -2695,7 +2678,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         createdDate && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 10 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
                                                     <Form.Field>
                                                         <label>
                                                             { t("user:profile.fields." +
@@ -2716,7 +2699,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     {
                                         modifiedDate && (
                                             <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 10 }>
+                                                <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
                                                     <Form.Field>
                                                         <label>
                                                             { t("user:profile.fields.modifiedDate") }
@@ -2734,7 +2717,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         )
                                     }
                                     <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                             {
                                                 !isReadOnly && (
                                                     <Button
