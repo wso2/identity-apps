@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.4.2
+
+### Patch Changes
+
+- [#7069](https://github.com/wso2/identity-apps/pull/7069) [`10f5bf644f973552f3c3d155fda410b6e071f147`](https://github.com/wso2/identity-apps/commit/10f5bf644f973552f3c3d155fda410b6e071f147) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - remove delete option from default claims and dialects
+
 ## 2.4.1
 
 ### Patch Changes

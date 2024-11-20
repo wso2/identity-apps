@@ -1,5 +1,27 @@
 # @wso2is/admin.claims.v1
 
+## 2.25.29
+
+### Patch Changes
+
+- [#7069](https://github.com/wso2/identity-apps/pull/7069) [`10f5bf644f973552f3c3d155fda410b6e071f147`](https://github.com/wso2/identity-apps/commit/10f5bf644f973552f3c3d155fda410b6e071f147) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - remove delete option from default claims and dialects
+
+- Updated dependencies [[`10f5bf644f973552f3c3d155fda410b6e071f147`](https://github.com/wso2/identity-apps/commit/10f5bf644f973552f3c3d155fda410b6e071f147)]:
+  - @wso2is/admin.extensions.v1@2.34.29
+  - @wso2is/admin.claims.v1@2.25.29
+  - @wso2is/core@2.4.2
+  - @wso2is/admin.core.v1@2.34.29
+  - @wso2is/admin.server-configurations.v1@2.29.2
+  - @wso2is/admin.users.v1@2.27.29
+  - @wso2is/admin.userstores.v1@2.25.29
+  - @wso2is/admin.validation.v1@2.26.29
+  - @wso2is/access-control@3.3.2
+  - @wso2is/dynamic-forms@2.4.6
+  - @wso2is/form@2.5.6
+  - @wso2is/forms@2.3.2
+  - @wso2is/i18n@2.12.2
+  - @wso2is/react-components@2.8.6
+
 ## 2.25.28
 
 ### Patch Changes
