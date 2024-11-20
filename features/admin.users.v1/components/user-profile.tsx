@@ -404,8 +404,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @param userInfo - BasicProfileInterface
      */
     const mapUserToSchema = (proSchema: ProfileSchemaInterface[], userInfo: ProfileInfoInterface): void => {
-
-
         if (!isEmpty(profileSchema) && !isEmpty(userInfo)) {
             const tempProfileInfo: Map<string, string> = new Map<string, string>();
 
