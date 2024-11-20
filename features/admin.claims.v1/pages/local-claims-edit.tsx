@@ -261,18 +261,11 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                             isLoading={ isLocalClaimDetailsRequestLoading }
                             panes={  panes }
                             data-testid={ `${testId}-tabs` } />)
-                    : userStores?.length >= 1
-                        ? (
-                            <ResourceTab
-                                isLoading={ isLocalClaimDetailsRequestLoading }
-                                panes={ basicPanes }
-                                data-testid={ `${testId}-tabs` } />)
-                        : (
-                            <EditBasicDetailsLocalClaims
-                                claim={ claim }
-                                update={ getClaim }
-                                data-testid="local-claims-basic-details-edit"/>)
-
+                    : (
+                        <EditBasicDetailsLocalClaims
+                            claim={ claim }
+                            update={ getClaim }
+                            data-testid="local-claims-basic-details-edit"/>)
             }
 
         </TabPageLayout>
