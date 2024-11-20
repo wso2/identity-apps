@@ -23,17 +23,14 @@ import Checkbox from "@oxygen-ui/react/Checkbox";
 import Typography from "@oxygen-ui/react/Typography";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
-import { userstoresConfig } from "@wso2is/admin.extensions.v1";
-import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
-import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
+import { UserStoreBasicData } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { AlertLevels, AttributeMapping, Claim, IdentifiableComponentInterface, Property } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -53,6 +50,10 @@ interface EditMappedAttributesLocalClaimsPropsInterface extends IdentifiableComp
      * Called to initiate an update
      */
     update: () => void;
+    /**
+     * User stores.
+     */
+    userStores: UserStoreBasicData[];
 }
 
 /**
@@ -70,12 +71,12 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
     const {
         claim,
         update,
+        userStores,
         [ "data-componentid" ]: componentId = "edit-local-claims-mapped-attributes"
     } = props;
 
     const dispatch: Dispatch = useDispatch();
 
-    const [ userStore, setUserStore ] = useState<UserStoreListItem[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const [ submit, setSubmit ] = useTrigger();
@@ -83,7 +84,6 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
     const { t } = useTranslation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const hiddenUserStores: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
 
     const isReadOnly: boolean = !useRequiredScopes(
         featureConfig?.attributeDialects?.scopes?.update
@@ -100,35 +100,6 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
     const [ excludedUserStores, setExcludedUserStores ] = useState<string[]>(
         getExcludedStoresFromClaim(claim)
     );
-
-    useEffect(() => {
-        //TODO: [Type Fix] Cannot use `UserStoreListItem[]` here
-        // because in line 74 some attributes are missing.
-        const userstore: any[] = [];
-
-        if (userstoresConfig?.primaryUserstoreName === PRIMARY_USERSTORE) {
-            userstore.push({
-                id: PRIMARY_USERSTORE,
-                name: PRIMARY_USERSTORE
-            });
-        }
-
-        getUserStoreList()
-            .then((response: AxiosResponse) => {
-                const userStoresData: UserStoreListItem[] = response?.data || [];
-
-                const filteredUserStores: UserStoreListItem[] = hiddenUserStores?.length > 0
-                    ? userStoresData.filter((store: UserStoreListItem) =>
-                        !hiddenUserStores?.includes(store?.name))
-                    : userStoresData;
-
-                userstore.push(...filteredUserStores);
-                setUserStore(userstore);
-            })
-            .catch(() => {
-                setUserStore(userstore);
-            });
-    }, []);
 
     const getMappedAttributeForUserStore = (userStore: string): string | undefined => {
         const mappingForGivenUserStore: string = claim?.attributeMapping?.find(
@@ -228,7 +199,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                     });
                             } }
                         >
-                            { userStore.map((store: UserStoreListItem, index: number) => {
+                            { userStores.map((store: UserStoreBasicData, index: number) => {
                                 return (
                                     <Accordion
                                         defaultExpanded
