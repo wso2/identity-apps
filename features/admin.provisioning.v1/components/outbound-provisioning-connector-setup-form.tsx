@@ -334,7 +334,6 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                         <Field
                             name="jit"
                             required={ false }
-                            requiredErrorMessage=""
                             type="checkbox"
                             children={ [
                                 {
