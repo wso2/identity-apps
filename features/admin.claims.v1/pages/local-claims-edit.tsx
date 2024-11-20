@@ -180,40 +180,6 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
     ];
 
     /**
-     * Contains the data of the basic panes.
-     */
-    const basicPanes: {
-        menuItem: string;
-        render: () => JSX.Element;
-    }[] = [
-        {
-            menuItem: t("claims:local.pageLayout.edit.tabs.general"),
-            render: () => (
-                <ResourceTab.Pane controlledSegmentation>
-                    <EditBasicDetailsLocalClaims
-                        claim={ claim }
-                        update={ getClaim }
-                        data-testid="local-claims-basic-details-edit"
-                    />
-                </ResourceTab.Pane>
-            )
-        },
-        {
-            menuItem: t("claims:local.pageLayout.edit.tabs.mappedAttributes"),
-            render: () => (
-                <ResourceTab.Pane controlledSegmentation>
-                    <EditMappedAttributesLocalClaims
-                        claim={ claim }
-                        update={ getClaim }
-                        userStores={ userStores }
-                        data-componentid={ `${ testId }-edit-local-claims-mapped-attributes` }
-                    />
-                </ResourceTab.Pane>
-            )
-        }
-    ];
-
-    /**
      * This generates the first letter of a claim.
      * @param name - Name of the claim.
      * @returns The first letter of a claim.
