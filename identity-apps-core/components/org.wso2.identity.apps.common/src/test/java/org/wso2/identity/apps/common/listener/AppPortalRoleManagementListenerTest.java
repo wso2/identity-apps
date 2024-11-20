@@ -29,7 +29,7 @@ import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.identity.organization.management.service.util.OrganizationManagementUtil;
 import org.wso2.carbon.identity.role.v2.mgt.core.RoleManagementService;
 import org.wso2.carbon.identity.role.v2.mgt.core.exception.IdentityRoleManagementException;
-import org.wso2.carbon.identity.role.v2.mgt.core.model.Role;
+import org.wso2.carbon.identity.role.v2.mgt.core.model.RoleBasicInfo;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.common.AbstractUserStoreManager;
 import org.wso2.carbon.user.core.config.RealmConfiguration;
@@ -81,7 +81,7 @@ public class AppPortalRoleManagementListenerTest {
     private RoleManagementService roleManagementService;
 
     @Mock
-    private Role role;
+    private RoleBasicInfo role;
 
     @BeforeMethod
     public void setUp() {
@@ -140,7 +140,7 @@ public class AppPortalRoleManagementListenerTest {
         when(mockUserRealm.getUserStoreManager()).thenReturn(mockUserStoreManager);
         when(mockUserStoreManager.getUserIDFromUserName(anyString())).thenReturn(adminUserId);
         mockAppsCommonDataHolder(appsCommonDataHolder);
-        when(roleManagementService.getRole(roleId, tenantDomain)).thenReturn(role);
+        when(roleManagementService.getRoleBasicInfoById(roleId, tenantDomain)).thenReturn(role);
         setRoleAttributes(isAdminRole);
 
         // Call the method.
