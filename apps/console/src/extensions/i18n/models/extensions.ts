@@ -1713,6 +1713,7 @@ export interface Extensions {
                 };
                 fetch: {
                     customLayoutNotFound: {
+                        appBrandingDescription: string;
                         description: string;
                         message: string;
                     };
