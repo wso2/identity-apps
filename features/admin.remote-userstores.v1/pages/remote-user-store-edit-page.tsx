@@ -65,7 +65,6 @@ const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPagePropsInt
         data: userStoreDetails,
         isLoading: isUserStoreDetailsRequestLoading,
         error: userStoreDetailsRequestError,
-        mutate: mutateUserStoreDetailsRequest,
         remainingRetryCount: userStoreDetailsRequestRemainingRetryCount
     } = useGetUserStoreDetails(userStoreId, !isEmpty(userStoreId));
 
@@ -76,6 +75,8 @@ const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPagePropsInt
      */
     useEffect(() => {
         if (userStoreDetailsRequestError) {
+            // Since user store creation can be delayed,
+            // 404 error is ignored until the maximum retry count is reached.
             if (userStoreDetailsRequestError.response?.status === 404
                 && userStoreDetailsRequestRemainingRetryCount > 0) {
                 return;
@@ -99,7 +100,7 @@ const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPagePropsInt
     }, [ userStoreDetails ]);
 
     /**
-     * The tab panes
+     * The tab panes.
      */
     const panes: ResourceTabPaneInterface[] = [
         {
@@ -198,6 +199,7 @@ const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPagePropsInt
             bottomMargin={ false }
             isLoading={ isUserStoreDetailsRequestLoading || !userStoreDetails }
             data-componentid={ `${ componentId }-layout` }
+            className="remote-user-store-edit-page"
         >
             <ResourceTab
                 className="remote-user-store-edit-section"

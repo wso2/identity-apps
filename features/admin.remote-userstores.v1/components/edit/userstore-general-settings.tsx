@@ -16,15 +16,12 @@
  * under the License.
  */
 
+import Skeleton from "@oxygen-ui/react/Skeleton";
 import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
 import { deleteUserStore, patchUserStore } from "@wso2is/admin.userstores.v1/api/user-stores";
 import { DISABLED, RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { PatchData, UserStoreDetails, UserStoreProperty } from "@wso2is/admin.userstores.v1/models/user-stores";
-import {
-    AlertInterface,
-    AlertLevels,
-    IdentifiableComponentInterface
-} from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue } from "@wso2is/form";
 import { Field, Forms, Validation } from "@wso2is/forms";
@@ -45,6 +42,7 @@ import {
     useDocumentation,
     useMediaContext
 } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -56,9 +54,8 @@ import {
     RemoteUserStoreConstants,
     USERSTORE_VALIDATION_REGEX_PATTERNS
 } from "../../constants/remote-user-stores-constants";
-import { AgentConnectionInterface, RegenerateTokenInterface } from "../../models/remote-user-stores";
+import { AgentConnectionInterface } from "../../models/remote-user-stores";
 import { validateInputWithRegex } from "../../utils/userstore-utils";
-import isEmpty from "lodash-es/isEmpty";
 
 /**
  * Props for the user store general settings component.
@@ -139,6 +136,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
         mutate: mutateAgentConnectionsRequest
     } = useGetUserStoreAgentConnections(userStoreId, userStoreManager);
 
+    // Filter out agent connections without an agent or display name.
     const agentConnections: AgentConnectionInterface[] = useMemo(() => {
         const _agentConnections: AgentConnectionInterface[] = agentConnectionsData?.filter(
             (connection: AgentConnectionInterface) => connection?.agent && !isEmpty(connection?.agent?.displayName)
@@ -146,6 +144,21 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
 
         return _agentConnections;
     }, [ agentConnectionsData ]);
+
+    /**
+     * Handle the agent connection request error.
+     */
+    useEffect(() => {
+        if (agentConnectionsRequestError) {
+            dispatch(
+                addAlert({
+                    description: t("remoteUserStores:notifications.connectionStatusCheckError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("remoteUserStores:notifications.connectionStatusCheckError.message")
+                })
+            );
+        }
+    }, [ agentConnectionsRequestError?.response?.data?.code ]);
 
     useEffect(() => {
         if (!isAgentOneTokenGenerated && !isAgentTwoTokenGenerated) {
@@ -177,20 +190,19 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
      * The following function handles token generation.
      */
     const handleGenerateToken = () => {
-
         generateToken(userStoreId, userStoreManager)
             .then((response: { token: string }) => {
                 setAgentHAToken(response.token);
                 setShowGenerateTokenModal(true);
             })
             .catch(() => {
-                dispatch(addAlert(
-                    {
+                dispatch(
+                    addAlert({
                         description: t("remoteUserStores:notifications.tokenGenerateError.description"),
                         level: AlertLevels.ERROR,
                         message: t("userstores:notifications.tokenGenerateError.message")
-                    }
-                ));
+                    })
+                );
             });
     };
 
@@ -214,10 +226,20 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
      * connection object.
      */
     const handleAgentDisconnect = (disconnectingAgentConnection: AgentConnectionInterface) => {
-        disconnectAgentConnection(userStoreId, disconnectingAgentConnection.agent.Id).then(() => {
-            setShowDisconnectConfirmationModal(false);
-            mutateAgentConnectionsRequest();
-        });
+        disconnectAgentConnection(userStoreId, disconnectingAgentConnection.agent.Id, userStoreManager)
+            .then(() => {
+                setShowDisconnectConfirmationModal(false);
+                mutateAgentConnectionsRequest();
+            })
+            .catch(() => {
+                dispatch(
+                    addAlert({
+                        description: t("remoteUserStores:notifications.disconnectError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("remoteUserStores:notifications.disconnectError.message")
+                    })
+                );
+            });
     };
 
     /**
@@ -226,21 +248,31 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
      * @param regeneratingAgentConnection - Agent connection object.
      */
     const handleRegenerateAgentConnectionToken = (regeneratingAgentConnection: AgentConnectionInterface) => {
-        const tokenData: RegenerateTokenInterface = {
-            existingTokenId: regeneratingAgentConnection.tokenId,
-            userStoreId: userStoreId
-        };
 
-        regenerateToken(tokenData).then((response: { token: string }) => {
-            if (agentIndex === 0) {
-                setAgentOneToken(response.token);
-            } else {
-                setAgentTwoToken(response.token);
-            }
-            setShowRegenerateConfirmationModal(false);
-            setShowTokenModal(true);
-            setRegeneratingAgentConnection(null);
-        });
+        regenerateToken(
+            regeneratingAgentConnection.tokenId,
+            userStoreId,
+            userStoreManager
+        )
+            .then((response: { token: string }) => {
+                if (agentIndex === 0) {
+                    setAgentOneToken(response.token);
+                } else {
+                    setAgentTwoToken(response.token);
+                }
+                setShowRegenerateConfirmationModal(false);
+                setShowTokenModal(true);
+                setRegeneratingAgentConnection(null);
+            })
+            .catch(() => {
+                dispatch(
+                    addAlert({
+                        description: t("remoteUserStores:notifications.tokenGenerateError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("userstores:notifications.tokenGenerateError.message")
+                    })
+                );
+            });
     };
 
     /**
@@ -520,6 +552,31 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
             });
     };
 
+    const renderLoadingSkeleton = (): ReactElement => {
+        return (
+            <div data-componentid={ `${testId}-loading-skeleton` }>
+                <Skeleton component="h1" width={ "40%" } />
+                <Skeleton />
+                <br />
+                <Skeleton component="h1" width={ "40%" } />
+                <Skeleton />
+            </div>
+        );
+    };
+
+    const renderEmptyPlaceholder = (): ReactElement => {
+        return (
+            <EmptyPlaceholder
+                data-componentid={ `${testId}-empty-placeholder` }
+                title="No Agents Connected"
+                subtitle={ [
+                    "There are no user store agent connections.",
+                    "Please go through the setup guide to configure the user store agent(s)."
+                ] }
+            />
+        );
+    };
+
     return (
         <>
             { !isAgentConnectionsRequestLoading ? (
@@ -626,97 +683,90 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                     <Divider hidden />
                     <Divider />
                     <Divider hidden />
+
                     <Heading as="h4">User Store Agent Connection(s)</Heading>
                     <Segment className="agent-connections-section" padded="very">
-                        <List divided verticalAlign="middle" relaxed="very" width={ 10 }>
-                            { !isAgentConnectionsRequestLoading ? (
-                                agentConnections.length > 0 ? (
-                                    agentConnections.map((connection: AgentConnectionInterface, index: number) => (
-                                        <List.Item key={ index } columns={ 2 } verticalAlign="middle">
-                                            <List.Content floated="right">
-                                                { connection?.connected ? (
-                                                    <Button
-                                                        basic
-                                                        color="red"
-                                                        onClick={ () => {
-                                                            setDisconnectingAgentConnection(connection);
-                                                            setShowDisconnectConfirmationModal(true);
-                                                        } }
-                                                    >
-                                                        Disconnect
-                                                    </Button>
-                                                ) : null }
+                        { isAgentConnectionsRequestLoading && renderLoadingSkeleton() }
+                        { !isAgentConnectionsRequestLoading
+                            && (!agentConnections || agentConnections.length === 0)
+                            && renderEmptyPlaceholder()
+                        }
+                        { !isAgentConnectionsRequestLoading && agentConnections?.length > 0 && (
+                            <List divided verticalAlign="middle" relaxed="very" width={ 10 }>
+                                { agentConnections.map((connection: AgentConnectionInterface, index: number) => (
+                                    <List.Item key={ index } columns={ 2 } verticalAlign="middle">
+                                        <List.Content floated="right">
+                                            { connection?.connected ? (
                                                 <Button
-                                                    className={
-                                                        !connection.connected
-                                                            ? index === 1
-                                                                ? "ml-4 mt-4"
-                                                                : "ml-4"
-                                                            : index === 1
-                                                                ? "mt-4"
-                                                                : ""
-                                                    }
-                                                    color={ connection.connected ? "red" : "orange" }
+                                                    basic
+                                                    color="red"
                                                     onClick={ () => {
-                                                        setAgentIndex(index);
-                                                        setRegeneratingAgentConnection(connection);
-                                                        setShowRegenerateConfirmationModal(true);
+                                                        setDisconnectingAgentConnection(connection);
+                                                        setShowDisconnectConfirmationModal(true);
                                                     } }
                                                 >
-                                                    Regenerate token
+                                                    Disconnect
                                                 </Button>
-                                            </List.Content>
-                                            <List.Content>
-                                                <List.Header className={ index == 1 ? "mt-4" : "" }>
-                                                    { resolveConnectionStatusIcon(connection?.connected) }
-                                                    <strong>{ connection?.agent?.displayName }</strong>
-                                                </List.Header>
-                                                <List.Description className="mt-2 ml-1">
-                                                    { AGENT_CONNECTION_DESCRIPTION }
-                                                </List.Description>
-                                            </List.Content>
-                                        </List.Item>
-                                    ))
-                                ) : (
-                                    <EmptyPlaceholder
-                                        title="No Agents Connected"
-                                        subtitle={ [
-                                            "There are no user store agent connections.",
-                                            "Please go through the setup guide to configure " +
-                                                "the user store agent(s)."
-                                        ] }
-                                    />
-                                )
-                            ) : (
-                                <ContentLoader />
-                            ) }
-                            { agentConnections.length === 1 && (
-                                <List.Item columns={ 2 } verticalAlign="middle">
-                                    <List.Content floated="right">
-                                        <Button className="mt-4" color="orange" onClick={ handleGenerateToken }>
-                                            Generate token
-                                        </Button>
-                                    </List.Content>
-                                    <List.Content>
-                                        <List.Header className="mt-4">
-                                            <Icon name="times circle" color="red" className="mr-1" />
-                                            <strong>On-Prem-Agent-2</strong>
-                                        </List.Header>
-                                        <List.Description className="mt-2 ml-1">
-                                            { t(
-                                                "extensions:manage.features.userStores.edit." +
-                                                    "general.connectionsSections.agents.agentTwo.description"
-                                            ) }
-                                            <DocumentationLink
-                                                link={ getLink("manage.userStores.highAvailability.learnMore") }
+                                            ) : null }
+                                            <Button
+                                                className={
+                                                    !connection.connected
+                                                        ? index === 1
+                                                            ? "ml-4 mt-4"
+                                                            : "ml-4"
+                                                        : index === 1
+                                                            ? "mt-4"
+                                                            : ""
+                                                }
+                                                color={ connection.connected ? "red" : "orange" }
+                                                onClick={ () => {
+                                                    setAgentIndex(index);
+                                                    setRegeneratingAgentConnection(connection);
+                                                    setShowRegenerateConfirmationModal(true);
+                                                } }
                                             >
-                                                { t("extensions:common.learnMore") }
-                                            </DocumentationLink>
-                                        </List.Description>
-                                    </List.Content>
-                                </List.Item>
-                            ) }
-                        </List>
+                                                Regenerate token
+                                            </Button>
+                                        </List.Content>
+                                        <List.Content>
+                                            <List.Header className={ index == 1 ? "mt-4" : "" }>
+                                                { resolveConnectionStatusIcon(connection?.connected) }
+                                                <strong>{ connection?.agent?.displayName }</strong>
+                                            </List.Header>
+                                            <List.Description className="mt-2 ml-1">
+                                                { AGENT_CONNECTION_DESCRIPTION }
+                                            </List.Description>
+                                        </List.Content>
+                                    </List.Item>
+                                )) }
+                                { agentConnections.length === 1 && (
+                                    <List.Item columns={ 2 } verticalAlign="middle">
+                                        <List.Content floated="right">
+                                            <Button className="mt-4" color="orange" onClick={ handleGenerateToken }>
+                                                Generate token
+                                            </Button>
+                                        </List.Content>
+                                        <List.Content>
+                                            <List.Header className="mt-4">
+                                                <Icon name="times circle" color="red" className="mr-1" />
+                                                <strong>On-Prem-Agent-2</strong>
+                                            </List.Header>
+                                            <List.Description className="mt-2 ml-1">
+                                                { t(
+                                                    "extensions:manage.features.userStores.edit." +
+                                                        "general.connectionsSections.agents.agentTwo.description"
+                                                ) }
+                                                <DocumentationLink
+                                                    link={ getLink("manage.userStores.highAvailability.learnMore") }
+                                                >
+                                                    { t("extensions:common.learnMore") }
+                                                </DocumentationLink>
+                                            </List.Description>
+                                        </List.Content>
+                                    </List.Item>
+                                ) }
+                            </List>
+                        ) }
                     </Segment>
                 </EmphasizedSegment>
             ) : (

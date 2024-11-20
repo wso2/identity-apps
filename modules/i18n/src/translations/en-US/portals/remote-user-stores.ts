@@ -94,6 +94,10 @@ export const remoteUserStores: RemoteUserStoresNS = {
             description: "There was an error while checking the connection status.",
             message: "Something went wrong!"
         },
+        disconnectError: {
+            description: "There was an error while disconnecting the user store.",
+            message: "Disconnection failed!"
+        },
         tokenGenerateError: {
             description: "There was an error while generating the installation token.",
             message: "Token generation failed!"
@@ -143,12 +147,15 @@ export const remoteUserStores: RemoteUserStoresNS = {
                 heading: "Connect the remote user store",
                 steps: {
                     attributeMapping: {
-                        description: "Update the <1>attribute mappings</1> according to remote user store that you connected. Make sure to review the mapped attributes otherwise it may cause errors in the user listings.",
+                        description:
+                            "Update the <1>attribute mappings</1> according to remote user store that you connected. Make sure to review the mapped attributes otherwise it may cause errors in the user listings.",
                         heading: "Attribute mappings"
                     },
                     configure: {
-                        description: "Update the properties in the deployment.toml file located in the root directory of the user store agent to match the remote user store settings. Add additional properties according to your requirements.",
-                        docsDescription: "See the <1>Asgardeo documentation</1> for more details on configuring the user store agent.",
+                        description:
+                            "Update the properties in the deployment.toml file located in the root directory of the user store agent to match the remote user store settings. Add additional properties according to your requirements.",
+                        docsDescription:
+                            "See the <1>Asgardeo documentation</1> for more details on configuring the user store agent.",
                         heading: "Configure the agent"
                     },
                     download: {
@@ -166,7 +173,8 @@ export const remoteUserStores: RemoteUserStoresNS = {
                             action: "Check connection",
                             errorAction: "Try again",
                             errorHeading: "Not connected",
-                            errorMessage: "A user store is not connected, please make sure that you have followed all the steps of the setup guide properly.",
+                            errorMessage:
+                                "A user store is not connected, please make sure that you have followed all the steps of the setup guide properly.",
                             successAction: "Successfully Connected"
                         },
                         commands: {
@@ -174,21 +182,26 @@ export const remoteUserStores: RemoteUserStoresNS = {
                             windows: "On Windows"
                         },
                         description: {
-                            onPrem: "Execute one of the following commands based on your operating system. Enter the installation token on prompt.",
+                            onPrem:
+                                "Execute one of the following commands based on your operating system. Enter the installation token on prompt.",
                             remote: "Execute one of the following commands based on your operating system."
                         },
                         heading: "Run the agent",
                         successMessage: {
-                            onPrem: "Once the user store agent is connected successfully the message <3>Agent successfully connected to {{productName}}</3> will be displayed in the terminal.",
-                            remote: "Once the user store agent is connected successfully the message <3>Successfully connected with the server</3> will be displayed in the terminal."
+                            onPrem:
+                                "Once the user store agent is connected successfully the message <3>Agent successfully connected to {{productName}}</3> will be displayed in the terminal.",
+                            remote:
+                                "Once the user store agent is connected successfully the message <3>Successfully connected with the server</3> will be displayed in the terminal."
                         }
                     },
                     token: {
                         action: "Generate token",
-                        description: "Generate a new installation token which will require when you try to connect your remote user store through the user store agent.",
+                        description:
+                            "Generate a new installation token which will require when you try to connect your remote user store through the user store agent.",
                         generatedToken: {
                             label: "Installation token",
-                            message: "Make sure to note down the installation token as it will be required when running the user store agent. You won't be able to see it again!"
+                            message:
+                                "Make sure to note down the installation token as it will be required when running the user store agent. You won't be able to see it again!"
                         },
                         heading: "Generate a token"
                     }

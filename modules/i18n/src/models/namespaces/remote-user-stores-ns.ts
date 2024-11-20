@@ -185,5 +185,6 @@ export interface RemoteUserStoresNS {
         typeFetchError: NotificationItem;
         tokenGenerateError: NotificationItem;
         connectionStatusCheckError: NotificationItem;
+        disconnectError: NotificationItem;
     };
 }

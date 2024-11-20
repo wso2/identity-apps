@@ -92,7 +92,6 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
     const remoteUserStoreCreatePath: string = RemoteUserStoreConstants.getPaths().get("REMOTE_USER_STORE_CREATE");
 
     const { t } = useTranslation();
-    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const dispatch: Dispatch = useDispatch();
 
     const generalUserStoreDetailsFormRef: MutableRefObject<GeneralUserStoreDetailsFormRef> = useRef<
@@ -112,6 +111,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
         }
     };
 
+    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
     const userStoreFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userStores
     );
