@@ -1,5 +1,40 @@
 # @wso2is/admin.extensions.v1
 
+## 2.34.31
+
+### Patch Changes
+
+- [#7138](https://github.com/wso2/identity-apps/pull/7138) [`4def165b624e0f2533d8ad158158b4909c24913a`](https://github.com/wso2/identity-apps/commit/4def165b624e0f2533d8ad158158b4909c24913a) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Add missing default scim mapping props
+
+- Updated dependencies [[`ce35db51c7bbf9fc894b71ecffd52d20413a4dd9`](https://github.com/wso2/identity-apps/commit/ce35db51c7bbf9fc894b71ecffd52d20413a4dd9), [`b7923d6f9ecdc70e314c14a328db8c551621eecb`](https://github.com/wso2/identity-apps/commit/b7923d6f9ecdc70e314c14a328db8c551621eecb), [`8294398b57416fd6648c1af9fecee230c198ac28`](https://github.com/wso2/identity-apps/commit/8294398b57416fd6648c1af9fecee230c198ac28)]:
+  - @wso2is/admin.users.v1@2.28.0
+  - @wso2is/admin.core.v1@2.34.31
+  - @wso2is/admin.server-configurations.v1@2.29.4
+  - @wso2is/i18n@2.12.3
+  - @wso2is/core@2.4.3
+  - @wso2is/admin.claims.v1@2.25.31
+  - @wso2is/admin.applications.v1@2.30.31
+  - @wso2is/admin.authentication.v1@2.25.31
+  - @wso2is/admin.groups.v1@2.25.31
+  - @wso2is/admin.organizations.v1@2.26.31
+  - @wso2is/admin.remote-userstores.v1@1.5.31
+  - @wso2is/admin.roles.v2@2.26.31
+  - @wso2is/admin.tenants.v1@2.28.5
+  - @wso2is/admin.validation.v1@2.26.31
+  - @wso2is/admin.api-resources.v1@2.25.31
+  - @wso2is/admin.connections.v1@2.28.31
+  - @wso2is/admin.feature-gate.v1@1.4.31
+  - @wso2is/admin.identity-providers.v1@2.26.31
+  - @wso2is/admin.provisioning.v1@2.25.31
+  - @wso2is/admin.sms-providers.v1@2.25.31
+  - @wso2is/admin.userstores.v1@2.25.31
+  - @wso2is/admin.authorization.v1@2.25.13
+  - @wso2is/access-control@3.3.3
+  - @wso2is/dynamic-forms@2.4.7
+  - @wso2is/form@2.5.7
+  - @wso2is/forms@2.3.3
+  - @wso2is/react-components@2.8.7
+
 ## 2.34.30
 
 ### Patch Changes
