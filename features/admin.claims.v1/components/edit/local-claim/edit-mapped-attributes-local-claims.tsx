@@ -253,8 +253,8 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                                                     ) }
                                                                 disabled={ isReadOnly }
                                                                 data-componentid={
-                                                                    `${componentId}-form-userstore-support-checkbox-
-                                                                        ${store.name}` }
+                                                                    `${componentId}-form-userstore-support-checkbox` +
+                                                                        `-${store.name}` }
                                                             />
                                                         </Grid.Column>
                                                     </Grid.Row>
