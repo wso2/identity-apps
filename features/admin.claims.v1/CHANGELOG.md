@@ -1,5 +1,20 @@
 # @wso2is/admin.claims.v1
 
+## 2.25.30
+
+### Patch Changes
+
+- [#7135](https://github.com/wso2/identity-apps/pull/7135) [`798fa126edf561e196e82cf007992b0d335327c8`](https://github.com/wso2/identity-apps/commit/798fa126edf561e196e82cf007992b0d335327c8) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Hide attribute mappings when no remote users stores
+
+- Updated dependencies [[`798fa126edf561e196e82cf007992b0d335327c8`](https://github.com/wso2/identity-apps/commit/798fa126edf561e196e82cf007992b0d335327c8)]:
+  - @wso2is/admin.userstores.v1@2.25.30
+  - @wso2is/admin.claims.v1@2.25.30
+  - @wso2is/admin.core.v1@2.34.30
+  - @wso2is/admin.extensions.v1@2.34.30
+  - @wso2is/admin.users.v1@2.27.30
+  - @wso2is/admin.server-configurations.v1@2.29.3
+  - @wso2is/admin.validation.v1@2.26.30
+
 ## 2.25.29
 
 ### Patch Changes
