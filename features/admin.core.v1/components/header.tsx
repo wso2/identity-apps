@@ -37,7 +37,7 @@ import { OrganizationSwitchBreadcrumb } from "@wso2is/admin.organizations.v1/com
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
 import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
-import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
+import { isFeatureEnabled, resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { FeatureAccessConfigInterface } from "@wso2is/core/src/models";
 import { StringUtils } from "@wso2is/core/utils";
@@ -58,6 +58,7 @@ import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
 import { CommonUtils, EventPublisher } from "../utils";
 import "./header.scss";
+import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 
 /**
  * Dashboard layout Prop types.
@@ -94,6 +95,17 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
         useSelector((state: AppState) => state.config.ui.features.gettingStarted);
     const scopes: string = useSelector((state: AppState) => state.auth.allowedScopes);
     const userOrganizationID: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
+
+    const authenticatedUserRoles: any = useSelector<AppState, string>(
+        (state: AppState) => state?.auth?.roles
+    );
+
+    const tenantFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.tenants
+    )
+    const isTenantSwitchingEnabledForAll: boolean = isFeatureEnabled(
+        tenantFeatureConfig, "tenant.switching.enabled.for.all"
+    )
 
     const hasOrganizationReadPermission: boolean =useRequiredScopes(organizationFeatureConfig?.scopes?.read);
     const hasGettingStartedViewPermission: boolean = useRequiredScopes(
@@ -138,6 +150,21 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
     }, [ tenantDomain, associatedTenants ]);
 
     /**
+     * Returns whether the current signed in user has the "Administrator" role
+     */
+    const isAdminUser = () => {
+        if (typeof authenticatedUserRoles === "string" && authenticatedUserRoles === administratorConfig.adminRoleName) {
+            return true;
+        }
+
+        if(Array.isArray(authenticatedUserRoles) && authenticatedUserRoles.includes(administratorConfig.adminRoleName)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Show the organization switching dropdown only if
      *  - the organizations feature is enabled
      *  - the extensions config enables this
@@ -150,7 +177,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
         (organizationType === OrganizationType.SUPER_ORGANIZATION ||
             organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
             organizationType === OrganizationType.SUBORGANIZATION ||
-            organizationConfigs.showSwitcherInTenants) && hasOrganizationReadPermission
+            organizationConfigs.showSwitcherInTenants) &&
+        hasOrganizationReadPermission
+        && (
+            !isTenantSwitchingEnabledForAll && isAdminUser()
+        )
     ), [ tenantDomain, hasOrganizationReadPermission, organizationType, scopes ]);
 
     const resolveUsername = (): string => {

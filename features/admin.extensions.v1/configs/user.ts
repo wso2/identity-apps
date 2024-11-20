@@ -17,7 +17,8 @@
  */
 
 import { deleteUser } from "@wso2is/admin.users.v1/api/users";
-import { AskPasswordOptionTypes, PasswordOptionTypes } from "@wso2is/admin.users.v1/constants";
+import { AskPasswordOptionTypes } from "@wso2is/admin.users.v1/constants";
+import { PasswordOptionTypes } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { ProfileInfoInterface } from "@wso2is/core/models";
 import { User } from "./models";
