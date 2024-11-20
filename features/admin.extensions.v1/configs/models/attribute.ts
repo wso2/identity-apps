@@ -81,11 +81,6 @@ export interface AttributeConfig {
         isSCIMCustomDialectAvailable: () => Promise<string>;
         isUserStoresHidden: (hiddenUserStores: string[]) => Promise<any[]>;
     }
-    defaultScimMapping: {
-        "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": Map<string, string>;
-        "urn:ietf:params:scim:schemas:core:2.0:User": Map<string, string>;
-        "urn:ietf:params:scim:schemas:core:2.0": Map<string, string>;
-    },
     systemClaims: string[];
     showCustomDialectInSCIM: boolean;
     isRowSelectable: (claim: Claim | ExternalClaim | ClaimDialect) => boolean;
