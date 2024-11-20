@@ -16,14 +16,18 @@
  * under the License.
  */
 
-import { AppConstants, history } from "@wso2is/admin.core.v1";
-import { attributeConfig } from "@wso2is/admin.extensions.v1";
+import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { attributeConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
+import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { UserStoreBasicData } from "@wso2is/admin.userstores.v1/models";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AnimatedAvatar, ResourceTab, TabPageLayout } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Image } from "semantic-ui-react";
@@ -63,9 +67,11 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
     } = props;
 
     const claimID: string = match.params.id;
+    const hiddenUserStores: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
 
     const [ claim, setClaim ] = useState<Claim>(null);
     const [ isLocalClaimDetailsRequestLoading, setIsLocalClaimDetailsRequestLoading ] = useState<boolean>(false);
+    const [ userStores, setUserStores ] = useState<UserStoreBasicData[]>([]);
 
     const dispatch: Dispatch = useDispatch();
 
@@ -100,6 +106,33 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
         getClaim();
     }, []);
 
+    useEffect(() => {
+        const userStores: UserStoreBasicData[] = [];
+
+        if (userstoresConfig?.primaryUserstoreName === PRIMARY_USERSTORE) {
+            userStores.push({
+                id: PRIMARY_USERSTORE,
+                name: PRIMARY_USERSTORE
+            });
+        }
+
+        getUserStoreList()
+            .then((response: AxiosResponse) => {
+                const userStoresData: UserStoreBasicData[] = response?.data || [];
+
+                const filteredUserStores: UserStoreBasicData[] = hiddenUserStores?.length > 0
+                    ? userStoresData.filter((store: UserStoreBasicData) =>
+                        !hiddenUserStores?.includes(store?.name))
+                    : userStoresData;
+
+                userStores.push(...filteredUserStores);
+                setUserStores(userStores);
+            })
+            .catch(() => {
+                setUserStores(userStores);
+            });
+    }, []);
+
     /**
      * Contains the data of the panes.
      */
@@ -126,6 +159,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                     <EditMappedAttributesLocalClaims
                         claim={ claim }
                         update={ getClaim }
+                        userStores={ userStores }
                         data-componentid={ `${ testId }-edit-local-claims-mapped-attributes` }
                     />
                 </ResourceTab.Pane>
@@ -171,6 +205,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                     <EditMappedAttributesLocalClaims
                         claim={ claim }
                         update={ getClaim }
+                        userStores={ userStores }
                         data-componentid={ `${ testId }-edit-local-claims-mapped-attributes` }
                     />
                 </ResourceTab.Pane>
@@ -219,11 +254,27 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
             bottomMargin={ false }
             data-testid={ `${ testId }-page-layout` }
         >
-            <ResourceTab
-                isLoading={ isLocalClaimDetailsRequestLoading }
-                panes={  attributeConfig?.attributes?.showEditTabs ? panes : basicPanes }
-                data-testid={ `${testId}-tabs` }
-            />
+            {
+                attributeConfig?.attributes?.showEditTabs
+                    ? (
+                        <ResourceTab
+                            isLoading={ isLocalClaimDetailsRequestLoading }
+                            panes={  panes }
+                            data-testid={ `${testId}-tabs` } />)
+                    : userStores?.length > 1
+                        ? (
+                            <ResourceTab
+                                isLoading={ isLocalClaimDetailsRequestLoading }
+                                panes={ basicPanes }
+                                data-testid={ `${testId}-tabs` } />)
+                        : (
+                            <EditBasicDetailsLocalClaims
+                                claim={ claim }
+                                update={ getClaim }
+                                data-testid="local-claims-basic-details-edit"/>)
+
+            }
+
         </TabPageLayout>
     );
 };
