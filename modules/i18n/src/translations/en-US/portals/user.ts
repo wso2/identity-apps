@@ -17,6 +17,11 @@
  */
 import { userNS } from "../../../models";
 
+/**
+ * NOTE: No need to care about the max-len for this file since it's easier to
+ * translate the strings to other languages easily with editor translation tools.
+ */
+/* eslint-disable max-len */
 export const user: userNS = {
     deleteJITUser: {
         confirmationModal: {
@@ -374,6 +379,14 @@ export const user: userNS = {
                 "user to be activated.",
             pendingSelfRegistration: "The account is locked pending user verification via the self-registration email."
         },
+        confirmationModals: {
+            deleteAttributeConfirmation: {
+                assertionHint: "Please confirm your action.",
+                content: "This action is irreversible and will permanently delete the {{attributeDisplayName}}.",
+                description: "If you delete this {{attributeDisplayName}}, it will be permanently removed from the user profile.",
+                heading: "Are you sure?"
+            }
+        },
         fields: {
             createdDate: "Created Date",
             emails: "Email",
@@ -578,6 +591,34 @@ export const user: userNS = {
                 success: {
                     description: "The required user profile details were successfully updated.",
                     message: "User profile updated successfully"
+                }
+            },
+            verifyEmail: {
+                error: {
+                    description: "{{description}}",
+                    message: "An error occurred while sending the verification email."
+                },
+                genericError: {
+                    description: "An error occurred while sending the verification email.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "The verification email was sent successfully.",
+                    message: "Verification email sent successfully"
+                }
+            },
+            verifyMobile: {
+                error: {
+                    description: "{{description}}",
+                    message: "An error occurred while sending the verification code."
+                },
+                genericError: {
+                    description: "An error occurred while sending the verification code.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "The verification code was sent successfully.",
+                    message: "Verification code sent successfully"
                 }
             }
         },
