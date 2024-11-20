@@ -261,7 +261,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                             isLoading={ isLocalClaimDetailsRequestLoading }
                             panes={  panes }
                             data-testid={ `${testId}-tabs` } />)
-                    : userStores?.length > 1
+                    : userStores?.length >= 1
                         ? (
                             <ResourceTab
                                 isLoading={ isLocalClaimDetailsRequestLoading }
