@@ -18,7 +18,8 @@
 
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
-import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
+import { ServerConfigurationsConstants } from
+    "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import { ProfileConstants } from "@wso2is/core/constants";
 
 /**
