@@ -143,15 +143,20 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                 delete claimData.id;
                                 delete claimData.dialectURI;
 
+                                const updatedMappings: AttributeMapping[] = Array.from(values)?.map(
+                                    ([ userstore, attribute ]: [string, FormValue]) => ({
+                                        mappedAttribute: attribute?.toString(),
+                                        userstore: userstore?.toString()
+                                    })
+                                );
+
+                                const existingMappings: AttributeMapping[] = claim?.attributeMapping?.filter(
+                                    (mapping: AttributeMapping) => !values.has(mapping?.userstore)
+                                ) || [];
+
                                 const submitData: Claim = {
                                     ...claimData,
-                                    attributeMapping: Array.from(values).map(
-                                        ([ userstore, attribute ]: [ string, FormValue ]) => {
-                                            return {
-                                                mappedAttribute: attribute.toString(),
-                                                userstore: userstore.toString()
-                                            };
-                                        }),
+                                    attributeMapping: [ ...updatedMappings, ...existingMappings ],
                                     properties: [
                                         ...(claimData.properties?.filter((prop: Property) =>
                                             prop.key.toLowerCase() !==
