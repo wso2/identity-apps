@@ -1,5 +1,16 @@
 # @wso2is/admin.userstores.v1
 
+## 2.25.35
+
+### Patch Changes
+
+- [#7141](https://github.com/wso2/identity-apps/pull/7141) [`02993f2768c985dd22ec77f39f52a7df3ec628ee`](https://github.com/wso2/identity-apps/commit/02993f2768c985dd22ec77f39f52a7df3ec628ee) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Define feature dictionary constant for disabled user store features
+
+- Updated dependencies [[`1e0439099500238ef3e6eae0ecfe94ab91ae7c51`](https://github.com/wso2/identity-apps/commit/1e0439099500238ef3e6eae0ecfe94ab91ae7c51)]:
+  - @wso2is/admin.extensions.v1@2.34.35
+  - @wso2is/admin.core.v1@2.34.35
+  - @wso2is/admin.remote-userstores.v1@1.5.35
+
 ## 2.25.34
 
 ### Patch Changes
