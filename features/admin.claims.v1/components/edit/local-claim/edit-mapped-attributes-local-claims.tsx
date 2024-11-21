@@ -29,7 +29,6 @@ import { AlertLevels, AttributeMapping, Claim, IdentifiableComponentInterface, P
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
-import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
