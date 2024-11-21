@@ -21,6 +21,7 @@
     --wso2is-authentication-flow-builder-step-action-panel-height: 44px;
     --wso2is-authentication-flow-builder-step-remove-button-color: var(--oxygen-palette-grey-500);
     --wso2is-authentication-flow-builder-step-remove-button-hover-color: var(--oxygen-palette-primary-contrastText);
+    --wso2is-authentication-flow-builder-step-content-form-field-drag-handle-width: 25px;
 }
 
 .authentication-flow-builder-step {
@@ -44,10 +45,15 @@
             .oxygen-form-group {
                 .authentication-flow-builder-step-content-form-field {
                     border: 2px dashed transparent;
+                    margin-left: calc(-1 * (var(--wso2is-authentication-flow-builder-step-content-form-field-drag-handle-width)));
 
                     .authentication-flow-builder-step-content-form-field-drag-handle {
                         display: flex;
                         visibility: hidden;
+                        justify-content: center;
+                        width: var(--wso2is-authentication-flow-builder-step-content-form-field-drag-handle-width);
+                        border-right: 2px dashed transparent;
+                        margin-right: 5px;
 
                         svg {
                             margin: 5px 0;
@@ -64,6 +70,7 @@
 
                         .authentication-flow-builder-step-content-form-field-drag-handle {
                             visibility: visible;
+                            border-right: 2px dashed var(--oxygen-palette-grey-200);
                         }
                     }
                 }

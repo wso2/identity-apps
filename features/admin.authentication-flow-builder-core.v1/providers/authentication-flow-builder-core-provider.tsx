@@ -17,8 +17,9 @@
  */
 
 import Avatar from "@oxygen-ui/react/Avatar";
-import Typography from "@oxygen-ui/react/Typography";
 import Stack from "@oxygen-ui/react/Stack";
+import Typography from "@oxygen-ui/react/Typography";
+import { Claim } from "@wso2is/core/models";
 import capitalize from "lodash-es/capitalize";
 import React, { PropsWithChildren, ReactElement, ReactNode, useState } from "react";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
@@ -42,8 +43,10 @@ const AuthenticationFlowBuilderCoreProvider = ({
     const [ isElementPropertiesPanelOpen, setIsOpenElementPropertiesPanel ] = useState<boolean>(false);
     const [ elementPropertiesPanelHeading, setElementPropertiesPanelHeading ] = useState<ReactNode>(null);
     const [ activeElement, setActiveElement ] = useState<Base>(null);
+    const [ activeElementNodeId, setActiveElementNodeId ] = useState<string>("");
+    const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Claim[] }>({});
 
-    const onElementDropOnCanvas = (element: Base): void  => {
+    const onElementDropOnCanvas = (element: Base, nodeId: string): void  => {
         // TODO: Internationalize this string and get from a mapping.
         setElementPropertiesPanelHeading(
             <Stack>
@@ -59,20 +62,25 @@ const AuthenticationFlowBuilderCoreProvider = ({
         );
         setIsOpenElementPropertiesPanel(true);
         setActiveElement(element);
+        setActiveElementNodeId(nodeId);
     };
 
     return (
         <AuthenticationFlowBuilderCoreContext.Provider
             value={ {
                 activeElement,
+                activeElementNodeId,
                 elementPropertiesPanelHeading,
                 isElementPanelOpen,
                 isElementPropertiesPanelOpen,
                 onElementDropOnCanvas,
+                selectedAttributes,
                 setActiveElement,
+                setActiveElementNodeId,
                 setElementPropertiesPanelHeading,
                 setIsElementPanelOpen,
-                setIsOpenElementPropertiesPanel
+                setIsOpenElementPropertiesPanel,
+                setSelectedAttributes
             } }
         >
             { children }

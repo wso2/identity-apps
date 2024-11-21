@@ -34,12 +34,21 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { FieldOption } from "../../models/base";
 import { Component, ComponentTypes } from "../../models/component";
 import { ElementCategories } from "../../models/elements";
+import AttributeCollectorNode from "./attribute-collector-node";
 import "./step-node.scss";
+import { WidgetTypes } from "../../models/widget";
 
 /**
  * Props interface of {@link NodeFactory}
  */
 export interface NodeFactoryPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * The flow id of the node.
+     */
+    nodeId: string;
+    /**
+     * The node properties.
+     */
     node: Component;
 }
 
@@ -156,6 +165,12 @@ export const NodeFactory: FunctionComponent<NodeFactoryPropsInterface> = ({
                     />
                 </Box>
             );
+        }
+    }
+
+    if (node.category === ElementCategories.Widget) {
+        if (node.type === WidgetTypes.AttributeCollector) {
+            return <AttributeCollectorNode />;
         }
     }
 

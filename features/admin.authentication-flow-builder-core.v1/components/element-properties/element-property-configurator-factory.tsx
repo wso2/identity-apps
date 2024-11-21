@@ -28,6 +28,8 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { Element, ElementCategories } from "../../models/elements";
 import getKnownElementProperties from "../../utils/get-known-element-properties";
 import isTextValueWithFallback from "../../utils/is-text-value-with-fallback";
+import { WidgetTypes } from "../../models/widget";
+import AttributeCollectorProperties from "./widgets/attribute-collector-properties";
 
 /**
  * Props interface of {@link ElementPropertyConfiguratorFactory}
@@ -86,6 +88,14 @@ const ElementPropertyConfiguratorFactory: FunctionComponent<ElementPropertyConfi
                         )) }
                     </Select>
                 </FormControl>
+            );
+        }
+    }
+
+    if (element.category === ElementCategories.Widget) {
+        if (element.type === WidgetTypes.AttributeCollector) {
+            return (
+                <AttributeCollectorProperties />
             );
         }
     }

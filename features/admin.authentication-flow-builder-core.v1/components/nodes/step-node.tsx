@@ -24,7 +24,7 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Handle, Node, Position } from "@xyflow/react";
+import { Handle, Node, Position, useNodeId } from "@xyflow/react";
 import React, {
     DragEvent,
     FunctionComponent,
@@ -74,6 +74,7 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
     data,
     "data-componentid": componentId = "step-node"
 }: StepNodePropsInterface & Node): ReactElement => {
+    const nodeId: string = useNodeId();
     const { onElementDropOnCanvas } = useAuthenticationFlowBuilderCore();
 
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
@@ -96,7 +97,7 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
 
                 setDroppedElements((prevDroppedElements: Component[]) => [ ...prevDroppedElements, newComponent ]);
 
-                onElementDropOnCanvas(newComponent);
+                onElementDropOnCanvas(newComponent, nodeId);
             }
         },
         [ data?.type ]
@@ -150,7 +151,7 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
                                         <GridDotsVerticalIcon height={ 20 } />
                                     </div>
                                     <div className="authentication-flow-builder-step-content-form-field-content">
-                                        <NodeFactory node={ component } />
+                                        <NodeFactory nodeId={ nodeId } node={ component } />
                                     </div>
                                 </Box>
                             )) }

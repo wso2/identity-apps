@@ -21,7 +21,7 @@ import { ReactFlowProvider } from "@xyflow/react";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import ElementPropertiesPanel from "./element-properties/element-properties-panel";
-import ElementsPanel from "./element-properties/elements-panel";
+import ElementsPanel from "./elements-panel/elements-panel";
 import VisualFlow from "./visual-flow";
 import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
 import DnDProvider from "../providers/dnd-provider";

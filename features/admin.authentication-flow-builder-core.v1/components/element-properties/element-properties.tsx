@@ -22,7 +22,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import ElementPropertyConfiguratorFactory from "./element-property-configurator-factory";
-import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
+import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 
 /**
  * Props interface of {@link ElementProperties}

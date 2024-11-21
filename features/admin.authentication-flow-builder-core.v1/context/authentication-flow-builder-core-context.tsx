@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Claim } from "@wso2is/core/models";
 import { Context, Dispatch, ReactNode, SetStateAction, createContext } from "react";
 import { Base } from "../models/base";
 
@@ -27,6 +28,10 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * The properties of the active element.
      */
     activeElement: Base;
+    /**
+     * The ID of the active element node.
+     */
+    activeElementNodeId: string;
     /**
      * The heading for the element properties panel.
      */
@@ -42,12 +47,23 @@ export interface AuthenticationFlowBuilderCoreContextProps {
     /**
      * Function to be called when an element is dropped on the canvas.
      * @param element - The element that was dropped on the canvas.
+     * @param nodeId - The ID of the node on which the element was dropped.
      */
-    onElementDropOnCanvas: (element: Base) => void;
+    onElementDropOnCanvas: (element: Base, nodeId: string) => void;
+    /**
+     * The set of attributes that are selected for the flow that are maintained per node.
+     */
+    selectedAttributes: {
+        [key: string]: Claim[]
+    };
     /**
      * Sets the active element in the canvas.
      */
     setActiveElement: Dispatch<SetStateAction<Base>>;
+    /**
+     * Sets the active element node ID.
+     */
+    setActiveElementNodeId: Dispatch<SetStateAction<string>>;
     /**
      * Sets the heading for the element properties panel.
      *
@@ -66,6 +82,10 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * @param isOpen - Boolean indicating whether the element properties panel should be open.
      */
     setIsOpenElementPropertiesPanel: Dispatch<SetStateAction<boolean>>;
+    /**
+     * Sets the selected attributes for the flow.
+     */
+    setSelectedAttributes: Dispatch<SetStateAction<{[key: string]: Claim[]}>>;
 }
 
 /**
@@ -76,14 +96,18 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
 >(
     {
         activeElement: null,
+        activeElementNodeId: "",
         elementPropertiesPanelHeading: null,
         isElementPanelOpen: true,
         isElementPropertiesPanelOpen: false,
         onElementDropOnCanvas: () => {},
+        selectedAttributes: {},
         setActiveElement: () => {},
+        setActiveElementNodeId: () => {},
         setElementPropertiesPanelHeading: () => {},
         setIsElementPanelOpen: () => {},
-        setIsOpenElementPropertiesPanel: () => {}
+        setIsOpenElementPropertiesPanel: () => {},
+        setSelectedAttributes: () => {}
     }
 );
 
