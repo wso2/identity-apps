@@ -19,6 +19,7 @@
 import { AppConstants, store } from "@wso2is/admin.core.v1";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
+import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { RoleGroupsInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
@@ -133,7 +134,10 @@ export class RoleManagementUtils {
      */
     public static getUserStore = (nameWithUserstore: string): string => {
         const isDefaultPrimaryUserStoreEnabled: boolean =
-            isFeatureEnabled(store.getState().config?.ui?.features?.userStores,"PRIMARY");
+            isFeatureEnabled(
+                store.getState().config?.ui?.features?.userStores,
+                UserStoreManagementConstants.FEATURE_DICTIONARY.get("USER_STORE_PRIMARY")
+            );
 
         return nameWithUserstore?.split("/").length > 1
             ? nameWithUserstore?.split("/")[0]
