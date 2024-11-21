@@ -84,6 +84,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
     const { t } = useTranslation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const hiddenUserStores: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
 
     const isReadOnly: boolean = !useRequiredScopes(
         featureConfig?.attributeDialects?.scopes?.update
@@ -149,24 +150,37 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                         userstore: userstore?.toString()
                                     })
                                 );
+                                const existingMappings: AttributeMapping[] =
+                                    claim?.attributeMapping?.filter((mapping: AttributeMapping) => {
+                                        if (!mapping?.userstore) return false;
 
-                                const existingMappings: AttributeMapping[] = claim?.attributeMapping?.filter(
-                                    (mapping: AttributeMapping) => !values.has(mapping?.userstore)
-                                ) || [];
+                                        const userstore: string = mapping?.userstore?.toUpperCase();
+                                        const validStores: string[] = [
+                                            PRIMARY_USERSTORE.toUpperCase(),
+                                            ...(hiddenUserStores?.map((store: string) => store.toUpperCase()) ?? [])
+                                        ];
+
+                                        return validStores?.includes(userstore) && !values?.has(mapping?.userstore);
+                                    }) ?? [];
+
+                                const validExcludedUserStores: string[] = excludedUserStores?.filter(
+                                    (store: string) => userStores?.find((userStore: UserStoreBasicData) =>
+                                        userStore?.name?.toUpperCase() === store?.toUpperCase()
+                                    )
+                                ) ?? [];
 
                                 const submitData: Claim = {
                                     ...claimData,
-                                    attributeMapping: [ ...updatedMappings, ...existingMappings ],
+                                    attributeMapping: [ ...existingMappings, ...updatedMappings ],
                                     properties: [
-                                        ...(claimData.properties?.filter((prop: Property) =>
-                                            prop.key.toLowerCase() !==
+                                        ...(claimData?.properties?.filter((prop: Property) =>
+                                            prop?.key?.toLowerCase() !==
                                             ClaimManagementConstants.EXCLUDED_USER_STORES_CLAIM_PROPERTY
                                                 .toLowerCase()
                                         ) || []),
                                         {
                                             key: ClaimManagementConstants.EXCLUDED_USER_STORES_CLAIM_PROPERTY,
-                                            value: excludedUserStores?.filter(
-                                                (store: string) => !isEmpty(store)).join(",")
+                                            value: validExcludedUserStores?.join(",")
                                         }
                                     ]
                                 };
