@@ -1,5 +1,17 @@
 # @wso2is/admin.provisioning.v1
 
+## 2.25.33
+
+### Patch Changes
+
+- [#7132](https://github.com/wso2/identity-apps/pull/7132) [`fcda7eca51c82d2354cd5c8ec8f8865c3d7a2b52`](https://github.com/wso2/identity-apps/commit/fcda7eca51c82d2354cd5c8ec8f8865c3d7a2b52) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add a checkbox to configure JIT outbound when adding a provisioning connector.
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.33
+  - @wso2is/admin.connections.v1@2.28.33
+  - @wso2is/admin.core.v1@2.34.33
+  - @wso2is/admin.identity-providers.v1@2.26.33
+
 ## 2.25.32
 
 ### Patch Changes
