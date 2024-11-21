@@ -57,7 +57,7 @@ const AttributeCollectorProperties: FunctionComponent<AttributeCollectorProperti
 
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
-            <Typography variant="body2">Select the attributes to collect</Typography>
+            <Typography variant="body2">Select and add user attributes you want to collect in this step</Typography>
             <Stack gap={ 1 }>
                 { attributes?.map(attribute => {
                     return (
