@@ -31,6 +31,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { DiamondIcon, DiscordIcon, StackOverflowIcon, TalkingHeadsetIcon } from "@oxygen-ui/react-icons";
 import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
+import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { OrganizationSwitchBreadcrumb } from "@wso2is/admin.organizations.v1/components/organization-switch";
@@ -58,7 +59,6 @@ import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
 import { CommonUtils, EventPublisher } from "../utils";
 import "./header.scss";
-import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 
 /**
  * Dashboard layout Prop types.
@@ -102,10 +102,10 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
 
     const tenantFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.tenants
-    )
+    );
     const isTenantSwitchingEnabledForAll: boolean = isFeatureEnabled(
         tenantFeatureConfig, "tenant.switching.enabled.for.all"
-    )
+    );
 
     const hasOrganizationReadPermission: boolean =useRequiredScopes(organizationFeatureConfig?.scopes?.read);
     const hasGettingStartedViewPermission: boolean = useRequiredScopes(
@@ -153,16 +153,22 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
      * Returns whether the current signed in user has the "Administrator" role
      */
     const isAdminUser = () => {
-        if (typeof authenticatedUserRoles === "string" && authenticatedUserRoles === administratorConfig.adminRoleName) {
+        if (
+            typeof authenticatedUserRoles === "string" &&
+            authenticatedUserRoles === administratorConfig.adminRoleName
+        ) {
             return true;
         }
 
-        if(Array.isArray(authenticatedUserRoles) && authenticatedUserRoles.includes(administratorConfig.adminRoleName)) {
+        if(
+            Array.isArray(authenticatedUserRoles) &&
+            authenticatedUserRoles.includes(administratorConfig.adminRoleName)
+        ) {
             return true;
         }
 
         return false;
-    }
+    };
 
     /**
      * Show the organization switching dropdown only if
