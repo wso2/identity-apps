@@ -16,9 +16,11 @@
  * under the License.
  */
 
-import { AppConstants } from "@wso2is/admin.core.v1";
+import { AppConstants, store } from "@wso2is/admin.core.v1";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
+import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { RoleGroupsInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import { AxiosResponse } from "axios";
@@ -95,7 +97,7 @@ export class RoleManagementUtils {
                     return permissionTree;
                 }
             });
-    }
+    };
 
     /**
      * Get the display name from the name with userstore.
@@ -130,10 +132,17 @@ export class RoleManagementUtils {
      * @param nameWithUserstore - name with userstore
      * @returns - userstore
      */
-    public static getUserStore = (nameWithUserstore: string): string =>
-        nameWithUserstore?.split("/").length > 1
+    public static getUserStore = (nameWithUserstore: string): string => {
+        const isDefaultPrimaryUserStoreEnabled: boolean =
+            isFeatureEnabled(
+                store.getState().config?.ui?.features?.userStores,
+                UserStoreManagementConstants.FEATURE_DICTIONARY.get("USER_STORE_PRIMARY")
+            );
+
+        return nameWithUserstore?.split("/").length > 1
             ? nameWithUserstore?.split("/")[0]
-            : I18n.instance.t("users:userstores.userstoreOptions.primary")
+            : isDefaultPrimaryUserStoreEnabled ? I18n.instance.t("users:userstores.userstoreOptions.primary") : null;
+    };
 
     /**
      * Get name to display of the user.

@@ -53,7 +53,8 @@ export class UserStoreManagementConstants {
      * Set of keys used to enable/disable features.
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
-        .set("USER_STORE_REMOTE", "userStores.type.remote");
+        .set("USER_STORE_REMOTE", "userStores.type.remote")
+        .set("USER_STORE_PRIMARY", "PRIMARY");
 }
 
 /**
