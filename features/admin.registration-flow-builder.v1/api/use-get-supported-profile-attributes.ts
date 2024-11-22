@@ -39,7 +39,6 @@ import { HttpMethods } from "@wso2is/core/models";
 const useGetSupportedProfileAttributes = <Data = any, Error = RequestErrorInterface>(
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
-
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",

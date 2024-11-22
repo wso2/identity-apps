@@ -21,14 +21,23 @@ import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { Claim } from "@wso2is/core/models";
 import capitalize from "lodash-es/capitalize";
-import React, { PropsWithChildren, ReactElement, ReactNode, useState } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode, useState } from "react";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
 import { Base } from "../models/base";
 
 /**
  * Props interface of {@link AuthenticationFlowBuilderCoreProvider}
  */
-export type AuthenticationFlowBuilderProviderProps = unknown;
+export interface AuthenticationFlowBuilderProviderProps {
+    /**
+     * The factory for creating nodes.
+     */
+    NodeFactory: FunctionComponent<any>;
+    /**
+     * The factory for creating element properties.
+     */
+    ElementPropertiesFactory: FunctionComponent<any>;
+}
 
 /**
  * This component provides authentication flow builder core related context to its children.
@@ -37,6 +46,8 @@ export type AuthenticationFlowBuilderProviderProps = unknown;
  * @returns The AuthenticationFlowBuilderCoreProvider component.
  */
 const AuthenticationFlowBuilderCoreProvider = ({
+    NodeFactory,
+    ElementPropertiesFactory,
     children
 }: PropsWithChildren<AuthenticationFlowBuilderProviderProps>): ReactElement => {
     const [ isElementPanelOpen, setIsElementPanelOpen ] = useState<boolean>(true);
@@ -68,6 +79,8 @@ const AuthenticationFlowBuilderCoreProvider = ({
     return (
         <AuthenticationFlowBuilderCoreContext.Provider
             value={ {
+                ElementPropertiesFactory,
+                NodeFactory,
                 activeElement,
                 activeElementNodeId,
                 elementPropertiesPanelHeading,

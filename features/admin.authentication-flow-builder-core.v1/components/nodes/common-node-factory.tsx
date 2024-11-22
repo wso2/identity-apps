@@ -34,14 +34,11 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { FieldOption } from "../../models/base";
 import { Component, ComponentTypes } from "../../models/component";
 import { ElementCategories } from "../../models/elements";
-import AttributeCollectorNode from "./attribute-collector-node";
-import "./step-node.scss";
-import { WidgetTypes } from "../../models/widget";
 
 /**
- * Props interface of {@link NodeFactory}
+ * Props interface of {@link CommonNodeFactory}
  */
-export interface NodeFactoryPropsInterface extends IdentifiableComponentInterface {
+export interface CommonNodeFactoryPropsInterface extends IdentifiableComponentInterface {
     /**
      * The flow id of the node.
      */
@@ -58,9 +55,9 @@ export interface NodeFactoryPropsInterface extends IdentifiableComponentInterfac
  * @param props - Props injected to the component.
  * @returns Step Node component.
  */
-export const NodeFactory: FunctionComponent<NodeFactoryPropsInterface> = ({
+export const CommonNodeFactory: FunctionComponent<CommonNodeFactoryPropsInterface> = ({
     node
-}: NodeFactoryPropsInterface & Node): ReactElement => {
+}: CommonNodeFactoryPropsInterface & Node): ReactElement => {
     if (node.category === ElementCategories.Component) {
         if (
             node.type === ComponentTypes.Text ||
@@ -168,13 +165,7 @@ export const NodeFactory: FunctionComponent<NodeFactoryPropsInterface> = ({
         }
     }
 
-    if (node.category === ElementCategories.Widget) {
-        if (node.type === WidgetTypes.AttributeCollector) {
-            return <AttributeCollectorNode />;
-        }
-    }
-
     return null;
 };
 
-export default NodeFactory;
+export default CommonNodeFactory;

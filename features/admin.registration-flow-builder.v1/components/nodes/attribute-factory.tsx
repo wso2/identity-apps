@@ -16,27 +16,10 @@
  * under the License.
  */
 
-import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
-import Checkbox from "@oxygen-ui/react/Checkbox";
-import Divider from "@oxygen-ui/react/Divider";
-import FormControl from "@oxygen-ui/react/FormControl";
-import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
-import FormLabel from "@oxygen-ui/react/FormLabel";
-import PhoneNumberInput from "@oxygen-ui/react/PhoneNumberInput";
-import Radio from "@oxygen-ui/react/Radio";
-import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import TextField from "@oxygen-ui/react/TextField";
-import Typography from "@oxygen-ui/react/Typography";
 import { Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
-import AttributeCollectorNode from "./attribute-collector-node";
-import { FieldOption } from "../../models/base";
-import { Component, ComponentTypes } from "../../models/component";
-import { ElementCategories } from "../../models/elements";
-import "./step-node.scss";
-import { WidgetTypes } from "../../models/widget";
 
 /**
  * Props interface of {@link AttributeFactory}

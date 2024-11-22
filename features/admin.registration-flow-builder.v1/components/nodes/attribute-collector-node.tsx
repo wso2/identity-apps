@@ -21,7 +21,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useNodeId } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
 import AttributeFactory from "./attribute-factory";
-import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
+import useRegistrationFlowBuilder from "../../hooks/use-registration-flow-builder-core-context";
 
 /**
  * Props interface of {@link AttributeCollectorNode}
@@ -38,7 +38,7 @@ const AttributeCollectorNode: FunctionComponent<AttributeCollectorNodePropsInter
     "data-componentid": componentId = "authentication-flow-builder-attribute-collector-node"
 }: AttributeCollectorNodePropsInterface): ReactElement => {
     const nodeId: string = useNodeId();
-    const { selectedAttributes } = useAuthenticationFlowBuilderCore();
+    const { selectedAttributes } = useRegistrationFlowBuilder();
 
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>

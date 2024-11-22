@@ -21,12 +21,13 @@ import CardContent from "@oxygen-ui/react/CardContent";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
+import useAuthenticationFlowBuilderCore from "@wso2is/admin.authentication-flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import some from "lodash-es/some";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import useGetSupportedProfileAttributes from "../../../api/use-get-supported-profile-attributes";
-import useAuthenticationFlowBuilderCore from "../../../hooks/use-authentication-flow-builder-core-context";
+import useRegistrationFlowBuilder from "../../../hooks/use-registration-flow-builder-core-context";
 import "./attribute-collector-properties.scss";
 
 /**
@@ -44,7 +45,8 @@ const AttributeCollectorProperties: FunctionComponent<AttributeCollectorProperti
     "data-componentid": componentId = "authentication-flow-builder-attribute-collector-properties"
 }: AttributeCollectorPropertiesPropsInterface): ReactElement => {
     const { data: attributes } = useGetSupportedProfileAttributes();
-    const { selectedAttributes, setSelectedAttributes, activeElementNodeId } = useAuthenticationFlowBuilderCore();
+    const { activeElementNodeId } = useAuthenticationFlowBuilderCore();
+    const { selectedAttributes, setSelectedAttributes } = useRegistrationFlowBuilder();
 
     useEffect(() => {
         if (activeElementNodeId && isEmpty(selectedAttributes[activeElementNodeId]) && !isEmpty(attributes)) {

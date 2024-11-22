@@ -11,13 +11,14 @@
                 "id": "flow-page-2",
                 "nodes": [
                     "flow-node-2",
-                    "flow-node-3"
+                    "flow-node-3",
+                    "flow-node-4"
                 ]
             },
             {
                 "id": "flow-page-3",
                 "nodes": [
-                    "flow-node-4"
+                    "flow-node-5"
                 ]
             }
         ]
@@ -73,8 +74,7 @@
             "id": "flow-node-2",
             "elements": [
                 "flow-display-header-hj6t4D3",
-                "flow-field-password-HK8uJ903",
-                "flow-field-confirm-password-GH63t78g",
+                "flow-block-attributes-osld3343",
                 "flow-action-next-ggh688op"
             ],
             "actions": [
@@ -86,7 +86,7 @@
                         "name": "flow-rule-age-validator-Fg5Ye54p"
                     },
                     "next": [
-                        "flow-node-4"
+                        "flow-node-5"
                     ]
                 }
             ]
@@ -94,40 +94,31 @@
         {
             "id": "flow-node-3",
             "elements": [
-                "flow-display-header-GG456y7",
-                "flow-field-otp-mn44gh0j",
-                "flow-action-verify-otp-ssd5g6h",
-                "flow-action-resent-otp-yt5g5t",
-                "flow-action-chose-different-option-ff3424"
+                "flow-display-header-rg6pwt0",
+                "flow-block-attributes-53fdsfsp",
+                "flow-action-next-tyG3hp31",
+                "flow-action-go-back-er212kfl"
             ],
             "actions": [
                 {
-                    "id": "flow-action-verify-otp-ssd5g6h",
+                    "id": "flow-action-next-tyG3hp31",
                     "type": "submit",
                     "action": {
-                        "type": "RULE",
-                        "name": "flow-rule-age-validator-Fg5Ye54p"
+                        "type": "NEXT",
+                        "ref": "flow-node-4"
                     },
                     "next": [
                         "flow-node-4"
                     ]
                 },
                 {
-                    "id": "flow-action-resent-otp-yt5g5t",
+                    "id": "flow-action-go-back-er212kfl",
                     "type": "button",
                     "action": {
-                        "type": "EXECUTOR",
-                        "name": "ResendOTP"
-                    }
-                },
-                {
-                    "id": "flow-action-chose-different-option-ff3424",
-                    "type": "button",
-                    "action": {
-                        "type": "NAVIGATOR",
-                        "name": "flow-page-1"
+                        "type": "PREVIOUS",
+                        "ref": "flow-page-1"
                     },
-                    "next": [
+                    "previous": [
                         "flow-node-1"
                     ]
                 }
@@ -136,15 +127,51 @@
         {
             "id": "flow-node-4",
             "elements": [
+                "flow-display-header-GG456y7",
+                "flow-block-attributes-45owsew2",
+                "flow-action-verify-otp-ssd5g6h",
+                "flow-action-go-back-yt5g5t"
+            ],
+            "actions": [
+                {
+                    "id": "flow-action-verify-otp-ssd5g6h",
+                    "type": "submit",
+                    "action": {
+                        "type": "RULE",
+                        "ref": "flow-rule-age-validator-Fg5Ye54p",
+                        "boundTo": "flow-block-attributes-45owsew2"
+                    },
+                    "next": [
+                        "flow-node-5"
+                    ]
+                },
+                {
+                    "id": "flow-action-go-back-yt5g5t",
+                    "type": "button",
+                    "action": {
+                        "type": "PREVIOUS",
+                        "ref": "flow-node-3"
+                    },
+                    "previous": [
+                        "flow-node-3"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "flow-node-5",
+            "elements": [
                 "flow-display-header-45wTrU",
-                "flow-field-nic-RR342gr",
+                "flow-block-attributes-er203owe",
                 "flow-action-done-5t8uJ6D3"
             ],
             "actions": [
                 {
                     "id": "flow-action-done-5t8uJ6D3",
                     "type": "submit",
-                    "action": {}
+                    "action": {
+                        "boundTo": "flow-block-attributes-er203owe"
+                    }
                 }
             ]
         }
@@ -155,7 +182,34 @@
             "nodes": [
                 "flow-field-email-Rt8uJ6D3",
                 "flow-field-username-F6D3t8uJ",
+                "flow-field-first-name-r7u4F1GG",
+                "flow-field-last-name-r7u4F1GG",
                 "flow-field-dob-G6D3t8uJ"
+            ]
+        },
+        {
+            "id": "flow-block-attributes-53fdsfsp",
+            "nodes": [
+                "flow-field-email-Rt8uJ6D3"
+            ]
+        },
+        {
+            "id": "flow-block-attributes-45owsew2",
+            "nodes": [
+                "flow-field-otp-mn44gh0j"
+            ]
+        },
+        {
+            "id": "flow-block-attributes-osld3343",
+            "nodes": [
+                "flow-field-password-HK8uJ903",
+                "flow-field-confirm-password-GH63t78g"
+            ]
+        },
+        {
+            "id": "flow-block-attributes-er203owe",
+            "nodes": [
+                "flow-field-nic-RR342gr"
             ]
         }
     ],
@@ -177,27 +231,6 @@
             }
         },
         {
-            "id": "flow-field-email-Rt8uJ6D3",
-            "category": "FIELD",
-            "type": "INPUT",
-            "version": "0.1.0",
-            "variant": "EMAIL",
-            "config": {
-                "field": {
-                    "type": "email",
-                    "name": "email",
-                    "className": "wso2is-email-input",
-                    "hint": "",
-                    "label": "Email",
-                    "required": true,
-                    "multiline": false,
-                    "placeholder": "Enter your email address",
-                    "defaultValue": ""
-                },
-                "styles": {}
-            }
-        },
-        {
             "id": "flow-field-username-F6D3t8uJ",
             "category": "FIELD",
             "type": "INPUT",
@@ -207,12 +240,58 @@
                 "field": {
                     "type": "text",
                     "name": "username",
-                    "className": "wso2is-username-input",
+                    "className": "wso2is-text-input",
                     "hint": "",
                     "label": "Username",
                     "required": true,
                     "multiline": false,
                     "placeholder": "Enter your username",
+                    "defaultValue": "",
+                    "minLength": 3,
+                    "maxLength": 50
+                },
+                "styles": {}
+            }
+        },
+        {
+            "id": "flow-field-first-name-r7u4F1GG",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "TEXT",
+            "config": {
+                "field": {
+                    "type": "text",
+                    "name": "firstName",
+                    "className": "wso2is-text-input",
+                    "hint": "",
+                    "label": "First Name",
+                    "required": true,
+                    "multiline": false,
+                    "placeholder": "Enter your first name",
+                    "defaultValue": "",
+                    "minLength": 3,
+                    "maxLength": 50
+                },
+                "styles": {}
+            }
+        },
+        {
+            "id": "flow-field-last-name-r7u4F1GG",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "TEXT",
+            "config": {
+                "field": {
+                    "type": "text",
+                    "name": "lastName",
+                    "className": "wso2is-text-input",
+                    "hint": "",
+                    "label": "Last Name",
+                    "required": true,
+                    "multiline": false,
+                    "placeholder": "Enter your last name",
                     "defaultValue": "",
                     "minLength": 3,
                     "maxLength": 50
@@ -400,6 +479,77 @@
             }
         },
         {
+            "id": "flow-display-header-rg6pwt0",
+            "category": "DISPLAY",
+            "type": "TYPOGRAPHY",
+            "version": "0.1.0",
+            "variant": "H3",
+            "config": {
+                "field": {
+                    "className": "wso2is-typography-h3",
+                    "text": "Enter Email"
+                },
+                "styles": {
+                    "textAlign": "center"
+                }
+            }
+        },
+        {
+            "id": "flow-field-email-Rt8uJ6D3",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "EMAIL",
+            "config": {
+                "field": {
+                    "type": "email",
+                    "name": "email",
+                    "className": "wso2is-email-input",
+                    "hint": "",
+                    "label": "Email",
+                    "required": true,
+                    "multiline": false,
+                    "placeholder": "Enter your email address",
+                    "defaultValue": ""
+                },
+                "styles": {}
+            }
+        },
+        {
+            "id": "flow-action-next-tyG3hp31",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "variant": "PRIMARY",
+            "config": {
+                "field": {
+                    "type": "submit",
+                    "className": "wso2is-button",
+                    "text": "Continue"
+                },
+                "styles": {
+                    "width": "100%"
+                }
+            }
+        },
+        {
+            "id": "flow-action-go-back-er212kfl",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "variant": "SECONDARY",
+            "config": {
+                "field": {
+                    "type": "submit",
+                    "className": "wso2is-button",
+                    "text": "Go back"
+                },
+                "styles": {
+                    "width": "100%"
+                }
+            }
+        },
+        {
             "id": "flow-display-header-GG456y7",
             "category": "DISPLAY",
             "type": "TYPOGRAPHY",
@@ -454,33 +604,16 @@
             }
         },
         {
-            "id": "flow-action-resent-otp-yt5g5t",
+            "id": "flow-action-go-back-yt5g5t",
             "category": "ACTION",
             "type": "BUTTON",
             "version": "0.1.0",
             "variant": "SECONDARY",
             "config": {
                 "field": {
-                    "type": "button",
+                    "type": "submit",
                     "className": "wso2is-button",
-                    "text": "Resend Code"
-                },
-                "styles": {
-                    "width": "100%"
-                }
-            }
-        },
-        {
-            "id": "flow-action-chose-different-option-ff3424",
-            "category": "ACTION",
-            "type": "BUTTON",
-            "version": "0.1.0",
-            "variant": "LINK",
-            "config": {
-                "field": {
-                    "type": "button",
-                    "className": "wso2is-button",
-                    "text": "Choose a different option"
+                    "text": "Go back"
                 },
                 "styles": {
                     "width": "100%"

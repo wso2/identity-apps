@@ -17,7 +17,7 @@
  */
 
 import { Claim } from "@wso2is/core/models";
-import { Context, Dispatch, ReactNode, SetStateAction, createContext } from "react";
+import { Context, Dispatch, FunctionComponent, ReactElement, ReactNode, SetStateAction, createContext } from "react";
 import { Base } from "../models/base";
 
 /**
@@ -33,6 +33,10 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      */
     activeElementNodeId: string;
     /**
+     * The factory for creating element properties.
+     */
+    ElementPropertiesFactory: FunctionComponent<any>;
+    /**
      * The heading for the element properties panel.
      */
     elementPropertiesPanelHeading: ReactNode;
@@ -44,6 +48,10 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * Indicates whether the element properties panel is open.
      */
     isElementPropertiesPanelOpen: boolean;
+    /**
+     * The factory for creating nodes.
+     */
+    NodeFactory: FunctionComponent<any>;
     /**
      * Function to be called when an element is dropped on the canvas.
      * @param element - The element that was dropped on the canvas.
@@ -95,6 +103,8 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
     null | AuthenticationFlowBuilderCoreContextProps
 >(
     {
+        ElementPropertiesFactory: () => null,
+        NodeFactory: () => null,
         activeElement: null,
         activeElementNodeId: "",
         elementPropertiesPanelHeading: null,

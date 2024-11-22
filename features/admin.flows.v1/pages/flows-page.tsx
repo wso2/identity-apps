@@ -17,12 +17,12 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
+import Button from "@oxygen-ui/react/Button";
 import Typography from "@oxygen-ui/react/Typography";
-import Builder from "@wso2is/admin.authentication-flow-builder-core.v1/components/builder";
+import RegistrationFlowBuilder from "@wso2is/admin.registration-flow-builder.v1/components/registration-flow-builder";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import "./flows-page.scss";
-import Button from "@oxygen-ui/react/Button";
 
 /**
  * Props interface of {@link Flows}
@@ -46,7 +46,7 @@ const Flows: FunctionComponent<FlowsProps> = ({
                     <Button variant="contained">Publish</Button>
                 </Box>
             </div>
-            <Builder />
+            <RegistrationFlowBuilder />
         </div>
     );
 };

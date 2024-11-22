@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,6 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
-import ElementPropertyConfiguratorFactory from "./element-property-configurator-factory";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 
 /**
@@ -41,7 +40,7 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-builder-element-properties",
     ...rest
 }: ElementPropertiesPropsInterface): ReactElement => {
-    const { activeElement } = useAuthenticationFlowBuilderCore();
+    const { activeElement, ElementPropertiesFactory } = useAuthenticationFlowBuilderCore();
 
     const hasVariants: boolean = !isEmpty(activeElement?.variants);
 
@@ -52,7 +51,7 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
                     { hasVariants
                         ? activeElement.variants.map(variant => {
                             return Object.entries(variant?.config?.field).map(([ key, value ]) => (
-                                <ElementPropertyConfiguratorFactory
+                                <ElementPropertiesFactory
                                     element={ variant }
                                     key={ key }
                                     propertyKey={ key }
@@ -61,7 +60,7 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
                             ));
                         })
                         : Object.entries(activeElement?.config?.field).map(([ key, value ]) => (
-                            <ElementPropertyConfiguratorFactory
+                            <ElementPropertiesFactory
                                 element={ activeElement }
                                 key={ key }
                                 propertyKey={ key }

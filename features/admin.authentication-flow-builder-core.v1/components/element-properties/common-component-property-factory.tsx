@@ -22,16 +22,21 @@ import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import startCase from "lodash-es/startCase";
 import React, { FunctionComponent, ReactElement } from "react";
-import { ElementPropertyConfiguratorFactoryPropsInterface } from "./element-property-configurator-factory";
+import { Element } from "../../models/elements";
 import getKnownElementProperties from "../../utils/get-known-element-properties";
 import isTextValueWithFallback from "../../utils/is-text-value-with-fallback";
 
 /**
- * Props interface of {@link ComponentPropertyConfiguratorFactory}
+ * Props interface of {@link CommonComponentPropertyFactory}
  */
-export type ComponentPropertyConfiguratorFactoryPropsInterface = ElementPropertyConfiguratorFactoryPropsInterface;
+export interface CommonComponentPropertyFactoryPropsInterface extends IdentifiableComponentInterface {
+    element: Element;
+    propertyKey: string;
+    propertyValue: any;
+}
 
 /**
  * Factory to generate the property configurator for the given component.
@@ -39,11 +44,12 @@ export type ComponentPropertyConfiguratorFactoryPropsInterface = ElementProperty
  * @param props - Props injected to the component.
  * @returns The ComponentPropertyConfiguratorFactory component.
  */
-const ComponentPropertyConfiguratorFactory: FunctionComponent<ElementPropertyConfiguratorFactoryPropsInterface> = ({
+const CommonComponentPropertyFactory: FunctionComponent<CommonComponentPropertyFactoryPropsInterface> = ({
+    "data-componentid": componentId = "authentication-flow-builder-component-property-factory",
     element,
     propertyKey,
     propertyValue
-}: ElementPropertyConfiguratorFactoryPropsInterface): ReactElement | null => {
+}: CommonComponentPropertyFactoryPropsInterface): ReactElement | null => {
     if (typeof propertyValue === "boolean") {
         return (
             <FormControlLabel
@@ -87,4 +93,4 @@ const ComponentPropertyConfiguratorFactory: FunctionComponent<ElementPropertyCon
     return null;
 };
 
-export default ComponentPropertyConfiguratorFactory;
+export default CommonComponentPropertyFactory;

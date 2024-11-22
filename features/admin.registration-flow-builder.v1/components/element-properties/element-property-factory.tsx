@@ -16,16 +16,16 @@
  * under the License.
  */
 
+import { Element, ElementCategories } from "@wso2is/admin.authentication-flow-builder-core.v1/models/elements";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import ComponentPropertyConfiguratorFactory from "./component-property-configurator-factory";
-import WidgetPropertyConfiguratorFactory from "./widget-property-configurator-factory";
-import { Element, ElementCategories } from "../../models/elements";
+import ComponentPropertyFactory from "./component-property-factory";
+import WidgetPropertyFactory from "./widget-property-factory";
 
 /**
- * Props interface of {@link ElementPropertyConfiguratorFactory}
+ * Props interface of {@link ElementPropertyFactory}
  */
-export interface ElementPropertyConfiguratorFactoryPropsInterface extends IdentifiableComponentInterface {
+export interface ElementPropertyFactoryPropsInterface extends IdentifiableComponentInterface {
     element: Element;
     propertyKey: string;
     propertyValue: any;
@@ -37,16 +37,16 @@ export interface ElementPropertyConfiguratorFactoryPropsInterface extends Identi
  * @param props - Props injected to the component.
  * @returns The ElementPropertyConfiguratorFactory component.
  */
-const ElementPropertyConfiguratorFactory: FunctionComponent<ElementPropertyConfiguratorFactoryPropsInterface> = ({
+const ElementPropertyFactory: FunctionComponent<ElementPropertyFactoryPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-builder-element-property-configurator-factory",
     element,
     propertyKey,
     propertyValue
-}: ElementPropertyConfiguratorFactoryPropsInterface): ReactElement | null => {
+}: ElementPropertyFactoryPropsInterface): ReactElement | null => {
     switch (element.category) {
         case ElementCategories.Component:
             return (
-                <ComponentPropertyConfiguratorFactory
+                <ComponentPropertyFactory
                     element={ element }
                     propertyKey={ propertyKey }
                     propertyValue={ propertyValue }
@@ -55,7 +55,7 @@ const ElementPropertyConfiguratorFactory: FunctionComponent<ElementPropertyConfi
             );
         case ElementCategories.Widget:
             return (
-                <WidgetPropertyConfiguratorFactory
+                <WidgetPropertyFactory
                     element={ element }
                     propertyKey={ propertyKey }
                     propertyValue={ propertyValue }
@@ -67,4 +67,4 @@ const ElementPropertyConfiguratorFactory: FunctionComponent<ElementPropertyConfi
     }
 };
 
-export default ElementPropertyConfiguratorFactory;
+export default ElementPropertyFactory;

@@ -16,32 +16,25 @@
  * under the License.
  */
 
-import { Component } from "./component";
-import { Node } from "./node";
-import { Widget } from "./widget";
+declare module "*.json" {
+    const value: any;
 
-export type Element = Component | Node | Widget;
-
-/**
- * Interface for the entire JSON structure.
- */
-export interface Elements {
-    /**
-     * List of blocks.
-     */
-    components: Component[];
-    /**
-     * List of nodes.
-     */
-    nodes: Node[];
-    /**
-     * List of widgets.
-     */
-    widgets: Widget[];
+    export default value;
 }
 
-export enum ElementCategories {
-    Component = "COMPONENT",
-    Nodes = "NODE",
-    Widget = "WIDGET"
+declare module "*.svg" {
+    import React = require("react");
+
+    export const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    const src: string;
+
+    export default src;
 }
+
+declare module "*.png" {
+    const content: string;
+
+    export default content;
+}
+
+declare module "*.md";

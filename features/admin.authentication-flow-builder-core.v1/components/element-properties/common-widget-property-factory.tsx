@@ -16,15 +16,18 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { ElementPropertyConfiguratorFactoryPropsInterface } from "./element-property-configurator-factory";
-import AttributeCollectorProperties from "./widgets/attribute-collector-properties";
-import { WidgetTypes } from "../../models/widget";
+import { Element } from "../../models/elements";
 
 /**
- * Props interface of {@link WidgetPropertyConfiguratorFactory}
+ * Props interface of {@link CommonWidgetPropertyFactory}
  */
-export type WidgetPropertyConfiguratorFactoryPropsInterface = ElementPropertyConfiguratorFactoryPropsInterface;
+export interface CommonWidgetPropertyFactoryPropsInterface extends IdentifiableComponentInterface {
+    element: Element;
+    propertyKey: string;
+    propertyValue: any;
+}
 
 /**
  * Factory to generate the property configurator for the given widget.
@@ -32,17 +35,16 @@ export type WidgetPropertyConfiguratorFactoryPropsInterface = ElementPropertyCon
  * @param props - Props injected to the component.
  * @returns The WidgetPropertyConfiguratorFactory component.
  */
-const WidgetPropertyConfiguratorFactory: FunctionComponent<ElementPropertyConfiguratorFactoryPropsInterface> = ({
+const CommonWidgetPropertyFactory: FunctionComponent<CommonWidgetPropertyFactoryPropsInterface> = ({
+    "data-componentid": componentId = "authentication-flow-builder-widget-property-factory",
     element,
     propertyKey,
     propertyValue
-}: ElementPropertyConfiguratorFactoryPropsInterface): ReactElement | null => {
+}: CommonWidgetPropertyFactoryPropsInterface): ReactElement | null => {
     switch (element.type) {
-        case WidgetTypes.AttributeCollector:
-            return <AttributeCollectorProperties />;
         default:
             return null;
     }
 };
 
-export default WidgetPropertyConfiguratorFactory;
+export default CommonWidgetPropertyFactory;
