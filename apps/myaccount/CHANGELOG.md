@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.13.15
+
+### Patch Changes
+
+- [#7150](https://github.com/wso2/identity-apps/pull/7150) [`b049fa7a9c9dbecb70a3390ebc5cd02f0dfa5234`](https://github.com/wso2/identity-apps/commit/b049fa7a9c9dbecb70a3390ebc5cd02f0dfa5234) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Improve attribut mappings logic to remove deleted user store mappings
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.36
+  - @wso2is/common.branding.v1@2.25.9
+
 ## 2.13.14
 
 ### Patch Changes
