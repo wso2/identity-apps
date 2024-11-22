@@ -24,6 +24,7 @@ import ElementPropertiesPanel from "./element-properties/element-properties-pane
 import ElementsPanel from "./elements-panel/elements-panel";
 import VisualFlow from "./visual-flow";
 import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
+import { Elements } from "../models/elements";
 import DnDProvider from "../providers/dnd-provider";
 
 /**
@@ -31,7 +32,12 @@ import DnDProvider from "../providers/dnd-provider";
  */
 export interface DecoratedVisualFlowPropsInterface
     extends IdentifiableComponentInterface,
-        HTMLAttributes<HTMLDivElement> {}
+        HTMLAttributes<HTMLDivElement> {
+    /**
+     * Flow elements.
+     */
+    elements: Elements;
+}
 
 /**
  * Component to decorate the visual flow editor with the necessary providers.
@@ -41,12 +47,10 @@ export interface DecoratedVisualFlowPropsInterface
  */
 const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-editor",
+    elements,
     ...rest
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
-    const {
-        isElementPanelOpen,
-        isElementPropertiesPanelOpen
-    } = useAuthenticationFlowBuilderCore();
+    const { isElementPanelOpen, isElementPropertiesPanelOpen } = useAuthenticationFlowBuilderCore();
 
     return (
         <div
@@ -56,7 +60,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         >
             <ReactFlowProvider>
                 <DnDProvider>
-                    <ElementsPanel open={ isElementPanelOpen }>
+                    <ElementsPanel elements={ elements } open={ isElementPanelOpen }>
                         <ElementPropertiesPanel open={ isElementPropertiesPanelOpen }>
                             <VisualFlow />
                         </ElementPropertiesPanel>

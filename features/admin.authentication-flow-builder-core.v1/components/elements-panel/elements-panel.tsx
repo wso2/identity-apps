@@ -29,8 +29,8 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps } from "react";
 import ElementPanelDraggableNode from "./element-panel-draggable-node";
-import useGetAuthenticationFlowBuilderCoreElements from "../../api/use-get-authentication-flow-builder-core-elements";
 import { Component } from "../../models/component";
+import { Elements } from "../../models/elements";
 import { Widget } from "../../models/widget";
 import "./elements-panel.scss";
 
@@ -40,7 +40,12 @@ import "./elements-panel.scss";
 export interface ElementsPanelPropsInterface
     extends DrawerProps,
         IdentifiableComponentInterface,
-        HTMLAttributes<HTMLDivElement> {}
+        HTMLAttributes<HTMLDivElement> {
+    /**
+     * Flow elements.
+     */
+    elements: Elements;
+}
 
 // TODO: Move this to Oxygen UI.
 /* eslint-disable max-len */
@@ -117,10 +122,10 @@ const ElementsPanel: FunctionComponent<ElementsPanelPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-builder-elements-panel",
     children,
     open,
+    elements,
     ...rest
 }: ElementsPanelPropsInterface): ReactElement => {
-    const { data } = useGetAuthenticationFlowBuilderCoreElements();
-    const { components, widgets, nodes } = data;
+    const { components, widgets, nodes } = elements;
 
     return (
         <Box
@@ -130,7 +135,6 @@ const ElementsPanel: FunctionComponent<ElementsPanelPropsInterface> = ({
             position="relative"
             bgcolor="white"
             component="div"
-            // style={ { overflowX: "hidden", overflowY: "scroll" } }
             data-componentid={ componentId }
             { ...rest }
         >
@@ -179,19 +183,11 @@ const ElementsPanel: FunctionComponent<ElementsPanelPropsInterface> = ({
                             </IconButton>
                             <Typography variant="h6">Nodes</Typography>
                         </AccordionSummary>
-                        <AccordionDetails
-                            className="authentication-flow-builder-elements-panel-category-details"
-                        >
-                            <Typography variant="body2">
-                                Use these nodes as building blocks of your flow
-                            </Typography>
+                        <AccordionDetails className="authentication-flow-builder-elements-panel-category-details">
+                            <Typography variant="body2">Use these nodes as building blocks of your flow</Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { nodes.map((node: Component) => (
-                                    <ElementPanelDraggableNode
-                                        id={ node.type }
-                                        key={ node.type }
-                                        node={ node }
-                                    />
+                                    <ElementPanelDraggableNode id={ node.type } key={ node.type } node={ node } />
                                 )) }
                             </Stack>
                         </AccordionDetails>
@@ -212,19 +208,11 @@ const ElementsPanel: FunctionComponent<ElementsPanelPropsInterface> = ({
                             </IconButton>
                             <Typography variant="h6">Components</Typography>
                         </AccordionSummary>
-                        <AccordionDetails
-                            className="authentication-flow-builder-elements-panel-category-details"
-                        >
-                            <Typography variant="body2">
-                                Use these components to build up custom UI blocks
-                            </Typography>
+                        <AccordionDetails className="authentication-flow-builder-elements-panel-category-details">
+                            <Typography variant="body2">Use these components to build up custom UI blocks</Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { components.map((node: Component) => (
-                                    <ElementPanelDraggableNode
-                                        id={ node.type }
-                                        key={ node.type }
-                                        node={ node }
-                                    />
+                                    <ElementPanelDraggableNode id={ node.type } key={ node.type } node={ node } />
                                 )) }
                             </Stack>
                         </AccordionDetails>
@@ -245,19 +233,13 @@ const ElementsPanel: FunctionComponent<ElementsPanelPropsInterface> = ({
                             </IconButton>
                             <Typography variant="h6">Widgets</Typography>
                         </AccordionSummary>
-                        <AccordionDetails
-                            className="authentication-flow-builder-elements-panel-category-details"
-                        >
+                        <AccordionDetails className="authentication-flow-builder-elements-panel-category-details">
                             <Typography variant="body2">
                                 Use these widgets to build up custom UI prompts and collect data
                             </Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { widgets.map((widget: Widget) => (
-                                    <ElementPanelDraggableNode
-                                        id={ widget.type }
-                                        key={ widget.type }
-                                        node={ widget }
-                                    />
+                                    <ElementPanelDraggableNode id={ widget.type } key={ widget.type } node={ widget } />
                                 )) }
                             </Stack>
                         </AccordionDetails>

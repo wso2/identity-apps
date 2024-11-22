@@ -19,6 +19,7 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import DecoratedVisualFlow from "./decorated-visual-flow";
+import useGetAuthenticationFlowBuilderCoreElements from "../api/use-get-authentication-flow-builder-core-elements";
 import AuthenticationFlowBuilderCoreProvider from "../providers/authentication-flow-builder-core-provider";
 
 /**
@@ -35,10 +36,14 @@ export type BuilderPropsInterface = IdentifiableComponentInterface & HTMLAttribu
 const Builder: FunctionComponent<BuilderPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-builder",
     ...rest
-}: BuilderPropsInterface): ReactElement => (
-    <AuthenticationFlowBuilderCoreProvider>
-        <DecoratedVisualFlow data-componentid={ componentId } { ...rest } />
-    </AuthenticationFlowBuilderCoreProvider>
-);
+}: BuilderPropsInterface): ReactElement => {
+    const { data: elements } = useGetAuthenticationFlowBuilderCoreElements();
+
+    return (
+        <AuthenticationFlowBuilderCoreProvider>
+            <DecoratedVisualFlow elements={ elements } data-componentid={ componentId } { ...rest } />
+        </AuthenticationFlowBuilderCoreProvider>
+    );
+};
 
 export default Builder;
