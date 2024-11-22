@@ -17,7 +17,9 @@
  */
 
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
-import elements from "../data/elements.json";
+import components from "../data/components.json";
+import nodes from "../data/nodes.json";
+import widgets from "../data/widgets.json";
 import { Elements } from "../models/elements";
 
 /**
@@ -30,11 +32,15 @@ import { Elements } from "../models/elements";
  *
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetAuthenticationFlowBuilderElements = <Data = Elements, Error = RequestErrorInterface>(
+const useGetAuthenticationFlowBuilderCoreElements = <Data = Elements, Error = RequestErrorInterface>(
     _shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     return {
-        data: (elements as unknown) as Data,
+        data: ({
+            components,
+            nodes,
+            widgets
+        } as unknown) as Data,
         error: null,
         isLoading: false,
         isValidating: false,
@@ -42,4 +48,4 @@ const useGetAuthenticationFlowBuilderElements = <Data = Elements, Error = Reques
     };
 };
 
-export default useGetAuthenticationFlowBuilderElements;
+export default useGetAuthenticationFlowBuilderCoreElements;

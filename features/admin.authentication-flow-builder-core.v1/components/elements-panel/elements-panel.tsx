@@ -29,7 +29,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps } from "react";
 import ElementPanelDraggableNode from "./element-panel-draggable-node";
-import useGetAuthenticationFlowBuilderElements from "../../api/use-get-authentication-flow-builder-elements";
+import useGetAuthenticationFlowBuilderCoreElements from "../../api/use-get-authentication-flow-builder-core-elements";
 import { Component } from "../../models/component";
 import { Widget } from "../../models/widget";
 import "./elements-panel.scss";
@@ -119,7 +119,7 @@ const ElementsPanel: FunctionComponent<ElementsPanelPropsInterface> = ({
     open,
     ...rest
 }: ElementsPanelPropsInterface): ReactElement => {
-    const { data } = useGetAuthenticationFlowBuilderElements();
+    const { data } = useGetAuthenticationFlowBuilderCoreElements();
     const { components, widgets, nodes } = data;
 
     return (
