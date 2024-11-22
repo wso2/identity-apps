@@ -1371,6 +1371,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             !isReadOnlyUserStore &&
                                             !isUserManagedByParentOrg &&
                                             user.userName !== adminUsername
+                                            && !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
                                         ) ? (
                                                 <Show when={ featureConfig?.users?.scopes?.update }>
                                                     <DangerZone
