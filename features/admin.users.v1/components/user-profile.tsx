@@ -324,7 +324,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 }
 
                 const excludedUserStores: string[] =
-                    schema?.excludedUserStores?.split(",")?.map((store: string) => store.trim().toUpperCase()) || [];
+                    schema?.excludedUserStores?.split(",")?.map((store: string) => store?.trim().toUpperCase()) || [];
 
                 return !excludedUserStores.includes(userStoreDomain);
             });
