@@ -40,16 +40,16 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-builder-element-properties",
     ...rest
 }: ElementPropertiesPropsInterface): ReactElement => {
-    const { activeElement, ElementPropertiesFactory } = useAuthenticationFlowBuilderCore();
+    const { lastInteractedElement, ElementPropertiesFactory } = useAuthenticationFlowBuilderCore();
 
-    const hasVariants: boolean = !isEmpty(activeElement?.variants);
+    const hasVariants: boolean = !isEmpty(lastInteractedElement?.variants);
 
     return (
         <div className="authentication-flow-builder-element-properties" data-componentid={ componentId } { ...rest }>
-            { activeElement ? (
+            { lastInteractedElement ? (
                 <Stack gap={ 1 }>
                     { hasVariants
-                        ? activeElement.variants.map(variant => {
+                        ? lastInteractedElement.variants.map(variant => {
                             return Object.entries(variant?.config?.field).map(([ key, value ]) => (
                                 <ElementPropertiesFactory
                                     element={ variant }
@@ -59,9 +59,9 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
                                 />
                             ));
                         })
-                        : Object.entries(activeElement?.config?.field).map(([ key, value ]) => (
+                        : Object.entries(lastInteractedElement?.config?.field).map(([ key, value ]) => (
                             <ElementPropertiesFactory
-                                element={ activeElement }
+                                element={ lastInteractedElement }
                                 key={ key }
                                 propertyKey={ key }
                                 propertyValue={ value }

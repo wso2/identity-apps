@@ -74,7 +74,7 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
     "data-componentid": componentId = "step-node"
 }: StepNodePropsInterface & Node): ReactElement => {
     const nodeId: string = useNodeId();
-    const { onElementDropOnCanvas, NodeFactory } = useAuthenticationFlowBuilderCore();
+    const { onElementDropOnCanvas, NodeFactory, setLastInteractedElement } = useAuthenticationFlowBuilderCore();
 
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
@@ -145,6 +145,7 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
                                     alignItems="center"
                                     key={ index }
                                     className="authentication-flow-builder-step-content-form-field"
+                                    onClick={ () => setLastInteractedElement(component) }
                                 >
                                     <div className="authentication-flow-builder-step-content-form-field-drag-handle">
                                         <GridDotsVerticalIcon height={ 20 } />

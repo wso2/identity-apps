@@ -27,11 +27,11 @@ export interface AuthenticationFlowBuilderCoreContextProps {
     /**
      * The properties of the active element.
      */
-    activeElement: Base;
+    lastInteractedElement: Base;
     /**
      * The ID of the active element node.
      */
-    activeElementNodeId: string;
+    lastInteractedNodeId: string;
     /**
      * The factory for creating element properties.
      */
@@ -67,11 +67,11 @@ export interface AuthenticationFlowBuilderCoreContextProps {
     /**
      * Sets the active element in the canvas.
      */
-    setActiveElement: Dispatch<SetStateAction<Base>>;
+    setLastInteractedElement: (element: Base) => void;
     /**
      * Sets the active element node ID.
      */
-    setActiveElementNodeId: Dispatch<SetStateAction<string>>;
+    setLastInteractedNodeId: Dispatch<SetStateAction<string>>;
     /**
      * Sets the heading for the element properties panel.
      *
@@ -105,18 +105,18 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
     {
         ElementPropertiesFactory: () => null,
         NodeFactory: () => null,
-        activeElement: null,
-        activeElementNodeId: "",
         elementPropertiesPanelHeading: null,
         isElementPanelOpen: true,
         isElementPropertiesPanelOpen: false,
+        lastInteractedElement: null,
+        lastInteractedNodeId: "",
         onElementDropOnCanvas: () => {},
         selectedAttributes: {},
-        setActiveElement: () => {},
-        setActiveElementNodeId: () => {},
         setElementPropertiesPanelHeading: () => {},
         setIsElementPanelOpen: () => {},
         setIsOpenElementPropertiesPanel: () => {},
+        setLastInteractedElement: () => {},
+        setLastInteractedNodeId: () => {},
         setSelectedAttributes: () => {}
     }
 );

@@ -53,11 +53,16 @@ const AuthenticationFlowBuilderCoreProvider = ({
     const [ isElementPanelOpen, setIsElementPanelOpen ] = useState<boolean>(true);
     const [ isElementPropertiesPanelOpen, setIsOpenElementPropertiesPanel ] = useState<boolean>(false);
     const [ elementPropertiesPanelHeading, setElementPropertiesPanelHeading ] = useState<ReactNode>(null);
-    const [ activeElement, setActiveElement ] = useState<Base>(null);
-    const [ activeElementNodeId, setActiveElementNodeId ] = useState<string>("");
+    const [ lastInteractedElement, _setLastInteractedElement ] = useState<Base>(null);
+    const [ lastInteractedNodeId, setLastInteractedNodeId ] = useState<string>("");
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Claim[] }>({});
 
     const onElementDropOnCanvas = (element: Base, nodeId: string): void  => {
+        setLastInteractedElement(element);
+        setLastInteractedNodeId(nodeId);
+    };
+
+    const setLastInteractedElement = (element: Base): void => {
         // TODO: Internationalize this string and get from a mapping.
         setElementPropertiesPanelHeading(
             <Stack>
@@ -72,8 +77,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
             </Stack>
         );
         setIsOpenElementPropertiesPanel(true);
-        setActiveElement(element);
-        setActiveElementNodeId(nodeId);
+        _setLastInteractedElement(element);
     };
 
     return (
@@ -81,18 +85,18 @@ const AuthenticationFlowBuilderCoreProvider = ({
             value={ {
                 ElementPropertiesFactory,
                 NodeFactory,
-                activeElement,
-                activeElementNodeId,
                 elementPropertiesPanelHeading,
                 isElementPanelOpen,
                 isElementPropertiesPanelOpen,
+                lastInteractedElement,
+                lastInteractedNodeId,
                 onElementDropOnCanvas,
                 selectedAttributes,
-                setActiveElement,
-                setActiveElementNodeId,
                 setElementPropertiesPanelHeading,
                 setIsElementPanelOpen,
                 setIsOpenElementPropertiesPanel,
+                setLastInteractedElement,
+                setLastInteractedNodeId,
                 setSelectedAttributes
             } }
         >

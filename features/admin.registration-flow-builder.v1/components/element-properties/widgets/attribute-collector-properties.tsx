@@ -45,17 +45,17 @@ const AttributeCollectorProperties: FunctionComponent<AttributeCollectorProperti
     "data-componentid": componentId = "authentication-flow-builder-attribute-collector-properties"
 }: AttributeCollectorPropertiesPropsInterface): ReactElement => {
     const { data: attributes } = useGetSupportedProfileAttributes();
-    const { activeElementNodeId } = useAuthenticationFlowBuilderCore();
+    const { lastInteractedNodeId } = useAuthenticationFlowBuilderCore();
     const { selectedAttributes, setSelectedAttributes } = useRegistrationFlowBuilder();
 
     useEffect(() => {
-        if (activeElementNodeId && isEmpty(selectedAttributes[activeElementNodeId]) && !isEmpty(attributes)) {
+        if (lastInteractedNodeId && isEmpty(selectedAttributes[lastInteractedNodeId]) && !isEmpty(attributes)) {
             setSelectedAttributes({
                 ...selectedAttributes,
-                [activeElementNodeId]: [ attributes[0] ]
+                [lastInteractedNodeId]: [ attributes[0] ]
             });
         }
-    }, [ activeElementNodeId, attributes ]);
+    }, [ lastInteractedNodeId, attributes ]);
 
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
@@ -75,11 +75,11 @@ const AttributeCollectorProperties: FunctionComponent<AttributeCollectorProperti
                                         tabIndex={ -1 }
                                         disableRipple
                                         inputProps={ { "aria-labelledby": attribute.id } }
-                                        checked={ some(selectedAttributes[activeElementNodeId], attribute) }
+                                        checked={ some(selectedAttributes[lastInteractedNodeId], attribute) }
                                         onChange={ () => setSelectedAttributes({
                                             ...selectedAttributes,
-                                            [activeElementNodeId]: [
-                                                ...selectedAttributes[activeElementNodeId],
+                                            [lastInteractedNodeId]: [
+                                                ...selectedAttributes[lastInteractedNodeId],
                                                 attribute
                                             ]
                                         }) }
