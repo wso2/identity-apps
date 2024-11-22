@@ -16,20 +16,11 @@
  * under the License.
  */
 
-import Checkbox from "@oxygen-ui/react/Checkbox";
-import FormControl from "@oxygen-ui/react/FormControl";
-import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
-import MenuItem from "@oxygen-ui/react/MenuItem";
-import Select from "@oxygen-ui/react/Select";
-import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import startCase from "lodash-es/startCase";
 import React, { FunctionComponent, ReactElement } from "react";
+import ComponentPropertyConfiguratorFactory from "./component-property-configurator-factory";
+import WidgetPropertyConfiguratorFactory from "./widget-property-configurator-factory";
 import { Element, ElementCategories } from "../../models/elements";
-import getKnownElementProperties from "../../utils/get-known-element-properties";
-import isTextValueWithFallback from "../../utils/is-text-value-with-fallback";
-import { WidgetTypes } from "../../models/widget";
-import AttributeCollectorProperties from "./widgets/attribute-collector-properties";
 
 /**
  * Props interface of {@link ElementPropertyConfiguratorFactory}
@@ -51,56 +42,29 @@ const ElementPropertyConfiguratorFactory: FunctionComponent<ElementPropertyConfi
     element,
     propertyKey,
     propertyValue
-}: ElementPropertyConfiguratorFactoryPropsInterface): ReactElement => {
-    if (element.category === ElementCategories.Component) {
-        if (typeof propertyValue === "boolean") {
+}: ElementPropertyConfiguratorFactoryPropsInterface): ReactElement | null => {
+    switch (element.category) {
+        case ElementCategories.Component:
             return (
-                <FormControlLabel
-                    control={ <Checkbox checked={ propertyValue } /> }
-                    label={ startCase(propertyKey) }
+                <ComponentPropertyConfiguratorFactory
+                    element={ element }
+                    propertyKey={ propertyKey }
+                    propertyValue={ propertyValue }
+                    data-componentid={ componentId }
                 />
             );
-        }
-
-        if (isTextValueWithFallback(propertyValue)) {
+        case ElementCategories.Widget:
             return (
-                <TextField
-                    fullWidth
-                    label={ startCase(propertyKey) }
-                    value={ propertyValue.fallback }
+                <WidgetPropertyConfiguratorFactory
+                    element={ element }
+                    propertyKey={ propertyKey }
+                    propertyValue={ propertyValue }
+                    data-componentid={ componentId }
                 />
             );
-        }
-
-        if (propertyKey === "variant" || propertyKey === "color") {
-            return (
-                <FormControl size="small" variant="outlined">
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-select-small"
-                        value={ propertyValue }
-                        label={ startCase(propertyKey) }
-                    >
-                        { getKnownElementProperties(element)[propertyKey]?.map((property: string) => (
-                            <MenuItem key={ property } value={ property }>
-                                { property }
-                            </MenuItem>
-                        )) }
-                    </Select>
-                </FormControl>
-            );
-        }
+        default:
+            return null;
     }
-
-    if (element.category === ElementCategories.Widget) {
-        if (element.type === WidgetTypes.AttributeCollector) {
-            return (
-                <AttributeCollectorProperties />
-            );
-        }
-    }
-
-    return null;
 };
 
 export default ElementPropertyConfiguratorFactory;
