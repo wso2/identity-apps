@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,13 +21,15 @@ import CardContent from "@oxygen-ui/react/CardContent";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
-import useAuthenticationFlowBuilderCore from "@wso2is/admin.authentication-flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+import useAuthenticationFlowBuilderCore from
+    "@wso2is/admin.authentication-flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import some from "lodash-es/some";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import useGetSupportedProfileAttributes from "../../../api/use-get-supported-profile-attributes";
 import useRegistrationFlowBuilder from "../../../hooks/use-registration-flow-builder-core-context";
+import { Attribute } from "../../../models/attributes";
 import "./attribute-collector-properties.scss";
 
 /**
@@ -36,7 +38,7 @@ import "./attribute-collector-properties.scss";
 export interface AttributeCollectorPropertiesPropsInterface extends IdentifiableComponentInterface {}
 
 /**
- * Factory to generate the property configurator for the given element.
+ * Component to generate the properties for the attribute collector widget.
  *
  * @param props - Props injected to the component.
  * @returns The AttributeCollectorProperties component.
@@ -61,7 +63,7 @@ const AttributeCollectorProperties: FunctionComponent<AttributeCollectorProperti
         <Stack gap={ 2 } data-componentid={ componentId }>
             <Typography variant="body2">Select and add user attributes you want to collect in this step</Typography>
             <Stack gap={ 1 }>
-                { attributes?.map(attribute => {
+                { attributes?.map((attribute: Attribute) => {
                     return (
                         <Card
                             key={ attribute.id }
@@ -76,13 +78,15 @@ const AttributeCollectorProperties: FunctionComponent<AttributeCollectorProperti
                                         disableRipple
                                         inputProps={ { "aria-labelledby": attribute.id } }
                                         checked={ some(selectedAttributes[lastInteractedNodeId], attribute) }
-                                        onChange={ () => setSelectedAttributes({
-                                            ...selectedAttributes,
-                                            [lastInteractedNodeId]: [
-                                                ...selectedAttributes[lastInteractedNodeId],
-                                                attribute
-                                            ]
-                                        }) }
+                                        onChange={ () =>
+                                            setSelectedAttributes({
+                                                ...selectedAttributes,
+                                                [lastInteractedNodeId]: [
+                                                    ...selectedAttributes[lastInteractedNodeId],
+                                                    attribute
+                                                ]
+                                            })
+                                        }
                                     />
                                     <Typography>{ attribute.displayName }</Typography>
                                 </Stack>

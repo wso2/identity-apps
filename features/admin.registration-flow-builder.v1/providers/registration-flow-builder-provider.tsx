@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { Claim } from "@wso2is/core/models";
 import React, { PropsWithChildren, ReactElement, useState } from "react";
 import RegistrationFlowBuilderContext from "../context/registration-flow-builder-context";
+import { Attribute } from "../models/attributes";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderProvider}
@@ -34,7 +34,7 @@ export type RegistrationFlowBuilderProviderProps = unknown;
 const RegistrationFlowBuilderProvider = ({
     children
 }: PropsWithChildren<RegistrationFlowBuilderProviderProps>): ReactElement => {
-    const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Claim[] }>({});
+    const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
 
     return (
         <RegistrationFlowBuilderContext.Provider

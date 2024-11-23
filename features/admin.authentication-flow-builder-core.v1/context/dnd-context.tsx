@@ -39,6 +39,7 @@ export type DnDContextProps = {
 
 /**
  * Context object for managing the Drag & Drop context.
+ * TODO: Move this to a shared module. `@wso2is/dnd`.
  */
 const DnDContext: Context<DnDContextProps> = createContext<null | DnDContextProps>({
     generateComponentId: () => "",

@@ -33,16 +33,25 @@ import isTextValueWithFallback from "../../utils/is-text-value-with-fallback";
  * Props interface of {@link CommonComponentPropertyFactory}
  */
 export interface CommonComponentPropertyFactoryPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * The element associated with the property.
+     */
     element: Element;
+    /**
+     * The key of the property.
+     */
     propertyKey: string;
+    /**
+     * The value of the property.
+     */
     propertyValue: any;
 }
 
 /**
- * Factory to generate the property configurator for the given component.
+ * Factory to generate the common property configurator for the given component.
  *
  * @param props - Props injected to the component.
- * @returns The ComponentPropertyConfiguratorFactory component.
+ * @returns The CommonComponentPropertyFactory component.
  */
 const CommonComponentPropertyFactory: FunctionComponent<CommonComponentPropertyFactoryPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-builder-component-property-factory",
@@ -55,6 +64,7 @@ const CommonComponentPropertyFactory: FunctionComponent<CommonComponentPropertyF
             <FormControlLabel
                 control={ <Checkbox checked={ propertyValue } /> }
                 label={ startCase(propertyKey) }
+                data-componentid={ `${ componentId }-${propertyKey}` }
             />
         );
     }
@@ -65,13 +75,14 @@ const CommonComponentPropertyFactory: FunctionComponent<CommonComponentPropertyF
                 fullWidth
                 label={ startCase(propertyKey) }
                 value={ propertyValue.fallback }
+                data-componentid={ `${ componentId }-${propertyKey}` }
             />
         );
     }
 
     if (propertyKey === "variant" || propertyKey === "color") {
         return (
-            <FormControl size="small" variant="outlined">
+            <FormControl size="small" variant="outlined" data-componentid={ `${ componentId }-${propertyKey}` }>
                 <Select
                     labelId={ `${propertyKey}-select-label` }
                     id={ `${propertyKey}-select` }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -29,10 +29,9 @@ import "./element-properties-panel.scss";
 /**
  * Props interface of {@link ElementPropertiesPanel}
  */
-export interface ElementPropertiesPanelPropsInterface
-    extends DrawerProps,
-        IdentifiableComponentInterface,
-        HTMLAttributes<HTMLDivElement> {}
+export type ElementPropertiesPanelPropsInterface = DrawerProps &
+    IdentifiableComponentInterface &
+    HTMLAttributes<HTMLDivElement>;
 
 // TODO: Move this to Oxygen UI once https://github.com/wso2/oxygen-ui/issues/158 is fixed.
 const ChevronsRight = ({ width = 16, height = 16 }: { width: number; height: number }): ReactElement => (

@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { Claim } from "@wso2is/core/models";
 import { Context, Dispatch, SetStateAction, createContext } from "react";
+import { Attribute } from "../models/attributes";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderContext}
@@ -27,7 +27,7 @@ export interface RegistrationFlowBuilderContextProps {
      * The set of attributes that are selected for the flow that are maintained per node.
      */
     selectedAttributes: {
-        [key: string]: Claim[];
+        [key: string]: Attribute[];
     };
     /**
      * Sets the selected attributes for the flow.

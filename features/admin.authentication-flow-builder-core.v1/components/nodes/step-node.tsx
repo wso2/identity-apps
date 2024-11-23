@@ -44,6 +44,9 @@ import "./step-node.scss";
  * Props interface of {@link StepNode}
  */
 export interface StepNodePropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Index of the step.
+     */
     stepIndex: number;
 }
 

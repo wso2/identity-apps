@@ -29,7 +29,7 @@ import AttributeCollectorProperties from "./widgets/attribute-collector-properti
 export type WidgetPropertyFactoryPropsInterface = CommonWidgetPropertyFactoryPropsInterface;
 
 /**
- * Factory to generate the property configurator for the given widget.
+ * Factory to generate the property configurator for the given registration flow widget.
  *
  * @param props - Props injected to the component.
  * @returns The WidgetPropertyConfiguratorFactory component.

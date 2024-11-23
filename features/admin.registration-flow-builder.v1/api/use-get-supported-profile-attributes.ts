@@ -23,6 +23,7 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
+import { Attribute } from "../models/attributes";
 
 /**
  * Hook to get the list of tenants.
@@ -36,7 +37,7 @@ import { HttpMethods } from "@wso2is/core/models";
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetSupportedProfileAttributes = <Data = any, Error = RequestErrorInterface>(
+const useGetSupportedProfileAttributes = <Data = Attribute[], Error = RequestErrorInterface>(
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
@@ -52,14 +53,14 @@ const useGetSupportedProfileAttributes = <Data = any, Error = RequestErrorInterf
         shouldFetch ? requestConfig : null
     );
 
-    const filterSupportedAttributes = (data: any) => {
+    const filterSupportedAttributes = (data: Attribute[]) => {
         return data?.filter((attribute: any) => {
             return attribute.supportedByDefault;
         });
     };
 
     return {
-        data: filterSupportedAttributes(data),
+        data: filterSupportedAttributes(data as Attribute[]) as Data,
         error,
         isLoading,
         isValidating,

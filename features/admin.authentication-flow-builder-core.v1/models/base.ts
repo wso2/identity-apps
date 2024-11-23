@@ -113,7 +113,11 @@ export interface StrictField {
     options?: FieldOption[];
 }
 
-export type Field = StrictField & Record<string, any>;
+export type FieldKey = string;
+
+export type FieldValue = any;
+
+export type Field = StrictField & Record<FieldKey, FieldValue>;
 
 export interface BaseConfig {
     /**

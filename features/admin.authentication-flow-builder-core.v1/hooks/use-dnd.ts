@@ -26,6 +26,7 @@ export type useDnDInterface = DnDContextProps;
 
 /**
  * Hook that provides Drag & Drop context.
+ * TODO: Move this to a shared module. `@wso2is/dnd`.
  *
  * This hook allows elements to access drag-and-drop related data and functions
  * provided by the Drag & Drop context. It returns an object containing

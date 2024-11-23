@@ -47,10 +47,9 @@ import "./visual-flow.scss";
 /**
  * Props interface of {@link VisualFlow}
  */
-export interface VisualFlowPropsInterface extends IdentifiableComponentInterface, ReactFlowProps<any, any> {}
+export type VisualFlowPropsInterface = IdentifiableComponentInterface & ReactFlowProps<any, any>;
 
-// we define the nodeTypes outside of the component to prevent re-renderings
-// you could also use useMemo inside the component
+// NOTE: `nodeTypes` are defined outside of the component to prevent re-renderings.
 const nodeTypes: {
     STEP: FC<StepNodePropsInterface>;
 } = { STEP: StepNode };

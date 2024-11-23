@@ -16,10 +16,6 @@
  * under the License.
  */
 
-.authentication-flow-builder-attribute-collector-property {
-    padding: var(--oxygen-spacing-2);
+import { Claim } from "@wso2is/core/models";
 
-    .MuiAccordionSummary-content {
-        margin: 0;
-    }
-}
+export type Attribute = Claim;

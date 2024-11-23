@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,13 +26,22 @@ import WidgetPropertyFactory from "./widget-property-factory";
  * Props interface of {@link ElementPropertyFactory}
  */
 export interface ElementPropertyFactoryPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * The element associated with the property.
+     */
     element: Element;
+    /**
+     * The key of the property.
+     */
     propertyKey: string;
+    /**
+     * The value of the property.
+     */
     propertyValue: any;
 }
 
 /**
- * Factory to generate the property configurator for the given element.
+ * Factory to generate the property configurator for the given registration flow element.
  *
  * @param props - Props injected to the component.
  * @returns The ElementPropertyConfiguratorFactory component.

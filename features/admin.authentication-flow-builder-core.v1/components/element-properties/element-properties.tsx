@@ -22,13 +22,13 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
+import { FieldKey, FieldValue } from "../../models/base";
+import { Element } from "../../models/elements";
 
 /**
  * Props interface of {@link ElementProperties}
  */
-export interface ElementPropertiesPropsInterface
-    extends IdentifiableComponentInterface,
-        HTMLAttributes<HTMLDivElement> {}
+export type ElementPropertiesPropsInterface = IdentifiableComponentInterface & HTMLAttributes<HTMLDivElement>;
 
 /**
  * Component to generate the properties panel for the selected element.
@@ -49,8 +49,10 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
             { lastInteractedElement ? (
                 <Stack gap={ 1 }>
                     { hasVariants
-                        ? lastInteractedElement.variants.map(variant => {
-                            return Object.entries(variant?.config?.field).map(([ key, value ]) => (
+                        ? lastInteractedElement.variants.map((variant: Element) => {
+                            return Object.entries(
+                                variant?.config?.field
+                            ).map(([ key, value ]: [FieldKey, FieldValue]) => (
                                 <ElementPropertiesFactory
                                     element={ variant }
                                     key={ key }
@@ -59,7 +61,9 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
                                 />
                             ));
                         })
-                        : Object.entries(lastInteractedElement?.config?.field).map(([ key, value ]) => (
+                        : Object.entries(
+                            lastInteractedElement?.config?.field
+                        ).map(([ key, value ]: [FieldKey, FieldValue]) => (
                             <ElementPropertiesFactory
                                 element={ lastInteractedElement }
                                 key={ key }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,8 @@
  */
 
 import DecoratedVisualFlow from "@wso2is/admin.authentication-flow-builder-core.v1/components/decorated-visual-flow";
-import AuthenticationFlowBuilderCoreProvider from "@wso2is/admin.authentication-flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
+import AuthenticationFlowBuilderCoreProvider from
+    "@wso2is/admin.authentication-flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import ElementPropertyFactory from "./element-properties/element-property-factory";

@@ -23,10 +23,11 @@ import DnDContext from "../context/dnd-context";
 /**
  * Props interface of {@link DnDProvider}
  */
-export interface DnDProviderProps {}
+export type DnDProviderProps = unknown;
 
 /**
  * This component provides Drag & Drop context to its children.
+ * TODO: Move this to a shared module. `@wso2is/dnd`.
  *
  * @param props - Props injected to the component.
  * @returns The DnDProvider component.

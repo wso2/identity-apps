@@ -24,16 +24,26 @@ import { Element } from "../../models/elements";
  * Props interface of {@link CommonWidgetPropertyFactory}
  */
 export interface CommonWidgetPropertyFactoryPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * The element associated with the property.
+     */
     element: Element;
+    /**
+     * The key of the property.
+     */
     propertyKey: string;
+    /**
+     * The value of the property.
+     */
     propertyValue: any;
 }
 
 /**
- * Factory to generate the property configurator for the given widget.
+ * Factory to generate the common property configurator for the given widget.
+ * TODO: Implement the common widgets like RE-CAPTCHA, etc.
  *
  * @param props - Props injected to the component.
- * @returns The WidgetPropertyConfiguratorFactory component.
+ * @returns The CommonWidgetPropertyFactory component.
  */
 const CommonWidgetPropertyFactory: FunctionComponent<CommonWidgetPropertyFactoryPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-builder-widget-property-factory",

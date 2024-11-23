@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,11 +22,12 @@ import { useNodeId } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
 import AttributeFactory from "./attribute-factory";
 import useRegistrationFlowBuilder from "../../hooks/use-registration-flow-builder-core-context";
+import { Attribute } from "../../models/attributes";
 
 /**
  * Props interface of {@link AttributeCollectorNode}
  */
-export interface AttributeCollectorNodePropsInterface extends IdentifiableComponentInterface {}
+export type AttributeCollectorNodePropsInterface = IdentifiableComponentInterface;
 
 /**
  * Factory to generate the property configurator for the given element.
@@ -44,7 +45,7 @@ const AttributeCollectorNode: FunctionComponent<AttributeCollectorNodePropsInter
         <Stack gap={ 2 } data-componentid={ componentId }>
             { selectedAttributes &&
                 Object.prototype.hasOwnProperty.call(selectedAttributes, nodeId) &&
-                selectedAttributes[nodeId].map((attribute, index) => (
+                selectedAttributes[nodeId].map(((attribute: Attribute) => (
                     <AttributeFactory key={ attribute.id } attribute={ attribute } />
                 )) }
         </Stack>

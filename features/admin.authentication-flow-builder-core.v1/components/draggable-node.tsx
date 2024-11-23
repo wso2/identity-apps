@@ -23,16 +23,20 @@ import { SupportedCanvasNodes } from "../models/visual-editor";
 import "./draggable-node.scss";
 
 /**
- * Props interface of {@link DraggableNode}
+ * Interface for the props of the Draggable Node.
  */
 export interface DraggableNodePropsInterface<T = SupportedCanvasNodes>
     extends IdentifiableComponentInterface,
         HTMLAttributes<HTMLDivElement> {
+    /**
+     * The node that is being dragged.
+     */
     node: T;
 }
 
 /**
  * A component that represents a draggable node.
+ * TODO: Move this to a shared module. `@wso2is/dnd`.
  *
  * @param props - Props injected to the component.
  * @returns Draggable node component.

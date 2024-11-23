@@ -33,6 +33,9 @@ import "./element-panel-draggable-node.scss";
 export interface ElementPanelDraggableNodePropsInterface
     extends IdentifiableComponentInterface,
         HTMLAttributes<HTMLDivElement> {
+    /**
+     * The node that is being dragged.
+     */
     node: SupportedCanvasNodes;
 }
 

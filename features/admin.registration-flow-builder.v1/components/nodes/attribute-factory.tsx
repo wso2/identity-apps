@@ -17,9 +17,10 @@
  */
 
 import TextField from "@oxygen-ui/react/TextField";
-import { Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
+import { Attribute } from "../../models/attributes";
 
 /**
  * Props interface of {@link AttributeFactory}
@@ -28,7 +29,7 @@ export interface AttributeFactoryPropsInterface extends IdentifiableComponentInt
     /**
      * The node properties.
      */
-    attribute: Claim;
+    attribute: Attribute;
 }
 
 /**
