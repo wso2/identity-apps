@@ -24,10 +24,14 @@ import {
     Edge,
     Node,
     OnConnect,
+    OnNodesDelete,
     ReactFlow,
     ReactFlowProps,
     XYPosition,
     addEdge,
+    getConnectedEdges,
+    getIncomers,
+    getOutgoers,
     useEdgesState,
     useNodesState,
     useReactFlow
@@ -108,6 +112,33 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
 
     const onConnect: OnConnect = useCallback((params: any) => setEdges((edges: Edge[]) => addEdge(params, edges)), []);
 
+    const onNodesDelete: OnNodesDelete<Node> = useCallback(
+        (deleted: Node[]) => {
+            setEdges(
+                deleted.reduce((acc: Edge[], node: Node) => {
+                    const incomers: Node[] = getIncomers(node, nodes, edges);
+                    const outgoers: Node[] = getOutgoers(node, nodes, edges);
+                    const connectedEdges: Edge[] = getConnectedEdges([ node ], edges);
+
+                    const remainingEdges: Edge[] = acc.filter(
+                        (edge: Edge) => !connectedEdges.includes(edge)
+                    );
+
+                    const createdEdges: Edge[] = incomers.flatMap(({ id: source }: { id: string }) =>
+                        outgoers.map(({ id: target }: { id: string }) => ({
+                            id: `${source}->${target}`,
+                            source,
+                            target
+                        }))
+                    );
+
+                    return [ ...remainingEdges, ...createdEdges ];
+                }, edges)
+            );
+        },
+        [ nodes, edges ]
+    );
+
     return (
         <ReactFlow
             fitView
@@ -117,6 +148,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
             onNodesChange={ onNodesChange }
             onEdgesChange={ onEdgesChange }
             onConnect={ onConnect }
+            onNodesDelete={ onNodesDelete }
             onDrop={ onDrop }
             onDragOver={ onDragOver }
             proOptions={ { hideAttribution: true } }

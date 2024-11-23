@@ -22,3 +22,8 @@ import { Base } from "./base";
  * Interface for a Node.
  */
 export type Node = Base;
+
+export enum NodeTypes {
+    Step = "STEP",
+    Rule = "RULE"
+}

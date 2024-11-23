@@ -24,7 +24,7 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Handle, Node, Position, useNodeId } from "@xyflow/react";
+import { Handle, Node, Position, useNodeId, useReactFlow } from "@xyflow/react";
 import React, {
     DragEvent,
     FunctionComponent,
@@ -74,6 +74,7 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
     "data-componentid": componentId = "step-node"
 }: StepNodePropsInterface & Node): ReactElement => {
     const nodeId: string = useNodeId();
+    const { deleteElements } = useReactFlow();
     const { onElementDropOnCanvas, NodeFactory, setLastInteractedElement } = useAuthenticationFlowBuilderCore();
 
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
@@ -126,7 +127,7 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
                     <IconButton
                         size="small"
                         onClick={ (_: MouseEvent<HTMLButtonElement>) => {
-                            // TODO: Implement remove step logic.
+                            deleteElements({ nodes: [ { id: nodeId } ] });
                         } }
                         className="authentication-flow-builder-step-remove-button"
                     >

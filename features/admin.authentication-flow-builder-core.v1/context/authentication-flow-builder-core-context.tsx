@@ -17,7 +17,7 @@
  */
 
 import { Claim } from "@wso2is/core/models";
-import { Context, Dispatch, FunctionComponent, ReactElement, ReactNode, SetStateAction, createContext } from "react";
+import { Context, Dispatch, FunctionComponent, ReactNode, SetStateAction, createContext } from "react";
 import { Base } from "../models/base";
 
 /**
@@ -62,7 +62,7 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * The set of attributes that are selected for the flow that are maintained per node.
      */
     selectedAttributes: {
-        [key: string]: Claim[]
+        [key: string]: Claim[];
     };
     /**
      * Sets the active element in the canvas.
@@ -93,7 +93,7 @@ export interface AuthenticationFlowBuilderCoreContextProps {
     /**
      * Sets the selected attributes for the flow.
      */
-    setSelectedAttributes: Dispatch<SetStateAction<{[key: string]: Claim[]}>>;
+    setSelectedAttributes: Dispatch<SetStateAction<{ [key: string]: Claim[] }>>;
 }
 
 /**

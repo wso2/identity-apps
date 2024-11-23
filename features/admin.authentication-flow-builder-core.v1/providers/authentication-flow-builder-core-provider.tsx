@@ -24,6 +24,8 @@ import capitalize from "lodash-es/capitalize";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode, useState } from "react";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
 import { Base } from "../models/base";
+import { ElementCategories } from "../models/elements";
+import { NodeTypes } from "../models/node";
 
 /**
  * Props interface of {@link AuthenticationFlowBuilderCoreProvider}
@@ -53,11 +55,11 @@ const AuthenticationFlowBuilderCoreProvider = ({
     const [ isElementPanelOpen, setIsElementPanelOpen ] = useState<boolean>(true);
     const [ isElementPropertiesPanelOpen, setIsOpenElementPropertiesPanel ] = useState<boolean>(false);
     const [ elementPropertiesPanelHeading, setElementPropertiesPanelHeading ] = useState<ReactNode>(null);
-    const [ lastInteractedElement, _setLastInteractedElement ] = useState<Base>(null);
+    const [ lastInteractedElementInternal, setLastInteractedElementInternal ] = useState<Base>(null);
     const [ lastInteractedNodeId, setLastInteractedNodeId ] = useState<string>("");
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Claim[] }>({});
 
-    const onElementDropOnCanvas = (element: Base, nodeId: string): void  => {
+    const onElementDropOnCanvas = (element: Base, nodeId: string): void => {
         setLastInteractedElement(element);
         setLastInteractedNodeId(nodeId);
     };
@@ -68,16 +70,22 @@ const AuthenticationFlowBuilderCoreProvider = ({
             <Stack>
                 <Typography variant="h6">{ capitalize(element.category) } Properties</Typography>
                 <Stack direction="row" className="sub-title" gap={ 1 } alignItems="center">
-                    <Avatar
-                        src={ element?.display?.image }
-                        variant="square"
-                    />
+                    <Avatar src={ element?.display?.image } variant="square" />
                     <Typography variant="body2">{ capitalize(element.type) }</Typography>
                 </Stack>
             </Stack>
         );
+        setLastInteractedElementInternal(element);
+
+        // If the element is a step node, do not open the properties panel for now.
+        // TODO: Figure out if there are properties for a step.
+        if (element.category === ElementCategories.Nodes && element.type === NodeTypes.Step) {
+            setIsOpenElementPropertiesPanel(false);
+
+            return;
+        }
+
         setIsOpenElementPropertiesPanel(true);
-        _setLastInteractedElement(element);
     };
 
     return (
@@ -88,7 +96,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
                 elementPropertiesPanelHeading,
                 isElementPanelOpen,
                 isElementPropertiesPanelOpen,
-                lastInteractedElement,
+                lastInteractedElement: lastInteractedElementInternal,
                 lastInteractedNodeId,
                 onElementDropOnCanvas,
                 selectedAttributes,
