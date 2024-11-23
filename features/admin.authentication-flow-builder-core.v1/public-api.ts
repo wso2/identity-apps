@@ -27,7 +27,8 @@ export * from "./models/node";
 export * from "./models/visual-editor";
 export * from "./models/widget";
 
-export { default as AuthenticationFlowBuilderCoreProvider } from "./providers/authentication-flow-builder-core-provider";
+export { default as AuthenticationFlowBuilderCoreProvider } from
+    "./providers/authentication-flow-builder-core-provider";
 export { default as AuthenticationFlowBuilderCoreContext } from "./context/authentication-flow-builder-core-context";
 export { default as useAuthenticationFlowBuilderCore } from "./hooks/use-authentication-flow-builder-core-context";
 

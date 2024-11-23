@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import { FunctionComponent, ReactElement } from "react";
 import { Element } from "../../models/elements";
 
 /**
@@ -46,10 +46,7 @@ export interface CommonWidgetPropertyFactoryPropsInterface extends IdentifiableC
  * @returns The CommonWidgetPropertyFactory component.
  */
 const CommonWidgetPropertyFactory: FunctionComponent<CommonWidgetPropertyFactoryPropsInterface> = ({
-    "data-componentid": componentId = "authentication-flow-builder-widget-property-factory",
-    element,
-    propertyKey,
-    propertyValue
+    element
 }: CommonWidgetPropertyFactoryPropsInterface): ReactElement | null => {
     switch (element.type) {
         default:

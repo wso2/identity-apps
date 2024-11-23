@@ -32,7 +32,7 @@ export interface RegistrationFlowBuilderContextProps {
     /**
      * Sets the selected attributes for the flow.
      */
-    setSelectedAttributes: Dispatch<SetStateAction<{ [key: string]: Claim[] }>>;
+    setSelectedAttributes: Dispatch<SetStateAction<{ [key: string]: Attribute[] }>>;
 }
 
 /**

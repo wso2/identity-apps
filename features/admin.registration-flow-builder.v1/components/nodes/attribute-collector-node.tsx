@@ -45,7 +45,7 @@ const AttributeCollectorNode: FunctionComponent<AttributeCollectorNodePropsInter
         <Stack gap={ 2 } data-componentid={ componentId }>
             { selectedAttributes &&
                 Object.prototype.hasOwnProperty.call(selectedAttributes, nodeId) &&
-                selectedAttributes[nodeId].map(((attribute: Attribute) => (
+                selectedAttributes[nodeId].map((attribute: Attribute) => (
                     <AttributeFactory key={ attribute.id } attribute={ attribute } />
                 )) }
         </Stack>
