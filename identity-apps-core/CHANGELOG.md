@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.8.2
+
+### Patch Changes
+
+- [#6746](https://github.com/wso2/identity-apps/pull/6746) [`b9fd57f731822372db9211ee346627c4ad9de0eb`](https://github.com/wso2/identity-apps/commit/b9fd57f731822372db9211ee346627c4ad9de0eb) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add spotbugs plugin to identity-apps-core
+
 ## 2.8.1
 
 ### Patch Changes
