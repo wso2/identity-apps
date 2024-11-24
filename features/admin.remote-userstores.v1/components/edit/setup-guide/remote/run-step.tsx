@@ -148,7 +148,7 @@ const RunAgentStep: FunctionComponent<RunAgentStepPropsInterface> = ({
             </Typography>
 
             <strong>{ t("remoteUserStores:pages.edit.guide.steps.run.commands.unix") }</strong>
-            <CodeEditor oneLiner readOnly withClipboardCopy language="javascript" sourceCode="sh remoteagent.sh" />
+            <CodeEditor oneLiner readOnly withClipboardCopy language="javascript" sourceCode="./remoteagent" />
             <br />
             <strong>{ t("remoteUserStores:pages.edit.guide.steps.run.commands.windows") }</strong>
             <CodeEditor
@@ -156,7 +156,7 @@ const RunAgentStep: FunctionComponent<RunAgentStepPropsInterface> = ({
                 readOnly
                 withClipboardCopy
                 language="javascript"
-                sourceCode="remoteagent.bat  -- run"
+                sourceCode="remoteagent"
             />
 
             <Typography component="p" marginTop={ 2 } marginBottom={ 1 }>

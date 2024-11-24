@@ -29,6 +29,11 @@ export const remoteUserStores: RemoteUserStoresNS = {
                     required: "Access type is required"
                 }
             },
+            attributes: {
+                validation: {
+                    required: "Attribute mapping is required"
+                }
+            },
             connectedUserStoreType: {
                 label: "Remote User Store Type",
                 placeholder: "Select the type of remote user store",
@@ -143,6 +148,23 @@ export const remoteUserStores: RemoteUserStoresNS = {
             title: "Create User Store"
         },
         edit: {
+            configurations: {
+                attributes: {
+                    custom: {
+                        heading: "Custom Attributes"
+                    },
+                    heading: "Attribute Mappings",
+                    local: {
+                        heading: "Local Attributes"
+                    }
+                },
+                groupAttributes: {
+                    heading: "Group attributes"
+                },
+                userAttributes: {
+                    heading: "User attributes"
+                }
+            },
             guide: {
                 heading: "Connect the remote user store",
                 steps: {

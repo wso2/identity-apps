@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import OxygenCode from "@oxygen-ui/react/Code";
+import Code from "@oxygen-ui/react/Code";
 import Divider from "@oxygen-ui/react/Divider";
 import FormLabel from "@oxygen-ui/react/FormLabel";
 import Grid from "@oxygen-ui/react/Grid";
@@ -165,7 +165,7 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                                         { t("remoteUserStores:form.fields.usernameMapping.label") }
                                     </FormLabel>
                                     <br />
-                                    <OxygenCode variant="caption">{ usernameClaimUri }</OxygenCode>
+                                    <Code variant="caption">{ usernameClaimUri }</Code>
                                 </Grid>
                                 <Grid xs={ 12 } md={ 6 }>
                                     <FinalFormField
@@ -195,7 +195,7 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                                         { t("remoteUserStores:form.fields.userIdMapping.label") }
                                     </FormLabel>
                                     <br />
-                                    <OxygenCode variant="caption">{ userIDClaimUri }</OxygenCode>
+                                    <Code variant="caption">{ userIDClaimUri }</Code>
                                 </Grid>
                                 <Grid xs={ 12 } md={ 6 }>
                                     <FinalFormField

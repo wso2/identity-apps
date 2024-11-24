@@ -76,11 +76,15 @@ interface UserStoreGeneralSettingsInterface extends IdentifiableComponentInterfa
     /**
      * Flag to hold if the user store is disabled.
      */
-    isDisabled: string;
+    isDisabled: boolean;
     /**
      * Call back to handle disabling/enabling the user store.
      */
     handleUserStoreDisabled: (value: string) => void;
+    /**
+     * Whether the component should be rendered in read-only mode.
+     */
+    isReadOnly?: boolean;
 }
 
 /**
@@ -99,7 +103,8 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
         userStoreId,
         userStoreManager,
         handleUserStoreDisabled,
-        ["data-componentid"]: testId
+        isReadOnly = false,
+        ["data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -248,12 +253,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
      * @param regeneratingAgentConnection - Agent connection object.
      */
     const handleRegenerateAgentConnectionToken = (regeneratingAgentConnection: AgentConnectionInterface) => {
-
-        regenerateToken(
-            regeneratingAgentConnection.tokenId,
-            userStoreId,
-            userStoreManager
-        )
+        regenerateToken(regeneratingAgentConnection.tokenId, userStoreId, userStoreManager)
             .then((response: { token: string }) => {
                 if (agentIndex === 0) {
                     setAgentOneToken(response.token);
@@ -328,16 +328,20 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                         setShowDeleteConfirmationModal(false);
                     });
             } }
-            data-testid={ `${testId}-delete-confirmation-modal` }
+            data-testid={ `${componentId}-delete-confirmation-modal` }
             closeOnDimmerClick={ false }
         >
-            <ConfirmationModal.Header data-testid={ `${testId}-delete-confirmation-modal-header` }>
+            <ConfirmationModal.Header data-testid={ `${componentId}-delete-confirmation-modal-header` }>
                 { t("userstores:confirmation.header") }
             </ConfirmationModal.Header>
-            <ConfirmationModal.Message attached negative data-testid={ `${testId}-delete-confirmation-modal-message` }>
+            <ConfirmationModal.Message
+                attached
+                negative
+                data-testid={ `${componentId}-delete-confirmation-modal-message` }
+            >
                 { t("userstores:confirmation.message") }
             </ConfirmationModal.Message>
-            <ConfirmationModal.Content data-testid={ `${testId}-delete-confirmation-modal-content` }>
+            <ConfirmationModal.Content data-testid={ `${componentId}-delete-confirmation-modal-content` }>
                 { t("userstores:confirmation.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
@@ -360,10 +364,10 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                 setIsAgentTwoTokenGenerated(null);
             } }
         >
-            <ConfirmationModal.Header data-testid={ `${testId}-delete-confirmation-modal-header` }>
+            <ConfirmationModal.Header data-testid={ `${componentId}-delete-confirmation-modal-header` }>
                 New Installation Token
             </ConfirmationModal.Header>
-            <ConfirmationModal.Content data-testid={ `${testId}-delete-confirmation-modal-content` }>
+            <ConfirmationModal.Content data-testid={ `${componentId}-delete-confirmation-modal-content` }>
                 { isAgentOneTokenGenerated && (
                     <Grid className="mt-2 mb-2">
                         <Grid.Row>
@@ -377,7 +381,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                                 <label>Installation token</label>
                                 <CopyInputField
                                     value={ agentOneToken ? agentOneToken : "" }
-                                    data-testid={ `${testId}-client-secret-readonly-input` }
+                                    data-testid={ `${componentId}-client-secret-readonly-input` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -396,7 +400,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                                 <label>Installation token</label>
                                 <CopyInputField
                                     value={ agentTwoToken ? agentTwoToken : "" }
-                                    data-testid={ `${testId}-client-secret-readonly-input` }
+                                    data-testid={ `${componentId}-client-secret-readonly-input` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -422,10 +426,10 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                 setIsAgentHATokenGenerated(null);
             } }
         >
-            <ConfirmationModal.Header data-testid={ `${testId}-delete-confirmation-modal-header` }>
+            <ConfirmationModal.Header data-testid={ `${componentId}-delete-confirmation-modal-header` }>
                 New Installation Token
             </ConfirmationModal.Header>
-            <ConfirmationModal.Content data-testid={ `${testId}-delete-confirmation-modal-content` }>
+            <ConfirmationModal.Content data-testid={ `${componentId}-delete-confirmation-modal-content` }>
                 { isAgentHATokenGenerated && (
                     <Grid className="mt-2 mb-2">
                         <Grid.Row>
@@ -439,7 +443,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                                 <label>Installation token</label>
                                 <CopyInputField
                                     value={ agentHAToken ? agentHAToken : "" }
-                                    data-testid={ `${testId}-client-secret-readonly-input` }
+                                    data-testid={ `${componentId}-client-secret-readonly-input` }
                                 />
                             </Grid.Column>
                         </Grid.Row>
@@ -554,7 +558,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
 
     const renderLoadingSkeleton = (): ReactElement => {
         return (
-            <div data-componentid={ `${testId}-loading-skeleton` }>
+            <div data-componentid={ `${componentId}-loading-skeleton` }>
                 <Skeleton component="h1" width={ "40%" } />
                 <Skeleton />
                 <br />
@@ -567,7 +571,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
     const renderEmptyPlaceholder = (): ReactElement => {
         return (
             <EmptyPlaceholder
-                data-componentid={ `${testId}-empty-placeholder` }
+                data-componentid={ `${componentId}-empty-placeholder` }
                 title="No Agents Connected"
                 subtitle={ [
                     "There are no user store agent connections.",
@@ -599,7 +603,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                                         maxLength={ 300 }
                                         minLength={ 3 }
                                         width={ 14 }
-                                        data-testid={ `${testId}-user-store-description-textarea` }
+                                        data-testid={ `${componentId}-user-store-description-textarea` }
                                         value={ userStore?.description ? userStore?.description : "" }
                                         validation={ (value: string, validation: Validation) => {
                                             let isMatch: boolean = true;
@@ -637,6 +641,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                                                 validation.errorMessages.push(validationErrorMessage);
                                             }
                                         } }
+                                        readOnly={ isReadOnly }
                                     />
                                     <Popup
                                         trigger={
@@ -655,7 +660,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                                                                 (property: UserStoreProperty) =>
                                                                     property.name === DISABLED
                                                             )?.value === "false"
-                                                        )
+                                                        ) || isReadOnly
                                                     }
                                                 >
                                                     { t("common:update") }
@@ -687,10 +692,9 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                     <Heading as="h4">User Store Agent Connection(s)</Heading>
                     <Segment className="agent-connections-section" padded="very">
                         { isAgentConnectionsRequestLoading && renderLoadingSkeleton() }
-                        { !isAgentConnectionsRequestLoading
-                            && (!agentConnections || agentConnections.length === 0)
-                            && renderEmptyPlaceholder()
-                        }
+                        { !isAgentConnectionsRequestLoading &&
+                            (!agentConnections || agentConnections.length === 0) &&
+                            renderEmptyPlaceholder() }
                         { !isAgentConnectionsRequestLoading && agentConnections?.length > 0 && (
                             <List divided verticalAlign="middle" relaxed="very" width={ 10 }>
                                 { agentConnections.map((connection: AgentConnectionInterface, index: number) => (
@@ -704,32 +708,26 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                                                         setDisconnectingAgentConnection(connection);
                                                         setShowDisconnectConfirmationModal(true);
                                                     } }
+                                                    disabled={ isReadOnly }
                                                 >
                                                     Disconnect
                                                 </Button>
                                             ) : null }
                                             <Button
-                                                className={
-                                                    !connection.connected
-                                                        ? index === 1
-                                                            ? "ml-4 mt-4"
-                                                            : "ml-4"
-                                                        : index === 1
-                                                            ? "mt-4"
-                                                            : ""
-                                                }
+                                                className="ml-4"
                                                 color={ connection.connected ? "red" : "orange" }
                                                 onClick={ () => {
                                                     setAgentIndex(index);
                                                     setRegeneratingAgentConnection(connection);
                                                     setShowRegenerateConfirmationModal(true);
                                                 } }
+                                                disabled={ isReadOnly || isDisabled }
                                             >
                                                 Regenerate token
                                             </Button>
                                         </List.Content>
                                         <List.Content>
-                                            <List.Header className={ index == 1 ? "mt-4" : "" }>
+                                            <List.Header>
                                                 { resolveConnectionStatusIcon(connection?.connected) }
                                                 <strong>{ connection?.agent?.displayName }</strong>
                                             </List.Header>
@@ -742,12 +740,16 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                                 { agentConnections.length === 1 && (
                                     <List.Item columns={ 2 } verticalAlign="middle">
                                         <List.Content floated="right">
-                                            <Button className="mt-4" color="orange" onClick={ handleGenerateToken }>
+                                            <Button
+                                                color="orange"
+                                                onClick={ handleGenerateToken }
+                                                disabled={ isReadOnly || isDisabled }
+                                            >
                                                 Generate token
                                             </Button>
                                         </List.Content>
                                         <List.Content>
-                                            <List.Header className="mt-4">
+                                            <List.Header>
                                                 <Icon name="times circle" color="red" className="mr-1" />
                                                 <strong>On-Prem-Agent-2</strong>
                                             </List.Header>
@@ -776,7 +778,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
             <Divider hidden />
             { disconnectingAgentConnection && (
                 <ConfirmationModal
-                    data-testid={ `${testId}-confirmation-modal` }
+                    data-testid={ `${componentId}-confirmation-modal` }
                     onClose={ (): void => setShowDisconnectConfirmationModal(false) }
                     type="warning"
                     open={ showDisconnectConfirmationModal }
@@ -791,10 +793,14 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                     onPrimaryActionClick={ (): void => handleAgentDisconnect(disconnectingAgentConnection) }
                     closeOnDimmerClick={ false }
                 >
-                    <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
+                    <ConfirmationModal.Header data-testid={ `${componentId}-confirmation-modal-header` }>
                         { t("user:deleteUser.confirmationModal.header") }
                     </ConfirmationModal.Header>
-                    <ConfirmationModal.Message data-testid={ `${testId}-confirmation-modal-message` } attached warning>
+                    <ConfirmationModal.Message
+                        data-testid={ `${componentId}-confirmation-modal-message` }
+                        attached
+                        warning
+                    >
                         This action is irreversible and will disconnect the user store agent connection.
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
@@ -806,7 +812,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
             ) }
             { regeneratingAgentConnection && (
                 <ConfirmationModal
-                    data-testid={ `${testId}-confirmation-modal` }
+                    data-testid={ `${componentId}-confirmation-modal` }
                     onClose={ (): void => setShowRegenerateConfirmationModal(false) }
                     type="warning"
                     open={ showRegenerateConfirmationModal }
@@ -819,13 +825,18 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                         setAlert(null);
                     } }
                     onPrimaryActionClick={
-                        (): void => handleRegenerateAgentConnectionToken(regeneratingAgentConnection) }
+                        (): void => handleRegenerateAgentConnectionToken(regeneratingAgentConnection)
+                    }
                     closeOnDimmerClick={ false }
                 >
-                    <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
+                    <ConfirmationModal.Header data-testid={ `${componentId}-confirmation-modal-header` }>
                         { t("user:deleteUser.confirmationModal.header") }
                     </ConfirmationModal.Header>
-                    <ConfirmationModal.Message data-testid={ `${testId}-confirmation-modal-message` } attached warning>
+                    <ConfirmationModal.Message
+                        data-testid={ `${componentId}-confirmation-modal-message` }
+                        attached
+                        warning
+                    >
                         This action is irreversible and will revoke the previously used installation token.
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
@@ -836,21 +847,19 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }
-            { !isPrivilegedUser && (
-                <DangerZoneGroup sectionHeader={ t("common:dangerZone") } ata-testid={ `${testId}-danger-zone-group` }>
+            { !isPrivilegedUser && !isReadOnly && (
+                <DangerZoneGroup
+                    sectionHeader={ t("common:dangerZone") }
+                    data-testid={ `${componentId}-danger-zone-group` }
+                >
                     <DangerZone
                         actionTitle={ t("userstores:dangerZone.disable.actionTitle") }
                         header="Disable User Store"
                         subheader={ t("userstores:dangerZone.disable.subheader") }
                         onActionClick={ undefined }
-                        data-testid={ `${testId}-delete-danger-zone` }
+                        data-testid={ `${componentId}-delete-danger-zone` }
                         toggle={ {
-                            checked:
-                                isDisabled !== undefined
-                                    ? isDisabled === "true"
-                                    : userStore?.properties?.find(
-                                        (property: UserStoreProperty) => property.name === DISABLED
-                                    )?.value === "false",
+                            checked: isDisabled,
                             onChange: handleUserStoreDisable
                         } }
                     />
@@ -859,7 +868,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                         header={ t("userstores:dangerZone.delete.header") }
                         subheader={ t("userstores:dangerZone.delete.subheader") }
                         onActionClick={ () => setShowDeleteConfirmationModal(true) }
-                        data-testid={ `${testId}-delete-danger-zone` }
+                        data-testid={ `${componentId}-delete-danger-zone` }
                     />
                 </DangerZoneGroup>
             ) }

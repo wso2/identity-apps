@@ -53,6 +53,10 @@ interface SetupGuideTabPropsInterface extends IdentifiableComponentInterface {
      * Flag to check if the user store is created.
      */
     isUserStoreLoading: boolean;
+    /**
+     * Whether the user store is disabled.
+     */
+    isUserStoreDisabled: boolean;
 }
 
 /**
@@ -65,6 +69,7 @@ export const SetupGuideTab: FunctionComponent<SetupGuideTabPropsInterface> = (
         isUserStoreLoading,
         userStoreId,
         userStoreManager,
+        isUserStoreDisabled,
         ["data-componentid"]: testId = "user-store-setup-guide"
     } = props;
 
@@ -96,7 +101,13 @@ export const SetupGuideTab: FunctionComponent<SetupGuideTabPropsInterface> = (
             stepTitle: t("remoteUserStores:pages.edit.guide.steps.configure.heading")
         },
         {
-            stepContent: <GenerateTokenStep userStoreManager={ userStoreManager } userStoreID={ userStoreId } />,
+            stepContent: (
+                <GenerateTokenStep
+                    userStoreManager={ userStoreManager }
+                    userStoreID={ userStoreId }
+                    isUserStoreDisabled={ isUserStoreDisabled }
+                />
+            ),
             stepTitle: t("remoteUserStores:pages.edit.guide.steps.token.heading")
         },
         {

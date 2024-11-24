@@ -43,7 +43,7 @@ import {
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmphasizedSegment, Message, PageLayout } from "@wso2is/react-components";
+import { DocumentationLink, EmphasizedSegment, Message, PageLayout, useDocumentation } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -92,6 +92,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
     const remoteUserStoreCreatePath: string = RemoteUserStoreConstants.getPaths().get("REMOTE_USER_STORE_CREATE");
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
     const dispatch: Dispatch = useDispatch();
 
     const generalUserStoreDetailsFormRef: MutableRefObject<GeneralUserStoreDetailsFormRef> = useRef<
@@ -407,9 +408,16 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
         <PageLayout
             title={ t("remoteUserStores:pages.create.title") }
             contentTopMargin={ true }
-            description={ t("remoteUserStores:pages.create.description", {
-                productName
-            }) }
+            description={ (
+                <>
+                    { t("remoteUserStores:pages.create.description", { productName }) }
+                    <DocumentationLink
+                        link={ getLink("manage.userStores.createUserStore.learnMore") }
+                    >
+                        { t("extensions:common.learnMore") }
+                    </DocumentationLink>
+                </>
+            ) }
             className="remote-user-store-create-page-layout"
             backButton={ {
                 "data-testid": `${testId}-page-back-button`,

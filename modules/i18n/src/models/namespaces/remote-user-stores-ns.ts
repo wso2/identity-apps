@@ -110,6 +110,23 @@ export interface RemoteUserStoresNS {
                     };
                 };
             };
+            configurations: {
+                userAttributes: {
+                    heading: string;
+                };
+                groupAttributes: {
+                    heading: string;
+                };
+                attributes: {
+                    heading: string;
+                    custom: {
+                        heading: string;
+                    };
+                    local: {
+                        heading: string;
+                    };
+                };
+            };
         };
     };
     form: {
@@ -175,6 +192,11 @@ export interface RemoteUserStoresNS {
                     required: string;
                 };
             };
+            attributes: {
+                validation: {
+                    required: string;
+                }
+            }
         };
         sections: {
             groupAttributes: string;

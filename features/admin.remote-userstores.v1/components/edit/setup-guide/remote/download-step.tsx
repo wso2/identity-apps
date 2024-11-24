@@ -53,16 +53,16 @@ const DownloadAgentStep: FunctionComponent<DownloadAgentStepPropsInterface> = ({
 
     const availableOptions: { os: string; link: string }[] = [
         {
-            link: downloadURLs?.mac ?? "",
-            os: "Mac OS"
-        },
-        {
             link: downloadURLs?.linux ?? "",
             os: "Linux"
         },
         {
             link: downloadURLs?.linuxArm ?? "",
             os: "Linux (ARM)"
+        },
+        {
+            link: downloadURLs?.mac ?? "",
+            os: "Mac OS"
         },
         {
             link: downloadURLs?.windows ?? "",

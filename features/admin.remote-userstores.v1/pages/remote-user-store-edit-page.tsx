@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
 import useGetUserStoreDetails from "@wso2is/admin.userstores.v1/api/use-get-user-store-details";
 import { getDatabaseAvatarGraphic } from "@wso2is/admin.userstores.v1/configs/ui";
 import { DISABLED, RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
@@ -27,11 +28,13 @@ import { GenericIcon, Popup, ResourceTab, ResourceTabPaneInterface, TabPageLayou
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
-import { AttributeMappings, SetupGuideTab, UserStoreGeneralSettings } from "../components";
+import { ConfigurationSettings } from "../components/edit/userstore-configuration-settings";
+import { UserStoreGeneralSettings } from "../components/edit/userstore-general-settings";
+import { SetupGuideTab } from "../components/edit/userstore-setup-guide";
 import { RemoteUserStoreConstants } from "../constants";
 import { RemoteUserStoreEditTabIDs } from "../constants/ui-constants";
 
@@ -58,6 +61,12 @@ const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPagePropsInt
     const { t } = useTranslation();
 
     const userStoreId: string = match.params[ "id" ];
+    const remoteUserStoreFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userStores
+    );
+    const hasUserStoreUpdatePermission: boolean = useRequiredScopes(
+        remoteUserStoreFeatureConfig?.scopes?.update
+    );
 
     const [ disabled, setDisabled ] = useState<string>("");
 
@@ -65,7 +74,8 @@ const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPagePropsInt
         data: userStoreDetails,
         isLoading: isUserStoreDetailsRequestLoading,
         error: userStoreDetailsRequestError,
-        remainingRetryCount: userStoreDetailsRequestRemainingRetryCount
+        remainingRetryCount: userStoreDetailsRequestRemainingRetryCount,
+        mutate: mutateUserStoreDetails
     } = useGetUserStoreDetails(userStoreId, !isEmpty(userStoreId));
 
     const userStoreManager: RemoteUserStoreManagerType = userStoreDetails?.typeName as RemoteUserStoreManagerType;
@@ -99,6 +109,16 @@ const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPagePropsInt
         }
     }, [ userStoreDetails ]);
 
+    const isUserStoreDisabled: boolean = disabled === "true";
+
+    const onUserStoreUpdated = (): void => {
+        // Mutate the user store details with a delay as the user store update operation is async
+        // and can be delayed.
+        setTimeout(() => {
+            mutateUserStoreDetails();
+        }, 3000);
+    };
+
     /**
      * The tab panes.
      */
@@ -112,6 +132,7 @@ const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPagePropsInt
                         isUserStoreLoading={ isUserStoreDetailsRequestLoading }
                         userStoreId={ userStoreId }
                         userStoreManager={ userStoreManager }
+                        isUserStoreDisabled={ isUserStoreDisabled }
                     />
                 </ResourceTab.Pane>
             )
@@ -122,11 +143,12 @@ const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPagePropsInt
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserStoreGeneralSettings
-                        isDisabled={ disabled }
+                        isDisabled={ isUserStoreDisabled }
                         userStore={ userStoreDetails }
                         userStoreId={ userStoreId }
                         userStoreManager={ userStoreManager }
                         handleUserStoreDisabled={ (value: string) => setDisabled(value) }
+                        isReadOnly={ !hasUserStoreUpdatePermission }
                     />
                 </ResourceTab.Pane>
             )
@@ -136,7 +158,15 @@ const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPagePropsInt
             menuItem: t("remoteUserStores:pages.edit.tabs.configurations"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <AttributeMappings userStore={ userStoreDetails } userStoreId={ userStoreId } />
+                    <ConfigurationSettings
+                        userStore={ userStoreDetails }
+                        userStoreId={ userStoreId }
+                        userStoreManager={ userStoreManager }
+                        isLoading={ isUserStoreDetailsRequestLoading }
+                        isReadOnly={ !hasUserStoreUpdatePermission }
+                        onUpdate={ onUserStoreUpdated }
+                        isUserStoreDisabled={ isUserStoreDisabled }
+                    />
                 </ResourceTab.Pane>
             )
         }

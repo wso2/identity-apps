@@ -38,6 +38,10 @@ interface GenerateTokenStepPropsInterface extends IdentifiableComponentInterface
      * User store ID.
      */
     userStoreID: string;
+    /**
+     * Whether the user store is disabled.
+     */
+    isUserStoreDisabled: boolean;
 }
 
 /**
@@ -49,6 +53,7 @@ interface GenerateTokenStepPropsInterface extends IdentifiableComponentInterface
 const GenerateTokenStep: FunctionComponent<GenerateTokenStepPropsInterface> = ({
     userStoreManager,
     userStoreID,
+    isUserStoreDisabled,
     ["data-componentid"]: componentId = "generate-token-step"
 }: GenerateTokenStepPropsInterface): ReactElement => {
 
@@ -107,6 +112,7 @@ const GenerateTokenStep: FunctionComponent<GenerateTokenStepPropsInterface> = ({
                 variant="contained"
                 onClick={ handleGenerateToken }
                 loading={ isTokenGenerating }
+                disabled={ isUserStoreDisabled }
                 data-componentid={ `${componentId}-generate-token` }
             >
                 { t("remoteUserStores:pages.edit.guide.steps.token.action") }
