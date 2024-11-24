@@ -88,4 +88,17 @@ export class UIConstants {
      * Display name of the console administrator role.
      */
     public static readonly ADMINISTRATOR_ROLE_DISPLAY_NAME: string = "Administrator";
+
+    /**
+     * Console feature map.
+     *
+     * Some of the API resource names have been changed in the backend since IS 7.0 release
+     * and they are different from the names used in console deployment config. Since it's not
+     * practical to change feature names everytime backend is changed, we have defined this constant
+     * to map new names to the feature names in console deployment config.
+     */
+    public static readonly CONSOLE_FEATURE_MAP: Record<string, string> = {
+        "connections": "identityProviders",
+        "roles": "userRoles"
+    };
 }

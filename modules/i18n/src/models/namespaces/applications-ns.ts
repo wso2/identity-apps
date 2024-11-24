@@ -329,6 +329,7 @@ export interface ApplicationsNS {
                     addWizard: {
                         header: string;
                         subHeading: string;
+                        note: string;
                         steps: {
                             select: {
                                 transfer: {
@@ -1323,6 +1324,11 @@ export interface ApplicationsNS {
                                 invalid: string;
                             };
                         };
+                        accessTokenAttributes: {
+                            hint: string;
+                            label:string;
+                            placeholder: string;
+                        };
                     };
                 };
                 idToken: {
@@ -1401,6 +1407,11 @@ export interface ApplicationsNS {
                                     instruction: string;
                                 },
                                 useClientIdAsSubClaimOfAppTokens: {
+                                    instruction: string;
+                                }
+                            },
+                            version200: {
+                                addAllRequestedClaimsInJWTAccessToken: {
                                     instruction: string;
                                 }
                             }

@@ -1090,6 +1090,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                     floated="right"
                                     onClick={ navigateToNext }
                                     loading={ isBasicDetailsLoading }
+                                    disabled = { isBasicDetailsLoading }
                                 >
                                     { currentWizardStep === wizardSteps.length - 2
                                         ? t("user:modals.addUserWizard.buttons.saveAndContinue")

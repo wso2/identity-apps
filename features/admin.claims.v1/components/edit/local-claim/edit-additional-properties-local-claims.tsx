@@ -16,12 +16,11 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
-import { AppState, FeatureConfigInterface, AppConstants, history } from "@wso2is/admin.core.v1";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, Claim, Property, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DynamicField , KeyValue, useTrigger } from "@wso2is/forms";
 import {
@@ -36,6 +35,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import { updateAClaim } from "../../../api";
+import { ClaimManagementConstants } from "../../../constants";
 
 /**
  * Prop types for `EditAdditionalPropertiesLocalClaims` component
@@ -76,20 +76,26 @@ export const EditAdditionalPropertiesLocalClaims:
 
         const { t } = useTranslation();
 
-        const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
         const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-
-        const isReadOnly: boolean = useMemo(
-            () =>
-                !hasRequiredScopes(
-                    featureConfig?.attributeDialects,
-                    featureConfig?.attributeDialects?.scopes?.update,
-                    allowedScopes
-                ),
-            [ featureConfig, allowedScopes ]
+        const hasAttributeUpdatePermissions: boolean = useRequiredScopes(
+            featureConfig?.attributeDialects?.scopes?.update
         );
 
         const { UIConfig } = useUIConfig();
+
+        const isReadOnly: boolean = !hasAttributeUpdatePermissions;
+
+        const filteredClaimProperties: Property[] = useMemo(() => {
+            if (claim?.properties) {
+                const properties: Property[] = claim.properties.filter((property: Property) => {
+                    return property.key !== ClaimManagementConstants.SYSTEM_CLAIM_PROPERTY_NAME;
+                });
+
+                return properties;
+            }
+
+            return [];
+        }, [ claim ]);
 
         return (
             <EmphasizedSegment>
@@ -126,7 +132,7 @@ export const EditAdditionalPropertiesLocalClaims:
                         <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
                             <p>{ t("claims:local.additionalProperties.hint") }</p>
                             <DynamicField
-                                data={ claim.properties }
+                                data={ filteredClaimProperties }
                                 keyType="text"
                                 keyName={ t("claims:local.additionalProperties.key") }
                                 valueName={ t("claims:local.additionalProperties.value") }

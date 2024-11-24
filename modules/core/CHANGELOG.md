@@ -1,5 +1,23 @@
 # @wso2is/core
 
+## 2.4.3
+
+### Patch Changes
+
+- [#6583](https://github.com/wso2/identity-apps/pull/6583) [`ce35db51c7bbf9fc894b71ecffd52d20413a4dd9`](https://github.com/wso2/identity-apps/commit/ce35db51c7bbf9fc894b71ecffd52d20413a4dd9) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add UI support for multiple email and mobile numbers per user
+
+## 2.4.2
+
+### Patch Changes
+
+- [#7069](https://github.com/wso2/identity-apps/pull/7069) [`10f5bf644f973552f3c3d155fda410b6e071f147`](https://github.com/wso2/identity-apps/commit/10f5bf644f973552f3c3d155fda410b6e071f147) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - remove delete option from default claims and dialects
+
+## 2.4.1
+
+### Patch Changes
+
+- [#6563](https://github.com/wso2/identity-apps/pull/6563) [`4b477833d0178b12ceba5c8623505c33c288b3c6`](https://github.com/wso2/identity-apps/commit/4b477833d0178b12ceba5c8623505c33c288b3c6) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add multi-valued email, mobile support to my account
+
 ## 2.4.0
 
 ### Minor Changes

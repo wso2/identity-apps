@@ -30,6 +30,7 @@ import Checkbox from "@oxygen-ui/react/Checkbox";
 import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon } from "@oxygen-ui/react-icons";
+import { AppState, FeatureConfigInterface, UIConstants } from "@wso2is/admin.core.v1";
 import { CreateRolePermissionInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -46,6 +47,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import useGetAPIResourceCollections from "../../../api/use-get-api-resource-collections";
 import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
 import {
@@ -114,6 +116,8 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         "apiResources"
     );
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
     const [ expandedAccordions, setExpandedAccordions ] = useState<string[]>([]);
     const [ selectedPermissions, setSelectedPermissions ] = useState<SelectedPermissionsInterface>(initialValues || {
         organization: {},
@@ -155,14 +159,18 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
             cloneDeep(tenantAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
 
-
         filteringAPIResourceCollectionNames.push(
             ConsoleRolesOnboardingConstants.ROLE_V1_API_RESOURCES_COLLECTION_NAME);
 
         clonedTenantAPIResourceCollections.apiResourceCollections =
                 clonedTenantAPIResourceCollections?.apiResourceCollections?.filter(
                     (item: APIResourceCollectionInterface) =>
-                        !filteringAPIResourceCollectionNames.includes(item?.name)
+                        !filteringAPIResourceCollectionNames.includes(item?.name) &&
+                        (
+                            featureConfig?.[item?.name]?.enabled
+                            || featureConfig?.[UIConstants.CONSOLE_FEATURE_MAP[item?.name]]?.enabled
+                        )
+
                 );
 
         return clonedTenantAPIResourceCollections;
@@ -410,7 +418,8 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                                             )
                                                         }
                                                         inputProps={ {
-                                                            "aria-label": `Select ${collection.displayName} permission`
+                                                            "aria-label":
+                                                                    `Select ${collection.displayName} permission`
                                                         } }
                                                     />
                                                 </TableCell>
@@ -424,7 +433,10 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                                             Object.keys(selectedPermissions.tenant).includes(
                                                                 collection.id
                                                             )
-                                                                ? get(selectedPermissions.tenant, collection.id)?.write
+                                                                ? get(
+                                                                    selectedPermissions.tenant,
+                                                                    collection.id
+                                                                )?.write
                                                                     ? "write"
                                                                     : "read"
                                                                 : null

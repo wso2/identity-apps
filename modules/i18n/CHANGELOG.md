@@ -1,5 +1,66 @@
 # @wso2is/i18n
 
+## 2.12.3
+
+### Patch Changes
+
+- [#6583](https://github.com/wso2/identity-apps/pull/6583) [`ce35db51c7bbf9fc894b71ecffd52d20413a4dd9`](https://github.com/wso2/identity-apps/commit/ce35db51c7bbf9fc894b71ecffd52d20413a4dd9) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add UI support for multiple email and mobile numbers per user
+
+- Updated dependencies [[`ce35db51c7bbf9fc894b71ecffd52d20413a4dd9`](https://github.com/wso2/identity-apps/commit/ce35db51c7bbf9fc894b71ecffd52d20413a4dd9)]:
+  - @wso2is/core@2.4.3
+
+## 2.12.2
+
+### Patch Changes
+
+- Updated dependencies [[`10f5bf644f973552f3c3d155fda410b6e071f147`](https://github.com/wso2/identity-apps/commit/10f5bf644f973552f3c3d155fda410b6e071f147)]:
+  - @wso2is/core@2.4.2
+
+## 2.12.1
+
+### Patch Changes
+
+- [#7124](https://github.com/wso2/identity-apps/pull/7124) [`8773370130811defa922868d08c4f1ac1e006eda`](https://github.com/wso2/identity-apps/commit/8773370130811defa922868d08c4f1ac1e006eda) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Introduce enable for user store config in attribute mappings
+
+## 2.12.0
+
+### Minor Changes
+
+- [#7005](https://github.com/wso2/identity-apps/pull/7005) [`825c12b034fa8db01857a10b3fb9ff36314bce1a`](https://github.com/wso2/identity-apps/commit/825c12b034fa8db01857a10b3fb9ff36314bce1a) Thanks [@Malith-19](https://github.com/Malith-19)! - Add the username recovery multiple channel support with branding.
+
+## 2.11.0
+
+### Minor Changes
+
+- [#7120](https://github.com/wso2/identity-apps/pull/7120) [`7e2588d91b8c20927219c6e6fa36daf87a18a0f6`](https://github.com/wso2/identity-apps/commit/7e2588d91b8c20927219c6e6fa36daf87a18a0f6) Thanks [@brionmario](https://github.com/brionmario)! - Add search capabilities to Tenant listing UI
+
+## 2.10.6
+
+### Patch Changes
+
+- [#6993](https://github.com/wso2/identity-apps/pull/6993) [`33dbbd9f8461a6a2001aa8a8189a48d24991e87b`](https://github.com/wso2/identity-apps/commit/33dbbd9f8461a6a2001aa8a8189a48d24991e87b) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add Access Token Attributes
+
+## 2.10.5
+
+### Patch Changes
+
+- [#6563](https://github.com/wso2/identity-apps/pull/6563) [`4b477833d0178b12ceba5c8623505c33c288b3c6`](https://github.com/wso2/identity-apps/commit/4b477833d0178b12ceba5c8623505c33c288b3c6) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add multi-valued email, mobile support to my account
+
+- Updated dependencies [[`4b477833d0178b12ceba5c8623505c33c288b3c6`](https://github.com/wso2/identity-apps/commit/4b477833d0178b12ceba5c8623505c33c288b3c6)]:
+  - @wso2is/core@2.4.1
+
+## 2.10.4
+
+### Patch Changes
+
+- [#7093](https://github.com/wso2/identity-apps/pull/7093) [`526596d57622f00f332376ee9a1414c166a7bfd2`](https://github.com/wso2/identity-apps/commit/526596d57622f00f332376ee9a1414c166a7bfd2) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Implement displaying locked account reason in user profile
+
+## 2.10.3
+
+### Patch Changes
+
+- [#7078](https://github.com/wso2/identity-apps/pull/7078) [`062fb7ee176b7a96a580fbd7171bf94db99c4d2e`](https://github.com/wso2/identity-apps/commit/062fb7ee176b7a96a580fbd7171bf94db99c4d2e) Thanks [@Sachin-Mamoru](https://github.com/Sachin-Mamoru)! - update secret management script editor placeholder
+
 ## 2.10.2
 
 ### Patch Changes

@@ -1,5 +1,58 @@
 # @wso2is/identity-apps-core
 
+## 2.8.2
+
+### Patch Changes
+
+- [#6746](https://github.com/wso2/identity-apps/pull/6746) [`b9fd57f731822372db9211ee346627c4ad9de0eb`](https://github.com/wso2/identity-apps/commit/b9fd57f731822372db9211ee346627c4ad9de0eb) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add spotbugs plugin to identity-apps-core
+
+## 2.8.1
+
+### Patch Changes
+
+- [#7130](https://github.com/wso2/identity-apps/pull/7130) [`08669ad434c35921e0a8c502adc2dd37ec600d3c`](https://github.com/wso2/identity-apps/commit/08669ad434c35921e0a8c502adc2dd37ec600d3c) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix incorrect french translations in UI
+
+## 2.8.0
+
+### Minor Changes
+
+- [#7005](https://github.com/wso2/identity-apps/pull/7005) [`825c12b034fa8db01857a10b3fb9ff36314bce1a`](https://github.com/wso2/identity-apps/commit/825c12b034fa8db01857a10b3fb9ff36314bce1a) Thanks [@Malith-19](https://github.com/Malith-19)! - Add the username recovery multiple channel support with branding.
+
+## 2.7.8
+
+### Patch Changes
+
+- Updated dependencies [[`cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453`](https://github.com/wso2/identity-apps/commit/cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453)]:
+  - @wso2is/theme@2.4.3
+
+## 2.7.7
+
+### Patch Changes
+
+- Updated dependencies [[`7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70`](https://github.com/wso2/identity-apps/commit/7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70)]:
+  - @wso2is/theme@2.4.2
+
+## 2.7.6
+
+### Patch Changes
+
+- [#7098](https://github.com/wso2/identity-apps/pull/7098) [`252656fabda8b35f6e52fb8834dab91be9dbaaf2`](https://github.com/wso2/identity-apps/commit/252656fabda8b35f6e52fb8834dab91be9dbaaf2) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue in the self-registration flow when the email address is configured as a unique value
+
+## 2.7.5
+
+### Patch Changes
+
+- Updated dependencies [[`33dbbd9f8461a6a2001aa8a8189a48d24991e87b`](https://github.com/wso2/identity-apps/commit/33dbbd9f8461a6a2001aa8a8189a48d24991e87b)]:
+  - @wso2is/theme@2.4.1
+
+## 2.7.4
+
+### Patch Changes
+
+- [#7097](https://github.com/wso2/identity-apps/pull/7097) [`4cb70f7fea193b10a2e3ccf6ec74d0496de470e9`](https://github.com/wso2/identity-apps/commit/4cb70f7fea193b10a2e3ccf6ec74d0496de470e9) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Hide username filed with deployment.toml change
+
+* [#7095](https://github.com/wso2/identity-apps/pull/7095) [`dda31e60b1a56e3226b32e8c068c9bacc3c7cea6`](https://github.com/wso2/identity-apps/commit/dda31e60b1a56e3226b32e8c068c9bacc3c7cea6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix incorrect i18n key for app disabled error message
+
 ## 2.7.3
 
 ### Patch Changes

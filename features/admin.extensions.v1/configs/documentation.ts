@@ -153,6 +153,11 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                                 useClientIdAsSubClaimOfAppTokens: {
                                     documentationLink: undefined
                                 }
+                            },
+                            version200: {
+                                addAllRequestedClaimsInJWTAccessToken: {
+                                    documentationLink: undefined
+                                }
                             }
                         }
                     },
@@ -387,6 +392,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 passwordRecovery: {
                     learnMore: undefined
                 }
+            },
+            administrators: {
+                learnMore: undefined
             },
             attributes: {
                 attributes: {

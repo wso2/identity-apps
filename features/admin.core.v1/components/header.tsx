@@ -88,14 +88,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
         (state: AppState) => state.config.deployment.accountApp.tenantQualifiedPath
     );
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
-    const organizationFeatureConfig: FeatureAccessConfigInterface =
-        useSelector((state: AppState) => state.config.ui.features.organizations);
     const gettingStartedFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state.config.ui.features.gettingStarted);
     const scopes: string = useSelector((state: AppState) => state.auth.allowedScopes);
     const userOrganizationID: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
 
-    const hasOrganizationReadPermission: boolean =useRequiredScopes(organizationFeatureConfig?.scopes?.read);
     const hasGettingStartedViewPermission: boolean = useRequiredScopes(
         gettingStartedFeatureConfig?.scopes?.feature
     );
@@ -150,8 +147,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
         (organizationType === OrganizationType.SUPER_ORGANIZATION ||
             organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
             organizationType === OrganizationType.SUBORGANIZATION ||
-            organizationConfigs.showSwitcherInTenants) && hasOrganizationReadPermission
-    ), [ tenantDomain, hasOrganizationReadPermission, organizationType, scopes ]);
+            organizationConfigs.showSwitcherInTenants)
+    ), [ tenantDomain, organizationType, scopes ]);
 
     const resolveUsername = (): string => {
         if (profileInfo?.name?.givenName) {

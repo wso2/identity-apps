@@ -520,6 +520,8 @@ export interface ClaimsNS {
         };
         mappedAttributes: {
             hint: string;
+            mappedAttributeName: string;
+            enableForUserStore: string;
         };
     };
     list: {

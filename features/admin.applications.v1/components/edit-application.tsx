@@ -229,6 +229,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     const handleApplicationUpdate = (id: string): void => {
         setIsApplicationUpdated(true);
+        handleProtocolUpdate();
         onUpdate(id);
     };
 
@@ -589,6 +590,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         <ResourceTab.Pane controlledSegmentation>
             <AttributeSettings
                 appId={ application.id }
+                appVersion={ application?.applicationVersion }
                 technology={ application.inboundProtocols }
                 claimConfigurations={ application.claimConfiguration }
                 featureConfig={ featureConfig }

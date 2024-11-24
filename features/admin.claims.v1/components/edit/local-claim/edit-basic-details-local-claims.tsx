@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
@@ -32,7 +32,6 @@ import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -42,6 +41,7 @@ import {
     TestableComponentInterface,
     UniquenessScope
 } from "@wso2is/core/models";
+import { Property } from "@wso2is/core/src/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import {
@@ -127,11 +127,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const hasAttributeUpdatePermissions: boolean = useRequiredScopes(featureConfig?.attributeDialects?.scopes?.update);
     const [ hideSpecialClaims, setHideSpecialClaims ] = useState<boolean>(true);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
     const [ accountVerificationEnabled, setAccountVerificationEnabled ] = useState<boolean>(false);
     const [ selfRegistrationEnabled, setSelfRegistrationEnabledEnabled ] = useState<boolean>(false);
+    const [ isSystemClaim, setIsSystemClaim ] = useState<boolean>(false);
 
     const { t } = useTranslation();
 
@@ -188,6 +190,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         else {
             setHideSpecialClaims(true);
         }
+
+        setIsSystemClaim(
+            claim?.properties?.some((property: Property) =>
+                property.key === ClaimManagementConstants.SYSTEM_CLAIM_PROPERTY_NAME
+                && property.value === "true"
+            )
+        );
     }, [ claim, usernameConfig ]);
 
     useEffect(() => {
@@ -322,8 +331,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         if (hideSpecialClaims) {
             return true;
         } else {
-            return !hasRequiredScopes(
-                featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes);
+            return !hasAttributeUpdatePermissions;
         }
     }, [ featureConfig, allowedScopes, hideSpecialClaims ]);
 
@@ -792,6 +800,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
                 && !hideSpecialClaims
                 && claim.claimURI !== ClaimManagementConstants.EMAIL_CLAIM_URI
+                && !isSystemClaim
                 && (
                     <Show
                         when={ featureConfig?.attributeDialects?.scopes?.delete }

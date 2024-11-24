@@ -39,6 +39,15 @@ export interface UserStoreListItem {
 }
 
 /**
+ * User store basic details object.
+ */
+export interface UserStoreBasicData {
+    id: string;
+    name: string;
+    enabled?: boolean;
+}
+
+/**
  * Type of userstore list item passed as options to dropdown fields.
  */
 export interface UserStoreDropdownItem {

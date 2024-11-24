@@ -270,7 +270,10 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         PreviewScreenType.TOTP,
         PreviewScreenType.PASSWORD_RECOVERY,
         PreviewScreenType.PASSWORD_RESET,
-        PreviewScreenType.PASSWORD_RESET_SUCCESS
+        PreviewScreenType.PASSWORD_RESET_SUCCESS,
+        PreviewScreenType.USERNAME_RECOVERY_CLAIM,
+        PreviewScreenType.USERNAME_RECOVERY_CHANNEL_SELECTION,
+        PreviewScreenType.USERNAME_RECOVERY_SUCCESS
     ];
 
     const resolvePreviewScreen = (): ReactElement => {
