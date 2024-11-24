@@ -66,6 +66,10 @@ export const EditAdditionalPropertiesLocalClaims:
 
         const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
+        const RESTRICTED_PROPERTY_KEYS: string[] = [ "isUnique" ];
+
+        const [ showWarning, setShowWarning ] = useState<boolean>(false);
+
         const [ submit, setSubmit ] = useTrigger();
 
         const dispatch: Dispatch = useDispatch();
@@ -84,10 +88,6 @@ export const EditAdditionalPropertiesLocalClaims:
                 ),
             [ featureConfig, allowedScopes ]
         );
-
-        const RESTRICTED_PROPERTY_KEYS: string[] = [ "isUnique" ];
-
-        const [ showWarning, setShowWarning ] = useState<boolean>(false);
 
         const { UIConfig } = useUIConfig();
 
@@ -147,10 +147,6 @@ export const EditAdditionalPropertiesLocalClaims:
 
                                     setShowWarning(hasRestrictedKey);
 
-                                    const filteredData: KeyValue[] = data.filter(
-                                        (item: KeyValue) => item.key !== RESTRICTED_PROPERTY_KEYS[0]
-                                    );
-
                                     if (hasRestrictedKey) {
                                         return;
                                     }
@@ -161,7 +157,7 @@ export const EditAdditionalPropertiesLocalClaims:
                                     delete claimData.dialectURI;
                                     const submitData: Claim = {
                                         ...claimData,
-                                        properties: [ ...filteredData ]
+                                        properties: [ ...data ]
                                     };
 
                                     setIsSubmitting(true);
