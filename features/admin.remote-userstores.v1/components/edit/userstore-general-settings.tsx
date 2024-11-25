@@ -111,8 +111,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
     const { getLink } = useDocumentation();
     const { isMobileViewport } = useMediaContext();
 
-    const AGENT_CONNECTION_DESCRIPTION: string =
-        "Users with an account in this user store connected via this agent, " +
+    const AGENT_CONNECTION_DESCRIPTION: string = "Users with an account in this user store connected via this agent, " +
         "can sign in to the My Account and other business applications registered in the organization.";
 
     const [ agentIndex, setAgentIndex ] = useState<number>(null);
