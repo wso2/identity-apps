@@ -86,13 +86,17 @@ export const SetupGuideTab: FunctionComponent<SetupGuideTabPropsInterface> = (
         };
     } = useSelector((state: AppState) => state.config?.deployment?.extensions?.userStoreAgentUrls);
 
+    // Deprecated onPrem agent URL will be used as a fallback.
+    const deprecatedOnPremAgentURL: string = useSelector(
+        (state: AppState) => state.config?.deployment?.extensions?.userStoreAgentUrl);
+
     const setupGuideSteps: VerticalStepperStepInterface[] = [
         {
             stepContent:
                 userStoreManager === RemoteUserStoreManagerType.RemoteUserStoreManager ? (
                     <RemoteDownloadAgentStep downloadURLs={ agentDownloadURLs?.remote } />
                 ) : (
-                    <OnPremDownloadAgentStep downloadURL={ agentDownloadURLs?.onPrem } />
+                    <OnPremDownloadAgentStep downloadURL={ agentDownloadURLs?.onPrem ?? deprecatedOnPremAgentURL } />
                 ),
             stepTitle: t("remoteUserStores:pages.edit.guide.steps.download.heading")
         },

@@ -24,7 +24,7 @@ import useRequest, {
 import { store } from "@wso2is/admin.core.v1/store";
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
 import { HttpMethods } from "@wso2is/core/models";
-import { AgentConnectionInterface } from "../models";
+import { AgentConnectionInterface } from "../models/remote-user-stores";
 
 /**
  * Hook to get connections list of a user store.

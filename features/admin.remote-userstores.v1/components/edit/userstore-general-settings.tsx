@@ -27,7 +27,6 @@ import { FormValue } from "@wso2is/form";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import {
     ConfirmationModal,
-    ContentLoader,
     CopyInputField,
     DangerZone,
     DangerZoneGroup,
@@ -48,7 +47,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, CheckboxProps, Divider, Grid, Icon, List, Segment } from "semantic-ui-react";
-import { disconnectAgentConnection, generateToken, regenerateToken } from "../../api";
+import { disconnectAgentConnection, generateToken, regenerateToken } from "../../api/remote-user-stores";
 import useGetUserStoreAgentConnections from "../../api/use-get-user-store-agent-connections";
 import {
     RemoteUserStoreConstants,
@@ -583,197 +582,193 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
 
     return (
         <>
-            { !isAgentConnectionsRequestLoading ? (
-                <EmphasizedSegment padded="very">
-                    <Grid>
-                        <Grid.Row>
-                            <Grid.Column width={ 6 }>
-                                <Forms
-                                    onSubmit={ (values: Map<string, FormValue>) => {
-                                        handleUpdateDescription(values);
-                                    } }
-                                >
-                                    <Field
-                                        requiredErrorMessage={ null }
-                                        type="text"
-                                        name="description"
-                                        label="Description"
-                                        required={ false }
-                                        placeholder="Enter the description of the user store"
-                                        maxLength={ 300 }
-                                        minLength={ 3 }
-                                        width={ 14 }
-                                        data-testid={ `${componentId}-user-store-description-textarea` }
-                                        value={ userStore?.description ? userStore?.description : "" }
-                                        validation={ (value: string, validation: Validation) => {
-                                            let isMatch: boolean = true;
-                                            let validationErrorMessage: string;
+            <EmphasizedSegment padded="very">
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column width={ 6 }>
+                            <Forms
+                                onSubmit={ (values: Map<string, FormValue>) => {
+                                    handleUpdateDescription(values);
+                                } }
+                            >
+                                <Field
+                                    requiredErrorMessage={ null }
+                                    type="text"
+                                    name="description"
+                                    label="Description"
+                                    required={ false }
+                                    placeholder="Enter the description of the user store"
+                                    maxLength={ 300 }
+                                    minLength={ 3 }
+                                    width={ 14 }
+                                    data-testid={ `${componentId}-user-store-description-textarea` }
+                                    value={ userStore?.description ? userStore?.description : "" }
+                                    validation={ (value: string, validation: Validation) => {
+                                        let isMatch: boolean = true;
+                                        let validationErrorMessage: string;
 
-                                            const validityResult: Map<
+                                        const validityResult: Map<
                                                 string,
                                                 string | boolean
                                             > = validateInputWithRegex(
                                                 value,
                                                 USERSTORE_VALIDATION_REGEX_PATTERNS.EscapeRegEx
                                             );
-                                            const validationMatch: boolean =
+                                        const validationMatch: boolean =
                                                 validityResult.get("isMatch").toString() === "true";
 
-                                            if (validationMatch) {
-                                                isMatch = false;
-                                                const invalidString: string = validityResult
-                                                    .get("invalidStringValue")
-                                                    .toString();
+                                        if (validationMatch) {
+                                            isMatch = false;
+                                            const invalidString: string = validityResult
+                                                .get("invalidStringValue")
+                                                .toString();
 
-                                                validationErrorMessage = t(
-                                                    "console:manage.features.userstores.forms.general.description" +
+                                            validationErrorMessage = t(
+                                                "console:manage.features.userstores.forms.general.description" +
                                                         ".validationErrorMessages.invalidInputErrorMessage",
-                                                    {
-                                                        invalidString: invalidString
-                                                    }
-                                                );
-                                            } else {
-                                                isMatch = true;
-                                            }
+                                                {
+                                                    invalidString: invalidString
+                                                }
+                                            );
+                                        } else {
+                                            isMatch = true;
+                                        }
 
-                                            if (!isMatch) {
-                                                validation.isValid = false;
-                                                validation.errorMessages.push(validationErrorMessage);
+                                        if (!isMatch) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(validationErrorMessage);
+                                        }
+                                    } }
+                                    readOnly={ isReadOnly }
+                                />
+                                <Popup
+                                    trigger={
+                                        (<div
+                                            className={
+                                                isMobileViewport
+                                                    ? "mb-1x mt-1x inline-button button-width"
+                                                    : "inline-button"
                                             }
-                                        } }
-                                        readOnly={ isReadOnly }
-                                    />
-                                    <Popup
-                                        trigger={
-                                            (<div
-                                                className={
-                                                    isMobileViewport
-                                                        ? "mb-1x mt-1x inline-button button-width"
-                                                        : "inline-button"
+                                        >
+                                            <PrimaryButton
+                                                type="submit"
+                                                disabled={
+                                                    !(
+                                                        userStore?.properties?.find(
+                                                            (property: UserStoreProperty) =>
+                                                                property.name === DISABLED
+                                                        )?.value === "false"
+                                                    ) || isReadOnly
                                                 }
                                             >
-                                                <PrimaryButton
-                                                    type="submit"
-                                                    disabled={
-                                                        !(
-                                                            userStore?.properties?.find(
-                                                                (property: UserStoreProperty) =>
-                                                                    property.name === DISABLED
-                                                            )?.value === "false"
-                                                        ) || isReadOnly
-                                                    }
-                                                >
-                                                    { t("common:update") }
-                                                </PrimaryButton>
-                                            </div>)
-                                        }
-                                        content={ t(
-                                            "extensions:manage.features.userStores.edit." +
+                                                { t("common:update") }
+                                            </PrimaryButton>
+                                        </div>)
+                                    }
+                                    content={ t(
+                                        "extensions:manage.features.userStores.edit." +
                                                 "general.disable.buttonDisableHint"
-                                        ) }
-                                        size="mini"
-                                        wide
-                                        disabled={
-                                            !!(
-                                                userStore?.properties?.find(
-                                                    (property: UserStoreProperty) => property.name === DISABLED
-                                                )?.value === "false"
-                                            )
-                                        }
-                                    />
-                                </Forms>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                    <Divider hidden />
-                    <Divider />
-                    <Divider hidden />
+                                    ) }
+                                    size="mini"
+                                    wide
+                                    disabled={
+                                        !!(
+                                            userStore?.properties?.find(
+                                                (property: UserStoreProperty) => property.name === DISABLED
+                                            )?.value === "false"
+                                        )
+                                    }
+                                />
+                            </Forms>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+                <Divider hidden />
+                <Divider />
+                <Divider hidden />
 
-                    <Heading as="h4">User Store Agent Connection(s)</Heading>
-                    <Segment className="agent-connections-section" padded="very">
-                        { isAgentConnectionsRequestLoading && renderLoadingSkeleton() }
-                        { !isAgentConnectionsRequestLoading &&
+                <Heading as="h4">User Store Agent Connection(s)</Heading>
+                <Segment className="agent-connections-section" padded="very">
+                    { isAgentConnectionsRequestLoading && renderLoadingSkeleton() }
+                    { !isAgentConnectionsRequestLoading &&
                             (!agentConnections || agentConnections.length === 0) &&
                             renderEmptyPlaceholder() }
-                        { !isAgentConnectionsRequestLoading && agentConnections?.length > 0 && (
-                            <List divided verticalAlign="middle" relaxed="very" width={ 10 }>
-                                { agentConnections.map((connection: AgentConnectionInterface, index: number) => (
-                                    <List.Item key={ index } columns={ 2 } verticalAlign="middle">
-                                        <List.Content floated="right">
-                                            { connection?.connected ? (
-                                                <Button
-                                                    basic
-                                                    color="red"
-                                                    onClick={ () => {
-                                                        setDisconnectingAgentConnection(connection);
-                                                        setShowDisconnectConfirmationModal(true);
-                                                    } }
-                                                    disabled={ isReadOnly }
-                                                >
-                                                    Disconnect
-                                                </Button>
-                                            ) : null }
+                    { !isAgentConnectionsRequestLoading && agentConnections?.length > 0 && (
+                        <List divided verticalAlign="middle" relaxed="very" width={ 10 }>
+                            { agentConnections.map((connection: AgentConnectionInterface, index: number) => (
+                                <List.Item key={ index } columns={ 2 } verticalAlign="middle">
+                                    <List.Content floated="right">
+                                        { connection?.connected ? (
                                             <Button
-                                                className="ml-4"
-                                                color={ connection.connected ? "red" : "orange" }
+                                                basic
+                                                color="red"
                                                 onClick={ () => {
-                                                    setAgentIndex(index);
-                                                    setRegeneratingAgentConnection(connection);
-                                                    setShowRegenerateConfirmationModal(true);
+                                                    setDisconnectingAgentConnection(connection);
+                                                    setShowDisconnectConfirmationModal(true);
                                                 } }
-                                                disabled={ isReadOnly || isDisabled }
+                                                disabled={ isReadOnly }
                                             >
+                                                    Disconnect
+                                            </Button>
+                                        ) : null }
+                                        <Button
+                                            className="ml-4"
+                                            color={ connection.connected ? "red" : "orange" }
+                                            onClick={ () => {
+                                                setAgentIndex(index);
+                                                setRegeneratingAgentConnection(connection);
+                                                setShowRegenerateConfirmationModal(true);
+                                            } }
+                                            disabled={ isReadOnly || isDisabled }
+                                        >
                                                 Regenerate token
-                                            </Button>
-                                        </List.Content>
-                                        <List.Content>
-                                            <List.Header>
-                                                { resolveConnectionStatusIcon(connection?.connected) }
-                                                <strong>{ connection?.agent?.displayName }</strong>
-                                            </List.Header>
-                                            <List.Description className="mt-2 ml-1">
-                                                { AGENT_CONNECTION_DESCRIPTION }
-                                            </List.Description>
-                                        </List.Content>
-                                    </List.Item>
-                                )) }
-                                { agentConnections.length === 1 && (
-                                    <List.Item columns={ 2 } verticalAlign="middle">
-                                        <List.Content floated="right">
-                                            <Button
-                                                color="orange"
-                                                onClick={ handleGenerateToken }
-                                                disabled={ isReadOnly || isDisabled }
-                                            >
+                                        </Button>
+                                    </List.Content>
+                                    <List.Content>
+                                        <List.Header>
+                                            { resolveConnectionStatusIcon(connection?.connected) }
+                                            <strong>{ connection?.agent?.displayName }</strong>
+                                        </List.Header>
+                                        <List.Description className="mt-2 ml-1">
+                                            { AGENT_CONNECTION_DESCRIPTION }
+                                        </List.Description>
+                                    </List.Content>
+                                </List.Item>
+                            )) }
+                            { agentConnections.length === 1 && (
+                                <List.Item columns={ 2 } verticalAlign="middle">
+                                    <List.Content floated="right">
+                                        <Button
+                                            color="orange"
+                                            onClick={ handleGenerateToken }
+                                            disabled={ isReadOnly || isDisabled }
+                                        >
                                                 Generate token
-                                            </Button>
-                                        </List.Content>
-                                        <List.Content>
-                                            <List.Header>
-                                                <Icon name="times circle" color="red" className="mr-1" />
-                                                <strong>On-Prem-Agent-2</strong>
-                                            </List.Header>
-                                            <List.Description className="mt-2 ml-1">
-                                                { t(
-                                                    "extensions:manage.features.userStores.edit." +
+                                        </Button>
+                                    </List.Content>
+                                    <List.Content>
+                                        <List.Header>
+                                            <Icon name="times circle" color="red" className="mr-1" />
+                                            <strong>On-Prem-Agent-2</strong>
+                                        </List.Header>
+                                        <List.Description className="mt-2 ml-1">
+                                            { t(
+                                                "extensions:manage.features.userStores.edit." +
                                                         "general.connectionsSections.agents.agentTwo.description"
-                                                ) }
-                                                <DocumentationLink
-                                                    link={ getLink("manage.userStores.highAvailability.learnMore") }
-                                                >
-                                                    { t("extensions:common.learnMore") }
-                                                </DocumentationLink>
-                                            </List.Description>
-                                        </List.Content>
-                                    </List.Item>
-                                ) }
-                            </List>
-                        ) }
-                    </Segment>
-                </EmphasizedSegment>
-            ) : (
-                <ContentLoader />
-            ) }
+                                            ) }
+                                            <DocumentationLink
+                                                link={ getLink("manage.userStores.highAvailability.learnMore") }
+                                            >
+                                                { t("extensions:common.learnMore") }
+                                            </DocumentationLink>
+                                        </List.Description>
+                                    </List.Content>
+                                </List.Item>
+                            ) }
+                        </List>
+                    ) }
+                </Segment>
+            </EmphasizedSegment>
             <Divider hidden />
             <Divider hidden />
             { disconnectingAgentConnection && (

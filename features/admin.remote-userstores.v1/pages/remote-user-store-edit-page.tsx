@@ -35,7 +35,7 @@ import { Icon } from "semantic-ui-react";
 import { ConfigurationSettings } from "../components/edit/userstore-configuration-settings";
 import { UserStoreGeneralSettings } from "../components/edit/userstore-general-settings";
 import { SetupGuideTab } from "../components/edit/userstore-setup-guide";
-import { RemoteUserStoreConstants } from "../constants";
+import { RemoteUserStoreConstants } from "../constants/remote-user-stores-constants";
 import { RemoteUserStoreEditTabIDs } from "../constants/ui-constants";
 
 /**

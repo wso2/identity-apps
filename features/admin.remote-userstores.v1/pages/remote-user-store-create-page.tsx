@@ -59,7 +59,7 @@ import {
     RemoteUserStoreAccessTypes,
     RemoteUserStoreConstants,
     UserStoresFeatureDictionaryKeys
-} from "../constants";
+} from "../constants/remote-user-stores-constants";
 import { RemoteUserStoreImplType, RemoteUserStoreUIConstants } from "../constants/ui-constants";
 import {
     ConfigurationsFormValuesInterface,
@@ -232,8 +232,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
                             .get("USERSTORES_EDIT")
                             .replace(":id", response.id)
                             .replace("edit-user-store", userstoresConfig.userstoreEdit.remoteUserStoreEditPath) +
-                        "#tab=1",
-                    search: "?isNew=true"
+                        "#tab=guide"
                 });
             })
             .catch((error: AxiosError) => {

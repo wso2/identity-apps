@@ -22,7 +22,7 @@ import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request"
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { GenerateTokenResponseInterface, RegenerateTokenPayloadInterface } from "../models";
+import { GenerateTokenResponseInterface, RegenerateTokenPayloadInterface } from "../models/remote-user-stores";
 
 /**
  * The error code that is returned when there is no item in the list.

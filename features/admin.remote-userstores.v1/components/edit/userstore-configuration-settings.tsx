@@ -54,7 +54,7 @@ import CustomAttributeMappings from "./configurations/custom-attributes";
 import GroupAttributesSection from "./configurations/group-attributes";
 import LocalAttributeMappings from "./configurations/local-attributes";
 import UserAttributesSection from "./configurations/user-attributes";
-import { RemoteUserStoreConstants } from "../../constants";
+import { RemoteUserStoreConstants } from "../../constants/remote-user-stores-constants";
 import "./userstore-configuration-settings.scss";
 
 /**
