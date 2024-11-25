@@ -1362,7 +1362,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         || allowDeleteOnly
                         || isUserManagedByParentOrg
                         || user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
-                    ) && (!isCurrentUserAdmin || !isUserCurrentLoggedInUser) ? (
+                    ) && (
+                        !isCurrentUserAdmin
+                        || !isUserCurrentLoggedInUser
+                    ) ? (
                             <Show
                                 when={ featureConfig?.users?.scopes?.delete }
                             >
