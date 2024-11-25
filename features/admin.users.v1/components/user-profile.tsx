@@ -1357,8 +1357,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         return (
             <>
                 {
-                    (!isReadOnly || allowDeleteOnly || isUserManagedByParentOrg)
-                    && (!isCurrentUserAdmin || !isUserCurrentLoggedInUser) ? (
+                    (
+                        !isReadOnly
+                        || allowDeleteOnly
+                        || isUserManagedByParentOrg
+                        || user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
+                    ) && (!isCurrentUserAdmin || !isUserCurrentLoggedInUser) ? (
                             <Show
                                 when={ featureConfig?.users?.scopes?.delete }
                             >
@@ -1371,7 +1375,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             !isReadOnlyUserStore &&
                                             !isUserManagedByParentOrg &&
                                             user.userName !== adminUsername
-                                            && !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
                                         ) ? (
                                                 <Show when={ featureConfig?.users?.scopes?.update }>
                                                     <DangerZone

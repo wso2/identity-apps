@@ -115,6 +115,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         if (!isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
             || readOnlyUserStores?.includes(userStore?.toString())
             || !hasUsersUpdatePermissions
+            || user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
         ) {
             setReadOnly(true);
         }
