@@ -31,7 +31,7 @@
         "@mui/system": "^5.12.3",
         "@mui/utils": "^5.12.3",
         "@oxygen-ui/react": "^1.15.2",
-        "@wso2is/admin.authentication-flow-builder-core.v1": "workspace:^",
+        "@wso2is/admin.registration-flow-builder.v1": "workspace:^",
         "@wso2is/core": "workspace:^",
         "i18next": "^21.9.1",
         "react-i18next": "^11.18.5",

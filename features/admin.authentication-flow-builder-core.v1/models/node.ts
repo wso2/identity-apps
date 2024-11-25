@@ -16,7 +16,14 @@
  * under the License.
  */
 
-import { Component } from "./component";
-import { Node } from "./node";
+import { Base } from "./base";
 
-export type SupportedCanvasNodes = Component | Node;
+/**
+ * Interface for a Node.
+ */
+export type Node = Base;
+
+export enum NodeTypes {
+    Step = "STEP",
+    Rule = "RULE"
+}

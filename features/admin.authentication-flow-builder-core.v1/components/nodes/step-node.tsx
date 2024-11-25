@@ -17,33 +17,53 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
+import FormGroup from "@oxygen-ui/react/FormGroup";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Handle, Node, Position } from "@xyflow/react";
+import { Handle, Node, Position, useNodeId, useReactFlow } from "@xyflow/react";
 import React, {
     DragEvent,
     FunctionComponent,
     MouseEvent,
     MutableRefObject,
     ReactElement,
+    SVGProps,
     useCallback,
     useRef,
     useState
 } from "react";
-import NodeFactory from "./node-factory";
-import { Component } from "../../models/components";
+import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
+import { Component } from "../../models/component";
 import "./step-node.scss";
 
 /**
  * Props interface of {@link StepNode}
  */
 export interface StepNodePropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Index of the step.
+     */
     stepIndex: number;
 }
+
+// TODO: Move this to Oxygen UI.
+/* eslint-disable max-len */
+const GridDotsVerticalIcon = ({ ...rest }: SVGProps<SVGSVGElement>): ReactElement => (
+    <svg fill="#a0a0a0" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg" { ...rest }>
+        <g id="SVGRepo_bgCarrier" strokeWidth="0" />
+        <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" />
+        <g id="SVGRepo_iconCarrier">
+            <path
+                d="M686.211 137.143v-.137l68.572.137H686.21Zm0 1508.571c75.566 0 137.143 61.577 137.143 137.143S761.777 1920 686.211 1920c-75.702 0-137.142-61.577-137.142-137.143s61.44-137.143 137.142-137.143Zm548.572 0c75.566 0 137.143 61.577 137.143 137.143S1310.349 1920 1234.783 1920c-75.703 0-137.143-61.577-137.143-137.143s61.44-137.143 137.143-137.143ZM686.21 1097.143c75.566 0 137.143 61.577 137.143 137.143 0 75.565-61.577 137.143-137.143 137.143-75.702 0-137.142-61.578-137.142-137.143 0-75.566 61.44-137.143 137.142-137.143Zm548.572 0c75.566 0 137.143 61.577 137.143 137.143 0 75.565-61.577 137.143-137.143 137.143-75.703 0-137.143-61.578-137.143-137.143 0-75.566 61.44-137.143 137.143-137.143ZM686.21 548.57c75.566 0 137.143 61.578 137.143 137.143 0 75.566-61.577 137.143-137.143 137.143-75.702 0-137.142-61.577-137.142-137.143 0-75.565 61.44-137.143 137.142-137.143Zm548.572 0c75.566 0 137.143 61.578 137.143 137.143 0 75.566-61.577 137.143-137.143 137.143-75.703 0-137.143-61.577-137.143-137.143 0-75.565 61.44-137.143 137.143-137.143ZM686.21 0c75.566 0 137.143 61.577 137.143 137.143S761.776 274.286 686.21 274.286c-75.702 0-137.142-61.577-137.142-137.143S610.509 0 686.21 0Zm548.503 0c75.566 0 137.143 61.577 137.143 137.143s-61.577 137.143-137.143 137.143c-75.565 0-137.143-61.577-137.143-137.143S1159.15 0 1234.714 0Z"
+                fillRule="evenodd"
+            />
+        </g>
+    </svg>
+);
 
 /**
  * Node for representing an empty step in the authentication flow.
@@ -56,9 +76,13 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
     data,
     "data-componentid": componentId = "step-node"
 }: StepNodePropsInterface & Node): ReactElement => {
+    const nodeId: string = useNodeId();
+    const { deleteElements } = useReactFlow();
+    const { onElementDropOnCanvas, NodeFactory, setLastInteractedElement } = useAuthenticationFlowBuilderCore();
+
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
-    const [ droppedComponents, setDroppedComponents ] = useState<Component[]>([]);
+    const [ droppedElements, setDroppedElements ] = useState<Component[]>([]);
 
     const onDragOver: (event: DragEvent) => void = useCallback((event: DragEvent) => {
         event.preventDefault();
@@ -74,10 +98,9 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
             if (droppedData) {
                 const newComponent: Component = JSON.parse(droppedData);
 
-                setDroppedComponents((prevDroppedComponents: Component[]) => [
-                    ...prevDroppedComponents,
-                    newComponent
-                ]);
+                setDroppedElements((prevDroppedElements: Component[]) => [ ...prevDroppedElements, newComponent ]);
+
+                onElementDropOnCanvas(newComponent, nodeId);
             }
         },
         [ data?.type ]
@@ -91,29 +114,52 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
             onDrop={ onDrop }
             onDrag={ onDragOver }
         >
-            <div className="authentication-flow-builder-step-id">
-                <Typography variant="body2" data-componentid={ `${componentId}-${stepIndex}-heading-text` }>
-                    Step { stepIndex + 1 }
-                </Typography>
-            </div>
-            <Tooltip title={ "Remove" }>
-                <IconButton
-                    size="small"
-                    onClick={ (_: MouseEvent<HTMLButtonElement>) => {
-                        // TODO: Implement remove step logic.
-                    } }
-                    className="authentication-flow-builder-step-remove-button"
+            <Box
+                display="flex"
+                justifyContent="space-between"
+                className="authentication-flow-builder-step-action-panel"
+            >
+                <Typography
+                    variant="body2"
+                    data-componentid={ `${componentId}-${stepIndex}-heading-text` }
+                    className="authentication-flow-builder-step-id"
                 >
-                    <XMarkIcon />
-                </IconButton>
-            </Tooltip>
+                    Step { stepIndex && stepIndex + 1 }
+                </Typography>
+                <Tooltip title={ "Remove" }>
+                    <IconButton
+                        size="small"
+                        onClick={ (_: MouseEvent<HTMLButtonElement>) => {
+                            deleteElements({ nodes: [ { id: nodeId } ] });
+                        } }
+                        className="authentication-flow-builder-step-remove-button"
+                    >
+                        <XMarkIcon />
+                    </IconButton>
+                </Tooltip>
+            </Box>
             { stepIndex !== 0 && <Handle type="target" position={ Position.Left } /> }
             <Box className="authentication-flow-builder-step-content" data-componentid={ `${componentId}-inner` }>
                 <Paper className="authentication-flow-builder-step-content-box" elevation={ 0 } variant="outlined">
                     <Box className="authentication-flow-builder-step-content-form">
-                        { droppedComponents.map((component: Component, index: number) => (
-                            <NodeFactory key={ index } node={ component } />
-                        )) }
+                        <FormGroup>
+                            { droppedElements.map((component: Component, index: number) => (
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    key={ index }
+                                    className="authentication-flow-builder-step-content-form-field"
+                                    onClick={ () => setLastInteractedElement(component) }
+                                >
+                                    <div className="authentication-flow-builder-step-content-form-field-drag-handle">
+                                        <GridDotsVerticalIcon height={ 20 } />
+                                    </div>
+                                    <div className="authentication-flow-builder-step-content-form-field-content">
+                                        <NodeFactory nodeId={ nodeId } node={ component } />
+                                    </div>
+                                </Box>
+                            )) }
+                        </FormGroup>
                     </Box>
                 </Paper>
             </Box>

@@ -16,7 +16,18 @@
  * under the License.
  */
 
+:root {
+    --wso2is-authentication-flow-builder-step-background-color: #252525;
+    --wso2is-authentication-flow-builder-step-action-panel-height: 44px;
+    --wso2is-authentication-flow-builder-step-remove-button-color: var(--oxygen-palette-grey-500);
+    --wso2is-authentication-flow-builder-step-remove-button-hover-color: var(--oxygen-palette-primary-contrastText);
+    --wso2is-authentication-flow-builder-step-content-form-field-drag-handle-width: 25px;
+}
+
 .authentication-flow-builder-step {
+    background-color: var(--wso2is-authentication-flow-builder-step-background-color);
+    border-radius: var(--oxygen-shape-borderRadius);
+
     .authentication-flow-builder-step-content {
         display: flex;
         flex-flow: column nowrap;
@@ -31,32 +42,59 @@
         }
 
         .authentication-flow-builder-step-content-form {
-            .oxygen-text-field {
-                margin-bottom: var(--oxygen-spacing-3);
+            .oxygen-form-group {
+                .authentication-flow-builder-step-content-form-field {
+                    border: 2px dashed transparent;
+                    margin-left: calc(-1 * (var(--wso2is-authentication-flow-builder-step-content-form-field-drag-handle-width)));
+
+                    .authentication-flow-builder-step-content-form-field-drag-handle {
+                        display: flex;
+                        visibility: hidden;
+                        justify-content: center;
+                        width: var(--wso2is-authentication-flow-builder-step-content-form-field-drag-handle-width);
+                        border-right: 2px dashed transparent;
+                        margin-right: 5px;
+
+                        svg {
+                            margin: 5px 0;
+                        }
+                    }
+
+                    .authentication-flow-builder-step-content-form-field-content {
+                        width: 100%;
+                    }
+
+                    &:hover {
+                        border-color: var(--oxygen-palette-grey-200);
+                        cursor: move;
+
+                        .authentication-flow-builder-step-content-form-field-drag-handle {
+                            visibility: visible;
+                            border-right: 2px dashed var(--oxygen-palette-grey-200);
+                        }
+                    }
+                }
             }
         }
     }
 
-    .authentication-flow-builder-step-remove-button {
-        position: absolute;
-        z-index: 999;
-        right: -12px;
-        margin-top: -10px;
-        background: white;
-        border: 1px solid var(--oxygen-palette-divider);
-        width: 25px;
-        height: 25px;
+    .authentication-flow-builder-step-action-panel {
+        padding: 10px 14px;
+        height: var(--wso2is-authentication-flow-builder-step-action-panel-height);
 
-        svg {
-            fill: var(--oxygen-palette-text-secondary);
+        .authentication-flow-builder-step-id {
+            color: var(--oxygen-palette-primary-contrastText);
         }
 
-        &:hover {
-            box-shadow: var(--oxygen-shadows-0);
-        }
-    }
+        .authentication-flow-builder-step-remove-button {
+            border: 2px solid var(--wso2is-authentication-flow-builder-step-remove-button-color);
+            padding: 2px;
+            color: var(--wso2is-authentication-flow-builder-step-remove-button-color);
 
-    .authentication-flow-builder-step-id {
-        margin-bottom: 10px;
+            &:hover {
+                border-color: var(--wso2is-authentication-flow-builder-step-remove-button-hover-color);
+                color: var(--wso2is-authentication-flow-builder-step-remove-button-hover-color);
+            }
+        }
     }
 }

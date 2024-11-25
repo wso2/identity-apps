@@ -16,16 +16,6 @@
  * under the License.
  */
 
-import { Base } from "./base";
+import { Claim } from "@wso2is/core/models";
 
-/**
- * Interface for a primitive.
- */
-export type Primitive = Base;
-
-/**
- * Interface for a set of primitives.
- */
-export type Primitives = {
-    primitives: Primitive[]
-};
+export type Attribute = Claim;

@@ -17,34 +17,29 @@
  */
 
 import React, { PropsWithChildren, ReactElement, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import DnDContext from "../context/dnd-context";
 
 /**
  * Props interface of {@link DnDProvider}
  */
-export interface DnDProviderProps {}
+export type DnDProviderProps = unknown;
 
 /**
  * This component provides Drag & Drop context to its children.
+ * TODO: Move this to a shared module. `@wso2is/dnd`.
  *
  * @param props - Props injected to the component.
  * @returns The DnDProvider component.
  */
 const DnDProvider = ({ children }: PropsWithChildren<DnDProviderProps>): ReactElement => {
     const [ node, setNode ] = useState<any>(null);
-    const [ lastGeneratedNodeId, setLastGeneratedNodeId ] = useState(0);
 
     /**
      * Generates a unique component ID for the node.
      * @returns Unique component ID.
      */
-    const generateComponentId = (): string => {
-        const id: number = lastGeneratedNodeId + 1;
-
-        setLastGeneratedNodeId(id);
-
-        return `dndnode_${id}`;
-    };
+    const generateComponentId = (): string => `dndnode_${uuidv4()}`;
 
     return <DnDContext.Provider value={ { generateComponentId, node, setNode } }>{ children }</DnDContext.Provider>;
 };

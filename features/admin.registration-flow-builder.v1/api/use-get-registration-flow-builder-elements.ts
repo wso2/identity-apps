@@ -16,28 +16,36 @@
  * under the License.
  */
 
-import {
-    RequestErrorInterface,
-    RequestResultInterface
-} from "@wso2is/admin.core.v1/hooks/use-request";
-import primitives from "../data/primitives.json";
-import { Primitives } from "../models/primitives";
+import useGetAuthenticationFlowBuilderCoreElements from
+    "@wso2is/admin.authentication-flow-builder-core.v1/api/use-get-authentication-flow-builder-core-elements";
+import { Elements } from "@wso2is/admin.authentication-flow-builder-core.v1/models/elements";
+import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import widgets from "../data/widgets.json";
 
 /**
- * Hook to get the primitives supported by the authentication flow builder.
+ * Hook to get the elements supported by the registration flow builder.
+ * This hook will aggregate the core elements and the registration specific elements.
  *
- * This function calls the GET method of the following endpoint to get the primitives.
+ * This function calls the GET method of the following endpoint to get the elements.
  * - TODO: Fill this
  * For more details, refer to the documentation:
  * {@link https://TODO:<fillthis>)}
  *
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetAuthenticationFlowBuilderPrimitives = <Data = Primitives, Error = RequestErrorInterface>(
+const useGetRegistrationFlowBuilderElements = <Data = Elements, Error = RequestErrorInterface>(
     _shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
+    const { data: coreElements } = useGetAuthenticationFlowBuilderCoreElements();
+
     return {
-        data: primitives as unknown as Data,
+        data: ({
+            ...coreElements,
+            widgets: [
+                ...coreElements?.widgets,
+                ...widgets
+            ]
+        } as unknown) as Data,
         error: null,
         isLoading: false,
         isValidating: false,
@@ -45,4 +53,4 @@ const useGetAuthenticationFlowBuilderPrimitives = <Data = Primitives, Error = Re
     };
 };
 
-export default useGetAuthenticationFlowBuilderPrimitives;
+export default useGetRegistrationFlowBuilderElements;

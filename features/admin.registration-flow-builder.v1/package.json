@@ -1,8 +1,8 @@
 {
     "private": true,
-    "name": "@wso2is/admin.authentication-flow-builder-core.v1",
+    "name": "@wso2is/admin.registration-flow-builder.v1",
     "version": "0.0.0",
-    "description": "Flow builder base package for the WSO2 Identity Server admin portal.",
+    "description": "Registration flow builder package for the WSO2 Identity Server admin portal.",
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
@@ -16,6 +16,7 @@
         "@mui/utils": "^5.12.3",
         "@oxygen-ui/react": "^1.15.2",
         "@oxygen-ui/react-icons": "^1.15.2",
+        "@wso2is/admin.authentication-flow-builder-core.v1": "workspace:^",
         "@wso2is/admin.core.v1": "workspace:^",
         "@wso2is/core": "workspace:^",
         "@xyflow/react": "^12.3.2",
@@ -25,8 +26,7 @@
         "react-i18next": "^11.18.5",
         "react-redux": "^7.2.9",
         "redux": "^4.0.4",
-        "semantic-ui-react": "^2.1.3",
-        "uuid": "^8.3.0"
+        "semantic-ui-react": "^2.1.3"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^25.0.7",

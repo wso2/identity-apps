@@ -16,20 +16,20 @@
  * under the License.
  */
 
-import TextField from "@oxygen-ui/react/TextField";
+import CommonNodeFactory, {
+    CommonNodeFactoryPropsInterface
+} from "@wso2is/admin.authentication-flow-builder-core.v1/components/nodes/common-node-factory";
+import { ElementCategories } from "@wso2is/admin.authentication-flow-builder-core.v1/models/elements";
+import { WidgetTypes } from "@wso2is/admin.authentication-flow-builder-core.v1/models/widget";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Component, ComponentCategories, InputComponentTypes } from "../../models/components";
-import transformConfigForTextField from "../../utils/transform-config-for-text-field";
-import "./step-node.scss";
+import AttributeCollectorNode from "./attribute-collector-node";
 
 /**
  * Props interface of {@link NodeFactory}
  */
-export interface NodeFactoryPropsInterface extends IdentifiableComponentInterface {
-    node: Component;
-}
+export type NodeFactoryPropsInterface = CommonNodeFactoryPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Node for representing an empty step in the authentication flow.
@@ -38,19 +38,16 @@ export interface NodeFactoryPropsInterface extends IdentifiableComponentInterfac
  * @returns Step Node component.
  */
 export const NodeFactory: FunctionComponent<NodeFactoryPropsInterface> = ({
-    node
+    node,
+    nodeId
 }: NodeFactoryPropsInterface & Node): ReactElement => {
-    if (node.category === ComponentCategories.Input) {
-        if (
-            node.type === InputComponentTypes.Text ||
-            node.type === InputComponentTypes.Password ||
-            node.type === InputComponentTypes.Number
-        ) {
-            return <TextField { ...transformConfigForTextField(node.config) } />;
+    if (node.category === ElementCategories.Widget) {
+        if (node.type === WidgetTypes.AttributeCollector) {
+            return <AttributeCollectorNode />;
         }
     }
 
-    return null;
+    return <CommonNodeFactory node={ node } nodeId={ nodeId } />;
 };
 
 export default NodeFactory;

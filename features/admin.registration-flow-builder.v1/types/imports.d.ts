@@ -16,7 +16,25 @@
  * under the License.
  */
 
-import { Component } from "./component";
-import { Node } from "./node";
+declare module "*.json" {
+    const value: any;
 
-export type SupportedCanvasNodes = Component | Node;
+    export default value;
+}
+
+declare module "*.svg" {
+    import React = require("react");
+
+    export const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    const src: string;
+
+    export default src;
+}
+
+declare module "*.png" {
+    const content: string;
+
+    export default content;
+}
+
+declare module "*.md";

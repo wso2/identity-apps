@@ -16,7 +16,18 @@
  * under the License.
  */
 
-import { Component } from "./component";
-import { Node } from "./node";
+import { ComponentTypes } from "../models/component";
+import { Element } from "../models/elements";
 
-export type SupportedCanvasNodes = Component | Node;
+const getKnownElementProperties = (element: Element): Record<string, string[]> => {
+    if (element.type === ComponentTypes.Button) {
+        return {
+            color: [ "primary", "secondary", "success", "error", "info", "warning" ],
+            variant: [ "contained", "outlined", "text" ]
+        };
+    }
+
+    return {};
+};
+
+export default getKnownElementProperties;

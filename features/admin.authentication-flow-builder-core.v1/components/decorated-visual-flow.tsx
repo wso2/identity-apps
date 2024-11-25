@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,8 +20,11 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ReactFlowProvider } from "@xyflow/react";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
-import AuthenticationFlowVisualEditorWidgetPanel from "./visual-editor-components-panel";
+import ElementPropertiesPanel from "./element-properties/element-properties-panel";
+import ElementsPanel from "./elements-panel/elements-panel";
 import VisualFlow from "./visual-flow";
+import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
+import { Elements } from "../models/elements";
 import DnDProvider from "../providers/dnd-provider";
 
 /**
@@ -29,18 +32,26 @@ import DnDProvider from "../providers/dnd-provider";
  */
 export interface DecoratedVisualFlowPropsInterface
     extends IdentifiableComponentInterface,
-        HTMLAttributes<HTMLDivElement> {}
+        HTMLAttributes<HTMLDivElement> {
+    /**
+     * Flow elements.
+     */
+    elements: Elements;
+}
 
 /**
- * Visual editor component.
+ * Component to decorate the visual flow editor with the necessary providers.
  *
  * @param props - Props injected to the component.
- * @returns Visual editor component.
+ * @returns Decorated visual flow component.
  */
 const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-editor",
+    elements,
     ...rest
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
+    const { isElementPanelOpen, isElementPropertiesPanelOpen } = useAuthenticationFlowBuilderCore();
+
     return (
         <div
             className={ classNames("decorated-visual-flow", "react-flow-container", "visual-editor") }
@@ -49,9 +60,11 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         >
             <ReactFlowProvider>
                 <DnDProvider>
-                    <AuthenticationFlowVisualEditorWidgetPanel>
-                        <VisualFlow />
-                    </AuthenticationFlowVisualEditorWidgetPanel>
+                    <ElementsPanel elements={ elements } open={ isElementPanelOpen }>
+                        <ElementPropertiesPanel open={ isElementPropertiesPanelOpen }>
+                            <VisualFlow />
+                        </ElementPropertiesPanel>
+                    </ElementsPanel>
                 </DnDProvider>
             </ReactFlowProvider>
         </div>

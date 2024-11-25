@@ -16,7 +16,10 @@
  * under the License.
  */
 
-import { Component } from "./component";
-import { Node } from "./node";
+.authentication-flow-builder-attribute-collector-property {
+    padding: var(--oxygen-spacing-2);
 
-export type SupportedCanvasNodes = Component | Node;
+    .MuiAccordionSummary-content {
+        margin: 0;
+    }
+}

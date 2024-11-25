@@ -18,23 +18,29 @@
 
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import components from "../data/components.json";
-import { Components } from "../models/components";
+import nodes from "../data/nodes.json";
+import widgets from "../data/widgets.json";
+import { Elements } from "../models/elements";
 
 /**
- * Hook to get the components supported by the authentication flow builder.
+ * Hook to get the elements supported by the authentication flow builder.
  *
- * This function calls the GET method of the following endpoint to get the components.
+ * This function calls the GET method of the following endpoint to get the elements.
  * - TODO: Fill this
  * For more details, refer to the documentation:
  * {@link https://TODO:<fillthis>)}
  *
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetAuthenticationFlowBuilderComponents = <Data = Components, Error = RequestErrorInterface>(
+const useGetAuthenticationFlowBuilderCoreElements = <Data = Elements, Error = RequestErrorInterface>(
     _shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     return {
-        data: (components as unknown) as Data,
+        data: ({
+            components,
+            nodes,
+            widgets
+        } as unknown) as Data,
         error: null,
         isLoading: false,
         isValidating: false,
@@ -42,4 +48,4 @@ const useGetAuthenticationFlowBuilderComponents = <Data = Components, Error = Re
     };
 };
 
-export default useGetAuthenticationFlowBuilderComponents;
+export default useGetAuthenticationFlowBuilderCoreElements;

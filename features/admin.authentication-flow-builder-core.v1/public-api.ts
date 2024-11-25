@@ -16,4 +16,25 @@
  * under the License.
  */
 
+export {
+    default as useGetAuthenticationFlowBuilderCoreElements
+} from "./api/use-get-authentication-flow-builder-core-elements";
+
+export * from "./models/base";
+export * from "./models/component";
+export * from "./models/elements";
+export * from "./models/node";
+export * from "./models/visual-editor";
+export * from "./models/widget";
+
+export { default as AuthenticationFlowBuilderCoreProvider } from
+    "./providers/authentication-flow-builder-core-provider";
+export { default as AuthenticationFlowBuilderCoreContext } from "./context/authentication-flow-builder-core-context";
+export { default as useAuthenticationFlowBuilderCore } from "./hooks/use-authentication-flow-builder-core-context";
+
+export { default as CommonNodeFactory } from "./components/nodes/common-node-factory";
+export {
+    default as CommonComponentPropertyFactory
+} from "./components/element-properties/common-component-property-factory";
+export { default as CommonWidgetPropertyFactory } from "./components/element-properties/common-widget-property-factory";
 export { default as DecoratedVisualFlow } from "./components/decorated-visual-flow";

@@ -24,27 +24,32 @@ import {
     Edge,
     Node,
     OnConnect,
+    OnNodesDelete,
     ReactFlow,
     ReactFlowProps,
     XYPosition,
     addEdge,
+    getConnectedEdges,
+    getIncomers,
+    getOutgoers,
     useEdgesState,
     useNodesState,
     useReactFlow
 } from "@xyflow/react";
 import React, { DragEvent, FC, FunctionComponent, ReactElement, useCallback } from "react";
 import StepNode, { StepNodePropsInterface } from "./nodes/step-node";
-import VisualEditorPrimitivesPanel from "./visual-editor-primitives-panel";
+import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
 import useDnD from "../hooks/use-dnd";
+import { ElementCategories } from "../models/elements";
 import "@xyflow/react/dist/style.css";
+import "./visual-flow.scss";
 
 /**
  * Props interface of {@link VisualFlow}
  */
-export interface VisualFlowPropsInterface extends IdentifiableComponentInterface, ReactFlowProps<any, any> {}
+export type VisualFlowPropsInterface = IdentifiableComponentInterface & ReactFlowProps<any, any>;
 
-// we define the nodeTypes outside of the component to prevent re-renderings
-// you could also use useMemo inside the component
+// NOTE: `nodeTypes` are defined outside of the component to prevent re-renderings.
 const nodeTypes: {
     STEP: FC<StepNodePropsInterface>;
 } = { STEP: StepNode };
@@ -63,6 +68,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     const [ edges, setEdges, onEdgesChange ] = useEdgesState([]);
     const { screenToFlowPosition } = useReactFlow();
     const { node, generateComponentId } = useDnD();
+    const { onElementDropOnCanvas } = useAuthenticationFlowBuilderCore();
 
     const onDragOver: (event: DragEvent) => void = useCallback((event: DragEvent) => {
         event.preventDefault();
@@ -74,7 +80,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
             event.preventDefault();
 
             // check if the dropped element is valid
-            if (!node?.type || node?.category !== "PRIMITIVE") {
+            if (!node?.type || node?.category !== ElementCategories.Nodes) {
                 return;
             }
 
@@ -97,30 +103,60 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
             };
 
             setNodes((nodes: Node[]) => nodes.concat(newNode));
+
+            onElementDropOnCanvas(node, null);
         },
         [ screenToFlowPosition, node?.type ]
     );
 
     const onConnect: OnConnect = useCallback((params: any) => setEdges((edges: Edge[]) => addEdge(params, edges)), []);
 
+    const onNodesDelete: OnNodesDelete<Node> = useCallback(
+        (deleted: Node[]) => {
+            setEdges(
+                deleted.reduce((acc: Edge[], node: Node) => {
+                    const incomers: Node[] = getIncomers(node, nodes, edges);
+                    const outgoers: Node[] = getOutgoers(node, nodes, edges);
+                    const connectedEdges: Edge[] = getConnectedEdges([ node ], edges);
+
+                    const remainingEdges: Edge[] = acc.filter(
+                        (edge: Edge) => !connectedEdges.includes(edge)
+                    );
+
+                    const createdEdges: Edge[] = incomers.flatMap(({ id: source }: { id: string }) =>
+                        outgoers.map(({ id: target }: { id: string }) => ({
+                            id: `${source}->${target}`,
+                            source,
+                            target
+                        }))
+                    );
+
+                    return [ ...remainingEdges, ...createdEdges ];
+                }, edges)
+            );
+        },
+        [ nodes, edges ]
+    );
+
     return (
         <ReactFlow
+            fitView
             nodes={ nodes }
             edges={ edges }
             nodeTypes={ nodeTypes as any }
             onNodesChange={ onNodesChange }
             onEdgesChange={ onEdgesChange }
             onConnect={ onConnect }
+            onNodesDelete={ onNodesDelete }
             onDrop={ onDrop }
             onDragOver={ onDragOver }
-            fitView
             proOptions={ { hideAttribution: true } }
             data-componentid={ componentId }
+            colorMode="dark"
             { ...rest }
         >
-            <Background color="#e1e1e1" gap={ 16 } variant={ BackgroundVariant.Dots } size={ 2 } />
+            <Background gap={ 16 } variant={ BackgroundVariant.Dots } size={ 2 } />
             <Controls position="top-right" />
-            <VisualEditorPrimitivesPanel />
         </ReactFlow>
     );
 };

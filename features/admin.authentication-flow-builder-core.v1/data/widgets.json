@@ -1,0 +1,58 @@
+[
+    {
+        "category": "WIDGET",
+        "type": "RECAPTCHA",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": {
+                "fallback": "reCAPTCHA",
+                "i18nKey": null
+            },
+            "image": "https://www.gstatic.com/recaptcha/api2/logo_48.png"
+        },
+        "config": {
+            "version": 2,
+            "field": {},
+            "styles": {}
+        }
+    },
+    {
+        "category": "WIDGET",
+        "type": "EMAIL_OTP",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": {
+                "fallback": "Email OTP",
+                "i18nKey": null
+            },
+            "image": "https://www.svgrepo.com/show/368868/otp.svg"
+        },
+        "config": {
+            "field": {
+                "className": "wso2is-email-otp"
+            },
+            "styles": {}
+        }
+    },
+    {
+        "category": "WIDGET",
+        "type": "SMS_OTP",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": {
+                "fallback": "SMS OTP",
+                "i18nKey": null
+            },
+            "image": "https://www.svgrepo.com/show/381137/transaction-password-otp-verification-code-security.svg"
+        },
+        "config": {
+            "field": {
+                "className": "wso2is-sms-otp"
+            },
+            "styles": {}
+        }
+    }
+]

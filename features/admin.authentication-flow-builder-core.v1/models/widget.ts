@@ -17,6 +17,19 @@
  */
 
 import { Component } from "./component";
-import { Node } from "./node";
 
-export type SupportedCanvasNodes = Component | Node;
+export type Widget = Component<WidgetExtendedConfig>;
+
+/**
+ * Interface for the properties of a widget.
+ */
+export interface WidgetExtendedConfig {
+    /**
+     * Version of the widget.
+     */
+    version?: string;
+}
+
+export enum WidgetTypes {
+    AttributeCollector = "ATTRIBUTE_COLLECTOR",
+}

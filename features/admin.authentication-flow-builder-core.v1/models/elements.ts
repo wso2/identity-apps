@@ -18,5 +18,30 @@
 
 import { Component } from "./component";
 import { Node } from "./node";
+import { Widget } from "./widget";
 
-export type SupportedCanvasNodes = Component | Node;
+export type Element = Component | Node | Widget;
+
+/**
+ * Interface for the entire JSON structure.
+ */
+export interface Elements {
+    /**
+     * List of blocks.
+     */
+    components: Component[];
+    /**
+     * List of nodes.
+     */
+    nodes: Node[];
+    /**
+     * List of widgets.
+     */
+    widgets: Widget[];
+}
+
+export enum ElementCategories {
+    Component = "COMPONENT",
+    Nodes = "NODE",
+    Widget = "WIDGET"
+}

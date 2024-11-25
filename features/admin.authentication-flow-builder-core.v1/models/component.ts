@@ -16,18 +16,23 @@
  * under the License.
  */
 
-.authentication-flow-builder-draggable-node {
-    // TODO: `@oxygen-ui/react/Card` declares a default padding which is a bug.
-    // Remove this once it is handled.
-    // Tracker: https://github.com/wso2/oxygen-ui/issues/300
-    padding: 0;
+import { Base } from "./base";
 
-    .oxygen-card-content:last-child {
-        padding-bottom: var(--oxygen-spacing-2);
-    }
+/**
+ * Interface for a component.
+ */
+export type Component<T = any> = Base<T>;
 
-    .authentication-flow-builder-draggable-node-avatar {
-        width: 20px;
-        height: 20px;
-    }
+export enum ComponentTypes {
+    Button = "BUTTON",
+    Divider = "DIVIDER",
+    Email = "EMAIL",
+    Text = "TEXT",
+    Number = "NUMBER",
+    Password = "PASSWORD",
+    Telephone = "TELEPHONE",
+    Choice = "CHOICE",
+    Checkbox = "CHECKBOX",
+    Image = "IMAGE",
+    Typography = "TYPOGRAPHY"
 }

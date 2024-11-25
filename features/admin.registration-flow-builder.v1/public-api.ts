@@ -16,7 +16,4 @@
  * under the License.
  */
 
-import { Component } from "./component";
-import { Node } from "./node";
-
-export type SupportedCanvasNodes = Component | Node;
+export { default as RegistrationFlowBuilder } from "./components/registration-flow-builder";

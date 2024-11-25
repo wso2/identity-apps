@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,25 +20,32 @@ import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
 import Box from "@oxygen-ui/react/Box";
-import Drawer from "@oxygen-ui/react/Drawer";
+import Drawer, { DrawerProps } from "@oxygen-ui/react/Drawer";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronRightIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps, useState } from "react";
-import VisualEditorDraggableNode from "./visual-editor-draggable-node";
-import useGetAuthenticationFlowBuilderComponents from "../api/use-get-authentication-flow-builder-components";
-import { Display, Input, Node, Widget } from "../models/components";
-import "./visual-editor-components-panel.scss";
+import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps } from "react";
+import ElementPanelDraggableNode from "./element-panel-draggable-node";
+import { Component } from "../../models/component";
+import { Elements } from "../../models/elements";
+import { Widget } from "../../models/widget";
+import "./elements-panel.scss";
 
 /**
- * Props interface of {@link VisualEditorComponentsPanel}
+ * Props interface of {@link ElementsPanel}
  */
-export interface VisualEditorComponentsPanelPropsInterface
-    extends IdentifiableComponentInterface,
-        HTMLAttributes<HTMLDivElement> {}
+export interface ElementsPanelPropsInterface
+    extends DrawerProps,
+        IdentifiableComponentInterface,
+        HTMLAttributes<HTMLDivElement> {
+    /**
+     * Flow elements.
+     */
+    elements: Elements;
+}
 
 // TODO: Move this to Oxygen UI.
 /* eslint-disable max-len */
@@ -54,16 +61,6 @@ const CubesIcon = ({ ...rest }: SVGProps<SVGSVGElement>): ReactElement => (
                 d="M6.5,10.5 L12,13.5 L17.5,10.5 L17.5,4.5 L12,1.5 L6.5,4.5 L6.5,10.5 Z M6.5,4.5 L12,7.5 L17.5,4.5 M12,7.5 L12,13.5 L12,7.5 Z M1,19.5 L6.5,22.5 L12,19.5 L12,13.5 L6.5,10.5 L1,13.5 L1,19.5 Z M1,13.5 L6.5,16.5 L12,13.5 M6.5,16.5 L6.5,22.5 L6.5,16.5 Z M12,19.5 L17.5,22.5 L23,19.5 L23,13.5 L17.5,10.5 L12,13.5 L12,19.5 Z M12,13.5 L17.5,16.5 L23,13.5 M17.5,16.5 L17.5,22.5 L17.5,16.5 Z"
             />
         </g>
-    </svg>
-);
-
-// TODO: Move this to Oxygen UI.
-const FormIcon = ({ ...rest }: SVGProps<SVGSVGElement>): ReactElement => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" viewBox="0 0 24 24" { ...rest }>
-        <path
-            fillRule="evenodd"
-            d="M3.81818182,11 L20.1818182,11 C21.1859723,11 22,11.8954305 22,13 L22,15 C22,16.1045695 21.1859723,17 20.1818182,17 L3.81818182,17 C2.81402773,17 2,16.1045695 2,15 L2,13 C2,11.8954305 2.81402773,11 3.81818182,11 Z M4,13 L4,15 L20,15 L20,13 L4,13 Z M3.81818182,3 L20.1818182,3 C21.1859723,3 22,3.8954305 22,5 L22,7 C22,8.1045695 21.1859723,9 20.1818182,9 L3.81818182,9 C2.81402773,9 2,8.1045695 2,7 L2,5 C2,3.8954305 2.81402773,3 3.81818182,3 Z M4,5 L4,7 L20,7 L20,5 L4,5 Z M2,19 L14,19 L14,21 L2,21 L2,19 Z"
-        />
     </svg>
 );
 
@@ -116,19 +113,19 @@ const WidgetsIcon = ({ ...rest }: SVGProps<SVGSVGElement>): ReactElement => (
 /* eslint-enable max-len */
 
 /**
- * Visual editor component.
+ * Visual editor elements drawer panel.
  *
  * @param props - Props injected to the component.
- * @returns Visual editor component.
+ * @returns Visual editor elements panel.
  */
-const VisualEditorComponentsPanel: FunctionComponent<VisualEditorComponentsPanelPropsInterface> = ({
-    "data-componentid": componentId = "authentication-flow-builder-components-panel",
+const ElementsPanel: FunctionComponent<ElementsPanelPropsInterface> = ({
+    "data-componentid": componentId = "authentication-flow-builder-elements-panel",
     children,
+    open,
+    elements,
     ...rest
-}: VisualEditorComponentsPanelPropsInterface): ReactElement => {
-    const [ open, setOpen ] = useState(false);
-    const { data } = useGetAuthenticationFlowBuilderComponents();
-    const { display, inputs, widgets, nodes } = data;
+}: ElementsPanelPropsInterface): ReactElement => {
+    const { components, widgets, nodes } = elements;
 
     return (
         <Box
@@ -138,7 +135,6 @@ const VisualEditorComponentsPanel: FunctionComponent<VisualEditorComponentsPanel
             position="relative"
             bgcolor="white"
             component="div"
-            style={ { overflowX: "hidden", overflowY: "scroll" } }
             data-componentid={ componentId }
             { ...rest }
         >
@@ -147,7 +143,7 @@ const VisualEditorComponentsPanel: FunctionComponent<VisualEditorComponentsPanel
                 open={ open }
                 onClose={ () => {} }
                 elevation={ 5 }
-                PaperProps={ { className: "authentication-flow-builder-components-panel" } }
+                PaperProps={ { className: "authentication-flow-builder-elements-panel" } }
                 BackdropProps={ { style: { position: "absolute" } } }
                 ModalProps={ {
                     container: document.getElementById("drawer-container"),
@@ -162,11 +158,11 @@ const VisualEditorComponentsPanel: FunctionComponent<VisualEditorComponentsPanel
                     }
                 } }
                 hideBackdrop={ true }
-                className={ classNames("authentication-flow-builder-components-drawer", { mini: !open }) }
-                variant="permanent"
+                className={ classNames("authentication-flow-builder-elements-drawer", { mini: !open }) }
+                variant={ open ? "permanent" : "temporary" }
             >
                 <div
-                    className={ classNames("authentication-flow-builder-components-panel-content", {
+                    className={ classNames("authentication-flow-builder-elements-panel-content", {
                         "full-height": true
                     }) }
                 >
@@ -174,59 +170,24 @@ const VisualEditorComponentsPanel: FunctionComponent<VisualEditorComponentsPanel
                         square
                         disableGutters
                         defaultExpanded
-                        className={ classNames("authentication-flow-builder-components-panel-categories") }
+                        className={ classNames("authentication-flow-builder-elements-panel-categories") }
                     >
                         <AccordionSummary
-                            className="authentication-flow-builder-components-panel-category-heading"
+                            className="authentication-flow-builder-elements-panel-category-heading"
                             expandIcon={ <ChevronRightIcon size={ 14 } /> }
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
-                            <IconButton onClick={ () => setOpen(!open) }>
-                                <FormIcon height={ 16 } width={ 16 } />
-                            </IconButton>
-                            <Typography variant="h6">Inputs</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails
-                            className="authentication-flow-builder-components-panel-category-details"
-                        >
-                            <Stack direction="column" spacing={ 1 }>
-                                { inputs.map((input: Input) => (
-                                    <VisualEditorDraggableNode
-                                        id={ input.type }
-                                        key={ input.type }
-                                        node={ input }
-                                    />
-                                )) }
-                            </Stack>
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion
-                        square
-                        disableGutters
-                        className={ classNames("authentication-flow-builder-components-panel-categories") }
-                    >
-                        <AccordionSummary
-                            className="authentication-flow-builder-components-panel-category-heading"
-                            expandIcon={ <ChevronRightIcon size={ 14 } /> }
-                            aria-controls="panel1-content"
-                            id="panel1-header"
-                        >
-                            <IconButton onClick={ () => setOpen(!open) }>
+                            <IconButton>
                                 <NodesIcon height={ 16 } width={ 16 } />
                             </IconButton>
                             <Typography variant="h6">Nodes</Typography>
                         </AccordionSummary>
-                        <AccordionDetails
-                            className="authentication-flow-builder-components-panel-category-details"
-                        >
+                        <AccordionDetails className="authentication-flow-builder-elements-panel-category-details">
+                            <Typography variant="body2">Use these nodes as building blocks of your flow</Typography>
                             <Stack direction="column" spacing={ 1 }>
-                                { nodes.map((node: Node) => (
-                                    <VisualEditorDraggableNode
-                                        id={ node.type }
-                                        key={ node.type }
-                                        node={ node }
-                                    />
+                                { nodes.map((node: Component) => (
+                                    <ElementPanelDraggableNode id={ node.type } key={ node.type } node={ node } />
                                 )) }
                             </Stack>
                         </AccordionDetails>
@@ -234,29 +195,24 @@ const VisualEditorComponentsPanel: FunctionComponent<VisualEditorComponentsPanel
                     <Accordion
                         square
                         disableGutters
-                        className={ classNames("authentication-flow-builder-components-panel-categories") }
+                        className={ classNames("authentication-flow-builder-elements-panel-categories") }
                     >
                         <AccordionSummary
-                            className="authentication-flow-builder-components-panel-category-heading"
+                            className="authentication-flow-builder-elements-panel-category-heading"
                             expandIcon={ <ChevronRightIcon size={ 14 } /> }
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
-                            <IconButton onClick={ () => setOpen(!open) }>
+                            <IconButton>
                                 <CubesIcon height={ 16 } width={ 16 } />
                             </IconButton>
-                            <Typography variant="h6">Display</Typography>
+                            <Typography variant="h6">Components</Typography>
                         </AccordionSummary>
-                        <AccordionDetails
-                            className="authentication-flow-builder-components-panel-category-details"
-                        >
+                        <AccordionDetails className="authentication-flow-builder-elements-panel-category-details">
+                            <Typography variant="body2">Use these components to build up custom UI blocks</Typography>
                             <Stack direction="column" spacing={ 1 }>
-                                { display.map((display: Display) => (
-                                    <VisualEditorDraggableNode
-                                        id={ display.type }
-                                        key={ display.type }
-                                        node={ display }
-                                    />
+                                { components.map((node: Component) => (
+                                    <ElementPanelDraggableNode id={ node.type } key={ node.type } node={ node } />
                                 )) }
                             </Stack>
                         </AccordionDetails>
@@ -264,29 +220,26 @@ const VisualEditorComponentsPanel: FunctionComponent<VisualEditorComponentsPanel
                     <Accordion
                         square
                         disableGutters
-                        className={ classNames("authentication-flow-builder-components-panel-categories") }
+                        className={ classNames("authentication-flow-builder-elements-panel-categories") }
                     >
                         <AccordionSummary
-                            className="authentication-flow-builder-components-panel-category-heading"
+                            className="authentication-flow-builder-elements-panel-category-heading"
                             expandIcon={ <ChevronRightIcon size={ 14 } /> }
                             aria-controls="panel1-content"
                             id="panel1-header"
                         >
-                            <IconButton onClick={ () => setOpen(!open) }>
+                            <IconButton>
                                 <WidgetsIcon height={ 16 } width={ 16 } />
                             </IconButton>
                             <Typography variant="h6">Widgets</Typography>
                         </AccordionSummary>
-                        <AccordionDetails
-                            className="authentication-flow-builder-components-panel-category-details"
-                        >
+                        <AccordionDetails className="authentication-flow-builder-elements-panel-category-details">
+                            <Typography variant="body2">
+                                Use these widgets to build up custom UI prompts and collect data
+                            </Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { widgets.map((widget: Widget) => (
-                                    <VisualEditorDraggableNode
-                                        id={ widget.type }
-                                        key={ widget.type }
-                                        node={ widget }
-                                    />
+                                    <ElementPanelDraggableNode id={ widget.type } key={ widget.type } node={ widget } />
                                 )) }
                             </Stack>
                         </AccordionDetails>
@@ -297,4 +250,4 @@ const VisualEditorComponentsPanel: FunctionComponent<VisualEditorComponentsPanel
     );
 };
 
-export default VisualEditorComponentsPanel;
+export default ElementsPanel;
