@@ -259,4 +259,5 @@ export interface UserStoreItem {
     key: number;
     text: string;
     value: string;
+    disabled?: boolean;
 }
