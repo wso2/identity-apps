@@ -209,6 +209,11 @@ export class ClaimManagementConstants {
     public static readonly SYSTEM_CLAIM_PROPERTY_NAME: string = "isSystemClaim";
 
     /**
+     * Claim property name for uniqueness validation scope.
+     */
+    public static readonly UNIQUENESS_SCOPE_PROPERTY_NAME: string = "uniquenessScope";
+
+    /**
      * The error code that is returned when there is no item in the list
      */
     public static readonly RESOURCE_NOT_FOUND_ERROR_CODE: string = "CMT-50017";

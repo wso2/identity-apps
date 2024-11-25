@@ -37,10 +37,10 @@ import {
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, Claim, ClaimsGetParams, IdentifiableComponentInterface, Property } from "@wso2is/core/models";
+import { AlertLevels, Claim, ClaimsGetParams, IdentifiableComponentInterface, Property, UniquenessScope } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
-import { ContentLoader, EmphasizedSegment, Message, PageLayout } from "@wso2is/react-components";
+import { ConfirmationModal, ContentLoader, EmphasizedSegment, Message, PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -88,6 +88,8 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
             ClaimManagementConstants.MOBILE_CLAIM_URI
         ];
     const [ isAlphanumericUsername, setIsAlphanumericUsername ] = useState<boolean>(false);
+    const [ showConfirmationModal, setShowConfirmationModal ] = useState<boolean>(false);
+    const [ pendingFormValues, setPendingFormValues ] = useState<AlternativeLoginIdentifierFormInterface>(null);
 
     const {
         data: validationData
@@ -319,7 +321,9 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
         setIsLoading(true);
         updateGovernanceConnector(data, categoryId, connectorId)
             .then(() => {
-                updateClaims(checkedClaims);
+                if (checkedClaims.length > 0) {
+                    updateClaims(checkedClaims);
+                }
                 handleUpdateSuccess();
                 loadConnectorDetails();
             })
@@ -332,27 +336,26 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
             });
     };
 
-    // Define a function to update claim properties with `isUnique` property.
-    const updateClaimProperties =(claim: Claim, checkedClaims: string[]) => {
-        let isClaimUpdate: boolean = false;
-        let updatedClaimProperties: Property[] = [ ...claim.properties ];
-        const isUniqueIndex: number = claim?.properties?.findIndex((property: Property) => property.key === "isUnique");
+    /**
+     * Updates the uniqueness scope of a claim if it's selected and needs to be updated to ACROSS_USERSTORES.
+     * Does not modify claims that are not selected.
+     */
+    const updateClaimUniquenessScope = (claim: Claim, checkedClaims: string[]) => {
+        const isSelected = checkedClaims?.includes(claim.claimURI);
+        
+        // Only update if selected and either uniquenessScope is undefined or not ACROSS_USERSTORES
+        const needsUpdate = isSelected && 
+            (!claim.uniquenessScope || claim.uniquenessScope !== UniquenessScope.ACROSS_USERSTORES);
 
-        if (checkedClaims?.includes(claim.claimURI)) {
-            if (isUniqueIndex !== -1 && claim.properties[isUniqueIndex].value === "false") {
-                isClaimUpdate = true;
-                updatedClaimProperties[isUniqueIndex].value = "true";
-            } else if (isUniqueIndex === -1) {
-                isClaimUpdate = true;
-                updatedClaimProperties.push({ key: "isUnique", value: "true" });
-            }
-        } else if (isUniqueIndex !== -1) {
-            isClaimUpdate = true;
-            updatedClaimProperties = updatedClaimProperties.filter((property: Property) =>
-                property.key !== "isUnique");
-        }
-
-        return { isClaimUpdate, updatedClaimProperties };
+        return {
+            isClaimUpdate: needsUpdate,
+            updatedClaim: needsUpdate 
+                ? {
+                    ...claim,
+                    uniquenessScope: UniquenessScope.ACROSS_USERSTORES
+                }
+                : claim
+        };
     };
 
     // Define a function to update and dispatch alerts
@@ -365,6 +368,18 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
 
         return updateAClaim(claimId, claim)
             .then(() => {
+                dispatch(addAlert({
+                    description: t(
+                        "extensions:manage.accountLogin.alternativeLoginIdentifierPage." +
+                        "claimUpdateNotification.success.description",
+                        { claimName: claim.displayName }
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "extensions:manage.accountLogin.alternativeLoginIdentifierPage." +
+                        "claimUpdateNotification.success.message"
+                    )
+                }));
                 getClaims();
             })
             .catch((error: IdentityAppsError) => {
@@ -380,10 +395,12 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
             });
     };
 
+    /**
+     * Updates the uniqueness scope of claims to ACROSS_USERSTORES
+     */
     const updateClaims = (checkedClaims : string[]) => {
         for (const claim of availableClaims) {
-            const { isClaimUpdate, updatedClaimProperties } = updateClaimProperties(claim, checkedClaims);
-            const updatedClaim: Claim = { ...claim, properties: updatedClaimProperties };
+            const { isClaimUpdate, updatedClaim } = updateClaimUniquenessScope(claim, checkedClaims);
 
             if (isClaimUpdate) {
                 updateClaimAndAlert(updatedClaim);
@@ -392,10 +409,9 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
     };
 
     /**
-     * Handle form submit click.
+     * Gets the processed checked claims from form values
      */
-    const handleSubmit = (values: AlternativeLoginIdentifierFormInterface) => {
-
+    const getProcessedCheckedClaims = (values: AlternativeLoginIdentifierFormInterface): string[] => {
         const processedFormValues: AlternativeLoginIdentifierFormInterface = { ...values };
         let checkedClaims: string[] = availableClaims
             .filter((claim: Claim) =>
@@ -407,10 +423,58 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
         if (!isAlphanumericUsername) {
             checkedClaims = checkedClaims.filter((item: string) => item !== ClaimManagementConstants.EMAIL_CLAIM_URI);
         }
-        const updatedConnectorData: any = getUpdatedConfigurations(checkedClaims);
+
+        return checkedClaims;
+    };
+
+    /**
+     * Checks if any claims need uniqueness scope update
+     */
+    const needsUniquenessScopeUpdate = (checkedClaims: string[]): boolean => {
+        return checkedClaims.some(claimURI => {
+            const claim = availableClaims.find(c => c.claimURI === claimURI);
+            return !claim.uniquenessScope || claim.uniquenessScope !== UniquenessScope.ACROSS_USERSTORES;
+        });
+    };
+
+    /**
+     * Processes form submission and updates connector and claims
+     */
+    const processFormSubmission = (
+        formValues: AlternativeLoginIdentifierFormInterface, 
+        hasUserConsent: boolean = false
+    ): void => {
+        const checkedClaims = getProcessedCheckedClaims(formValues);
+        const updatedConnectorData = getUpdatedConfigurations(checkedClaims);
+        const requiresUniquenessScopeUpdate = needsUniquenessScopeUpdate(checkedClaims);
+
+        // Show confirmation modal if uniqueness scope update is needed and no consent yet
+        if (!hasUserConsent && requiresUniquenessScopeUpdate) {
+            setPendingFormValues(formValues);
+            setShowConfirmationModal(true);
+            return;
+        }
 
         updateConnector(updatedConnectorData, checkedClaims);
+    };
 
+    /**
+     * Handles the initial form submission
+     */
+    const handleSubmit = (values: AlternativeLoginIdentifierFormInterface): void => {
+        processFormSubmission(values, false);
+    };
+
+    /**
+     * Handles the form submission after user consents to uniqueness scope update
+     */
+    const handleConsentedSubmit = (): void => {
+        if (!pendingFormValues) {
+            return;
+        }
+
+        processFormSubmission(pendingFormValues, true);
+        setShowConfirmationModal(false);
     };
 
     useEffect(() => {
@@ -576,6 +640,38 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
                         <ContentLoader />
                     )
             }
+            <ConfirmationModal
+                data-testid={ `${componentId}-confirmation-modal` }
+                onClose={ (): void => {
+                    setShowConfirmationModal(false);
+                } }
+                type="warning"
+                open={ showConfirmationModal }
+                assertion={ t("common:confirm") }
+                assertionHint={ t("extensions:manage.accountLogin.alternativeLoginIdentifierPage." +
+                    "claimUpdateConfirmation.assertionHint") }
+                assertionType="checkbox"
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ (): void => {
+                    setShowConfirmationModal(false);
+                } }
+                onPrimaryActionClick={ handleConsentedSubmit }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header>
+                    { t("extensions:manage.accountLogin.alternativeLoginIdentifierPage." +
+                        "claimUpdateConfirmation.header") }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message attached warning>
+                    { t("extensions:manage.accountLogin.alternativeLoginIdentifierPage." +
+                        "claimUpdateConfirmation.message") }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content>
+                    { t("extensions:manage.accountLogin.alternativeLoginIdentifierPage." +
+                        "claimUpdateConfirmation.content") }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
         </>
     );
 };

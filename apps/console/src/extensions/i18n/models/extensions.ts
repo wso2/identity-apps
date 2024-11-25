@@ -2737,6 +2737,13 @@ export interface Extensions {
                 };
                 claimUpdateNotification: {
                     error: NotificationItem;
+                    success: NotificationItem;
+                };
+                claimUpdateConfirmation: {
+                    header: string;
+                    message: string;
+                    content: string;
+                    assertionHint: string;
                 };
             };
             pageTitle: string;

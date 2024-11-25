@@ -3037,7 +3037,20 @@ export const extensions: Extensions = {
                     error: {
                         description: "Error updating the attribute as an unique attribute. Please try again.",
                         message: "Error updating claim"
+                    },
+                    success: {
+                        description: "Successfully updated the {{claimName}} uniqueness validation scope to across user stores.",
+                        message: "Update successful"
                     }
+                },
+                claimUpdateConfirmation: {
+                    header: "Before you proceed",
+                    message: "Uniqueness validation for the selected attribute(s) will be applied across user stores.",
+                    content: "Alternate log-in identifiers work only if the attribute(s) values are unique across " +
+                        "the organization. This setting will ensure that the required uniqueness of attribute(s) is " +
+                        "guaranteed for new users created through the system. However, it doesn't guarantee the same " +
+                        "for existing users' attribute(s).",
+                    assertionHint: "I understand and wish to proceed"
                 }
             },
             pageTitle: "Account Login",

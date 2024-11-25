@@ -574,7 +574,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             && UIConfig?.isClaimUniquenessValidationEnabled && (
                             <Field.Dropdown
                                 ariaLabel="uniqueness-scope-dropdown"
-                                name="uniquenessScope"
+                                name={ ClaimManagementConstants.UNIQUENESS_SCOPE_PROPERTY_NAME }
                                 label={ t("claims:local.forms.uniquenessScope.label") }
                                 data-testid={ `${ testId }-form-uniqueness-scope-dropdown` }
                                 disabled={ !hasMapping }
