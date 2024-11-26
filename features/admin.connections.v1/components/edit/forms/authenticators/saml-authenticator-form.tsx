@@ -264,8 +264,8 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             IdPEntityId: findPropVal<string>({ defaultValue: "", key: "IdPEntityId" }),
             IncludeAuthnContext: findPropVal<string>({ defaultValue: "string", key: "IncludeAuthnContext" }),
             IncludeCert : findPropVal<boolean>({ defaultValue: false, key: "IncludeCert" }),
-            IncludeProtocolBinding: findPropVal<boolean>({ defaultValue: false, key: "IncludeProtocolBinding" }),
             IncludeNameIDPolicy: findPropVal<boolean>({ defaultValue: false, key: "IncludeNameIDPolicy" }),
+            IncludeProtocolBinding: findPropVal<boolean>({ defaultValue: false, key: "IncludeProtocolBinding" }),
             /**
              * `IsAuthnRespSigned` is by default set to true when creating the SAML IdP so,
              * always the value will be true. Keeping this here to indicate for the user and
