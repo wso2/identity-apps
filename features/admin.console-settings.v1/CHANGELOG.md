@@ -1,5 +1,24 @@
 # @wso2is/admin.console-settings.v1
 
+## 2.25.39
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.39
+  - @wso2is/admin.core.v1@2.34.39
+  - @wso2is/admin.extensions.v1@2.34.39
+  - @wso2is/admin.identity-providers.v1@2.26.39
+  - @wso2is/admin.organizations.v1@2.26.39
+  - @wso2is/admin.roles.v2@2.26.39
+  - @wso2is/admin.administrators.v1@2.29.39
+  - @wso2is/admin.login-flow.ai.v1@2.26.39
+  - @wso2is/admin.authentication.v1@2.25.39
+  - @wso2is/admin.feature-gate.v1@1.4.39
+  - @wso2is/admin.server-configurations.v1@2.29.12
+  - @wso2is/admin.users.v1@2.28.8
+  - @wso2is/admin.userstores.v1@2.25.39
+
 ## 2.25.38
 
 ### Patch Changes
