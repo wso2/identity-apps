@@ -70,14 +70,14 @@ const UserAttributesSection: FunctionComponent<UserAttributesSectionPropsInterfa
                 { t("remoteUserStores:form.sections.userAttributes") }
             </Heading>
             <Grid container spacing={ 2 } className="form-grid-container">
-                <Grid xs={ 12 } md={ 4 }>
+                <Grid xs={ 12 } lg={ 5 } xl={ 4 }>
                     <FormLabel required>
                         { t("remoteUserStores:form.fields.usernameMapping.label") }
                     </FormLabel>
                     <br />
                     <Code variant="caption">{ usernameClaimUri }</Code>
                 </Grid>
-                <Grid xs={ 12 } md={ 4 }>
+                <Grid xs={ 12 } lg={ 6 } xl={ 4 }>
                     <FinalFormField
                         FormControlProps={ {
                             margin: "dense"
@@ -102,14 +102,14 @@ const UserAttributesSection: FunctionComponent<UserAttributesSectionPropsInterfa
                 </Grid>
                 <Grid />
 
-                <Grid xs={ 12 } md={ 4 }>
+                <Grid xs={ 12 } lg={ 5 } xl={ 4 }>
                     <FormLabel required>
                         { t("remoteUserStores:form.fields.userIdMapping.label") }
                     </FormLabel>
                     <br />
                     <Code variant="caption">{ userIDClaimUri }</Code>
                 </Grid>
-                <Grid xs={ 12 } md={ 4 }>
+                <Grid xs={ 12 } lg={ 6 } xl={ 4 }>
                     <FinalFormField
                         FormControlProps={ {
                             margin: "dense"

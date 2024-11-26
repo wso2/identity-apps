@@ -17,7 +17,7 @@
  */
 
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalForm, FinalFormField, FormRenderProps, RadioGroupFieldAdapter, TextFieldAdapter } from "@wso2is/form";
 import { RadioChild } from "@wso2is/forms";
 import React, {
@@ -45,7 +45,7 @@ import "./general-user-store-details-form.scss";
 /**
  * Prop types of the general user store details component
  */
-interface GeneralUserStoreDetailsPropsInterface extends TestableComponentInterface {
+interface GeneralUserStoreDetailsPropsInterface extends IdentifiableComponentInterface {
     /**
      * User store manager.
      */
@@ -92,7 +92,7 @@ const GeneralUserStoreDetailsForm: ForwardRefExoticComponent<RefAttributes<Gener
                 isReadWriteUserStoresEnabled,
                 onSubmit,
                 initialValues,
-                ["data-testid"]: testId = "asgardeo-customer-userstore-general-details"
+                ["data-componentid"]: testId = "asgardeo-customer-userstore-general-details"
             }: GeneralUserStoreDetailsPropsInterface,
             ref: ForwardedRef<GeneralUserStoreDetailsFormRef>
         ): ReactElement => {
@@ -115,7 +115,7 @@ const GeneralUserStoreDetailsForm: ForwardRefExoticComponent<RefAttributes<Gener
 
             const userStoreOptions: RadioChild[] = [
                 {
-                    "data-testid": `${testId}-create-user-store-form-user-store-ldap-option-radio-button`,
+                    "data-componentid": `${testId}-user-store-type-ldap-option-radio-button`,
                     label: t(
                         "extensions:manage.features.userStores.create.pageLayout.steps.generalSettings.form.fields." +
                         "userStoreType.types.ldap.label"
@@ -123,7 +123,7 @@ const GeneralUserStoreDetailsForm: ForwardRefExoticComponent<RefAttributes<Gener
                     value: ConnectedUserStoreTypes.LDAP
                 },
                 {
-                    "data-testid": `${testId}-create-user-store-form-user-store-ad-option-radio-button`,
+                    "data-componentid": `${testId}-user-store-type-ad-option-radio-button`,
                     label: t(
                         "extensions:manage.features.userStores.create.pageLayout.steps.generalSettings.form.fields." +
                         "userStoreType.types.ad.label"
@@ -134,7 +134,7 @@ const GeneralUserStoreDetailsForm: ForwardRefExoticComponent<RefAttributes<Gener
 
             const accessTypeOptions: RadioChild[] = [
                 {
-                    "data-componentid": `${testId}-create-user-store-form-access-type-read-only-option-radio-button`,
+                    "data-componentid": `${testId}-access-type-read-only-option-radio-button`,
                     hint: {
                         content: t(
                             "extensions:manage.features.userStores.create.pageLayout.steps.generalSettings.form." +
@@ -148,7 +148,7 @@ const GeneralUserStoreDetailsForm: ForwardRefExoticComponent<RefAttributes<Gener
                     value: RemoteUserStoreAccessTypes.ReadOnly
                 },
                 {
-                    "data-componentid": `${testId}-create-user-store-form-access-type-read-write-option-radio-button`,
+                    "data-componentid": `${testId}-access-type-read-write-option-radio-button`,
                     hint: {
                         content: t(
                             "extensions:manage.features.userStores.create.pageLayout.steps.generalSettings.form." +
@@ -336,9 +336,10 @@ const GeneralUserStoreDetailsForm: ForwardRefExoticComponent<RefAttributes<Gener
                                         data-componentid={ `${testId}-field-accessType` }
                                         component={ RadioGroupFieldAdapter }
                                         disabled={ isReadOnly }
-                                        options={ accessTypeOptions.map((option: RadioChild) => ({
-                                            label: option.label,
-                                            value: option.value
+                                        options={ accessTypeOptions.map(({ label, value, ...rest }: RadioChild) => ({
+                                            label,
+                                            value,
+                                            ...rest
                                         })) }
                                         required
                                     />

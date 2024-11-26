@@ -115,7 +115,7 @@ const GroupAttributesSection: FunctionComponent<GroupAttributesSectionPropsInter
 
                             { userStoreManager === RemoteUserStoreManagerType.RemoteUserStoreManager && (
                                 <>
-                                    <Grid xs={ 12 } md={ 4 }>
+                                    <Grid xs={ 12 } lg={ 5 } xl={ 4 }>
                                         <FormLabel
                                             required={
                                                 isReadGroupsEnabled &&
@@ -126,7 +126,7 @@ const GroupAttributesSection: FunctionComponent<GroupAttributesSectionPropsInter
                                             { t("remoteUserStores:form.fields.groupnameMapping.label") }
                                         </FormLabel>
                                     </Grid>
-                                    <Grid xs={ 12 } md={ 4 }>
+                                    <Grid xs={ 12 } lg={ 6 } xl={ 4 }>
                                         <FinalFormField
                                             FormControlProps={ {
                                                 margin: "dense"
@@ -155,7 +155,7 @@ const GroupAttributesSection: FunctionComponent<GroupAttributesSectionPropsInter
                                     </Grid>
                                     <Grid />
 
-                                    <Grid xs={ 12 } md={ 4 }>
+                                    <Grid xs={ 12 } lg={ 5 } xl={ 4 }>
                                         <FormLabel
                                             required={
                                                 isReadGroupsEnabled &&
@@ -166,7 +166,7 @@ const GroupAttributesSection: FunctionComponent<GroupAttributesSectionPropsInter
                                             { t("remoteUserStores:form.fields.groupIdMapping.label") }
                                         </FormLabel>
                                     </Grid>
-                                    <Grid xs={ 12 } md={ 4 }>
+                                    <Grid xs={ 12 } lg={ 6 } xl={ 4 }>
                                         <FinalFormField
                                             FormControlProps={ {
                                                 margin: "dense"

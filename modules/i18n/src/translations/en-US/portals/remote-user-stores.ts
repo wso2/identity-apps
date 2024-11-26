@@ -151,6 +151,10 @@ export const remoteUserStores: RemoteUserStoresNS = {
             configurations: {
                 attributes: {
                     custom: {
+                        emptyPlaceholder: {
+                            description: "There are no custom attributes created in the system.",
+                            heading: "No Custom Attributes"
+                        },
                         heading: "Custom Attributes"
                     },
                     heading: "Attribute Mappings",
@@ -192,7 +196,7 @@ export const remoteUserStores: RemoteUserStoresNS = {
                     },
                     run: {
                         checkConnection: {
-                            action: "Check connection",
+                            action: "Check Connections",
                             errorAction: "Try again",
                             errorHeading: "Not connected",
                             errorMessage:

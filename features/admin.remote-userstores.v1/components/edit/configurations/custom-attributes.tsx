@@ -16,12 +16,14 @@
  * under the License.
  */
 
+import Grid from "@oxygen-ui/react/Grid";
+import Stack from "@oxygen-ui/react/Stack";
 import { Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalFormField, TextFieldAdapter } from "@wso2is/form/src";
-import { Heading, Text } from "@wso2is/react-components";
+import { EmptyPlaceholder, Heading, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Header, Segment } from "semantic-ui-react";
+import { Header, Segment } from "semantic-ui-react";
 
 /**
  * Interface for the custom attribute mappings component props.
@@ -69,55 +71,67 @@ const CustomAttributeMappings: FunctionComponent<CustomAttributeMappingsPropsInt
                 { t("remoteUserStores:pages.edit.configurations.attributes.custom.heading") }
             </Heading>
             <Segment className="attribute-mapping-section" padded="very">
-                <Grid>
-                    {
-                        attributesList?.map((attribute: Claim, index: number) => {
-                            const fieldName: string = attribute.claimURI.split("/").pop();
+                { attributesList?.length === 0 && (
+                    <EmptyPlaceholder
+                        title={
+                            t("remoteUserStores:pages.edit.configurations.attributes.custom.emptyPlaceholder.heading") }
+                        subtitle={
+                            [ t("remoteUserStores:pages.edit.configurations."
+                                + "attributes.custom.emptyPlaceholder.description") ]
+                        }
+                        data-componentid={ `${componentId}-empty-placeholder` }
+                    />
+                ) }
+                { attributesList?.length > 0 && (
+                    <Stack data-componentid={ `${componentId}-grid` }>
+                        {
+                            attributesList?.map((attribute: Claim, index: number) => {
+                                const fieldName: string = attribute.claimURI.split("/").pop();
 
-                            return (
-                                <Grid.Row
-                                    key={ index }
-                                    columns={ 2 }
-                                    verticalAlign="middle"
-                                >
-                                    <Grid.Column width={ 6 }>
-                                        <Header.Content>
-                                            { attribute?.displayName }
-                                            <Text
-                                                display="inline"
-                                                styles={ { color: "red" } }
-                                            >
-                                            *
-                                            </Text>
-                                            <Header.Subheader>
-                                                <code
-                                                    className={
-                                                        "inline-code compact transparent"
-                                                    }
+                                return (
+                                    <Grid
+                                        key={ index }
+                                        container
+                                    >
+                                        <Grid xs={ 12 } lg={ 6 } xl={ 5 }>
+                                            <Header.Content>
+                                                { attribute?.displayName }
+                                                <Text
+                                                    display="inline"
+                                                    styles={ { color: "red" } }
                                                 >
-                                                    { attribute?.claimURI }
-                                                </code>
-                                            </Header.Subheader>
-                                        </Header.Content>
-                                    </Grid.Column>
-                                    <Grid.Column width={ 6 }>
-                                        <FinalFormField
-                                            FormControlProps={ {
-                                                margin: "dense"
-                                            } }
-                                            data-componentid={ `${componentId}-${attribute.claimURI}-input` }
-                                            name={ fieldName }
-                                            component={ TextFieldAdapter }
-                                            initialValue={ resolveMappedAttribute(attribute) }
-                                            disabled={ isReadOnly }
-                                            validate={ validateRequiredField }
-                                        />
-                                    </Grid.Column>
-                                </Grid.Row>
-                            );
-                        })
-                    }
-                </Grid>
+                                            *
+                                                </Text>
+                                                <Header.Subheader>
+                                                    <code
+                                                        className={
+                                                            "inline-code compact transparent"
+                                                        }
+                                                    >
+                                                        { attribute?.claimURI }
+                                                    </code>
+                                                </Header.Subheader>
+                                            </Header.Content>
+                                        </Grid>
+                                        <Grid xs={ 6 } lg={ 6 } xl={ 5 }>
+                                            <FinalFormField
+                                                FormControlProps={ {
+                                                    margin: "dense"
+                                                } }
+                                                data-componentid={ `${componentId}-${attribute.claimURI}-input` }
+                                                name={ fieldName }
+                                                component={ TextFieldAdapter }
+                                                initialValue={ resolveMappedAttribute(attribute) }
+                                                disabled={ isReadOnly }
+                                                validate={ validateRequiredField }
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                );
+                            })
+                        }
+                    </Stack>
+                ) }
             </Segment>
         </div>
     );

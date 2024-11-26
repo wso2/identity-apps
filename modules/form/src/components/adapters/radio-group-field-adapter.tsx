@@ -29,7 +29,7 @@ import { FieldRenderProps } from "react-final-form";
 /**
  * Interface for the DropDownItem.
  */
-export type RadioGroupOptionProps = FormControlLabelProps;
+export type RadioGroupOptionProps = FormControlLabelProps & IdentifiableComponentInterface;
 
 /**
  * Props interface of {@link SelectFieldAdapter}

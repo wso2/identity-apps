@@ -121,6 +121,10 @@ export interface RemoteUserStoresNS {
                     heading: string;
                     custom: {
                         heading: string;
+                        emptyPlaceholder: {
+                            heading: string;
+                            description: string;
+                        }
                     };
                     local: {
                         heading: string;

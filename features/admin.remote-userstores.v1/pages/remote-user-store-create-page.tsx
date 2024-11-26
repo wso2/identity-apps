@@ -389,7 +389,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
      */
     const renderLoadingPlaceholder = () => {
         return (
-            <Stack spacing={ 3 }>
+            <Stack spacing={ 3 } data-componentid={ `${testId}-loading-placeholder` }>
                 <Skeleton variant="rectangular" height={ 40 } />
                 <Stack spacing={ 1 }>
                     <Skeleton variant="rectangular" width={ 210 } height={ 10 } />
@@ -419,7 +419,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
             ) }
             className="remote-user-store-create-page-layout"
             backButton={ {
-                "data-testid": `${testId}-page-back-button`,
+                "data-testid": `${testId}-back-button`,
                 onClick: () => {
                     history.push(AppConstants.getPaths().get("USERSTORES"));
                 },
@@ -446,6 +446,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
                         activeStep={ activeStep }
                         orientation="vertical"
                         className="remote-user-store-create-stepper"
+                        data-componentid={ `${testId}-stepper` }
                     >
                         <Step>
                             <StepLabel
@@ -471,6 +472,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
                                     isReadWriteUserStoresEnabled={ isReadWriteUserStoresEnabled }
                                     initialValues={ userStoreFormData.generalDetails ?? {} }
                                     onSubmit={ onGeneralDetailsFormSubmit }
+                                    data-componentid="remote-user-store-create-general-details-form"
                                 />
                                 <Button
                                     variant="contained"
@@ -510,6 +512,7 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
                                     isReadOnly={ !hasUserStoreCreatePermissions }
                                     initialValues={ userStoreFormData.configurations ?? {} }
                                     onSubmit={ onConfigurationsFormSubmit }
+                                    data-componentid="remote-user-store-create-configurations-form"
                                 />
                                 <div className="step-actions-container">
                                     <Button

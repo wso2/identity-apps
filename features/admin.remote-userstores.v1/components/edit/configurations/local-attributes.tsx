@@ -16,12 +16,14 @@
  * under the License.
  */
 
+import Grid from "@oxygen-ui/react/Grid";
+import Stack from "@oxygen-ui/react/Stack";
 import { Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalFormField, TextFieldAdapter } from "@wso2is/form/src";
 import { Heading, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Header, Segment } from "semantic-ui-react";
+import { Header, Segment } from "semantic-ui-react";
 
 /**
  * Interface for the local attribute mappings component props.
@@ -69,18 +71,14 @@ const LocalAttributeMappings: FunctionComponent<LocalAttributeMappingsPropsInter
                 { t("remoteUserStores:pages.edit.configurations.attributes.local.heading") }
             </Heading>
             <Segment className="attribute-mapping-section" padded="very">
-                <Grid>
+                <Stack spacing={ 2 }>
                     {
                         attributesList?.map((attribute: Claim, index: number) => {
                             const fieldName: string = attribute.claimURI.split("/").pop();
 
                             return (
-                                <Grid.Row
-                                    key={ index }
-                                    columns={ 2 }
-                                    verticalAlign="middle"
-                                >
-                                    <Grid.Column width={ 6 }>
+                                <Grid key={ index } container>
+                                    <Grid xs={ 12 } lg={ 6 } xl={ 5 }>
                                         <Header.Content>
                                             { attribute?.displayName }
                                             <Text
@@ -99,8 +97,8 @@ const LocalAttributeMappings: FunctionComponent<LocalAttributeMappingsPropsInter
                                                 </code>
                                             </Header.Subheader>
                                         </Header.Content>
-                                    </Grid.Column>
-                                    <Grid.Column width={ 6 }>
+                                    </Grid>
+                                    <Grid xs={ 6 } lg={ 6 } xl={ 5 }>
                                         <FinalFormField
                                             FormControlProps={ {
                                                 margin: "dense"
@@ -112,12 +110,12 @@ const LocalAttributeMappings: FunctionComponent<LocalAttributeMappingsPropsInter
                                             disabled={ isReadOnly }
                                             validate={ validateRequiredField }
                                         />
-                                    </Grid.Column>
-                                </Grid.Row>
+                                    </Grid>
+                                </Grid>
                             );
                         })
                     }
-                </Grid>
+                </Stack>
             </Segment>
         </div>
     );
