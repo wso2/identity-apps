@@ -37,7 +37,13 @@ import {
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, Claim, ClaimsGetParams, IdentifiableComponentInterface, Property, UniquenessScope } from "@wso2is/core/models";
+import {
+    AlertLevels,
+    Claim,
+    ClaimsGetParams,
+    IdentifiableComponentInterface,
+    UniquenessScope
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { ConfirmationModal, ContentLoader, EmphasizedSegment, Message, PageLayout } from "@wso2is/react-components";
@@ -341,15 +347,14 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
      * Does not modify claims that are not selected.
      */
     const updateClaimUniquenessScope = (claim: Claim, checkedClaims: string[]) => {
-        const isSelected = checkedClaims?.includes(claim.claimURI);
-        
-        // Only update if selected and either uniquenessScope is undefined or not ACROSS_USERSTORES
-        const needsUpdate = isSelected && 
+        const isSelected: boolean = checkedClaims?.includes(claim.claimURI);
+
+        const needsUpdate: boolean = isSelected &&
             (!claim.uniquenessScope || claim.uniquenessScope !== UniquenessScope.ACROSS_USERSTORES);
 
         return {
             isClaimUpdate: needsUpdate,
-            updatedClaim: needsUpdate 
+            updatedClaim: needsUpdate
                 ? {
                     ...claim,
                     uniquenessScope: UniquenessScope.ACROSS_USERSTORES
@@ -431,8 +436,9 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
      * Checks if any claims need uniqueness scope update
      */
     const needsUniquenessScopeUpdate = (checkedClaims: string[]): boolean => {
-        return checkedClaims.some(claimURI => {
-            const claim = availableClaims.find(c => c.claimURI === claimURI);
+        return checkedClaims.some((claimURI: string) => {
+            const claim: Claim = availableClaims.find((c: Claim) => c.claimURI === claimURI);
+
             return !claim.uniquenessScope || claim.uniquenessScope !== UniquenessScope.ACROSS_USERSTORES;
         });
     };
@@ -441,17 +447,18 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
      * Processes form submission and updates connector and claims
      */
     const processFormSubmission = (
-        formValues: AlternativeLoginIdentifierFormInterface, 
+        formValues: AlternativeLoginIdentifierFormInterface,
         hasUserConsent: boolean = false
     ): void => {
-        const checkedClaims = getProcessedCheckedClaims(formValues);
-        const updatedConnectorData = getUpdatedConfigurations(checkedClaims);
-        const requiresUniquenessScopeUpdate = needsUniquenessScopeUpdate(checkedClaims);
+        const checkedClaims: string[] = getProcessedCheckedClaims(formValues);
+        const updatedConnectorData: any = getUpdatedConfigurations(checkedClaims);
+        const requiresUniquenessScopeUpdate: boolean = needsUniquenessScopeUpdate(checkedClaims);
 
         // Show confirmation modal if uniqueness scope update is needed and no consent yet
         if (!hasUserConsent && requiresUniquenessScopeUpdate) {
             setPendingFormValues(formValues);
             setShowConfirmationModal(true);
+
             return;
         }
 
