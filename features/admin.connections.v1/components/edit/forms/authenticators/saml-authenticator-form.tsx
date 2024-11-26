@@ -241,10 +241,17 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
 
         return {
             ArtifactResolveUrl: findPropVal<string>({ defaultValue: "", key: "ArtifactResolveUrl" }),
+            AttributeConsumingServiceIndex: findPropVal<string>({ 
+                defaultValue: "", 
+                key: "AttributeConsumingServiceIndex" 
+            }),
             AuthRedirectUrl: findPropVal<string>({ defaultValue: authorizedRedirectURL, key: "AuthRedirectUrl" }),
             AuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "AuthnContextClassRef" }),
             AuthnContextComparisonLevel: findPropVal<string>({ defaultValue: "", key: "AuthnContextComparisonLevel" }),
+            CustomAuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "CustomAuthnContextClassRef" }),
             DigestAlgorithm: findPropVal<string>({ defaultValue: "SHA256", key: "DigestAlgorithm" }),
+            ForceAuthentication: findPropVal<string>({ defaultValue: "string", key: "ForceAuthentication" }),
+            IncludeAuthnContext: findPropVal<string>({ defaultValue: "string", key: "IncludeAuthnContext" }),
             ISArtifactBindingEnabled:  findPropVal<boolean>({ defaultValue: false, key: "ISArtifactBindingEnabled" }),
             /**
              * https://github.com/wso2/product-is/issues/17004
@@ -254,9 +261,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 key: "ISArtifactResolveReqSigned" }
             ),
             ISArtifactResponseSigned: findPropVal<string>({ defaultValue: "string", key: "ISArtifactResponseSigned" }),
-            IncludeAuthnContext: findPropVal<string>({ defaultValue: "string", key: "IncludeAuthnContext" }),
-            ForceAuthentication: findPropVal<string>({ defaultValue: "string", key: "ForceAuthentication" }),
-            ResponseAuthnContextClassRef: findPropVal<string>({ defaultValue: "string", key: "ResponseAuthnContextClassRef" }),
             ISAuthnReqSigned: findPropVal<boolean>({ defaultValue: false, key: "ISAuthnReqSigned" }),
             IdPEntityId: findPropVal<string>({ defaultValue: "", key: "IdPEntityId" }),
             IncludeProtocolBinding: findPropVal<boolean>({ defaultValue: false, key: "IncludeProtocolBinding" }),
@@ -282,12 +286,14 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 defaultValue: findMeta({ key: "RequestMethod" })?.defaultValue ?? DEFAULT_PROTOCOL_BINDING,
                 key: "RequestMethod"
             }),
+            ResponseAuthnContextClassRef: findPropVal<string>({ 
+                defaultValue: "string", 
+                key: "ResponseAuthnContextClassRef" 
+            }),
             SPEntityId: findPropVal<string>({ defaultValue: "", key: "SPEntityId" }),
             SSOUrl: findPropVal<string>({ defaultValue: "", key: "SSOUrl" }),
             SignatureAlgorithm: findPropVal<string>({ defaultValue: "RSA with SHA256", key: "SignatureAlgorithm" }),
             commonAuthQueryParams: findPropVal<string>({ defaultValue: "", key: "commonAuthQueryParams" }),
-            CustomAuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "CustomAuthnContextClassRef" }),
-            AttributeConsumingServiceIndex: findPropVal<string>({ defaultValue: "", key: "AttributeConsumingServiceIndex" }),
             /**
              * https://github.com/wso2/product-is/issues/17004
              */
