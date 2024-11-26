@@ -439,6 +439,10 @@ export interface ClaimsNS {
         };
         additionalProperties: {
             hint: string;
+            isUniqueDeprecationMessage: {
+                uniquenessDisabled: string;
+                uniquenessEnabled: string;
+            };
             key: string;
             value: string;
             keyRequiredErrorMessage: string;

@@ -30,7 +30,7 @@ import {
     PrimaryButton
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
@@ -102,26 +102,38 @@ export const EditAdditionalPropertiesLocalClaims:
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 16 }>
-                            { showWarning && UIConfig?.isClaimUniquenessValidationEnabled && (
+                            { showWarning && (
                                 <Message
                                     type="warning"
                                     content={ (
-                                        <>
-                                            The &apos;isUnique&apos; property is deprecated. Please use the &nbsp;
-                                            <Link
-                                                external={ false }
-                                                onClick={ () => {
-                                                    history.push({
-                                                        pathname: AppConstants.getPaths()
-                                                            .get("LOCAL_CLAIMS_EDIT")
-                                                            .replace(":id", claim.id)
-                                                    });
-                                                } }
-                                            >
-                                                Uniqueness Validation Dropdown
-                                            </Link>
-                                                &nbsp; to configure claim uniqueness.
-                                        </>
+                                        <Trans
+                                            i18nKey={
+                                                UIConfig?.isClaimUniquenessValidationEnabled
+                                                    ? "claims:local.additionalProperties." +
+                                                        "isUniqueDeprecationMessage.uniquenessEnabled"
+                                                    : "claims:local.additionalProperties." +
+                                                        "isUniqueDeprecationMessage.uniquenessDisabled"
+                                            }
+                                        >
+                                            { UIConfig?.isClaimUniquenessValidationEnabled ? (
+                                                <>
+                                                    The &apos;isUnique&apos; property is deprecated. Please use the
+                                                    <Link
+                                                        external={ false }
+                                                        onClick={ () => {
+                                                            history.push({
+                                                                pathname: AppConstants.getPaths()
+                                                                    .get("LOCAL_CLAIMS_EDIT")
+                                                                    .replace(":id", claim.id)
+                                                            });
+                                                        } }
+                                                    > Uniqueness Validation Dropdown </Link>
+                                                    to configure claim uniqueness.
+                                                </>
+                                            ) : (
+                                                "The 'isUnique' property is deprecated."
+                                            ) }
+                                        </Trans>
                                     ) }
                                     data-componentid={ `${ testId }-restricted-warning` }
                                 />
