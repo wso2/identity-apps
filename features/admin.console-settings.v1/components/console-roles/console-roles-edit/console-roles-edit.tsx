@@ -23,6 +23,7 @@ import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is
 import { useOrganizationConfigV2 } from "@wso2is/admin.administrators.v1/api/useOrganizationConfigV2";
 import { UseOrganizationConfigType } from "@wso2is/admin.administrators.v1/models";
 import { AppState, OrganizationType, store } from "@wso2is/admin.core.v1";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { BasicRoleDetails } from "@wso2is/admin.roles.v2/components/edit-role/edit-role-basic";
@@ -219,7 +220,9 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             activeUserStore={
-                                isPrivilegedUsersInConsoleSettingsEnabled && isFirstLevelOrganization()
+                                activeUserStore !== userstoresConfig?.primaryUserstoreName
+                                && isPrivilegedUsersInConsoleSettingsEnabled
+                                && isFirstLevelOrganization()
                                     ? activeUserStore
                                     : null
                             }

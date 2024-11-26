@@ -410,10 +410,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                             {
                                 users && availableUserStores && !isReadOnly && (
                                     <Grid container spacing={ 1 }>
-                                        { (
-                                            !activeUserStore
-                                            || activeUserStore === userstoresConfig?.primaryUserstoreName
-                                        ) && (
+                                        { !activeUserStore && (
                                             <Grid xs={ 12 } sm={ 4 } md={ 2 } alignItems="center">
                                                 <FormControl fullWidth size="medium">
                                                     <Select
