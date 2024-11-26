@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.12.4
+
+### Patch Changes
+
+- [#7159](https://github.com/wso2/identity-apps/pull/7159) [`21a3569af8546401645c85f8f07f06a59ceac8a5`](https://github.com/wso2/identity-apps/commit/21a3569af8546401645c85f8f07f06a59ceac8a5) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger changeset for https://github.com/wso2/identity-apps/pull/7157
+
+* [#7157](https://github.com/wso2/identity-apps/pull/7157) [`996eb0f85c0b24e6193e18a316f607a8c82f8406`](https://github.com/wso2/identity-apps/commit/996eb0f85c0b24e6193e18a316f607a8c82f8406) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update text in user profile lock reason
+
 ## 2.12.3
 
 ### Patch Changes
