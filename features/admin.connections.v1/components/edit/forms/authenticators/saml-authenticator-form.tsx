@@ -241,9 +241,9 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
 
         return {
             ArtifactResolveUrl: findPropVal<string>({ defaultValue: "", key: "ArtifactResolveUrl" }),
-            AttributeConsumingServiceIndex: findPropVal<string>({ 
-                defaultValue: "", 
-                key: "AttributeConsumingServiceIndex" 
+            AttributeConsumingServiceIndex: findPropVal<string>({
+                defaultValue: "",
+                key: "AttributeConsumingServiceIndex"
             }),
             AuthRedirectUrl: findPropVal<string>({ defaultValue: authorizedRedirectURL, key: "AuthRedirectUrl" }),
             AuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "AuthnContextClassRef" }),
@@ -251,7 +251,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             CustomAuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "CustomAuthnContextClassRef" }),
             DigestAlgorithm: findPropVal<string>({ defaultValue: "SHA256", key: "DigestAlgorithm" }),
             ForceAuthentication: findPropVal<string>({ defaultValue: "string", key: "ForceAuthentication" }),
-            IncludeAuthnContext: findPropVal<string>({ defaultValue: "string", key: "IncludeAuthnContext" }),
             ISArtifactBindingEnabled:  findPropVal<boolean>({ defaultValue: false, key: "ISArtifactBindingEnabled" }),
             /**
              * https://github.com/wso2/product-is/issues/17004
@@ -263,15 +262,16 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             ISArtifactResponseSigned: findPropVal<string>({ defaultValue: "string", key: "ISArtifactResponseSigned" }),
             ISAuthnReqSigned: findPropVal<boolean>({ defaultValue: false, key: "ISAuthnReqSigned" }),
             IdPEntityId: findPropVal<string>({ defaultValue: "", key: "IdPEntityId" }),
-            IncludeProtocolBinding: findPropVal<boolean>({ defaultValue: false, key: "IncludeProtocolBinding" }),
-            IsAssertionEncrypted: findPropVal<boolean>({ defaultValue: false, key: "IsAssertionEncrypted" }),
-            IncludeNameIDPolicy: findPropVal<boolean>({ defaultValue: false, key: "IncludeNameIDPolicy" }),
+            IncludeAuthnContext: findPropVal<string>({ defaultValue: "string", key: "IncludeAuthnContext" }),
             IncludeCert : findPropVal<boolean>({ defaultValue: false, key: "IncludeCert" }),
+            IncludeProtocolBinding: findPropVal<boolean>({ defaultValue: false, key: "IncludeProtocolBinding" }),
+            IncludeNameIDPolicy: findPropVal<boolean>({ defaultValue: false, key: "IncludeNameIDPolicy" }),
             /**
              * `IsAuthnRespSigned` is by default set to true when creating the SAML IdP so,
              * always the value will be true. Keeping this here to indicate for the user and
              * to enable this if requirements gets changed.
              */
+            IsAssertionEncrypted: findPropVal<boolean>({ defaultValue: false, key: "IsAssertionEncrypted" }),
             IsAuthnRespSigned: findPropVal<boolean>({ defaultValue: false, key: "IsAuthnRespSigned" }),
             IsLogoutEnabled: findPropVal<boolean>({ defaultValue: false, key: "IsLogoutEnabled" }),
             IsLogoutReqSigned: findPropVal<boolean>({ defaultValue: false, key: "IsLogoutReqSigned" }),
@@ -286,9 +286,9 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 defaultValue: findMeta({ key: "RequestMethod" })?.defaultValue ?? DEFAULT_PROTOCOL_BINDING,
                 key: "RequestMethod"
             }),
-            ResponseAuthnContextClassRef: findPropVal<string>({ 
-                defaultValue: "string", 
-                key: "ResponseAuthnContextClassRef" 
+            ResponseAuthnContextClassRef: findPropVal<string>({
+                defaultValue: "string",
+                key: "ResponseAuthnContextClassRef"
             }),
             SPEntityId: findPropVal<string>({ defaultValue: "", key: "SPEntityId" }),
             SSOUrl: findPropVal<string>({ defaultValue: "", key: "SSOUrl" }),
