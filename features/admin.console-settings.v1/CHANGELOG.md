@@ -1,5 +1,26 @@
 # @wso2is/admin.console-settings.v1
 
+## 2.25.40
+
+### Patch Changes
+
+- [#7158](https://github.com/wso2/identity-apps/pull/7158) [`e8b1eeda4bfa7ed346ac35b14b504623cd8e349d`](https://github.com/wso2/identity-apps/commit/e8b1eeda4bfa7ed346ac35b14b504623cd8e349d) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix the issue when assigning a secondary user store user to a role in console settings
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.40
+  - @wso2is/admin.core.v1@2.34.40
+  - @wso2is/admin.administrators.v1@2.29.40
+  - @wso2is/admin.extensions.v1@2.34.40
+  - @wso2is/admin.identity-providers.v1@2.26.40
+  - @wso2is/admin.login-flow.ai.v1@2.26.40
+  - @wso2is/admin.organizations.v1@2.26.40
+  - @wso2is/admin.roles.v2@2.26.40
+  - @wso2is/admin.authentication.v1@2.25.40
+  - @wso2is/admin.feature-gate.v1@1.4.40
+  - @wso2is/admin.server-configurations.v1@2.29.13
+  - @wso2is/admin.users.v1@2.28.9
+  - @wso2is/admin.userstores.v1@2.25.40
+
 ## 2.25.39
 
 ### Patch Changes
