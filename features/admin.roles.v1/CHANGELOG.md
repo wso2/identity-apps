@@ -1,5 +1,18 @@
 # @wso2is/admin.roles.v1
 
+## 2.25.38
+
+### Patch Changes
+
+- Updated dependencies [[`21a3569af8546401645c85f8f07f06a59ceac8a5`](https://github.com/wso2/identity-apps/commit/21a3569af8546401645c85f8f07f06a59ceac8a5), [`996eb0f85c0b24e6193e18a316f607a8c82f8406`](https://github.com/wso2/identity-apps/commit/996eb0f85c0b24e6193e18a316f607a8c82f8406)]:
+  - @wso2is/i18n@2.12.4
+  - @wso2is/admin.core.v1@2.34.38
+  - @wso2is/admin.organizations.v1@2.26.38
+  - @wso2is/admin.groups.v1@2.25.38
+  - @wso2is/admin.server-configurations.v1@2.29.11
+  - @wso2is/admin.users.v1@2.28.7
+  - @wso2is/admin.userstores.v1@2.25.38
+
 ## 2.25.37
 
 ### Patch Changes
