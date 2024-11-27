@@ -292,35 +292,27 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
             onPrimaryActionClick={ (): void => {
                 deleteUserStore(userStoreId)
                     .then(() => {
-                        dispatch(
-                            addAlert({
-                                description: t("userstores:notifications." + "deleteUserstore.success.description"),
-                                level: AlertLevels.SUCCESS,
-                                message: t("userstores:notifications." + "deleteUserstore.success.message")
-                            })
-                        );
-                        dispatch(
-                            addAlert({
-                                description: t("userstores:notifications." + "delay.description"),
-                                level: AlertLevels.WARNING,
-                                message: t("userstores:notifications." + "delay.message")
-                            })
-                        );
+                        dispatch(addAlert({
+                            description: t("userstores:notifications.deleteUserstore.success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("userstores:notifications.deleteUserstore.success.message")
+                        }));
+                        dispatch(addAlert({
+                            description: t("userstores:notifications.delay.description"),
+                            level: AlertLevels.WARNING,
+                            message: t("userstores:notifications.delay.message")
+                        }));
 
                         history.push(AppConstants.getPaths().get("USERSTORES"));
                     })
                     .catch((error: { description: string; message: string }) => {
-                        dispatch(
-                            addAlert({
-                                description:
-                                    error?.description ??
-                                    t("userstores:notifications." + "deleteUserstore.genericError.description"),
-                                level: AlertLevels.ERROR,
-                                message:
-                                    error?.message ??
-                                    t("userstores:notifications." + "deleteUserstore.genericError.message")
-                            })
-                        );
+                        dispatch(addAlert({
+                            description: error?.description
+                                ?? t("userstores:notifications.deleteUserstore.genericError.description"),
+                            level: AlertLevels.ERROR,
+                            message: error?.message
+                                ?? t("userstores:notifications.deleteUserstore.genericError.message")
+                        }));
                     })
                     .finally(() => {
                         setShowDeleteConfirmationModal(false);
@@ -366,44 +358,48 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                 New Installation Token
             </ConfirmationModal.Header>
             <ConfirmationModal.Content data-testid={ `${componentId}-delete-confirmation-modal-content` }>
-                { isAgentOneTokenGenerated && (
-                    <Grid className="mt-2 mb-2">
-                        <Grid.Row>
-                            <Grid.Column width={ 16 }>
-                                <Message
-                                    content="Make sure to note down the installation token as it
+                {
+                    isAgentOneTokenGenerated && (
+                        <Grid className="mt-2 mb-2">
+                            <Grid.Row>
+                                <Grid.Column width={ 16 }>
+                                    <Message
+                                        content="Make sure to note down the installation token as it
                                                         will be required when running the user store agent. You won’t
                                                         be able to see it again!"
-                                    type="warning"
-                                />
-                                <label>Installation token</label>
-                                <CopyInputField
-                                    value={ agentOneToken ? agentOneToken : "" }
-                                    data-testid={ `${componentId}-client-secret-readonly-input` }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                ) }
-                { isAgentTwoTokenGenerated && (
-                    <Grid className="mt-2 mb-2">
-                        <Grid.Row>
-                            <Grid.Column width={ 16 }>
-                                <Message
-                                    content="Make sure to note down the installation token as it
+                                        type="warning"
+                                    />
+                                    <label>Installation token</label>
+                                    <CopyInputField
+                                        value={ agentOneToken ? agentOneToken : "" }
+                                        data-testid={ `${componentId}-client-secret-readonly-input` }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    )
+                }
+                {
+                    isAgentTwoTokenGenerated && (
+                        <Grid className="mt-2 mb-2">
+                            <Grid.Row>
+                                <Grid.Column width={ 16 }>
+                                    <Message
+                                        content="Make sure to note down the installation token as it
                                                         will be required when running the user store agent. You won't
                                                         be able to see it again!"
-                                    type="info"
-                                />
-                                <label>Installation token</label>
-                                <CopyInputField
-                                    value={ agentTwoToken ? agentTwoToken : "" }
-                                    data-testid={ `${componentId}-client-secret-readonly-input` }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                ) }
+                                        type="info"
+                                    />
+                                    <label>Installation token</label>
+                                    <CopyInputField
+                                        value={ agentTwoToken ? agentTwoToken : "" }
+                                        data-testid={ `${componentId}-client-secret-readonly-input` }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    )
+                }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
