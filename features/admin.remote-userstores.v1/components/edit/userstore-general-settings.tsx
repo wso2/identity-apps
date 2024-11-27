@@ -424,25 +424,27 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                 New Installation Token
             </ConfirmationModal.Header>
             <ConfirmationModal.Content data-testid={ `${componentId}-delete-confirmation-modal-content` }>
-                { isAgentHATokenGenerated && (
-                    <Grid className="mt-2 mb-2">
-                        <Grid.Row>
-                            <Grid.Column width={ 16 }>
-                                <Message
-                                    content="Make sure to note down the installation token as it
+                {
+                    isAgentHATokenGenerated && (
+                        <Grid className="mt-2 mb-2">
+                            <Grid.Row>
+                                <Grid.Column width={ 16 }>
+                                    <Message
+                                        content="Make sure to note down the installation token as it
                                                         will be required when running the user store agent. You won't
                                                         be able to see it again!"
-                                    type="warning"
-                                />
-                                <label>Installation token</label>
-                                <CopyInputField
-                                    value={ agentHAToken ? agentHAToken : "" }
-                                    data-testid={ `${componentId}-client-secret-readonly-input` }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                ) }
+                                        type="warning"
+                                    />
+                                    <label>Installation token</label>
+                                    <CopyInputField
+                                        value={ agentHAToken ? agentHAToken : "" }
+                                        data-testid={ `${componentId}-client-secret-readonly-input` }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    )
+                }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );
