@@ -36,6 +36,7 @@ import OnPremDownloadAgentStep from "./setup-guide/on-prem/download-step";
 import OnPremRunAgentStep from "./setup-guide/on-prem/run-step";
 import RemoteDownloadAgentStep from "./setup-guide/remote/download-step";
 import RemoteRunAgentStep from "./setup-guide/remote/run-step";
+import "./userstore-setup-guide.scss";
 
 /**
  * Props for the remote customer user store page.

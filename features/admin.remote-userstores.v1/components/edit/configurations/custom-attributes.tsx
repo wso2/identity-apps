@@ -83,7 +83,7 @@ const CustomAttributeMappings: FunctionComponent<CustomAttributeMappingsPropsInt
                     />
                 ) }
                 { attributesList?.length > 0 && (
-                    <Stack data-componentid={ `${componentId}-grid` }>
+                    <Stack spacing={ 2 } data-componentid={ `${componentId}-grid` }>
                         {
                             attributesList?.map((attribute: Claim, index: number) => {
                                 const fieldName: string = attribute.claimURI.split("/").pop();

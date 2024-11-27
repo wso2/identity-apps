@@ -29,7 +29,7 @@ import { Claim, ClaimsGetParams, HttpMethods } from "@wso2is/core/models";
  *
  * @param shouldFetch - If true, will fetch the data.
  *
- * @returns Requested data.
+ * @returns local claims list.
  */
 const useGetAllLocalClaims = <Data = Claim[], Error = RequestErrorInterface>(
     params: ClaimsGetParams,

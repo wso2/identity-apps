@@ -60,7 +60,7 @@ const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPagePropsInt
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const userStoreId: string = match.params[ "id" ];
+    const userStoreId: string = match.params[ "id" ]?.split( "#" )[ 0 ];
     const remoteUserStoreFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userStores
     );

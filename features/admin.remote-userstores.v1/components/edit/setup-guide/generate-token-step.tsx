@@ -109,7 +109,7 @@ const GenerateTokenStep: FunctionComponent<GenerateTokenStepPropsInterface> = ({
                 { t("remoteUserStores:pages.edit.guide.steps.token.description") }
             </Typography>
             <Button
-                variant="contained"
+                variant="outlined"
                 onClick={ handleGenerateToken }
                 loading={ isTokenGenerating }
                 disabled={ isUserStoreDisabled }

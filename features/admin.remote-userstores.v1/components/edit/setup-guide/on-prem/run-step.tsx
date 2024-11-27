@@ -124,14 +124,12 @@ const RunAgentStep: FunctionComponent<RunAgentStepPropsInterface> = ({
         return (
             <Message
                 type="error"
-                header={ t("remoteUserStores:pages.edit.guide.steps.run.checkConnection.errorHeading") }
                 content={
                     (<>
-                        <Typography component="p" gutterBottom>
-                            { t("remoteUserStores:pages.edit.guide.steps.run.checkConnection.errorMessage") }
-                        </Typography>
+                        { t("remoteUserStores:pages.edit.guide.steps.run.checkConnection.errorMessage") }
                         <Button
                             variant="outlined"
+                            className="btn-try-again"
                             loading={ isAgentConnectionsRequestLoading }
                             onClick={ () => fetchAgentConnectionList() }
                             data-componentid={ `${componentId}-try-again-button` }
@@ -146,7 +144,7 @@ const RunAgentStep: FunctionComponent<RunAgentStepPropsInterface> = ({
     };
 
     return (
-        <>
+        <div className="run-agent-step">
             <Typography component="p" marginBottom={ 2 }>
                 { t("remoteUserStores:pages.edit.guide.steps.run.description.onPrem") }
             </Typography>
@@ -174,7 +172,7 @@ const RunAgentStep: FunctionComponent<RunAgentStepPropsInterface> = ({
                 </Trans>
             </Typography>
             { renderConnectionStatus() }
-        </>
+        </div>
     );
 };
 
