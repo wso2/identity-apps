@@ -216,7 +216,7 @@ export const remoteUserStores: RemoteUserStoresNS = {
                         heading: "Run the agent",
                         successMessage: {
                             onPrem:
-                                "Once the user store agent is connected successfully the message <3>Agent successfully connected to {{productName}}</3> will be displayed in the terminal.",
+                                "Once the user store agent is connected successfully, the message <3>Agent successfully connected to {{productName}}</3> will be displayed in the terminal.",
                             remote:
                                 "Once the user store agent is connected successfully the message <3>Successfully connected with the server</3> will be displayed in the terminal."
                         }
