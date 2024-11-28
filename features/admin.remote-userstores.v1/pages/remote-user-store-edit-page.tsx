@@ -177,6 +177,8 @@ const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPagePropsInt
      * @returns Status icon.
      */
     const renderStatusIcon = (): ReactElement => {
+        const _isDisabled: boolean = disabled === "true";
+
         return (
             <Popup
                 trigger={ (
@@ -184,10 +186,10 @@ const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPagePropsInt
                         className="mr-2 ml-0 vertical-aligned-baseline"
                         size="small"
                         name="circle"
-                        color={ disabled ? "red" : "green" }
+                        color={ _isDisabled ? "red" : "green" }
                     />
                 ) }
-                content={ disabled ? t("common:disabled") : t("common:enabled") }
+                content={ _isDisabled ? t("common:disabled") : t("common:enabled") }
                 inverted
             />
         );
