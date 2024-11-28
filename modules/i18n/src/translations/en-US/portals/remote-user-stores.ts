@@ -224,7 +224,7 @@ export const remoteUserStores: RemoteUserStoresNS = {
                     token: {
                         action: "Generate token",
                         description:
-                            "Generate a new installation token which will require when you try to connect your remote user store through the user store agent.",
+                            "Generate a new installation token which will be required when you try to connect your remote user store through the user store agent.",
                         generatedToken: {
                             label: "Installation token",
                             message:
