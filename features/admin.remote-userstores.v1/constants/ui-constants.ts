@@ -29,7 +29,6 @@ export class RemoteUserStoreUIConstants {
     private constructor() {}
 
     public static readonly REMOTE_USER_STORE_TYPE_QUERY_PARAM: string = "type";
-
 }
 
 /**
