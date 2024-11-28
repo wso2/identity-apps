@@ -1,5 +1,32 @@
 # @wso2is/admin.roles.v2
 
+## 2.26.41
+
+### Patch Changes
+
+- Updated dependencies [[`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897), [`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897), [`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897)]:
+  - @wso2is/admin.remote-userstores.v1@1.6.0
+  - @wso2is/admin.extensions.v1@2.35.0
+  - @wso2is/admin.userstores.v1@2.26.0
+  - @wso2is/admin.groups.v1@2.26.0
+  - @wso2is/admin.users.v1@2.29.0
+  - @wso2is/core@2.5.0
+  - @wso2is/admin.core.v1@2.34.41
+  - @wso2is/theme@2.4.4
+  - @wso2is/form@2.6.0
+  - @wso2is/i18n@2.13.0
+  - @wso2is/admin.applications.v1@2.30.41
+  - @wso2is/admin.connections.v1@2.28.41
+  - @wso2is/admin.identity-providers.v1@2.26.41
+  - @wso2is/admin.organizations.v1@2.26.41
+  - @wso2is/admin.server-configurations.v1@2.29.14
+  - @wso2is/admin.api-resources.v2@2.25.41
+  - @wso2is/admin.authorization.v1@2.25.15
+  - @wso2is/access-control@3.3.4
+  - @wso2is/dynamic-forms@2.4.8
+  - @wso2is/forms@2.3.4
+  - @wso2is/react-components@2.8.8
+
 ## 2.26.40
 
 ### Patch Changes

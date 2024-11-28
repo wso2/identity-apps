@@ -1,5 +1,16 @@
 # @wso2is/i18n
 
+## 2.13.0
+
+### Minor Changes
+
+- [#7099](https://github.com/wso2/identity-apps/pull/7099) [`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add remote user stores translations
+
+### Patch Changes
+
+- Updated dependencies [[`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897)]:
+  - @wso2is/core@2.5.0
+
 ## 2.12.4
 
 ### Patch Changes

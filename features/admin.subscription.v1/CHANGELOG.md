@@ -1,5 +1,15 @@
 # @wso2is/admin.subscription.v1
 
+## 1.5.41
+
+### Patch Changes
+
+- Updated dependencies [[`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897)]:
+  - @wso2is/core@2.5.0
+  - @wso2is/admin.core.v1@2.34.41
+  - @wso2is/admin.organizations.v1@2.26.41
+  - @wso2is/access-control@3.3.4
+
 ## 1.5.40
 
 ### Patch Changes

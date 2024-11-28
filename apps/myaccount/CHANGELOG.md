@@ -1,5 +1,19 @@
 # @wso2is/myaccount
 
+## 2.13.20
+
+### Patch Changes
+
+- Updated dependencies [[`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897), [`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897)]:
+  - @wso2is/core@2.5.0
+  - @wso2is/theme@2.4.4
+  - @wso2is/i18n@2.13.0
+  - @wso2is/admin.organizations.v1@2.26.41
+  - @wso2is/common.branding.v1@2.25.14
+  - @wso2is/access-control@3.3.4
+  - @wso2is/forms@2.3.4
+  - @wso2is/react-components@2.8.8
+
 ## 2.13.19
 
 ### Patch Changes
