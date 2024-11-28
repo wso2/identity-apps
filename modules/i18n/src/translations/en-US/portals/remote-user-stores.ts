@@ -175,7 +175,7 @@ export const remoteUserStores: RemoteUserStoresNS = {
                 steps: {
                     attributeMapping: {
                         description:
-                            "Update the <1>attribute mappings</1> according to remote user store that you connected. Make sure to review the mapped attributes otherwise it may cause errors in the user listings.",
+                            "Update the <1>attribute mappings</1> to match the connected remote user store. Please review the mapped attributes carefully to avoid errors when retrieving users from the user store.",
                         heading: "Attribute mappings"
                     },
                     configure: {
