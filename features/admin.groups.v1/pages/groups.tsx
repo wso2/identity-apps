@@ -31,7 +31,11 @@ import { commonConfig, groupConfig, userstoresConfig } from "@wso2is/admin.exten
 import { RootOnlyComponent } from "@wso2is/admin.organizations.v1/components";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
-import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import {
+    CONSUMER_USERSTORE,
+    PRIMARY_USERSTORE,
+    RemoteUserStoreManagerType
+} from "@wso2is/admin.userstores.v1/constants";
 import { UserStorePostData } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { AlertInterface, AlertLevels, RolesInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -199,6 +203,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
 
                                 if (!isDisabled) {
                                     storeOption = {
+                                        disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,
                                         key: index,
                                         text: store.name,
                                         value: store.name

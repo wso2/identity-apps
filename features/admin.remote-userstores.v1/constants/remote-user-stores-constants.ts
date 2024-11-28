@@ -17,6 +17,14 @@
  */
 
 /**
+ * Keys used in feature dictionry.
+ */
+export enum UserStoresFeatureDictionaryKeys {
+    ReadWriteUserStores = "USERSTORES_READ_WRITE_USERSTORES",
+    OptimizedUserStore = "OPTIMIZED_USERSTORE"
+}
+
+/**
  * Class containing user store constants.
  */
 export class RemoteUserStoreConstants {
@@ -30,11 +38,11 @@ export class RemoteUserStoreConstants {
 
     // Type ID of the on-prem customer user store.
     public static readonly OUTBOUND_USER_STORE_TYPE_ID: string = "V1NPdXRib3VuZFVzZXJTdG9yZU1hbmFnZXI";
-    public static readonly READONLY_LDAP_USER_STORE_TYPE_ID: string
-        = "VW5pcXVlSURSZWFkT25seUxEQVBVc2VyU3RvcmVNYW5hZ2Vy";
+    public static readonly READONLY_LDAP_USER_STORE_TYPE_ID: string =
+        "VW5pcXVlSURSZWFkT25seUxEQVBVc2VyU3RvcmVNYW5hZ2Vy";
 
-    public static readonly READONLY_AD_USER_STORE_TYPE_ID: string
-        = "VW5pcXVlSURBY3RpdmVEaXJlY3RvcnlVc2VyU3RvcmVNYW5hZ2Vy";
+    public static readonly READONLY_AD_USER_STORE_TYPE_ID: string =
+        "VW5pcXVlSURBY3RpdmVEaXJlY3RvcnlVc2VyU3RvcmVNYW5hZ2Vy";
 
     public static readonly CUSTOMER_USERSTORE_ID: string = "REVGQVVMVA";
 
@@ -51,21 +59,29 @@ export class RemoteUserStoreConstants {
     public static readonly DISPLAY_NAME_VALUE: string = "displayName";
 
     // Userstore propery names
-    public static readonly PROPERTY_NAME_CONNECTED_USERSTORE_TYPE: string = "ConnectedUserstoreType";
+    public static readonly PROPERTY_NAME_CONNECTED_USER_STORE_TYPE: string = "ConnectedUserstoreType";
     public static readonly PROPERTY_NAME_READ_ONLY: string = "ReadOnly";
+    public static readonly PROPERTY_NAME_DISABLED: string = "Disabled";
+    public static readonly PROPERTY_NAME_READ_GROUPS: string = "ReadGroups";
+    public static readonly PROPERTY_NAME_USERID: string = "UserIDAttribute";
+    public static readonly PROPERTY_NAME_USERNAME: string = "UserNameAttribute";
+    public static readonly PROPERTY_NAME_GROUPID: string = "GroupIdAttribute";
+    public static readonly PROPERTY_NAME_GROUPNAME: string = "GroupNameAttribute";
 
     /**
-     * Set of keys used to enable/disable features.
+     * Set of keys used to enable/disable sub-features.
      */
-    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
-        .set("USERSTORES_READ_WRITE_USERSTORES", "userStores.readWriteUserstores");
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>([
+        [ UserStoresFeatureDictionaryKeys.ReadWriteUserStores, "userStores.readWriteUserstores" ],
+        [ UserStoresFeatureDictionaryKeys.OptimizedUserStore, "userStores.optimizedUserstore" ]
+    ]);
 
     public static getPaths(): Map<string, string> {
-        return new Map<string, string>()
-            .set("REMOTE_USER_STORE_CREATE",
-                `${ window["AppUtils"].getConfig().adminApp.basePath }/remote-user-store-create`);
+        return new Map<string, string>().set(
+            "REMOTE_USER_STORE_CREATE",
+            `${window["AppUtils"].getConfig().adminApp.basePath}/remote-user-store-create`
+        );
     }
-
 }
 
 /**
@@ -73,7 +89,7 @@ export class RemoteUserStoreConstants {
  *
  * @readonly
  */
-export enum RemoteUserStoreTypes {
+export enum ConnectedUserStoreTypes {
     ActiveDirectory = "AD",
     LDAP = "LDAP"
 }
