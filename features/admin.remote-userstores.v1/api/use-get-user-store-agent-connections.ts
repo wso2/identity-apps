@@ -34,7 +34,7 @@ import { AgentConnectionInterface } from "../models/remote-user-stores";
  * @param userStoreManager - User store manager type.
  * @param shouldFetch - If true, will fetch the data.
  *
- * @returns Requested data.
+ * @returns the list of available connections of a user store
  */
 const useGetUserStoreAgentConnections = <Data = AgentConnectionInterface[], Error = RequestErrorInterface>(
     userStoreId: string,
