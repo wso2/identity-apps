@@ -49,7 +49,7 @@ export const remoteUserStores: RemoteUserStoresNS = {
             groupIdMapping: {
                 helperText: "Specify the attribute from the user store that stores the group ID.",
                 label: "Group ID",
-                placeholder: "Ex: groupId",
+                placeholder: "e.g. groupId",
                 validation: {
                     required: "Group ID mapping is required when read groups is enabled"
                 }
@@ -57,14 +57,14 @@ export const remoteUserStores: RemoteUserStoresNS = {
             groupnameMapping: {
                 helperText: "Specify the attribute from the user store that stores the group name.",
                 label: "Group Name",
-                placeholder: "Ex: groupName",
+                placeholder: "e.g. groupName",
                 validation: {
                     required: "Group name mapping is required when read groups is enabled"
                 }
             },
             name: {
                 label: "User Store Name",
-                placeholder: "ex: MY USER STORE",
+                placeholder: "MY USER STORE",
                 validation: {
                     required: "User store name is required"
                 }
@@ -76,7 +76,7 @@ export const remoteUserStores: RemoteUserStoresNS = {
             userIdMapping: {
                 helperText: "Specify the attribute from the user store that represents the unique ID for the user.",
                 label: "User ID Mapping",
-                placeholder: "Ex: uid",
+                placeholder: "e.g. uid",
                 validation: {
                     required: "User ID mapping is required"
                 }
@@ -84,7 +84,7 @@ export const remoteUserStores: RemoteUserStoresNS = {
             usernameMapping: {
                 helperText: "Specify the attribute from the user store that represents the user's primary identifier.",
                 label: "Username Mapping",
-                placeholder: "Ex: un",
+                placeholder: "e.g. un",
                 validation: {
                     required: "Username mapping is required"
                 }
@@ -168,6 +168,21 @@ export const remoteUserStores: RemoteUserStoresNS = {
                 },
                 userAttributes: {
                     heading: "User attributes"
+                }
+            },
+            generalSettings: {
+                connections: {
+                    actions: {
+                        disconnect: "Disconnect",
+                        generate: "Generate token",
+                        regenerate: "Regenerate token"
+                    },
+                    emptyPlaceholder: {
+                        description1: "There are no user store agent connections.",
+                        description2: "Please go through the setup guide to configure the user store agent(s).",
+                        heading: "No User Store Agent Connections"
+                    },
+                    heading: "User Store Agent Connection(s)"
                 }
             },
             guide: {

@@ -110,6 +110,21 @@ export interface RemoteUserStoresNS {
                     };
                 };
             };
+            generalSettings: {
+                connections: {
+                    emptyPlaceholder: {
+                        heading: string;
+                        description1: string;
+                        description2: string;
+                    },
+                    heading: string;
+                    actions: {
+                        disconnect: string;
+                        generate: string;
+                        regenerate: string;
+                    }
+                }
+            }
             configurations: {
                 userAttributes: {
                     heading: string;

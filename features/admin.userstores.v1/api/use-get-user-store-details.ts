@@ -33,6 +33,7 @@ import { UserStoreDetails } from "../models";
 /**
  * Hook to get User Store details.
  *
+ * @param userStoreId - User Store ID.
  * @param shouldFetch - If true, will fetch the data.
  *
  * @returns Requested data.

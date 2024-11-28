@@ -35,7 +35,6 @@ import { Icon } from "semantic-ui-react";
 import { ConfigurationSettings } from "../components/edit/userstore-configuration-settings";
 import { UserStoreGeneralSettings } from "../components/edit/userstore-general-settings";
 import { SetupGuideTab } from "../components/edit/userstore-setup-guide";
-import { RemoteUserStoreConstants } from "../constants/remote-user-stores-constants";
 import { RemoteUserStoreEditTabIDs } from "../constants/ui-constants";
 
 /**
@@ -178,10 +177,6 @@ const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPagePropsInt
      * @returns Status icon.
      */
     const renderStatusIcon = (): ReactElement => {
-        const _isDisabled: boolean = userStoreDetails?.properties?.find(
-            (property: UserStoreProperty) =>
-                property.name === RemoteUserStoreConstants.PROPERTY_NAME_DISABLED)?.value === "true";
-
         return (
             <Popup
                 trigger={ (
@@ -189,10 +184,10 @@ const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPagePropsInt
                         className="mr-2 ml-0 vertical-aligned-baseline"
                         size="small"
                         name="circle"
-                        color={ _isDisabled ? "red" : "green" }
+                        color={ disabled ? "red" : "green" }
                     />
                 ) }
-                content={ _isDisabled ? t("common:disabled") : t("common:enabled") }
+                content={ disabled ? t("common:disabled") : t("common:enabled") }
                 inverted
             />
         );

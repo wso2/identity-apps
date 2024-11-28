@@ -284,7 +284,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
             type="negative"
             open={ showDeleteConfirmationModal }
             assertion={ userStore?.name }
-            assertionHint={ t("extensions:manage.features.userStores.delete." + "assertionHint") }
+            assertionHint={ t("extensions:manage.features.userStores.delete.assertionHint") }
             assertionType="checkbox"
             primaryAction={ t("userstores:confirmation.confirm") }
             secondaryAction={ t("common:cancel") }
@@ -459,18 +459,18 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
         const patchData: PatchData = {
             operation: "REPLACE",
             path: `/properties/${RemoteUserStoreConstants.PROPERTY_NAME_DISABLED}`,
-            value: data.checked.toString()
+            value: Boolean(data.checked).toString()
         };
 
         patchUserStore(userStoreId, [ patchData ])
             .then(() => {
-                handleUserStoreDisabled(data.checked.toString());
+                handleUserStoreDisabled(Boolean(data.checked).toString());
 
                 dispatch(
                     addAlert<AlertInterface>({
-                        description: t("userstores:notifications." + "updateUserstore.success.description"),
+                        description: t("userstores:notifications.updateUserstore.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("userstores:notifications." + "updateUserstore.success.message")
+                        message: t("userstores:notifications.updateUserstore.success.message")
                     })
                 );
 
@@ -493,10 +493,10 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                     addAlert<AlertInterface>({
                         description:
                             error?.description ||
-                            t("userstores:notifications." + "updateUserstore.genericError.description"),
+                            t("userstores:notifications.updateUserstore.genericError.description"),
                         level: AlertLevels.ERROR,
                         message:
-                            error?.message || t("userstores:notifications." + "updateUserstore.genericError.message")
+                            error?.message || t("userstores:notifications.updateUserstore.genericError.message")
                     })
                 );
             });
@@ -518,9 +518,9 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
             .then(() => {
                 dispatch(
                     addAlert<AlertInterface>({
-                        description: t("userstores:notifications." + "updateUserstore.success.description"),
+                        description: t("userstores:notifications.updateUserstore.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("userstores:notifications." + "updateUserstore.success.message")
+                        message: t("userstores:notifications.updateUserstore.success.message")
                     })
                 );
 
@@ -543,10 +543,10 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                     addAlert<AlertInterface>({
                         description:
                             error?.description ||
-                            t("userstores:notifications." + "updateUserstore.genericError.description"),
+                            t("userstores:notifications.updateUserstore.genericError.description"),
                         level: AlertLevels.ERROR,
                         message:
-                            error?.message || t("userstores:notifications." + "updateUserstore.genericError.message")
+                            error?.message || t("userstores:notifications.updateUserstore.genericError.message")
                     })
                 );
             });
@@ -568,10 +568,10 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
         return (
             <EmptyPlaceholder
                 data-componentid={ `${componentId}-empty-placeholder` }
-                title="No Agents Connected"
+                title={ t("remoteUserStores:pages.edit.generalSettings.connections.emptyPlaceholder.heading") }
                 subtitle={ [
-                    "There are no user store agent connections.",
-                    "Please go through the setup guide to configure the user store agent(s)."
+                    t("remoteUserStores:pages.edit.generalSettings.connections.emptyPlaceholder.description1"),
+                    t("remoteUserStores:pages.edit.generalSettings.connections.emptyPlaceholder.description2")
                 ] }
             />
         );
@@ -589,12 +589,11 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                                 } }
                             >
                                 <Field
-                                    requiredErrorMessage={ null }
                                     type="text"
                                     name="description"
-                                    label="Description"
+                                    label={ t("remoteUserStores:form.fields.description.label") }
                                     required={ false }
-                                    placeholder="Enter the description of the user store"
+                                    placeholder={ t("remoteUserStores:form.fields.description.placeholder") }
                                     maxLength={ 300 }
                                     minLength={ 3 }
                                     width={ 14 }
@@ -705,7 +704,8 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                                                 } }
                                                 disabled={ isReadOnly }
                                             >
-                                                    Disconnect
+                                                { t("remoteUserStores:pages.edit.generalSettings."
+                                                    + "connections.actions.disconnect") }
                                             </Button>
                                         ) : null }
                                         <Button
@@ -718,7 +718,8 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                                             } }
                                             disabled={ isReadOnly || isDisabled }
                                         >
-                                                Regenerate token
+                                            { t("remoteUserStores:pages.edit.generalSettings."
+                                                + "connections.actions.regenerate") }
                                         </Button>
                                     </List.Content>
                                     <List.Content>
@@ -740,7 +741,8 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                                             onClick={ handleGenerateToken }
                                             disabled={ isReadOnly || isDisabled }
                                         >
-                                                Generate token
+                                            { t("remoteUserStores:pages.edit.generalSettings."
+                                                + "connections.actions.generate") }
                                         </Button>
                                     </List.Content>
                                     <List.Content>
@@ -774,7 +776,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                     onClose={ (): void => setShowDisconnectConfirmationModal(false) }
                     type="warning"
                     open={ showDisconnectConfirmationModal }
-                    assertionHint={ t("user:deleteUser.confirmationModal." + "assertionHint") }
+                    assertionHint={ t("user:deleteUser.confirmationModal.assertionHint") }
                     assertionType="checkbox"
                     primaryAction={ t("common:confirm") }
                     secondaryAction={ t("common:cancel") }
@@ -808,7 +810,7 @@ export const UserStoreGeneralSettings: FunctionComponent<UserStoreGeneralSetting
                     onClose={ (): void => setShowRegenerateConfirmationModal(false) }
                     type="warning"
                     open={ showRegenerateConfirmationModal }
-                    assertionHint={ t("user:deleteUser.confirmationModal." + "assertionHint") }
+                    assertionHint={ t("user:deleteUser.confirmationModal.assertionHint") }
                     assertionType="checkbox"
                     primaryAction={ t("common:confirm") }
                     secondaryAction={ t("common:cancel") }
