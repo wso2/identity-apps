@@ -1,5 +1,17 @@
 # @wso2is/form
 
+## 2.6.0
+
+### Minor Changes
+
+- [#7099](https://github.com/wso2/identity-apps/pull/7099) [`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce `RadioGroupFieldAdapter` and minor improvements
+
+### Patch Changes
+
+- Updated dependencies [[`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897)]:
+  - @wso2is/core@2.5.0
+  - @wso2is/react-components@2.8.8
+
 ## 2.5.7
 
 ### Patch Changes

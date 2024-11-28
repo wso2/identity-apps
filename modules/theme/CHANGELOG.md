@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.4.4
+
+### Patch Changes
+
+- [#7099](https://github.com/wso2/identity-apps/pull/7099) [`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce new remote user store implementation
+
 ## 2.4.3
 
 ### Patch Changes
