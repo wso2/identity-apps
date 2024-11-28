@@ -81,7 +81,7 @@ const RunAgentStep: FunctionComponent<RunAgentStepPropsInterface> = ({
 
     /**
      * Renders the connection status message/action based on the agent connection data.
-     * @returns ReactElement.
+     * @returns the check connection button
      */
     const renderConnectionStatus = (): ReactElement => {
         // Render the check connection button if the agent connection data is not available.
