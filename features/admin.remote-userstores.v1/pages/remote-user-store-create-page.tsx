@@ -79,7 +79,7 @@ type RemoteCustomerUserStoreCreatePageInterface = IdentifiableComponentInterface
  *
  * @param props - Props injected to the component.
  *
- * @returns ReactElement
+ * @returns the remote customer user store creation page
  */
 const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserStoreCreatePageInterface> = (
     props: RemoteCustomerUserStoreCreatePageInterface
