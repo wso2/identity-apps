@@ -28,7 +28,7 @@ export interface AgentConnectionInterface {
     }
 }
 
-export interface RegenerateTokenPayloadInterface {
+export interface RegenerateTokenRequestPayloadInterface {
     existingTokenId: string;
     userStoreId?: string;
 }

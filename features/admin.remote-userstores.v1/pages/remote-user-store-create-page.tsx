@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { Typography } from "@mui/material";
 import Button from "@oxygen-ui/react/Button";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import Stack from "@oxygen-ui/react/Stack";
@@ -24,6 +23,7 @@ import Step from "@oxygen-ui/react/Step";
 import StepContent from "@oxygen-ui/react/StepContent";
 import StepLabel from "@oxygen-ui/react/StepLabel";
 import Stepper from "@oxygen-ui/react/Stepper";
+import Typography from "@oxygen-ui/react/Typography";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
@@ -81,7 +81,7 @@ type RemoteCustomerUserStoreCreatePageInterface = IdentifiableComponentInterface
  *
  * @returns the remote customer user store creation page
  */
-const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserStoreCreatePageInterface> = (
+const RemoteUserStoreCreatePage: FunctionComponent<RemoteCustomerUserStoreCreatePageInterface> = (
     props: RemoteCustomerUserStoreCreatePageInterface
 ): ReactElement => {
     const { location, ["data-componentid"]: testId = "remote-userstore-create-page" } = props;
@@ -547,4 +547,4 @@ const RemoteCustomerUserStoreCreatePage: FunctionComponent<RemoteCustomerUserSto
     );
 };
 
-export default RemoteCustomerUserStoreCreatePage;
+export default RemoteUserStoreCreatePage;
