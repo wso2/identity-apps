@@ -109,7 +109,7 @@ export const remoteUserStores: RemoteUserStoresNS = {
             message: "Token generation failed!"
         },
         typeFetchError: {
-            description: "There was an error while fetching the user store types.",
+            description: "There was an error while getting the user store types.",
             message: "Something went wrong!"
         }
     },
