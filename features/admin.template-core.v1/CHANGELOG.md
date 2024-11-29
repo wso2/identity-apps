@@ -1,5 +1,136 @@
 # @wso2is/admin.template-core.v1
 
+## 1.4.41
+
+### Patch Changes
+
+- Updated dependencies [[`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897)]:
+  - @wso2is/core@2.5.0
+  - @wso2is/admin.core.v1@2.34.41
+
+## 1.4.40
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.40
+
+## 1.4.39
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.39
+
+## 1.4.38
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.38
+
+## 1.4.37
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.37
+
+## 1.4.36
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.36
+
+## 1.4.35
+
+### Patch Changes
+
+- Updated dependencies [[`1e0439099500238ef3e6eae0ecfe94ab91ae7c51`](https://github.com/wso2/identity-apps/commit/1e0439099500238ef3e6eae0ecfe94ab91ae7c51)]:
+  - @wso2is/admin.core.v1@2.34.35
+
+## 1.4.34
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.34
+
+## 1.4.33
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.33
+
+## 1.4.32
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.32
+
+## 1.4.31
+
+### Patch Changes
+
+- Updated dependencies [[`ce35db51c7bbf9fc894b71ecffd52d20413a4dd9`](https://github.com/wso2/identity-apps/commit/ce35db51c7bbf9fc894b71ecffd52d20413a4dd9)]:
+  - @wso2is/admin.core.v1@2.34.31
+  - @wso2is/core@2.4.3
+
+## 1.4.30
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.30
+
+## 1.4.29
+
+### Patch Changes
+
+- Updated dependencies [[`10f5bf644f973552f3c3d155fda410b6e071f147`](https://github.com/wso2/identity-apps/commit/10f5bf644f973552f3c3d155fda410b6e071f147)]:
+  - @wso2is/core@2.4.2
+  - @wso2is/admin.core.v1@2.34.29
+
+## 1.4.28
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.28
+
+## 1.4.27
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.27
+
+## 1.4.26
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.26
+
+## 1.4.25
+
+### Patch Changes
+
+- [#7116](https://github.com/wso2/identity-apps/pull/7116) [`b1d9ceb84cd80876dbe86f8c7730d18af274a1a5`](https://github.com/wso2/identity-apps/commit/b1d9ceb84cd80876dbe86f8c7730d18af274a1a5) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Revert "Enforce scope checks for application template API requests"
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.25
+
+## 1.4.24
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.24
+
 ## 1.4.23
 
 ### Patch Changes

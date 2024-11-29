@@ -121,6 +121,16 @@ export const generatePassword = (
         ? characterString + SPECIAL_CHAR
         : characterString;
 
+    // Handle the allowed characters when the user has not selected any character combinations.
+    if (
+        minAlphabetsLowercase === 0
+        && minAlphabetsUppercase === 0
+        && minNumbers === 0
+        && minSpecialCharacters ===0
+    ) {
+        characterString = characterString + LOWERCASE_CHAR + UPPERCASE_CHAR + NUMBERS + SPECIAL_CHAR;
+    }
+
     const set : Set<string> = new Set(generatedPassword.split(""));
     let isUnique: boolean = false;
 

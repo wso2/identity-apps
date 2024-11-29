@@ -311,7 +311,8 @@ export const organizations: organizationsNS = {
         },
         subOrganizations: "Organizations",
         switchButton: "Switch to Organization",
-        switchLabel: "Root Organization"
+        switchLabel: "Root Organization",
+        switchLabelAlt: "Organizations"
     },
     title: "Organizations",
     unshareApplicationInfo: "This will allow you to prevent sharing this application with any of the " +

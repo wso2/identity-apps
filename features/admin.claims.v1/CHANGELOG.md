@@ -1,5 +1,293 @@
 # @wso2is/admin.claims.v1
 
+## 2.26.0
+
+### Minor Changes
+
+- [#7099](https://github.com/wso2/identity-apps/pull/7099) [`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce new remote user store implementation
+
+### Patch Changes
+
+- Updated dependencies [[`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897), [`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897), [`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897)]:
+  - @wso2is/admin.extensions.v1@2.35.0
+  - @wso2is/admin.userstores.v1@2.26.0
+  - @wso2is/admin.claims.v1@2.26.0
+  - @wso2is/admin.users.v1@2.29.0
+  - @wso2is/core@2.5.0
+  - @wso2is/admin.core.v1@2.34.41
+  - @wso2is/theme@2.4.4
+  - @wso2is/form@2.6.0
+  - @wso2is/i18n@2.13.0
+  - @wso2is/admin.server-configurations.v1@2.29.14
+  - @wso2is/admin.validation.v1@2.26.41
+  - @wso2is/access-control@3.3.4
+  - @wso2is/dynamic-forms@2.4.8
+  - @wso2is/forms@2.3.4
+  - @wso2is/react-components@2.8.8
+
+## 2.25.40
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.40
+  - @wso2is/admin.extensions.v1@2.34.40
+  - @wso2is/admin.claims.v1@2.25.40
+  - @wso2is/admin.server-configurations.v1@2.29.13
+  - @wso2is/admin.users.v1@2.28.9
+  - @wso2is/admin.userstores.v1@2.25.40
+  - @wso2is/admin.validation.v1@2.26.40
+
+## 2.25.39
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.39
+  - @wso2is/admin.extensions.v1@2.34.39
+  - @wso2is/admin.claims.v1@2.25.39
+  - @wso2is/admin.server-configurations.v1@2.29.12
+  - @wso2is/admin.users.v1@2.28.8
+  - @wso2is/admin.userstores.v1@2.25.39
+  - @wso2is/admin.validation.v1@2.26.39
+
+## 2.25.38
+
+### Patch Changes
+
+- Updated dependencies [[`21a3569af8546401645c85f8f07f06a59ceac8a5`](https://github.com/wso2/identity-apps/commit/21a3569af8546401645c85f8f07f06a59ceac8a5), [`996eb0f85c0b24e6193e18a316f607a8c82f8406`](https://github.com/wso2/identity-apps/commit/996eb0f85c0b24e6193e18a316f607a8c82f8406)]:
+  - @wso2is/i18n@2.12.4
+  - @wso2is/admin.core.v1@2.34.38
+  - @wso2is/admin.extensions.v1@2.34.38
+  - @wso2is/admin.claims.v1@2.25.38
+  - @wso2is/admin.server-configurations.v1@2.29.11
+  - @wso2is/admin.users.v1@2.28.7
+  - @wso2is/admin.userstores.v1@2.25.38
+  - @wso2is/admin.validation.v1@2.26.38
+
+## 2.25.37
+
+### Patch Changes
+
+- Updated dependencies [[`849c07f68757a6f4aaccac19fe0387317a14c143`](https://github.com/wso2/identity-apps/commit/849c07f68757a6f4aaccac19fe0387317a14c143)]:
+  - @wso2is/admin.users.v1@2.28.6
+  - @wso2is/admin.claims.v1@2.25.37
+  - @wso2is/admin.core.v1@2.34.37
+  - @wso2is/admin.extensions.v1@2.34.37
+  - @wso2is/admin.server-configurations.v1@2.29.10
+  - @wso2is/admin.validation.v1@2.26.37
+  - @wso2is/admin.userstores.v1@2.25.37
+
+## 2.25.36
+
+### Patch Changes
+
+- [#7150](https://github.com/wso2/identity-apps/pull/7150) [`b049fa7a9c9dbecb70a3390ebc5cd02f0dfa5234`](https://github.com/wso2/identity-apps/commit/b049fa7a9c9dbecb70a3390ebc5cd02f0dfa5234) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Improve attribut mappings logic to remove deleted user store mappings
+
+- Updated dependencies [[`b049fa7a9c9dbecb70a3390ebc5cd02f0dfa5234`](https://github.com/wso2/identity-apps/commit/b049fa7a9c9dbecb70a3390ebc5cd02f0dfa5234)]:
+  - @wso2is/admin.claims.v1@2.25.36
+  - @wso2is/admin.users.v1@2.28.5
+  - @wso2is/admin.core.v1@2.34.36
+  - @wso2is/admin.extensions.v1@2.34.36
+  - @wso2is/admin.server-configurations.v1@2.29.9
+  - @wso2is/admin.validation.v1@2.26.36
+  - @wso2is/admin.userstores.v1@2.25.36
+
+## 2.25.35
+
+### Patch Changes
+
+- Updated dependencies [[`1e0439099500238ef3e6eae0ecfe94ab91ae7c51`](https://github.com/wso2/identity-apps/commit/1e0439099500238ef3e6eae0ecfe94ab91ae7c51), [`02993f2768c985dd22ec77f39f52a7df3ec628ee`](https://github.com/wso2/identity-apps/commit/02993f2768c985dd22ec77f39f52a7df3ec628ee)]:
+  - @wso2is/admin.extensions.v1@2.34.35
+  - @wso2is/admin.core.v1@2.34.35
+  - @wso2is/admin.userstores.v1@2.25.35
+  - @wso2is/admin.claims.v1@2.25.35
+  - @wso2is/admin.server-configurations.v1@2.29.8
+  - @wso2is/admin.users.v1@2.28.4
+  - @wso2is/admin.validation.v1@2.26.35
+
+## 2.25.34
+
+### Patch Changes
+
+- Updated dependencies [[`0f19b9b0d7b307526d6be48950fe113d61b93d78`](https://github.com/wso2/identity-apps/commit/0f19b9b0d7b307526d6be48950fe113d61b93d78)]:
+  - @wso2is/admin.users.v1@2.28.3
+  - @wso2is/admin.claims.v1@2.25.34
+  - @wso2is/admin.core.v1@2.34.34
+  - @wso2is/admin.extensions.v1@2.34.34
+  - @wso2is/admin.server-configurations.v1@2.29.7
+  - @wso2is/admin.validation.v1@2.26.34
+  - @wso2is/admin.userstores.v1@2.25.34
+
+## 2.25.33
+
+### Patch Changes
+
+- [#7145](https://github.com/wso2/identity-apps/pull/7145) [`cb5cbc1494f3193a8111f80081d4b86cac9ee6fb`](https://github.com/wso2/identity-apps/commit/cb5cbc1494f3193a8111f80081d4b86cac9ee6fb) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Show attribute mappings section for remote user stores
+
+- Updated dependencies [[`cb5cbc1494f3193a8111f80081d4b86cac9ee6fb`](https://github.com/wso2/identity-apps/commit/cb5cbc1494f3193a8111f80081d4b86cac9ee6fb)]:
+  - @wso2is/admin.claims.v1@2.25.33
+  - @wso2is/admin.core.v1@2.34.33
+  - @wso2is/admin.extensions.v1@2.34.33
+  - @wso2is/admin.users.v1@2.28.2
+  - @wso2is/admin.server-configurations.v1@2.29.6
+  - @wso2is/admin.userstores.v1@2.25.33
+  - @wso2is/admin.validation.v1@2.26.33
+
+## 2.25.32
+
+### Patch Changes
+
+- [#7142](https://github.com/wso2/identity-apps/pull/7142) [`34f1c785d309fdce41218aa9fbcb8f36595d39ba`](https://github.com/wso2/identity-apps/commit/34f1c785d309fdce41218aa9fbcb8f36595d39ba) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Temporarily hide attribute mappings
+
+- Updated dependencies [[`34f1c785d309fdce41218aa9fbcb8f36595d39ba`](https://github.com/wso2/identity-apps/commit/34f1c785d309fdce41218aa9fbcb8f36595d39ba)]:
+  - @wso2is/admin.claims.v1@2.25.32
+  - @wso2is/admin.core.v1@2.34.32
+  - @wso2is/admin.extensions.v1@2.34.32
+  - @wso2is/admin.users.v1@2.28.1
+  - @wso2is/admin.server-configurations.v1@2.29.5
+  - @wso2is/admin.userstores.v1@2.25.32
+  - @wso2is/admin.validation.v1@2.26.32
+
+## 2.25.31
+
+### Patch Changes
+
+- [#7139](https://github.com/wso2/identity-apps/pull/7139) [`b7923d6f9ecdc70e314c14a328db8c551621eecb`](https://github.com/wso2/identity-apps/commit/b7923d6f9ecdc70e314c14a328db8c551621eecb) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix user store count
+
+* [#7134](https://github.com/wso2/identity-apps/pull/7134) [`8294398b57416fd6648c1af9fecee230c198ac28`](https://github.com/wso2/identity-apps/commit/8294398b57416fd6648c1af9fecee230c198ac28) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Hide system property
+
+* Updated dependencies [[`ce35db51c7bbf9fc894b71ecffd52d20413a4dd9`](https://github.com/wso2/identity-apps/commit/ce35db51c7bbf9fc894b71ecffd52d20413a4dd9), [`b7923d6f9ecdc70e314c14a328db8c551621eecb`](https://github.com/wso2/identity-apps/commit/b7923d6f9ecdc70e314c14a328db8c551621eecb), [`8294398b57416fd6648c1af9fecee230c198ac28`](https://github.com/wso2/identity-apps/commit/8294398b57416fd6648c1af9fecee230c198ac28), [`4def165b624e0f2533d8ad158158b4909c24913a`](https://github.com/wso2/identity-apps/commit/4def165b624e0f2533d8ad158158b4909c24913a)]:
+  - @wso2is/admin.users.v1@2.28.0
+  - @wso2is/admin.core.v1@2.34.31
+  - @wso2is/admin.server-configurations.v1@2.29.4
+  - @wso2is/i18n@2.12.3
+  - @wso2is/core@2.4.3
+  - @wso2is/admin.claims.v1@2.25.31
+  - @wso2is/admin.extensions.v1@2.34.31
+  - @wso2is/admin.validation.v1@2.26.31
+  - @wso2is/admin.userstores.v1@2.25.31
+  - @wso2is/access-control@3.3.3
+  - @wso2is/dynamic-forms@2.4.7
+  - @wso2is/form@2.5.7
+  - @wso2is/forms@2.3.3
+  - @wso2is/react-components@2.8.7
+
+## 2.25.30
+
+### Patch Changes
+
+- [#7135](https://github.com/wso2/identity-apps/pull/7135) [`798fa126edf561e196e82cf007992b0d335327c8`](https://github.com/wso2/identity-apps/commit/798fa126edf561e196e82cf007992b0d335327c8) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Hide attribute mappings when no remote users stores
+
+- Updated dependencies [[`798fa126edf561e196e82cf007992b0d335327c8`](https://github.com/wso2/identity-apps/commit/798fa126edf561e196e82cf007992b0d335327c8)]:
+  - @wso2is/admin.userstores.v1@2.25.30
+  - @wso2is/admin.claims.v1@2.25.30
+  - @wso2is/admin.core.v1@2.34.30
+  - @wso2is/admin.extensions.v1@2.34.30
+  - @wso2is/admin.users.v1@2.27.30
+  - @wso2is/admin.server-configurations.v1@2.29.3
+  - @wso2is/admin.validation.v1@2.26.30
+
+## 2.25.29
+
+### Patch Changes
+
+- [#7069](https://github.com/wso2/identity-apps/pull/7069) [`10f5bf644f973552f3c3d155fda410b6e071f147`](https://github.com/wso2/identity-apps/commit/10f5bf644f973552f3c3d155fda410b6e071f147) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - remove delete option from default claims and dialects
+
+- Updated dependencies [[`10f5bf644f973552f3c3d155fda410b6e071f147`](https://github.com/wso2/identity-apps/commit/10f5bf644f973552f3c3d155fda410b6e071f147)]:
+  - @wso2is/admin.extensions.v1@2.34.29
+  - @wso2is/admin.claims.v1@2.25.29
+  - @wso2is/core@2.4.2
+  - @wso2is/admin.core.v1@2.34.29
+  - @wso2is/admin.server-configurations.v1@2.29.2
+  - @wso2is/admin.users.v1@2.27.29
+  - @wso2is/admin.userstores.v1@2.25.29
+  - @wso2is/admin.validation.v1@2.26.29
+  - @wso2is/access-control@3.3.2
+  - @wso2is/dynamic-forms@2.4.6
+  - @wso2is/form@2.5.6
+  - @wso2is/forms@2.3.2
+  - @wso2is/i18n@2.12.2
+  - @wso2is/react-components@2.8.6
+
+## 2.25.28
+
+### Patch Changes
+
+- [#7124](https://github.com/wso2/identity-apps/pull/7124) [`8773370130811defa922868d08c4f1ac1e006eda`](https://github.com/wso2/identity-apps/commit/8773370130811defa922868d08c4f1ac1e006eda) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Introduce enable for user store config in attribute mappings
+
+- Updated dependencies [[`8773370130811defa922868d08c4f1ac1e006eda`](https://github.com/wso2/identity-apps/commit/8773370130811defa922868d08c4f1ac1e006eda)]:
+  - @wso2is/admin.claims.v1@2.25.28
+  - @wso2is/i18n@2.12.1
+  - @wso2is/admin.core.v1@2.34.28
+  - @wso2is/admin.extensions.v1@2.34.28
+  - @wso2is/admin.users.v1@2.27.28
+  - @wso2is/admin.server-configurations.v1@2.29.1
+  - @wso2is/admin.userstores.v1@2.25.28
+  - @wso2is/admin.validation.v1@2.26.28
+
+## 2.25.27
+
+### Patch Changes
+
+- Updated dependencies [[`825c12b034fa8db01857a10b3fb9ff36314bce1a`](https://github.com/wso2/identity-apps/commit/825c12b034fa8db01857a10b3fb9ff36314bce1a), [`7c573064160ca9f7a3845891ff1ce5b8ccfb6700`](https://github.com/wso2/identity-apps/commit/7c573064160ca9f7a3845891ff1ce5b8ccfb6700)]:
+  - @wso2is/i18n@2.12.0
+  - @wso2is/admin.server-configurations.v1@2.29.0
+  - @wso2is/admin.core.v1@2.34.27
+  - @wso2is/admin.claims.v1@2.25.27
+  - @wso2is/admin.extensions.v1@2.34.27
+  - @wso2is/admin.users.v1@2.27.27
+  - @wso2is/admin.userstores.v1@2.25.27
+  - @wso2is/admin.validation.v1@2.26.27
+
+## 2.25.26
+
+### Patch Changes
+
+- Updated dependencies [[`3fb654d08acfd029039afd1a07190d10e347b25d`](https://github.com/wso2/identity-apps/commit/3fb654d08acfd029039afd1a07190d10e347b25d), [`cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453`](https://github.com/wso2/identity-apps/commit/cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453), [`7e2588d91b8c20927219c6e6fa36daf87a18a0f6`](https://github.com/wso2/identity-apps/commit/7e2588d91b8c20927219c6e6fa36daf87a18a0f6)]:
+  - @wso2is/admin.users.v1@2.27.26
+  - @wso2is/theme@2.4.3
+  - @wso2is/i18n@2.11.0
+  - @wso2is/admin.claims.v1@2.25.26
+  - @wso2is/admin.core.v1@2.34.26
+  - @wso2is/admin.extensions.v1@2.34.26
+  - @wso2is/admin.server-configurations.v1@2.28.26
+  - @wso2is/admin.validation.v1@2.26.26
+  - @wso2is/admin.userstores.v1@2.25.26
+  - @wso2is/react-components@2.8.5
+  - @wso2is/dynamic-forms@2.4.5
+  - @wso2is/form@2.5.5
+
+## 2.25.25
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.25
+  - @wso2is/admin.extensions.v1@2.34.25
+  - @wso2is/admin.claims.v1@2.25.25
+  - @wso2is/admin.server-configurations.v1@2.28.25
+  - @wso2is/admin.users.v1@2.27.25
+  - @wso2is/admin.userstores.v1@2.25.25
+  - @wso2is/admin.validation.v1@2.26.25
+
+## 2.25.24
+
+### Patch Changes
+
+- Updated dependencies [[`7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70`](https://github.com/wso2/identity-apps/commit/7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70)]:
+  - @wso2is/admin.users.v1@2.27.24
+  - @wso2is/theme@2.4.2
+  - @wso2is/admin.claims.v1@2.25.24
+  - @wso2is/admin.core.v1@2.34.24
+  - @wso2is/admin.extensions.v1@2.34.24
+  - @wso2is/admin.server-configurations.v1@2.28.24
+  - @wso2is/admin.validation.v1@2.26.24
+  - @wso2is/admin.userstores.v1@2.25.24
+  - @wso2is/react-components@2.8.4
+  - @wso2is/dynamic-forms@2.4.4
+  - @wso2is/form@2.5.4
+
 ## 2.25.23
 
 ### Patch Changes

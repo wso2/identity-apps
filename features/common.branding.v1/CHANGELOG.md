@@ -1,5 +1,156 @@
 # @wso2is/common.branding.v1
 
+## 2.25.14
+
+### Patch Changes
+
+- Updated dependencies [[`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897)]:
+  - @wso2is/core@2.5.0
+  - @wso2is/admin.core.v1@2.34.41
+  - @wso2is/admin.organizations.v1@2.26.41
+
+## 2.25.13
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.40
+  - @wso2is/admin.organizations.v1@2.26.40
+
+## 2.25.12
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.39
+  - @wso2is/admin.organizations.v1@2.26.39
+
+## 2.25.11
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.38
+  - @wso2is/admin.organizations.v1@2.26.38
+
+## 2.25.10
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.37
+  - @wso2is/admin.organizations.v1@2.26.37
+
+## 2.25.9
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.36
+  - @wso2is/admin.organizations.v1@2.26.36
+
+## 2.25.8
+
+### Patch Changes
+
+- Updated dependencies [[`1e0439099500238ef3e6eae0ecfe94ab91ae7c51`](https://github.com/wso2/identity-apps/commit/1e0439099500238ef3e6eae0ecfe94ab91ae7c51)]:
+  - @wso2is/admin.core.v1@2.34.35
+  - @wso2is/admin.organizations.v1@2.26.35
+
+## 2.25.7
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.34
+  - @wso2is/admin.organizations.v1@2.26.34
+
+## 2.25.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.33
+  - @wso2is/admin.organizations.v1@2.26.33
+
+## 2.25.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.32
+  - @wso2is/admin.organizations.v1@2.26.32
+
+## 2.25.4
+
+### Patch Changes
+
+- Updated dependencies [[`ce35db51c7bbf9fc894b71ecffd52d20413a4dd9`](https://github.com/wso2/identity-apps/commit/ce35db51c7bbf9fc894b71ecffd52d20413a4dd9)]:
+  - @wso2is/admin.core.v1@2.34.31
+  - @wso2is/core@2.4.3
+  - @wso2is/admin.organizations.v1@2.26.31
+
+## 2.25.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.30
+  - @wso2is/admin.organizations.v1@2.26.30
+
+## 2.25.2
+
+### Patch Changes
+
+- Updated dependencies [[`10f5bf644f973552f3c3d155fda410b6e071f147`](https://github.com/wso2/identity-apps/commit/10f5bf644f973552f3c3d155fda410b6e071f147)]:
+  - @wso2is/core@2.4.2
+  - @wso2is/admin.core.v1@2.34.29
+  - @wso2is/admin.organizations.v1@2.26.29
+
+## 2.25.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.28
+  - @wso2is/admin.organizations.v1@2.26.28
+
+## 2.25.0
+
+### Minor Changes
+
+- [#7005](https://github.com/wso2/identity-apps/pull/7005) [`825c12b034fa8db01857a10b3fb9ff36314bce1a`](https://github.com/wso2/identity-apps/commit/825c12b034fa8db01857a10b3fb9ff36314bce1a) Thanks [@Malith-19](https://github.com/Malith-19)! - Add the username recovery multiple channel support with branding.
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.27
+  - @wso2is/admin.organizations.v1@2.26.27
+
+## 2.24.26
+
+### Patch Changes
+
+- Updated dependencies [[`7e2588d91b8c20927219c6e6fa36daf87a18a0f6`](https://github.com/wso2/identity-apps/commit/7e2588d91b8c20927219c6e6fa36daf87a18a0f6)]:
+  - @wso2is/admin.organizations.v1@2.26.26
+  - @wso2is/admin.core.v1@2.34.26
+
+## 2.24.25
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.25
+  - @wso2is/admin.organizations.v1@2.26.25
+
+## 2.24.24
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.24
+  - @wso2is/admin.organizations.v1@2.26.24
+
 ## 2.24.23
 
 ### Patch Changes

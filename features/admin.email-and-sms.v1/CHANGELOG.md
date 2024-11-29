@@ -1,5 +1,183 @@
 # @wso2is/admin.email-and-sms.v1
 
+## 2.25.41
+
+### Patch Changes
+
+- Updated dependencies [[`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897), [`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897), [`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897)]:
+  - @wso2is/core@2.5.0
+  - @wso2is/admin.core.v1@2.34.41
+  - @wso2is/theme@2.4.4
+  - @wso2is/form@2.6.0
+  - @wso2is/i18n@2.13.0
+  - @wso2is/admin.organizations.v1@2.26.41
+  - @wso2is/access-control@3.3.4
+  - @wso2is/dynamic-forms@2.4.8
+  - @wso2is/forms@2.3.4
+  - @wso2is/react-components@2.8.8
+
+## 2.25.40
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.40
+  - @wso2is/admin.organizations.v1@2.26.40
+
+## 2.25.39
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.39
+  - @wso2is/admin.organizations.v1@2.26.39
+
+## 2.25.38
+
+### Patch Changes
+
+- Updated dependencies [[`21a3569af8546401645c85f8f07f06a59ceac8a5`](https://github.com/wso2/identity-apps/commit/21a3569af8546401645c85f8f07f06a59ceac8a5), [`996eb0f85c0b24e6193e18a316f607a8c82f8406`](https://github.com/wso2/identity-apps/commit/996eb0f85c0b24e6193e18a316f607a8c82f8406)]:
+  - @wso2is/i18n@2.12.4
+  - @wso2is/admin.core.v1@2.34.38
+  - @wso2is/admin.organizations.v1@2.26.38
+
+## 2.25.37
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.37
+  - @wso2is/admin.organizations.v1@2.26.37
+
+## 2.25.36
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.36
+  - @wso2is/admin.organizations.v1@2.26.36
+
+## 2.25.35
+
+### Patch Changes
+
+- Updated dependencies [[`1e0439099500238ef3e6eae0ecfe94ab91ae7c51`](https://github.com/wso2/identity-apps/commit/1e0439099500238ef3e6eae0ecfe94ab91ae7c51)]:
+  - @wso2is/admin.core.v1@2.34.35
+  - @wso2is/admin.organizations.v1@2.26.35
+
+## 2.25.34
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.34
+  - @wso2is/admin.organizations.v1@2.26.34
+
+## 2.25.33
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.33
+  - @wso2is/admin.organizations.v1@2.26.33
+
+## 2.25.32
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.32
+  - @wso2is/admin.organizations.v1@2.26.32
+
+## 2.25.31
+
+### Patch Changes
+
+- Updated dependencies [[`ce35db51c7bbf9fc894b71ecffd52d20413a4dd9`](https://github.com/wso2/identity-apps/commit/ce35db51c7bbf9fc894b71ecffd52d20413a4dd9)]:
+  - @wso2is/admin.core.v1@2.34.31
+  - @wso2is/i18n@2.12.3
+  - @wso2is/core@2.4.3
+  - @wso2is/admin.organizations.v1@2.26.31
+  - @wso2is/access-control@3.3.3
+  - @wso2is/dynamic-forms@2.4.7
+  - @wso2is/form@2.5.7
+  - @wso2is/forms@2.3.3
+  - @wso2is/react-components@2.8.7
+
+## 2.25.30
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.30
+  - @wso2is/admin.organizations.v1@2.26.30
+
+## 2.25.29
+
+### Patch Changes
+
+- Updated dependencies [[`10f5bf644f973552f3c3d155fda410b6e071f147`](https://github.com/wso2/identity-apps/commit/10f5bf644f973552f3c3d155fda410b6e071f147)]:
+  - @wso2is/core@2.4.2
+  - @wso2is/admin.core.v1@2.34.29
+  - @wso2is/admin.organizations.v1@2.26.29
+  - @wso2is/access-control@3.3.2
+  - @wso2is/dynamic-forms@2.4.6
+  - @wso2is/form@2.5.6
+  - @wso2is/forms@2.3.2
+  - @wso2is/i18n@2.12.2
+  - @wso2is/react-components@2.8.6
+
+## 2.25.28
+
+### Patch Changes
+
+- Updated dependencies [[`8773370130811defa922868d08c4f1ac1e006eda`](https://github.com/wso2/identity-apps/commit/8773370130811defa922868d08c4f1ac1e006eda)]:
+  - @wso2is/i18n@2.12.1
+  - @wso2is/admin.core.v1@2.34.28
+  - @wso2is/admin.organizations.v1@2.26.28
+
+## 2.25.27
+
+### Patch Changes
+
+- Updated dependencies [[`825c12b034fa8db01857a10b3fb9ff36314bce1a`](https://github.com/wso2/identity-apps/commit/825c12b034fa8db01857a10b3fb9ff36314bce1a)]:
+  - @wso2is/i18n@2.12.0
+  - @wso2is/admin.core.v1@2.34.27
+  - @wso2is/admin.organizations.v1@2.26.27
+
+## 2.25.26
+
+### Patch Changes
+
+- Updated dependencies [[`cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453`](https://github.com/wso2/identity-apps/commit/cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453), [`7e2588d91b8c20927219c6e6fa36daf87a18a0f6`](https://github.com/wso2/identity-apps/commit/7e2588d91b8c20927219c6e6fa36daf87a18a0f6)]:
+  - @wso2is/theme@2.4.3
+  - @wso2is/admin.organizations.v1@2.26.26
+  - @wso2is/i18n@2.11.0
+  - @wso2is/admin.core.v1@2.34.26
+  - @wso2is/react-components@2.8.5
+  - @wso2is/dynamic-forms@2.4.5
+  - @wso2is/form@2.5.5
+
+## 2.25.25
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.25
+  - @wso2is/admin.organizations.v1@2.26.25
+
+## 2.25.24
+
+### Patch Changes
+
+- Updated dependencies [[`7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70`](https://github.com/wso2/identity-apps/commit/7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70)]:
+  - @wso2is/theme@2.4.2
+  - @wso2is/admin.core.v1@2.34.24
+  - @wso2is/admin.organizations.v1@2.26.24
+  - @wso2is/react-components@2.8.4
+  - @wso2is/dynamic-forms@2.4.4
+  - @wso2is/form@2.5.4
+
 ## 2.25.23
 
 ### Patch Changes

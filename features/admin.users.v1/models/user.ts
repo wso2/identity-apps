@@ -297,6 +297,9 @@ export interface AccountConfigSettingsInterface {
     accountDisable: string;
     accountLock: string;
     forcePasswordReset: string;
+    isEmailVerificationEnabled?: string;
+    isMobileVerificationEnabled?: string;
+    isMobileVerificationByPrivilegeUserEnabled?: string;
 }
 
 /**
@@ -391,6 +394,14 @@ export interface PatchUserAddOpInterface {
         users: { value: string }[]
     }
 }
+
+/**
+ * Interface for the user patch operation value.
+ */
+export type PatchUserOperationValue = Record<string, string
+    | Record<string, string | string[]>
+    | Array<string>
+    | Array<Record<string, string>>>;
 
 /**
  * Enum for the multiple invites modes.

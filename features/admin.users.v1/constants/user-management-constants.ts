@@ -18,6 +18,9 @@
 
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
+import { ServerConfigurationsConstants } from
+    "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import { ProfileConstants } from "@wso2is/core/constants";
 
 /**
  * Class containing app constants which can be used across several applications.
@@ -156,6 +159,13 @@ export class UserManagementConstants {
     public static readonly GLOBE: string = "globe";
 
     public static readonly USERNAME_JAVA_REGEX: string = "UsernameJavaRegEx";
+
+    public static readonly MULTI_VALUED_ATTRIBUTES: string[] = [
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS"),
+        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES")
+    ];
 }
 
 /**
@@ -329,4 +339,19 @@ export const ACCOUNT_LOCK_REASON_MAP: Record<string, string> = {
     PENDING_EMAIL_VERIFICATION: "user:profile.accountLockReason.pendingEmailVerification",
     PENDING_SELF_REGISTRATION: "user:profile.accountLockReason.pendingSelfRegistration"
 };
+
+export const CONNECTOR_PROPERTY_TO_CONFIG_STATUS_MAP: Record<string, string> = {
+    [ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE]: "accountDisable",
+    [ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION]: "accountLock",
+    [ServerConfigurationsConstants.ENABLE_EMAIL_VERIFICATION]: "isEmailVerificationEnabled",
+    [ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION]: "isMobileVerificationEnabled",
+    [ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER]:
+        "isMobileVerificationByPrivilegeUserEnabled"
+};
+
+export const PASSWORD_RESET_PROPERTIES: string[] = [
+    ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET,
+    ServerConfigurationsConstants.OTP_PASSWORD_RESET,
+    ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET
+];
 

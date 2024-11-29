@@ -1,5 +1,23 @@
 # @wso2is/theme
 
+## 2.4.4
+
+### Patch Changes
+
+- [#7099](https://github.com/wso2/identity-apps/pull/7099) [`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce new remote user store implementation
+
+## 2.4.3
+
+### Patch Changes
+
+- [#7122](https://github.com/wso2/identity-apps/pull/7122) [`cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453`](https://github.com/wso2/identity-apps/commit/cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update user profile lock icon
+
+## 2.4.2
+
+### Patch Changes
+
+- [#7113](https://github.com/wso2/identity-apps/pull/7113) [`7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70`](https://github.com/wso2/identity-apps/commit/7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add locked status for locked users in user list
+
 ## 2.4.1
 
 ### Patch Changes

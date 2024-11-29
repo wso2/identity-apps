@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,10 +16,19 @@
  * under the License.
  */
 
-/**
- * Interface for the Outbound User Store Management feature resource endpoints.
- */
-export interface OutboundUserStoreResourceEndpointsInterface {
-    connection: string;
-    token: string;
+import { ServerConfigurationsConstants } from "./server-configurations-constants";
+
+export class UsernameRecoveryFormConstants {
+
+    /**
+     * Private constructor to avoid object instantiation from outside the class.
+     *
+     */
+    /* eslint-disable @typescript-eslint/no-empty-function */
+    private constructor() { }
+
+    public static readonly allowedConnectorFields: string[] = [
+        ServerConfigurationsConstants.USERNAME_RECOVERY_EMAIL_ENABLE,
+        ServerConfigurationsConstants.USERNAME_RECOVERY_SMS_ENABLE
+    ];
 }

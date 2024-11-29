@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import {
     AppConstants,
     AppState,
@@ -29,7 +29,6 @@ import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
 import { getUserStores } from "@wso2is/admin.userstores.v1/api/user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     AttributeMapping,
@@ -38,6 +37,7 @@ import {
     ExternalClaim,
     LoadableComponentInterface,
     ProfileSchemaInterface,
+    Property,
     SBACInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
@@ -70,7 +70,7 @@ import React,{
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import { Header, Icon, ItemHeader, SemanticICONS } from "semantic-ui-react";
 import { EditExternalClaim } from "./edit";
@@ -225,7 +225,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const [ editClaim, setEditClaim ] = useState("");
     const [ editExternalClaim, setEditExternalClaim ] = useState<AddExternalClaim>(undefined);
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const hasAttributeCreatePermissions: boolean = useRequiredScopes(featureConfig?.attributeDialects?.scopes?.create);
+    const hasAttributeUpdatePermissions: boolean = useRequiredScopes(featureConfig?.attributeDialects?.scopes?.update);
+    const hasAttributeDeletePermissions: boolean = useRequiredScopes(featureConfig?.attributeDialects?.scopes?.delete);
 
     const dispatch: ThunkDispatch<AppState, any, any> = useDispatch();
 
@@ -818,18 +820,10 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 const showEditAction: boolean =
                     attributeConfig.externalAttributes.showActions(dialectID) &&
                     attributeConfig.externalAttributes.isAttributeEditable &&
-                    hasRequiredScopes(
-                        featureConfig?.attributeDialects,
-                        featureConfig?.attributeDialects?.scopes?.create,
-                        allowedScopes
-                    );
+                    hasAttributeCreatePermissions;
                 const showDeleteAction: boolean =
                     attributeConfig.externalAttributes.showDeleteIcon(dialectID, list) &&
-                    hasRequiredScopes(
-                        featureConfig?.attributeDialects,
-                        featureConfig?.attributeDialects?.scopes?.delete,
-                        allowedScopes
-                    );
+                    hasAttributeDeletePermissions;
 
                 return showEditAction || showDeleteAction;
             };
@@ -1014,22 +1008,19 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         if (isLocalClaim(list)) {
             return [
                 {
-                    icon: (): SemanticICONS => !hasRequiredScopes(featureConfig?.attributeDialects,
-                        featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
+                    icon: (): SemanticICONS => !hasAttributeUpdatePermissions
                         ? "eye"
                         : "pencil alternate",
                     onClick: (e: SyntheticEvent, claim: Claim | ExternalClaim | ClaimDialect): void => {
                         history.push(AppConstants.getPaths().get("LOCAL_CLAIMS_EDIT").replace(":id", claim?.id));
                     },
-                    popupText: (): string => hasRequiredScopes(featureConfig?.attributeDialects,
-                        featureConfig?.attributeDialects?.scopes?.update, allowedScopes)
+                    popupText: (): string => hasAttributeUpdatePermissions
                         ? t("common:edit")
                         : t("common:view"),
                     renderer: "semantic-icon"
                 },
                 attributeConfig.attributes.deleteAction && {
-                    hidden: (): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
-                        featureConfig?.attributeDialects?.scopes?.delete, allowedScopes),
+                    hidden: (): boolean => !hasAttributeDeletePermissions,
                     icon: (): SemanticICONS => "trash alternate",
                     onClick: (e: SyntheticEvent, claim: Claim | ExternalClaim | ClaimDialect): void =>
                         initDelete(ListType.LOCAL, claim),
@@ -1042,8 +1033,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         if (isDialect(list)) {
             return [
                 {
-                    hidden: (): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
-                        featureConfig?.attributeDialects?.scopes?.create, allowedScopes),
+                    hidden: (): boolean => !hasAttributeCreatePermissions,
                     icon: (): SemanticICONS => "pencil alternate",
                     onClick: (e: SyntheticEvent, dialect: ClaimDialect): void => {
                         history.push(AppConstants.getPaths().get("EXTERNAL_DIALECT_EDIT").replace(":id", dialect.id));
@@ -1052,8 +1042,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     renderer: "semantic-icon"
                 },
                 attributeConfig.attributeMappings.deleteAction && {
-                    hidden: (): boolean => !hasRequiredScopes(featureConfig?.attributeDialects,
-                        featureConfig?.attributeDialects?.scopes?.delete, allowedScopes),
+                    hidden: (): boolean => !hasAttributeDeletePermissions,
                     icon: (): SemanticICONS => "trash alternate",
                     onClick: (e: SyntheticEvent, dialect: ClaimDialect): void => initDelete(ListType.DIALECT, dialect),
                     popupText: (): string => t("common:delete"),
@@ -1074,8 +1063,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 attributeConfig.externalAttributes.showActions(dialectID) && {
                     hidden: (): boolean => {
                         if (attributeConfig.externalAttributes.isAttributeEditable) {
-                            return !hasRequiredScopes(featureConfig?.attributeDialects,
-                                featureConfig?.attributeDialects?.scopes?.create, allowedScopes);
+                            return !hasAttributeCreatePermissions;
                         } else {
                             return !attributeConfig.externalAttributes.isAttributeEditable;
                         }
@@ -1094,22 +1082,18 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 },
                 attributeConfig.externalAttributes.showDeleteIcon(dialectID, list) && {
                     hidden: (claim: ExternalClaim): boolean => {
-                        if (!hasRequiredScopes(featureConfig?.attributeDialects,
-                            featureConfig?.attributeDialects?.scopes?.delete, allowedScopes)
+                        if (!hasAttributeDeletePermissions
                             || attributeConfig.externalAttributes.hideDeleteIcon(claim)) {
                             return true;
                         }
 
-                        if (attributeConfig.defaultScimMapping
-                            && Object.keys(attributeConfig.defaultScimMapping).length > 0) {
-                            const defaultSCIMClaims: Map<string, string> = attributeConfig
-                                .defaultScimMapping[claim.claimDialectURI];
-
-                            if (defaultSCIMClaims && defaultSCIMClaims.get(claim.claimURI)) {
-                                return true;
-                            } else {
-                                return false;
-                            }
+                        if (claim?.properties?.some((property: Property) =>
+                            property.key === ClaimManagementConstants.SYSTEM_CLAIM_PROPERTY_NAME
+                            && property.value === "true"
+                        )) {
+                            return true;
+                        } else {
+                            return false;
                         }
                     },
                     icon: (): SemanticICONS => "trash alternate",
@@ -1158,8 +1142,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const resolveTableRowClick = (e: SyntheticEvent, item: Claim | ExternalClaim | ClaimDialect | any): void => {
 
         //Disables inline edit if create scope is not available
-        if (!hasRequiredScopes(featureConfig?.attributeDialects,
-            featureConfig?.attributeDialects?.scopes?.create, allowedScopes)) {
+        if (!hasAttributeCreatePermissions) {
             return;
         }
 

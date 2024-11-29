@@ -29,6 +29,7 @@ export { default as AutocompleteFieldAdapter } from "./adapters/autocomplete-fie
 export { default as URLFieldAdapter } from "./adapters/url-field-adapter";
 export { default as CheckboxFieldAdapter } from "./adapters/checkbox-field-adapter";
 export { default as FilePickerAdapter } from "./adapters/file-picker-adapter";
+export { default as RadioGroupFieldAdapter } from "./adapters/radio-group-field-adapter";
 
 export * from "./field";
 export * from "./field-button";

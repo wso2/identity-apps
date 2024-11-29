@@ -112,6 +112,11 @@ const UserEditPage = (): ReactElement => {
         data: originalUserOnboardingConnectorData
     } = useGovernanceConnectors(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID);
 
+    // Get other settings governance connector data.
+    const {
+        data: otherSettingsConnectorData
+    } = useGovernanceConnectors(ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID);
+
     const user: ProfileInfoInterface = useMemo(() =>
         originalUserDetails || emptyProfileInfo(), [ originalUserDetails ]);
 
@@ -147,8 +152,23 @@ const UserEditPage = (): ReactElement => {
             });
         }
 
+        if (otherSettingsConnectorData) {
+            otherSettingsConnectorData.map((connector: GovernanceConnectorInterface) => {
+                if (connector.id === ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID) {
+                    connector.properties.map((property: ConnectorPropertyInterface) => {
+                        if (property.name === ServerConfigurationsConstants.ENABLE_EMAIL_VERIFICATION
+                            || property.name === ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION
+                            || property.name ===
+                                ServerConfigurationsConstants.ENABLE_MOBILE_VERIFICATION_BY_PRIVILEGED_USER
+                        ) {
+                            properties.push(property);
+                        }
+                    });
+                }
+            });
+        }
         setConnectorProperties(properties);
-    }, [ originalAccountManagementConnectorData, originalUserOnboardingConnectorData ]);
+    }, [ originalAccountManagementConnectorData, originalUserOnboardingConnectorData, otherSettingsConnectorData ]);
 
     useEffect(() => {
         setReadOnlyUserStoresLoading(true);

@@ -1,5 +1,44 @@
 # @wso2is/identity-apps-core
 
+## 2.8.3
+
+### Patch Changes
+
+- Updated dependencies [[`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897)]:
+  - @wso2is/theme@2.4.4
+
+## 2.8.2
+
+### Patch Changes
+
+- [#6746](https://github.com/wso2/identity-apps/pull/6746) [`b9fd57f731822372db9211ee346627c4ad9de0eb`](https://github.com/wso2/identity-apps/commit/b9fd57f731822372db9211ee346627c4ad9de0eb) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add spotbugs plugin to identity-apps-core
+
+## 2.8.1
+
+### Patch Changes
+
+- [#7130](https://github.com/wso2/identity-apps/pull/7130) [`08669ad434c35921e0a8c502adc2dd37ec600d3c`](https://github.com/wso2/identity-apps/commit/08669ad434c35921e0a8c502adc2dd37ec600d3c) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix incorrect french translations in UI
+
+## 2.8.0
+
+### Minor Changes
+
+- [#7005](https://github.com/wso2/identity-apps/pull/7005) [`825c12b034fa8db01857a10b3fb9ff36314bce1a`](https://github.com/wso2/identity-apps/commit/825c12b034fa8db01857a10b3fb9ff36314bce1a) Thanks [@Malith-19](https://github.com/Malith-19)! - Add the username recovery multiple channel support with branding.
+
+## 2.7.8
+
+### Patch Changes
+
+- Updated dependencies [[`cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453`](https://github.com/wso2/identity-apps/commit/cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453)]:
+  - @wso2is/theme@2.4.3
+
+## 2.7.7
+
+### Patch Changes
+
+- Updated dependencies [[`7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70`](https://github.com/wso2/identity-apps/commit/7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70)]:
+  - @wso2is/theme@2.4.2
+
 ## 2.7.6
 
 ### Patch Changes

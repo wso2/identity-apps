@@ -206,6 +206,10 @@ export interface ProfileSchemaInterface {
      * Maximum length limit.
      */
     maxLength?: number;
+    /**
+     * Excluded user stores.
+     */
+    excludedUserStores?: string;
 }
 
 /**

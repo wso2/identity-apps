@@ -1,5 +1,23 @@
 # @wso2is/core
 
+## 2.5.0
+
+### Minor Changes
+
+- [#7099](https://github.com/wso2/identity-apps/pull/7099) [`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce new remote user store implementation
+
+## 2.4.3
+
+### Patch Changes
+
+- [#6583](https://github.com/wso2/identity-apps/pull/6583) [`ce35db51c7bbf9fc894b71ecffd52d20413a4dd9`](https://github.com/wso2/identity-apps/commit/ce35db51c7bbf9fc894b71ecffd52d20413a4dd9) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add UI support for multiple email and mobile numbers per user
+
+## 2.4.2
+
+### Patch Changes
+
+- [#7069](https://github.com/wso2/identity-apps/pull/7069) [`10f5bf644f973552f3c3d155fda410b6e071f147`](https://github.com/wso2/identity-apps/commit/10f5bf644f973552f3c3d155fda410b6e071f147) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - remove delete option from default claims and dialects
+
 ## 2.4.1
 
 ### Patch Changes

@@ -30,11 +30,12 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder } from "@wso2is/react-components";
+import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import TenantCard from "./tenant-card";
-import { TenantListResponse } from "../models/tenants";
+import useTenants from "../hooks/use-tenants";
 import "./with-tenant-grid-placeholders.scss";
 
 /**
@@ -46,14 +47,6 @@ export type WithTenantGridPlaceholdersProps = IdentifiableComponentInterface &
          * Callback to be fired on add tenant modal trigger.
          */
         onAddTenantModalTrigger: () => void;
-        /**
-         * Tenant list.
-         */
-        tenantList: TenantListResponse;
-        /**
-         * Flag to indicate if the tenant list is loading.
-         */
-        isTenantListLoading: boolean;
     }>;
 
 /**
@@ -63,13 +56,19 @@ export type WithTenantGridPlaceholdersProps = IdentifiableComponentInterface &
  * @returns Decorated tenant grid component.
  */
 const WithTenantGridPlaceholders: FunctionComponent<WithTenantGridPlaceholdersProps> = ({
-    tenantList,
-    isTenantListLoading,
     children,
     onAddTenantModalTrigger,
     ["data-componentid"]: componentId = "with-tenant-grid-placeholders"
 }: WithTenantGridPlaceholdersProps): ReactElement => {
     const { t } = useTranslation();
+    const {
+        searchQuery,
+        setSearchQuery,
+        tenantList,
+        isTenantListLoading,
+        setSearchQueryClearTrigger,
+        searchQueryClearTrigger
+    } = useTenants();
 
     const tenantFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config?.ui?.features?.tenants
@@ -94,49 +93,85 @@ const WithTenantGridPlaceholders: FunctionComponent<WithTenantGridPlaceholdersPr
     };
 
     /**
+     * Clears the search query and toggles the search query clear trigger.
+     */
+    const handleSearchQueryClear = (): void => {
+        setSearchQuery("");
+        setSearchQueryClearTrigger(!searchQueryClearTrigger);
+    };
+
+    /**
      * Resolve the relevant placeholder.
      *
      * @returns React element.
      */
-    const showPlaceholders = (): ReactElement => (
-        <EmptyPlaceholder
-            className="list-placeholder"
-            action={
-                (<Stack direction="row" alignItems="center" justifyContent="center" gap={ 2 }>
-                    <Show when={ tenantFeatureConfig?.scopes?.create }>
+    const showPlaceholders = (): ReactElement => {
+        if (isTenantListLoading) {
+            return null;
+        }
+
+        if (searchQuery) {
+            return (
+                <EmptyPlaceholder
+                    action={
+                        (<Button variant="text" onClick={ handleSearchQueryClear }>
+                            { t("tenants:listing.emptySearchResult.actions.clearSearchQuery.label") }
+                        </Button>)
+                    }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
+                    imageSize="tiny"
+                    title={ t("tenants:listing.emptySearchResult.title") }
+                    subtitle={ [
+                        t("tenants:listing.emptySearchResult.subtitles.0", {
+                            searchQuery: searchQuery
+                        }),
+                        t("tenants:listing.emptySearchResult.subtitles.1")
+                    ] }
+                    data-componentid={ `${componentId}-empty-search-placeholder` }
+                />
+            );
+        }
+
+        return (
+            <EmptyPlaceholder
+                className="list-placeholder"
+                action={
+                    (<Stack direction="row" alignItems="center" justifyContent="center" gap={ 2 }>
+                        <Show when={ tenantFeatureConfig?.scopes?.create }>
+                            <Button
+                                startIcon={ <PlusIcon /> }
+                                variant="contained"
+                                color="primary"
+                                autoFocus
+                                onClick={ () => onAddTenantModalTrigger() }
+                            >
+                                { t("tenants:listing.emptyPlaceholder.actions.new.label") }
+                            </Button>
+                        </Show>
+                        <Divider orientation="vertical" variant="middle" flexItem>
+                            { t("tenants:listing.emptyPlaceholder.actions.divider") }
+                        </Divider>
                         <Button
-                            startIcon={ <PlusIcon /> }
-                            variant="contained"
-                            color="primary"
-                            autoFocus
-                            onClick={ () => onAddTenantModalTrigger() }
+                            aria-label="system-settings-button"
+                            data-componentid="system-settings-button"
+                            variant="text"
+                            startIcon={ <GearIcon /> }
+                            onClick={ () => history.push(AppConstants.getPaths().get("SYSTEM_SETTINGS")) }
                         >
-                            { t("tenants:listing.emptyPlaceholder.actions.new.label") }
+                            { t("tenants:listing.emptyPlaceholder.actions.configure.label") }
                         </Button>
-                    </Show>
-                    <Divider orientation="vertical" variant="middle" flexItem>
-                        { t("tenants:listing.emptyPlaceholder.actions.divider") }
-                    </Divider>
-                    <Button
-                        aria-label="system-settings-button"
-                        data-componentid="system-settings-button"
-                        variant="text"
-                        startIcon={ <GearIcon /> }
-                        onClick={ () => history.push(AppConstants.getPaths().get("SYSTEM_SETTINGS")) }
-                    >
-                        { t("tenants:listing.emptyPlaceholder.actions.configure.label") }
-                    </Button>
-                </Stack>)
-            }
-            image={ getEmptyPlaceholderIllustrations().newList }
-            imageSize="tiny"
-            subtitle={ [
-                t("tenants:listing.emptyPlaceholder.subtitles.0"),
-                t("tenants:listing.emptyPlaceholder.subtitles.1")
-            ] }
-            data-componentid={ `${componentId}-empty-placeholder` }
-        />
-    );
+                    </Stack>)
+                }
+                image={ getEmptyPlaceholderIllustrations().newList }
+                imageSize="tiny"
+                subtitle={ [
+                    t("tenants:listing.emptyPlaceholder.subtitles.0"),
+                    t("tenants:listing.emptyPlaceholder.subtitles.1")
+                ] }
+                data-componentid={ `${componentId}-empty-placeholder` }
+            />
+        );
+    };
 
     if (isTenantListLoading) {
         return (
@@ -149,23 +184,23 @@ const WithTenantGridPlaceholders: FunctionComponent<WithTenantGridPlaceholdersPr
     // Sometimes, `tenants` array is undefined but `totalResults` is available.
     // TODO: Tracker: https://github.com/wso2/product-is/issues/21459
     if (!tenantList?.tenants || tenantList?.totalResults <= 0) {
-        return (
-            <Box className="with-tenant-grid-placeholders">
-                { showPlaceholders() }
-            </Box>
-        );
+        return <Box className="with-tenant-grid-placeholders">{ showPlaceholders() }</Box>;
     }
 
     return (
         <>
-            { !isTenantListLoading && tenantList?.tenants?.length > 0 && (
-                <Typography align="right" className="tenants-grid-display-count" variant="body2">
-                    { t("tenants:listing.count", {
-                        results: tenantList?.tenants?.length,
-                        totalResults: tenantList?.totalResults
-                    }) }
-                </Typography>
-            ) }
+            <Typography
+                align="right"
+                className={ classNames("tenants-grid-display-count", {
+                    hidden: !isTenantListLoading && tenantList?.tenants?.length > 0 && searchQuery
+                }) }
+                variant="body2"
+            >
+                { t("tenants:listing.count", {
+                    results: tenantList?.tenants?.length,
+                    totalResults: tenantList?.totalResults
+                }) }
+            </Typography>
             <Grid container spacing={ 3 } data-componentid={ componentId }>
                 { children }
             </Grid>
