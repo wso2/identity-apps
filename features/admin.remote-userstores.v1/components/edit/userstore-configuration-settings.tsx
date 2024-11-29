@@ -20,6 +20,7 @@ import Button from "@oxygen-ui/react/Button";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import Stack from "@oxygen-ui/react/Stack";
 import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppState, sortList } from "@wso2is/admin.core.v1";
 import { patchUserStore, updateUserStoreAttributeMappings } from "@wso2is/admin.userstores.v1/api/user-stores";
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
@@ -318,15 +319,6 @@ export const ConfigurationSettings: FunctionComponent<ConfigurationSettingsProps
                 property.value = userStorePropertyValues[property.name].toString();
                 updatedUserStoreProperties.push({ ...property });
             }
-
-            // UserNameAttribute and UserIDAttribute are extracted from the attribute mappings.
-            if (property.name === RemoteUserStoreConstants.PROPERTY_NAME_USERNAME) {
-                property.value = formValues.username as string;
-                updatedUserStoreProperties.push({ ...property });
-            } else if (property.name === RemoteUserStoreConstants.PROPERTY_NAME_USERID) {
-                property.value = formValues.userid as string;
-                updatedUserStoreProperties.push({ ...property });
-            }
         }
 
         delete formValues["userstore-properties"];
@@ -335,10 +327,26 @@ export const ConfigurationSettings: FunctionComponent<ConfigurationSettingsProps
         const attributeMappings: UserStoreAttributeMapping[] = [];
 
         for (const [ key, value ] of Object.entries(flattenedValues)) {
+            const decodedKey: string = decodeURIComponent(key);
+
             attributeMappings.push({
-                "claimURI": `http://wso2.org/claims/${key}`,
+                "claimURI": decodedKey,
                 "mappedAttribute": value
             });
+
+            if (userStoreManager === RemoteUserStoreManagerType.RemoteUserStoreManager) {
+                if (decodedKey === ClaimManagementConstants.USER_NAME_CLAIM_URI) {
+                    updatedUserStoreProperties.push({
+                        name: RemoteUserStoreConstants.PROPERTY_NAME_USERNAME,
+                        value
+                    });
+                } else if (decodedKey === ClaimManagementConstants.USER_ID_CLAIM_URI) {
+                    updatedUserStoreProperties.push({
+                        name: RemoteUserStoreConstants.PROPERTY_NAME_USERID,
+                        value
+                    });
+                }
+            }
         }
 
         setIsUpdating(true);
