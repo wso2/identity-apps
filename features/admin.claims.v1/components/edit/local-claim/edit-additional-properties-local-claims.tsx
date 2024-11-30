@@ -26,7 +26,6 @@ import { DynamicField , KeyValue, useTrigger } from "@wso2is/forms";
 import {
     EmphasizedSegment,
     Link,
-    Message,
     PrimaryButton
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
@@ -68,8 +67,6 @@ export const EditAdditionalPropertiesLocalClaims:
 
         const RESTRICTED_PROPERTY_KEYS: string[] = [ "isUnique" ];
 
-        const [ showWarning, setShowWarning ] = useState<boolean>(false);
-
         const [ submit, setSubmit ] = useTrigger();
 
         const dispatch: Dispatch = useDispatch();
@@ -101,46 +98,6 @@ export const EditAdditionalPropertiesLocalClaims:
             <EmphasizedSegment>
                 <Grid>
                     <Grid.Row columns={ 1 }>
-                        <Grid.Column width={ 16 }>
-                            { showWarning && (
-                                <Message
-                                    type="warning"
-                                    content={ (
-                                        <Trans
-                                            i18nKey={
-                                                UIConfig?.isClaimUniquenessValidationEnabled
-                                                    ? "claims:local.additionalProperties." +
-                                                        "isUniqueDeprecationMessage.uniquenessEnabled"
-                                                    : "claims:local.additionalProperties." +
-                                                        "isUniqueDeprecationMessage.uniquenessDisabled"
-                                            }
-                                        >
-                                            { UIConfig?.isClaimUniquenessValidationEnabled ? (
-                                                <>
-                                                    The &apos;isUnique&apos; property is deprecated. Please use the
-                                                    <Link
-                                                        external={ false }
-                                                        onClick={ () => {
-                                                            history.push({
-                                                                pathname: AppConstants.getPaths()
-                                                                    .get("LOCAL_CLAIMS_EDIT")
-                                                                    .replace(":id", claim.id)
-                                                            });
-                                                        } }
-                                                    > Uniqueness Validation Dropdown </Link>
-                                                    to configure claim uniqueness.
-                                                </>
-                                            ) : (
-                                                "The 'isUnique' property is deprecated."
-                                            ) }
-                                        </Trans>
-                                    ) }
-                                    data-componentid={ `${ testId }-restricted-warning` }
-                                />
-                            ) }
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
                         <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
                             <p>{ t("claims:local.additionalProperties.hint") }</p>
                             <DynamicField
@@ -158,17 +115,47 @@ export const EditAdditionalPropertiesLocalClaims:
                                 "valueRequiredErrorMessage"
                                 ) }
                                 requiredField={ true }
-                                update={ (data: KeyValue[]) => {
-                                    const hasRestrictedKey: boolean = data.some(
-                                        (item: KeyValue) => item.key === RESTRICTED_PROPERTY_KEYS[0]
-                                    );
+                                keyValidation={ (key: string) => {
+                                    if (RESTRICTED_PROPERTY_KEYS.includes(key)) {
 
-                                    setShowWarning(hasRestrictedKey);
-
-                                    if (hasRestrictedKey) {
-                                        return;
+                                        return false;
                                     }
 
+                                    return true;
+                                } }
+                                keyValidationWarningMessage={
+                                    UIConfig?.isClaimUniquenessValidationEnabled ? (
+                                        <Trans
+                                            i18nKey={
+                                                "claims:local.additionalProperties." +
+                                                "isUniqueDeprecationMessage.uniquenessEnabled"
+                                            }
+                                        >
+                                            The &apos;isUnique&apos; property is deprecated. Please use
+                                            <Link
+                                                external={ false }
+                                                onClick={ () => {
+                                                    history.push({
+                                                        pathname: AppConstants.getPaths()
+                                                            .get("LOCAL_CLAIMS_EDIT")
+                                                            .replace(":id", claim.id)
+                                                    });
+                                                } }
+                                            > Uniqueness Validation </Link>
+                                            option to configure claim uniqueness.
+                                        </Trans>
+                                    ) : (
+                                        <Trans
+                                            i18nKey={
+                                                "claims:local.additionalProperties." +
+                                                "isUniqueDeprecationMessage.uniquenessDisabled"
+                                            }
+                                        >
+                                            The &apos;isUnique&apos; property is deprecated.
+                                        </Trans>
+                                    )
+                                }
+                                update={ (data: KeyValue[]) => {
                                     const claimData: Claim = { ...claim };
 
                                     delete claimData.id;
