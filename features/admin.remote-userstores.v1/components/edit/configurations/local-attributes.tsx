@@ -74,7 +74,9 @@ const LocalAttributeMappings: FunctionComponent<LocalAttributeMappingsPropsInter
                 <Stack spacing={ 2 }>
                     {
                         attributesList?.map((attribute: Claim, index: number) => {
-                            const fieldName: string = attribute.claimURI.split("/").pop();
+                            // http://wso2.org/claims/emailaddress type of name
+                            // is not supported by React Final Form field. Hence encoding.
+                            const fieldName: string = encodeURIComponent(attribute.claimURI);
 
                             return (
                                 <Grid key={ index } container>

@@ -83,7 +83,7 @@ const UserAttributesSection: FunctionComponent<UserAttributesSectionPropsInterfa
                             margin: "dense"
                         } }
                         data-componentid={ `${componentId}-field-usernameMapping` }
-                        name="username"
+                        name={ encodeURIComponent(usernameClaimUri) }
                         type="text"
                         placeholder={
                             t("remoteUserStores:form.fields.usernameMapping.placeholder")
@@ -115,7 +115,7 @@ const UserAttributesSection: FunctionComponent<UserAttributesSectionPropsInterfa
                             margin: "dense"
                         } }
                         data-componentid={ `${componentId}-field-userIdMapping` }
-                        name="userid"
+                        name={ encodeURIComponent(userIDClaimUri) }
                         type="text"
                         placeholder={ t("remoteUserStores:form.fields.userIdMapping.placeholder") }
                         component={ TextFieldAdapter }
