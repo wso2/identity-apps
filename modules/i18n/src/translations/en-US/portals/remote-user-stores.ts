@@ -96,6 +96,10 @@ export const remoteUserStores: RemoteUserStoresNS = {
         }
     },
     notifications: {
+        checkSumError: {
+            description: "There was an error while retrieving the validation information.",
+            message: "Something went wrong!"
+        },
         connectionStatusCheckError: {
             description: "There was an error while checking the connection status.",
             message: "Something went wrong!"
@@ -207,7 +211,13 @@ export const remoteUserStores: RemoteUserStoresNS = {
                             description: "Download and unzip the user store agent."
                         },
                         remote: {
-                            description: "Select your platform and download the corresponding user store agent:"
+                            description: "Select your platform and download the corresponding user store agent:",
+                            verification: {
+                                description: "Follow the steps below to verify the downloaded file using SHA256 checksum.",
+                                heading: "Verify the downloaded file",
+                                step1: "Execute the following command in the command line. Replace the <3>FILE_PATH</3> with the path of the downloaded agent zip file.",
+                                step2: "Compare the generated checksum with the one provided below."
+                            }
                         }
                     },
                     run: {
