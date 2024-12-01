@@ -27,9 +27,10 @@ import isEmpty from "lodash-es/isEmpty";
 /**
  * Hook to get DataType.
  *
+ * @param filePath - File path to be fetched.
  * @param shouldFetch - If true, will fetch the data.
  *
- * @returns Requested data.
+ * @returns content of the file.
  */
 const useGetCheckSum = <Data = string, Error = RequestErrorInterface>(
     filePath: string,
