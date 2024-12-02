@@ -50,7 +50,7 @@ import { ConnectorPropertyInterface } from "../../admin.connections.v1";
 import {
     ServerConfigurationsConstants,
     UpdateGovernanceConnectorConfigPropertyInterface,
-    useGovernanceConnectorDetails
+    useGetGovernanceConnectorById
 } from "../../admin.server-configurations.v1";
 import updateOrganizationDiscoveryConfig from "../api/update-organization-discovery-config";
 import useGetOrganizationDiscovery from "../api/use-get-organization-discovery";
@@ -112,7 +112,7 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
 
     const {
         data: selfRegistrationConnectorDetetails
-    } = useGovernanceConnectorDetails(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+    } = useGetGovernanceConnectorById(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
         ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID);
 
     const { isOrganizationDiscoveryEnabled, isEmailDomainBasedSelfRegistrationEnabled } = organizationDiscoveryConfig;

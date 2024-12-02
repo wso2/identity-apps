@@ -115,7 +115,7 @@ export const useGovernanceConnectors = <
  * @param connectorId - ID of the connector
  * @returns the governance connector.
  */
-export const useGovernanceConnectorDetails = <
+export const useGetGovernanceConnectorById = <
     Data = GovernanceConnectorInterface,
     Error = RequestErrorInterface
     >(
