@@ -23,17 +23,18 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { ActionBasicResponseInterface } from "../models/actions";
+import isEmpty from "lodash-es/isEmpty";
+import { ActionResponseInterface } from "../models/actions";
 
 /**
- * Hook to get the actions configurations by action type.
+ * Hook to get the action configurations by id.
  *
  * @param actionType - Type of the action.
- * @param shouldFetch - Should fetch the data.
+ * @param actionId - ID of the action.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetActionsByType = <Data = ActionBasicResponseInterface[], Error = RequestErrorInterface>
-    (actionType: string, shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
+const useGetActionById = <Data = ActionResponseInterface, Error = RequestErrorInterface>
+    (actionType: string, actionId: string): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -41,8 +42,10 @@ const useGetActionsByType = <Data = ActionBasicResponseInterface[], Error = Requ
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.actions }/${ actionType }`
+        url: `${ store.getState().config.endpoints.actions }/${ actionType }/${ actionId }`
     };
+
+    const shouldFetch: boolean = !isEmpty(actionId);
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
         shouldFetch ? requestConfig : null,
@@ -58,4 +61,4 @@ const useGetActionsByType = <Data = ActionBasicResponseInterface[], Error = Requ
     };
 };
 
-export default useGetActionsByType;
+export default useGetActionById;

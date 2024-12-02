@@ -46,6 +46,7 @@ import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import createAction from "../api/create-action";
 import updateAction from "../api/update-action";
+import useGetActionById from "../api/use-get-action-by-id";
 import useGetActionsByType from "../api/use-get-actions-by-type";
 import { ActionsConstants } from "../constants/actions-constants";
 import {
@@ -105,6 +106,10 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     const {
         mutate: mutateActions
     } = useGetActionsByType(actionTypeApiPath);
+
+    const {
+        mutate: mutateAction
+    } = useGetActionById(actionTypeApiPath, initialValues?.id);
 
     /**
      * The following useEffect is used to set the current Action Authentication Type.
@@ -342,7 +347,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                 .then(() => {
                     handleSuccess(ActionsConstants.UPDATE);
                     setIsAuthenticationUpdateFormState(false);
-                    mutateActions();
+                    mutateAction();
                 })
                 .catch((error: AxiosError) => {
                     handleError(error, ActionsConstants.UPDATE);
