@@ -16,18 +16,19 @@
  * under the License.
  */
 
-export { default as DraggableNode } from "./components/draggable-node";
-export * from "./components/draggable-node";
+.droppable-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 
-export { default as DroppableContainer } from "./components/droppable-container";
-export * from "./components/droppable-container";
+    .draggable-item {
+        cursor: grab;
+        transition: transform 0.2s, background 0.2s;
 
-export { default as DnDContext } from "./context/dnd-context";
-export * from "./context/dnd-context";
-
-export { default as useDnD } from "./hooks/use-dnd";
-export * from "./hooks/use-dnd";
-
-export { default as DnDProvider } from "./providers/dnd-provider";
-export * from "./providers/dnd-provider";
-
+        &:active {
+            background: #f9f9f9;
+            cursor: grabbing;
+            transform: scale(1.03);
+        }
+    }
+}
