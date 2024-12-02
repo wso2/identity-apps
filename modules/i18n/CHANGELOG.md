@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.13.1
+
+### Patch Changes
+
+- [#7168](https://github.com/wso2/identity-apps/pull/7168) [`eb2b27a9d56bec6e126f908339f151cab80e0ad5`](https://github.com/wso2/identity-apps/commit/eb2b27a9d56bec6e126f908339f151cab80e0ad5) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add getActionByActionId api to actions ui
+
 ## 2.13.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.8.4
+
+### Patch Changes
+
+- [#7083](https://github.com/wso2/identity-apps/pull/7083) [`2bbb19623b7aa832910e23da5baa1829a2ff1281`](https://github.com/wso2/identity-apps/commit/2bbb19623b7aa832910e23da5baa1829a2ff1281) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Support email domain based organization discovery during self-registration.
+
 ## 2.8.3
 
 ### Patch Changes

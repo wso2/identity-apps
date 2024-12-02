@@ -1,5 +1,19 @@
 # @wso2is/admin.actions.v1
 
+## 1.7.0
+
+### Minor Changes
+
+- [#7168](https://github.com/wso2/identity-apps/pull/7168) [`eb2b27a9d56bec6e126f908339f151cab80e0ad5`](https://github.com/wso2/identity-apps/commit/eb2b27a9d56bec6e126f908339f151cab80e0ad5) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add getActionByActionId api to actions ui
+
+### Patch Changes
+
+- Updated dependencies [[`eb2b27a9d56bec6e126f908339f151cab80e0ad5`](https://github.com/wso2/identity-apps/commit/eb2b27a9d56bec6e126f908339f151cab80e0ad5)]:
+  - @wso2is/i18n@2.13.1
+  - @wso2is/admin.core.v1@2.34.43
+  - @wso2is/admin.extensions.v1@2.35.2
+  - @wso2is/admin.feature-gate.v1@1.4.43
+
 ## 1.6.42
 
 ### Patch Changes
