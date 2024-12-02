@@ -38,8 +38,14 @@ import useGetCheckSum from "../../../../api/use-get-sha-file";
  * Interface for download URLs prop of the DownloadAgentStep component.
  */
 export interface AgentDownloadInfoInterface {
+    /**
+     * The download URL of the user store agent.
+     */
     file: string;
-    checkSum?: string;
+    /**
+     * The checksum file URL of the user store agent file.
+     */
+    checkSum: string;
 }
 
 /**
@@ -57,6 +63,9 @@ interface DownloadAgentStepPropsInterface extends IdentifiableComponentInterface
     }
 }
 
+/**
+ * User store agent available operating systems.
+ */
 enum OperatingSystem {
     Linux = "Linux",
     LinuxArm = "Linux (ARM)",
