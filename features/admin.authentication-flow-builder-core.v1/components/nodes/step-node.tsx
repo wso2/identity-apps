@@ -159,7 +159,6 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
                                             key={ index }
                                             className={ classNames("authentication-flow-builder-step-content-form-field", dragItemClassName) }
                                             onClick={ () => setLastInteractedElement(component) }
-                                            draggable
                                             { ...otherDragItemProps }
                                         >
                                             <div className="authentication-flow-builder-step-content-form-field-drag-handle">

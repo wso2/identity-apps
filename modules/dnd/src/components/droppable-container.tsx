@@ -17,7 +17,8 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { HTMLAttributes, MutableRefObject, ReactNode, useRef, useState } from "react";
+import cloneDeep from "lodash-es/cloneDeep";
+import React, { HTMLAttributes, MutableRefObject, ReactNode, useEffect, useRef, useState } from "react";
 import "./droppable-container.scss";
 
 /**
@@ -109,9 +110,11 @@ export interface DragHandlers {
  * @returns Droppable container component.
  */
 const DroppableContainer = <T,>({ nodes, onOrderChange, children }: DroppableContainerProps<T>) => {
-    const [ orderedNodes, setOrderedNodes ] = useState<T[]>(nodes);
-    const dragNodeIndex: MutableRefObject<number | null> = useRef<number | null>(null);
-    const dragOverNodeIndex: MutableRefObject<number | null> = useRef<number | null>(null);
+    const [ orderedNodes, setOrderedNodes ] = useState<T[]>([]);
+    const dragNodeIndex: MutableRefObject<number> = useRef<number | null>(null);
+    const dragOverNodeIndex: MutableRefObject<number> = useRef<number | null>(null);
+
+    useEffect(() => setOrderedNodes(cloneDeep(nodes)), [ nodes ]);
 
     /**
      * Handles the drag start event.
