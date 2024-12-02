@@ -24,7 +24,9 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { DroppableContainer, GetDragItemProps } from "@wso2is/dnd";
 import { Handle, Node, Position, useNodeId, useReactFlow } from "@xyflow/react";
+import classNames from "classnames";
 import React, {
     DragEvent,
     FunctionComponent,
@@ -139,26 +141,38 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
                 </Tooltip>
             </Box>
             { stepIndex !== 0 && <Handle type="target" position={ Position.Left } /> }
-            <Box className="authentication-flow-builder-step-content" data-componentid={ `${componentId}-inner` }>
+            <Box className="authentication-flow-builder-step-content nodrag" data-componentid={ `${componentId}-inner` }>
                 <Paper className="authentication-flow-builder-step-content-box" elevation={ 0 } variant="outlined">
                     <Box className="authentication-flow-builder-step-content-form">
                         <FormGroup>
-                            { droppedElements.map((component: Component, index: number) => (
-                                <Box
-                                    display="flex"
-                                    alignItems="center"
-                                    key={ index }
-                                    className="authentication-flow-builder-step-content-form-field"
-                                    onClick={ () => setLastInteractedElement(component) }
-                                >
-                                    <div className="authentication-flow-builder-step-content-form-field-drag-handle">
-                                        <GridDotsVerticalIcon height={ 20 } />
-                                    </div>
-                                    <div className="authentication-flow-builder-step-content-form-field-content">
-                                        <NodeFactory nodeId={ nodeId } node={ component } />
-                                    </div>
-                                </Box>
-                            )) }
+                            <DroppableContainer<Component>
+                                nodes={ droppedElements }
+                                onOrderChange={ (orderedNodes: Component[]) => setDroppedElements(orderedNodes) }
+                            >
+                                { ({ nodes, getDragItemProps }: { nodes: Component[]; getDragItemProps: GetDragItemProps }) => nodes.map((component: Component, index: number) => {
+                                    const { className: dragItemClassName, ...otherDragItemProps } = getDragItemProps(index);
+
+                                    return (
+                                        <Box
+                                            display="flex"
+                                            alignItems="center"
+                                            key={ index }
+                                            className={ classNames("authentication-flow-builder-step-content-form-field", dragItemClassName) }
+                                            onClick={ () => setLastInteractedElement(component) }
+                                            draggable
+                                            { ...otherDragItemProps }
+                                        >
+                                            <div className="authentication-flow-builder-step-content-form-field-drag-handle">
+                                                <GridDotsVerticalIcon height={ 20 } />
+                                            </div>
+                                            <div className="authentication-flow-builder-step-content-form-field-content">
+                                                <NodeFactory nodeId={ nodeId } node={ component } />
+                                            </div>
+                                        </Box>
+                                    );
+                                })
+                                }
+                            </DroppableContainer>
                         </FormGroup>
                     </Box>
                 </Paper>

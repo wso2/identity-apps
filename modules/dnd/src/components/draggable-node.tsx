@@ -22,7 +22,7 @@ import useDnD from "../hooks/use-dnd";
 import "./draggable-node.scss";
 
 /**
- * Interface for the props of the Draggable Node.
+ * Props interface of {@link DraggableNode}
  */
 export interface DraggableNodePropsInterface<T = any>
     extends IdentifiableComponentInterface,
