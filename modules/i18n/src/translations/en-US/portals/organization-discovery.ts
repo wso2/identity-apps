@@ -101,7 +101,8 @@ export const organizationDiscovery: organizationDiscoveryNS = {
         }
     },
     message: "Email domain discovery feature can only be used when email address is configured as the username."
-        + " When enabled, email domains are validated during user authentication and onboarding to organizations.",
+        + " When enabled, email domains are validated during user authentication and when administrators"
+        + " onboard users to organizations.",
     notifications: {
         addEmailDomains: {
             error: {
@@ -197,7 +198,7 @@ export const organizationDiscovery: organizationDiscoveryNS = {
     },
     selfRegistration: {
         label: "Email domain discovery for self-registration",
-        labelHint: "when enabled, users will be self-registered in child organizations via shared applications",
+        labelHint: "When enabled, users will be self-registered in child organizations via shared applications",
         message: "Enable <1>self-registration</1> to allow domain discovery for self-registration"
     },
     title: "Organization Discovery"
