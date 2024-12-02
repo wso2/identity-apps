@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import Button from "@oxygen-ui/react/Button";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useDnD } from "@wso2is/dnd";
 import {
@@ -66,7 +68,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
 }: VisualFlowPropsInterface): ReactElement => {
     const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
     const [ edges, setEdges, onEdgesChange ] = useEdgesState([]);
-    const { screenToFlowPosition } = useReactFlow();
+    const { screenToFlowPosition, toObject } = useReactFlow();
     const { node, generateComponentId } = useDnD();
     const { onElementDropOnCanvas } = useAuthenticationFlowBuilderCore();
 
@@ -119,9 +121,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                     const outgoers: Node[] = getOutgoers(node, nodes, edges);
                     const connectedEdges: Edge[] = getConnectedEdges([ node ], edges);
 
-                    const remainingEdges: Edge[] = acc.filter(
-                        (edge: Edge) => !connectedEdges.includes(edge)
-                    );
+                    const remainingEdges: Edge[] = acc.filter((edge: Edge) => !connectedEdges.includes(edge));
 
                     const createdEdges: Edge[] = incomers.flatMap(({ id: source }: { id: string }) =>
                         outgoers.map(({ id: target }: { id: string }) => ({
@@ -138,26 +138,43 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
         [ nodes, edges ]
     );
 
+    // TODO: Handle the submit
+    const handlePublish = (): void => {
+        const flow: any = toObject();
+        console.log(JSON.stringify(flow, null, 2));
+    };
+
     return (
-        <ReactFlow
-            fitView
-            nodes={ nodes }
-            edges={ edges }
-            nodeTypes={ nodeTypes as any }
-            onNodesChange={ onNodesChange }
-            onEdgesChange={ onEdgesChange }
-            onConnect={ onConnect }
-            onNodesDelete={ onNodesDelete }
-            onDrop={ onDrop }
-            onDragOver={ onDragOver }
-            proOptions={ { hideAttribution: true } }
-            data-componentid={ componentId }
-            colorMode="dark"
-            { ...rest }
-        >
-            <Background gap={ 16 } variant={ BackgroundVariant.Dots } size={ 2 } />
-            <Controls position="top-right" />
-        </ReactFlow>
+        <>
+            <Box
+                display="flex"
+                justifyContent="flex-end"
+                alignItems="center"
+                // TODO: Fix the styling once the design is finalized
+                sx={ { marginTop: "-50px", position: "absolute", right: "24px" } }
+            >
+                <Button variant="contained" onClick={ () => handlePublish() }>Publish</Button>
+            </Box>
+            <ReactFlow
+                fitView
+                nodes={ nodes }
+                edges={ edges }
+                nodeTypes={ nodeTypes as any }
+                onNodesChange={ onNodesChange }
+                onEdgesChange={ onEdgesChange }
+                onConnect={ onConnect }
+                onNodesDelete={ onNodesDelete }
+                onDrop={ onDrop }
+                onDragOver={ onDragOver }
+                proOptions={ { hideAttribution: true } }
+                data-componentid={ componentId }
+                colorMode="dark"
+                { ...rest }
+            >
+                <Background gap={ 16 } variant={ BackgroundVariant.Dots } size={ 2 } />
+                <Controls position="top-right" />
+            </ReactFlow>
+        </>
     );
 };
 

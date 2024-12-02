@@ -17,7 +17,6 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
 import Typography from "@oxygen-ui/react/Typography";
 import RegistrationFlowBuilder from "@wso2is/admin.registration-flow-builder.v1/components/registration-flow-builder";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -43,7 +42,6 @@ const Flows: FunctionComponent<FlowsProps> = ({
             <div className="page-layout">
                 <Box display="flex" className="page-header" justifyContent="space-between" alignItems="center">
                     <Typography variant="h5">Flows</Typography>
-                    <Button variant="contained">Publish</Button>
                 </Box>
             </div>
             <RegistrationFlowBuilder />

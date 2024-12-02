@@ -79,19 +79,19 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
     "data-componentid": componentId = "step-node"
 }: StepNodePropsInterface & Node): ReactElement => {
     const nodeId: string = useNodeId();
-    const { deleteElements } = useReactFlow();
+    const { deleteElements, updateNodeData } = useReactFlow();
     const { onElementDropOnCanvas, NodeFactory, setLastInteractedElement } = useAuthenticationFlowBuilderCore();
 
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     const [ droppedElements, setDroppedElements ] = useState<Component[]>([]);
 
-    const onDragOver: (event: DragEvent) => void = useCallback((event: DragEvent) => {
+    const handleDragOver: (event: DragEvent) => void = useCallback((event: DragEvent) => {
         event.preventDefault();
         event.dataTransfer.dropEffect = "move";
     }, []);
 
-    const onDrop: (e: DragEvent) => void = useCallback(
+    const handleDrop: (e: DragEvent) => void = useCallback(
         (event: DragEvent) => {
             event.preventDefault();
 
@@ -102,19 +102,35 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
 
                 setDroppedElements((prevDroppedElements: Component[]) => [ ...prevDroppedElements, newComponent ]);
 
+                updateNodeData(nodeId, (node: any) => {
+                    return {
+                        ...(node.data.elements
+                            ? { elements: [ ...node.data.elements, newComponent ] }
+                            : { elements: [ newComponent ] })
+                    };
+                });
+
                 onElementDropOnCanvas(newComponent, nodeId);
             }
         },
         [ data?.type ]
     );
 
+    const handleOrderChange = (orderedNodes: Component[]) => {
+        updateNodeData(nodeId, () => {
+            return {
+                elements: orderedNodes
+            };
+        });
+    };
+
     return (
         <div
             ref={ ref }
             className="authentication-flow-builder-step"
             data-componentid={ componentId }
-            onDrop={ onDrop }
-            onDrag={ onDragOver }
+            onDrop={ handleDrop }
+            onDrag={ handleDragOver }
         >
             <Box
                 display="flex"
@@ -147,29 +163,42 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
                         <FormGroup>
                             <DroppableContainer<Component>
                                 nodes={ droppedElements }
-                                onOrderChange={ (orderedNodes: Component[]) => setDroppedElements(orderedNodes) }
+                                onOrderChange={ handleOrderChange }
                             >
-                                { ({ nodes, getDragItemProps }: { nodes: Component[]; getDragItemProps: GetDragItemProps }) => nodes.map((component: Component, index: number) => {
-                                    const { className: dragItemClassName, ...otherDragItemProps } = getDragItemProps(index);
+                                { ({
+                                    nodes,
+                                    getDragItemProps
+                                }: {
+                                    nodes: Component[];
+                                    getDragItemProps: GetDragItemProps;
+                                }) =>
+                                    nodes.map((component: Component, index: number) => {
+                                        const {
+                                            className: dragItemClassName,
+                                            ...otherDragItemProps
+                                        } = getDragItemProps(index);
 
-                                    return (
-                                        <Box
-                                            display="flex"
-                                            alignItems="center"
-                                            key={ index }
-                                            className={ classNames("authentication-flow-builder-step-content-form-field", dragItemClassName) }
-                                            onClick={ () => setLastInteractedElement(component) }
-                                            { ...otherDragItemProps }
-                                        >
-                                            <div className="authentication-flow-builder-step-content-form-field-drag-handle">
-                                                <GridDotsVerticalIcon height={ 20 } />
-                                            </div>
-                                            <div className="authentication-flow-builder-step-content-form-field-content">
-                                                <NodeFactory nodeId={ nodeId } node={ component } />
-                                            </div>
-                                        </Box>
-                                    );
-                                })
+                                        return (
+                                            <Box
+                                                display="flex"
+                                                alignItems="center"
+                                                key={ index }
+                                                className={ classNames(
+                                                    "authentication-flow-builder-step-content-form-field",
+                                                    dragItemClassName
+                                                ) }
+                                                onClick={ () => setLastInteractedElement(component) }
+                                                { ...otherDragItemProps }
+                                            >
+                                                <div className="authentication-flow-builder-step-content-form-field-drag-handle">
+                                                    <GridDotsVerticalIcon height={ 20 } />
+                                                </div>
+                                                <div className="authentication-flow-builder-step-content-form-field-content">
+                                                    <NodeFactory nodeId={ nodeId } node={ component } />
+                                                </div>
+                                            </Box>
+                                        );
+                                    })
                                 }
                             </DroppableContainer>
                         </FormGroup>
