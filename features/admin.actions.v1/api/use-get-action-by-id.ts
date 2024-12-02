@@ -46,6 +46,7 @@ const useGetActionById = <Data = ActionResponseInterface, Error = RequestErrorIn
     };
 
     const shouldFetch: boolean = !isEmpty(actionId);
+
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
         shouldFetch ? requestConfig : null,
         { shouldRetryOnError: false }

@@ -164,15 +164,15 @@ export const actions: actionsNS = {
             },
             fetchById: {
                 description: "{{description}}",
-                message: "Error fetching the action."
+                message: "Error retrieving the action."
             },
             fetchByType: {
                 description: "{{description}}",
-                message: "Error fetching actions."
+                message: "Error retrieving actions."
             },
             typesFetch: {
                 description: "{{description}}",
-                message: "Error fetching the action types."
+                message: "Error retrieving the action types."
             },
             update: {
                 description: "{{description}}",
