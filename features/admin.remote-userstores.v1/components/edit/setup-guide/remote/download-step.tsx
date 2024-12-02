@@ -49,6 +49,16 @@ export interface AgentDownloadInfoInterface {
 }
 
 /**
+ * Interface for agent download options shown it the UI.
+ */
+interface AgentDownloadOptionInterface extends AgentDownloadInfoInterface {
+    /**
+     * The operating system of the user store agent.
+     */
+    os: OperatingSystem;
+}
+
+/**
  * Download agent step component props.
  */
 interface DownloadAgentStepPropsInterface extends IdentifiableComponentInterface {
@@ -88,7 +98,7 @@ const DownloadAgentStep: FunctionComponent<DownloadAgentStepPropsInterface> = ({
 
     const [ downloadedOS, setDownloadedOS ] = useState<OperatingSystem>();
 
-    const availableOptions: (AgentDownloadInfoInterface & { os: OperatingSystem })[] = [
+    const availableOptions: AgentDownloadOptionInterface[] = [
         {
             checkSum: downloadURLs?.linux?.checkSum ?? "",
             file: downloadURLs?.linux?.file ?? "",
@@ -181,7 +191,7 @@ const DownloadAgentStep: FunctionComponent<DownloadAgentStepPropsInterface> = ({
                 { t("remoteUserStores:pages.edit.guide.steps.download.remote.description") }
             </Typography>
             <Stack direction="row" spacing={ 1 }>
-                { availableOptions.map((option: (AgentDownloadInfoInterface & { os: OperatingSystem })) => {
+                { availableOptions.map((option: AgentDownloadOptionInterface) => {
                     return (
                         <Button
                             key={ option.os }
@@ -214,7 +224,7 @@ const DownloadAgentStep: FunctionComponent<DownloadAgentStepPropsInterface> = ({
                                     <Typography component="p" marginBottom={ 1 }>
                                         <Trans
                                             i18nKey={ "remoteUserStores:pages.edit.guide.steps"
-                                                + ".download.remote.verification.step2" }
+                                                + ".download.remote.verification.step1" }
                                         >
                                             Execute the following command in the command line. Replace the <Code>
                                                 FILE_PATH</Code> with the path of the downloaded agent zip file.

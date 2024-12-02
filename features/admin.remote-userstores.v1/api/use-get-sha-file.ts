@@ -25,7 +25,7 @@ import { HttpMethods } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 
 /**
- * Hook to get DataType.
+ * Hook to get the checksum file content.
  *
  * @param filePath - File path to be fetched.
  * @param shouldFetch - If true, will fetch the data.

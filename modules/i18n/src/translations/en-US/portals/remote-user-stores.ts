@@ -215,7 +215,7 @@ export const remoteUserStores: RemoteUserStoresNS = {
                             verification: {
                                 description: "Follow the steps below to verify the downloaded file using SHA256 checksum.",
                                 heading: "Verify the downloaded file",
-                                step1: "Execute the following command in the command line. Replace the <3>FILE_PATH</3> with the path of the downloaded agent zip file.",
+                                step1: "Execute the following command in the command line. Replace the <1>FILE_PATH</1> with the path of the downloaded agent zip file.",
                                 step2: "Compare the generated checksum with the one provided below."
                             }
                         }
