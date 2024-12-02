@@ -98,13 +98,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
         mutate: mutateActions
     } = useGetActionsByType(actionTypeApiPath);
 
-    const actionId: string = useMemo(() => {
-        if (actions && actions.length >= 1) {
-            return actions[0].id;
-        } else {
-            return null;
-        }
-    }, [ actions ]);
+    const actionId: string = useMemo(() => actions?.[0]?.id || null, [ actions ]);
 
     const {
         data: action,

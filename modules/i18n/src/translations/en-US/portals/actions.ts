@@ -197,15 +197,15 @@ export const actions: actionsNS = {
                 message: "Something went wrong."
             },
             fetchById: {
-                description: "Couldn't fetch the action.",
+                description: "Couldn't retrieve the action.",
                 message: "Something went wrong."
             },
             fetchByType: {
-                description: "Couldn't fetch actions.",
+                description: "Couldn't retrieve actions.",
                 message: "Something went wrong."
             },
             typesFetch: {
-                description: "Couldn't fetch the action types.",
+                description: "Couldn't retrieve the action types.",
                 message: "Something went wrong."
             },
             update: {

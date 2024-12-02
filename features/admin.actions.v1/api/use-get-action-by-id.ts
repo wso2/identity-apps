@@ -23,6 +23,7 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
+import isEmpty from "lodash-es/isEmpty";
 import { ActionResponseInterface } from "../models/actions";
 
 /**
@@ -44,7 +45,7 @@ const useGetActionById = <Data = ActionResponseInterface, Error = RequestErrorIn
         url: `${ store.getState().config.endpoints.actions }/${ actionType }/${ actionId }`
     };
 
-    const shouldFetch: boolean = actionId !== undefined && actionId !== null;
+    const shouldFetch: boolean = !isEmpty(actionId);
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
         shouldFetch ? requestConfig : null,
         { shouldRetryOnError: false }
