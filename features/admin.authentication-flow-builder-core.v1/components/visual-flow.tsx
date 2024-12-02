@@ -17,6 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { useDnD } from "@wso2is/dnd";
 import {
     Background,
     BackgroundVariant,
@@ -39,7 +40,6 @@ import {
 import React, { DragEvent, FC, FunctionComponent, ReactElement, useCallback } from "react";
 import StepNode, { StepNodePropsInterface } from "./nodes/step-node";
 import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
-import useDnD from "../hooks/use-dnd";
 import { ElementCategories } from "../models/elements";
 import "@xyflow/react/dist/style.css";
 import "./visual-flow.scss";

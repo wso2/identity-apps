@@ -22,9 +22,9 @@ import CardContent from "@oxygen-ui/react/CardContent";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { DraggableNode } from "@wso2is/dnd";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import { SupportedCanvasNodes } from "../../models/visual-editor";
-import DraggableNode from "../draggable-node";
 import "./element-panel-draggable-node.scss";
 
 /**

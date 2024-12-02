@@ -17,6 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { DnDProvider } from "@wso2is/dnd";
 import { ReactFlowProvider } from "@xyflow/react";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
@@ -25,7 +26,6 @@ import ElementsPanel from "./elements-panel/elements-panel";
 import VisualFlow from "./visual-flow";
 import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
 import { Elements } from "../models/elements";
-import DnDProvider from "../providers/dnd-provider";
 
 /**
  * Props interface of {@link DecoratedVisualFlow}
