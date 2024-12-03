@@ -17,16 +17,12 @@
  */
 
 import Checkbox from "@oxygen-ui/react/Checkbox";
-import FormControl from "@oxygen-ui/react/FormControl";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
-import MenuItem from "@oxygen-ui/react/MenuItem";
-import Select from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import startCase from "lodash-es/startCase";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Element } from "../../models/elements";
-import getKnownElementProperties from "../../utils/get-known-element-properties";
 
 /**
  * Props interface of {@link CommonComponentPropertyFactory}
@@ -76,27 +72,6 @@ const CommonComponentPropertyFactory: FunctionComponent<CommonComponentPropertyF
                 value={ propertyValue }
                 data-componentid={ `${ componentId }-${propertyKey}` }
             />
-        );
-    }
-
-    if (propertyKey === "variant" || propertyKey === "color") {
-        return (
-            <FormControl size="small" variant="outlined" data-componentid={ `${ componentId }-${propertyKey}` }>
-                <Select
-                    labelId={ `${propertyKey}-select-label` }
-                    id={ `${propertyKey}-select` }
-                    value={ propertyValue }
-                    label={ startCase(propertyKey) }
-                >
-                    { getKnownElementProperties(element)[propertyKey]?.map(
-                        (property: string) => (
-                            <MenuItem key={ property } value={ property }>
-                                { property }
-                            </MenuItem>
-                        )
-                    ) }
-                </Select>
-            </FormControl>
         );
     }
 

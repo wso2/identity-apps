@@ -16,14 +16,17 @@
  * under the License.
  */
 
+import FormControl from "@oxygen-ui/react/FormControl";
+import MenuItem from "@oxygen-ui/react/MenuItem";
+import Select from "@oxygen-ui/react/Select";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import capitalize from "lodash-es/capitalize";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
+import React, { FunctionComponent, HTMLAttributes, ReactElement, useEffect, useState } from "react";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
-import { FieldKey, FieldValue } from "../../models/base";
-import { Element } from "../../models/elements";
+import { Base, FieldKey, FieldValue } from "../../models/base";
 
 /**
  * Props interface of {@link ElementProperties}
@@ -44,35 +47,51 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
 
     const hasVariants: boolean = !isEmpty(lastInteractedElement?.variants);
 
+    const [ selectedVariant, setSelectedVariant ] = useState<Base>(null);
+
+    useEffect(() => {
+        if (hasVariants) {
+            setSelectedVariant(lastInteractedElement?.variants?.[0]);
+        } else {
+            setSelectedVariant(lastInteractedElement);
+        }
+    } , [ lastInteractedElement ]);
+
+    const changeSelectedVariant = (selected: string) => {
+        setSelectedVariant(lastInteractedElement?.variants?.find((element: Base) => element.variant === selected));
+    };
+
     return (
         <div className="authentication-flow-builder-element-properties" data-componentid={ componentId } { ...rest }>
             { lastInteractedElement ? (
                 <Stack gap={ 1 }>
-                    { hasVariants
-                        ? lastInteractedElement.variants.map((variant: Element) => {
-                            return Object.entries(
-                                variant?.config?.field
-                            ).map(([ key, value ]: [FieldKey, FieldValue]) => (
-                                <ElementPropertiesFactory
-                                    element={ variant }
-                                    key={ key }
-                                    propertyKey={ key }
-                                    propertyValue={ value }
-                                />
-                            ));
-                        })
-                        : Object.entries(
-                            lastInteractedElement?.config?.field
-                        ).map(([ key, value ]: [FieldKey, FieldValue]) => {
-                            return (
-                                <ElementPropertiesFactory
-                                    element={ lastInteractedElement }
-                                    key={ key }
-                                    propertyKey={ key }
-                                    propertyValue={ value }
-                                />
-                            );
-                        }) }
+                    { hasVariants && (
+                        <FormControl size="small" variant="outlined">
+                            <Select
+                                labelId={ `${selectedVariant?.variant}-variants` }
+                                id={ `${selectedVariant?.variant}-variants` }
+                                value={ selectedVariant?.variant }
+                                label="variant"
+                                onChange={ event => changeSelectedVariant(event.target.value as string) }
+                            >
+                                { lastInteractedElement?.variants?.map((element: Base) => (
+                                    <MenuItem key={ element?.variant } value={ element?.variant }>
+                                        { capitalize(element?.display?.label) }
+                                    </MenuItem>
+                                )) }
+                            </Select>
+                        </FormControl>
+                    ) }
+                    { selectedVariant && Object.entries(selectedVariant?.config?.field).map(([ key, value ]: [FieldKey, FieldValue]) => {
+                        return (
+                            <ElementPropertiesFactory
+                                element={ selectedVariant }
+                                key={ key }
+                                propertyKey={ key }
+                                propertyValue={ value }
+                            />
+                        );
+                    }) }
                 </Stack>
             ) : (
                 <Typography variant="body2" color="textSecondary" sx={ { padding: 2 } }>
