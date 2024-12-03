@@ -29,9 +29,6 @@
             "elements": [
                 "flow-display-header-8uJ6t4D3",
                 "flow-block-attributes-g55dfGuK",
-                "flow-action-password-onboarder-p563u9Yn",
-                "flow-display-horizontal-divider-67f8uJ6D3",
-                "flow-action-email-otp-verifier-5t8uJ6D3",
                 "flow-display-horizontal-divider-G6d3t8uJ",
                 "flow-action-google-sign-up-Rt8uJ6D3"
             ],
@@ -66,7 +63,10 @@
                     "action": {
                         "type": "EXECUTOR",
                         "name": "GoogleSignUp"
-                    }
+                    },
+                    "next": [
+                        "flow-node-5"
+                    ]
                 }
             ]
         },
@@ -74,8 +74,7 @@
             "id": "flow-node-2",
             "elements": [
                 "flow-display-header-hj6t4D3",
-                "flow-block-attributes-osld3343",
-                "flow-action-next-ggh688op"
+                "flow-block-attributes-osld3343"
             ],
             "actions": [
                 {
@@ -97,7 +96,6 @@
             "elements": [
                 "flow-display-header-rg6pwt0",
                 "flow-block-attributes-53fdsfsp",
-                "flow-action-next-tyG3hp31",
                 "flow-action-go-back-er212kfl"
             ],
             "actions": [
@@ -130,7 +128,6 @@
             "elements": [
                 "flow-display-header-GG456y7",
                 "flow-block-attributes-45owsew2",
-                "flow-action-verify-otp-ssd5g6h",
                 "flow-action-go-back-yt5g5t"
             ],
             "actions": [
@@ -163,8 +160,7 @@
             "id": "flow-node-5",
             "elements": [
                 "flow-display-header-45wTrU",
-                "flow-block-attributes-er203owe",
-                "flow-action-done-5t8uJ6D3"
+                "flow-block-attributes-er203owe"
             ],
             "actions": [
                 {
@@ -185,32 +181,39 @@
                 "flow-field-username-F6D3t8uJ",
                 "flow-field-first-name-r7u4F1GG",
                 "flow-field-last-name-r7u4F1GG",
-                "flow-field-dob-G6D3t8uJ"
+                "flow-field-dob-G6D3t8uJ",
+                "flow-action-password-onboarder-p563u9Yn",
+                "flow-display-horizontal-divider-67f8uJ6D3",
+                "flow-action-email-otp-verifier-5t8uJ6D3"
             ]
         },
         {
             "id": "flow-block-attributes-53fdsfsp",
             "nodes": [
-                "flow-field-email-Rt8uJ6D3"
+                "flow-field-email-Rt8uJ6D3",
+                "flow-action-next-tyG3hp31"
             ]
         },
         {
             "id": "flow-block-attributes-45owsew2",
             "nodes": [
-                "flow-field-otp-mn44gh0j"
+                "flow-field-otp-mn44gh0j",
+                "flow-action-verify-otp-ssd5g6h"
             ]
         },
         {
             "id": "flow-block-attributes-osld3343",
             "nodes": [
                 "flow-field-password-HK8uJ903",
-                "flow-field-confirm-password-GH63t78g"
+                "flow-field-confirm-password-GH63t78g",
+                "flow-action-next-ggh688op"
             ]
         },
         {
             "id": "flow-block-attributes-er203owe",
             "nodes": [
-                "flow-field-nic-RR342gr"
+                "flow-field-nic-RR342gr",
+                "flow-action-done-5t8uJ6D3"
             ]
         }
     ],

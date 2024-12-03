@@ -27,7 +27,6 @@ import startCase from "lodash-es/startCase";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Element } from "../../models/elements";
 import getKnownElementProperties from "../../utils/get-known-element-properties";
-import isTextValueWithFallback from "../../utils/is-text-value-with-fallback";
 
 /**
  * Props interface of {@link CommonComponentPropertyFactory}
@@ -69,12 +68,12 @@ const CommonComponentPropertyFactory: FunctionComponent<CommonComponentPropertyF
         );
     }
 
-    if (isTextValueWithFallback(propertyValue)) {
+    if (typeof propertyValue === "string") {
         return (
             <TextField
                 fullWidth
                 label={ startCase(propertyKey) }
-                value={ propertyValue.fallback }
+                value={ propertyValue }
                 data-componentid={ `${ componentId }-${propertyKey}` }
             />
         );

@@ -24,6 +24,7 @@ import { Base } from "./base";
 export type Component<T = any> = Base<T>;
 
 export enum ComponentTypes {
+    Input = "INPUT",
     Button = "BUTTON",
     Divider = "DIVIDER",
     Email = "EMAIL",
@@ -35,4 +36,19 @@ export enum ComponentTypes {
     Checkbox = "CHECKBOX",
     Image = "IMAGE",
     Typography = "TYPOGRAPHY"
+}
+
+export enum InputVariants {
+    Text = "TEXT",
+    Password = "PASSWORD",
+    Email = "EMAIL",
+    Telephone = "TELEPHONE",
+    Number = "NUMBER",
+    Checkbox = "CHECKBOX",
+}
+
+export enum ButtonVariants {
+    Primary = "PRIMARY",
+    Secondary = "SECONDARY",
+    Text = "TEXT"
 }

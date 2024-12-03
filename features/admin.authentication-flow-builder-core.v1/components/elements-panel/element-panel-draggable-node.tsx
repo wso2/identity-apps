@@ -61,7 +61,7 @@ const ElementPanelDraggableNode: FunctionComponent<ElementPanelDraggableNodeProp
                             variant="square"
                             className="authentication-flow-builder-element-panel-draggable-node-avatar"
                         />
-                        <Typography>{ node?.display?.label?.fallback }</Typography>
+                        <Typography>{ node?.display?.label }</Typography>
                     </Stack>
                 </CardContent>
             </Card>

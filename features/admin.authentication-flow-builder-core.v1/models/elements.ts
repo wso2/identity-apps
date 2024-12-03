@@ -42,6 +42,8 @@ export interface Elements {
 
 export enum ElementCategories {
     Component = "COMPONENT",
+    Display = "DISPLAY",
+    Field = "FIELD",
     Nodes = "NODE",
     Widget = "WIDGET"
 }

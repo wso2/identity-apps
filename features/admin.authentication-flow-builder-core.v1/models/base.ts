@@ -48,27 +48,20 @@ export interface Base<T = any> {
      */
     config: BaseConfig & T;
     /**
+     * Base variant of the component or the primitive
+     */
+    variant: any;
+    /**
      * Variants of the component or the primitive.
      */
     variants: Base<T>[];
-}
-
-export interface ValueWithFallback {
-    /**
-     * Fallback value of the label.
-     */
-    fallback: string;
-    /**
-     * i18n key of the label.
-     */
-    i18nKey: string;
 }
 
 export interface BaseDisplay {
     /**
      * Fallback & i18n key value of the label.
      */
-    label: ValueWithFallback;
+    label: string;
     /**
      * Image URL of the component or the primitive.
      */
@@ -92,7 +85,7 @@ export interface FieldOption {
     /**
      * The label of the field option.
      */
-    label: ValueWithFallback;
+    label: string;
 }
 
 /**

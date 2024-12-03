@@ -80,7 +80,7 @@
         "deprecated": false,
         "variant": "TELEPHONE",
         "display": {
-            "fallback": "Phone",
+            "label": "Phone",
             "image": "https://www.svgrepo.com/show/533285/phone.svg"
         },
         "config": {
@@ -185,11 +185,8 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": {
-                "label": "Button",
-                "image": "https://www.svgrepo.com/show/450681/button.svg"
-            },
-            "image": "https://www.svgrepo.com/show/532231/text-size.svg"
+            "label": "Button",
+            "image": "https://www.svgrepo.com/show/450681/button.svg"
         },
         "variants": [
             {

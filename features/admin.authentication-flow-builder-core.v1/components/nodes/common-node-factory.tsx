@@ -17,7 +17,7 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
+import Button, { ButtonProps } from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import Divider from "@oxygen-ui/react/Divider";
 import FormControl from "@oxygen-ui/react/FormControl";
@@ -32,8 +32,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
 import { FieldOption } from "../../models/base";
-import { Component, ComponentTypes } from "../../models/component";
-import { ElementCategories } from "../../models/elements";
+import { ButtonVariants, Component, ComponentTypes, InputVariants } from "../../models/component";
 
 /**
  * Props interface of {@link CommonNodeFactory}
@@ -58,111 +57,114 @@ export interface CommonNodeFactoryPropsInterface extends IdentifiableComponentIn
 export const CommonNodeFactory: FunctionComponent<CommonNodeFactoryPropsInterface> = ({
     node
 }: CommonNodeFactoryPropsInterface & Node): ReactElement => {
-    if (node.category === ElementCategories.Component) {
-        if (
-            node.type === ComponentTypes.Text ||
-            node.type === ComponentTypes.Password ||
-            node.type === ComponentTypes.Number ||
-            node.type === ComponentTypes.Email
-        ) {
-            return (
-                <TextField
-                    fullWidth
-                    className={ node.config?.field?.className }
-                    defaultValue={
-                        node.config?.field?.defaultValue?.i18nKey || node.config?.field?.defaultValue?.fallback
-                    }
-                    helperText={ node.config?.field?.hint?.i18nKey || node.config?.field?.hint?.fallback }
-                    inputProps={ {
-                        maxLength: node.config?.field?.maxLength,
-                        minLength: node.config?.field?.minLength
-                    } }
-                    label={ node.config?.field?.label?.i18nKey || node.config?.field?.label?.fallback }
-                    multiline={ node.config?.field?.multiline }
-                    placeholder={
-                        node.config?.field?.placeholder?.i18nKey || node.config?.field?.placeholder?.fallback || ""
-                    }
-                    required={ node.config?.field?.required }
-                    type={ node.config?.field?.type }
-                    style={ node.config?.styles }
-                />
-            );
-        } else if (node.type === ComponentTypes.Telephone) {
-            return (
-                <PhoneNumberInput
-                    className={ node.config?.field?.className }
-                    label={ node.config?.field?.label?.i18nKey || node.config?.field?.label?.fallback }
-                    placeholder={
-                        node.config?.field?.placeholder?.i18nKey || node.config?.field?.placeholder?.fallback || ""
-                    }
-                />
-            );
-        } else if (node.type === ComponentTypes.Checkbox) {
+    if (node.type === ComponentTypes.Input) {
+        if (node.variant === InputVariants.Checkbox) {
             return (
                 <FormControlLabel
                     control={ <Checkbox defaultChecked /> }
                     className={ node.config?.field?.className }
-                    defaultValue={
-                        node.config?.field?.defaultValue?.i18nKey || node.config?.field?.defaultValue?.fallback
-                    }
-                    label={ node.config?.field?.label?.i18nKey || node.config?.field?.label?.fallback }
-                    placeholder={
-                        node.config?.field?.placeholder?.i18nKey || node.config?.field?.placeholder?.fallback || ""
-                    }
+                    defaultValue={ node.config?.field?.defaultValue }
+                    label={ node.config?.field?.label }
+                    placeholder={ node.config?.field?.placeholder || "" }
                     required={ node.config?.field?.required }
                     style={ node.config?.styles }
                 />
             );
-        } else if (node.type === ComponentTypes.Choice) {
+        }
+
+        if (node.variant === InputVariants.Telephone) {
             return (
-                <FormControl sx={ { my: 2 } }>
-                    <FormLabel id={ node.config?.field?.id }>
-                        { node.config?.field?.label?.i18nKey || node.config?.field?.label?.fallback }
-                    </FormLabel>
-                    <RadioGroup
-                        defaultValue={
-                            node.config?.field?.defaultValue?.i18nKey || node.config?.field?.defaultValue?.fallback
-                        }
-                    >
-                        { node.config?.field?.options?.map((option: FieldOption) => (
-                            <FormControlLabel
-                                key={ option?.key }
-                                value={ option?.value }
-                                control={ <Radio /> }
-                                label={ option?.label?.i18nKey || option?.label?.fallback }
-                            />
-                        )) }
-                    </RadioGroup>
-                </FormControl>
-            );
-        } else if (node.type === ComponentTypes.Button) {
-            return (
-                <Button variant="contained" fullWidth={ node.config?.field?.fullWidth }>
-                    { node.config?.field?.label?.i18nKey || node.config?.field?.label?.fallback }
-                </Button>
-            );
-        } else if (node.type === ComponentTypes.Typography) {
-            return (
-                <Typography
-                    variant={ node?.variants?.[0]?.config?.field?.variant }
-                    color={ node?.variants?.[0]?.config?.field?.color }
-                >
-                    Text
-                </Typography>
-            );
-        } else if (node.type === ComponentTypes.Divider) {
-            return <Divider />;
-        } else if (node.type === ComponentTypes.Image) {
-            return (
-                <Box display="flex" alignItems="center" justifyContent="center">
-                    <img
-                        src={ node?.variants?.[0]?.config?.field?.src }
-                        alt={ node?.variants?.[0]?.config?.field?.alt }
-                        style={ node?.variants?.[0]?.config?.styles }
-                    />
-                </Box>
+                <PhoneNumberInput
+                    className={ node.config?.field?.className }
+                    label={ node.config?.field?.label }
+                    placeholder={ node.config?.field?.placeholder || "" }
+                />
             );
         }
+
+        return (
+            <TextField
+                fullWidth
+                className={ node.config?.field?.className }
+                defaultValue={ node.config?.field?.defaultValue }
+                helperText={ node.config?.field?.hint }
+                inputProps={ {
+                    maxLength: node.config?.field?.maxLength,
+                    minLength: node.config?.field?.minLength
+                } }
+                label={ node.config?.field?.label }
+                multiline={ node.config?.field?.multiline }
+                placeholder={ node.config?.field?.placeholder || "" }
+                required={ node.config?.field?.required }
+                type={ node.config?.field?.type }
+                style={ node.config?.styles }
+            />
+        );
+    } else if (node.type === ComponentTypes.Choice) {
+        return (
+            <FormControl sx={ { my: 2 } }>
+                <FormLabel id={ node.config?.field?.id }>{ node.config?.field?.label }</FormLabel>
+                <RadioGroup defaultValue={ node.config?.field?.defaultValue }>
+                    { node.config?.field?.options?.map((option: FieldOption) => (
+                        <FormControlLabel
+                            key={ option?.key }
+                            value={ option?.value }
+                            control={ <Radio /> }
+                            label={ option?.label }
+                        />
+                    )) }
+                </RadioGroup>
+            </FormControl>
+        );
+    } else if (node.type === ComponentTypes.Button) {
+        let config: ButtonProps = {};
+
+        if (node.variant === ButtonVariants.Primary) {
+            config = {
+                ...config,
+                color: "primary",
+                variant: "contained"
+            };
+        } else if (node.variant === ButtonVariants.Secondary) {
+            config = {
+                ...config,
+                color: "secondary",
+                variant: "contained"
+            };
+        } else if (node.variant === ButtonVariants.Text) {
+            config = {
+                ...config,
+                variant: "text"
+            };
+        }
+
+        return (
+            <Button sx={ node?.variants?.[0]?.config.styles } { ...config }>
+                { node?.variants?.[0]?.config?.field?.text }
+            </Button>
+        );
+    } else if (node.type === ComponentTypes.Typography) {
+        return (
+            <Typography
+                variant={ node?.variants?.[2]?.variant?.toLowerCase() }
+                color={ node?.variants?.[2]?.config?.field?.color }
+                style={ node?.variants?.[2]?.config?.styles }
+            >
+                { node?.variants?.[2]?.config?.field?.text }
+            </Typography>
+        );
+    } else if (node.type === ComponentTypes.Divider) {
+        return <Divider />;
+    } else if (node.type === ComponentTypes.Image) {
+        return (
+            <Box display="flex" alignItems="center" justifyContent="center">
+                <img
+                    src={ node?.variants?.[0]?.config?.field?.src }
+                    alt={ node?.variants?.[0]?.config?.field?.alt }
+                    style={ node?.variants?.[0]?.config?.styles }
+                />
+            </Box>
+        );
     }
 
     return null;
