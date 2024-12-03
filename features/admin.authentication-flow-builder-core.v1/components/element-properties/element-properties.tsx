@@ -63,14 +63,16 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
                         })
                         : Object.entries(
                             lastInteractedElement?.config?.field
-                        ).map(([ key, value ]: [FieldKey, FieldValue]) => (
-                            <ElementPropertiesFactory
-                                element={ lastInteractedElement }
-                                key={ key }
-                                propertyKey={ key }
-                                propertyValue={ value }
-                            />
-                        )) }
+                        ).map(([ key, value ]: [FieldKey, FieldValue]) => {
+                            return (
+                                <ElementPropertiesFactory
+                                    element={ lastInteractedElement }
+                                    key={ key }
+                                    propertyKey={ key }
+                                    propertyValue={ value }
+                                />
+                            );
+                        }) }
                 </Stack>
             ) : (
                 <Typography variant="body2" color="textSecondary" sx={ { padding: 2 } }>

@@ -41,7 +41,7 @@ export interface Elements {
 }
 
 export enum ElementCategories {
-    Component = "COMPONENT",
+    Action = "ACTION",
     Display = "DISPLAY",
     Field = "FIELD",
     Nodes = "NODE",

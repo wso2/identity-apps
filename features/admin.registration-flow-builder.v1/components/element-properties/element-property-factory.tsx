@@ -53,7 +53,9 @@ const ElementPropertyFactory: FunctionComponent<ElementPropertyFactoryPropsInter
     propertyValue
 }: ElementPropertyFactoryPropsInterface): ReactElement | null => {
     switch (element.category) {
-        case ElementCategories.Component, ElementCategories.Display:
+        case ElementCategories.Field:
+        case ElementCategories.Action:
+        case ElementCategories.Display:
             return (
                 <ComponentPropertyFactory
                     element={ element }

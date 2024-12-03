@@ -27,13 +27,7 @@ export enum ComponentTypes {
     Input = "INPUT",
     Button = "BUTTON",
     Divider = "DIVIDER",
-    Email = "EMAIL",
-    Text = "TEXT",
-    Number = "NUMBER",
-    Password = "PASSWORD",
-    Telephone = "TELEPHONE",
     Choice = "CHOICE",
-    Checkbox = "CHECKBOX",
     Image = "IMAGE",
     Typography = "TYPOGRAPHY"
 }
