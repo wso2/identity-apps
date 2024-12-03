@@ -198,7 +198,7 @@ const DownloadAgentStep: FunctionComponent<DownloadAgentStepPropsInterface> = ({
                             size="small"
                             variant="outlined"
                             startIcon={ <DownloadIcon /> }
-                            onClick={ () => onDownloadClicked(option.os,option.file) }
+                            onClick={ () => onDownloadClicked(option.os, option.file) }
                         >
                             { option.os }
                         </Button>
