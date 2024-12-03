@@ -1,5 +1,20 @@
 # @wso2is/admin.branding.v1
 
+## 2.27.18
+
+### Patch Changes
+
+- [#7140](https://github.com/wso2/identity-apps/pull/7140) [`bbbd626d1d1687e74ac4dc44a11f2aa74c3d8d99`](https://github.com/wso2/identity-apps/commit/bbbd626d1d1687e74ac4dc44a11f2aa74c3d8d99) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix saving issue when a custom layout is not configured for application branding
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.ai.v1@2.26.45
+  - @wso2is/admin.core.v1@2.34.45
+  - @wso2is/admin.extensions.v1@2.35.4
+  - @wso2is/admin.organizations.v1@2.26.45
+  - @wso2is/admin.feature-gate.v1@1.4.45
+  - @wso2is/admin.server-configurations.v1@2.29.18
+  - @wso2is/common.branding.v1@2.25.18
+
 ## 2.27.17
 
 ### Patch Changes
