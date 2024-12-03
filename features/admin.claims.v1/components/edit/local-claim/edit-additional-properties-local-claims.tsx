@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -65,8 +65,6 @@ export const EditAdditionalPropertiesLocalClaims:
 
         const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
-        const RESTRICTED_PROPERTY_KEYS: string[] = [ "isUnique" ];
-
         const [ submit, setSubmit ] = useTrigger();
 
         const dispatch: Dispatch = useDispatch();
@@ -116,8 +114,7 @@ export const EditAdditionalPropertiesLocalClaims:
                                 ) }
                                 requiredField={ true }
                                 keyValidation={ (key: string) => {
-                                    if (RESTRICTED_PROPERTY_KEYS.includes(key)) {
-
+                                    if (ClaimManagementConstants.RESTRICTED_PROPERTY_KEYS.includes(key)) {
                                         return false;
                                     }
 
@@ -142,7 +139,7 @@ export const EditAdditionalPropertiesLocalClaims:
                                                     });
                                                 } }
                                             > Uniqueness Validation </Link>
-                                            option to configure claim uniqueness.
+                                            option to configure attribute uniqueness.
                                         </Trans>
                                     ) : (
                                         <Trans

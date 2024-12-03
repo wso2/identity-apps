@@ -569,14 +569,14 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         )
                     }
                     {
-                        claim && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                        claim && UIConfig?.isClaimUniquenessValidationEnabled
                             && !hideSpecialClaims
-                            && UIConfig?.isClaimUniquenessValidationEnabled && (
+                            && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI) && (
                             <Field.Dropdown
                                 ariaLabel="uniqueness-scope-dropdown"
                                 name={ ClaimManagementConstants.UNIQUENESS_SCOPE_PROPERTY_NAME }
                                 label={ t("claims:local.forms.uniquenessScope.label") }
-                                data-testid={ `${ testId }-form-uniqueness-scope-dropdown` }
+                                data-componentid={ `${ testId }-form-uniqueness-scope-dropdown` }
                                 hint={ t("claims:local.forms.uniquenessScopeHint") }
                                 options={ [
                                     {

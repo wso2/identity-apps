@@ -214,6 +214,11 @@ export class ClaimManagementConstants {
     public static readonly UNIQUENESS_SCOPE_PROPERTY_NAME: string = "uniquenessScope";
 
     /**
+     * List of restricted property keys that cannot be used in claim properties.
+     */
+    public static readonly RESTRICTED_PROPERTY_KEYS: string[] = [ "isUnique" ];
+
+    /**
      * The error code that is returned when there is no item in the list
      */
     public static readonly RESOURCE_NOT_FOUND_ERROR_CODE: string = "CMT-50017";

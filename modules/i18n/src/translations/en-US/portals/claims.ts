@@ -397,7 +397,7 @@ export const claims: ClaimsNS = {
             isUniqueDeprecationMessage: {
                 uniquenessDisabled: "The 'isUnique' property is deprecated.",
                 uniquenessEnabled: "The 'isUnique' property is deprecated. Please use " +
-                    "<1>Uniqueness Validation</1> option to configure claim uniqueness."
+                    "<1>Uniqueness Validation</1> option to configure attribute uniqueness."
             },
             key: "Name",
             keyRequiredErrorMessage: "Enter a name",

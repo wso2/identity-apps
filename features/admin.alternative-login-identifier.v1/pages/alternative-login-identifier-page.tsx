@@ -349,12 +349,12 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
     const updateClaimUniquenessScope = (claim: Claim, checkedClaims: string[]) => {
         const isSelected: boolean = checkedClaims?.includes(claim.claimURI);
 
-        const needsUpdate: boolean = isSelected &&
-            (!claim.uniquenessScope || claim.uniquenessScope !== UniquenessScope.ACROSS_USERSTORES);
+        const shouldUpdateClaim: boolean = isSelected &&
+            (claim.uniquenessScope !== UniquenessScope.ACROSS_USERSTORES);
 
         return {
-            isClaimUpdate: needsUpdate,
-            updatedClaim: needsUpdate
+            isClaimUpdate: shouldUpdateClaim,
+            updatedClaim: shouldUpdateClaim
                 ? {
                     ...claim,
                     uniquenessScope: UniquenessScope.ACROSS_USERSTORES
@@ -363,7 +363,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
         };
     };
 
-    // Define a function to update and dispatch alerts
+    // Define a function to update and dispatch alerts.
     const updateClaimAndAlert = (claim: Claim) => {
 
         const claimId: string = claim?.id;
@@ -401,7 +401,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
     };
 
     /**
-     * Updates the uniqueness scope of claims to ACROSS_USERSTORES
+     * Updates the uniqueness scope of claims to ACROSS_USERSTORES.
      */
     const updateClaims = (checkedClaims : string[]) => {
         for (const claim of availableClaims) {
@@ -414,7 +414,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
     };
 
     /**
-     * Gets the processed checked claims from form values
+     * Gets the processed checked claims from form values.
      */
     const getProcessedCheckedClaims = (values: AlternativeLoginIdentifierFormInterface): string[] => {
         const processedFormValues: AlternativeLoginIdentifierFormInterface = { ...values };
@@ -424,7 +424,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
                     ? processedFormValues[claim?.displayName?.toLowerCase()] : false)
             .map((claim: Claim) => claim?.claimURI);
 
-        // Remove the email attribute from the allowed attributes list when email username type is enabled
+        // Remove the email attribute from the allowed attributes list when email username type is enabled.
         if (!isAlphanumericUsername) {
             checkedClaims = checkedClaims.filter((item: string) => item !== ClaimManagementConstants.EMAIL_CLAIM_URI);
         }
@@ -433,18 +433,18 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
     };
 
     /**
-     * Checks if any claims need uniqueness scope update
+     * Checks if any claims need uniqueness scope update.
      */
-    const needsUniquenessScopeUpdate = (checkedClaims: string[]): boolean => {
+    const shouldUpdateUniquenessScope = (checkedClaims: string[]): boolean => {
         return checkedClaims.some((claimURI: string) => {
             const claim: Claim = availableClaims.find((c: Claim) => c.claimURI === claimURI);
 
-            return !claim.uniquenessScope || claim.uniquenessScope !== UniquenessScope.ACROSS_USERSTORES;
+            return claim.uniquenessScope !== UniquenessScope.ACROSS_USERSTORES;
         });
     };
 
     /**
-     * Processes form submission and updates connector and claims
+     * Processes form submission and updates connector and claims.
      */
     const processFormSubmission = (
         formValues: AlternativeLoginIdentifierFormInterface,
@@ -452,9 +452,9 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
     ): void => {
         const checkedClaims: string[] = getProcessedCheckedClaims(formValues);
         const updatedConnectorData: any = getUpdatedConfigurations(checkedClaims);
-        const requiresUniquenessScopeUpdate: boolean = needsUniquenessScopeUpdate(checkedClaims);
+        const requiresUniquenessScopeUpdate: boolean = shouldUpdateUniquenessScope(checkedClaims);
 
-        // Show confirmation modal if uniqueness scope update is needed and no consent yet
+        // Show confirmation modal if uniqueness scope update is required and no consent received yet.
         if (!hasUserConsent && requiresUniquenessScopeUpdate) {
             setPendingFormValues(formValues);
             setShowConfirmationModal(true);
@@ -466,14 +466,14 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
     };
 
     /**
-     * Handles the initial form submission
+     * Handles the initial form submission.
      */
     const handleSubmit = (values: AlternativeLoginIdentifierFormInterface): void => {
         processFormSubmission(values, false);
     };
 
     /**
-     * Handles the form submission after user consents to uniqueness scope update
+     * Handles the form submission after user consents to uniqueness scope update.
      */
     const handleConsentedSubmit = (): void => {
         if (!pendingFormValues) {
@@ -505,7 +505,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
     ]);
 
     /**
-     * Get username type
+     * Get username type.
      */
     useEffect(() => {
         if (validationData) {
@@ -648,7 +648,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
                     )
             }
             <ConfirmationModal
-                data-testid={ `${componentId}-confirmation-modal` }
+                data-componentid={ `${componentId}-confirmation-modal` }
                 onClose={ (): void => {
                     setShowConfirmationModal(false);
                 } }
