@@ -61,8 +61,8 @@ export const useLayout = <Data = Blob, Error = RequestErrorInterface>(
                             `${Config.getDeploymentConfig().extensions?.layoutStoreURL
                                 ? (Config.getDeploymentConfig().extensions.layoutStoreURL as string)
                                     .replace("${tenantDomain}", tenantDomain)
-                                : `https://${window.location.host}${basename}/libs/login-portal-layouts`}/apps/
-                                    ${appName}/body.html`
+                                : `https://${window.location.host}
+                                    ${basename}/libs/login-portal-layouts`}/apps/${appName}/body.html`
                         ) : (
                             `${Config.getDeploymentConfig().extensions?.layoutStoreURL
                                 ? (Config.getDeploymentConfig().extensions.layoutStoreURL as string)

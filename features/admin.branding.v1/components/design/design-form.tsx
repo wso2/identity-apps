@@ -206,7 +206,7 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
         PredefinedLayouts.CUSTOM,
         tenantDomain,
         commonConfig?.checkCustomLayoutExistanceBeforeEnabling,
-        brandingMode,
+        brandingMode as BrandingModes,
         appName
     );
 
