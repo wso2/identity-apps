@@ -26,7 +26,8 @@ import { DynamicField , KeyValue, useTrigger } from "@wso2is/forms";
 import {
     EmphasizedSegment,
     Link,
-    PrimaryButton
+    PrimaryButton,
+    TAB_URL_HASH_FRAGMENT
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -34,7 +35,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import { updateAClaim } from "../../../api";
-import { ClaimManagementConstants } from "../../../constants";
+import { ClaimManagementConstants, ClaimTabIDs } from "../../../constants";
 
 /**
  * Prop types for `EditAdditionalPropertiesLocalClaims` component
@@ -133,6 +134,7 @@ export const EditAdditionalPropertiesLocalClaims:
                                                 external={ false }
                                                 onClick={ () => {
                                                     history.push({
+                                                        hash: `#${TAB_URL_HASH_FRAGMENT}${ClaimTabIDs.GENERAL}`,
                                                         pathname: AppConstants.getPaths()
                                                             .get("LOCAL_CLAIMS_EDIT")
                                                             .replace(":id", claim.id)

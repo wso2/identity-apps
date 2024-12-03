@@ -229,3 +229,14 @@ export class ClaimManagementConstants {
     public static readonly REGEX_FIELD_MAX_LENGTH: number = 255;
     public static readonly REGEX_FIELD_MIN_LENGTH: number = 3;
 }
+
+/**
+ * Unique identifiers for claim edit tabs.
+ *
+ * @readonly
+ */
+export enum ClaimTabIDs {
+    GENERAL = "general",
+    ATTRIBUTE_MAPPINGS = "attribute-mappings",
+    ADDITIONAL_PROPERTIES = "additional-properties"
+}
