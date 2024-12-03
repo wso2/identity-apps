@@ -1,5 +1,22 @@
 # @wso2is/admin.remote-userstores.v1
 
+## 1.7.0
+
+### Minor Changes
+
+- [#7167](https://github.com/wso2/identity-apps/pull/7167) [`c03c909c1b6c2a993a76aad5b1e6c85eccc8d7f6`](https://github.com/wso2/identity-apps/commit/c03c909c1b6c2a993a76aad5b1e6c85eccc8d7f6) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - [feat] introduce new remote user store impl - add file verification steps
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.extensions.v1@2.35.3
+  - @wso2is/admin.userstores.v1@2.26.3
+  - @wso2is/admin.core.v1@2.34.44
+  - @wso2is/admin.applications.v1@2.30.44
+  - @wso2is/admin.claims.v1@2.26.3
+  - @wso2is/admin.users.v1@2.29.3
+  - @wso2is/admin.validation.v1@2.26.44
+
 ## 1.6.2
 
 ### Patch Changes
