@@ -151,7 +151,6 @@ const DownloadAgentStep: FunctionComponent<DownloadAgentStepPropsInterface> = ({
         }
     }, [ checkSumFetchRequestError ]);
 
-
     const onDownloadClicked = (os: OperatingSystem, downloadURL: string) => {
         window.open(downloadURL, "_blank", "noopener, noreferrer");
         setDownloadedOS(os);
