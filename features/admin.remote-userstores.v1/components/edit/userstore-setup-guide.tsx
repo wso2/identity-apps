@@ -34,7 +34,7 @@ import ConfigureStep from "./setup-guide/configure-step";
 import GenerateTokenStep from "./setup-guide/generate-token-step";
 import OnPremDownloadAgentStep from "./setup-guide/on-prem/download-step";
 import OnPremRunAgentStep from "./setup-guide/on-prem/run-step";
-import RemoteDownloadAgentStep from "./setup-guide/remote/download-step";
+import RemoteDownloadAgentStep, { AgentDownloadInfoInterface } from "./setup-guide/remote/download-step";
 import RemoteRunAgentStep from "./setup-guide/remote/run-step";
 import "./userstore-setup-guide.scss";
 
@@ -80,10 +80,10 @@ export const SetupGuideTab: FunctionComponent<SetupGuideTabPropsInterface> = (
     const agentDownloadURLs: {
         onPrem: string;
         remote: {
-            linux: string;
-            linuxArm: string;
-            mac: string;
-            windows: string;
+            linux: AgentDownloadInfoInterface;
+            linuxArm: AgentDownloadInfoInterface;
+            mac: AgentDownloadInfoInterface;
+            windows: AgentDownloadInfoInterface;
         };
     } = useSelector((state: AppState) => state.config?.deployment?.extensions?.userStoreAgentUrls);
 
@@ -142,7 +142,7 @@ export const SetupGuideTab: FunctionComponent<SetupGuideTabPropsInterface> = (
     }
 
     return (
-        <EmphasizedSegment padded="very">
+        <EmphasizedSegment padded="very" className="userstore-setup-guide">
             <Heading as="h3">
                 { t("remoteUserStores:pages.edit.guide.heading") }
                 <Heading subHeading as="h6">

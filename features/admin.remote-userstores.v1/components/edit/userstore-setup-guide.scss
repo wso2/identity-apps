@@ -23,4 +23,15 @@
             margin-top: 4px;
         }
     }
+
+    .download-agent-step {
+        .verification-steps-list {
+            list-style: decimal;
+            margin-left: 20px;
+
+            li {
+                display: list-item;
+            }
+        }
+    }
 }

@@ -66,6 +66,12 @@ export interface RemoteUserStoresNS {
                         };
                         remote: {
                             description: string;
+                            verification: {
+                                description: string;
+                                heading: string;
+                                step1: string;
+                                step2: string;
+                            }
                         };
                     };
                     configure: {
@@ -227,5 +233,6 @@ export interface RemoteUserStoresNS {
         tokenGenerateError: NotificationItem;
         connectionStatusCheckError: NotificationItem;
         disconnectError: NotificationItem;
+        checkSumError: NotificationItem;
     };
 }

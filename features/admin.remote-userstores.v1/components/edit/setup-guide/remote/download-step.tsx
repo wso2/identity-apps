@@ -17,12 +17,46 @@
  */
 
 import Button from "@oxygen-ui/react/Button";
+import Code from "@oxygen-ui/react/Code";
+import List from "@oxygen-ui/react/List";
+import ListItem from "@oxygen-ui/react/ListItem";
+import Skeleton from "@oxygen-ui/react/Skeleton";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { DownloadIcon } from "@oxygen-ui/react-icons";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
-import { useTranslation } from "react-i18next";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { CodeEditor, Heading } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import useGetCheckSum from "../../../../api/use-get-sha-file";
+
+/**
+ * Interface for download URLs prop of the DownloadAgentStep component.
+ */
+export interface AgentDownloadInfoInterface {
+    /**
+     * The download URL of the user store agent.
+     */
+    file: string;
+    /**
+     * The checksum file URL of the user store agent file.
+     */
+    checkSum: string;
+}
+
+/**
+ * Interface for agent download options shown it the UI.
+ */
+interface AgentDownloadOptionInterface extends AgentDownloadInfoInterface {
+    /**
+     * The operating system of the user store agent.
+     */
+    os: OperatingSystem;
+}
 
 /**
  * Download agent step component props.
@@ -32,11 +66,21 @@ interface DownloadAgentStepPropsInterface extends IdentifiableComponentInterface
      * Download URLs of the user store agent for different operating systems.
      */
     downloadURLs: {
-        mac: string;
-        linux: string;
-        linuxArm: string;
-        windows: string;
-    };
+        linux: AgentDownloadInfoInterface;
+        linuxArm: AgentDownloadInfoInterface;
+        mac: AgentDownloadInfoInterface;
+        windows: AgentDownloadInfoInterface;
+    }
+}
+
+/**
+ * User store agent available operating systems.
+ */
+enum OperatingSystem {
+    Linux = "Linux",
+    LinuxArm = "Linux (ARM)",
+    Mac = "Mac OS",
+    Windows = "Windows"
 }
 
 /**
@@ -50,37 +94,103 @@ const DownloadAgentStep: FunctionComponent<DownloadAgentStepPropsInterface> = ({
     ["data-componentid"]: componentId = "download-agent-step"
 }: DownloadAgentStepPropsInterface): ReactElement => {
     const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
 
-    const availableOptions: { os: string; link: string }[] = [
+    const [ downloadedOS, setDownloadedOS ] = useState<OperatingSystem>();
+
+    const availableOptions: AgentDownloadOptionInterface[] = [
         {
-            link: downloadURLs?.linux ?? "",
-            os: "Linux"
+            checkSum: downloadURLs?.linux?.checkSum ?? "",
+            file: downloadURLs?.linux?.file ?? "",
+            os: OperatingSystem.Linux
         },
         {
-            link: downloadURLs?.linuxArm ?? "",
-            os: "Linux (ARM)"
+            checkSum: downloadURLs?.linuxArm?.checkSum ?? "",
+            file: downloadURLs?.linuxArm?.file ?? "",
+            os: OperatingSystem.LinuxArm
         },
         {
-            link: downloadURLs?.mac ?? "",
-            os: "Mac OS"
+            checkSum: downloadURLs?.mac?.checkSum ?? "",
+            file: downloadURLs?.mac?.file ?? "",
+            os: OperatingSystem.Mac
         },
         {
-            link: downloadURLs?.windows ?? "",
-            os: "Windows"
+            checkSum: downloadURLs?.windows?.checkSum ?? "",
+            file: downloadURLs?.windows?.file ?? "",
+            os: OperatingSystem.Windows
         }
     ];
 
-    const onDownloadClicked = (downloadURL: string) => {
+    /**
+     * Resolves the selected check sum path based on the downloaded agent's OS.
+     */
+    const selectedCheckSumPath: string = useMemo(() => {
+        return availableOptions.find(
+            (option: (AgentDownloadInfoInterface & { os: OperatingSystem })) => option.os === downloadedOS)?.checkSum;
+    }, [ downloadedOS ]);
+
+    const {
+        data: fetchedCheckSumContent,
+        error: checkSumFetchRequestError,
+        isLoading: isCheckSumFetchRequestLoading,
+        isValidating: isCheckSumFetchRequestValidating
+    } = useGetCheckSum(selectedCheckSumPath, !!downloadedOS);
+
+    const checkSum: string = fetchedCheckSumContent?.split(" ")[0] ?? "";
+
+    /**
+     * Handles the check sum fetch error.
+     */
+    useEffect(() => {
+        if (checkSumFetchRequestError) {
+            dispatch(addAlert({
+                description: t("remoteUserStores:notifications.checkSumError.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("remoteUserStores:notifications.checkSumError.message")
+            }));
+        }
+    }, [ checkSumFetchRequestError ]);
+
+    const onDownloadClicked = (os: OperatingSystem, downloadURL: string) => {
         window.open(downloadURL, "_blank", "noopener, noreferrer");
+        setDownloadedOS(os);
+    };
+
+    const renderLoadingPlaceholder = () => {
+        return (
+            <div data-componentid={ `${componentId}-validation-loading-placeholder` }>
+                <Skeleton width="50%" />
+                <Skeleton />
+                <Skeleton />
+            </div>
+        );
+    };
+
+    /**
+     * Resolves the verification command based on the downloaded agent's OS.
+     * @returns The verification command.
+     */
+    const getVerificationCommand = () => {
+        switch(downloadedOS) {
+            case OperatingSystem.Linux:
+            case OperatingSystem.LinuxArm:
+                return "sha256sum <FILE_PATH>";
+            case OperatingSystem.Mac:
+                return "shasum -a 256 <FILE_PATH>";
+            case OperatingSystem.Windows:
+                return "certutil -hashFile <FILE_PATH> SHA256";
+            default:
+                return "";
+        }
     };
 
     return (
-        <>
+        <div className="download-agent-step">
             <Typography component="p" marginBottom={ 2 }>
                 { t("remoteUserStores:pages.edit.guide.steps.download.remote.description") }
             </Typography>
             <Stack direction="row" spacing={ 1 }>
-                { availableOptions.map((option: { os: string; link: string }) => {
+                { availableOptions.map((option: AgentDownloadOptionInterface) => {
                     return (
                         <Button
                             key={ option.os }
@@ -88,14 +198,63 @@ const DownloadAgentStep: FunctionComponent<DownloadAgentStepPropsInterface> = ({
                             size="small"
                             variant="outlined"
                             startIcon={ <DownloadIcon /> }
-                            onClick={ () => onDownloadClicked(option.link) }
+                            onClick={ () => onDownloadClicked(option.os, option.file) }
                         >
                             { option.os }
                         </Button>
                     );
                 }) }
             </Stack>
-        </>
+            { (isCheckSumFetchRequestLoading || isCheckSumFetchRequestValidating) && renderLoadingPlaceholder() }
+            {
+                !(isCheckSumFetchRequestLoading || isCheckSumFetchRequestValidating)
+                    && !isEmpty(checkSum)
+                    && (
+                        <>
+                            <Heading as="h4">
+                                { t("remoteUserStores:pages.edit.guide.steps.download.remote.verification.heading") }
+                            </Heading>
+                            <Typography component="p" marginBottom={ 1 }>
+                                { t("remoteUserStores:pages.edit.guide.steps"
+                                    + ".download.remote.verification.description") }
+                            </Typography>
+                            <List className="verification-steps-list">
+                                <ListItem>
+                                    <Typography component="p" marginBottom={ 1 }>
+                                        <Trans
+                                            i18nKey={ "remoteUserStores:pages.edit.guide.steps"
+                                                + ".download.remote.verification.step1" }
+                                        >
+                                            Execute the following command in the command line. Replace the <Code>
+                                                FILE_PATH</Code> with the path of the downloaded agent zip file.
+                                        </Trans>
+                                    </Typography>
+                                    <CodeEditor
+                                        oneLiner
+                                        readOnly
+                                        withClipboardCopy
+                                        language="shell"
+                                        sourceCode={ getVerificationCommand() }
+                                    />
+                                </ListItem>
+                                <ListItem>
+                                    <Typography component="p" marginBottom={ 1 }>
+                                        { t("remoteUserStores:pages.edit.guide.steps"
+                                            + ".download.remote.verification.step2") }
+                                    </Typography>
+                                    <CodeEditor
+                                        oneLiner
+                                        readOnly
+                                        withClipboardCopy
+                                        language="shell"
+                                        sourceCode={ checkSum }
+                                    />
+                                </ListItem>
+                            </List>
+                        </>
+                    )
+            }
+        </div>
     );
 };
 
