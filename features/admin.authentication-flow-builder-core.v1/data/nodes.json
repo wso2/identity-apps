@@ -5,10 +5,7 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": {
-                "fallback": "Step",
-                "i18nKey": null
-            },
+            "label": "Step",
             "image": "https://www.svgrepo.com/show/448632/step.svg"
         },
         "config": {
@@ -24,10 +21,7 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": {
-                "fallback": "Rule",
-                "i18nKey": null
-            },
+            "label": "Rule",
             "image": "https://www.svgrepo.com/show/413199/decide.svg"
         },
         "config": {

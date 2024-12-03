@@ -5,10 +5,7 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": {
-                "fallback": "reCAPTCHA",
-                "i18nKey": null
-            },
+            "label": "reCAPTCHA",
             "image": "https://www.gstatic.com/recaptcha/api2/logo_48.png"
         },
         "config": {
@@ -23,10 +20,7 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": {
-                "fallback": "Email OTP",
-                "i18nKey": null
-            },
+            "label": "Email OTP",
             "image": "https://www.svgrepo.com/show/368868/otp.svg"
         },
         "config": {
@@ -42,10 +36,7 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": {
-                "fallback": "SMS OTP",
-                "i18nKey": null
-            },
+            "label": "SMS OTP",
             "image": "https://www.svgrepo.com/show/381137/transaction-password-otp-verification-code-security.svg"
         },
         "config": {

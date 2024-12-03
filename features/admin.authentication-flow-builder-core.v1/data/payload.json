@@ -240,7 +240,7 @@
                 "field": {
                     "type": "text",
                     "name": "username",
-                    "className": "wso2is-text-input",
+                    "className": "wso2is-input text",
                     "hint": "",
                     "label": "Username",
                     "required": true,
@@ -263,7 +263,7 @@
                 "field": {
                     "type": "text",
                     "name": "firstName",
-                    "className": "wso2is-text-input",
+                    "className": "wso2is-input text",
                     "hint": "",
                     "label": "First Name",
                     "required": true,
@@ -286,7 +286,7 @@
                 "field": {
                     "type": "text",
                     "name": "lastName",
-                    "className": "wso2is-text-input",
+                    "className": "wso2is-input text",
                     "hint": "",
                     "label": "Last Name",
                     "required": true,
@@ -309,7 +309,7 @@
                 "field": {
                     "type": "date",
                     "name": "dob",
-                    "className": "wso2is-date-input",
+                    "className": "wso2is-input date",
                     "hint": "",
                     "label": "Birth Date",
                     "required": false,
@@ -429,7 +429,7 @@
                 "field": {
                     "type": "password",
                     "name": "password",
-                    "className": "wso2is-password-input",
+                    "className": "wso2is-input password",
                     "hint": "",
                     "label": "Password",
                     "required": true,
@@ -450,7 +450,7 @@
                 "field": {
                     "type": "password",
                     "name": "confirmPassword",
-                    "className": "wso2is-confirm-password-input",
+                    "className": "wso2is-input password",
                     "hint": "",
                     "label": "Confirm Password",
                     "required": true,
@@ -504,7 +504,7 @@
                 "field": {
                     "type": "email",
                     "name": "email",
-                    "className": "wso2is-email-input",
+                    "className": "wso2is-input email",
                     "hint": "",
                     "label": "Email",
                     "required": true,
@@ -575,7 +575,7 @@
                 "field": {
                     "type": "text",
                     "name": "otp",
-                    "className": "wso2is-otp-input",
+                    "className": "wso2is-input otp",
                     "hint": "",
                     "label": "OTP",
                     "required": true,
