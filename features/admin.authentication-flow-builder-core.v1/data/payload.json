@@ -82,8 +82,9 @@
                     "id": "flow-action-next-ggh688op",
                     "type": "submit",
                     "action": {
-                        "type": "RULE",
-                        "name": "flow-rule-age-validator-Fg5Ye54p"
+                        "type": "NEXT",
+                        "ref": "flow-node-5",
+                        "boundTo": "flow-block-attributes-osld3343"
                     },
                     "next": [
                         "flow-node-5"
@@ -137,8 +138,8 @@
                     "id": "flow-action-verify-otp-ssd5g6h",
                     "type": "submit",
                     "action": {
-                        "type": "RULE",
-                        "ref": "flow-rule-age-validator-Fg5Ye54p",
+                        "type": "NEXT",
+                        "ref": "flow-node-5",
                         "boundTo": "flow-block-attributes-45owsew2"
                     },
                     "next": [
@@ -673,16 +674,6 @@
                 "styles": {
                     "width": "100%"
                 }
-            }
-        }
-    ],
-    "rules": [
-        {
-            "id": "flow-rule-age-validator-Fg5Ye54p",
-            "properties": {
-                "field": "dob",
-                "operator": "greaterThan",
-                "value": 18
             }
         }
     ]
