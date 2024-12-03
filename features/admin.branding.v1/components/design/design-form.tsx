@@ -92,6 +92,10 @@ interface DesignFormPropsInterface extends IdentifiableComponentInterface {
      */
     readOnly?: boolean;
     /**
+     * Application name.
+     */
+    appName?: string;
+    /**
      * Ref for the form.
      */
     ref: Ref<FormPropsInterface>;
@@ -149,6 +153,7 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
         isLoading,
         onSubmit,
         readOnly,
+        appName,
         ["data-componentid"]: componentId
     } = props;
 
@@ -191,13 +196,19 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
     const [ layoutDesignExtensionsName, setLayoutDesignExtensionsName ] = useState<string>(null);
 
     const {
-        data: customLayoutBlob,
-        isLoading: customLayoutLoading
-    } = useLayout(PredefinedLayouts.CUSTOM, tenantDomain, commonConfig?.checkCustomLayoutExistanceBeforeEnabling);
-
-    const {
         brandingMode
     } = useBrandingPreference();
+
+    const {
+        data: customLayoutBlob,
+        isLoading: customLayoutLoading
+    } = useLayout(
+        PredefinedLayouts.CUSTOM,
+        tenantDomain,
+        commonConfig?.checkCustomLayoutExistanceBeforeEnabling,
+        brandingMode as BrandingModes,
+        appName
+    );
 
     /**
      * Set the internal initial theme state.
@@ -351,8 +362,12 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
             } else {
                 dispatch(addAlert<AlertInterface>({
                     description:
-                        t("extensions:develop.branding.notifications.fetch.customLayoutNotFound.description",
-                            { tenant: tenantDomain }),
+                        brandingMode === BrandingModes.APPLICATION
+                            ? t("extensions:develop.branding.notifications.fetch.customLayoutNotFound."
+                                + "appBrandingDescription")
+                            : t("extensions:develop.branding.notifications.fetch.customLayoutNotFound.description",
+                                { tenant: tenantDomain })
+                    ,
                     level: AlertLevels.ERROR,
                     message: t("extensions:develop.branding.notifications.fetch.customLayoutNotFound.message")
                 }));

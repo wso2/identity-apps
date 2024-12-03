@@ -1937,6 +1937,7 @@ export const extensions: Extensions = {
                 fetch: {
                     customLayoutNotFound: {
                         description: "There is no deployed custom layout for {{ tenant }}.",
+                        appBrandingDescription: "There is no deployed custom layout for this application.",
                         message: "Couldn't activate the custom layout"
                     },
                     genericError: {
