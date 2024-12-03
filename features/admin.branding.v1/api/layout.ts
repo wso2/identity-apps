@@ -39,7 +39,7 @@ export const useLayout = <Data = Blob, Error = RequestErrorInterface>(
     layout: PredefinedLayouts,
     tenantDomain: string,
     shouldFetch: boolean = true,
-    brandingMode?: string,
+    brandingMode?: BrandingModes,
     appName?: string
 ): RequestResultInterface<Data, Error> => {
     const basename: string = AppConstants.getAppBasename()
