@@ -22,8 +22,9 @@ import FormLabel from "@oxygen-ui/react/FormLabel";
 import Grid from "@oxygen-ui/react/Grid";
 import Typography from "@oxygen-ui/react/Typography";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     CheckboxFieldAdapter,
     FinalForm,
@@ -44,8 +45,9 @@ import React, {
     useRef
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { ConfigurationsFormValuesInterface } from "../../models/ui";
-
+import { getIsReadGroupsFeatureEnabled } from "../../utils/ui-utils";
 import "./configurations-form.scss";
 
 interface ConfigurationsFormPropsInterface extends IdentifiableComponentInterface {
@@ -93,6 +95,11 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
 
         const { t } = useTranslation();
 
+        const userStoreFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+            state?.config?.ui?.features?.userStores);
+        const isReadGroupsFeatureEnabled: boolean = getIsReadGroupsFeatureEnabled(
+            userStoreFeatureConfig, userStoreManager);
+
         // Expose triggerFormSubmit to the parent via the ref.
         useImperativeHandle(
             ref,
@@ -127,15 +134,162 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
 
             if (values.readGroups && userStoreManager === RemoteUserStoreManagerType.RemoteUserStoreManager) {
                 if (!values.groupnameMapping) {
-                    errors.groupnameMapping = t(
-                        "remoteUserStores:form.fields.groupnameMapping.validation.required");
+                    if (isReadGroupsFeatureEnabled) {
+                        errors.groupnameMapping = t(
+                            "remoteUserStores:form.fields.groupnameMapping.validation.readGroupsEnabled");
+                    } else {
+                        errors.groupnameMapping = t(
+                            "remoteUserStores:form.fields.groupnameMapping.validation.required");
+                    }
                 }
                 if (!values.groupIdMapping) {
-                    errors.groupIdMapping = t("remoteUserStores:form.fields.groupIdMapping.validation.required");;
+                    if (isReadGroupsFeatureEnabled) {
+                        errors.groupIdMapping = t(
+                            "remoteUserStores:form.fields.groupIdMapping.validation.readGroupsEnabled");
+                    } else {
+                        errors.groupIdMapping = t(
+                            "remoteUserStores:form.fields.groupIdMapping.validation.required");
+                    }
                 }
             }
 
             return errors;
+        };
+
+        /**
+         * Renders the group attributes section based on the user store manager and read groups feature status.
+         *
+         * @returns The group attributes section.
+         */
+        const renderGroupAttributesSection = () => {
+            if (!isReadGroupsFeatureEnabled
+                && userStoreManager !== RemoteUserStoreManagerType.RemoteUserStoreManager) {
+                return null;
+            }
+
+            return (
+                <>
+                    <Typography variant="h5">
+                        { t("remoteUserStores:form.sections.groupAttributes") }
+                    </Typography>
+                    <Divider />
+
+                    <FormSpy subscription={ { values: true } }>
+                        { ({ values }: { values: ConfigurationsFormValuesInterface }) => {
+                            const isReadGroupsEnabled: boolean = values?.readGroups;
+
+                            return (
+                                <Grid container spacing={ 2 } className="form-grid-container">
+                                    { isReadGroupsFeatureEnabled && (
+                                        <Grid xs={ 12 }>
+                                            <FinalFormField
+                                                label={ t(
+                                                    "remoteUserStores:form.fields.readGroups.label"
+                                                ) }
+                                                name="readGroups"
+                                                FormControlProps={ {
+                                                    fullWidth: true,
+                                                    margin: "dense"
+                                                } }
+                                                data-componentid={ `${componentId}-field-readGroups` }
+                                                component={ CheckboxFieldAdapter }
+                                                disabled={ isReadOnly }
+                                                hint={
+                                                    (<Hint className="hint" compact>
+                                                        { t("remoteUserStores:form.fields.readGroups.helperText") }
+                                                    </Hint>)
+                                                }
+                                            />
+                                        </Grid>
+                                    ) }
+
+                                    { userStoreManager === RemoteUserStoreManagerType.RemoteUserStoreManager && (
+                                        <>
+                                            <Grid xs={ 12 } md={ 4 }>
+                                                <FormLabel
+                                                    required={
+                                                        isReadGroupsEnabled &&
+                                                        userStoreManager ===
+                                                            RemoteUserStoreManagerType.RemoteUserStoreManager
+                                                    }
+                                                    disabled={ isReadOnly || !isReadGroupsEnabled }
+                                                >
+                                                    { t(
+                                                        "remoteUserStores:form.fields.groupnameMapping.label"
+                                                    ) }
+                                                </FormLabel>
+                                            </Grid>
+                                            <Grid xs={ 12 } md={ 6 }>
+                                                <FinalFormField
+                                                    FormControlProps={ {
+                                                        margin: "dense"
+                                                    } }
+                                                    data-componentid={
+                                                        `${componentId}-field-groupnameMapping`
+                                                    }
+                                                    name="groupnameMapping"
+                                                    type="text"
+                                                    placeholder={ t(
+                                                        "remoteUserStores:form.fields.groupnameMapping.placeholder"
+                                                    ) }
+                                                    component={ TextFieldAdapter }
+                                                    disabled={ isReadOnly || !isReadGroupsEnabled }
+                                                    helperText={
+                                                        (<Hint className="hint" compact>
+                                                            { t("remoteUserStores:form.fields." +
+                                                                "groupnameMapping.helperText") }
+                                                        </Hint>)
+                                                    }
+                                                />
+                                            </Grid>
+
+                                            <Grid xs={ 12 } md={ 4 }>
+                                                <FormLabel
+                                                    required={
+                                                        isReadGroupsEnabled &&
+                                                        userStoreManager ===
+                                                            RemoteUserStoreManagerType.RemoteUserStoreManager
+                                                    }
+                                                    disabled={ isReadOnly || !isReadGroupsEnabled }
+                                                >
+                                                    { t(
+                                                        "remoteUserStores:form.fields.groupIdMapping.label"
+                                                    ) }
+                                                </FormLabel>
+                                            </Grid>
+                                            <Grid xs={ 12 } md={ 6 }>
+                                                <FinalFormField
+                                                    FormControlProps={ {
+                                                        margin: "dense"
+                                                    } }
+                                                    ariaLabel="groupIdMapping"
+                                                    data-componentid={
+                                                        `${componentId}-field-groupIdMapping`
+                                                    }
+                                                    name="groupIdMapping"
+                                                    type="text"
+                                                    placeholder={ t(
+                                                        "remoteUserStores:form.fields.groupIdMapping.placeholder"
+                                                    ) }
+                                                    component={ TextFieldAdapter }
+                                                    disabled={ isReadOnly || !isReadGroupsEnabled }
+                                                    helperText={
+                                                        (<Hint className="hint" compact>
+                                                            { t(
+                                                                "remoteUserStores:form.fields.groupIdMapping.helperText"
+                                                            ) }
+                                                        </Hint>)
+                                                    }
+                                                />
+                                            </Grid>
+                                        </>
+                                    ) }
+                                </Grid>
+                            );
+                        } }
+                    </FormSpy>
+                </>
+            );
         };
 
         return (
@@ -155,9 +309,7 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
 
                     return (
                         <form onSubmit={ handleSubmit } className="configurations-form">
-                            <Typography variant="h5">
-                                { t("remoteUserStores:form.sections.userAttributes") }
-                            </Typography>
+                            <Typography variant="h5">{ t("remoteUserStores:form.sections.userAttributes") }</Typography>
                             <Divider />
                             <Grid container spacing={ 2 } className="form-grid-container">
                                 <Grid xs={ 12 } md={ 4 }>
@@ -175,16 +327,12 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                                         data-componentid={ `${componentId}-field-usernameMapping` }
                                         name="usernameMapping"
                                         type="text"
-                                        placeholder={
-                                            t("remoteUserStores:form.fields.usernameMapping.placeholder")
-                                        }
+                                        placeholder={ t("remoteUserStores:form.fields.usernameMapping.placeholder") }
                                         component={ TextFieldAdapter }
                                         disabled={ isReadOnly }
                                         helperText={
                                             (<Hint className="hint" compact>
-                                                {
-                                                    t("remoteUserStores:form.fields.usernameMapping.helperText")
-                                                }
+                                                { t("remoteUserStores:form.fields.usernameMapping.helperText") }
                                             </Hint>)
                                         }
                                     />
@@ -210,124 +358,14 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                                         disabled={ isReadOnly }
                                         helperText={
                                             (<Hint className="hint" compact>
-                                                {
-                                                    t("remoteUserStores:form.fields.userIdMapping.helperText")
-                                                }
+                                                { t("remoteUserStores:form.fields.userIdMapping.helperText") }
                                             </Hint>)
                                         }
                                     />
                                 </Grid>
                             </Grid>
 
-                            <Typography variant="h5">
-                                { t("remoteUserStores:form.sections.groupAttributes") }
-                            </Typography>
-                            <Divider />
-
-                            <FormSpy subscription={ { values: true } }>
-                                { ({ values }: { values: ConfigurationsFormValuesInterface }) => {
-                                    const isReadGroupsEnabled: boolean = values?.readGroups;
-
-                                    return (
-                                        <Grid container spacing={ 2 } className="form-grid-container">
-                                            <Grid xs={ 12 }>
-                                                <FinalFormField
-                                                    label={ t("remoteUserStores:form.fields.readGroups.label") }
-                                                    name="readGroups"
-                                                    FormControlProps={ {
-                                                        fullWidth: true,
-                                                        margin: "dense"
-                                                    } }
-                                                    data-componentid={ `${componentId}-field-readGroups` }
-                                                    component={ CheckboxFieldAdapter }
-                                                    disabled={ isReadOnly }
-                                                    hint={
-                                                        (<Hint className="hint" compact>
-                                                            { t("remoteUserStores:form.fields.readGroups.helperText") }
-                                                        </Hint>)
-                                                    }
-                                                />
-                                            </Grid>
-
-                                            { userStoreManager === RemoteUserStoreManagerType
-                                                .RemoteUserStoreManager && (
-                                                <>
-                                                    <Grid xs={ 12 } md={ 4 }>
-                                                        <FormLabel
-                                                            required={
-                                                                isReadGroupsEnabled &&
-                                                                userStoreManager ===
-                                                                    RemoteUserStoreManagerType.RemoteUserStoreManager
-                                                            }
-                                                            disabled={ isReadOnly || !isReadGroupsEnabled }
-                                                        >
-                                                            { t("remoteUserStores:form.fields.groupnameMapping.label") }
-                                                        </FormLabel>
-                                                    </Grid>
-                                                    <Grid xs={ 12 } md={ 6 }>
-                                                        <FinalFormField
-                                                            FormControlProps={ {
-                                                                margin: "dense"
-                                                            } }
-                                                            data-componentid={ `${componentId}-field-groupnameMapping` }
-                                                            name="groupnameMapping"
-                                                            type="text"
-                                                            placeholder={ t("remoteUserStores:form.fields." +
-                                                                "groupnameMapping.placeholder") }
-                                                            component={ TextFieldAdapter }
-                                                            disabled={ isReadOnly || !isReadGroupsEnabled }
-                                                            helperText={
-                                                                (<Hint className="hint" compact>
-                                                                    {
-                                                                        t("remoteUserStores:form.fields." +
-                                                                        "groupnameMapping.helperText")
-                                                                    }
-                                                                </Hint>)
-                                                            }
-                                                        />
-                                                    </Grid>
-
-                                                    <Grid xs={ 12 } md={ 4 }>
-                                                        <FormLabel
-                                                            required={
-                                                                isReadGroupsEnabled &&
-                                                                userStoreManager ===
-                                                                    RemoteUserStoreManagerType.RemoteUserStoreManager
-                                                            }
-                                                            disabled={ isReadOnly || !isReadGroupsEnabled }
-                                                        >
-                                                            { t("remoteUserStores:form.fields.groupIdMapping.label") }
-                                                        </FormLabel>
-                                                    </Grid>
-                                                    <Grid xs={ 12 } md={ 6 }>
-                                                        <FinalFormField
-                                                            FormControlProps={ {
-                                                                margin: "dense"
-                                                            } }
-                                                            ariaLabel="groupIdMapping"
-                                                            data-componentid={ `${componentId}-field-groupIdMapping` }
-                                                            name="groupIdMapping"
-                                                            type="text"
-                                                            placeholder={ t("remoteUserStores:form.fields." +
-                                                                "groupIdMapping.placeholder") }
-                                                            component={ TextFieldAdapter }
-                                                            disabled={ isReadOnly || !isReadGroupsEnabled }
-                                                            helperText={
-                                                                (<Hint className="hint" compact>
-                                                                    {
-                                                                        t("remoteUserStores:form.fields." +
-                                                                        "groupIdMapping.helperText")
-                                                                    }
-                                                                </Hint>)
-                                                            }
-                                                        />
-                                                    </Grid>
-                                                </>
-                                            ) }
-                                        </Grid>
-                                    );
-                                } }
-                            </FormSpy>
+                            { renderGroupAttributesSection() }
                         </form>
                     );
                 } }
