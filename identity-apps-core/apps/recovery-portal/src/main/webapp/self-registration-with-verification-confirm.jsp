@@ -162,7 +162,7 @@
 
             JSONObject cookieValueInJson = new JSONObject();
             cookieValueInJson.put("content", content);
-            String signature = Base64.getEncoder().encodeToString(IdentityUtil.doSignature(content, user.getTenantDomain());
+            String signature = Base64.getEncoder().encodeToString(IdentityUtil.doSignature(content, user.getTenantDomain()));
             cookieValueInJson.put("signature", signature);
             String cookieValue = Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes());
 
