@@ -22,11 +22,14 @@ import Select from "@oxygen-ui/react/Select";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { useReactFlow } from "@xyflow/react";
 import capitalize from "lodash-es/capitalize";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, useEffect, useState } from "react";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import { Base, FieldKey, FieldValue } from "../../models/base";
+import { Component } from "../../models/component";
+import { Element } from "../../models/elements";
 
 /**
  * Props interface of {@link ElementProperties}
@@ -43,7 +46,8 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-builder-element-properties",
     ...rest
 }: ElementPropertiesPropsInterface): ReactElement => {
-    const { lastInteractedElement, ElementPropertiesFactory } = useAuthenticationFlowBuilderCore();
+    const { updateNodeData } = useReactFlow();
+    const { lastInteractedElement, ElementPropertyFactory, lastInteractedNodeId } = useAuthenticationFlowBuilderCore();
 
     const hasVariants: boolean = !isEmpty(lastInteractedElement?.variants);
 
@@ -55,10 +59,26 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
         } else {
             setSelectedVariant(lastInteractedElement);
         }
-    } , [ lastInteractedElement ]);
+    }, [ lastInteractedElement ]);
 
     const changeSelectedVariant = (selected: string) => {
         setSelectedVariant(lastInteractedElement?.variants?.find((element: Base) => element.variant === selected));
+    };
+
+    const handlePropertyChange = (propertyKey: string, previousValue: any, newValue: any, element: Element) => {
+        updateNodeData(lastInteractedNodeId, (node: any) => {
+            const components: Component = node?.data?.components?.map((component: any) => {
+                if (component.id === element.id) {
+                    component.config.field[propertyKey] = newValue;
+                }
+
+                return component;
+            });
+
+            return {
+                components
+            };
+        });
     };
 
     return (
@@ -82,16 +102,16 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
                             </Select>
                         </FormControl>
                     ) }
-                    { selectedVariant && Object.entries(selectedVariant?.config?.field).map(([ key, value ]: [FieldKey, FieldValue]) => {
-                        return (
-                            <ElementPropertiesFactory
+                    { selectedVariant &&
+                        Object.entries(selectedVariant?.config?.field).map(([ key, value ]: [FieldKey, FieldValue]) => (
+                            <ElementPropertyFactory
                                 element={ selectedVariant }
-                                key={ key }
+                                key={ `${selectedVariant.id}-${key}` }
                                 propertyKey={ key }
                                 propertyValue={ value }
+                                onChange={ handlePropertyChange }
                             />
-                        );
-                    }) }
+                        )) }
                 </Stack>
             ) : (
                 <Typography variant="body2" color="textSecondary" sx={ { padding: 2 } }>

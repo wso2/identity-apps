@@ -22,7 +22,11 @@ import { ComponentTypes } from "./component";
 /**
  * Base interface for a component or a primitive.
  */
-export interface Base<T = any> {
+export interface StrictBase<T = any> {
+    /**
+     * ID of the component or the primitive.
+     */
+    id: string;
     /**
      * Category of the component or the primitive.
      */
@@ -55,6 +59,16 @@ export interface Base<T = any> {
      * Variants of the component or the primitive.
      */
     variants: Base<T>[];
+}
+
+/**
+ * Interface representing a base component or a primitive.
+ */
+export interface Base<T = any> extends StrictBase<T> {
+    /**
+     * Data added to the component by the flow builder.
+     */
+    data?: any;
 }
 
 export interface BaseDisplay {

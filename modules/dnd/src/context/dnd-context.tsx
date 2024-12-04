@@ -25,7 +25,7 @@ export type DnDContextProps = {
     /**
      * Utility function to generate a unique component ID.
      */
-    generateComponentId: () => string;
+    generateComponentId:  (prefix?: string) => string;
     /**
      * Node object.
      */

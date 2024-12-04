@@ -24,8 +24,8 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { DroppableContainer, GetDragItemProps } from "@wso2is/dnd";
-import { Handle, Node, Position, useNodeId, useReactFlow } from "@xyflow/react";
+import { DroppableContainer, GetDragItemProps, useDnD } from "@wso2is/dnd";
+import { Handle, Node, Position, useNodeId, useNodesData, useReactFlow } from "@xyflow/react";
 import classNames from "classnames";
 import React, {
     DragEvent,
@@ -35,8 +35,7 @@ import React, {
     ReactElement,
     SVGProps,
     useCallback,
-    useRef,
-    useState
+    useRef
 } from "react";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import { Component } from "../../models/component";
@@ -79,12 +78,12 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
     "data-componentid": componentId = "step-node"
 }: StepNodePropsInterface & Node): ReactElement => {
     const nodeId: string = useNodeId();
+    const node = useNodesData(nodeId);
     const { deleteElements, updateNodeData } = useReactFlow();
     const { onElementDropOnCanvas, NodeFactory, setLastInteractedElement } = useAuthenticationFlowBuilderCore();
+    const { generateComponentId } = useDnD();
 
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
-
-    const [ droppedElements, setDroppedElements ] = useState<Component[]>([]);
 
     const handleDragOver: (event: DragEvent) => void = useCallback((event: DragEvent) => {
         event.preventDefault();
@@ -98,15 +97,14 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
             const droppedData: string = event.dataTransfer.getData("application/json");
 
             if (droppedData) {
-                const newComponent: Component = JSON.parse(droppedData);
-
-                setDroppedElements((prevDroppedElements: Component[]) => [ ...prevDroppedElements, newComponent ]);
+                const newComponent: Component = {
+                    ...JSON.parse(droppedData),
+                    id: generateComponentId("element")
+                };
 
                 updateNodeData(nodeId, (node: any) => {
                     return {
-                        ...(node.data.elements
-                            ? { elements: [ ...node.data.elements, newComponent ] }
-                            : { elements: [ newComponent ] })
+                        components: [ ...(node?.data?.components || []), newComponent ]
                     };
                 });
 
@@ -119,7 +117,7 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
     const handleOrderChange = (orderedNodes: Component[]) => {
         updateNodeData(nodeId, () => {
             return {
-                elements: orderedNodes
+                components: orderedNodes
             };
         });
     };
@@ -162,7 +160,7 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
                     <Box className="authentication-flow-builder-step-content-form">
                         <FormGroup>
                             <DroppableContainer<Component>
-                                nodes={ droppedElements }
+                                nodes={ (node?.data?.components || []) as Component[] }
                                 onOrderChange={ handleOrderChange }
                             >
                                 { ({

@@ -21,7 +21,7 @@ import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import startCase from "lodash-es/startCase";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
 import { Element } from "../../models/elements";
 
 /**
@@ -40,6 +40,14 @@ export interface CommonComponentPropertyFactoryPropsInterface extends Identifiab
      * The value of the property.
      */
     propertyValue: any;
+    /**
+     * The event handler for the property change.
+     * @param propertyKey - The key of the property.
+     * @param previousValue - The previous value of the property.
+     * @param newValue - The new value of the property.
+     * @param element - The element associated with the property.
+     */
+    onChange: (propertyKey: string, previousValue: any, newValue: any, element: Element) => void;
 }
 
 /**
@@ -52,14 +60,18 @@ const CommonComponentPropertyFactory: FunctionComponent<CommonComponentPropertyF
     "data-componentid": componentId = "authentication-flow-builder-component-property-factory",
     element,
     propertyKey,
-    propertyValue
+    propertyValue,
+    onChange
 }: CommonComponentPropertyFactoryPropsInterface): ReactElement | null => {
     if (typeof propertyValue === "boolean") {
         return (
             <FormControlLabel
-                control={ <Checkbox checked={ propertyValue } /> }
+                control={ <Checkbox /> }
                 label={ startCase(propertyKey) }
-                data-componentid={ `${ componentId }-${propertyKey}` }
+                onChange={ (e: ChangeEvent<HTMLInputElement>) =>
+                    onChange(propertyKey, propertyValue, e.target.checked, element)
+                }
+                data-componentid={ `${componentId}-${propertyKey}` }
             />
         );
     }
@@ -69,8 +81,11 @@ const CommonComponentPropertyFactory: FunctionComponent<CommonComponentPropertyF
             <TextField
                 fullWidth
                 label={ startCase(propertyKey) }
-                value={ propertyValue }
-                data-componentid={ `${ componentId }-${propertyKey}` }
+                defaultValue={ propertyValue }
+                onChange={ (e: ChangeEvent<HTMLInputElement>) =>
+                    onChange(propertyKey, propertyValue, e.target.value, element)
+                }
+                data-componentid={ `${componentId}-${propertyKey}` }
             />
         );
     }

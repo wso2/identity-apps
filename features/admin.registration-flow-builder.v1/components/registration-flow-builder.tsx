@@ -46,7 +46,7 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
     return (
         <AuthenticationFlowBuilderCoreProvider
             NodeFactory={ NodeFactory }
-            ElementPropertiesFactory={ ElementPropertyFactory }
+            ElementPropertyFactory={ ElementPropertyFactory }
         >
             <RegistrationFlowBuilderProvider>
                 <DecoratedVisualFlow elements={ elements } data-componentid={ componentId } { ...rest } />

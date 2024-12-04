@@ -38,7 +38,7 @@ const DnDProvider = ({ children }: PropsWithChildren<DnDProviderProps>): ReactEl
      * Generates a unique component ID for the node.
      * @returns Unique component ID.
      */
-    const generateComponentId = (): string => `dndnode_${uuidv4()}`;
+    const generateComponentId = (prefix: string = "node"): string => `dnd-${prefix}_${uuidv4()}`;
 
     return <DnDContext.Provider value={ { generateComponentId, node, setNode } }>{ children }</DnDContext.Provider>;
 };

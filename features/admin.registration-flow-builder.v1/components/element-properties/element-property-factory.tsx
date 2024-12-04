@@ -38,6 +38,14 @@ export interface ElementPropertyFactoryPropsInterface extends IdentifiableCompon
      * The value of the property.
      */
     propertyValue: any;
+    /**
+     * The event handler for the property change.
+     * @param propertyKey - The key of the property.
+     * @param previousValue - The previous value of the property.
+     * @param newValue - The new value of the property.
+     * @param element - The element associated with the property.
+     */
+    onChange: (propertyKey: string, previousValue: any, newValue: any, element: Element) => void;
 }
 
 /**
@@ -50,7 +58,8 @@ const ElementPropertyFactory: FunctionComponent<ElementPropertyFactoryPropsInter
     "data-componentid": componentId = "authentication-flow-builder-element-property-configurator-factory",
     element,
     propertyKey,
-    propertyValue
+    propertyValue,
+    onChange
 }: ElementPropertyFactoryPropsInterface): ReactElement | null => {
     switch (element.category) {
         case ElementCategories.Field:
@@ -62,6 +71,7 @@ const ElementPropertyFactory: FunctionComponent<ElementPropertyFactoryPropsInter
                     propertyKey={ propertyKey }
                     propertyValue={ propertyValue }
                     data-componentid={ componentId }
+                    onChange={ onChange }
                 />
             );
         case ElementCategories.Widget:
@@ -71,6 +81,7 @@ const ElementPropertyFactory: FunctionComponent<ElementPropertyFactoryPropsInter
                     propertyKey={ propertyKey }
                     propertyValue={ propertyValue }
                     data-componentid={ componentId }
+                    onChange={ onChange }
                 />
             );
         default:

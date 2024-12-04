@@ -36,13 +36,15 @@ export type ComponentPropertyFactoryPropsInterface = CommonComponentPropertyFact
 const ComponentPropertyFactory: FunctionComponent<ComponentPropertyFactoryPropsInterface> = ({
     element,
     propertyKey,
-    propertyValue
+    propertyValue,
+    onChange
 }: ComponentPropertyFactoryPropsInterface): ReactElement | null => {
     return (
         <CommonComponentPropertyFactory
             element={ element }
             propertyKey={ propertyKey }
             propertyValue={ propertyValue }
+            onChange={ onChange }
         />
     );
 };

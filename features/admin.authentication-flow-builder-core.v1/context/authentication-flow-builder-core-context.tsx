@@ -35,7 +35,7 @@ export interface AuthenticationFlowBuilderCoreContextProps {
     /**
      * The factory for creating element properties.
      */
-    ElementPropertiesFactory: FunctionComponent<any>;
+    ElementPropertyFactory: FunctionComponent<any>;
     /**
      * The heading for the element properties panel.
      */
@@ -103,7 +103,7 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
     null | AuthenticationFlowBuilderCoreContextProps
 >(
     {
-        ElementPropertiesFactory: () => null,
+        ElementPropertyFactory: () => null,
         NodeFactory: () => null,
         elementPropertiesPanelHeading: null,
         isElementPanelOpen: true,

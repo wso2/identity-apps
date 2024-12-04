@@ -37,7 +37,8 @@ export type WidgetPropertyFactoryPropsInterface = CommonWidgetPropertyFactoryPro
 const WidgetPropertyFactory: FunctionComponent<WidgetPropertyFactoryPropsInterface> = ({
     element,
     propertyKey,
-    propertyValue
+    propertyValue,
+    onChange
 }: WidgetPropertyFactoryPropsInterface): ReactElement | null => {
     switch (element.type) {
         case WidgetTypes.AttributeCollector:
@@ -48,6 +49,7 @@ const WidgetPropertyFactory: FunctionComponent<WidgetPropertyFactoryPropsInterfa
                     element={ element }
                     propertyKey={ propertyKey }
                     propertyValue={ propertyValue }
+                    onChange={ onChange }
                 />
             );
     }

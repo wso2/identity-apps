@@ -38,7 +38,7 @@ export interface AuthenticationFlowBuilderProviderProps {
     /**
      * The factory for creating element properties.
      */
-    ElementPropertiesFactory: FunctionComponent<any>;
+    ElementPropertyFactory: FunctionComponent<any>;
 }
 
 /**
@@ -49,7 +49,7 @@ export interface AuthenticationFlowBuilderProviderProps {
  */
 const AuthenticationFlowBuilderCoreProvider = ({
     NodeFactory,
-    ElementPropertiesFactory,
+    ElementPropertyFactory,
     children
 }: PropsWithChildren<AuthenticationFlowBuilderProviderProps>): ReactElement => {
     const [ isElementPanelOpen, setIsElementPanelOpen ] = useState<boolean>(true);
@@ -71,7 +71,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
                 <Typography variant="h6">{ capitalize(element.category) } Properties</Typography>
                 <Stack direction="row" className="sub-title" gap={ 1 } alignItems="center">
                     <Avatar src={ element?.display?.image } variant="square" />
-                    <Typography variant="body2">{ capitalize(element.type) }</Typography>
+                    <Typography variant="body2">{ capitalize(element.variant ?? element.type) }</Typography>
                 </Stack>
             </Stack>
         );
@@ -91,7 +91,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
     return (
         <AuthenticationFlowBuilderCoreContext.Provider
             value={ {
-                ElementPropertiesFactory,
+                ElementPropertyFactory,
                 NodeFactory,
                 elementPropertiesPanelHeading,
                 isElementPanelOpen,
