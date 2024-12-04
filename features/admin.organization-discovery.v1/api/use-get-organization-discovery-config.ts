@@ -26,7 +26,8 @@ import { HttpMethods } from "@wso2is/core/models";
 import { OrganizationDiscoveryConfigConstants } from "../constants/organization-discovery-config-constants";
 import {
     OrganizationDiscoveryConfigInterface,
-    OrganizationDiscoveryConfigPropertyInterface
+    OrganizationDiscoveryConfigPropertyInterface,
+    OrganizationDiscoveryResponseInterface
 } from "../models/organization-discovery";
 
 /**
@@ -36,7 +37,7 @@ import {
  * @returns SWR response object containing the data, error, isValidating, mutate.
  */
 const useGetOrganizationDiscoveryConfig = <
-    Data = OrganizationDiscoveryConfigInterface & { isOrganizationDiscoveryEnabled: boolean },
+    Data = OrganizationDiscoveryResponseInterface,
     Error = RequestErrorInterface
 >(shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
@@ -53,12 +54,19 @@ const useGetOrganizationDiscoveryConfig = <
     });
 
     let isOrganizationDiscoveryEnabled: boolean = false;
+    let isEmailDomainBasedSelfRegistrationEnabled: boolean = false;
 
     if ((data as OrganizationDiscoveryConfigInterface)?.properties) {
         (data as OrganizationDiscoveryConfigInterface).properties?.forEach(
             (property: OrganizationDiscoveryConfigPropertyInterface) => {
-                if (property.key === "emailDomain.enable") {
+                if (property.key === OrganizationDiscoveryConfigConstants.EMAIL_DOMAIN_DISCOVERY_PROPERTY_KEY
+                    && property.value === "true") {
                     isOrganizationDiscoveryEnabled = true;
+                }
+
+                if (property.key === OrganizationDiscoveryConfigConstants.EMAIL_DOMAIN_DISCOVERY_SELF_REG_PROPERTY_KEY
+                    && property.value === "true") {
+                    isEmailDomainBasedSelfRegistrationEnabled = true;
                 }
             }
         );
@@ -83,6 +91,7 @@ const useGetOrganizationDiscoveryConfig = <
 
     return {
         data: {
+            isEmailDomainBasedSelfRegistrationEnabled,
             isOrganizationDiscoveryEnabled,
             ...data
         },

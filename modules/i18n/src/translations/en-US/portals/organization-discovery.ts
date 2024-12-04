@@ -40,14 +40,16 @@ export const organizationDiscovery: organizationDiscoveryNS = {
         placeholder: "Search by Organization Name"
     },
     assign: {
-        title: "Assign Email Domains",
+        buttons: {
+            assign: "Assign"
+        },
         description: "Assign email domains for organizations.",
         form: {
             fields: {
                 emailDomains: {
+                    hint: "Type and enter email domains to map to the organization. (E.g. gmail.com etc.)",
                     label : "Email Domains",
                     placeholder: "Enter email domains",
-                    hint: "Type and enter email domains to map to the organization. (E.g. gmail.com etc.)",
                     validations: {
                         invalid: {
                             0: "Please enter a valid email domain.",
@@ -56,18 +58,40 @@ export const organizationDiscovery: organizationDiscoveryNS = {
                     }
                 },
                 organizationName: {
-                    label: "Organization Name",
-                    placeholder: "Select an organization",
                     emptyPlaceholder: {
                         0: "There are no organizations available.",
                         1: "All the organizations have assigned domains."
                     },
-                    hint: "Enter the name of the organization you wish to add the domain mapping."
+                    hint: "Enter the name of the organization you wish to add the domain mapping.",
+                    label: "Organization Name",
+                    placeholder: "Select an organization"
                 }
             }
         },
-        buttons: {
-            assign: "Assign"
+        title: "Assign Email Domains"
+    },
+    edit: {
+        back: "Back",
+        description: "Edit Email Domains",
+        form: {
+            fields: {
+                emailDomains: {
+                    hint: "Type and enter email domains to map to the organization. (E.g. gmail.com etc.)",
+                    label : "Email Domains",
+                    placeholder: "Enter email domains",
+                    validations: {
+                        invalid: {
+                            0: "Please enter a valid email domain.",
+                            1: "Provided email domain is already mapped to a different organization."
+                        }
+                    }
+                },
+                organizationName: {
+                    hint: "The name of the organization to which the domain mappings are added.",
+                    label: "Organization Name"
+                }
+            },
+            message: "Changing email domain mappings may result in existing users being unable to log in."
         }
     },
     emailDomains: {
@@ -76,31 +100,9 @@ export const organizationDiscovery: organizationDiscoveryNS = {
             enable: "Enable email domain discovery"
         }
     },
-    edit: {
-        back: "Back",
-        description: "Edit Email Domains",
-        form: {
-            fields: {
-                emailDomains: {
-                    label : "Email Domains",
-                    placeholder: "Enter email domains",
-                    hint: "Type and enter email domains to map to the organization. (E.g. gmail.com etc.)",
-                    validations: {
-                        invalid: {
-                            0: "Please enter a valid email domain.",
-                            1: "Provided email domain is already mapped to a different organization."
-                        }
-                    }
-                },
-                organizationName: {
-                    label: "Organization Name",
-                    hint: "The name of the organization to which the domain mappings are added."
-                }
-            },
-            message: "Changing email domain mappings may result in existing users being unable to log in."
-        }
-    },
-    message: "Email domain discovery feature can only be used when email address is configured as the username.",
+    message: "Email domain discovery feature can only be used when email address is configured as the username."
+        + " When enabled, email domains are validated during user authentication and when administrators"
+        + " onboard users to organizations.",
     notifications: {
         addEmailDomains: {
             error: {
@@ -118,6 +120,16 @@ export const organizationDiscovery: organizationDiscoveryNS = {
                 message: "Validating unsuccessful"
             }
         },
+        disableEmailDomainBasedSelfRegistration: {
+            error: {
+                description: "An error occurred while disabling email domain discovery for self-registration.",
+                message: "Disabling unsuccessful"
+            },
+            success: {
+                description: "Successfully disabled email domain discovery for self-registration.",
+                message: "Disabled successfully"
+            }
+        },
         disableEmailDomainDiscovery: {
             error: {
                 description: "An error occurred while disabling email domain discovery.",
@@ -126,6 +138,16 @@ export const organizationDiscovery: organizationDiscoveryNS = {
             success: {
                 description: "Successfully disabled email domain discovery.",
                 message: "Disabled successfully"
+            }
+        },
+        enableEmailDomainBasedSelfRegistration: {
+            error: {
+                description: "An error occurred while enabling email domain discovery for self-registration.",
+                message: "Enabling unsuccessful"
+            },
+            success: {
+                description: "Successfully enabled email domain discovery for self-registration.",
+                message: "Enabled successfully"
             }
         },
         enableEmailDomainDiscovery: {
@@ -174,5 +196,10 @@ export const organizationDiscovery: organizationDiscoveryNS = {
             title: "Assign Email Domain"
         }
     },
-    title: "Email Domain Discovery"
+    selfRegistration: {
+        label: "Email domain discovery for self-registration",
+        labelHint: "When enabled, users will be self-registered in child organizations via shared applications",
+        message: "Enable <1>self-registration</1> to allow domain discovery for self-registration"
+    },
+    title: "Organization Discovery"
 };
