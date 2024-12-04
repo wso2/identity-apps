@@ -32,7 +32,7 @@ import {
     FormRenderProps,
     FormSpy,
     TextFieldAdapter
-} from "@wso2is/form/src";
+} from "@wso2is/form";
 import { Hint } from "@wso2is/react-components";
 import React, {
     ForwardRefExoticComponent,

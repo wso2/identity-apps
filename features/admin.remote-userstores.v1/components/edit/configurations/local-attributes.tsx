@@ -19,7 +19,7 @@
 import Grid from "@oxygen-ui/react/Grid";
 import Stack from "@oxygen-ui/react/Stack";
 import { Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalFormField, TextFieldAdapter } from "@wso2is/form/src";
+import { FinalFormField, TextFieldAdapter } from "@wso2is/form";
 import { Heading, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";

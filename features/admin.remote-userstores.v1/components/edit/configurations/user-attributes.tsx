@@ -21,7 +21,7 @@ import FormLabel from "@oxygen-ui/react/FormLabel";
 import Grid from "@oxygen-ui/react/Grid";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalFormField, TextFieldAdapter } from "@wso2is/form/src";
+import { FinalFormField, TextFieldAdapter } from "@wso2is/form";
 import { Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";

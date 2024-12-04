@@ -39,7 +39,7 @@ import {
     Property
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FormRenderProps } from "@wso2is/form/src";
+import { FinalForm, FormRenderProps } from "@wso2is/form";
 import {
     DocumentationLink,
     EmphasizedSegment,

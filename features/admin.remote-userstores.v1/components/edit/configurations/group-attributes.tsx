@@ -21,7 +21,7 @@ import Grid from "@oxygen-ui/react/Grid";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { CheckboxFieldAdapter, FinalFormField, FormSpy, TextFieldAdapter } from "@wso2is/form/src";
+import { CheckboxFieldAdapter, FinalFormField, FormSpy, TextFieldAdapter } from "@wso2is/form";
 import { Heading, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
