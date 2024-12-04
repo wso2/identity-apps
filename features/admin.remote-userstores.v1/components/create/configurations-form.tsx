@@ -309,7 +309,9 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
 
                     return (
                         <form onSubmit={ handleSubmit } className="configurations-form">
-                            <Typography variant="h5">{ t("remoteUserStores:form.sections.userAttributes") }</Typography>
+                            <Typography variant="h5">
+                                { t("remoteUserStores:form.sections.userAttributes") }
+                            </Typography>
                             <Divider />
                             <Grid container spacing={ 2 } className="form-grid-container">
                                 <Grid xs={ 12 } md={ 4 }>
@@ -327,12 +329,16 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                                         data-componentid={ `${componentId}-field-usernameMapping` }
                                         name="usernameMapping"
                                         type="text"
-                                        placeholder={ t("remoteUserStores:form.fields.usernameMapping.placeholder") }
+                                        placeholder={
+                                            t("remoteUserStores:form.fields.usernameMapping.placeholder")
+                                        }
                                         component={ TextFieldAdapter }
                                         disabled={ isReadOnly }
                                         helperText={
                                             (<Hint className="hint" compact>
-                                                { t("remoteUserStores:form.fields.usernameMapping.helperText") }
+                                                {
+                                                    t("remoteUserStores:form.fields.usernameMapping.helperText")
+                                                }
                                             </Hint>)
                                         }
                                     />
@@ -358,7 +364,9 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                                         disabled={ isReadOnly }
                                         helperText={
                                             (<Hint className="hint" compact>
-                                                { t("remoteUserStores:form.fields.userIdMapping.helperText") }
+                                                {
+                                                    t("remoteUserStores:form.fields.userIdMapping.helperText")
+                                                }
                                             </Hint>)
                                         }
                                     />
