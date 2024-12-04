@@ -1518,6 +1518,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const updateConfigurationForSPA = (values: any, url?: string, origin?: string): any => {
         let inboundConfigFormValues: any = {
             accessToken: {
+                accessTokenAttributes: selectedAccessTokenAttributes?.map((claim: ExternalClaim) => claim.claimURI),
                 applicationAccessTokenExpiryInSeconds: Number(metadata?.defaultApplicationAccessTokenExpiryTime),
                 bindingType: values.get("bindingType"),
                 revokeTokensWhenIDPSessionTerminated: getRevokeStateForSPA(values),
