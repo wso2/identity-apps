@@ -1,5 +1,17 @@
 # @wso2is/admin.organization-discovery.v1
 
+## 2.25.46
+
+### Patch Changes
+
+- [#7084](https://github.com/wso2/identity-apps/pull/7084) [`615188993e920b2df3321bad91e7659f9db5b79f`](https://github.com/wso2/identity-apps/commit/615188993e920b2df3321bad91e7659f9db5b79f) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Improve email domain discovery page to incorporate new configuration for enabling email domain discovery for self-registration.
+
+- Updated dependencies [[`615188993e920b2df3321bad91e7659f9db5b79f`](https://github.com/wso2/identity-apps/commit/615188993e920b2df3321bad91e7659f9db5b79f), [`423eb1ccefc05e0a3d314f49707256af715c6501`](https://github.com/wso2/identity-apps/commit/423eb1ccefc05e0a3d314f49707256af715c6501)]:
+  - @wso2is/i18n@2.13.2
+  - @wso2is/form@2.6.1
+  - @wso2is/admin.core.v1@2.34.46
+  - @wso2is/admin.organizations.v1@2.26.46
+
 ## 2.25.45
 
 ### Patch Changes

@@ -1,5 +1,25 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.30.0
+
+### Minor Changes
+
+- [#7084](https://github.com/wso2/identity-apps/pull/7084) [`6ca0f80dbe76cf9b51e7bb3d3773dd14b254546a`](https://github.com/wso2/identity-apps/commit/6ca0f80dbe76cf9b51e7bb3d3773dd14b254546a) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add new method to get governance connector details.
+
+### Patch Changes
+
+- Updated dependencies [[`615188993e920b2df3321bad91e7659f9db5b79f`](https://github.com/wso2/identity-apps/commit/615188993e920b2df3321bad91e7659f9db5b79f), [`6ca0f80dbe76cf9b51e7bb3d3773dd14b254546a`](https://github.com/wso2/identity-apps/commit/6ca0f80dbe76cf9b51e7bb3d3773dd14b254546a), [`423eb1ccefc05e0a3d314f49707256af715c6501`](https://github.com/wso2/identity-apps/commit/423eb1ccefc05e0a3d314f49707256af715c6501)]:
+  - @wso2is/i18n@2.13.2
+  - @wso2is/admin.server-configurations.v1@2.30.0
+  - @wso2is/form@2.6.1
+  - @wso2is/admin.core.v1@2.34.46
+  - @wso2is/admin.extensions.v1@2.35.5
+  - @wso2is/admin.identity-providers.v1@2.26.46
+  - @wso2is/admin.organizations.v1@2.26.46
+  - @wso2is/admin.users.v1@2.29.5
+  - @wso2is/admin.validation.v1@2.26.46
+  - @wso2is/admin.feature-gate.v1@1.4.46
+
 ## 2.29.18
 
 ### Patch Changes
