@@ -1,5 +1,38 @@
 # @wso2is/admin.applications.v1
 
+## 2.30.46
+
+### Patch Changes
+
+- [#7164](https://github.com/wso2/identity-apps/pull/7164) [`423eb1ccefc05e0a3d314f49707256af715c6501`](https://github.com/wso2/identity-apps/commit/423eb1ccefc05e0a3d314f49707256af715c6501) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Onboard Slack and Zoom SSO templates
+
+- Updated dependencies [[`615188993e920b2df3321bad91e7659f9db5b79f`](https://github.com/wso2/identity-apps/commit/615188993e920b2df3321bad91e7659f9db5b79f), [`6ca0f80dbe76cf9b51e7bb3d3773dd14b254546a`](https://github.com/wso2/identity-apps/commit/6ca0f80dbe76cf9b51e7bb3d3773dd14b254546a), [`423eb1ccefc05e0a3d314f49707256af715c6501`](https://github.com/wso2/identity-apps/commit/423eb1ccefc05e0a3d314f49707256af715c6501)]:
+  - @wso2is/i18n@2.13.2
+  - @wso2is/admin.server-configurations.v1@2.30.0
+  - @wso2is/admin.template-core.v1@1.5.0
+  - @wso2is/form@2.6.1
+  - @wso2is/admin.core.v1@2.34.46
+  - @wso2is/admin.authorization.v1@2.25.17
+  - @wso2is/admin.branding.v1@2.27.19
+  - @wso2is/admin.claims.v1@2.26.5
+  - @wso2is/admin.connections.v1@2.28.46
+  - @wso2is/admin.console-settings.v1@2.25.46
+  - @wso2is/admin.extensions.v1@2.35.5
+  - @wso2is/admin.identity-providers.v1@2.26.46
+  - @wso2is/admin.impersonation.v1@1.6.46
+  - @wso2is/admin.login-flow.ai.v1@2.26.46
+  - @wso2is/admin.oidc-scopes.v1@2.25.46
+  - @wso2is/admin.organizations.v1@2.26.46
+  - @wso2is/admin.roles.v2@2.26.46
+  - @wso2is/admin.secrets.v1@2.25.46
+  - @wso2is/admin.users.v1@2.29.5
+  - @wso2is/admin.userstores.v1@2.26.5
+  - @wso2is/admin.wsfed-configuration.v1@2.25.46
+  - @wso2is/admin.authentication-flow-builder.v1@2.24.46
+  - @wso2is/admin.application-templates.v1@1.4.46
+  - @wso2is/admin.api-resources.v2@2.25.46
+  - @wso2is/admin.feature-gate.v1@1.4.46
+
 ## 2.30.45
 
 ### Patch Changes

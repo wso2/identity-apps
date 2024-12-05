@@ -1,5 +1,11 @@
 # @wso2is/form
 
+## 2.6.1
+
+### Patch Changes
+
+- [#7164](https://github.com/wso2/identity-apps/pull/7164) [`423eb1ccefc05e0a3d314f49707256af715c6501`](https://github.com/wso2/identity-apps/commit/423eb1ccefc05e0a3d314f49707256af715c6501) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Onboard Slack and Zoom SSO templates
+
 ## 2.6.0
 
 ### Minor Changes

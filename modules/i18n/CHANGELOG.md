@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.13.2
+
+### Patch Changes
+
+- [#7084](https://github.com/wso2/identity-apps/pull/7084) [`615188993e920b2df3321bad91e7659f9db5b79f`](https://github.com/wso2/identity-apps/commit/615188993e920b2df3321bad91e7659f9db5b79f) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Improve email domain discovery page to incorporate new configuration for enabling email domain discovery for self-registration.
+
 ## 2.13.1
 
 ### Patch Changes

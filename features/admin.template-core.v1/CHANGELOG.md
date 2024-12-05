@@ -1,5 +1,16 @@
 # @wso2is/admin.template-core.v1
 
+## 1.5.0
+
+### Minor Changes
+
+- [#7164](https://github.com/wso2/identity-apps/pull/7164) [`423eb1ccefc05e0a3d314f49707256af715c6501`](https://github.com/wso2/identity-apps/commit/423eb1ccefc05e0a3d314f49707256af715c6501) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Onboard Slack and Zoom SSO templates
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.46
+
 ## 1.4.45
 
 ### Patch Changes
