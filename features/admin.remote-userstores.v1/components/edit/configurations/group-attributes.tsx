@@ -18,14 +18,17 @@
 
 import FormLabel from "@oxygen-ui/react/FormLabel";
 import Grid from "@oxygen-ui/react/Grid";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { CheckboxFieldAdapter, FinalFormField, FormSpy, TextFieldAdapter } from "@wso2is/form/src";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { CheckboxFieldAdapter, FinalFormField, FormSpy, TextFieldAdapter } from "@wso2is/form";
 import { Heading, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { RemoteUserStoreConstants } from "../../../constants/remote-user-stores-constants";
+import { getIsReadGroupsFeatureEnabled } from "../../../utils/ui-utils";
 
 /**
  * Interface for the group attributes section component props.
@@ -57,27 +60,45 @@ const GroupAttributesSection: FunctionComponent<GroupAttributesSectionPropsInter
 
     const { t } = useTranslation();
 
+    const userStoreFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.userStores);
+
+    const isReadGroupsFeatureEnabled: boolean = getIsReadGroupsFeatureEnabled(userStoreFeatureConfig, userStoreManager);
+
     const validateGroupnameField = (value: string, allValues: Record<string, unknown>) => {
+        if (!isReadGroupsFeatureEnabled && isEmpty(value)) {
+            return t("remoteUserStores:form.fields.groupnameMapping.validation.required");
+        }
+
         const userStoreProperties: Record<string, string | boolean> =
             allValues["userstore-properties"] as Record<string, string | boolean>;
 
         if (userStoreProperties?.ReadGroups as boolean && isEmpty(value)) {
-            return t("remoteUserStores:form.fields.groupnameMapping.validation.required");
+            return t("remoteUserStores:form.fields.groupnameMapping.validation.readGroupsEnabled");
         }
 
         return undefined;
     };
 
     const validateGroupIdField = (value: string, allValues: Record<string, unknown>) => {
+        if (!isReadGroupsFeatureEnabled && isEmpty(value)) {
+            return t("remoteUserStores:form.fields.groupIdMapping.validation.required");
+        }
+
         const userStoreProperties: Record<string, string | boolean> =
             allValues["userstore-properties"] as Record<string, string | boolean>;
 
         if (userStoreProperties?.ReadGroups as boolean && isEmpty(value)) {
-            return t("remoteUserStores:form.fields.groupIdMapping.validation.required");
+            return t("remoteUserStores:form.fields.groupIdMapping.validation.readGroupsEnabled");
         }
 
         return undefined;
     };
+
+    if (!isReadGroupsFeatureEnabled
+        && userStoreManager !== RemoteUserStoreManagerType.RemoteUserStoreManager) {
+        return null;
+    }
 
     return (
         <div>
@@ -86,32 +107,36 @@ const GroupAttributesSection: FunctionComponent<GroupAttributesSectionPropsInter
                 { ({ values }: { values: Record<string, unknown> }) => {
                     const userStoreProperties: Record<string, unknown> =
                         values["userstore-properties"] as Record<string, unknown>;
-                    const isReadGroupsEnabled: boolean = userStoreProperties?.ReadGroups as boolean;
+
+                    const isReadGroupsEnabled: boolean = (userStoreProperties?.ReadGroups as boolean)
+                        ?? initialValues[RemoteUserStoreConstants.PROPERTY_NAME_READ_GROUPS] === "true";
 
                     return (
                         <Grid container spacing={ 2 } className="form-grid-container">
-                            <Grid xs={ 12 }>
-                                <FinalFormField
-                                    label={ t("remoteUserStores:form.fields.readGroups.label") }
-                                    name={
-                                        `userstore-properties.${RemoteUserStoreConstants.PROPERTY_NAME_READ_GROUPS}`
-                                    }
-                                    FormControlProps={ {
-                                        fullWidth: true,
-                                        margin: "dense"
-                                    } }
-                                    data-componentid={ `${componentId}-field-readGroups` }
-                                    component={ CheckboxFieldAdapter }
-                                    disabled={ isReadOnly }
-                                    hint={
-                                        (<Hint className="hint" compact>
-                                            { t("remoteUserStores:form.fields.readGroups.helperText") }
-                                        </Hint>)
-                                    }
-                                    initialValue={ initialValues[
-                                        RemoteUserStoreConstants.PROPERTY_NAME_READ_GROUPS] === "true" }
-                                />
-                            </Grid>
+                            { isReadGroupsFeatureEnabled && (
+                                <Grid xs={ 12 }>
+                                    <FinalFormField
+                                        label={ t("remoteUserStores:form.fields.readGroups.label") }
+                                        name={
+                                            `userstore-properties.${RemoteUserStoreConstants.PROPERTY_NAME_READ_GROUPS}`
+                                        }
+                                        FormControlProps={ {
+                                            fullWidth: true,
+                                            margin: "dense"
+                                        } }
+                                        data-componentid={ `${componentId}-field-readGroups` }
+                                        component={ CheckboxFieldAdapter }
+                                        disabled={ isReadOnly }
+                                        hint={
+                                            (<Hint className="hint" compact>
+                                                { t("remoteUserStores:form.fields.readGroups.helperText") }
+                                            </Hint>)
+                                        }
+                                        initialValue={ initialValues[
+                                            RemoteUserStoreConstants.PROPERTY_NAME_READ_GROUPS] === "true" }
+                                    />
+                                </Grid>
+                            ) }
 
                             { userStoreManager === RemoteUserStoreManagerType.RemoteUserStoreManager && (
                                 <>

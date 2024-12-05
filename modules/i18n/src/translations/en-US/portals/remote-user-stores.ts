@@ -51,7 +51,8 @@ export const remoteUserStores: RemoteUserStoresNS = {
                 label: "Group ID",
                 placeholder: "e.g. groupId",
                 validation: {
-                    required: "Group ID mapping is required when read groups is enabled"
+                    readGroupsEnabled: "Group ID mapping is required when read groups is enabled",
+                    required: "Group ID mapping is required"
                 }
             },
             groupnameMapping: {
@@ -59,7 +60,8 @@ export const remoteUserStores: RemoteUserStoresNS = {
                 label: "Group Name",
                 placeholder: "e.g. groupName",
                 validation: {
-                    required: "Group name mapping is required when read groups is enabled"
+                    readGroupsEnabled: "Group name mapping is required when read groups is enabled",
+                    required: "Group name mapping is required"
                 }
             },
             name: {

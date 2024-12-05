@@ -17,11 +17,13 @@
  */
 
 /**
- * Keys used in feature dictionry.
+ * Keys used in feature dictionary.
  */
 export enum UserStoresFeatureDictionaryKeys {
     ReadWriteUserStores = "USERSTORES_READ_WRITE_USERSTORES",
-    OptimizedUserStore = "OPTIMIZED_USERSTORE"
+    OptimizedUserStore = "OPTIMIZED_USERSTORE",
+    ClassicUserStoreReadGroups = "CLASSIC_USERSTORE_READ_GROUPS",
+    OptimizedUserStoreReadGroups = "OPTIMIZED_USERSTORE_READ_GROUPS"
 }
 
 /**
@@ -73,7 +75,9 @@ export class RemoteUserStoreConstants {
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>([
         [ UserStoresFeatureDictionaryKeys.ReadWriteUserStores, "userStores.readWriteUserstores" ],
-        [ UserStoresFeatureDictionaryKeys.OptimizedUserStore, "userStores.optimizedUserstore" ]
+        [ UserStoresFeatureDictionaryKeys.OptimizedUserStore, "userStores.optimizedUserstore" ],
+        [ UserStoresFeatureDictionaryKeys.ClassicUserStoreReadGroups, "userStores.classicUserstore.readGroups" ],
+        [ UserStoresFeatureDictionaryKeys.OptimizedUserStoreReadGroups, "userStores.optimizedUserstore.readGroups" ]
     ]);
 
     public static getPaths(): Map<string, string> {

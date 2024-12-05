@@ -180,6 +180,7 @@ export interface RemoteUserStoresNS {
                 placeholder: string;
                 validation: {
                     required: string;
+                    readGroupsEnabled: string;
                 };
             };
             groupnameMapping: {
@@ -188,6 +189,7 @@ export interface RemoteUserStoresNS {
                 placeholder: string;
                 validation: {
                     required: string;
+                    readGroupsEnabled: string;
                 };
             };
             name: {
