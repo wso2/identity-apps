@@ -6,7 +6,7 @@
         "deprecated": false,
         "variant": "TEXT",
         "display": {
-            "label": "Text",
+            "label": "Text Input",
             "image": "https://www.svgrepo.com/show/437311/textbox.svg"
         },
         "config": {
@@ -32,7 +32,7 @@
         "deprecated": false,
         "variant": "PASSWORD",
         "display": {
-            "label": "Password",
+            "label": "Password Input",
             "image": "https://www.svgrepo.com/show/529125/password.svg"
         },
         "config": {
@@ -56,7 +56,7 @@
         "deprecated": false,
         "variant": "EMAIL",
         "display": {
-            "label": "Email",
+            "label": "Email Input",
             "image": "https://www.svgrepo.com/show/488920/email.svg"
         },
         "config": {
@@ -80,7 +80,7 @@
         "deprecated": false,
         "variant": "TELEPHONE",
         "display": {
-            "label": "Phone",
+            "label": "Phone Input",
             "image": "https://www.svgrepo.com/show/533285/phone.svg"
         },
         "config": {
@@ -104,7 +104,7 @@
         "deprecated": false,
         "variant": "NUMBER",
         "display": {
-            "label": "Number",
+            "label": "Number Input",
             "image": "https://www.svgrepo.com/show/374740/number-input.svg"
         },
         "config": {
@@ -260,7 +260,7 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "Typography",
+            "label": "Text",
             "image": "https://www.svgrepo.com/show/532231/text-size.svg"
         },
         "variants": [
@@ -277,7 +277,7 @@
                 "config": {
                     "field": {
                         "className": "wso2is-typography h1",
-                        "text": "Register Account"
+                        "text": "Heading - H1"
                     },
                     "styles": {
                         "textAlign": "center"
@@ -297,7 +297,7 @@
                 "config": {
                     "field": {
                         "className": "wso2is-typography h2",
-                        "text": "Register Account"
+                        "text": "Heading - H2"
                     },
                     "styles": {
                         "textAlign": "center"
@@ -317,7 +317,7 @@
                 "config": {
                     "field": {
                         "className": "wso2is-typography h3",
-                        "text": "Register Account"
+                        "text": "Heading - H3"
                     },
                     "styles": {
                         "textAlign": "center"
@@ -337,7 +337,7 @@
                 "config": {
                     "field": {
                         "className": "wso2is-typography h4",
-                        "text": "Register Account"
+                        "text": "Heading - H4"
                     },
                     "styles": {
                         "textAlign": "center"
@@ -357,7 +357,7 @@
                 "config": {
                     "field": {
                         "className": "wso2is-typography h5",
-                        "text": "Register Account"
+                        "text": "Heading - H5"
                     },
                     "styles": {
                         "textAlign": "center"
@@ -377,7 +377,7 @@
                 "config": {
                     "field": {
                         "className": "wso2is-typography h6",
-                        "text": "Register Account"
+                        "text": "Heading - H6"
                     },
                     "styles": {
                         "textAlign": "center"
@@ -397,11 +397,10 @@
                 "config": {
                     "field": {
                         "className": "wso2is-typography body1",
-                        "text": "Enter your details to register an account."
+                        "text": "Body Text"
                     },
                     "styles": {
                         "fontSize": "14px",
-                        "color": "#333333",
                         "fontWeight": "400",
                         "textAlign": "center"
                     }
@@ -420,40 +419,35 @@
                 "config": {
                     "field": {
                         "className": "wso2is-typography body2",
-                        "text": "Enter your details to register an account."
+                        "text": "Body Text - Muted"
                     },
                     "styles": {
                         "fontSize": "12px",
-                        "color": "#333333",
-                        "fontWeight": "400",
-                        "textAlign": "center"
-                    }
-                }
-            },
-            {
-                "category": "DISPLAY",
-                "type": "TYPOGRAPHY",
-                "version": "0.1.0",
-                "variant": "CAPTION",
-                "deprecated": false,
-                "display": {
-                    "label": "Caption",
-                    "image": null
-                },
-                "config": {
-                    "field": {
-                        "className": "wso2is-typography caption",
-                        "text": "By clicking the Register button, you agree to our Terms and Conditions."
-                    },
-                    "styles": {
-                        "fontSize": "10px",
-                        "color": "#333333",
                         "fontWeight": "400",
                         "textAlign": "center"
                     }
                 }
             }
         ]
+    },
+    {
+        "category": "DISPLAY",
+        "type": "RICH_TEXT",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Rich Text",
+            "image": "https://www.svgrepo.com/show/374852/display-rich-text.svg"
+        },
+        "config": {
+            "field": {
+                "className": "wso2is-rich-text",
+                "text": "<h3 class=\"ui header\">Rich Text</h3>"
+            },
+            "styles": {
+                "textAlign": "center"
+            }
+        }
     },
     {
         "category": "DISPLAY",

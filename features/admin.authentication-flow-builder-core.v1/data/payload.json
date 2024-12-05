@@ -35,11 +35,8 @@
             "actions": [
                 {
                     "id": "flow-action-password-onboarder-p563u9Yn",
-                    "type": "BUTTON",
                     "action": {
-                        "type": "EXECUTOR",
-                        "boundTo": "flow-block-attributes-g55dfGuK",
-                        "name": "PasswordOnboarder"
+                        "type": "NEXT"
                     },
                     "next": [
                         "flow-node-2"
@@ -47,11 +44,8 @@
                 },
                 {
                     "id": "flow-action-email-otp-verifier-5t8uJ6D3",
-                    "type": "BUTTON",
                     "action": {
-                        "type": "EXECUTOR",
-                        "boundTo": "flow-block-attributes-g55dfGuK",
-                        "name": "EmailOTPVerifier"
+                        "type": "NEXT"
                     },
                     "next": [
                         "flow-node-3"
@@ -59,7 +53,6 @@
                 },
                 {
                     "id": "flow-action-google-sign-up-Rt8uJ6D3",
-                    "type": "BUTTON",
                     "action": {
                         "type": "EXECUTOR",
                         "name": "GoogleSignUp"
@@ -74,19 +67,27 @@
             "id": "flow-node-2",
             "elements": [
                 "flow-display-header-hj6t4D3",
-                "flow-block-attributes-osld3343"
+                "flow-block-attributes-osld3343",
+                "flow-action-go-back-rtessdf3"
             ],
             "actions": [
                 {
                     "id": "flow-action-next-ggh688op",
-                    "type": "submit",
                     "action": {
-                        "type": "NEXT",
-                        "ref": "flow-node-5",
-                        "boundTo": "flow-block-attributes-osld3343"
+                        "type": "EXECUTOR",
+                        "name": "PasswordOnboarder"
                     },
                     "next": [
                         "flow-node-5"
+                    ]
+                },
+                {
+                    "id": "flow-action-go-back-rtessdf3",
+                    "action": {
+                        "type": "PREVIOUS"
+                    },
+                    "previous": [
+                        "flow-node-1"
                     ]
                 }
             ]
@@ -101,10 +102,9 @@
             "actions": [
                 {
                     "id": "flow-action-next-tyG3hp31",
-                    "type": "submit",
                     "action": {
-                        "type": "NEXT",
-                        "ref": "flow-node-4"
+                        "type": "EXECUTOR",
+                        "name": "EmailOTPVerifier"
                     },
                     "next": [
                         "flow-node-4"
@@ -112,10 +112,8 @@
                 },
                 {
                     "id": "flow-action-go-back-er212kfl",
-                    "type": "button",
                     "action": {
-                        "type": "PREVIOUS",
-                        "ref": "flow-page-1"
+                        "type": "PREVIOUS"
                     },
                     "previous": [
                         "flow-node-1"
@@ -133,11 +131,11 @@
             "actions": [
                 {
                     "id": "flow-action-verify-otp-ssd5g6h",
-                    "type": "submit",
                     "action": {
                         "type": "NEXT",
-                        "ref": "flow-node-5",
-                        "boundTo": "flow-block-attributes-45owsew2"
+                        "meta": {
+                            "actionType": "VERIFICATION"
+                        }
                     },
                     "next": [
                         "flow-node-5"
@@ -145,10 +143,8 @@
                 },
                 {
                     "id": "flow-action-go-back-yt5g5t",
-                    "type": "button",
                     "action": {
-                        "type": "PREVIOUS",
-                        "ref": "flow-node-3"
+                        "type": "PREVIOUS"
                     },
                     "previous": [
                         "flow-node-3"
@@ -165,9 +161,8 @@
             "actions": [
                 {
                     "id": "flow-action-done-5t8uJ6D3",
-                    "type": "submit",
                     "action": {
-                        "boundTo": "flow-block-attributes-er203owe"
+                        "type": "DONE"
                     }
                 }
             ]
@@ -226,7 +221,7 @@
             "variant": "H3",
             "config": {
                 "field": {
-                    "className": "wso2is-typography-h3",
+                    "className": "wso2is-typography h3",
                     "text": "Register Account"
                 },
                 "styles": {
@@ -415,7 +410,7 @@
             "variant": "H3",
             "config": {
                 "field": {
-                    "className": "wso2is-typography-h3",
+                    "className": "wso2is-typography h3",
                     "text": "Enter Password"
                 },
                 "styles": {
@@ -483,14 +478,14 @@
             }
         },
         {
-            "id": "flow-display-header-rg6pwt0",
+            "id": "flow-display-header-hj6t4D3",
             "category": "DISPLAY",
             "type": "TYPOGRAPHY",
             "version": "0.1.0",
             "variant": "H3",
             "config": {
                 "field": {
-                    "className": "wso2is-typography-h3",
+                    "className": "wso2is-typography h3",
                     "text": "Enter Email"
                 },
                 "styles": {
@@ -561,7 +556,7 @@
             "variant": "H3",
             "config": {
                 "field": {
-                    "className": "wso2is-typography-h3",
+                    "className": "wso2is-typography h3",
                     "text": "OTP Verification"
                 },
                 "styles": {
@@ -632,7 +627,7 @@
             "variant": "H3",
             "config": {
                 "field": {
-                    "className": "wso2is-typography-h3",
+                    "className": "wso2is-typography h3",
                     "text": "Enter Personal Details"
                 },
                 "styles": {
