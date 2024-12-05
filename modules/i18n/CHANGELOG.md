@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.13.3
+
+### Patch Changes
+
+- [#7179](https://github.com/wso2/identity-apps/pull/7179) [`ffd11318ba4fa76ecb54bd0228466c2f0ad3cd7c`](https://github.com/wso2/identity-apps/commit/ffd11318ba4fa76ecb54bd0228466c2f0ad3cd7c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - [feat] introduce new remote user store impl - show read groups field based on deployment config
+
 ## 2.13.2
 
 ### Patch Changes
