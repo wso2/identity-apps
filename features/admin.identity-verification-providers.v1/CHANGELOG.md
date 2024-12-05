@@ -1,5 +1,18 @@
 # @wso2is/admin.identity-verification-providers.v1
 
+## 2.27.47
+
+### Patch Changes
+
+- [#7101](https://github.com/wso2/identity-apps/pull/7101) [`8def54ebda730604811204f0c1ee968164003bc9`](https://github.com/wso2/identity-apps/commit/8def54ebda730604811204f0c1ee968164003bc9) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Remove the idvp image URL from the API request body and onfido logo
+
+- Updated dependencies []:
+  - @wso2is/admin.connections.v1@2.28.47
+  - @wso2is/admin.core.v1@2.34.47
+  - @wso2is/admin.claims.v1@2.26.6
+  - @wso2is/admin.feature-gate.v1@1.4.47
+  - @wso2is/admin.template-core.v1@1.5.1
+
 ## 2.27.46
 
 ### Patch Changes
