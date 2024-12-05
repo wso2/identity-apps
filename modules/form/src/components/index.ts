@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,7 @@ export * from "./adapters/__DEPRECATED__adapters";
 export * from "./adapters/text-field-adapter";
 export * from "./adapters/url-field-adapter";
 export * from "./adapters/file-picker-adapter";
+export * from "./adapters/select-field-adapter";
 export * from "./adapters/checkbox-field-adapter";
 
 export { default as TextFieldAdapter } from "./adapters/text-field-adapter";
