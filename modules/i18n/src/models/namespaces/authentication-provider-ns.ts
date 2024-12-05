@@ -862,6 +862,9 @@ export interface AuthenticationProviderNS {
                 hint: string;
                 label: string;
                 placeholder: string;
+                validations: {
+                    invalid: string;
+                }
             };
         };
         jitProvisioning: {
