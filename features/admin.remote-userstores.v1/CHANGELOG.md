@@ -1,5 +1,20 @@
 # @wso2is/admin.remote-userstores.v1
 
+## 1.7.5
+
+### Patch Changes
+
+- [#7179](https://github.com/wso2/identity-apps/pull/7179) [`ffd11318ba4fa76ecb54bd0228466c2f0ad3cd7c`](https://github.com/wso2/identity-apps/commit/ffd11318ba4fa76ecb54bd0228466c2f0ad3cd7c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - [feat] introduce new remote user store impl - show read groups field based on deployment config
+
+- Updated dependencies []:
+  - @wso2is/admin.extensions.v1@2.35.8
+  - @wso2is/admin.userstores.v1@2.26.8
+  - @wso2is/admin.applications.v1@2.30.49
+  - @wso2is/admin.claims.v1@2.26.8
+  - @wso2is/admin.core.v1@2.34.49
+  - @wso2is/admin.users.v1@2.29.8
+  - @wso2is/admin.validation.v1@2.26.49
+
 ## 1.7.4
 
 ### Patch Changes

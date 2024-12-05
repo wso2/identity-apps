@@ -1,5 +1,16 @@
 # @wso2is/admin.provisioning.v1
 
+## 2.25.49
+
+### Patch Changes
+
+- Updated dependencies [[`ffd11318ba4fa76ecb54bd0228466c2f0ad3cd7c`](https://github.com/wso2/identity-apps/commit/ffd11318ba4fa76ecb54bd0228466c2f0ad3cd7c)]:
+  - @wso2is/i18n@2.13.3
+  - @wso2is/admin.applications.v1@2.30.49
+  - @wso2is/admin.connections.v1@2.28.49
+  - @wso2is/admin.core.v1@2.34.49
+  - @wso2is/admin.identity-providers.v1@2.26.49
+
 ## 2.25.48
 
 ### Patch Changes
