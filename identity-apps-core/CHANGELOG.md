@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.8.5
+
+### Patch Changes
+
+- [#7170](https://github.com/wso2/identity-apps/pull/7170) [`a9584e4e2385102a159edc61f0484be1e508bf48`](https://github.com/wso2/identity-apps/commit/a9584e4e2385102a159edc61f0484be1e508bf48) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Invoke new signing function to sign the ALOR cookie
+
 ## 2.8.4
 
 ### Patch Changes
