@@ -17,7 +17,7 @@
  */
 
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
-import { I18nConstants } from "../constants";
+import { I18nConstants, UIConstants } from "../constants";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { SCIMConfigs } from "../extensions/configs/scim";
 import { AppUtils } from "../init/app-utils";
@@ -163,7 +163,8 @@ export class Config {
                 window["AppUtils"]?.getConfig()?.ui?.isMultipleEmailsAndMobileNumbersEnabled,
             isPasswordInputValidationEnabled: window["AppUtils"]?.getConfig()?.ui?.isPasswordInputValidationEnabled,
             isProfileUsernameReadonly: window["AppUtils"]?.getConfig()?.ui?.isProfileUsernameReadonly,
-            maxPasswordValue: window[ "AppUtils" ]?.getConfig()?.ui?.maxPasswordValue ?? 64,
+            maxPasswordValue: window[ "AppUtils" ]?.getConfig()?.ui?.maxPasswordValue ??
+                UIConstants.DEFAULT_MAX_PASSWORD_VALUE,
             privacyPolicyConfigs: window["AppUtils"]?.getConfig()?.ui?.privacyPolicyConfigs,
             productName: window["AppUtils"]?.getConfig()?.ui?.productName,
             productVersionConfig: window["AppUtils"]?.getConfig()?.ui?.productVersionConfig,

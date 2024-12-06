@@ -80,4 +80,8 @@ export class UIConstants extends CommonUIConstants {
      * Constant to handle dashboard layout's desktop content top spacing.
      */
     public static readonly DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING: number = 50;
+    /**
+     * Default value for the max password value.
+     */
+    public static readonly DEFAULT_MAX_PASSWORD_VALUE: number = 64;
 }
