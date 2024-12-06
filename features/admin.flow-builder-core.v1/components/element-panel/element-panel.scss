@@ -17,32 +17,32 @@
  */
 
 :root {
-    --wso2is-authentication-flow-builder-elements-drawer-background: #f4f4f4;
-    --wso2is-authentication-flow-builder-elements-drawer-width: 350px;
-    --wso2is-authentication-flow-builder-elements-drawer-mini-width: 350px;
+    --wso2is-flow-builder-element-panel-background: #f4f4f4;
+    --wso2is-flow-builder-element-panel-width: 350px;
+    --wso2is-flow-builder-element-panel-mini-width: 350px;
 }
 
-.authentication-flow-builder-elements-drawer {
-    .authentication-flow-builder-elements-panel {
+.flow-builder-element-panel {
+    .flow-builder-element-panel {
         position: absolute;
-        width: var(--wso2is-authentication-flow-builder-elements-drawer-width);
-        background: var(--wso2is-authentication-flow-builder-elements-drawer-background);
+        width: var(--wso2is-flow-builder-element-panel-width);
+        background: var(--wso2is-flow-builder-element-panel-background);
         box-shadow: 8px 0 18px 0 rgba(0, 0, 0, 0.06);
         border-right: 1px solid #E8E8E8;
         border-left: 1px solid #E8E8E8;
     }
 
     &.mini {
-        .authentication-flow-builder-elements-panel {
-            width: var(--wso2is-authentication-flow-builder-elements-drawer-mini-width)
+        .flow-builder-element-panel {
+            width: var(--wso2is-flow-builder-element-panel-mini-width)
         }
     }
 }
 
-.authentication-flow-builder-elements-drawer {
-    .authentication-flow-builder-elements-panel {
+.flow-builder-element-panel {
+    .flow-builder-element-panel {
 
-        .authentication-flow-builder-elements-panel-content {
+        .flow-builder-element-panel-content {
             padding: var(--oxygen-spacing-1) var(--oxygen-spacing-2);
 
             &.full-height {
@@ -50,13 +50,13 @@
             }
         }
 
-        .authentication-flow-builder-elements-panel-categories {
+        .flow-builder-element-panel-categories {
             box-shadow: none;
-            background-color: var(--asg-auth-flow-builder-flows-side-panel-drawer-content-background);
+            background-color: transparent;
             overflow: hidden;
             transition: height 0.3s ease-in-out;
 
-            .authentication-flow-builder-elements-panel-category-heading {
+            .flow-builder-element-panel-category-heading {
                 .MuiAccordionSummary-content {
                     display: flex;
                     flex-direction: row;
@@ -71,8 +71,8 @@
                 }
             }
 
-            .authentication-flow-builder-elements-panel-category-details {
-                background: var(--wso2is-authentication-flow-builder-elements-drawer-background);
+            .flow-builder-element-panel-category-details {
+                background: var(--wso2is-flow-builder-element-panel-background);
 
                 > .OxygenStack-root {
                     margin-top: var(--oxygen-spacing-2);
@@ -80,7 +80,7 @@
             }
 
             &:not(:first-child) {
-                .authentication-flow-builder-elements-panel-category-heading {
+                .flow-builder-element-panel-category-heading {
                     border-top: 1px solid var(--oxygen-palette-divider);
                 }
             }

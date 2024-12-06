@@ -22,7 +22,7 @@ import Checkbox from "@oxygen-ui/react/Checkbox";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import useAuthenticationFlowBuilderCore from
-    "@wso2is/admin.authentication-flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+    "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import some from "lodash-es/some";
@@ -67,7 +67,7 @@ const AttributeCollectorProperties: FunctionComponent<AttributeCollectorProperti
                     return (
                         <Card
                             key={ attribute.id }
-                            className="authentication-flow-builder-element-panel-draggable-node"
+                            className="flow-builder-element-panel-draggable-node"
                             variant="elevation"
                         >
                             <CardContent>

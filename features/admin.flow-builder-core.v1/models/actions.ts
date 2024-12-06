@@ -16,18 +16,8 @@
  * under the License.
  */
 
-.authentication-flow-builder-element-panel-draggable-node {
-    // TODO: `@oxygen-ui/react/Card` declares a default padding which is a bug.
-    // Remove this once it is handled.
-    // Tracker: https://github.com/wso2/oxygen-ui/issues/300
-    padding: 0;
-
-    .oxygen-card-content:last-child {
-        padding-bottom: var(--oxygen-spacing-2);
-    }
-
-    .authentication-flow-builder-element-panel-draggable-node-avatar {
-        width: 20px;
-        height: 20px;
-    }
+export enum ActionTypes {
+    Next = "NEXT",
+    Previous = "PREVIOUS",
+    Submit = "SUBMIT"
 }

@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { FieldKey, FieldValue, Properties } from "@wso2is/admin.authentication-flow-builder-core.v1/models/base";
-import { Element, ElementCategories } from "@wso2is/admin.authentication-flow-builder-core.v1/models/elements";
+import { FieldKey, FieldValue, Properties } from "@wso2is/admin.flow-builder-core.v1/models/base";
+import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import ElementPropertyFactory from "./element-property-factory";
-import FieldExtendedProperties from "./field/field-extended-properties";
+import FieldExtendedProperties from "./extended-properties/field-extended-properties";
 
 /**
  * Props interface of {@link ElementProperties}

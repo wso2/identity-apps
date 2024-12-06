@@ -21,8 +21,8 @@ import { DnDProvider } from "@wso2is/dnd";
 import { ReactFlowProvider } from "@xyflow/react";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
-import ElementPropertiesPanel from "./element-properties/element-properties-panel";
-import ElementsPanel from "./elements-panel/elements-panel";
+import ElementPropertiesPanel from "./element-property-panel/element-property-panel";
+import ElementPanel from "./element-panel/element-panel";
 import VisualFlow from "./visual-flow";
 import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
 import { Elements } from "../models/elements";
@@ -60,11 +60,11 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         >
             <ReactFlowProvider>
                 <DnDProvider>
-                    <ElementsPanel elements={ elements } open={ isElementPanelOpen }>
+                    <ElementPanel elements={ elements } open={ isElementPanelOpen }>
                         <ElementPropertiesPanel open={ isElementPropertiesPanelOpen }>
                             <VisualFlow />
                         </ElementPropertiesPanel>
-                    </ElementsPanel>
+                    </ElementPanel>
                 </DnDProvider>
             </ReactFlowProvider>
         </div>

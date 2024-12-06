@@ -19,7 +19,7 @@
 import CommonComponentPropertyFactory, {
     CommonComponentPropertyFactoryPropsInterface
 // eslint-disable-next-line max-len
-} from "@wso2is/admin.authentication-flow-builder-core.v1/components/element-properties/common-component-property-factory";
+} from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/common-component-property-factory";
 import React, { FunctionComponent, ReactElement } from "react";
 
 /**

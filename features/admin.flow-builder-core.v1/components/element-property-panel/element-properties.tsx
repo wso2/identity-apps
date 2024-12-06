@@ -43,7 +43,7 @@ export type ElementPropertiesPropsInterface = IdentifiableComponentInterface & H
  * @returns The ElementProperties component.
  */
 const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
-    "data-componentid": componentId = "authentication-flow-builder-element-properties",
+    "data-componentid": componentId = "element-properties",
     ...rest
 }: ElementPropertiesPropsInterface): ReactElement => {
     const { updateNodeData } = useReactFlow();
@@ -101,7 +101,7 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
     };
 
     return (
-        <div className="authentication-flow-builder-element-properties" data-componentid={ componentId } { ...rest }>
+        <div className="flow-builder-element-properties" data-componentid={ componentId } { ...rest }>
             { lastInteractedElement ? (
                 <Stack gap={ 1 }>
                     { hasVariants && (

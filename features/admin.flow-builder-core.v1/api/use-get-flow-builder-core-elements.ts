@@ -23,7 +23,7 @@ import widgets from "../data/widgets.json";
 import { Elements } from "../models/elements";
 
 /**
- * Hook to get the elements supported by the authentication flow builder.
+ * Hook to get the elements supported by the flow builder.
  *
  * This function calls the GET method of the following endpoint to get the elements.
  * - TODO: Fill this
@@ -32,7 +32,7 @@ import { Elements } from "../models/elements";
  *
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetAuthenticationFlowBuilderCoreElements = <Data = Elements, Error = RequestErrorInterface>(
+const useGetFlowBuilderCoreElements = <Data = Elements, Error = RequestErrorInterface>(
     _shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     return {
@@ -48,4 +48,4 @@ const useGetAuthenticationFlowBuilderCoreElements = <Data = Elements, Error = Re
     };
 };
 
-export default useGetAuthenticationFlowBuilderCoreElements;
+export default useGetFlowBuilderCoreElements;

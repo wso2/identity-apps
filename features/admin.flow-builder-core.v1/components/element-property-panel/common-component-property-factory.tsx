@@ -59,7 +59,7 @@ export interface CommonComponentPropertyFactoryPropsInterface extends Identifiab
  * @returns The CommonComponentPropertyFactory component.
  */
 const CommonComponentPropertyFactory: FunctionComponent<CommonComponentPropertyFactoryPropsInterface> = ({
-    "data-componentid": componentId = "authentication-flow-builder-component-property-factory",
+    "data-componentid": componentId = "common-component-property-factory",
     element,
     propertyKey,
     propertyValue,
@@ -67,9 +67,7 @@ const CommonComponentPropertyFactory: FunctionComponent<CommonComponentPropertyF
 }: CommonComponentPropertyFactoryPropsInterface): ReactElement | null => {
     if (propertyKey === "text") {
         if (element.type === ComponentTypes.RichText) {
-            return (
-                <RichText ToolbarProps={ { history: false, strikeThrough: false } } />
-            );
+            return <RichText ToolbarProps={ { history: false, strikeThrough: false } } />;
         }
     }
 

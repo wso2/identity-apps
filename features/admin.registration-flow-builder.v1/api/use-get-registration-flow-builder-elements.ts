@@ -16,10 +16,9 @@
  * under the License.
  */
 
-import useGetAuthenticationFlowBuilderCoreElements from
-    "@wso2is/admin.authentication-flow-builder-core.v1/api/use-get-authentication-flow-builder-core-elements";
-import { Elements } from "@wso2is/admin.authentication-flow-builder-core.v1/models/elements";
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import useGetFlowBuilderCoreElements from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-builder-core-elements";
+import { Elements } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import widgets from "../data/widgets.json";
 
 /**
@@ -36,7 +35,7 @@ import widgets from "../data/widgets.json";
 const useGetRegistrationFlowBuilderElements = <Data = Elements, Error = RequestErrorInterface>(
     _shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
-    const { data: coreElements } = useGetAuthenticationFlowBuilderCoreElements();
+    const { data: coreElements } = useGetFlowBuilderCoreElements();
 
     return {
         data: ({

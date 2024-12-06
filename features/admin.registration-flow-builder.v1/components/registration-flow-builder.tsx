@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import DecoratedVisualFlow from "@wso2is/admin.authentication-flow-builder-core.v1/components/decorated-visual-flow";
+import DecoratedVisualFlow from "@wso2is/admin.flow-builder-core.v1/components/decorated-visual-flow";
 import AuthenticationFlowBuilderCoreProvider from
-    "@wso2is/admin.authentication-flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
+    "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import ElementProperties from "./element-properties/element-properties";

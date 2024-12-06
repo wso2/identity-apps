@@ -24,16 +24,16 @@ import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import ElementProperties from "./element-properties";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
-import "./element-properties-panel.scss";
+import "./element-property-panel.scss";
 
 /**
- * Props interface of {@link ElementPropertiesPanel}
+ * Props interface of {@link ElementPropertyPanel}
  */
-export type ElementPropertiesPanelPropsInterface = DrawerProps &
+export type ElementPropertyPanelPropsInterface = DrawerProps &
     IdentifiableComponentInterface &
     HTMLAttributes<HTMLDivElement>;
 
-// TODO: Move this to Oxygen UI once https://github.com/wso2/oxygen-ui/issues/158 is fixed.
+// TODO: Move this to Oxygen UI.
 const ChevronsRight = ({ width = 16, height = 16 }: { width: number; height: number }): ReactElement => (
     <svg width={ width } height={ height } viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -45,18 +45,18 @@ const ChevronsRight = ({ width = 16, height = 16 }: { width: number; height: num
 );
 
 /**
- * Visual editor element properties panel to pick the necessary properties of the selected element.
+ * Component to render the element property panel.
  *
  * @param props - Props injected to the component.
- * @returns Visual editor elements panel.
+ * @returns The ElementPropertyPanel component.
  */
-const ElementPropertiesPanel: FunctionComponent<ElementPropertiesPanelPropsInterface> = ({
-    "data-componentid": componentId = "authentication-flow-builder-elements-panel",
+const ElementPropertyPanel: FunctionComponent<ElementPropertyPanelPropsInterface> = ({
+    "data-componentid": componentId = "flow-builder-property-panel",
     children,
     open,
     anchor = "right",
     ...rest
-}: ElementPropertiesPanelPropsInterface): ReactElement => {
+}: ElementPropertyPanelPropsInterface): ReactElement => {
     const { elementPropertiesPanelHeading, setIsOpenElementPropertiesPanel } = useAuthenticationFlowBuilderCore();
 
     return (
@@ -76,7 +76,7 @@ const ElementPropertiesPanel: FunctionComponent<ElementPropertiesPanelPropsInter
                 anchor={ anchor }
                 onClose={ () => {} }
                 elevation={ 5 }
-                PaperProps={ { className: "authentication-flow-builder-element-properties-panel" } }
+                PaperProps={ { className: "flow-builder-element-property-panel" } }
                 BackdropProps={ { style: { position: "absolute" } } }
                 ModalProps={ {
                     container: document.getElementById("drawer-container"),
@@ -91,14 +91,14 @@ const ElementPropertiesPanel: FunctionComponent<ElementPropertiesPanelPropsInter
                     }
                 } }
                 hideBackdrop={ true }
-                className={ classNames("authentication-flow-builder-element-properties-drawer", { mini: !open }) }
+                className={ classNames("flow-builder-element-property-panel", { mini: !open }) }
                 variant={ open ? "permanent" : "temporary" }
             >
                 <Box
                     display="flex"
                     justifyContent="space-between"
                     alignItems="center"
-                    className="authentication-flow-builder-element-properties-panel-header"
+                    className="flow-builder-element-property-panel-header"
                 >
                     { elementPropertiesPanelHeading }
                     <IconButton onClick={ () => setIsOpenElementPropertiesPanel(false) }>
@@ -106,7 +106,7 @@ const ElementPropertiesPanel: FunctionComponent<ElementPropertiesPanelPropsInter
                     </IconButton>
                 </Box>
                 <div
-                    className={ classNames("authentication-flow-builder-element-properties-panel-content", {
+                    className={ classNames("flow-builder-element-property-panel-content", {
                         "full-height": true
                     }) }
                 >
@@ -117,4 +117,4 @@ const ElementPropertiesPanel: FunctionComponent<ElementPropertiesPanelPropsInter
     );
 };
 
-export default ElementPropertiesPanel;
+export default ElementPropertyPanel;

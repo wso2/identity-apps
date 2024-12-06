@@ -21,52 +21,48 @@ import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import Stack from "@oxygen-ui/react/Stack";
 // eslint-disable-next-line max-len
-import { CommonComponentPropertyFactoryPropsInterface } from "@wso2is/admin.authentication-flow-builder-core.v1/components/element-properties/common-component-property-factory";
+import { CommonComponentPropertyFactoryPropsInterface } from "@wso2is/admin.flow-builder-core.v1/components/element-properties/common-component-property-factory";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useState } from "react";
-import useGetSupportedProfileAttributes from "../../../api/use-get-supported-profile-attributes";
-import { Attribute } from "../../../models/attributes";
+import { RegistrationFlowActionTypes } from "../../../models/actions";
 
 /**
- * Props interface of {@link FieldExtendedProperties}
+ * Props interface of {@link ButtonExtendedProperties}
  */
-export type FieldExtendedPropertiesPropsInterface = CommonComponentPropertyFactoryPropsInterface &
+export type ButtonExtendedPropertiesPropsInterface = CommonComponentPropertyFactoryPropsInterface &
     IdentifiableComponentInterface;
 
 /**
  * Extended properties for the field elements.
  *
  * @param props - Props injected to the component.
- * @returns The FieldExtendedProperties component.
+ * @returns The ButtonExtendedProperties component.
  */
-const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInterface> = ({
-    "data-componentid": componentId = "field-extended-properties",
+const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsInterface> = ({
+    "data-componentid": componentId = "button-extended-properties",
     element,
     onChange
-}: FieldExtendedPropertiesPropsInterface): ReactElement => {
-    const { data: attributes } = useGetSupportedProfileAttributes();
-    const [ selectedAttribute, setSelectedAttribute ] = useState<Attribute>(null);
+}: ButtonExtendedPropertiesPropsInterface): ReactElement => {
+    const [ selectedActionType, setSelectedActionType ] = useState<RegistrationFlowActionTypes>(null);
 
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
             <FormControl size="small" variant="outlined">
                 <Select
-                    labelId="attribute-select-label"
-                    id="attribute-selector"
-                    value={ selectedAttribute?.claimURI }
-                    label="Attribute"
-                    placeholder="Select an attribute"
+                    labelId="action-type-select-label"
+                    id="action-type-selector"
+                    value={ selectedActionType }
+                    label="Action Type"
+                    placeholder="Select an action type"
                     onChange={ (e: ChangeEvent<HTMLInputElement>) => {
-                        const newValue: string = e?.target?.value || "";
+                        // const newValue: string = e?.target?.value || "";
 
-                        onChange("name", selectedAttribute?.claimURI, newValue, element);
+                        // onChange("name", selectedActionType?.claimURI, newValue, element);
 
-                        setSelectedAttribute(
-                            attributes?.find((attribute: Attribute) => attribute?.claimURI === newValue)
-                        );
+                        // setSelectedActionType();
                     } }
                 >
-                    { attributes?.map((attribute: Attribute) => (
+                    { Object.entries(RegistrationFlowActionTypes)?.map((attribute: Attribute) => (
                         <MenuItem key={ attribute?.claimURI } value={ attribute?.claimURI }>
                             { attribute?.displayName }
                         </MenuItem>
@@ -77,4 +73,4 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
     );
 };
 
-export default FieldExtendedProperties;
+export default ButtonExtendedProperties;

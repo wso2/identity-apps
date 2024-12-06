@@ -43,23 +43,23 @@ export interface ElementPanelDraggableNodePropsInterface
  * Draggable node for the visual editor element panel.
  *
  * @param props - Props injected to the component.
- * @returns Draggable Visual Editor node component.
+ * @returns The ElementPanelDraggableNode component.
  */
 const ElementPanelDraggableNode: FunctionComponent<ElementPanelDraggableNodePropsInterface> = ({
-    "data-componentid": componentId = "authentication-flow-visual-editor-draggable-node",
+    "data-componentid": componentId = "element-panel-draggable-node",
     id,
     node,
     ...rest
 }: ElementPanelDraggableNodePropsInterface): ReactElement => {
     return (
         <DraggableNode key={ id } node={ node } data-componentid={ componentId } { ...rest }>
-            <Card className="authentication-flow-builder-element-panel-draggable-node" variant="elevation">
+            <Card className="flow-builder-element-panel-draggable-node" variant="elevation">
                 <CardContent>
                     <Stack direction="row" spacing={ 1 }>
                         <Avatar
                             src={ node?.display?.image }
                             variant="square"
-                            className="authentication-flow-builder-element-panel-draggable-node-avatar"
+                            className="flow-builder-element-panel-draggable-node-avatar"
                         />
                         <Typography>{ node?.display?.label }</Typography>
                     </Stack>

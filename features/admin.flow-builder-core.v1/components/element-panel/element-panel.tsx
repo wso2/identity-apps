@@ -32,12 +32,12 @@ import ElementPanelDraggableNode from "./element-panel-draggable-node";
 import { Component } from "../../models/component";
 import { Elements } from "../../models/elements";
 import { Widget } from "../../models/widget";
-import "./elements-panel.scss";
+import "./element-panel.scss";
 
 /**
- * Props interface of {@link ElementsPanel}
+ * Props interface of {@link ElementPanel}
  */
-export interface ElementsPanelPropsInterface
+export interface ElementPanelPropsInterface
     extends DrawerProps,
         IdentifiableComponentInterface,
         HTMLAttributes<HTMLDivElement> {
@@ -113,18 +113,18 @@ const WidgetsIcon = ({ ...rest }: SVGProps<SVGSVGElement>): ReactElement => (
 /* eslint-enable max-len */
 
 /**
- * Visual editor elements drawer panel.
+ * Flow builder element panel that contains draggable components.
  *
  * @param props - Props injected to the component.
- * @returns Visual editor elements panel.
+ * @returns The ElementPanel component.
  */
-const ElementsPanel: FunctionComponent<ElementsPanelPropsInterface> = ({
-    "data-componentid": componentId = "authentication-flow-builder-elements-panel",
+const ElementPanel: FunctionComponent<ElementPanelPropsInterface> = ({
+    "data-componentid": componentId = "element-panel",
     children,
     open,
     elements,
     ...rest
-}: ElementsPanelPropsInterface): ReactElement => {
+}: ElementPanelPropsInterface): ReactElement => {
     const { components, widgets, nodes } = elements;
 
     return (
@@ -143,7 +143,7 @@ const ElementsPanel: FunctionComponent<ElementsPanelPropsInterface> = ({
                 open={ open }
                 onClose={ () => {} }
                 elevation={ 5 }
-                PaperProps={ { className: "authentication-flow-builder-elements-panel" } }
+                PaperProps={ { className: "flow-builder-element-panel" } }
                 BackdropProps={ { style: { position: "absolute" } } }
                 ModalProps={ {
                     container: document.getElementById("drawer-container"),
@@ -158,11 +158,11 @@ const ElementsPanel: FunctionComponent<ElementsPanelPropsInterface> = ({
                     }
                 } }
                 hideBackdrop={ true }
-                className={ classNames("authentication-flow-builder-elements-drawer", { mini: !open }) }
+                className={ classNames("flow-builder-element-panel", { mini: !open }) }
                 variant={ open ? "permanent" : "temporary" }
             >
                 <div
-                    className={ classNames("authentication-flow-builder-elements-panel-content", {
+                    className={ classNames("flow-builder-element-panel-content", {
                         "full-height": true
                     }) }
                 >
@@ -170,10 +170,10 @@ const ElementsPanel: FunctionComponent<ElementsPanelPropsInterface> = ({
                         square
                         disableGutters
                         defaultExpanded
-                        className={ classNames("authentication-flow-builder-elements-panel-categories") }
+                        className={ classNames("flow-builder-element-panel-categories") }
                     >
                         <AccordionSummary
-                            className="authentication-flow-builder-elements-panel-category-heading"
+                            className="flow-builder-element-panel-category-heading"
                             expandIcon={ <ChevronRightIcon size={ 14 } /> }
                             aria-controls="panel1-content"
                             id="panel1-header"
@@ -183,7 +183,7 @@ const ElementsPanel: FunctionComponent<ElementsPanelPropsInterface> = ({
                             </IconButton>
                             <Typography variant="h6">Nodes</Typography>
                         </AccordionSummary>
-                        <AccordionDetails className="authentication-flow-builder-elements-panel-category-details">
+                        <AccordionDetails className="flow-builder-element-panel-category-details">
                             <Typography variant="body2">Use these nodes as building blocks of your flow</Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { nodes.map((node: Component) => (
@@ -195,10 +195,10 @@ const ElementsPanel: FunctionComponent<ElementsPanelPropsInterface> = ({
                     <Accordion
                         square
                         disableGutters
-                        className={ classNames("authentication-flow-builder-elements-panel-categories") }
+                        className={ classNames("flow-builder-element-panel-categories") }
                     >
                         <AccordionSummary
-                            className="authentication-flow-builder-elements-panel-category-heading"
+                            className="flow-builder-element-panel-category-heading"
                             expandIcon={ <ChevronRightIcon size={ 14 } /> }
                             aria-controls="panel1-content"
                             id="panel1-header"
@@ -208,7 +208,7 @@ const ElementsPanel: FunctionComponent<ElementsPanelPropsInterface> = ({
                             </IconButton>
                             <Typography variant="h6">Components</Typography>
                         </AccordionSummary>
-                        <AccordionDetails className="authentication-flow-builder-elements-panel-category-details">
+                        <AccordionDetails className="flow-builder-element-panel-category-details">
                             <Typography variant="body2">Use these components to build up custom UI blocks</Typography>
                             <Stack direction="column" spacing={ 1 }>
                                 { components.map((node: Component) => (
@@ -220,10 +220,10 @@ const ElementsPanel: FunctionComponent<ElementsPanelPropsInterface> = ({
                     <Accordion
                         square
                         disableGutters
-                        className={ classNames("authentication-flow-builder-elements-panel-categories") }
+                        className={ classNames("flow-builder-element-panel-categories") }
                     >
                         <AccordionSummary
-                            className="authentication-flow-builder-elements-panel-category-heading"
+                            className="flow-builder-element-panel-category-heading"
                             expandIcon={ <ChevronRightIcon size={ 14 } /> }
                             aria-controls="panel1-content"
                             id="panel1-header"
@@ -233,7 +233,7 @@ const ElementsPanel: FunctionComponent<ElementsPanelPropsInterface> = ({
                             </IconButton>
                             <Typography variant="h6">Widgets</Typography>
                         </AccordionSummary>
-                        <AccordionDetails className="authentication-flow-builder-elements-panel-category-details">
+                        <AccordionDetails className="flow-builder-element-panel-category-details">
                             <Typography variant="body2">
                                 Use these widgets to build up custom UI prompts and collect data
                             </Typography>
@@ -250,4 +250,4 @@ const ElementsPanel: FunctionComponent<ElementsPanelPropsInterface> = ({
     );
 };
 
-export default ElementsPanel;
+export default ElementPanel;

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Element, ElementCategories } from "@wso2is/admin.authentication-flow-builder-core.v1/models/elements";
+import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import ComponentPropertyFactory from "./component-property-factory";

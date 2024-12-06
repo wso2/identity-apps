@@ -18,8 +18,8 @@
 
 import CommonWidgetPropertyFactory, {
     CommonWidgetPropertyFactoryPropsInterface
-} from "@wso2is/admin.authentication-flow-builder-core.v1/components/element-properties/common-widget-property-factory";
-import { WidgetTypes } from "@wso2is/admin.authentication-flow-builder-core.v1/models/widget";
+} from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/common-widget-property-factory";
+import { WidgetTypes } from "@wso2is/admin.flow-builder-core.v1/models/widget";
 import React, { FunctionComponent, ReactElement } from "react";
 import AttributeCollectorProperties from "./widgets/attribute-collector-properties";
 

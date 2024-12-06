@@ -18,9 +18,9 @@
 
 import CommonNodeFactory, {
     CommonNodeFactoryPropsInterface
-} from "@wso2is/admin.authentication-flow-builder-core.v1/components/nodes/common-node-factory";
-import { ElementCategories } from "@wso2is/admin.authentication-flow-builder-core.v1/models/elements";
-import { WidgetTypes } from "@wso2is/admin.authentication-flow-builder-core.v1/models/widget";
+} from "@wso2is/admin.flow-builder-core.v1/components/nodes/common-node-factory";
+import { ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
+import { WidgetTypes } from "@wso2is/admin.flow-builder-core.v1/models/widget";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";

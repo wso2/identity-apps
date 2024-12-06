@@ -17,8 +17,8 @@
  */
 
 export {
-    default as useGetAuthenticationFlowBuilderCoreElements
-} from "./api/use-get-authentication-flow-builder-core-elements";
+    default as useGetFlowBuilderCoreElements
+} from "./api/use-get-flow-builder-core-elements";
 
 export * from "./models/base";
 export * from "./models/component";
@@ -35,6 +35,6 @@ export { default as useAuthenticationFlowBuilderCore } from "./hooks/use-authent
 export { default as CommonNodeFactory } from "./components/nodes/common-node-factory";
 export {
     default as CommonComponentPropertyFactory
-} from "./components/element-properties/common-component-property-factory";
-export { default as CommonWidgetPropertyFactory } from "./components/element-properties/common-widget-property-factory";
+} from "./components/element-property-panel/common-component-property-factory";
+export { default as CommonWidgetPropertyFactory } from "./components/element-property-panel/common-widget-property-factory";
 export { default as DecoratedVisualFlow } from "./components/decorated-visual-flow";
