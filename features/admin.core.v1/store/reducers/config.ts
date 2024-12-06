@@ -267,7 +267,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isSignatureValidationCertificateAliasEnabled: undefined,
             isTrustedAppConsentRequired: undefined,
             listAllAttributeDialects: undefined,
-            maxPasswordValue: undefined,
+            passwordPolicyConfigs: null,
             privacyPolicyConfigs: null,
             productName: "",
             productVersionConfig: null,

@@ -89,10 +89,6 @@ export class UIConstants {
      */
     public static readonly ADMINISTRATOR_ROLE_DISPLAY_NAME: string = "Administrator";
 
-    /**
-     * Default value for the max password value.
-     */
-    public static readonly DEFAULT_MAX_PASSWORD_VALUE: number = 64;
 
     /**
      * Console feature map.

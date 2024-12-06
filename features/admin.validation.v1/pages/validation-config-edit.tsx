@@ -99,7 +99,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         state?.config?.ui?.features?.loginAndRegistration?.disabledFeatures);
     const isRuleBasedPasswordExpiryDisabled: boolean = disabledFeatures?.includes("ruleBasedPasswordExpiry");
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
-    const maxPasswordValue: number = useSelector((state: AppState) => state?.config?.ui?.maxPasswordValue);
+    const maxPasswordValue: number = useSelector((state: AppState) =>
+        state?.config?.ui?.passwordPolicyConfigs?.maxPasswordAllowedLength);
     const maxPasswordValueLength: number = maxPasswordValue.toString().length;
 
     const [ isSubmitting, setSubmitting ] = useState<boolean>(false);

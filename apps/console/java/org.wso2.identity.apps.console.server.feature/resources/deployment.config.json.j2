@@ -1845,9 +1845,9 @@
         "isPasswordInputValidationEnabled": true,
         {% endif %}
         {% if identity_mgt.password_policy.max_password_allowed_length is defined %}
-        "maxPasswordValue: {{ identity_mgt.password_policy.max_password_allowed_length }},
+        "maxPasswordAllowedLength: {{ identity_mgt.password_policy.max_password_allowed_length }},
         {% else %}
-        "maxPasswordValue: 64,
+        "maxPasswordAllowedLength: 64,
         {% endif %}
         "isSignatureValidationCertificateAliasEnabled": {{ console.applications.ui.certificate_alias_enabled }},
         "listAllAttributeDialects": {{ console.list_all_attribute_dialects }},
