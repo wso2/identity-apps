@@ -15,7 +15,7 @@
                 "className": "wso2is-input text",
                 "hint": "",
                 "label": "Text",
-                "required": true,
+                "required": false,
                 "multiline": false,
                 "placeholder": "Enter your text",
                 "defaultValue": "",
@@ -41,7 +41,7 @@
                 "className": "wso2is-input password",
                 "hint": "",
                 "label": "Password",
-                "required": true,
+                "required": false,
                 "multiline": false,
                 "placeholder": "Enter your password",
                 "defaultValue": ""
@@ -65,7 +65,7 @@
                 "className": "wso2is-input email",
                 "hint": "",
                 "label": "Email",
-                "required": true,
+                "required": false,
                 "multiline": false,
                 "placeholder": "Enter your email address",
                 "defaultValue": ""
@@ -89,7 +89,7 @@
                 "className": "wso2is-input phone",
                 "hint": "",
                 "label": "Phone",
-                "required": true,
+                "required": false,
                 "multiline": false,
                 "placeholder": "Enter your phone number",
                 "defaultValue": ""
@@ -113,9 +113,33 @@
                 "className": "wso2is-input number",
                 "hint": "",
                 "label": "Number",
-                "required": true,
+                "required": false,
                 "multiline": false,
                 "placeholder": "Enter a number",
+                "defaultValue": ""
+            },
+            "styles": {}
+        }
+    },
+    {
+        "category": "FIELD",
+        "type": "INPUT",
+        "version": "0.1.0",
+        "deprecated": false,
+        "variant": "DATE",
+        "display": {
+            "label": "Date Input",
+            "image": "https://www.svgrepo.com/show/488144/date.svg"
+        },
+        "config": {
+            "field": {
+                "type": "date",
+                "className": "wso2is-input date",
+                "hint": "",
+                "label": "Date",
+                "required": false,
+                "multiline": false,
+                "placeholder": "Enter a date",
                 "defaultValue": ""
             },
             "styles": {}

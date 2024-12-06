@@ -25,9 +25,9 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useReactFlow } from "@xyflow/react";
 import capitalize from "lodash-es/capitalize";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, HTMLAttributes, ReactElement, useEffect, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
-import { Base, FieldKey, FieldValue } from "../../models/base";
+import { Base } from "../../models/base";
 import { Component } from "../../models/component";
 import { Element } from "../../models/elements";
 
@@ -47,12 +47,19 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
     ...rest
 }: ElementPropertiesPropsInterface): ReactElement => {
     const { updateNodeData } = useReactFlow();
-    const { lastInteractedElement, setLastInteractedElement, ElementPropertyFactory, lastInteractedNodeId } = useAuthenticationFlowBuilderCore();
+    const {
+        lastInteractedElement,
+        setLastInteractedElement,
+        ElementProperties,
+        lastInteractedNodeId
+    } = useAuthenticationFlowBuilderCore();
 
     const hasVariants: boolean = !isEmpty(lastInteractedElement?.variants);
 
     const changeSelectedVariant = (selected: string) => {
-        const selectedVariant = lastInteractedElement?.variants?.find((element: Component) => element.variant === selected);
+        const selectedVariant: Component = lastInteractedElement?.variants?.find(
+            (element: Component) => element.variant === selected
+        );
 
         updateNodeData(lastInteractedNodeId, (node: any) => {
             const components: Component = node?.data?.components?.map((component: any) => {
@@ -104,7 +111,9 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
                                 id={ `${lastInteractedElement?.variant}-variants` }
                                 value={ lastInteractedElement?.variant }
                                 label="variant"
-                                onChange={ event => changeSelectedVariant(event.target.value as string) }
+                                onChange={ (e: ChangeEvent<HTMLInputElement>) =>
+                                    changeSelectedVariant(e.target.value as string)
+                                }
                             >
                                 { lastInteractedElement?.variants?.map((element: Base) => (
                                     <MenuItem key={ element?.variant } value={ element?.variant }>
@@ -114,16 +123,13 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
                             </Select>
                         </FormControl>
                     ) }
-                    { lastInteractedElement &&
-                        Object.entries(lastInteractedElement?.config?.field).map(([ key, value ]: [FieldKey, FieldValue]) => (
-                            <ElementPropertyFactory
-                                element={ lastInteractedElement }
-                                key={ `${lastInteractedElement.id}-${key}` }
-                                propertyKey={ key }
-                                propertyValue={ value }
-                                onChange={ handlePropertyChange }
-                            />
-                        )) }
+                    { lastInteractedElement && (
+                        <ElementProperties
+                            element={ lastInteractedElement }
+                            properties={ lastInteractedElement?.config?.field }
+                            onChange={ handlePropertyChange }
+                        />
+                    ) }
                 </Stack>
             ) : (
                 <Typography variant="body2" color="textSecondary" sx={ { padding: 2 } }>

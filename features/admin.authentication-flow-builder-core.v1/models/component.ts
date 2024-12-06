@@ -58,3 +58,8 @@ export enum TypographyVariants {
     Body1 = "BODY1",
     Body2 = "BODY2"
 }
+
+export enum DividerVariants {
+    Horizontal = "HORIZONTAL",
+    Vertical = "VERTICAL"
+}

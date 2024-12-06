@@ -19,7 +19,7 @@
 import Box from "@oxygen-ui/react/Box";
 import Button, { ButtonProps } from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
-import Divider from "@oxygen-ui/react/Divider";
+import Divider, { DividerProps } from "@oxygen-ui/react/Divider";
 import FormControl from "@oxygen-ui/react/FormControl";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormLabel from "@oxygen-ui/react/FormLabel";
@@ -35,7 +35,7 @@ import parse, { domToReact } from "html-react-parser";
 import Mustache from "mustache";
 import React, { FunctionComponent, ReactElement } from "react";
 import { FieldOption } from "../../models/base";
-import { ButtonVariants, Component, ComponentTypes, InputVariants } from "../../models/component";
+import { ButtonVariants, Component, ComponentTypes, DividerVariants, InputVariants } from "../../models/component";
 
 /**
  * Props interface of {@link CommonNodeFactory}
@@ -168,14 +168,28 @@ export const CommonNodeFactory: FunctionComponent<CommonNodeFactoryPropsInterfac
             </>
         );
     } else if (node.type === ComponentTypes.Divider) {
-        return <Divider />;
+        let config: DividerProps = {};
+
+        if (node?.variant === DividerVariants.Horizontal || node?.variant === DividerVariants.Vertical) {
+            config = {
+                ...config,
+                orientation: node?.variant?.toLowerCase()
+            };
+        } else {
+            config = {
+                ...config,
+                variant: node?.variant?.toLowerCase()
+            };
+        }
+
+        return <Divider { ...config }>{ node?.config?.field?.text }</Divider>;
     } else if (node.type === ComponentTypes.Image) {
         return (
             <Box display="flex" alignItems="center" justifyContent="center">
                 <img
-                    src={ node?.variants?.[0]?.config?.field?.src }
-                    alt={ node?.variants?.[0]?.config?.field?.alt }
-                    style={ node?.variants?.[0]?.config?.styles }
+                    src={ node?.config?.field?.src }
+                    alt={ node?.config?.field?.alt }
+                    style={ node?.config?.styles }
                 />
             </Box>
         );

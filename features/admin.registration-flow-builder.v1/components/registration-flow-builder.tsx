@@ -21,7 +21,7 @@ import AuthenticationFlowBuilderCoreProvider from
     "@wso2is/admin.authentication-flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
-import ElementPropertyFactory from "./element-properties/element-property-factory";
+import ElementProperties from "./element-properties/element-properties";
 import NodeFactory from "./nodes/node-factory";
 import useGetRegistrationFlowBuilderElements from "../api/use-get-registration-flow-builder-elements";
 import RegistrationFlowBuilderProvider from "../providers/registration-flow-builder-provider";
@@ -46,7 +46,7 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
     return (
         <AuthenticationFlowBuilderCoreProvider
             NodeFactory={ NodeFactory }
-            ElementPropertyFactory={ ElementPropertyFactory }
+            ElementProperties={ ElementProperties }
         >
             <RegistrationFlowBuilderProvider>
                 <DecoratedVisualFlow elements={ elements } data-componentid={ componentId } { ...rest } />

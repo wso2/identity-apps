@@ -38,7 +38,7 @@ export interface AuthenticationFlowBuilderProviderProps {
     /**
      * The factory for creating element properties.
      */
-    ElementPropertyFactory: FunctionComponent<any>;
+    ElementProperties: FunctionComponent<any>;
 }
 
 /**
@@ -49,7 +49,7 @@ export interface AuthenticationFlowBuilderProviderProps {
  */
 const AuthenticationFlowBuilderCoreProvider = ({
     NodeFactory,
-    ElementPropertyFactory,
+    ElementProperties,
     children
 }: PropsWithChildren<AuthenticationFlowBuilderProviderProps>): ReactElement => {
     const [ isElementPanelOpen, setIsElementPanelOpen ] = useState<boolean>(true);
@@ -91,7 +91,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
     return (
         <AuthenticationFlowBuilderCoreContext.Provider
             value={ {
-                ElementPropertyFactory,
+                ElementProperties,
                 NodeFactory,
                 elementPropertiesPanelHeading,
                 isElementPanelOpen,

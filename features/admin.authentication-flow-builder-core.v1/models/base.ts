@@ -130,6 +130,8 @@ export type FieldValue = any;
 
 export type Field = StrictField & Record<FieldKey, FieldValue>;
 
+export type Properties = Field | CSSProperties;
+
 export interface BaseConfig {
     /**
      * Field properties.
