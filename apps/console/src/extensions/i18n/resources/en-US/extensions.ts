@@ -3039,17 +3039,17 @@ export const extensions: Extensions = {
                         message: "Error updating claim"
                     },
                     success: {
-                        description: "Successfully updated the {{claimName}} uniqueness validation scope to across user stores.",
+                        description: "Successfully updated the {{claimName}} uniqueness validation scope.",
                         message: "Update successful"
                     }
                 },
                 claimUpdateConfirmation: {
                     header: "Before you proceed",
                     message: "Uniqueness validation for the selected attribute(s) will be applied across user stores.",
-                    content: "Alternate log-in identifiers work only if the attribute(s) values are unique across " +
-                        "the organization. This setting will ensure that the required uniqueness of attribute(s) is " +
-                        "guaranteed for new users created through the system. However, it doesn't guarantee the same " +
-                        "for existing users' attribute(s).",
+                    content: "This setting ensures values of selected attribute(s) remain unique across the " +
+                    "organization for new users, which is required for alternate login identifiers to work. " +
+                    "However, it does not guarantee uniqueness for attribute(s) of existing users that remain " +
+                    "unchanged.",
                     assertionHint: "I understand and wish to proceed"
                 }
             },
