@@ -29,7 +29,10 @@ import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Encode } from "@wso2is/core/utils";
 import { Node } from "@xyflow/react";
+import parse, { domToReact } from "html-react-parser";
+import Mustache from "mustache";
 import React, { FunctionComponent, ReactElement } from "react";
 import { FieldOption } from "../../models/base";
 import { ButtonVariants, Component, ComponentTypes, InputVariants } from "../../models/component";
@@ -146,12 +149,23 @@ export const CommonNodeFactory: FunctionComponent<CommonNodeFactoryPropsInterfac
     } else if (node.type === ComponentTypes.Typography) {
         return (
             <Typography
-                variant={ node?.variants?.[2]?.variant?.toLowerCase() }
-                color={ node?.variants?.[2]?.config?.field?.color }
-                style={ node?.variants?.[2]?.config?.styles }
+                variant={ node?.variant.toLowerCase() }
+                style={ node?.config?.styles }
             >
-                { node?.variants?.[2]?.config?.field?.text }
+                { node?.config?.field?.text }
             </Typography>
+        );
+    } else if (node.type === ComponentTypes.RichText) {
+        return (
+            <>
+                { parse(node?.config?.field?.text, {
+                    replace(domNode) {
+                        if ((domNode as unknown as any).name === "h1") {
+                            <Typography variant="h1">{ domToReact((domNode as unknown as any).children) }</Typography>;
+                        }
+                    }
+                }) }
+            </>
         );
     } else if (node.type === ComponentTypes.Divider) {
         return <Divider />;

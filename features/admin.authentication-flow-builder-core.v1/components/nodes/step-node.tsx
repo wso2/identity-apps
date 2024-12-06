@@ -40,6 +40,7 @@ import React, {
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import { Component } from "../../models/component";
 import "./step-node.scss";
+import isEmpty from "lodash-es/isEmpty";
 
 /**
  * Props interface of {@link StepNode}
@@ -97,10 +98,21 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
             const droppedData: string = event.dataTransfer.getData("application/json");
 
             if (droppedData) {
-                const newComponent: Component = {
+                let newComponent: Component = {
                     ...JSON.parse(droppedData),
                     id: generateComponentId("element")
                 };
+
+                // If the component has variants, add the default variant to the root.
+                if (!isEmpty(newComponent?.variants)) {
+                    const defaultVariantType: string =  newComponent?.display?.defaultVariant ?? newComponent?.variants[0]?.variant;
+                    const defaultVariant: Component = newComponent.variants.find((variant: Component) => variant.variant === defaultVariantType);
+
+                    newComponent = {
+                        ...newComponent,
+                        ...defaultVariant
+                    };
+                }
 
                 updateNodeData(nodeId, (node: any) => {
                     return {

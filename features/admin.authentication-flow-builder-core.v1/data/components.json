@@ -186,7 +186,8 @@
         "deprecated": false,
         "display": {
             "label": "Button",
-            "image": "https://www.svgrepo.com/show/450681/button.svg"
+            "image": "https://www.svgrepo.com/show/450681/button.svg",
+            "defaultVariant": "PRIMARY"
         },
         "variants": [
             {
@@ -261,7 +262,8 @@
         "deprecated": false,
         "display": {
             "label": "Text",
-            "image": "https://www.svgrepo.com/show/532231/text-size.svg"
+            "image": "https://www.svgrepo.com/show/532231/text-size.svg",
+            "defaultVariant": "H3"
         },
         "variants": [
             {
@@ -456,7 +458,8 @@
         "deprecated": false,
         "display": {
             "label": "Divider",
-            "image": "https://www.svgrepo.com/show/471336/divider.svg"
+            "image": "https://www.svgrepo.com/show/471336/divider.svg",
+            "defaultVariant": "HORIZONTAL"
         },
         "variants": [
             {
@@ -504,7 +507,8 @@
         "deprecated": false,
         "display": {
             "label": "Image",
-            "image": "https://www.svgrepo.com/show/532576/image-square.svg"
+            "image": "https://www.svgrepo.com/show/532576/image-square.svg",
+            "defaultVariant": "IMAGE_BLOCK"
         },
         "variants": [
             {
@@ -512,15 +516,15 @@
                 "type": "IMAGE",
                 "version": "0.1.0",
                 "deprecated": false,
-                "variant": "LOGO",
+                "variant": "IMAGE_BLOCK",
                 "display": {
-                    "label": "Logo",
+                    "label": "Image Block",
                     "image": null
                 },
                 "config": {
                     "field": {
                         "src": "https://www.svgrepo.com/show/508699/landscape-placeholder.svg",
-                        "className": "wso2is-image logo"
+                        "className": "wso2is-image image-block"
                     },
                     "styles": {
                         "width": "inherit",

@@ -80,6 +80,10 @@ export interface BaseDisplay {
      * Image URL of the component or the primitive.
      */
     image: string;
+    /**
+     * The default variant of the component or the primitive.
+     */
+    defaultVariant?: string;
 }
 
 /**

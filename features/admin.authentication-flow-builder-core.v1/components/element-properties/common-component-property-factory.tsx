@@ -22,7 +22,9 @@ import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import startCase from "lodash-es/startCase";
 import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
+import { ComponentTypes } from "../../models/component";
 import { Element } from "../../models/elements";
+import RichText from "../nodes/rich-text/rich-text";
 
 /**
  * Props interface of {@link CommonComponentPropertyFactory}
@@ -63,6 +65,14 @@ const CommonComponentPropertyFactory: FunctionComponent<CommonComponentPropertyF
     propertyValue,
     onChange
 }: CommonComponentPropertyFactoryPropsInterface): ReactElement | null => {
+    if (propertyKey === "text") {
+        if (element.type === ComponentTypes.RichText) {
+            return (
+                <RichText ToolbarProps={ { history: false, strikeThrough: false } } />
+            );
+        }
+    }
+
     if (typeof propertyValue === "boolean") {
         return (
             <FormControlLabel

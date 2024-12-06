@@ -29,7 +29,8 @@ export enum ComponentTypes {
     Divider = "DIVIDER",
     Choice = "CHOICE",
     Image = "IMAGE",
-    Typography = "TYPOGRAPHY"
+    RichText = "RICH_TEXT",
+    Typography = "TYPOGRAPHY",
 }
 
 export enum InputVariants {
@@ -45,4 +46,15 @@ export enum ButtonVariants {
     Primary = "PRIMARY",
     Secondary = "SECONDARY",
     Text = "TEXT"
+}
+
+export enum TypographyVariants {
+    H1 = "H1",
+    H2 = "H2",
+    H3 = "H3",
+    H4 = "H4",
+    H5 = "H5",
+    H6 = "H6",
+    Body1 = "BODY1",
+    Body2 = "BODY2"
 }

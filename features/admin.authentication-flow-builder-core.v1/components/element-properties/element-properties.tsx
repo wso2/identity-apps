@@ -47,22 +47,34 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
     ...rest
 }: ElementPropertiesPropsInterface): ReactElement => {
     const { updateNodeData } = useReactFlow();
-    const { lastInteractedElement, ElementPropertyFactory, lastInteractedNodeId } = useAuthenticationFlowBuilderCore();
+    const { lastInteractedElement, setLastInteractedElement, ElementPropertyFactory, lastInteractedNodeId } = useAuthenticationFlowBuilderCore();
 
     const hasVariants: boolean = !isEmpty(lastInteractedElement?.variants);
 
-    const [ selectedVariant, setSelectedVariant ] = useState<Base>(null);
-
-    useEffect(() => {
-        if (hasVariants) {
-            setSelectedVariant(lastInteractedElement?.variants?.[0]);
-        } else {
-            setSelectedVariant(lastInteractedElement);
-        }
-    }, [ lastInteractedElement ]);
-
     const changeSelectedVariant = (selected: string) => {
-        setSelectedVariant(lastInteractedElement?.variants?.find((element: Base) => element.variant === selected));
+        const selectedVariant = lastInteractedElement?.variants?.find((element: Component) => element.variant === selected);
+
+        updateNodeData(lastInteractedNodeId, (node: any) => {
+            const components: Component = node?.data?.components?.map((component: any) => {
+                if (component.id === lastInteractedElement.id) {
+                    return {
+                        ...component,
+                        ...selectedVariant
+                    };
+                }
+
+                return component;
+            });
+
+            setLastInteractedElement({
+                ...lastInteractedElement,
+                ...selectedVariant
+            });
+
+            return {
+                components
+            };
+        });
     };
 
     const handlePropertyChange = (propertyKey: string, previousValue: any, newValue: any, element: Element) => {
@@ -88,9 +100,9 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
                     { hasVariants && (
                         <FormControl size="small" variant="outlined">
                             <Select
-                                labelId={ `${selectedVariant?.variant}-variants` }
-                                id={ `${selectedVariant?.variant}-variants` }
-                                value={ selectedVariant?.variant }
+                                labelId={ `${lastInteractedElement?.variant}-variants` }
+                                id={ `${lastInteractedElement?.variant}-variants` }
+                                value={ lastInteractedElement?.variant }
                                 label="variant"
                                 onChange={ event => changeSelectedVariant(event.target.value as string) }
                             >
@@ -102,11 +114,11 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
                             </Select>
                         </FormControl>
                     ) }
-                    { selectedVariant &&
-                        Object.entries(selectedVariant?.config?.field).map(([ key, value ]: [FieldKey, FieldValue]) => (
+                    { lastInteractedElement &&
+                        Object.entries(lastInteractedElement?.config?.field).map(([ key, value ]: [FieldKey, FieldValue]) => (
                             <ElementPropertyFactory
-                                element={ selectedVariant }
-                                key={ `${selectedVariant.id}-${key}` }
+                                element={ lastInteractedElement }
+                                key={ `${lastInteractedElement.id}-${key}` }
                                 propertyKey={ key }
                                 propertyValue={ value }
                                 onChange={ handlePropertyChange }
