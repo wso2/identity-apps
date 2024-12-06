@@ -30,6 +30,7 @@ export interface Claim {
     regEx: string;
     required: boolean;
     supportedByDefault: boolean;
+    uniquenessScope?: UniquenessScope;
     attributeMapping?: AttributeMapping[];
     properties?: Property[];
 }
@@ -124,4 +125,16 @@ export interface SCIMResource {
     description: string;
     schema: string;
     schemaExtensions?: SCIMSchemaExtension[];
+}
+
+/**
+ * Enum representing the scope of uniqueness validation for the claim.
+ * - NONE: The claim value doesn't need to be unique
+ * - WITHIN_USERSTORE: The claim value must be unique within a single userstore
+ * - ACROSS_USERSTORES: The claim value must be unique across all userstores
+ */
+export enum UniquenessScope {
+    NONE = "NONE",
+    WITHIN_USERSTORE = "WITHIN_USERSTORE",
+    ACROSS_USERSTORES = "ACROSS_USERSTORES"
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -101,6 +101,15 @@ export interface DynamicFieldPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Validation function for the key field
+     */
+    keyValidation?: (key: string) => boolean;
+    /**
+     * Warning message to show when key validation fails
+     * Can be string or JSX content
+     */
+    keyValidationWarningMessage?: string | ReactElement;
 }
 
 /**
@@ -128,6 +137,8 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
         requiredField,
         duplicateKeyErrorMsg,
         readOnly,
+        keyValidation,
+        keyValidationWarningMessage,
         [ "data-testid" ]: testId
     } = props;
 
@@ -138,6 +149,7 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
     const [ updateMapIndex, setUpdateMapIndex ] = useState<number>(null);
     const [ showAddErrorMsg, setAddShowErrorMsg ] = useState(false);
     const [ showEditErrorMsg, setShowEditErrorMsg ] = useState(false);
+    const [ showKeyValidationWarningMsg, setShowKeyValidationWarningMsg ] = useState(false);
 
     const initRender = useRef(true);
 
@@ -203,9 +215,22 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                     </Message>
                                 )
                             }
+                            {
+                                showKeyValidationWarningMsg && (
+                                    <Message warning>
+                                        { keyValidationWarningMessage }
+                                    </Message>
+                                )
+                            }
                             <Forms
                                 onSubmit={
                                     (values: Map<string, FormValue>) => {
+                                        if (keyValidation && !keyValidation(values.get("key").toString())) {
+                                            setShowKeyValidationWarningMsg(true);
+
+                                            return;
+                                        }
+                                        setShowKeyValidationWarningMsg(false);
                                         if (!showAddErrorMsg) {
                                             const tempFields: Map<number, KeyValue> = new Map<number, KeyValue>(fields);
                                             const newIndex: number = tempFields.size > 0

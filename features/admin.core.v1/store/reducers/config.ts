@@ -250,6 +250,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                     enabled: false
                 }
             },
+            isClaimUniquenessValidationEnabled: undefined,
             isClientSecretHashEnabled: undefined,
             isCookieConsentBannerEnabled: undefined,
             isCustomClaimMappingEnabled: undefined,
