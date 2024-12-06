@@ -100,7 +100,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const isRuleBasedPasswordExpiryDisabled: boolean = disabledFeatures?.includes("ruleBasedPasswordExpiry");
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const maxPasswordValue: number = useSelector((state: AppState) => state?.config?.ui?.maxPasswordValue);
-    const maxPasswordLength: number = maxPasswordValue.toString().length;
+    const maxPasswordValueLength: number = maxPasswordValue.toString().length;
 
     const [ isSubmitting, setSubmitting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<
@@ -773,7 +773,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                             required
                             hidden={ false }
                             placeholder={ "min" }
-                            maxLength={ maxPasswordLength }
+                            maxLength={ maxPasswordValueLength }
                             minLength={
                                 ValidationConfigConstants
                                     .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
@@ -834,7 +834,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                     }
                                 );
                             } }
-                            maxLength={ maxPasswordLength }
+                            maxLength={ maxPasswordValueLength }
                             labelPosition="top"
                             minLength={
                                 ValidationConfigConstants
@@ -1025,7 +1025,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         required
                         hidden={ false }
                         placeholder={ "min" }
-                        maxLength={ maxPasswordLength }
+                        maxLength={ maxPasswordValueLength }
                         minLength={
                             ValidationConfigConstants
                                 .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
@@ -1093,7 +1093,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 }
                             );
                         } }
-                        maxLength={ maxPasswordLength }
+                        maxLength={ maxPasswordValueLength }
                         labelPosition="top"
                         minLength={
                             ValidationConfigConstants
@@ -1167,7 +1167,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 }
                             );
                         } }
-                        maxLength={ maxPasswordLength }
+                        maxLength={ maxPasswordValueLength }
                         minLength={
                             ValidationConfigConstants
                                 .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
@@ -1231,7 +1231,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 }
                             );
                         } }
-                        maxLength={ maxPasswordLength }
+                        maxLength={ maxPasswordValueLength }
                         minLength={
                             ValidationConfigConstants
                                 .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
@@ -1296,7 +1296,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 }
                             );
                         } }
-                        maxLength={ maxPasswordLength }
+                        maxLength={ maxPasswordValueLength }
                         minLength={
                             ValidationConfigConstants
                                 .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
