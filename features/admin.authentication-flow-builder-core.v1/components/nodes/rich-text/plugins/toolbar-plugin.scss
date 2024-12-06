@@ -1,0 +1,25 @@
+:root {
+    --wso2is-rich-text-toolbar-vertical-spacing: calc(var(--oxygen-spacing-1) / 2);
+}
+
+.rich-text-toolbar {
+    margin-bottom: var(--oxygen-spacing-2);
+
+    .oxygen-icon-button {
+        margin: var(--wso2is-rich-text-toolbar-vertical-spacing) calc(var(--wso2is-rich-text-toolbar-vertical-spacing) / 2) var(--wso2is-rich-text-toolbar-vertical-spacing) var(--wso2is-rich-text-toolbar-vertical-spacing);
+        border-radius: var(--oxygen-shape-borderRadius);
+
+        &.active {
+            background-color: rgba(var(--oxygen-palette-action-activeChannel) / var(--oxygen-palette-action-hoverOpacity));
+        }
+
+        .MuiTouchRipple-root {
+            border-radius: var(--oxygen-shape-borderRadius);
+        }
+    }
+
+    .oxygen-divider {
+        margin: var(--oxygen-spacing-1);
+    }
+}
+

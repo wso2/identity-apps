@@ -8,6 +8,8 @@
     "dependencies": {
         "@emotion/react": "^11.11.0",
         "@emotion/styled": "^11.11.0",
+        "@lexical/react": "^0.21.0",
+        "@lexical/utils": "^0.21.0",
         "@monaco-editor/react": "^4.5.1",
         "@mui/icons-material": "^5.11.16",
         "@mui/lab": "5.0.0-alpha.129",
@@ -22,6 +24,7 @@
         "@xyflow/react": "^12.3.2",
         "classnames": "^2.2.6",
         "i18next": "^21.9.1",
+        "lexical": "^0.21.0",
         "lodash-es": "^4.17.21",
         "react-i18next": "^11.18.5",
         "react-redux": "^7.2.9",
