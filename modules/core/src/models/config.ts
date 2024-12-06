@@ -212,6 +212,10 @@ export interface CommonUIConfigInterface<T = Record<string, unknown>> {
     */
     isPasswordInputValidationEnabled: boolean;
     /**
+     * Max value for the password length.
+     */
+    maxPasswordValue: number;
+    /**
      * Privacy Policy configs.
      */
     privacyPolicyConfigs: PrivacyPolicyConfigsInterface;

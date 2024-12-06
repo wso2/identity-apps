@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -163,6 +163,7 @@ export class Config {
                 window["AppUtils"]?.getConfig()?.ui?.isMultipleEmailsAndMobileNumbersEnabled,
             isPasswordInputValidationEnabled: window["AppUtils"]?.getConfig()?.ui?.isPasswordInputValidationEnabled,
             isProfileUsernameReadonly: window["AppUtils"]?.getConfig()?.ui?.isProfileUsernameReadonly,
+            maxPasswordValue: window[ "AppUtils" ]?.getConfig()?.ui?.maxPasswordValue ?? 64,
             privacyPolicyConfigs: window["AppUtils"]?.getConfig()?.ui?.privacyPolicyConfigs,
             productName: window["AppUtils"]?.getConfig()?.ui?.productName,
             productVersionConfig: window["AppUtils"]?.getConfig()?.ui?.productVersionConfig,
