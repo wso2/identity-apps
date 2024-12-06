@@ -89,7 +89,6 @@ export class UIConstants {
      */
     public static readonly ADMINISTRATOR_ROLE_DISPLAY_NAME: string = "Administrator";
 
-
     /**
      * Console feature map.
      *
