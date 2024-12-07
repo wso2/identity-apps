@@ -54,8 +54,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { Icon } from "semantic-ui-react";
-import { EditGuestUser } from "../components";
-import { AdministratorConstants } from "../constants";
+import { EditGuestUser } from "../components/guests/edit-guest-user";
+import { AdministratorConstants } from "../constants/users";
 
 /**
  * Admin User Edit page.

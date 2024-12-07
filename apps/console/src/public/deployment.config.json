@@ -495,8 +495,8 @@
             },
             "consoleSettings": {
                 "disabledFeatures": [
-                    "consoleSettings.invitedExternalAdmins",
-                    "consoleSettings.privilegedUsers"
+                    "consoleSettings.editableConsoleRoles",
+                    "consoleSettings.firstLevelOrgloginFlowConfiguration"
                 ],
                 "enabled": true,
                 "scopes": {
