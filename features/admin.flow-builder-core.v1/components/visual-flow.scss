@@ -1,0 +1,64 @@
+/**
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.react-flow {
+    --xy-background-pattern-color-props: #e1e1e1;
+    --xy-edge-stroke-width-default: 3;
+    --xy-handle-height: 15px;
+    --xy-handle-width: 15px;
+    --xy-handle-top-default: 50%;
+    --xy-handle-top-offset: var(--wso2is-flow-builder-step-action-panel-height);
+}
+
+.react-flow.dark {
+    --xy-background-pattern-color-props: #848484;
+    --xy-background-color-default: #48484C;
+    --xy-edge-stroke-default: var(--oxygen-palette-grey-200);
+    --xy-edge-stroke-width-default: 3;
+    --xy-handle-background-color-default: var(--oxygen-palette-grey-200);
+    --xy-handle-border-color-default: var(--oxygen-palette-grey-400);
+}
+
+.react-flow {
+    .react-flow__edge {
+        &:hover {
+            .react-flow__edge-path {
+                stroke: var(--oxygen-palette-primary-main);
+            }
+
+            .react-flow__handle {
+                border-color: var(--oxygen-palette-primary-main);
+            }
+        }
+    }
+
+    .react-flow__handle {
+        height: var(--xy-handle-height);
+        width: var(--xy-handle-width);
+        border-width: var(--xy-handle-border-width-default);
+
+        // TODO: Fix offset issues.
+        // &.react-flow__handle-left, &.react-flow__handle-right {
+        //     top: calc(var(--xy-handle-top-default) + (var(--xy-handle-top-offset) / 2));
+        // }
+
+        &:hover {
+            border-color: var(--oxygen-palette-primary-main);
+        }
+    }
+}

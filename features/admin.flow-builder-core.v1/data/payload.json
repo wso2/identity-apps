@@ -1,0 +1,678 @@
+{
+    "flow": {
+        "pages": [
+            {
+                "id": "flow-page-1",
+                "nodes": [
+                    "flow-node-1"
+                ]
+            },
+            {
+                "id": "flow-page-2",
+                "nodes": [
+                    "flow-node-2",
+                    "flow-node-3",
+                    "flow-node-4"
+                ]
+            },
+            {
+                "id": "flow-page-3",
+                "nodes": [
+                    "flow-node-5"
+                ]
+            }
+        ]
+    },
+    "nodes": [
+        {
+            "id": "flow-node-1",
+            "elements": [
+                "flow-display-header-8uJ6t4D3",
+                "flow-block-attributes-g55dfGuK",
+                "flow-display-horizontal-divider-G6d3t8uJ",
+                "flow-action-google-sign-up-Rt8uJ6D3"
+            ],
+            "actions": [
+                {
+                    "id": "flow-action-password-onboarder-p563u9Yn",
+                    "action": {
+                        "type": "NEXT"
+                    },
+                    "next": [
+                        "flow-node-2"
+                    ]
+                },
+                {
+                    "id": "flow-action-email-otp-verifier-5t8uJ6D3",
+                    "action": {
+                        "type": "NEXT"
+                    },
+                    "next": [
+                        "flow-node-3"
+                    ]
+                },
+                {
+                    "id": "flow-action-google-sign-up-Rt8uJ6D3",
+                    "action": {
+                        "type": "EXECUTOR",
+                        "name": "GoogleSignUp"
+                    },
+                    "next": [
+                        "flow-node-5"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "flow-node-2",
+            "elements": [
+                "flow-display-header-hj6t4D3",
+                "flow-block-attributes-osld3343",
+                "flow-action-go-back-rtessdf3"
+            ],
+            "actions": [
+                {
+                    "id": "flow-action-next-ggh688op",
+                    "action": {
+                        "type": "EXECUTOR",
+                        "name": "PasswordOnboarder"
+                    },
+                    "next": [
+                        "flow-node-5"
+                    ]
+                },
+                {
+                    "id": "flow-action-go-back-rtessdf3",
+                    "action": {
+                        "type": "PREVIOUS"
+                    },
+                    "previous": [
+                        "flow-node-1"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "flow-node-3",
+            "elements": [
+                "flow-display-header-rg6pwt0",
+                "flow-block-attributes-53fdsfsp",
+                "flow-action-go-back-er212kfl"
+            ],
+            "actions": [
+                {
+                    "id": "flow-action-next-tyG3hp31",
+                    "action": {
+                        "type": "EXECUTOR",
+                        "name": "EmailOTPVerifier"
+                    },
+                    "next": [
+                        "flow-node-4"
+                    ]
+                },
+                {
+                    "id": "flow-action-go-back-er212kfl",
+                    "action": {
+                        "type": "PREVIOUS"
+                    },
+                    "previous": [
+                        "flow-node-1"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "flow-node-4",
+            "elements": [
+                "flow-display-header-GG456y7",
+                "flow-block-attributes-45owsew2",
+                "flow-action-go-back-yt5g5t"
+            ],
+            "actions": [
+                {
+                    "id": "flow-action-verify-otp-ssd5g6h",
+                    "action": {
+                        "type": "NEXT",
+                        "meta": {
+                            "actionType": "VERIFICATION"
+                        }
+                    },
+                    "next": [
+                        "flow-node-5"
+                    ]
+                },
+                {
+                    "id": "flow-action-go-back-yt5g5t",
+                    "action": {
+                        "type": "PREVIOUS"
+                    },
+                    "previous": [
+                        "flow-node-3"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "flow-node-5",
+            "elements": [
+                "flow-display-header-45wTrU",
+                "flow-block-attributes-er203owe"
+            ],
+            "actions": [
+                {
+                    "id": "flow-action-done-5t8uJ6D3",
+                    "action": {
+                        "type": "DONE"
+                    }
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "id": "flow-block-attributes-g55dfGuK",
+            "nodes": [
+                "flow-field-email-Rt8uJ6D3",
+                "flow-field-username-F6D3t8uJ",
+                "flow-field-first-name-r7u4F1GG",
+                "flow-field-last-name-r7u4F1GG",
+                "flow-field-dob-G6D3t8uJ",
+                "flow-action-password-onboarder-p563u9Yn",
+                "flow-display-horizontal-divider-67f8uJ6D3",
+                "flow-action-email-otp-verifier-5t8uJ6D3"
+            ]
+        },
+        {
+            "id": "flow-block-attributes-53fdsfsp",
+            "nodes": [
+                "flow-field-email-Rt8uJ6D3",
+                "flow-action-next-tyG3hp31"
+            ]
+        },
+        {
+            "id": "flow-block-attributes-45owsew2",
+            "nodes": [
+                "flow-field-otp-mn44gh0j",
+                "flow-action-verify-otp-ssd5g6h"
+            ]
+        },
+        {
+            "id": "flow-block-attributes-osld3343",
+            "nodes": [
+                "flow-field-password-HK8uJ903",
+                "flow-field-confirm-password-GH63t78g",
+                "flow-action-next-ggh688op"
+            ]
+        },
+        {
+            "id": "flow-block-attributes-er203owe",
+            "nodes": [
+                "flow-field-nic-RR342gr",
+                "flow-action-done-5t8uJ6D3"
+            ]
+        }
+    ],
+    "elements": [
+        {
+            "id": "flow-display-header-8uJ6t4D3",
+            "category": "DISPLAY",
+            "type": "TYPOGRAPHY",
+            "version": "0.1.0",
+            "variant": "H3",
+            "config": {
+                "field": {
+                    "className": "wso2is-typography h3",
+                    "text": "Register Account"
+                },
+                "styles": {
+                    "textAlign": "center"
+                }
+            }
+        },
+        {
+            "id": "flow-field-username-F6D3t8uJ",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "TEXT",
+            "config": {
+                "field": {
+                    "type": "text",
+                    "name": "username",
+                    "className": "wso2is-input text",
+                    "hint": "",
+                    "label": "Username",
+                    "required": true,
+                    "multiline": false,
+                    "placeholder": "Enter your username",
+                    "defaultValue": "",
+                    "minLength": 3,
+                    "maxLength": 50
+                },
+                "styles": {}
+            }
+        },
+        {
+            "id": "flow-field-first-name-r7u4F1GG",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "TEXT",
+            "config": {
+                "field": {
+                    "type": "text",
+                    "name": "firstName",
+                    "className": "wso2is-input text",
+                    "hint": "",
+                    "label": "First Name",
+                    "required": true,
+                    "multiline": false,
+                    "placeholder": "Enter your first name",
+                    "defaultValue": "",
+                    "minLength": 3,
+                    "maxLength": 50
+                },
+                "styles": {}
+            }
+        },
+        {
+            "id": "flow-field-last-name-r7u4F1GG",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "TEXT",
+            "config": {
+                "field": {
+                    "type": "text",
+                    "name": "lastName",
+                    "className": "wso2is-input text",
+                    "hint": "",
+                    "label": "Last Name",
+                    "required": true,
+                    "multiline": false,
+                    "placeholder": "Enter your last name",
+                    "defaultValue": "",
+                    "minLength": 3,
+                    "maxLength": 50
+                },
+                "styles": {}
+            }
+        },
+        {
+            "id": "flow-field-dob-G6D3t8uJ",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "DATE",
+            "config": {
+                "field": {
+                    "type": "date",
+                    "name": "dob",
+                    "className": "wso2is-input date",
+                    "hint": "",
+                    "label": "Birth Date",
+                    "required": false,
+                    "multiline": false,
+                    "placeholder": "Enter your birth date",
+                    "defaultValue": ""
+                },
+                "styles": {}
+            }
+        },
+        {
+            "id": "flow-action-password-onboarder-p563u9Yn",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "variant": "PRIMARY",
+            "config": {
+                "field": {
+                    "type": "submit",
+                    "className": "wso2is-button",
+                    "text": "Continue with Password"
+                },
+                "styles": {
+                    "width": "100%"
+                }
+            }
+        },
+        {
+            "id": "flow-display-horizontal-divider-67f8uJ6D3",
+            "category": "DISPLAY",
+            "type": "DIVIDER",
+            "version": "0.1.0",
+            "variant": "HORIZONTAL",
+            "config": {
+                "field": {
+                    "className": "wso2is-divider-horizontal",
+                    "text": "Or"
+                },
+                "styles": {}
+            }
+        },
+        {
+            "id": "flow-action-email-otp-verifier-5t8uJ6D3",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "deprecated": false,
+            "variant": "PRIMARY",
+            "config": {
+                "field": {
+                    "action": "EmailOTPVerifier",
+                    "type": "submit",
+                    "className": "wso2is-button",
+                    "label": "Continue with Email OTP"
+                },
+                "styles": {
+                    "width": "100%"
+                }
+            }
+        },
+        {
+            "id": "flow-display-horizontal-divider-G6d3t8uJ",
+            "category": "DISPLAY",
+            "type": "DIVIDER",
+            "version": "0.1.0",
+            "variant": "HORIZONTAL",
+            "config": {
+                "field": {
+                    "className": "wso2is-divider-horizontal",
+                    "text": "Or"
+                },
+                "styles": {}
+            }
+        },
+        {
+            "id": "flow-action-google-sign-up-Rt8uJ6D3",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "deprecated": false,
+            "variant": "SOCIAL_BUTTON",
+            "config": {
+                "field": {
+                    "action": "GoogleSignUp",
+                    "type": "button",
+                    "className": "wso2is-social-button",
+                    "label": "Continue with Google Sign Up"
+                },
+                "styles": {
+                    "width": "100%"
+                }
+            }
+        },
+        {
+            "id": "flow-display-header-hj6t4D3",
+            "category": "DISPLAY",
+            "type": "TYPOGRAPHY",
+            "version": "0.1.0",
+            "variant": "H3",
+            "config": {
+                "field": {
+                    "className": "wso2is-typography h3",
+                    "text": "Enter Password"
+                },
+                "styles": {
+                    "textAlign": "center"
+                }
+            }
+        },
+        {
+            "id": "flow-field-password-HK8uJ903",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "PASSWORD",
+            "config": {
+                "field": {
+                    "type": "password",
+                    "name": "password",
+                    "className": "wso2is-input password",
+                    "hint": "",
+                    "label": "Password",
+                    "required": true,
+                    "multiline": false,
+                    "placeholder": "Enter your password",
+                    "defaultValue": ""
+                },
+                "styles": {}
+            }
+        },
+        {
+            "id": "flow-field-confirm-password-GH63t78g",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "PASSWORD",
+            "config": {
+                "field": {
+                    "type": "password",
+                    "name": "confirmPassword",
+                    "className": "wso2is-input password",
+                    "hint": "",
+                    "label": "Confirm Password",
+                    "required": true,
+                    "multiline": false,
+                    "placeholder": "Re-enter your password",
+                    "defaultValue": ""
+                },
+                "styles": {}
+            }
+        },
+        {
+            "id": "flow-action-next-ggh688op",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "variant": "PRIMARY",
+            "config": {
+                "field": {
+                    "type": "submit",
+                    "className": "wso2is-button",
+                    "text": "Next"
+                },
+                "styles": {
+                    "width": "100%"
+                }
+            }
+        },
+        {
+            "id": "flow-display-header-hj6t4D3",
+            "category": "DISPLAY",
+            "type": "TYPOGRAPHY",
+            "version": "0.1.0",
+            "variant": "H3",
+            "config": {
+                "field": {
+                    "className": "wso2is-typography h3",
+                    "text": "Enter Email"
+                },
+                "styles": {
+                    "textAlign": "center"
+                }
+            }
+        },
+        {
+            "id": "flow-field-email-Rt8uJ6D3",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "EMAIL",
+            "config": {
+                "field": {
+                    "type": "email",
+                    "name": "email",
+                    "className": "wso2is-input email",
+                    "hint": "",
+                    "label": "Email",
+                    "required": true,
+                    "multiline": false,
+                    "placeholder": "Enter your email address",
+                    "defaultValue": ""
+                },
+                "styles": {}
+            }
+        },
+        {
+            "id": "flow-action-next-tyG3hp31",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "variant": "PRIMARY",
+            "config": {
+                "field": {
+                    "type": "submit",
+                    "className": "wso2is-button",
+                    "text": "Continue"
+                },
+                "styles": {
+                    "width": "100%"
+                }
+            }
+        },
+        {
+            "id": "flow-action-go-back-er212kfl",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "variant": "SECONDARY",
+            "config": {
+                "field": {
+                    "type": "submit",
+                    "className": "wso2is-button",
+                    "text": "Go back"
+                },
+                "styles": {
+                    "width": "100%"
+                }
+            }
+        },
+        {
+            "id": "flow-display-header-GG456y7",
+            "category": "DISPLAY",
+            "type": "TYPOGRAPHY",
+            "version": "0.1.0",
+            "variant": "H3",
+            "config": {
+                "field": {
+                    "className": "wso2is-typography h3",
+                    "text": "OTP Verification"
+                },
+                "styles": {
+                    "textAlign": "center"
+                }
+            }
+        },
+        {
+            "id": "flow-field-otp-mn44gh0j",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "OTP",
+            "config": {
+                "field": {
+                    "type": "text",
+                    "name": "otp",
+                    "className": "wso2is-input otp",
+                    "hint": "",
+                    "label": "OTP",
+                    "required": true,
+                    "multiline": false,
+                    "placeholder": "Enter the OTP",
+                    "defaultValue": ""
+                },
+                "styles": {}
+            }
+        },
+        {
+            "id": "flow-action-verify-otp-ssd5g6h",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "variant": "PRIMARY",
+            "config": {
+                "field": {
+                    "type": "submit",
+                    "className": "wso2is-button",
+                    "text": "Continue"
+                },
+                "styles": {
+                    "width": "100%"
+                }
+            }
+        },
+        {
+            "id": "flow-action-go-back-yt5g5t",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "variant": "SECONDARY",
+            "config": {
+                "field": {
+                    "type": "submit",
+                    "className": "wso2is-button",
+                    "text": "Go back"
+                },
+                "styles": {
+                    "width": "100%"
+                }
+            }
+        },
+        {
+            "id": "flow-display-header-45wTrU",
+            "category": "DISPLAY",
+            "type": "TYPOGRAPHY",
+            "version": "0.1.0",
+            "variant": "H3",
+            "config": {
+                "field": {
+                    "className": "wso2is-typography h3",
+                    "text": "Enter Personal Details"
+                },
+                "styles": {
+                    "textAlign": "center"
+                }
+            }
+        },
+        {
+            "id": "flow-field-nic-RR342gr",
+            "category": "FIELD",
+            "type": "INPUT",
+            "version": "0.1.0",
+            "variant": "TEXT",
+            "config": {
+                "field": {
+                    "type": "text",
+                    "name": "nic",
+                    "className": "wso2is-text-input",
+                    "hint": "",
+                    "label": "NIC",
+                    "required": true,
+                    "multiline": false,
+                    "placeholder": "Enter your national identity card number",
+                    "defaultValue": ""
+                },
+                "styles": {}
+            }
+        },
+        {
+            "id": "flow-action-done-5t8uJ6D3",
+            "category": "ACTION",
+            "type": "BUTTON",
+            "version": "0.1.0",
+            "deprecated": false,
+            "variant": "PRIMARY",
+            "config": {
+                "field": {
+                    "type": "submit",
+                    "className": "wso2is-button",
+                    "label": "Done"
+                },
+                "styles": {
+                    "width": "100%"
+                }
+            }
+        }
+    ]
+}
