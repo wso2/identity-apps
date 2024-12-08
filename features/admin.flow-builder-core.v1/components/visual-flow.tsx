@@ -25,11 +25,11 @@ import {
     BackgroundVariant,
     Controls,
     Edge,
-    Node,
     OnConnect,
     OnNodesDelete,
     ReactFlow,
     ReactFlowProps,
+    Node as XYFlowNode,
     XYPosition,
     addEdge,
     getConnectedEdges,
@@ -39,10 +39,12 @@ import {
     useNodesState,
     useReactFlow
 } from "@xyflow/react";
-import React, { DragEvent, FC, FunctionComponent, ReactElement, useCallback } from "react";
-import Step, { StepPropsInterface } from "./elements/nodes/step/step";
+import React, { DragEvent, FC, FunctionComponent, ReactElement, useCallback, useMemo } from "react";
+import NodeFactory from "./elements/nodes/node-factory";
+import useGetFlowBuilderCoreElements from "../api/use-get-flow-builder-core-elements";
 import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
 import { ElementCategories } from "../models/elements";
+import { Node } from "../models/node";
 import "@xyflow/react/dist/style.css";
 import "./visual-flow.scss";
 
@@ -50,11 +52,6 @@ import "./visual-flow.scss";
  * Props interface of {@link VisualFlow}
  */
 export type VisualFlowPropsInterface = IdentifiableComponentInterface & ReactFlowProps<any, any>;
-
-// NOTE: `nodeTypes` are defined outside of the component to prevent re-renderings.
-const nodeTypes: {
-    STEP: FC<StepPropsInterface>;
-} = { STEP: Step };
 
 /**
  * Wrapper component for React Flow used in the Visual Editor.
@@ -71,6 +68,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     const { screenToFlowPosition, toObject } = useReactFlow();
     const { node, generateComponentId } = useDnD();
     const { onElementDropOnCanvas } = useAuthenticationFlowBuilderCore();
+    const { data: coreElements } = useGetFlowBuilderCoreElements();
 
     const onDragOver: (event: DragEvent) => void = useCallback((event: DragEvent) => {
         event.preventDefault();
@@ -94,7 +92,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                 y: event.clientY
             });
 
-            const newNode: Node = {
+            const newNode: XYFlowNode = {
                 data: {
                     label: `${node.type} node`,
                     ...node
@@ -104,7 +102,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                 type: node.type as string
             };
 
-            setNodes((nodes: Node[]) => nodes.concat(newNode));
+            setNodes((nodes: XYFlowNode[]) => nodes.concat(newNode));
 
             onElementDropOnCanvas(node, null);
         },
@@ -113,12 +111,12 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
 
     const onConnect: OnConnect = useCallback((params: any) => setEdges((edges: Edge[]) => addEdge(params, edges)), []);
 
-    const onNodesDelete: OnNodesDelete<Node> = useCallback(
-        (deleted: Node[]) => {
+    const onNodesDelete: OnNodesDelete<XYFlowNode> = useCallback(
+        (deleted: XYFlowNode[]) => {
             setEdges(
-                deleted.reduce((acc: Edge[], node: Node) => {
-                    const incomers: Node[] = getIncomers(node, nodes, edges);
-                    const outgoers: Node[] = getOutgoers(node, nodes, edges);
+                deleted.reduce((acc: Edge[], node: XYFlowNode) => {
+                    const incomers: XYFlowNode[] = getIncomers(node, nodes, edges);
+                    const outgoers: XYFlowNode[] = getOutgoers(node, nodes, edges);
                     const connectedEdges: Edge[] = getConnectedEdges([ node ], edges);
 
                     const remainingEdges: Edge[] = acc.filter((edge: Edge) => !connectedEdges.includes(edge));
@@ -141,8 +139,23 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     // TODO: Handle the submit
     const handlePublish = (): void => {
         const flow: any = toObject();
+
         console.log(JSON.stringify(flow, null, 2));
     };
+
+    const generateNodeTypes = () => {
+        if (!coreElements?.nodes) {
+            return {};
+        }
+
+        return coreElements.nodes.reduce((acc: Record<string, FC<XYFlowNode>>, node: Node) => {
+            acc[node.type] = (props: any) => <NodeFactory { ...props } node={ node } />;
+
+            return acc;
+        }, {} as Record<string, FC<XYFlowNode>>);
+    };
+
+    const nodeTypes: { [key: string]: FC<XYFlowNode> } = useMemo(() => generateNodeTypes(), []);
 
     return (
         <>
@@ -153,7 +166,9 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                 // TODO: Fix the styling once the design is finalized
                 sx={ { marginTop: "-50px", position: "absolute", right: "24px" } }
             >
-                <Button variant="contained" onClick={ () => handlePublish() }>Publish</Button>
+                <Button variant="contained" onClick={ () => handlePublish() }>
+                    Publish
+                </Button>
             </Box>
             <ReactFlow
                 fitView

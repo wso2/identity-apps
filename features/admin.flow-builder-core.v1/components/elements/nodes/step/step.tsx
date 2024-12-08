@@ -45,12 +45,7 @@ import "./step.scss";
 /**
  * Props interface of {@link Step}
  */
-export interface StepPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * Index of the step.
-     */
-    stepIndex: number;
-}
+export interface StepPropsInterface extends Node, IdentifiableComponentInterface {}
 
 // TODO: Move this to Oxygen UI.
 /* eslint-disable max-len */
@@ -74,10 +69,9 @@ const GridDotsVerticalIcon = ({ ...rest }: SVGProps<SVGSVGElement>): ReactElemen
  * @returns Step Node component.
  */
 export const Step: FunctionComponent<StepPropsInterface> = ({
-    stepIndex,
     data,
-    "data-componentid": componentId = "step-node"
-}: StepPropsInterface & Node): ReactElement => {
+    "data-componentid": componentId = "step"
+}: StepPropsInterface): ReactElement => {
     const nodeId: string = useNodeId();
     const node: Pick<Node, "data"> = useNodesData(nodeId);
     const { deleteElements, updateNodeData } = useReactFlow();
@@ -149,10 +143,10 @@ export const Step: FunctionComponent<StepPropsInterface> = ({
             >
                 <Typography
                     variant="body2"
-                    data-componentid={ `${componentId}-${stepIndex}-heading-text` }
+                    data-componentid={ `${componentId}-heading-text` }
                     className="flow-builder-step-id"
                 >
-                    Step { stepIndex && stepIndex + 1 }
+                    Step
                 </Typography>
                 <Tooltip title={ "Remove" }>
                     <IconButton
@@ -166,7 +160,7 @@ export const Step: FunctionComponent<StepPropsInterface> = ({
                     </IconButton>
                 </Tooltip>
             </Box>
-            { stepIndex !== 0 && <Handle type="target" position={ Position.Left } /> }
+            <Handle type="target" position={ Position.Left } />
             <Box className="flow-builder-step-content nodrag" data-componentid={ `${componentId}-inner` }>
                 <Paper className="flow-builder-step-content-box" elevation={ 0 } variant="outlined">
                     <Box className="flow-builder-step-content-form">
