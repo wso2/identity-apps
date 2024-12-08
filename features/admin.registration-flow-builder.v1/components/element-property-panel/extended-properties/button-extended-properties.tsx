@@ -17,13 +17,12 @@
  */
 
 import FormControl from "@oxygen-ui/react/FormControl";
-import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import Stack from "@oxygen-ui/react/Stack";
 // eslint-disable-next-line max-len
-import { CommonComponentPropertyFactoryPropsInterface } from "@wso2is/admin.flow-builder-core.v1/components/element-properties/common-component-property-factory";
+import { CommonComponentPropertyFactoryPropsInterface } from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/common-component-property-factory";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { ChangeEvent, FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { RegistrationFlowActionTypes } from "../../../models/actions";
 
 /**
@@ -39,11 +38,9 @@ export type ButtonExtendedPropertiesPropsInterface = CommonComponentPropertyFact
  * @returns The ButtonExtendedProperties component.
  */
 const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsInterface> = ({
-    "data-componentid": componentId = "button-extended-properties",
-    element,
-    onChange
+    "data-componentid": componentId = "button-extended-properties"
 }: ButtonExtendedPropertiesPropsInterface): ReactElement => {
-    const [ selectedActionType, setSelectedActionType ] = useState<RegistrationFlowActionTypes>(null);
+    const [ selectedActionType ] = useState<RegistrationFlowActionTypes>(null);
 
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
@@ -54,19 +51,7 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
                     value={ selectedActionType }
                     label="Action Type"
                     placeholder="Select an action type"
-                    onChange={ (e: ChangeEvent<HTMLInputElement>) => {
-                        // const newValue: string = e?.target?.value || "";
-
-                        // onChange("name", selectedActionType?.claimURI, newValue, element);
-
-                        // setSelectedActionType();
-                    } }
                 >
-                    { Object.entries(RegistrationFlowActionTypes)?.map((attribute: Attribute) => (
-                        <MenuItem key={ attribute?.claimURI } value={ attribute?.claimURI }>
-                            { attribute?.displayName }
-                        </MenuItem>
-                    )) }
                 </Select>
             </FormControl>
         </Stack>

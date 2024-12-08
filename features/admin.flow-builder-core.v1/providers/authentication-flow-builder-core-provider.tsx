@@ -91,8 +91,8 @@ const AuthenticationFlowBuilderCoreProvider = ({
     return (
         <AuthenticationFlowBuilderCoreContext.Provider
             value={ {
-                ElementProperties,
                 ComponentFactory,
+                ElementProperties,
                 elementPropertiesPanelHeading,
                 isElementPanelOpen,
                 isElementPropertiesPanelOpen,

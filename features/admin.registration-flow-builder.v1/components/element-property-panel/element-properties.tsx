@@ -49,7 +49,6 @@ export interface ElementPropertiesPropsInterface extends IdentifiableComponentIn
  * @returns The ElementPropertyConfiguratorFactory component.
  */
 const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
-    "data-componentid": componentId = "element-properties",
     properties,
     element,
     onChange

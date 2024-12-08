@@ -19,7 +19,7 @@
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Encode } from "@wso2is/core/utils";
-import parse, { domToReact } from "html-react-parser"; 
+import parse, { domToReact } from "html-react-parser";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Component } from "../../../../models/component";
 
@@ -48,9 +48,9 @@ export const RichTextAdapter: FunctionComponent<RichTextAdapterPropsInterface> =
 }: RichTextAdapterPropsInterface): ReactElement => (
     <>
         { parse(Encode.forHtml(node?.config?.field?.text), {
-            replace(domNode) {
-                if ((domNode as unknown as any).name === "h1") {
-                    <Typography variant="h1">{ domToReact((domNode as unknown as any).children) }</Typography>;
+            replace(domNode: any) {
+                if (((domNode as unknown) as any).name === "h1") {
+                    <Typography variant="h1">{ domToReact(((domNode as unknown) as any).children) }</Typography>;
                 }
             }
         }) }
