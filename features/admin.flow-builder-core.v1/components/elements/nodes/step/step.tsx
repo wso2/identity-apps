@@ -27,6 +27,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DroppableContainer, GetDragItemProps, useDnD } from "@wso2is/dnd";
 import { Handle, Node, Position, useNodeId, useNodesData, useReactFlow } from "@xyflow/react";
 import classNames from "classnames";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     DragEvent,
     FunctionComponent,
@@ -37,15 +38,14 @@ import React, {
     useCallback,
     useRef
 } from "react";
-import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
-import { Component } from "../../models/component";
-import "./step-node.scss";
-import isEmpty from "lodash-es/isEmpty";
+import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
+import { Component } from "../../../../models/component";
+import "./step.scss";
 
 /**
- * Props interface of {@link StepNode}
+ * Props interface of {@link Step}
  */
-export interface StepNodePropsInterface extends IdentifiableComponentInterface {
+export interface StepPropsInterface extends IdentifiableComponentInterface {
     /**
      * Index of the step.
      */
@@ -68,18 +68,18 @@ const GridDotsVerticalIcon = ({ ...rest }: SVGProps<SVGSVGElement>): ReactElemen
 );
 
 /**
- * Node for representing an empty step in the authentication flow.
+ * Node for representing an empty step in the flow builder.
  *
  * @param props - Props injected to the component.
  * @returns Step Node component.
  */
-export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
+export const Step: FunctionComponent<StepPropsInterface> = ({
     stepIndex,
     data,
     "data-componentid": componentId = "step-node"
-}: StepNodePropsInterface & Node): ReactElement => {
+}: StepPropsInterface & Node): ReactElement => {
     const nodeId: string = useNodeId();
-    const node = useNodesData(nodeId);
+    const node: Pick<Node, "data"> = useNodesData(nodeId);
     const { deleteElements, updateNodeData } = useReactFlow();
     const { onElementDropOnCanvas, NodeFactory, setLastInteractedElement } = useAuthenticationFlowBuilderCore();
     const { generateComponentId } = useDnD();
@@ -137,7 +137,7 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
     return (
         <div
             ref={ ref }
-            className="authentication-flow-builder-step"
+            className="flow-builder-step"
             data-componentid={ componentId }
             onDrop={ handleDrop }
             onDrag={ handleDragOver }
@@ -145,12 +145,12 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
             <Box
                 display="flex"
                 justifyContent="space-between"
-                className="authentication-flow-builder-step-action-panel"
+                className="flow-builder-step-action-panel"
             >
                 <Typography
                     variant="body2"
                     data-componentid={ `${componentId}-${stepIndex}-heading-text` }
-                    className="authentication-flow-builder-step-id"
+                    className="flow-builder-step-id"
                 >
                     Step { stepIndex && stepIndex + 1 }
                 </Typography>
@@ -160,16 +160,16 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
                         onClick={ (_: MouseEvent<HTMLButtonElement>) => {
                             deleteElements({ nodes: [ { id: nodeId } ] });
                         } }
-                        className="authentication-flow-builder-step-remove-button"
+                        className="flow-builder-step-remove-button"
                     >
                         <XMarkIcon />
                     </IconButton>
                 </Tooltip>
             </Box>
             { stepIndex !== 0 && <Handle type="target" position={ Position.Left } /> }
-            <Box className="authentication-flow-builder-step-content nodrag" data-componentid={ `${componentId}-inner` }>
-                <Paper className="authentication-flow-builder-step-content-box" elevation={ 0 } variant="outlined">
-                    <Box className="authentication-flow-builder-step-content-form">
+            <Box className="flow-builder-step-content nodrag" data-componentid={ `${componentId}-inner` }>
+                <Paper className="flow-builder-step-content-box" elevation={ 0 } variant="outlined">
+                    <Box className="flow-builder-step-content-form">
                         <FormGroup>
                             <DroppableContainer<Component>
                                 nodes={ (node?.data?.components || []) as Component[] }
@@ -194,16 +194,16 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
                                                 alignItems="center"
                                                 key={ index }
                                                 className={ classNames(
-                                                    "authentication-flow-builder-step-content-form-field",
+                                                    "flow-builder-step-content-form-field",
                                                     dragItemClassName
                                                 ) }
                                                 onClick={ () => setLastInteractedElement(component) }
                                                 { ...otherDragItemProps }
                                             >
-                                                <div className="authentication-flow-builder-step-content-form-field-drag-handle">
+                                                <div className="flow-builder-step-content-form-field-drag-handle">
                                                     <GridDotsVerticalIcon height={ 20 } />
                                                 </div>
-                                                <div className="authentication-flow-builder-step-content-form-field-content">
+                                                <div className="flow-builder-step-content-form-field-content">
                                                     <NodeFactory nodeId={ nodeId } node={ component } />
                                                 </div>
                                             </Box>
@@ -220,4 +220,4 @@ export const StepNode: FunctionComponent<StepNodePropsInterface> = ({
     );
 };
 
-export default StepNode;
+export default Step;

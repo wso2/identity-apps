@@ -32,7 +32,7 @@ export { default as AuthenticationFlowBuilderCoreProvider } from
 export { default as AuthenticationFlowBuilderCoreContext } from "./context/authentication-flow-builder-core-context";
 export { default as useAuthenticationFlowBuilderCore } from "./hooks/use-authentication-flow-builder-core-context";
 
-export { default as CommonNodeFactory } from "./components/nodes/common-node-factory";
+export { default as CommonComponentFactory } from "./components/elements/components/common-component-factory";
 export {
     default as CommonComponentPropertyFactory
 } from "./components/element-property-panel/common-component-property-factory";

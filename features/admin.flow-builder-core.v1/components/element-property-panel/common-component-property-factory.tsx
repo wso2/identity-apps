@@ -22,9 +22,9 @@ import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import startCase from "lodash-es/startCase";
 import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
+import RichText from "./rich-text/rich-text";
 import { ComponentTypes } from "../../models/component";
 import { Element } from "../../models/elements";
-import RichText from "../nodes/rich-text/rich-text";
 
 /**
  * Props interface of {@link CommonComponentPropertyFactory}

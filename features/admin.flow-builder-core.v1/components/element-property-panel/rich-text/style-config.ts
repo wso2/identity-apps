@@ -16,14 +16,14 @@
  * under the License.
  */
 
-const MIN_ALLOWED_FONT_SIZE = 8;
-const MAX_ALLOWED_FONT_SIZE = 72;
+const MIN_ALLOWED_FONT_SIZE: number = 8;
+const MAX_ALLOWED_FONT_SIZE: number = 72;
 
 export const parseAllowedFontSize = (input: string): string => {
-    const match = input.match(/^(\d+(?:\.\d+)?)px$/);
+    const match: RegExpMatchArray = input.match(/^(\d+(?:\.\d+)?)px$/);
 
     if (match) {
-        const n = Number(match[1]);
+        const n: number = Number(match[1]);
 
         if (n >= MIN_ALLOWED_FONT_SIZE && n <= MAX_ALLOWED_FONT_SIZE) {
             return input;

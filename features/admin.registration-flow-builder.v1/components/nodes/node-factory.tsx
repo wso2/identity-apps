@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import CommonNodeFactory, {
-    CommonNodeFactoryPropsInterface
-} from "@wso2is/admin.flow-builder-core.v1/components/nodes/common-node-factory";
+import CommonComponentFactory, {
+    CommonComponentFactoryPropsInterface
+} from "@wso2is/admin.flow-builder-core.v1/components/elements/components/common-component-factory";
 import { ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { WidgetTypes } from "@wso2is/admin.flow-builder-core.v1/models/widget";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -29,7 +29,7 @@ import AttributeCollectorNode from "./attribute-collector-node";
 /**
  * Props interface of {@link NodeFactory}
  */
-export type NodeFactoryPropsInterface = CommonNodeFactoryPropsInterface & IdentifiableComponentInterface;
+export type NodeFactoryPropsInterface = CommonComponentFactoryPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Node for representing an empty step in the authentication flow.
@@ -47,7 +47,7 @@ export const NodeFactory: FunctionComponent<NodeFactoryPropsInterface> = ({
         }
     }
 
-    return <CommonNodeFactory node={ node } nodeId={ nodeId } />;
+    return <CommonComponentFactory node={ node } nodeId={ nodeId } />;
 };
 
 export default NodeFactory;

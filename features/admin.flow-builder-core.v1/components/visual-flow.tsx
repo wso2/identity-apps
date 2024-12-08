@@ -40,7 +40,7 @@ import {
     useReactFlow
 } from "@xyflow/react";
 import React, { DragEvent, FC, FunctionComponent, ReactElement, useCallback } from "react";
-import StepNode, { StepNodePropsInterface } from "./nodes/step-node";
+import Step, { StepPropsInterface } from "./elements/nodes/step/step";
 import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
 import { ElementCategories } from "../models/elements";
 import "@xyflow/react/dist/style.css";
@@ -53,8 +53,8 @@ export type VisualFlowPropsInterface = IdentifiableComponentInterface & ReactFlo
 
 // NOTE: `nodeTypes` are defined outside of the component to prevent re-renderings.
 const nodeTypes: {
-    STEP: FC<StepNodePropsInterface>;
-} = { STEP: StepNode };
+    STEP: FC<StepPropsInterface>;
+} = { STEP: Step };
 
 /**
  * Wrapper component for React Flow used in the Visual Editor.

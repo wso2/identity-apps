@@ -1,10 +1,21 @@
 /**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
  *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
+
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { mergeRegister } from "@lexical/utils";
 import IconButton from "@oxygen-ui/react/IconButton";
@@ -135,7 +146,8 @@ const ToolbarPlugin: FunctionComponent<ToolbarPluginProps> = ({
     underline = true,
     strikeThrough = true,
     alignment = true,
-    typography = true
+    typography = true,
+    className
 }: ToolbarPluginProps): ReactElement => {
     const [editor] = useLexicalComposerContext();
     const toolbarRef = useRef(null);
@@ -145,7 +157,7 @@ const ToolbarPlugin: FunctionComponent<ToolbarPluginProps> = ({
     const [isItalic, setIsItalic] = useState(false);
     const [isUnderline, setIsUnderline] = useState(false);
     const [isStrikethrough, setIsStrikethrough] = useState(false);
-    const [ typographyMenu, setTypographyMenu ] = useState<null | HTMLElement>(null);
+    const [typographyMenu, setTypographyMenu] = useState<null | HTMLElement>(null);
 
     const openTypographyMenu: boolean = Boolean(typographyMenu);
 
@@ -202,7 +214,12 @@ const ToolbarPlugin: FunctionComponent<ToolbarPluginProps> = ({
     }, [editor, $updateToolbar]);
 
     return (
-        <Paper className={classNames("rich-text-toolbar")} ref={toolbarRef} variant="outlined" elevation={0}>
+        <Paper
+            className={classNames("OxygenRichTextToolbar-root", className)}
+            ref={toolbarRef}
+            variant="outlined"
+            elevation={0}
+        >
             <Stack direction="row">
                 {history && (
                     <>
@@ -229,29 +246,26 @@ const ToolbarPlugin: FunctionComponent<ToolbarPluginProps> = ({
                         <Divider orientation="vertical" flexItem />
                     </>
                 )}
-                { typography && (
+                {typography && (
                     <>
-                                    <Menu
-                                    open={ openTypographyMenu }
-                                    anchorEl={ typographyMenu }
-                                    className="oxygen-user-dropdown-menu header-help-menu"
-                                    id="header-help-menu"
-                                    anchorOrigin={ { horizontal: "right", vertical: "bottom" } }
-                                    transformOrigin={ { horizontal: "right", vertical: "top" } }
-                                    onClose={ handleTypographyMenuClose }
-                                >
-                                        <MenuItem
-                                            className="get-help-dropdown-item"
-                                        >
-                                            <>
-                                                <ListItemIcon className="get-help-icon">
-                                                </ListItemIcon>
-                                                <ListItemText primary="Text" />
-                                            </>
-                                        </MenuItem>
-                                </Menu>
-                                <Divider orientation="vertical" flexItem />
+                        <Menu
+                            open={openTypographyMenu}
+                            anchorEl={typographyMenu}
+                            className="oxygen-user-dropdown-menu header-help-menu"
+                            id="header-help-menu"
+                            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                            transformOrigin={{ horizontal: "right", vertical: "top" }}
+                            onClose={handleTypographyMenuClose}
+                        >
+                            <MenuItem className="get-help-dropdown-item">
+                                <>
+                                    <ListItemIcon className="get-help-icon"></ListItemIcon>
+                                    <ListItemText primary="Text" />
                                 </>
+                            </MenuItem>
+                        </Menu>
+                        <Divider orientation="vertical" flexItem />
+                    </>
                 )}
                 {bold && (
                     <IconButton

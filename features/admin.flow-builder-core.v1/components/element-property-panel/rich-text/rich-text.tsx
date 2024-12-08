@@ -17,13 +17,14 @@
  */
 
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
-import { LexicalComposer } from "@lexical/react/LexicalComposer";
+import { InitialConfigType, LexicalComposer } from "@lexical/react/LexicalComposer";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import Paper from "@oxygen-ui/react/Paper";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import classNames from "classnames";
 import {
     $isTextNode,
     DOMConversionMap,
@@ -142,7 +143,7 @@ const constructImportMap = (): DOMConversionMap => {
     return importMap;
 };
 
-const editorConfig = {
+const editorConfig: InitialConfigType = {
     html: {
         export: exportMap,
         import: constructImportMap()
@@ -160,19 +161,22 @@ export interface RichTextProps extends IdentifiableComponentInterface, HTMLAttri
 
 const RichText: FunctionComponent<RichTextProps> = ({
     "data-componentid": componentId = "rich-text",
-    ToolbarProps
+    ToolbarProps,
+    className
 }: RichTextProps): ReactElement => {
     return (
         <LexicalComposer initialConfig={ editorConfig }>
-            <div className="rich-text" data-componentid={ componentId }>
+            <div className={ classNames("OxygenRichText-root", className) } data-componentid={ componentId }>
                 <ToolbarPlugin { ...ToolbarProps } />
-                <Paper className="rich-text-editor" variant="outlined">
+                <Paper className="OxygenRichText-editor-root" variant="outlined">
                     <RichTextPlugin
                         contentEditable={
                             (<ContentEditable
-                                className="rich-text-editor-input"
+                                className="OxygenRichText-editor-input"
                                 aria-placeholder="Enter some rich text..."
-                                placeholder={ <div className="rich-text-editor-input-placeholder">Enter some rich text.</div> }
+                                placeholder={
+                                    <div className="OxygenRichText-editor-input-placeholder">Enter some rich text.</div>
+                                }
                             />)
                         }
                         ErrorBoundary={ LexicalErrorBoundary }
