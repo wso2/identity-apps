@@ -20,7 +20,7 @@ import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Attribute } from "../../models/attributes";
+import { Attribute } from "../../../../../models/attributes";
 
 /**
  * Props interface of {@link AttributeFactory}
@@ -33,10 +33,10 @@ export interface AttributeFactoryPropsInterface extends IdentifiableComponentInt
 }
 
 /**
- * Node for representing an empty step in the authentication flow.
+ * Factory for generating the attributes.
  *
  * @param props - Props injected to the component.
- * @returns Step Node component.
+ * @returns The AttributeFactory component.
  */
 export const AttributeFactory: FunctionComponent<AttributeFactoryPropsInterface> = ({
     attribute

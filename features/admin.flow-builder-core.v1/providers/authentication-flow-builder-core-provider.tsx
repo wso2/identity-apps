@@ -34,7 +34,7 @@ export interface AuthenticationFlowBuilderProviderProps {
     /**
      * The factory for creating nodes.
      */
-    NodeFactory: FunctionComponent<any>;
+    ComponentFactory: FunctionComponent<any>;
     /**
      * The factory for creating element properties.
      */
@@ -48,7 +48,7 @@ export interface AuthenticationFlowBuilderProviderProps {
  * @returns The AuthenticationFlowBuilderCoreProvider component.
  */
 const AuthenticationFlowBuilderCoreProvider = ({
-    NodeFactory,
+    ComponentFactory,
     ElementProperties,
     children
 }: PropsWithChildren<AuthenticationFlowBuilderProviderProps>): ReactElement => {
@@ -92,7 +92,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
         <AuthenticationFlowBuilderCoreContext.Provider
             value={ {
                 ElementProperties,
-                NodeFactory,
+                ComponentFactory,
                 elementPropertiesPanelHeading,
                 isElementPanelOpen,
                 isElementPropertiesPanelOpen,

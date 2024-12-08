@@ -24,30 +24,30 @@ import { WidgetTypes } from "@wso2is/admin.flow-builder-core.v1/models/widget";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
-import AttributeCollectorNode from "./attribute-collector-node";
+import AttributesAdapter from "./adapters/attributes/attributes-adapter";
 
 /**
- * Props interface of {@link NodeFactory}
+ * Props interface of {@link ComponentFactory}
  */
-export type NodeFactoryPropsInterface = CommonComponentFactoryPropsInterface & IdentifiableComponentInterface;
+export type ComponentFactoryPropsInterface = CommonComponentFactoryPropsInterface & IdentifiableComponentInterface;
 
 /**
- * Node for representing an empty step in the authentication flow.
+ * Factory for creating components.
  *
  * @param props - Props injected to the component.
- * @returns Step Node component.
+ * @returns The ComponentFactory component.
  */
-export const NodeFactory: FunctionComponent<NodeFactoryPropsInterface> = ({
+export const ComponentFactory: FunctionComponent<ComponentFactoryPropsInterface> = ({
     node,
     nodeId
-}: NodeFactoryPropsInterface & Node): ReactElement => {
+}: ComponentFactoryPropsInterface & Node): ReactElement => {
     if (node.category === ElementCategories.Widget) {
         if (node.type === WidgetTypes.AttributeCollector) {
-            return <AttributeCollectorNode />;
+            return <AttributesAdapter />;
         }
     }
 
     return <CommonComponentFactory node={ node } nodeId={ nodeId } />;
 };
 
-export default NodeFactory;
+export default ComponentFactory;

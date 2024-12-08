@@ -49,9 +49,9 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      */
     isElementPropertiesPanelOpen: boolean;
     /**
-     * The factory for creating nodes.
+     * The factory for creating components.
      */
-    NodeFactory: FunctionComponent<any>;
+    ComponentFactory: FunctionComponent<any>;
     /**
      * Function to be called when an element is dropped on the canvas.
      * @param element - The element that was dropped on the canvas.
@@ -103,8 +103,8 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
     null | AuthenticationFlowBuilderCoreContextProps
 >(
     {
+        ComponentFactory: () => null,
         ElementProperties: () => null,
-        NodeFactory: () => null,
         elementPropertiesPanelHeading: null,
         isElementPanelOpen: true,
         isElementPropertiesPanelOpen: false,

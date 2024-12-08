@@ -75,7 +75,7 @@ export const Step: FunctionComponent<StepPropsInterface> = ({
     const nodeId: string = useNodeId();
     const node: Pick<Node, "data"> = useNodesData(nodeId);
     const { deleteElements, updateNodeData } = useReactFlow();
-    const { onElementDropOnCanvas, NodeFactory, setLastInteractedElement } = useAuthenticationFlowBuilderCore();
+    const { onElementDropOnCanvas, ComponentFactory, setLastInteractedElement } = useAuthenticationFlowBuilderCore();
     const { generateComponentId } = useDnD();
 
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
@@ -198,7 +198,7 @@ export const Step: FunctionComponent<StepPropsInterface> = ({
                                                     <GridDotsVerticalIcon height={ 20 } />
                                                 </div>
                                                 <div className="flow-builder-step-content-form-field-content">
-                                                    <NodeFactory nodeId={ nodeId } node={ component } />
+                                                    <ComponentFactory nodeId={ nodeId } node={ component } />
                                                 </div>
                                             </Box>
                                         );

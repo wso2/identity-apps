@@ -21,22 +21,22 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useNodeId } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
 import AttributeFactory from "./attribute-factory";
-import useRegistrationFlowBuilder from "../../hooks/use-registration-flow-builder-core-context";
-import { Attribute } from "../../models/attributes";
+import useRegistrationFlowBuilder from "../../../../../hooks/use-registration-flow-builder-core-context";
+import { Attribute } from "../../../../../models/attributes";
 
 /**
- * Props interface of {@link AttributeCollectorNode}
+ * Props interface of {@link AttributesAdapter}
  */
 export type AttributeCollectorNodePropsInterface = IdentifiableComponentInterface;
 
 /**
- * Factory to generate the property configurator for the given element.
+ * Adapter to generate the attributes.
  *
  * @param props - Props injected to the component.
- * @returns The AttributeCollectorNode component.
+ * @returns The AttributesAdapter component.
  */
-const AttributeCollectorNode: FunctionComponent<AttributeCollectorNodePropsInterface> = ({
-    "data-componentid": componentId = "authentication-flow-builder-attribute-collector-node"
+const AttributesAdapter: FunctionComponent<AttributeCollectorNodePropsInterface> = ({
+    "data-componentid": componentId = "attributes-adapter"
 }: AttributeCollectorNodePropsInterface): ReactElement => {
     const nodeId: string = useNodeId();
     const { selectedAttributes } = useRegistrationFlowBuilder();
@@ -52,4 +52,4 @@ const AttributeCollectorNode: FunctionComponent<AttributeCollectorNodePropsInter
     );
 };
 
-export default AttributeCollectorNode;
+export default AttributesAdapter;
