@@ -16,8 +16,25 @@
  * under the License.
  */
 
+export interface Action {
+    category: ActionCategories;
+    actions: {
+        type: ActionTypes;
+        displayName: string;
+        meta?: Record<string, unknown>;
+    }
+}
+
+export type Actions = Action[];
+
+export enum ActionCategories {
+    Navigation = "NAVIGATION",
+    Verification = "VERIFICATION",
+    Executor = "SOCIAL"
+}
+
 export enum ActionTypes {
     Next = "NEXT",
     Previous = "PREVIOUS",
-    Submit = "SUBMIT"
+    Executor = "EXECUTOR"
 }

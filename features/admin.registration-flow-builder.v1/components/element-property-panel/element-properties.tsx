@@ -21,6 +21,7 @@ import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/m
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import ElementPropertyFactory from "./element-property-factory";
+import ButtonExtendedProperties from "./extended-properties/button-extended-properties";
 import FieldExtendedProperties from "./extended-properties/field-extended-properties";
 
 /**
@@ -75,6 +76,19 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
                         propertyKey={ null }
                         propertyValue={ null }
                         data-componentid="field-extended-properties"
+                        onChange={ onChange }
+                    />
+                    { renderElementPropertyFactory() }
+                </>
+            );
+        case ElementCategories.Action:
+            return (
+                <>
+                    <ButtonExtendedProperties
+                        element={ element }
+                        propertyKey={ null }
+                        propertyValue={ null }
+                        data-componentid="button-extended-properties"
                         onChange={ onChange }
                     />
                     { renderElementPropertyFactory() }
