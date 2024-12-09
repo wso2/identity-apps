@@ -16,14 +16,16 @@
  * under the License.
  */
 
-import FormControl from "@oxygen-ui/react/FormControl";
-import Select from "@oxygen-ui/react/Select";
+import Box from "@oxygen-ui/react/Box";
 import Stack from "@oxygen-ui/react/Stack";
+import Typography from "@oxygen-ui/react/Typography";
 // eslint-disable-next-line max-len
 import { CommonComponentPropertyFactoryPropsInterface } from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/common-component-property-factory";
+import { Action } from "@wso2is/admin.flow-builder-core.v1/models/actions";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useState } from "react";
-import { RegistrationFlowActionTypes } from "../../../models/actions";
+import capitalize from "lodash-es/capitalize";
+import React, { FunctionComponent, ReactElement } from "react";
+import useGetRegistrationFlowCoreActions from "../../../api/use-get-registration-flow-builder-actions";
 
 /**
  * Props interface of {@link ButtonExtendedProperties}
@@ -40,20 +42,15 @@ export type ButtonExtendedPropertiesPropsInterface = CommonComponentPropertyFact
 const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsInterface> = ({
     "data-componentid": componentId = "button-extended-properties"
 }: ButtonExtendedPropertiesPropsInterface): ReactElement => {
-    const [ selectedActionType ] = useState<RegistrationFlowActionTypes>(null);
+    const { data: actions } = useGetRegistrationFlowCoreActions();
 
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
-            <FormControl size="small" variant="outlined">
-                <Select
-                    labelId="action-type-select-label"
-                    id="action-type-selector"
-                    value={ selectedActionType }
-                    label="Action Type"
-                    placeholder="Select an action type"
-                >
-                </Select>
-            </FormControl>
+            { actions?.map((action: Action, index: number) => (
+                <Box key={ index }>
+                    <Typography variant="h6">{ capitalize(action?.category) }</Typography>
+                </Box>
+            )) }
         </Stack>
     );
 };

@@ -1,0 +1,47 @@
+[
+    {
+        "category": "NAVIGATION",
+        "actions": [
+            {
+                "type": "NEXT",
+                "displayName": "Next"
+            },
+            {
+                "type": "PREVIOUS",
+                "displayName": "Previous"
+            }
+        ]
+    },
+    {
+        "category": "VERIFICATION",
+        "actions": [
+            {
+                "type": "NEXT",
+                "meta": {
+                    "actionType": "VERIFICATION"
+                },
+                "displayName": "Verify email address"
+            },
+            {
+                "type": "NEXT",
+                "meta": {
+                    "actionType": "VERIFICATION"
+                },
+                "displayName": "Verify mobile number"
+            }
+        ]
+    },
+    {
+        "category": "SOCIAL",
+        "actions": [
+            {
+                "type": "EXECUTOR",
+                "name": "GoogleOIDCAuthenticator",
+                "meta": {
+                    "idp": "Google"
+                },
+                "displayName": "Continue with Google Sign Up"
+            }
+        ]
+    }
+]
