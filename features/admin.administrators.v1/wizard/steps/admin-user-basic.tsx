@@ -57,8 +57,8 @@ import React, { FormEvent, ReactElement, useCallback, useEffect, useMemo, useSta
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Header } from "semantic-ui-react";
-import { AdministratorConstants } from "../../constants";
-import { InternalAdminFormDataInterface } from "../../models";
+import { AdministratorConstants } from "../../constants/users";
+import { InternalAdminFormDataInterface } from "../../models/invite";
 import { isAdminUser, isCollaboratorUser } from "../../utils/administrators";
 
 /**

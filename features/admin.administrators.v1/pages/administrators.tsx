@@ -102,11 +102,12 @@ import {
     TabProps
 } from "semantic-ui-react";
 import { useOrganizationConfigV2 } from "../api/useOrganizationConfigV2";
-import { GuestUsersList, OnboardedGuestUsersList } from "../components";
-import { AdministratorConstants } from "../constants";
+import { GuestUsersList } from "../components/guests/guest-users-list";
+import { OnboardedGuestUsersList } from "../components/guests/onboarded-guest-user-list";
+import { AdministratorConstants } from "../constants/users";
 import { UseOrganizationConfigType } from "../models/organization";
 import { isAdminUser, isOwner } from "../utils/administrators";
-import { AddAdministratorWizard } from "../wizard";
+import { AddAdministratorWizard } from "../wizard/add-administrator-wizard";
 
 /**
  * Props for the Users page.

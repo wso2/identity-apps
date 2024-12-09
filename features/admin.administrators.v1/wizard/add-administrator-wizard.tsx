@@ -53,7 +53,7 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import {
     AddAdminUserBasic
 } from "./steps/admin-user-basic";
-import { InternalAdminFormDataInterface } from "../models";
+import { InternalAdminFormDataInterface } from "../models/invite";
 import { isAdminUser } from "../utils/administrators";
 
 interface AddUserWizardPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {

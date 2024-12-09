@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
+import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import {
     AppState,
     FeatureConfigInterface,
@@ -44,7 +44,7 @@ import {
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -68,7 +68,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
-import { AdministratorConstants } from "../../constants";
+import { AdministratorConstants } from "../../constants/users";
 
 /**
  * Prop types for the onboarded collaborator users list component.
@@ -185,6 +185,9 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
+    const hasUserUpdatePermissions: boolean = useRequiredScopes(featureConfig?.users?.scopes?.update);
+    const hasUserDeletePermissions: boolean = useRequiredScopes(featureConfig?.users?.scopes?.delete);
+
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface | UserRoleInterface>(undefined);
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
@@ -192,7 +195,6 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
     const [ loading, setLoading ] = useState(false);
 
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
@@ -491,7 +493,7 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                         : "PRIMARY";
 
                     return (
-                        !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+                        !hasUserUpdatePermissions
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
@@ -508,7 +510,7 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                         : "PRIMARY";
 
                     return (
-                        !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+                        !hasUserUpdatePermissions
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
@@ -530,7 +532,7 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                 return !isFeatureEnabled(featureConfig?.users,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
                     || isPrivilegedUser
-                    || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)
+                    || !hasUserDeletePermissions
                     || readOnlyUserStores?.includes(userStore.toString())
                     || (adminType === AdminAccountTypes.EXTERNAL
                     && (getUserNameWithoutDomain(user?.userName) === realmConfigs?.adminUser
