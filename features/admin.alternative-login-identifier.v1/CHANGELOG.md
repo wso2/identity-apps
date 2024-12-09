@@ -1,5 +1,17 @@
 # @wso2is/admin.alternative-login-identifier.v1
 
+## 1.5.50
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.50
+  - @wso2is/admin.core.v1@2.34.50
+  - @wso2is/admin.claims.v1@2.26.9
+  - @wso2is/admin.server-configurations.v1@2.30.4
+  - @wso2is/admin.users.v1@2.29.9
+  - @wso2is/admin.validation.v1@2.26.50
+
 ## 1.5.49
 
 ### Patch Changes
