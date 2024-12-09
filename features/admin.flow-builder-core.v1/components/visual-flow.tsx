@@ -138,9 +138,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
 
     // TODO: Handle the submit
     const handlePublish = (): void => {
-        const flow: any = toObject();
-
-        console.log(JSON.stringify(flow, null, 2));
+        const _flow: any = toObject();
     };
 
     const generateNodeTypes = () => {
