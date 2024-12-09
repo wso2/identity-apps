@@ -62,7 +62,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                 <DnDProvider>
                     <ElementPanel elements={ elements } open={ isElementPanelOpen }>
                         <ElementPropertiesPanel open={ isElementPropertiesPanelOpen }>
-                            <VisualFlow />
+                            <VisualFlow elements={ elements } />
                         </ElementPropertiesPanel>
                     </ElementPanel>
                 </DnDProvider>

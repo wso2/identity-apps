@@ -41,9 +41,8 @@ import {
 } from "@xyflow/react";
 import React, { DragEvent, FC, FunctionComponent, ReactElement, useCallback, useMemo } from "react";
 import NodeFactory from "./elements/nodes/node-factory";
-import useGetFlowBuilderCoreElements from "../api/use-get-flow-builder-core-elements";
 import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
-import { ElementCategories } from "../models/elements";
+import { ElementCategories, Elements } from "../models/elements";
 import { Node } from "../models/node";
 import "@xyflow/react/dist/style.css";
 import "./visual-flow.scss";
@@ -51,7 +50,12 @@ import "./visual-flow.scss";
 /**
  * Props interface of {@link VisualFlow}
  */
-export type VisualFlowPropsInterface = IdentifiableComponentInterface & ReactFlowProps<any, any>;
+export interface VisualFlowPropsInterface extends IdentifiableComponentInterface, ReactFlowProps<any, any> {
+    /**
+     * Flow elements.
+     */
+    elements: Elements;
+}
 
 /**
  * Wrapper component for React Flow used in the Visual Editor.
@@ -61,6 +65,7 @@ export type VisualFlowPropsInterface = IdentifiableComponentInterface & ReactFlo
  */
 const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-flow",
+    elements,
     ...rest
 }: VisualFlowPropsInterface): ReactElement => {
     const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
@@ -68,7 +73,6 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     const { screenToFlowPosition, toObject } = useReactFlow();
     const { node, generateComponentId } = useDnD();
     const { onElementDropOnCanvas } = useAuthenticationFlowBuilderCore();
-    const { data: coreElements } = useGetFlowBuilderCoreElements();
 
     const onDragOver: (event: DragEvent) => void = useCallback((event: DragEvent) => {
         event.preventDefault();
@@ -138,15 +142,17 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
 
     // TODO: Handle the submit
     const handlePublish = (): void => {
-        const _flow: any = toObject();
+        const flow: any = toObject();
+
+        console.log(JSON.stringify(flow, null, 2));
     };
 
     const generateNodeTypes = () => {
-        if (!coreElements?.nodes) {
+        if (!elements?.nodes) {
             return {};
         }
 
-        return coreElements.nodes.reduce((acc: Record<string, FC<XYFlowNode>>, node: Node) => {
+        return elements.nodes.reduce((acc: Record<string, FC<XYFlowNode>>, node: Node) => {
             acc[node.type] = (props: any) => <NodeFactory { ...props } node={ node } />;
 
             return acc;
