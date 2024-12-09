@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import DecoratedVisualFlow from "@wso2is/admin.authentication-flow-builder-core.v1/components/decorated-visual-flow";
+import DecoratedVisualFlow from "@wso2is/admin.flow-builder-core.v1/components/decorated-visual-flow";
 import AuthenticationFlowBuilderCoreProvider from
-    "@wso2is/admin.authentication-flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
+    "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
-import ElementPropertyFactory from "./element-properties/element-property-factory";
-import NodeFactory from "./nodes/node-factory";
+import ElementProperties from "./element-property-panel/element-properties";
+import ComponentFactory from "./elements/components/component-factory";
 import useGetRegistrationFlowBuilderElements from "../api/use-get-registration-flow-builder-elements";
 import RegistrationFlowBuilderProvider from "../providers/registration-flow-builder-provider";
 
@@ -45,8 +45,8 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
 
     return (
         <AuthenticationFlowBuilderCoreProvider
-            NodeFactory={ NodeFactory }
-            ElementPropertiesFactory={ ElementPropertyFactory }
+            ComponentFactory={ ComponentFactory }
+            ElementProperties={ ElementProperties }
         >
             <RegistrationFlowBuilderProvider>
                 <DecoratedVisualFlow elements={ elements } data-componentid={ componentId } { ...rest } />

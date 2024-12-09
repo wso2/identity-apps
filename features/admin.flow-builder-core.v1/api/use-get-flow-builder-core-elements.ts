@@ -17,13 +17,13 @@
  */
 
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
-import useGetFlowBuilderCoreElements from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-builder-core-elements";
-import { Elements } from "@wso2is/admin.flow-builder-core.v1/models/elements";
+import components from "../data/components.json";
+import nodes from "../data/nodes.json";
 import widgets from "../data/widgets.json";
+import { Elements } from "../models/elements";
 
 /**
- * Hook to get the elements supported by the registration flow builder.
- * This hook will aggregate the core elements and the registration specific elements.
+ * Hook to get the elements supported by the flow builder.
  *
  * This function calls the GET method of the following endpoint to get the elements.
  * - TODO: Fill this
@@ -32,18 +32,14 @@ import widgets from "../data/widgets.json";
  *
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetRegistrationFlowBuilderElements = <Data = Elements, Error = RequestErrorInterface>(
+const useGetFlowBuilderCoreElements = <Data = Elements, Error = RequestErrorInterface>(
     _shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
-    const { data: coreElements } = useGetFlowBuilderCoreElements();
-
     return {
         data: ({
-            ...coreElements,
-            widgets: [
-                ...coreElements?.widgets,
-                ...widgets
-            ]
+            components,
+            nodes,
+            widgets
         } as unknown) as Data,
         error: null,
         isLoading: false,
@@ -52,4 +48,4 @@ const useGetRegistrationFlowBuilderElements = <Data = Elements, Error = RequestE
     };
 };
 
-export default useGetRegistrationFlowBuilderElements;
+export default useGetFlowBuilderCoreElements;

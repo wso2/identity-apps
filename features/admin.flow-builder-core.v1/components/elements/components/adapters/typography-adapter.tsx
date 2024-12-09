@@ -16,37 +16,40 @@
  * under the License.
  */
 
-import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
-import RegistrationFlowBuilder from "@wso2is/admin.registration-flow-builder.v1/components/registration-flow-builder";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import "./flows-page.scss";
+import { Component } from "../../../../models/component";
 
 /**
- * Props interface of {@link Flows}
+ * Props interface of {@link TypographyAdapter}
  */
-type FlowsProps = IdentifiableComponentInterface;
+export interface TypographyAdapterPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * The flow id of the node.
+     */
+    nodeId: string;
+    /**
+     * The node properties.
+     */
+    node: Component;
+}
 
 /**
- * Landing page for the Flows feature.
+ * Adapter for the Typography component.
  *
  * @param props - Props injected to the component.
- * @returns Flows page component.
+ * @returns The TypographyAdapter component.
  */
-const Flows: FunctionComponent<FlowsProps> = ({
-    ["data-componentid"]: componentId = "flows-page"
-}: FlowsProps): ReactElement => {
-    return (
-        <div className="flows" data-componentid={ componentId }>
-            <div className="page-layout">
-                <Box display="flex" className="page-header" justifyContent="space-between" alignItems="center">
-                    <Typography variant="h5">Flows</Typography>
-                </Box>
-            </div>
-            <RegistrationFlowBuilder />
-        </div>
-    );
-};
+export const TypographyAdapter: FunctionComponent<TypographyAdapterPropsInterface> = ({
+    node
+}: TypographyAdapterPropsInterface): ReactElement => (
+    <Typography
+        variant={ node?.variant.toLowerCase() }
+        style={ node?.config?.styles }
+    >
+        { node?.config?.field?.text }
+    </Typography>
+);
 
-export default Flows;
+export default TypographyAdapter;

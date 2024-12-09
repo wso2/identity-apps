@@ -1,0 +1,561 @@
+[
+    {
+        "category": "FIELD",
+        "type": "INPUT",
+        "version": "0.1.0",
+        "deprecated": false,
+        "variant": "TEXT",
+        "display": {
+            "label": "Text Input",
+            "image": "https://www.svgrepo.com/show/437311/textbox.svg"
+        },
+        "config": {
+            "field": {
+                "type": "text",
+                "className": "wso2is-input text",
+                "hint": "",
+                "label": "Text",
+                "required": false,
+                "multiline": false,
+                "placeholder": "Enter your text",
+                "defaultValue": "",
+                "minLength": 3,
+                "maxLength": 50
+            },
+            "styles": {}
+        }
+    },
+    {
+        "category": "FIELD",
+        "type": "INPUT",
+        "version": "0.1.0",
+        "deprecated": false,
+        "variant": "PASSWORD",
+        "display": {
+            "label": "Password Input",
+            "image": "https://www.svgrepo.com/show/529125/password.svg"
+        },
+        "config": {
+            "field": {
+                "type": "password",
+                "className": "wso2is-input password",
+                "hint": "",
+                "label": "Password",
+                "required": false,
+                "multiline": false,
+                "placeholder": "Enter your password",
+                "defaultValue": ""
+            },
+            "styles": {}
+        }
+    },
+    {
+        "category": "FIELD",
+        "type": "INPUT",
+        "version": "0.1.0",
+        "deprecated": false,
+        "variant": "EMAIL",
+        "display": {
+            "label": "Email Input",
+            "image": "https://www.svgrepo.com/show/488920/email.svg"
+        },
+        "config": {
+            "field": {
+                "type": "email",
+                "className": "wso2is-input email",
+                "hint": "",
+                "label": "Email",
+                "required": false,
+                "multiline": false,
+                "placeholder": "Enter your email address",
+                "defaultValue": ""
+            },
+            "styles": {}
+        }
+    },
+    {
+        "category": "FIELD",
+        "type": "INPUT",
+        "version": "0.1.0",
+        "deprecated": false,
+        "variant": "TELEPHONE",
+        "display": {
+            "label": "Phone Input",
+            "image": "https://www.svgrepo.com/show/533285/phone.svg"
+        },
+        "config": {
+            "field": {
+                "type": "tel",
+                "className": "wso2is-input phone",
+                "hint": "",
+                "label": "Phone",
+                "required": false,
+                "multiline": false,
+                "placeholder": "Enter your phone number",
+                "defaultValue": ""
+            },
+            "styles": {}
+        }
+    },
+    {
+        "category": "FIELD",
+        "type": "INPUT",
+        "version": "0.1.0",
+        "deprecated": false,
+        "variant": "NUMBER",
+        "display": {
+            "label": "Number Input",
+            "image": "https://www.svgrepo.com/show/374740/number-input.svg"
+        },
+        "config": {
+            "field": {
+                "type": "number",
+                "className": "wso2is-input number",
+                "hint": "",
+                "label": "Number",
+                "required": false,
+                "multiline": false,
+                "placeholder": "Enter a number",
+                "defaultValue": ""
+            },
+            "styles": {}
+        }
+    },
+    {
+        "category": "FIELD",
+        "type": "INPUT",
+        "version": "0.1.0",
+        "deprecated": false,
+        "variant": "DATE",
+        "display": {
+            "label": "Date Input",
+            "image": "https://www.svgrepo.com/show/488144/date.svg"
+        },
+        "config": {
+            "field": {
+                "type": "date",
+                "className": "wso2is-input date",
+                "hint": "",
+                "label": "Date",
+                "required": false,
+                "multiline": false,
+                "placeholder": "Enter a date",
+                "defaultValue": ""
+            },
+            "styles": {}
+        }
+    },
+    {
+        "category": "FIELD",
+        "type": "INPUT",
+        "version": "0.1.0",
+        "deprecated": false,
+        "variant": "CHECKBOX",
+        "display": {
+            "label": "Checkbox",
+            "image": "https://www.svgrepo.com/show/510900/checkbox-check.svg"
+        },
+        "config": {
+            "field": {
+                "className": "wso2is-input checkbox",
+                "hint": "",
+                "label": "Checkbox",
+                "required": false,
+                "defaultValue": ""
+            },
+            "styles": {}
+        }
+    },
+    {
+        "category": "FIELD",
+        "type": "CHOICE",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Choice",
+            "image": "https://www.svgrepo.com/show/339836/boolean.svg"
+        },
+        "config": {
+            "field": {
+                "className": "wso2is-input choice",
+                "hint": "",
+                "label": "Choice",
+                "required": false,
+                "defaultValue": "option1",
+                "options": [
+                    {
+                        "label": "Option 1",
+                        "key": "option1",
+                        "value": "option1"
+                    },
+                    {
+                        "label": "Option 2",
+                        "key": "option2",
+                        "value": "option2"
+                    },
+                    {
+                        "label": "Option 3",
+                        "key": "option3",
+                        "value": "option3"
+                    }
+                ]
+            },
+            "styles": {}
+        }
+    },
+    {
+        "category": "ACTION",
+        "type": "BUTTON",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Button",
+            "image": "https://www.svgrepo.com/show/450681/button.svg",
+            "defaultVariant": "PRIMARY"
+        },
+        "variants": [
+            {
+                "category": "ACTION",
+                "type": "BUTTON",
+                "version": "0.1.0",
+                "variant": "PRIMARY",
+                "deprecated": false,
+                "display": {
+                    "label": "Primary",
+                    "image": null
+                },
+                "config": {
+                    "field": {
+                        "type": "submit",
+                        "className": "wso2is-button primary",
+                        "text": "Primary Button"
+                    },
+                    "styles": {
+                        "width": "100%"
+                    }
+                }
+            },
+            {
+                "category": "ACTION",
+                "type": "BUTTON",
+                "version": "0.1.0",
+                "variant": "SECONDARY",
+                "deprecated": false,
+                "display": {
+                    "label": "Secondary",
+                    "image": null
+                },
+                "config": {
+                    "field": {
+                        "type": "button",
+                        "className": "wso2is-button secondary",
+                        "text": "Secondary Button"
+                    },
+                    "styles": {
+                        "width": "100%"
+                    }
+                }
+            },
+            {
+                "category": "ACTION",
+                "type": "BUTTON",
+                "version": "0.1.0",
+                "variant": "TEXT",
+                "deprecated": false,
+                "display": {
+                    "label": "Text",
+                    "image": null
+                },
+                "config": {
+                    "field": {
+                        "type": "button",
+                        "className": "wso2is-button text",
+                        "text": "Text Button"
+                    },
+                    "styles": {
+                        "width": "100%"
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "category": "DISPLAY",
+        "type": "TYPOGRAPHY",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Text",
+            "image": "https://www.svgrepo.com/show/532231/text-size.svg",
+            "defaultVariant": "H3"
+        },
+        "variants": [
+            {
+                "category": "DISPLAY",
+                "type": "TYPOGRAPHY",
+                "version": "0.1.0",
+                "variant": "H1",
+                "deprecated": false,
+                "display": {
+                    "label": "H1",
+                    "image": null
+                },
+                "config": {
+                    "field": {
+                        "className": "wso2is-typography h1",
+                        "text": "Heading - H1"
+                    },
+                    "styles": {
+                        "textAlign": "center"
+                    }
+                }
+            },
+            {
+                "category": "DISPLAY",
+                "type": "TYPOGRAPHY",
+                "version": "0.1.0",
+                "variant": "H2",
+                "deprecated": false,
+                "display": {
+                    "label": "H2",
+                    "image": null
+                },
+                "config": {
+                    "field": {
+                        "className": "wso2is-typography h2",
+                        "text": "Heading - H2"
+                    },
+                    "styles": {
+                        "textAlign": "center"
+                    }
+                }
+            },
+            {
+                "category": "DISPLAY",
+                "type": "TYPOGRAPHY",
+                "version": "0.1.0",
+                "variant": "H3",
+                "deprecated": false,
+                "display": {
+                    "label": "H3",
+                    "image": null
+                },
+                "config": {
+                    "field": {
+                        "className": "wso2is-typography h3",
+                        "text": "Heading - H3"
+                    },
+                    "styles": {
+                        "textAlign": "center"
+                    }
+                }
+            },
+            {
+                "category": "DISPLAY",
+                "type": "TYPOGRAPHY",
+                "version": "0.1.0",
+                "variant": "H4",
+                "deprecated": false,
+                "display": {
+                    "label": "H4",
+                    "image": null
+                },
+                "config": {
+                    "field": {
+                        "className": "wso2is-typography h4",
+                        "text": "Heading - H4"
+                    },
+                    "styles": {
+                        "textAlign": "center"
+                    }
+                }
+            },
+            {
+                "category": "DISPLAY",
+                "type": "TYPOGRAPHY",
+                "version": "0.1.0",
+                "variant": "H5",
+                "deprecated": false,
+                "display": {
+                    "label": "H5",
+                    "image": null
+                },
+                "config": {
+                    "field": {
+                        "className": "wso2is-typography h5",
+                        "text": "Heading - H5"
+                    },
+                    "styles": {
+                        "textAlign": "center"
+                    }
+                }
+            },
+            {
+                "category": "DISPLAY",
+                "type": "TYPOGRAPHY",
+                "version": "0.1.0",
+                "variant": "H6",
+                "deprecated": false,
+                "display": {
+                    "label": "H6",
+                    "image": null
+                },
+                "config": {
+                    "field": {
+                        "className": "wso2is-typography h6",
+                        "text": "Heading - H6"
+                    },
+                    "styles": {
+                        "textAlign": "center"
+                    }
+                }
+            },
+            {
+                "category": "DISPLAY",
+                "type": "TYPOGRAPHY",
+                "version": "0.1.0",
+                "variant": "BODY1",
+                "deprecated": false,
+                "display": {
+                    "label": "Body1",
+                    "image": null
+                },
+                "config": {
+                    "field": {
+                        "className": "wso2is-typography body1",
+                        "text": "Body Text"
+                    },
+                    "styles": {
+                        "fontSize": "14px",
+                        "fontWeight": "400",
+                        "textAlign": "center"
+                    }
+                }
+            },
+            {
+                "category": "DISPLAY",
+                "type": "TYPOGRAPHY",
+                "version": "0.1.0",
+                "variant": "BODY2",
+                "deprecated": false,
+                "display": {
+                    "label": "Body2",
+                    "image": null
+                },
+                "config": {
+                    "field": {
+                        "className": "wso2is-typography body2",
+                        "text": "Body Text - Muted"
+                    },
+                    "styles": {
+                        "fontSize": "12px",
+                        "fontWeight": "400",
+                        "textAlign": "center"
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "category": "DISPLAY",
+        "type": "RICH_TEXT",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Rich Text",
+            "image": "https://www.svgrepo.com/show/374852/display-rich-text.svg"
+        },
+        "config": {
+            "field": {
+                "className": "wso2is-rich-text",
+                "text": "<h3 class=\"ui header\">Rich Text</h3>"
+            },
+            "styles": {
+                "textAlign": "center"
+            }
+        }
+    },
+    {
+        "category": "DISPLAY",
+        "type": "DIVIDER",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Divider",
+            "image": "https://www.svgrepo.com/show/471336/divider.svg",
+            "defaultVariant": "HORIZONTAL"
+        },
+        "variants": [
+            {
+                "category": "DISPLAY",
+                "type": "DIVIDER",
+                "version": "0.1.0",
+                "deprecated": false,
+                "variant": "HORIZONTAL",
+                "display": {
+                    "label": "Horizontal Divider",
+                    "image": null
+                },
+                "config": {
+                    "field": {
+                        "className": "wso2is-divider horizontal",
+                        "text": "Or"
+                    },
+                    "styles": {}
+                }
+            },
+            {
+                "category": "DISPLAY",
+                "type": "DIVIDER",
+                "version": "0.1.0",
+                "deprecated": false,
+                "variant": "VERTICAL",
+                "display": {
+                    "label": "Vertical Divider",
+                    "image": null
+                },
+                "config": {
+                    "field": {
+                        "className": "wso2is-divider vertical",
+                        "text": "Or"
+                    },
+                    "styles": {}
+                }
+            }
+        ]
+    },
+    {
+        "category": "DISPLAY",
+        "type": "IMAGE",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Image",
+            "image": "https://www.svgrepo.com/show/532576/image-square.svg",
+            "defaultVariant": "IMAGE_BLOCK"
+        },
+        "variants": [
+            {
+                "category": "DISPLAY",
+                "type": "IMAGE",
+                "version": "0.1.0",
+                "deprecated": false,
+                "variant": "IMAGE_BLOCK",
+                "display": {
+                    "label": "Image Block",
+                    "image": null
+                },
+                "config": {
+                    "field": {
+                        "src": "https://www.svgrepo.com/show/508699/landscape-placeholder.svg",
+                        "className": "wso2is-image image-block"
+                    },
+                    "styles": {
+                        "width": "inherit",
+                        "height": "40px"
+                    }
+                }
+            }
+        ]
+    }
+]

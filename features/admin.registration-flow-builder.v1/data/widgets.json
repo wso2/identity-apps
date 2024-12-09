@@ -5,10 +5,7 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": {
-                "fallback": "Attribute Collector",
-                "i18nKey": null
-            },
+            "label": "Attribute Collector",
             "image": "https://www.svgrepo.com/show/450909/form-elements.svg"
         },
         "config": {
