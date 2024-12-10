@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.8.6
+
+### Patch Changes
+
+- [#7191](https://github.com/wso2/identity-apps/pull/7191) [`a0850641919b1060808df7cf193885bb678464b3`](https://github.com/wso2/identity-apps/commit/a0850641919b1060808df7cf193885bb678464b3) Thanks [@Sachin-Mamoru](https://github.com/Sachin-Mamoru)! - Reflect branding in dismiss button of the timeout modal
+
 ## 2.8.5
 
 ### Patch Changes
