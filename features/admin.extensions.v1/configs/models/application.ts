@@ -54,7 +54,6 @@ export interface ApplicationConfig {
     hiddenGrantTypes: string[],
     attributeSettings: {
         advancedAttributeSettings: {
-            isLinkedAccountsEnabled: (templateId: string) => boolean;
             showIncludeTenantDomain: boolean;
             showIncludeUserstoreDomainRole: boolean;
             showIncludeUserstoreDomainSubject: boolean;
