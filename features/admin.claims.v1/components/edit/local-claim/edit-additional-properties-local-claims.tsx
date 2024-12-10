@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,19 +17,25 @@
  */
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, Claim, Property, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DynamicField , KeyValue, useTrigger } from "@wso2is/forms";
-import { EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
+import {
+    EmphasizedSegment,
+    Link,
+    PrimaryButton,
+    TAB_URL_HASH_FRAGMENT
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import { updateAClaim } from "../../../api";
-import { ClaimManagementConstants } from "../../../constants";
+import { ClaimManagementConstants, ClaimTabIDs } from "../../../constants";
 
 /**
  * Prop types for `EditAdditionalPropertiesLocalClaims` component
@@ -71,6 +77,8 @@ export const EditAdditionalPropertiesLocalClaims:
             featureConfig?.attributeDialects?.scopes?.update
         );
 
+        const { UIConfig } = useUIConfig();
+
         const isReadOnly: boolean = !hasAttributeUpdatePermissions;
 
         const filteredClaimProperties: Property[] = useMemo(() => {
@@ -106,6 +114,46 @@ export const EditAdditionalPropertiesLocalClaims:
                                 "valueRequiredErrorMessage"
                                 ) }
                                 requiredField={ true }
+                                keyValidation={ (key: string) => {
+                                    if (ClaimManagementConstants.RESTRICTED_PROPERTY_KEYS.includes(key)) {
+                                        return false;
+                                    }
+
+                                    return true;
+                                } }
+                                keyValidationWarningMessage={
+                                    UIConfig?.isClaimUniquenessValidationEnabled ? (
+                                        <Trans
+                                            i18nKey={
+                                                "claims:local.additionalProperties." +
+                                                "isUniqueDeprecationMessage.uniquenessEnabled"
+                                            }
+                                        >
+                                            The &apos;isUnique&apos; property is deprecated. Please use
+                                            <Link
+                                                external={ false }
+                                                onClick={ () => {
+                                                    history.push({
+                                                        hash: `#${TAB_URL_HASH_FRAGMENT}${ClaimTabIDs.GENERAL}`,
+                                                        pathname: AppConstants.getPaths()
+                                                            .get("LOCAL_CLAIMS_EDIT")
+                                                            .replace(":id", claim.id)
+                                                    });
+                                                } }
+                                            > Uniqueness Validation </Link>
+                                            option to configure attribute uniqueness.
+                                        </Trans>
+                                    ) : (
+                                        <Trans
+                                            i18nKey={
+                                                "claims:local.additionalProperties." +
+                                                "isUniqueDeprecationMessage.uniquenessDisabled"
+                                            }
+                                        >
+                                            The &apos;isUnique&apos; property is deprecated.
+                                        </Trans>
+                                    )
+                                }
                                 update={ (data: KeyValue[]) => {
                                     const claimData: Claim = { ...claim };
 
