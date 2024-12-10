@@ -491,7 +491,7 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
 /**
  * Password policy configs interface.
  */
-export interface PasswordPolicyConfigsInterface {
+interface PasswordPolicyConfigsInterface {
     /**
      * Maximum password length.
      */
