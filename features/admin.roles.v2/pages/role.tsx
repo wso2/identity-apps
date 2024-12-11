@@ -303,7 +303,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                         />
                     )
                 }
-                showPagination={ rolesList?.totalResults > 0 }
+                showPagination={ true }
                 totalPages={ Math.ceil(rolesList?.totalResults / listItemLimit) }
                 totalListSize={ rolesList?.totalResults }
                 isLoading={ isRolesListLoading }
