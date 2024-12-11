@@ -21,20 +21,16 @@ import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { useTranslations } from "../../hooks/use-translations";
 import { getTranslationByKey } from "../../utils/i18n-utils";
-import ValidationCriteria from "../field-validation";
 
-const OTPFieldAdapter = ({ component, formState, formStateHandler, otpLength = 6 }) => {
+const OTPFieldAdapter = ({ component, formStateHandler, otpLength = 6 }) => {
 
-    const { label, required, styles, validation } = component.properties;
-    const { errors } = formState;
-    const fieldErrors = errors && errors.filter(error => error.field === component.properties.name);
+    const { label, required, styles } = component.properties;
 
     const { translations } = useTranslations();
 
     const [ otpValues, setOtpValues ] = useState(Array(otpLength).fill(""));
 
     useEffect(() => {
-        // Join all OTP fields to form the complete OTP value
         formStateHandler(component.properties.name, otpValues.join(""));
     }, [ otpValues ]);
 
@@ -124,9 +120,6 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, otpLength = 6
                         } }
                     />
                 </div>
-            ) }
-            { validation && (
-                <ValidationCriteria validationConfig={ validation } errors={ fieldErrors } value={ otpValues } />
             ) }
         </div>
     );
