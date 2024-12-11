@@ -1,5 +1,15 @@
 # @wso2is/admin.api-resources.v1
 
+## 2.25.53
+
+### Patch Changes
+
+- [#7197](https://github.com/wso2/identity-apps/pull/7197) [`bf297b6dbbdad2ed10fd892f7ed85f74f3aca12f`](https://github.com/wso2/identity-apps/commit/bf297b6dbbdad2ed10fd892f7ed85f74f3aca12f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove index files in `@wso2is/admin.api-resources.v1` module
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.53
+  - @wso2is/admin.extensions.v1@2.35.12
+
 ## 2.25.52
 
 ### Patch Changes
