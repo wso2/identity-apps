@@ -21,20 +21,26 @@
 <%
     StringBuilder requestBody = new StringBuilder();
     String line;
-    boolean useCreatedObject = false;
+    boolean isSubmitRequest = false;
+    String endpoint = "";
 
-    // Read the request body
     try (BufferedReader reader = request.getReader()) {
         while ((line = reader.readLine()) != null) {
             requestBody.append(line);
         }
 
-        // Check if the request does NOT contain "applicationId"
+        System.out.println("Request: " + requestBody.toString());
+
         if (requestBody.length() > 0) {
-            System.out.print(requestBody);
             JSONObject requestJson = new JSONObject(requestBody.toString());
-            if (!requestJson.has("applicationId")) {
-                useCreatedObject = true;  // Flag to use the "created" object
+            if (requestJson.has("applicationId")) {
+                endpoint = "/data/init-response.json"; 
+            } else if (requestJson.has("action") && "PasswordOnboarder".equalsIgnoreCase(requestJson.getString("action"))) {
+                endpoint = "/data/password-submit-response.json";
+            } else if (requestJson.has("action") && "EmailOTPVerifier1".equalsIgnoreCase(requestJson.getString("action"))) {
+                endpoint = "/data/emailotp-submit-1-response.json";
+            } else if (requestJson.has("action") && "EmailOTPVerifier2".equalsIgnoreCase(requestJson.getString("action"))) {
+                endpoint = "/data/emailotp-submit-2-response.json";
             }
         }
     } catch (Exception e) {
@@ -47,17 +53,25 @@
     int serverPort = request.getServerPort();
     String contextPath = request.getContextPath();
 
-    // Construct the API URL
-    String apiUrl = scheme + "://" + serverName + ":" + serverPort + contextPath + "/registration-mock-data.json";
+    String apiURL = scheme + "://" + serverName + ":" + serverPort + contextPath + endpoint;
 
     StringBuilder apiResponse = new StringBuilder();
     HttpURLConnection connection = null;
 
     try {
-        URL url = new URL(apiUrl);
+        URL url = new URL(apiURL);
         connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Accept", "application/json");
+
+        connection.setDoOutput(true);
+
+        // if (requestBody.length() > 0) {
+        //     try (OutputStream os = connection.getOutputStream()) {
+        //         byte[] input = requestBody.toString().getBytes("utf-8");
+        //         os.write(input, 0, input.length);
+        //     }
+        // }
 
         int responseCode = connection.getResponseCode();
         if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -70,18 +84,9 @@
             in.close();
 
             // Parse the API response JSON
-            JSONObject apiJson = new JSONObject(apiResponse.toString());
+            JSONObject responseObject = new JSONObject(apiResponse.toString()); 
 
-            // Select the appropriate object based on the request content
-            JSONObject responseObject;
-
-            if (useCreatedObject && apiJson.has("created")) {
-                responseObject = apiJson.getJSONObject("created");
-            } else if (apiJson.has("init")) {
-                responseObject = apiJson.getJSONObject("init");
-            } else {
-                responseObject = new JSONObject().put("error", "Invalid API response");
-            }
+            System.out.println("Response: " + responseObject.toString(2));           
 
             // Send the selected object as the response
             out.print(responseObject.toString(2));
