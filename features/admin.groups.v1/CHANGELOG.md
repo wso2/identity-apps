@@ -1,5 +1,17 @@
 # @wso2is/admin.groups.v1
 
+## 2.26.12
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.53
+  - @wso2is/admin.extensions.v1@2.35.12
+  - @wso2is/admin.organizations.v1@2.26.53
+  - @wso2is/admin.roles.v2@2.26.53
+  - @wso2is/admin.users.v1@2.29.12
+  - @wso2is/admin.userstores.v1@2.26.12
+
 ## 2.26.11
 
 ### Patch Changes
