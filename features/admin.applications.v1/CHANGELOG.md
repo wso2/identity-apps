@@ -1,5 +1,36 @@
 # @wso2is/admin.applications.v1
 
+## 2.30.54
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.authorization.v1@2.25.19
+  - @wso2is/admin.branding.v1@2.27.27
+  - @wso2is/admin.claims.v1@2.26.13
+  - @wso2is/admin.connections.v1@2.28.54
+  - @wso2is/admin.console-settings.v1@2.25.54
+  - @wso2is/admin.extensions.v1@2.35.13
+  - @wso2is/admin.identity-providers.v1@2.26.54
+  - @wso2is/admin.impersonation.v1@1.6.54
+  - @wso2is/admin.login-flow.ai.v1@2.26.54
+  - @wso2is/admin.oidc-scopes.v1@2.25.54
+  - @wso2is/admin.organizations.v1@2.26.54
+  - @wso2is/admin.roles.v2@2.26.54
+  - @wso2is/admin.secrets.v1@2.25.54
+  - @wso2is/admin.server-configurations.v1@2.30.8
+  - @wso2is/admin.users.v1@2.29.13
+  - @wso2is/admin.userstores.v1@2.26.13
+  - @wso2is/admin.wsfed-configuration.v1@2.25.54
+  - @wso2is/react-components@2.8.9
+  - @wso2is/admin.core.v1@2.34.54
+  - @wso2is/admin.authentication-flow-builder.v1@2.24.54
+  - @wso2is/admin.feature-gate.v1@1.4.54
+  - @wso2is/admin.api-resources.v2@2.25.54
+  - @wso2is/form@2.6.2
+  - @wso2is/admin.application-templates.v1@1.4.54
+  - @wso2is/admin.template-core.v1@1.5.8
+
 ## 2.30.53
 
 ### Patch Changes
