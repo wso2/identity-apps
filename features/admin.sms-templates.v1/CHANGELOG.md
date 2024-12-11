@@ -1,5 +1,14 @@
 # @wso2is/admin.sms-templates.v1
 
+## 1.0.51
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.52
+  - @wso2is/admin.branding.v1@2.27.25
+  - @wso2is/common.branding.v1@2.25.25
+
 ## 1.0.50
 
 ### Patch Changes
