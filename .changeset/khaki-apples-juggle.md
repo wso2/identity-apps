@@ -1,5 +1,5 @@
 ---
-"@wso2is/console": patch
+"@wso2is/admin.roles.v2": patch
 ---
 
 Fix role pagination issue.
