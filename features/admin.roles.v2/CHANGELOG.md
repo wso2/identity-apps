@@ -1,5 +1,25 @@
 # @wso2is/admin.roles.v2
 
+## 2.26.52
+
+### Patch Changes
+
+- [#7193](https://github.com/wso2/identity-apps/pull/7193) [`269041cfba8a89c687d7bbdc561de0b173956fc4`](https://github.com/wso2/identity-apps/commit/269041cfba8a89c687d7bbdc561de0b173956fc4) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Fix role pagination issue.
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.52
+  - @wso2is/admin.connections.v1@2.28.52
+  - @wso2is/admin.core.v1@2.34.52
+  - @wso2is/admin.extensions.v1@2.35.11
+  - @wso2is/admin.groups.v1@2.26.11
+  - @wso2is/admin.identity-providers.v1@2.26.52
+  - @wso2is/admin.organizations.v1@2.26.52
+  - @wso2is/admin.users.v1@2.29.11
+  - @wso2is/admin.remote-userstores.v1@1.7.8
+  - @wso2is/admin.api-resources.v2@2.25.52
+  - @wso2is/admin.server-configurations.v1@2.30.6
+  - @wso2is/admin.userstores.v1@2.26.11
+
 ## 2.26.51
 
 ### Patch Changes
