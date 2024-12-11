@@ -648,26 +648,25 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     </Grid.Column>
                                 </Grid.Row>
                             ) }
-                            {
-                                (<Grid.Row
-                                    columns={ 1 }
-                                    data-componentid="application-edit-user-attributes-linked-accounts"
-                                >
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                        <Divider />
-                                        <Heading
-                                            as="h4"
-                                        >
-                                            { t("applications:forms.advancedAttributeSettings." +
+                            <Grid.Row
+                                columns={ 1 }
+                                data-componentid="application-edit-user-attributes-linked-accounts"
+                            >
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Divider />
+                                    <Heading
+                                        as="h4"
+                                    >
+                                        { t("applications:forms.advancedAttributeSettings." +
                                                 "sections.linkedAccounts.heading") }
-                                        </Heading>
-                                        <Heading as="h6" color="grey">
-                                            { t("applications:forms.advancedAttributeSettings." +
+                                    </Heading>
+                                    <Heading as="h6" color="grey" className="mt-1">
+                                        { t("applications:forms.advancedAttributeSettings." +
                                                 "sections.linkedAccounts.descriptionFederated") }
-                                        </Heading>
-                                    </Grid.Column>
-                                </Grid.Row>)
-                            }
+                                    </Heading>
+                                </Grid.Column>
+                            </Grid.Row>
+
                             {
                                 applicationConfig?.attributeSettings?.advancedAttributeSettings
                                     ?.showValidateLinkedLocalAccount && (
