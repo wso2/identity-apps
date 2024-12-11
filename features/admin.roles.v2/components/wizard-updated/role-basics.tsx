@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -42,7 +42,7 @@ import React, {
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { DropdownProps } from "semantic-ui-react";
-import { useRolesList } from "../../api/roles";
+import useGetRolesList from "../../api/use-get-roles-list";
 import { RoleAudienceTypes, RoleConstants } from "../../constants";
 import { CreateRoleFormData } from "../../models";
 
@@ -109,7 +109,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         data: rolesList,
         isLoading: isRolesListLoading,
         isValidating: isRolesListValidating
-    } = useRolesList(undefined, undefined, roleNameSearchQuery, "users,groups,permissions,associatedApplications");
+    } = useGetRolesList(undefined, undefined, roleNameSearchQuery, "users,groups,permissions,associatedApplications");
 
     useEffect(() => {
         if (applicationListFetchRequestError) {

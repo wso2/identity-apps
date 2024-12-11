@@ -38,7 +38,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { deleteRoleById, useRolesList } from "../api";
+import { deleteRoleById } from "../api";
+import useGetRolesList from "../api/use-get-roles-list";
 import { RoleList } from "../components/role-list";
 import { RoleConstants } from "../constants";
 
@@ -90,7 +91,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
         isLoading: isRolesListLoading,
         error: rolesListError,
         mutate: mutateRolesList
-    } = useRolesList(
+    } = useGetRolesList(
         listItemLimit,
         listOffset,
         useRolesListFilterBy(filterBy),
