@@ -61,6 +61,7 @@ const useGetRolesList = <Data = RoleListInterface, Error = RequestErrorInterface
     const {
         data,
         error,
+        isLoading,
         isValidating,
         mutate,
         response
@@ -69,7 +70,7 @@ const useGetRolesList = <Data = RoleListInterface, Error = RequestErrorInterface
     return {
         data,
         error,
-        isLoading: !error && !data,
+        isLoading,
         isValidating,
         mutate,
         response
