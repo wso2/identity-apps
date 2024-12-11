@@ -25,9 +25,9 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, useRef } from
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { getAPIResourcesForIdenitifierValidation } from "../../../api";
-import { APIResourcesConstants } from "../../../constants";
-import { APIResourcesListInterface, BasicAPIResourceInterface } from "../../../models";
+import { getAPIResourcesForIdenitifierValidation } from "../../../api/api-resources";
+import { APIResourcesConstants } from "../../../constants/api-resources-constants";
+import { APIResourcesListInterface, BasicAPIResourceInterface } from "../../../models/api-resources";
 
 /**
  * Prop-types for the API resources page component.

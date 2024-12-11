@@ -26,7 +26,7 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { APIResourcePanesCommonPropsInterface, APIResourcePermissionInterface } from "../../models";
+import { APIResourcePanesCommonPropsInterface, APIResourcePermissionInterface } from "../../models/api-resources";
 
 /**
  * Prop-types for the API resources page component.
