@@ -29,7 +29,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import {
     APIResourcePanesCommonPropsInterface
-} from "../../models";
+} from "../../models/api-resources";
 
 /**
  * Prop-types for the Authorization part of the edit API Resource page component.
