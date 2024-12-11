@@ -483,56 +483,6 @@ export const getRolesList = (domain: string, filter?: string): Promise<RoleListI
 };
 
 /**
- * Hook to get the retrieve the list of groups that are currently in the system.
- *
- * @param count - Number of records to fetch.
- * @param startIndex - Index of the first record to fetch.
- * @param filter - Search filter.
- * @param shouldFetch - Should fetch the data.
- * @returns The object containing the roles list.
- */
-export const useRolesList = <Data = RoleListInterface, Error = RequestErrorInterface>(
-    count?: number,
-    startIndex?: number,
-    filter?: string,
-    excludedAttributes?: string,
-    shouldFetch: boolean = true
-): RequestResultInterface<Data, Error> => {
-
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        params: {
-            count,
-            excludedAttributes,
-            filter,
-            startIndex
-        },
-        url: store.getState().config.endpoints.rolesV2
-    };
-
-    const {
-        data,
-        error,
-        isValidating,
-        mutate,
-        response
-    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
-
-    return {
-        data,
-        error,
-        isLoading: !error && !data,
-        isValidating,
-        mutate,
-        response
-    };
-};
-
-/**
  * Hook to get the retrieve the list of API resources that are currently in the system.
  *
  * @param domain - User store domain.

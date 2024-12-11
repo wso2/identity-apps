@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -43,7 +43,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Grid, Header, Label, Modal } from "semantic-ui-react";
-import { createRole, useRolesList } from "../../api";
+import { createRole } from "../../api";
+import useGetRolesList from "../../api/use-get-roles-list";
 import { RoleAudienceTypes, RoleConstants } from "../../constants";
 import { ScopeInterface } from "../../models/apiResources";
 import { Policy } from "../../models/policies";
@@ -105,7 +106,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         data: rolesList,
         isLoading: isRolesListLoading,
         isValidating: isRolesListValidating
-    } = useRolesList(undefined, undefined, roleNameSearchQuery, "users,groups,permissions,associatedApplications");
+    } = useGetRolesList(undefined, undefined, roleNameSearchQuery, "users,groups,permissions,associatedApplications");
 
     useEffect(() => {
         const selectedApplication: DropdownItemProps[] = [];
