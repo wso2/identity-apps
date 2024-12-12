@@ -22,7 +22,7 @@ const fs = require("fs-extra");
 const themeFiles = path.join(__dirname, "..", "modules", "theme", "dist", "lib");
 const apps = [ "authentication-portal", "recovery-portal", "x509-certificate-authentication-portal" ];
 
-const ReactComponentsJSFile = "react-ui-components.min.js";
+const ReactComponentsJSFile = "react-ui-core.min.js";
 const appReactComponentsJSFilePath = path.join(__dirname, "apps", `${apps[0]}`, "src", "main", "webapp", "js");
 const transpiledReactComponentsJSFilePath = path.join(__dirname, "dist");
 
@@ -45,21 +45,21 @@ async function copyThemeFiles() {
     }
 }
 
-// Check for the react-ui-components file and delete it if exists.
+// Check for the react-ui-core module and delete it if exists.
 async function deleteExistingAppReactComponentsJSFile() {
     if (fs.existsSync(path.join(appReactComponentsJSFilePath, ReactComponentsJSFile))) {
-        console.log(`Deleting existing react-ui-components file in ${apps[0]} app...`);
+        console.log(`Deleting existing react-ui-core module in ${apps[0]} app...`);
         await fs.remove(path.join(appReactComponentsJSFilePath, ReactComponentsJSFile));
     }
 }
 
-// Copy the react-ui-components.js file to authentication app.
+// Copy the react-ui-core.js file to authentication portal.
 async function copyAppReactComponentsJSFile() {
-    console.log(`Copying react-ui-components file to ${apps[0]} app...`);
+    console.log(`Copying react-ui-core file to ${apps[0]} app...`);
     await fs.copyFile(
         path.join(transpiledReactComponentsJSFilePath, ReactComponentsJSFile),
-        path.join(appReactComponentsJSFilePath, ReactComponentsJSFile)   
-    ); 
+        path.join(appReactComponentsJSFilePath, ReactComponentsJSFile)
+    );
 }
 
 async function main() {
