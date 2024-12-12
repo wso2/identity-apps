@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.4.5
+
+### Patch Changes
+
+- [#7196](https://github.com/wso2/identity-apps/pull/7196) [`e698589ee572899b0fa7c4c70407b740d7dbec2d`](https://github.com/wso2/identity-apps/commit/e698589ee572899b0fa7c4c70407b740d7dbec2d) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Update the facebook logo
+
 ## 2.4.4
 
 ### Patch Changes
