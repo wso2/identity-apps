@@ -57,7 +57,7 @@ import {
     ClaimConfigurationInterface,
     ClaimMappingInterface,
     RequestedClaimConfigurationInterface
-} from "../../../models";
+} from "../../../models/application";
 
 interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     claims: ExtendedClaimInterface[];

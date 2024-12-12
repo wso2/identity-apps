@@ -22,8 +22,10 @@ import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Typography from "@oxygen-ui/react/Typography";
-import { ExtendedClaimInterface } from "@wso2is/admin.applications.v1/components/settings/attribute-management";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import {
+    ExtendedClaimInterface
+} from "@wso2is/admin.applications.v1/components/settings/attribute-management/attribute-settings";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import { getAllLocalClaims, updateAClaim } from "@wso2is/admin.claims.v1/api/claims";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";

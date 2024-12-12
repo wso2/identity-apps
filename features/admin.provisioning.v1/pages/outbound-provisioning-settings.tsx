@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { OutboundProvisioningConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
 import { OutboundProvisioningConnectorInterface } from "@wso2is/admin.connections.v1/models/connection";
 import {
@@ -28,7 +29,6 @@ import {
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { useIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
 import { IdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, PageLayout, PrimaryButton } from "@wso2is/react-components";
@@ -37,7 +37,6 @@ import React, {
     MouseEvent,
     ReactElement,
     useEffect,
-    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -72,20 +71,11 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
     const dispatch: Dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     /**
      * Check if the user has the required scopes to update the resident outbound provisioning configurations.
      */
-    const isReadOnly: boolean = useMemo(
-        () =>
-            !hasRequiredScopes(
-                featureConfig?.residentOutboundProvisioning,
-                featureConfig?.residentOutboundProvisioning?.scopes?.update,
-                allowedScopes
-            ),
-        [ featureConfig, allowedScopes ]
-    );
+    const isReadOnly: boolean = useRequiredScopes(featureConfig?.residentOutboundProvisioning?.scopes?.update);
 
     const [ isShowCreateWizard, setIsShowCreateWizard ] = useState(false);
     const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>([]);

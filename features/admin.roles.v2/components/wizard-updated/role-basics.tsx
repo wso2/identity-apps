@@ -22,7 +22,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Alert from "@oxygen-ui/react/Alert";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
-import { ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models";
+import { ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models/application";
 import { history, store } from "@wso2is/admin.core.v1";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";

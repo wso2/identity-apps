@@ -19,13 +19,15 @@
 import {
     ApplicationInterface,
     OIDCApplicationConfigurationInterface,
+    SAMLApplicationConfigurationInterface
+} from "@wso2is/admin.applications.v1/models/application";
+import {
     OIDCDataInterface,
     PassiveStsConfigurationInterface,
     SAML2ConfigurationInterface,
-    SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolTypes,
     WSTrustConfigurationInterface
-} from "@wso2is/admin.applications.v1/models";
+} from "@wso2is/admin.applications.v1/models/application-inbound";
 import { AppState } from "@wso2is/admin.core.v1";
 import { MarkdownGuide } from "@wso2is/admin.template-core.v1/components/markdown-guide";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";

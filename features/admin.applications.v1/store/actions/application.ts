@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,21 +25,23 @@ import {
     SetAvailableInboundProtocolsMetaInterface,
     SetOIDCApplicationConfigurationsActionInterface,
     SetSAMLApplicationConfigurationsActionInterface
-} from "./types";
+} from "./types/application";
 import {
     ApplicationTemplateListItemInterface,
-    AuthProtocolMetaListItemInterface,
     OIDCApplicationConfigurationInterface,
+    SAMLApplicationConfigurationInterface
+} from "../../models/application";
+import {
+    AuthProtocolMetaListItemInterface,
     OIDCMetadataInterface,
-    SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolMetaTypes
-} from "../../models";
+} from "../../models/application-inbound";
 
 /**
  * Redux action to set the list of available inbound authentication protocols.
  *
- * @param {AuthProtocolMetaListItemInterface} meta - Inbound auth protocol meta.
- * @return {SetAvailableInboundProtocolsMetaInterface} An action of type `SET_AVAILABLE_INBOUND_AUTH_PROTOCOL_META`
+ * @param meta - Inbound auth protocol meta.
+ * @returns An action of type `SET_AVAILABLE_INBOUND_AUTH_PROTOCOL_META`
  */
 export const setAvailableInboundAuthProtocolMeta = (
     meta: AuthProtocolMetaListItemInterface[]
@@ -51,9 +53,9 @@ export const setAvailableInboundAuthProtocolMeta = (
 /**
  * Redux action to set the list of available custom inbound authentication protocols.
  *
- * @param {AuthProtocolMetaListItemInterface} meta - Inbound auth protocol meta.
+ * @param meta - Inbound auth protocol meta.
  *
- * @return {SetAvailableCustomInboundProtocolsMetaInterface}
+ * @returns
  * An action of type `SET_AVAILABLE_CUSTOM_INBOUND_AUTH_PROTOCOL_META`
  */
 export const setAvailableCustomInboundAuthProtocolMeta = (
@@ -73,9 +75,9 @@ export const checkAvailableCustomInboundAuthProtocolMeta = (
 /**
  * Redux action to set the auth protocol metadata.
  *
- * @param {SupportedAuthProtocolMetaTypes} protocol - The relevant auth protocol.
- * @param {OIDCMetadataInterface | any} meta - Auth protocol metadata.
- * @return {SetAuthProtocolMetaInterface} An action of type `SET_AUTH_PROTOCOL_META`
+ * @param protocol - The relevant auth protocol.
+ * @param meta - Auth protocol metadata.
+ * @returns An action of type `SET_AUTH_PROTOCOL_META`
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const setAuthProtocolMeta = (
@@ -90,9 +92,9 @@ export const setAuthProtocolMeta = (
 /**
  * Redux action to set the application templates.
  *
- * @param {ApplicationTemplateListItemInterface[]} templates - Application templates list.
- * @param {boolean} isGrouped - Are the templates grouped.
- * @return {SetApplicationTemplatesActionInterface}
+ * @param templates - Application templates list.
+ * @param isGrouped - Are the templates grouped.
+ * @returns the Redux action payload to set the application templates
  */
 export const setApplicationTemplates = (
     templates: ApplicationTemplateListItemInterface[],
@@ -108,10 +110,10 @@ export const setApplicationTemplates = (
  * Redux action to set the oidc application configurations.
  *
  *
- * @return {OIDCApplicationConfigurationInterface} An action of type
+ * @returns An action of type
  * `ApplicationActionTypes.SET_OIDC_APPLICATION_CONFIGURATIONS`
  *
- * @param oidcConfigurations
+ * @param oidcConfigurations - OIDC configurations
  */
 export const setOIDCApplicationConfigs = (
     oidcConfigurations: OIDCApplicationConfigurationInterface
@@ -124,10 +126,10 @@ export const setOIDCApplicationConfigs = (
  * Redux action to set the oidc application configurations.
  *
  *
- * @return {SAMLApplicationConfigurationInterface} An action of type
+ * @returns An action of type
  * `ApplicationActionTypes.SET_SAML_APPLICATION_CONFIGURATIONS`
  *
- * @param samlConfigurations
+ * @param samlConfigurations - SAML configurations
  */
 export const setSAMLApplicationConfigs = (
     samlConfigurations: SAMLApplicationConfigurationInterface

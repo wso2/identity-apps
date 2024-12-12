@@ -23,7 +23,7 @@ import { SignOnMethodsWrapper } from "./components/sign-on-methods-wrapper";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface
-} from "../../../models";
+} from "../../../models/application";
 
 /**
  * Proptypes for the sign on methods component.

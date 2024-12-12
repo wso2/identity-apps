@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import {
     AppConstants,
     AppState,

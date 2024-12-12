@@ -19,7 +19,7 @@
 import { updateApplicationConfigurations, useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { useGetApplication } from "@wso2is/admin.applications.v1/api/use-get-application";
 import useGetApplicationInboundConfigs from "@wso2is/admin.applications.v1/api/use-get-application-inbound-configs";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import { AuthenticationSequenceInterface } from "@wso2is/admin.applications.v1/models/application";
 import React, { PropsWithChildren, ReactElement, useMemo } from "react";
 import ConsoleSettingsContext from "../context/console-settings-context";
