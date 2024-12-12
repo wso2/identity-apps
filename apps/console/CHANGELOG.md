@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.35.29
+
+### Patch Changes
+
+- [#7205](https://github.com/wso2/identity-apps/pull/7205) [`8fb01c942a8682858710de55b5ff6805d28f6d11`](https://github.com/wso2/identity-apps/commit/8fb01c942a8682858710de55b5ff6805d28f6d11) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Release the latest console version
+
 ## 2.35.28
 
 ### Patch Changes
