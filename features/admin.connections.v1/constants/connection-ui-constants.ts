@@ -313,8 +313,10 @@ export class ConnectionUIConstants {
      * Set of connection template group Ids.
      */
     public static readonly CONNECTION_TEMPLATE_GROUPS: {
+        CUSTOM_AUTHENTICATION: string;
         ENTERPRISE_PROTOCOLS: string;
     } = {
+            CUSTOM_AUTHENTICATION: "custom-authentication",
             ENTERPRISE_PROTOCOLS: "enterprise-protocols"
         };
 

@@ -80,6 +80,7 @@ export const useGetConnectionTemplates = <Data = ConnectionTemplateInterface[], 
             CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS
                 .ORGANIZATION_ENTERPRISE_IDP,
             CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.ENTERPRISE,
+            CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.CUSTOM_AUTHENTICATION,
             ...(UIConfig?.hiddenConnectionTemplates || [])
         ];
 
@@ -102,6 +103,7 @@ export const useGetConnectionTemplates = <Data = ConnectionTemplateInterface[], 
 
         // Sort the connection templates based on the display order.
         groupedConnectionTemplates.sort((a: ConnectionTemplateInterface, b: ConnectionTemplateInterface) => {
+            // TODO: update the display order
             return a.displayOrder - b.displayOrder;
         });
     }
