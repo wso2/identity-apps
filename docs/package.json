@@ -1,0 +1,40 @@
+{
+  "private": true,
+  "name": "@wso2is/identity-apps-docs",
+  "version": "0.0.0",
+  "description": "Developer documentation for the WSO2 Identity Server Apps codebase",
+  "type": "module",
+  "author": "WSO2",
+  "license": "Apache-2.0",
+  "files": [
+    ".vitepress/dist"
+  ],
+  "homepage": "https://github.com/wso2/identity-apps/tree/main/docs#readme",
+  "bugs": {
+    "url": "https://github.com/wso2/identity-apps/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wso2/identity-apps",
+    "directory": "docs"
+  },
+  "keywords": [
+    "wso2",
+    "identity-server",
+    "identity-apps",
+    "developer-docs",
+    "docs"
+  ],
+  "scripts": {
+    "docs:dev": "vitepress dev",
+    "docs:build": "vitepress build",
+    "docs:preview": "vitepress preview"
+  },
+  "devDependencies": {
+    "vitepress": "^1.3.0",
+    "vue": "^3.4.31"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  }
+}
