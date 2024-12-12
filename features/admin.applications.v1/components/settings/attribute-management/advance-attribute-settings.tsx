@@ -648,30 +648,26 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     </Grid.Column>
                                 </Grid.Row>
                             ) }
-                            { applicationConfig?.attributeSettings?.advancedAttributeSettings
-                                ?.isLinkedAccountsEnabled(applicationTemplateId) &&
-                                (<Grid.Row
-                                    columns={ 1 }
-                                    data-componentid="application-edit-user-attributes-linked-accounts"
-                                >
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                        <Divider />
-                                        <Heading
-                                            as="h4"
-                                        >
-                                            { t("applications:forms.advancedAttributeSettings." +
+                            <Grid.Row
+                                columns={ 1 }
+                                data-componentid="application-edit-user-attributes-linked-accounts"
+                            >
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Divider />
+                                    <Heading
+                                        as="h4"
+                                    >
+                                        { t("applications:forms.advancedAttributeSettings." +
                                                 "sections.linkedAccounts.heading") }
-                                        </Heading>
-                                        <Heading as="h6" color="grey">
-                                            { t("applications:forms.advancedAttributeSettings." +
+                                    </Heading>
+                                    <Heading as="h6" color="grey" className="mt-1">
+                                        { t("applications:forms.advancedAttributeSettings." +
                                                 "sections.linkedAccounts.descriptionFederated") }
-                                        </Heading>
-                                    </Grid.Column>
-                                </Grid.Row>)
-                            }
+                                    </Heading>
+                                </Grid.Column>
+                            </Grid.Row>
+
                             {
-                                applicationConfig?.attributeSettings?.advancedAttributeSettings
-                                    ?.isLinkedAccountsEnabled(applicationTemplateId) &&
                                 applicationConfig?.attributeSettings?.advancedAttributeSettings
                                     ?.showValidateLinkedLocalAccount && (
                                     <Grid.Row
@@ -705,36 +701,37 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                     </Grid.Row>
                                 )
                             }
-                            { applicationConfig?.attributeSettings?.advancedAttributeSettings
-                                ?.isLinkedAccountsEnabled(applicationTemplateId) &&
+                            {
                                 applicationConfig?.attributeSettings?.advancedAttributeSettings
                                     ?.showMandateLinkedLocalAccount ? (<div className="ml-3">
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                            <Field.CheckboxLegacy
-                                                listen={ mandateLinkedAccountCheckboxHandler }
-                                                disabled= { !validateLinkedLocalAccount }
-                                                ariaLabel="Mandate linked local account"
-                                                name="mandateLinkedLocalAccount"
-                                                label={
-                                                    t("applications:forms.advancedAttributeSettings." +
+                                        <Grid.Row columns={ 1 }>
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                                <Field.CheckboxLegacy
+                                                    listen={ mandateLinkedAccountCheckboxHandler }
+                                                    disabled= { !validateLinkedLocalAccount }
+                                                    ariaLabel="Mandate linked local account"
+                                                    name="mandateLinkedLocalAccount"
+                                                    label={
+                                                        t("applications:forms.advancedAttributeSettings." +
                                                     "sections.linkedAccounts.fields.mandateLocalAccount.label")
-                                                }
-                                                required={ false }
-                                                value={
-                                                    mandateLinkedLocalAccount
-                                                        ? [ "mappedLocalSubjectMandatory" ]
-                                                        : []
-                                                }
-                                                readOnly={ readOnly }
-                                                data-testid={ `${ componentId }-mandate-linked-local-account-checkbox` }
-                                                hint={ t("applications:forms.advancedAttributeSettings." +
+                                                    }
+                                                    required={ false }
+                                                    value={
+                                                        mandateLinkedLocalAccount
+                                                            ? [ "mappedLocalSubjectMandatory" ]
+                                                            : []
+                                                    }
+                                                    readOnly={ readOnly }
+                                                    data-testid={
+                                                        `${ componentId }-mandate-linked-local-account-checkbox`
+                                                    }
+                                                    hint={ t("applications:forms.advancedAttributeSettings." +
                                                 "sections.linkedAccounts.fields.mandateLocalAccount.hint") }
-                                            />
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </div>)
-                                : null
+                                                />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </div>)
+                                    : null
                             }
                             {
                                 applicationConfig?.attributeSettings?.advancedAttributeSettings
