@@ -1,5 +1,14 @@
 # @wso2is/forms
 
+## 2.3.5
+
+### Patch Changes
+
+- [#7106](https://github.com/wso2/identity-apps/pull/7106) [`1d03b454bd2dcd03ea3c9af5fb78a7320e7b47aa`](https://github.com/wso2/identity-apps/commit/1d03b454bd2dcd03ea3c9af5fb78a7320e7b47aa) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add support for claim-wise uniqueness validation
+
+- Updated dependencies [[`1d03b454bd2dcd03ea3c9af5fb78a7320e7b47aa`](https://github.com/wso2/identity-apps/commit/1d03b454bd2dcd03ea3c9af5fb78a7320e7b47aa)]:
+  - @wso2is/core@2.5.1
+
 ## 2.3.4
 
 ### Patch Changes

@@ -1,5 +1,22 @@
 # @wso2is/admin.alternative-login-identifier.v1
 
+## 1.5.55
+
+### Patch Changes
+
+- [#7106](https://github.com/wso2/identity-apps/pull/7106) [`1d03b454bd2dcd03ea3c9af5fb78a7320e7b47aa`](https://github.com/wso2/identity-apps/commit/1d03b454bd2dcd03ea3c9af5fb78a7320e7b47aa) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add support for claim-wise uniqueness validation
+
+- Updated dependencies [[`1d03b454bd2dcd03ea3c9af5fb78a7320e7b47aa`](https://github.com/wso2/identity-apps/commit/1d03b454bd2dcd03ea3c9af5fb78a7320e7b47aa)]:
+  - @wso2is/admin.claims.v1@2.26.14
+  - @wso2is/admin.core.v1@2.34.55
+  - @wso2is/core@2.5.1
+  - @wso2is/admin.applications.v1@2.30.55
+  - @wso2is/admin.users.v1@2.29.14
+  - @wso2is/admin.server-configurations.v1@2.30.9
+  - @wso2is/admin.validation.v1@2.26.55
+  - @wso2is/form@2.6.3
+  - @wso2is/react-components@2.8.10
+
 ## 1.5.54
 
 ### Patch Changes
