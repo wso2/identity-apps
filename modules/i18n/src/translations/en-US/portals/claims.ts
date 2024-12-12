@@ -394,6 +394,11 @@ export const claims: ClaimsNS = {
     local: {
         additionalProperties: {
             hint: "Use when writing an extension using current attributes",
+            isUniqueDeprecationMessage: {
+                uniquenessDisabled: "The 'isUnique' property is deprecated.",
+                uniquenessEnabled: "The 'isUnique' property is deprecated. Please use " +
+                    "<1>Uniqueness Validation</1> option to configure attribute uniqueness."
+            },
             key: "Name",
             keyRequiredErrorMessage: "Enter a name",
             value: "Value",
@@ -494,7 +499,16 @@ export const claims: ClaimsNS = {
                 "you need to disable account verification for your organization.",
             supportedByDefault: {
                 label: "Display this attribute on the user's profile"
-            }
+            },
+            uniquenessScope: {
+                label: "Uniqueness Validation",
+                options: {
+                    acrossUserstores: "Across User Stores",
+                    none: "None",
+                    withinUserstore: "Within User Store"
+                }
+            },
+            uniquenessScopeHint: "Select the scope to validate the uniqueness of the attribute value."
         },
         mappedAttributes: {
             enableForUserStore: "Enable for this user store",
