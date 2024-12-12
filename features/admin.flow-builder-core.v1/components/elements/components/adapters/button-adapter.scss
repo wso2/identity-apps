@@ -16,31 +16,20 @@
  * under the License.
  */
 
-import { BaseDisplay } from "./base";
+.social-button.oxygen-button {
+    background: var(--oxygen-palette-common-white);
+    color: var(--oxygen-palette-common-black);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, .12), 0 1px 1px 0 rgba(0, 0, 0, .24);
 
-export interface Action {
-    category: ActionCategories;
-    display: BaseDisplay;
-    types: ActionType[];
-}
+    &:hover {
+        color: rgba(0, 0, 0, .8);
+    }
 
-export interface ActionType {
-    type: ActionTypes;
-    display: BaseDisplay;
-    meta?: Record<string, unknown>;
-}
-
-export type Actions = Action[];
-
-export enum ActionCategories {
-    Navigation = "NAVIGATION",
-    Verification = "VERIFICATION",
-    CredentialOnboarding = "CREDENTIAL_ONBOARDING",
-    Executor = "SOCIAL"
-}
-
-export enum ActionTypes {
-    Next = "NEXT",
-    Previous = "PREVIOUS",
-    Executor = "EXECUTOR"
+    .oxygen-sign-in-option-image {
+        height: 20px;
+    }
 }
