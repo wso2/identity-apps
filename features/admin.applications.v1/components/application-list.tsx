@@ -63,15 +63,15 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { deleteApplication } from "../api";
-import { ApplicationManagementConstants } from "../constants";
+import { deleteApplication } from "../api/application";
+import { ApplicationManagementConstants } from "../constants/application-management";
 import {
     ApplicationAccessTypes,
     ApplicationInboundTypes,
     ApplicationListInterface,
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
-} from "../models";
+} from "../models/application";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 
