@@ -3166,6 +3166,7 @@ export interface Extensions {
                     form: {
                         fields: {
                             accountLockIncrementFactor: FormAttributes;
+                            enableIndefiniteUserLockduration: FormAttributes;
                             accountLockTime: FormAttributes;
                             enable: FormAttributes;
                             maxFailedAttempts: FormAttributes;
