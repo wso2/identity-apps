@@ -45,6 +45,7 @@ export enum InputVariants {
 export enum ButtonVariants {
     Primary = "PRIMARY",
     Secondary = "SECONDARY",
+    Social = "SOCIAL",
     Text = "TEXT"
 }
 

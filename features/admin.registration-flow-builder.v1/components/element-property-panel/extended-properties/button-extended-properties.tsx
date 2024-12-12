@@ -16,16 +16,20 @@
  * under the License.
  */
 
+import Avatar from "@oxygen-ui/react/Avatar";
 import Box from "@oxygen-ui/react/Box";
+import Card from "@oxygen-ui/react/Card";
+import CardContent from "@oxygen-ui/react/CardContent";
+import Grid from "@oxygen-ui/react/Grid";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 // eslint-disable-next-line max-len
 import { CommonComponentPropertyFactoryPropsInterface } from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/common-component-property-factory";
-import { Action } from "@wso2is/admin.flow-builder-core.v1/models/actions";
+import { Action, ActionType } from "@wso2is/admin.flow-builder-core.v1/models/actions";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import capitalize from "lodash-es/capitalize";
 import React, { FunctionComponent, ReactElement } from "react";
 import useGetRegistrationFlowCoreActions from "../../../api/use-get-registration-flow-builder-actions";
+import "./button-extended-properties.scss";
 
 /**
  * Props interface of {@link ButtonExtendedProperties}
@@ -45,12 +49,37 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
     const { data: actions } = useGetRegistrationFlowCoreActions();
 
     return (
-        <Stack gap={ 2 } data-componentid={ componentId }>
-            { actions?.map((action: Action, index: number) => (
-                <Box key={ index }>
-                    <Typography variant="h6">{ capitalize(action?.category) }</Typography>
-                </Box>
-            )) }
+        <Stack className="button-extended-properties" gap={ 2 } data-componentid={ componentId }>
+            <div>
+                <Typography variant="h6">Action Type</Typography>
+                { actions?.map((action: Action, index: number) => (
+                    <Box key={ index }>
+                        <Typography className="button-extended-properties-sub-heading" variant="body1">
+                            { action?.display?.label }
+                        </Typography>
+                        <Grid container spacing={ 1 }>
+                            { action.types?.map((type: ActionType, typeIndex: number) => (
+                                <Grid key={ typeIndex } xs={ 6 }>
+                                    <Card className="extended-property action-type" variant="outlined">
+                                        <CardContent>
+                                            <Box display="flex" flexDirection="row" gap={ 1 } alignItems="center">
+                                                <Avatar
+                                                    className="action-type-icon"
+                                                    src={ type?.display?.image }
+                                                    variant="rounded"
+                                                />
+                                                <Typography variant="body2" className="action-type-name">
+                                                    { type?.display?.label }
+                                                </Typography>
+                                            </Box>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            )) }
+                        </Grid>
+                    </Box>
+                )) }
+            </div>
         </Stack>
     );
 };

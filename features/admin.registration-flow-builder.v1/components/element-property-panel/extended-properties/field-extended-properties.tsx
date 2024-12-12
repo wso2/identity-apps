@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import FormControl from "@oxygen-ui/react/FormControl";
-import MenuItem from "@oxygen-ui/react/MenuItem";
-import Select from "@oxygen-ui/react/Select";
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Stack from "@oxygen-ui/react/Stack";
-// eslint-disable-next-line max-len
-import { CommonComponentPropertyFactoryPropsInterface } from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/common-component-property-factory";
+import TextField from "@oxygen-ui/react/TextField";
+import {
+    CommonComponentPropertyFactoryPropsInterface
+} from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/common-component-property-factory";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useState } from "react";
 import useGetSupportedProfileAttributes from "../../../api/use-get-supported-profile-attributes";
@@ -49,30 +49,20 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
 
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
-            <FormControl size="small" variant="outlined">
-                <Select
-                    labelId="attribute-select-label"
-                    id="attribute-selector"
-                    value={ selectedAttribute?.claimURI }
-                    label="Attribute"
-                    placeholder="Select an attribute"
-                    onChange={ (e: ChangeEvent<HTMLInputElement>) => {
-                        const newValue: string = e?.target?.value || "";
+            <Autocomplete
+                disablePortal
+                options={ attributes }
+                getOptionLabel={ (attribute: Attribute) => attribute.displayName }
+                sx={ { width: 300 } }
+                renderInput={ (params: AutocompleteRenderInputParams) => <TextField { ...params } label="Attribute" /> }
+                onChange={ (_: ChangeEvent<HTMLInputElement>, attribute: Attribute) => {
+                    onChange("name", selectedAttribute?.claimURI, attribute?.claimURI, element);
 
-                        onChange("name", selectedAttribute?.claimURI, newValue, element);
-
-                        setSelectedAttribute(
-                            attributes?.find((attribute: Attribute) => attribute?.claimURI === newValue)
-                        );
-                    } }
-                >
-                    { attributes?.map((attribute: Attribute) => (
-                        <MenuItem key={ attribute?.claimURI } value={ attribute?.claimURI }>
-                            { attribute?.displayName }
-                        </MenuItem>
-                    )) }
-                </Select>
-            </FormControl>
+                    setSelectedAttribute(
+                        attributes?.find((attribute: Attribute) => attribute?.claimURI === attribute?.claimURI)
+                    );
+                } }
+            />
         </Stack>
     );
 };

@@ -16,10 +16,13 @@
  * under the License.
  */
 
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import TextField from "@oxygen-ui/react/TextField";
 import { FieldKey, FieldValue, Properties } from "@wso2is/admin.flow-builder-core.v1/models/base";
 import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import isEmpty from "lodash-es/isEmpty";
+import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
 import ElementPropertyFactory from "./element-property-factory";
 import ButtonExtendedProperties from "./extended-properties/button-extended-properties";
 import FieldExtendedProperties from "./extended-properties/field-extended-properties";
@@ -41,6 +44,11 @@ export interface ElementPropertiesPropsInterface extends IdentifiableComponentIn
      * @param element - The element associated with the property.
      */
     onChange: (propertyKey: string, previousValue: any, newValue: any, element: Element) => void;
+    /**
+     * The event handler for the variant change.
+     * @param variant - The variant of the element.
+     */
+    onVariantChange: (variant: string) => void;
 }
 
 /**
@@ -52,19 +60,40 @@ export interface ElementPropertiesPropsInterface extends IdentifiableComponentIn
 const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
     properties,
     element,
-    onChange
+    onChange,
+    onVariantChange
 }: ElementPropertiesPropsInterface): ReactElement | null => {
     const renderElementPropertyFactory = () => {
-        return Object.entries(properties).map(([ key, value ]: [FieldKey, FieldValue]) => (
-            <ElementPropertyFactory
-                key={ `${element.id}-${key}` }
-                element={ element }
-                propertyKey={ key }
-                propertyValue={ value }
-                data-componentid={ `${element.id}-${key}` }
-                onChange={ onChange }
-            />
-        ));
+        const hasVariants: boolean = !isEmpty(element?.variants);
+
+        return (
+            <>
+                { hasVariants && (
+                    <Autocomplete
+                        disablePortal
+                        options={ element?.variants }
+                        sx={ { width: 300 } }
+                        getOptionLabel={ (variant: Element) => variant.variant }
+                        renderInput={ (params: AutocompleteRenderInputParams) => (
+                            <TextField { ...params } label="Variant" />
+                        ) }
+                        onChange={ (_: ChangeEvent<HTMLInputElement>, variant: Element) => {
+                            onVariantChange(variant?.variant);
+                        } }
+                    />
+                ) }
+                { Object.entries(properties).map(([ key, value ]: [FieldKey, FieldValue]) => (
+                    <ElementPropertyFactory
+                        key={ `${element.id}-${key}` }
+                        element={ element }
+                        propertyKey={ key }
+                        propertyValue={ value }
+                        data-componentid={ `${element.id}-${key}` }
+                        onChange={ onChange }
+                    />
+                )) }
+            </>
+        );
     };
 
     switch (element.category) {

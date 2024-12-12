@@ -16,18 +16,12 @@
  * under the License.
  */
 
-import FormControl from "@oxygen-ui/react/FormControl";
-import MenuItem from "@oxygen-ui/react/MenuItem";
-import Select from "@oxygen-ui/react/Select";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useReactFlow } from "@xyflow/react";
-import capitalize from "lodash-es/capitalize";
-import isEmpty from "lodash-es/isEmpty";
-import React, { ChangeEvent, FunctionComponent, HTMLAttributes, ReactElement } from "react";
+import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
-import { Base } from "../../models/base";
 import { Component } from "../../models/component";
 import { Element } from "../../models/elements";
 
@@ -53,8 +47,6 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
         ElementProperties,
         lastInteractedNodeId
     } = useAuthenticationFlowBuilderCore();
-
-    const hasVariants: boolean = !isEmpty(lastInteractedElement?.variants);
 
     const changeSelectedVariant = (selected: string) => {
         const selectedVariant: Component = lastInteractedElement?.variants?.find(
@@ -104,30 +96,12 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
         <div className="flow-builder-element-properties" data-componentid={ componentId } { ...rest }>
             { lastInteractedElement ? (
                 <Stack gap={ 1 }>
-                    { hasVariants && (
-                        <FormControl size="small" variant="outlined">
-                            <Select
-                                labelId={ `${lastInteractedElement?.variant}-variants` }
-                                id={ `${lastInteractedElement?.variant}-variants` }
-                                value={ lastInteractedElement?.variant }
-                                label="variant"
-                                onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                                    changeSelectedVariant(e.target.value as string)
-                                }
-                            >
-                                { lastInteractedElement?.variants?.map((element: Base) => (
-                                    <MenuItem key={ element?.variant } value={ element?.variant }>
-                                        { capitalize(element?.display?.label) }
-                                    </MenuItem>
-                                )) }
-                            </Select>
-                        </FormControl>
-                    ) }
                     { lastInteractedElement && (
                         <ElementProperties
                             element={ lastInteractedElement }
                             properties={ lastInteractedElement?.config?.field }
                             onChange={ handlePropertyChange }
+                            onVariantChange={ changeSelectedVariant }
                         />
                     ) }
                 </Stack>
