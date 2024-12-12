@@ -1261,6 +1261,9 @@
             "roleMapping": false
         },
         "listAllAttributeDialects": true,
+        "passwordPolicyConfigs": {
+            "maxPasswordAllowedLength": 64
+        },
         "privacyPolicyConfigs": {},
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {
