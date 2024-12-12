@@ -9,10 +9,7 @@
             "image": "https://www.svgrepo.com/show/448632/step.svg"
         },
         "config": {
-            "field": {
-                "className": "wso2is-authentication-step"
-            },
-            "styles": {}
+            "field": {}
         }
     },
     {
@@ -25,10 +22,7 @@
             "image": "https://www.svgrepo.com/show/413199/decide.svg"
         },
         "config": {
-            "field": {
-                "className": "wso2is-authentication-rule"
-            },
-            "styles": {}
+            "field": {}
         }
     }
 ]

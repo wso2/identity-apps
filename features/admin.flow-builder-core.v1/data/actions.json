@@ -1,46 +1,93 @@
 [
     {
         "category": "NAVIGATION",
-        "actions": [
+        "display": {
+            "label": "Navigation",
+            "image": ""
+        },
+        "types": [
             {
                 "type": "NEXT",
-                "displayName": "Next"
+                "display": {
+                    "label": "Next",
+                    "image": "https://www.svgrepo.com/show/305382/arrowhead-right-outline.svg"
+                }
             },
             {
                 "type": "PREVIOUS",
-                "displayName": "Previous"
+                "display": {
+                    "label": "Previous",
+                    "image": "https://www.svgrepo.com/show/305384/arrowhead-left-outline.svg"
+                }
             }
         ]
     },
     {
         "category": "VERIFICATION",
-        "actions": [
+        "display": {
+            "label": "Verification",
+            "image": ""
+        },
+        "types": [
             {
                 "type": "NEXT",
                 "meta": {
                     "actionType": "VERIFICATION"
                 },
-                "displayName": "Verify email address"
+                "display": {
+                    "label": "Verify email address",
+                    "image": "https://www.svgrepo.com/show/408695/message-letter-mail-tick-check-e-mail.svg"
+                }
             },
             {
                 "type": "NEXT",
                 "meta": {
                     "actionType": "VERIFICATION"
                 },
-                "displayName": "Verify mobile number"
+                "display": {
+                    "label": "Verify mobile number",
+                    "image": "https://www.svgrepo.com/show/533121/mobile-check.svg"
+                }
+            }
+        ]
+    },
+    {
+        "category": "CREDENTIAL_ONBOARDING",
+        "display": {
+            "label": "Credential Onboarding",
+            "image": ""
+        },
+        "types": [
+            {
+                "type": "EXECUTOR",
+                "name": "PasswordOnboarder",
+                "display": {
+                    "label": "Onboard Password",
+                    "image": "https://www.svgrepo.com/show/526627/password.svg"
+                },
+                "meta": {
+                    "actionType": "CREDENTIAL_ONBOARDING"
+                }
             }
         ]
     },
     {
         "category": "SOCIAL",
-        "actions": [
+        "display": {
+            "label": "Social",
+            "image": ""
+        },
+        "types": [
             {
                 "type": "EXECUTOR",
                 "name": "GoogleOIDCAuthenticator",
                 "meta": {
                     "idp": "Google"
                 },
-                "displayName": "Continue with Google Sign Up"
+                "display": {
+                    "label": "Continue with Google Sign Up",
+                    "image": "https://www.svgrepo.com/show/475656/google-color.svg"
+                }
             }
         ]
     }

@@ -10,8 +10,7 @@
         },
         "config": {
             "version": 2,
-            "field": {},
-            "styles": {}
+            "field": {}
         }
     },
     {
@@ -24,10 +23,7 @@
             "image": "https://www.svgrepo.com/show/368868/otp.svg"
         },
         "config": {
-            "field": {
-                "className": "wso2is-email-otp"
-            },
-            "styles": {}
+            "field": {}
         }
     },
     {
@@ -40,10 +36,7 @@
             "image": "https://www.svgrepo.com/show/381137/transaction-password-otp-verification-code-security.svg"
         },
         "config": {
-            "field": {
-                "className": "wso2is-sms-otp"
-            },
-            "styles": {}
+            "field": {}
         }
     }
 ]
