@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import { getApplicationDetails } from "@wso2is/admin.applications.v1/api";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import { getApplicationDetails } from "@wso2is/admin.applications.v1/api/application";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import {
     ApplicationAccessTypes,
     ApplicationBasicInterface,
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
-} from "@wso2is/admin.applications.v1/models";
+} from "@wso2is/admin.applications.v1/models/application";
 import {
     ApplicationTemplateManagementUtils
 } from "@wso2is/admin.applications.v1/utils/application-template-management-utils";

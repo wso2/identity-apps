@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { URLFragmentTypes } from "@wso2is/admin.applications.v1/models";
+import { URLFragmentTypes } from "@wso2is/admin.applications.v1/models/application";
 import { AppState, history } from "@wso2is/admin.core.v1";
 import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";

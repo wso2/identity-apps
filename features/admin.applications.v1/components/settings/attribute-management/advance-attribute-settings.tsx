@@ -32,18 +32,18 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Checkbox, CheckboxProps, Divider, Grid, Icon } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
-import { ApplicationManagementConstants } from "../../../constants";
+import { ApplicationManagementConstants } from "../../../constants/application-management";
 import {
     AdvanceAttributeSettingsErrorValidationInterface,
     ClaimConfigurationInterface,
     InboundProtocolListItemInterface,
-    OIDCDataInterface,
     RoleConfigInterface,
     RoleInterface,
     SubjectConfigInterface,
     SubjectInterface,
     SubjectTypes
-} from "../../../models";
+} from "../../../models/application";
+import {     OIDCDataInterface } from "../../../models/application-inbound";
 
 interface AdvanceAttributeSettingsPropsInterface extends IdentifiableComponentInterface {
     claimConfigurations: ClaimConfigurationInterface;

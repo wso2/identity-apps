@@ -24,7 +24,7 @@ import {
     useCheckFeatureStatus,
     useRequiredScopes
 } from "@wso2is/access-control";
-import { useApplicationList } from "@wso2is/admin.applications.v1/api";
+import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
