@@ -45,11 +45,11 @@ import { Form, Grid, Header, Icon, Input } from "semantic-ui-react";
 import { ScopeForm } from "./scope-form";
 import useScopesOfAPIResources from "../../api/use-scopes-of-api-resources";
 import { Policy } from "../../constants/api-authorization";
-import { ApplicationTemplateIdTypes } from "../../models";
 import {
     AuthorizedAPIListItemInterface,
     AuthorizedPermissionListItemInterface
 } from "../../models/api-authorization";
+import { ApplicationTemplateIdTypes } from "../../models/application";
 
 /**
  * Prop types for the API resources list component.

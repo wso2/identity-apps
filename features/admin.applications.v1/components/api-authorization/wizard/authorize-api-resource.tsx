@@ -46,8 +46,8 @@ import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Grid, Header, Label, Modal } from "semantic-ui-react";
 import useScopesOfAPIResources from "../../../api/use-scopes-of-api-resources";
 import { Policy, PolicyInfo, policyDetails } from "../../../constants/api-authorization";
-import { ApplicationTemplateIdTypes } from "../../../models";
 import { AuthorizedAPIListItemInterface } from "../../../models/api-authorization";
+import { ApplicationTemplateIdTypes } from "../../../models/application";
 
 interface AuthorizeAPIResourcePropsInterface extends IdentifiableComponentInterface {
     /**
