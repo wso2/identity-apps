@@ -17,8 +17,8 @@
  */
 
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
-import { useApplicationList } from "@wso2is/admin.applications.v1/api";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import { AppState, UserBasicInterface } from "@wso2is/admin.core.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
