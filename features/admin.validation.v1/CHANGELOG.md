@@ -1,5 +1,20 @@
 # @wso2is/admin.validation.v1
 
+## 2.26.56
+
+### Patch Changes
+
+- [#7199](https://github.com/wso2/identity-apps/pull/7199) [`5c34ab228052f828724ef129eeaeef6e6042c708`](https://github.com/wso2/identity-apps/commit/5c34ab228052f828724ef129eeaeef6e6042c708) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Separate out `useGetRoleList` hook
+
+- Updated dependencies [[`5c34ab228052f828724ef129eeaeef6e6042c708`](https://github.com/wso2/identity-apps/commit/5c34ab228052f828724ef129eeaeef6e6042c708), [`5c34ab228052f828724ef129eeaeef6e6042c708`](https://github.com/wso2/identity-apps/commit/5c34ab228052f828724ef129eeaeef6e6042c708)]:
+  - @wso2is/admin.roles.v2@2.27.0
+  - @wso2is/admin.groups.v1@2.26.15
+  - @wso2is/admin.core.v1@2.34.56
+  - @wso2is/admin.extensions.v1@2.35.15
+  - @wso2is/admin.organizations.v1@2.26.56
+  - @wso2is/admin.users.v1@2.29.15
+  - @wso2is/admin.server-configurations.v1@2.30.10
+
 ## 2.26.55
 
 ### Patch Changes
