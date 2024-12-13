@@ -23,7 +23,7 @@ import {
     CommonComponentPropertyFactoryPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/common-component-property-factory";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { ChangeEvent, FunctionComponent, ReactElement, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo, useState } from "react";
 import useGetSupportedProfileAttributes from "../../../api/use-get-supported-profile-attributes";
 import { Attribute } from "../../../models/attributes";
 
@@ -47,6 +47,12 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
     const { data: attributes } = useGetSupportedProfileAttributes();
     const [ selectedAttribute, setSelectedAttribute ] = useState<Attribute>(null);
 
+    const selectedValue: Attribute = useMemo(() => {
+        return attributes?.find(
+            (attribute: Attribute) => attribute?.claimURI === element.config.field.name
+        );
+    }, [ element.config.field.name, attributes ]);
+
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
             <Autocomplete
@@ -55,6 +61,7 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
                 getOptionLabel={ (attribute: Attribute) => attribute.displayName }
                 sx={ { width: 300 } }
                 renderInput={ (params: AutocompleteRenderInputParams) => <TextField { ...params } label="Attribute" /> }
+                value={ selectedValue }
                 onChange={ (_: ChangeEvent<HTMLInputElement>, attribute: Attribute) => {
                     onChange("config.field.name", selectedAttribute?.claimURI, attribute?.claimURI, element);
 

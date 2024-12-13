@@ -48,6 +48,9 @@ export const PhoneNumberInputAdapter: FunctionComponent<PhoneNumberInputAdapterP
         className={ node.config?.field?.className }
         label={ node.config?.field?.label }
         placeholder={ node.config?.field?.placeholder || "" }
+        InputLabelProps={ {
+            required: node.config?.field?.required
+        } }
     />
 );
 
