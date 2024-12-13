@@ -74,10 +74,10 @@ const CommonComponentPropertyFactory: FunctionComponent<CommonComponentPropertyF
     if (typeof propertyValue === "boolean") {
         return (
             <FormControlLabel
-                control={ <Checkbox /> }
+                control={ <Checkbox defaultChecked={ propertyValue } /> }
                 label={ startCase(propertyKey) }
                 onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                    onChange(propertyKey, propertyValue, e.target.checked, element)
+                    onChange(`config.field.${propertyKey}`, propertyValue, e.target.checked, element)
                 }
                 data-componentid={ `${componentId}-${propertyKey}` }
             />
@@ -91,7 +91,7 @@ const CommonComponentPropertyFactory: FunctionComponent<CommonComponentPropertyF
                 label={ startCase(propertyKey) }
                 defaultValue={ propertyValue }
                 onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                    onChange(propertyKey, propertyValue, e.target.value, element)
+                    onChange(`config.field.${propertyKey}`, propertyValue, e.target.value, element)
                 }
                 data-componentid={ `${componentId}-${propertyKey}` }
             />
