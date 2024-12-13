@@ -124,6 +124,26 @@
         "type": "INPUT",
         "version": "0.1.0",
         "deprecated": false,
+        "variant": "OTP",
+        "display": {
+            "label": "OTP Input",
+            "image": "https://www.svgrepo.com/show/381137/transaction-password-otp-verification-code-security.svg"
+        },
+        "config": {
+            "field": {
+                "type": "text",
+                "hint": "",
+                "label": "OTP",
+                "required": false,
+                "placeholder": ""
+            }
+        }
+    },
+    {
+        "category": "FIELD",
+        "type": "INPUT",
+        "version": "0.1.0",
+        "deprecated": false,
         "variant": "CHECKBOX",
         "display": {
             "label": "Checkbox",
@@ -196,7 +216,7 @@
                 "config": {
                     "field": {
                         "type": "submit",
-                        "text": "Primary Button"
+                        "text": "Button"
                     }
                 }
             },
