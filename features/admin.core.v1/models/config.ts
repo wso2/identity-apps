@@ -20,9 +20,9 @@ import { ResponseMode, Storage } from "@asgardeo/auth-react";
 import { ActionsResourceEndpointsInterface } from "@wso2is/admin.actions.v1/models/endpoints";
 import { ApplicationsTemplatesEndpointsInterface } from "@wso2is/admin.application-templates.v1/models/endpoints";
 import {
-    ApplicationTemplateLoadingStrategies,
-    ApplicationsResourceEndpointsInterface
-} from "@wso2is/admin.applications.v1/models";
+    ApplicationTemplateLoadingStrategies
+} from "@wso2is/admin.applications.v1/models/application";
+import { ApplicationsResourceEndpointsInterface } from "@wso2is/admin.applications.v1/models/endpoints";
 import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.branding.v1/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
