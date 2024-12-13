@@ -1,5 +1,24 @@
 # @wso2is/admin.administrators.v1
 
+## 2.29.56
+
+### Patch Changes
+
+- [#7199](https://github.com/wso2/identity-apps/pull/7199) [`5c34ab228052f828724ef129eeaeef6e6042c708`](https://github.com/wso2/identity-apps/commit/5c34ab228052f828724ef129eeaeef6e6042c708) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Separate out `useGetRoleList` hook
+
+- Updated dependencies [[`5c34ab228052f828724ef129eeaeef6e6042c708`](https://github.com/wso2/identity-apps/commit/5c34ab228052f828724ef129eeaeef6e6042c708)]:
+  - @wso2is/admin.roles.v2@2.27.0
+  - @wso2is/admin.applications.v1@2.30.56
+  - @wso2is/admin.core.v1@2.34.56
+  - @wso2is/admin.extensions.v1@2.35.15
+  - @wso2is/admin.users.v1@2.29.15
+  - @wso2is/admin.remote-userstores.v1@1.7.12
+  - @wso2is/admin.server-configurations.v1@2.30.10
+  - @wso2is/admin.tenants.v1@2.28.30
+  - @wso2is/admin.authentication.v1@2.25.56
+  - @wso2is/admin.feature-gate.v1@1.4.56
+  - @wso2is/admin.userstores.v1@2.26.15
+
 ## 2.29.55
 
 ### Patch Changes
