@@ -275,7 +275,7 @@
             "config": {
                 "field": {
                     "type": "text",
-                    "name": "firstName",
+                    "name": "http://wso2.org/claims/givenname",
                     "hint": "",
                     "label": "First Name",
                     "required": true,
@@ -292,7 +292,7 @@
             "config": {
                 "field": {
                     "type": "text",
-                    "name": "lastName",
+                    "name": "http://wso2.org/claims/lastname",
                     "hint": "",
                     "label": "Last Name",
                     "required": true,
@@ -309,7 +309,7 @@
             "config": {
                 "field": {
                     "type": "date",
-                    "name": "dob",
+                    "name": "http://wso2.org/claims/dob",
                     "hint": "",
                     "label": "Birth Date",
                     "required": false,

@@ -22,7 +22,7 @@ import { FieldKey, FieldValue, Properties } from "@wso2is/admin.flow-builder-cor
 import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
-import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
 import ElementPropertyFactory from "./element-property-factory";
 import ButtonExtendedProperties from "./extended-properties/button-extended-properties";
 import FieldExtendedProperties from "./extended-properties/field-extended-properties";
@@ -63,6 +63,10 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
     onChange,
     onVariantChange
 }: ElementPropertiesPropsInterface): ReactElement | null => {
+    const selectedVariant: Element = useMemo(() => {
+        return element?.variants?.find((_element: Element) => _element.variant === element.variant);
+    }, [ element.variants, element.variant ]);
+
     const renderElementPropertyFactory = () => {
         const hasVariants: boolean = !isEmpty(element?.variants);
 
@@ -77,6 +81,7 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
                         renderInput={ (params: AutocompleteRenderInputParams) => (
                             <TextField { ...params } label="Variant" />
                         ) }
+                        value={ selectedVariant }
                         onChange={ (_: ChangeEvent<HTMLInputElement>, variant: Element) => {
                             onVariantChange(variant?.variant);
                         } }
