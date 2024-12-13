@@ -34,12 +34,11 @@
             ],
             "actions": [
                 {
-                    "id": "flow-action-ty203491",
+                    "id": "flow-action-password-onboarder-p563u9Yn",
                     "action": {
                         "type": "EXECUTOR",
                         "executors": [
                             {
-                                "id": "flow-action-password-onboarder-p563u9Yn",
                                 "name": "PasswordOnboarder"
                             }
                         ]
@@ -49,12 +48,11 @@
                     ]
                 },
                 {
-                    "id": "flow-action-394ksdj3",
+                    "id": "flow-action-email-otp-verifier-5t8uJ6D3",
                     "action": {
                         "type": "EXECUTOR",
                         "executors": [
                             {
-                                "id": "flow-action-email-otp-verifier-5t8uJ6D3",
                                 "name": "EmailOTPVerifier"
                             }
                         ]
@@ -64,12 +62,11 @@
                     ]
                 },
                 {
-                    "id": "flow-action-WeP34234",
+                    "id": "flow-action-google-sign-up-Rt8uJ6D3",
                     "action": {
                         "type": "EXECUTOR",
                         "executors": [
                             {
-                                "id": "flow-action-google-sign-up-Rt8uJ6D3",
                                 "name": "GoogleSignUp"
                             }
                         ]
@@ -442,7 +439,7 @@
             }
         },
         {
-            "id": "flow-display-header-hj6t4D3",
+            "id": "flow-display-header-rg6pwt0",
             "category": "DISPLAY",
             "type": "TYPOGRAPHY",
             "version": "0.1.0",
