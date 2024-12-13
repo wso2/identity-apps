@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -44,9 +44,9 @@ interface InboundCustomProtocolWizardFormPropsInterface extends TestableComponen
 /**
  * Inbound Custom protocol configurations form.
  *
- * @param {InboundCustomProtocolWizardFormPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns the Inbound Custom protocol configurations form
  */
 export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomProtocolWizardFormPropsInterface> = (
     props: InboundCustomProtocolWizardFormPropsInterface
@@ -174,12 +174,15 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
 
             if (configs.length > 0) {
                 configs.sort(
-                    (a, b) => (a.displayOrder > b.displayOrder) ? 1 : -1);
+                    (
+                        a: CustomInboundProtocolPropertyInterface,
+                        b: CustomInboundProtocolPropertyInterface
+                    ) => (a.displayOrder > b.displayOrder) ? 1 : -1);
             }
 
-            return configs.map((config) => {
+            return configs.map((config: CustomInboundProtocolPropertyInterface) => {
                 const initialValue: PropertyModelInterface = initialValues?.properties.find(
-                    (prop) => prop.key === config.name
+                    (prop: any) => prop.key === config.name
                 );
 
                 if (initialValue) {
@@ -193,13 +196,13 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
 
     /**
      * Create drop down options.
-     * @param options property to create the option.
+     * @param options - property to create the option.
      */
     const createDropDownOption = (options: string[]) => {
-        const allowedOptions = [];
+        const allowedOptions: any[] = [];
 
         if (options) {
-            options.map((ele) => {
+            options.map((ele: string) => {
                 allowedOptions.push({ key: options.indexOf(ele), text: ele, value: ele });
             });
         }
@@ -211,7 +214,7 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
      * Prepares form values for submit.
      *
      * @param values - Form values.
-     * @return {any} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const updateConfiguration = (values: Map<string, string | string[]>): any => {
         const valueProperties: SubmitFormCustomPropertiesInterface[] = [];
@@ -257,7 +260,7 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
         metadata
             ? (
                 <Forms
-                    onSubmit={ (values) => {
+                    onSubmit={ (values: Map<string, FormValue>) => {
                         onSubmit(updateConfiguration(values));
                     } }
                     submitState={ triggerSubmit }

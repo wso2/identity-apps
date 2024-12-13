@@ -26,7 +26,12 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { getAuthProtocolMetadata } from "../../api/application";
-import { MetadataPropertyInterface, SupportedAuthProtocolMetaTypes, WSTrustMetaDataInterface } from "../../models/application-inbound";
+import {
+    MetadataPropertyInterface,
+    SupportedAuthProtocolMetaTypes,
+    WSTrustMetaDataInterface
+} from "../../models/application-inbound";
+import { Dispatch } from "redux";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -41,9 +46,9 @@ interface WSTrustSettingsWizardFormPropsInterface extends TestableComponentInter
 /**
  * SAML protocol settings wizard form component.
  *
- * @param {WSTrustSettingsWizardFormPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns the SAML protocol settings wizard form component.
  */
 export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSettingsWizardFormPropsInterface> = (
     props: WSTrustSettingsWizardFormPropsInterface
@@ -59,16 +64,16 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ showWSTrustMetaData, setShowWSTrustMetaData ] = useState<WSTrustMetaDataInterface>(undefined);
 
     const getMetaData = (() => {
         getAuthProtocolMetadata(SupportedAuthProtocolMetaTypes.WS_TRUST)
-            .then((response) => {
+            .then((response: unknown) => {
                 setShowWSTrustMetaData(response as WSTrustMetaDataInterface);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,

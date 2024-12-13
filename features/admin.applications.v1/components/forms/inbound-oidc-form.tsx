@@ -112,7 +112,7 @@ import {
     OIDCMetadataInterface,
     State,
     SupportedAccessTokenBindingTypes,
-    SupportedAuthProtocolTypes,
+    SupportedAuthProtocolTypes
 } from "../../models/application-inbound";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { AccessTokenAttributeOption } from "../access-token-attribute-option";
