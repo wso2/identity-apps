@@ -8508,6 +8508,9 @@ importers:
       '@wso2is/access-control':
         specifier: ^3.3.5
         version: link:../../modules/access-control
+      '@wso2is/admin.applications.v1':
+        specifier: ^2.30.55
+        version: link:../admin.applications.v1
       '@wso2is/admin.authorization.v1':
         specifier: ^2.25.20
         version: link:../admin.authorization.v1
@@ -40913,8 +40916,6 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
-        optional: true
-      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@4.10.0)

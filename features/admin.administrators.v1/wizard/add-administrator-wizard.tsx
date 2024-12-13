@@ -21,7 +21,8 @@ import { useApplicationList } from "@wso2is/admin.applications.v1/api";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
 import { AppState, UserBasicInterface } from "@wso2is/admin.core.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
-import { updateRoleDetails, useRolesList } from "@wso2is/admin.roles.v2/api/roles";
+import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
+import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { sendInvite, useUsersList } from "@wso2is/admin.users.v1/api";
 import { getUserWizardStepIcons } from "@wso2is/admin.users.v1/configs/ui";
@@ -50,9 +51,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import {
-    AddAdminUserBasic
-} from "./steps/admin-user-basic";
+import { AddAdminUserBasic } from "./steps/admin-user-basic";
 import { InternalAdminFormDataInterface } from "../models/invite";
 import { isAdminUser } from "../utils/administrators";
 
@@ -191,7 +190,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
     const {
         data: rolesList,
         error: rolesListFetchRequestError
-    } = useRolesList(
+    } = useGetRolesList(
         null,
         null,
         roleSearchFilter,
