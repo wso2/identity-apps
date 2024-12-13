@@ -40,6 +40,7 @@ export enum InputVariants {
     Telephone = "TELEPHONE",
     Number = "NUMBER",
     Checkbox = "CHECKBOX",
+    OTP = "OTP"
 }
 
 export enum ButtonVariants {
