@@ -8509,7 +8509,7 @@ importers:
         specifier: ^3.3.5
         version: link:../../modules/access-control
       '@wso2is/admin.applications.v1':
-        specifier: ^2.30.51
+        specifier: ^2.30.55
         version: link:../admin.applications.v1
       '@wso2is/admin.authorization.v1':
         specifier: ^2.25.20
