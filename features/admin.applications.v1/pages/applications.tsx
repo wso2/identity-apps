@@ -69,11 +69,11 @@ import {
     List,
     PaginationProps
 } from "semantic-ui-react";
-import { useApplicationList, useMyAccountApplicationData } from "../api";
+import { useApplicationList, useMyAccountApplicationData } from "../api/application";
 import { useGetApplication } from "../api/use-get-application";
 import { ApplicationList } from "../components/application-list";
-import { ApplicationManagementConstants } from "../constants";
-import { ApplicationAccessTypes, ApplicationListInterface, ApplicationListItemInterface } from "../models";
+import { ApplicationManagementConstants } from "../constants/application-management";
+import { ApplicationAccessTypes, ApplicationListInterface, ApplicationListItemInterface } from "../models/application";
 import "./applications.scss";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [

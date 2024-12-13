@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,8 +25,8 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { getAuthProtocolMetadata } from "../../api";
-import { MetadataPropertyInterface, SupportedAuthProtocolMetaTypes, WSTrustMetaDataInterface } from "../../models";
+import { getAuthProtocolMetadata } from "../../api/application";
+import { MetadataPropertyInterface, SupportedAuthProtocolMetaTypes, WSTrustMetaDataInterface } from "../../models/application-inbound";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -201,7 +201,7 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
                         </Grid.Row>
                     </Grid>
                 </Forms>
-            ) 
+            )
             : <ContentLoader/>
     );
 };
