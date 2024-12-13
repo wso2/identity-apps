@@ -20,6 +20,7 @@ import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useReactFlow } from "@xyflow/react";
+import set from "lodash-es/set";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import { Component } from "../../models/component";
@@ -80,7 +81,7 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
         updateNodeData(lastInteractedNodeId, (node: any) => {
             const components: Component = node?.data?.components?.map((component: any) => {
                 if (component.id === element.id) {
-                    component.config.field[propertyKey] = newValue;
+                    set(component, propertyKey, newValue);
                 }
 
                 return component;

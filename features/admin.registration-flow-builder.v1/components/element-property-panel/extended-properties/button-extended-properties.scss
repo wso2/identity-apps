@@ -1,5 +1,7 @@
 .button-extended-properties {
     .extended-property.action-type {
+        cursor: pointer;
+
         &.oxygen-card {
             // TODO: `@oxygen-ui/react/Card` declares a default padding which is a bug.
             // Remove this once it is handled.
@@ -31,6 +33,10 @@
                 height: 18px;
                 width: 18px;
             }
+        }
+
+        &.selected {
+            border: 1px solid var(--oxygen-palette-primary-main);
         }
     }
 

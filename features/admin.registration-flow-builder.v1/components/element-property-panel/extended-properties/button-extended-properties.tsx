@@ -23,11 +23,16 @@ import CardContent from "@oxygen-ui/react/CardContent";
 import Grid from "@oxygen-ui/react/Grid";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
+import {
+    CommonComponentPropertyFactoryPropsInterface
+} from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/common-component-property-factory";
 // eslint-disable-next-line max-len
-import { CommonComponentPropertyFactoryPropsInterface } from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/common-component-property-factory";
+import useAuthenticationFlowBuilderCore from "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import { Action, ActionType } from "@wso2is/admin.flow-builder-core.v1/models/actions";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import classNames from "classnames";
+import isEqual from "lodash-es/isEqual";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import useGetRegistrationFlowCoreActions from "../../../api/use-get-registration-flow-builder-actions";
 import "./button-extended-properties.scss";
 
@@ -44,9 +49,14 @@ export type ButtonExtendedPropertiesPropsInterface = CommonComponentPropertyFact
  * @returns The ButtonExtendedProperties component.
  */
 const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsInterface> = ({
-    "data-componentid": componentId = "button-extended-properties"
+    "data-componentid": componentId = "button-extended-properties",
+    element,
+    onChange
 }: ButtonExtendedPropertiesPropsInterface): ReactElement => {
     const { data: actions } = useGetRegistrationFlowCoreActions();
+    const { lastInteractedElement, setLastInteractedElement } = useAuthenticationFlowBuilderCore();
+
+    const [ selectedActionType, setSelectedActionType ] = useState<ActionType>(actions[0]?.types[0]);
 
     return (
         <Stack className="button-extended-properties" gap={ 2 } data-componentid={ componentId }>
@@ -58,18 +68,40 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
                             { action?.display?.label }
                         </Typography>
                         <Grid container spacing={ 1 }>
-                            { action.types?.map((type: ActionType, typeIndex: number) => (
-                                <Grid key={ typeIndex } xs={ 6 }>
-                                    <Card className="extended-property action-type" variant="outlined">
+                            { action.types?.map((actionType: ActionType, typeIndex: number) => (
+                                <Grid
+                                    key={ typeIndex }
+                                    xs={ 6 }
+                                    onClick={ () => {
+                                        onChange(
+                                            "variant",
+                                            selectedActionType?.display?.defaultVariant,
+                                            actionType?.display?.defaultVariant,
+                                            element
+                                        );
+
+                                        setSelectedActionType(actionType);
+                                        setLastInteractedElement({
+                                            ...lastInteractedElement,
+                                            variant: actionType?.display?.defaultVariant
+                                        });
+                                    } }
+                                >
+                                    <Card
+                                        className={ classNames("extended-property action-type", {
+                                            selected: isEqual(selectedActionType, actionType)
+                                        }) }
+                                        variant="outlined"
+                                    >
                                         <CardContent>
                                             <Box display="flex" flexDirection="row" gap={ 1 } alignItems="center">
                                                 <Avatar
                                                     className="action-type-icon"
-                                                    src={ type?.display?.image }
+                                                    src={ actionType?.display?.image }
                                                     variant="rounded"
                                                 />
                                                 <Typography variant="body2" className="action-type-name">
-                                                    { type?.display?.label }
+                                                    { actionType?.display?.label }
                                                 </Typography>
                                             </Box>
                                         </CardContent>

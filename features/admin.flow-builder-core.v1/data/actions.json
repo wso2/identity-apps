@@ -10,14 +10,16 @@
                 "type": "NEXT",
                 "display": {
                     "label": "Next",
-                    "image": "https://www.svgrepo.com/show/305382/arrowhead-right-outline.svg"
+                    "image": "https://www.svgrepo.com/show/305382/arrowhead-right-outline.svg",
+                    "defaultVariant": "PRIMARY"
                 }
             },
             {
                 "type": "PREVIOUS",
                 "display": {
                     "label": "Previous",
-                    "image": "https://www.svgrepo.com/show/305384/arrowhead-left-outline.svg"
+                    "image": "https://www.svgrepo.com/show/305384/arrowhead-left-outline.svg",
+                    "defaultVariant": "SECONDARY"
                 }
             }
         ]
@@ -36,7 +38,8 @@
                 },
                 "display": {
                     "label": "Verify email address",
-                    "image": "https://www.svgrepo.com/show/408695/message-letter-mail-tick-check-e-mail.svg"
+                    "image": "https://www.svgrepo.com/show/408695/message-letter-mail-tick-check-e-mail.svg",
+                    "defaultVariant": "PRIMARY"
                 }
             },
             {
@@ -46,7 +49,8 @@
                 },
                 "display": {
                     "label": "Verify mobile number",
-                    "image": "https://www.svgrepo.com/show/533121/mobile-check.svg"
+                    "image": "https://www.svgrepo.com/show/533121/mobile-check.svg",
+                    "defaultVariant": "SECONDARY"
                 }
             }
         ]
@@ -63,7 +67,8 @@
                 "name": "PasswordOnboarder",
                 "display": {
                     "label": "Onboard Password",
-                    "image": "https://www.svgrepo.com/show/526627/password.svg"
+                    "image": "https://www.svgrepo.com/show/526627/password.svg",
+                    "defaultVariant": "PRIMARY"
                 },
                 "meta": {
                     "actionType": "CREDENTIAL_ONBOARDING"
@@ -86,7 +91,8 @@
                 },
                 "display": {
                     "label": "Continue with Google Sign Up",
-                    "image": "https://www.svgrepo.com/show/475656/google-color.svg"
+                    "image": "https://www.svgrepo.com/show/475656/google-color.svg",
+                    "defaultVariant": "SOCIAL"
                 }
             }
         ]

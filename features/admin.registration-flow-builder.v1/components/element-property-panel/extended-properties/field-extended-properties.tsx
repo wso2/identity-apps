@@ -56,7 +56,7 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
                 sx={ { width: 300 } }
                 renderInput={ (params: AutocompleteRenderInputParams) => <TextField { ...params } label="Attribute" /> }
                 onChange={ (_: ChangeEvent<HTMLInputElement>, attribute: Attribute) => {
-                    onChange("name", selectedAttribute?.claimURI, attribute?.claimURI, element);
+                    onChange("config.field.name", selectedAttribute?.claimURI, attribute?.claimURI, element);
 
                     setSelectedAttribute(
                         attributes?.find((attribute: Attribute) => attribute?.claimURI === attribute?.claimURI)
