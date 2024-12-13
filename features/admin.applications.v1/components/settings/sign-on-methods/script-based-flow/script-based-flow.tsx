@@ -86,13 +86,13 @@ import { Dispatch } from "redux";
 import { Checkbox, Icon, Input, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel, ScriptTemplatesSidePanelRefInterface } from "./script-templates-side-panel";
-import { getAdaptiveAuthTemplates } from "../../../../api";
-import { ApplicationManagementConstants } from "../../../../constants";
+import { getAdaptiveAuthTemplates } from "../../../../api/application";
+import { ApplicationManagementConstants } from "../../../../constants/application-management";
 import {
     AdaptiveAuthTemplateInterface,
     AdaptiveAuthTemplatesListInterface,
     AuthenticationSequenceInterface
-} from "../../../../models";
+} from "../../../../models/application";
 import { AdaptiveScriptUtils } from "../../../../utils/adaptive-script-utils";
 import "./script-based-flow.scss";
 

@@ -64,7 +64,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Accordion,  Grid, Icon, Menu, Modal, Segment, Sidebar } from "semantic-ui-react";
 // eslint-disable-next-line max-len
-import { AdaptiveAuthTemplateCategoryInterface, AdaptiveAuthTemplateInterface } from "../../../../models";
+import { AdaptiveAuthTemplateCategoryInterface, AdaptiveAuthTemplateInterface } from "../../../../models/application";
 
 /**
  * Component ref interface.
