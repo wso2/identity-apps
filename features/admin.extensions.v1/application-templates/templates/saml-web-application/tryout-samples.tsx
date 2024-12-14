@@ -16,14 +16,16 @@
  * under the License.
  */
 
-import { updateAuthProtocolConfig } from "@wso2is/admin.applications.v1/api";
+import { updateAuthProtocolConfig } from "@wso2is/admin.applications.v1/api/application";
 import {
     ApplicationInterface,
     ApplicationTemplateInterface,
+    SAMLApplicationConfigurationInterface
+} from "@wso2is/admin.applications.v1/models/application";
+import {
     SAML2ConfigurationInterface,
-    SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolTypes
-} from "@wso2is/admin.applications.v1/models";
+} from "@wso2is/admin.applications.v1/models/application-inbound";
 import {
     VerticalStepper,
     VerticalStepperStepInterface
