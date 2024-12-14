@@ -17,7 +17,7 @@
  */
 
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
-import { useApplicationList } from "@wso2is/admin.applications.v1/api";
+import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "@wso2is/admin.core.v1";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
