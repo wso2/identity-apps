@@ -25,7 +25,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Form, Grid, Icon } from "semantic-ui-react";
 import { getHelpPanelIcons } from "../../configs/ui";
-import { SAMLApplicationConfigurationInterface } from "../../models";
+import { SAMLApplicationConfigurationInterface } from "../../models/application";
 
 /**
  * Proptypes for the OIDC application configurations component.
