@@ -18,12 +18,13 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { DropdownChild, Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ContentLoader, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import { getAuthProtocolMetadata } from "../../api/application";
 import {
@@ -31,7 +32,6 @@ import {
     SupportedAuthProtocolMetaTypes,
     WSTrustMetaDataInterface
 } from "../../models/application-inbound";
-import { Dispatch } from "redux";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -95,13 +95,13 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
 
     /**
      * Create drop down options.
-     * @param metadataProp metadata property to create the option.
+     * @param metadataProp - metadata property to create the option.
      */
     const getCertificateOptions = (metadataProp: MetadataPropertyInterface) => {
-        const allowedOptions = [];
+        const allowedOptions: DropdownChild[] = [];
 
         if (metadataProp) {
-            metadataProp.options.map((ele) => {
+            metadataProp.options.map((ele: string) => {
                 allowedOptions.push({ key: metadataProp.options.indexOf(ele), text: ele, value: ele });
             });
         }
@@ -113,7 +113,7 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
      * Sanitizes and prepares the form values for submission.
      *
      * @param values - Form values.
-     * @return {object} Prepared values.
+     * @returns Prepared values.
      */
     const getFormValues = (values: Map<string, FormValue>): any => {
         return {

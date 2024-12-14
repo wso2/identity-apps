@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import AdaptiveAuthTemplateInfoModal from "@wso2is/admin.authentication-flow-builder.v1/components/predefined-flows-side-panel/adaptive-auth-template-info-modal";
+import AdaptiveAuthTemplateInfoModal from
+    "@wso2is/admin.authentication-flow-builder.v1/components/predefined-flows-side-panel/adaptive-auth-template-info-modal";
 import {
     ELK_RISK_BASED_TEMPLATE_NAME
 } from "@wso2is/admin.authentication-flow-builder.v1/constants/template-constants";
