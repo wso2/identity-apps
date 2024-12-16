@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/branding-preference-provider";
 import { AppState, FeatureConfigInterface, I18nConstants } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -91,26 +91,26 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
+    const hasUsersUpdateEmailTemplatesPermissions: boolean = useRequiredScopes(
+        emailTemplatesFeatureConfig?.scopes?.update
+    );
+
+    const hasUsersCreateEmailTemplatesPermissions: boolean = useRequiredScopes(
+        emailTemplatesFeatureConfig?.scopes?.create
+    );
+
     const isReadOnly: boolean = useMemo(() => {
         return !isFeatureEnabled(
             emailTemplatesFeatureConfig,
             EmailManagementConstants.FEATURE_DICTIONARY.get("EMAIL_TEMPLATES_UPDATE")
-        ) || !hasRequiredScopes(
-            emailTemplatesFeatureConfig,
-            emailTemplatesFeatureConfig?.scopes?.update,
-            allowedScopes
-        );
+        ) || hasUsersUpdateEmailTemplatesPermissions;
     }, [ emailTemplatesFeatureConfig, allowedScopes ]);
 
     const hasEmailTemplateCreatePermissions: boolean = useMemo(() => {
         return isFeatureEnabled(
             emailTemplatesFeatureConfig,
             EmailManagementConstants.FEATURE_DICTIONARY.get("EMAIL_TEMPLATES_CREATE")
-        ) && hasRequiredScopes(
-            emailTemplatesFeatureConfig,
-            emailTemplatesFeatureConfig?.scopes?.create,
-            allowedScopes
-        );
+        ) && hasUsersCreateEmailTemplatesPermissions;
     }, [ emailTemplatesFeatureConfig, allowedScopes ]);
 
     const {
