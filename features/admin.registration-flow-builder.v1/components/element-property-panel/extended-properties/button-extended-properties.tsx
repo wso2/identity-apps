@@ -80,9 +80,32 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
                                             element
                                         );
 
+                                        onChange(
+                                            "meta",
+                                            {
+                                                executors: actionType?.executors,
+                                                meta: selectedActionType?.meta,
+                                                name: selectedActionType?.name,
+                                                type: selectedActionType?.type
+                                            },
+                                            {
+                                                executors: actionType?.executors,
+                                                meta: actionType?.meta,
+                                                name: actionType?.name,
+                                                type: actionType?.type
+                                            },
+                                            element
+                                        );
+
                                         setSelectedActionType(actionType);
                                         setLastInteractedElement({
                                             ...lastInteractedElement,
+                                            meta: {
+                                                executors: actionType?.executors,
+                                                meta: actionType?.meta,
+                                                name: actionType?.name,
+                                                type: actionType?.type
+                                            },
                                             variant: actionType?.display?.defaultVariant
                                         });
                                     } }

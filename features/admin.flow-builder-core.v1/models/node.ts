@@ -17,6 +17,7 @@
  */
 
 import { Base } from "./base";
+import { Element } from "./elements";
 
 /**
  * Interface for a Node.
@@ -26,4 +27,9 @@ export type Node = Base;
 export enum NodeTypes {
     Step = "STEP",
     Rule = "RULE"
+}
+
+export interface NodeData {
+    components: Element[];
+    [key: string]: any;
 }

@@ -25,16 +25,8 @@ import { NodeData } from "../models/node";
 const DISPLAY_ONLY_ELEMENT_PROPERTIES: string[] = [ "display", "version", "variants" ];
 
 const transformFlow = (flowState: any): Payload => {
+    /* eslint-disable sort-keys */
     const output: Payload = {
-        blocks: [
-            {
-                id: "flow-block-1",
-                nodes: flowState.nodes[0].data.components.map((component: Element) => component.id)
-            }
-        ],
-        elements: flowState.nodes[0].data.components.map((component: Element) =>
-            omit(component, DISPLAY_ONLY_ELEMENT_PROPERTIES)
-        ),
         flow: {
             pages: [
                 {
@@ -46,20 +38,42 @@ const transformFlow = (flowState: any): Payload => {
         nodes: flowState.nodes.map((node: XYFlowNode<NodeData>) => ({
             actions: node.data.components
                 .filter((component: Element) => component.category === "ACTION")
-                .map((action: Element) => ({
-                    action: {
-                        meta: {
-                            actionType: "ATTRIBUTE_COLLECTION"
-                        },
-                        type: "NEXT"
-                    },
-                    id: action.id,
-                    next: [ "COMPLETE" ]
-                })),
+                .map((action: Element) => {
+                    let _action: any = {
+                        id: action.id,
+                        ...action.meta
+                    };
+
+                    if (!action.meta) {
+                        if (action?.config?.field?.type === "submit") {
+                            _action = {
+                                ..._action,
+                                action: {
+                                    ..._action.action,
+                                    meta: {
+                                        actionType: "ATTRIBUTE_COLLECTION"
+                                    }
+                                }
+                            };
+                        }
+                    }
+
+                    return _action;
+                }),
             elements: node.data.components.map((component: Element) => component.id),
             id: node.id
-        }))
+        })),
+        blocks: [
+            {
+                id: "flow-block-1",
+                nodes: flowState.nodes[0].data.components.map((component: Element) => component.id)
+            }
+        ],
+        elements: flowState.nodes[0].data.components.map((component: Element) =>
+            omit(component, DISPLAY_ONLY_ELEMENT_PROPERTIES)
+        )
     };
+    /* eslint-enable sort-keys */
 
     return output;
 };

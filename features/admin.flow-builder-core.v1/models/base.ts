@@ -69,6 +69,10 @@ export interface Base<T = any> extends StrictBase<T> {
      * Data added to the component by the flow builder.
      */
     data?: any;
+    /**
+     * Addtional meta data of the component or the primitive
+     */
+    meta?: any;
 }
 
 export interface BaseDisplay {
