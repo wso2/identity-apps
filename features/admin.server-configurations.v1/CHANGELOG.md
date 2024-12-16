@@ -1,5 +1,19 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.30.11
+
+### Patch Changes
+
+- Updated dependencies [[`48167e5ce0601e49097deea7c4d7808cf7bbd064`](https://github.com/wso2/identity-apps/commit/48167e5ce0601e49097deea7c4d7808cf7bbd064)]:
+  - @wso2is/admin.identity-providers.v1@2.26.57
+  - @wso2is/admin.organizations.v1@2.26.57
+  - @wso2is/admin.extensions.v1@2.35.16
+  - @wso2is/admin.core.v1@2.34.57
+  - @wso2is/admin.server-configurations.v1@2.30.11
+  - @wso2is/admin.users.v1@2.29.16
+  - @wso2is/admin.feature-gate.v1@1.4.57
+  - @wso2is/admin.validation.v1@2.26.57
+
 ## 2.30.10
 
 ### Patch Changes
