@@ -137,7 +137,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ accountVerificationEnabled, setAccountVerificationEnabled ] = useState<boolean>(false);
     const [ selfRegistrationEnabled, setSelfRegistrationEnabledEnabled ] = useState<boolean>(false);
     const [ isSystemClaim, setIsSystemClaim ] = useState<boolean>(false);
-    // const [ customUserSchemaID, setCustomUserSchemaID ] = useState<string>(null);
 
     const { t } = useTranslation();
 
