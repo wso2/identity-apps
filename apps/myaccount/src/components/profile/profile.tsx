@@ -148,6 +148,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         state.authenticationInformation.profileInfo.isReadOnly);
     const hasLocalAccount: boolean = useSelector((state: AppState) => state.authenticationInformation.hasLocalAccount);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
@@ -447,8 +448,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         }
 
                         if (schema.extended
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]) {
+                            && profileDetails?.profileInfo[userSchemaURI]
+                            && profileDetails?.profileInfo[userSchemaURI][schemaNames[0]]) {
 
                             const multiValuedAttributes: string[] = [
                                 EMAIL_ADDRESSES_ATTRIBUTE,
@@ -460,8 +461,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             if (multiValuedAttributes.includes(schemaNames[0])) {
 
                                 const attributeValue: string | string[] =
-                                    profileDetails?.profileInfo[
-                                        ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]?.[schemaNames[0]];
+                                    profileDetails?.profileInfo[userSchemaURI]?.[schemaNames[0]];
 
                                 const formattedValue: string = Array.isArray(attributeValue)
                                     ? attributeValue.join(",")
@@ -473,10 +473,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             }
                             tempProfileInfo.set(
                                 schema.name,
-                                profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
-                                    ? profileDetails?.profileInfo[
-                                        ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA
-                                    ][schemaNames[0]]
+                                profileDetails?.profileInfo[userSchemaURI]
+                                    ? profileDetails?.profileInfo[userSchemaURI][schemaNames[0]]
                                     : ""
                             );
 

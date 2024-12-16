@@ -19,6 +19,7 @@
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
 import { I18nConstants } from "../constants";
 import { AppConstants } from "../constants/app-constants";
+import { UserManagementConstants } from "../constants/user-management-constants";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { SCIMConfigs } from "../extensions/configs/scim";
 import { AppUtils } from "../init/app-utils";
@@ -170,7 +171,9 @@ export class Config {
             productName: window["AppUtils"]?.getConfig()?.ui?.productName,
             productVersionConfig: window["AppUtils"]?.getConfig()?.ui?.productVersionConfig,
             showAppSwitchButton: window["AppUtils"]?.getConfig()?.ui?.showAppSwitchButton,
-            theme: window["AppUtils"]?.getConfig()?.ui?.theme
+            theme: window["AppUtils"]?.getConfig()?.ui?.theme,
+            userSchemaURI: window[ "AppUtils" ]?.getConfig()?.ui?.customUserSchemaURI
+                ?? UserManagementConstants.DEFAULT_SCIM2_CUSTOM_USER_SCHEMA_URI
         };
     }
 
