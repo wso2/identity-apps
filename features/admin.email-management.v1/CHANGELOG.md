@@ -1,5 +1,16 @@
 # @wso2is/admin.email-management.v1
 
+## 2.25.58
+
+### Patch Changes
+
+- [#7209](https://github.com/wso2/identity-apps/pull/7209) [`f1d8ecd9fe3976cead200923d51a66d1aedaed16`](https://github.com/wso2/identity-apps/commit/f1d8ecd9fe3976cead200923d51a66d1aedaed16) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Add info modal for unavailable loacle for suborgs.
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.58
+  - @wso2is/admin.branding.v1@2.27.31
+  - @wso2is/common.branding.v1@2.25.31
+
 ## 2.25.57
 
 ### Patch Changes
