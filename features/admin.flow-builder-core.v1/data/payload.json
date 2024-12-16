@@ -67,7 +67,10 @@
                         "type": "EXECUTOR",
                         "executors": [
                             {
-                                "name": "GoogleSignUp"
+                                "name": "GoogleOIDCAuthenticator",
+                                "meta": {
+                                    "idp": "Google"
+                                }
                             }
                         ]
                     },
