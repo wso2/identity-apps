@@ -143,39 +143,39 @@ export class ClaimManagementConstants {
         isAttributeButtonEnabled: boolean;
         attributeButtonText: string;
     }[] = [
-        {
-            attributeButtonText: "",
-            isAttributeButtonEnabled: false,
-            name: "Core Schema",
-            uri: "urn:ietf:params:scim:schemas:core:2.0"
-        },
-        {
-            attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction",
-            isAttributeButtonEnabled: true,
-            name: "User Schema",
-            uri: "urn:ietf:params:scim:schemas:core:2.0:User"
-        },
-        {
-            attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction" ,
-            isAttributeButtonEnabled: true,
-            name: "Enterprise Schema",
-            uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
-        },
-        {
-            attributeButtonText: "",
-            isAttributeButtonEnabled: true,
-            name: "Core 1.0 Schema",
-            uri: "urn:scim:schemas:core:1.0"
-        }
-    ];
+            {
+                attributeButtonText: "",
+                isAttributeButtonEnabled: false,
+                name: "Core Schema",
+                uri: "urn:ietf:params:scim:schemas:core:2.0"
+            },
+            {
+                attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction",
+                isAttributeButtonEnabled: true,
+                name: "User Schema",
+                uri: "urn:ietf:params:scim:schemas:core:2.0:User"
+            },
+            {
+                attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction" ,
+                isAttributeButtonEnabled: true,
+                name: "Enterprise Schema",
+                uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
+            },
+            {
+                attributeButtonText: "",
+                isAttributeButtonEnabled: true,
+                name: "Core 1.0 Schema",
+                uri: "urn:scim:schemas:core:1.0"
+            }
+        ];
 
     public static readonly EIDAS_TABS: {
         name: string;
         uri: string;
     }[] = [
-        { name: "eIDAS/Legal Person", uri: "http://eidas.europa.eu/attributes/legalperson" },
-        { name: "eIDAS/Natural Person", uri: "http://eidas.europa.eu/attributes/naturalperson" }
-    ];
+            { name: "eIDAS/Legal Person", uri: "http://eidas.europa.eu/attributes/legalperson" },
+            { name: "eIDAS/Natural Person", uri: "http://eidas.europa.eu/attributes/naturalperson" }
+        ];
 
     /**
      * Display names of User Id & Username to
@@ -230,6 +230,11 @@ export class ClaimManagementConstants {
      */
     public static readonly REGEX_FIELD_MAX_LENGTH: number = 255;
     public static readonly REGEX_FIELD_MIN_LENGTH: number = 3;
+
+    /**
+     * Default scim2 custom user schema URI.
+     */
+    public static readonly DEFAULT_SCIM2_CUSTOM_USER_SCHEMA_URI: string = "urn:scim:wso2:schema";
 }
 
 /**

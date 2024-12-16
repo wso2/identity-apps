@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -49,6 +49,7 @@ import { getAUserStore, getUserStores } from "@wso2is/admin.userstores.v1/api";
 import { PRIMARY_USERSTORE, UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
+import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertLevels,
@@ -212,6 +213,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         state.config.ui.features.bulkUserImport.fileImportTimeout);
     const userLimit: number = useSelector((state: AppState) =>
         state.config.ui.features.bulkUserImport.userLimit);
+    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
     const csvFileProcessingStrategy: CSVFileStrategy = useMemo( () => {
         return new CSVFileStrategy(
             undefined,  // Mimetype.
@@ -1084,8 +1086,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         ? `${selectedUserStore}/${email}`
                         : email,
                 [ userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
-                    ? UserManagementConstants.CUSTOMSCHEMA
-                    : UserManagementConstants.ENTERPRISESCHEMA
+                    ? userSchemaURI
+                    : ProfileConstants.SCIM2_ENT_USER_SCHEMA
                 ]: {
                     askPassword: "true"
                 }
