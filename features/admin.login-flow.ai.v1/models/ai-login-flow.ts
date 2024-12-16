@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthenticationSequenceInterface } from "@wso2is/admin.applications.v1/models";
+import { AuthenticationSequenceInterface } from "@wso2is/admin.applications.v1/models/application";
 
 /**
  * Status of the login flow generation.

@@ -16,7 +16,10 @@
  * under the License.
  */
 
-import { AdaptiveAuthTemplateInterface, AdaptiveAuthTemplateTypes } from "@wso2is/admin.applications.v1/models";
+import {
+    AdaptiveAuthTemplateInterface,
+    AdaptiveAuthTemplateTypes
+} from "@wso2is/admin.applications.v1/models/application";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code, CodeEditor, DocumentationLink, LinkButton, Message, useDocumentation } from "@wso2is/react-components";
 import isObject from "lodash-es/isObject";

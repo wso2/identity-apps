@@ -69,18 +69,20 @@ import { useGetApplication } from "../api/use-get-application";
 import useGetApplicationInboundConfigs from "../api/use-get-application-inbound-configs";
 import { EditApplication } from "../components/edit-application";
 import { InboundProtocolDefaultFallbackTemplates } from "../components/meta/inbound-protocols.meta";
-import { ApplicationManagementConstants } from "../constants";
+import { ApplicationManagementConstants } from "../constants/application-management";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationAccessTypes,
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
+    idpInfoTypeInterface
+} from "../models/application";
+import {
     State,
     SupportedAuthProtocolName,
-    SupportedAuthProtocolTypes,
-    idpInfoTypeInterface
-} from "../models";
+    SupportedAuthProtocolTypes
+} from "../models/application-inbound";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
 import "./application-edit.scss";

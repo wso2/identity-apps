@@ -36,15 +36,17 @@ import {
     ApplicationInterface,
     CertificateInterface,
     CertificateTypeInterface,
+    SAMLApplicationConfigurationInterface
+} from "../../models/application";
+import {
     LogoutMethods,
     MetadataPropertyInterface,
     SAML2BindingTypes,
     SAML2ServiceProviderInterface,
-    SAMLApplicationConfigurationInterface,
     SAMLMetaDataInterface,
     SupportedAuthProtocolTypes
-} from "../../models";
-import { ApplicationCertificateWrapper } from "../settings/certificate";
+} from "../../models/application-inbound";
+import { ApplicationCertificateWrapper } from "../settings/certificate/application-certificate-wrapper";
 
 interface InboundSAMLFormPropsInterface extends TestableComponentInterface {
     onUpdate: (id: string) => void;

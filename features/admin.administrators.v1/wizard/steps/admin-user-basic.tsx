@@ -18,7 +18,7 @@
 
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import {
     AppState,
     SharedUserStoreUtils,

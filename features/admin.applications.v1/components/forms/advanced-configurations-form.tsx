@@ -43,13 +43,13 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { ApplicationManagementConstants } from "../../constants";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import SAMLWebApplicationTemplate from
     "../../data/application-templates/templates/saml-web-application/saml-web-application.json";
 import {
     AdvancedConfigurationsInterface,
     ApplicationTemplateListItemInterface
-} from "../../models";
+} from "../../models/application";
 import "./advanced-configurations-form.scss";
 
 /**

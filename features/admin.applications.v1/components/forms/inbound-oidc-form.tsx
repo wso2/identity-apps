@@ -85,7 +85,7 @@ import { Dispatch } from "redux";
 import { Button, Container, Divider, DropdownProps, Form, Grid, Label, List, Table } from "semantic-ui-react";
 import { OIDCScopesManagementConstants } from "../../../admin.oidc-scopes.v1/constants";
 import { getGeneralIcons } from "../../configs/ui";
-import { ApplicationManagementConstants } from "../../constants";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import CustomApplicationTemplate from
     "../../data/application-templates/templates/custom-application/custom-application.json";
 import M2MApplicationTemplate from "../../data/application-templates/templates/m2m-application/m2m-application.json";
@@ -101,6 +101,9 @@ import {
     ApplicationTemplateNames,
     CertificateInterface,
     CertificateTypeInterface,
+    additionalSpProperty
+} from "../../models/application";
+import {
     GrantTypeInterface,
     GrantTypeMetaDataInterface,
     MetadataPropertyInterface,
@@ -109,12 +112,11 @@ import {
     OIDCMetadataInterface,
     State,
     SupportedAccessTokenBindingTypes,
-    SupportedAuthProtocolTypes,
-    additionalSpProperty
-} from "../../models";
+    SupportedAuthProtocolTypes
+} from "../../models/application-inbound";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { AccessTokenAttributeOption } from "../access-token-attribute-option";
-import { ApplicationCertificateWrapper } from "../settings/certificate";
+import { ApplicationCertificateWrapper } from "../settings/certificate/application-certificate-wrapper";
 import "./inbound-oidc-form.scss";
 
 /**
