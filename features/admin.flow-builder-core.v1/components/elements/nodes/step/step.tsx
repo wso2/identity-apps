@@ -209,7 +209,6 @@ export const Step: FunctionComponent<StepPropsInterface> = ({
                     </Box>
                 </Paper>
             </Box>
-            <Handle type="source" position={ Position.Right } id="a" />
         </div>
     );
 };

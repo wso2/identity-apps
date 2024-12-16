@@ -18,6 +18,7 @@
 
 import Button, { ButtonProps } from "@oxygen-ui/react/Button";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Handle, Position } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
 import { ButtonVariants, Component } from "../../../../models/component";
 import "./button-adapter.scss";
@@ -77,9 +78,13 @@ export const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
     }
 
     return (
-        <Button startIcon={ <img src={ node?.display?.image } /> } sx={ node?.config.styles } { ...config }>
-            { node?.variants?.[0]?.config?.field?.text }
-        </Button>
+        <div className="adapter button-adapter">
+            <Handle id={ `${ node?.id }-PREVIOUS` } type="source" position={ Position.Left } />
+            <Button startIcon={ <img src={ node?.display?.image } /> } sx={ node?.config.styles } { ...config }>
+                { node?.variants?.[0]?.config?.field?.text }
+            </Button>
+            <Handle id={ `${ node?.id }-NEXT` } type="source" position={ Position.Right } />
+        </div>
     );
 };
 
