@@ -2678,6 +2678,11 @@ export interface Extensions {
                 replicateContent: {
                     header: string;
                     message: string;
+                },
+                updateFromRootOrg: {
+                    header: string,
+                    message: string,
+                    content: string
                 }
             },
             dangerZone: {
