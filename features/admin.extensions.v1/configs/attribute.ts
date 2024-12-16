@@ -268,7 +268,7 @@ export const attributeConfig: AttributeConfig = {
                     await getClaimsForDialect(dialectID)
                         .then((response: Claim[] | ExternalClaim[]) => {
                             response.map((attrib: Claim | ExternalClaim) => {
-                                if (attrib.claimURI === "urn:scim:wso2:schema:" + attributeName) {
+                                if (attrib.claimURI === `${userSchemaURI}:${attributeName}`) {
                                     availability.set("SCIM", false);
                                 }
                             });
