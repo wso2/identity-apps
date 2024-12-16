@@ -93,10 +93,6 @@ export class UserManagementConstants {
     public static readonly SCIM2_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:core:2.0:User";
     public static readonly BULK_REQUEST_SCHEMA: string = "urn:ietf:params:scim:api:messages:2.0:BulkRequest";
 
-    // Schema related constants.
-    public static readonly ENTERPRISESCHEMA: string = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
-    public static readonly CUSTOMSCHEMA: string = "urn:scim:wso2:schema";
-
     /**
      * Set of SCIM2 schema names.apps/myaccount/src/store/actions/authenticate.ts
      * @typeParam SCIM2_SCHEMA_DICTIONARY - `Map<string, string>`

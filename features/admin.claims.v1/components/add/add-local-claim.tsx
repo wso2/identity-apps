@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -97,6 +97,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const skipSCIM: MutableRefObject<boolean> = useRef(false);
 
     const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
+    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
 
     const [ firstStep, setFirstStep ] = useTrigger();
     const [ secondStep, setSecondStep ] = useTrigger();
@@ -167,7 +168,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
             await attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then((available: string) => {
                 if (available === "") {
-                    addDialect(attributeConfig.localAttributes.customDialectURI);
+                    addDialect(userSchemaURI);
                 }
             });
 
@@ -193,8 +194,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     if (!skipSCIM) {
                         attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then((claimId: string) => {
                             addExternalClaim(claimId, {
-                                claimURI: `${ attributeConfig.localAttributes.customDialectURI
-                                }:${ customMappings.get("scim") }`,
+                                claimURI: `${ userSchemaURI }:${ customMappings.get("scim") }`,
                                 mappedLocalClaimURI: data.claimURI
                             }).then(() => {
                                 fetchUpdatedSchemaList();

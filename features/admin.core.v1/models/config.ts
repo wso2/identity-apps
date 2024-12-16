@@ -486,6 +486,11 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Config to check whether the multiple emails and mobile numbers per user feature is enabled.
      */
     isMultipleEmailsAndMobileNumbersEnabled?: boolean;
+    /**
+     * Overridden Scim2 user schema URI.
+     * If the value is not overridden, the default SCIM2 user schema URI is returned.
+     */
+    userSchemaURI?: string;
 }
 
 /**
