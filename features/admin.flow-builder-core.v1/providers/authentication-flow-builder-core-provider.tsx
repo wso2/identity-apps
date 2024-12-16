@@ -23,8 +23,7 @@ import { Claim } from "@wso2is/core/models";
 import capitalize from "lodash-es/capitalize";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode, useState } from "react";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
-import { Base } from "../models/base";
-import { ElementCategories } from "../models/elements";
+import { Element, ElementCategories } from "../models/elements";
 import { NodeTypes } from "../models/node";
 
 /**
@@ -55,16 +54,16 @@ const AuthenticationFlowBuilderCoreProvider = ({
     const [ isElementPanelOpen, setIsElementPanelOpen ] = useState<boolean>(true);
     const [ isElementPropertiesPanelOpen, setIsOpenElementPropertiesPanel ] = useState<boolean>(false);
     const [ elementPropertiesPanelHeading, setElementPropertiesPanelHeading ] = useState<ReactNode>(null);
-    const [ lastInteractedElementInternal, setLastInteractedElementInternal ] = useState<Base>(null);
+    const [ lastInteractedElementInternal, setLastInteractedElementInternal ] = useState<Element>(null);
     const [ lastInteractedNodeId, setLastInteractedNodeId ] = useState<string>("");
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Claim[] }>({});
 
-    const onElementDropOnCanvas = (element: Base, nodeId: string): void => {
+    const onElementDropOnCanvas = (element: Element, nodeId: string): void => {
         setLastInteractedElement(element);
         setLastInteractedNodeId(nodeId);
     };
 
-    const setLastInteractedElement = (element: Base): void => {
+    const setLastInteractedElement = (element: Element): void => {
         // TODO: Internationalize this string and get from a mapping.
         setElementPropertiesPanelHeading(
             <Stack>

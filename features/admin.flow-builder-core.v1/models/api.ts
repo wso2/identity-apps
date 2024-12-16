@@ -16,38 +16,49 @@
  * under the License.
  */
 
-import { BaseDisplay } from "./base";
+import { ActionTypes } from "./actions";
+import { Element } from "./elements";
 
-export interface Action {
-    category: ActionCategories;
-    display: BaseDisplay;
-    types: ActionType[];
+export interface Page {
+    id: string;
+    nodes: string[];
 }
 
-export interface Executor {
+export interface Flow {
+    pages: Page[];
+}
+
+export interface ExecutorInfo {
     name: string;
     meta: Record<string, unknown>;
 }
 
-export interface ActionType {
+export interface ActionInfo {
     type: ActionTypes;
-    display: BaseDisplay;
-    name?: string;
-    executors: Executor[];
-    meta?: Record<string, unknown>;
+    executors: ExecutorInfo[]
 }
 
-export type Actions = Action[];
-
-export enum ActionCategories {
-    Navigation = "NAVIGATION",
-    Verification = "VERIFICATION",
-    CredentialOnboarding = "CREDENTIAL_ONBOARDING",
-    Executor = "SOCIAL"
+export interface Action {
+    id: string;
+    action: ActionInfo;
+    next: string[];
 }
 
-export enum ActionTypes {
-    Next = "NEXT",
-    Previous = "PREVIOUS",
-    Executor = "EXECUTOR"
+export interface Node {
+    id: string;
+    elements: string[];
+    actions: Action;
+    data: Record<string, unknown>;
+}
+
+export interface Block {
+    id: string;
+    nodes: string[];
+}
+
+export interface Payload {
+    flow: Flow;
+    nodes: Node;
+    blocks: Block[];
+    elements: Omit<Element, "variants" | "display" | "version" | "deprecated">[];
 }

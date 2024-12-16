@@ -28,7 +28,7 @@
         "flow": {
             "nodes": [
                 {
-                    "id": "flow-node-3",
+                    "id": "flow-node-{{STEP_NUMBER}}",
                     "elements": [
                         "flow-display-header-rg6pwt0",
                         "flow-block-attributes-53fdsfsp",
@@ -44,7 +44,7 @@
                                 }
                             },
                             "next": [
-                                "flow-node-4"
+                                "{{NEXT_STEP_ID}}"
                             ]
                         },
                         {
@@ -53,13 +53,13 @@
                                 "type": "PREVIOUS"
                             },
                             "previous": [
-                                "flow-node-1"
+                                "{{PREVIOUS_STEP_ID}}"
                             ]
                         }
                     ]
                 },
                 {
-                    "id": "flow-node-4",
+                    "id": "flow-node-{{STEP_NUMBER}}",
                     "elements": [
                         "flow-display-header-GG456y7",
                         "flow-block-attributes-45owsew2",
@@ -75,7 +75,7 @@
                                 }
                             },
                             "next": [
-                                "flow-node-5"
+                                "{{NEXT_STEP_ID}}"
                             ]
                         },
                         {
@@ -84,7 +84,7 @@
                                 "type": "PREVIOUS"
                             },
                             "previous": [
-                                "flow-node-3"
+                                "{{PREVIOUS_STEP_ID}}"
                             ]
                         }
                     ]

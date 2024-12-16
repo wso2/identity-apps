@@ -65,13 +65,15 @@
             {
                 "type": "EXECUTOR",
                 "name": "PasswordOnboarder",
+                "executors": [
+                    {
+                        "name": "PasswordOnboarder"
+                    }
+                ],
                 "display": {
                     "label": "Onboard Password",
                     "image": "https://www.svgrepo.com/show/526627/password.svg",
                     "defaultVariant": "PRIMARY"
-                },
-                "meta": {
-                    "actionType": "CREDENTIAL_ONBOARDING"
                 }
             }
         ]
