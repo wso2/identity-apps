@@ -2967,6 +2967,11 @@ export const extensions: Extensions = {
                 replicateContent: {
                     header: "Replicate content?",
                     message: "Seems like you don't have any content for this locale. Do you need to populate the previous locale's content here as a quick start?"
+                },
+                updateFromRootOrg: {
+                    header: "Template not available",
+                    message: "Template is not available for selected locale.",
+                    content: "The selected locale is not available for the selected template currently. Please contact admins for more infomation."
                 }
             },
             dangerZone: {

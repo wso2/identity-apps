@@ -75,6 +75,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     const [ selectedEmailTemplate, setSelectedEmailTemplate ] = useState<EmailTemplate>();
     const [ currentEmailTemplate, setCurrentEmailTemplate ] = useState<EmailTemplate>();
     const [ showReplicatePreviousTemplateModal, setShowReplicatePreviousTemplateModal ] = useState(false);
+    const [ showUpdateTemplateFromRootOrgModal, setShowUpdateTemplateFromRootOrgModal ] = useState(false);
     const [ isTemplateNotAvailable, setIsTemplateNotAvailable ] = useState(false);
 
     const emailTemplates: Record<string, string>[] = useSelector(
@@ -206,6 +207,9 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
             } else {
                 setCurrentEmailTemplate(undefined);
             }
+            setShowUpdateTemplateFromRootOrgModal(true);
+
+            return;
         }
 
         if (emailTemplateError.response.data.description) {
@@ -345,6 +349,10 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         setShowReplicatePreviousTemplateModal(false);
     };
 
+    const alertUpdateTemplateFromRootOrg = () => {
+        setShowUpdateTemplateFromRootOrgModal(false);
+    };
+
     const resolveTabPanes = ():  TabProps[ "panes" ] => {
         const panes: TabProps [ "panes" ] = [];
 
@@ -462,6 +470,33 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                     >
                         { t("extensions:develop.emailTemplates.modal.replicateContent.message") }
                     </ConfirmationModal.Message>
+                </ConfirmationModal>
+
+                <ConfirmationModal
+                    type="info"
+                    open={ showUpdateTemplateFromRootOrgModal }
+                    primaryAction={ t("common:okay") }
+                    onPrimaryActionClick={ (): void => alertUpdateTemplateFromRootOrg() }
+                    data-componentid={ `${ componentId }-update-template-from-root-org-modal` }
+                    closeOnDimmerClick={ true }
+                >
+                    <ConfirmationModal.Header
+                        data-componentid={ `${ componentId }-update-template-from-root-org-modal-header` }
+                    >
+                        { t("extensions:develop.emailTemplates.modal.updateFromRootOrg.header") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message
+                        attached
+                        info
+                        data-componentid={ `${ componentId }-update-template-from-root-org-modal-message` }
+                    >
+                        { t("extensions:develop.emailTemplates.modal.updateFromRootOrg.message") }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content
+                        data-testid={ `${ componentId }-update-template-from-root-org-modal-content` }
+                    >
+                        { t("extensions:develop.emailTemplates.modal.updateFromRootOrg.content") }
+                    </ConfirmationModal.Content>
                 </ConfirmationModal>
             </PageLayout>
         </BrandingPreferenceProvider>
