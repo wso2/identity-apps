@@ -44,6 +44,7 @@ import NodeFactory from "./elements/nodes/node-factory";
 import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
 import { ElementCategories, Elements } from "../models/elements";
 import { Node } from "../models/node";
+import transformFlow from "../utils/transform-flow";
 import "@xyflow/react/dist/style.css";
 import "./visual-flow.scss";
 
@@ -144,7 +145,8 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     const handlePublish = (): void => {
         const flow: any = toObject();
 
-        console.log(JSON.stringify(flow, null, 2));
+        console.log('Raw', JSON.stringify(flow, null, 2));
+        console.log('Transformed', JSON.stringify(transformFlow(flow), null, 2));
     };
 
     const generateNodeTypes = () => {
