@@ -49,7 +49,9 @@ const transformFlow = (flowState: any): Payload => {
         });
 
         nodes.push({
-            actions: node.data.components.map((action: Element) => {
+            actions: node.data.components
+            .filter((component: Element) => component.category === "ACTION")
+            .map((action: Element) => {
                 let _action: any = {
                     id: action.id,
                     ...action.meta
