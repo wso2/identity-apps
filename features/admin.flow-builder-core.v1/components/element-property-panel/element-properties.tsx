@@ -20,16 +20,37 @@ import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useReactFlow } from "@xyflow/react";
+import merge from "lodash-es/merge";
 import set from "lodash-es/set";
-import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
+import { Properties } from "../../models/base";
 import { Component } from "../../models/component";
 import { Element } from "../../models/elements";
 
 /**
  * Props interface of {@link ElementProperties}
  */
-export type ElementPropertiesPropsInterface = IdentifiableComponentInterface & HTMLAttributes<HTMLDivElement>;
+export type CommonElementPropertiesPropsInterface = IdentifiableComponentInterface & {
+    properties?: Properties;
+    /**
+     * The element associated with the property.
+     */
+    element: Element;
+    /**
+     * The event handler for the property change.
+     * @param propertyKey - The key of the property.
+     * @param previousValue - The previous value of the property.
+     * @param newValue - The new value of the property.
+     * @param element - The element associated with the property.
+     */
+    onChange: (propertyKey: string, previousValue: any, newValue: any, element: Element) => void;
+    /**
+     * The event handler for the variant change.
+     * @param variant - The variant of the element.
+     */
+    onVariantChange?: (variant: string) => void;
+};
 
 /**
  * Component to generate the properties panel for the selected element.
@@ -37,10 +58,10 @@ export type ElementPropertiesPropsInterface = IdentifiableComponentInterface & H
  * @param props - Props injected to the component.
  * @returns The ElementProperties component.
  */
-const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
+const ElementProperties: FunctionComponent<Partial<CommonElementPropertiesPropsInterface>> = ({
     "data-componentid": componentId = "element-properties",
     ...rest
-}: ElementPropertiesPropsInterface): ReactElement => {
+}: Partial<CommonElementPropertiesPropsInterface>): ReactElement => {
     const { updateNodeData } = useReactFlow();
     const {
         lastInteractedElement,
@@ -57,19 +78,13 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
         updateNodeData(lastInteractedNodeId, (node: any) => {
             const components: Component = node?.data?.components?.map((component: any) => {
                 if (component.id === lastInteractedElement.id) {
-                    return {
-                        ...component,
-                        ...selectedVariant
-                    };
+                    return merge(component, selectedVariant);
                 }
 
                 return component;
             });
 
-            setLastInteractedElement({
-                ...lastInteractedElement,
-                ...selectedVariant
-            });
+            setLastInteractedElement(merge(lastInteractedElement, selectedVariant));
 
             return {
                 components
@@ -94,7 +109,7 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
     };
 
     return (
-        <div className="flow-builder-element-properties" data-componentid={ componentId } { ...rest }>
+        <div className="flow-builder-element-properties" data-componentid={ componentId }>
             { lastInteractedElement ? (
                 <Stack gap={ 1 }>
                     { lastInteractedElement && (

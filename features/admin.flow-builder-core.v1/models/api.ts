@@ -17,7 +17,7 @@
  */
 
 import { ActionTypes } from "./actions";
-import { Element } from "./elements";
+import { Element as CoreElement } from "./elements";
 
 export interface Page {
     id: string;
@@ -47,18 +47,20 @@ export interface Action {
 export interface Node {
     id: string;
     elements: string[];
-    actions: Action;
+    actions: Action[];
     data: Record<string, unknown>;
 }
 
 export interface Block {
     id: string;
-    nodes: string[];
+    elements: string[];
 }
+
+export type Element = Omit<CoreElement, "variants" | "display" | "version" | "deprecated">;
 
 export interface Payload {
     flow: Flow;
-    nodes: Node;
+    nodes: Node[];
     blocks: Block[];
-    elements: Omit<Element, "variants" | "display" | "version" | "deprecated">[];
+    elements: Element[];
 }
