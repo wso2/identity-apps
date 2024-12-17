@@ -195,7 +195,7 @@
     "blocks": [
         {
             "id": "flow-block-attributes-g55dfGuK",
-            "nodes": [
+            "elements": [
                 "flow-field-email-Rt8uJ6D3",
                 "flow-field-username-F6D3t8uJ",
                 "flow-field-first-name-r7u4F1GG",
@@ -208,21 +208,21 @@
         },
         {
             "id": "flow-block-attributes-53fdsfsp",
-            "nodes": [
+            "elements": [
                 "flow-field-email-Rt8uJ6D3",
                 "flow-action-next-tyG3hp31"
             ]
         },
         {
             "id": "flow-block-attributes-45owsew2",
-            "nodes": [
+            "elements": [
                 "flow-field-otp-mn44gh0j",
                 "flow-action-verify-otp-ssd5g6h"
             ]
         },
         {
             "id": "flow-block-attributes-osld3343",
-            "nodes": [
+            "elements": [
                 "flow-field-password-HK8uJ903",
                 "flow-field-confirm-password-GH63t78g",
                 "flow-action-next-ggh688op"
@@ -230,7 +230,7 @@
         },
         {
             "id": "flow-block-attributes-er203owe",
-            "nodes": [
+            "elements": [
                 "flow-field-nic-RR342gr",
                 "flow-action-done-5t8uJ6D3"
             ]

@@ -19,9 +19,7 @@
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Stack from "@oxygen-ui/react/Stack";
 import TextField from "@oxygen-ui/react/TextField";
-import {
-    CommonComponentPropertyFactoryPropsInterface
-} from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/common-component-property-factory";
+import { CommonElementPropertiesPropsInterface } from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/element-properties";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo, useState } from "react";
 import useGetSupportedProfileAttributes from "../../../api/use-get-supported-profile-attributes";
@@ -30,7 +28,7 @@ import { Attribute } from "../../../models/attributes";
 /**
  * Props interface of {@link FieldExtendedProperties}
  */
-export type FieldExtendedPropertiesPropsInterface = CommonComponentPropertyFactoryPropsInterface &
+export type FieldExtendedPropertiesPropsInterface = CommonElementPropertiesPropsInterface &
     IdentifiableComponentInterface;
 
 /**

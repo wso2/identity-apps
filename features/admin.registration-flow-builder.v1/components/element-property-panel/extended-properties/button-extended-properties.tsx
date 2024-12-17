@@ -24,8 +24,8 @@ import Grid from "@oxygen-ui/react/Grid";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import {
-    CommonComponentPropertyFactoryPropsInterface
-} from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/common-component-property-factory";
+    CommonElementPropertiesPropsInterface
+} from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/element-properties";
 // eslint-disable-next-line max-len
 import useAuthenticationFlowBuilderCore from "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import { Action, ActionType } from "@wso2is/admin.flow-builder-core.v1/models/actions";
@@ -39,7 +39,7 @@ import "./button-extended-properties.scss";
 /**
  * Props interface of {@link ButtonExtendedProperties}
  */
-export type ButtonExtendedPropertiesPropsInterface = CommonComponentPropertyFactoryPropsInterface &
+export type ButtonExtendedPropertiesPropsInterface = CommonElementPropertiesPropsInterface &
     IdentifiableComponentInterface;
 
 /**
@@ -51,7 +51,8 @@ export type ButtonExtendedPropertiesPropsInterface = CommonComponentPropertyFact
 const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsInterface> = ({
     "data-componentid": componentId = "button-extended-properties",
     element,
-    onChange
+    onChange,
+    onVariantChange
 }: ButtonExtendedPropertiesPropsInterface): ReactElement => {
     const { data: actions } = useGetRegistrationFlowCoreActions();
     const { lastInteractedElement, setLastInteractedElement } = useAuthenticationFlowBuilderCore();
@@ -73,12 +74,7 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
                                     key={ typeIndex }
                                     xs={ 6 }
                                     onClick={ () => {
-                                        onChange(
-                                            "variant",
-                                            selectedActionType?.display?.defaultVariant,
-                                            actionType?.display?.defaultVariant,
-                                            element
-                                        );
+                                        onVariantChange(actionType?.display?.defaultVariant);
 
                                         onChange(
                                             "meta",

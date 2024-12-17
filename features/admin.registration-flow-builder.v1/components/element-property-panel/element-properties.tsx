@@ -18,7 +18,8 @@
 
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
-import { FieldKey, FieldValue, Properties } from "@wso2is/admin.flow-builder-core.v1/models/base";
+import { CommonElementPropertiesPropsInterface } from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/element-properties";
+import { FieldKey, FieldValue } from "@wso2is/admin.flow-builder-core.v1/models/base";
 import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
@@ -30,26 +31,7 @@ import FieldExtendedProperties from "./extended-properties/field-extended-proper
 /**
  * Props interface of {@link ElementProperties}
  */
-export interface ElementPropertiesPropsInterface extends IdentifiableComponentInterface {
-    properties: Properties;
-    /**
-     * The element associated with the property.
-     */
-    element: Element;
-    /**
-     * The event handler for the property change.
-     * @param propertyKey - The key of the property.
-     * @param previousValue - The previous value of the property.
-     * @param newValue - The new value of the property.
-     * @param element - The element associated with the property.
-     */
-    onChange: (propertyKey: string, previousValue: any, newValue: any, element: Element) => void;
-    /**
-     * The event handler for the variant change.
-     * @param variant - The variant of the element.
-     */
-    onVariantChange: (variant: string) => void;
-}
+export type ElementPropertiesPropsInterface = CommonElementPropertiesPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Factory to generate the property configurator for the given registration flow element.
@@ -107,8 +89,6 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
                 <>
                     <FieldExtendedProperties
                         element={ element }
-                        propertyKey={ null }
-                        propertyValue={ null }
                         data-componentid="field-extended-properties"
                         onChange={ onChange }
                     />
@@ -120,10 +100,9 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
                 <>
                     <ButtonExtendedProperties
                         element={ element }
-                        propertyKey={ null }
-                        propertyValue={ null }
                         data-componentid="button-extended-properties"
                         onChange={ onChange }
+                        onVariantChange={ onVariantChange }
                     />
                     { renderElementPropertyFactory() }
                 </>
