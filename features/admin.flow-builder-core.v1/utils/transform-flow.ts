@@ -19,13 +19,11 @@
 import { Node as XYFlowNode } from "@xyflow/react";
 import omit from "lodash-es/omit";
 import {
-    Payload,
-    PayloadBlocks,
-    PayloadElement,
-    PayloadElements,
-    PayloadFlow,
-    PayloadNode,
-    PayloadNodes
+    Payload as Payload,
+    Action as PayloadAction,
+    Block as PayloadBlock,
+    Element as PayloadElement,
+    Node as PayloadNode
 } from "../models/api";
 import { Element } from "../models/elements";
 import { NodeData } from "../models/node";
@@ -35,21 +33,22 @@ const DISPLAY_ONLY_ELEMENT_PROPERTIES: string[] = [ "display", "version", "varia
 const transformFlow = (flowState: any): Payload => {
     const { nodes: flowNodes } = flowState;
 
-    const flow: PayloadFlow = {
-        pages: []
+    const payload: Payload = {
+        flow: {
+            pages: []
+        },
+        nodes: [],
+        blocks: [],
+        elements: []
     };
-    const nodes: PayloadNodes = [];
-    const blocks: PayloadBlocks = [];
-    const elements: PayloadElements = [];
 
     flowNodes.forEach((node: XYFlowNode<NodeData>, index: number) => {
-        flow.pages.push({
+        payload.flow.pages.push({
             id: `flow-page-${index + 1}`,
             nodes: [ node.id ]
         });
 
-        nodes.push({
-            actions: node.data.components
+        const nodeActions: PayloadAction[] = node.data.components
             .filter((component: Element) => component.category === "ACTION")
             .map((action: Element) => {
                 let _action: any = {
@@ -70,35 +69,52 @@ const transformFlow = (flowState: any): Payload => {
                 }
 
                 return _action;
-            }),
-            elements: node.data.components.map((component: Element) => component.id),
+            });
+
+        let currentBlock: PayloadBlock | null = null;
+        const nodeElements: string[] = [];
+        const nonBlockElements: string[] = [];
+
+        // Identify the last ACTION with type "submit"
+        const lastSubmitActionIndex = node.data.components
+            .map((component: Element, index: number) => ({ component, index }))
+            .reverse()
+            .find(({ component }) => component.category === "ACTION" && component?.config?.field?.type === "submit")?.index;
+
+        node.data.components.forEach((component: Element, index: number) => {
+            if (currentBlock) {
+                currentBlock.elements.push(component.id);
+                if (index === lastSubmitActionIndex) {
+                    currentBlock = null;
+                }
+            } else {
+                if (component.category === "FIELD") {
+                    currentBlock = {
+                        id: `flow-block-${payload.blocks.length + 1}`,
+                        elements: [ component.id ]
+                    };
+                    payload.blocks.push(currentBlock);
+                    nodeElements.push(currentBlock.id);
+                } else {
+                    nodeElements.push(component.id);
+                }
+            }
+        });
+
+        payload.nodes.push({
+            actions: nodeActions,
+            elements: nodeElements,
             id: node.id
         } as PayloadNode);
 
-        blocks.push({
-            id: `flow-block-${index + 1}`,
-            elements: node.data.components
-                .filter(
-                    (component: Element) =>
-                        (component.category === "FIELD" || component.category === "ACTION") &&
-                        component.config?.field?.type === "submit"
-                )
-                .map((component: Element) => component.id)
-        });
-
-        elements.push(
+        payload.elements.push(
             ...(node.data.components.map((component: Element) =>
                 omit(component, DISPLAY_ONLY_ELEMENT_PROPERTIES)
-            ) as PayloadElements)
+            )) as PayloadElement[]
         );
     });
 
-    return {
-        flow,
-        nodes,
-        blocks,
-        elements
-    };
+    return payload;
 };
 
 export default transformFlow;
