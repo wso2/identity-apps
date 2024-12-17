@@ -103,7 +103,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         return !isFeatureEnabled(
             emailTemplatesFeatureConfig,
             EmailManagementConstants.FEATURE_DICTIONARY.get("EMAIL_TEMPLATES_UPDATE")
-        ) || hasUsersUpdateEmailTemplatesPermissions;
+        ) || !hasUsersUpdateEmailTemplatesPermissions;
     }, [ emailTemplatesFeatureConfig, allowedScopes ]);
 
     const hasEmailTemplateCreatePermissions: boolean = useMemo(() => {
