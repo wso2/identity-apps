@@ -18,33 +18,38 @@
 
 import { Node as XYFlowNode } from "@xyflow/react";
 import omit from "lodash-es/omit";
-import { Payload } from "../models/api";
+import {
+    Payload,
+    PayloadBlocks,
+    PayloadElement,
+    PayloadElements,
+    PayloadFlow,
+    PayloadNode,
+    PayloadNodes
+} from "../models/api";
 import { Element } from "../models/elements";
 import { NodeData } from "../models/node";
 
 const DISPLAY_ONLY_ELEMENT_PROPERTIES: string[] = [ "display", "version", "variants" ];
 
 const transformFlow = (flowState: any): Payload => {
-    /* eslint-disable sort-keys */
-    const output: Payload = {
-        flow: {
-            pages: [
-                {
-                    id: "flow-page-1",
-                    // Add all node IDs for the page
-                    nodes: flowState.nodes.map((node: XYFlowNode<NodeData>) => node.id)
-                }
-            ]
-        },
-        nodes: flowState.nodes.map((node: XYFlowNode<NodeData>) => {
-            // Filter FIELD elements and ACTION buttons of type "submit"
-            const submitElements = node.data.components.filter((component: Element) =>
-                (component.category === "FIELD" || component.category === "ACTION") &&
-                component.config?.field?.type === "submit"
-            );
+    const { nodes: flowNodes } = flowState;
 
-            // Handle actions separately
-            const actions = submitElements.map((action: Element) => {
+    const flow: PayloadFlow = {
+        pages: []
+    };
+    const nodes: PayloadNodes = [];
+    const blocks: PayloadBlocks = [];
+    const elements: PayloadElements = [];
+
+    flowNodes.forEach((node: XYFlowNode<NodeData>, index: number) => {
+        flow.pages.push({
+            id: `flow-page-${index + 1}`,
+            nodes: [ node.id ]
+        });
+
+        nodes.push({
+            actions: node.data.components.map((action: Element) => {
                 let _action: any = {
                     id: action.id,
                     ...action.meta
@@ -63,33 +68,35 @@ const transformFlow = (flowState: any): Payload => {
                 }
 
                 return _action;
-            });
+            }),
+            elements: node.data.components.map((component: Element) => component.id),
+            id: node.id
+        } as PayloadNode);
 
-            return {
-                actions,
-                elements: node.data.components.map((component: Element) => component.id),
-                id: node.id
-            };
-        }),
-        blocks: flowState.nodes.map((node: XYFlowNode<NodeData>, index: number) => ({
-            // For each node, create a block containing the components of type "submit"
+        blocks.push({
             id: `flow-block-${index + 1}`,
             elements: node.data.components
-                .filter((component: Element) =>
-                    (component.category === "FIELD" || component.category === "ACTION") &&
-                    component.config?.field?.type === "submit"
+                .filter(
+                    (component: Element) =>
+                        (component.category === "FIELD" || component.category === "ACTION") &&
+                        component.config?.field?.type === "submit"
                 )
-                .map((component: Element) => component.id) // Collect only submit buttons and fields
-        })),
-        elements: flowState.nodes.flatMap((node: XYFlowNode<NodeData>) =>
-            node.data.components.map((component: Element) =>
-                omit(component, DISPLAY_ONLY_ELEMENT_PROPERTIES)
-            )
-        )
-    };
-    /* eslint-enable sort-keys */
+                .map((component: Element) => component.id)
+        });
 
-    return output;
+        elements.push(
+            ...(node.data.components.map((component: Element) =>
+                omit(component, DISPLAY_ONLY_ELEMENT_PROPERTIES)
+            ) as PayloadElements)
+        );
+    });
+
+    return {
+        flow,
+        nodes,
+        blocks,
+        elements
+    };
 };
 
 export default transformFlow;
