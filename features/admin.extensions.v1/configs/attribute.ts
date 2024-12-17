@@ -47,7 +47,7 @@ const isIdentityClaims = (claim: ExternalClaim): boolean => {
 /**
  * SCIM2 custom user schema URI.
  */
-const userSchemaURI: string = Config.getUIConfig()?.userSchemaURI;
+const userSchemaURI: string = Config?.getUIConfig()?.userSchemaURI;
 
 export const attributeConfig: AttributeConfig = {
     addAttributeMapping: true,
