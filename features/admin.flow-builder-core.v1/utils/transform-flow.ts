@@ -30,90 +30,78 @@ import { NodeData } from "../models/node";
 
 const DISPLAY_ONLY_ELEMENT_PROPERTIES: string[] = [ "display", "version", "variants" ];
 
-const groupNodesIntoPages = (nodes: any[], edges: any[]): any => {
-    console.log("nodes", JSON.stringify(nodes));
-    console.log("edges", JSON.stringify(edges));
+const groupNodesIntoPages = (nodes: string[], edges: any[]): any => {
+    // Create a directed adjacency list to represent the graph
+    const createGraph = (edges: any[]) => {
+        const graph: Record<string, string[]> = {};
+        const inDegree: Record<string, number> = {};
+        const outDegree: Record<string, number> = {};
 
-    const createGraphFromEdges = (edges: any[]) => {
-        const graph: Record<string, string[]> = {}; // Holds the graph structure
-
-        // Iterate through each edge and build the graph
+        // Initialize nodes and degree tracking
         edges.forEach((edge) => {
             const { source, target } = edge;
 
-            // Initialize the source node if not already present
-            if (!graph[source]) {
-                graph[source] = [];
-            }
-            // Initialize the target node if not already present
-            if (!graph[target]) {
-                graph[target] = [];
-            }
+            if (!graph[source]) graph[source] = [];
+            if (!graph[target]) graph[target] = [];
+            if (!inDegree[source]) inDegree[source] = 0;
+            if (!inDegree[target]) inDegree[target] = 0;
+            if (!outDegree[source]) outDegree[source] = 0;
+            if (!outDegree[target]) outDegree[target] = 0;
 
-            // Add the target node to the source node's list of connections
             graph[source].push(target);
-            // Add the source node to the target node's list of connections (undirected graph)
-            graph[target].push(source);
+            inDegree[target]++;
+            outDegree[source]++;
         });
 
-        return graph;
+        return { graph, inDegree, outDegree, edges };
     };
 
-    const derivePagesFromGraph = (graph: Record<string, string[]>) => {
+    // Determine page distribution strategy based on edges
+    const distributeNodesToPagesWithEdgeOrder = (graphData: {
+        graph: Record<string, string[]>,
+        inDegree: Record<string, number>,
+        outDegree: Record<string, number>,
+        edges: any[]
+    }) => {
+        const { graph, inDegree, edges } = graphData;
         const pages: any[] = [];
-        const visited: Set<string> = new Set();
-        let pageId = 1;
+        const usedNodes = new Set<string>();
 
-        // Helper function to perform DFS
-        const dfs = (node: string, path: string[]) => {
-            if (visited.has(node)) {
-                return;
+        // Find source nodes (nodes with no incoming edges)
+        const sourceNodes = Object.keys(inDegree).filter(node => inDegree[node] === 0);
+
+        // Traverse nodes and group them into pages
+        const traverseNodes = (nodeId: string, pageId: string) => {
+            if (usedNodes.has(nodeId)) return;
+            usedNodes.add(nodeId);
+
+            if (!pages[pageId]) {
+                pages[pageId] = {
+                    id: `flow-page-${pages.length + 1}`,
+                    nodes: []
+                };
             }
+            pages[pageId].nodes.push(nodeId);
 
-            visited.add(node);
-            path.push(node);
-
-            const neighbors = graph[node] || [];
-            for (const neighbor of neighbors) {
-                if (!visited.has(neighbor)) {
-                    dfs(neighbor, path);
-                }
-            }
+            const connectedEdges = edges.filter((edge: any) => edge.source === nodeId);
+            connectedEdges.forEach((edge: any) => {
+                traverseNodes(edge.target, pageId + 1);
+            });
         };
 
-        // Create a map to group nodes by their target
-        const targetGroups: Record<string, string[]> = {};
-
-        // Iterate over all edges to create target-based groups
-        edges.forEach((edge) => {
-            const { source, target } = edge;
-
-            // Initialize the target group if not already present
-            if (!targetGroups[target]) {
-                targetGroups[target] = [];
-            }
-
-            // Add the source node to the group of its target
-            targetGroups[target].push(source);
-        });
-
-        // Now, create flow pages based on the target groups
-        Object.keys(targetGroups).forEach((target) => {
-            const flowPage = {
-                id: `flow-page-${pageId++}`,
-                nodes: targetGroups[target], // All sources that lead to this target
-            };
-
-            pages.push(flowPage);
+        sourceNodes.forEach((sourceNode) => {
+            traverseNodes(sourceNode, 0);
         });
 
         return pages;
     };
 
-    const graph = createGraphFromEdges(edges);
-    const pages = derivePagesFromGraph(graph);
+    const graphData = createGraph(edges);
+    const pages = distributeNodesToPagesWithEdgeOrder(graphData);
 
-    // Construct the final "flow" object
+    console.log("graph", JSON.stringify(graphData.graph, null, 2));
+    console.log("pages", JSON.stringify(pages, null, 2));
+
     return pages;
 };
 
