@@ -1,5 +1,16 @@
 # @wso2is/admin.email-management.v1
 
+## 2.25.59
+
+### Patch Changes
+
+- [#7214](https://github.com/wso2/identity-apps/pull/7214) [`d776a6a48b811d330717875ea8ecd6c1b1f105ab`](https://github.com/wso2/identity-apps/commit/d776a6a48b811d330717875ea8ecd6c1b1f105ab) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Fix unable to update email template.
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.59
+  - @wso2is/admin.branding.v1@2.27.32
+  - @wso2is/common.branding.v1@2.25.32
+
 ## 2.25.58
 
 ### Patch Changes
