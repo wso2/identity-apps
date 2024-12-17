@@ -31,46 +31,60 @@ const transformFlow = (flowState: any): Payload => {
             pages: [
                 {
                     id: "flow-page-1",
-                    nodes: [ flowState.nodes[0].id ]
+                    // Add all node IDs for the page
+                    nodes: flowState.nodes.map((node: XYFlowNode<NodeData>) => node.id)
                 }
             ]
         },
-        nodes: flowState.nodes.map((node: XYFlowNode<NodeData>) => ({
-            actions: node.data.components
-                .filter((component: Element) => component.category === "ACTION")
-                .map((action: Element) => {
-                    let _action: any = {
-                        id: action.id,
-                        ...action.meta
-                    };
+        nodes: flowState.nodes.map((node: XYFlowNode<NodeData>) => {
+            // Filter FIELD elements and ACTION buttons of type "submit"
+            const submitElements = node.data.components.filter((component: Element) =>
+                (component.category === "FIELD" || component.category === "ACTION") &&
+                component.config?.field?.type === "submit"
+            );
 
-                    if (!action.meta) {
-                        if (action?.config?.field?.type === "submit") {
-                            _action = {
-                                ..._action,
-                                action: {
-                                    ..._action.action,
-                                    meta: {
-                                        actionType: "ATTRIBUTE_COLLECTION"
-                                    }
-                                }
-                            };
+            // Handle actions separately
+            const actions = submitElements.map((action: Element) => {
+                let _action: any = {
+                    id: action.id,
+                    ...action.meta
+                };
+
+                if (!action.meta && action?.config?.field?.type === "submit") {
+                    _action = {
+                        ..._action,
+                        action: {
+                            ..._action.action,
+                            meta: {
+                                actionType: "ATTRIBUTE_COLLECTION"
+                            }
                         }
-                    }
+                    };
+                }
 
-                    return _action;
-                }),
-            elements: node.data.components.map((component: Element) => component.id),
-            id: node.id
+                return _action;
+            });
+
+            return {
+                actions,
+                elements: node.data.components.map((component: Element) => component.id),
+                id: node.id
+            };
+        }),
+        blocks: flowState.nodes.map((node: XYFlowNode<NodeData>, index: number) => ({
+            // For each node, create a block containing the components of type "submit"
+            id: `flow-block-${index + 1}`,
+            elements: node.data.components
+                .filter((component: Element) =>
+                    (component.category === "FIELD" || component.category === "ACTION") &&
+                    component.config?.field?.type === "submit"
+                )
+                .map((component: Element) => component.id) // Collect only submit buttons and fields
         })),
-        blocks: [
-            {
-                id: "flow-block-1",
-                nodes: flowState.nodes[0].data.components.map((component: Element) => component.id)
-            }
-        ],
-        elements: flowState.nodes[0].data.components.map((component: Element) =>
-            omit(component, DISPLAY_ONLY_ELEMENT_PROPERTIES)
+        elements: flowState.nodes.flatMap((node: XYFlowNode<NodeData>) =>
+            node.data.components.map((component: Element) =>
+                omit(component, DISPLAY_ONLY_ELEMENT_PROPERTIES)
+            )
         )
     };
     /* eslint-enable sort-keys */
