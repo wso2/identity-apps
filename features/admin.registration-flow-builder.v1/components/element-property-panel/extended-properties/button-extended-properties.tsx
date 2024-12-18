@@ -57,8 +57,6 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
     const { data: actions } = useGetRegistrationFlowCoreActions();
     const { lastInteractedElement, setLastInteractedElement } = useAuthenticationFlowBuilderCore();
 
-    const [ selectedActionType, setSelectedActionType ] = useState<ActionType>(actions[0]?.types[0]);
-
     return (
         <Stack className="button-extended-properties" gap={ 2 } data-componentid={ componentId }>
             <div>
@@ -80,12 +78,6 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
                                             "meta",
                                             {
                                                 executors: actionType?.executors,
-                                                meta: selectedActionType?.meta,
-                                                name: selectedActionType?.name,
-                                                type: selectedActionType?.type
-                                            },
-                                            {
-                                                executors: actionType?.executors,
                                                 meta: actionType?.meta,
                                                 name: actionType?.name,
                                                 type: actionType?.type
@@ -93,7 +85,6 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
                                             element
                                         );
 
-                                        setSelectedActionType(actionType);
                                         setLastInteractedElement({
                                             ...lastInteractedElement,
                                             meta: {
@@ -108,7 +99,17 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
                                 >
                                     <Card
                                         className={ classNames("extended-property action-type", {
-                                            selected: isEqual(selectedActionType, actionType)
+                                            selected: isEqual({
+                                                executors: element?.meta?.executors,
+                                                meta: element?.meta?.meta,
+                                                name: element?.meta?.name,
+                                                type: element?.meta?.type
+                                            }, {
+                                                executors: actionType?.executors,
+                                                meta: actionType?.meta,
+                                                name: actionType?.name,
+                                                type: actionType?.type
+                                            })
                                         }) }
                                         variant="outlined"
                                     >
