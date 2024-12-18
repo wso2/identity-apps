@@ -153,6 +153,12 @@ const transformFlow = (flowState: any): Payload => {
         );
     });
 
+    // Add `next: ["COMPLETE"] to the last nodes' actions
+    const lastNode = payload.nodes[payload.nodes.length - 1];
+    lastNode.actions.forEach((action: PayloadAction) => {
+        action.next = [ "COMPLETE" ];
+    });
+
     payload.flow.pages = groupNodesIntoPages(flowNodes, flowEdges);
 
     return payload;
