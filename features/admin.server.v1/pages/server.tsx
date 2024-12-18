@@ -21,11 +21,7 @@ import Avatar from "@oxygen-ui/react/Avatar";
 import Card from "@oxygen-ui/react/Card";
 import Grid from "@oxygen-ui/react/Grid";
 import Typography from "@oxygen-ui/react/Typography";
-import {
-    ArrowLoopRightUserIcon,
-    UserBannerIcon,
-    UserIcon
-} from "@oxygen-ui/react-icons";
+import { ArrowLoopRightUserIcon } from "@oxygen-ui/react-icons";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, PageLayout } from "@wso2is/react-components";
@@ -63,84 +59,6 @@ export const ServerSettingsListingPage: FunctionComponent<ServerSettingsListingP
         >
             <Ref innerRef={ pageContextRef }>
                 <Grid container rowSpacing={ 3 } columnSpacing={ 3 }>
-                    <Grid xs={ 12 } md={ 6 } lg={ 4 }>
-                        <Card
-                            key="admin-advisory-page-section"
-                            className="server-configuration"
-                            data-componentid="admin-advisory-page-section"
-                            onClick={ () => history.push(AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER_EDIT")) }
-                        >
-                            <CardContent className="server-configuration-header">
-                                <div>
-                                    <GenericIcon
-                                        size="micro"
-                                        icon={ (
-                                            <Avatar
-                                                variant="square"
-                                                randomBackgroundColor
-                                                backgroundColorRandomizer="admin-advisory-banner"
-                                                className="server-configuration-icon-container"
-                                            >
-                                                <UserBannerIcon className="icon" />
-                                            </Avatar>
-                                        ) }
-                                        inline
-                                        transparent
-                                        shape="square"
-                                    />
-                                </div>
-                                <Typography variant="h6">
-                                    { t("console:manage.features.serverConfigs.adminAdvisory." +
-                                        "configurationSection.heading") }
-                                </Typography>
-                            </CardContent>
-                            <CardContent>
-                                <Typography variant="body2" color="text.secondary">
-                                    {  t("console:manage.features.serverConfigs.adminAdvisory." +
-                                        "configurationSection.description") }
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                    <Grid xs={ 12 } md={ 6 } lg={ 4 }>
-                        <Card
-                            key="remote-logging-page-section"
-                            data-componentid="remote-logging-page-section"
-                            className="server-configuration"
-                            onClick={ () => history.push(AppConstants.getPaths().get("REMOTE_LOGGING")) }
-                        >
-                            <CardContent className="server-configuration-header">
-                                <div>
-                                    <GenericIcon
-                                        size="micro"
-                                        icon={ (
-                                            <Avatar
-                                                variant="square"
-                                                randomBackgroundColor
-                                                backgroundColorRandomizer="remote-logging"
-                                                className="server-configuration-icon-container"
-                                            >
-                                                <UserIcon className="icon" />
-                                            </Avatar>
-                                        ) }
-                                        inline
-                                        transparent
-                                        shape="square"
-                                    />
-                                </div>
-                                <Typography variant="h6">
-                                    { t("console:manage.features.serverConfigs.remoteLogPublishing" +
-                                        ".title")  }
-                                </Typography>
-                            </CardContent>
-                            <CardContent>
-                                <Typography variant="body2" color="text.secondary">
-                                    { t("console:manage.features.serverConfigs.remoteLogPublishing" +
-                                        ".description")  }
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                    </Grid>
                     <Grid xs={ 12 } md={ 6 } lg={ 4 }>
                         <Card
                             key="manage-notifications-sending-page-section"
