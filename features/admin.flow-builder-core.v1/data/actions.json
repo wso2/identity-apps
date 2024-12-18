@@ -87,10 +87,14 @@
         "types": [
             {
                 "type": "EXECUTOR",
-                "name": "GoogleOIDCAuthenticator",
-                "meta": {
-                    "idp": "Google"
-                },
+                "executors": [
+                    {
+                        "name": "GoogleOIDCAuthenticator",
+                        "meta": {
+                            "idp": "Google"
+                        }
+                    }
+                ],
                 "display": {
                     "label": "Continue with Google Sign Up",
                     "image": "https://www.svgrepo.com/show/475656/google-color.svg",
