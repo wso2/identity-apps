@@ -196,7 +196,6 @@
         {
             "id": "flow-block-attributes-g55dfGuK",
             "elements": [
-                "flow-field-email-Rt8uJ6D3",
                 "flow-field-username-F6D3t8uJ",
                 "flow-field-first-name-r7u4F1GG",
                 "flow-field-last-name-r7u4F1GG",
@@ -258,7 +257,7 @@
             "config": {
                 "field": {
                     "type": "text",
-                    "name": "username",
+                    "name": "http://wso2.org/claims/username",
                     "hint": "",
                     "label": "Username",
                     "required": true,
@@ -311,9 +310,9 @@
                     "type": "date",
                     "name": "http://wso2.org/claims/dob",
                     "hint": "",
-                    "label": "Birth Date",
+                    "label": "Date of Birth",
                     "required": false,
-                    "placeholder": "Enter your birth date"
+                    "placeholder": "Enter your date of birth"
                 }
             }
         },
@@ -352,7 +351,7 @@
             "config": {
                 "field": {
                     "type": "submit",
-                    "label": "Continue with Email OTP"
+                    "text": "Continue with Email OTP"
                 }
             }
         },
@@ -378,7 +377,7 @@
             "config": {
                 "field": {
                     "type": "button",
-                    "label": "Continue with Google Sign Up"
+                    "text": "Continue with Google Sign Up"
                 }
             }
         },
@@ -407,8 +406,106 @@
                     "hint": "",
                     "label": "Password",
                     "required": true,
-                    "placeholder": "Enter your password"
-                }
+                    "multiline": false,
+                    "placeholder": "Enter your password",
+                    "defaultValue": "",
+                    "validation": [
+                        {
+                            "type": "CRITERIA",
+                            "showValidationCriteria": true,
+                            "criteria": [
+                                {
+                                    "label": "sign.up.form.fields.password.policies.length",
+                                    "error": "This field must be between 5 and 10 characters.",
+                                    "validation": [
+                                        {
+                                            "type": "MIN_LENGTH",
+                                            "value": 5,
+                                            "error": "This field must be at least 5 characters."
+                                        },
+                                        {
+                                            "type": "MAX_LENGTH",
+                                            "value": 10,
+                                            "error": "This field must be at most 10 characters."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "sign.up.form.fields.password.policies.lowercaseAndUppercaseLetter",
+                                    "error": "This field must have at least one uppercase and lowercase letter.",
+                                    "validation": [
+                                        {
+                                            "type": "MIN_LOWERCASE_LETTERS",
+                                            "value": 1,
+                                            "error": "Password must contain at least one lowercase letter."
+                                        },
+                                        {
+                                            "type": "MIN_UPPERCASE_LETTERS",
+                                            "value": 1,
+                                            "error": "Password must contain at least one uppercase letter."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "sign.up.form.fields.password.policies.minimumOneNumber",
+                                    "error": "This field must have at least one number.",
+                                    "validation": [
+                                        {
+                                            "type": "MIN_NUMBERS",
+                                            "value": 1,
+                                            "error": "Password must contain at least one number."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "sign.up.form.fields.password.policies.minimumOneSpecialCharacter",
+                                    "error": "This field must have at least one special character.",
+                                    "validation": [
+                                        {
+                                            "type": "MIN_SPECIAL_CHARACTERS",
+                                            "value": 1,
+                                            "error": "Password must contain at least one special character."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "sign.up.form.fields.password.policies.minimumOneSpecialCharacter",
+                                    "error": "This field must have at least one special character.",
+                                    "validation": [
+                                        {
+                                            "type": "MIN_SPECIAL_CHARACTERS",
+                                            "value": 1,
+                                            "error": "Password must contain at least one special character."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "sign.up.form.fields.password.policies.minimumOneUniqueCharacter",
+                                    "error": "This field must have at least one unique character.",
+                                    "validation": [
+                                        {
+                                            "type": "MIN_UNIQUE_CHARACTERS",
+                                            "value": 1,
+                                            "error": "Password must contain at least one unique character."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "sign.up.form.fields.password.policies.noRepeatedCharacters",
+                                    "error": "This field must not have repeated characters.",
+                                    "validation": [
+                                        {
+                                            "type": "MAX_REPEATED_CHARACTERS",
+                                            "value": 0,
+                                            "error": "Password must not contain repeated characters."
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "styles": {}
             }
         },
         {
@@ -462,7 +559,7 @@
             "config": {
                 "field": {
                     "type": "email",
-                    "name": "email",
+                    "name": "http://wso2.org/claims/emailaddress",
                     "hint": "",
                     "label": "Email",
                     "required": true,
@@ -517,7 +614,7 @@
             "config": {
                 "field": {
                     "type": "text",
-                    "name": "otp",
+                    "name": "email-otp",
                     "hint": "",
                     "label": "OTP",
                     "required": true,
@@ -572,7 +669,7 @@
             "config": {
                 "field": {
                     "type": "text",
-                    "name": "nic",
+                    "name": "http://wso2.org/claims/im",
                     "hint": "",
                     "label": "NIC",
                     "required": true,
@@ -590,7 +687,7 @@
             "config": {
                 "field": {
                     "type": "submit",
-                    "label": "Done"
+                    "text": "Done"
                 }
             }
         }
