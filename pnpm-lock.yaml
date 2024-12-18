@@ -2631,6 +2631,9 @@ importers:
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.4.67
         version: link:../admin.feature-gate.v1
+      '@wso2is/admin.groups.v1':
+        specifier: ^2.26.18
+        version: link:../admin.groups.v1
       '@wso2is/admin.identity-providers.v1':
         specifier: ^2.26.67
         version: link:../admin.identity-providers.v1

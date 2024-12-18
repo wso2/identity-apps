@@ -22,7 +22,7 @@ import { PaletteIcon } from "@oxygen-ui/react-icons";
 import { ApplicationTabComponentsFilter } from
     "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
 import { AppConstants, AppState, UIConfigInterface, history } from "@wso2is/admin.core.v1";
-import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
+import { ApplicationTabIDs, applicationConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
@@ -42,9 +42,10 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
+import GroupAssignment from "./application-audience";
 import { useMyAccountStatus } from "../../api/application";
 import { ApplicationManagementConstants } from "../../constants/application-management";
-import { ApplicationInterface } from "../../models/application";
+import { ApplicationInterface, DiscoverableGroup } from "../../models/application";
 
 /**
  * Proptypes for the applications general details form component.
@@ -182,6 +183,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     const [ isDiscoverable, setDiscoverability ] = useState<boolean>(discoverability);
 
+    const [ discoverableGroups, setDiscoverableGroups ] = useState<DiscoverableGroup[]>([
+        { groups: [], userStore: userstoresConfig.primaryUserstoreId }
+    ]);
+
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
     const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
 
@@ -223,7 +228,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         onSubmit({
             accessUrl: values.accessUrl?.toString(),
             advancedConfigurations: {
-                discoverableByEndUsers: values.discoverableByEndUsers
+                discoverableByEndUsers: values.discoverableByEndUsers,
+                discoverableGroups: discoverableGroups
             },
             description: values.description?.toString().trim(),
             id: appId,
@@ -478,62 +484,75 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         )
                         && !isSubOrganizationType
                     ) ? (
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Field.Checkbox
-                                        ariaLabel="Make application discoverable by end users"
-                                        name="discoverableByEndUsers"
-                                        required={ false }
-                                        label={ t("applications:forms.generalDetails.fields" +
+                            <>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Field.Checkbox
+                                            ariaLabel="Make application discoverable by end users"
+                                            name="discoverableByEndUsers"
+                                            required={ false }
+                                            label={ t("applications:forms.generalDetails.fields" +
                                             ".discoverable.label") }
-                                        initialValue={ isDiscoverable }
-                                        readOnly={ readOnly }
-                                        data-testid={ `${ testId }-application-discoverable-checkbox` }
-                                        listen={ (value: boolean) => setDiscoverability(value) }
-                                        hint={ (
-                                            <Trans
-                                                i18nKey={
-                                                    application.templateId === ApplicationManagementConstants.MOBILE
-                                                        ? "applications:forms.inboundOIDC.mobileApp" +
+                                            initialValue={ isDiscoverable }
+                                            readOnly={ readOnly }
+                                            data-testid={ `${ testId }-application-discoverable-checkbox` }
+                                            listen={ (value: boolean) => setDiscoverability(value) }
+                                            hint={ (
+                                                <Trans
+                                                    i18nKey={
+                                                        application.templateId === ApplicationManagementConstants.MOBILE
+                                                            ? "applications:forms.inboundOIDC.mobileApp" +
                                                             ".discoverableHint"
-                                                        : "applications:forms.generalDetails.fields." +
+                                                            : "applications:forms.generalDetails.fields." +
                                                             "discoverable.hint"
-                                                }
-                                                tOptions={ { myAccount: "My Account" } }
-                                            >
-                                                { " " }
-                                                { getLink(
-                                                    "develop.applications.managementApplication.selfServicePortal"
-                                                ) === undefined
-                                                    ? (
-                                                        <strong data-testid="application-name-assertion">
+                                                    }
+                                                    tOptions={ { myAccount: "My Account" } }
+                                                >
+                                                    { " " }
+                                                    { getLink(
+                                                        "develop.applications.managementApplication.selfServicePortal"
+                                                    ) === undefined
+                                                        ? (
+                                                            <strong data-testid="application-name-assertion">
                                                             My Account
-                                                        </strong>
-                                                    )
-                                                    : (
-                                                        <strong
-                                                            className="link pointing"
-                                                            data-testid="application-name-assertion"
-                                                            onClick={
-                                                                () => window.open(
-                                                                    getLink(
-                                                                        "develop.applications.managementApplication"
+                                                            </strong>
+                                                        )
+                                                        : (
+                                                            <strong
+                                                                className="link pointing"
+                                                                data-testid="application-name-assertion"
+                                                                onClick={
+                                                                    () => window.open(
+                                                                        getLink(
+                                                                            "develop.applications.managementApplication"
                                                                             + ".selfServicePortal"
-                                                                    ),
-                                                                    "_blank"
-                                                                )
-                                                            }
-                                                        >
+                                                                        ),
+                                                                        "_blank"
+                                                                    )
+                                                                }
+                                                            >
                                                             My Account
-                                                        </strong>
-                                                    )
-                                                }
-                                            </Trans>
-                                        ) }
-                                        width={ 16 }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
+                                                            </strong>
+                                                        )
+                                                    }
+                                                </Trans>
+                                            ) }
+                                            width={ 16 }
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                                { isDiscoverable && (
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <GroupAssignment
+                                                discoverableGroups={ discoverableGroups }
+                                                setDiscoverableGroups={ setDiscoverableGroups }
+                                                application={ application }
+                                            />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                ) }
+                            </>
                         ) : null
                     }
                     {
