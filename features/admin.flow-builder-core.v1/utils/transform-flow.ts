@@ -28,6 +28,7 @@ import {
 import { InputVariants } from "../models/component";
 import { Element } from "../models/elements";
 import { NodeData } from "../models/node";
+import { ActionTypes } from "../models/actions";
 
 const DISPLAY_ONLY_ELEMENT_PROPERTIES: string[] = [ "display", "version", "variants", "deprecated", "meta" ];
 
@@ -79,27 +80,34 @@ const transformFlow = (flowState: any): Payload => {
         elements: []
     };
 
-    const nextNodeMap: Record<string, string[]> = {};
+    const nodeNavigationMap: Record<string, string[]> = {};
 
     flowEdges.forEach((edge: any) => {
-        nextNodeMap[edge.sourceHandle.replace("-NEXT", "").replace("-PREVIOUS", "")] = [ edge.target ];
+        nodeNavigationMap[edge.sourceHandle.replace("-NEXT", "").replace("-PREVIOUS", "")] = [ edge.target ];
     });
 
     flowNodes.forEach((node: XYFlowNode<NodeData>, index: number) => {
         const nodeActions: PayloadAction[] = node.data?.components
             ?.filter((component: Element) => component.category === "ACTION")
             .map((action: Element) => {
+                const navigation: string[] = node.data.components.map((component: Element) => {
+                    if (component.id === action.id) {
+                        if (nodeNavigationMap[component.id]) {
+                            return nodeNavigationMap[component.id];
+                        }
+                    }
+                }).flat().filter(Boolean);
+
                 let _action: any = {
                     id: action.id,
-                    action: action.meta,
-                    next: node.data.components.map((component: Element) => {
-                        if (component.id === action.id) {
-                            if (nextNodeMap[component.id]) {
-                                return nextNodeMap[component.id];
-                            }
-                        }
-                    }).flat().filter(Boolean)
+                    action: action.meta
                 };
+
+                if (_action.action?.type === ActionTypes.Next || _action.action?.type === ActionTypes.Executor) {
+                    _action.next = navigation;
+                } else if (_action.action?.type === ActionTypes.Previous) {
+                    _action.previous = navigation;
+                }
 
                 if (action?.config?.field?.type === "submit") {
                     // If there are password fields in the form, add a `CREDENTIAL_ONBOARDING` action type to all the submit actions
@@ -169,6 +177,11 @@ const transformFlow = (flowState: any): Payload => {
                     }
                 }
 
+                // TODO: Fix this. When the action type is not manually selected, `type` becomes `undefined`.
+                if (!_action.action?.type) {
+                    _action.action.type = ActionTypes.Next;
+                }
+
                 return _action;
             });
 
@@ -221,7 +234,9 @@ const transformFlow = (flowState: any): Payload => {
     const lastNode = payload.nodes[payload.nodes.length - 1];
 
     lastNode.actions.forEach((action: PayloadAction) => {
-        action.next = [ "COMPLETE" ];
+        if (action.action?.type === ActionTypes.Next) {
+            action.next = [ "COMPLETE" ];
+        }
     });
 
     payload.flow.pages = groupNodesIntoPages(flowNodes, flowEdges);

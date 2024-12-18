@@ -41,11 +41,10 @@ export interface ElementPropertyFactoryPropsInterface extends IdentifiableCompon
     /**
      * The event handler for the property change.
      * @param propertyKey - The key of the property.
-     * @param previousValue - The previous value of the property.
      * @param newValue - The new value of the property.
      * @param element - The element associated with the property.
      */
-    onChange: (propertyKey: string, previousValue: any, newValue: any, element: Element) => void;
+    onChange: (propertyKey: string, newValue: any, element: Element) => void;
 }
 
 /**

@@ -27,6 +27,7 @@ import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "re
 import ElementPropertyFactory from "./element-property-factory";
 import ButtonExtendedProperties from "./extended-properties/button-extended-properties";
 import FieldExtendedProperties from "./extended-properties/field-extended-properties";
+import { InputVariants } from "@wso2is/admin.flow-builder-core.v1/models/component";
 
 /**
  * Props interface of {@link ElementProperties}
@@ -85,6 +86,10 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
 
     switch (element.category) {
         case ElementCategories.Field:
+            if (element.variant === InputVariants.Password) {
+                return renderElementPropertyFactory();
+            }
+
             return (
                 <>
                     <FieldExtendedProperties

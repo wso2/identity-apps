@@ -47,7 +47,7 @@ const configureRegistrationFlow = (payload: Payload): Promise<AxiosResponse> => 
     };
 
     if (payload.nodes?.length === 5) {
-        requestConfig.data = samplePayload;
+        // requestConfig.data = samplePayload;
     }
 
     return httpClient(requestConfig)
