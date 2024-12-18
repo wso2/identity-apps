@@ -40,11 +40,10 @@ export type CommonElementPropertiesPropsInterface = IdentifiableComponentInterfa
     /**
      * The event handler for the property change.
      * @param propertyKey - The key of the property.
-     * @param previousValue - The previous value of the property.
      * @param newValue - The new value of the property.
      * @param element - The element associated with the property.
      */
-    onChange: (propertyKey: string, previousValue: any, newValue: any, element: Element) => void;
+    onChange: (propertyKey: string, newValue: any, element: Element) => void;
     /**
      * The event handler for the variant change.
      * @param variant - The variant of the element.
@@ -92,7 +91,7 @@ const ElementProperties: FunctionComponent<Partial<CommonElementPropertiesPropsI
         });
     };
 
-    const handlePropertyChange = (propertyKey: string, previousValue: any, newValue: any, element: Element) => {
+    const handlePropertyChange = (propertyKey: string, newValue: any, element: Element) => {
         updateNodeData(lastInteractedNodeId, (node: any) => {
             const components: Component = node?.data?.components?.map((component: any) => {
                 if (component.id === element.id) {

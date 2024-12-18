@@ -37,34 +37,22 @@
                     "actionType": "VERIFICATION"
                 },
                 "display": {
-                    "label": "Verify email address",
-                    "image": "https://www.svgrepo.com/show/408695/message-letter-mail-tick-check-e-mail.svg",
+                    "label": "Verify OTP",
+                    "image": "https://www.svgrepo.com/show/497630/verify.svg",
                     "defaultVariant": "PRIMARY"
-                }
-            },
-            {
-                "type": "NEXT",
-                "meta": {
-                    "actionType": "VERIFICATION"
-                },
-                "display": {
-                    "label": "Verify mobile number",
-                    "image": "https://www.svgrepo.com/show/533121/mobile-check.svg",
-                    "defaultVariant": "SECONDARY"
                 }
             }
         ]
     },
     {
-        "category": "CREDENTIAL_ONBOARDING",
+        "category": "ONBOARDING",
         "display": {
-            "label": "Credential Onboarding",
+            "label": "Onboarding",
             "image": ""
         },
         "types": [
             {
                 "type": "EXECUTOR",
-                "name": "PasswordOnboarder",
                 "executors": [
                     {
                         "name": "PasswordOnboarder"
@@ -73,6 +61,19 @@
                 "display": {
                     "label": "Onboard Password",
                     "image": "https://www.svgrepo.com/show/526627/password.svg",
+                    "defaultVariant": "PRIMARY"
+                }
+            },
+            {
+                "type": "EXECUTOR",
+                "executors": [
+                    {
+                        "name": "EmailOTPVerifier"
+                    }
+                ],
+                "display": {
+                    "label": "Onboard Email",
+                    "image": "https://www.svgrepo.com/show/479622/email-18.svg",
                     "defaultVariant": "PRIMARY"
                 }
             }
