@@ -42,6 +42,7 @@ import {
 import React, { DragEvent, FC, FunctionComponent, ReactElement, useCallback, useMemo } from "react";
 import NodeFactory from "./elements/nodes/node-factory";
 import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
+import { Payload } from "../models/api";
 import { ElementCategories, Elements } from "../models/elements";
 import { Node } from "../models/node";
 import transformFlow from "../utils/transform-flow";
@@ -56,6 +57,11 @@ export interface VisualFlowPropsInterface extends IdentifiableComponentInterface
      * Flow elements.
      */
     elements: Elements;
+    /**
+     * Callback to be fired when the flow is submitted.
+     * @param payload - Payload of the flow.
+     */
+    onFlowSubmit: (payload: Payload) => void;
 }
 
 /**
@@ -67,6 +73,7 @@ export interface VisualFlowPropsInterface extends IdentifiableComponentInterface
 const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-flow",
     elements,
+    onFlowSubmit,
     ...rest
 }: VisualFlowPropsInterface): ReactElement => {
     const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
@@ -145,8 +152,10 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     const handlePublish = (): void => {
         const flow: any = toObject();
 
-        console.log('Raw', JSON.stringify(flow, null, 2));
-        console.log('Transformed', JSON.stringify(transformFlow(flow), null, 2));
+        console.log("Raw", JSON.stringify(flow, null, 2));
+        console.log("Transformed", JSON.stringify(transformFlow(flow), null, 2));
+
+        onFlowSubmit(transformFlow(flow));
     };
 
     const generateNodeTypes = () => {

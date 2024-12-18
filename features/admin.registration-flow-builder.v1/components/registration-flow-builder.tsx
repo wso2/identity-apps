@@ -17,12 +17,13 @@
  */
 
 import DecoratedVisualFlow from "@wso2is/admin.flow-builder-core.v1/components/decorated-visual-flow";
-import AuthenticationFlowBuilderCoreProvider from
-    "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
+import { Payload } from "@wso2is/admin.flow-builder-core.v1/models/api";
+import AuthenticationFlowBuilderCoreProvider from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import ElementProperties from "./element-property-panel/element-properties";
 import ComponentFactory from "./elements/components/component-factory";
+import configureRegistrationFlow from "../api/configure-registration-flow";
 import useGetRegistrationFlowBuilderElements from "../api/use-get-registration-flow-builder-elements";
 import RegistrationFlowBuilderProvider from "../providers/registration-flow-builder-provider";
 
@@ -43,13 +44,28 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
 }: RegistrationFlowBuilderPropsInterface): ReactElement => {
     const { data: elements } = useGetRegistrationFlowBuilderElements();
 
+    const handleFlowSubmit = (payload: Payload) => {
+        configureRegistrationFlow(payload)
+            .then(() => {
+                // Handle success.
+            })
+            .catch(() => {
+                // Handle error.
+            });
+    };
+
     return (
         <AuthenticationFlowBuilderCoreProvider
             ComponentFactory={ ComponentFactory }
             ElementProperties={ ElementProperties }
         >
             <RegistrationFlowBuilderProvider>
-                <DecoratedVisualFlow elements={ elements } data-componentid={ componentId } { ...rest } />
+                <DecoratedVisualFlow
+                    elements={ elements }
+                    data-componentid={ componentId }
+                    onFlowSubmit={ handleFlowSubmit }
+                    { ...rest }
+                />
             </RegistrationFlowBuilderProvider>
         </AuthenticationFlowBuilderCoreProvider>
     );
