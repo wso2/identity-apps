@@ -121,7 +121,7 @@ const transformFlow = (flowState: any): Payload => {
         const nodeActions: PayloadAction[] = node.data?.components?.filter((component: Element) => component.category === "ACTION").map((action: Element) => {
                 let _action: any = {
                     id: action.id,
-                    ...action.meta
+                    action: action.meta
                 };
 
                 if (!action.meta && action?.config?.field?.type === "submit") {
@@ -169,9 +169,9 @@ const transformFlow = (flowState: any): Payload => {
         });
 
         payload.nodes.push({
-            actions: nodeActions,
+            id: node.id,
             elements: nodeElements,
-            id: node.id
+            actions: nodeActions
         } as PayloadNode);
 
         payload.elements.push(
