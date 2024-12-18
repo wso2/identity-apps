@@ -1418,11 +1418,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         )
                                     }
                                     {
-                                        (
-                                            (!allowDeleteOnly
-                                            && !isUserManagedByParentOrg)
-                                        ) 
-                                        && (
+                                        !allowDeleteOnly && !isUserManagedByParentOrg && (
                                             <DangerZone
                                                 data-testid={ `${ testId }-danger-zone-toggle` }
                                                 actionTitle={ t("user:editUser." +
