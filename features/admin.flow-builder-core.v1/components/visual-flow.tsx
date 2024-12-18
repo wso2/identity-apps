@@ -25,6 +25,7 @@ import {
     BackgroundVariant,
     Controls,
     Edge,
+    MarkerType,
     OnConnect,
     OnNodesDelete,
     ReactFlow,
@@ -41,6 +42,7 @@ import {
 } from "@xyflow/react";
 import React, { DragEvent, FC, FunctionComponent, ReactElement, useCallback, useMemo } from "react";
 import NodeFactory from "./elements/nodes/node-factory";
+import BaseEdge from "./react-flow-overrides/base-edge";
 import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
 import { Payload } from "../models/api";
 import { ElementCategories, Elements } from "../models/elements";
@@ -62,6 +64,18 @@ export interface VisualFlowPropsInterface extends IdentifiableComponentInterface
      * @param payload - Payload of the flow.
      */
     onFlowSubmit: (payload: Payload) => void;
+    /**
+     * Custom edges to be rendered.
+     */
+    customEdgeTypes?: {
+        [key: string]: Edge;
+    };
+    /**
+     * Callback to be fired when an edge is resolved.
+     * @param connection - Connection object.
+     * @returns Edge object.
+     */
+    onEdgeResolve?: (connection: any) => Edge;
 }
 
 /**
@@ -73,7 +87,9 @@ export interface VisualFlowPropsInterface extends IdentifiableComponentInterface
 const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-flow",
     elements,
+    customEdgeTypes,
     onFlowSubmit,
+    onEdgeResolve,
     ...rest
 }: VisualFlowPropsInterface): ReactElement => {
     const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
@@ -121,7 +137,24 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
         [ screenToFlowPosition, node?.type ]
     );
 
-    const onConnect: OnConnect = useCallback((params: any) => setEdges((edges: Edge[]) => addEdge(params, edges)), []);
+    const onConnect: OnConnect = useCallback(
+        (connection: any) => {
+            let edge: Edge = onEdgeResolve && onEdgeResolve(connection);
+
+            if (!edge) {
+                edge = {
+                    ...connection,
+                    markerEnd: {
+                        type: MarkerType.Arrow
+                    },
+                    type: "base-edge"
+                };
+            }
+
+            setEdges((edges: Edge[]) => addEdge(edge, edges));
+        },
+        [ setEdges ]
+    );
 
     const onNodesDelete: OnNodesDelete<XYFlowNode> = useCallback(
         (deleted: XYFlowNode[]) => {
@@ -171,6 +204,12 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     };
 
     const nodeTypes: { [key: string]: FC<XYFlowNode> } = useMemo(() => generateNodeTypes(), []);
+    const edgeTypes: { [key: string]: FC<Edge> } = useMemo(() => {
+        return {
+            "base-edge": BaseEdge,
+            ...customEdgeTypes
+        };
+    }, []);
 
     return (
         <>
@@ -190,6 +229,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                 nodes={ nodes }
                 edges={ edges }
                 nodeTypes={ nodeTypes as any }
+                edgeTypes={ edgeTypes as any }
                 onNodesChange={ onNodesChange }
                 onEdgesChange={ onEdgesChange }
                 onConnect={ onConnect }

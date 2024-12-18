@@ -20,30 +20,17 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DnDProvider } from "@wso2is/dnd";
 import { ReactFlowProvider } from "@xyflow/react";
 import classNames from "classnames";
-import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import ElementPanel from "./element-panel/element-panel";
 import ElementPropertiesPanel from "./element-property-panel/element-property-panel";
-import VisualFlow from "./visual-flow";
+import VisualFlow, { VisualFlowPropsInterface } from "./visual-flow";
 import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
-import { Elements } from "../models/elements";
-import { Payload } from "../models/api";
+
 
 /**
  * Props interface of {@link DecoratedVisualFlow}
  */
-export interface DecoratedVisualFlowPropsInterface
-    extends IdentifiableComponentInterface,
-        HTMLAttributes<HTMLDivElement> {
-    /**
-     * Flow elements.
-     */
-    elements: Elements;
-    /**
-     * Callback to be fired when the flow is submitted.
-     * @param payload - Payload of the flow.
-     */
-    onFlowSubmit: (payload: Payload) => void;
-}
+export type DecoratedVisualFlowPropsInterface = VisualFlowPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Component to decorate the visual flow editor with the necessary providers.
@@ -54,7 +41,6 @@ export interface DecoratedVisualFlowPropsInterface
 const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-editor",
     elements,
-    onFlowSubmit,
     ...rest
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
     const { isElementPanelOpen, isElementPropertiesPanelOpen } = useAuthenticationFlowBuilderCore();
@@ -63,13 +49,12 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         <div
             className={ classNames("decorated-visual-flow", "react-flow-container", "visual-editor") }
             data-componentid={ componentId }
-            { ...rest }
         >
             <ReactFlowProvider>
                 <DnDProvider>
                     <ElementPanel elements={ elements } open={ isElementPanelOpen }>
                         <ElementPropertiesPanel open={ isElementPropertiesPanelOpen }>
-                            <VisualFlow elements={ elements } onFlowSubmit={ onFlowSubmit } />
+                            <VisualFlow elements={ elements } { ...rest } />
                         </ElementPropertiesPanel>
                     </ElementPanel>
                 </DnDProvider>
