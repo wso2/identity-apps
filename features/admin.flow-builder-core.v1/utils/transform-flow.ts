@@ -79,14 +79,10 @@ const transformFlow = (flowState: any): Payload => {
         elements: []
     };
 
-    const nodeIdToNextNodes: Record<string, string[]> = {};
+    const nextNodeMap: Record<string, string[]> = {};
 
-    // Build a map of node IDs to their next connected nodes
     flowEdges.forEach((edge: any) => {
-        if (!nodeIdToNextNodes[edge.source]) {
-            nodeIdToNextNodes[edge.source] = [];
-        }
-        nodeIdToNextNodes[edge.source].push(edge.target);
+        nextNodeMap[edge.sourceHandle.replace("-NEXT", "").replace("-PREVIOUS", "")] = [ edge.target ];
     });
 
     flowNodes.forEach((node: XYFlowNode<NodeData>, index: number) => {
@@ -96,7 +92,13 @@ const transformFlow = (flowState: any): Payload => {
                 let _action: any = {
                     id: action.id,
                     action: action.meta,
-                    next: nodeIdToNextNodes[node.id] || []
+                    next: node.data.components.map((component: Element) => {
+                        if (component.id === action.id) {
+                            if (nextNodeMap[component.id]) {
+                                return nextNodeMap[component.id];
+                            }
+                        }
+                    }).flat().filter(Boolean)
                 };
 
                 if (action?.config?.field?.type === "submit") {
