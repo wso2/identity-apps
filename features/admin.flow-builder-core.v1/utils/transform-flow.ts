@@ -116,7 +116,7 @@ const transformFlow = (flowState: any): Payload => {
                                         return {
                                             ...executor,
                                             meta: {
-                                                ...executor.meta,
+                                                ...(executor?.meta || {}),
                                                 actionType: "CREDENTIAL_ONBOARDING"
                                             }
                                         };
@@ -127,8 +127,9 @@ const transformFlow = (flowState: any): Payload => {
                             _action = {
                                 ..._action,
                                 action: {
-                                    ..._action.action,
+                                    ...(_action.action || {}),
                                     meta: {
+                                        ...(_action?.action?.meta || {}),
                                         actionType: "CREDENTIAL_ONBOARDING"
                                     }
                                 }
@@ -144,7 +145,7 @@ const transformFlow = (flowState: any): Payload => {
                                         return {
                                             ...executor,
                                             meta: {
-                                                ...executor.meta,
+                                                ...(executor?.meta || {}),
                                                 actionType: "ATTRIBUTE_COLLECTION"
                                             }
                                         };
@@ -155,8 +156,9 @@ const transformFlow = (flowState: any): Payload => {
                             _action = {
                                 ..._action,
                                 action: {
-                                    ..._action.action,
+                                    ...(_action?.action || {}),
                                     meta: {
+                                        ...(_action?.action?.meta || {}),
                                         actionType: "ATTRIBUTE_COLLECTION"
                                     }
                                 }
