@@ -19,7 +19,7 @@
 import { Node as XYFlowNode } from "@xyflow/react";
 import omit from "lodash-es/omit";
 import {
-    Payload as Payload,
+    Payload,
     Action as PayloadAction,
     Block as PayloadBlock,
     Element as PayloadElement,
@@ -30,79 +30,40 @@ import { NodeData } from "../models/node";
 
 const DISPLAY_ONLY_ELEMENT_PROPERTIES: string[] = [ "display", "version", "variants" ];
 
-const groupNodesIntoPages = (nodes: string[], edges: any[]): any => {
-    // Create a directed adjacency list to represent the graph
-    const createGraph = (edges: any[]) => {
-        const graph: Record<string, string[]> = {};
-        const inDegree: Record<string, number> = {};
-        const outDegree: Record<string, number> = {};
+const groupNodesIntoPages = (nodes: any[], edges: any[]): any[] => {
+    const nodePages: Record<string, string[]> = {};
+    const visitedNodes = new Set<string>();
 
-        // Initialize nodes and degree tracking
-        edges.forEach((edge) => {
-            const { source, target } = edge;
+    const traverseNodes = (nodeId: string, pageId: string) => {
+        if (visitedNodes.has(nodeId)) return;
+        visitedNodes.add(nodeId);
 
-            if (!graph[source]) graph[source] = [];
-            if (!graph[target]) graph[target] = [];
-            if (!inDegree[source]) inDegree[source] = 0;
-            if (!inDegree[target]) inDegree[target] = 0;
-            if (!outDegree[source]) outDegree[source] = 0;
-            if (!outDegree[target]) outDegree[target] = 0;
+        if (!nodePages[pageId]) {
+            nodePages[pageId] = [];
+        }
+        nodePages[pageId].push(nodeId);
 
-            graph[source].push(target);
-            inDegree[target]++;
-            outDegree[source]++;
+        const connectedEdges = edges.filter((edge: any) => edge.source === nodeId);
+
+        connectedEdges.forEach((edge: any) => {
+            const nextNodeId = edge.target;
+
+            traverseNodes(nextNodeId, pageId + 1);
         });
-
-        return { graph, inDegree, outDegree, edges };
     };
 
-    // Determine page distribution strategy based on edges
-    const distributeNodesToPagesWithEdgeOrder = (graphData: {
-        graph: Record<string, string[]>,
-        inDegree: Record<string, number>,
-        outDegree: Record<string, number>,
-        edges: any[]
-    }) => {
-        const { graph, inDegree, edges } = graphData;
-        const pages: any[] = [];
-        const usedNodes = new Set<string>();
+    nodes.forEach((node: any) => {
+        if (!visitedNodes.has(node.id)) {
+            const pageId = `flow-page-${Object.keys(nodePages).length + 1}`;
 
-        // Find source nodes (nodes with no incoming edges)
-        const sourceNodes = Object.keys(inDegree).filter(node => inDegree[node] === 0);
+            traverseNodes(node.id, pageId);
+        }
+    });
 
-        // Traverse nodes and group them into pages
-        const traverseNodes = (nodeId: string, pageId: string) => {
-            if (usedNodes.has(nodeId)) return;
-            usedNodes.add(nodeId);
-
-            if (!pages[pageId]) {
-                pages[pageId] = {
-                    id: `flow-page-${pages.length + 1}`,
-                    nodes: []
-                };
-            }
-            pages[pageId].nodes.push(nodeId);
-
-            const connectedEdges = edges.filter((edge: any) => edge.source === nodeId);
-            connectedEdges.forEach((edge: any) => {
-                traverseNodes(edge.target, pageId + 1);
-            });
-        };
-
-        sourceNodes.forEach((sourceNode) => {
-            traverseNodes(sourceNode, 0);
-        });
-
-        return pages;
-    };
-
-    const graphData = createGraph(edges);
-    const pages = distributeNodesToPagesWithEdgeOrder(graphData);
-
-    console.log("graph", JSON.stringify(graphData.graph, null, 2));
-    console.log("pages", JSON.stringify(pages, null, 2));
-
-    return pages;
+    return Object.keys(nodePages).map((pageId) => ({
+        id: pageId,
+        nodes: nodePages[pageId]
+    }));
 };
 
 const transformFlow = (flowState: any): Payload => {
@@ -117,27 +78,38 @@ const transformFlow = (flowState: any): Payload => {
         elements: []
     };
 
+    const nodeIdToNextNodes: Record<string, string[]> = {};
+
+    // Build a map of node IDs to their next connected nodes
+    flowEdges.forEach((edge: any) => {
+        if (!nodeIdToNextNodes[edge.source]) {
+            nodeIdToNextNodes[edge.source] = [];
+        }
+        nodeIdToNextNodes[edge.source].push(edge.target);
+    });
+
     flowNodes.forEach((node: XYFlowNode<NodeData>, index: number) => {
         const nodeActions: PayloadAction[] = node.data?.components?.filter((component: Element) => component.category === "ACTION").map((action: Element) => {
-                let _action: any = {
-                    id: action.id,
-                    action: action.meta
-                };
+            let _action: any = {
+                id: action.id,
+                action: action.meta,
+                next: nodeIdToNextNodes[node.id] || []
+            };
 
-                if (!action.meta && action?.config?.field?.type === "submit") {
-                    _action = {
-                        ..._action,
-                        action: {
-                            ..._action.action,
-                            meta: {
-                                actionType: "ATTRIBUTE_COLLECTION"
-                            }
+            if (!action.meta && action?.config?.field?.type === "submit") {
+                _action = {
+                    ..._action,
+                    action: {
+                        ..._action.action,
+                        meta: {
+                            actionType: "ATTRIBUTE_COLLECTION"
                         }
-                    };
-                }
+                    }
+                };
+            }
 
-                return _action;
-            });
+            return _action;
+        });
 
         let currentBlock: PayloadBlock | null = null;
         const nodeElements: string[] = [];
