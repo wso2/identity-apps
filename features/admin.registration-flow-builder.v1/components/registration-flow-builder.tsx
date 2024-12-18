@@ -20,7 +20,7 @@ import DecoratedVisualFlow from "@wso2is/admin.flow-builder-core.v1/components/d
 import { Payload } from "@wso2is/admin.flow-builder-core.v1/models/api";
 import AuthenticationFlowBuilderCoreProvider from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import ElementProperties from "./element-property-panel/element-properties";
 import ComponentFactory from "./elements/components/component-factory";
 import configureRegistrationFlow from "../api/configure-registration-flow";
@@ -30,7 +30,7 @@ import RegistrationFlowBuilderProvider from "../providers/registration-flow-buil
 /**
  * Props interface of {@link RegistrationFlowBuilder}
  */
-export type RegistrationFlowBuilderPropsInterface = IdentifiableComponentInterface & HTMLAttributes<HTMLDivElement>;
+export type RegistrationFlowBuilderPropsInterface = IdentifiableComponentInterface;
 
 /**
  * Entry point for the registration flow builder.
