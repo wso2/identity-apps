@@ -26,6 +26,7 @@ import ElementPropertiesPanel from "./element-property-panel/element-property-pa
 import VisualFlow from "./visual-flow";
 import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
 import { Elements } from "../models/elements";
+import { Payload } from "../models/api";
 
 /**
  * Props interface of {@link DecoratedVisualFlow}
@@ -37,6 +38,11 @@ export interface DecoratedVisualFlowPropsInterface
      * Flow elements.
      */
     elements: Elements;
+    /**
+     * Callback to be fired when the flow is submitted.
+     * @param payload - Payload of the flow.
+     */
+    onFlowSubmit: (payload: Payload) => void;
 }
 
 /**
@@ -48,6 +54,7 @@ export interface DecoratedVisualFlowPropsInterface
 const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> = ({
     "data-componentid": componentId = "authentication-flow-visual-editor",
     elements,
+    onFlowSubmit,
     ...rest
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
     const { isElementPanelOpen, isElementPropertiesPanelOpen } = useAuthenticationFlowBuilderCore();
@@ -62,7 +69,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                 <DnDProvider>
                     <ElementPanel elements={ elements } open={ isElementPanelOpen }>
                         <ElementPropertiesPanel open={ isElementPropertiesPanelOpen }>
-                            <VisualFlow elements={ elements } />
+                            <VisualFlow elements={ elements } onFlowSubmit={ onFlowSubmit } />
                         </ElementPropertiesPanel>
                     </ElementPanel>
                 </DnDProvider>
