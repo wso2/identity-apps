@@ -25,10 +25,11 @@ import {
     Element as PayloadElement,
     Node as PayloadNode
 } from "../models/api";
+import { InputVariants } from "../models/component";
 import { Element } from "../models/elements";
 import { NodeData } from "../models/node";
 
-const DISPLAY_ONLY_ELEMENT_PROPERTIES: string[] = [ "display", "version", "variants" ];
+const DISPLAY_ONLY_ELEMENT_PROPERTIES: string[] = [ "display", "version", "variants", "deprecated", "meta" ];
 
 const groupNodesIntoPages = (nodes: any[], edges: any[]): any[] => {
     const nodePages: Record<string, string[]> = {};
@@ -60,7 +61,7 @@ const groupNodesIntoPages = (nodes: any[], edges: any[]): any[] => {
         }
     });
 
-    return Object.keys(nodePages).map((pageId) => ({
+    return Object.keys(nodePages).map(pageId => ({
         id: pageId,
         nodes: nodePages[pageId]
     }));
@@ -89,36 +90,94 @@ const transformFlow = (flowState: any): Payload => {
     });
 
     flowNodes.forEach((node: XYFlowNode<NodeData>, index: number) => {
-        const nodeActions: PayloadAction[] = node.data?.components?.filter((component: Element) => component.category === "ACTION").map((action: Element) => {
-            let _action: any = {
-                id: action.id,
-                action: action.meta,
-                next: nodeIdToNextNodes[node.id] || []
-            };
+        const nodeActions: PayloadAction[] = node.data?.components
+            ?.filter((component: Element) => component.category === "ACTION")
+            .map((action: Element) => {
+                let _action: any = {
+                    id: action.id,
+                    action: action.meta,
+                    next: nodeIdToNextNodes[node.id] || []
+                };
 
-            if (!action.meta && action?.config?.field?.type === "submit") {
-                _action = {
-                    ..._action,
-                    action: {
-                        ..._action.action,
-                        meta: {
-                            actionType: "ATTRIBUTE_COLLECTION"
+                if (action?.config?.field?.type === "submit") {
+                    // If there are password fields in the form, add a `CREDENTIAL_ONBOARDING` action type to all the submit actions
+                    // TODO: Improve.
+                    if (
+                        node.data?.components?.some(
+                            (component: Element) => component?.variant === InputVariants.Password
+                        )
+                    ) {
+                        if (_action?.action?.executors) {
+                            _action = {
+                                ..._action,
+                                action: {
+                                    ..._action.action,
+                                    executors: _action.action?.executors?.map((executor: any) => {
+                                        return {
+                                            ...executor,
+                                            meta: {
+                                                ...executor.meta,
+                                                actionType: "CREDENTIAL_ONBOARDING"
+                                            }
+                                        };
+                                    })
+                                }
+                            };
+                        } else {
+                            _action = {
+                                ..._action,
+                                action: {
+                                    ..._action.action,
+                                    meta: {
+                                        actionType: "CREDENTIAL_ONBOARDING"
+                                    }
+                                }
+                            };
+                        }
+                    } else {
+                        if (_action?.action?.executors) {
+                            _action = {
+                                ..._action,
+                                action: {
+                                    ..._action.action,
+                                    executors: _action.action?.executors?.map((executor: any) => {
+                                        return {
+                                            ...executor,
+                                            meta: {
+                                                ...executor.meta,
+                                                actionType: "ATTRIBUTE_COLLECTION"
+                                            }
+                                        };
+                                    })
+                                }
+                            };
+                        } else {
+                            _action = {
+                                ..._action,
+                                action: {
+                                    ..._action.action,
+                                    meta: {
+                                        actionType: "ATTRIBUTE_COLLECTION"
+                                    }
+                                }
+                            };
                         }
                     }
-                };
-            }
+                }
 
-            return _action;
-        });
+                return _action;
+            });
 
         let currentBlock: PayloadBlock | null = null;
         const nodeElements: string[] = [];
         const nonBlockElements: string[] = [];
 
         // Identify the last ACTION with type "submit"
-        const lastSubmitActionIndex = node.data?.components?.map((component: Element, index: number) => ({ component, index }))
+        const lastSubmitActionIndex = node.data?.components
+            ?.map((component: Element, index: number) => ({ component, index }))
             .reverse()
-            .find(({ component }) => component.category === "ACTION" && component?.config?.field?.type === "submit")?.index;
+            .find(({ component }) => component.category === "ACTION" && component?.config?.field?.type === "submit")
+            ?.index;
 
         node.data?.components?.forEach((component: Element, index: number) => {
             if (currentBlock) {
@@ -149,12 +208,14 @@ const transformFlow = (flowState: any): Payload => {
         payload.elements.push(
             ...(node.data?.components?.map((component: Element) =>
                 omit(component, DISPLAY_ONLY_ELEMENT_PROPERTIES)
-            )) as PayloadElement[]
+            ) as PayloadElement[])
         );
     });
 
     // Add `next: ["COMPLETE"] to the last nodes' actions
+    // TODO: Improve.
     const lastNode = payload.nodes[payload.nodes.length - 1];
+
     lastNode.actions.forEach((action: PayloadAction) => {
         action.next = [ "COMPLETE" ];
     });
