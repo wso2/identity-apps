@@ -241,14 +241,12 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             menuItem: t("users:editUser.tab.menuItems.1"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    {
-                        <UserGroupsList
-                            onAlertFired={ handleAlerts }
-                            user={ user }
-                            handleUserUpdate={ handleUserUpdate }
-                            isReadOnly={ isReadOnly }
-                        />
-                    }
+                    <UserGroupsList
+                        onAlertFired={ handleAlerts }
+                        user={ user }
+                        handleUserUpdate={ handleUserUpdate }
+                        isReadOnly={ isReadOnly }
+                    />
                 </ResourceTab.Pane>
             )
         },
