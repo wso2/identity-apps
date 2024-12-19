@@ -800,6 +800,12 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     ariaLabel: "Enable assertion encryption",
                     hint: "Specify if SAMLAssertion element is encrypted",
                     label: "Enable assertion encryption"
+                },
+                authnReqProviderName: {
+                    hint: "The human-readable name of the requester.",
+                    label: "Authentication Request Provider Name",
+                    placeholder: "Enter authentication request provider name",
+                    ariaLabel: "Authentication Request Provider Name"
                 }
             },
             smsOTP: {
