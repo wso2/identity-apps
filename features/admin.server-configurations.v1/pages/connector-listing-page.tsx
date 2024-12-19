@@ -99,8 +99,9 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         const isResidentOutboundProvisioningEnabled: boolean = featureConfig?.residentOutboundProvisioning?.enabled
             && hasResidentOutboundProvisioningFeaturePermission;
 
-        const isInternalNotificationSendingConfigurationEnabled: boolean = featureConfig?.
-            internalNotificationSending?.enabled && hasInternalNotificationSendingReadPermission;
+        const isConfiguringInternalNotificationSendingEnabled: boolean = featureConfig?.
+            internalNotificationSending?.enabled
+            && hasInternalNotificationSendingReadPermission;
 
         for (const category of originalConnectors) {
             if (!isOrganizationDiscoveryEnabled
@@ -113,7 +114,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 continue;
             }
 
-            if (!isInternalNotificationSendingConfigurationEnabled
+            if (!isConfiguringInternalNotificationSendingEnabled
                     && category.id === ServerConfigurationsConstants.NOTIFICATION_SETTINGS_CATEGORY_ID) {
                 continue;
             }
