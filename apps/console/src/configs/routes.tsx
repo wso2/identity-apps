@@ -284,11 +284,10 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 {
                     component: lazy(() =>
-                        import("@wso2is/admin.server.v1/pages/internal-notification-sending-page")
+                        import("@wso2is/admin.server-configurations.v1/pages/internal-notification-sending-page")
                     ),
                     exact: true,
                     id: "internalNotificationSending",
-                    name: "Internal Notification Sending",
                     path: AppConstants.getPaths().get("INTERNAL_NOTIFICATION_SENDING"),
                     protected: true,
                     showOnSidePanel: false

@@ -6392,10 +6392,6 @@ export interface ConsoleNS {
                     pageHeading: string;
                     pageSubheading: string;
                 };
-                manageNotificationSendingInternally: {
-                    title: string;
-                    description: string;
-                };
                 remoteLogPublishing: {
                     title: string;
                     pageTitle: string;

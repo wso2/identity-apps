@@ -123,7 +123,8 @@ export class GovernanceConnectorUtils {
                     properties: [
                         "EmailVerification.Enable", // Enable user email verification
                         "EmailVerification.LockOnCreation", // Enable account lock on creation
-                        "EmailVerification.Notification.InternallyManage", // Manage notifications sending internally
+                        // eslint-disable-next-line max-len
+                        ServerConfigurationsConstants.EMAIL_VERIFICATION_NOTIFICATIONS_INTERNALLY_MANAGED, // Manage notifications sending internally
                         "EmailVerification.ExpiryTime", // Email verification code expiry time
                         "EmailVerification.AskPassword.ExpiryTime", // Username recoveryAsk password code expiry time
                         "EmailVerification.AskPassword.PasswordGenerator",
@@ -406,9 +407,10 @@ export class GovernanceConnectorUtils {
                 connectors: [
                     {
                         description: I18n.instance.t(
-                            "console:manage.features.serverConfigs.manageNotificationSendingInternally.description"),
+                            "governanceConnectors:connectorCategories.internalNotificationSending.connector.description"
+                        ),
                         header: I18n.instance.t(
-                            "console:manage.features.serverConfigs.manageNotificationSendingInternally.title"),
+                            "governanceConnectors:connectorCategories.internalNotificationSending.connector.title"),
                         id: ServerConfigurationsConstants.NOTIFICATION_SETTINGS_CONNECTOR_ID,
                         route: AppConstants.getPaths().get("INTERNAL_NOTIFICATION_SENDING"),
                         testId: "internal-notification-settings-card"
@@ -416,7 +418,8 @@ export class GovernanceConnectorUtils {
                 ],
                 displayOrder: 0,
                 id: ServerConfigurationsConstants.NOTIFICATION_SETTINGS_CATEGORY_ID,
-                title: "Notification Settings"
+                title: I18n.instance
+                    .t("governanceConnectors:connectorCategories.internalNotificationSending.categoryTitle")
             }
         ];
     }

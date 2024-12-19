@@ -101,10 +101,6 @@ export interface serverConfigsNS {
         pageSubheading: string;
         title: string;
     };
-    manageNotificationSendingInternally: {
-        title: string;
-        description: string;
-    };
     remoteLogPublishing: {
         title: string;
         pageTitle: string;

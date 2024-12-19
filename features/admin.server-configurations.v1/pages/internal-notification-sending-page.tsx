@@ -18,12 +18,6 @@
 
 import Grid from "@oxygen-ui/react/Grid";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
-import { getConnectorDetails, updateGovernanceConnector } from "@wso2is/admin.server-configurations.v1/api";
-import {
-    ConnectorPropertyInterface,
-    GovernanceConnectorInterface,
-    UpdateGovernanceConnectorConfigInterface
-} from "@wso2is/admin.server-configurations.v1/models";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, Hint, PageLayout } from "@wso2is/react-components";
@@ -33,24 +27,30 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps } from "semantic-ui-react";
-import { ServerConstants } from "../constants/server";
+import { getConnectorDetails, updateGovernanceConnector } from "../api/governance-connectors";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface,
+    UpdateGovernanceConnectorConfigInterface
+} from "../models/governance-connectors";
 
 /**
- * Props for the Admin Session Advisory Banner page.
+ * Props for the Internal Notification Sending configuration page.
  */
 type InternalNotificationSendingPageInterface = IdentifiableComponentInterface;
 
 /**
- * Admin Advisory Banner Edit page.
+ * Internal Notification Sending configuration page.
  *
  * @param props - Props injected to the component.
- * @returns Admin Advisory Banner Edit page.
+ * @returns Internal Notification Sending configuration page.
  */
 export const InternalNotificationSendingPage: FC<InternalNotificationSendingPageInterface> = (
     props: InternalNotificationSendingPageInterface
 ): ReactElement => {
 
-    const { [ "data-componentid" ]: componentId } = props;
+    const { [ "data-componentid" ]: componentId = "internal-notification-sending" } = props;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -69,29 +69,29 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
         setIsLoading(true);
         Promise.all([
             getConnectorNotificationInternallyManaged(
-                ServerConstants.USER_ONBOARDING_CONNECTOR_ID,
-                ServerConstants.SELF_SIGN_UP_CONNECTOR_ID,
-                ServerConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED
+                ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+                ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID,
+                ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED
             ),
             getConnectorNotificationInternallyManaged(
-                ServerConstants.USER_ONBOARDING_CONNECTOR_ID,
-                ServerConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID,
-                ServerConstants.USER_EMAIL_VERIFICATION_NOTIFICATIONS_INTERNALLY_MANAGED
+                ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+                ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID,
+                ServerConfigurationsConstants.EMAIL_VERIFICATION_NOTIFICATIONS_INTERNALLY_MANAGED
             ),
             getConnectorNotificationInternallyManaged(
-                ServerConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID,
-                ServerConstants.ACCOUNT_LOCKING_CONNECTOR_ID,
-                ServerConstants.ACCOUNT_LOCKING_NOTIFICATIONS_INTERNALLY_MANAGED
+                ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID,
+                ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID,
+                ServerConfigurationsConstants.ACCOUNT_LOCK_INTERNAL_NOTIFICATION_MANAGEMENT
             ),
             getConnectorNotificationInternallyManaged(
-                ServerConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
-                ServerConstants.ACCOUNT_DISABLING_CONNECTOR_ID,
-                ServerConstants.ACCOUNT_DISABLING_NOTIFICATIONS_INTERNALLY_MANAGED
+                ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
+                ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID,
+                ServerConfigurationsConstants.ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT
             ),
             getConnectorNotificationInternallyManaged(
-                ServerConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
-                ServerConstants.ACCOUNT_RECOVERY_CONNECTOR_ID,
-                ServerConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED
+                ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
+                ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID,
+                ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED
             )
         ])
             .then((response: boolean[]) => {
@@ -147,33 +147,33 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
     const updateNotificationInternallyManaged = async (value: boolean): Promise<void> => {
         try {
             const selfSignUpResult: boolean = await updateConnectorNotificationInternallyManaged(
-                ServerConstants.USER_ONBOARDING_CONNECTOR_ID,
-                ServerConstants.SELF_SIGN_UP_CONNECTOR_ID,
-                ServerConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED,
+                ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+                ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID,
+                ServerConfigurationsConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED,
                 value
             );
             const emailVerificationResult: boolean = await updateConnectorNotificationInternallyManaged(
-                ServerConstants.USER_ONBOARDING_CONNECTOR_ID,
-                ServerConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID,
-                ServerConstants.USER_EMAIL_VERIFICATION_NOTIFICATIONS_INTERNALLY_MANAGED,
+                ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+                ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID,
+                ServerConfigurationsConstants.EMAIL_VERIFICATION_NOTIFICATIONS_INTERNALLY_MANAGED,
                 value
             );
             const accountLockingResult: boolean = await updateConnectorNotificationInternallyManaged(
-                ServerConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID,
-                ServerConstants.ACCOUNT_LOCKING_CONNECTOR_ID,
-                ServerConstants.ACCOUNT_LOCKING_NOTIFICATIONS_INTERNALLY_MANAGED,
+                ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID,
+                ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID,
+                ServerConfigurationsConstants.ACCOUNT_LOCK_INTERNAL_NOTIFICATION_MANAGEMENT,
                 value
             );
             const accountDisablingResult: boolean = await updateConnectorNotificationInternallyManaged(
-                ServerConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
-                ServerConstants.ACCOUNT_DISABLING_CONNECTOR_ID,
-                ServerConstants.ACCOUNT_DISABLING_NOTIFICATIONS_INTERNALLY_MANAGED,
+                ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
+                ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID,
+                ServerConfigurationsConstants.ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT,
                 value
             );
             const accountRecoveryResult: boolean = await updateConnectorNotificationInternallyManaged(
-                ServerConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
-                ServerConstants.ACCOUNT_RECOVERY_CONNECTOR_ID,
-                ServerConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED,
+                ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
+                ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID,
+                ServerConfigurationsConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED,
                 value
             );
 
@@ -403,13 +403,6 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
             </Grid>
         </PageLayout>
     );
-};
-
-/**
- * Default props for the component.
- */
-InternalNotificationSendingPage.defaultProps = {
-    "data-componentid": "internal-notification-sending"
 };
 
 export default InternalNotificationSendingPage;

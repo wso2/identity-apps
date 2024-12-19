@@ -400,8 +400,6 @@ export class AppConstants {
             [ "CONSOLE_ROLES_EDIT", `${AppConstants.getAdminViewBasePath()}/settings/roles/:id` ],
             [ "WSFED_CONFIGURATION",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/wsfed-configuration` ],
-            [ "SERVER",
-                `${AppConstants.getAdminViewBasePath()}/server` ],
             [ "INTERNAL_NOTIFICATION_SENDING",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/internal-notification-sending` ],
             [ "OUTBOUND_PROVISIONING_SETTINGS",
