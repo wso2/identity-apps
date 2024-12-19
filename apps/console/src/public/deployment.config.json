@@ -722,6 +722,23 @@
                 "enabled": false,
                 "scopes": {}
             },
+            "internalNotificationSending": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
+                    "read": [
+                        "internal_governance_view"
+                    ],
+                    "update": [
+                        "internal_governance_update"
+                    ]
+                }
+            },
             "loginAndRegistration": {
                 "disabledFeatures": [],
                 "enabled": true,

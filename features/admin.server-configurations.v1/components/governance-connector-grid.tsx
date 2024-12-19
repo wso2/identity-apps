@@ -204,6 +204,10 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                 return (
                     <EnvelopeMagnifyingGlassIcon className="icon" />
                 );
+            case ServerConfigurationsConstants.NOTIFICATION_SETTINGS_CONNECTOR_ID:
+                return (
+                    <ArrowLoopRightUserIcon className="icon" />
+                );
             default:
                 return <GearIcon className="icon" />;
         }
