@@ -218,69 +218,73 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                             } }
                         >
                             { userStores.map((store: UserStoreBasicData, index: number) => {
-                                return (
-                                    <Accordion
-                                        defaultExpanded
-                                        expanded={ true }
-                                        key={ index }
-                                        data-componentid={ `${componentId}-form-accordion-${store.name}` }
-                                    >
-                                        <AccordionSummary>
-                                            <Typography variant="h6"> { store.name } </Typography>
-                                        </AccordionSummary>
-                                        <AccordionDetails>
-                                            <Grid>
-                                                <Grid.Row columns={ 2 } key={ index } verticalAlign="middle">
-                                                    <Grid.Column width={ 6 }>
-                                                        <p> {
-                                                            t("claims:local.mappedAttributes.mappedAttributeName")
-                                                        }</p>
-                                                    </Grid.Column>
-                                                    <Grid.Column width={ 6 }>
-                                                        <Field
-                                                            type="text"
-                                                            name={ store.name }
-                                                            placeholder={ t("claims:local.forms.attribute." +
-                                                                "placeholder") }
-                                                            required={ true }
-                                                            requiredErrorMessage={
-                                                                t("claims:local.forms." +
-                                                                    "attribute.requiredErrorMessage")
-                                                            }
-                                                            value={ getMappedAttributeForUserStore(store.name) }
-                                                            data-componentid={
-                                                                `${componentId}-form-attribute-name-input-
-                                                                    ${store.name}` }
-                                                            readOnly={ isReadOnly }
-                                                        />
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                                { ClaimManagementConstants.USER_STORE_CONFIG_SUPPORTED_CLAIMS
-                                                    .includes(claim.claimURI) && (
+                                if (store.enabled || store.id.toUpperCase() === PRIMARY_USERSTORE.toUpperCase()) {
+                                    return (
+                                        <Accordion
+                                            defaultExpanded
+                                            expanded={ true }
+                                            key={ index }
+                                            data-componentid={ `${componentId}-form-accordion-${store.name}` }
+                                        >
+                                            <AccordionSummary>
+                                                <Typography variant="h6"> { store.name } </Typography>
+                                            </AccordionSummary>
+                                            <AccordionDetails>
+                                                <Grid>
                                                     <Grid.Row columns={ 2 } key={ index } verticalAlign="middle">
                                                         <Grid.Column width={ 6 }>
-                                                            <p>{ t("claims:local.mappedAttributes." +
-                                                                    "enableForUserStore") }</p>
+                                                            <p> {
+                                                                t("claims:local.mappedAttributes.mappedAttributeName")
+                                                            }</p>
                                                         </Grid.Column>
                                                         <Grid.Column width={ 6 }>
-                                                            <Checkbox
-                                                                checked={ !excludedUserStores.includes(store.name) }
-                                                                onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                                                                    handleEnableForUserStore(
-                                                                        store.name, e.target.checked
-                                                                    ) }
-                                                                disabled={ isReadOnly }
+                                                            <Field
+                                                                type="text"
+                                                                name={ store.name }
+                                                                placeholder={ t("claims:local.forms.attribute." +
+                                                                    "placeholder") }
+                                                                required={ true }
+                                                                requiredErrorMessage={
+                                                                    t("claims:local.forms." +
+                                                                        "attribute.requiredErrorMessage")
+                                                                }
+                                                                value={ getMappedAttributeForUserStore(store.name) }
                                                                 data-componentid={
-                                                                    `${componentId}-form-userstore-support-checkbox` +
-                                                                        `-${store.name}` }
+                                                                    `${componentId}-form-attribute-name-input-
+                                                                        ${store.name}` }
+                                                                readOnly={ isReadOnly }
                                                             />
                                                         </Grid.Column>
                                                     </Grid.Row>
-                                                ) }
-                                            </Grid>
-                                        </AccordionDetails>
-                                    </Accordion>
-                                );
+                                                    { ClaimManagementConstants.USER_STORE_CONFIG_SUPPORTED_CLAIMS
+                                                        .includes(claim.claimURI) && (
+                                                        <Grid.Row columns={ 2 } key={ index } verticalAlign="middle">
+                                                            <Grid.Column width={ 6 }>
+                                                                <p>{ t("claims:local.mappedAttributes." +
+                                                                        "enableForUserStore") }</p>
+                                                            </Grid.Column>
+                                                            <Grid.Column width={ 6 }>
+                                                                <Checkbox
+                                                                    checked={ !excludedUserStores.includes(store.name) }
+                                                                    onChange={
+                                                                        (e: React.ChangeEvent<HTMLInputElement>) =>
+                                                                            handleEnableForUserStore(
+                                                                                store.name, e.target.checked
+                                                                            ) }
+                                                                    disabled={ isReadOnly }
+                                                                    data-componentid={
+                                                                        `${componentId}` +
+                                                                        "-form-userstore-support-checkbox" +
+                                                                        `-${store.name}` }
+                                                                />
+                                                            </Grid.Column>
+                                                        </Grid.Row>
+                                                    ) }
+                                                </Grid>
+                                            </AccordionDetails>
+                                        </Accordion>
+                                    );
+                                }
                             }) }
                         </Forms>
                     </Grid.Column>
