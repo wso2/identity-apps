@@ -67,6 +67,7 @@ export class UserManagementConstants {
         .set("USER_UPDATE", "users.update")
         .set("USER_DELETE", "users.delete")
         .set("USER_READ", "users.read")
+        .set("USER_GROUPS", "users.edit.groups")
         .set("USER_ROLES", "users.edit.roles");
 
     // API errors
