@@ -264,11 +264,30 @@ export interface ApplicationAdvancedConfigurationsViewInterface {
 }
 
 /**
+ * Type for defining the discoverable groups for a userstore
+ */
+export interface DiscoverableGroup {
+    /**
+     * Userstore name
+     */
+    userStore: string;
+    /**
+     * Groups assigned from the userstore for discoverability
+     */
+    groups: string[];
+}
+
+/**
  *  Captures application related configuration.
  */
 export interface AdvancedConfigurationsInterface {
     saas?: boolean;
     discoverableByEndUsers?: boolean;
+    /**
+     * List of groups the application is discoverable to.
+     * values are sent in the format "userstoreId/groupId"
+     */
+    discoverableGroups?: DiscoverableGroup[];
     certificate?: CertificateInterface;
     skipLoginConsent?: boolean;
     skipLogoutConsent?: boolean;
