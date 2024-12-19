@@ -266,7 +266,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                                             <Grid.Column width={ 6 }>
                                                                 <Checkbox
                                                                     checked={ !excludedUserStores.includes(store.name) }
-                                                                    onChange={ 
+                                                                    onChange={
                                                                         (e: React.ChangeEvent<HTMLInputElement>) =>
                                                                             handleEnableForUserStore(
                                                                                 store.name, e.target.checked
