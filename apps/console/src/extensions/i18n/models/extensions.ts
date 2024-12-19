@@ -327,6 +327,7 @@ export interface Extensions {
         apiResource: {
             pageHeader: {
                 description: string;
+                subOrgDescription: string;
                 title: string;
             };
             empty: string;
