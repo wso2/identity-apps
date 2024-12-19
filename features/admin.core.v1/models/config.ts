@@ -254,6 +254,10 @@ export interface FeatureConfigInterface {
      * Connection management feature.
      */
     connections?: ConnectionConfigInterface;
+    /**
+     * Notification sending feature.
+     */
+    internalNotificationSending?: FeatureAccessConfigInterface;
 }
 
 /**

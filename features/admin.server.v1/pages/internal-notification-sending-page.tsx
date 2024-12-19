@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -348,7 +348,7 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
-        history.push(AppConstants.getPaths().get("SERVER"));
+        history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
     };
 
     /**
@@ -368,7 +368,7 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
             backButton={ {
                 "data-testid": `${ componentId }-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("pages:rolesEdit.backButton", { type: "Server" })
+                text: t("governanceConnectors:goBackLoginAndRegistration")
             } }
             bottomMargin={ false }
             contentTopMargin={ true }

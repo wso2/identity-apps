@@ -403,7 +403,7 @@ export class AppConstants {
             [ "SERVER",
                 `${AppConstants.getAdminViewBasePath()}/server` ],
             [ "INTERNAL_NOTIFICATION_SENDING",
-                `${AppConstants.getAdminViewBasePath()}/server/internal-notification-sending` ],
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/internal-notification-sending` ],
             [ "OUTBOUND_PROVISIONING_SETTINGS",
                 `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ],
             [ "IMPERSONATION", `${AppConstants.getAdminViewBasePath()}/login-and-registration/impersonation` ],
@@ -509,7 +509,6 @@ export class AppConstants {
     public static readonly SUPER_ADMIN_ONLY_ROUTES: string[] = [
         "admin-session-advisory-banner-edit",
         "remote-logging",
-        "internal-notification-sending",
         "server"
     ];
 
