@@ -39,6 +39,7 @@ import {
 import {
     DEFAULT_NAME_ID_FORMAT,
     DEFAULT_PROTOCOL_BINDING,
+    IDENTITY_PROVIDER_AUTHENTICATION_REQUEST_PROVIDER_NAME_LENGTH,
     IDENTITY_PROVIDER_AUTHORIZED_REDIRECT_URL_LENGTH,
     IDENTITY_PROVIDER_ENTITY_ID_LENGTH,
     LOGOUT_URL_LENGTH,
@@ -249,7 +250,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             AuthRedirectUrl: findPropVal<string>({ defaultValue: authorizedRedirectURL, key: "AuthRedirectUrl" }),
             AuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "AuthnContextClassRef" }),
             AuthnContextComparisonLevel: findPropVal<string>({ defaultValue: "", key: "AuthnContextComparisonLevel" }),
-            AuthnReqProviderName: findPropVal<string>({ defaultValue: "", key: "authnReqProviderName" }),
+            AuthnReqProviderName: findPropVal<string>({ defaultValue: "", key: "AuthnReqProviderName" }),
             CustomAuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "CustomAuthnContextClassRef" }),
             DigestAlgorithm: findPropVal<string>({ defaultValue: "SHA256", key: "DigestAlgorithm" }),
             ForceAuthentication: findPropVal<string>({ defaultValue: "string", key: "ForceAuthentication" }),
@@ -963,19 +964,19 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                     </SectionRow>
                     <SectionRow>
                         <Field.Input
-                            name="authnReqProviderName"
+                            name="AuthnReqProviderName"
                             value={ formValues?.AuthnReqProviderName }
                             inputType="default"
                             placeholder={ t(`${ I18N_TARGET_KEY }.authnReqProviderName.placeholder`) }
                             ariaLabel={ t(`${ I18N_TARGET_KEY }.authnReqProviderName.ariaLabel`) }
                             data-testid={ `${ testId }-authnReqProviderName-field` }
                             label={ (
-                                <FormInputLabel htmlFor="authnReqProviderName">
+                                <FormInputLabel htmlFor="AuthnReqProviderName">
                                     { t(`${ I18N_TARGET_KEY }.authnReqProviderName.label`) }
                                 </FormInputLabel>
                             ) }
-                            maxLength={ 100 }
-                            minLength={ 0 }
+                            maxLength={ IDENTITY_PROVIDER_AUTHENTICATION_REQUEST_PROVIDER_NAME_LENGTH.max }
+                            minLength={ IDENTITY_PROVIDER_AUTHENTICATION_REQUEST_PROVIDER_NAME_LENGTH.min }
                             hint={ t(`${ I18N_TARGET_KEY }.authnReqProviderName.hint`) }
                             readOnly={ readOnly }
                         />
