@@ -249,6 +249,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             AuthRedirectUrl: findPropVal<string>({ defaultValue: authorizedRedirectURL, key: "AuthRedirectUrl" }),
             AuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "AuthnContextClassRef" }),
             AuthnContextComparisonLevel: findPropVal<string>({ defaultValue: "", key: "AuthnContextComparisonLevel" }),
+            AuthnReqProviderName: findPropVal<string>({ defaultValue: "", key: "authnReqProviderName" }),
             CustomAuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "CustomAuthnContextClassRef" }),
             DigestAlgorithm: findPropVal<string>({ defaultValue: "SHA256", key: "DigestAlgorithm" }),
             ForceAuthentication: findPropVal<string>({ defaultValue: "string", key: "ForceAuthentication" }),
@@ -298,8 +299,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             /**
              * https://github.com/wso2/product-is/issues/17004
              */
-            isAssertionSigned: findPropVal<boolean>({ defaultValue: false, key: "isAssertionSigned" }),
-            AuthnReqProviderName: findPropVal<string>({defaultValue: "", key: "authnReqProviderName"})
+            isAssertionSigned: findPropVal<boolean>({ defaultValue: false, key: "isAssertionSigned" })
 
         } as SamlPropertiesInterface;
 
