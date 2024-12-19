@@ -41,6 +41,14 @@ export class ValidationConfigConstants {
         PASSWORD_MIN_VALUE: 5
     };
 
+    /**
+     * These scopes are checked to determine whether to display the new rule-based password expiry configuration UI.
+     * If these scopes are not available, legacy password expiry configuration will be shown for backward compatibility.
+     */
+    public static readonly RULE_BASED_PASSWORD_EXPIRY_REQUIRED_SCOPES: string[] = [
+        "internal_role_mgt_view",
+        "internal_group_mgt_view"
+    ];
 }
 
 /**
