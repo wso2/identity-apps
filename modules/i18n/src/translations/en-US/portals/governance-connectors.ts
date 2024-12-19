@@ -617,6 +617,13 @@ export const governanceConnectors: governanceConnectorsNS = {
         },
         wsFederationConfiguration: {
             description: "Configure WS-Federation protocol for your applications."
+        },
+        internalNotificationSending: {
+            categoryTitle: "Notification Settings",
+            connector: {
+                description: "Manage notification sending internally.",
+                title: "Internal Notification Sending"
+            }
         }
     },
     disabled: "Disabled",
@@ -673,5 +680,4 @@ export const governanceConnectors: governanceConnectorsNS = {
         }
     },
     pageSubHeading: "Configure and manage {{ name }}."
-
 };

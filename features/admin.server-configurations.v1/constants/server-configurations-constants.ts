@@ -191,6 +191,8 @@ export class ServerConfigurationsConstants {
      * User email verification API Keyword constants.
      */
     public static readonly EMAIL_VERIFICATION_ENABLED: string = "EmailVerification.Enable";
+    public static readonly EMAIL_VERIFICATION_NOTIFICATIONS_INTERNALLY_MANAGED: string =
+        "EmailVerification.Notification.InternallyManage";
 
     /**
 	 * Self registration API Keyword constants.

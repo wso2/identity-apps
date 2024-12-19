@@ -92,7 +92,8 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
         EMAIL_VERIFICATION_ENABLE: "EmailVerification.Enable",
         EMAIL_VERIFICATION_EXPIRY_TIME: "EmailVerification.ExpiryTime",
         EMAIL_VERIFICATION_LOCK_ON_CREATION: "EmailVerification.LockOnCreation",
-        EMAIL_VERIFICATION_NOTIFICATION_INTERNALLY_MANAGE: "EmailVerification.Notification.InternallyManage",
+        EMAIL_VERIFICATION_NOTIFICATION_INTERNALLY_MANAGE: ServerConfigurationsConstants
+            .EMAIL_VERIFICATION_NOTIFICATIONS_INTERNALLY_MANAGED,
         EMAIL_VERIFICATION_OTP_OTPLENGTH: "EmailVerification.OTP.OTPLength",
         EMAIL_VERIFICATION_OTP_SEND_OTP_IN_EMAIL: "EmailVerification.OTP.SendOTPInEmail",
         EMAIL_VERIFICATION_OTP_USELOWERCASECHARACTERS_IN_OTP: "EmailVerification.OTP.UseLowercaseCharactersInOTP",
