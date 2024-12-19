@@ -115,6 +115,7 @@ export interface SamlPropertiesInterface {
     IncludeCert?: boolean;
     IncludeNameIDPolicy?:boolean;
     AuthnContextClassRef?: string;
+    AuthnReqProviderName?: string;
 }
 
 const FORM_ID: string = "saml-authenticator-form";
@@ -297,7 +298,8 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             /**
              * https://github.com/wso2/product-is/issues/17004
              */
-            isAssertionSigned: findPropVal<boolean>({ defaultValue: false, key: "isAssertionSigned" })
+            isAssertionSigned: findPropVal<boolean>({ defaultValue: false, key: "isAssertionSigned" }),
+            AuthnReqProviderName: findPropVal<string>({defaultValue: "", key: "authnReqProviderName"})
 
         } as SamlPropertiesInterface;
 
@@ -956,6 +958,25 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             label={ t(`${ I18N_TARGET_KEY }.commonAuthQueryParams.label`) }
                             ariaLabel={ t(`${ I18N_TARGET_KEY }.commonAuthQueryParams.ariaLabel`) }
                             name="commonAuthQueryParams"
+                            readOnly={ readOnly }
+                        />
+                    </SectionRow>
+                    <SectionRow>
+                        <Field.Input
+                            name="authnReqProviderName"
+                            value={ formValues?.AuthnReqProviderName }
+                            inputType="default"
+                            placeholder={ t(`${ I18N_TARGET_KEY }.authnReqProviderName.placeholder`) }
+                            ariaLabel={ t(`${ I18N_TARGET_KEY }.authnReqProviderName.ariaLabel`) }
+                            data-testid={ `${ testId }-authnReqProviderName-field` }
+                            label={ (
+                                <FormInputLabel htmlFor="authnReqProviderName">
+                                    { t(`${ I18N_TARGET_KEY }.authnReqProviderName.label`) }
+                                </FormInputLabel>
+                            ) }
+                            maxLength={ 100 }
+                            minLength={ 0 }
+                            hint={ t(`${ I18N_TARGET_KEY }.authnReqProviderName.hint`) }
                             readOnly={ readOnly }
                         />
                     </SectionRow>
