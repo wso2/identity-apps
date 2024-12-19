@@ -603,13 +603,20 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     ): void => {
         if (hasPasswordExpiryRuleErrors) return;
 
-        const processedFormValues: ValidationFormInterface = {
+        let processedFormValues: ValidationFormInterface = {
             ...values,
-            passwordExpiryEnabled: passwordExpiryEnabled,
-            passwordExpiryRules: processPasswordExpiryRules(),
-            passwordExpirySkipFallback: passwordExpirySkipFallback,
-            passwordExpiryTime: defaultPasswordExpiryTime
+            passwordExpiryEnabled: passwordExpiryEnabled
         };
+
+        if (!isRuleBasedPasswordExpiryDisabled) {
+            processedFormValues = {
+                ...values,
+                passwordExpiryEnabled: passwordExpiryEnabled,
+                passwordExpiryRules: processPasswordExpiryRules(),
+                passwordExpirySkipFallback: passwordExpirySkipFallback,
+                passwordExpiryTime: defaultPasswordExpiryTime
+            };
+        }
 
         const updatePasswordPolicies: Promise<void> = serverConfigurationConfig.processPasswordPoliciesSubmitData(
             processedFormValues,
