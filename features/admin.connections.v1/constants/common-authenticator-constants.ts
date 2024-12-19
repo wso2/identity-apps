@@ -31,12 +31,15 @@ export class CommonAuthenticatorConstants {
      */
     public static readonly CONNECTION_TEMPLATE_IDS: {
         APPLE: string;
+        CUSTOM_AUTHENTICATION: string;
         ENTERPRISE: string;
         EXPERT_MODE: string;
+        EXTERNAL_CUSTOM_AUTHENTICATION: string;
         FACEBOOK: string;
         GITHUB: string;
         GOOGLE: string;
         HYPR: string;
+        INTERNAL_CUSTOM_AUTHENTICATION: string;
         IPROOV: string;
         LINKEDIN: string;
         MICROSOFT: string;
@@ -47,12 +50,15 @@ export class CommonAuthenticatorConstants {
         TRUSTED_TOKEN_ISSUER: string;
     } = {
             APPLE: "apple-idp",
+            CUSTOM_AUTHENTICATION: "custom-authentication",
             ENTERPRISE: "enterprise-idp",
             EXPERT_MODE: "expert-mode-idp",
+            EXTERNAL_CUSTOM_AUTHENTICATION: "external-custom-authentication",
             FACEBOOK: "facebook-idp",
             GITHUB: "github-idp",
             GOOGLE: "google-idp",
             HYPR: "hypr-idp",
+            INTERNAL_CUSTOM_AUTHENTICATION: "internal-custom-authentication",
             IPROOV: "iproov-idp",
             LINKEDIN: "linkedin-idp",
             MICROSOFT: "microsoft-idp",
