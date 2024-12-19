@@ -106,7 +106,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const [ hideTermination, setHideTermination ] = useState<boolean>(false);
     const [ adminUsername, setAdminUsername ] = useState<string|null>(null);
     const [ isUserManagedByParentOrg, setIsUserManagedByParentOrg ] = useState<boolean>(false);
-    const [ isUserProfileReadOnly, setIsUserProfileReadOnly ] = useState<boolean>(false);
 
     const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
         return state.config.ui.features?.users?.disabledFeatures;
@@ -139,7 +138,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     useEffect(() => {
         if (user[ SCIMConfigs.scim.enterpriseSchema ]?.managedOrg) {
             setIsUserManagedByParentOrg(true);
-            setIsUserProfileReadOnly(true);
         }
     }, [ user ]);
 
@@ -212,7 +210,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         onAlertFired={ handleAlerts }
                         user={ user }
                         handleUserUpdate={ handleUserUpdate }
-                        isReadOnly={ isReadOnly || isUserProfileReadOnly }
+                        isReadOnly={ isReadOnly }
                         connectorProperties={ connectorProperties }
                         isReadOnlyUserStoresLoading={ isReadOnlyUserStoresLoading }
                         isUserManagedByParentOrg={ isUserManagedByParentOrg }
