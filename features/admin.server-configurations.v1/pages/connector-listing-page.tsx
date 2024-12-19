@@ -82,6 +82,12 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const hasResidentOutboundProvisioningFeaturePermission: boolean = useRequiredScopes(
         featureConfig?.residentOutboundProvisioning?.scopes?.feature
     );
+    const hasInternalNotificationSendingReadPermission: boolean = useRequiredScopes(
+        [
+            ...featureConfig?.internalNotificationSending?.scopes?.feature,
+            ...featureConfig?.internalNotificationSending?.scopes?.read
+        ]
+    );
 
     const predefinedCategories: any = useMemo(() => {
         const originalConnectors: Array<any> = GovernanceConnectorUtils.getPredefinedConnectorCategories();
@@ -93,6 +99,9 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         const isResidentOutboundProvisioningEnabled: boolean = featureConfig?.residentOutboundProvisioning?.enabled
             && hasResidentOutboundProvisioningFeaturePermission;
 
+        const isInternalNotificationSendingConfigurationEnabled: boolean = featureConfig?.
+            internalNotificationSending?.enabled && hasInternalNotificationSendingReadPermission;
+
         for (const category of originalConnectors) {
             if (!isOrganizationDiscoveryEnabled
                     && category.id === ServerConfigurationsConstants.ORGANIZATION_SETTINGS_CATEGORY_ID) {
@@ -101,6 +110,11 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
 
             if (!isResidentOutboundProvisioningEnabled
                     && category.id === ServerConfigurationsConstants.PROVISIONING_SETTINGS_CATEGORY_ID) {
+                continue;
+            }
+
+            if (!isInternalNotificationSendingConfigurationEnabled
+                    && category.id === ServerConfigurationsConstants.NOTIFICATION_SETTINGS_CATEGORY_ID) {
                 continue;
             }
 

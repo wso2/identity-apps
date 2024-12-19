@@ -281,6 +281,17 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.server.v1/pages/internal-notification-sending-page")
+                    ),
+                    exact: true,
+                    id: "internalNotificationSending",
+                    name: "Internal Notification Sending",
+                    path: AppConstants.getPaths().get("INTERNAL_NOTIFICATION_SENDING"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() =>
@@ -1070,40 +1081,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 .get("GOVERNANCE_CONNECTOR_EDIT"),
             protected: true,
             showOnSidePanel: false
-        },
-        {
-            category: "extensions:manage.sidePanel.categories.settings",
-            children: [
-                {
-                    component: lazy(() =>
-                        import("@wso2is/admin.server.v1/pages/internal-notification-sending-page")
-                    ),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "internal-notification-sending",
-                    name: "Internal Notification Sending",
-                    path: AppConstants.getPaths().get("INTERNAL_NOTIFICATION_SENDING"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ],
-            component: lazy(() =>
-                import(
-                    "@wso2is/admin.server.v1/pages/server"
-                )
-            ),
-            exact: true,
-            icon: {
-                icon: getSidePanelIcons().userStore
-            },
-            id: "server",
-            name: "Server",
-            order: 25,
-            path: AppConstants.getPaths().get("SERVER"),
-            protected: true,
-            showOnSidePanel: true
         },
         {
             category: "extensions:manage.sidePanel.categories.userManagement",

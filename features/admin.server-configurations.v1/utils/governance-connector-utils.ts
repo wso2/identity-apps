@@ -401,6 +401,22 @@ export class GovernanceConnectorUtils {
                 displayOrder: 0,
                 id: ServerConfigurationsConstants.PROVISIONING_SETTINGS_CATEGORY_ID,
                 title: "Provisioning Settings"
+            },
+            {
+                connectors: [
+                    {
+                        description: I18n.instance.t(
+                            "console:manage.features.serverConfigs.manageNotificationSendingInternally.description"),
+                        header: I18n.instance.t(
+                            "console:manage.features.serverConfigs.manageNotificationSendingInternally.title"),
+                        id: ServerConfigurationsConstants.NOTIFICATION_SETTINGS_CONNECTOR_ID,
+                        route: AppConstants.getPaths().get("INTERNAL_NOTIFICATION_SENDING"),
+                        testId: "internal-notification-settings-card"
+                    }
+                ],
+                displayOrder: 0,
+                id: ServerConfigurationsConstants.NOTIFICATION_SETTINGS_CATEGORY_ID,
+                title: "Notification Settings"
             }
         ];
     }
