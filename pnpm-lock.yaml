@@ -2268,6 +2268,9 @@ importers:
       '@wso2is/admin.core.v1':
         specifier: ^2.34.59
         version: link:../admin.core.v1
+      '@wso2is/admin.organizations.v1':
+        specifier: ^2.26.59
+        version: link:../admin.organizations.v1
       '@wso2is/core':
         specifier: ^2.5.1
         version: link:../../modules/core
