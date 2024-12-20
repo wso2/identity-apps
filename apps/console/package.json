@@ -83,7 +83,6 @@
         "@wso2is/admin.saml2-configuration.v1": "^2.25.61",
         "@wso2is/admin.secrets.v1": "^2.25.61",
         "@wso2is/admin.server-configurations.v1": "^2.30.15",
-        "@wso2is/admin.server.v1": "^2.25.61",
         "@wso2is/admin.session-management.v1": "^2.25.61",
         "@wso2is/admin.sms-providers.v1": "^2.25.61",
         "@wso2is/admin.sms-templates.v1": "^1.0.60",
