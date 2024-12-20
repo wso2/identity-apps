@@ -18,7 +18,8 @@
 
 import DecoratedVisualFlow from "@wso2is/admin.flow-builder-core.v1/components/decorated-visual-flow";
 import { Payload } from "@wso2is/admin.flow-builder-core.v1/models/api";
-import AuthenticationFlowBuilderCoreProvider from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
+import AuthenticationFlowBuilderCoreProvider from
+    "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import ElementProperties from "./element-property-panel/element-properties";

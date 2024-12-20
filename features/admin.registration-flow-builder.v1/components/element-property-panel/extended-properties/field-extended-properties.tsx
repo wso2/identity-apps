@@ -19,7 +19,9 @@
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Stack from "@oxygen-ui/react/Stack";
 import TextField from "@oxygen-ui/react/TextField";
-import { CommonElementPropertiesPropsInterface } from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/element-properties";
+import {
+    CommonElementPropertiesPropsInterface
+} from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/element-properties";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo, useState } from "react";
 import useGetSupportedProfileAttributes from "../../../api/use-get-supported-profile-attributes";
@@ -43,7 +45,7 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
     onChange
 }: FieldExtendedPropertiesPropsInterface): ReactElement => {
     const { data: attributes } = useGetSupportedProfileAttributes();
-    const [ selectedAttribute, setSelectedAttribute ] = useState<Attribute>(null);
+    const [ setSelectedAttribute ] = useState<Attribute>(null);
 
     const selectedValue: Attribute = useMemo(() => {
         return attributes?.find(
