@@ -1,5 +1,13 @@
 # @wso2is/admin.saml2-configuration.v1
 
+## 2.25.61
+
+### Patch Changes
+
+- Updated dependencies [[`2840ab6f606b818ad0a1b0427dd88bfce4be986f`](https://github.com/wso2/identity-apps/commit/2840ab6f606b818ad0a1b0427dd88bfce4be986f)]:
+  - @wso2is/i18n@2.14.0
+  - @wso2is/admin.core.v1@2.34.61
+
 ## 2.25.60
 
 ### Patch Changes

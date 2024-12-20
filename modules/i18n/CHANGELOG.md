@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.14.0
+
+### Minor Changes
+
+- [#7225](https://github.com/wso2/identity-apps/pull/7225) [`2840ab6f606b818ad0a1b0427dd88bfce4be986f`](https://github.com/wso2/identity-apps/commit/2840ab6f606b818ad0a1b0427dd88bfce4be986f) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Add authentication request provider name config to set the ProviderName in SAML2 outbound requests
+
 ## 2.13.4
 
 ### Patch Changes

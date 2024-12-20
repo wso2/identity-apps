@@ -1,5 +1,29 @@
 # @wso2is/admin.connections.v1
 
+## 2.29.0
+
+### Minor Changes
+
+- [#7225](https://github.com/wso2/identity-apps/pull/7225) [`2840ab6f606b818ad0a1b0427dd88bfce4be986f`](https://github.com/wso2/identity-apps/commit/2840ab6f606b818ad0a1b0427dd88bfce4be986f) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Add authentication request provider name config to set the ProviderName in SAML2 outbound requests
+
+### Patch Changes
+
+- Updated dependencies [[`2840ab6f606b818ad0a1b0427dd88bfce4be986f`](https://github.com/wso2/identity-apps/commit/2840ab6f606b818ad0a1b0427dd88bfce4be986f)]:
+  - @wso2is/admin.connections.v1@2.29.0
+  - @wso2is/i18n@2.14.0
+  - @wso2is/admin.applications.v1@2.30.61
+  - @wso2is/admin.core.v1@2.34.61
+  - @wso2is/admin.extensions.v1@2.35.20
+  - @wso2is/admin.identity-providers.v1@2.26.61
+  - @wso2is/admin.identity-verification-providers.v1@2.27.61
+  - @wso2is/admin.organizations.v1@2.26.61
+  - @wso2is/admin.roles.v2@2.27.5
+  - @wso2is/admin.claims.v1@2.26.20
+  - @wso2is/admin.console-settings.v1@2.25.61
+  - @wso2is/admin.userstores.v1@2.26.20
+  - @wso2is/admin.feature-gate.v1@1.4.61
+  - @wso2is/admin.template-core.v1@1.5.15
+
 ## 2.28.60
 
 ### Patch Changes
