@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+/* eslint-disable no-console */
 
 const path = require("path");
 const fs = require("fs-extra");
@@ -25,6 +26,7 @@ const apps = [ "authentication-portal", "recovery-portal", "x509-certificate-aut
 async function deleteExistingThemesFolder() {
     for (const app of apps) {
         const themePath = path.join(__dirname, "apps", app, "src", "main", "webapp", "libs", "themes");
+
         if (fs.existsSync(themePath)) {
             console.log(`Deleting existing themes folder in ${app} app...`);
             await fs.remove(themePath);
@@ -50,4 +52,12 @@ async function main() {
     }
 }
 
-main();
+// Parse command-line arguments.
+const args = process.argv.slice(2);
+
+// Check which function to run based on the arguments.
+if (args.includes("clean")) {
+    deleteExistingThemesFolder().catch(console.error);
+} else {
+    main().catch(console.error);
+}
