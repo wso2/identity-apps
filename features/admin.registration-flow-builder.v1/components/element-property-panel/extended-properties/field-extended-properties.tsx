@@ -45,7 +45,7 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
     onChange
 }: FieldExtendedPropertiesPropsInterface): ReactElement => {
     const { data: attributes } = useGetSupportedProfileAttributes();
-    const [ setSelectedAttribute ] = useState<Attribute>(null);
+    const [ _, setSelectedAttribute ] = useState<Attribute>(null);
 
     const selectedValue: Attribute = useMemo(() => {
         return attributes?.find(
