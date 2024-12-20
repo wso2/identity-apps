@@ -1418,7 +1418,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         )
                                     }
                                     {
-                                        !allowDeleteOnly && !isUserManagedByParentOrg && (
+                                        !allowDeleteOnly && !isUserManagedByParentOrg  && (
                                             <DangerZone
                                                 data-testid={ `${ testId }-danger-zone-toggle` }
                                                 actionTitle={ t("user:editUser." +
@@ -2605,10 +2605,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     !isEmpty(profileInfo) && (
                         <EmphasizedSegment padded="very">
                             {
-                                isReadOnly
-                                && (!isEmpty(tenantAdmin) || tenantAdmin !== null)
-                                && !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
-                                && editUserDisclaimerMessage
+                                (isReadOnly && !isEmpty(tenantAdmin)) && editUserDisclaimerMessage
                             }
                             <Forms
                                 data-testid={ `${ testId }-form` }
