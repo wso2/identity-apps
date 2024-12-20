@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.35.36
+
+### Patch Changes
+
+- [#7230](https://github.com/wso2/identity-apps/pull/7230) [`7a8e0c7de312a2afbc793e00ab1e393b30f3a425`](https://github.com/wso2/identity-apps/commit/7a8e0c7de312a2afbc793e00ab1e393b30f3a425) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Revert Update the administrator user profile
+
 ## 2.35.35
 
 ### Patch Changes
