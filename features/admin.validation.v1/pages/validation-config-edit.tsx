@@ -97,7 +97,6 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         state?.config?.ui?.isPasswordInputValidationEnabled);
     const disabledFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.loginAndRegistration?.disabledFeatures);
-    const isRuleBasedPasswordExpiryDisabled: boolean = disabledFeatures?.includes("ruleBasedPasswordExpiry");
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const maxPasswordLengthLimit: number = useSelector((state: AppState) =>
         state?.config?.ui?.passwordPolicyConfigs?.maxPasswordAllowedLength);
@@ -140,6 +139,10 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const [ legacyPasswordPolicies, setLegacyPasswordPolicies ] = useState<ConnectorPropertyInterface[]>([]);
 
     const isReadOnly: boolean = !useRequiredScopes(featureConfig?.governanceConnectors?.scopes?.update);
+    const hasScopesForRuleBasedPasswordExpiry: boolean =
+        useRequiredScopes(ValidationConfigConstants.RULE_BASED_PASSWORD_EXPIRY_REQUIRED_SCOPES);
+    const isRuleBasedPasswordExpiryDisabled: boolean = disabledFeatures?.includes("ruleBasedPasswordExpiry")
+        || !hasScopesForRuleBasedPasswordExpiry;
 
     const {
         data: passwordHistoryCountData,
@@ -602,13 +605,20 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     ): void => {
         if (hasPasswordExpiryRuleErrors) return;
 
-        const processedFormValues: ValidationFormInterface = {
+        let processedFormValues: ValidationFormInterface = {
             ...values,
-            passwordExpiryEnabled: passwordExpiryEnabled,
-            passwordExpiryRules: processPasswordExpiryRules(),
-            passwordExpirySkipFallback: passwordExpirySkipFallback,
-            passwordExpiryTime: defaultPasswordExpiryTime
+            passwordExpiryEnabled: passwordExpiryEnabled
         };
+
+        if (!isRuleBasedPasswordExpiryDisabled) {
+            processedFormValues = {
+                ...values,
+                passwordExpiryEnabled: passwordExpiryEnabled,
+                passwordExpiryRules: processPasswordExpiryRules(),
+                passwordExpirySkipFallback: passwordExpirySkipFallback,
+                passwordExpiryTime: defaultPasswordExpiryTime
+            };
+        }
 
         const updatePasswordPolicies: Promise<void> = serverConfigurationConfig.processPasswordPoliciesSubmitData(
             processedFormValues,
