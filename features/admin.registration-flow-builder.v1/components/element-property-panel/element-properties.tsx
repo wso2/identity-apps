@@ -18,8 +18,11 @@
 
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
-import { CommonElementPropertiesPropsInterface } from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/element-properties";
+import {
+    CommonElementPropertiesPropsInterface
+} from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/element-properties";
 import { FieldKey, FieldValue } from "@wso2is/admin.flow-builder-core.v1/models/base";
+import { InputVariants } from "@wso2is/admin.flow-builder-core.v1/models/component";
 import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
@@ -27,7 +30,6 @@ import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "re
 import ElementPropertyFactory from "./element-property-factory";
 import ButtonExtendedProperties from "./extended-properties/button-extended-properties";
 import FieldExtendedProperties from "./extended-properties/field-extended-properties";
-import { InputVariants } from "@wso2is/admin.flow-builder-core.v1/models/component";
 
 /**
  * Props interface of {@link ElementProperties}

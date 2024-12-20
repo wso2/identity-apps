@@ -17,7 +17,7 @@
  */
 
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
-import actions from "../data/actions.json";;
+import actions from "../data/actions.json";
 import { Actions } from "../models/actions";
 
 /**

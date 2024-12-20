@@ -188,9 +188,6 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     const handlePublish = (): void => {
         const flow: any = toObject();
 
-        console.log("Raw", JSON.stringify(flow, null, 2));
-        console.log("Transformed", JSON.stringify(transformFlow(flow), null, 2));
-
         onFlowSubmit(transformFlow(flow));
     };
 

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { useTheme } from "@mui/material/styles";
+import { Theme, useTheme } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
@@ -50,7 +50,7 @@ const SocialConnectionEdge: FunctionComponent<SocialConnectionEdgePropsInterface
     data,
     ...rest
 }: SocialConnectionEdgePropsInterface): ReactElement => {
-    const theme = useTheme();
+    const theme: Theme = useTheme();
     const [ edgePath, labelX, labelY ] = getBezierPath({
         sourcePosition,
         sourceX,
