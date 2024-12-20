@@ -84,8 +84,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     );
     const hasInternalNotificationSendingReadPermission: boolean = useRequiredScopes(
         [
-            ...featureConfig?.internalNotificationSending?.scopes?.feature,
-            ...featureConfig?.internalNotificationSending?.scopes?.read
+            ...featureConfig?.internalNotificationSending?.scopes?.feature ?? [],
+            ...featureConfig?.internalNotificationSending?.scopes?.read ?? []
         ]
     );
 
