@@ -1847,6 +1847,17 @@
         {% else %}
         "isPasswordInputValidationEnabled": true,
         {% endif %}
+        "passwordPolicyConfigs": {
+            {% if identity_mgt.password_policy.items() is defined %}
+            {% for key, value in identity_mgt.password_policy.items() %}
+            {% if value is string %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        },
         "isSignatureValidationCertificateAliasEnabled": {{ console.applications.ui.certificate_alias_enabled }},
         "listAllAttributeDialects": {{ console.list_all_attribute_dialects }},
         {% if console.enable_identity_claims is defined %}
