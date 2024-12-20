@@ -29,6 +29,7 @@ import { InputVariants } from "../models/component";
 import { Element } from "../models/elements";
 import { NodeData } from "../models/node";
 import { ActionTypes } from "../models/actions";
+import set from "lodash-es/set";
 
 const DISPLAY_ONLY_ELEMENT_PROPERTIES: string[] = [ "display", "version", "variants", "deprecated", "meta" ];
 
@@ -113,6 +114,7 @@ const transformFlow = (flowState: any): Payload => {
                     // If there are password fields in the form, add a `CREDENTIAL_ONBOARDING` action type to all the submit actions
                     // TODO: Improve.
                     if (
+                        _action.action?.type === ActionTypes.Next &&
                         node.data?.components?.some(
                             (component: Element) => component?.variant === InputVariants.Password
                         )
@@ -146,40 +148,42 @@ const transformFlow = (flowState: any): Payload => {
                             };
                         }
                     } else {
-                        if (_action?.action?.executors) {
-                            _action = {
-                                ..._action,
-                                action: {
-                                    ..._action.action,
-                                    executors: _action.action?.executors?.map((executor: any) => {
-                                        return {
-                                            ...executor,
-                                            meta: {
-                                                ...(executor?.meta || {}),
-                                                actionType: "ATTRIBUTE_COLLECTION"
-                                            }
-                                        };
-                                    })
-                                }
-                            };
-                        } else {
-                            _action = {
-                                ..._action,
-                                action: {
-                                    ...(_action?.action || {}),
-                                    meta: {
-                                        ...(_action?.action?.meta || {}),
-                                        actionType: "ATTRIBUTE_COLLECTION"
-                                    }
-                                }
-                            };
-                        }
+                        // const actionType: string = _action.action?.meta?.actionType || "ATTRIBUTE_COLLECTION";
+
+                        // if (_action?.action?.executors) {
+                        //     _action = {
+                        //         ..._action,
+                        //         action: {
+                        //             ..._action.action,
+                        //             executors: _action.action?.executors?.map((executor: any) => {
+                        //                 return {
+                        //                     ...executor,
+                        //                     meta: {
+                        //                         ...(executor?.meta || {}),
+                        //                         actionType: actionType
+                        //                     }
+                        //                 };
+                        //             })
+                        //         }
+                        //     };
+                        // } else {
+                        //     _action = {
+                        //         ..._action,
+                        //         action: {
+                        //             ...(_action?.action || {}),
+                        //             meta: {
+                        //                 ...(_action?.action?.meta || {}),
+                        //                 actionType: actionType
+                        //             }
+                        //         }
+                        //     };
+                        // }
                     }
                 }
 
                 // TODO: Fix this. When the action type is not manually selected, `type` becomes `undefined`.
                 if (!_action.action?.type) {
-                    _action.action.type = ActionTypes.Next;
+                    set(_action, "action.type", ActionTypes.Next);
                 }
 
                 return _action;

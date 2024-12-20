@@ -16,24 +16,23 @@
  * under the License.
  */
 
-import { ComponentTypes } from "../models/component";
-import { Element } from "../models/elements";
+import { Edge } from "@xyflow/react";
+import { FC } from "react";
+import SocialConnectionEdge, {
+    SocialConnectionEdgeKey
+} from "../components/react-flow-overrides/social-connection-edge";
 
 /**
- * Returns a mapping of known properties for a given element.
+ * Returns a mapping of known edge types.
  *
- * @param element - The element for which to get the known properties.
- * @returns An object with known element properties.
+ * @returns An object with edge type identifiers.
  */
-const getKnownElementProperties = (element: Element): Record<string, string[]> => {
-    if (element.type === ComponentTypes.Button) {
-        return {
-            color: [ "primary", "secondary", "success", "error", "info", "warning" ],
-            variant: [ "contained", "outlined", "text" ]
-        };
-    }
-
-    return {};
+const getKnownEdgeTypes = (): {
+    [key: string]: FC<Edge>;
+} => {
+    return {
+        [SocialConnectionEdgeKey]: SocialConnectionEdge
+    };
 };
 
-export default getKnownElementProperties;
+export default getKnownEdgeTypes;
