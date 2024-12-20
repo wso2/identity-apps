@@ -16,8 +16,10 @@
  * under the License.
  */
 
-import { Node as XYFlowNode } from "@xyflow/react";
+import { Edge, Node as XYFlowNode } from "@xyflow/react";
 import omit from "lodash-es/omit";
+import set from "lodash-es/set";
+import { ActionTypes } from "../models/actions";
 import {
     Payload,
     Action as PayloadAction,
@@ -28,14 +30,12 @@ import {
 import { InputVariants } from "../models/component";
 import { Element } from "../models/elements";
 import { NodeData } from "../models/node";
-import { ActionTypes } from "../models/actions";
-import set from "lodash-es/set";
 
 const DISPLAY_ONLY_ELEMENT_PROPERTIES: string[] = [ "display", "version", "variants", "deprecated", "meta" ];
 
 const groupNodesIntoPages = (nodes: any[], edges: any[]): any[] => {
     const nodePages: Record<string, string[]> = {};
-    const visitedNodes = new Set<string>();
+    const visitedNodes: Set<string> = new Set<string>();
 
     const traverseNodes = (nodeId: string, pageId: string) => {
         if (visitedNodes.has(nodeId)) return;
@@ -46,10 +46,10 @@ const groupNodesIntoPages = (nodes: any[], edges: any[]): any[] => {
         }
         nodePages[pageId].push(nodeId);
 
-        const connectedEdges = edges.filter((edge: any) => edge.source === nodeId);
+        const connectedEdges: Edge[] = edges.filter((edge: any) => edge.source === nodeId);
 
         connectedEdges.forEach((edge: any) => {
-            const nextNodeId = edge.target;
+            const nextNodeId: string = edge.target;
 
             traverseNodes(nextNodeId, pageId + 1);
         });
@@ -57,13 +57,13 @@ const groupNodesIntoPages = (nodes: any[], edges: any[]): any[] => {
 
     nodes.forEach((node: any) => {
         if (!visitedNodes.has(node.id)) {
-            const pageId = `flow-page-${Object.keys(nodePages).length + 1}`;
+            const pageId: string = `flow-page-${Object.keys(nodePages).length + 1}`;
 
             traverseNodes(node.id, pageId);
         }
     });
 
-    return Object.keys(nodePages).map(pageId => ({
+    return Object.keys(nodePages).map((pageId: string) => ({
         id: pageId,
         nodes: nodePages[pageId]
     }));
@@ -73,12 +73,12 @@ const transformFlow = (flowState: any): Payload => {
     const { nodes: flowNodes, edges: flowEdges } = flowState;
 
     const payload: Payload = {
+        blocks: [],
+        elements: [],
         flow: {
             pages: []
         },
-        nodes: [],
-        blocks: [],
-        elements: []
+        nodes: []
     };
 
     const nodeNavigationMap: Record<string, string[]> = {};
@@ -87,21 +87,24 @@ const transformFlow = (flowState: any): Payload => {
         nodeNavigationMap[edge.sourceHandle.replace("-NEXT", "").replace("-PREVIOUS", "")] = [ edge.target ];
     });
 
-    flowNodes.forEach((node: XYFlowNode<NodeData>, index: number) => {
+    flowNodes.forEach((node: XYFlowNode<NodeData>) => {
         const nodeActions: PayloadAction[] = node.data?.components
             ?.filter((component: Element) => component.category === "ACTION")
             .map((action: Element) => {
-                const navigation: string[] = node.data.components.map((component: Element) => {
-                    if (component.id === action.id) {
-                        if (nodeNavigationMap[component.id]) {
-                            return nodeNavigationMap[component.id];
+                const navigation: string[] = node.data.components
+                    .map((component: Element) => {
+                        if (component.id === action.id) {
+                            if (nodeNavigationMap[component.id]) {
+                                return nodeNavigationMap[component.id];
+                            }
                         }
-                    }
-                }).flat().filter(Boolean);
+                    })
+                    .flat()
+                    .filter(Boolean);
 
                 let _action: any = {
-                    id: action.id,
-                    action: action.meta
+                    action: action.meta,
+                    id: action.id
                 };
 
                 if (_action.action?.type === ActionTypes.Next || _action.action?.type === ActionTypes.Executor) {
@@ -111,8 +114,8 @@ const transformFlow = (flowState: any): Payload => {
                 }
 
                 if (action?.config?.field?.type === "submit") {
-                    // If there are password fields in the form, add a `CREDENTIAL_ONBOARDING` action type to all the submit actions
-                    // TODO: Improve.
+                    // TODO: Improve this. If there are password fields in the form, add a `CREDENTIAL_ONBOARDING`
+                    // action type to all the submit actions.
                     if (
                         _action.action?.type === ActionTypes.Next &&
                         node.data?.components?.some(
@@ -149,7 +152,6 @@ const transformFlow = (flowState: any): Payload => {
                         }
                     } else {
                         // const actionType: string = _action.action?.meta?.actionType || "ATTRIBUTE_COLLECTION";
-
                         // if (_action?.action?.executors) {
                         //     _action = {
                         //         ..._action,
@@ -191,14 +193,15 @@ const transformFlow = (flowState: any): Payload => {
 
         let currentBlock: PayloadBlock | null = null;
         const nodeElements: string[] = [];
-        const nonBlockElements: string[] = [];
 
         // Identify the last ACTION with type "submit"
-        const lastSubmitActionIndex = node.data?.components
+        const lastSubmitActionIndex: number = node.data?.components
             ?.map((component: Element, index: number) => ({ component, index }))
             .reverse()
-            .find(({ component }) => component.category === "ACTION" && component?.config?.field?.type === "submit")
-            ?.index;
+            .find(
+                ({ component }: { component: Element }) =>
+                    component.category === "ACTION" && component?.config?.field?.type === "submit"
+            )?.index;
 
         node.data?.components?.forEach((component: Element, index: number) => {
             if (currentBlock) {
@@ -209,8 +212,8 @@ const transformFlow = (flowState: any): Payload => {
             } else {
                 if (component.category === "FIELD") {
                     currentBlock = {
-                        id: `flow-block-${payload.blocks.length + 1}`,
-                        elements: [ component.id ]
+                        elements: [ component.id ],
+                        id: `flow-block-${payload.blocks.length + 1}`
                     };
                     payload.blocks.push(currentBlock);
                     nodeElements.push(currentBlock.id);
@@ -221,9 +224,9 @@ const transformFlow = (flowState: any): Payload => {
         });
 
         payload.nodes.push({
-            id: node.id,
+            actions: nodeActions,
             elements: nodeElements,
-            actions: nodeActions
+            id: node.id
         } as PayloadNode);
 
         payload.elements.push(
@@ -235,7 +238,7 @@ const transformFlow = (flowState: any): Payload => {
 
     // Add `next: ["COMPLETE"] to the last nodes' actions
     // TODO: Improve.
-    const lastNode = payload.nodes[payload.nodes.length - 1];
+    const lastNode: PayloadNode = payload.nodes[payload.nodes.length - 1];
 
     lastNode.actions.forEach((action: PayloadAction) => {
         if (action.action?.type === ActionTypes.Next) {
