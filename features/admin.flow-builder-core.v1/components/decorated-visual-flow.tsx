@@ -20,24 +20,17 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DnDProvider } from "@wso2is/dnd";
 import { ReactFlowProvider } from "@xyflow/react";
 import classNames from "classnames";
-import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import ElementPanel from "./element-panel/element-panel";
 import ElementPropertiesPanel from "./element-property-panel/element-property-panel";
-import VisualFlow from "./visual-flow";
+import VisualFlow, { VisualFlowPropsInterface } from "./visual-flow";
 import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-builder-core-context";
-import { Elements } from "../models/elements";
+
 
 /**
  * Props interface of {@link DecoratedVisualFlow}
  */
-export interface DecoratedVisualFlowPropsInterface
-    extends IdentifiableComponentInterface,
-        HTMLAttributes<HTMLDivElement> {
-    /**
-     * Flow elements.
-     */
-    elements: Elements;
-}
+export type DecoratedVisualFlowPropsInterface = VisualFlowPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Component to decorate the visual flow editor with the necessary providers.
@@ -56,13 +49,12 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         <div
             className={ classNames("decorated-visual-flow", "react-flow-container", "visual-editor") }
             data-componentid={ componentId }
-            { ...rest }
         >
             <ReactFlowProvider>
                 <DnDProvider>
                     <ElementPanel elements={ elements } open={ isElementPanelOpen }>
                         <ElementPropertiesPanel open={ isElementPropertiesPanelOpen }>
-                            <VisualFlow />
+                            <VisualFlow elements={ elements } { ...rest } />
                         </ElementPropertiesPanel>
                     </ElementPanel>
                 </DnDProvider>

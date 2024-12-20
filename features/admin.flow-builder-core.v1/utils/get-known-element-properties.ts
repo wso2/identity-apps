@@ -19,6 +19,12 @@
 import { ComponentTypes } from "../models/component";
 import { Element } from "../models/elements";
 
+/**
+ * Returns a mapping of known properties for a given element.
+ *
+ * @param element - The element for which to get the known properties.
+ * @returns An object with known element properties.
+ */
 const getKnownElementProperties = (element: Element): Record<string, string[]> => {
     if (element.type === ComponentTypes.Button) {
         return {

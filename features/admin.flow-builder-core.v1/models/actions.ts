@@ -16,8 +16,43 @@
  * under the License.
  */
 
+import { BaseDisplay } from "./base";
+
+export interface Action {
+    category: ActionCategories;
+    display: BaseDisplay;
+    types: ActionType[];
+}
+
+export interface Executor {
+    name: string;
+    meta: Record<string, unknown>;
+}
+
+export interface ActionType {
+    type: ActionTypes;
+    display: BaseDisplay;
+    name?: string;
+    executors: Executor[];
+    meta?: Record<string, unknown>;
+}
+
+export type Actions = Action[];
+
+// TODO: Re-evaluate the following enums
+export enum ActionCategories {
+    Navigation = "NAVIGATION",
+    Verification = "VERIFICATION",
+    CredentialOnboarding = "CREDENTIAL_ONBOARDING",
+    Executor = "SOCIAL"
+}
+
 export enum ActionTypes {
     Next = "NEXT",
     Previous = "PREVIOUS",
-    Submit = "SUBMIT"
+    Executor = "EXECUTOR"
+}
+
+export enum ActionVariants {
+    SOCIAL = "SOCIAL"
 }

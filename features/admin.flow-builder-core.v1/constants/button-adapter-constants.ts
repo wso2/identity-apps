@@ -16,19 +16,15 @@
  * under the License.
  */
 
-.droppable-container {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+class ButtonAdapterConstants {
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     */
+    private constructor() { }
 
-    .draggable-item {
-        cursor: grab;
-        transition: transform 0.2s, background 0.2s;
-
-        &:active {
-            background: #f9f9f9;
-            cursor: grabbing;
-            // transform: scale(1.03);
-        }
-    }
+    public static readonly NEXT_BUTTON_HANDLE_SUFFIX: string = "-NEXT";
+    public static readonly PREVIOUS_BUTTON_HANDLE_SUFFIX: string = "-PREVIOUS";
 }
+
+export default ButtonAdapterConstants;

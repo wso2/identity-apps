@@ -18,8 +18,11 @@
 
 import Button, { ButtonProps } from "@oxygen-ui/react/Button";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Handle, Position } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
+import ButtonAdapterConstants from "../../../../constants/button-adapter-constants";
 import { ButtonVariants, Component } from "../../../../models/component";
+import "./button-adapter.scss";
 
 /**
  * Props interface of {@link ButtonAdapter}
@@ -50,25 +53,47 @@ export const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
         config = {
             ...config,
             color: "primary",
+            fullWidth: true,
             variant: "contained"
         };
     } else if (node.variant === ButtonVariants.Secondary) {
         config = {
             ...config,
             color: "secondary",
+            fullWidth: true,
             variant: "contained"
         };
     } else if (node.variant === ButtonVariants.Text) {
         config = {
             ...config,
+            fullWidth: true,
             variant: "text"
+        };
+    } else if (node.variant === ButtonVariants.Social) {
+        config = {
+            ...config,
+            className: "social-button",
+            fullWidth: true,
+            variant: "contained"
         };
     }
 
     return (
-        <Button sx={ node?.variants?.[0]?.config.styles } { ...config }>
-            { node?.variants?.[0]?.config?.field?.text }
-        </Button>
+        <div className="adapter button-adapter">
+            <Handle
+                id={ `${node?.id}${ButtonAdapterConstants.PREVIOUS_BUTTON_HANDLE_SUFFIX}` }
+                type="source"
+                position={ Position.Left }
+            />
+            <Button startIcon={ <img src={ node?.display?.image } /> } sx={ node?.config.styles } { ...config }>
+                { node?.variants?.[0]?.config?.field?.text }
+            </Button>
+            <Handle
+                id={ `${node?.id}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}` }
+                type="source"
+                position={ Position.Right }
+            />
+        </div>
     );
 };
 

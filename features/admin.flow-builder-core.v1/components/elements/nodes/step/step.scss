@@ -64,6 +64,10 @@
 
                     .flow-builder-step-content-form-field-content {
                         width: 100%;
+
+                        .adapter {
+                            position: relative;
+                        }
                     }
 
                     &:hover {

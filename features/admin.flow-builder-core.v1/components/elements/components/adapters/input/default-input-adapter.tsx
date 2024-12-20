@@ -57,6 +57,9 @@ export const DefaultInputAdapter: FunctionComponent<DefaultInputAdapterPropsInte
         multiline={ node.config?.field?.multiline }
         placeholder={ node.config?.field?.placeholder || "" }
         required={ node.config?.field?.required }
+        InputLabelProps={ {
+            required: node.config?.field?.required
+        } }
         type={ node.config?.field?.type }
         style={ node.config?.styles }
     />

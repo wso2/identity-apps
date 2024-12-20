@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,19 +16,13 @@
  * under the License.
  */
 
-.droppable-container {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    .draggable-item {
-        cursor: grab;
-        transition: transform 0.2s, background 0.2s;
-
-        &:active {
-            background: #f9f9f9;
-            cursor: grabbing;
-            // transform: scale(1.03);
-        }
-    }
+/**
+ * Interface for the Registration Flow Builder feature resource endpoints.
+ */
+export interface RegistrationFlowBuilderResourceEndpointsInterface {
+    /**
+     * API to configure the registration flow.
+     * @example `https://{serverUrl}/t/{tenantDomain}/api/server/v1/reg-orchestration/config`
+    */
+    configure: string;
 }

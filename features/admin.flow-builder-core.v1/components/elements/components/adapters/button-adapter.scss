@@ -16,19 +16,20 @@
  * under the License.
  */
 
-.droppable-container {
+.social-button.oxygen-button {
+    background: var(--oxygen-palette-common-white);
+    color: var(--oxygen-palette-common-black);
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, .12), 0 1px 1px 0 rgba(0, 0, 0, .24);
 
-    .draggable-item {
-        cursor: grab;
-        transition: transform 0.2s, background 0.2s;
+    &:hover {
+        color: rgba(0, 0, 0, .8);
+    }
 
-        &:active {
-            background: #f9f9f9;
-            cursor: grabbing;
-            // transform: scale(1.03);
-        }
+    .oxygen-sign-in-option-image {
+        height: 20px;
     }
 }

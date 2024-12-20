@@ -16,31 +16,25 @@
  * under the License.
  */
 
-import { FieldKey, FieldValue, Properties } from "@wso2is/admin.flow-builder-core.v1/models/base";
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import TextField from "@oxygen-ui/react/TextField";
+import {
+    CommonElementPropertiesPropsInterface
+} from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/element-properties";
+import { FieldKey, FieldValue } from "@wso2is/admin.flow-builder-core.v1/models/base";
+import { InputVariants } from "@wso2is/admin.flow-builder-core.v1/models/component";
 import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import isEmpty from "lodash-es/isEmpty";
+import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
 import ElementPropertyFactory from "./element-property-factory";
+import ButtonExtendedProperties from "./extended-properties/button-extended-properties";
 import FieldExtendedProperties from "./extended-properties/field-extended-properties";
 
 /**
  * Props interface of {@link ElementProperties}
  */
-export interface ElementPropertiesPropsInterface extends IdentifiableComponentInterface {
-    properties: Properties;
-    /**
-     * The element associated with the property.
-     */
-    element: Element;
-    /**
-     * The event handler for the property change.
-     * @param propertyKey - The key of the property.
-     * @param previousValue - The previous value of the property.
-     * @param newValue - The new value of the property.
-     * @param element - The element associated with the property.
-     */
-    onChange: (propertyKey: string, previousValue: any, newValue: any, element: Element) => void;
-}
+export type ElementPropertiesPropsInterface = CommonElementPropertiesPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Factory to generate the property configurator for the given registration flow element.
@@ -51,31 +45,71 @@ export interface ElementPropertiesPropsInterface extends IdentifiableComponentIn
 const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
     properties,
     element,
-    onChange
+    onChange,
+    onVariantChange
 }: ElementPropertiesPropsInterface): ReactElement | null => {
+    const selectedVariant: Element = useMemo(() => {
+        return element?.variants?.find((_element: Element) => _element.variant === element.variant);
+    }, [ element.variants, element.variant ]);
+
     const renderElementPropertyFactory = () => {
-        return Object.entries(properties).map(([ key, value ]: [FieldKey, FieldValue]) => (
-            <ElementPropertyFactory
-                key={ `${element.id}-${key}` }
-                element={ element }
-                propertyKey={ key }
-                propertyValue={ value }
-                data-componentid={ `${element.id}-${key}` }
-                onChange={ onChange }
-            />
-        ));
+        const hasVariants: boolean = !isEmpty(element?.variants);
+
+        return (
+            <>
+                { hasVariants && (
+                    <Autocomplete
+                        disablePortal
+                        options={ element?.variants }
+                        sx={ { width: 300 } }
+                        getOptionLabel={ (variant: Element) => variant.variant }
+                        renderInput={ (params: AutocompleteRenderInputParams) => (
+                            <TextField { ...params } label="Variant" />
+                        ) }
+                        value={ selectedVariant }
+                        onChange={ (_: ChangeEvent<HTMLInputElement>, variant: Element) => {
+                            onVariantChange(variant?.variant);
+                        } }
+                    />
+                ) }
+                { Object.entries(properties).map(([ key, value ]: [FieldKey, FieldValue]) => (
+                    <ElementPropertyFactory
+                        key={ `${element.id}-${key}` }
+                        element={ element }
+                        propertyKey={ key }
+                        propertyValue={ value }
+                        data-componentid={ `${element.id}-${key}` }
+                        onChange={ onChange }
+                    />
+                )) }
+            </>
+        );
     };
 
     switch (element.category) {
         case ElementCategories.Field:
+            if (element.variant === InputVariants.Password) {
+                return renderElementPropertyFactory();
+            }
+
             return (
                 <>
                     <FieldExtendedProperties
                         element={ element }
-                        propertyKey={ null }
-                        propertyValue={ null }
                         data-componentid="field-extended-properties"
                         onChange={ onChange }
+                    />
+                    { renderElementPropertyFactory() }
+                </>
+            );
+        case ElementCategories.Action:
+            return (
+                <>
+                    <ButtonExtendedProperties
+                        element={ element }
+                        data-componentid="button-extended-properties"
+                        onChange={ onChange }
+                        onVariantChange={ onVariantChange }
                     />
                     { renderElementPropertyFactory() }
                 </>

@@ -25,6 +25,7 @@ import DividerAdapter from "./adapters/divider-adapter";
 import ImageAdapter from "./adapters/image-adapter";
 import CheckboxAdapter from "./adapters/input/checkbox-adapter";
 import DefaultInputAdapter from "./adapters/input/default-input-adapter";
+import OTPInputAdapter from "./adapters/input/otp-input-adapter";
 import PhoneNumberInputAdapter from "./adapters/input/phone-number-input-adapter";
 import RichTextAdapter from "./adapters/rich-text-adapter";
 import TypographyAdapter from "./adapters/typography-adapter";
@@ -61,6 +62,10 @@ export const CommonComponentFactory: FunctionComponent<CommonComponentFactoryPro
 
         if (node.variant === InputVariants.Telephone) {
             return <PhoneNumberInputAdapter nodeId={ nodeId } node={ node } />;
+        }
+
+        if (node.variant === InputVariants.OTP) {
+            return <OTPInputAdapter nodeId={ nodeId } node={ node } />;
         }
 
         return <DefaultInputAdapter nodeId={ nodeId } node={ node } />;

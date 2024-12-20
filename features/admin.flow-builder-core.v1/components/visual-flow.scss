@@ -35,6 +35,10 @@
 }
 
 .react-flow {
+    .react-flow__edges {
+        z-index: 1;
+    }
+
     .react-flow__edge {
         &:hover {
             .react-flow__edge-path {
@@ -51,6 +55,7 @@
         height: var(--xy-handle-height);
         width: var(--xy-handle-width);
         border-width: var(--xy-handle-border-width-default);
+        z-index: 1;
 
         // TODO: Fix offset issues.
         // &.react-flow__handle-left, &.react-flow__handle-right {
