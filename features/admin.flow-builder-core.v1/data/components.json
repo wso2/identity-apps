@@ -134,6 +134,7 @@
             "field": {
                 "type": "text",
                 "hint": "",
+                "name": "otp",
                 "label": "OTP",
                 "required": false,
                 "placeholder": ""

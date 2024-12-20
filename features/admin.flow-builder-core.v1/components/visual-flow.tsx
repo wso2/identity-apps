@@ -47,7 +47,10 @@ import useAuthenticationFlowBuilderCore from "../hooks/use-authentication-flow-b
 import { Payload } from "../models/api";
 import { ElementCategories, Elements } from "../models/elements";
 import { Node } from "../models/node";
+import getKnownEdgeTypes from "../utils/get-known-edge-types";
+import resolveKnownEdges from "../utils/resolve-known-edges";
 import transformFlow from "../utils/transform-flow";
+// IMPORTANT: `@xyflow/react/dist/style.css` should be at the top of the stylesheet import list.
 import "@xyflow/react/dist/style.css";
 import "./visual-flow.scss";
 
@@ -75,7 +78,7 @@ export interface VisualFlowPropsInterface extends IdentifiableComponentInterface
      * @param connection - Connection object.
      * @returns Edge object.
      */
-    onEdgeResolve?: (connection: any) => Edge;
+    onEdgeResolve?: (connection: any, nodes: XYFlowNode[]) => Edge;
 }
 
 /**
@@ -139,7 +142,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
 
     const onConnect: OnConnect = useCallback(
         (connection: any) => {
-            let edge: Edge = onEdgeResolve && onEdgeResolve(connection);
+            let edge: Edge = onEdgeResolve ? onEdgeResolve(connection, nodes) : resolveKnownEdges(connection, nodes);
 
             if (!edge) {
                 edge = {
@@ -153,7 +156,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
 
             setEdges((edges: Edge[]) => addEdge(edge, edges));
         },
-        [ setEdges ]
+        [ setEdges, nodes ]
     );
 
     const onNodesDelete: OnNodesDelete<XYFlowNode> = useCallback(
@@ -207,6 +210,7 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     const edgeTypes: { [key: string]: FC<Edge> } = useMemo(() => {
         return {
             "base-edge": BaseEdge,
+            ...getKnownEdgeTypes(),
             ...customEdgeTypes
         };
     }, []);

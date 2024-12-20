@@ -39,6 +39,7 @@ export interface ActionType {
 
 export type Actions = Action[];
 
+// TODO: Re-evaluate the following enums
 export enum ActionCategories {
     Navigation = "NAVIGATION",
     Verification = "VERIFICATION",
@@ -50,4 +51,8 @@ export enum ActionTypes {
     Next = "NEXT",
     Previous = "PREVIOUS",
     Executor = "EXECUTOR"
+}
+
+export enum ActionVariants {
+    SOCIAL = "SOCIAL"
 }

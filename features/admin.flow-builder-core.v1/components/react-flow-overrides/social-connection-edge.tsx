@@ -16,22 +16,30 @@
  * under the License.
  */
 
+import { useTheme } from "@mui/material/styles";
+import Box from "@oxygen-ui/react/Box";
+import Card from "@oxygen-ui/react/Card";
+import CardContent from "@oxygen-ui/react/CardContent";
+import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EdgeLabelRenderer, EdgeProps, BaseEdge as XYFlowBaseEdge, getBezierPath } from "@xyflow/react";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode } from "react";
+import "./social-connection-edge.scss";
 
 /**
  * Props interface of {@link VisualFlow}
  */
-export interface BaseEdgePropsInterface extends EdgeProps, IdentifiableComponentInterface {}
+export interface SocialConnectionEdgePropsInterface extends EdgeProps, IdentifiableComponentInterface {}
+
+export const SocialConnectionEdgeKey: string = "social-connection-edge";
 
 /**
- * A customized version of the BaseEdge component.
+ * A customized version of the SocialConnectionEdge component.
  *
  * @param props - Props injected to the component.
- * @returns BaseEdge component.
+ * @returns SocialConnectionEdge component.
  */
-const BaseEdge: FunctionComponent<BaseEdgePropsInterface> = ({
+const SocialConnectionEdge: FunctionComponent<SocialConnectionEdgePropsInterface> = ({
     id,
     sourceX,
     sourceY,
@@ -39,9 +47,10 @@ const BaseEdge: FunctionComponent<BaseEdgePropsInterface> = ({
     targetY,
     sourcePosition,
     targetPosition,
-    label,
+    data,
     ...rest
-}: BaseEdgePropsInterface): ReactElement => {
+}: SocialConnectionEdgePropsInterface): ReactElement => {
+    const theme = useTheme();
     const [ edgePath, labelX, labelY ] = getBezierPath({
         sourcePosition,
         sourceX,
@@ -61,13 +70,25 @@ const BaseEdge: FunctionComponent<BaseEdgePropsInterface> = ({
                         position: "absolute",
                         transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`
                     } }
-                    className="edge-label-renderer__social-connection-edge nodrag nopan nodrag nopan"
+                    className="edge-label-renderer__social-connection-edge nodrag nopan"
                 >
-                    { label }
+                    <Card
+                        sx={ {
+                            backgroundColor: (theme as any).colorSchemes.dark.palette.background.default,
+                            color: (theme as any).colorSchemes.dark.palette.text.primary
+                        } }
+                    >
+                        <CardContent>
+                            <Box display="flex" gap={ 1 }>
+                                <img src={ data.img as string } height="20" />
+                                <Typography variant="body1">{ data.label as ReactNode }</Typography>
+                            </Box>
+                        </CardContent>
+                    </Card>
                 </div>
             </EdgeLabelRenderer>
         </>
     );
 };
 
-export default BaseEdge;
+export default SocialConnectionEdge;
