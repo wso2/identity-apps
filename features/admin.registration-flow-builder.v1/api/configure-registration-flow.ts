@@ -21,7 +21,6 @@ import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request"
 import { Payload } from "@wso2is/admin.flow-builder-core.v1/models/api";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import samplePayload from "../data/payload.json";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
     AsgardeoSPAClient.getInstance()
@@ -65,8 +64,7 @@ const configureRegistrationFlow = (payload: Payload): Promise<AxiosResponse> => 
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
-            debugger;
+        .catch((_error: AxiosError) => {
             // throw new IdentityAppsApiException(
             //     TenantConstants.TENANT_CREATION_ERROR,
             //     error.stack,

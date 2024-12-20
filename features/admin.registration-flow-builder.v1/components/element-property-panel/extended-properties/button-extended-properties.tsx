@@ -32,7 +32,7 @@ import { Action, ActionType } from "@wso2is/admin.flow-builder-core.v1/models/ac
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import isEqual from "lodash-es/isEqual";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import useGetRegistrationFlowCoreActions from "../../../api/use-get-registration-flow-builder-actions";
 import "./button-extended-properties.scss";
 

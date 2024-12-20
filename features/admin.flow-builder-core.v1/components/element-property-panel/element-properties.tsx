@@ -58,8 +58,7 @@ export type CommonElementPropertiesPropsInterface = IdentifiableComponentInterfa
  * @returns The ElementProperties component.
  */
 const ElementProperties: FunctionComponent<Partial<CommonElementPropertiesPropsInterface>> = ({
-    "data-componentid": componentId = "element-properties",
-    ...rest
+    "data-componentid": componentId = "element-properties"
 }: Partial<CommonElementPropertiesPropsInterface>): ReactElement => {
     const { updateNodeData } = useReactFlow();
     const {
