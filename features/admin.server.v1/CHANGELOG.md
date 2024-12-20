@@ -1,5 +1,15 @@
 # @wso2is/admin.server.v1
 
+## 2.25.60
+
+### Patch Changes
+
+- [#7217](https://github.com/wso2/identity-apps/pull/7217) [`a7f0bc5a547b5a1b17ab35688ed8b86ff168aa3f`](https://github.com/wso2/identity-apps/commit/a7f0bc5a547b5a1b17ab35688ed8b86ff168aa3f) Thanks [@ThaminduDilshan](https://github.com/ThaminduDilshan)! - Remove admin advisory and remote log publishing from server configs
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.60
+  - @wso2is/admin.server-configurations.v1@2.30.14
+
 ## 2.25.59
 
 ### Patch Changes
