@@ -375,7 +375,7 @@ export class AppConstants {
                 "ATTRIBUTE_MAPPINGS",
                 `${AppConstants.getAdminViewBasePath()}/attribute-mappings/:type/:customAttributeMappingID?`
             ],
-            [ "CREATE_TENANT", `${AppConstants.getMainViewBasePath()}/create-tenant` ],
+            [ "CREATE_TENANT", `${AppConstants.getAppBasePath()}/create-tenant` ],
             [ "ORGANIZATIONS", `${AppConstants.getAdminViewBasePath()}/organizations` ],
             [ "ORGANIZATION_UPDATE", `${AppConstants.getAdminViewBasePath()}/organizations/:id` ],
             [ "ORGANIZATION_ROLES", `${AppConstants.getAdminViewBasePath()}/roles/organization-roles` ],
