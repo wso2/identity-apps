@@ -333,7 +333,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     <DocumentationLink
                         link={ getLink("manage.groups.learnMore") }
                     >
-                        { t("extensions:common.learnMore") }
+                        { t("console:common.learnMore") }
                     </DocumentationLink>
                 </>
             ) }

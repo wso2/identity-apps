@@ -413,7 +413,7 @@ const RemoteUserStoreCreatePage: FunctionComponent<RemoteCustomerUserStoreCreate
                     <DocumentationLink
                         link={ getLink("manage.userStores.createUserStore.learnMore") }
                     >
-                        { t("extensions:common.learnMore") }
+                        { t("console:common.learnMore") }
                     </DocumentationLink>
                 </>
             ) }

@@ -527,7 +527,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         <DocumentationLink
                             link={ getLink("manage.organizations.learnMore") }
                         >
-                            { t("extensions:common.learnMore") }
+                            { t("console:common.learnMore") }
                         </DocumentationLink>
                     </>
                 ) }

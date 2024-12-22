@@ -116,7 +116,7 @@ const BrandingAIBanner: FunctionComponent<PropsWithChildren<BrandingAIBannerProp
                             <DocumentationLink
                                 link={ getLink("develop.branding.ai.learnMore") }
                             >
-                                <Trans i18nKey={ "extensions:common.learnMore" }>
+                                <Trans i18nKey={ "console:common.learnMore" }>
                                     Learn more
                                 </Trans>
                             </DocumentationLink>

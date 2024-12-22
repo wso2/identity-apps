@@ -714,7 +714,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                                 link={ getLink("manage.users.collaboratorAccounts." +
                                                                     "roles.learnMore") }
                                                             >
-                                                                { t("extensions:common.learnMore") }
+                                                                { t("console:common.learnMore") }
                                                             </DocumentationLink>
                                                         </>
                                                     )

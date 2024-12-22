@@ -513,7 +513,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                     <DocumentationLink
                         link={ getLink("develop.smsProviders.learnMore") }
                     >
-                        { t("extensions:common.learnMore") }
+                        { t("console:common.learnMore") }
                     </DocumentationLink>
                 </div>
             ) }
