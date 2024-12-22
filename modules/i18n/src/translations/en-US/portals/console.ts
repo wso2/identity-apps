@@ -68,6 +68,7 @@ export const console: ConsoleNS = {
             },
             resultsIndicator: "Showing results for the query \"{{query}}\""
         },
+        community: "Community",
         cookieConsent: {
             confirmButton: "Got It",
             content: "We use cookies to ensure that you get the best overall experience. These cookies are used to " +
@@ -76,6 +77,13 @@ export const console: ConsoleNS = {
         },
         dateTime: {
             humanizedDateString: "Last modified {{date}} ago"
+        },
+        dropdown: {
+            footer: {
+                privacyPolicy: "Privacy",
+                cookiePolicy: "Cookies",
+                termsOfService: "Terms"
+            }
         },
         header: {
             appSwitch: {
@@ -107,6 +115,19 @@ export const console: ConsoleNS = {
                 orgSearchPlaceholder: "Search by organization name"
             }
         },
+        help: {
+            communityLinks: {
+                discord: "Ask on Discord",
+                stackOverflow: "Ask on Stack Overflow"
+            },
+            docSiteLink: "Documentation",
+            helpCenterLink: {
+                title: "Contact Support",
+                subtitle: "Talk to the {{productName}} team to obtain personalized assistance."
+            },
+            helpDropdownLink: "Get Help"
+        },
+        learnMore: "Learn More",
         modals: {
             editAvatarModal: {
                 content: {
@@ -448,6 +469,77 @@ export const console: ConsoleNS = {
                 }
             }
         },
+        quickStart: {
+            greeting: {
+                alternativeHeading: "Welcome back, {{username}}!",
+                heading: "Welcome, {{username}}!",
+                subHeading: "Here’s how you can get started"
+            },
+            sections: {
+                addSocialLogin: {
+                    actions: {
+                        setup: "Set Up Social Connections",
+                        view: "View Social Connections"
+                    },
+                    description:
+                    "Let your users log in to your applications with an Identity Provider of " + "their choice",
+                    heading: "Add social login"
+                },
+                integrateApps: {
+                    actions: {
+                        create: "Register Application",
+                        manage: "Explore Applications",
+                        view: "View Applications"
+                    },
+                    capabilities: {
+                        sso: "SSO",
+                        mfa: "MFA",
+                        social: "Social Login"
+                    },
+                    description:
+                    "Register your app and design the user login experience you want by configuring " +
+                    "SSO, MFA, social login, and various flexible authentication rules.",
+                    heading: "Add login to your apps"
+                },
+                learn: {
+                    actions: {
+                        view: "View Docs"
+                    },
+                    description:
+                    "Get started using Asgardeo. Implement authentication for any kind of application " +
+                    "in minutes.",
+                    heading: "Learn"
+                },
+                manageUsers: {
+                    actions: {
+                        create: "Add Users",
+                        manage: "Manage Users",
+                        view: "View Users"
+                    },
+                    capabilities: {
+                        collaborators: "Administrators",
+                        customers: "Users",
+                        groups: "User Groups"
+                    },
+                    description:
+                    "Create user accounts for users and invite administrators to your organization. " +
+                    "Allow your users to securely self-manage their profiles.",
+                    heading: "Manage users and groups"
+                },
+                asgardeoTryIt: {
+                    errorMessages: {
+                        appCreateGeneric: {
+                            message: "Something went wrong!",
+                            description: "Failed to initialize the Try It app."
+                        },
+                        appCreateDuplicate: {
+                            message: "Application already exists!",
+                            description: "Please delete the existing {{productName}} Try It application."
+                        }
+                    }
+                }
+            }
+        },
         sidePanel: {
             privacy: "Privacy",
             loginAndRegistration: {
@@ -459,6 +551,7 @@ export const console: ConsoleNS = {
             branding: "Branding",
             tenants: "Root Organizations"
         },
+        upgrade: "Upgrade",
         validations: {
             inSecureURL: {
                 description: "The entered URL is a non-TLS URL. Please proceed with caution.",
