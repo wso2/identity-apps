@@ -57,6 +57,7 @@ import {
     ImplicitAssociaionConfigInterface
 } from "../../models/connection";
 import { isProvisioningAttributesEnabled } from "../../utils/attribute-utils";
+import { ConnectionsManagementUtils } from "../../utils/connection-utils";
 
 /**
  * Proptypes for the connection edit component.
@@ -216,11 +217,9 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         <ResourceTab.Pane controlledSegmentation>
             <GeneralSettings
                 hideIdPLogoEditField={
-                    identityProviderConfig
-                        .utils
-                        ?.hideLogoInputFieldInIdPGeneralSettingsForm(
-                            identityProvider?.templateId
-                        )
+                    ConnectionsManagementUtils.hideLogoInputFieldInIdPGeneralSettingsForm(
+                        identityProvider?.templateId
+                    )
                 }
                 templateType={ type }
                 isSaml={ isSaml }
