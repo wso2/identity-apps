@@ -1,5 +1,16 @@
 # @wso2is/i18n
 
+## 2.14.1
+
+### Patch Changes
+
+- [#7227](https://github.com/wso2/identity-apps/pull/7227) [`8110b4503bc622997af4942727afa5ef65245689`](https://github.com/wso2/identity-apps/commit/8110b4503bc622997af4942727afa5ef65245689) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Reposition internal notification sending feature
+
+* [#7185](https://github.com/wso2/identity-apps/pull/7185) [`0057877859bdf3d91475cf3d1865382a88a1e9e7`](https://github.com/wso2/identity-apps/commit/0057877859bdf3d91475cf3d1865382a88a1e9e7) Thanks [@Malith-19](https://github.com/Malith-19)! - Add the passwordMaxAllowed length config for password length values validation.
+
+* Updated dependencies [[`0057877859bdf3d91475cf3d1865382a88a1e9e7`](https://github.com/wso2/identity-apps/commit/0057877859bdf3d91475cf3d1865382a88a1e9e7)]:
+  - @wso2is/core@2.5.2
+
 ## 2.14.0
 
 ### Minor Changes
