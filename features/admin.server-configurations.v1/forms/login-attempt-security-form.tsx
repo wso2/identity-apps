@@ -146,6 +146,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
     const [ lockDuration, setLockDuration ] = useState<string>(undefined);
     const [ lockIncrementRatio, setLockIncrementRatio ] = useState<string>(undefined);
     const [ notifyUserOnAccountLockIncrement, setNotifyUserOnAccountLockIncrement ] = useState<boolean>(undefined);
+    const [ enableIndefiniteUserLockduration, setEnableIndefiniteUserLockduration ] = useState<boolean>(undefined);
     const [ accordionActiveIndex, setAccordionActiveIndex ] = useState<string | number>(undefined);
 
     /**
@@ -173,6 +174,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                         accountLockTime: property.value
                     };
                     setLockDuration(property.value);
+                    setEnableIndefiniteUserLockduration(parseInt(property.value) === 0);
                 } else if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_TIME_INCREMENT_FACTOR) {
                     resolvedInitialValues = {
                         ...resolvedInitialValues,
@@ -269,8 +271,9 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
             // Check for invalid input.
             errors.accountLockTime = t("extensions:manage.serverConfigurations.accountSecurity." +
                 "loginAttemptSecurity.form.fields.accountLockTime.validations.invalid");
-        } else if ((parseInt(values.accountLockTime, 10) < GovernanceConnectorConstants
-            .LOGINS_ATTEMPT_SECURITY_FORM_FIELD_CONSTRAINTS.ACCOUNT_LOCK_TIME_MIN_VALUE)
+        } else if (((parseInt(values.accountLockTime, 10) < GovernanceConnectorConstants
+            .LOGINS_ATTEMPT_SECURITY_FORM_FIELD_CONSTRAINTS.ACCOUNT_LOCK_TIME_MIN_VALUE) &&
+            !enableIndefiniteUserLockduration)
             || (parseInt(values.accountLockTime, 10) > GovernanceConnectorConstants
                 .LOGINS_ATTEMPT_SECURITY_FORM_FIELD_CONSTRAINTS.ACCOUNT_LOCK_TIME_MAX_VALUE)) {
             // Check for invalid range.
@@ -323,6 +326,11 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
             : accordionTitleProps.index;
 
         setAccordionActiveIndex(newIndex);
+    };
+
+    const updateEnableIndefiniteAccountLockDuration = (value: any) => {
+        setEnableIndefiniteUserLockduration(value);
+        setLockDuration("0");
     };
 
     /**
@@ -472,6 +480,25 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                             "loginAttemptSecurity.form.fields.maxFailedAttempts.hint")
                     }
                 </Hint>
+                <Field.Checkbox
+                    ariaLabel="enableIndefiniteUserLockduration"
+                    name="enableIndefiniteUserLockduration"
+                    label={ t("extensions:manage.serverConfigurations.accountSecurity." +
+                        "loginAttemptSecurity.form.fields.enableIndefiniteUserLockduration.label") }
+                    listen={ (value: boolean) => updateEnableIndefiniteAccountLockDuration(value) }
+                    checked={ enableIndefiniteUserLockduration }
+                    required={ false }
+                    readOnly={ readOnly }
+                    disabled={ !isConnectorEnabled }
+                    width={ 10 }
+                    data-testid={ `${testId}-enable-indefinite-user-lock-duration` }
+                />
+                <Hint className={ "mb-5" }>
+                    {
+                        t("extensions:manage.serverConfigurations.accountSecurity." +
+                            "loginAttemptSecurity.form.fields.enableIndefiniteUserLockduration.hint")
+                    }
+                </Hint>
                 <Field.Input
                     ariaLabel="accountLockTime"
                     inputType="number"
@@ -501,7 +528,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                             .LOGINS_ATTEMPT_SECURITY_FORM_FIELD_CONSTRAINTS.ACCOUNT_LOCK_TIME_MIN_LENGTH
                     }
                     width={ 10 }
-                    disabled={ !isConnectorEnabled }
+                    disabled={ !isConnectorEnabled || enableIndefiniteUserLockduration }
                     labelPosition="right"
                     data-testid={ `${testId}-account-lock-time` }
                     readOnly={ readOnly }
@@ -546,7 +573,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                             .ACCOUNT_LOCK_INCREMENT_FACTOR_MIN_LENGTH
                     }
                     width={ 10 }
-                    disabled={ !isConnectorEnabled }
+                    disabled={ !isConnectorEnabled || enableIndefiniteUserLockduration }
                     data-testid={ `${testId}-account-lock-increment` }
                     readOnly={ readOnly }
                 />
