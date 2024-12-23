@@ -235,9 +235,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
             ]);
 
             return identityClaimsHiddenAuthenticators.has(authenticatorId);
-        },
-        hideLogoInputFieldInIdPGeneralSettingsForm(): boolean {
-            return true;
         }
     }
 };
