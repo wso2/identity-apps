@@ -315,7 +315,10 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 key: "lastModified",
                 render: (group: GroupsInterface): ReactNode => {
                     const now: Moment = moment(new Date());
-                    const receivedDate: Moment = moment(group.meta.created);
+                    const receivedDate: Moment = moment(group.meta.lastModified ?
+                        group.meta.lastModified :
+                        group.meta.created
+                    );
 
                     return t("console:common.dateTime.humanizedDateString", {
                         date: moment.duration(now.diff(receivedDate)).humanize()
