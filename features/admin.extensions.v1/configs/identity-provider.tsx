@@ -235,15 +235,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
             ]);
 
             return identityClaimsHiddenAuthenticators.has(authenticatorId);
-        },
-        hideLogoInputFieldInIdPGeneralSettingsForm(templateId: string): boolean {
-            // show if the idp is enterprise idp, otherwise don't
-            const allowedTemplates: string[] = [
-                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OIDC,
-                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.SAML
-            ];
-
-            return !allowedTemplates.includes(templateId);
         }
     }
 };
