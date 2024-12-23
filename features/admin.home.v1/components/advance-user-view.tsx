@@ -288,7 +288,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                         </Heading>
                     </div>
                     <Text muted>
-                        { t("extensions:common.quickStart.sections.addSocialLogin.description") }
+                        { t("console:common.quickStart.sections.addSocialLogin.description") }
                     </Text>
                 </Card.Content>
                 <Card.Content style={ { borderTop: "none" } } className="illustration-container">
@@ -448,7 +448,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                                     </Placeholder.Header>
                                 </Placeholder>
                             )
-                            : t("extensions:common.quickStart.greeting.heading", {
+                            : t("console:common.quickStart.greeting.heading", {
                                 username: isPrivilegedUser ? username : resolveUserDisplayName(profileInfo)
                             })
                     }

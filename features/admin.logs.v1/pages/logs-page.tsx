@@ -141,7 +141,7 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (
                         <DocumentationLink
                             link={ getLink("manage.logs.learnMore") }
                         >
-                            { t("extensions:common.learnMore") }
+                            { t("console:common.learnMore") }
                         </DocumentationLink>
                     </>
                 ) }
