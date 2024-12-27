@@ -25,13 +25,13 @@ import { PermissionObject, TreeNode } from "../models/permission";
   * @param pathComponents - Permission Path Array
   * @param permissionTreeArray - Permission Tree array for reference
   *
-  * @returns {TreeNode[]} - Permission array with tree structure
+  * @returns Permission array with tree structure
   */
 export const generatePermissionTree = (permissioObject: PermissionObject, pathComponents: string[],
     permissionTreeArray: TreeNode[]): TreeNode[] => {
 
-    const component = pathComponents.shift();
-    let permissionComponent = permissionTreeArray.find((permission: TreeNode) => {
+    const component: string = pathComponents.shift();
+    let permissionComponent: TreeNode = permissionTreeArray.find((permission: TreeNode) => {
         return permission.name === component;
     });
 
