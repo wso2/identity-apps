@@ -19,7 +19,7 @@
 import { AppState, getEmptyPlaceholderIllustrations, updateResources } from "@wso2is/admin.core.v1";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { useGroupList } from "@wso2is/admin.groups.v1/api";
-import { GroupsInterface, GroupsMemberInterface } from "@wso2is/admin.groups.v1/models";
+import { GroupsInterface, GroupsMemberInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import {
