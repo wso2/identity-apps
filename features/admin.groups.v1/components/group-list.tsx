@@ -43,7 +43,7 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { GroupConstants } from "../constants";
-import { GroupsInterface } from "../models";
+import { GroupsInterface } from "../models/groups";
 
 interface GroupListProps extends SBACInterface<FeatureConfigInterface>,
     LoadableComponentInterface, TestableComponentInterface {

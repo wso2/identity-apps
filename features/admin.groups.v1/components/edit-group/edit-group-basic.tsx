@@ -39,7 +39,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Form, Grid } from "semantic-ui-react";
 import { deleteGroupById, searchGroupList, updateGroupDetails } from "../../api";
-import { GroupsInterface, PatchGroupDataInterface, SearchGroupInterface } from "../../models";
+import { GroupsInterface, PatchGroupDataInterface, SearchGroupInterface } from "../../models/groups";
 
 /**
  * Interface to contain props needed for component
