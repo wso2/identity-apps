@@ -5124,6 +5124,9 @@ importers:
       '@wso2is/access-control':
         specifier: ^3.3.6
         version: link:../../modules/access-control
+      '@wso2is/admin.application-templates.v1':
+        specifier: ^1.4.62
+        version: link:../admin.application-templates.v1
       '@wso2is/admin.applications.v1':
         specifier: ^2.30.62
         version: link:../admin.applications.v1

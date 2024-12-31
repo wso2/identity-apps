@@ -17,13 +17,15 @@
  */
 
 import { AppConstants, history } from "@wso2is/admin.core.v1";
-import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
+import { ExtensionTemplateListInterface, ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
+import ExtensionTemplatesProvider from "@wso2is/admin.template-core.v1/provider/extension-templates-provider";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ApplicationCreationAdapter from "../components/application-creation-adapter";
 import ApplicationTemplateGrid from "../components/application-templates-grid";
+import { ApplicationTemplateConstants } from "../constants/templates";
 import ApplicationTemplateMetadataProvider from
     "../provider/application-template-metadata-provider";
 import ApplicationTemplateProvider from "../provider/application-template-provider";
@@ -57,43 +59,48 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
     };
 
     return (
-        <PageLayout
-            pageTitle="Register New Application"
-            title={ t("console:develop.pages.applicationTemplate.title") }
-            contentTopMargin={ true }
-            description={ t("console:develop.pages.applicationTemplate.subTitle") }
-            backButton={ {
-                "data-testid": `${ testId }-page-back-button`,
-                onClick: handleBackButtonClick,
-                text: t("console:develop.pages.applicationTemplate.backButton")
-            } }
-            titleTextAlign="left"
-            bottomMargin={ false }
-            showBottomDivider
-            data-testid={ `${ testId }-page-layout` }
-            headingColumnWidth={ 13 }
-            actionColumnWidth={ 3 }
+        <ExtensionTemplatesProvider
+            resourceType={ ResourceTypes.APPLICATIONS }
+            categories={ ApplicationTemplateConstants.SUPPORTED_CATEGORIES_INFO }
         >
-            <ApplicationTemplateGrid
-                onTemplateSelect={ (template: ExtensionTemplateListInterface) => {
-                    setSelectedTemplate(template);
-                    setShowWizard(true);
+            <PageLayout
+                pageTitle="Register New Application"
+                title={ t("console:develop.pages.applicationTemplate.title") }
+                contentTopMargin={ true }
+                description={ t("console:develop.pages.applicationTemplate.subTitle") }
+                backButton={ {
+                    "data-testid": `${ testId }-page-back-button`,
+                    onClick: handleBackButtonClick,
+                    text: t("console:develop.pages.applicationTemplate.backButton")
                 } }
-            />
-            <ApplicationTemplateProvider
-                template={ selectedTemplate }
+                titleTextAlign="left"
+                bottomMargin={ false }
+                showBottomDivider
+                data-testid={ `${ testId }-page-layout` }
+                headingColumnWidth={ 13 }
+                actionColumnWidth={ 3 }
             >
-                <ApplicationTemplateMetadataProvider
+                <ApplicationTemplateGrid
+                    onTemplateSelect={ (template: ExtensionTemplateListInterface) => {
+                        setSelectedTemplate(template);
+                        setShowWizard(true);
+                    } }
+                />
+                <ApplicationTemplateProvider
                     template={ selectedTemplate }
                 >
-                    <ApplicationCreationAdapter
+                    <ApplicationTemplateMetadataProvider
                         template={ selectedTemplate }
-                        showWizard={ showWizard }
-                        onClose={ () => setShowWizard(false) }
-                    />
-                </ApplicationTemplateMetadataProvider>
-            </ApplicationTemplateProvider>
-        </PageLayout>
+                    >
+                        <ApplicationCreationAdapter
+                            template={ selectedTemplate }
+                            showWizard={ showWizard }
+                            onClose={ () => setShowWizard(false) }
+                        />
+                    </ApplicationTemplateMetadataProvider>
+                </ApplicationTemplateProvider>
+            </PageLayout>
+        </ExtensionTemplatesProvider>
     );
 };
 
