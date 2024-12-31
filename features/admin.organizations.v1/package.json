@@ -143,7 +143,7 @@
         "typescript": "^4.6.4"
     },
     "peerDependencies": {
-        "react": "^18.2.0",
+        "react": "catalog:",
         "react-dom": "^18.2.0",
         "react-router-dom": "^4.3.1"
     },
