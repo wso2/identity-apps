@@ -17,7 +17,13 @@
  */
 
 import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
-import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
+import {
+    AccessControlProvider,
+    AllFeatureInterface,
+    FeatureAccessConfigInterface,
+    FeatureGateInterface,
+    useRequiredScopes
+} from "@wso2is/access-control";
 import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
 import { EventPublisher, PreLoader } from "@wso2is/admin.core.v1";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components";
@@ -104,6 +110,12 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
         data: allFeatures,
         error: featureGateAPIException
     } = useGetAllFeatures();
+
+    const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.applications
+    );
+
+    const hasApplicationTemplateViewPermissions: boolean = useRequiredScopes(applicationsFeatureConfig?.scopes?.read);
 
     /**
      * Set the deployment configs in redux state.
@@ -471,6 +483,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
                                             }
                                         />
                                         <ExtensionTemplatesProvider
+                                            shouldFetch={ hasApplicationTemplateViewPermissions }
                                             resourceType={ ResourceTypes.APPLICATIONS }
                                             categories={ ApplicationTemplateConstants.SUPPORTED_CATEGORIES_INFO }
                                         >
