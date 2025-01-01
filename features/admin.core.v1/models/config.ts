@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -435,6 +435,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Show App Switch button in the Header.
      */
     showAppSwitchButton?: boolean;
+    /**
+     * Domain name of the primary user store.
+     */
+    primaryUserStoreDomainName: string;
     /**
      * Show Label for the features introduced with new authz runtime.
      */

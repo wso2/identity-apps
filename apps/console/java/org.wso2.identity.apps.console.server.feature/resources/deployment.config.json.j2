@@ -1787,6 +1787,9 @@
                 {% endfor %}
             {% endif %}
         ],
+        {% if user_store.properties.DomainName is defined %}
+        "primaryUserStoreDomainName": "{{ user_store.properties.DomainName }}",
+        {% endif %}
         "hiddenUserStores": [
             {% if console.ui.hidden_user_stores is defined %}
                 {% for value in console.ui.hidden_user_stores %}

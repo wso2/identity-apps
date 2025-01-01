@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,7 +26,6 @@ import {
 import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { UserInviteInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
-import { UserstoreConstants } from "@wso2is/core/constants";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     FeatureAccessConfigInterface,
@@ -161,6 +160,8 @@ const InvitedAdministratorsTable: React.FunctionComponent<InvitedAdministratorsT
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     /**
      * Resolves data table columns.
@@ -248,7 +249,7 @@ const InvitedAdministratorsTable: React.FunctionComponent<InvitedAdministratorsT
                 hidden: (user: UserInviteInterface): boolean => {
                     const userStore: string = user?.username?.split("/").length > 1
                         ? user?.username?.split("/")[0]
-                        : UserstoreConstants.PRIMARY_USER_STORE;
+                        : primaryUserStoreDomainName;
 
                     return !isFeatureEnabled(featureConfig,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))

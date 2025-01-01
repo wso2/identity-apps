@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -170,6 +170,8 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
     const [ loading, setLoading ] = useState(false);
 
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     /**
      * Set tenant admin.
@@ -196,7 +198,7 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const handleUserEdit = (user: UserBasicInterface) => {
-        if (resolveUserstore(user.userName) === userstoresConfig.primaryUserstoreName) {
+        if (resolveUserstore(user.userName, primaryUserStoreDomainName) === userstoresConfig.primaryUserstoreName) {
             history.push(AdministratorConstants.getPaths().get("CUSTOMER_USER_EDIT_PATH").replace(":id", user.id));
         } else {
             history.push(AdministratorConstants.getPaths().get("COLLABORATOR_USER_EDIT_PATH").replace(":id", user.id));
@@ -289,7 +291,8 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                     if (user.userName === tenantAdmin) {
                         return "Owner";
                     }
-                    if (resolveUserstore(user.userName) === userstoresConfig.primaryUserstoreName) {
+                    if (resolveUserstore(user.userName, primaryUserStoreDomainName)
+                        === userstoresConfig.primaryUserstoreName) {
                         return UserAccountTypes.USER;
                     } else {
                         return administratorConfig.adminRoleName;
@@ -599,14 +602,16 @@ export const AllUsersList: React.FunctionComponent<AllUsersListProps> = (props: 
                             attached
                             negative
                         >
-                            { resolveUserstore(deletingUser.userName) === userstoresConfig.primaryUserstoreName
+                            { resolveUserstore(deletingUser.userName, primaryUserStoreDomainName)
+                                === userstoresConfig.primaryUserstoreName
                                 ? t("user:deleteUser.confirmationModal.message")
                                 : t("extensions:manage.guest.deleteUser.confirmationModal.message")
                             }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-testid={ `${ testId }-confirmation-modal-content` }>
                             <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                            { resolveUserstore(deletingUser.userName) === userstoresConfig.primaryUserstoreName
+                            { resolveUserstore(deletingUser.userName, primaryUserStoreDomainName)
+                                === userstoresConfig.primaryUserstoreName
                                 ? (
                                     deletingUser[SCIMConfigs.scim.enterpriseSchema]?.userSourceId
                                         ? t("user:deleteJITUser.confirmationModal.content")

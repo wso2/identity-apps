@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -72,7 +72,7 @@ const getLicenseHeaderPattern = () => {
     const LICENSE_HEADER_DEFAULT_PATTERN = [
         "*",
         {
-            pattern: " Copyright \\(c\\) \\b(2019|202[0-4])(?:-(202[0-4]))?, WSO2 LLC. \\(https://www.wso2.com\\).$",
+            pattern: " Copyright \\(c\\) \\b(2019|202[0-5])(?:-(202[0-5]))?, WSO2 LLC. \\(https://www.wso2.com\\).$",
             template: " * Copyright (c) {{year}}, WSO2 LLC. (https://www.wso2.com)."
         },
         " *",

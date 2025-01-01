@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,7 +26,6 @@ import { UserRolesList } from "@wso2is/admin.users.v1/components/user-roles-list
 import { UserSessions } from "@wso2is/admin.users.v1/components/user-sessions";
 import { AdminAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
-import { UserstoreConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -95,6 +94,8 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
     const [ adminUserType, setAdminUserType ] = useState<string>(AdminAccountTypes.EXTERNAL);
 
     const authenticatedUserTenanted: string = useSelector((state: AppState) => state?.auth?.username);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const authenticatedUser: string = useMemo(() => {
         const authenticatedUserComponents: string[] = authenticatedUserTenanted.split("@");
@@ -120,7 +121,7 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
 
         const userStore: string = user?.userName?.split("/").length > 1
             ? user?.userName?.split("/")[ 0 ]
-            : UserstoreConstants.PRIMARY_USER_STORE;
+            : primaryUserStoreDomainName;
 
         setReadOnlyUserStore(readOnlyUserStores?.includes(userStore?.toString()));
 
