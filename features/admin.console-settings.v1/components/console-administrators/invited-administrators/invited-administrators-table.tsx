@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -26,7 +27,7 @@ import {
 import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { UserInviteInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
-import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
@@ -158,10 +159,11 @@ const InvitedAdministratorsTable: React.FunctionComponent<InvitedAdministratorsT
         return state?.config?.ui?.features?.users;
     });
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
+
+    const hasUserDeletePermission: boolean = useRequiredScopes(featureConfig?.scopes?.delete);
 
     /**
      * Resolves data table columns.
@@ -254,7 +256,7 @@ const InvitedAdministratorsTable: React.FunctionComponent<InvitedAdministratorsT
                     return !isFeatureEnabled(featureConfig,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
                         || isPrivilegedUser
-                        || !hasRequiredScopes(featureConfig, featureConfig?.scopes?.delete, allowedScopes)
+                        || !hasUserDeletePermission
                         || readOnlyUserStores?.includes(userStore.toString())
                         || ((getUserNameWithoutDomain(user?.username) === serverConfigs?.realmConfig?.adminUser
                         || authenticatedUser?.includes(getUserNameWithoutDomain(user?.username))));

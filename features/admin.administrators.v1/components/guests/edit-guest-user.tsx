@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
@@ -26,7 +27,7 @@ import { UserRolesList } from "@wso2is/admin.users.v1/components/user-roles-list
 import { UserSessions } from "@wso2is/admin.users.v1/components/user-sessions";
 import { AdminAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
-import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, Message, ResourceTab } from "@wso2is/react-components";
@@ -85,8 +86,6 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
     const [ allowDeleteOnly, setAllowDeleteOnly ] = useState<boolean>(false);
     const [ isProfileTabsLoading, setIsProfileTabsLoading ] = useState<boolean>(true);
@@ -96,6 +95,9 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
     const authenticatedUserTenanted: string = useSelector((state: AppState) => state?.auth?.username);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
+
+    const hasUserUpdatePermission: boolean = useRequiredScopes(featureConfig?.users?.scopes?.update);
+    const hasUserDeletePermission: boolean = useRequiredScopes(featureConfig?.users?.scopes?.delete);
 
     const authenticatedUser: string = useMemo(() => {
         const authenticatedUserComponents: string[] = authenticatedUserTenanted.split("@");
@@ -127,7 +129,7 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
 
         if (!isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
             || readOnlyUserStores?.includes(userStore?.toString())
-            || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+            || !hasUserUpdatePermission
             || user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
         ) {
             setReadOnly(true);
@@ -135,7 +137,7 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
 
         if (isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE")) &&
             !(user.userName == realmConfigs?.adminUser) &&
-            hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)) {
+            hasUserDeletePermission) {
             setAllowDeleteOnly(true);
         }
 

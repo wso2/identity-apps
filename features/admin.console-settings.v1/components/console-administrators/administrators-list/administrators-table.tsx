@@ -17,6 +17,7 @@
  */
 
 import Chip from "@oxygen-ui/react/Chip";
+import { useRequiredScopes } from "@wso2is/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -31,7 +32,7 @@ import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { UserListInterface } from "@wso2is/admin.users.v1/models";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
-import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
@@ -170,10 +171,12 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
         return state?.config?.ui?.features?.users;
     });
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
+
+    const hasUserUpdatePermission: boolean = useRequiredScopes(featureConfig?.scopes?.update);
+    const hasUserDeletePermission: boolean = useRequiredScopes(featureConfig?.scopes?.delete);
 
     /**
      * Resolves data table columns.
@@ -342,7 +345,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                         : primaryUserStoreDomainName;
 
                     return (
-                        !hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes)
+                        !hasUserUpdatePermission
                     || !isFeatureEnabled(featureConfig,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString()))
@@ -359,7 +362,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                         : primaryUserStoreDomainName;
 
                     return (
-                        !hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes)
+                        !hasUserUpdatePermission
                     || !isFeatureEnabled(featureConfig,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString()))
@@ -380,7 +383,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                 return !isFeatureEnabled(featureConfig,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
                     || isPrivilegedUser
-                    || !hasRequiredScopes(featureConfig, featureConfig?.scopes?.delete, allowedScopes)
+                    || !hasUserDeletePermission
                     || readOnlyUserStores?.includes(userStore.toString())
                     || (getUserNameWithoutDomain(user?.userName) === serverConfigs?.realmConfig?.adminUser &&
                             !isSubOrganization())
