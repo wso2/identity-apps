@@ -436,10 +436,6 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     showAppSwitchButton?: boolean;
     /**
-     * Domain name of the primary user store.
-     */
-    primaryUserStoreDomainName: string;
-    /**
      * Show Label for the features introduced with new authz runtime.
      */
     showStatusLabelForNewAuthzRuntimeFeatures?: boolean;
