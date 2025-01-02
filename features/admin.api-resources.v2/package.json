@@ -22,6 +22,7 @@
         "@wso2is/forms": "^2.3.6",
         "@wso2is/react-components": "^2.8.11",
         "@wso2is/admin.core.v1": "^2.35.1",
+        "@wso2is/admin.organizations.v1": "^2.26.62",
         "axios": "^0.19.2",
         "i18next": "^21.9.1",
         "node-forge": "^0.10.0",
