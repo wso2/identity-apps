@@ -34,6 +34,7 @@
         "@wso2is/admin.roles.v2": "^2.27.6",
         "@wso2is/admin.template-core.v1": "^1.5.16",
         "@wso2is/admin.userstores.v1": "^2.26.21",
+        "@wso2is/admin.application-templates.v1": "^1.4.62",
         "@wso2is/core": "^2.5.2",
         "@wso2is/dynamic-forms": "^2.4.11",
         "@wso2is/form": "^2.6.4",
