@@ -1,5 +1,35 @@
 # @wso2is/admin.users.v1
 
+## 2.29.24
+
+### Patch Changes
+
+- [#7244](https://github.com/wso2/identity-apps/pull/7244) [`97aae1b9168c49e72cd544ded82d53c8fa16fff0`](https://github.com/wso2/identity-apps/commit/97aae1b9168c49e72cd544ded82d53c8fa16fff0) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add schema attribute profile based validation to user profile
+
+- Updated dependencies [[`97aae1b9168c49e72cd544ded82d53c8fa16fff0`](https://github.com/wso2/identity-apps/commit/97aae1b9168c49e72cd544ded82d53c8fa16fff0), [`e4978afb7f6d93587773e06152bda252cfce478f`](https://github.com/wso2/identity-apps/commit/e4978afb7f6d93587773e06152bda252cfce478f)]:
+  - @wso2is/admin.users.v1@2.29.24
+  - @wso2is/core@2.5.3
+  - @wso2is/admin.validation.v1@2.27.3
+  - @wso2is/admin.authentication.v1@2.25.65
+  - @wso2is/admin.claims.v1@2.26.24
+  - @wso2is/admin.core.v1@2.35.3
+  - @wso2is/admin.extensions.v1@2.35.24
+  - @wso2is/admin.groups.v1@2.26.24
+  - @wso2is/admin.organizations.v1@2.26.65
+  - @wso2is/admin.roles.v2@2.27.9
+  - @wso2is/admin.server-configurations.v1@2.31.3
+  - @wso2is/admin.tenants.v1@2.28.39
+  - @wso2is/admin.authorization.v1@2.25.24
+  - @wso2is/admin.feature-gate.v1@1.4.65
+  - @wso2is/admin.identity-providers.v1@2.26.65
+  - @wso2is/admin.userstores.v1@2.26.24
+  - @wso2is/access-control@3.3.7
+  - @wso2is/dynamic-forms@2.4.13
+  - @wso2is/form@2.6.6
+  - @wso2is/forms@2.3.7
+  - @wso2is/i18n@2.14.3
+  - @wso2is/react-components@2.8.13
+
 ## 2.29.23
 
 ### Patch Changes
