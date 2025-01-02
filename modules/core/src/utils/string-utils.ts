@@ -142,6 +142,6 @@ export class StringUtils {
      * @returns True if the two given string values are equal in a case-insensitive manner.
      */
     public static isEqualCaseInsensitive(firstValue: string, secondValue: string): boolean {
-        return firstValue.toLowerCase() === secondValue.toLowerCase();
+        return firstValue?.toLowerCase() === secondValue?.toLowerCase();
     }
 }
