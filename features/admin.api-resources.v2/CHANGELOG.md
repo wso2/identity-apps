@@ -1,5 +1,17 @@
 # @wso2is/admin.api-resources.v2
 
+## 2.25.64
+
+### Patch Changes
+
+- [#7226](https://github.com/wso2/identity-apps/pull/7226) [`d4b2298353d0184ac77d5be3b0a7676a8e94e004`](https://github.com/wso2/identity-apps/commit/d4b2298353d0184ac77d5be3b0a7676a8e94e004) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add API Resource View capability in sub orgs
+
+- Updated dependencies [[`d4b2298353d0184ac77d5be3b0a7676a8e94e004`](https://github.com/wso2/identity-apps/commit/d4b2298353d0184ac77d5be3b0a7676a8e94e004)]:
+  - @wso2is/admin.core.v1@2.35.2
+  - @wso2is/admin.organizations.v1@2.26.64
+  - @wso2is/react-components@2.8.12
+  - @wso2is/form@2.6.5
+
 ## 2.25.63
 
 ### Patch Changes
