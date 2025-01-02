@@ -27,14 +27,22 @@
 
 <%
     String domainUnknown = AuthenticationEndpointUtil.i18n(resourceBundle, "domain.unknown");
-    String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.failed");
+    String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.failed.please.retry");
     boolean loginFailed = false;
     if (Boolean.parseBoolean(request.getParameter("authFailure"))) {
         loginFailed = true;
         if (request.getParameter("authFailureMsg") != null) {
-            errorMessage = request.getParameter("authFailureMsg");
+            String error = Encode.forJava(request.getParameter("authFailureMsg"));
+            /*
+            * Only allowing error messages defined in the resourceBundle.
+            * AuthenticationEndpointUtil.i18n() will return the value of the provided key if the key is found
+            * in the resourceBundle. If the key is not found, it will return the key itself.
+            */
+            if (!error.equalsIgnoreCase(AuthenticationEndpointUtil.i18n(resourceBundle, error))) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, error);
+            }
 
-            if (domainUnknown.equalsIgnoreCase(errorMessage)) {
+            if (domainUnknown.equalsIgnoreCase(error)) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "domain.cannot.be.identified");
             }
         }
