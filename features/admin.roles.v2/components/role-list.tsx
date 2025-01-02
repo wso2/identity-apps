@@ -29,6 +29,7 @@ import {
     IdentifiableComponentInterface,
     LoadableComponentInterface,
     RoleListInterface,
+    RolePropertyInterface,
     RolesInterface
 } from "@wso2is/core/models";
 import {
@@ -85,7 +86,6 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
 
     const {
         handleRoleDelete,
-        isSubOrg,
         onEmptyListPlaceholderActionClick,
         onSearchQueryClear,
         roleList,
@@ -168,7 +168,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
             return (
                 <EmptyPlaceholder
                     data-componentid={ `${ componentId }-empty-list-empty-placeholder` }
-                    action={ !isSubOrg && (
+                    action={ (
                         <Show when={ featureConfig?.userRoles?.scopes?.create }>
                             <PrimaryButton
                                 data-componentid={ `${ componentId }-empty-list-empty-placeholder-add-button` }
@@ -182,21 +182,16 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ !isSubOrg && t("roles:list.emptyPlaceholders.emptyRoleList.title",
+                    title={ t("roles:list.emptyPlaceholders.emptyRoleList.title",
                         { type: "role" }) }
-                    subtitle={ isSubOrg
-                        ? [
-                            t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.0",
-                                { type: "roles" })
-                        ]
-                        : [
-                            t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.0",
-                                { type: "roles" }),
-                            t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.1",
-                                { type: "role" }),
-                            t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.2",
-                                { type: "role" })
-                        ]
+                    subtitle={ [
+                        t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.0",
+                            { type: "roles" }),
+                        t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.1",
+                            { type: "role" }),
+                        t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.2",
+                            { type: "role" })
+                    ]
                     }
                 />
             );
@@ -215,30 +210,44 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 dataIndex: "name",
                 id: "name",
                 key: "name",
-                render: (role: RolesInterface): ReactNode => (
-                    <Header
-                        image
-                        as="h6"
-                        className="header-with-icon"
-                        data-componentid={ `${ componentId }-item-heading` }
-                    >
-                        <AppAvatar
-                            image={ (
-                                <AnimatedAvatar
-                                    name={ role?.displayName[ 0 ] }
-                                    size="mini"
-                                    data-componentid={ `${ componentId }-item-image-inner` }
-                                />
-                            ) }
-                            size="mini"
-                            spaced="right"
-                            data-componentid={ `${ componentId }-item-image` }
-                        />
-                        <Header.Content>
-                            { role?.displayName }
-                        </Header.Content>
-                    </Header>
-                ),
+                render: (role: RolesInterface): ReactNode => {
+                    const isSharedRole: boolean = role?.properties?.some(
+                        (property: RolePropertyInterface) =>
+                            property?.name === RoleConstants.IS_SHARED_ROLE &&
+                        property?.value === "true");
+
+                    return (
+                        <Header
+                            image
+                            as="h6"
+                            className="header-with-icon"
+                            data-componentid={ `${ componentId }-item-heading` }
+                        >
+                            <AppAvatar
+                                image={ (
+                                    <AnimatedAvatar
+                                        name={ role?.displayName[ 0 ] }
+                                        size="mini"
+                                        data-componentid={ `${ componentId }-item-image-inner` }
+                                    />
+                                ) }
+                                size="mini"
+                                spaced="right"
+                                data-componentid={ `${ componentId }-item-image` }
+                            />
+                            <Header.Content>
+                                { role?.displayName }
+                                {
+                                    isSharedRole && (
+                                        <Label size="mini">
+                                            { t("roles:list.labels.shared") }
+                                        </Label>
+                                    )
+                                }
+                            </Header.Content>
+                        </Header>
+                    );
+                },
                 title: t("roles:list.columns.name")
             },
             {
@@ -296,8 +305,10 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
             },
             {
                 hidden: (role: RolesInterface) => {
-                    return isSubOrg
-                    || role?.meta?.systemRole
+                    const isSharedRole: boolean = role?.properties?.some((property: RolePropertyInterface) =>
+                        property?.name === RoleConstants.IS_SHARED_ROLE && property?.value === "true");
+
+                    return role?.meta?.systemRole
                     || (
                         role?.displayName === CommonRoleConstants.ADMIN_ROLE ||
                         role?.displayName === CommonRoleConstants.ADMIN_GROUP ||
@@ -306,7 +317,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     || !isFeatureEnabled(userRolesFeatureConfig,
                         RoleConstants.FEATURE_DICTIONARY.get("ROLE_DELETE"))
                     || !hasRequiredScopes(userRolesFeatureConfig,
-                        userRolesFeatureConfig?.scopes?.delete, allowedScopes);
+                        userRolesFeatureConfig?.scopes?.delete, allowedScopes)
+                    || isSharedRole;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {
