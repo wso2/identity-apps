@@ -91,6 +91,7 @@
             String SELF_REGISTRATION_WITH_VERIFICATION_PAGE = "self-registration-with-verification.jsp";
             String SELF_REGISTRATION_WITHOUT_VERIFICATION_PAGE = "* self-registration-without-verification.jsp";
             String passwordPatternErrorCode = "20035";
+            String invalidCharErrorCode = "20067";
             String AUTO_LOGIN_COOKIE_NAME = "ALOR";
             String AUTO_LOGIN_COOKIE_DOMAIN = "AutoLoginCookieDomain";
             String AUTO_LOGIN_FLOW_TYPE = "SIGNUP";
@@ -266,7 +267,7 @@
             } catch (Exception e) {
                 IdentityManagementEndpointUtil.addErrorInformation(request, e);
                 String errorCode = (String) request.getAttribute("errorCode");
-                if (passwordPatternErrorCode.equals(errorCode)) {
+                if (passwordPatternErrorCode.equals(errorCode) || invalidCharErrorCode.equals(errorCode)) {
                     String i18Resource = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, errorCode);
                     if (!i18Resource.equals(errorCode)) {
                         request.setAttribute(ERROR_MESSAGE, i18Resource);
