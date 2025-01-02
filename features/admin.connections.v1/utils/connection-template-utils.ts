@@ -287,7 +287,8 @@ export const groupConnectionTemplates = (
         if (group.id === ConnectionUIConstants.CONNECTION_TEMPLATE_GROUPS.CUSTOM_AUTHENTICATION) {
             const subTemplateIds: string[] = [
                 CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXTERNAL_CUSTOM_AUTHENTICATION,
-                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATION
+                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATION,
+                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATION
             ];
 
             updatedGroup.subTemplates = _templates
