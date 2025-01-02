@@ -45,11 +45,10 @@ export interface CommonComponentPropertyFactoryPropsInterface extends Identifiab
     /**
      * The event handler for the property change.
      * @param propertyKey - The key of the property.
-     * @param previousValue - The previous value of the property.
      * @param newValue - The new value of the property.
      * @param element - The element associated with the property.
      */
-    onChange: (propertyKey: string, previousValue: any, newValue: any, element: Element) => void;
+    onChange: (propertyKey: string, newValue: any, element: Element) => void;
 }
 
 /**
@@ -74,10 +73,10 @@ const CommonComponentPropertyFactory: FunctionComponent<CommonComponentPropertyF
     if (typeof propertyValue === "boolean") {
         return (
             <FormControlLabel
-                control={ <Checkbox /> }
+                control={ <Checkbox defaultChecked={ propertyValue } /> }
                 label={ startCase(propertyKey) }
                 onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                    onChange(propertyKey, propertyValue, e.target.checked, element)
+                    onChange(`config.field.${propertyKey}`, e.target.checked, element)
                 }
                 data-componentid={ `${componentId}-${propertyKey}` }
             />
@@ -91,7 +90,7 @@ const CommonComponentPropertyFactory: FunctionComponent<CommonComponentPropertyF
                 label={ startCase(propertyKey) }
                 defaultValue={ propertyValue }
                 onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                    onChange(propertyKey, propertyValue, e.target.value, element)
+                    onChange(`config.field.${propertyKey}`, e.target.value, element)
                 }
                 data-componentid={ `${componentId}-${propertyKey}` }
             />

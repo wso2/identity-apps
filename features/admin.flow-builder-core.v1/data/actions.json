@@ -1,0 +1,107 @@
+[
+    {
+        "category": "NAVIGATION",
+        "display": {
+            "label": "Navigation",
+            "image": ""
+        },
+        "types": [
+            {
+                "type": "NEXT",
+                "display": {
+                    "label": "Next",
+                    "image": "https://www.svgrepo.com/show/305382/arrowhead-right-outline.svg",
+                    "defaultVariant": "PRIMARY"
+                }
+            },
+            {
+                "type": "PREVIOUS",
+                "display": {
+                    "label": "Previous",
+                    "image": "https://www.svgrepo.com/show/305384/arrowhead-left-outline.svg",
+                    "defaultVariant": "SECONDARY"
+                }
+            }
+        ]
+    },
+    {
+        "category": "VERIFICATION",
+        "display": {
+            "label": "Verification",
+            "image": ""
+        },
+        "types": [
+            {
+                "type": "NEXT",
+                "meta": {
+                    "actionType": "VERIFICATION"
+                },
+                "display": {
+                    "label": "Verify OTP",
+                    "image": "https://www.svgrepo.com/show/497630/verify.svg",
+                    "defaultVariant": "PRIMARY"
+                }
+            }
+        ]
+    },
+    {
+        "category": "ONBOARDING",
+        "display": {
+            "label": "Onboarding",
+            "image": ""
+        },
+        "types": [
+            {
+                "type": "EXECUTOR",
+                "executors": [
+                    {
+                        "name": "PasswordOnboarder"
+                    }
+                ],
+                "display": {
+                    "label": "Onboard Password",
+                    "image": "https://www.svgrepo.com/show/526627/password.svg",
+                    "defaultVariant": "PRIMARY"
+                }
+            },
+            {
+                "type": "EXECUTOR",
+                "executors": [
+                    {
+                        "name": "EmailOTPVerifier"
+                    }
+                ],
+                "display": {
+                    "label": "Onboard Email",
+                    "image": "https://www.svgrepo.com/show/479622/email-18.svg",
+                    "defaultVariant": "PRIMARY"
+                }
+            }
+        ]
+    },
+    {
+        "category": "SOCIAL",
+        "display": {
+            "label": "Social",
+            "image": ""
+        },
+        "types": [
+            {
+                "type": "EXECUTOR",
+                "executors": [
+                    {
+                        "name": "GoogleOIDCAuthenticator",
+                        "meta": {
+                            "idp": "Google"
+                        }
+                    }
+                ],
+                "display": {
+                    "label": "Continue with Google Sign Up",
+                    "image": "https://www.svgrepo.com/show/475656/google-color.svg",
+                    "defaultVariant": "SOCIAL"
+                }
+            }
+        ]
+    }
+]

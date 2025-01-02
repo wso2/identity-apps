@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import Typography from "@oxygen-ui/react/Typography";
+import Typography, { TypographyProps } from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Component } from "../../../../models/component";
+import { Component, TypographyVariants } from "../../../../models/component";
 
 /**
  * Props interface of {@link TypographyAdapter}
@@ -43,13 +43,28 @@ export interface TypographyAdapterPropsInterface extends IdentifiableComponentIn
  */
 export const TypographyAdapter: FunctionComponent<TypographyAdapterPropsInterface> = ({
     node
-}: TypographyAdapterPropsInterface): ReactElement => (
-    <Typography
-        variant={ node?.variant.toLowerCase() }
-        style={ node?.config?.styles }
-    >
-        { node?.config?.field?.text }
-    </Typography>
-);
+}: TypographyAdapterPropsInterface): ReactElement => {
+    let config: TypographyProps = {};
+
+    if (
+        node?.variant === TypographyVariants.H1 ||
+        node?.variant === TypographyVariants.H2 ||
+        node?.variant === TypographyVariants.H3 ||
+        node?.variant === TypographyVariants.H4 ||
+        node?.variant === TypographyVariants.H5 ||
+        node?.variant === TypographyVariants.H6
+    ) {
+        config = {
+            ...config,
+            textAlign: "center"
+        };
+    }
+
+    return (
+        <Typography variant={ node?.variant.toLowerCase() } style={ node?.config?.styles } { ...config }>
+            { node?.config?.field?.text }
+        </Typography>
+    );
+};
 
 export default TypographyAdapter;

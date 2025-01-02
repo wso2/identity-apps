@@ -193,6 +193,8 @@ export const Step: FunctionComponent<StepPropsInterface> = ({
                                                 ) }
                                                 onClick={ () => setLastInteractedElement(component) }
                                                 { ...otherDragItemProps }
+                                                // TODO: Fix this. Temporary fix to prevent dragging issues.
+                                                draggable={ false }
                                             >
                                                 <div className="flow-builder-step-content-form-field-drag-handle">
                                                     <GridDotsVerticalIcon height={ 20 } />
@@ -209,7 +211,6 @@ export const Step: FunctionComponent<StepPropsInterface> = ({
                     </Box>
                 </Paper>
             </Box>
-            <Handle type="source" position={ Position.Right } id="a" />
         </div>
     );
 };

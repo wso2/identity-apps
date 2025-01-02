@@ -16,19 +16,23 @@
  * under the License.
  */
 
-.droppable-container {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+import { Edge } from "@xyflow/react";
+import { FC } from "react";
+import SocialConnectionEdge, {
+    SocialConnectionEdgeKey
+} from "../components/react-flow-overrides/social-connection-edge";
 
-    .draggable-item {
-        cursor: grab;
-        transition: transform 0.2s, background 0.2s;
+/**
+ * Returns a mapping of known edge types.
+ *
+ * @returns An object with edge type identifiers.
+ */
+const getKnownEdgeTypes = (): {
+    [key: string]: FC<Edge>;
+} => {
+    return {
+        [SocialConnectionEdgeKey]: SocialConnectionEdge
+    };
+};
 
-        &:active {
-            background: #f9f9f9;
-            cursor: grabbing;
-            // transform: scale(1.03);
-        }
-    }
-}
+export default getKnownEdgeTypes;

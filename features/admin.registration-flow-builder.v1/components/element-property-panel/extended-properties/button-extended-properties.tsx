@@ -16,19 +16,30 @@
  * under the License.
  */
 
-import FormControl from "@oxygen-ui/react/FormControl";
-import Select from "@oxygen-ui/react/Select";
+import Avatar from "@oxygen-ui/react/Avatar";
+import Box from "@oxygen-ui/react/Box";
+import Card from "@oxygen-ui/react/Card";
+import CardContent from "@oxygen-ui/react/CardContent";
+import Grid from "@oxygen-ui/react/Grid";
 import Stack from "@oxygen-ui/react/Stack";
+import Typography from "@oxygen-ui/react/Typography";
+import {
+    CommonElementPropertiesPropsInterface
+} from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/element-properties";
 // eslint-disable-next-line max-len
-import { CommonComponentPropertyFactoryPropsInterface } from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/common-component-property-factory";
+import useAuthenticationFlowBuilderCore from "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+import { Action, ActionType } from "@wso2is/admin.flow-builder-core.v1/models/actions";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useState } from "react";
-import { RegistrationFlowActionTypes } from "../../../models/actions";
+import classNames from "classnames";
+import isEqual from "lodash-es/isEqual";
+import React, { FunctionComponent, ReactElement } from "react";
+import useGetRegistrationFlowCoreActions from "../../../api/use-get-registration-flow-builder-actions";
+import "./button-extended-properties.scss";
 
 /**
  * Props interface of {@link ButtonExtendedProperties}
  */
-export type ButtonExtendedPropertiesPropsInterface = CommonComponentPropertyFactoryPropsInterface &
+export type ButtonExtendedPropertiesPropsInterface = CommonElementPropertiesPropsInterface &
     IdentifiableComponentInterface;
 
 /**
@@ -38,22 +49,89 @@ export type ButtonExtendedPropertiesPropsInterface = CommonComponentPropertyFact
  * @returns The ButtonExtendedProperties component.
  */
 const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsInterface> = ({
-    "data-componentid": componentId = "button-extended-properties"
+    "data-componentid": componentId = "button-extended-properties",
+    element,
+    onChange,
+    onVariantChange
 }: ButtonExtendedPropertiesPropsInterface): ReactElement => {
-    const [ selectedActionType ] = useState<RegistrationFlowActionTypes>(null);
+    const { data: actions } = useGetRegistrationFlowCoreActions();
+    const { lastInteractedElement, setLastInteractedElement } = useAuthenticationFlowBuilderCore();
 
     return (
-        <Stack gap={ 2 } data-componentid={ componentId }>
-            <FormControl size="small" variant="outlined">
-                <Select
-                    labelId="action-type-select-label"
-                    id="action-type-selector"
-                    value={ selectedActionType }
-                    label="Action Type"
-                    placeholder="Select an action type"
-                >
-                </Select>
-            </FormControl>
+        <Stack className="button-extended-properties" gap={ 2 } data-componentid={ componentId }>
+            <div>
+                <Typography variant="h6">Action Type</Typography>
+                { actions?.map((action: Action, index: number) => (
+                    <Box key={ index }>
+                        <Typography className="button-extended-properties-sub-heading" variant="body1">
+                            { action?.display?.label }
+                        </Typography>
+                        <Grid container spacing={ 1 }>
+                            { action.types?.map((actionType: ActionType, typeIndex: number) => (
+                                <Grid
+                                    key={ typeIndex }
+                                    xs={ 6 }
+                                    onClick={ () => {
+                                        onVariantChange(actionType?.display?.defaultVariant);
+
+                                        onChange(
+                                            "meta",
+                                            {
+                                                executors: actionType?.executors,
+                                                meta: actionType?.meta,
+                                                name: actionType?.name,
+                                                type: actionType?.type
+                                            },
+                                            element
+                                        );
+
+                                        setLastInteractedElement({
+                                            ...lastInteractedElement,
+                                            meta: {
+                                                executors: actionType?.executors,
+                                                meta: actionType?.meta,
+                                                name: actionType?.name,
+                                                type: actionType?.type
+                                            },
+                                            variant: actionType?.display?.defaultVariant
+                                        });
+                                    } }
+                                >
+                                    <Card
+                                        className={ classNames("extended-property action-type", {
+                                            selected: isEqual({
+                                                executors: element?.meta?.executors,
+                                                meta: element?.meta?.meta,
+                                                name: element?.meta?.name,
+                                                type: element?.meta?.type
+                                            }, {
+                                                executors: actionType?.executors,
+                                                meta: actionType?.meta,
+                                                name: actionType?.name,
+                                                type: actionType?.type
+                                            })
+                                        }) }
+                                        variant="outlined"
+                                    >
+                                        <CardContent>
+                                            <Box display="flex" flexDirection="row" gap={ 1 } alignItems="center">
+                                                <Avatar
+                                                    className="action-type-icon"
+                                                    src={ actionType?.display?.image }
+                                                    variant="rounded"
+                                                />
+                                                <Typography variant="body2" className="action-type-name">
+                                                    { actionType?.display?.label }
+                                                </Typography>
+                                            </Box>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            )) }
+                        </Grid>
+                    </Box>
+                )) }
+            </div>
         </Stack>
     );
 };

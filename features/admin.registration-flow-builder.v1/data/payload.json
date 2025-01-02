@@ -36,7 +36,12 @@
                 {
                     "id": "flow-action-password-onboarder-p563u9Yn",
                     "action": {
-                        "type": "NEXT"
+                        "type": "EXECUTOR",
+                        "executors": [
+                            {
+                                "name": "PasswordOnboarder"
+                            }
+                        ]
                     },
                     "next": [
                         "flow-node-2"
@@ -45,7 +50,12 @@
                 {
                     "id": "flow-action-email-otp-verifier-5t8uJ6D3",
                     "action": {
-                        "type": "NEXT"
+                        "type": "EXECUTOR",
+                        "executors": [
+                            {
+                                "name": "EmailOTPVerifier"
+                            }
+                        ]
                     },
                     "next": [
                         "flow-node-3"
@@ -55,7 +65,14 @@
                     "id": "flow-action-google-sign-up-Rt8uJ6D3",
                     "action": {
                         "type": "EXECUTOR",
-                        "name": "GoogleSignUp"
+                        "executors": [
+                            {
+                                "name": "GoogleOIDCAuthenticator",
+                                "meta": {
+                                    "idp": "Google"
+                                }
+                            }
+                        ]
                     },
                     "next": [
                         "flow-node-5"
@@ -74,8 +91,10 @@
                 {
                     "id": "flow-action-next-ggh688op",
                     "action": {
-                        "type": "EXECUTOR",
-                        "name": "PasswordOnboarder"
+                        "type": "NEXT",
+                        "meta": {
+                            "actionType": "CREDENTIAL_ONBOARDING"
+                        }
                     },
                     "next": [
                         "flow-node-5"
@@ -103,8 +122,10 @@
                 {
                     "id": "flow-action-next-tyG3hp31",
                     "action": {
-                        "type": "EXECUTOR",
-                        "name": "EmailOTPVerifier"
+                        "type": "NEXT",
+                        "meta": {
+                            "actionType": "ATTRIBUTE_COLLECTION"
+                        }
                     },
                     "next": [
                         "flow-node-4"
@@ -162,8 +183,11 @@
                 {
                     "id": "flow-action-done-5t8uJ6D3",
                     "action": {
-                        "type": "DONE"
-                    }
+                        "type": "NEXT"
+                    },
+                    "next": [
+                        "COMPLETE"
+                    ]
                 }
             ]
         }
@@ -171,8 +195,7 @@
     "blocks": [
         {
             "id": "flow-block-attributes-g55dfGuK",
-            "nodes": [
-                "flow-field-email-Rt8uJ6D3",
+            "elements": [
                 "flow-field-username-F6D3t8uJ",
                 "flow-field-first-name-r7u4F1GG",
                 "flow-field-last-name-r7u4F1GG",
@@ -184,21 +207,21 @@
         },
         {
             "id": "flow-block-attributes-53fdsfsp",
-            "nodes": [
+            "elements": [
                 "flow-field-email-Rt8uJ6D3",
                 "flow-action-next-tyG3hp31"
             ]
         },
         {
             "id": "flow-block-attributes-45owsew2",
-            "nodes": [
+            "elements": [
                 "flow-field-otp-mn44gh0j",
                 "flow-action-verify-otp-ssd5g6h"
             ]
         },
         {
             "id": "flow-block-attributes-osld3343",
-            "nodes": [
+            "elements": [
                 "flow-field-password-HK8uJ903",
                 "flow-field-confirm-password-GH63t78g",
                 "flow-action-next-ggh688op"
@@ -206,7 +229,7 @@
         },
         {
             "id": "flow-block-attributes-er203owe",
-            "nodes": [
+            "elements": [
                 "flow-field-nic-RR342gr",
                 "flow-action-done-5t8uJ6D3"
             ]
@@ -221,11 +244,7 @@
             "variant": "H3",
             "config": {
                 "field": {
-                    "className": "wso2is-typography h3",
                     "text": "Register Account"
-                },
-                "styles": {
-                    "textAlign": "center"
                 }
             }
         },
@@ -238,18 +257,12 @@
             "config": {
                 "field": {
                     "type": "text",
-                    "name": "username",
-                    "className": "wso2is-input text",
+                    "name": "http://wso2.org/claims/username",
                     "hint": "",
                     "label": "Username",
                     "required": true,
-                    "multiline": false,
-                    "placeholder": "Enter your username",
-                    "defaultValue": "",
-                    "minLength": 3,
-                    "maxLength": 50
-                },
-                "styles": {}
+                    "placeholder": "Enter your username"
+                }
             }
         },
         {
@@ -261,18 +274,12 @@
             "config": {
                 "field": {
                     "type": "text",
-                    "name": "firstName",
-                    "className": "wso2is-input text",
+                    "name": "http://wso2.org/claims/givenname",
                     "hint": "",
                     "label": "First Name",
                     "required": true,
-                    "multiline": false,
-                    "placeholder": "Enter your first name",
-                    "defaultValue": "",
-                    "minLength": 3,
-                    "maxLength": 50
-                },
-                "styles": {}
+                    "placeholder": "Enter your first name"
+                }
             }
         },
         {
@@ -284,18 +291,12 @@
             "config": {
                 "field": {
                     "type": "text",
-                    "name": "lastName",
-                    "className": "wso2is-input text",
+                    "name": "http://wso2.org/claims/lastname",
                     "hint": "",
                     "label": "Last Name",
                     "required": true,
-                    "multiline": false,
-                    "placeholder": "Enter your last name",
-                    "defaultValue": "",
-                    "minLength": 3,
-                    "maxLength": 50
-                },
-                "styles": {}
+                    "placeholder": "Enter your last name"
+                }
             }
         },
         {
@@ -307,16 +308,12 @@
             "config": {
                 "field": {
                     "type": "date",
-                    "name": "dob",
-                    "className": "wso2is-input date",
+                    "name": "http://wso2.org/claims/dob",
                     "hint": "",
-                    "label": "Birth Date",
+                    "label": "Date of Birth",
                     "required": false,
-                    "multiline": false,
-                    "placeholder": "Enter your birth date",
-                    "defaultValue": ""
-                },
-                "styles": {}
+                    "placeholder": "Enter your date of birth"
+                }
             }
         },
         {
@@ -328,11 +325,7 @@
             "config": {
                 "field": {
                     "type": "submit",
-                    "className": "wso2is-button",
                     "text": "Continue with Password"
-                },
-                "styles": {
-                    "width": "100%"
                 }
             }
         },
@@ -344,10 +337,8 @@
             "variant": "HORIZONTAL",
             "config": {
                 "field": {
-                    "className": "wso2is-divider-horizontal",
                     "text": "Or"
-                },
-                "styles": {}
+                }
             }
         },
         {
@@ -359,13 +350,8 @@
             "variant": "PRIMARY",
             "config": {
                 "field": {
-                    "action": "EmailOTPVerifier",
                     "type": "submit",
-                    "className": "wso2is-button",
-                    "label": "Continue with Email OTP"
-                },
-                "styles": {
-                    "width": "100%"
+                    "text": "Continue with Email OTP"
                 }
             }
         },
@@ -377,10 +363,8 @@
             "variant": "HORIZONTAL",
             "config": {
                 "field": {
-                    "className": "wso2is-divider-horizontal",
                     "text": "Or"
-                },
-                "styles": {}
+                }
             }
         },
         {
@@ -389,16 +373,11 @@
             "type": "BUTTON",
             "version": "0.1.0",
             "deprecated": false,
-            "variant": "SOCIAL_BUTTON",
+            "variant": "SOCIAL",
             "config": {
                 "field": {
-                    "action": "GoogleSignUp",
                     "type": "button",
-                    "className": "wso2is-social-button",
-                    "label": "Continue with Google Sign Up"
-                },
-                "styles": {
-                    "width": "100%"
+                    "text": "Continue with Google Sign Up"
                 }
             }
         },
@@ -410,11 +389,7 @@
             "variant": "H3",
             "config": {
                 "field": {
-                    "className": "wso2is-typography h3",
                     "text": "Enter Password"
-                },
-                "styles": {
-                    "textAlign": "center"
                 }
             }
         },
@@ -428,13 +403,107 @@
                 "field": {
                     "type": "password",
                     "name": "password",
-                    "className": "wso2is-input password",
                     "hint": "",
                     "label": "Password",
                     "required": true,
                     "multiline": false,
                     "placeholder": "Enter your password",
-                    "defaultValue": ""
+                    "defaultValue": "",
+                    "validation": [
+                        {
+                            "type": "CRITERIA",
+                            "showValidationCriteria": true,
+                            "criteria": [
+                                {
+                                    "label": "sign.up.form.fields.password.policies.length",
+                                    "error": "This field must be between 5 and 10 characters.",
+                                    "validation": [
+                                        {
+                                            "type": "MIN_LENGTH",
+                                            "value": 5,
+                                            "error": "This field must be at least 5 characters."
+                                        },
+                                        {
+                                            "type": "MAX_LENGTH",
+                                            "value": 10,
+                                            "error": "This field must be at most 10 characters."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "sign.up.form.fields.password.policies.lowercaseAndUppercaseLetter",
+                                    "error": "This field must have at least one uppercase and lowercase letter.",
+                                    "validation": [
+                                        {
+                                            "type": "MIN_LOWERCASE_LETTERS",
+                                            "value": 1,
+                                            "error": "Password must contain at least one lowercase letter."
+                                        },
+                                        {
+                                            "type": "MIN_UPPERCASE_LETTERS",
+                                            "value": 1,
+                                            "error": "Password must contain at least one uppercase letter."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "sign.up.form.fields.password.policies.minimumOneNumber",
+                                    "error": "This field must have at least one number.",
+                                    "validation": [
+                                        {
+                                            "type": "MIN_NUMBERS",
+                                            "value": 1,
+                                            "error": "Password must contain at least one number."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "sign.up.form.fields.password.policies.minimumOneSpecialCharacter",
+                                    "error": "This field must have at least one special character.",
+                                    "validation": [
+                                        {
+                                            "type": "MIN_SPECIAL_CHARACTERS",
+                                            "value": 1,
+                                            "error": "Password must contain at least one special character."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "sign.up.form.fields.password.policies.minimumOneSpecialCharacter",
+                                    "error": "This field must have at least one special character.",
+                                    "validation": [
+                                        {
+                                            "type": "MIN_SPECIAL_CHARACTERS",
+                                            "value": 1,
+                                            "error": "Password must contain at least one special character."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "sign.up.form.fields.password.policies.minimumOneUniqueCharacter",
+                                    "error": "This field must have at least one unique character.",
+                                    "validation": [
+                                        {
+                                            "type": "MIN_UNIQUE_CHARACTERS",
+                                            "value": 1,
+                                            "error": "Password must contain at least one unique character."
+                                        }
+                                    ]
+                                },
+                                {
+                                    "label": "sign.up.form.fields.password.policies.noRepeatedCharacters",
+                                    "error": "This field must not have repeated characters.",
+                                    "validation": [
+                                        {
+                                            "type": "MAX_REPEATED_CHARACTERS",
+                                            "value": 0,
+                                            "error": "Password must not contain repeated characters."
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 },
                 "styles": {}
             }
@@ -449,15 +518,11 @@
                 "field": {
                     "type": "password",
                     "name": "confirmPassword",
-                    "className": "wso2is-input password",
                     "hint": "",
                     "label": "Confirm Password",
                     "required": true,
-                    "multiline": false,
-                    "placeholder": "Re-enter your password",
-                    "defaultValue": ""
-                },
-                "styles": {}
+                    "placeholder": "Re-enter your password"
+                }
             }
         },
         {
@@ -469,27 +534,19 @@
             "config": {
                 "field": {
                     "type": "submit",
-                    "className": "wso2is-button",
                     "text": "Next"
-                },
-                "styles": {
-                    "width": "100%"
                 }
             }
         },
         {
-            "id": "flow-display-header-hj6t4D3",
+            "id": "flow-display-header-rg6pwt0",
             "category": "DISPLAY",
             "type": "TYPOGRAPHY",
             "version": "0.1.0",
             "variant": "H3",
             "config": {
                 "field": {
-                    "className": "wso2is-typography h3",
                     "text": "Enter Email"
-                },
-                "styles": {
-                    "textAlign": "center"
                 }
             }
         },
@@ -502,16 +559,12 @@
             "config": {
                 "field": {
                     "type": "email",
-                    "name": "email",
-                    "className": "wso2is-input email",
+                    "name": "http://wso2.org/claims/emailaddress",
                     "hint": "",
                     "label": "Email",
                     "required": true,
-                    "multiline": false,
-                    "placeholder": "Enter your email address",
-                    "defaultValue": ""
-                },
-                "styles": {}
+                    "placeholder": "Enter your email address"
+                }
             }
         },
         {
@@ -523,11 +576,7 @@
             "config": {
                 "field": {
                     "type": "submit",
-                    "className": "wso2is-button",
                     "text": "Continue"
-                },
-                "styles": {
-                    "width": "100%"
                 }
             }
         },
@@ -540,11 +589,7 @@
             "config": {
                 "field": {
                     "type": "submit",
-                    "className": "wso2is-button",
                     "text": "Go back"
-                },
-                "styles": {
-                    "width": "100%"
                 }
             }
         },
@@ -556,11 +601,7 @@
             "variant": "H3",
             "config": {
                 "field": {
-                    "className": "wso2is-typography h3",
                     "text": "OTP Verification"
-                },
-                "styles": {
-                    "textAlign": "center"
                 }
             }
         },
@@ -573,16 +614,12 @@
             "config": {
                 "field": {
                     "type": "text",
-                    "name": "otp",
-                    "className": "wso2is-input otp",
+                    "name": "email-otp",
                     "hint": "",
                     "label": "OTP",
                     "required": true,
-                    "multiline": false,
-                    "placeholder": "Enter the OTP",
-                    "defaultValue": ""
-                },
-                "styles": {}
+                    "placeholder": "Enter the OTP"
+                }
             }
         },
         {
@@ -594,11 +631,7 @@
             "config": {
                 "field": {
                     "type": "submit",
-                    "className": "wso2is-button",
                     "text": "Continue"
-                },
-                "styles": {
-                    "width": "100%"
                 }
             }
         },
@@ -611,11 +644,7 @@
             "config": {
                 "field": {
                     "type": "submit",
-                    "className": "wso2is-button",
                     "text": "Go back"
-                },
-                "styles": {
-                    "width": "100%"
                 }
             }
         },
@@ -627,11 +656,7 @@
             "variant": "H3",
             "config": {
                 "field": {
-                    "className": "wso2is-typography h3",
                     "text": "Enter Personal Details"
-                },
-                "styles": {
-                    "textAlign": "center"
                 }
             }
         },
@@ -644,16 +669,12 @@
             "config": {
                 "field": {
                     "type": "text",
-                    "name": "nic",
-                    "className": "wso2is-text-input",
+                    "name": "http://wso2.org/claims/im",
                     "hint": "",
                     "label": "NIC",
                     "required": true,
-                    "multiline": false,
-                    "placeholder": "Enter your national identity card number",
-                    "defaultValue": ""
-                },
-                "styles": {}
+                    "placeholder": "Enter your national identity card number"
+                }
             }
         },
         {
@@ -666,11 +687,7 @@
             "config": {
                 "field": {
                     "type": "submit",
-                    "className": "wso2is-button",
-                    "label": "Done"
-                },
-                "styles": {
-                    "width": "100%"
+                    "text": "Done"
                 }
             }
         }

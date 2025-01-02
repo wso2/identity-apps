@@ -16,25 +16,40 @@
  * under the License.
  */
 
-import FormControl from "@oxygen-ui/react/FormControl";
-import MenuItem from "@oxygen-ui/react/MenuItem";
-import Select from "@oxygen-ui/react/Select";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useReactFlow } from "@xyflow/react";
-import capitalize from "lodash-es/capitalize";
-import isEmpty from "lodash-es/isEmpty";
-import React, { ChangeEvent, FunctionComponent, HTMLAttributes, ReactElement } from "react";
+import merge from "lodash-es/merge";
+import set from "lodash-es/set";
+import React, { FunctionComponent, ReactElement } from "react";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
-import { Base } from "../../models/base";
+import { Properties } from "../../models/base";
 import { Component } from "../../models/component";
 import { Element } from "../../models/elements";
 
 /**
  * Props interface of {@link ElementProperties}
  */
-export type ElementPropertiesPropsInterface = IdentifiableComponentInterface & HTMLAttributes<HTMLDivElement>;
+export type CommonElementPropertiesPropsInterface = IdentifiableComponentInterface & {
+    properties?: Properties;
+    /**
+     * The element associated with the property.
+     */
+    element: Element;
+    /**
+     * The event handler for the property change.
+     * @param propertyKey - The key of the property.
+     * @param newValue - The new value of the property.
+     * @param element - The element associated with the property.
+     */
+    onChange: (propertyKey: string, newValue: any, element: Element) => void;
+    /**
+     * The event handler for the variant change.
+     * @param variant - The variant of the element.
+     */
+    onVariantChange?: (variant: string) => void;
+};
 
 /**
  * Component to generate the properties panel for the selected element.
@@ -42,10 +57,9 @@ export type ElementPropertiesPropsInterface = IdentifiableComponentInterface & H
  * @param props - Props injected to the component.
  * @returns The ElementProperties component.
  */
-const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
-    "data-componentid": componentId = "element-properties",
-    ...rest
-}: ElementPropertiesPropsInterface): ReactElement => {
+const ElementProperties: FunctionComponent<Partial<CommonElementPropertiesPropsInterface>> = ({
+    "data-componentid": componentId = "element-properties"
+}: Partial<CommonElementPropertiesPropsInterface>): ReactElement => {
     const { updateNodeData } = useReactFlow();
     const {
         lastInteractedElement,
@@ -53,8 +67,6 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
         ElementProperties,
         lastInteractedNodeId
     } = useAuthenticationFlowBuilderCore();
-
-    const hasVariants: boolean = !isEmpty(lastInteractedElement?.variants);
 
     const changeSelectedVariant = (selected: string) => {
         const selectedVariant: Component = lastInteractedElement?.variants?.find(
@@ -64,19 +76,13 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
         updateNodeData(lastInteractedNodeId, (node: any) => {
             const components: Component = node?.data?.components?.map((component: any) => {
                 if (component.id === lastInteractedElement.id) {
-                    return {
-                        ...component,
-                        ...selectedVariant
-                    };
+                    return merge(component, selectedVariant);
                 }
 
                 return component;
             });
 
-            setLastInteractedElement({
-                ...lastInteractedElement,
-                ...selectedVariant
-            });
+            setLastInteractedElement(merge(lastInteractedElement, selectedVariant));
 
             return {
                 components
@@ -84,11 +90,11 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
         });
     };
 
-    const handlePropertyChange = (propertyKey: string, previousValue: any, newValue: any, element: Element) => {
+    const handlePropertyChange = (propertyKey: string, newValue: any, element: Element) => {
         updateNodeData(lastInteractedNodeId, (node: any) => {
             const components: Component = node?.data?.components?.map((component: any) => {
                 if (component.id === element.id) {
-                    component.config.field[propertyKey] = newValue;
+                    set(component, propertyKey, newValue);
                 }
 
                 return component;
@@ -101,33 +107,15 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
     };
 
     return (
-        <div className="flow-builder-element-properties" data-componentid={ componentId } { ...rest }>
+        <div className="flow-builder-element-properties" data-componentid={ componentId }>
             { lastInteractedElement ? (
                 <Stack gap={ 1 }>
-                    { hasVariants && (
-                        <FormControl size="small" variant="outlined">
-                            <Select
-                                labelId={ `${lastInteractedElement?.variant}-variants` }
-                                id={ `${lastInteractedElement?.variant}-variants` }
-                                value={ lastInteractedElement?.variant }
-                                label="variant"
-                                onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                                    changeSelectedVariant(e.target.value as string)
-                                }
-                            >
-                                { lastInteractedElement?.variants?.map((element: Base) => (
-                                    <MenuItem key={ element?.variant } value={ element?.variant }>
-                                        { capitalize(element?.display?.label) }
-                                    </MenuItem>
-                                )) }
-                            </Select>
-                        </FormControl>
-                    ) }
                     { lastInteractedElement && (
                         <ElementProperties
                             element={ lastInteractedElement }
                             properties={ lastInteractedElement?.config?.field }
                             onChange={ handlePropertyChange }
+                            onVariantChange={ changeSelectedVariant }
                         />
                     ) }
                 </Stack>
