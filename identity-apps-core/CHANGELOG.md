@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.8.10
+
+### Patch Changes
+
+- [#7223](https://github.com/wso2/identity-apps/pull/7223) [`1664078748a9b89cbe3b1ac8d41b6c3f718efe9b`](https://github.com/wso2/identity-apps/commit/1664078748a9b89cbe3b1ac8d41b6c3f718efe9b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a null check for the username field value
+
 ## 2.8.9
 
 ### Patch Changes
