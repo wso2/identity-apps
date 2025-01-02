@@ -1,5 +1,25 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.4.64
+
+### Patch Changes
+
+- Updated dependencies [[`d4b2298353d0184ac77d5be3b0a7676a8e94e004`](https://github.com/wso2/identity-apps/commit/d4b2298353d0184ac77d5be3b0a7676a8e94e004)]:
+  - @wso2is/admin.core.v1@2.35.2
+  - @wso2is/admin.applications.v1@2.30.64
+  - @wso2is/admin.template-core.v1@1.5.18
+
+## 1.4.63
+
+### Patch Changes
+
+- [#7237](https://github.com/wso2/identity-apps/pull/7237) [`a51ab954bbebb4f2dc44a43c287934824f89c81f`](https://github.com/wso2/identity-apps/commit/a51ab954bbebb4f2dc44a43c287934824f89c81f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Handle application templates provider based on available scopes
+
+- Updated dependencies [[`a51ab954bbebb4f2dc44a43c287934824f89c81f`](https://github.com/wso2/identity-apps/commit/a51ab954bbebb4f2dc44a43c287934824f89c81f)]:
+  - @wso2is/admin.template-core.v1@1.5.17
+  - @wso2is/admin.applications.v1@2.30.63
+  - @wso2is/admin.core.v1@2.35.1
+
 ## 1.4.62
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.4.6
+
+### Patch Changes
+
+- [#6440](https://github.com/wso2/identity-apps/pull/6440) [`f0da57190bcbe263e54df65ca04087fb832b70d6`](https://github.com/wso2/identity-apps/commit/f0da57190bcbe263e54df65ca04087fb832b70d6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Make custom idp image in the sign in page contain within the specified dimensions
+
 ## 2.4.5
 
 ### Patch Changes

@@ -888,7 +888,10 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 hint: "A URL for the image of the connection for display purposes. If not provided" +
                     " a generated thumbnail will be displayed. Recommended size is 200x200 pixels.",
                 label: "Logo",
-                placeholder: "https://myapp-resources.io/my_app_image.png"
+                placeholder: "https://myapp-resources.io/my_app_image.png",
+                validations: {
+                    invalid: "This is not a valid image URL"
+                }
             },
             issuer: {
                 hint: "A unique issuer value of the trusted token issuer.",

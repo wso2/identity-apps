@@ -481,7 +481,8 @@ export class AppConstants {
         "smsTemplates",
         "governanceConnectors",
         "branding",
-        "consoleSettings"
+        "consoleSettings",
+        "apiResources"
     ];
 
     /**
