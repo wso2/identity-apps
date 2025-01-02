@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.5.3
+
+### Patch Changes
+
+- [#7244](https://github.com/wso2/identity-apps/pull/7244) [`97aae1b9168c49e72cd544ded82d53c8fa16fff0`](https://github.com/wso2/identity-apps/commit/97aae1b9168c49e72cd544ded82d53c8fa16fff0) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add schema attribute profile based validation to user profile
+
 ## 2.5.2
 
 ### Patch Changes
