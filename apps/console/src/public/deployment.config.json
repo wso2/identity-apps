@@ -921,6 +921,25 @@
                     ]
                 }
             },
+            "ruleBasedPasswordExpiry": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [
+                        "internal_governance_view",
+                        "internal_group_mgt_view",
+                        "internal_role_mgt_view"
+                    ],
+                    "update": [
+                        "internal_config_update",
+                        "internal_governance_update",
+                        "internal_validation_rule_mgt_update"
+                    ]
+                }
+            },
             "saml2Configuration": {
                 "disabledFeatures": [],
                 "enabled": true,

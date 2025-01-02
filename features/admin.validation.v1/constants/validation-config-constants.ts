@@ -42,13 +42,10 @@ export class ValidationConfigConstants {
     };
 
     /**
-     * These scopes are checked to determine whether to display the new rule-based password expiry configuration UI.
-     * If these scopes are not available, legacy password expiry configuration will be shown for backward compatibility.
+     * Set of keys used to enable/disable features.
      */
-    public static readonly RULE_BASED_PASSWORD_EXPIRY_REQUIRED_SCOPES: string[] = [
-        "internal_role_mgt_view",
-        "internal_group_mgt_view"
-    ];
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("RULE_BASED_PASSWORD_EXPIRY", "validation.ruleBasedPasswordExpiry");;
 }
 
 /**
