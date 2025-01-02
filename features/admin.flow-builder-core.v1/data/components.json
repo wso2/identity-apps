@@ -161,7 +161,7 @@
     },
     {
         "category": "FIELD",
-        "type": "CHOICE",
+        "type": "INPUT",
         "version": "0.1.0",
         "deprecated": false,
         "display": {
