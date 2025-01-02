@@ -1,5 +1,24 @@
 # @wso2is/admin.administrators.v1
 
+## 2.29.66
+
+### Patch Changes
+
+- [#7238](https://github.com/wso2/identity-apps/pull/7238) [`56322497c76af2999e4945502296bf2257f14c10`](https://github.com/wso2/identity-apps/commit/56322497c76af2999e4945502296bf2257f14c10) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Move React version to pnpm catalog
+
+- Updated dependencies [[`56322497c76af2999e4945502296bf2257f14c10`](https://github.com/wso2/identity-apps/commit/56322497c76af2999e4945502296bf2257f14c10)]:
+  - @wso2is/admin.server-configurations.v1@2.31.4
+  - @wso2is/admin.remote-userstores.v1@1.7.22
+  - @wso2is/admin.authentication.v1@2.25.66
+  - @wso2is/admin.applications.v1@2.30.66
+  - @wso2is/admin.feature-gate.v1@1.4.66
+  - @wso2is/admin.extensions.v1@2.35.25
+  - @wso2is/admin.userstores.v1@2.26.25
+  - @wso2is/admin.tenants.v1@2.28.40
+  - @wso2is/admin.roles.v2@2.27.10
+  - @wso2is/admin.users.v1@2.29.25
+  - @wso2is/admin.core.v1@2.35.4
+
 ## 2.29.65
 
 ### Patch Changes

@@ -1,5 +1,20 @@
 # @wso2is/admin.branding.v1
 
+## 2.27.39
+
+### Patch Changes
+
+- [#7238](https://github.com/wso2/identity-apps/pull/7238) [`56322497c76af2999e4945502296bf2257f14c10`](https://github.com/wso2/identity-apps/commit/56322497c76af2999e4945502296bf2257f14c10) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Move React version to pnpm catalog
+
+- Updated dependencies [[`56322497c76af2999e4945502296bf2257f14c10`](https://github.com/wso2/identity-apps/commit/56322497c76af2999e4945502296bf2257f14c10)]:
+  - @wso2is/admin.server-configurations.v1@2.31.4
+  - @wso2is/admin.organizations.v1@2.26.66
+  - @wso2is/admin.feature-gate.v1@1.4.66
+  - @wso2is/admin.branding.ai.v1@2.26.66
+  - @wso2is/admin.extensions.v1@2.35.25
+  - @wso2is/common.branding.v1@2.25.39
+  - @wso2is/admin.core.v1@2.35.4
+
 ## 2.27.38
 
 ### Patch Changes

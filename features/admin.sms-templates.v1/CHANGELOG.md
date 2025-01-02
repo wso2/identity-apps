@@ -1,5 +1,16 @@
 # @wso2is/admin.sms-templates.v1
 
+## 1.0.65
+
+### Patch Changes
+
+- [#7238](https://github.com/wso2/identity-apps/pull/7238) [`56322497c76af2999e4945502296bf2257f14c10`](https://github.com/wso2/identity-apps/commit/56322497c76af2999e4945502296bf2257f14c10) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Move React version to pnpm catalog
+
+- Updated dependencies [[`56322497c76af2999e4945502296bf2257f14c10`](https://github.com/wso2/identity-apps/commit/56322497c76af2999e4945502296bf2257f14c10)]:
+  - @wso2is/common.branding.v1@2.25.39
+  - @wso2is/admin.branding.v1@2.27.39
+  - @wso2is/admin.core.v1@2.35.4
+
 ## 1.0.64
 
 ### Patch Changes
