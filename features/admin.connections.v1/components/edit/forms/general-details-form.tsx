@@ -286,8 +286,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     onSubmit={ (values: GeneralDetailsFormValuesInterface): void => {
                         updateConfigurations(values);
                     } }
-                    validate={ (values: any) => {
-                        const errors: any = {
+                    validate={ (values: GeneralDetailsFormValuesInterface) => {
+                        const errors: Partial<Record<keyof GeneralDetailsFormValuesInterface, string>> = {
                             image: undefined
                         };
 
