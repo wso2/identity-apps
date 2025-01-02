@@ -101,7 +101,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const maxPasswordLengthLimit: number = useSelector((state: AppState) =>
         state?.config?.ui?.passwordPolicyConfigs?.maxPasswordAllowedLength);
-    const maxPasswordLengthLimitLength: number = maxPasswordLengthLimit.toString().length;
+    const maxPasswordLengthLimitLength: number = maxPasswordLengthLimit?.toString()?.length;
 
     const [ isSubmitting, setSubmitting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<
