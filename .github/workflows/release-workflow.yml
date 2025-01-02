@@ -44,7 +44,7 @@ jobs:
                 node-version: [lts/*]
                 maven-version: [3.8.6]
                 java-version: [11]
-                pnpm-version: [9.5.0]
+                pnpm-version: [lts/*]
         steps:
             - name: ⬇️ Checkout
               id: checkout
