@@ -291,7 +291,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             image: undefined
                         };
 
-                        if (values?.image && values.image !== " " && !ImageUtils.isValidImageExtension(values?.image)) {
+                        if (values?.image && !ImageUtils.isValidImageExtension(values?.image)) {
                             errors.image = t(
                                 "authenticationProvider:forms.generalDetails.image.validations.invalid"
                             );
