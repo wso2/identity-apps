@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -873,8 +873,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         if (adminUserType === AdminAccountTypes.INTERNAL) {
             profileSchema.forEach((schema: ProfileSchemaInterface) => {
+                const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
 
-                if (schema.mutability === ProfileConstants.READONLY_SCHEMA) {
+                if (resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA) {
                     return;
                 }
 
@@ -1034,7 +1035,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         } else {
             profileSchema.forEach((schema: ProfileSchemaInterface) => {
-                if (schema.mutability === ProfileConstants.READONLY_SCHEMA) {
+                const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
+
+                if (resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA) {
                     return;
                 }
 
@@ -1899,6 +1902,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         let primaryAttributeSchema: ProfileSchemaInterface;
         let maxAllowedLimit: number = 0;
 
+        const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
+        const resolvedRequiredValue: boolean = schema?.profiles?.console?.required ?? schema.required;
+
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             attributeValueList = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
             verifiedAttributeValueList = profileInfo?.get(VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
@@ -1977,11 +1983,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             : fieldName
                         )
                     }
-                    required={ schema.required }
+                    required={ resolvedRequiredValue }
                     requiredErrorMessage={ fieldName + " " + "is required" }
                     placeholder={ "Enter your" + " " + fieldName }
                     type="text"
-                    readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
+                    readOnly={ isReadOnly || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
                     validation={ (value: string, validation: Validation) => {
                         if (!RegExp(primaryAttributeSchema.regEx).test(value)) {
                             setIsMultiValuedItemInvalid({
@@ -2226,12 +2232,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     const resolveFormField = (schema: ProfileSchemaInterface, fieldName: string, key: number): ReactElement => {
+        const resolvedRequiredValue: boolean = schema?.profiles?.console?.required ?? schema.required;
+        const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
+
         if (schema.type.toUpperCase() === "BOOLEAN") {
             return (
                 <Field
                     data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
                     name={ schema.name }
-                    required={ schema.required }
+                    required={ resolvedRequiredValue }
                     requiredErrorMessage={ fieldName + " " + "is required" }
                     type="checkbox"
                     value={ profileInfo.get(schema.name) ? [ schema.name ] : [] }
@@ -2241,7 +2250,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             value: schema.name
                         }
                     ] }
-                    readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
+                    readOnly={ isReadOnly || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
                     key={ key }
                 />
             );
@@ -2252,7 +2261,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
                     name={ schema.name }
                     label={ fieldName }
-                    required={ schema.required }
+                    required={ resolvedRequiredValue }
                     requiredErrorMessage={ fieldName + " " + "is required" }
                     placeholder={ "Select your" + " " + fieldName }
                     type="dropdown"
@@ -2277,8 +2286,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     ) }
                     key={ key }
                     disabled={ false }
-                    readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
-                    clearable={ !schema.required }
+                    readOnly={ isReadOnly || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
+                    clearable={ !resolvedRequiredValue }
                     search
                     selection
                     fluid
@@ -2290,7 +2299,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     data-testid={ `${ testId }-profile-form-${ schema?.name }-input` }
                     name={ schema?.name }
                     label={ fieldName }
-                    required={ schema?.required }
+                    required={ resolvedRequiredValue }
                     requiredErrorMessage={
                         t("user:profile.forms.generic.inputs.validations.empty", { fieldName })
                     }
@@ -2326,7 +2335,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     key={ key }
                     disabled={ false }
                     readOnly={ isReadOnly || schema?.mutability === ProfileConstants.READONLY_SCHEMA }
-                    clearable={ !schema?.required }
+                    clearable={ !resolvedRequiredValue }
                     search
                     selection
                     fluid
@@ -2343,13 +2352,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
                     name={ schema.name }
                     label={ fieldName }
-                    required={ schema.required }
+                    required={ resolvedRequiredValue }
                     requiredErrorMessage={ fieldName + " is required" }
                     placeholder="YYYY-MM-DD"
                     type="text"
                     value={ profileInfo.get(schema.name) }
                     key={ key }
-                    readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
+                    readOnly={ isReadOnly || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
                     validation={ (value: string, validation: Validation) => {
                         if (!RegExp(schema.regEx).test(value)) {
                             validation.isValid = false;
@@ -2376,14 +2385,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             : fieldName
                         )
                     }
-                    required={ schema.required }
+                    required={ resolvedRequiredValue }
                     requiredErrorMessage={ fieldName + " is required" }
                     placeholder={ "Enter your " + fieldName }
                     type="text"
                     value={ profileInfo.get(schema.name) }
                     key={ key }
                     disabled={ schema.name === "userName" }
-                    readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
+                    readOnly={ isReadOnly || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
                     validation={ (value: string, validation: Validation) => {
                         if (!RegExp(schema.regEx).test(value)) {
                             validation.isValid = false;
@@ -2416,8 +2425,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      * @returns whether the field for the input schema should be displayed.
      */
     const isFieldDisplayable = (schema: ProfileSchemaInterface): boolean => {
+        const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
+
         return (!isEmpty(profileInfo.get(schema.name)) ||
-            (!isReadOnly && (schema.mutability !== ProfileConstants.READONLY_SCHEMA)));
+            (!isReadOnly && (resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA)));
     };
 
     /**
@@ -2453,6 +2464,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         );
 
         const domainName: string[] = profileInfo?.get(schema.name)?.toString().split("/");
+        const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
+        const resolvedRequiredValue: boolean = schema?.profiles?.console?.required ?? schema.required;
 
         return (
             <Grid.Row columns={ 1 } key={ key }>
@@ -2472,7 +2485,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             <Input
                                                 data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
                                                 name={ schema.name }
-                                                required={ schema.required }
+                                                required={ resolvedRequiredValue }
                                                 requiredErrorMessage={ fieldName + " " + "is required" }
                                                 placeholder={ "Enter your" + " " + fieldName }
                                                 type="text"
@@ -2498,14 +2511,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                 data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
                                                 name={ schema.name }
                                                 label={ domainName[0] + " / " }
-                                                required={ schema.required }
+                                                required={ resolvedRequiredValue }
                                                 requiredErrorMessage={ fieldName + " " + "is required" }
                                                 placeholder={ "Enter your" + " " + fieldName }
                                                 type="text"
                                                 value={ domainName[1] }
                                                 key={ key }
                                                 readOnly={ isReadOnly ||
-                                                    schema.mutability === ProfileConstants.READONLY_SCHEMA }
+                                                    resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA }
                                                 maxLength={
                                                     schema.maxLength
                                                         ? schema.maxLength
