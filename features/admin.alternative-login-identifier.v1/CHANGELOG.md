@@ -1,5 +1,19 @@
 # @wso2is/admin.alternative-login-identifier.v1
 
+## 1.5.66
+
+### Patch Changes
+
+- [#7238](https://github.com/wso2/identity-apps/pull/7238) [`56322497c76af2999e4945502296bf2257f14c10`](https://github.com/wso2/identity-apps/commit/56322497c76af2999e4945502296bf2257f14c10) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Move React version to pnpm catalog
+
+- Updated dependencies [[`56322497c76af2999e4945502296bf2257f14c10`](https://github.com/wso2/identity-apps/commit/56322497c76af2999e4945502296bf2257f14c10)]:
+  - @wso2is/admin.server-configurations.v1@2.31.4
+  - @wso2is/admin.applications.v1@2.30.66
+  - @wso2is/admin.validation.v1@2.27.4
+  - @wso2is/admin.claims.v1@2.26.25
+  - @wso2is/admin.users.v1@2.29.25
+  - @wso2is/admin.core.v1@2.35.4
+
 ## 1.5.65
 
 ### Patch Changes

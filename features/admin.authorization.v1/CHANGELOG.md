@@ -1,5 +1,11 @@
 # @wso2is/admin.authorization.v1
 
+## 2.25.25
+
+### Patch Changes
+
+- [#7238](https://github.com/wso2/identity-apps/pull/7238) [`56322497c76af2999e4945502296bf2257f14c10`](https://github.com/wso2/identity-apps/commit/56322497c76af2999e4945502296bf2257f14c10) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Move React version to pnpm catalog
+
 ## 2.25.24
 
 ### Patch Changes

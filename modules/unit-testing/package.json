@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@wso2is/unit-testing",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Reusable module to be used for Unit Testing the Identity Server front-ends.",
   "main": "index.ts",
   "homepage": "https://github.com/wso2/identity-apps#README",

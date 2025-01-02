@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.13.45
+
+### Patch Changes
+
+- [#7238](https://github.com/wso2/identity-apps/pull/7238) [`56322497c76af2999e4945502296bf2257f14c10`](https://github.com/wso2/identity-apps/commit/56322497c76af2999e4945502296bf2257f14c10) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Move React version to pnpm catalog
+
+- Updated dependencies [[`56322497c76af2999e4945502296bf2257f14c10`](https://github.com/wso2/identity-apps/commit/56322497c76af2999e4945502296bf2257f14c10)]:
+  - @wso2is/admin.organizations.v1@2.26.66
+  - @wso2is/common.branding.v1@2.25.39
+
 ## 2.13.44
 
 ### Patch Changes
