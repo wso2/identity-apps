@@ -4,3 +4,6 @@ packages:
   - "identity-apps-core"
   - "features"
   - "features/*"
+
+catalog:
+  react: ^18.2.0
