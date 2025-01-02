@@ -1879,14 +1879,10 @@
         "isPasswordInputValidationEnabled": true,
         {% endif %}
         "passwordPolicyConfigs": {
-            {% if identity_mgt.password_policy.items() is defined %}
-            {% for key, value in identity_mgt.password_policy.items() %}
-            {% if value is string %}
-                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% if identity_mgt.password_policy.max_password_allowed_length is defined %}
+            "maxPasswordAllowedLength": {{ identity_mgt.password_policy.max_password_allowed_length }},
             {% else %}
-                "{{ key }}": {{ value }}{{ "," if not loop.last }}
-            {% endif %}
-            {% endfor %}
+            "maxPasswordAllowedLength": 64
             {% endif %}
         },
         "isSignatureValidationCertificateAliasEnabled": {{ console.applications.ui.certificate_alias_enabled }},
