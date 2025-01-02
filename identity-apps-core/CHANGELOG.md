@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.8.8
+
+### Patch Changes
+
+- [#7131](https://github.com/wso2/identity-apps/pull/7131) [`3cb1d7e7e2632971ec67647f233b8068016858fd`](https://github.com/wso2/identity-apps/commit/3cb1d7e7e2632971ec67647f233b8068016858fd) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Use getRoleBasicInfoById when checking Administrator role
+
 ## 2.8.7
 
 ### Patch Changes

@@ -1,5 +1,61 @@
 # @wso2is/admin.remote-userstores.v1
 
+## 1.7.19
+
+### Patch Changes
+
+- Updated dependencies [[`a51ab954bbebb4f2dc44a43c287934824f89c81f`](https://github.com/wso2/identity-apps/commit/a51ab954bbebb4f2dc44a43c287934824f89c81f)]:
+  - @wso2is/admin.applications.v1@2.30.63
+  - @wso2is/admin.core.v1@2.35.1
+  - @wso2is/admin.extensions.v1@2.35.22
+  - @wso2is/admin.claims.v1@2.26.22
+  - @wso2is/admin.users.v1@2.29.22
+  - @wso2is/admin.userstores.v1@2.26.22
+  - @wso2is/admin.validation.v1@2.27.1
+
+## 1.7.18
+
+### Patch Changes
+
+- Updated dependencies [[`8110b4503bc622997af4942727afa5ef65245689`](https://github.com/wso2/identity-apps/commit/8110b4503bc622997af4942727afa5ef65245689), [`0057877859bdf3d91475cf3d1865382a88a1e9e7`](https://github.com/wso2/identity-apps/commit/0057877859bdf3d91475cf3d1865382a88a1e9e7)]:
+  - @wso2is/admin.core.v1@2.35.0
+  - @wso2is/admin.validation.v1@2.27.0
+  - @wso2is/core@2.5.2
+  - @wso2is/admin.applications.v1@2.30.62
+  - @wso2is/admin.claims.v1@2.26.21
+  - @wso2is/admin.extensions.v1@2.35.21
+  - @wso2is/admin.users.v1@2.29.21
+  - @wso2is/admin.userstores.v1@2.26.21
+  - @wso2is/form@2.6.4
+  - @wso2is/forms@2.3.6
+  - @wso2is/react-components@2.8.11
+
+## 1.7.17
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.61
+  - @wso2is/admin.core.v1@2.34.61
+  - @wso2is/admin.extensions.v1@2.35.20
+  - @wso2is/admin.claims.v1@2.26.20
+  - @wso2is/admin.users.v1@2.29.20
+  - @wso2is/admin.userstores.v1@2.26.20
+  - @wso2is/admin.validation.v1@2.26.61
+
+## 1.7.16
+
+### Patch Changes
+
+- Updated dependencies [[`be2156b4bfb88d225caef6f8b99242e30c1ed0c9`](https://github.com/wso2/identity-apps/commit/be2156b4bfb88d225caef6f8b99242e30c1ed0c9), [`1eb537e110aa1eec0e791667ae25fe44a4d42424`](https://github.com/wso2/identity-apps/commit/1eb537e110aa1eec0e791667ae25fe44a4d42424)]:
+  - @wso2is/admin.users.v1@2.29.19
+  - @wso2is/admin.claims.v1@2.26.19
+  - @wso2is/admin.applications.v1@2.30.60
+  - @wso2is/admin.core.v1@2.34.60
+  - @wso2is/admin.extensions.v1@2.35.19
+  - @wso2is/admin.validation.v1@2.26.60
+  - @wso2is/admin.userstores.v1@2.26.19
+
 ## 1.7.15
 
 ### Patch Changes

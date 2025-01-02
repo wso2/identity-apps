@@ -271,6 +271,37 @@
                 }
             },
             {% endif %}
+            {% if console.internal_notification_sending is defined %}
+            "internalNotificationSending": {
+                "disabledFeatures": [
+                    {% if console.internal_notification_sending.disabled_features is defined %}
+                    {% for feature in console.internal_notification_sending.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.internal_notification_sending.enabled is defined %} {{ console.internal_notification_sending.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.internal_notification_sending.scopes is defined %}
+                    {% for operation, scopes in console.internal_notification_sending.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": [],
+                        "feature": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.account_login is defined %}
             "accountLogin": {
                 "disabledFeatures": [
@@ -1877,6 +1908,17 @@
         {% else %}
         "isPasswordInputValidationEnabled": true,
         {% endif %}
+        "passwordPolicyConfigs": {
+            {% if identity_mgt.password_policy.items() is defined %}
+            {% for key, value in identity_mgt.password_policy.items() %}
+            {% if value is string %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        },
         "isSignatureValidationCertificateAliasEnabled": {{ console.applications.ui.certificate_alias_enabled }},
         "listAllAttributeDialects": {{ console.list_all_attribute_dialects }},
         {% if console.enable_identity_claims is defined %}

@@ -1,5 +1,41 @@
 # @wso2is/admin.secrets.v1
 
+## 2.25.63
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.35.1
+
+## 2.25.62
+
+### Patch Changes
+
+- Updated dependencies [[`8110b4503bc622997af4942727afa5ef65245689`](https://github.com/wso2/identity-apps/commit/8110b4503bc622997af4942727afa5ef65245689), [`0057877859bdf3d91475cf3d1865382a88a1e9e7`](https://github.com/wso2/identity-apps/commit/0057877859bdf3d91475cf3d1865382a88a1e9e7)]:
+  - @wso2is/admin.core.v1@2.35.0
+  - @wso2is/i18n@2.14.1
+  - @wso2is/core@2.5.2
+  - @wso2is/access-control@3.3.6
+  - @wso2is/dynamic-forms@2.4.11
+  - @wso2is/form@2.6.4
+  - @wso2is/forms@2.3.6
+  - @wso2is/react-components@2.8.11
+
+## 2.25.61
+
+### Patch Changes
+
+- Updated dependencies [[`2840ab6f606b818ad0a1b0427dd88bfce4be986f`](https://github.com/wso2/identity-apps/commit/2840ab6f606b818ad0a1b0427dd88bfce4be986f)]:
+  - @wso2is/i18n@2.14.0
+  - @wso2is/admin.core.v1@2.34.61
+
+## 2.25.60
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.34.60
+
 ## 2.25.59
 
 ### Patch Changes
