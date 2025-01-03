@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { GroupsInterface } from "@wso2is/admin.groups.v1";
+import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { ReactNode } from "react";
 import { InviteUserStatus } from "../../../models/user";
 

@@ -39,7 +39,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
-import { GroupsInterface } from "../../models";
+import { GroupsInterface } from "../../models/groups";
 
 /**
  * Proptypes for the group users list component.

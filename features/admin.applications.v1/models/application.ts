@@ -18,7 +18,7 @@
 
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
-import { AssociatedRolesInterface } from "@wso2is/admin.roles.v2/models";
+import { AssociatedRolesInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { LinkInterface } from "@wso2is/core/models";
 import {
     OIDCDataInterface,

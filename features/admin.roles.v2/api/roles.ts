@@ -28,13 +28,13 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods, RoleListInterface, RolesInterface } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { RoleAudienceTypes } from "../constants/role-constants";
+import { APIResourceInterface, APIResourceListInterface, AuthorizedAPIListItemInterface } from "../models/apiResources";
 import {
     CreateRoleInterface,
     PatchRoleDataInterface,
     RolesV2ResponseInterface,
     SearchRoleInterface
-} from "../models";
-import { APIResourceInterface, APIResourceListInterface, AuthorizedAPIListItemInterface } from "../models/apiResources";
+} from "../models/roles";
 
 /**
  * Initialize an axios Http client.

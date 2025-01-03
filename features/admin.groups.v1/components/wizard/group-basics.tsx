@@ -33,7 +33,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, Grid, GridColumn, GridRow } from "semantic-ui-react";
-import { CreateGroupFormData, SearchGroupInterface, searchGroupList } from "../..";
+import { searchGroupList } from "../../api";
+import { CreateGroupFormData, SearchGroupInterface } from "../../models/groups";
 
 /**
  * Interface to capture group basics props.
