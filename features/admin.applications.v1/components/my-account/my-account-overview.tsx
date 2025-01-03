@@ -62,7 +62,7 @@ const MyAccountOverview: FunctionComponent<MyAccountOverviewPropsInterface> = ({
                         link={ getLink("develop.applications.myaccount.overview.learnMore") }
                     >
                         <Trans
-                            i18nKey={ "extensions:common.learnMore" }
+                            i18nKey={ "console:common.learnMore" }
                         >
                             Learn More
                         </Trans>

@@ -58,7 +58,7 @@ export const ApplicationGeneralTabOverride: FunctionComponent<ApplicationGeneral
                         isLinkRef = { true }
                     >
                         <Trans
-                            i18nKey={ "extensions:common.learnMore" }
+                            i18nKey={ "console:common.learnMore" }
                         >
                             Learn More
                         </Trans>

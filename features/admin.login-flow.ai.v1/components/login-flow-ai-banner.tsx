@@ -198,7 +198,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                                 link={ getLink("develop.applications.editApplication.common.signInMethod." +
                                     "conditionalAuthenticaion.ai.learnMore") }
                             >
-                                <Trans i18nKey={ "extensions:common.learnMore" }>
+                                <Trans i18nKey={ "console:common.learnMore" }>
                                     Learn more
                                 </Trans>
                             </DocumentationLink>

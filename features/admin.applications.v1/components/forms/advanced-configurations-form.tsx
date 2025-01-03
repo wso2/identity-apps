@@ -610,7 +610,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                         link={ getLink("develop.applications.editApplication." +
                                                     "common.advanced.trustedApps.learnMore") }
                                                     >
-                                                        { t("extensions:common.learnMore") }
+                                                        { t("console:common.learnMore") }
                                                     </DocumentationLink>
                                                 </>
                                             </Alert>
