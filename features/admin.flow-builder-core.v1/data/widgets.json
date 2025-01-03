@@ -1,16 +1,77 @@
 [
     {
         "category": "WIDGET",
-        "type": "RECAPTCHA",
+        "type": "IDENTIFIER_PASSWORD",
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "reCAPTCHA",
-            "image": "https://www.gstatic.com/recaptcha/api2/logo_48.png"
+            "label": "Username + Password",
+            "description": "Basic registration experience with simple username & password",
+            "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg"
         },
         "config": {
-            "version": 2,
-            "field": {}
+            "field": {
+                "className": "wso2is-widget username-password"
+            },
+            "flow": {
+                "blocks": [
+                    {
+                        "elements": [
+                            "dnd-element_d6707724-df80-4f69-bbbd-6303217b660e",
+                            "dnd-element_4f84cb89-62de-488d-aeb4-163dcb948148",
+                            "dnd-element_b5c04863-dc63-4fe6-831b-df8a2a946a9f"
+                        ],
+                        "id": "flow-block-c2a56cea-abf8-4608-a617-92fb1f61e136"
+                    }
+                ],
+                "elements": [
+                    {
+                        "category": "FIELD",
+                        "type": "INPUT",
+                        "variant": "TEXT",
+                        "config": {
+                            "field": {
+                                "type": "text",
+                                "hint": "",
+                                "label": "Username",
+                                "required": true,
+                                "placeholder": "Enter your username",
+                                "name": "http://wso2.org/claims/username"
+                            }
+                        },
+                        "id": "dnd-element_d6707724-df80-4f69-bbbd-6303217b660e"
+                    },
+                    {
+                        "category": "FIELD",
+                        "type": "INPUT",
+                        "variant": "PASSWORD",
+                        "config": {
+                            "field": {
+                                "name": "password",
+                                "type": "password",
+                                "hint": "",
+                                "label": "Password",
+                                "required": true,
+                                "placeholder": "Enter your password"
+                            }
+                        },
+                        "id": "dnd-element_4f84cb89-62de-488d-aeb4-163dcb948148"
+                    },
+                    {
+                        "category": "ACTION",
+                        "type": "BUTTON",
+                        "id": "dnd-element_b5c04863-dc63-4fe6-831b-df8a2a946a9f",
+                        "variant": "PRIMARY",
+                        "config": {
+                            "field": {
+                                "type": "submit",
+                                "text": "Continue"
+                            }
+                        }
+                    }
+                ]
+            },
+            "styles": {}
         }
     },
     {
@@ -20,6 +81,7 @@
         "deprecated": false,
         "display": {
             "label": "Email OTP",
+            "description": "Registration experience with Email",
             "image": "https://www.svgrepo.com/show/368868/otp.svg"
         },
         "config": {
@@ -33,9 +95,25 @@
         "deprecated": false,
         "display": {
             "label": "SMS OTP",
+            "description": "Registration experience with SMS OTP",
             "image": "https://www.svgrepo.com/show/381137/transaction-password-otp-verification-code-security.svg"
         },
         "config": {
+            "field": {}
+        }
+    },
+    {
+        "category": "WIDGET",
+        "type": "RECAPTCHA",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "reCAPTCHA",
+            "description": "Add reCAPTCHA to your registration experience",
+            "image": "https://www.gstatic.com/recaptcha/api2/logo_48.png"
+        },
+        "config": {
+            "version": 2,
             "field": {}
         }
     }
