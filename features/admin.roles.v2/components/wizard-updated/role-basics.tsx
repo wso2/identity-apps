@@ -23,8 +23,9 @@ import Alert from "@oxygen-ui/react/Alert";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import { ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models/application";
-import { history, store } from "@wso2is/admin.core.v1";
+import { OrganizationType, history, store } from "@wso2is/admin.core.v1";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Link } from "@wso2is/react-components";
@@ -110,6 +111,9 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         isLoading: isRolesListLoading,
         isValidating: isRolesListValidating
     } = useGetRolesList(undefined, undefined, roleNameSearchQuery, "users,groups,permissions,associatedApplications");
+
+    const { organizationType } = useGetCurrentOrganizationType();
+    const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
 
     useEffect(() => {
         if (applicationListFetchRequestError) {
@@ -367,12 +371,20 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                     ? (
                         <Alert severity="info">
                             {
-                                roleAudience === RoleAudienceTypes.ORGANIZATION
-                                    ? t("roles:addRoleWizard.forms.roleBasicDetails.notes" +
-                                        ".orgNote")
-                                    : t("roles:addRoleWizard.forms.roleBasicDetails.notes" +
-                                        ".appNote")
+                                !isSubOrg ? (
+                                    roleAudience === RoleAudienceTypes.ORGANIZATION
+                                        ? t("roles:addRoleWizard.forms.roleBasicDetails.notes" +
+                                            ".orgNote")
+                                        : t("roles:addRoleWizard.forms.roleBasicDetails.notes" +
+                                            ".appNote")
                                 // TODO: need to add a learn more for this.
+                                ) : (
+                                    roleAudience === RoleAudienceTypes.ORGANIZATION
+                                        ? t("roles:addRoleWizard.forms.roleBasicDetails.notes.subOrganization" +
+                                            ".orgNote")
+                                        : t("roles:addRoleWizard.forms.roleBasicDetails.notes.subOrganization" +
+                                            ".appNote")
+                                )
                             }
                         </Alert>
                     ) : (

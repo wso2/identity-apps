@@ -60,9 +60,21 @@ export const roles: rolesNS = {
                     }
                 },
                 notes: {
-                    orgNote: "When the role audience is organization, you can associate the role with an application which allows organization audience roles.",
-                    appNote: "When the role audience is application, you can associate the role with an application which allows application audience roles.",
-                    cannotCreateRole: "You cannot create a role with role audience as application because there are currently no applications that support application audience roles. Please <1>create an application</1> that supports application audience roles to proceed."
+                    appNote: "When the role audience is application, you can associate the role with an application " +
+                        "which allows application audience roles.",
+                    cannotCreateRole: "You cannot create a role with role audience as application because there are " +
+                        "currently no applications that support application audience roles. " +
+                        "Please <1>create an application</1> that supports application audience roles to proceed.",
+                    orgNote: "When the role audience is organization, you can associate the role with an " +
+                        "application which allows organization audience roles.",
+                    subOrganization: {
+                        appNote: "When the role audience is application, you can associate the role with an " +
+                            "application which allows application audience roles. " +
+                            "You cannot associate the role with a shared application.",
+                        orgNote: "When the role audience is organization, you can associate the role with an " +
+                            "application which allows organization audience roles. You cannot associate the " +
+                            "role with a shared application."
+                    }
                 },
                 assignedApplication: {
                     hint: "Assign an application for the role. Note that assigned application for this role cannot be edited after the role is created.",
@@ -363,6 +375,9 @@ export const roles: rolesNS = {
                 header: "Managed By"
             },
             name: "Role"
+        },
+        labels: {
+            shared: "Shared role"
         },
         confirmations: {
             deleteItem: {

@@ -28,6 +28,7 @@ export interface RolesInterface {
     permissions?: string[] | RolePermissionInterface[];
     audience?: RoleAudiencesInterface;
     associatedApplications?: RoleConnectedApplicationInterface[];
+    properties?: RolePropertyInterface[];
 }
 
 /**
@@ -100,4 +101,9 @@ export interface RoleConnectedApplicationInterface {
     display?: string;
     value?: string;
     $ref?: string;
+}
+
+export interface RolePropertyInterface {
+    name: string;
+    value: string;
 }
