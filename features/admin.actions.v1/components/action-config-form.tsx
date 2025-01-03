@@ -57,6 +57,9 @@ import {
     AuthenticationType,
     AuthenticationTypeDropdownOption
 } from "../models/actions";
+import RulesComponent from "@wso2is/admin.rules.v1/components/rules-component";
+import { getRuleContextValue } from "@wso2is/admin.rules.v1/providers/rules-provider";
+import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import "./action-config-form.scss";
 
 /**
@@ -111,6 +114,12 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
         mutate: mutateAction
     } = useGetActionById(actionTypeApiPath, initialValues?.id);
 
+    const {
+        data: RulesMeta
+    } = useGetRulesMeta(actionTypeApiPath);
+
+    const showRulesComponent: boolean = false;
+
     /**
      * The following useEffect is used to set the current Action Authentication Type.
      */
@@ -122,6 +131,11 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
             setIsAuthenticationUpdateFormState(false);
         }
     }, [ initialValues ]);
+
+    // TODO: Use this function to get the rule value.
+    const handleGetRuleValue = () => {
+        const ruleValue = getRuleContextValue();
+    };
 
     const renderInputAdornmentOfSecret = (showSecret: boolean, onClick: () => void): ReactElement => (
         <InputAdornment position="end">
@@ -727,6 +741,12 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                     { t("actions:fields.authentication.label") }
                 </Heading>
                 { renderAuthenticationSection() }
+                { (RulesMeta && showRulesComponent) &&
+                    <>
+                        <Divider className="divider-container"/>
+                        <RulesComponent metaData={ RulesMeta } />
+                    </>
+                }
             </>
         );
     };
