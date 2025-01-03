@@ -34,10 +34,10 @@ import React, {
     MouseEvent,
     MutableRefObject,
     ReactElement,
-    SVGProps,
     useCallback,
     useRef
 } from "react";
+import ReorderableComponent from "./reorderable-component";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import { Component } from "../../../../models/component";
 import "./step.scss";
@@ -46,21 +46,6 @@ import "./step.scss";
  * Props interface of {@link Step}
  */
 export interface StepPropsInterface extends Node, IdentifiableComponentInterface {}
-
-// TODO: Move this to Oxygen UI.
-/* eslint-disable max-len */
-const GridDotsVerticalIcon = ({ ...rest }: SVGProps<SVGSVGElement>): ReactElement => (
-    <svg fill="#a0a0a0" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg" { ...rest }>
-        <g id="SVGRepo_bgCarrier" strokeWidth="0" />
-        <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round" />
-        <g id="SVGRepo_iconCarrier">
-            <path
-                d="M686.211 137.143v-.137l68.572.137H686.21Zm0 1508.571c75.566 0 137.143 61.577 137.143 137.143S761.777 1920 686.211 1920c-75.702 0-137.142-61.577-137.142-137.143s61.44-137.143 137.142-137.143Zm548.572 0c75.566 0 137.143 61.577 137.143 137.143S1310.349 1920 1234.783 1920c-75.703 0-137.143-61.577-137.143-137.143s61.44-137.143 137.143-137.143ZM686.21 1097.143c75.566 0 137.143 61.577 137.143 137.143 0 75.565-61.577 137.143-137.143 137.143-75.702 0-137.142-61.578-137.142-137.143 0-75.566 61.44-137.143 137.142-137.143Zm548.572 0c75.566 0 137.143 61.577 137.143 137.143 0 75.565-61.577 137.143-137.143 137.143-75.703 0-137.143-61.578-137.143-137.143 0-75.566 61.44-137.143 137.143-137.143ZM686.21 548.57c75.566 0 137.143 61.578 137.143 137.143 0 75.566-61.577 137.143-137.143 137.143-75.702 0-137.142-61.577-137.142-137.143 0-75.565 61.44-137.143 137.142-137.143Zm548.572 0c75.566 0 137.143 61.578 137.143 137.143 0 75.566-61.577 137.143-137.143 137.143-75.703 0-137.143-61.577-137.143-137.143 0-75.565 61.44-137.143 137.143-137.143ZM686.21 0c75.566 0 137.143 61.577 137.143 137.143S761.776 274.286 686.21 274.286c-75.702 0-137.142-61.577-137.142-137.143S610.509 0 686.21 0Zm548.503 0c75.566 0 137.143 61.577 137.143 137.143s-61.577 137.143-137.143 137.143c-75.565 0-137.143-61.577-137.143-137.143S1159.15 0 1234.714 0Z"
-                fillRule="evenodd"
-            />
-        </g>
-    </svg>
-);
 
 /**
  * Node for representing an empty step in the flow builder.
@@ -75,7 +60,7 @@ export const Step: FunctionComponent<StepPropsInterface> = ({
     const nodeId: string = useNodeId();
     const node: Pick<Node, "data"> = useNodesData(nodeId);
     const { deleteElements, updateNodeData } = useReactFlow();
-    const { onElementDropOnCanvas, ComponentFactory, setLastInteractedElement } = useAuthenticationFlowBuilderCore();
+    const { onElementDropOnCanvas } = useAuthenticationFlowBuilderCore();
     const { generateComponentId } = useDnD();
 
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
@@ -99,8 +84,11 @@ export const Step: FunctionComponent<StepPropsInterface> = ({
 
                 // If the component has variants, add the default variant to the root.
                 if (!isEmpty(newComponent?.variants)) {
-                    const defaultVariantType: string =  newComponent?.display?.defaultVariant ?? newComponent?.variants[0]?.variant;
-                    const defaultVariant: Component = newComponent.variants.find((variant: Component) => variant.variant === defaultVariantType);
+                    const defaultVariantType: string =
+                        newComponent?.display?.defaultVariant ?? newComponent?.variants[0]?.variant;
+                    const defaultVariant: Component = newComponent.variants.find(
+                        (variant: Component) => variant.variant === defaultVariantType
+                    );
 
                     newComponent = {
                         ...newComponent,
@@ -136,11 +124,7 @@ export const Step: FunctionComponent<StepPropsInterface> = ({
             onDrop={ handleDrop }
             onDrag={ handleDragOver }
         >
-            <Box
-                display="flex"
-                justifyContent="space-between"
-                className="flow-builder-step-action-panel"
-            >
+            <Box display="flex" justifyContent="space-between" className="flow-builder-step-action-panel">
                 <Typography
                     variant="body2"
                     data-componentid={ `${componentId}-heading-text` }
@@ -182,27 +166,34 @@ export const Step: FunctionComponent<StepPropsInterface> = ({
                                             ...otherDragItemProps
                                         } = getDragItemProps(index);
 
+                                        // Wigets have a flow property which contains the elements of the sub flow.
+                                        // If the component is a widget, render the elements of the flow.
+                                        if (component?.config?.flow) {
+                                            return component.config?.flow?.elements?.map((element: any) => {
+                                                return (
+                                                    <ReorderableComponent
+                                                        key={ element.id }
+                                                        component={ element }
+                                                        className={ classNames(
+                                                            "flow-builder-step-content-form-field",
+                                                            dragItemClassName
+                                                        ) }
+                                                        draggableProps={ otherDragItemProps }
+                                                    />
+                                                );
+                                            });
+                                        }
+
                                         return (
-                                            <Box
-                                                display="flex"
-                                                alignItems="center"
-                                                key={ index }
+                                            <ReorderableComponent
+                                                key={ component.id }
+                                                component={ component }
                                                 className={ classNames(
                                                     "flow-builder-step-content-form-field",
                                                     dragItemClassName
                                                 ) }
-                                                onClick={ () => setLastInteractedElement(component) }
-                                                { ...otherDragItemProps }
-                                                // TODO: Fix this. Temporary fix to prevent dragging issues.
-                                                draggable={ false }
-                                            >
-                                                <div className="flow-builder-step-content-form-field-drag-handle">
-                                                    <GridDotsVerticalIcon height={ 20 } />
-                                                </div>
-                                                <div className="flow-builder-step-content-form-field-content">
-                                                    <ComponentFactory nodeId={ nodeId } node={ component } />
-                                                </div>
-                                            </Box>
+                                                draggableProps={ otherDragItemProps }
+                                            />
                                         );
                                     })
                                 }
