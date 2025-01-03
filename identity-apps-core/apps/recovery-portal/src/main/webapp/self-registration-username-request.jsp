@@ -27,6 +27,9 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS_MSG" %>
+<%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
+<%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
+<%@ page import="org.wso2.carbon.identity.base.IdentityRuntimeException" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.identity.core.URLBuilderException" %>
@@ -737,13 +740,28 @@
 
                         <div class="ui divider hidden"></div>
                         <%
+                            try {
+                                if (StringUtils.isNotBlank(backToUrl) && !Utils.validateCallbackURL(backToUrl, tenantDomain,
+                                    IdentityRecoveryConstants.ConnectorConfig.SELF_REGISTRATION_CALLBACK_REGEX)) {
+                                    request.setAttribute("error", true);
+                                    request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                        "Callback.url.format.invalid"));
+                                    request.getRequestDispatcher("error.jsp").forward(request, response);
+                                    return;
+                                }
+                            } catch (IdentityRuntimeException e) {
+                                request.setAttribute("error", true);
+                                request.setAttribute("errorMsg", e.getMessage());
+                                request.getRequestDispatcher("error.jsp").forward(request, response);
+                                return;
+                            }
                             if (!StringUtils.equalsIgnoreCase(backToUrl,"null") && !StringUtils.isBlank(backToUrl)) {
                         %>
                         <div class="buttons mt-2">
                             <div class="field external-link-container text-small">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                         "Already.have.an.account")%>
-                                <a href="<%=backToUrl%>">
+                                <a href="<%= StringEscapeUtils.escapeHtml4(backToUrl) %>">
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Sign.in")%>
                                 </a>
                             </div>
