@@ -1880,7 +1880,7 @@
         {% endif %}
         "passwordPolicyConfigs": {
             {% if identity_mgt.password_policy.max_password_allowed_length is defined %}
-            "maxPasswordAllowedLength": {{ identity_mgt.password_policy.max_password_allowed_length }},
+            "maxPasswordAllowedLength": {{ identity_mgt.password_policy.max_password_allowed_length }}
             {% else %}
             "maxPasswordAllowedLength": 64
             {% endif %}
