@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,26 +17,29 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
-import { store } from "@wso2is/admin.core.v1/store";
+import useConsoleRoles from "@wso2is/admin.console-settings.v1/hooks/use-console-roles";
+import { FeatureConfigInterface, UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { ServerConfigurationsInterface, getServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1/models";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertInterface, AlertLevels, ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, ProfileInfoInterface, RolesInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ResourceTab } from "@wso2is/react-components";
+import { Message, ResourceTab } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { TabProps } from "semantic-ui-react";
+import { Divider, Grid, TabProps } from "semantic-ui-react";
 import { UserGroupsList } from "./user-groups-edit";
 import { UserProfile } from "./user-profile";
+import { UserRolesList } from "./user-roles-list";
 import { UserSessions } from "./user-sessions";
+import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { AdminAccountTypes, UserManagementConstants } from "../constants";
 import useUserManagement from "../hooks/use-user-management";
 
@@ -106,6 +109,17 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const [ adminUsername, setAdminUsername ] = useState<string|null>(null);
     const [ isUserManagedByParentOrg, setIsUserManagedByParentOrg ] = useState<boolean>(false);
     const [ isUserProfileReadOnly, setIsUserProfileReadOnly ] = useState<boolean>(false);
+    const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
+        return state.config.ui.features?.users?.disabledFeatures;
+    });
+
+    const { data: consoleApplicationFilter } = useApplicationList(null, null, null, "name eq Console");
+
+    const consoleId: string = useMemo(() => (
+        consoleApplicationFilter?.applications[0]?.id
+    ), [ consoleApplicationFilter ]);
+
+    const { consoleRoles } = useConsoleRoles(null, null, null, null, consoleId);
 
     useEffect(() => {
         const userStore: string = user?.userName?.split("/").length > 1
@@ -116,6 +130,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             || readOnlyUserStores?.includes(userStore?.toString())
             || !hasUsersUpdatePermissions
             || user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
+            || user[ UserManagementConstants.CUSTOMSCHEMA ]?.isReadOnlyUser === "true"
         ) {
             setReadOnly(true);
         }
@@ -196,6 +211,17 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             });
     };
 
+    /**
+     * Checks whether administrator role is present in the user.
+     */
+    const isAdminUser = (user: UserBasicInterface): boolean => {
+        return user?.roles?.some((userRole: UserRoleInterface) => {
+            return consoleRoles?.Resources?.some((consoleRole: RolesInterface) => {
+                return consoleRole.id === userRole.value;
+            });
+        });
+    };
+
     const panes = () => ([
         {
             menuItem: t("users:editUser.tab.menuItems.0"),
@@ -211,11 +237,34 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         isReadOnlyUserStoresLoading={ isReadOnlyUserStoresLoading }
                         isUserManagedByParentOrg={ isUserManagedByParentOrg }
                         adminUserType={ AdminAccountTypes.INTERNAL }
+                        allowDeleteOnly={
+                            user[ UserManagementConstants.CUSTOMSCHEMA ]?.isReadOnlyUser === "true"
+
+                        }
+                        editUserDisclaimerMessage={ (
+                            <Grid>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                        <Message
+                                            type="info"
+                                            content={ t("extensions:manage.users.editUserProfile.disclaimerMessage") }
+                                        />
+                                        <Divider hidden />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        ) }
                     />
                 </ResourceTab.Pane>
             )
         },
-        {
+        (
+            (
+                !userRolesDisabledFeatures?.includes(UserManagementConstants.FEATURE_DICTIONARY.get("USER_GROUPS"))
+                || user?.userName?.split("/").length !== 1
+            )
+        )
+        && {
             menuItem: t("users:editUser.tab.menuItems.1"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -225,6 +274,17 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         handleUserUpdate={ handleUserUpdate }
                         isReadOnly={ isReadOnly }
                     />
+                </ResourceTab.Pane>
+            )
+        },
+        isAdminUser(user)
+        && {
+            menuItem: t("users:editUser.tab.menuItems.2"),
+            render: () => (
+                <ResourceTab.Pane controlledSegmentation attached={ false }>
+                    {
+                        <UserRolesList user={ user } />
+                    }
                 </ResourceTab.Pane>
             )
         },
