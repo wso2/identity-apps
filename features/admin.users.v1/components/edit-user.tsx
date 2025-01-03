@@ -109,6 +109,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const [ adminUsername, setAdminUsername ] = useState<string|null>(null);
     const [ isUserManagedByParentOrg, setIsUserManagedByParentOrg ] = useState<boolean>(false);
     const [ isUserProfileReadOnly, setIsUserProfileReadOnly ] = useState<boolean>(false);
+    
     const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
         return state.config.ui.features?.users?.disabledFeatures;
     });
@@ -212,7 +213,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     };
 
     /**
-     * Checks whether administrator role is present in the user.
+     * Checks whether user has any console roles i.e user has administrative access to the organization.
      */
     const isAdminUser = (user: UserBasicInterface): boolean => {
         return user?.roles?.some((userRole: UserRoleInterface) => {
@@ -280,9 +281,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             menuItem: t("users:editUser.tab.menuItems.2"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    {
-                        <UserRolesList user={ user } />
-                    }
+                    <UserRolesList user={ user } />
                 </ResourceTab.Pane>
             )
         },
