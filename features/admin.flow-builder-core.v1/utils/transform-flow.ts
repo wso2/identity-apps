@@ -19,6 +19,7 @@
 import { Edge, Node as XYFlowNode } from "@xyflow/react";
 import omit from "lodash-es/omit";
 import set from "lodash-es/set";
+import { v4 as uuidv4 } from "uuid";
 import { ActionTypes } from "../models/actions";
 import {
     Payload,
@@ -57,7 +58,7 @@ const groupNodesIntoPages = (nodes: any[], edges: any[]): any[] => {
 
     nodes.forEach((node: any) => {
         if (!visitedNodes.has(node.id)) {
-            const pageId: string = `flow-page-${Object.keys(nodePages).length + 1}`;
+            const pageId: string = `flow-page-${uuidv4()}`;
 
             traverseNodes(node.id, pageId);
         }
@@ -213,7 +214,7 @@ const transformFlow = (flowState: any): Payload => {
                 if (component.category === "FIELD") {
                     currentBlock = {
                         elements: [ component.id ],
-                        id: `flow-block-${payload.blocks.length + 1}`
+                        id: `flow-block-${uuidv4()}`
                     };
                     payload.blocks.push(currentBlock);
                     nodeElements.push(currentBlock.id);
