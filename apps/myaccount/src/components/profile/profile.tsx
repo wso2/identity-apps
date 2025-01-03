@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -165,6 +165,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isMultipleEmailsAndMobileConfigEnabled: boolean = config?.ui?.isMultipleEmailsAndMobileNumbersEnabled;
+    const primaryUserStoreDomainName: string = config?.ui?.primaryUserStoreDomainName;
 
     const [ isMobileVerificationEnabled, setIsMobileVerificationEnabled ] = useState<boolean>(false);
     const [ isEmailVerificationEnabled, setIsEmailVerificationEnabled ] = useState<boolean>(false);
@@ -328,7 +329,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         const username: string = profileDetails?.profileInfo["userName"];
 
         if (!username) return;
-        const userStoreDomain: string = resolveUserstore(username)?.toUpperCase();
+        const userStoreDomain: string = resolveUserstore(username, primaryUserStoreDomainName)?.toUpperCase();
         // Check each required attribute exists and domain is not excluded in the excluded user store list.
         const attributeCheck: boolean = multipleEmailsAndMobileFeatureRelatedAttributes.every(
             (attribute: string) => {

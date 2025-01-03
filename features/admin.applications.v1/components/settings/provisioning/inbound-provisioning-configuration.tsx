@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import { AuthenticatorAccordion, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { AppState, AuthenticatorAccordion, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -26,7 +26,7 @@ import { Heading } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Grid } from "semantic-ui-react";
 import { updateApplicationConfigurations } from "../../../api/application";
@@ -85,6 +85,9 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
     const { isSuperOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
     const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
+
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ userStore, setUserStore ] = useState<SimpleUserStoreListItemInterface[]>([]);
 
@@ -155,8 +158,8 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
         const userstore: SimpleUserStoreListItemInterface[] = [];
 
         userstore.push({
-            id: "PRIMARY",
-            name: "PRIMARY"
+            id: primaryUserStoreDomainName,
+            name: primaryUserStoreDomainName
         });
         if (isSuperOrganization()) {
             getUserStoreList().then((response: AxiosResponse) => {

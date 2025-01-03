@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -108,6 +108,9 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
     const dispatch: Dispatch = useDispatch();
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
+
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitRoleList, setSubmitRoleList ] = useTrigger();
 
@@ -116,7 +119,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>(undefined);
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>(
-        commonConfig?.primaryUserstoreOnly ? PRIMARY_USERSTORE : CONSUMER_USERSTORE);
+        commonConfig?.primaryUserstoreOnly ? primaryUserStoreDomainName : CONSUMER_USERSTORE);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isWizardActionDisabled, setIsWizardActionDisabled ] = useState<boolean>(true);
     const [ selectedRoleId, setSelectedRoleId ] = useState<string>();

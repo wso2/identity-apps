@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -41,7 +41,5 @@ export class GroupConstants {
         .set("GROUP_CREATE", "groups.create")
         .set("GROUP_UPDATE", "groups.update")
         .set("GROUP_DELETE", "groups.delete")
-        .set("GROUP_READ", "groups.read")
-
-    public static readonly PRIMARY_USER_STORE_OPTION_VALUE: string = "primary";
+        .set("GROUP_READ", "groups.read");
 }

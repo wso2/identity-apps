@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -132,5 +132,16 @@ export class StringUtils {
      */
     public static removeDotsAndSlashesFromRelativePath(path: string): string {
         return path.replace(/\.\.\//g, "");
+    }
+
+    /**
+     * Compare the two given strings in a case-insensitive manner.
+     *
+     * @param firstValue - First string value.
+     * @param secondValue - Second string value.
+     * @returns True if the two given string values are equal in a case-insensitive manner.
+     */
+    public static isEqualCaseInsensitive(firstValue: string, secondValue: string): boolean {
+        return firstValue?.toLowerCase() === secondValue?.toLowerCase();
     }
 }
