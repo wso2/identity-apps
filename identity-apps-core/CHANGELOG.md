@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.8.11
+
+### Patch Changes
+
+- [#7250](https://github.com/wso2/identity-apps/pull/7250) [`79a63a6187da0c01415ea5bac2ca2ec2f56ce87a`](https://github.com/wso2/identity-apps/commit/79a63a6187da0c01415ea5bac2ca2ec2f56ce87a) Thanks [@KD23243](https://github.com/KD23243)! - Validate and Sanitize backToUrl in self-registration-username-request.jsp
+
 ## 2.8.10
 
 ### Patch Changes
