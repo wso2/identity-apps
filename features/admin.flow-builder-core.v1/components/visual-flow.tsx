@@ -21,8 +21,6 @@ import Button from "@oxygen-ui/react/Button";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useDnD } from "@wso2is/dnd";
 import {
-    Background,
-    BackgroundVariant,
     Controls,
     Edge,
     MarkerType,
@@ -242,7 +240,6 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
                 colorMode="dark"
                 { ...rest }
             >
-                <Background gap={ 16 } variant={ BackgroundVariant.Dots } size={ 2 } />
                 <Controls position="top-right" />
             </ReactFlow>
         </>
