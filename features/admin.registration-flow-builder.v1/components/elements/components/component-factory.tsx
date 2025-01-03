@@ -19,12 +19,9 @@
 import CommonComponentFactory, {
     CommonComponentFactoryPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/elements/components/common-component-factory";
-import { ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
-import { WidgetTypes } from "@wso2is/admin.flow-builder-core.v1/models/widget";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
-import AttributesAdapter from "./adapters/attributes/attributes-adapter";
 
 /**
  * Props interface of {@link ComponentFactory}
@@ -41,12 +38,6 @@ export const ComponentFactory: FunctionComponent<ComponentFactoryPropsInterface>
     node,
     nodeId
 }: ComponentFactoryPropsInterface & Node): ReactElement => {
-    if (node.category === ElementCategories.Widget) {
-        if (node.type === WidgetTypes.AttributeCollector) {
-            return <AttributesAdapter />;
-        }
-    }
-
     return <CommonComponentFactory node={ node } nodeId={ nodeId } />;
 };
 
