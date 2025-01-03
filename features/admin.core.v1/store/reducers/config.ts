@@ -143,6 +143,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             resourceTypes: "",
             roles: "",
             rolesV2: "",
+            rulesMetaData: "",
             rolesWithoutOrgPath: "",
             rootOrganization: "",
             rootUsersOrganization: "",
