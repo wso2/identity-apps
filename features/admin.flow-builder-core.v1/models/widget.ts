@@ -30,6 +30,4 @@ export interface WidgetExtendedConfig {
     version?: string;
 }
 
-export enum WidgetTypes {
-    AttributeCollector = "ATTRIBUTE_COLLECTOR",
-}
+export enum WidgetTypes {}
