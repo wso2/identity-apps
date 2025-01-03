@@ -86,7 +86,7 @@ export const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
                 position={ Position.Left }
             />
             <Button startIcon={ <img src={ node?.display?.image } /> } sx={ node?.config.styles } { ...config }>
-                { node?.variants?.[0]?.config?.field?.text }
+                { node?.config?.field?.text }
             </Button>
             <Handle
                 id={ `${node?.id}${ButtonAdapterConstants.NEXT_BUTTON_HANDLE_SUFFIX}` }
