@@ -259,10 +259,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             )
         },
         (
-            (
-                !userRolesDisabledFeatures?.includes(UserManagementConstants.FEATURE_DICTIONARY.get("USER_GROUPS"))
-                || user?.userName?.split("/").length !== 1
-            )
+            !userRolesDisabledFeatures?.includes(UserManagementConstants.FEATURE_DICTIONARY.get("USER_GROUPS"))
+            || user?.userName?.split("/").length !== 1
         )
         && {
             menuItem: t("users:editUser.tab.menuItems.1"),
