@@ -17,6 +17,7 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
+import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import useConsoleRoles from "@wso2is/admin.console-settings.v1/hooks/use-console-roles";
 import { FeatureConfigInterface, UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
@@ -39,7 +40,6 @@ import { UserGroupsList } from "./user-groups-edit";
 import { UserProfile } from "./user-profile";
 import { UserRolesList } from "./user-roles-list";
 import { UserSessions } from "./user-sessions";
-import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { AdminAccountTypes, UserManagementConstants } from "../constants";
 import useUserManagement from "../hooks/use-user-management";
 
