@@ -1,18 +1,1 @@
-[
-    {
-        "category": "WIDGET",
-        "type": "ATTRIBUTE_COLLECTOR",
-        "version": "0.1.0",
-        "deprecated": false,
-        "display": {
-            "label": "Attribute Collector",
-            "image": "https://www.svgrepo.com/show/450909/form-elements.svg"
-        },
-        "config": {
-            "field": {
-                "className": "wso2is-attribute-collector"
-            },
-            "styles": {}
-        }
-    }
-]
+[]

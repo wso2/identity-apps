@@ -61,7 +61,12 @@ const ElementPanelDraggableNode: FunctionComponent<ElementPanelDraggableNodeProp
                             variant="square"
                             className="flow-builder-element-panel-draggable-node-avatar"
                         />
-                        <Typography>{ node?.display?.label }</Typography>
+                        <Stack direction="column" spacing={ 0.5 }>
+                            <Typography>{ node?.display?.label }</Typography>
+                            { node?.display?.description && (
+                                <Typography variant="body2">{ node?.display?.description }</Typography>
+                            ) }
+                        </Stack>
                     </Stack>
                 </CardContent>
             </Card>

@@ -19,9 +19,7 @@
 import CommonWidgetPropertyFactory, {
     CommonWidgetPropertyFactoryPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/common-widget-property-factory";
-import { WidgetTypes } from "@wso2is/admin.flow-builder-core.v1/models/widget";
 import React, { FunctionComponent, ReactElement } from "react";
-import AttributeCollectorProperties from "./widgets/attribute-collector-properties";
 
 /**
  * Props interface of {@link WidgetPropertyFactory}
@@ -41,8 +39,6 @@ const WidgetPropertyFactory: FunctionComponent<WidgetPropertyFactoryPropsInterfa
     onChange
 }: WidgetPropertyFactoryPropsInterface): ReactElement | null => {
     switch (element.type) {
-        case WidgetTypes.AttributeCollector:
-            return <AttributeCollectorProperties />;
         default:
             return (
                 <CommonWidgetPropertyFactory

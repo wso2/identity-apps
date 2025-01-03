@@ -29,7 +29,8 @@ import OTPInputAdapter from "./adapters/input/otp-input-adapter";
 import PhoneNumberInputAdapter from "./adapters/input/phone-number-input-adapter";
 import RichTextAdapter from "./adapters/rich-text-adapter";
 import TypographyAdapter from "./adapters/typography-adapter";
-import { Component, ComponentTypes, InputVariants } from "../../../models/component";
+import { ComponentTypes, InputVariants } from "../../../models/component";
+import { Element } from "../../../models/elements";
 
 /**
  * Props interface of {@link CommonComponentFactory}
@@ -42,7 +43,7 @@ export interface CommonComponentFactoryPropsInterface extends IdentifiableCompon
     /**
      * The node properties.
      */
-    node: Component;
+    node: Element;
 }
 
 /**
