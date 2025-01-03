@@ -81,7 +81,6 @@
 
     // Get the current language's direction
     String direction = languageDirectionMap.getOrDefault(language, "ltr");
-    out.write("<html dir=\"" + direction + "\">");
 
     String themeSuffix = "";
     if ("rtl".equals(languageDirectionMap.get(language))) {
@@ -166,6 +165,9 @@
     }
 </style>
 
-<script>
-    document.documentElement.setAttribute("dir", "<%= direction %>");
+<script type="text/javascript">
+    const direction = "<%= direction %>";
+    if (direction) {
+        document.documentElement.setAttribute("dir", direction);
+    }
 </script>
