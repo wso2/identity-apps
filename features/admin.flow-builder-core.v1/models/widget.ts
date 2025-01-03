@@ -16,9 +16,12 @@
  * under the License.
  */
 
+import { Payload } from "./api";
 import { Component } from "./component";
 
 export type Widget = Component<WidgetExtendedConfig>;
+
+export type SubFlow = Partial<Payload>;
 
 /**
  * Interface for the properties of a widget.
@@ -28,6 +31,10 @@ export interface WidgetExtendedConfig {
      * Version of the widget.
      */
     version?: string;
+    /**
+     * Sub flow to render for the widget.
+     */
+    flow?: SubFlow;
 }
 
 export enum WidgetTypes {}
