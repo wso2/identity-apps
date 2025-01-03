@@ -1335,6 +1335,37 @@
                 ]
             },
             {% endif %}
+            {% if console.rule_based_password_expiry is defined %}
+            "ruleBasedPasswordExpiry": {
+                "disabledFeatures": [
+                    {% if console.rule_based_password_expiry.disabled_features is defined %}
+                    {% for feature in console.rule_based_password_expiry.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.rule_based_password_expiry.enabled is defined %} {{ console.rule_based_password_expiry.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.rule_based_password_expiry.scopes is defined %}
+                    {% for operation, scopes in console.rule_based_password_expiry.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "feature": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.server is defined %}
             "server": {
                 "disabledFeatures": [

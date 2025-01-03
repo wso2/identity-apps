@@ -251,6 +251,10 @@ export interface FeatureConfigInterface {
      */
     residentOutboundProvisioning?: FeatureAccessConfigInterface;
     /**
+     * Rule based password expiry feature
+     */
+    ruleBasedPasswordExpiry?: FeatureAccessConfigInterface;
+    /**
      * Connection management feature.
      */
     connections?: ConnectionConfigInterface;
