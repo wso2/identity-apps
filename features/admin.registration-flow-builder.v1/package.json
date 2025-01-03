@@ -18,6 +18,7 @@
         "@oxygen-ui/react-icons": "^1.15.2",
         "@wso2is/admin.flow-builder-core.v1": "workspace:^",
         "@wso2is/admin.core.v1": "workspace:^",
+        "@wso2is/admin.rules.v1": "workspace:^",
         "@wso2is/core": "workspace:^",
         "@xyflow/react": "^12.3.2",
         "classnames": "^2.2.6",

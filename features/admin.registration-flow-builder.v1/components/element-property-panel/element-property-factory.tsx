@@ -20,6 +20,7 @@ import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/m
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import ComponentPropertyFactory from "./component-property-factory";
+import NodePropertyFactory from "./node-property-factory";
 import WidgetPropertyFactory from "./widget-property-factory";
 
 /**
@@ -66,6 +67,16 @@ const ElementPropertyFactory: FunctionComponent<ElementPropertyFactoryPropsInter
         case ElementCategories.Display:
             return (
                 <ComponentPropertyFactory
+                    element={ element }
+                    propertyKey={ propertyKey }
+                    propertyValue={ propertyValue }
+                    data-componentid={ componentId }
+                    onChange={ onChange }
+                />
+            );
+        case ElementCategories.Nodes:
+            return (
+                <NodePropertyFactory
                     element={ element }
                     propertyKey={ propertyKey }
                     propertyValue={ propertyValue }
