@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,6 @@
  */
 
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
-import useConsoleSettings from "./use-console-settings";
 
 /**
  * Props interface of {@link useConsoleRoles}
@@ -37,9 +36,10 @@ const useConsoleRoles = (
     shouldFetch: boolean = true,
     count?: number,
     startIndex?: number,
-    filter?: string
+    filter?: string,
+    consoleId?: string
 ): UseConsoleRolesInterface => {
-    const { consoleId } = useConsoleSettings();
+
     const {
         data: consoleRoles,
         isLoading: isConsoleRolesFetchRequestLoading,

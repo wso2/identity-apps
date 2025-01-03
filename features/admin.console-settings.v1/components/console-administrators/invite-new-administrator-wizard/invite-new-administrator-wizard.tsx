@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -41,6 +41,7 @@ import { Grid, Modal, ModalProps } from "semantic-ui-react";
 import { ConsoleAdministratorOnboardingConstants } from "../../../constants/console-administrator-onboarding-constants";
 import useConsoleRoles from "../../../hooks/use-console-roles";
 import "./invite-new-administrator-wizard.scss";
+import useConsoleSettings from "../../../hooks/use-console-settings";
 
 /**
  * Props interface of {@link InviteNewAdministratorWizard}
@@ -85,7 +86,9 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
-    const { consoleRoles } = useConsoleRoles(null, null);
+    const { consoleId } = useConsoleSettings();
+
+    const { consoleRoles } = useConsoleRoles(null, null, null, null, consoleId);
 
     const rolesAutocompleteOptions: InviteNewAdministratorWizardFormValuesInterface["roles"] = useMemo(() => {
         if (isEmpty(consoleRoles?.Resources)) {
