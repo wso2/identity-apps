@@ -48,6 +48,12 @@
             <param-value>{{ downtime_banner.enabled }}</param-value>
         </context-param>
     {% endif %}
+    % if event.default_listener.validation.enable is defined %}
+        <context-param>
+            <param-name>isPasswordInputValidationEnabled</param-name>
+            <param-value>{{ event.default_listener.validation.enable }}</param-value>
+        </context-param>
+    {% endif %}
     <!-- **************** End of Application specific configurations ************************* -->
 
     <!-- *************** Global configurations ********************** -->
