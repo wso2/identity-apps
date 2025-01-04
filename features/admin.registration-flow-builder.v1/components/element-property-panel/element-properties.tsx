@@ -30,6 +30,8 @@ import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "re
 import ElementPropertyFactory from "./element-property-factory";
 import ButtonExtendedProperties from "./extended-properties/button-extended-properties";
 import FieldExtendedProperties from "./extended-properties/field-extended-properties";
+import RulesProperties from "./nodes/rules-properties";
+import { NodeTypes } from "@wso2is/admin.flow-builder-core.v1/models/node";
 
 /**
  * Props interface of {@link ElementProperties}
@@ -114,6 +116,10 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
                     { renderElementPropertyFactory() }
                 </>
             );
+        case ElementCategories.Nodes:
+            if (element.type === NodeTypes.Rule) {
+                return <RulesProperties />;
+            }
         default:
             return <>{ renderElementPropertyFactory() }</>;
     }
