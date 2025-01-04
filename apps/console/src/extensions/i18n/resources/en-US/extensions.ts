@@ -3816,6 +3816,12 @@ export const extensions: Extensions = {
                                     "Notify user when the account lock duration is increased due to " +
                                     "continuous failed login attempts.",
                                 label: "Notify user when lock time is increased"
+                            },
+                            lockAccountForSpecifiedTime: {
+                                label: "Lock account for a specified duration",
+                            },
+                            lockAccountindefiniteTime: {
+                                label: "Lock account indefinitely"
                             }
                         }
                     },
@@ -3825,6 +3831,7 @@ export const extensions: Extensions = {
                     connectorDescription:
                         "Protect accounts from password brute-force attacks by locking the " +
                         "account on consecutive failed login attempts.",
+                    accountLockDurationHeading: "Set account lock duration",
                     heading: "Login Attempts",
                     notification: {
                         error: {
