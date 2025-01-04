@@ -18,7 +18,6 @@
 
 :root {
     --wso2is-flow-builder-rule-background-color: #002e58;
-    --wso2is-flow-builder-rule-action-panel-height: 44px;
     --wso2is-flow-builder-rule-remove-button-color: var(--oxygen-palette-grey-500);
     --wso2is-flow-builder-rule-remove-button-hover-color: var(--oxygen-palette-primary-contrastText);
     --wso2is-flow-builder-rule-content-box-width: 150px;
@@ -44,8 +43,8 @@
     }
 
     .flow-builder-rule-action-panel {
-        padding: 10px 14px;
-        height: var(--wso2is-flow-builder-rule-action-panel-height);
+        padding: 20px 20px;
+        height: auto;
 
         .flow-builder-rule-id {
             color: var(--oxygen-palette-primary-contrastText);
@@ -54,6 +53,7 @@
         .flow-builder-rule-remove-button {
             border: 2px solid var(--wso2is-flow-builder-rule-remove-button-color);
             padding: 2px;
+            margin-left: 20px;
             color: var(--wso2is-flow-builder-rule-remove-button-color);
 
             &:hover {
