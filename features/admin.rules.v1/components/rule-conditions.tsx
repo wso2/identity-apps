@@ -30,7 +30,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { SelectChangeEvent } from '@mui/material';
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { debounce } from "lodash";
+import debounce from "lodash-es/debounce";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { ConditionTypes, ExpressionInterface, RuleConditionsInterface } from "../models/rules";
 import { useRulesContext } from "../providers/rules-provider";
@@ -182,7 +182,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     onChange={ (e, value) => {
                         if (value) {
                             setLocalValue(value.name);
-                            handleChangeDebounced(value.name, ruleId, condition.id, condition.expressions[0].id, "value");
+                            handleChangeDebounced(value.name, ruleId, condition.id, 
+                                condition.expressions[0].id, "value");
                         }
                     } }
                     onInputChange={ (e, value) => setInputValue(value) }
@@ -222,7 +223,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         value={ localValue }
                         onChange={(e) => {
                             setLocalValue(e.target.value);
-                            handleChangeDebounced(e.target.value, ruleId, condition.id, condition.expressions[0].id, "value");
+                            handleChangeDebounced(e.target.value, ruleId, condition.id,
+                                condition.expressions[0].id, "value");
                         }}
                     />
                 );
@@ -237,11 +239,14 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             value={ localValue }
                             onChange={(e: SelectChangeEvent) => {
                                 setLocalValue(e.target.value);
-                                updateRuleConditionExpression(e.target.value, ruleId, condition.id, condition.expressions[0].id, "value")
+                                updateRuleConditionExpression(e.target.value, ruleId, condition.id,
+                                    condition.expressions[0].id, "value")
                             }}
                         >
                             { metaValue.values.map((item, index) => (
-                                <MenuItem value={ item.name } key={ `${condition.id}-${index}` }>{ item.displayName }</MenuItem>
+                                <MenuItem value={ item.name } key={ `${condition.id}-${index}` }>
+                                    { item.displayName }
+                                </MenuItem>
                             )) }
                         </Select>
                     );
@@ -273,11 +278,14 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 value={ localValue }
                                 onChange={(e: SelectChangeEvent) => {
                                     setLocalValue(e.target.value);
-                                    updateRuleConditionExpression(e.target.value, ruleId, condition.id, condition.expressions[0].id, "value")
+                                    updateRuleConditionExpression(e.target.value, ruleId, condition.id,
+                                        condition.expressions[0].id, "value")
                                 }}
                             >
                                 { resourcesList && resourcesList[resourceType]?.map((item, index) => (
-                                    <MenuItem value={ item.id } key={ `${condition.id}-${index}` }>{ item.name }</MenuItem>
+                                    <MenuItem value={ item.id } key={ `${condition.id}-${index}` }>
+                                        { item.name }
+                                    </MenuItem>
                                 )) }
                             </Select>
                         );
@@ -297,12 +305,16 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         value={ localField }
                         onChange={ (e: SelectChangeEvent) => {
                             setLocalField(e.target.value);
-                            updateRuleConditionExpression(e.target.value, ruleId, condition.id, condition.expressions[0].id, "field")
-                            updateRuleConditionExpression("", ruleId, condition.id, condition.expressions[0].id, "value")
+                            updateRuleConditionExpression(e.target.value, ruleId, condition.id,
+                                condition.expressions[0].id, "field")
+                            updateRuleConditionExpression("", ruleId, condition.id,
+                                condition.expressions[0].id, "value")
                         }}>
 
                         { conditionExpressionsMeta?.map((item, index) => (
-                            <MenuItem value={ item.field?.name } key={ `${condition.id}-${index}` }>{ item.field?.displayName }</MenuItem>
+                            <MenuItem value={ item.field?.name } key={ `${condition.id}-${index}` }>
+                                { item.field?.displayName }
+                            </MenuItem>
                         )) }
                     </Select>
                 </FormControl>
@@ -311,11 +323,14 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         value={ localOperator }
                         onChange={ (e: SelectChangeEvent) => {
                             setLocalOperator(e.target.value);
-                            updateRuleConditionExpression(e.target.value, ruleId, condition.id, condition.expressions[0].id, "operator") 
+                            updateRuleConditionExpression(e.target.value, ruleId, condition.id,
+                                condition.expressions[0].id, "operator") 
                         }}>
 
                         { metaOperators?.map((item, index) => (
-                            <MenuItem value={ item.name } key={ `${condition.id}-${index}` }>{ item.displayName }</MenuItem>
+                            <MenuItem value={ item.name } key={ `${condition.id}-${index}` }>
+                                { item.displayName }
+                            </MenuItem>
                         )) }
                     </Select>
                 </FormControl>

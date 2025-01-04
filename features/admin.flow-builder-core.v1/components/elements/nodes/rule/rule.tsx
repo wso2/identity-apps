@@ -18,7 +18,6 @@
 
 import Box from "@oxygen-ui/react/Box";
 import IconButton from "@oxygen-ui/react/IconButton";
-import Paper from "@oxygen-ui/react/Paper";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { XMarkIcon } from "@oxygen-ui/react-icons";
@@ -87,7 +86,7 @@ export const Rule: FunctionComponent<RulePropsInterface> = ({
                 justifyContent="space-between"
                 className="flow-builder-rule-action-panel"
                 onClick={ () => setLastInteractedElement(ruleStep) }
-                >
+            >
                 <Typography
                     variant="body2"
                     data-componentid={ `${componentId}-heading-text` }
@@ -107,7 +106,7 @@ export const Rule: FunctionComponent<RulePropsInterface> = ({
                     </IconButton>
                 </Tooltip>
             </Box>
-            <Handle type="source" position={ Position.Right } id="a" />            
+            <Handle type="source" position={ Position.Right } id="a" />
         </div>
     );
 };

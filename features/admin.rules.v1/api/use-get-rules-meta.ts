@@ -33,7 +33,7 @@ import { RuleComponentMetaDataInterface } from "../models/rules";
  * For more details, refer to the documentation:
  * {@link https://wso2.com/asgardeo/docs/apis/rule-metadata-rest-api/#tag/Metadata/operation/getExpressionMeta}
  *
- * @param flow - Flow. "preIssueAccessToken" "prePasswordUpdate" "preProfileUpdate" "preLogin" "postLogin" 
+ * @param flow - Flow. "preIssueAccessToken" "prePasswordUpdate" "preProfileUpdate" "preLogin" "postLogin"
  *                     "inLogin" "preRegistration" "inRegistration" "inPasswordExpiry"
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.

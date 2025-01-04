@@ -21,8 +21,8 @@ import CommonNodePropertyFactory, {
 // eslint-disable-next-line max-len
 } from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/common-node-property-factory";
 import { NodeTypes } from "@wso2is/admin.flow-builder-core.v1/models/node";
-import RulesProperties from "./nodes/rules-properties";
 import React, { FunctionComponent, ReactElement } from "react";
+import RulesProperties from "./nodes/rules-properties";
 
 /**
  * Props interface of {@link ComponentPropertyFactory}

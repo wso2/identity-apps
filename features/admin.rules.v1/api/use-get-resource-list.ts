@@ -27,7 +27,8 @@ import { HttpMethods } from "@wso2is/core/models";
 /**
  * Hook to get the resources list.
  *
- * This function calls the GET method of the provided endpoints to get the resources list, such as applications, roles, etc.
+ * This function calls the GET method of the provided endpoints to get the resources list, such as applications, 
+ * roles, etc.
  * 
  * @param endpointPath - Endpoint path.
  * @param shouldFetch - Should fetch the data.

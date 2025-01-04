@@ -38,6 +38,9 @@ import {
     TextFieldAdapter
 } from "@wso2is/form";
 import { EmphasizedSegment, Heading, Hint } from "@wso2is/react-components";
+import RulesComponent from "@wso2is/admin.rules.v1/components/rules-component";
+import { getRuleContextValue } from "@wso2is/admin.rules.v1/providers/rules-provider";
+import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -56,9 +59,6 @@ import {
     AuthenticationType,
     AuthenticationTypeDropdownOption
 } from "../models/actions";
-import RulesComponent from "@wso2is/admin.rules.v1/components/rules-component";
-import { getRuleContextValue } from "@wso2is/admin.rules.v1/providers/rules-provider";
-import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import "./action-config-form.scss";
 
 /**
@@ -736,12 +736,12 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                     { t("actions:fields.authentication.label") }
                 </Heading>
                 { renderAuthenticationSection() }
-                { (RulesMeta && showRulesComponent) &&
+                { (RulesMeta && showRulesComponent) && (
                     <>
                         <Divider className="divider-container"/>
                         <RulesComponent metaData={ RulesMeta } />
                     </>
-                }
+                )}
             </>
         );
     };

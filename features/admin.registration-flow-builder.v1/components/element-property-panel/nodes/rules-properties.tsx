@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import Stack from "@oxygen-ui/react/Stack";
-import Typography from "@oxygen-ui/react/Typography";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
-import RulesComponent from "@wso2is/admin.rules.v1/components/rules-component";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
-import "./rules-properties.scss";
+import Stack from "@oxygen-ui/react/Stack";
+import Typography from "@oxygen-ui/react/Typography";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
+import RulesComponent from "@wso2is/admin.rules.v1/components/rules-component";
 import { sampleExecutionsList } from "@wso2is/admin.rules.v1/data";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement } from "react";
+import "./rules-properties.scss";
 
 /**
  * Props interface of {@link RulesProperties}
@@ -47,17 +47,19 @@ const RulesProperties: FunctionComponent<RulesPropertiesPropsInterface> = ({
         data: RulesMeta
     } = useGetRulesMeta("preIssueAccessToken");
 
-    return( 
+    return (
         <Stack gap={ 2 } data-componentid={ componentId }>
-            <Typography variant="body2">Define a rule to how conditionally proceed to next steps in the flow</Typography>
+            <Typography variant="body2">
+                Define a rule to how conditionally proceed to next steps 
+                in the flow
+            </Typography>
             { RulesMeta &&
                 <RulesComponent metaData={ RulesMeta } multipleRules={ true } ruleExecutions={ sampleExecutionsList } />
             }
-            <Box sx={{ mt: 3 }}>
+            <Box sx={ { mt: 3 } }>
                 <Button size="small" variant="contained" color="primary">Save</Button>
             </Box>
         </Stack>
-    
     );
 };
 

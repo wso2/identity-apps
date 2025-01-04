@@ -65,8 +65,6 @@ const CommonNodePropertyFactory: FunctionComponent<CommonNodePropertyFactoryProp
     propertyValue,
     onChange
 }: CommonNodePropertyFactoryPropsInterface): ReactElement | null => {
-    console.log(propertyKey, propertyValue);
-
     if (propertyKey === "text") {
         if (element.type === ComponentTypes.RichText) {
             return <RichText ToolbarProps={ { history: false, strikeThrough: false } } />;
