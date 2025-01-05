@@ -116,7 +116,7 @@ export interface RuleComponentDataInterface {
  * Interface to represent the value of a rule component.
  */
 export interface RuleComponentExpressionValueInterface {
-    inputType: string;
+    inputType: "input" | "options";
     valueType: string;
     valueReferenceAttribute?: string;
     valueDisplayAttribute?: string;

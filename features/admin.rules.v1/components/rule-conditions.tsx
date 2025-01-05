@@ -53,6 +53,13 @@ interface ValueInputAutocompleteProps {
 }
 
 /**
+ * Condition value input props interface.
+ */
+interface ConditionValueInputProps {
+    metaValue: RuleComponentExpressionValueInterface;
+}
+
+/**
  * Props interface of {@link RulesComponent}
  */
 export interface RulesComponentPropsInterface extends IdentifiableComponentInterface {
@@ -239,7 +246,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                         ) : null }
                                         { params.InputProps.endAdornment }
                                     </>
-                                ),
+                                )
                             } }
                         />
                     ) }
@@ -249,15 +256,19 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
         /**
          * Condition value input component.
+         * @param metaValue - Meta value.
          * @returns Condition value input component.
          */
-        const ConditionValueInput: FunctionComponent = () => {
+        const ConditionValueInput: FunctionComponent<ConditionValueInputProps> = (props: any) => {
+
+            const { metaValue } = props;
+
             let resourcesList: any = null;
             let resourceType: string = "";
 
             // Handle fetching data unconditionally
             const resourcesListLink: string =
-                metaValue?.links?.find((link: LinkInterface) => link.rel === "values")?.href;
+            metaValue?.links?.find((link: LinkInterface) => link.rel === "values")?.href;
 
             const { data: fetchedResourcesList } = useGetResourcesList(resourcesListLink || null);
 
@@ -390,7 +401,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     </Select>
                 </FormControl>
                 <FormControl fullWidth size="small">
-                    <ConditionValueInput  />
+                    <ConditionValueInput metaValue={ metaValue }  />
                 </FormControl>
                 <FormControl sx={ { mt: 1 } } size="small">
                     <Button
