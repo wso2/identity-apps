@@ -27,7 +27,7 @@ jobs:
     strategy:
       matrix:
         node-version: [ lts/* ]
-        pnpm-version: [ 9.5.0 ]
+        pnpm-version: [ 8.7.4 ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -90,7 +90,7 @@ jobs:
     strategy:
       matrix:
         node-version: [ lts/* ]
-        pnpm-version: [ 9.5.0 ]
+        pnpm-version: [ 8.7.4 ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -148,7 +148,7 @@ jobs:
     strategy:
       matrix:
         node-version: [ lts/* ]
-        pnpm-version: [ 9.5.0 ]
+        pnpm-version: [ 8.7.4 ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
@@ -235,7 +235,7 @@ jobs:
         node-version: [ lts/* ]
         maven-version: [ 3.8.6 ]
         java-version: [ 11 ]
-        pnpm-version: [ 9.5.0 ]
+        pnpm-version: [ 8.7.4 ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
