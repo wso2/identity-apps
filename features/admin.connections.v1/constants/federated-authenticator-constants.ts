@@ -46,6 +46,7 @@ export class FederatedAuthenticatorConstants {
         SMS_OTP_AUTHENTICATOR_ID: string;
         TWITTER_AUTHENTICATOR_ID: string;
         YAHOO_AUTHENTICATOR_ID: string;
+        PASSWORD_RESET_ENFORCER_AUTHENTICATOR_ID: string;
     } = {
         APPLE_AUTHENTICATOR_ID: "QXBwbGVPSURDQXV0aGVudGljYXRvcg",
         DUO_AUTHENTICATOR_ID: "RHVvQXV0aGVudGljYXRvcg",
@@ -65,7 +66,8 @@ export class FederatedAuthenticatorConstants {
         SIWE_AUTHENTICATOR_ID: "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I",
         SMS_OTP_AUTHENTICATOR_ID: "U01TT1RQ",
         TWITTER_AUTHENTICATOR_ID: "VHdpdHRlckF1dGhlbnRpY2F0b3I",
-        YAHOO_AUTHENTICATOR_ID: "WWFob29PQXV0aDJBdXRoZW50aWNhdG9y"
+        YAHOO_AUTHENTICATOR_ID: "WWFob29PQXV0aDJBdXRoZW50aWNhdG9y",
+        PASSWORD_RESET_ENFORCER_AUTHENTICATOR_ID: "WWFob29PQXV0aDJBdXRoZW50aWNhdG9y"
     };
 
     public static readonly AUTHENTICATOR_NAMES: {
@@ -86,6 +88,7 @@ export class FederatedAuthenticatorConstants {
         OIDC_AUTHENTICATOR_NAME: string;
         ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME: string;
         YAHOO_AUTHENTICATOR_NAME: string;
+        PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME: string;
     } = {
         APPLE_AUTHENTICATOR_NAME: "AppleOIDCAuthenticator",
         DUO_AUTHENTICATOR_NAME: "DuoAuthenticator",
@@ -103,7 +106,8 @@ export class FederatedAuthenticatorConstants {
         SAML_AUTHENTICATOR_NAME: "SAMLSSOAuthenticator",
         SMS_OTP_AUTHENTICATOR_NAME: "SMSOTP",
         TWITTER_AUTHENTICATOR_NAME: "TwitterAuthenticator",
-        YAHOO_AUTHENTICATOR_NAME: "YahooOAuth2Authenticator"
+        YAHOO_AUTHENTICATOR_NAME: "YahooOAuth2Authenticator",
+        PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME: "password-reset-enforcer"
     };
 
     public static readonly AUTHENTICATOR_DISPLAY_NAMES: {
