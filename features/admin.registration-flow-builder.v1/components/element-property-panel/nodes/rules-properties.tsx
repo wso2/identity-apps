@@ -50,8 +50,7 @@ const RulesProperties: FunctionComponent<RulesPropertiesPropsInterface> = ({
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
             <Typography variant="body2">
-                Define a rule to how conditionally proceed to next steps 
-                in the flow
+                Define a rule to how conditionally proceed to next steps in the flow
             </Typography>
             { RulesMeta &&
                 <RulesComponent metaData={ RulesMeta } multipleRules={ true } ruleExecutions={ sampleExecutionsList } />

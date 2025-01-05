@@ -18,12 +18,12 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
-import { 
-    RuleInterface,
-    RuleComponentMetaDataInterface,
-    RuleExecutionMetaDataInterface } from "../models/rules";
-import { RulesProvider } from "../providers/rules-provider";
 import Rules from "./rules";
+import {
+    RuleComponentMetaDataInterface,
+    RuleExecutionMetaDataInterface,
+    RuleInterface } from "../models/rules";
+import { RulesProvider } from "../providers/rules-provider";
 import "./rules-component.scss";
 
 /**
@@ -43,8 +43,6 @@ interface RulesComponentPropsInterface extends IdentifiableComponentInterface {
 
     /**
      * Multiple rules flag.
-     * 
-     * @default false
      */
     multipleRules?: boolean
 
@@ -54,11 +52,9 @@ interface RulesComponentPropsInterface extends IdentifiableComponentInterface {
     ruleExecutions?: RuleExecutionMetaDataInterface[];
 }
 
-type RulesComponentPropsWithValidation = 
-  | (RulesComponentPropsInterface & { 
-        multipleRules: true; ruleExecutions: any })
-  | (RulesComponentPropsInterface & { 
-        multipleRules?: false; ruleExecutions?: never });
+type RulesComponentPropsWithValidation =
+  | (RulesComponentPropsInterface & { multipleRules: true; ruleExecutions: any })
+  | (RulesComponentPropsInterface & { multipleRules?: false; ruleExecutions?: never });
 
 /**
  * Landing page for the Flows feature.

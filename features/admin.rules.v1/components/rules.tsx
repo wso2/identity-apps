@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { SelectChangeEvent } from "@mui/material";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
@@ -24,15 +27,12 @@ import FormControl from "@oxygen-ui/react/FormControl";
 import Grid from "@oxygen-ui/react/Grid";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from "@oxygen-ui/react/Typography";
-import { SelectChangeEvent } from '@mui/material';
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
+import RuleConditions from "./rule-conditions";
 import { RuleInterface } from "../models/rules";
 import { useRulesContext } from "../providers/rules-provider";
-import RuleConditions from "./rule-conditions";
 import "./rules.scss";
 
 /**
@@ -41,9 +41,6 @@ import "./rules.scss";
 export interface RulesPropsInterface extends IdentifiableComponentInterface {
     /**
      * Multiple rules flag.
-     * 
-     * @default false
-     * @memberof RulesPropsInterface
      */
     multipleRules: boolean;
 }
@@ -72,28 +69,29 @@ const Rules: FunctionComponent<RulesPropsInterface> = ({
 
     return (
         <div className="rules-component" data-componentid={ componentId }>
-            { multipleRules &&
-                <Box sx={{ mb: 2 }}>
+            { multipleRules && (
+                <Box sx={ { mb: 2 } }>
                     <Button
                         size="small"
                         variant="contained"
                         color="secondary"
                         onClick={ addNewRule }
-                        startIcon={<AddIcon />}
+                        startIcon={ <AddIcon /> }
                     >
                         New Rule
                     </Button>
                 </Box>
-            }
-            { rulesInstance?.map((ruleInstance: RuleInterface) => (
+            ) }
+            { rulesInstance?.map((ruleInstance: RuleInterface, index: number) => (
                 <Card
-                    sx={{
+                    sx={ {
                         mb: 2,
                         position: "relative"
-                }}>
+                    } }
+                    key={ index }>
                     <Grid container alignItems="center">
                         <Grid>
-                            <Typography variant="body1"><Typography variant="body2">Execute</Typography></Typography>
+                            <Typography variant="body2">Execute</Typography>
                         </Grid>
                         { ruleInstance.execution ? (
                             <Grid>
@@ -101,20 +99,20 @@ const Rules: FunctionComponent<RulesPropsInterface> = ({
                                     <Select 
                                         value={ ruleInstance.execution } 
                                         onChange={ (e: SelectChangeEvent) => updateRuleExecution(e, ruleInstance.id) }>
-                                            
-                                        { conditionsMeta?.map((item, index) => (
+
+                                        { conditionsMeta?.map((item, index: number) => (
                                             <MenuItem
                                                 value={ item.value }
                                                 key={ `${ruleInstance.id}-${index}` }>
-                                                    { item.displayName }
+                                                { item.displayName }
                                             </MenuItem>
                                         )) }
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            ) : (
-                                <Grid>&nbsp;</Grid>
-                            )
+                        ) : (
+                            <Grid>&nbsp;</Grid>
+                        )
                         }
                         <Grid>
                             <Typography variant="body2">If</Typography>
@@ -126,26 +124,26 @@ const Rules: FunctionComponent<RulesPropsInterface> = ({
                         conditions={ ruleInstance.conditions }
                         conditionRemovable={ ruleInstance.conditions?.length > 1 }
                     /> 
-                    { rulesInstance?.length > 1 && 
+                    { rulesInstance?.length > 1 && (
                         <Fab
                             color="error"
                             aria-label="delete"
                             size="small"
                             className="delete-button"
-                            sx={{
-                                position: 'absolute',
-                                top: 14,
+                            sx={ {
+                                position: "absolute",
                                 right: 14,
-                            }}
+                                top: 14
+                            } }
                             onClick={ () => removeRule(ruleInstance.id) }
                         >
                             <DeleteIcon className="delete-button-icon" />
                         </Fab>
-                    }
+                    ) }
                 </Card>
             )) }
         </div>
-    )
+    );
 };
 
 export default Rules;

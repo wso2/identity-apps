@@ -1,4 +1,26 @@
-export const sampleRules = [{
+/**
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import { RuleComponentMetaDataInterface, RuleInterface } from "./models/rules";
+
+/* eslint-disable sort-keys */
+
+export const sampleRules: RuleInterface[] = [ {
     "id": "e9a500d4-12dd-4b87-ad7c-9efdacf8a2a5",
     "execution": "totp",
     "conditions": [
@@ -8,11 +30,11 @@ export const sampleRules = [{
             "order": 0,
             "expressions": [
                 {
-                "id": "8cbe103e-4c86-4021-91e4-83c37effe893a9267753",
-                "field": "application",
-                "operator": "equals",
-                "value": "c90293c7-3fc1-465e-a946",
-                "order": 0
+                    "id": "8cbe103e-4c86-4021-91e4-83c37effe893a9267753",
+                    "field": "application",
+                    "operator": "equals",
+                    "value": "c90293c7-3fc1-465e-a946",
+                    "order": 0
                 }
             ]
         },
@@ -22,11 +44,11 @@ export const sampleRules = [{
             "order": 0,
             "expressions": [
                 {
-                "id": "8cbe103e-4c86-4021-91e4-83dsfc37fe89ee3a9",
-                "field": "grantType",
-                "operator": "equals",
-                "value": "authorization_code",
-                "order": 0
+                    "id": "8cbe103e-4c86-4021-91e4-83dsfc37fe89ee3a9",
+                    "field": "grantType",
+                    "operator": "equals",
+                    "value": "authorization_code",
+                    "order": 0
                 }
             ]
         },
@@ -36,11 +58,11 @@ export const sampleRules = [{
             "order": 0,
             "expressions": [
                 {
-                "id": "8cbe103e-4c86-4021-91e4-83cdsf37fe893a9",
-                "field": "grantType",
-                "operator": "notEquals",
-                "value": "client_credentials",
-                "order": 0
+                    "id": "8cbe103e-4c86-4021-91e4-83cdsf37fe893a9",
+                    "field": "grantType",
+                    "operator": "notEquals",
+                    "value": "client_credentials",
+                    "order": 0
                 }
             ]
         },
@@ -50,18 +72,18 @@ export const sampleRules = [{
             "order": 0,
             "expressions": [
                 {
-                "id": "8cbe103e-4c86-4021-91e4-83c3fdsff437fe893a9",
-                "field": "application",
-                "operator": "equals",
-                "value": "8cbe103e-4c86-4021",
-                "order": 0
+                    "id": "8cbe103e-4c86-4021-91e4-83c3fdsff437fe893a9",
+                    "field": "application",
+                    "operator": "equals",
+                    "value": "8cbe103e-4c86-4021",
+                    "order": 0
                 }
             ]
         }
     ]
-}]
+} ];
 
-export const sampleApplicationList = {
+export const sampleApplicationList: any = {
     "totalResults": 2,
     "startIndex": 1,
     "count": 2,
@@ -88,7 +110,7 @@ export const sampleApplicationList = {
     "links": []
 };
 
-export const sampleExecutionsList = [
+export const sampleExecutionsList: any = [
     {
         "displayName": "TOTP",
         "value": "totp"
@@ -103,7 +125,7 @@ export const sampleExecutionsList = [
     }
 ];
 
-export const sampleExpressionsMeta = [
+export const sampleExpressionsMeta: RuleComponentMetaDataInterface = [
     {
         field: {
             name: "application",
@@ -181,30 +203,3 @@ export const sampleExpressionsMeta = [
         }
     }
 ];
-
-export const dummyMeta = {
-    checkValues : [
-        {
-            "displayName": "User Role",
-            "value": "userRole"
-        },
-        {
-            "displayName": "Application",
-            "value": "application"
-        },
-        {
-            "displayName": "Grant Type",
-            "value": "grantType"
-        }
-    ],
-    operators : [
-        {
-            "displayName": "= Equals",
-            "value": "equals"
-        },
-        {
-            "displayName": "!= Not equals",
-            "value": "notEquals"
-        },
-    ]
-}

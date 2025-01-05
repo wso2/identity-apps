@@ -120,6 +120,7 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
             if (element.type === NodeTypes.Rule) {
                 return <RulesProperties />;
             }
+
             break;
         default:
             return <>{ renderElementPropertyFactory() }</>;
