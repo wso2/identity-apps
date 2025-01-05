@@ -32,6 +32,23 @@ export enum RuleExecutions {
 }
 
 /**
+ * Interface to represent the rule execution data.
+ */
+export interface ListDataInterface {
+    name: string;
+    displayName: string;
+}
+
+/**
+ * Interface to represent the rule execution data.
+ */
+export interface LinkInterface {
+    href: string;
+    method: string;
+    rel: string;
+}
+
+/**
  * Interface to represent the rule execution meta data.
  */
 export interface RuleExecutionMetaDataInterface {
@@ -103,29 +120,16 @@ export interface RuleComponentExpressionValueInterface {
     valueType: string;
     valueReferenceAttribute?: string;
     valueDisplayAttribute?: string;
-    links?: {
-        href: string;
-        method: string;
-        rel: string;
-    }[];
-    values?: {
-        name: string;
-        displayName: string;
-    }[];
+    links?: LinkInterface[];
+    values?: ListDataInterface[];
 }
 
 /**
  * Interface to represent the rule component meta.
  */
 export interface RuleComponentMetaInterface {
-    field: {
-        name: string,
-        displayName: string
-    },
-    operators: {
-        name: string,
-        displayName: string
-    }[],
+    field: ListDataInterface,
+    operators: ListDataInterface[],
     value: RuleComponentExpressionValueInterface;
 }
 

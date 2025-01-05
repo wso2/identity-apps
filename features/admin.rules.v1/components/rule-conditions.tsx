@@ -36,10 +36,21 @@ import useGetResourcesList from "../api/use-get-resource-list";
 import {
     ConditionTypes,
     ExpressionInterface,
+    LinkInterface,
+    ListDataInterface,
+    RuleComponentExpressionValueInterface,
     RuleComponentMetaInterface,
     RuleConditionsInterface } from "../models/rules";
 import { useRulesContext } from "../providers/rules-provider";
 import "./rules-component.scss";
+
+/**
+ * Value input autocomplete props interface.
+ */
+interface ValueInputAutocompleteProps {
+    metaValue: RuleComponentExpressionValueInterface;
+    resourceType: string;
+}
 
 /**
  * Props interface of {@link RulesComponent}
@@ -101,8 +112,10 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         const [ localOperator, setLocalOperator ] = useState<string>(condition.expressions[0].operator);
         const [ localValue, setLocalValue ] = useState<string>(condition.expressions[0].value);
 
-        const [ metaOperators, setMetaOperators ] = useState(conditionExpressionsMeta[0]?.operators);
-        const [ metaValue, setMetaValue ] = useState(conditionExpressionsMeta[0]?.value);
+        const [ metaOperators, setMetaOperators ] =
+            useState<ListDataInterface[]>(conditionExpressionsMeta[0]?.operators);
+        const [ metaValue, setMetaValue ] =
+            useState<RuleComponentExpressionValueInterface>(conditionExpressionsMeta[0]?.value);
 
         useEffect(() => {
 
@@ -152,14 +165,17 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
          * @param resourceType - Resource type.
          * @returns Value input autocomplete component.
          */
-        const ValueInputAutocomplete: FunctionComponent<any> = ({ metaValue, resourceType }) => {
+        const ValueInputAutocomplete: FunctionComponent<ValueInputAutocompleteProps> = ({
+            metaValue,
+            resourceType
+        }: ValueInputAutocompleteProps) => {
 
             const [ inputValue, setInputValue ] = useState<string>(localValue);
             const [ options, setOptions ] = useState([]);
             const [ open, setOpen ] = useState<boolean>(false);
 
-            const initialLoadUrl: string = metaValue?.links.find(link => link.rel === "values")?.href;
-            const filterBaseUrl: string = metaValue?.links.find(link => link.rel === "filter")?.href;
+            const initialLoadUrl: string = metaValue?.links.find((link: LinkInterface) => link.rel === "values")?.href;
+            const filterBaseUrl: string = metaValue?.links.find((link: LinkInterface) => link.rel === "filter")?.href;
             const filterUrl: string = inputValue ? filterBaseUrl?.replace("*", inputValue) : null;
 
             const {
@@ -190,18 +206,26 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     onOpen={ () => setOpen(true) }
                     onClose={ () => setOpen(false) }
                     options={ options || [] }
-                    getOptionLabel={ (option) => option.name || "" }
+                    getOptionLabel={ (option: { name: string }) => option.name || "" }
                     loading={ isInitialLoading || isFiltering }
-                    value={ options.find(option => option.name === inputValue) || null }
-                    onChange={ (e, value) => {
+                    value={ options.find((option: any) => option.name === inputValue) || null }
+                    onChange={ (
+                        event: React.SyntheticEvent,
+                        value: { name: string } | null
+                    ) => {
                         if (value) {
                             setLocalValue(value.name);
-                            handleChangeDebounced(value.name, ruleId, condition.id,
-                                condition.expressions[0].id, "value");
+                            handleChangeDebounced(
+                                value.name,
+                                ruleId,
+                                condition.id,
+                                condition.expressions[0].id,
+                                "value"
+                            );
                         }
                     } }
-                    onInputChange={ (e, value) => setInputValue(value) }
-                    renderInput={ (params) => (
+                    onInputChange={ (event: React.ChangeEvent, value: string) => setInputValue(value) }
+                    renderInput={ (params: any) => (
                         <TextField
                             { ...params }
                             variant="outlined"
@@ -228,11 +252,13 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
          * @returns Condition value input component.
          */
         const ConditionValueInput: FunctionComponent = () => {
-            let resourcesList = null;
+            let resourcesList: any = null;
             let resourceType: string = "";
 
             // Handle fetching data unconditionally
-            const resourcesListLink = metaValue?.links?.find((link) => link.rel === "values")?.href;
+            const resourcesListLink: string =
+                metaValue?.links?.find((link: LinkInterface) => link.rel === "values")?.href;
+
             const { data: fetchedResourcesList } = useGetResourcesList(resourcesListLink || null);
 
             if (localField === "application") {
@@ -278,7 +304,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 );
                             } }
                         >
-                            { metaValue.values.map((item, index) => (
+                            { metaValue.values?.map((item: ListDataInterface, index: number) => (
                                 <MenuItem value={ item.name } key={ `${condition.id}-${index}` }>
                                     { item.displayName }
                                 </MenuItem>
@@ -308,7 +334,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 );
                             } }
                         >
-                            { resourcesList[resourceType]?.map((item, index) => (
+                            { resourcesList[resourceType]?.map((item: any, index: number) => (
                                 <MenuItem value={ item.id } key={ `${condition.id}-${index}` }>
                                     { item.name }
                                 </MenuItem>
@@ -340,14 +366,14 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 condition.expressions[0].id, "value");
                         } }>
 
-                        { conditionExpressionsMeta?.map((item, index) => (
+                        { conditionExpressionsMeta?.map((item: RuleComponentMetaInterface, index: number) => (
                             <MenuItem value={ item.field?.name } key={ `${condition.id}-${index}` }>
                                 { item.field?.displayName }
                             </MenuItem>
                         )) }
                     </Select>
                 </FormControl>
-                <FormControl sx={ { mt: 1, mb: 1, minWidth: 120 } } size="small">
+                <FormControl sx={ { mb: 1, minWidth: 120, mt: 1 } } size="small">
                     <Select
                         value={ localOperator }
                         onChange={ (e: SelectChangeEvent) => {
@@ -356,7 +382,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 condition.expressions[0].id, "operator");
                         } }>;
 
-                        { metaOperators?.map((item, index) => (
+                        { metaOperators?.map((item: ListDataInterface, index: number) => (
                             <MenuItem value={ item.name } key={ `${condition.id}-${index}` }>
                                 { item.displayName }
                             </MenuItem>
@@ -394,7 +420,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         );
     };
 
-    const ConditionOrDivider = (props) => (
+    const ConditionOrDivider = (props: any) => (
         <Divider sx={ { mb: 1, mt: 2 } }>
             <Button
                 size="small"

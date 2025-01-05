@@ -185,7 +185,7 @@ export const RulesProvider = (
      *
      * @returns RuleInterface
      */
-    const getNewRuleInstance = ():RuleInterface  => {
+    const getNewRuleInstance = (): RuleInterface  => {
 
         const newRuleUUID: string = uuidv4();
 
@@ -202,7 +202,7 @@ export const RulesProvider = (
 
         // If the initial data is not provided, create a new instance.
         if (!initialData) {
-            setRuleInstance([getNewRuleInstance()]);
+            setRuleInstance([ getNewRuleInstance() ]);
         }
     }, []);
 
@@ -226,7 +226,7 @@ export const RulesProvider = (
     const handleRemoveRule = (id: string) => {
 
         setRuleInstance((prev: RuleInterface[]) => {
-            return prev.filter((rule) => rule?.id !== id);
+            return prev.filter((rule: RuleInterface) => rule?.id !== id);
         });
     };
 
@@ -240,7 +240,7 @@ export const RulesProvider = (
         const changedValue: string = event.target.value as string;
 
         setRuleInstance((prev: RuleInterface[]) => {
-            return prev.map((rule) => {
+            return prev.map((rule: RuleInterface) => {
                 if (rule.id === id) {
                     return { ...rule, execution: changedValue };
                 }
@@ -269,16 +269,16 @@ export const RulesProvider = (
 
         setRuleInstance((prev: RuleInterface[]) => {
 
-            return prev.map((rule) => {
+            return prev.map((rule: RuleInterface) => {
                 if (rule.id === ruleId) {
                     return {
                         ...rule,
-                        conditions: rule.conditions.map((condition) => {
+                        conditions: rule.conditions.map((condition: RuleConditionsInterface) => {
                             if (condition.id === conditionId) {
                                 return {
                                     ...condition,
                                     expressions: condition.expressions.map(
-                                        (expression) => {
+                                        (expression: ExpressionInterface) => {
                                             if (expression.id === expressionId) {
                                                 return {
                                                     ...expression,
@@ -288,7 +288,7 @@ export const RulesProvider = (
 
                                             return expression;
                                         }
-                                    ),
+                                    )
                                 };
                             }
 
@@ -316,13 +316,15 @@ export const RulesProvider = (
     ) => {
 
         setRuleInstance((prev: RuleInterface[]) => {
-            return prev.map((rule) => {
+            return prev.map((rule: RuleInterface) => {
                 if (rule.id === ruleId) {
                     // Clone conditions to avoid mutating the original state
-                    const updatedConditions = [...rule.conditions];
+                    const updatedConditions: RuleConditionsInterface[] = [ ...rule.conditions ];
 
                     // Find the index of the item with the matching id
-                    const index = updatedConditions.findIndex((condition) => condition.id === previousConditionId);
+                    const index: number =
+                        updatedConditions.findIndex((condition: RuleConditionsInterface) =>
+                            condition.id === previousConditionId);
 
                     if (index === -1) {
                         return rule;
@@ -352,7 +354,7 @@ export const RulesProvider = (
     const handleRemoveRuleCondition = (ruleId: string, conditionId: string) => {
 
         setRuleInstance((prev: RuleInterface[]) => {
-            return prev.map((rule) => {
+            return prev.map((rule: RuleInterface) => {
                 if (rule.id === ruleId) {
 
                     // Clone conditions to avoid mutating the original state

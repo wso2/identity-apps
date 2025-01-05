@@ -59,7 +59,7 @@ const Rules: FunctionComponent<RulesPropsInterface> = ({
     multipleRules = false
 }: RulesPropsInterface): ReactElement => {
 
-    const { 
+    const {
         rulesInstance,
         conditionsMeta,
         addNewRule,
@@ -96,11 +96,11 @@ const Rules: FunctionComponent<RulesPropsInterface> = ({
                         { ruleInstance.execution ? (
                             <Grid>
                                 <FormControl sx={ { m: 1, minWidth: 120 } } size="small">
-                                    <Select 
-                                        value={ ruleInstance.execution } 
+                                    <Select
+                                        value={ ruleInstance.execution }
                                         onChange={ (e: SelectChangeEvent) => updateRuleExecution(e, ruleInstance.id) }>
 
-                                        { conditionsMeta?.map((item, index: number) => (
+                                        { conditionsMeta?.map((item: any, index: number) => (
                                             <MenuItem
                                                 value={ item.value }
                                                 key={ `${ruleInstance.id}-${index}` }>
@@ -123,7 +123,7 @@ const Rules: FunctionComponent<RulesPropsInterface> = ({
                         ruleId={ ruleInstance.id }
                         conditions={ ruleInstance.conditions }
                         conditionRemovable={ ruleInstance.conditions?.length > 1 }
-                    /> 
+                    />
                     { rulesInstance?.length > 1 && (
                         <Fab
                             color="error"
