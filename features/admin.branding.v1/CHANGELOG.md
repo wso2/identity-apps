@@ -1,5 +1,20 @@
 # @wso2is/admin.branding.v1
 
+## 2.27.41
+
+### Patch Changes
+
+- [#7258](https://github.com/wso2/identity-apps/pull/7258) [`403d351f2cb978fc4e2c02d49160af509a50a112`](https://github.com/wso2/identity-apps/commit/403d351f2cb978fc4e2c02d49160af509a50a112) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Revert pnpm version back to v8.7.4
+
+- Updated dependencies [[`403d351f2cb978fc4e2c02d49160af509a50a112`](https://github.com/wso2/identity-apps/commit/403d351f2cb978fc4e2c02d49160af509a50a112)]:
+  - @wso2is/admin.server-configurations.v1@2.31.6
+  - @wso2is/admin.organizations.v1@2.26.68
+  - @wso2is/admin.feature-gate.v1@1.4.68
+  - @wso2is/admin.branding.ai.v1@2.26.68
+  - @wso2is/admin.extensions.v1@2.35.27
+  - @wso2is/common.branding.v1@2.25.41
+  - @wso2is/admin.core.v1@2.35.6
+
 ## 2.27.40
 
 ### Patch Changes

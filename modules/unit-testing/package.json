@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@wso2is/unit-testing",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Reusable module to be used for Unit Testing the Identity Server front-ends.",
   "main": "index.ts",
   "homepage": "https://github.com/wso2/identity-apps#README",
@@ -24,7 +24,7 @@
     "@wso2is/admin.extensions.v1": "workspace:*",
     "@wso2is/admin.core.v1": "workspace:*",
     "msw": "^0.36.8",
-    "react": "catalog:",
+    "react": "^18.2.0",
     "@wso2is/access-control": "workspace:*",
     "redux-mock-store": "^1.5.4",
     "redux": "^4.0.4"
