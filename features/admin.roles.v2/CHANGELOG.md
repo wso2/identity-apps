@@ -1,5 +1,26 @@
 # @wso2is/admin.roles.v2
 
+## 2.27.12
+
+### Patch Changes
+
+- [#7258](https://github.com/wso2/identity-apps/pull/7258) [`403d351f2cb978fc4e2c02d49160af509a50a112`](https://github.com/wso2/identity-apps/commit/403d351f2cb978fc4e2c02d49160af509a50a112) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Revert pnpm version back to v8.7.4
+
+- Updated dependencies [[`403d351f2cb978fc4e2c02d49160af509a50a112`](https://github.com/wso2/identity-apps/commit/403d351f2cb978fc4e2c02d49160af509a50a112)]:
+  - @wso2is/admin.server-configurations.v1@2.31.6
+  - @wso2is/admin.identity-providers.v1@2.26.68
+  - @wso2is/admin.remote-userstores.v1@1.7.24
+  - @wso2is/admin.api-resources.v2@2.25.68
+  - @wso2is/admin.authorization.v1@2.25.26
+  - @wso2is/admin.organizations.v1@2.26.68
+  - @wso2is/admin.applications.v1@2.30.68
+  - @wso2is/admin.connections.v1@2.30.4
+  - @wso2is/admin.extensions.v1@2.35.27
+  - @wso2is/admin.userstores.v1@2.26.27
+  - @wso2is/admin.groups.v1@2.26.27
+  - @wso2is/admin.users.v1@2.29.27
+  - @wso2is/admin.core.v1@2.35.6
+
 ## 2.27.11
 
 ### Patch Changes
