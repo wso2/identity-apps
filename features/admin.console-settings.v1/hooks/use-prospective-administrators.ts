@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,6 @@ import cloneDeep from "lodash-es/cloneDeep";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import useConsoleRoles from "./use-console-roles";
-import useConsoleSettings from "./use-console-settings";
 
 /**
  * Props interface of {@link UseAdministrators}
@@ -93,9 +92,7 @@ const useProspectiveAdministrators = (
         shouldFetch
     );
 
-    const { consoleId } = useConsoleSettings();
-
-    const { consoleRoles } = useConsoleRoles(null, null, null, null, consoleId);
+    const { consoleRoles } = useConsoleRoles(null, null);
 
     /**
      * Transform the original users list response from the API.

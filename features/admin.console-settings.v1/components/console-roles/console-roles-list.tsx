@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,6 @@ import { Dispatch } from "redux";
 import ConsoleRolesListLayout from "./console-roles-list-layout";
 import CreateConsoleRoleWizard from "./create-console-role-wizard/create-console-role-wizard";
 import useConsoleRoles from "../../hooks/use-console-roles";
-import useConsoleSettings from "../../hooks/use-console-settings";
 
 /**
  * Props interface of {@link ConsoleRolesList}
@@ -54,14 +53,12 @@ const ConsoleRolesList: FunctionComponent<ConsoleRolesListInterface> = (
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ searchQuery, setSearchQuery ] = useState<string>(undefined);
 
-    const { consoleId } = useConsoleSettings();
-
     const {
         consoleRoles,
         consoleRolesFetchRequestError,
         mutateConsoleRolesFetchRequest,
         isConsoleRolesFetchRequestLoading
-    } = useConsoleRoles(true, listItemLimit, listOffset, searchQuery, consoleId);
+    } = useConsoleRoles(true, listItemLimit, listOffset, searchQuery);
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,6 @@
  */
 
 import Chip from "@oxygen-ui/react/Chip";
-import { useRequiredScopes } from "@wso2is/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -33,7 +32,7 @@ import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { UserListInterface } from "@wso2is/admin.users.v1/models";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { UserstoreConstants } from "@wso2is/core/constants";
-import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
+import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
@@ -57,7 +56,6 @@ import { useSelector } from "react-redux";
 import { Header, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
 import useConsoleRoles from "../../../hooks/use-console-roles";
 import "./administrators-table.scss";
-import useConsoleSettings from "../../../hooks/use-console-settings";
 
 /**
  * Props interface of {@link AdministratorsTable}
@@ -163,9 +161,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
     const { data: serverConfigs } = useServerConfigs();
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
-    const { consoleId } = useConsoleSettings();
-
-    const { consoleRoles } = useConsoleRoles(null, null, null, null, consoleId);
+    const { consoleRoles } = useConsoleRoles(null, null);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
@@ -175,10 +171,8 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
         return state?.config?.ui?.features?.users;
     });
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
-
-    const hasUsersUpdatePermissions: boolean = useRequiredScopes(featureConfig?.scopes?.update);
-    const hasUsersDeletePermissions: boolean = useRequiredScopes(featureConfig?.scopes?.delete);
 
     /**
      * Resolves data table columns.
@@ -347,7 +341,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                         : "PRIMARY";
 
                     return (
-                        !hasUsersUpdatePermissions
+                        !hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes)
                     || !isFeatureEnabled(featureConfig,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString()))
@@ -364,7 +358,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                         : "PRIMARY";
 
                     return (
-                        !hasUsersUpdatePermissions
+                        !hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes)
                     || !isFeatureEnabled(featureConfig,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString()))
@@ -385,7 +379,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                 return !isFeatureEnabled(featureConfig,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
                     || isPrivilegedUser
-                    || !hasUsersDeletePermissions
+                    || !hasRequiredScopes(featureConfig, featureConfig?.scopes?.delete, allowedScopes)
                     || readOnlyUserStores?.includes(userStore.toString())
                     || (getUserNameWithoutDomain(user?.userName) === serverConfigs?.realmConfig?.adminUser &&
                             !isSubOrganization())

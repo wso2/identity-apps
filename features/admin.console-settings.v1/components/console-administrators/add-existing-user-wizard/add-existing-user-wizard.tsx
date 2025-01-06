@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -33,7 +33,6 @@ import { Grid, Modal, ModalProps } from "semantic-ui-react";
 import { ConsoleAdministratorOnboardingConstants } from "../../../constants/console-administrator-onboarding-constants";
 import useBulkAssignAdministratorRoles from "../../../hooks/use-bulk-assign-user-roles";
 import useConsoleRoles from "../../../hooks/use-console-roles";
-import useConsoleSettings from "../../../hooks/use-console-settings";
 import useProspectiveAdministrators from "../../../hooks/use-prospective-administrators";
 import "./add-existing-user-wizard.scss";
 
@@ -83,9 +82,7 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
-    const { consoleId } = useConsoleSettings();
-
-    const { consoleRoles } = useConsoleRoles(null, null, null, null, consoleId);
+    const { consoleRoles } = useConsoleRoles(null, null);
 
     const { assignAdministratorRoles } = useBulkAssignAdministratorRoles();
 

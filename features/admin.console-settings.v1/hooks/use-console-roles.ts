@@ -17,6 +17,7 @@
  */
 
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
+import useConsoleSettings from "./use-console-settings";
 
 /**
  * Props interface of {@link useConsoleRoles}
@@ -36,10 +37,9 @@ const useConsoleRoles = (
     shouldFetch: boolean = true,
     count?: number,
     startIndex?: number,
-    filter?: string,
-    consoleId?: string
+    filter?: string
 ): UseConsoleRolesInterface => {
-
+    const { consoleId } = useConsoleSettings();
     const {
         data: consoleRoles,
         isLoading: isConsoleRolesFetchRequestLoading,
