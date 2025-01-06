@@ -114,7 +114,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
         data: RulesMeta
     } = useGetRulesMeta(actionTypeApiPath);
 
-    const showRulesComponent: boolean = true;
+    const showRulesComponent: boolean = false;
 
     /**
      * The following useEffect is used to set the current Action Authentication Type.
