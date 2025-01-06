@@ -17,9 +17,7 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
-import useConsoleRoles from "@wso2is/admin.console-settings.v1/hooks/use-console-roles";
-import { FeatureConfigInterface, UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
@@ -27,11 +25,11 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { ServerConfigurationsInterface, getServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1/models";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertInterface, AlertLevels, ProfileInfoInterface, RolesInterface, SBACInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Message, ResourceTab } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -113,14 +111,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
         return state.config.ui.features?.users?.disabledFeatures;
     });
-
-    const { data: consoleApplicationFilter } = useApplicationList(null, null, null, "name eq Console");
-
-    const consoleId: string = useMemo(() => (
-        consoleApplicationFilter?.applications[0]?.id
-    ), [ consoleApplicationFilter ]);
-
-    const { consoleRoles } = useConsoleRoles(null, null, null, null, consoleId);
 
     useEffect(() => {
         const userStore: string = user?.userName?.split("/").length > 1
@@ -210,17 +200,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             .finally(() => {
                 setIsSuperAdminIdentifierFetchRequestLoading(false);
             });
-    };
-
-    /**
-     * Checks whether user has any console roles i.e user has administrative access to the organization.
-     */
-    const isAdminUser = (user: UserBasicInterface): boolean => {
-        return user?.roles?.some((userRole: UserRoleInterface) => {
-            return consoleRoles?.Resources?.some((consoleRole: RolesInterface) => {
-                return consoleRole.id === userRole.value;
-            });
-        });
     };
 
     const panes = () => ([
