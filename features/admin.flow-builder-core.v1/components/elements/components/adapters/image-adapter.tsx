@@ -48,6 +48,7 @@ export const ImageAdapter: FunctionComponent<ImageAdapterPropsInterface> = ({
         <img
             src={ node?.config?.field?.src }
             alt={ node?.config?.field?.alt }
+            width="100%"
             style={ node?.config?.styles }
         />
     </Box>

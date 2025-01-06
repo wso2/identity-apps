@@ -166,24 +166,6 @@ export const Step: FunctionComponent<StepPropsInterface> = ({
                                             ...otherDragItemProps
                                         } = getDragItemProps(index);
 
-                                        // Wigets have a flow property which contains the elements of the sub flow.
-                                        // If the component is a widget, render the elements of the flow.
-                                        if (component?.config?.flow) {
-                                            return component.config?.flow?.elements?.map((element: any) => {
-                                                return (
-                                                    <ReorderableComponent
-                                                        key={ element.id }
-                                                        component={ element }
-                                                        className={ classNames(
-                                                            "flow-builder-step-content-form-field",
-                                                            dragItemClassName
-                                                        ) }
-                                                        draggableProps={ otherDragItemProps }
-                                                    />
-                                                );
-                                            });
-                                        }
-
                                         return (
                                             <ReorderableComponent
                                                 key={ component.id }

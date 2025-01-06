@@ -19,7 +19,7 @@
 .droppable-container {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--oxygen-spacing-1);
 
     .draggable-item {
         cursor: grab;
