@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.13.48
+
+### Patch Changes
+
+- [#7262](https://github.com/wso2/identity-apps/pull/7262) [`246a14f97e64463c3a1a81a843e3eb9bbdc76144`](https://github.com/wso2/identity-apps/commit/246a14f97e64463c3a1a81a843e3eb9bbdc76144) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add schema attribute profile based validation to my account
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.69
+  - @wso2is/common.branding.v1@2.25.42
+
 ## 2.13.47
 
 ### Patch Changes

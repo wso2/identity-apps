@@ -1,5 +1,61 @@
 # @wso2is/console
 
+## 2.36.8
+
+### Patch Changes
+
+- [#7224](https://github.com/wso2/identity-apps/pull/7224) [`224842029dc99ae8b90344a146a5bbd1d4fb5c35`](https://github.com/wso2/identity-apps/commit/224842029dc99ae8b90344a146a5bbd1d4fb5c35) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Disable rule based password expiry for users without required scopes
+
+- Updated dependencies [[`224842029dc99ae8b90344a146a5bbd1d4fb5c35`](https://github.com/wso2/identity-apps/commit/224842029dc99ae8b90344a146a5bbd1d4fb5c35), [`2b1240e04858c8ebfb3c33cfc91a76c62c0dcb33`](https://github.com/wso2/identity-apps/commit/2b1240e04858c8ebfb3c33cfc91a76c62c0dcb33)]:
+  - @wso2is/admin.core.v1@2.35.7
+  - @wso2is/admin.validation.v1@2.27.7
+  - @wso2is/admin.groups.v1@2.26.28
+  - @wso2is/admin.actions.v1@1.7.26
+  - @wso2is/admin.administrators.v1@2.29.69
+  - @wso2is/admin.alternative-login-identifier.v1@1.5.69
+  - @wso2is/admin.api-resources.v1@2.25.69
+  - @wso2is/admin.api-resources.v2@2.25.69
+  - @wso2is/admin.application-templates.v1@1.4.69
+  - @wso2is/admin.applications.v1@2.30.69
+  - @wso2is/admin.authentication.v1@2.25.69
+  - @wso2is/admin.branding.v1@2.27.42
+  - @wso2is/admin.certificates.v1@2.25.69
+  - @wso2is/admin.claims.v1@2.26.28
+  - @wso2is/admin.connections.v1@2.30.5
+  - @wso2is/admin.console-settings.v1@2.25.69
+  - @wso2is/admin.email-and-sms.v1@2.25.69
+  - @wso2is/admin.email-management.v1@2.25.69
+  - @wso2is/admin.email-providers.v1@2.25.69
+  - @wso2is/admin.extensions.v1@2.35.28
+  - @wso2is/admin.feature-gate.v1@1.4.69
+  - @wso2is/admin.home.v1@1.6.69
+  - @wso2is/admin.identity-verification-providers.v1@2.27.69
+  - @wso2is/admin.impersonation.v1@1.6.69
+  - @wso2is/admin.logs.v1@1.5.70
+  - @wso2is/admin.oidc-scopes.v1@2.25.69
+  - @wso2is/admin.org-insights.v1@2.25.69
+  - @wso2is/admin.organization-discovery.v1@2.25.69
+  - @wso2is/admin.organizations.v1@2.26.69
+  - @wso2is/admin.private-key-jwt.v1@2.25.69
+  - @wso2is/admin.remote-repository-configuration.v1@2.25.69
+  - @wso2is/admin.remote-userstores.v1@1.7.25
+  - @wso2is/admin.roles.v1@2.25.69
+  - @wso2is/admin.roles.v2@2.27.13
+  - @wso2is/admin.saml2-configuration.v1@2.25.69
+  - @wso2is/admin.secrets.v1@2.25.69
+  - @wso2is/admin.server-configurations.v1@2.31.7
+  - @wso2is/admin.session-management.v1@2.25.69
+  - @wso2is/admin.sms-providers.v1@2.25.69
+  - @wso2is/admin.sms-templates.v1@1.0.68
+  - @wso2is/admin.subscription.v1@1.5.69
+  - @wso2is/admin.template-core.v1@1.5.23
+  - @wso2is/admin.tenants.v1@2.28.43
+  - @wso2is/admin.username-validation.v1@1.5.69
+  - @wso2is/admin.users.v1@2.29.28
+  - @wso2is/admin.userstores.v1@2.26.28
+  - @wso2is/admin.workflow-approvals.v1@2.25.69
+  - @wso2is/admin.wsfed-configuration.v1@2.25.69
+
 ## 2.36.7
 
 ### Patch Changes
