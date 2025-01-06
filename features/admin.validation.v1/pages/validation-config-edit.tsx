@@ -814,7 +814,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 }
 
                                 if (numValue > maxPasswordLengthLimit) {
-                                    return t("common:maxValidation", { maxPasswordLengthLimit });
+                                    return t("common:maxValidation", { max: maxPasswordLengthLimit });
                                 }
                             } }
                             min={
@@ -1072,7 +1072,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                             }
 
                             if (numValue > maxPasswordLengthLimit) {
-                                return t("common:maxValidation", { maxPasswordLengthLimit });
+                                return t("common:maxValidation", { max: maxPasswordLengthLimit });
                             }
                         } }
                         min={
