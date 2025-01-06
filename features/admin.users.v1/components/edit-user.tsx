@@ -240,7 +240,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         adminUserType={ AdminAccountTypes.INTERNAL }
                         allowDeleteOnly={
                             user[ UserManagementConstants.CUSTOMSCHEMA ]?.isReadOnlyUser === "true"
-
                         }
                         editUserDisclaimerMessage={ (
                             <Grid>
