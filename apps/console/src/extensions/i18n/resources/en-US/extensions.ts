@@ -473,6 +473,7 @@ export const extensions: Extensions = {
         apiResource: {
             pageHeader: {
                 description: "Create and manage the APIs used to define the API scopes/permissions that can be consumed by your applications.",
+                subOrgDescription: "View the APIs that define scopes and permissions for your applications.",
                 title: "API Resources"
             },
             empty: "There are no API resources available at the moment.",

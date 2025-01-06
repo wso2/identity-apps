@@ -37,8 +37,8 @@ import {
     history
 } from "@wso2is/admin.core.v1";
 import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/application";
-import useExtensionTemplates from "@wso2is/admin.template-core.v1/hooks/use-extension-templates";
-import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
+import useGetExtensionTemplates from "@wso2is/admin.template-core.v1/api/use-get-extension-templates";
+import { ExtensionTemplateListInterface, ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -120,8 +120,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const appDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     const {
-        templates: extensionApplicationTemplates
-    } = useExtensionTemplates();
+        data: extensionApplicationTemplates
+    } = useGetExtensionTemplates(ResourceTypes.APPLICATIONS);
 
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);

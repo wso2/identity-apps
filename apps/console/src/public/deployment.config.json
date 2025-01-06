@@ -722,6 +722,23 @@
                 "enabled": false,
                 "scopes": {}
             },
+            "internalNotificationSending": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
+                    "read": [
+                        "internal_governance_view"
+                    ],
+                    "update": [
+                        "internal_governance_update"
+                    ]
+                }
+            },
             "loginAndRegistration": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -1261,6 +1278,9 @@
             "roleMapping": false
         },
         "listAllAttributeDialects": true,
+        "passwordPolicyConfigs": {
+            "maxPasswordAllowedLength": 64
+        },
         "privacyPolicyConfigs": {},
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {

@@ -1,5 +1,30 @@
 # @wso2is/identity-apps-core
 
+## 2.8.11
+
+### Patch Changes
+
+- [#7250](https://github.com/wso2/identity-apps/pull/7250) [`79a63a6187da0c01415ea5bac2ca2ec2f56ce87a`](https://github.com/wso2/identity-apps/commit/79a63a6187da0c01415ea5bac2ca2ec2f56ce87a) Thanks [@KD23243](https://github.com/KD23243)! - Validate and Sanitize backToUrl in self-registration-username-request.jsp
+
+## 2.8.10
+
+### Patch Changes
+
+- [#7223](https://github.com/wso2/identity-apps/pull/7223) [`1664078748a9b89cbe3b1ac8d41b6c3f718efe9b`](https://github.com/wso2/identity-apps/commit/1664078748a9b89cbe3b1ac8d41b6c3f718efe9b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a null check for the username field value
+
+## 2.8.9
+
+### Patch Changes
+
+- Updated dependencies [[`f0da57190bcbe263e54df65ca04087fb832b70d6`](https://github.com/wso2/identity-apps/commit/f0da57190bcbe263e54df65ca04087fb832b70d6)]:
+  - @wso2is/theme@2.4.6
+
+## 2.8.8
+
+### Patch Changes
+
+- [#7131](https://github.com/wso2/identity-apps/pull/7131) [`3cb1d7e7e2632971ec67647f233b8068016858fd`](https://github.com/wso2/identity-apps/commit/3cb1d7e7e2632971ec67647f233b8068016858fd) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Use getRoleBasicInfoById when checking Administrator role
+
 ## 2.8.7
 
 ### Patch Changes

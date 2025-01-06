@@ -1,5 +1,17 @@
 # @wso2is/core
 
+## 2.5.3
+
+### Patch Changes
+
+- [#7244](https://github.com/wso2/identity-apps/pull/7244) [`97aae1b9168c49e72cd544ded82d53c8fa16fff0`](https://github.com/wso2/identity-apps/commit/97aae1b9168c49e72cd544ded82d53c8fa16fff0) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add schema attribute profile based validation to user profile
+
+## 2.5.2
+
+### Patch Changes
+
+- [#7185](https://github.com/wso2/identity-apps/pull/7185) [`0057877859bdf3d91475cf3d1865382a88a1e9e7`](https://github.com/wso2/identity-apps/commit/0057877859bdf3d91475cf3d1865382a88a1e9e7) Thanks [@Malith-19](https://github.com/Malith-19)! - Add the passwordMaxAllowed length config for password length values validation.
+
 ## 2.5.1
 
 ### Patch Changes

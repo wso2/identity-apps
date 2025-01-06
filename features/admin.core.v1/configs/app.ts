@@ -345,6 +345,7 @@ export class Config {
             isXacmlConnectorEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isXacmlConnectorEnabled,
             legacyMode: window[ "AppUtils" ]?.getConfig()?.ui?.legacyMode,
             listAllAttributeDialects: window[ "AppUtils" ]?.getConfig()?.ui?.listAllAttributeDialects,
+            passwordPolicyConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.passwordPolicyConfigs,
             privacyPolicyConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.privacyPolicyConfigs,
             productName: window[ "AppUtils" ]?.getConfig()?.ui?.productName,
             productVersionConfig: window[ "AppUtils" ]?.getConfig()?.ui?.productVersionConfig,

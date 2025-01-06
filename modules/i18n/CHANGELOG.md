@@ -1,5 +1,35 @@
 # @wso2is/i18n
 
+## 2.14.3
+
+### Patch Changes
+
+- Updated dependencies [[`97aae1b9168c49e72cd544ded82d53c8fa16fff0`](https://github.com/wso2/identity-apps/commit/97aae1b9168c49e72cd544ded82d53c8fa16fff0)]:
+  - @wso2is/core@2.5.3
+
+## 2.14.2
+
+### Patch Changes
+
+- [#6440](https://github.com/wso2/identity-apps/pull/6440) [`f0da57190bcbe263e54df65ca04087fb832b70d6`](https://github.com/wso2/identity-apps/commit/f0da57190bcbe263e54df65ca04087fb832b70d6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add i18n strings for IDP logo field placeholder and invalid image URL warning
+
+## 2.14.1
+
+### Patch Changes
+
+- [#7227](https://github.com/wso2/identity-apps/pull/7227) [`8110b4503bc622997af4942727afa5ef65245689`](https://github.com/wso2/identity-apps/commit/8110b4503bc622997af4942727afa5ef65245689) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Reposition internal notification sending feature
+
+* [#7185](https://github.com/wso2/identity-apps/pull/7185) [`0057877859bdf3d91475cf3d1865382a88a1e9e7`](https://github.com/wso2/identity-apps/commit/0057877859bdf3d91475cf3d1865382a88a1e9e7) Thanks [@Malith-19](https://github.com/Malith-19)! - Add the passwordMaxAllowed length config for password length values validation.
+
+* Updated dependencies [[`0057877859bdf3d91475cf3d1865382a88a1e9e7`](https://github.com/wso2/identity-apps/commit/0057877859bdf3d91475cf3d1865382a88a1e9e7)]:
+  - @wso2is/core@2.5.2
+
+## 2.14.0
+
+### Minor Changes
+
+- [#7225](https://github.com/wso2/identity-apps/pull/7225) [`2840ab6f606b818ad0a1b0427dd88bfce4be986f`](https://github.com/wso2/identity-apps/commit/2840ab6f606b818ad0a1b0427dd88bfce4be986f) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Add authentication request provider name config to set the ProviderName in SAML2 outbound requests
+
 ## 2.13.4
 
 ### Patch Changes

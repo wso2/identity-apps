@@ -1,5 +1,87 @@
 # @wso2is/admin.username-validation.v1
 
+## 1.5.67
+
+### Patch Changes
+
+- Updated dependencies [[`bbb1d924701c0538df5248a581147062581d98eb`](https://github.com/wso2/identity-apps/commit/bbb1d924701c0538df5248a581147062581d98eb)]:
+  - @wso2is/admin.applications.v1@2.30.67
+  - @wso2is/admin.core.v1@2.35.5
+  - @wso2is/admin.validation.v1@2.27.5
+
+## 1.5.66
+
+### Patch Changes
+
+- [#7238](https://github.com/wso2/identity-apps/pull/7238) [`56322497c76af2999e4945502296bf2257f14c10`](https://github.com/wso2/identity-apps/commit/56322497c76af2999e4945502296bf2257f14c10) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Move React version to pnpm catalog
+
+- Updated dependencies [[`56322497c76af2999e4945502296bf2257f14c10`](https://github.com/wso2/identity-apps/commit/56322497c76af2999e4945502296bf2257f14c10)]:
+  - @wso2is/admin.applications.v1@2.30.66
+  - @wso2is/admin.validation.v1@2.27.4
+  - @wso2is/admin.core.v1@2.35.4
+
+## 1.5.65
+
+### Patch Changes
+
+- Updated dependencies [[`97aae1b9168c49e72cd544ded82d53c8fa16fff0`](https://github.com/wso2/identity-apps/commit/97aae1b9168c49e72cd544ded82d53c8fa16fff0), [`e4978afb7f6d93587773e06152bda252cfce478f`](https://github.com/wso2/identity-apps/commit/e4978afb7f6d93587773e06152bda252cfce478f)]:
+  - @wso2is/core@2.5.3
+  - @wso2is/admin.validation.v1@2.27.3
+  - @wso2is/admin.applications.v1@2.30.65
+  - @wso2is/admin.core.v1@2.35.3
+  - @wso2is/form@2.6.6
+  - @wso2is/react-components@2.8.13
+
+## 1.5.64
+
+### Patch Changes
+
+- Updated dependencies [[`d4b2298353d0184ac77d5be3b0a7676a8e94e004`](https://github.com/wso2/identity-apps/commit/d4b2298353d0184ac77d5be3b0a7676a8e94e004)]:
+  - @wso2is/admin.core.v1@2.35.2
+  - @wso2is/admin.applications.v1@2.30.64
+  - @wso2is/admin.validation.v1@2.27.2
+  - @wso2is/react-components@2.8.12
+  - @wso2is/form@2.6.5
+
+## 1.5.63
+
+### Patch Changes
+
+- Updated dependencies [[`a51ab954bbebb4f2dc44a43c287934824f89c81f`](https://github.com/wso2/identity-apps/commit/a51ab954bbebb4f2dc44a43c287934824f89c81f)]:
+  - @wso2is/admin.applications.v1@2.30.63
+  - @wso2is/admin.core.v1@2.35.1
+  - @wso2is/admin.validation.v1@2.27.1
+
+## 1.5.62
+
+### Patch Changes
+
+- Updated dependencies [[`8110b4503bc622997af4942727afa5ef65245689`](https://github.com/wso2/identity-apps/commit/8110b4503bc622997af4942727afa5ef65245689), [`0057877859bdf3d91475cf3d1865382a88a1e9e7`](https://github.com/wso2/identity-apps/commit/0057877859bdf3d91475cf3d1865382a88a1e9e7)]:
+  - @wso2is/admin.core.v1@2.35.0
+  - @wso2is/admin.validation.v1@2.27.0
+  - @wso2is/core@2.5.2
+  - @wso2is/admin.applications.v1@2.30.62
+  - @wso2is/form@2.6.4
+  - @wso2is/react-components@2.8.11
+
+## 1.5.61
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.61
+  - @wso2is/admin.core.v1@2.34.61
+  - @wso2is/admin.validation.v1@2.26.61
+
+## 1.5.60
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.60
+  - @wso2is/admin.core.v1@2.34.60
+  - @wso2is/admin.validation.v1@2.26.60
+
 ## 1.5.59
 
 ### Patch Changes

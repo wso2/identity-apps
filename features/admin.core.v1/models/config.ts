@@ -254,6 +254,10 @@ export interface FeatureConfigInterface {
      * Connection management feature.
      */
     connections?: ConnectionConfigInterface;
+    /**
+     * Notification sending feature.
+     */
+    internalNotificationSending?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -486,6 +490,20 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Config to check whether the multiple emails and mobile numbers per user feature is enabled.
      */
     isMultipleEmailsAndMobileNumbersEnabled?: boolean;
+    /**
+     * Password policy configs.
+     */
+    passwordPolicyConfigs: PasswordPolicyConfigsInterface;
+}
+
+/**
+ * Password policy configs interface.
+ */
+interface PasswordPolicyConfigsInterface {
+    /**
+     * Maximum password length.
+     */
+    maxPasswordAllowedLength: number;
 }
 
 /**
