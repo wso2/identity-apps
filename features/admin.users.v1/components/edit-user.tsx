@@ -275,8 +275,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 </ResourceTab.Pane>
             )
         },
-        isAdminUser(user)
-        && {
+        {
             menuItem: t("users:editUser.tab.menuItems.2"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
