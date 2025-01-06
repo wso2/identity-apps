@@ -37,6 +37,11 @@ export class ValidationConfigConstants {
         PASSWORD_MIN_VALUE: 5
     };
 
+    /**
+     * Set of keys used to enable/disable features.
+     */
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("RULE_BASED_PASSWORD_EXPIRY", "validation.ruleBasedPasswordExpiry");;
 }
 
 /**
