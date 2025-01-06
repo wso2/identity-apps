@@ -26,6 +26,10 @@ import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1";
+import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
+import RulesComponent from "@wso2is/admin.rules.v1/components/rules-component";
+import { RuleInterface } from "@wso2is/admin.rules.v1/models/rules";
+import { getRuleInstanceValue } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
@@ -106,6 +110,12 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
         mutate: mutateActions
     } = useGetActionsByType(actionTypeApiPath);
 
+    const {
+        data: RulesMeta
+    } = useGetRulesMeta(actionTypeApiPath);
+
+    const showRulesComponent: boolean = false;
+
     /**
      * The following useEffect is used to set the current Action Authentication Type.
      */
@@ -117,6 +127,13 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
             setIsAuthenticationUpdateFormState(false);
         }
     }, [ initialValues ]);
+
+    // TODO: Use this function to get the rule value.
+    /* eslint-disable @typescript-eslint/no-unused-vars */
+    const handleGetRuleValue = () => {
+        const ruleValue: RuleInterface[] = getRuleInstanceValue();
+    };
+    /* eslint-enable @typescript-eslint/no-unused-vars */
 
     const renderInputAdornmentOfSecret = (showSecret: boolean, onClick: () => void): ReactElement => (
         <InputAdornment position="end">
@@ -717,11 +734,17 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
                     minLength={ 0 }
                     disabled={ getFieldDisabledStatus() }
                 />
-                <Divider className="divider-container"/>
+                <Divider className="divider-container" />
                 <Heading className="heading-container" as="h5">
                     { t("actions:fields.authentication.label") }
                 </Heading>
                 { renderAuthenticationSection() }
+                { (RulesMeta && showRulesComponent) && (
+                    <>
+                        <Divider className="divider-container" />
+                        <RulesComponent metaData={ RulesMeta } />
+                    </>
+                ) }
             </>
         );
     };

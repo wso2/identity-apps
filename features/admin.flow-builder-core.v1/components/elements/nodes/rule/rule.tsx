@@ -18,12 +18,11 @@
 
 import Box from "@oxygen-ui/react/Box";
 import IconButton from "@oxygen-ui/react/IconButton";
-import Paper from "@oxygen-ui/react/Paper";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Handle, Node, Position, useNodeId, useReactFlow } from "@xyflow/react";
+import { Handle, Node, Position, useNodeId, useNodesData, useReactFlow } from "@xyflow/react";
 import React, {
     DragEvent,
     FunctionComponent,
@@ -33,6 +32,8 @@ import React, {
     useCallback,
     useRef
 } from "react";
+import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
+import { Base } from "../../../../models/base";
 import "./rule.scss";
 
 /**
@@ -51,7 +52,9 @@ export const Rule: FunctionComponent<RulePropsInterface> = ({
     "data-componentid": componentId = "rule"
 }: RulePropsInterface): ReactElement => {
     const nodeId: string = useNodeId();
+    const node: Pick<Node, "data" | "type" | "id"> = useNodesData(nodeId);
     const { deleteElements } = useReactFlow();
+    const { setLastInteractedElement } = useAuthenticationFlowBuilderCore();
 
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
@@ -67,6 +70,8 @@ export const Rule: FunctionComponent<RulePropsInterface> = ({
         [ data?.type ]
     );
 
+    const ruleStep: Base = { ...node.data, id: node.id } as Base;
+
     return (
         <div
             ref={ ref }
@@ -75,13 +80,19 @@ export const Rule: FunctionComponent<RulePropsInterface> = ({
             onDrop={ handleDrop }
             onDrag={ handleDragOver }
         >
-            <Box display="flex" justifyContent="space-between" className="flow-builder-rule-action-panel">
+            <Handle type="target" position={ Position.Left } />
+            <Box
+                display="flex"
+                justifyContent="space-between"
+                className="flow-builder-rule-action-panel"
+                onClick={ () => setLastInteractedElement(ruleStep) }
+            >
                 <Typography
                     variant="body2"
                     data-componentid={ `${componentId}-heading-text` }
                     className="flow-builder-rule-id"
                 >
-                    Rule
+                    Conditional Rule
                 </Typography>
                 <Tooltip title={ "Remove" }>
                     <IconButton
@@ -94,10 +105,6 @@ export const Rule: FunctionComponent<RulePropsInterface> = ({
                         <XMarkIcon />
                     </IconButton>
                 </Tooltip>
-            </Box>
-            <Handle type="target" position={ Position.Left } />
-            <Box className="flow-builder-rule-content nodrag" data-componentid={ `${componentId}-inner` }>
-                <Paper className="flow-builder-rule-content-box" elevation={ 0 } variant="outlined"></Paper>
             </Box>
             <Handle type="source" position={ Position.Right } id="a" />
         </div>

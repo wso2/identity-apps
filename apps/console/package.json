@@ -81,6 +81,7 @@
         "@wso2is/admin.remote-userstores.v1": "^1.5.21",
         "@wso2is/admin.roles.v1": "^2.25.21",
         "@wso2is/admin.roles.v2": "^2.26.21",
+        "@wso2is/admin.rules.v1": "workspace:^",
         "@wso2is/admin.saml2-configuration.v1": "^2.25.21",
         "@wso2is/admin.secrets.v1": "^2.25.21",
         "@wso2is/admin.server-configurations.v1": "^2.28.21",

@@ -37,6 +37,7 @@ import { getOrganizationsResourceEndpoints } from "@wso2is/admin.organizations.v
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
 import { getRemoteFetchConfigResourceEndpoints } from "@wso2is/admin.remote-repository-configuration.v1";
 import { getRolesResourceEndpoints } from "@wso2is/admin.roles.v2/configs/endpoints";
+import { getRulesEndpoints } from "@wso2is/admin.rules.v1/configs/endpoints";
 import { getSecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/configs/endpoints";
 import { getServerConfigurationsResourceEndpoints } from "@wso2is/admin.server-configurations.v1";
 import { getSmsTemplateResourceEndpoints } from "@wso2is/admin.sms-templates.v1/configs/endpoints";
@@ -269,6 +270,7 @@ export class Config {
             ...getExtensionTemplatesEndpoints(this.resolveServerHost()),
             ...getApplicationTemplatesResourcesEndpoints(this.resolveServerHost()),
             ...getActionsResourceEndpoints(this.resolveServerHost()),
+            ...getRulesEndpoints(this.resolveServerHost()),
             ...getSmsTemplateResourceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details

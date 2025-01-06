@@ -145,6 +145,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             rolesWithoutOrgPath: "",
             rootOrganization: "",
             rootUsersOrganization: "",
+            rulesMetaData: "",
             saml2Configurations: "",
             saml2Meta: "",
             schemas: "",

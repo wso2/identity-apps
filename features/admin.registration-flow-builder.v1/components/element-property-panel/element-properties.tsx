@@ -24,12 +24,14 @@ import {
 import { FieldKey, FieldValue } from "@wso2is/admin.flow-builder-core.v1/models/base";
 import { InputVariants } from "@wso2is/admin.flow-builder-core.v1/models/component";
 import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
+import { NodeTypes } from "@wso2is/admin.flow-builder-core.v1/models/node";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
 import ElementPropertyFactory from "./element-property-factory";
 import ButtonExtendedProperties from "./extended-properties/button-extended-properties";
 import FieldExtendedProperties from "./extended-properties/field-extended-properties";
+import RulesProperties from "./nodes/rules-properties";
 
 /**
  * Props interface of {@link ElementProperties}
@@ -114,6 +116,12 @@ const ElementProperties: FunctionComponent<ElementPropertiesPropsInterface> = ({
                     { renderElementPropertyFactory() }
                 </>
             );
+        case ElementCategories.Nodes:
+            if (element.type === NodeTypes.Rule) {
+                return <RulesProperties />;
+            }
+
+            break;
         default:
             return <>{ renderElementPropertyFactory() }</>;
     }
