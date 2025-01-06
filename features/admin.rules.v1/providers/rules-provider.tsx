@@ -19,11 +19,10 @@
 import { SelectChangeEvent } from "@mui/material";
 import React, {
     ReactNode,
-    createContext,
-    useContext,
     useEffect,
     useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import RulesContext from "../contexts/rules-context";
 import {
     ConditionTypes,
     ExpressionInterface,
@@ -32,67 +31,6 @@ import {
     RuleExecutionMetaDataInterface,
     RuleInterface
 } from "../models/rules";
-
-/**
- * Interface for the RulesContext.
- */
-interface RulesContextInterface {
-    /**
-     * Rules instance.
-     */
-    rulesInstance: RuleInterface[];
-
-    /**
-     * Conditions meta.
-     */
-    conditionsMeta: any;
-
-    /**
-     * Condition expressions meta.
-     */
-    conditionExpressionsMeta: RuleComponentMetaDataInterface;
-
-    /**
-     * Method to add a new rule.
-     */
-    addNewRule: () => void;
-
-    /**
-     * Method to remove a rule.
-     */
-    removeRule: (id: string) => void;
-
-    /**
-     * Method to add a new rule condition.
-     */
-    addNewRuleCondition: (ruleId: string, previousConditionInstanceId: string, conditionType: ConditionTypes) => void;
-
-    /**
-     * Method to remove a rule condition.
-     */
-    removeRuleCondition: (ruleId: string, conditionId: string) => void;
-
-    /**
-     * Method to update the rule execution type.
-     */
-    updateRuleExecution: (event: SelectChangeEvent, id: string) => void;
-
-    /**
-     * Method to update the rule condition expression value.
-     */
-    updateRuleConditionExpression: (
-        changedValue: string,
-        ruleId: string,
-        conidtionId: string,
-        expressionId: string,
-        fieldName: keyof ExpressionInterface) => void;
-}
-
-/**
- * Create the context
- */
-const RulesContext: React.Context<RulesContextInterface | undefined> =
-    createContext<RulesContextInterface | undefined>(undefined);
 
 // Refference to hold the latest context value
 const RuleContextRef: { ruleInstance: RuleInterface[] | undefined } = { ruleInstance: undefined };
@@ -103,21 +41,6 @@ const RuleContextRef: { ruleInstance: RuleInterface[] | undefined } = { ruleInst
  * @returns RuleInstanceData
  */
 export const getRuleContextValue = () => RuleContextRef.ruleInstance;
-
-/**
- * Custom hook for accessing the context
- *
- * @returns RulesComponent context
- */
-export const useRulesContext = (): RulesContextInterface => {
-    const context: RulesContextInterface = useContext(RulesContext);
-
-    if (!context) {
-        throw new Error("useRulesContext must be used within a RulesProvider");
-    }
-
-    return context;
-};
 
 /**
  * Provider for the RulesContext

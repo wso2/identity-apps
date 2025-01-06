@@ -33,6 +33,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import debounce from "lodash-es/debounce";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import useGetResourcesList from "../api/use-get-resource-list";
+import { useRulesContext } from "../hooks/use-rules-context";
 import {
     ConditionTypes,
     ExpressionInterface,
@@ -41,7 +42,6 @@ import {
     RuleComponentExpressionValueInterface,
     RuleComponentMetaInterface,
     RuleConditionsInterface } from "../models/rules";
-import { useRulesContext } from "../providers/rules-provider";
 import "./rules-component.scss";
 
 /**

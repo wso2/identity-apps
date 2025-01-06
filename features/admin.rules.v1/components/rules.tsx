@@ -31,8 +31,8 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import RuleConditions from "./rule-conditions";
+import { useRulesContext } from "../hooks/use-rules-context";
 import { RuleInterface } from "../models/rules";
-import { useRulesContext } from "../providers/rules-provider";
 import "./rules.scss";
 
 /**
