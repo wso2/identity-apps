@@ -52,10 +52,7 @@ export interface RulesPropsInterface extends IdentifiableComponentInterface {
  * @returns Rule component.
  */
 const Rules: FunctionComponent<RulesPropsInterface> = ({
-    // Set the component id.
     ["data-componentid"]: componentId = "rules-render-component",
-
-    // Multiple rules flag.
     multipleRules = false
 }: RulesPropsInterface): ReactElement => {
 
