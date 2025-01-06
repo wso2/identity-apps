@@ -29,7 +29,7 @@ import { AppState } from "@wso2is/admin.core.v1";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import RulesComponent from "@wso2is/admin.rules.v1/components/rules-component";
 import { RuleInterface } from "@wso2is/admin.rules.v1/models/rules";
-import { getRuleContextValue } from "@wso2is/admin.rules.v1/providers/rules-provider";
+import { getRuleInstanceValue } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
@@ -114,7 +114,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
         data: RulesMeta
     } = useGetRulesMeta(actionTypeApiPath);
 
-    const showRulesComponent: boolean = false;
+    const showRulesComponent: boolean = true;
 
     /**
      * The following useEffect is used to set the current Action Authentication Type.
@@ -131,7 +131,7 @@ const ActionConfigForm: FunctionComponent<ActionConfigFormInterface> = ({
     // TODO: Use this function to get the rule value.
     /* eslint-disable @typescript-eslint/no-unused-vars */
     const handleGetRuleValue = () => {
-        const ruleValue: RuleInterface[] = getRuleContextValue();
+        const ruleValue: RuleInterface[] = getRuleInstanceValue();
     };
     /* eslint-enable @typescript-eslint/no-unused-vars */
 

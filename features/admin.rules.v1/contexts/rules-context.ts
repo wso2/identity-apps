@@ -81,6 +81,6 @@ export interface RulesContextInterface {
 const RulesContext: React.Context<RulesContextInterface | undefined> =
     createContext<RulesContextInterface | undefined>(undefined);
 
-RulesContext.displayName = "RulesContyext";
+RulesContext.displayName = "RulesContext";
 
 export default RulesContext;

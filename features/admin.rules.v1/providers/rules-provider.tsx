@@ -40,7 +40,7 @@ const RuleContextRef: { ruleInstance: RuleInterface[] | undefined } = { ruleInst
  *
  * @returns RuleInstanceData
  */
-export const getRuleContextValue = () => RuleContextRef.ruleInstance;
+export const getRuleInstanceValue = () => RuleContextRef.ruleInstance;
 
 /**
  * Provider for the RulesContext
