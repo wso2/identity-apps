@@ -31,6 +31,8 @@ import RichTextAdapter from "./adapters/rich-text-adapter";
 import TypographyAdapter from "./adapters/typography-adapter";
 import { ComponentTypes, InputVariants } from "../../../models/component";
 import { Element } from "../../../models/elements";
+import getWidgetElements from "../../../utils/get-widget-elements";
+import isWidget from "../../../utils/is-widget";
 
 /**
  * Props interface of {@link CommonComponentFactory}
@@ -58,16 +60,20 @@ export const CommonComponentFactory: FunctionComponent<CommonComponentFactoryPro
 }: CommonComponentFactoryPropsInterface & Node): ReactElement => {
     // Widgets have a flow property which contains the elements of the sub flow.
     // If the component is a widget, render the elements of the flow.
-    if (node?.config?.flow) {
-        return node.config?.flow?.elements?.map((element: any) => {
-            return (
-                <CommonComponentFactory
-                    key={ element.id }
-                    nodeId={ element.id }
-                    node={ element }
-                />
-            );
-        });
+    if (isWidget(node)) {
+        return (
+            <>
+                { getWidgetElements(node)?.map((element: any) => {
+                    return (
+                        <CommonComponentFactory
+                            key={ element.id }
+                            nodeId={ element.id }
+                            node={ element }
+                        />
+                    );
+                }) }
+            </>
+        );
     }
 
     if (node.type === ComponentTypes.Input) {
