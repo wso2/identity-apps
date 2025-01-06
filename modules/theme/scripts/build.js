@@ -264,8 +264,8 @@ const generateThemes = () => {
 
         return Theme.compile(themeIndexFile, {}).then((output) => {
             const minifiedOutput = new CleanCSS().minify(output.css);
-            const rtlCSS = generateRTLCSS(output.css); // Generate RTL CSS
-            const rtlMinCSS = new CleanCSS().minify(rtlCSS); // Minify RTL CSS
+            const rtlCSS = generateRTLCSS(output.css);
+            const rtlMinCSS = new CleanCSS().minify(rtlCSS);
 
             const files = {
                 ".css": output.css,
