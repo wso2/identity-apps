@@ -39,9 +39,7 @@
     Cookie[] userCookies = request.getCookies();
 
     if (userCookies != null) {
-
         for (Cookie cookie : userCookies) {
-
             if ("ui_lang".equals(cookie.getName())) {
                 language = cookie.getValue();
                 break;
@@ -57,7 +55,6 @@
         String line;
 
         while ((line = bufferedReader.readLine()) != null) {
-
             if (!line.trim().startsWith("#") && !line.trim().isEmpty()) {
                 String[] keyValue = line.split("=");
 
@@ -81,8 +78,8 @@
 
     // Get the selected language's direction
     String direction = languageDirectionMap.getOrDefault(language, "ltr");
-
     String themeSuffix = "";
+
     if ("rtl".equals(languageDirectionMap.get(language))) {
         themeSuffix = ".rtl";
     }
