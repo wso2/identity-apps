@@ -1,5 +1,16 @@
 # @wso2is/admin.oidc-scopes.v1
 
+## 2.25.68
+
+### Patch Changes
+
+- [#7258](https://github.com/wso2/identity-apps/pull/7258) [`403d351f2cb978fc4e2c02d49160af509a50a112`](https://github.com/wso2/identity-apps/commit/403d351f2cb978fc4e2c02d49160af509a50a112) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Revert pnpm version back to v8.7.4
+
+- Updated dependencies [[`403d351f2cb978fc4e2c02d49160af509a50a112`](https://github.com/wso2/identity-apps/commit/403d351f2cb978fc4e2c02d49160af509a50a112)]:
+  - @wso2is/admin.applications.v1@2.30.68
+  - @wso2is/admin.claims.v1@2.26.27
+  - @wso2is/admin.core.v1@2.35.6
+
 ## 2.25.67
 
 ### Patch Changes

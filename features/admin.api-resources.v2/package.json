@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.api-resources.v2",
-    "version": "2.25.67",
+    "version": "2.25.68",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -21,8 +21,8 @@
         "@wso2is/form": "^2.6.6",
         "@wso2is/forms": "^2.3.7",
         "@wso2is/react-components": "^2.8.13",
-        "@wso2is/admin.core.v1": "^2.35.5",
-        "@wso2is/admin.organizations.v1": "^2.26.67",
+        "@wso2is/admin.core.v1": "^2.35.6",
+        "@wso2is/admin.organizations.v1": "^2.26.68",
         "axios": "^0.19.2",
         "i18next": "^21.9.1",
         "node-forge": "^0.10.0",
@@ -52,7 +52,7 @@
         "typescript": "^4.6.4"
     },
     "peerDependencies": {
-        "react": "catalog:",
+        "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^4.3.1"
     },
