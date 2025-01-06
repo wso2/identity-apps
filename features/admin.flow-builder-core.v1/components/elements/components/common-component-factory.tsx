@@ -56,6 +56,20 @@ export const CommonComponentFactory: FunctionComponent<CommonComponentFactoryPro
     nodeId,
     node
 }: CommonComponentFactoryPropsInterface & Node): ReactElement => {
+    // Widgets have a flow property which contains the elements of the sub flow.
+    // If the component is a widget, render the elements of the flow.
+    if (node?.config?.flow) {
+        return node.config?.flow?.elements?.map((element: any) => {
+            return (
+                <CommonComponentFactory
+                    key={ element.id }
+                    nodeId={ element.id }
+                    node={ element }
+                />
+            );
+        });
+    }
+
     if (node.type === ComponentTypes.Input) {
         if (node.variant === InputVariants.Checkbox) {
             return <CheckboxAdapter nodeId={ nodeId } node={ node } />;
