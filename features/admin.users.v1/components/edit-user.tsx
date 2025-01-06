@@ -109,7 +109,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const [ adminUsername, setAdminUsername ] = useState<string|null>(null);
     const [ isUserManagedByParentOrg, setIsUserManagedByParentOrg ] = useState<boolean>(false);
     const [ isUserProfileReadOnly, setIsUserProfileReadOnly ] = useState<boolean>(false);
-    
+
     const userRolesDisabledFeatures: string[] = useSelector((state: AppState) => {
         return state.config.ui.features?.users?.disabledFeatures;
     });
