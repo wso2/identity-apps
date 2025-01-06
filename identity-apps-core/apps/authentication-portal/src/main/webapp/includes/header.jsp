@@ -34,10 +34,13 @@
 <%-- Extract the name of the stylesheet--%>
 <%
     String themeName = "wso2is";
-    String language = "en"; // Default language
+    String language = "en";
     Cookie[] userCookies = request.getCookies();
+
     if (userCookies != null) {
+
         for (Cookie cookie : userCookies) {
+
             if ("ui_lang".equals(cookie.getName())) {
                 language = cookie.getValue();
                 break;
@@ -45,32 +48,28 @@
         }
     }
 
-    // Specify the file path
     String filePath = application.getRealPath("/") + "/WEB-INF/classes/LanguageOptions.properties";
 
-    // Create a Map to store the language direction
     Map<String, String> languageDirectionMap = new HashMap<>();
 
-    // Use a BufferedReader to read the file content
     try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
         String line;
+
         while ((line = bufferedReader.readLine()) != null) {
-            // Ignore comments and empty lines
+
             if (!line.trim().startsWith("#") && !line.trim().isEmpty()) {
-                // Split the line into key and value using '='
                 String[] keyValue = line.split("=");
-                if (keyValue.length == 2) { // Ensure valid format
-                    // Extract the language code from the key
+
+                if (keyValue.length == 2) {
                     String[] keyParts = keyValue[0].split("\\.");
                     String languageCode = keyParts[keyParts.length - 1];
-
-                    // Split the value into components (languageCode, languageName, direction)
                     String[] valueParts = keyValue[1].split(",");
-                    if (valueParts.length >= 3) { // Ensure the value has at least 3 parts
+
+                    if (valueParts.length >= 3) {
                         String direction = valueParts[2].trim();
                         languageDirectionMap.put(languageCode, direction);
                     } else {
-                        languageDirectionMap.put(languageCode, "ltr"); // Default to LTR if direction is missing
+                        languageDirectionMap.put(languageCode, "ltr");
                     }
                 }
             }
@@ -79,7 +78,7 @@
         throw e;
     }
 
-    // Get the current language's direction
+    // Get the selected language's direction.
     String direction = languageDirectionMap.getOrDefault(language, "ltr");
 
     String themeSuffix = "";
@@ -93,7 +92,7 @@
     String themeFileName = "";
 
     for(String file: fileNames) {
-        if(file.endsWith(themeSuffix + ".min.css")) {
+        if (file.endsWith(themeSuffix + ".min.css")) {
             themeFileName = file;
             break;
         }
