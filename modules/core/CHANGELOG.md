@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.5.4
+
+### Patch Changes
+
+- [#7239](https://github.com/wso2/identity-apps/pull/7239) [`398c39ec452d460994a3a0a6425115678538e49b`](https://github.com/wso2/identity-apps/commit/398c39ec452d460994a3a0a6425115678538e49b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the option to modify the primary user store domain name in console and myaccount apps
+
 ## 2.5.3
 
 ### Patch Changes
