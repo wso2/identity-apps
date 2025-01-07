@@ -116,6 +116,31 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
+            category: "console:common.sidePanel.policyAdministration",
+            children: [
+                {
+                    component: lazy(() => import("@wso2is/admin.policy-administration.v1/pages/edit-policy")),
+                    exact: true,
+                    id: "editPolicy",
+                    name: "Edit Policy",
+                    path: AppConstants.getPaths().get("EDIT_POLICY"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("@wso2is/admin.policy-administration.v1/pages/policy-administration")),
+            exact: true,
+            icon: {
+                icon: getSidePanelIcons().policyAdministration
+            },
+            id: "policyAdministration",
+            name: "Policy Administration",
+            order: 30,
+            path: AppConstants.getPaths().get("POLICY_ADMINISTRATION"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
             category: "console:develop.features.sidePanel.categories.application",
             children: [
                 {

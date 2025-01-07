@@ -333,4 +333,9 @@ export class I18nModuleConstants {
      * Tenants namespace.
      */
     public static readonly TENANTS_NAMESPACE: string = "tenants";
+
+    /**
+     * Policy Administration namespace.
+     */
+    public static readonly POLICY_ADMINISTRATION_NAMESPACE: string = "policyAdministration";
 }

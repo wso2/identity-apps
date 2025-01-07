@@ -61,7 +61,14 @@ import "./script-editor-panel.scss";
 /**
  * Proptypes for the Script editor panel component.
  */
-export type ScriptEditorPanelPropsInterface = IdentifiableComponentInterface & HTMLAttributes<HTMLDivElement>;
+// export type ScriptEditorPanelPropsInterface = IdentifiableComponentInterface & HTMLAttributes<HTMLDivElement>;
+//I need to add props for script editor ponel, language prop
+
+export interface ScriptEditorPanelPropsInterface extends IdentifiableComponentInterface, HTMLAttributes<HTMLDivElement>{
+    language?: string;
+    hideMinimizeIcon?: boolean;
+    hideText?: boolean;
+}
 
 const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
     import("@monaco-editor/react" /* webpackChunkName: "MDMonacoEditor" */)
@@ -115,7 +122,7 @@ const MinimizeIcon = ({ width = 16, height = 16 }: { width: number; height: numb
  * @returns Script editor panel component.
  */
 const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterface>): ReactElement => {
-    const { className, "data-componentid": componentId } = props;
+    const { className, "data-componentid": componentId, language, hideMinimizeIcon, hideText } = props;
 
     const { t } = useTranslation();
 
@@ -239,9 +246,9 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
             className="script-editor"
             width="100%"
             height="100%"
-            language="javascript"
+            language={ language || "javascript" }
             theme={ editorTheme }
-            value={ getAdaptiveScript() }
+            value={ hideText ? null: getAdaptiveScript() }
             options={ {
                 automaticLayout: true
             } }
@@ -299,27 +306,29 @@ hasSecretReadPermissions && (
                             </div>
                         </>
                     ) }
-                    <div className="editor-fullscreen">
-                        <Tooltip
-                            title={
-                                scriptEditorPanelSizeMode === ScriptEditorPanelSizeModes.Minimized
-                                    ? t("common:goFullScreen")
-                                    : t("common:exitFullScreen")
-                            }
-                            data-componentid="editor-fullscreen-toggle-tooltip"
-                        >
-                            <IconButton
-                                size="small"
-                                onClick={ handleScriptEditorPanelSizeChange }
-                            >
-                                {
+                    { !hideMinimizeIcon && (
+                        <div className="editor-fullscreen">
+                            <Tooltip
+                                title={
                                     scriptEditorPanelSizeMode === ScriptEditorPanelSizeModes.Minimized
-                                        ? <MaximizeIcon height={ 16 } width={ 16 } />
-                                        : <MinimizeIcon height={ 16 } width={ 16 } />
+                                        ? t("common:goFullScreen")
+                                        : t("common:exitFullScreen")
                                 }
-                            </IconButton>
-                        </Tooltip>
-                    </div>
+                                data-componentid="editor-fullscreen-toggle-tooltip"
+                            >
+                                <IconButton
+                                    size="small"
+                                    onClick={ handleScriptEditorPanelSizeChange }
+                                >
+                                    {
+                                        scriptEditorPanelSizeMode === ScriptEditorPanelSizeModes.Minimized
+                                            ? <MaximizeIcon height={ 16 } width={ 16 } />
+                                            : <MinimizeIcon height={ 16 } width={ 16 } />
+                                    }
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                    ) }
                 </div>
             </Toolbar>
         </Box>

@@ -353,6 +353,7 @@ export interface ConsoleNS {
             userManagement: string;
             branding: string;
             tenants: string;
+            policyAdministration: string;
         };
     };
     develop: {
