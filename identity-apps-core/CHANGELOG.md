@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.8.12
+
+### Patch Changes
+
+- [#7103](https://github.com/wso2/identity-apps/pull/7103) [`b78b82365f002fbe98971a642793058b4ff479d7`](https://github.com/wso2/identity-apps/commit/b78b82365f002fbe98971a642793058b4ff479d7) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Add missing changes from unification
+
 ## 2.8.11
 
 ### Patch Changes

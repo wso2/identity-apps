@@ -1,5 +1,20 @@
 # @wso2is/admin.groups.v1
 
+## 2.26.28
+
+### Patch Changes
+
+- [#7232](https://github.com/wso2/identity-apps/pull/7232) [`2b1240e04858c8ebfb3c33cfc91a76c62c0dcb33`](https://github.com/wso2/identity-apps/commit/2b1240e04858c8ebfb3c33cfc91a76c62c0dcb33) Thanks [@ThaminduDilshan](https://github.com/ThaminduDilshan)! - Fix the issue of displaying group created time for the last modified in the group list view
+
+- Updated dependencies [[`224842029dc99ae8b90344a146a5bbd1d4fb5c35`](https://github.com/wso2/identity-apps/commit/224842029dc99ae8b90344a146a5bbd1d4fb5c35)]:
+  - @wso2is/admin.core.v1@2.35.7
+  - @wso2is/admin.applications.v1@2.30.69
+  - @wso2is/admin.extensions.v1@2.35.28
+  - @wso2is/admin.organizations.v1@2.26.69
+  - @wso2is/admin.roles.v2@2.27.13
+  - @wso2is/admin.users.v1@2.29.28
+  - @wso2is/admin.userstores.v1@2.26.28
+
 ## 2.26.27
 
 ### Patch Changes
