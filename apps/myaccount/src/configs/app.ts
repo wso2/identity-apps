@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
 import { I18nConstants } from "../constants";
+import { AppConstants } from "../constants/app-constants";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { SCIMConfigs } from "../extensions/configs/scim";
 import { AppUtils } from "../init/app-utils";
@@ -165,7 +165,7 @@ export class Config {
             isPasswordInputValidationEnabled: window["AppUtils"]?.getConfig()?.ui?.isPasswordInputValidationEnabled,
             isProfileUsernameReadonly: window["AppUtils"]?.getConfig()?.ui?.isProfileUsernameReadonly,
             primaryUserStoreDomainName: window[ "AppUtils" ]?.getConfig()?.ui?.primaryUserStoreDomainName?.toUpperCase()
-                ?? PRIMARY_USERSTORE,
+                ?? AppConstants.PRIMARY_USER_STORE_IDENTIFIER,
             privacyPolicyConfigs: window["AppUtils"]?.getConfig()?.ui?.privacyPolicyConfigs,
             productName: window["AppUtils"]?.getConfig()?.ui?.productName,
             productVersionConfig: window["AppUtils"]?.getConfig()?.ui?.productVersionConfig,

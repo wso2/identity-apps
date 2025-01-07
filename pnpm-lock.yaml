@@ -957,9 +957,6 @@ importers:
       '@wso2is/admin.organizations.v1':
         specifier: ^2.26.64
         version: link:../../features/admin.organizations.v1
-      '@wso2is/admin.userstores.v1':
-        specifier: ^2.26.23
-        version: link:../../features/admin.userstores.v1
       '@wso2is/common.branding.v1':
         specifier: ^2.25.37
         version: link:../../features/common.branding.v1
