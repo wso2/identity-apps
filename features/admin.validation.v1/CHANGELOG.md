@@ -1,5 +1,20 @@
 # @wso2is/admin.validation.v1
 
+## 2.27.8
+
+### Patch Changes
+
+- [#7261](https://github.com/wso2/identity-apps/pull/7261) [`de4d605d925e25ed7be92b969fb691de2a8339a3`](https://github.com/wso2/identity-apps/commit/de4d605d925e25ed7be92b969fb691de2a8339a3) Thanks [@Malith-19](https://github.com/Malith-19)! - Fix the variable passing to error message.
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.35.8
+  - @wso2is/admin.extensions.v1@2.35.29
+  - @wso2is/admin.server-configurations.v1@2.31.8
+  - @wso2is/admin.users.v1@2.29.29
+  - @wso2is/admin.groups.v1@2.26.29
+  - @wso2is/admin.organizations.v1@2.26.70
+  - @wso2is/admin.roles.v2@2.27.14
+
 ## 2.27.7
 
 ### Patch Changes
