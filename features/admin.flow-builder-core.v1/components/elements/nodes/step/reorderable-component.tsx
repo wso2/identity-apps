@@ -96,11 +96,12 @@ export const ReorderableComponent: FunctionComponent<ReorderableComponentPropsIn
         <Box
             display="flex"
             alignItems="center"
-            draggable={ false }
             className={ classNames("reorderable-component", className) }
             onClick={ () => setLastInteractedElement(component) }
             data-componentid={ `${componentId}-${component.type}` }
             { ...draggableProps }
+            // TODO: Temporary disable draggable until the dragging animation issue is fixed.
+            draggable={ false }
         >
             <div className="flow-builder-step-content-form-field-drag-handle">
                 <GridDotsVerticalIcon height={ 20 } />
