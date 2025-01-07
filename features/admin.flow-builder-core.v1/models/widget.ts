@@ -37,4 +37,6 @@ export interface WidgetExtendedConfig {
     flow?: SubFlow;
 }
 
-export enum WidgetTypes {}
+export enum WidgetTypes {
+    IdentifierPassword = "IDENTIFIER_PASSWORD",
+}
