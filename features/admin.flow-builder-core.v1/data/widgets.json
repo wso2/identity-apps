@@ -29,6 +29,10 @@
                         "category": "FIELD",
                         "type": "INPUT",
                         "variant": "TEXT",
+                        "display": {
+                            "label": "Text",
+                            "image": "https://www.svgrepo.com/show/532231/text-size.svg"
+                        },
                         "config": {
                             "field": {
                                 "type": "text",
@@ -45,6 +49,10 @@
                         "category": "FIELD",
                         "type": "INPUT",
                         "variant": "PASSWORD",
+                        "display": {
+                            "label": "Password Input",
+                            "image": "https://www.svgrepo.com/show/529125/password.svg"
+                        },
                         "config": {
                             "field": {
                                 "name": "password",
@@ -62,6 +70,10 @@
                         "type": "BUTTON",
                         "id": "dnd-element_b5c04863-dc63-4fe6-831b-df8a2a946a9f",
                         "variant": "PRIMARY",
+                        "display": {
+                            "label": "Button",
+                            "image": "https://www.svgrepo.com/show/450681/button.svg"
+                        },
                         "config": {
                             "field": {
                                 "type": "submit",
