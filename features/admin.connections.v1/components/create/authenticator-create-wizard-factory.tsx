@@ -24,6 +24,9 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { CreateConnectionWizard } from "./add-connection-wizard";
 import {
+    CustomAuthenticationCreateWizard
+} from "./custom-authentication-create-wizard";
+import {
     EnterpriseConnectionCreateWizard
 } from "./enterprise-connection-create-wizard";
 import { useGetConnectionTemplate, useGetConnections } from "../../api/connections";
@@ -166,6 +169,8 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
         }
 
         if (type === "enterprise-protocols") {
+            setSelectedTemplate(parentSelectedTemplate);
+        } else if (type === "custom-authentication") {
             setSelectedTemplate(parentSelectedTemplate);
         } else {
             if (!connectionTemplate) {
@@ -318,6 +323,24 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                             "addWizard.title") }
                         subTitle= { t("authenticationProvider:templates.enterprise." +
                             "addWizard.subtitle") }
+                        onWizardClose={ () => {
+                            setSelectedTemplateWithUniqueName(undefined);
+                            setSelectedTemplate(undefined);
+                            handleModalVisibility(false);
+                            onWizardClose();
+                        } }
+                        template={ selectedTemplateWithUniqueName }
+                        data-componentid={ selectedTemplate?.templateId }
+                        { ...rest }
+                    />
+                );
+
+            // TODO: use local for headings
+            case "custom-authentication":
+                return (
+                    <CustomAuthenticationCreateWizard
+                        title= { "Custom Authentication" }
+                        subTitle= { "Register externally implemented authentication service." }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);
