@@ -264,6 +264,36 @@ export interface FederatedAuthenticatorInterface extends CommonPluggableComponen
     isEnabled?: boolean;
     isDefault?: boolean;
     tags?: string[];
+    endpoint?: ExternalEndpoint;
+}
+
+/**
+ * Captures the properties of a externally implemented local authenticator.
+ */
+export interface CustomAuthenticatorInterface extends StrictConnectionInterface {
+    name?: string;
+    displayName?: string;
+    isEnabled?: boolean;
+    isDefault?: boolean;
+    endpoint?: ExternalEndpoint;
+    authenticationType?: string;
+    description?: string;
+}
+
+/**
+ * Captures the properties of a external endpoint associated with the authenticator.
+ */
+export interface ExternalEndpoint {
+    uri?: string;
+    authentication?: ExternalEndpointAuthentication
+}
+
+/**
+ * Captures the properties of a external endpoint authentication details associated with the authenticator.
+ */
+export interface ExternalEndpointAuthentication {
+    type?: AuthenticationType;
+    properties?: string[] //TODO: check the object
 }
 
 /**
@@ -449,6 +479,7 @@ export interface ConnectionTemplateItemInterface {
     category?: string;
     displayOrder?: number;
     idp?: ConnectionInterface;
+    customAuth?: CustomAuthenticatorInterface; // TODO; check this object
     disabled?: boolean;
     provisioning?: ProvisioningInterface;
     type?: string;
@@ -768,9 +799,130 @@ export interface EnterpriseConnectionCreateWizardGeneralFormValuesInterface {
 }
 
 /**
+ * Interface for the general form values in the custom authentication wizard.
+ */
+export interface CustomAuthenticationCreateWizardGeneralFormValuesInterface {
+    /**
+     * Identifier of the custom authentication.
+     */
+    identifier: string;
+    /**
+     * Display name of the custom authentication.
+     */
+    displayName: string;
+}
+
+/**
+ *  Custom authentication endpoint config form property Interface.
+ */
+export interface EndpointConfigFormPropertyInterface {
+    /**
+     * Endpoint Uri of the Action.
+     */
+    endpointUri: string;
+    /**
+     * Endpoint Uri of the Action.
+     */
+    authenticationType: string;
+    /**
+     * Username property of basic authentication.
+     */
+    usernameAuthProperty?: string;
+    /**
+     * Password property of basic authentication.
+     */
+    passwordAuthProperty?: string;
+    /**
+     * Access Token property of bearer authentication.
+     */
+    accessTokenAuthProperty?: string;
+    /**
+     * Header property of apiKey authentication.
+     */
+    headerAuthProperty?: string;
+    /**
+     * Value property of apiKey authentication.
+     */
+    valueAuthProperty?: string;
+}
+
+/**
+ *  Endpoint configuration.
+ */
+export interface EndpointInterface {
+    /**
+     * External endpoint.
+     */
+    uri: string;
+    /**
+     * Authentication configurations of the Action.
+     */
+    authentication: AuthenticationInterface;
+}
+
+/**
+ *  Endpoint authentication configuration.
+ */
+interface AuthenticationInterface {
+    /**
+     * Authentication Type.
+     */
+    type: AuthenticationType;
+    /**
+     * Authentication properties.
+     */
+    properties: Partial<AuthenticationPropertiesInterface>;
+}
+
+/**
+ * Authentication Properties.
+ */
+export interface AuthenticationPropertiesInterface {
+    /**
+     * Username auth property.
+     */
+    username: string;
+    /**
+     * Password auth property.
+     */
+    password: string;
+    /**
+     * Access Token auth property.
+     */
+    accessToken: string;
+    /**
+     * Header auth property.
+     */
+    header: string;
+    /**
+     * Value auth property.
+     */
+    value: string;
+}
+
+/**
+ * Interface for the authentication type dropdown options.
+ */
+export interface AuthenticationTypeDropdownOption {
+    key: AuthenticationType;
+    text: string;
+    value: AuthenticationType;
+}
+
+/**
  * Enum for the connection type.
  */
 export enum ConnectionTypes {
     CONNECTION = "connections",
     IDVP = "identity-verification-providers"
+}
+
+/**
+ * Authentication Types.
+ */
+export enum AuthenticationType {
+    NONE = "NONE",
+    BASIC = "BASIC",
+    API_KEY = "API_KEY",
+    BEARER = "BEARER",
 }
