@@ -741,7 +741,7 @@
                         <div class="ui divider hidden"></div>
                         <%
                             try {
-                                if (StringUtils.isNotBlank(backToUrl) && !Utils.validateCallbackURL(backToUrl, tenantDomain,
+                                if (StringUtils.isNotBlank(callback) && !Utils.validateCallbackURL(callback, tenantDomain,
                                     IdentityRecoveryConstants.ConnectorConfig.SELF_REGISTRATION_CALLBACK_REGEX)) {
                                     request.setAttribute("error", true);
                                     request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
