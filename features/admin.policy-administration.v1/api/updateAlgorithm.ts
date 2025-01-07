@@ -17,14 +17,12 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import useRequest, {
-    RequestConfigInterface,
-    RequestErrorInterface,
-    RequestResultInterface
+import {
+    RequestConfigInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { PolicyAlgorithmRequestInterface } from "../models/policies";
 
 
@@ -35,44 +33,10 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
     .bind(AsgardeoSPAClient.getInstance());
 
-
-
-
-type GetAlgorithmResponse = string;
-
 /**
- * Fetches the policy combining algorithm.
- *
- * @param {boolean} shouldFetch - Flag to determine if the data should be fetched.
- * @return {RequestResultInterface} Response data.
+ * Function to update the policy combining algorithm.
+ * @param policyCombiningAlgorithm - The policy combining algorithm to be updated.
  */
-
-export const useGetAlgorithm = <Data = GetAlgorithmResponse, Error = RequestErrorInterface>(
-    shouldFetch: boolean = true
-): RequestResultInterface<Data, Error> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.entitlementPolicyCombiningAlgorithmApi}`
-    };
-
-
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null, {
-        shouldRetryOnError: false
-    });
-
-    return {
-        data,
-        error,
-        isLoading: !error && !data,
-        isValidating,
-        mutate
-    };
-};
-
 export const updateAlgorithm = (
     policyCombiningAlgorithm: PolicyAlgorithmRequestInterface) : Promise<any> => {
     const requestConfig: RequestConfigInterface = {

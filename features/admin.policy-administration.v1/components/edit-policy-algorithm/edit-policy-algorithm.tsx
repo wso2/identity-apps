@@ -34,7 +34,7 @@ import "./edit-policy-algorithm.scss";
 import { addAlert } from "@wso2is/core/store";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { updateAlgorithm } from "../../api/policy-algorithm";
+import { updateAlgorithm } from "../../api/updateAlgorithm";
 import { PolicyAlgorithmRequestInterface } from "../../models/policies";
 
 interface AlgorithmOption {

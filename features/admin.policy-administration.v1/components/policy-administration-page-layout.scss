@@ -8,6 +8,9 @@
 .policy-list-card {
     background-color: transparent;
     padding: 0;
+    max-height: 60vh;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .policy-list-header {

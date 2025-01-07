@@ -43,9 +43,8 @@ import { PolicyList } from "./policy-list";
 import { NewPolicyWizard } from "./wizard/new-policy-wizard";
 import EditPolicyAlgorithmModal from "../components/edit-policy-algorithm/edit-policy-algorithm";
 import "./policy-administration-page-layout.scss";
-import { useGetAlgorithm } from "../api/policy-algorithm";
-import { useGetPolicies } from "../api/entitlement-policies";
-import { PolicyListInterface } from "../models/policies";
+import { useGetAlgorithm } from "../api/useGetAlgorithm";
+import { useGetPolicies } from "../api/useGetPolicies";
 
 
 interface AlgorithmOption {
@@ -148,19 +147,6 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
 
     const activePolicies = activePolicyArray?.policySet?.filter((policy) => policy !== null) || [];
     const inactivePolicies = inactivePolicyArray?.policySet?.filter((policy) => policy !== null) || [];
-
-
-
-
-    const [ policies , setPolicies ] = useState();
-
-    const handleButtonClick = () => {
-        history.push(AppConstants.getPaths().get("EDIT_POLICY"));
-    };
-
-    const handleSetPolicy = () => {
-
-    };
 
 
 

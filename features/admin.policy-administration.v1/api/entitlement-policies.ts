@@ -15,93 +15,119 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import useRequest, {
-    RequestConfigInterface,
-    RequestErrorInterface,
-    RequestResultInterface
-} from "@wso2is/admin.core.v1/hooks/use-request";
+
+import {
+    AsgardeoSPAClient,
+    HttpClientInstance
+} from "@asgardeo/auth-react";
+import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { PolicyInterface, PolicyListInterface } from "../models/policies";
+import { AxiosError, AxiosResponse } from "axios";
+import { PolicyInterface } from "../models/policies";
 
 /**
- * Hook to get the list of policies.
+ * Get an axios instance.
  *
- * @param shouldFetch - Should fetch the data.
- * @param pageNumber - Pagination limit.
- * @param isPDPPolicy - Is PDP policy.
- * @param policySearchString - Search filter.
- * @param policyType - Policy type. (Policy/PolicySet)
- * @returns SWR response object containing the data, error, isValidating, mutate.
  */
-export const useGetPolicies = <
-    Data = PolicyListInterface,
-    Error = RequestErrorInterface>(
-        shouldFetch: boolean,
-        pageNumber: number,
-        isPDPPolicy: boolean,
-        policySearchString: string,
-        policyType: string
-    ): RequestResultInterface<Data, Error> => {
+const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
+    AsgardeoSPAClient.getInstance()
+);
+
+/**
+ * Function to create a new policy.
+ *
+ * @param policyData - The policy data to be created.
+ * @returns A promise containing the response.
+ */
+export const createPolicy = (
+    policyData: PolicyInterface
+): Promise<AxiosResponse<PolicyInterface>> => {
+
     const requestConfig: RequestConfigInterface = {
+        data: policyData,
         headers: {
-            Accept: "application/json",
+            "Accept": "*/*",
             "Content-Type": "application/json"
         },
-        method: HttpMethods.GET,
-        params: {
-            isPDPPolicy,
-            pageNumber,
-            policySearchString,
-            policyType
-        },
-        url: `${store.getState().config.endpoints.entitlementPoliciesApi}`
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.entitlementPoliciesApi
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null, {
-        shouldRetryOnError: false
-    });
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 201) {
+                return Promise.reject(new Error("Failed to create the policy."));
+            }
 
-    return {
-        data,
-        error,
-        isLoading: !error && !data,
-        isValidating,
-        mutate
-    };
+            return Promise.resolve(response);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
 };
 
 /**
- * Hook to fetch a specific policy by its ID.
+ * Update an existing policy with new data.
  *
- * @param policyId - The ID of the policy to fetch.
- * @param shouldFetch - Should fetch the data.
- * @returns SWR response object containing the data, error, isValidating, mutate.
+ * @param policyData - The policy data to be updated (payload).
+ * @returns A promise containing the updated policy data.
  */
-export const useGetPolicy = <
-    Data = PolicyInterface,
-    Error = RequestErrorInterface>(
-        policyId: string,
-        shouldFetch: boolean
-    ): RequestResultInterface<Data, Error> => {
+export const updatePolicy = (
+    policyData: PolicyInterface
+): Promise<any> => {
+
     const requestConfig: RequestConfigInterface = {
+        data: policyData,
         headers: {
-            Accept: "application/json",
+            Accept: "*/*",
             "Content-Type": "application/json"
         },
-        method: HttpMethods.GET,
+        method: HttpMethods.PATCH,
+        url: store.getState().config.endpoints.entitlementPoliciesApi
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(
+                    new Error("Failed to update policy: " + policyData.policyId)
+                );
+            }
+
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Deletes a policy when the relevant policy ID is passed in.
+ *
+ * @param policyId - ID of the policy to be deleted.
+ * @returns A promise containing the response.
+ */
+export const deletePolicy = (policyId: string): Promise<AxiosResponse> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
         url: `${store.getState().config.endpoints.entitlementPoliciesApi}/${policyId}`
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null, {
-        shouldRetryOnError: false
-    });
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 204) {
+                return Promise.reject(new Error("Failed to delete the policy."));
+            }
 
-    return {
-        data,
-        error,
-        isLoading: !error && !data,
-        isValidating,
-        mutate
-    };
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
 };
+

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) {{year}}, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,21 +15,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
+import Alert from "@oxygen-ui/react/Alert";
 import ScriptEditorPanel
     from "@wso2is/admin.authentication-flow-builder.v1/components/script-editor-panel/script-editor-panel";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import "./edit-policy.scss";
-import {AppConstants, history} from "@wso2is/admin.core.v1";
+import { RouteComponentProps } from "react-router";
+import { useGetPolicy } from "../api/useGetPolicy";
 
-
-
-type EditPolicyPageProps = IdentifiableComponentInterface;
+type EditPolicyPageProps = IdentifiableComponentInterface & RouteComponentProps;
 
 /**
  * Component for editing a policy.
@@ -37,10 +39,29 @@ type EditPolicyPageProps = IdentifiableComponentInterface;
  * @param props - Props injected to the component.
  * @returns Policy edit page component.
  */
-
 const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
+    match,
     ["data-componentid"]: componentId = "policy-edit-page"
-}: EditPolicyPageProps): ReactElement => {
+}: EditPolicyPageProps & RouteComponentProps): ReactElement => {
+    const policyId: string = match.params["id"];
+
+    const shouldFetchPolicy: boolean = !isEmpty(policyId);
+
+    /**
+     * Converts kebab-case to snake_case.
+     *
+     * @param kebab - Kebab case string.
+     * @returns Snake case string.
+     */
+    const kebabToSnakeCase = (kebab: string): string => {
+        return kebab.replace(/-/g, "_");
+    };
+
+    // Fetch the policy using the useGetPolicy hook
+    const { data: policy, isLoading, error } = useGetPolicy(
+        kebabToSnakeCase(policyId || ""),
+        shouldFetchPolicy
+    );
 
     const { t } = useTranslation();
 
@@ -51,21 +72,46 @@ const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
         history.push(AppConstants.getPaths().get("POLICY_ADMINISTRATION"));
     };
 
-
     return (
         <PageLayout
-            title={ "Provisioning User Claim Based Policy" }
+            title={ policy?.policyId || t("policyAdministration:editPolicy.loadingTitle") }
             backButton={ {
-                "data-componentid": `${ componentId }-edit-policy-page-back-button`,
-                onClick: () => handleBackButtonClick(),
+                "data-componentid": `${componentId}-edit-policy-page-back-button`,
+                onClick: handleBackButtonClick,
                 text: t("policyAdministration:editPolicy.backBtn")
             } }
             data-componentid={ componentId }
         >
-            <Box className="script-editor">
-                <ScriptEditorPanel language="xml" hideText={ true } />
-            </Box>
-            <Button className="edit-policy-btn" color="primary" variant="contained">{ t("common:update") }</Button>
+            { /* Loading State */ }
+            { isLoading && (
+                <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+                    <CircularProgress />
+                </Box>
+            ) }
+
+            { /* Error State */ }
+            { error && (
+                <Alert severity="error" title={ t("policyAdministration:editPolicy.errorTitle") }>
+                    { t("policyAdministration:editPolicy.errorDescription") }
+                </Alert>
+            ) }
+
+            { /* Render Policy Script Editor only if policy data is available */ }
+            { !isLoading && !error && policy && (
+                <Box className="script-editor">
+                    <ScriptEditorPanel
+                        language="xml"
+                        initialValue={ policy.policy } // Safely access the policy data
+                    />
+                </Box>
+            ) }
+
+            { /* Update Button: Show only if policy data is available */ }
+            { !isLoading && !error && policy && (
+                <Button className="edit-policy-btn" color="primary" variant="contained">
+                    { t("common:update") }
+                </Button>
+            ) }
         </PageLayout>
     );
 };
