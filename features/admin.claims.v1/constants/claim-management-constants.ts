@@ -92,7 +92,8 @@ export class ClaimManagementConstants {
         .set("SCIM2_SCHEMAS_CORE_USER", "dXJuOmlldGY6cGFyYW1zOnNjaW06c2NoZW1hczpjb3JlOjIuMDpVc2Vy")
         .set("SCIM2_SCHEMAS_EXT_ENT_USER",
             "dXJuOmlldGY6cGFyYW1zOnNjaW06c2NoZW1hczpleHRlbnNpb246ZW50ZXJwcmlzZToyLjA6VXNlcg")
-        .set("SCIM_SCHEMAS_CORE", "dXJuOnNjaW06c2NoZW1hczpjb3JlOjEuMA");
+        .set("SCIM_SCHEMAS_CORE", "dXJuOnNjaW06c2NoZW1hczpjb3JlOjEuMA")
+        .set("SCIM2_SCHEMAS_EXT_SYSTEM", "dXJuOnNjaW06d3NvMjpzY2hlbWE");
 
     /**
      * Set of dialects packed OOTB.
@@ -118,7 +119,8 @@ export class ClaimManagementConstants {
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE_USER"),
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"),
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM_SCHEMAS_CORE"),
-        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP")
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_SYSTEM")
     ];
 
     public static readonly CUSTOM_MAPPING: string = SCIMConfigs.custom;
