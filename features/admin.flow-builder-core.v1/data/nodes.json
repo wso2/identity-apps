@@ -5,7 +5,7 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "Step",
+            "label": "Prompt",
             "image": "https://www.svgrepo.com/show/448632/step.svg"
         },
         "config": {

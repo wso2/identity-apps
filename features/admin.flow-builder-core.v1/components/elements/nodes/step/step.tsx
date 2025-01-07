@@ -130,7 +130,7 @@ export const Step: FunctionComponent<StepPropsInterface> = ({
                     data-componentid={ `${componentId}-heading-text` }
                     className="flow-builder-step-id"
                 >
-                    Step
+                    Prompt
                 </Typography>
                 <Tooltip title={ "Remove" }>
                     <IconButton

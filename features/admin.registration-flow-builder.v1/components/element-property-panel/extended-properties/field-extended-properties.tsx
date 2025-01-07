@@ -23,7 +23,7 @@ import {
     CommonElementPropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/element-property-panel/element-properties";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
 import useGetSupportedProfileAttributes from "../../../api/use-get-supported-profile-attributes";
 import { Attribute } from "../../../models/attributes";
 
@@ -45,29 +45,25 @@ const FieldExtendedProperties: FunctionComponent<FieldExtendedPropertiesPropsInt
     onChange
 }: FieldExtendedPropertiesPropsInterface): ReactElement => {
     const { data: attributes } = useGetSupportedProfileAttributes();
-    const [ _, setSelectedAttribute ] = useState<Attribute>(null);
 
     const selectedValue: Attribute = useMemo(() => {
-        return attributes?.find(
-            (attribute: Attribute) => attribute?.claimURI === element.config.field.name
-        );
+        return attributes?.find((attribute: Attribute) => attribute?.claimURI === element.config.field.name);
     }, [ element.config.field.name, attributes ]);
 
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
             <Autocomplete
                 disablePortal
+                key={ element.id }
                 options={ attributes }
                 getOptionLabel={ (attribute: Attribute) => attribute.displayName }
                 sx={ { width: "100%" } }
-                renderInput={ (params: AutocompleteRenderInputParams) => <TextField { ...params } label="Attribute" /> }
+                renderInput={ (params: AutocompleteRenderInputParams) => (
+                    <TextField { ...params } label="Attribute" placeholder="Select an attribute" />
+                ) }
                 value={ selectedValue }
                 onChange={ (_: ChangeEvent<HTMLInputElement>, attribute: Attribute) => {
                     onChange("config.field.name", attribute?.claimURI, element);
-
-                    setSelectedAttribute(
-                        attributes?.find((attribute: Attribute) => attribute?.claimURI === attribute?.claimURI)
-                    );
                 } }
             />
         </Stack>

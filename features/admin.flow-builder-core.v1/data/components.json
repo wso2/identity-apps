@@ -56,7 +56,7 @@
                 "hint": "",
                 "label": "Email",
                 "required": false,
-                "placeholder": "Enter your email address"
+                "placeholder": "Enter your email"
             }
         }
     },
@@ -116,7 +116,7 @@
                 "hint": "",
                 "label": "Date",
                 "required": false,
-                "placeholder": "Enter a date"
+                "placeholder": "yyyy-mm-dd"
             }
         }
     },

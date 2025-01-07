@@ -242,9 +242,7 @@ const transformFlow = (flowState: any): Payload => {
     const lastNode: PayloadNode = payload.nodes[payload.nodes.length - 1];
 
     lastNode.actions.forEach((action: PayloadAction) => {
-        if (action.action?.type === ActionTypes.Next) {
-            action.next = [ "COMPLETE" ];
-        }
+        action.next = [ "COMPLETE" ];
     });
 
     payload.flow.pages = groupNodesIntoPages(flowNodes, flowEdges);

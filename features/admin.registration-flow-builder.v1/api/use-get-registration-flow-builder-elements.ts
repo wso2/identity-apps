@@ -19,6 +19,7 @@
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import useGetFlowBuilderCoreElements from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-builder-core-elements";
 import { Elements } from "@wso2is/admin.flow-builder-core.v1/models/elements";
+import templates from "../data/templates.json";
 import widgets from "../data/widgets.json";
 
 /**
@@ -40,6 +41,10 @@ const useGetRegistrationFlowBuilderElements = <Data = Elements, Error = RequestE
     return {
         data: ({
             ...coreElements,
+            templates: [
+                ...coreElements?.templates,
+                ...templates
+            ],
             widgets: [
                 ...coreElements?.widgets,
                 ...widgets

@@ -76,9 +76,12 @@ const AuthenticationFlowBuilderCoreProvider = ({
         );
         setLastInteractedElementInternal(element);
 
-        // If the element is a step node, do not open the properties panel for now.
+        // If the element is a step node or a widget, do not open the properties panel for now.
         // TODO: Figure out if there are properties for a step.
-        if (element.category === ElementCategories.Nodes && element.type === NodeTypes.Step) {
+        if (
+            element.category === ElementCategories.Widget ||
+            (element.category === ElementCategories.Nodes && element.type === NodeTypes.Step)
+        ) {
             setIsOpenElementPropertiesPanel(false);
 
             return;

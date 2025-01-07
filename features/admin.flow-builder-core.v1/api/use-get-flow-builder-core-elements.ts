@@ -19,6 +19,7 @@
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import components from "../data/components.json";
 import nodes from "../data/nodes.json";
+import templates from "../data/templates.json";
 import widgets from "../data/widgets.json";
 import { Elements } from "../models/elements";
 
@@ -39,6 +40,7 @@ const useGetFlowBuilderCoreElements = <Data = Elements, Error = RequestErrorInte
         data: ({
             components,
             nodes,
+            templates,
             widgets
         } as unknown) as Data,
         error: null,

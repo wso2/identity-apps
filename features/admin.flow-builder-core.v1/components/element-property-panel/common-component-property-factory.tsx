@@ -92,6 +92,7 @@ const CommonComponentPropertyFactory: FunctionComponent<CommonComponentPropertyF
                 onChange={ (e: ChangeEvent<HTMLInputElement>) =>
                     onChange(`config.field.${propertyKey}`, e.target.value, element)
                 }
+                placeholder={ `Enter ${startCase(propertyKey)}` }
                 data-componentid={ `${componentId}-${propertyKey}` }
             />
         );

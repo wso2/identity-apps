@@ -92,7 +92,7 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "Email OTP",
+            "label": "Continue with Email OTP",
             "description": "Registration experience with Email",
             "image": "https://www.svgrepo.com/show/368868/otp.svg"
         },
@@ -106,7 +106,7 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "SMS OTP",
+            "label": "Continue with SMS OTP",
             "description": "Registration experience with SMS OTP",
             "image": "https://www.svgrepo.com/show/381137/transaction-password-otp-verification-code-security.svg"
         },

@@ -16,36 +16,6 @@
  * under the License.
  */
 
-import { Component } from "./component";
-import { Node } from "./node";
-import { Template } from "./template";
-import { Widget } from "./widget";
+import { Base } from "./base";
 
-export type Element = Component | Node | Widget;
-
-/**
- * Interface for the entire JSON structure.
- */
-export interface Elements {
-    templates: Template[];
-    /**
-     * List of blocks.
-     */
-    components: Component[];
-    /**
-     * List of nodes.
-     */
-    nodes: Node[];
-    /**
-     * List of widgets.
-     */
-    widgets: Widget[];
-}
-
-export enum ElementCategories {
-    Action = "ACTION",
-    Display = "DISPLAY",
-    Field = "FIELD",
-    Nodes = "NODE",
-    Widget = "WIDGET"
-}
+export type Template = Base;

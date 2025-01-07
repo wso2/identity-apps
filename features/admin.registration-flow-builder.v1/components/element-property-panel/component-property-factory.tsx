@@ -27,6 +27,8 @@ import React, { FunctionComponent, ReactElement } from "react";
  */
 export type ComponentPropertyFactoryPropsInterface = CommonComponentPropertyFactoryPropsInterface;
 
+const PROPERTIES_TO_IGNORE: string[] = [ "type", "name" ];
+
 /**
  * Factory to generate the property configurator for the given component.
  *
@@ -39,6 +41,10 @@ const ComponentPropertyFactory: FunctionComponent<ComponentPropertyFactoryPropsI
     propertyValue,
     onChange
 }: ComponentPropertyFactoryPropsInterface): ReactElement | null => {
+    if (PROPERTIES_TO_IGNORE.includes(propertyKey)) {
+        return null;
+    }
+
     return (
         <CommonComponentPropertyFactory
             element={ element }
