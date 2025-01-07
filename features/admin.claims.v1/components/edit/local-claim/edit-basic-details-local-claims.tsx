@@ -26,7 +26,6 @@ import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
-import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     ConnectorPropertyInterface,
@@ -43,6 +42,7 @@ import {
     AlertInterface,
     AlertLevels,
     Claim,
+    ClaimDialect,
     ExternalClaim,
     ProfileSchemaInterface,
     TestableComponentInterface,
@@ -79,6 +79,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
 import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
+import useGetClaimDialects from "../../../api/use-get-claim-dialects";
 import { ClaimManagementConstants } from "../../../constants";
 
 /**
@@ -136,6 +137,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
+
     const hasAttributeUpdatePermissions: boolean = useRequiredScopes(featureConfig?.attributeDialects?.scopes?.update);
     const [ hideSpecialClaims, setHideSpecialClaims ] = useState<boolean>(true);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
@@ -161,6 +164,37 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const { data: validationData } = useValidationConfigData();
 
     const { UIConfig } = useUIConfig();
+
+    const {
+        data: fetchedDialects,
+        error: fetchDialectsRequestError
+    } = useGetClaimDialects(null);
+
+    // Extract custom user schema ID.
+    const customUserSchemaID: string = useMemo(() => fetchedDialects?.find(
+        (dialect: ClaimDialect) => dialect?.dialectURI === userSchemaURI
+    )?.id || null, [ fetchedDialects ]);
+
+    /**
+     * Handle the fetch dialects request error.
+     */
+    useEffect(() => {
+        if (fetchDialectsRequestError) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "console:manage.features.claims.dialects.notifications.fetchDialects" +
+                            ".genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "console:manage.features.claims.dialects.notifications.fetchDialects" +
+                            ".genericError.message"
+                    )
+                })
+            );
+        }
+    }, [ fetchDialectsRequestError ]);
 
     /**
      * Get username configuration.
@@ -266,7 +300,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 }
             }).finally(() => setMappingChecked(true));
         }
-    }, [ claim ]);
+    }, [ claim, customUserSchemaID ]);
 
     useEffect(() => {
         getConnectorDetails(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
@@ -340,8 +374,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE"));
         dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE_USER"));
         dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"));
-        if (SCIMConfigs.scimDialectID?.customEnterpriseSchema) {
-            dialectID.push(SCIMConfigs.scimDialectID.customEnterpriseSchema);
+        dialectID.push(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_SYSTEM"));
+
+        if (customUserSchemaID) {
+            dialectID.push(customUserSchemaID);
         }
 
         return dialectID;

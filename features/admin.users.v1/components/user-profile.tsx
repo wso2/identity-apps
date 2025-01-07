@@ -200,6 +200,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
     );
+    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const { UIConfig } = useUIConfig();
 
@@ -450,12 +451,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             }
 
                             if (
-                                schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
-                                && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
+                                schema.extended
+                                && userInfo?.[userSchemaURI]?.[schemaNames[0]]
                             ) {
                                 if (UserManagementConstants.MULTI_VALUED_ATTRIBUTES.includes(schemaNames[0])) {
                                     const attributeValue: string | string[] =
-                                        userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]?.[schemaNames[0]];
+                                        userInfo[userSchemaURI]?.[schemaNames[0]];
                                     const formattedValue: string = Array.isArray(attributeValue)
                                         ? attributeValue.join(",")
                                         : "";
@@ -465,7 +466,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     return;
                                 }
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
+                                    schema.name, userInfo[userSchemaURI][schemaNames[0]]
                                 );
 
                                 return;
@@ -585,12 +586,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             }
 
                             if (
-                                schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
-                                && userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
+                                schema.extended
+                                && userInfo?.[userSchemaURI]?.[schemaNames[0]]
                             ) {
                                 if (UserManagementConstants.MULTI_VALUED_ATTRIBUTES.includes(schemaNames[0])) {
                                     const attributeValue: string | string[] =
-                                        userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]?.[schemaNames[0]];
+                                        userInfo[userSchemaURI]?.[schemaNames[0]];
                                     const formattedValue: string = Array.isArray(attributeValue)
                                         ? attributeValue.join(",")
                                         : "";
@@ -600,7 +601,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     return;
                                 }
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
+                                    schema.name, userInfo[userSchemaURI][schemaNames[0]]
                                 );
 
                                 return;
@@ -1227,7 +1228,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     /**
      * The method handles the locking and disabling of user account.
      */
-    const handleDangerActions = (attributeName: string, attributeValue: boolean): Promise<void> => {
+    const handleDangerActions = (attributeName: string, attributeValue: boolean): void => {
         let data: PatchRoleDataInterface = {
             "Operations": [
                 {
@@ -1243,17 +1244,20 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         };
 
         if (adminUserType === "internal") {
+            const accountDisabledURI: string = SCIMConfigs?.scimSystemUserClaimUri?.accountDisabled;
+            const accountLockedURI: string = SCIMConfigs?.scimSystemUserClaimUri?.accountLocked;
+
+            const schemaURI: string = accountDisabledURI?.startsWith(ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA)
+                && accountLockedURI?.startsWith(ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA)
+                ? ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA
+                : userSchemaURI;
+
             data = {
                 "Operations": [
                     {
                         "op": "replace",
-                        "value": {
-                            [ SCIMConfigs?.scimEnterpriseUserClaimUri?.accountDisabled?.
-                                startsWith(ProfileConstants.SCIM2_WSO2_USER_SCHEMA) &&
-                                SCIMConfigs?.scimEnterpriseUserClaimUri?.accountLocked?.
-                                    startsWith(ProfileConstants.SCIM2_WSO2_USER_SCHEMA)
-                                ? ProfileConstants.SCIM2_WSO2_USER_SCHEMA
-                                : ProfileConstants.SCIM2_ENT_USER_SCHEMA ]: {
+                        value: {
+                            [schemaURI]: {
                                 [attributeName]: attributeValue
                             }
                         }
@@ -1263,7 +1267,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             };
         }
 
-        return updateUserInfo(user.id, data)
+        updateUserInfo(user.id, data)
             .then(() => {
                 onAlertFired({
                     description:

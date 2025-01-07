@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,9 +31,6 @@ export const SCIMConfigs: SCIMConfigInterface = {
         enterpriseSchema: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
         userSchema: "urn:ietf:params:scim:schemas:core:2.0:User"
     },
-    scimDialectID: {
-        customEnterpriseSchema: "dXJuOnNjaW06d3NvMjpzY2hlbWE"
-    },
     scimEnterpriseUserClaimUri: {
         accountDisabled: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.accountDisabled",
         accountLocked: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.accountLocked",
@@ -42,6 +39,15 @@ export const SCIMConfigs: SCIMConfigInterface = {
         isReadOnlyUser: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.isReadOnlyUser",
         oneTimePassword: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.oneTimePassword",
         profileUrl: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.profileUrl"
+    },
+    scimSystemUserClaimUri: {
+        accountDisabled: "urn:scim:wso2:schema:accountDisabled",
+        accountLocked: "urn:scim:wso2:schema:accountLocked",
+        askPassword: "urn:scim:wso2:schema:askPassword",
+        forcePasswordReset: "urn:scim:wso2:schema:forcePasswordReset",
+        isReadOnlyUser: "urn:scim:wso2:schema:isReadOnlyUser",
+        oneTimePassword: "urn:scim:wso2:schema:oneTimePassword",
+        profileUrl: "urn:scim:wso2:schema:profileUrl"
     },
     serverSupportedClaimsAvailable: [
         "urn:scim:schemas:core:1.0",

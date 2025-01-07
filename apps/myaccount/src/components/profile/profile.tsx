@@ -148,6 +148,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         state.authenticationInformation.profileInfo.isReadOnly);
     const hasLocalAccount: boolean = useSelector((state: AppState) => state.authenticationInformation.hasLocalAccount);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
@@ -426,58 +427,46 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             tempProfileInfo.set(schema.name, primaryEmail);
                         }
                     } else {
-                        if (schema.extended
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
-                            tempProfileInfo.set(
-                                schema.name,
-                                profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                                    ? profileDetails?.profileInfo[
-                                        ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]
-                                    ]
-                                    : ""
-                            );
-
-                            return;
-                        }
-
-                        if (schema.extended
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
-                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]) {
-
-                            const multiValuedAttributes: string[] = [
-                                EMAIL_ADDRESSES_ATTRIBUTE,
-                                MOBILE_NUMBERS_ATTRIBUTE,
-                                VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
-                                VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
+                        if (schema.extended) {
+                            const schemaURIs: string[] = [
+                                ProfileConstants.SCIM2_ENT_USER_SCHEMA,
+                                ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA,
+                                userSchemaURI
                             ];
 
-                            if (multiValuedAttributes.includes(schemaNames[0])) {
+                            for (const schemaURI of schemaURIs) {
+                                if (profileDetails?.profileInfo[schemaURI]?.[schemaNames[0]]) {
 
-                                const attributeValue: string | string[] =
-                                    profileDetails?.profileInfo[
-                                        ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]?.[schemaNames[0]];
+                                    const multiValuedAttributes: string[] = [
+                                        EMAIL_ADDRESSES_ATTRIBUTE,
+                                        MOBILE_NUMBERS_ATTRIBUTE,
+                                        VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
+                                        VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
+                                    ];
 
-                                const formattedValue: string = Array.isArray(attributeValue)
-                                    ? attributeValue.join(",")
-                                    : "";
+                                    if (schemaURI === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA
+                                        && multiValuedAttributes.includes(schemaNames[0])) {
+                                        const attributeValue: string | string[] =
+                                            profileDetails?.profileInfo[schemaURI]?.[schemaNames[0]];
 
-                                tempProfileInfo.set(schema.name, formattedValue);
+                                        const formattedValue: string = Array.isArray(attributeValue)
+                                            ? attributeValue.join(",")
+                                            : "";
 
-                                return;
+                                        tempProfileInfo.set(schema.name, formattedValue);
+
+                                        return;
+                                    }
+
+                                    tempProfileInfo.set(
+                                        schema.name,
+                                        profileDetails?.profileInfo[schemaURI]?.[schemaNames[0]] ?? ""
+                                    );
+
+                                    return;
+                                }
                             }
-                            tempProfileInfo.set(
-                                schema.name,
-                                profileDetails?.profileInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA]
-                                    ? profileDetails?.profileInfo[
-                                        ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA
-                                    ][schemaNames[0]]
-                                    : ""
-                            );
-
-                            return;
                         }
-
                         tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]]);
                     }
                 } else {
@@ -507,14 +496,20 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             }
                         }
                     } else {
-                        if (schema.extended) {
-                            tempProfileInfo.set(schema.name,
-                                profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]
-                                    ? profileDetails
-                                        ?.profileInfo[
-                                            ProfileConstants.SCIM2_ENT_USER_SCHEMA
-                                        ][schemaNames[0]][schemaNames[1]]
-                                    : "");
+                        if (schema.extended
+                            && profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]) {
+                            tempProfileInfo.set(
+                                schema.name,
+                                profileDetails.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]][
+                                    schemaNames[1]]
+                                ?? "");
+                        } else if (schema.extended &&
+                            profileDetails?.profileInfo[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.[schemaNames[0]]) {
+                            tempProfileInfo.set(
+                                schema.name,
+                                profileDetails.profileInfo[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][schemaNames[0]][
+                                    schemaNames[1]]
+                                ?? "");
                         } else {
                             const subValue: BasicProfileInterface = profileDetails.profileInfo[schemaNames[0]]
                                 && profileDetails.profileInfo[schemaNames[0]].find(
@@ -700,7 +695,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 if (values.get(formName)) {
                     value = {
                         ...value,
-                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                        [ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]: {
                             "verifyEmail": true
                         }
                     };
@@ -742,7 +737,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 if (primaryValue) {
                     value = {
                         ...value,
-                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                        [ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]: {
                             "verifyEmail": true
                         }
                     };

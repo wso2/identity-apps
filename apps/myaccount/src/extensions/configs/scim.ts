@@ -41,5 +41,14 @@ export const SCIMConfigs: SCIMConfigInterface = {
         isReadOnlyUser: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.isReadOnlyUser",
         oneTimePassword: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.oneTimePassword",
         profileUrl: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.profileUrl"
+    },
+
+    scimSystemUserClaimUri: {
+        accountDisabled: "urn:scim:wso2:schema:accountDisabled",
+        accountLocked: "urn:scim:wso2:schema:accountLocked",
+        askPassword: "urn:scim:wso2:schema:askPassword",
+        isReadOnlyUser: "urn:scim:wso2:schema:isReadOnlyUser",
+        oneTimePassword: "urn:scim:wso2:schema:oneTimePassword",
+        profileUrl: "urn:scim:wso2:schema:profileUrl"
     }
 };

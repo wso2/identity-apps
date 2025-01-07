@@ -121,6 +121,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
+    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
 
     const hasLoginAndRegistrationFeaturePermissions: boolean = useRequiredScopes(
         featureConfig?.loginAndRegistration?.scopes?.feature
@@ -218,15 +219,17 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             return;
         }
 
+        const schemaURI: string = SCIMConfigs?.scimSystemUserClaimUri?.forcePasswordReset?.
+            startsWith(ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA)
+            ? ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA
+            : userSchemaURI;
+
         const data: PatchRoleDataInterface = {
             "Operations": [
                 {
                     "op": "add",
                     "value": {
-                        [ SCIMConfigs?.scimEnterpriseUserClaimUri?.forcePasswordReset?.
-                            startsWith(ProfileConstants.SCIM2_ENT_USER_SCHEMA)
-                            ? ProfileConstants.SCIM2_ENT_USER_SCHEMA
-                            : ProfileConstants.SCIM2_WSO2_USER_SCHEMA ]: {
+                        [ schemaURI ]: {
                             "forcePasswordReset": true
                         }
                     }

@@ -96,7 +96,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     const listAllAttributeDialects: boolean = useSelector(
         (state: AppState) => state.config.ui.listAllAttributeDialects
     );
-
+    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     /**
@@ -153,7 +153,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         eidas.push(attributeMapping);
                     } else {
                         if (attributeConfig.showCustomDialectInSCIM) {
-                            if (attributeMapping.dialectURI !== attributeConfig.localAttributes.customDialectURI) {
+                            if (attributeMapping.dialectURI !== userSchemaURI) {
                                 others.push(attributeMapping);
                             }
                         } else {

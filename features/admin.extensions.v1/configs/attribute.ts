@@ -17,6 +17,7 @@
  */
 import { deleteADialect } from "@wso2is/admin.claims.v1/api/claims";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
+import { Config } from "@wso2is/admin.core.v1/configs";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
 import { Claim, ClaimDialect, ExternalClaim } from "@wso2is/core/models";
@@ -42,6 +43,11 @@ const isIdentityClaims = (claim: ExternalClaim): boolean => {
 
     return identityRegex.test(claim.mappedLocalClaimURI);
 };
+
+/**
+ * SCIM2 custom user schema URI.
+ */
+const userSchemaURI: string = Config?.getUIConfig()?.userSchemaURI;
 
 export const attributeConfig: AttributeConfig = {
     addAttributeMapping: true,
@@ -151,7 +157,7 @@ export const attributeConfig: AttributeConfig = {
             await getDialects()
                 .then((response: Claim[] | ClaimDialect[]) => {
                     response.map((dialect: Claim | ClaimDialect) => {
-                        if (dialect.dialectURI === "urn:scim:wso2:schema") {
+                        if (dialect.dialectURI === userSchemaURI) {
                             dialectID = dialect.id;
                         }
                     });
@@ -252,7 +258,7 @@ export const attributeConfig: AttributeConfig = {
                 await getDialects()
                     .then((response: Claim[] | ClaimDialect[]) => {
                         response.map((dialect: Claim | ClaimDialect) => {
-                            if (dialect.dialectURI === "urn:scim:wso2:schema") {
+                            if (dialect.dialectURI === userSchemaURI) {
                                 dialectID = dialect.id;
                             }
                         });
@@ -262,7 +268,7 @@ export const attributeConfig: AttributeConfig = {
                     await getClaimsForDialect(dialectID)
                         .then((response: Claim[] | ExternalClaim[]) => {
                             response.map((attrib: Claim | ExternalClaim) => {
-                                if (attrib.claimURI === "urn:scim:wso2:schema:" + attributeName) {
+                                if (attrib.claimURI === `${userSchemaURI}:${attributeName}`) {
                                     availability.set("SCIM", false);
                                 }
                             });
@@ -285,7 +291,6 @@ export const attributeConfig: AttributeConfig = {
             showRegularExpression: false,
             showSummary: false
         },
-        customDialectURI: "urn:scim:wso2:schema",
         getDialect: async (dialectURI: string): Promise<Claim | ClaimDialect> => {
             let dialectObject: Claim | ClaimDialect;
 
@@ -306,7 +311,7 @@ export const attributeConfig: AttributeConfig = {
             await getDialects()
                 .then((response: Claim[] | ClaimDialect[]) => {
                     response.map((dialect: Claim | ClaimDialect) => {
-                        if (dialect.dialectURI === "urn:scim:wso2:schema") {
+                        if (dialect.dialectURI === userSchemaURI) {
                             dialectID = dialect.id;
                         }
                     });

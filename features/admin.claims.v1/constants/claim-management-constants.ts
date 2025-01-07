@@ -98,7 +98,8 @@ export class ClaimManagementConstants {
         .set("SCIM2_SCHEMAS_CORE_USER", "dXJuOmlldGY6cGFyYW1zOnNjaW06c2NoZW1hczpjb3JlOjIuMDpVc2Vy")
         .set("SCIM2_SCHEMAS_EXT_ENT_USER",
             "dXJuOmlldGY6cGFyYW1zOnNjaW06c2NoZW1hczpleHRlbnNpb246ZW50ZXJwcmlzZToyLjA6VXNlcg")
-        .set("SCIM_SCHEMAS_CORE", "dXJuOnNjaW06c2NoZW1hczpjb3JlOjEuMA");
+        .set("SCIM_SCHEMAS_CORE", "dXJuOnNjaW06c2NoZW1hczpjb3JlOjEuMA")
+        .set("SCIM2_SCHEMAS_EXT_SYSTEM", "dXJuOnNjaW06d3NvMjpzY2hlbWE");
 
     /**
      * Set of dialects packed OOTB.
@@ -124,7 +125,8 @@ export class ClaimManagementConstants {
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE_USER"),
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"),
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM_SCHEMAS_CORE"),
-        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP")
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_SYSTEM")
     ];
 
     public static readonly CUSTOM_MAPPING: string = SCIMConfigs.custom;
@@ -147,39 +149,45 @@ export class ClaimManagementConstants {
         isAttributeButtonEnabled: boolean;
         attributeButtonText: string;
     }[] = [
-        {
-            attributeButtonText: "",
-            isAttributeButtonEnabled: false,
-            name: "Core Schema",
-            uri: "urn:ietf:params:scim:schemas:core:2.0"
-        },
-        {
-            attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction",
-            isAttributeButtonEnabled: true,
-            name: "User Schema",
-            uri: "urn:ietf:params:scim:schemas:core:2.0:User"
-        },
-        {
-            attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction" ,
-            isAttributeButtonEnabled: true,
-            name: "Enterprise Schema",
-            uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
-        },
-        {
-            attributeButtonText: "",
-            isAttributeButtonEnabled: true,
-            name: "Core 1.0 Schema",
-            uri: "urn:scim:schemas:core:1.0"
-        }
-    ];
+            {
+                attributeButtonText: "",
+                isAttributeButtonEnabled: false,
+                name: "Core Schema",
+                uri: "urn:ietf:params:scim:schemas:core:2.0"
+            },
+            {
+                attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction",
+                isAttributeButtonEnabled: true,
+                name: "User Schema",
+                uri: "urn:ietf:params:scim:schemas:core:2.0:User"
+            },
+            {
+                attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction" ,
+                isAttributeButtonEnabled: true,
+                name: "Enterprise Schema",
+                uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
+            },
+            {
+                attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction" ,
+                isAttributeButtonEnabled: true,
+                name: "System Schema",
+                uri: "urn:scim:wso2:schema"
+            },
+            {
+                attributeButtonText: "",
+                isAttributeButtonEnabled: true,
+                name: "Core 1.0 Schema",
+                uri: "urn:scim:schemas:core:1.0"
+            }
+        ];
 
     public static readonly EIDAS_TABS: {
         name: string;
         uri: string;
     }[] = [
-        { name: "eIDAS/Legal Person", uri: "http://eidas.europa.eu/attributes/legalperson" },
-        { name: "eIDAS/Natural Person", uri: "http://eidas.europa.eu/attributes/naturalperson" }
-    ];
+            { name: "eIDAS/Legal Person", uri: "http://eidas.europa.eu/attributes/legalperson" },
+            { name: "eIDAS/Natural Person", uri: "http://eidas.europa.eu/attributes/naturalperson" }
+        ];
 
     /**
      * Display names of User Id & Username to
@@ -234,6 +242,11 @@ export class ClaimManagementConstants {
      */
     public static readonly REGEX_FIELD_MAX_LENGTH: number = 255;
     public static readonly REGEX_FIELD_MIN_LENGTH: number = 3;
+
+    /**
+     * Default scim2 custom user schema URI.
+     */
+    public static readonly DEFAULT_SCIM2_CUSTOM_USER_SCHEMA_URI: string = "urn:scim:wso2:schema:ext";
 }
 
 /**
