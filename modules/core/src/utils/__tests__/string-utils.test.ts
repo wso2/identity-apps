@@ -40,7 +40,7 @@ describe("Test isEqualCaseInsensitive function", () => {
 
     test("Should return false for case-insensitive comparison of `test` and `test1`",
         () => {
-            expect(StringUtils.isEqualCaseInsensitive("test", "Test")).toBe(true);
+            expect(StringUtils.isEqualCaseInsensitive("test", "test1")).toBe(false);
         }
     );
 });
