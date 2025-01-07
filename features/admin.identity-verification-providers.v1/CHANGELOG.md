@@ -1,5 +1,16 @@
 # @wso2is/admin.identity-verification-providers.v1
 
+## 2.27.70
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.claims.v1@2.26.29
+  - @wso2is/admin.core.v1@2.35.8
+  - @wso2is/admin.connections.v1@2.30.6
+  - @wso2is/admin.feature-gate.v1@1.4.70
+  - @wso2is/admin.template-core.v1@1.5.24
+
 ## 2.27.69
 
 ### Patch Changes
