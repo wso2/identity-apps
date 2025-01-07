@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,7 +24,6 @@ import {
     UserListInterface
 } from "@wso2is/admin.core.v1";
 import { InvitationStatus, UserInviteInterface } from "@wso2is/admin.users.v1/models";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { DocumentationLink, ListLayout, Message, Text, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -97,6 +96,8 @@ const GuestUsersPage: FunctionComponent<GuestUsersPageInterface> = (
     const [ isInvitationStatusOptionChanged, setIsInvitationStatusOptionChanged ] = useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     /**
      * Show the description message for the first time.
@@ -191,9 +192,9 @@ const GuestUsersPage: FunctionComponent<GuestUsersPageInterface> = (
     useEffect(() => {
         if (invitationStatusOption === InvitationStatus.ACCEPTED) {
             if (searchQuery == undefined || searchQuery == "") {
-                getUsersList(listItemLimit, listOffset + 1, null, null, PRIMARY_USERSTORE);
+                getUsersList(listItemLimit, listOffset + 1, null, null, primaryUserStoreDomainName);
             } else  {
-                getUsersList(listItemLimit, listOffset + 1, searchQuery, null, PRIMARY_USERSTORE);
+                getUsersList(listItemLimit, listOffset + 1, searchQuery, null, primaryUserStoreDomainName);
             }
         }
     }, [ listOffset, listItemLimit ]);
@@ -271,11 +272,11 @@ const GuestUsersPage: FunctionComponent<GuestUsersPageInterface> = (
         setSearchQuery(query);
         if (invitationStatusOption === InvitationStatus.ACCEPTED) {
             if (query === "userName sw ") {
-                getUsersList(listItemLimit, listOffset, null, null, PRIMARY_USERSTORE);
+                getUsersList(listItemLimit, listOffset, null, null, primaryUserStoreDomainName);
 
                 return;
             }
-            getUsersList(listItemLimit, listOffset, query, null, PRIMARY_USERSTORE);
+            getUsersList(listItemLimit, listOffset, query, null, primaryUserStoreDomainName);
         }
     };
 
@@ -457,7 +458,7 @@ const GuestUsersPage: FunctionComponent<GuestUsersPageInterface> = (
                             readOnlyUserStores={ null }
                             featureConfig={ featureConfig }
                             onUserDelete={ () =>
-                                getUsersList(listItemLimit, listOffset, null, null, PRIMARY_USERSTORE)
+                                getUsersList(listItemLimit, listOffset, null, null, primaryUserStoreDomainName)
                             }
                         />)
                 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { UIConstants } from "@wso2is/admin.core.v1";
+
+import { AppState, UIConstants } from "@wso2is/admin.core.v1";
 import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { resolveUserstore } from "@wso2is/core/helpers";
@@ -33,7 +34,7 @@ import {
 } from "@wso2is/react-components";
 import React, { ChangeEvent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Header, Icon, Input } from "semantic-ui-react";
 import { useApplicationRoleInvitedUserGroups, useDescendantsOfSubOrg } from "../api/application-roles";
@@ -56,6 +57,9 @@ const ApplicationRoleInvitedUserGroups = (props: ApplicationRoleGroupsProps): Re
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ processedGroupsList, setProcessedGroupsList ] = useState<ApplicationRoleGroupInterface[]>([]);
@@ -268,7 +272,7 @@ const ApplicationRoleInvitedUserGroups = (props: ApplicationRoleGroupsProps): Re
                 id: "type",
                 key: "type",
                 render: (group: ApplicationRoleGroupInterface): ReactNode => {
-                    const grpName: string = resolveUserstore(group.name);
+                    const grpName: string = resolveUserstore(group.name, primaryUserStoreDomainName);
 
                     if (grpName === CONSUMER_USERSTORE) {
                         return CONSUMER_USERSTORE;

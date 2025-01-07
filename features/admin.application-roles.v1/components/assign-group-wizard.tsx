@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,11 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1";
 import { getGroupList } from "@wso2is/admin.groups.v1/api";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
+import { StringUtils } from "@wso2is/core/utils";
 import {
     ContentLoader,
     Heading,
@@ -32,6 +35,7 @@ import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FormEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { ApplicationRoleGroupInterface, ApplicationRoleGroupsAPIResponseInterface } from "../models/application-roles";
 
@@ -59,6 +63,9 @@ const AssignGroupWizard = (props: AssignGroupProps): ReactElement => {
     } = props;
 
     const { t } = useTranslation();
+
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ isLoading, setLoading ] = useState<boolean>(true);
     const [ groupList, setGroupsList ] = useState<RolesInterface[]>([]);
@@ -205,7 +212,12 @@ const AssignGroupWizard = (props: AssignGroupProps): ReactElement => {
         if (group.length > 1) {
             return { labelColor: "teal", labelText: group[0].toString() };
         } else {
-            return { labelColor: "olive", labelText: "Primary" };
+            return {
+                labelColor: "olive",
+                labelText: StringUtils.isEqualCaseInsensitive(primaryUserStoreDomainName, PRIMARY_USERSTORE)
+                    ? t("console:manage.features.users.userstores.userstoreOptions.primary")
+                    : primaryUserStoreDomainName
+            };
         }
     };
 

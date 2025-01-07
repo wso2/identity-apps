@@ -28,7 +28,6 @@ import { sendInvite, useUsersList } from "@wso2is/admin.users.v1/api";
 import { getUserWizardStepIcons } from "@wso2is/admin.users.v1/configs/ui";
 import { AdminAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserInviteInterface } from "@wso2is/admin.users.v1/models";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -123,6 +122,8 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
         useSelector((state: AppState) => state?.config?.ui?.features?.administrators);
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
 
@@ -152,7 +153,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
         0,
         searchQuery,
         null,
-        PRIMARY_USERSTORE,
+        primaryUserStoreDomainName,
         excludedAttributes,
         !!searchQuery
     );

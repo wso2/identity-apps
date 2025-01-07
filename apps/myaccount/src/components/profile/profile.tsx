@@ -165,6 +165,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isMultipleEmailsAndMobileConfigEnabled: boolean = config?.ui?.isMultipleEmailsAndMobileNumbersEnabled;
+    const primaryUserStoreDomainName: string = config?.ui?.primaryUserStoreDomainName;
 
     const [ isMobileVerificationEnabled, setIsMobileVerificationEnabled ] = useState<boolean>(false);
     const [ isEmailVerificationEnabled, setIsEmailVerificationEnabled ] = useState<boolean>(false);
@@ -328,7 +329,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         const username: string = profileDetails?.profileInfo["userName"];
 
         if (!username) return;
-        const userStoreDomain: string = resolveUserstore(username)?.toUpperCase();
+        const userStoreDomain: string = resolveUserstore(username, primaryUserStoreDomainName)?.toUpperCase();
         // Check each required attribute exists and domain is not excluded in the excluded user store list.
         const attributeCheck: boolean = multipleEmailsAndMobileFeatureRelatedAttributes.every(
             (attribute: string) => {
