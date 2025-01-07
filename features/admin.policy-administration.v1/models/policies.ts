@@ -48,3 +48,5 @@ export interface PolicyListInterface {
 export interface PolicyAlgorithmRequestInterface {
     policyCombiningAlgorithm: string;
 }
+
+export type AlgorithmResponseInterface = string;

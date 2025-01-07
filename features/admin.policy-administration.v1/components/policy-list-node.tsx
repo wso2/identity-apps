@@ -51,7 +51,7 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
 }: PolicyListDraggableNodePropsInterface): ReactElement => {
 
     const handleEdit = (policyId: string) => {
-        history.push(`${AppConstants.getPaths().get("EDIT_POLICY")}/${policyId}`);
+        history.push(`${AppConstants.getPaths().get("EDIT_POLICY").replace(":id", kebabCase(policyId))}`);
     };
 
     const handleDelete = () => {
@@ -85,7 +85,7 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
                             trigger={ (
                                 <Icon
                                     link={ true }
-                                    onClick={ handleEdit }
+                                    onClick={ () => handleEdit(policy.policyId) }
                                     data-componentid={ `${componentId}-edit-button` }
                                     className="list-icon"
                                     size="small"

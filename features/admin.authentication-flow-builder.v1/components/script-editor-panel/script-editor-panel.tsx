@@ -68,6 +68,7 @@ export interface ScriptEditorPanelPropsInterface extends IdentifiableComponentIn
     language?: string;
     hideMinimizeIcon?: boolean;
     hideText?: boolean;
+    initialValue?: string;
 }
 
 const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
@@ -122,7 +123,7 @@ const MinimizeIcon = ({ width = 16, height = 16 }: { width: number; height: numb
  * @returns Script editor panel component.
  */
 const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterface>): ReactElement => {
-    const { className, "data-componentid": componentId, language, hideMinimizeIcon, hideText } = props;
+    const { className, "data-componentid": componentId, language, hideMinimizeIcon, hideText, initialValue } = props;
 
     const { t } = useTranslation();
 
@@ -240,6 +241,16 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
         setScriptEditorPanelSizeMode(ScriptEditorPanelSizeModes.Minimized);
     };
 
+    /**
+     * Determine what value to display in the script editor.
+     *
+     * Logic:
+     * - If `hideText` is true, do not display any text (`null`).
+     * - If `initialValue` is provided, use it as the editor's content.
+     * - If `initialValue` is not provided, fallback to `getAdaptiveScript()`.
+     */
+    const displayValue = hideText ? null : (initialValue !== undefined ? initialValue : getAdaptiveScript());
+
     const ScriptEditor: ReactElement = (
         <MonacoEditor
             loading={ null }
@@ -248,7 +259,7 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
             height="100%"
             language={ language || "javascript" }
             theme={ editorTheme }
-            value={ hideText ? null: getAdaptiveScript() }
+            value={ displayValue }
             options={ {
                 automaticLayout: true
             } }

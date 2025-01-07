@@ -80,7 +80,7 @@ export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
     );
 
     const renderStaticList = () => (
-        <div className="policy-static-list">
+        <div className="policy-inactive-list">
             { policies.map((policy) => (
                 <PolicyListNode
                     key={ policy.policyId }
