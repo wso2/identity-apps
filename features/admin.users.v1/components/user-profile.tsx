@@ -2618,7 +2618,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     !isEmpty(profileInfo) && (
                         <EmphasizedSegment padded="very">
                             {
-                                (isReadOnly && !isEmpty(tenantAdmin)) && editUserDisclaimerMessage
+                                isReadOnly
+                                && (!isEmpty(tenantAdmin) || tenantAdmin !== null)
+                                && !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
+                                && editUserDisclaimerMessage
                             }
                             <Forms
                                 data-testid={ `${ testId }-form` }
