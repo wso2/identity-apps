@@ -24,6 +24,9 @@ import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, SVGProps } from "react";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import { Component } from "../../../../models/component";
+import { Element } from "../../../../models/elements";
+import getWidgetElements from "../../../../utils/get-widget-elements";
+import isWidget from "../../../../utils/is-widget";
 
 /**
  * Props interface of {@link ReorderableComponent}
@@ -70,6 +73,24 @@ export const ReorderableComponent: FunctionComponent<ReorderableComponentPropsIn
 }: ReorderableComponentPropsInterface): ReactElement => {
     const nodeId: string = useNodeId();
     const { ComponentFactory, setLastInteractedElement } = useAuthenticationFlowBuilderCore();
+
+    // Widgets have a flow property which contains the elements of the sub flow.
+    // If the component is a widget, render the elements of the flow.
+    if (isWidget(component)) {
+        return (
+            <>
+                { getWidgetElements(component)?.map((element: Element) => (
+                    <ReorderableComponent
+                        key={ element.id }
+                        component={ element }
+                        className={ className }
+                        draggableProps={ draggableProps }
+                    />
+                )
+                ) }
+            </>
+        );
+    }
 
     return (
         <Box
