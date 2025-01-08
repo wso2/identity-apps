@@ -146,8 +146,8 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
             const profileResponse: BasicProfileInterface = {
                 emails: response.data.emails || "",
                 name: response.data.name || { familyName: "", givenName: "" },
-                pendingEmails: response.data[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
-                    ? response.data[ProfileConstants.SCIM2_ENT_USER_SCHEMA].pendingEmails
+                pendingEmails: response.data[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]
+                    ? response.data[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA].pendingEmails
                     : [],
                 phoneNumbers: response.data.phoneNumbers || [],
                 profileUrl: response.data.profileUrl || "",

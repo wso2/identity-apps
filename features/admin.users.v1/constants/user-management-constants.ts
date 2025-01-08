@@ -95,6 +95,15 @@ export class UserManagementConstants {
     public static readonly SCIM2_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:core:2.0:User";
     public static readonly BULK_REQUEST_SCHEMA: string = "urn:ietf:params:scim:api:messages:2.0:BulkRequest";
 
+    // Schema related constants.
+    public static readonly ENTERPRISESCHEMA: string = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
+    public static readonly SYSTEMSCHEMA: string = "urn:scim:wso2:schema";
+    /**
+     * @deprecated This variable is deprecated. Use `SCIM2_CUSTOM_SCHEMA` instead.
+     */
+    public static readonly CUSTOMSCHEMA: string = "urn:scim:wso2:schema";
+    public static readonly SCIM2_CUSTOM_SCHEMA: string = "urn:scim:schemas:extension:custom:User";
+
     /**
      * Set of SCIM2 schema names.apps/myaccount/src/store/actions/authenticate.ts
      * @typeParam SCIM2_SCHEMA_DICTIONARY - `Map<string, string>`
@@ -114,9 +123,9 @@ export class UserManagementConstants {
      * @defaultValue
      */
     public static readonly SCIM2_ATTRIBUTES_DICTIONARY: Map<string, string> = new Map<string, string>()
-        .set("ACCOUNT_LOCKED", SCIMConfigs.scimEnterpriseUserClaimUri.accountLocked)
-        .set("ACCOUNT_DISABLED", SCIMConfigs.scimEnterpriseUserClaimUri.accountDisabled)
-        .set("ONETIME_PASSWORD", SCIMConfigs.scimEnterpriseUserClaimUri.oneTimePassword);
+        .set("ACCOUNT_LOCKED", SCIMConfigs.scimSystemUserClaimUri.accountLocked)
+        .set("ACCOUNT_DISABLED", SCIMConfigs.scimSystemUserClaimUri.accountDisabled)
+        .set("ONETIME_PASSWORD", SCIMConfigs.scimSystemUserClaimUri.oneTimePassword);
 
     public static readonly ROLES: string = "roles";
     public static readonly GROUPS: string = "groups";

@@ -219,9 +219,9 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             return;
         }
 
-        const schemaURI: string = SCIMConfigs?.scimEnterpriseUserClaimUri?.forcePasswordReset?.
-            startsWith(ProfileConstants.SCIM2_ENT_USER_SCHEMA)
-            ? ProfileConstants.SCIM2_ENT_USER_SCHEMA
+        const schemaURI: string = SCIMConfigs?.scimSystemUserClaimUri?.forcePasswordReset?.
+            startsWith(ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA)
+            ? ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA
             : userSchemaURI;
 
         const data: PatchRoleDataInterface = {

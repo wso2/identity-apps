@@ -35,5 +35,13 @@ export interface SCIMConfigInterface {
         oneTimePassword: string,
         profileUrl: string
     };
+    scimSystemUserClaimUri: {
+        accountDisabled: string,
+        accountLocked: string,
+        askPassword: string,
+        forcePasswordReset: string,
+        isReadOnlyUser: string,
+        oneTimePassword: string
+    };
     serverSupportedClaimsAvailable: string[];
 }

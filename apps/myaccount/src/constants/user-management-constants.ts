@@ -43,5 +43,5 @@ export class UserManagementConstants {
     /**
      * Default scim2 custom user schema URI.
      */
-    public static readonly DEFAULT_SCIM2_CUSTOM_USER_SCHEMA_URI: string = "urn:scim:wso2:schema";
+    public static readonly DEFAULT_SCIM2_CUSTOM_USER_SCHEMA_URI: string = "urn:scim:schemas:extension:custom:User";
 }

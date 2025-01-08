@@ -1089,10 +1089,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
                         ? `${selectedUserStore}/${email}`
                         : email,
-                [ !StringUtils.isEqualCaseInsensitive(userstore, primaryUserStoreDomainName)
-                    ? UserManagementConstants.CUSTOMSCHEMA
-                    : UserManagementConstants.ENTERPRISESCHEMA
-                ]: {
+                [ UserManagementConstants.SYSTEMSCHEMA ]: {
                     askPassword: "true"
                 }
             };

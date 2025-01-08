@@ -110,7 +110,7 @@ export class Config {
                 this.getDeploymentConfig()?.serverHost
             }/api/server/v1/configs/home-realm-identifiers`,
             isReadOnlyUser: `${this.getDeploymentConfig()?.serverHost}/scim2/Me?attributes=${
-                SCIMConfigs.scimEnterpriseUserClaimUri.isReadOnlyUser
+                SCIMConfigs.scimSystemUserClaimUri.isReadOnlyUser
             }`,
             issuer: `${this.getDeploymentConfig()?.serverHost}/oauth2/token`,
             jwks: `${this.getDeploymentConfig()?.serverHost}/oauth2/jwks`,
