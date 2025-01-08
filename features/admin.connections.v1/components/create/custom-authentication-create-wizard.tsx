@@ -16,12 +16,8 @@
  * under the License.
  */
 
-import { SelectChangeEvent } from "@mui/material";
 import Backdrop from "@mui/material/Backdrop";
-import Alert from "@oxygen-ui/react/Alert";
-import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
 import Divider from "@oxygen-ui/react/Divider";
 import Grid from "@oxygen-ui/react/Grid";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
@@ -35,12 +31,6 @@ import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import {
     Field,
-    FinalForm,
-    FinalFormField,
-    FormRenderProps,
-    FormSpy,
-    SelectFieldAdapter,
-    TextFieldAdapter,
     Wizard2,
     WizardPage
 } from "@wso2is/form";
@@ -75,7 +65,7 @@ import React, {
     useRef,
     useState
 } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon, Grid as SemanticGrid } from "semantic-ui-react";
@@ -84,16 +74,18 @@ import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import { LocalAuthenticatorConstants } from "../../constants/local-authenticator-constants";
 import {
+    AuthenticationPropertiesInterface,
     AuthenticationType,
     AuthenticationTypeDropdownOption,
-    AuthenticationPropertiesInterface,
     ConnectionInterface,
     ConnectionTemplateInterface,
     CustomAuthenticationCreateWizardGeneralFormValuesInterface,
-    EndpointInterface,
     EndpointConfigFormPropertyInterface,
+    EndpointInterface,
     GenericConnectionCreateWizardPropsInterface,
 } from "../../models/connection";
+import "./custom-authentication-create-wizard.scss";
+import { DropDownItemInterface } from "@wso2is/form/src";
 
 /**
  * Proptypes for the custom authenticator
@@ -214,13 +206,6 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         setSelectedTemplateId(templateId);
     }, [ selectedAuthenticator ]);
 
-    // useEffect(() => {
-    //     if(selectedAuthenticationType) {
-    //         setSelectedValue(selectedSubjectValue);
-    //         setShowSubjectAttribute(selectedSubjectValue !== defaultSubjectAttribute);
-    //     }
-    // }, [ selectedSubjectValue ]);
-
     const initialValues: { NameIDType: string, RequestMethod: string, 
         identifier: string, displayName: string } = useMemo(() => ({
             NameIDType: "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
@@ -324,8 +309,6 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         // Populate user entered values
         customAuthenticator.name = values?.identifier?.toString();
         customAuthenticator.displayName = values?.displayName?.toString();
-        console.log("name: " + customAuthenticator.name);
-        console.log("displayName: " + customAuthenticator.displayName);
         // TODO: [Immediate] add endpoint details here
         // customAuthenticator.endpoint.uri = values?.uri?.toString();
 
@@ -424,19 +407,16 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
     };
 
     useEffect (() => {
-        console.log("Auth type", selectedAuthenticationType);
     }, [ selectedAuthenticationType ]);
 
-    const handleDropdownChange = (event, data) => {
-        setSelectedAuthenticationType(data.value); // Update the state with the selected value
-        console.log("Selected value:", data.value); // Log the selected value for debugging
+    const handleDropdownChange = (data) => { // TODO: [Immediate] make type safe
+        setSelectedAuthenticationType(data.value);
     };
 
     const validateForm = (values: EndpointConfigFormPropertyInterface):
     Partial<EndpointConfigFormPropertyInterface> => { const error: Partial<EndpointConfigFormPropertyInterface> = {};
 
-        console.log("value type: " + values?.authenticationType);
-        console.log("value uri: " + values?.endpointUri);
+
         // TODO: use local - and update with proper local
         if (!values?.endpointUri) {
             error.endpointUri = "Empty endpoint URI";
@@ -618,15 +598,6 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
     );
 
     const renderEndpointAuthPropertyFields = (): ReactElement => {
-        // const showAuthSecretsHint = (): ReactElement => (
-        //     <Hint className="hint-text" compact>
-        //         {
-        //             isAuthenticationCreateState ?
-        //                 t("actions:fields.authenticationType.hint.create")
-        //                 : t("actions:fields.authenticationType.hint.update")
-        //         }
-        //     </Hint>
-        // );
 
         switch (selectedAuthenticationType) {
             case AuthenticationType.NONE:
@@ -638,7 +609,6 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                         <Field.Input
                             ariaLabel="username"
                             className="addon-field-wrapper"
-                            // inputType="username"
                             name="usernameAuthProperty"
                             label={ "Username" }
                             placeholder={ "Username" }
@@ -749,357 +719,6 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                 break;
         }
     };
-
-    // const renderFormFields = (): ReactElement => {
-    //     const renderAuthenticationSection = (): ReactElement => {
-    //         const renderAuthenticationSectionInfoBox = (): ReactElement => {
-    //             const resolveAuthTypeDisplayName = (): string => {
-    //                 switch (authenticationType) {
-    //                     case AuthenticationType.NONE: // TODO: update with proper local
-    //                         return t("actions:fields.authentication.types.none.name");
-    //                     case AuthenticationType.BASIC:
-    //                         return t("actions:fields.authentication.types.basic.name");
-    //                     case AuthenticationType.BEARER:
-    //                         return t("actions:fields.authentication.types.bearer.name");
-    //                     case AuthenticationType.API_KEY:
-    //                         return t("actions:fields.authentication.types.apiKey.name");
-    //                     default:
-    //                         return;
-    //                 }
-    //             };
-
-    //             return (
-    //                 <Alert severity="info">
-    //                     <AlertTitle
-    //                         className="alert-title"
-    //                         data-componentid={ `${ componentId }-authentication-info-box-title` }
-    //                     >
-    //                         <Trans
-    //                             i18nKey={
-    //                                 authenticationType === AuthenticationType.NONE ?
-    //                                     t("actions:fields.authentication.info.title.noneAuthType") :
-    //                                     t("actions:fields.authentication.info.title.otherAuthType",
-    //                                         { authType: resolveAuthTypeDisplayName() })
-    //                             }
-    //                             components={ { strong: <strong/> } }
-    //                         />
-    //                     </AlertTitle>
-    //                     <Trans
-    //                         i18nKey={ t("actions:fields.authentication.info.message") }
-    //                     >
-    //                             If you are changing the authentication, be aware that the authentication secrets of
-    //                             the external endpoint need to be updated.
-    //                     </Trans>
-    //                     <div>
-    //                         <Button
-    //                             onClick={ handleAuthenticationChange }
-    //                             variant="outlined"
-    //                             size="small"
-    //                             className={ "secondary-button" }
-    //                             data-componentid={ `${ componentId }-change-authentication-button` }
-    //                             disabled={ getFieldDisabledStatus() }
-    //                         >
-    //                             { t("actions:buttons.changeAuthentication") }
-    //                         </Button>
-    //                     </div>
-    //                 </Alert>
-    //             );
-    //         };
-
-    //         const renderAuthenticationUpdateWidget = (): ReactElement => {
-    //             const renderAuthentication = (): ReactElement => {
-    //                 const renderAuthenticationPropertyFields = (): ReactElement => {
-    //                     const showAuthSecretsHint = (): ReactElement => (
-    //                         <Hint className="hint-text" compact>
-    //                             {
-    //                                 isAuthenticationCreateState ?
-    //                                     t("actions:fields.authenticationType.hint.create")
-    //                                     : t("actions:fields.authenticationType.hint.update")
-    //                             }
-    //                         </Hint>
-    //                     );
-
-    //                     switch (authenticationType) {
-    //                         case AuthenticationType.NONE:
-    //                             break;
-    //                         case AuthenticationType.BASIC:
-    //                             return (
-    //                                 <>
-    //                                     { showAuthSecretsHint() }
-    //                                     <FinalFormField
-    //                                         key="username"
-    //                                         width={ 16 }
-    //                                         className="text-field-container"
-    //                                         FormControlProps={ {
-    //                                             margin: "dense"
-    //                                         } }
-    //                                         ariaLabel="username"
-    //                                         required={ true }
-    //                                         data-componentid={ `${ componentId }-authentication-property-username` }
-    //                                         name="usernameAuthProperty"
-    //                                         type={ isShowSecret1 ? "text" : "password" }
-    //                                         InputProps={ {
-    //                                             endAdornment: renderInputAdornmentOfSecret(
-    //                                                 isShowSecret1,
-    //                                                 () => setIsShowSecret1(!isShowSecret1))
-    //                                         } }
-    //                                         label={ t("actions:fields.authentication" +
-    //                                             ".types.basic.properties.username.label") }
-    //                                         placeholder={ t("actions:fields.authentication" +
-    //                                             ".types.basic.properties.username.placeholder") }
-    //                                         component={ TextFieldAdapter }
-    //                                         maxLength={ 100 }
-    //                                         minLength={ 0 }
-    //                                         disabled={ getFieldDisabledStatus() }
-    //                                     />
-    //                                     <FinalFormField
-    //                                         key="password"
-    //                                         className="text-field-container"
-    //                                         width={ 16 }
-    //                                         FormControlProps={ {
-    //                                             margin: "dense"
-    //                                         } }
-    //                                         ariaLabel="password"
-    //                                         required={ true }
-    //                                         data-componentid={ `${ componentId }-authentication-property-password` }
-    //                                         name="passwordAuthProperty"
-    //                                         type={ isShowSecret2 ? "text" : "password" }
-    //                                         InputProps={ {
-    //                                             endAdornment: renderInputAdornmentOfSecret(
-    //                                                 isShowSecret2,
-    //                                                 () => setIsShowSecret2(!isShowSecret2))
-    //                                         } }
-    //                                         label={ t("actions:fields.authentication" +
-    //                                             ".types.basic.properties.password.label") }
-    //                                         placeholder={ t("actions:fields.authentication" +
-    //                                             ".types.basic.properties.password.placeholder") }
-    //                                         component={ TextFieldAdapter }
-    //                                         maxLength={ 100 }
-    //                                         minLength={ 0 }
-    //                                         disabled={ getFieldDisabledStatus() }
-    //                                     />
-    //                                 </>
-    //                             );
-    //                         case AuthenticationType.BEARER:
-    //                             return (
-    //                                 <>
-    //                                     { showAuthSecretsHint() }
-    //                                     <FinalFormField
-    //                                         key="accessToken"
-    //                                         className="text-field-container"
-    //                                         width={ 16 }
-    //                                         FormControlProps={ {
-    //                                             margin: "dense"
-    //                                         } }
-    //                                         ariaLabel="accessToken"
-    //                                         required={ true }
-    //                                         data-componentid={ `${ componentId }-authentication-property-accessToken` }
-    //                                         name="accessTokenAuthProperty"
-    //                                         type={ isShowSecret1 ? "text" : "password" }
-    //                                         InputProps={ {
-    //                                             endAdornment: renderInputAdornmentOfSecret(
-    //                                                 isShowSecret1,
-    //                                                 () => setIsShowSecret1(!isShowSecret1))
-    //                                         } }
-    //                                         label={ t("actions:fields.authentication" +
-    //                                             ".types.bearer.properties.accessToken.label") }
-    //                                         placeholder={ t("actions:fields.authentication" +
-    //                                             ".types.bearer.properties.accessToken.placeholder") }
-    //                                         component={ TextFieldAdapter }
-    //                                         maxLength={ 100 }
-    //                                         minLength={ 0 }
-    //                                         disabled={ getFieldDisabledStatus() }
-    //                                     />
-    //                                 </>
-    //                             );
-    //                         case AuthenticationType.API_KEY:
-    //                             return (
-    //                                 <>
-    //                                     { showAuthSecretsHint() }
-    //                                     <FinalFormField
-    //                                         key="header"
-    //                                         className="text-field-container"
-    //                                         width={ 16 }
-    //                                         FormControlProps={ {
-    //                                             margin: "dense"
-    //                                         } }
-    //                                         ariaLabel="header"
-    //                                         required={ true }
-    //                                         data-componentid={ `${ componentId }-authentication-property-header` }
-    //                                         name="headerAuthProperty"
-    //                                         type={ "text" }
-    //                                         label={ t("actions:fields.authentication" +
-    //                                             ".types.apiKey.properties.header.label") }
-    //                                         placeholder={ t("actions:fields.authentication" +
-    //                                             ".types.apiKey.properties.header.placeholder") }
-    //                                         helperText={ (
-    //                                             <Hint className="hint" compact>
-    //                                                 { t("actions:fields.authentication" +
-    //                                                     ".types.apiKey.properties.header.hint") }
-    //                                             </Hint>
-    //                                         ) }
-    //                                         component={ TextFieldAdapter }
-    //                                         maxLength={ 100 }
-    //                                         minLength={ 0 }
-    //                                         disabled={ getFieldDisabledStatus() }
-    //                                     />
-    //                                     <FinalFormField
-    //                                         key="value"
-    //                                         className="text-field-container"
-    //                                         width={ 16 }
-    //                                         FormControlProps={ {
-    //                                             margin: "dense"
-    //                                         } }
-    //                                         ariaLabel="value"
-    //                                         required={ true }
-    //                                         data-componentid={ `${ componentId }-authentication-property-value` }
-    //                                         name="valueAuthProperty"
-    //                                         type={ isShowSecret2 ? "text" : "password" }
-    //                                         InputProps={ {
-    //                                             endAdornment: renderInputAdornmentOfSecret(
-    //                                                 isShowSecret2,
-    //                                                 () => setIsShowSecret2(!isShowSecret2))
-    //                                         } }
-    //                                         label={ t("actions:fields.authentication" +
-    //                                             ".types.apiKey.properties.value.label") }
-    //                                         placeholder={ t("actions:fields.authentication" +
-    //                                             ".types.apiKey.properties.value.placeholder") }
-    //                                         component={ TextFieldAdapter }
-    //                                         maxLength={ 100 }
-    //                                         minLength={ 0 }
-    //                                         disabled={ getFieldDisabledStatus() }
-    //                                     />
-    //                                 </>
-    //                             );
-    //                         default:
-    //                             break;
-    //                     }
-    //                 };
-
-    //                 const handleAuthTypeChange = (event: SelectChangeEvent) => {
-    //                     switch (event.target.value) {
-    //                         case AuthenticationType.NONE.toString():
-    //                             setAuthenticationType(AuthenticationType.NONE);
-
-    //                             break;
-    //                         case AuthenticationType.BASIC.toString():
-    //                             setAuthenticationType(AuthenticationType.BASIC);
-
-    //                             break;
-    //                         case AuthenticationType.BEARER.toString():
-    //                             setAuthenticationType(AuthenticationType.BEARER);
-
-    //                             break;
-    //                         case AuthenticationType.API_KEY.toString():
-    //                             setAuthenticationType(AuthenticationType.API_KEY);
-
-    //                             break;
-    //                         default:
-    //                             setAuthenticationType(AuthenticationType.NONE);
-    //                     }
-
-    //                     renderAuthenticationPropertyFields();
-    //                 };
-
-    //                 return (
-    //                     <>
-    //                         <FinalFormField
-    //                             key="authenticationType"
-    //                             className="select-field-container"
-    //                             width={ 16 }
-    //                             FormControlProps={ {
-    //                                 margin: "dense"
-    //                             } }
-    //                             ariaLabel="authenticationType"
-    //                             required={ true }
-    //                             data-componentid={ `${ componentId }-authentication-type-dropdown` }
-    //                             name="authenticationType"
-    //                             type={ "dropdown" }
-    //                             displayEmpty={ true }
-    //                             label={ t("actions:fields.authenticationType.label") }
-    //                             placeholder={ "Select" }
-    //                             component={ SelectFieldAdapter }
-    //                             maxLength={ 100 }
-    //                             minLength={ 0 }
-    //                             options={
-    //                                 [ ...LocalAuthenticatorConstants.AUTH_TYPES.map(
-    //                                     (option: AuthenticationTypeDropdownOption) => ({
-    //                                         text: t(option.text),
-    //                                         value: option.value.toString() }))
-    //                                 ]
-    //                             }
-    //                             onChange={ handleAuthTypeChange }
-    //                             disabled={ getFieldDisabledStatus() }
-    //                         />
-    //                         {/* { renderAuthenticationPropertyFields() } */}
-    //                     </>
-    //                 );
-    //             };
-
-    //             return (
-    //                 <Box className="box-container">
-    //                     <div className="box-field">
-    //                         { renderAuthentication() }
-    //                         {/* { !isAuthenticationCreateState && (
-    //                             <Button
-    //                                 onClick={ handleAuthenticationChangeCancel }
-    //                                 variant="outlined"
-    //                                 size="small"
-    //                                 className="secondary-button"
-    //                                 data-componentid={ `${ componentId }-cancel-edit-authentication-button` }
-    //                             >
-    //                                 { t("actions:buttons.cancel") }
-    //                             </Button>
-    //                         ) } */}
-    //                     </div>
-    //                 </Box>
-    //             );
-    //         };
-
-    //         // return ( !isAuthenticationUpdateState && !isAuthenticationCreateState && !(authenticationType === null) ?
-    //         //     renderAuthenticationSectionInfoBox() : renderAuthenticationUpdateWidget());
-
-    //         return ( renderAuthenticationUpdateWidget());
-    //     };
-
-    //     if (isLoading) {
-    //         return renderLoadingPlaceholders();
-    //     }
-
-    //     return (
-    //         <>
-    //             <FinalFormField
-    //                 key="uri"
-    //                 className="text-field-container"
-    //                 width={ 16 }
-    //                 FormControlProps={ {
-    //                     margin: "dense"
-    //                 } }
-    //                 ariaLabel="endpointUri"
-    //                 required={ true }
-    //                 data-componentid={ `${ componentId }-action-endpointUri` }
-    //                 name="endpointUri"
-    //                 type="text"
-    //                 label={ t("actions:fields.endpoint.label") }
-    //                 placeholder={ t("actions:fields.endpoint.placeholder") }
-    //                 helperText={ (
-    //                     <Hint className="hint" compact>
-    //                         { t("actions:fields.endpoint.hint") }
-    //                     </Hint>
-    //                 ) }
-    //                 component={ TextFieldAdapter }
-    //                 maxLength={ 100 }
-    //                 minLength={ 0 }
-    //                 disabled={ getFieldDisabledStatus() }
-    //             />
-    //             <Divider className="divider-container"/>
-    //             <Heading className="heading-container" as="h5">
-    //                 { t("actions:fields.authentication.label") }
-    //             </Heading>
-    //             { renderAuthenticationSection() }
-    //         </>
-    //     );
-    // };
 
     const wizardCommonFirstPage = () => (
         <WizardPage
@@ -1240,54 +859,60 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
     );
 
     // Final Page
-    // TODO: check if we need the emphasized segment
     const configurationsPage = () => (
         <WizardPage
             validate={ validateForm }
         >
-            <Field.Input
-                ariaLabel="endpointUri"
-                className="addon-field-wrapper"
-                inputType="url"
-                name="endpointUri"
-                label={ "Endpoint" }
-                placeholder={ "https://abc.external.authenticator/authenticate" }
-                hint="Hello babe"
-                required={ true }
-                maxLength={ 100 }
-                minLength={ 0 }
-                data-componentid={ `${ componentId }-endpointUri` }
-                width={ 15 }
-            />
-            <Divider className="divider-container"/>
-            <Heading className="heading-container" as="h5">
-                { "Authentication" }
-            </Heading>
-            <Box className="box-container">
-                <Field.Dropdown
-                    ariaLabel="authenticationType"
-                    name="authenticationType"
-                    label={ "Authentication Scheme" }
-                    placeholder = { "Select Authentication Type" }
-                    hint="Once added, these secrets will not be displayed. You will only be able to reset them."
+            <EmphasizedSegment
+                class="wizard-wrapper"
+                bordered={ false }
+                padded={ "very" }
+                data-componentid={ `${ componentId }-section` }
+            >
+                <Field.Input
+                    ariaLabel="endpointUri"
+                    className="addon-field-wrapper"
+                    inputType="url"
+                    name="endpointUri"
+                    label={ "Endpoint" }
+                    placeholder={ "https://abc.external.authenticator/authenticate" }
+                    hint="The URL of the configured external endpoint to integrate with the authenticator"
                     required={ true }
-                    value={ selectedAuthenticationType }
-                    options={
-                        [ ...LocalAuthenticatorConstants.AUTH_TYPES.map(
-                            (option: AuthenticationTypeDropdownOption) => ({
-                                text: t(option.text),
-                                value: option.value.toString() }))
-                        ]
-                    }
-                    onChange={ handleDropdownChange }
-                    enableReinitialize={ true }
-                    data-componentid={ `${ componentId }-endpoint_authentication-dropdown` }
+                    maxLength={ 100 }
+                    minLength={ 0 }
+                    data-componentid={ `${ componentId }-endpointUri` }
                     width={ 15 }
                 />
-                <div className="box-field">
-                    { renderEndpointAuthPropertyFields() }
-                </div>
-            </Box>
+                <Divider className="divider-container"/>
+                <Heading className="heading-container" as="h5">
+                    { "Authentication" }
+                </Heading>
+                <Box className="box-container">
+                    <Field.Dropdown
+                        ariaLabel="authenticationType"
+                        name="authenticationType"
+                        label={ "Authentication Scheme" }
+                        placeholder = { "Select Authentication Type" }
+                        hint="Once added, these secrets will not be displayed. You will only be able to reset them."
+                        required={ true }
+                        value={ selectedAuthenticationType }
+                        options={
+                            [ ...LocalAuthenticatorConstants.AUTH_TYPES.map(
+                                (option: AuthenticationTypeDropdownOption) => ({
+                                    text: t(option.text),
+                                    value: option.value.toString() }))
+                            ]
+                        }
+                        onChange={ handleDropdownChange }
+                        enableReinitialize={ true }
+                        data-componentid={ `${ componentId }-endpoint_authentication-dropdown` }
+                        width={ 15 }
+                    />
+                    <div className="box-field">
+                        { renderEndpointAuthPropertyFields() }
+                    </div>
+                </Box>
+            </EmphasizedSegment>
         </WizardPage>
     );
 
@@ -1398,6 +1023,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
     // );
 
     // Resolvers
+
     const resolveWizardPages = (): Array<ReactElement> => {
         return [
             wizardCommonFirstPage(),
@@ -1406,6 +1032,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         ];
     };
 
+    // TODO: need to update
     const resolveHelpPanel = () => {
 
         const SECOND_STEP: number = 1;
@@ -1454,10 +1081,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
 
     };
 
-    /**
-     * Resolves the documentation link when a protocol is selected.
-     * @returns Documetation link.
-     */
+    // TODO: need to update
     const resolveDocumentationLink = (): ReactElement => {
         let docLink: string = undefined;
 
@@ -1483,7 +1107,6 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
     };
 
     // Start: Modal
-
     return (
         <ModalWithSidePanel
             isLoading={ isConnectionTemplateFetchRequestLoading }
