@@ -307,6 +307,11 @@
         consentPurposeGroupName = "JIT";
     }
 
+    if (StringUtils.isBlank(callback) || StringUtils.equalsIgnoreCase(callback, "null")) {
+        callback = Encode.forHtmlAttribute(IdentityManagementEndpointUtil.getUserPortalUrl(
+                application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain));
+    }
+
     try {
         if (StringUtils.isNotBlank(callback) && !Utils.validateCallbackURL(callback, tenantDomain,
             IdentityRecoveryConstants.ConnectorConfig.SELF_REGISTRATION_CALLBACK_REGEX)) {
@@ -321,11 +326,6 @@
         request.setAttribute("errorMsg", e.getMessage());
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
-    }
-
-    if (StringUtils.isBlank(callback) || StringUtils.equalsIgnoreCase(callback, "null")) {
-        callback = Encode.forHtmlAttribute(IdentityManagementEndpointUtil.getUserPortalUrl(
-                application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain));
     }
 
     /**
