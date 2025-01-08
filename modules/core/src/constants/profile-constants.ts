@@ -29,6 +29,7 @@ export class ProfileConstants {
     private constructor() { }
 
     // SCIM2 schema IDs
+    public static readonly SCIM2_CORE_SCHEMA: string = "urn:ietf:params:scim:schemas:core:2.0";
     public static readonly SCIM2_CORE_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:core:2.0:User";
     public static readonly SCIM2_ENT_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
 

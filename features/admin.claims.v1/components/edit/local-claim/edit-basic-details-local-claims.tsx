@@ -235,7 +235,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     useEffect(() => {
         const dialectID: string[] = getDialectID();
-
+        console.log("dialectIDs", dialectID);
         if(claim) {
             const externalClaimRequest: Promise<ExternalClaim[]>[] = [];
 
