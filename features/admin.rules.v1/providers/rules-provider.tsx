@@ -22,6 +22,7 @@ import { v4 as uuidv4 } from "uuid";
 import RulesContext from "../contexts/rules-context";
 import {
     ConditionTypes,
+    ExpressionFieldTypes,
     ExpressionInterface,
     RuleComponentMetaDataInterface,
     RuleConditionsInterface,
@@ -168,14 +169,14 @@ export const RulesProvider = ({
      * @param ruleId - string
      * @param conditionId - string
      * @param expressionId - string
-     * @param fieldName - keyof ExpressionInterface
+     * @param fieldName - ExpressionFieldTypes
      */
     const handleRuleConditionExpressionValueChange = (
         changedValue: string,
         ruleId: string,
         conditionId: string,
         expressionId: string,
-        fieldName: keyof ExpressionInterface
+        fieldName: ExpressionFieldTypes
     ) => {
         setRuleInstance((prev: RuleInterface[]) => {
             return prev.map((rule: RuleInterface) => {

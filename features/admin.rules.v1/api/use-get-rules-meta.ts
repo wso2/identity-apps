@@ -42,7 +42,6 @@ const useGetRulesMeta = <Data = RuleComponentMetaDataInterface, Error = RequestE
     flow: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
-
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",

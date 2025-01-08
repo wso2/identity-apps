@@ -36,7 +36,7 @@ import useGetResourcesList from "../api/use-get-resource-list";
 import { useRulesContext } from "../hooks/use-rules-context";
 import {
     ConditionTypes,
-    ExpressionInterface,
+    ExpressionFieldTypes,
     LinkInterface,
     ListDataInterface,
     RuleComponentExpressionValueInterface,
@@ -151,14 +151,14 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             ruleId: string,
             conditionId: string,
             expressionId: string,
-            fieldName: keyof ExpressionInterface
+            fieldName: ExpressionFieldTypes
         ) => void = debounce(
             (
                 changedValue: string,
                 ruleId: string,
                 conditionId: string,
                 expressionId: string,
-                fieldName: keyof ExpressionInterface
+                fieldName: ExpressionFieldTypes
             ) => {
                 updateRuleConditionExpression(changedValue, ruleId, conditionId, expressionId, fieldName);
             },
@@ -216,7 +216,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 ruleId,
                                 condition.id,
                                 condition.expressions[0].id,
-                                "value"
+                                ExpressionFieldTypes.Value
                             );
                         }
                     } }
@@ -255,8 +255,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             let resourceType: string = "";
 
             // Handle fetching data unconditionally
-            const resourcesListLink: string = metaValue?.links?.find((link: LinkInterface) => link.rel === "values")
-                ?.href;
+            const resourcesListLink: string =
+                metaValue?.links?.find((link: LinkInterface) => link.rel === "values")?.href;
 
             const { data: fetchedResourcesList } = useGetResourcesList(resourcesListLink || null);
 
@@ -280,7 +280,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 ruleId,
                                 condition.id,
                                 condition.expressions[0].id,
-                                "value"
+                                ExpressionFieldTypes.Value
                             );
                         } }
                     />
@@ -299,7 +299,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                     ruleId,
                                     condition.id,
                                     condition.expressions[0].id,
-                                    "value"
+                                    ExpressionFieldTypes.Value
                                 );
                             } }
                         >
@@ -327,7 +327,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                     ruleId,
                                     condition.id,
                                     condition.expressions[0].id,
-                                    "value"
+                                    ExpressionFieldTypes.Value
                                 );
                             } }
                         >
@@ -363,14 +363,14 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 ruleId,
                                 condition.id,
                                 condition.expressions[0].id,
-                                "field"
+                                ExpressionFieldTypes.Field
                             );
                             updateRuleConditionExpression(
                                 "",
                                 ruleId,
                                 condition.id,
                                 condition.expressions[0].id,
-                                "value"
+                                ExpressionFieldTypes.Value
                             );
                         } }
                     >
@@ -391,7 +391,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                 ruleId,
                                 condition.id,
                                 condition.expressions[0].id,
-                                "operator"
+                                ExpressionFieldTypes.Operator
                             );
                         } }
                     >

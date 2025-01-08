@@ -113,11 +113,11 @@ export const sampleApplicationList: any = {
 // TODO: Replace this with the actual data from the API.
 export const sampleExecutionsList: any = [
     {
-        displayName: "Prompt TOTP Page",
+        displayName: "Show TOTP",
         value: "dc2bf156-008e-4cdws2-afb1"
     },
     {
-        displayName: "Rule Conditions 3",
+        displayName: "Rule",
         value: "dc2bf156-008e-4cd2-afb1sa"
     }
 ];
