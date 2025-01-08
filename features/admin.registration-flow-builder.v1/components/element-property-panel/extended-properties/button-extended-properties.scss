@@ -1,4 +1,6 @@
 .button-extended-properties {
+    margin-bottom: var(--oxygen-spacing-1);
+
     .extended-property.action-type {
         cursor: pointer;
 
@@ -28,16 +30,22 @@
 
         .action-type-icon {
             background-color: var(--oxygen-palette-grey-300);
+            width: 32px;
+            height: 32px;
 
             img {
-                height: 18px;
-                width: 18px;
+                height: 16px;
+                width: 16px;
             }
         }
 
         &.selected {
             border: 1px solid var(--oxygen-palette-primary-main);
         }
+    }
+
+    .button-extended-properties-heading {
+        font-weight: 500;
     }
 
     .button-extended-properties-sub-heading {

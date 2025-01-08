@@ -20,6 +20,7 @@ import Avatar from "@oxygen-ui/react/Avatar";
 import Box from "@oxygen-ui/react/Box";
 import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
+import Divider from "@oxygen-ui/react/Divider";
 import Grid from "@oxygen-ui/react/Grid";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
@@ -60,7 +61,7 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
     return (
         <Stack className="button-extended-properties" gap={ 2 } data-componentid={ componentId }>
             <div>
-                <Typography variant="h6">Action Type</Typography>
+                <Typography className="button-extended-properties-heading">Type</Typography>
                 { actions?.map((action: Action, index: number) => (
                     <Box key={ index }>
                         <Typography className="button-extended-properties-sub-heading" variant="body1">
@@ -132,6 +133,7 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
                     </Box>
                 )) }
             </div>
+            <Divider />
         </Stack>
     );
 };

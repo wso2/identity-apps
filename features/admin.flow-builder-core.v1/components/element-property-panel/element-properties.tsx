@@ -47,8 +47,9 @@ export type CommonElementPropertiesPropsInterface = IdentifiableComponentInterfa
     /**
      * The event handler for the variant change.
      * @param variant - The variant of the element.
+     * @param element - Partial element properties to override.
      */
-    onVariantChange?: (variant: string) => void;
+    onVariantChange?: (variant: string, element?: Partial<Element>) => void;
 };
 
 /**
@@ -68,10 +69,14 @@ const ElementProperties: FunctionComponent<Partial<CommonElementPropertiesPropsI
         lastInteractedNodeId
     } = useAuthenticationFlowBuilderCore();
 
-    const changeSelectedVariant = (selected: string) => {
-        const selectedVariant: Component = lastInteractedElement?.variants?.find(
+    const changeSelectedVariant = (selected: string, element?: Partial<Element>) => {
+        let selectedVariant: Component = lastInteractedElement?.variants?.find(
             (element: Component) => element.variant === selected
         );
+
+        if (element) {
+            selectedVariant = merge(selectedVariant, element);
+        }
 
         updateNodeData(lastInteractedNodeId, (node: any) => {
             const components: Component = node?.data?.components?.map((component: any) => {

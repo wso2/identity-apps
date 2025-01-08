@@ -20,8 +20,11 @@ import DecoratedVisualFlow from "@wso2is/admin.flow-builder-core.v1/components/d
 import { Payload } from "@wso2is/admin.flow-builder-core.v1/models/api";
 import AuthenticationFlowBuilderCoreProvider from
     "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import ElementProperties from "./element-property-panel/element-properties";
 import ComponentFactory from "./elements/components/component-factory";
 import configureRegistrationFlow from "../api/configure-registration-flow";
@@ -45,13 +48,23 @@ const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInt
 }: RegistrationFlowBuilderPropsInterface): ReactElement => {
     const { data: elements } = useGetRegistrationFlowBuilderElements();
 
+    const dispatch: Dispatch = useDispatch();
+
     const handleFlowSubmit = (payload: Payload) => {
         configureRegistrationFlow(payload)
             .then(() => {
-                // Handle success.
+                dispatch(addAlert({
+                    description: "Registration flow updated successfully.",
+                    level: AlertLevels.SUCCESS,
+                    message: "Flow Updated Successfully"
+                }));
             })
             .catch(() => {
-                // Handle error.
+                dispatch(addAlert({
+                    description: "Failed to update the registration flow.",
+                    level: AlertLevels.ERROR,
+                    message: "Flow Updated Failure"
+                }));
             });
     };
 

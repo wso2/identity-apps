@@ -59,7 +59,7 @@
                     }
                 ],
                 "display": {
-                    "label": "Onboard Password",
+                    "label": "Continue with Password",
                     "image": "https://www.svgrepo.com/show/526627/password.svg",
                     "defaultVariant": "PRIMARY"
                 }
@@ -72,7 +72,7 @@
                     }
                 ],
                 "display": {
-                    "label": "Onboard Email",
+                    "label": "Continue with Email OTP",
                     "image": "https://www.svgrepo.com/show/479622/email-18.svg",
                     "defaultVariant": "PRIMARY"
                 }
@@ -97,7 +97,7 @@
                     }
                 ],
                 "display": {
-                    "label": "Continue with Google Sign Up",
+                    "label": "Continue with Google",
                     "image": "https://www.svgrepo.com/show/475656/google-color.svg",
                     "defaultVariant": "SOCIAL"
                 }
