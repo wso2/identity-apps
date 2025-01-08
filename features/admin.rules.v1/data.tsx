@@ -112,16 +112,12 @@ export const sampleApplicationList = {
 
 export const sampleExecutionsList = [
     {
-        "displayName": "TOTP",
-        "value": "totp"
+        displayName: "Show TOTP",
+        value: "dc2bf156-008e-4cdws2-afb1"
     },
     {
-        "displayName": "Basic",
-        "value": "basic"
-    },
-    {
-        "displayName": "Account Link",
-        "value": "account-link"
+        displayName: "Rule",
+        value: "dc2bf156-008e-4cd2-afb1sa"
     }
 ];
 

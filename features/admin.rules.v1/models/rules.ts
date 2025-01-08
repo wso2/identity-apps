@@ -48,6 +48,15 @@ export enum ConditionTypes {
 }
 
 /**
+ * Enum to represent the rule expression field types.
+ */
+export enum ExpressionFieldTypes {
+    Field = "field",
+    Operator = "operator",
+    Value = "value"
+}
+
+/**
  * Enum to represent the rule expression operators.
  */
 export interface ExpressionInterface {
