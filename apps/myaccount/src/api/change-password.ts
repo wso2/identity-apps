@@ -36,7 +36,7 @@ import { store } from "../store";
  * @param newPassword - newly assigned password.
  * @returns axiosResponse - a promise containing the response.
  */
-export const updatePassword = (currentPassword: string, newPassword: string): Promise<AxiosResponse> => {
+export const updatePassword = (currentPassword: string, newPassword: string, isSubOrgUser: boolean = false, userOrganizationId: string = null): Promise<AxiosResponse> => {
 
     // If the `httpRequest` method from SDK is used for the request, it causes the 401 to be handled by
     // the callbacks set fot the application which will log the user out. Hence, axios will be used
@@ -45,14 +45,20 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
     // See https://github.com/asgardio/asgardio-js-oidc-sdk/issues/45 for progress.
     // httpRequest.disableHandler();
 
+    const tenantDomain = isSubOrgUser ? userOrganizationId : store.getState().authenticationInformation.tenantDomain;
     const username: string = [
         store.getState().authenticationInformation?.profileInfo.userName,
         "@",
-        store.getState().authenticationInformation.tenantDomain
+        tenantDomain
     ].join("");
     // In case the password contains non-ascii characters, converting to valid ascii format.
     const encoder: TextEncoder = new TextEncoder();
     const encodedPassword: string = String.fromCharCode(...encoder.encode(currentPassword));
+    const url: string = store.getState().config.endpoints.me;
+    let updatedUrl = url;
+    if (isSubOrgUser) {
+        updatedUrl = url.replace(/\/t\/[^/]+\//, `/t/${userOrganizationId}/`)
+    }
 
     const requestConfig: AxiosRequestConfig = {
         data: {
@@ -71,7 +77,7 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: store.getState().config.endpoints.me,
+        url: updatedUrl,
         withCredentials: true
     };
 
