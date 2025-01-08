@@ -36,7 +36,8 @@ import { store } from "../store";
  * @param newPassword - newly assigned password.
  * @returns axiosResponse - a promise containing the response.
  */
-export const updatePassword = (currentPassword: string, newPassword: string, isSubOrgUser: boolean = false, userOrganizationId: string = null): Promise<AxiosResponse> => {
+export const updatePassword = (currentPassword: string, newPassword: string,
+    isSubOrgUser: boolean = false, userOrganizationId: string = null): Promise<AxiosResponse> => {
 
     // If the `httpRequest` method from SDK is used for the request, it causes the 401 to be handled by
     // the callbacks set fot the application which will log the user out. Hence, axios will be used
@@ -45,7 +46,8 @@ export const updatePassword = (currentPassword: string, newPassword: string, isS
     // See https://github.com/asgardio/asgardio-js-oidc-sdk/issues/45 for progress.
     // httpRequest.disableHandler();
 
-    const tenantDomain = isSubOrgUser ? userOrganizationId : store.getState().authenticationInformation.tenantDomain;
+    const tenantDomain: string = isSubOrgUser ? userOrganizationId :
+        store.getState().authenticationInformation.tenantDomain;
     const username: string = [
         store.getState().authenticationInformation?.profileInfo.userName,
         "@",
@@ -55,9 +57,10 @@ export const updatePassword = (currentPassword: string, newPassword: string, isS
     const encoder: TextEncoder = new TextEncoder();
     const encodedPassword: string = String.fromCharCode(...encoder.encode(currentPassword));
     const url: string = store.getState().config.endpoints.me;
-    let updatedUrl = url;
+    let updatedUrl: string = url;
+
     if (isSubOrgUser) {
-        updatedUrl = url.replace(/\/t\/[^/]+\//, `/t/${userOrganizationId}/`)
+        updatedUrl = url.replace(/\/t\/[^/]+\//, `/t/${userOrganizationId}/`);
     }
 
     const requestConfig: AxiosRequestConfig = {

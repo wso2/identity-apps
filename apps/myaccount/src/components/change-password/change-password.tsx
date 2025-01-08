@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { PasswordValidation, ValidationStatusInterface } from "@wso2is/react-components";
-import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import React, { Dispatch, FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
