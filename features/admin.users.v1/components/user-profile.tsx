@@ -21,8 +21,6 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
-import Accordion from "@oxygen-ui/react/Accordion";
-import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import Alert from "@oxygen-ui/react/Alert";
 import OxygenButton from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
@@ -2101,6 +2099,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                         <OxygenButton
                                                             variant="text"
                                                             size="small"
+                                                            className="text-btn"
                                                             onClick={ () => handleVerify(schema, value) }
                                                             data-componentid={
                                                                 `${testId}-profile-form` +
@@ -2115,7 +2114,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                         <OxygenButton
                                                             variant="text"
                                                             size="small"
-                                                            className="primary-btn"
+                                                            className="text-btn"
                                                             onClick={ () => handleMakePrimary(schema, value) }
                                                             data-componentid={
                                                                 `${testId}-profile-form` +
