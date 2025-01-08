@@ -39,7 +39,7 @@ import {
     ELK_RISK_BASED_TEMPLATE_NAME
 } from "@wso2is/admin.authentication-flow-builder.v1/constants/template-constants";
 import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
-import { AppState, AppUtils, EventPublisher, FeatureConfigInterface, getOperationIcons } from "@wso2is/admin.core.v1";
+import { AppState, EventPublisher, FeatureConfigInterface, getOperationIcons } from "@wso2is/admin.core.v1";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
@@ -49,7 +49,7 @@ import { ADAPTIVE_SCRIPT_SECRETS } from "@wso2is/admin.secrets.v1/constants/secr
 import { GetSecretListResponse, SecretModel } from "@wso2is/admin.secrets.v1/models/secret";
 import { UIConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, IdentifiableComponentInterface, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
 import {
@@ -70,11 +70,7 @@ import {
 import { AxiosError, AxiosResponse } from "axios";
 import * as codemirror from "codemirror";
 import beautify from "js-beautify";
-import cloneDeep from "lodash-es/cloneDeep";
-import get from "lodash-es/get";
-import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
-import set from "lodash-es/set";
 import React, {
     ChangeEvent,
     FunctionComponent,
@@ -85,7 +81,6 @@ import React, {
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, Icon, Input, Menu, Sidebar } from "semantic-ui-react";
@@ -629,142 +624,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     };
 
     /**
-     * Steps for the conditional authentication toggle tour.
-     *
-     */
-    const conditionalAuthTourSteps: Array<Step> = [
-        {
-            content: (
-                <div className="tour-step">
-                    <Heading bold as="h6">
-                        {
-                            t("applications:edit.sections.signOnMethod.sections." +
-                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.0.heading")
-                        }
-                    </Heading>
-                    <Text>
-                        {
-                            t("applications:edit.sections.signOnMethod.sections." +
-                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.0.content.0")
-                        }
-                    </Text>
-                    <Text>
-                        <Trans
-                            i18nKey={
-                                "applications:edit.sections.signOnMethod.sections." +
-                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.0.content.1"
-                            }
-                        >
-                            Click on the <Code>Next</Code> button to learn about the process.
-                        </Trans>
-                    </Text>
-                </div>
-            ),
-            disableBeacon: true,
-            placement: "top",
-            target: "[data-tourid=\"conditional-auth\"]"
-        },
-        {
-            content: (
-                <div className="tour-step">
-                    <Heading bold as="h6">
-                        {
-                            t("applications:edit.sections.signOnMethod.sections." +
-                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.1.heading")
-                        }
-                    </Heading>
-                    <Text>
-                        {
-                            t("applications:edit.sections.signOnMethod.sections." +
-                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.1.content.0")
-                        }
-                    </Text>
-                </div>
-            ),
-            disableBeacon: true,
-            placement: "right",
-            target: "[data-tourid=\"add-authentication-options-button\"]"
-        },
-        {
-            content: (
-                <div className="tour-step">
-                    <Heading bold as="h6">
-                        {
-                            t("applications:edit.sections.signOnMethod.sections." +
-                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.2.heading")
-                        }
-                    </Heading>
-                    <Text>
-                        <Trans
-                            i18nKey={
-                                "applications:edit.sections.signOnMethod.sections." +
-                                "authenticationFlow.sections.scriptBased.conditionalAuthTour.steps.2.content.0"
-                            }
-                        >
-                            Click here if you need to add more steps to the flow.
-                            Once you add a new step,<Code>executeStep(STEP_NUMBER);</Code> will appear on
-                            the script editor.
-                        </Trans>
-                    </Text>
-                </div>
-            ),
-            disableBeacon: true,
-            placement: "right",
-            target: "[data-tourid=\"add-new-step-button\"]"
-        }
-    ];
-
-    /**
-     * Should the conditional auth tour open.
-     *
-     * @returns
-     */
-    const shouldConditionalAuthTourOpen = (): boolean => {
-
-        if (!isConditionalAuthenticationEnabled) {
-            return false;
-        }
-
-        return getConditionalAuthTourViewedStatus() === false;
-    };
-
-    /**
-     * Renders the Conditional Auth tour.
-     *
-     * @returns
-     */
-    const renderConditionalAuthTour = (): ReactElement => (
-        <Joyride
-            continuous
-            disableOverlay
-            showSkipButton
-            callback={ (data: CallBackProps) => {
-                // If the tour is `done` or `skipped`, set the viewed state in storage.
-                if ((data.status === STATUS.FINISHED) || (data.status === STATUS.SKIPPED)) {
-                    persistConditionalAuthTourViewedStatus();
-                }
-            } }
-            run={ shouldConditionalAuthTourOpen() }
-            steps={ conditionalAuthTourSteps }
-            styles={ {
-                buttonClose: {
-                    display: "none"
-                },
-                tooltipContent: {
-                    paddingBottom: 1
-                }
-            } }
-            locale={ {
-                back: t("common:back"),
-                close: t("common:close"),
-                last: t("common:done"),
-                next: t("common:next"),
-                skip: t("common:skip")
-            } }
-        />
-    );
-
-    /**
      * This will be only called when user gives their consent for deletion.
      * @see `SecretDeleteConfirmationModal`
      */
@@ -983,44 +842,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                 </Popover>
             </>
         );
-    };
-
-    /**
-     * Persist the Conditional Auth Tour seen status in Local Storage.
-     *
-     * @param status - Status to set.
-     */
-    const persistConditionalAuthTourViewedStatus = (status: boolean = true): void => {
-
-        const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
-
-        if (isEmpty(userPreferences)) {
-            return;
-        }
-
-        const newPref: StorageIdentityAppsSettingsInterface = cloneDeep(userPreferences);
-
-        set(newPref?.identityAppsSettings?.devPortal,
-            ApplicationManagementConstants.CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY, status);
-
-        AppUtils.setUserPreferences(newPref);
-    };
-
-    /**
-     * Check if the Conditional Auth Tour has already been seen by the user.
-     *
-     * @returns
-     */
-    const getConditionalAuthTourViewedStatus = (): boolean => {
-
-        const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
-
-        if (isEmpty(userPreferences)) {
-            return false;
-        }
-
-        return get(userPreferences?.identityAppsSettings?.devPortal,
-            ApplicationManagementConstants.CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY, false);
     };
 
     /**
@@ -1317,7 +1138,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         </Text>
                                     </div>
                                 </div>
-                                { renderConditionalAuthTour() }
                             </>
                         ) }
                         hideChevron={ true }

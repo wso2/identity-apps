@@ -49,7 +49,6 @@
         "react-draggable": "^4.2.0",
         "react-helmet": "^5.2.1",
         "react-i18next": "^11.18.5",
-        "react-joyride": "^2.3.0",
         "react-notification-system": "^0.4.0",
         "react-redux": "^7.2.9",
         "reduce-reducers": "^1.0.4",
@@ -129,8 +128,8 @@
         "typescript": "^4.6.4"
     },
     "peerDependencies": {
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
         "react-router-dom": "^4.3.1"
     },
     "browserslist": [
