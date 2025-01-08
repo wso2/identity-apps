@@ -19,10 +19,7 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import Rules from "./rules";
-import {
-    RuleComponentMetaDataInterface,
-    RuleExecutionMetaDataInterface,
-    RuleInterface } from "../models/rules";
+import { RuleComponentMetaDataInterface, RuleExecutionMetaDataInterface, RuleInterface } from "../models/rules";
 import { RulesProvider } from "../providers/rules-provider";
 import "./rules-component.scss";
 
@@ -30,7 +27,6 @@ import "./rules-component.scss";
  * Props interface of {@link RulesComponent}
  */
 interface RulesComponentPropsInterface extends IdentifiableComponentInterface {
-
     /**
      * Initial data to be passed to the rules component.
      */
@@ -44,7 +40,7 @@ interface RulesComponentPropsInterface extends IdentifiableComponentInterface {
     /**
      * Multiple rules flag.
      */
-    multipleRules?: boolean
+    multipleRules?: boolean;
 
     /**
      * Rule execution meta data.
@@ -53,8 +49,8 @@ interface RulesComponentPropsInterface extends IdentifiableComponentInterface {
 }
 
 type RulesComponentPropsWithValidation =
-  | (RulesComponentPropsInterface & { multipleRules: true; ruleExecutions: any })
-  | (RulesComponentPropsInterface & { multipleRules?: false; ruleExecutions?: never });
+    | (RulesComponentPropsInterface & { multipleRules: true; ruleExecutions: any })
+    | (RulesComponentPropsInterface & { multipleRules?: false; ruleExecutions?: never });
 
 /**
  * Landing page for the Flows feature.
@@ -68,17 +64,10 @@ const RulesComponent: FunctionComponent<RulesComponentPropsWithValidation> = ({
     metaData,
     multipleRules,
     ruleExecutions
-}: RulesComponentPropsWithValidation): ReactElement => {
-
-    return (
-        <RulesProvider
-            metaData={ metaData }
-            initialData={ initialData }
-            ruleExecutions={ ruleExecutions }>
-
-            <Rules data-componentid={ componentId } multipleRules={ multipleRules } />
-        </RulesProvider>
-    );
-};
+}: RulesComponentPropsWithValidation): ReactElement => (
+    <RulesProvider metaData={ metaData } initialData={ initialData } ruleExecutions={ ruleExecutions }>
+        <Rules data-componentid={ componentId } multipleRules={ multipleRules } />
+    </RulesProvider>
+);
 
 export default RulesComponent;

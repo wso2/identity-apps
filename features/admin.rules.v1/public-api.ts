@@ -17,4 +17,4 @@
  */
 
 export { default as RulesComponent } from "./components/rules-component";
-export { getRuleContextValue } from "./providers/rules-provider";
+export { getRuleInstanceValue } from "./providers/rules-provider";

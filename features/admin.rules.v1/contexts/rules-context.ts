@@ -18,7 +18,7 @@
 
 import { SelectChangeEvent } from "@mui/material";
 import { createContext } from "react";
-import { ConditionTypes, ExpressionInterface, RuleComponentMetaDataInterface, RuleInterface } from "../models/rules";
+import { ConditionTypes, ExpressionFieldTypes, RuleComponentMetaDataInterface, RuleInterface } from "../models/rules";
 
 /**
  * Interface for the RulesContext.
@@ -72,7 +72,8 @@ export interface RulesContextInterface {
         ruleId: string,
         conidtionId: string,
         expressionId: string,
-        fieldName: keyof ExpressionInterface) => void;
+        fieldName: ExpressionFieldTypes
+    ) => void;
 }
 
 /**
