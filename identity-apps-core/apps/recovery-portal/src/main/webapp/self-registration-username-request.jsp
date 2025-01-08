@@ -740,28 +740,13 @@
 
                         <div class="ui divider hidden"></div>
                         <%
-                            try {
-                                if (StringUtils.isNotBlank(backToUrl) && !Utils.validateCallbackURL(backToUrl, tenantDomain,
-                                    IdentityRecoveryConstants.ConnectorConfig.SELF_REGISTRATION_CALLBACK_REGEX)) {
-                                    request.setAttribute("error", true);
-                                    request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                        "Callback.url.format.invalid"));
-                                    request.getRequestDispatcher("error.jsp").forward(request, response);
-                                    return;
-                                }
-                            } catch (IdentityRuntimeException e) {
-                                request.setAttribute("error", true);
-                                request.setAttribute("errorMsg", e.getMessage());
-                                request.getRequestDispatcher("error.jsp").forward(request, response);
-                                return;
-                            }
                             if (!StringUtils.equalsIgnoreCase(backToUrl,"null") && !StringUtils.isBlank(backToUrl)) {
                         %>
                         <div class="buttons mt-2">
                             <div class="field external-link-container text-small">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                         "Already.have.an.account")%>
-                                <a href="<%= StringEscapeUtils.escapeHtml4(backToUrl) %>">
+                                <a href="<%=backToUrl%>">
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Sign.in")%>
                                 </a>
                             </div>
