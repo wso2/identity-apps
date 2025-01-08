@@ -1,5 +1,16 @@
 # @wso2is/admin.authentication.v1
 
+## 2.25.73
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.extensions.v1@2.35.32
+  - @wso2is/admin.core.v1@2.35.11
+  - @wso2is/admin.organizations.v1@2.26.73
+  - @wso2is/admin.users.v1@2.29.32
+  - @wso2is/admin.userstores.v1@2.26.32
+
 ## 2.25.72
 
 ### Patch Changes
