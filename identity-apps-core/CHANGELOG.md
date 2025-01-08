@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.8.14
+
+### Patch Changes
+
+- [#7275](https://github.com/wso2/identity-apps/pull/7275) [`d934324e367ed709486106030b5e4d0200dff4c3`](https://github.com/wso2/identity-apps/commit/d934324e367ed709486106030b5e4d0200dff4c3) Thanks [@KD23243](https://github.com/KD23243)! - Revert callback validation logic
+
 ## 2.8.13
 
 ### Patch Changes
