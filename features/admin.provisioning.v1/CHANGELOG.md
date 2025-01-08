@@ -1,5 +1,17 @@
 # @wso2is/admin.provisioning.v1
 
+## 2.25.73
+
+### Patch Changes
+
+- [#7266](https://github.com/wso2/identity-apps/pull/7266) [`d7df2eb32661da2994d2354b95603f0c38a06ff7`](https://github.com/wso2/identity-apps/commit/d7df2eb32661da2994d2354b95603f0c38a06ff7) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in organization level outbound configurations UI
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.73
+  - @wso2is/admin.connections.v1@2.30.9
+  - @wso2is/admin.core.v1@2.35.11
+  - @wso2is/admin.identity-providers.v1@2.26.73
+
 ## 2.25.72
 
 ### Patch Changes
