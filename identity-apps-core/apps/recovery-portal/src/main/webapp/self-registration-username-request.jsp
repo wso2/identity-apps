@@ -307,22 +307,6 @@
         consentPurposeGroupName = "JIT";
     }
 
-    try {
-        if (StringUtils.isNotBlank(callback) && !Utils.validateCallbackURL(callback, tenantDomain,
-            IdentityRecoveryConstants.ConnectorConfig.SELF_REGISTRATION_CALLBACK_REGEX)) {
-            request.setAttribute("error", true);
-            request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                "Callback.url.format.invalid"));
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-            return;
-        }
-    } catch (IdentityRuntimeException e) {
-        request.setAttribute("error", true);
-        request.setAttribute("errorMsg", e.getMessage());
-        request.getRequestDispatcher("error.jsp").forward(request, response);
-        return;
-    }
-
     if (StringUtils.isBlank(callback) || StringUtils.equalsIgnoreCase(callback, "null")) {
         callback = Encode.forHtmlAttribute(IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain));
@@ -756,6 +740,21 @@
 
                         <div class="ui divider hidden"></div>
                         <%
+                            try {
+                                if (StringUtils.isNotBlank(backToUrl) && !Utils.validateCallbackURL(backToUrl, tenantDomain,
+                                    IdentityRecoveryConstants.ConnectorConfig.SELF_REGISTRATION_CALLBACK_REGEX)) {
+                                    request.setAttribute("error", true);
+                                    request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                        "Callback.url.format.invalid"));
+                                    request.getRequestDispatcher("error.jsp").forward(request, response);
+                                    return;
+                                }
+                            } catch (IdentityRuntimeException e) {
+                                request.setAttribute("error", true);
+                                request.setAttribute("errorMsg", e.getMessage());
+                                request.getRequestDispatcher("error.jsp").forward(request, response);
+                                return;
+                            }
                             if (!StringUtils.equalsIgnoreCase(backToUrl,"null") && !StringUtils.isBlank(backToUrl)) {
                         %>
                         <div class="buttons mt-2">
