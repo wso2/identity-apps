@@ -42,6 +42,7 @@
         for (Cookie cookie : userCookies) {
             if ("ui_lang".equals(cookie.getName())) {
                 language = cookie.getValue();
+
                 break;
             }
         }
@@ -89,9 +90,10 @@
     String[] fileNames = themeDir.list();
     String themeFileName = "";
 
-    for(String file: fileNames) {
+    for (String file: fileNames) {
         if (file.endsWith(themeSuffix + ".min.css")) {
             themeFileName = file;
+
             break;
         }
     }
@@ -151,6 +153,7 @@
 
 <script type="text/javascript">
     const direction = "<%= direction %>";
+
     if (direction) {
         document.documentElement.setAttribute("dir", direction);
     }
