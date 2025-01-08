@@ -16,16 +16,13 @@
  * under the License.
  */
 
-import React, {
-    createContext,
-    useContext,
-    useState,
-    ReactNode,
-    useEffect } from "react";
-import { SelectChangeEvent } from '@mui/material';
-import { 
-    RuleInterface,
-    RuleConditionsInterface,
+import { SelectChangeEvent } from "@mui/material";
+import React, { ReactNode, useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import RulesContext from "../contexts/rules-context";
+import {
+    ConditionTypes,
+    ExpressionInterface,
     RuleComponentMetaDataInterface,
     RuleExecutionMetaDataInterface,
     ConditionTypes,
@@ -129,13 +126,17 @@ export const useRulesContext = (): RulesContextInterface => {
  * @param initialData - RuleInterface[] | null
  * @returns RulesProvider
  */
-export const RulesProvider = (
-    { children, metaData, initialData, ruleExecutions }
-    : { children: ReactNode,
-        metaData: RuleComponentMetaDataInterface,
-        initialData: RuleInterface[] | [],
-        ruleExecutions: RuleExecutionMetaDataInterface }) => {
-
+export const RulesProvider = ({
+    children,
+    metaData,
+    initialData,
+    ruleExecutions
+}: {
+    children: ReactNode;
+    metaData: RuleComponentMetaDataInterface;
+    initialData: RuleInterface[] | [];
+    ruleExecutions: RuleExecutionMetaDataInterface;
+}) => {
     const [ rulesInstance, setRuleInstance ] = useState<RuleInterface[] | []>(initialData);
 
     const conditionsMeta = ruleExecutions ?? [];
@@ -144,17 +145,16 @@ export const RulesProvider = (
     // Update the ref whenever the context value changes
     RuleContextRef.ruleInstance = rulesInstance;
 
-    const getNewRuleInstanceConditionExpression = ():ExpressionInterface  => {
-
+    const getNewRuleInstanceConditionExpression = (): ExpressionInterface => {
         const newRuleConditionExpressionUUID: string = uuidv4();
-    
-        return ({
-            "id": newRuleConditionExpressionUUID,
-            "field": metaData?.[0]?.field?.name,
-            "operator": metaData?.[0]?.operators?.[0]?.name,
-            "value": "",
-            "order": 0
-        });
+
+        return {
+            field: metaData?.[0]?.field?.name,
+            id: newRuleConditionExpressionUUID,
+            operator: metaData?.[0]?.operators?.[0]?.name,
+            order: 0,
+            value: ""
+        };
     };
 
     /**
@@ -165,17 +165,16 @@ export const RulesProvider = (
      */
     const getNewRuleInstanceCondition = (
         condition: ConditionTypes,
-        orderIndex = 0
-    ):RuleConditionsInterface  => {
-
+        orderIndex: number = 0
+    ): RuleConditionsInterface => {
         const newRuleConditionUUID: string = uuidv4();
-    
-        return ({
-            "id": newRuleConditionUUID,
-            "condition": condition,
-            "order": orderIndex,
-            "expressions": [ getNewRuleInstanceConditionExpression() ]
-        });
+
+        return {
+            condition: condition,
+            expressions: [ getNewRuleInstanceConditionExpression() ],
+            id: newRuleConditionUUID,
+            order: orderIndex
+        };
     };
     
     /**
@@ -183,19 +182,17 @@ export const RulesProvider = (
      * 
      * @returns RuleInterface
      */
-    const getNewRuleInstance = ():RuleInterface  => {
-
+    const getNewRuleInstance = (): RuleInterface => {
         const newRuleUUID: string = uuidv4();
-    
-        return ({
-            id: newRuleUUID,
+
+        return {
+            conditions: [ getNewRuleInstanceCondition(ConditionTypes.And) ],
             execution: conditionsMeta?.[0]?.value,
-            conditions: [ getNewRuleInstanceCondition(ConditionTypes.And) ]
-        });
+            id: newRuleUUID
+        };
     };
 
     useEffect(() => {
-
         // If the initial data is not provided, create a new instance.
         if (!initialData) {
             setRuleInstance([getNewRuleInstance()]);
@@ -206,7 +203,6 @@ export const RulesProvider = (
      * Method to add a new rule.
      */
     const handleAddNewRule = () => {
-
         const newRuleInstance: RuleInterface = getNewRuleInstance();
 
         setRuleInstance((prev: RuleInterface[]) => {
@@ -220,7 +216,6 @@ export const RulesProvider = (
      * @param id - string
      */
     const handleRemoveRule = (id: string) => {
-    
         setRuleInstance((prev: RuleInterface[]) => {
             return prev.filter((rule) => rule?.id !== id);
         });
@@ -231,10 +226,8 @@ export const RulesProvider = (
      * 
      * @param id - string
      */
-    const handleRuleExecutionTypeChange = 
-        (event: SelectChangeEvent, id: string) => {
-
-        const changedValue = event.target.value as string;
+    const handleRuleExecutionTypeChange = (event: SelectChangeEvent, id: string) => {
+        const changedValue: string = event.target.value as string;
 
         setRuleInstance((prev: RuleInterface[]) => {
             return prev.map((rule) => {
@@ -263,10 +256,8 @@ export const RulesProvider = (
         expressionId: string,
         fieldName: keyof ExpressionInterface
     ) => {
-
         setRuleInstance((prev: RuleInterface[]) => {
-
-            return prev.map((rule) => {
+            return prev.map((rule: RuleInterface) => {
                 if (rule.id === ruleId) {
                     return {
                         ...rule,
@@ -274,18 +265,16 @@ export const RulesProvider = (
                             if (condition.id === conditionId) {
                                 return {
                                     ...condition,
-                                    expressions: condition.expressions.map(
-                                        (expression) => {
-                                            if (expression.id === expressionId) {
-                                                return { 
-                                                    ...expression, 
-                                                    [fieldName]: changedValue
-                                                };
-                                            }
-
-                                            return expression;
+                                    expressions: condition.expressions.map((expression: ExpressionInterface) => {
+                                        if (expression.id === expressionId) {
+                                            return {
+                                                ...expression,
+                                                [fieldName]: changedValue
+                                            };
                                         }
-                                    ),
+
+                                        return expression;
+                                    })
                                 };
                             }
                             return condition;
@@ -304,12 +293,7 @@ export const RulesProvider = (
      * @param previousConditionId - string
      * @param conditionType - ConditionTypes
      */
-    const handleAddRuleCondition = (
-        ruleId: string,
-        previousConditionId: string, 
-        conditionType: ConditionTypes
-    ) => {
-
+    const handleAddRuleCondition = (ruleId: string, previousConditionId: string, conditionType: ConditionTypes) => {
         setRuleInstance((prev: RuleInterface[]) => {
             return prev.map((rule) => {
                 if (rule.id === ruleId) {
@@ -317,17 +301,17 @@ export const RulesProvider = (
                     const updatedConditions = [...rule.conditions];
                 
                     // Find the index of the item with the matching id
-                    const index = updatedConditions.findIndex((condition) => 
-                        condition.id === previousConditionId);
-                    
+                    const index: number = updatedConditions.findIndex(
+                        (condition: RuleConditionsInterface) => condition.id === previousConditionId
+                    );
+
                     if (index === -1) {
                         return rule;
                     }
                 
                     // Insert the new condition after the matched condition
-                    updatedConditions.splice(index + 1, 0, 
-                        getNewRuleInstanceCondition(conditionType, index + 1));
-    
+                    updatedConditions.splice(index + 1, 0, getNewRuleInstanceCondition(conditionType, index + 1));
+
                     return {
                         ...rule,
                         conditions: updatedConditions
@@ -345,15 +329,12 @@ export const RulesProvider = (
      * @param conditionId - string
      */
     const handleRemoveRuleCondition = (ruleId: string, conditionId: string) => {
-
         setRuleInstance((prev: RuleInterface[]) => {
             return prev.map((rule) => {
                 if (rule.id === ruleId) {
-
                     // Clone conditions to avoid mutating the original state
-                    const updatedConditions = rule.conditions.filter(
-                        (condition, index) => {
-
+                    const updatedConditions: RuleConditionsInterface[] = rule.conditions.filter(
+                        (condition: RuleConditionsInterface, index: number) => {
                             // Skip the condition that is being removed
                             if (condition.id === conditionId) {
                                 const nextCondition = 

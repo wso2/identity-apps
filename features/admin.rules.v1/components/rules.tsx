@@ -61,14 +61,7 @@ const Rules: FunctionComponent<RulesPropsInterface> = ({
     // Multiple rules flag.
     multipleRules = false
 }: RulesPropsInterface): ReactElement => {
-
-    const { 
-        rulesInstance,
-        conditionsMeta,
-        addNewRule,
-        removeRule,
-        updateRuleExecution
-    } = useRulesContext();
+    const { rulesInstance, conditionsMeta, addNewRule, removeRule, updateRuleExecution } = useRulesContext();
 
     return (
         <div className="rules-component" data-componentid={ componentId }>
@@ -90,7 +83,9 @@ const Rules: FunctionComponent<RulesPropsInterface> = ({
                     sx={{
                         mb: 2,
                         position: "relative"
-                }}>
+                    } }
+                    key={ index }
+                >
                     <Grid container alignItems="center">
                         <Grid>
                             <Typography variant="body1"><Typography variant="body2">Execute</Typography></Typography>
@@ -98,24 +93,21 @@ const Rules: FunctionComponent<RulesPropsInterface> = ({
                         { ruleInstance.execution ? (
                             <Grid>
                                 <FormControl sx={ { m: 1, minWidth: 120 } } size="small">
-                                    <Select 
-                                        value={ ruleInstance.execution } 
-                                        onChange={ (e: SelectChangeEvent) => updateRuleExecution(e, ruleInstance.id) }>
-                                            
-                                        { conditionsMeta?.map((item, index) => (
-                                            <MenuItem
-                                                value={ item.value }
-                                                key={ `${ruleInstance.id}-${index}` }>
-                                                    { item.displayName }
+                                    <Select
+                                        value={ ruleInstance.execution }
+                                        onChange={ (e: SelectChangeEvent) => updateRuleExecution(e, ruleInstance.id) }
+                                    >
+                                        { conditionsMeta?.map((item: any, index: number) => (
+                                            <MenuItem value={ item.value } key={ `${ruleInstance.id}-${index}` }>
+                                                { item.displayName }
                                             </MenuItem>
                                         )) }
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            ) : (
-                                <Grid>&nbsp;</Grid>
-                            )
-                        }
+                        ) : (
+                            <Grid>&nbsp;</Grid>
+                        ) }
                         <Grid>
                             <Typography variant="body2">If</Typography>
                         </Grid>

@@ -24,10 +24,8 @@ import { RulesEndpointsInterface } from "../models/endpoints";
  * @param serverHost - Server Host.
  * @returns Interface of Actions Resource Endpoints.
  */
-export const getRulesEndpoints = (
-    serverHost: string
-): RulesEndpointsInterface => {
+export const getRulesEndpoints = (serverHost: string): RulesEndpointsInterface => {
     return {
-        rulesMetaData: `${ serverHost }/api/server/v1/rules/metadata`
+        rulesMetaData: `${serverHost}/api/server/v1/rules/metadata`
     };
 };

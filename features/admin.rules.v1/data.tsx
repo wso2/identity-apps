@@ -1,65 +1,87 @@
-export const sampleRules = [{
-    "id": "e9a500d4-12dd-4b87-ad7c-9efdacf8a2a5",
-    "execution": "totp",
-    "conditions": [
-        {
-            "id": "c90293c7-3fc1-465e-a946-adab6170e2fcdc",
-            "condition": "AND",
-            "order": 0,
-            "expressions": [
-                {
-                "id": "8cbe103e-4c86-4021-91e4-83c37effe893a9267753",
-                "field": "application",
-                "operator": "equals",
-                "value": "c90293c7-3fc1-465e-a946",
-                "order": 0
-                }
-            ]
-        },
-        {
-            "id": "c90293c7-3fc1-465e-a946-adab6170e2dc443",
-            "condition": "AND",
-            "order": 0,
-            "expressions": [
-                {
-                "id": "8cbe103e-4c86-4021-91e4-83dsfc37fe89ee3a9",
-                "field": "grantType",
-                "operator": "equals",
-                "value": "authorization_code",
-                "order": 0
-                }
-            ]
-        },
-        {
-            "id": "c90293c7-3fc1-465e-a946-adab6170e2dc",
-            "condition": "OR",
-            "order": 0,
-            "expressions": [
-                {
-                "id": "8cbe103e-4c86-4021-91e4-83cdsf37fe893a9",
-                "field": "grantType",
-                "operator": "notEquals",
-                "value": "client_credentials",
-                "order": 0
-                }
-            ]
-        },
-        {
-            "id": "c90293c7-3fc1-465e-a946-adab61e3270e2dc",
-            "condition": "OR",
-            "order": 0,
-            "expressions": [
-                {
-                "id": "8cbe103e-4c86-4021-91e4-83c3fdsff437fe893a9",
-                "field": "application",
-                "operator": "equals",
-                "value": "8cbe103e-4c86-4021",
-                "order": 0
-                }
-            ]
-        }
-    ]
-}]
+/**
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import { RuleComponentMetaDataInterface, RuleInterface } from "./models/rules";
+
+export const sampleRules: RuleInterface[] = [
+    {
+        conditions: [
+            {
+                condition: "AND",
+                expressions: [
+                    {
+                        field: "application",
+                        id: "8cbe103e-4c86-4021-91e4-83c37effe893a9267753",
+                        operator: "equals",
+                        order: 0,
+                        value: "c90293c7-3fc1-465e-a946"
+                    }
+                ],
+                id: "c90293c7-3fc1-465e-a946-adab6170e2fcdc",
+                order: 0
+            },
+            {
+                condition: "AND",
+                expressions: [
+                    {
+                        field: "grantType",
+                        id: "8cbe103e-4c86-4021-91e4-83dsfc37fe89ee3a9",
+                        operator: "equals",
+                        order: 0,
+                        value: "authorization_code"
+                    }
+                ],
+                id: "c90293c7-3fc1-465e-a946-adab6170e2dc443",
+                order: 0
+            },
+            {
+                condition: "OR",
+                expressions: [
+                    {
+                        field: "grantType",
+                        id: "8cbe103e-4c86-4021-91e4-83cdsf37fe893a9",
+                        operator: "notEquals",
+                        order: 0,
+                        value: "client_credentials"
+                    }
+                ],
+                id: "c90293c7-3fc1-465e-a946-adab6170e2dc",
+                order: 0
+            },
+            {
+                condition: "OR",
+                expressions: [
+                    {
+                        field: "application",
+                        id: "8cbe103e-4c86-4021-91e4-83c3fdsff437fe893a9",
+                        operator: "equals",
+                        order: 0,
+                        value: "8cbe103e-4c86-4021"
+                    }
+                ],
+                id: "c90293c7-3fc1-465e-a946-adab61e3270e2dc",
+                order: 0
+            }
+        ],
+        execution: "totp",
+        id: "e9a500d4-12dd-4b87-ad7c-9efdacf8a2a5"
+    }
+];
 
 export const sampleApplicationList = {
     "totalResults": 2,

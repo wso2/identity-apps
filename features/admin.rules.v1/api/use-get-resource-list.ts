@@ -37,7 +37,6 @@ const useGetResourcesList = <Data = any, Error = RequestErrorInterface>(
     endpointPath: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
-
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
