@@ -55,14 +55,7 @@ const Rules: FunctionComponent<RulesPropsInterface> = ({
     ["data-componentid"]: componentId = "rules-render-component",
     multipleRules = false
 }: RulesPropsInterface): ReactElement => {
-
-    const {
-        rulesInstance,
-        conditionsMeta,
-        addNewRule,
-        removeRule,
-        updateRuleExecution
-    } = useRulesContext();
+    const { rulesInstance, conditionsMeta, addNewRule, removeRule, updateRuleExecution } = useRulesContext();
 
     return (
         <div className="rules-component" data-componentid={ componentId }>
@@ -85,7 +78,8 @@ const Rules: FunctionComponent<RulesPropsInterface> = ({
                         mb: 2,
                         position: "relative"
                     } }
-                    key={ index }>
+                    key={ index }
+                >
                     <Grid container alignItems="center">
                         <Grid>
                             <Typography variant="body2">Execute</Typography>
@@ -95,12 +89,10 @@ const Rules: FunctionComponent<RulesPropsInterface> = ({
                                 <FormControl sx={ { m: 1, minWidth: 120 } } size="small">
                                     <Select
                                         value={ ruleInstance.execution }
-                                        onChange={ (e: SelectChangeEvent) => updateRuleExecution(e, ruleInstance.id) }>
-
+                                        onChange={ (e: SelectChangeEvent) => updateRuleExecution(e, ruleInstance.id) }
+                                    >
                                         { conditionsMeta?.map((item: any, index: number) => (
-                                            <MenuItem
-                                                value={ item.value }
-                                                key={ `${ruleInstance.id}-${index}` }>
+                                            <MenuItem value={ item.value } key={ `${ruleInstance.id}-${index}` }>
                                                 { item.displayName }
                                             </MenuItem>
                                         )) }
@@ -109,8 +101,7 @@ const Rules: FunctionComponent<RulesPropsInterface> = ({
                             </Grid>
                         ) : (
                             <Grid>&nbsp;</Grid>
-                        )
-                        }
+                        ) }
                         <Grid>
                             <Typography variant="body2">If</Typography>
                         </Grid>

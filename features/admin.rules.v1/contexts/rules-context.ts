@@ -72,7 +72,8 @@ export interface RulesContextInterface {
         ruleId: string,
         conidtionId: string,
         expressionId: string,
-        fieldName: keyof ExpressionInterface) => void;
+        fieldName: keyof ExpressionInterface
+    ) => void;
 }
 
 /**

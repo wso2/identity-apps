@@ -18,68 +18,70 @@
 
 import { RuleComponentMetaDataInterface, RuleInterface } from "./models/rules";
 
-export const sampleRules: RuleInterface[] = [ {
-    conditions: [
-        {
-            condition: "AND",
-            expressions: [
-                {
-                    field: "application",
-                    id: "8cbe103e-4c86-4021-91e4-83c37effe893a9267753",
-                    operator: "equals",
-                    order: 0,
-                    value: "c90293c7-3fc1-465e-a946"
-                }
-            ],
-            id: "c90293c7-3fc1-465e-a946-adab6170e2fcdc",
-            order: 0
-        },
-        {
-            condition: "AND",
-            expressions: [
-                {
-                    field: "grantType",
-                    id: "8cbe103e-4c86-4021-91e4-83dsfc37fe89ee3a9",
-                    operator: "equals",
-                    order: 0,
-                    value: "authorization_code"
-                }
-            ],
-            id: "c90293c7-3fc1-465e-a946-adab6170e2dc443",
-            order: 0
-        },
-        {
-            condition: "OR",
-            expressions: [
-                {
-                    field: "grantType",
-                    id: "8cbe103e-4c86-4021-91e4-83cdsf37fe893a9",
-                    operator: "notEquals",
-                    order: 0,
-                    value: "client_credentials"
-                }
-            ],
-            id: "c90293c7-3fc1-465e-a946-adab6170e2dc",
-            order: 0
-        },
-        {
-            condition: "OR",
-            expressions: [
-                {
-                    field: "application",
-                    id: "8cbe103e-4c86-4021-91e4-83c3fdsff437fe893a9",
-                    operator: "equals",
-                    order: 0,
-                    value: "8cbe103e-4c86-4021"
-                }
-            ],
-            id: "c90293c7-3fc1-465e-a946-adab61e3270e2dc",
-            order: 0
-        }
-    ],
-    execution: "totp",
-    id: "e9a500d4-12dd-4b87-ad7c-9efdacf8a2a5"
-} ];
+export const sampleRules: RuleInterface[] = [
+    {
+        conditions: [
+            {
+                condition: "AND",
+                expressions: [
+                    {
+                        field: "application",
+                        id: "8cbe103e-4c86-4021-91e4-83c37effe893a9267753",
+                        operator: "equals",
+                        order: 0,
+                        value: "c90293c7-3fc1-465e-a946"
+                    }
+                ],
+                id: "c90293c7-3fc1-465e-a946-adab6170e2fcdc",
+                order: 0
+            },
+            {
+                condition: "AND",
+                expressions: [
+                    {
+                        field: "grantType",
+                        id: "8cbe103e-4c86-4021-91e4-83dsfc37fe89ee3a9",
+                        operator: "equals",
+                        order: 0,
+                        value: "authorization_code"
+                    }
+                ],
+                id: "c90293c7-3fc1-465e-a946-adab6170e2dc443",
+                order: 0
+            },
+            {
+                condition: "OR",
+                expressions: [
+                    {
+                        field: "grantType",
+                        id: "8cbe103e-4c86-4021-91e4-83cdsf37fe893a9",
+                        operator: "notEquals",
+                        order: 0,
+                        value: "client_credentials"
+                    }
+                ],
+                id: "c90293c7-3fc1-465e-a946-adab6170e2dc",
+                order: 0
+            },
+            {
+                condition: "OR",
+                expressions: [
+                    {
+                        field: "application",
+                        id: "8cbe103e-4c86-4021-91e4-83c3fdsff437fe893a9",
+                        operator: "equals",
+                        order: 0,
+                        value: "8cbe103e-4c86-4021"
+                    }
+                ],
+                id: "c90293c7-3fc1-465e-a946-adab61e3270e2dc",
+                order: 0
+            }
+        ],
+        execution: "totp",
+        id: "e9a500d4-12dd-4b87-ad7c-9efdacf8a2a5"
+    }
+];
 
 export const sampleApplicationList: any = {
     applications: [
