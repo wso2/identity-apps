@@ -46,7 +46,7 @@ import { getUserstoreResourceEndpoints } from "@wso2is/admin.userstores.v1/confi
 import { getValidationServiceEndpoints } from "@wso2is/admin.validation.v1/configs";
 import { getApprovalsResourceEndpoints } from "@wso2is/admin.workflow-approvals.v1";
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
-import { I18nConstants, UIConstants } from "../constants";
+import { AppConstants, I18nConstants, UIConstants } from "../constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 import { store } from "../store";
 
@@ -349,6 +349,9 @@ export class Config {
             privacyPolicyConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.privacyPolicyConfigs,
             productName: window[ "AppUtils" ]?.getConfig()?.ui?.productName,
             productVersionConfig: window[ "AppUtils" ]?.getConfig()?.ui?.productVersionConfig,
+            routes: window[ "AppUtils" ]?.getConfig()?.ui?.routes ?? {
+                organizationEnabledRoutes: AppConstants.ORGANIZATION_ENABLED_ROUTES
+            },
             selfAppIdentifier: window[ "AppUtils" ]?.getConfig()?.ui?.selfAppIdentifier,
             showAppSwitchButton: window[ "AppUtils" ]?.getConfig()?.ui?.showAppSwitchButton,
             showSmsOtpPwdRecoveryFeatureStatusChip:

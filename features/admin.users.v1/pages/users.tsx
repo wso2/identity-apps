@@ -141,7 +141,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(
         FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
-    const { isSubOrganization, isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -236,10 +236,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         isLoading: isUserStoreListFetchRequestLoading,
         isValidating: isUserStoreListFetchRequestValidating,
         error: userStoreListFetchRequestError
-    } = useUserStores(
-        null,
-        !isSubOrganization()
-    );
+    } = useUserStores(null);
 
     const realmConfigs: RealmConfigInterface = useMemo(() => originalServerConfigs?.realmConfig,
         [ originalServerConfigs ]);
@@ -695,16 +692,15 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 data-testid="user-mgt-user-list-layout"
                 onPageChange={ handlePaginationChange }
                 rightActionPanel={
-                    isFirstLevelOrganization() || isSuperOrganization()
-                        ? (<Dropdown
-                            data-testid="user-mgt-user-list-userstore-dropdown"
-                            selection
-                            options={ userStoreOptions }
-                            onChange={ handleDomainChange }
-                            defaultValue={ userstoresConfig.primaryUserstoreName }
-                            loading={ isUserStoreListFetchRequestLoading }
-                            readonly={ userStoreOptions.length <= 1 }
-                        />) : null
+                    (<Dropdown
+                        data-testid="user-mgt-user-list-userstore-dropdown"
+                        selection
+                        options={ userStoreOptions }
+                        onChange={ handleDomainChange }
+                        defaultValue={ userstoresConfig.primaryUserstoreName }
+                        loading={ isUserStoreListFetchRequestLoading }
+                        readonly={ userStoreOptions.length <= 1 }
+                    />)
                 }
                 showPagination={ true }
                 totalPages={ resolveTotalPages() }

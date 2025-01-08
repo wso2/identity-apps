@@ -28,7 +28,6 @@ import {
     getEmptyPlaceholderIllustrations
 } from "@wso2is/admin.core.v1";
 import { commonConfig, groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
-import { RootOnlyComponent } from "@wso2is/admin.organizations.v1/components";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
 import {
@@ -186,41 +185,39 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             value: ""
         };
 
-        if (isSuperOrganization() || isFirstLevelOrganization()) {
-            setUserStoresListRequestLoading(true);
-            getUserStoreList()
-                .then((response: AxiosResponse<UserstoreListResponseInterface[]>) => {
-                    if (storeOptions?.length === 0) {
-                        storeOptions.push(storeOption);
+        setUserStoresListRequestLoading(true);
+        getUserStoreList()
+            .then((response: AxiosResponse<UserstoreListResponseInterface[]>) => {
+                if (storeOptions?.length === 0) {
+                    storeOptions.push(storeOption);
+                }
+
+                response.data.map((store: UserstoreListResponseInterface, index: number) => {
+                    if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName) {
+                        setUserStoreRequestLoading(true);
+                        getAUserStore(store.id).then((response: UserStorePostData) => {
+                            const isDisabled: boolean = response.properties.find(
+                                (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
+
+                            if (!isDisabled) {
+                                storeOption = {
+                                    disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,
+                                    key: index,
+                                    text: store.name,
+                                    value: store.name
+                                };
+                                storeOptions.push(storeOption);
+                            }
+                        }).finally(() => {
+                            setUserStoreRequestLoading(false);
+                        });
                     }
-
-                    response.data.map((store: UserstoreListResponseInterface, index: number) => {
-                        if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName) {
-                            setUserStoreRequestLoading(true);
-                            getAUserStore(store.id).then((response: UserStorePostData) => {
-                                const isDisabled: boolean = response.properties.find(
-                                    (property: UserStoreProperty) => property.name === "Disabled")?.value === "true";
-
-                                if (!isDisabled) {
-                                    storeOption = {
-                                        disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,
-                                        key: index,
-                                        text: store.name,
-                                        value: store.name
-                                    };
-                                    storeOptions.push(storeOption);
-                                }
-                            }).finally(() => {
-                                setUserStoreRequestLoading(false);
-                            });
-                        }
-                    });
-
-                    setUserStoresList(storeOptions);
-                }).finally(() => {
-                    setUserStoresListRequestLoading(false);
                 });
-        }
+
+                setUserStoresList(storeOptions);
+            }).finally(() => {
+                setUserStoresListRequestLoading(false);
+            });
 
         setUserStoresList(storeOptions);
     };
@@ -374,17 +371,15 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 onSortStrategyChange={ handleListSortingStrategyOnChange }
                 sortStrategy={ listSortingStrategy }
                 rightActionPanel={ (
-                    <RootOnlyComponent>
-                        <Dropdown
-                            data-testid="group-mgt-groups-list-stores-dropdown"
-                            selection
-                            options={ userStoreOptions && userStoreOptions }
-                            placeholder={ t("console:manage.features.groups.list.storeOptions") }
-                            onChange={ handleDomainChange }
-                            loading={ isUserStoresListRequestLoading || isUserStoreRequestLoading }
-                            defaultValue={ userstoresConfig.primaryUserstoreName }
-                        />
-                    </RootOnlyComponent>
+                    <Dropdown
+                        data-testid="group-mgt-groups-list-stores-dropdown"
+                        selection
+                        options={ userStoreOptions && userStoreOptions }
+                        placeholder={ t("console:manage.features.groups.list.storeOptions") }
+                        onChange={ handleDomainChange }
+                        loading={ isUserStoresListRequestLoading || isUserStoreRequestLoading }
+                        defaultValue={ userstoresConfig.primaryUserstoreName }
+                    />
                 ) }
                 showPagination={ paginatedGroups?.length > 0  }
                 totalPages={ Math.ceil(groupList?.length / listItemLimit) }
