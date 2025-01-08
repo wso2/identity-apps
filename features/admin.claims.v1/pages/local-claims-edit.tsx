@@ -19,7 +19,6 @@
 import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
 import { attributeConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { UserStoreBasicData } from "@wso2is/admin.userstores.v1/models";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -69,6 +68,8 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
 
     const claimID: string = match.params.id;
     const hiddenUserStores: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ claim, setClaim ] = useState<Claim>(null);
     const [ isLocalClaimDetailsRequestLoading, setIsLocalClaimDetailsRequestLoading ] = useState<boolean>(false);
@@ -111,10 +112,10 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
     useEffect(() => {
         const userStores: UserStoreBasicData[] = [];
 
-        if (userstoresConfig?.primaryUserstoreName === PRIMARY_USERSTORE) {
+        if (userstoresConfig?.primaryUserstoreName === primaryUserStoreDomainName) {
             userStores.push({
-                id: PRIMARY_USERSTORE,
-                name: PRIMARY_USERSTORE
+                id: primaryUserStoreDomainName,
+                name: primaryUserStoreDomainName
             });
         }
 

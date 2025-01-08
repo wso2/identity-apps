@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -250,6 +250,10 @@ export interface FeatureConfigInterface {
      * Resident Outbound Provisioning feature
      */
     residentOutboundProvisioning?: FeatureAccessConfigInterface;
+    /**
+     * Rule based password expiry feature
+     */
+    ruleBasedPasswordExpiry?: FeatureAccessConfigInterface;
     /**
      * Connection management feature.
      */

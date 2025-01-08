@@ -1,5 +1,23 @@
 # @wso2is/identity-apps-core
 
+## 2.8.13
+
+### Patch Changes
+
+- [#7263](https://github.com/wso2/identity-apps/pull/7263) [`57cf9b69ddf277e2367b913dbc56a65169c96f4c`](https://github.com/wso2/identity-apps/commit/57cf9b69ddf277e2367b913dbc56a65169c96f4c) Thanks [@KD23243](https://github.com/KD23243)! - Change validation from backToUrl to callback
+
+## 2.8.12
+
+### Patch Changes
+
+- [#7103](https://github.com/wso2/identity-apps/pull/7103) [`b78b82365f002fbe98971a642793058b4ff479d7`](https://github.com/wso2/identity-apps/commit/b78b82365f002fbe98971a642793058b4ff479d7) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Add missing changes from unification
+
+## 2.8.11
+
+### Patch Changes
+
+- [#7250](https://github.com/wso2/identity-apps/pull/7250) [`79a63a6187da0c01415ea5bac2ca2ec2f56ce87a`](https://github.com/wso2/identity-apps/commit/79a63a6187da0c01415ea5bac2ca2ec2f56ce87a) Thanks [@KD23243](https://github.com/KD23243)! - Validate and Sanitize backToUrl in self-registration-username-request.jsp
+
 ## 2.8.10
 
 ### Patch Changes

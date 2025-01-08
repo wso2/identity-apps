@@ -75,7 +75,7 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
     /**
      * Check if the user has the required scopes to update the resident outbound provisioning configurations.
      */
-    const isReadOnly: boolean = useRequiredScopes(featureConfig?.residentOutboundProvisioning?.scopes?.update);
+    const isReadOnly: boolean = !useRequiredScopes(featureConfig?.residentOutboundProvisioning?.scopes?.update);
 
     const [ isShowCreateWizard, setIsShowCreateWizard ] = useState(false);
     const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>([]);

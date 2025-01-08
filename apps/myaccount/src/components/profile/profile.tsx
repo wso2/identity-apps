@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -165,6 +165,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isMultipleEmailsAndMobileConfigEnabled: boolean = config?.ui?.isMultipleEmailsAndMobileNumbersEnabled;
+    const primaryUserStoreDomainName: string = config?.ui?.primaryUserStoreDomainName;
 
     const [ isMobileVerificationEnabled, setIsMobileVerificationEnabled ] = useState<boolean>(false);
     const [ isEmailVerificationEnabled, setIsEmailVerificationEnabled ] = useState<boolean>(false);
@@ -328,7 +329,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         const username: string = profileDetails?.profileInfo["userName"];
 
         if (!username) return;
-        const userStoreDomain: string = resolveUserstore(username)?.toUpperCase();
+        const userStoreDomain: string = resolveUserstore(username, primaryUserStoreDomainName)?.toUpperCase();
         // Check each required attribute exists and domain is not excluded in the excluded user store list.
         const attributeCheck: boolean = multipleEmailsAndMobileFeatureRelatedAttributes.every(
             (attribute: string) => {
@@ -1469,6 +1470,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         let pendingEmailAddress: string = "";
         let maxAllowedLimit: number = 0;
 
+        const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required ?? schema.required;
+
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             verifyPopupHeader = t("myAccount:components.profile.actions.verifyEmail");
             attributeValueList = profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
@@ -1544,7 +1547,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     label=""
                     name={ schema.name }
                     placeholder={ getPlaceholderText(schema, fieldName) }
-                    required={ schema.required }
+                    required={ resolvedRequiredValue }
                     requiredErrorMessage={
                         t("myAccount:components.profile.forms.generic.inputs.validations.empty",
                             { fieldName }) }
@@ -1754,6 +1757,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     const generateCountryDropdown = (schema: ProfileSchema, fieldName: string): JSX.Element => {
+        const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required ?? schema.required;
 
         return (
             <>
@@ -1762,7 +1766,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     label=""
                     name={ schema.name }
                     placeholder={ getPlaceholderText(schema, fieldName) }
-                    required={ schema.required }
+                    required={ resolvedRequiredValue }
                     requiredErrorMessage={
                         t("myAccount:components.profile.forms.generic.inputs.validations.empty", { fieldName }) }
                     type="dropdown"
@@ -1775,7 +1779,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     })) : [] }
                     value={ resolveProfileInfoSchemaValue(schema) }
                     disabled={ false }
-                    clearable={ !schema.required }
+                    clearable={ !resolvedRequiredValue }
                     search
                     selection
                     fluid
@@ -1812,6 +1816,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     const generateEditableLocaleField = (schema: ProfileSchema, fieldName: string): JSX.Element => {
+        const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required ?? schema.required;
 
         return (
             <>
@@ -1819,7 +1824,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     autofocus={ true }
                     name={ schema.name }
                     placeholder={ getPlaceholderText(schema, fieldName) }
-                    required={ schema.required }
+                    required={ resolvedRequiredValue }
                     requiredErrorMessage={
                         t("myAccount:components.profile.forms.generic." +
                             "inputs.validations.empty", { fieldName })
@@ -1843,7 +1848,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             }) : []
                     }
                     disabled={ false }
-                    clearable={ !schema?.required }
+                    clearable={ !resolvedRequiredValue }
                     search
                     selection
                     fluid
@@ -1880,6 +1885,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     const generateTextField = (schema: ProfileSchema, fieldName: string): JSX.Element => {
+        const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required ?? schema.required;
 
         return (
             <>
@@ -1890,7 +1896,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     data-testid= { `${testId}-${schema.name.replace(".", "-")}-text-field` }
                     data-componentid= { `${testId}-${schema.name.replace(".", "-")}-text-field` }
                     placeholder={ getPlaceholderText(schema, fieldName) }
-                    required={ schema.required }
+                    required={ resolvedRequiredValue }
                     requiredErrorMessage={
                         t("myAccount:components.profile.forms.generic.inputs.validations.empty", { fieldName }) }
                     type="text"
@@ -2115,8 +2121,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     const generatePlaceholderLink = (schema: ProfileSchema, fieldName: string): JSX.Element => {
+        const resolvedMutabilityValue: string = schema?.profiles?.endUser?.mutability ?? schema.mutability;
 
-        if (!CommonUtils.isProfileReadOnly(isReadOnlyUser) && schema.mutability !== ProfileConstants.READONLY_SCHEMA) {
+        if (!CommonUtils.isProfileReadOnly(isReadOnlyUser) &&
+            resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA) {
             return (
                 <a
                     className="placeholder-text"
@@ -2146,6 +2154,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         let attributeValueList: string[] = [];
         let primaryAttributeValue: string = "";
+        const resolvedMutabilityValue: string = schema?.profiles?.endUser?.mutability ?? schema.mutability;
 
         if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
             attributeValueList = profileInfo.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [];
@@ -2167,7 +2176,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         };
 
         if (!CommonUtils.isProfileReadOnly(isReadOnlyUser)
-            && schema.mutability !== ProfileConstants.READONLY_SCHEMA
+            && resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA
             && schema.name !== ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")
             && !isFieldEmpty()
             && hasRequiredScopes(
@@ -2589,8 +2598,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         return !(!CommonUtils.isProfileReadOnly(isReadOnlyUser)
             && hasRequiredScopes(featureConfig?.personalInfo,featureConfig?.personalInfo?.scopes?.update, allowedScopes)
             && profileSchema?.some((schema: ProfileSchema) => {
+                const resolvedMutabilityValue: string = schema?.profiles?.endUser?.mutability ?? schema.mutability;
+
                 return schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
-                    && schema.mutability !== ProfileConstants.READONLY_SCHEMA;
+                    && resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA;
             }));
     };
 
@@ -2646,6 +2657,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                             >
                                 {
                                     profileSchema && profileSchema.map((schema: ProfileSchema, index: number) => {
+                                        const resolvedMutabilityValue: string = schema?.profiles?.endUser?.mutability
+                                            ?? schema.mutability;
+                                        const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required
+                                            ?? schema.required;
+
                                         if (!(schema.name ===
                                             ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
                                     || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACTIVE")
@@ -2686,7 +2702,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                                                 : null
                                                                             : profileInfo.get(schema.name)
                                                                     }
-                                                                    isMobileRequired={ schema.required }
+                                                                    isMobileRequired={ resolvedRequiredValue }
                                                                     isMultipleEmailAndMobileNumberEnabled =
                                                                         {
                                                                             isMultipleEmailAndMobileNumberEnabled
@@ -2699,7 +2715,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                                     {
                                                         !isEmpty(profileInfo.get(schema.name)) ||
                                         (!CommonUtils.isProfileReadOnly(isReadOnlyUser)
-                                            && (schema.mutability !== ProfileConstants.READONLY_SCHEMA)
+                                            && (resolvedMutabilityValue !== ProfileConstants.READONLY_SCHEMA)
                                             && hasRequiredScopes(featureConfig?.personalInfo,
                                                 featureConfig?.personalInfo?.scopes?.update, allowedScopes))
                                                             ? generateSchemaForm(schema, index)

@@ -1,13 +1,13 @@
 {
     "private": true,
     "name": "@wso2is/admin.template-core.v1",
-    "version": "1.5.20",
+    "version": "1.5.27",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/core": "^2.5.3",
-        "@wso2is/admin.core.v1": "^2.35.4",
+        "@wso2is/core": "^2.5.4",
+        "@wso2is/admin.core.v1": "^2.35.11",
         "i18next": "^21.9.1",
         "react-redux": "^7.2.9",
         "redux": "^4.0.4"
@@ -30,7 +30,7 @@
         "typescript": "^4.6.4"
     },
     "peerDependencies": {
-        "react": "catalog:",
+        "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^4.3.1"
     },

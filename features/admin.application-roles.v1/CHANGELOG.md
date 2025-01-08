@@ -1,5 +1,103 @@
 # @wso2is/admin.application-roles.v1
 
+## 2.26.73
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.extensions.v1@2.35.32
+  - @wso2is/admin.applications.v1@2.30.73
+  - @wso2is/admin.connections.v1@2.30.9
+  - @wso2is/admin.core.v1@2.35.11
+  - @wso2is/admin.groups.v1@2.26.32
+  - @wso2is/admin.identity-providers.v1@2.26.73
+  - @wso2is/admin.userstores.v1@2.26.32
+
+## 2.26.72
+
+### Patch Changes
+
+- [#7239](https://github.com/wso2/identity-apps/pull/7239) [`398c39ec452d460994a3a0a6425115678538e49b`](https://github.com/wso2/identity-apps/commit/398c39ec452d460994a3a0a6425115678538e49b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the option to modify the primary user store domain name in console and myaccount apps
+
+- Updated dependencies [[`398c39ec452d460994a3a0a6425115678538e49b`](https://github.com/wso2/identity-apps/commit/398c39ec452d460994a3a0a6425115678538e49b)]:
+  - @wso2is/admin.applications.v1@2.30.72
+  - @wso2is/admin.connections.v1@2.30.8
+  - @wso2is/admin.extensions.v1@2.35.31
+  - @wso2is/admin.groups.v1@2.26.31
+  - @wso2is/react-components@2.8.14
+  - @wso2is/admin.core.v1@2.35.10
+  - @wso2is/core@2.5.4
+  - @wso2is/admin.identity-providers.v1@2.26.72
+  - @wso2is/admin.userstores.v1@2.26.31
+  - @wso2is/access-control@3.3.8
+
+## 2.26.71
+
+### Patch Changes
+
+- Updated dependencies [[`a7a437f20784d7b7423a195f5f9fe0682bc28235`](https://github.com/wso2/identity-apps/commit/a7a437f20784d7b7423a195f5f9fe0682bc28235)]:
+  - @wso2is/admin.core.v1@2.35.9
+  - @wso2is/admin.applications.v1@2.30.71
+  - @wso2is/admin.connections.v1@2.30.7
+  - @wso2is/admin.extensions.v1@2.35.30
+  - @wso2is/admin.groups.v1@2.26.30
+  - @wso2is/admin.identity-providers.v1@2.26.71
+  - @wso2is/admin.userstores.v1@2.26.30
+
+## 2.26.70
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.35.8
+  - @wso2is/admin.extensions.v1@2.35.29
+  - @wso2is/admin.applications.v1@2.30.70
+  - @wso2is/admin.connections.v1@2.30.6
+  - @wso2is/admin.identity-providers.v1@2.26.70
+  - @wso2is/admin.groups.v1@2.26.29
+  - @wso2is/admin.userstores.v1@2.26.29
+
+## 2.26.69
+
+### Patch Changes
+
+- Updated dependencies [[`224842029dc99ae8b90344a146a5bbd1d4fb5c35`](https://github.com/wso2/identity-apps/commit/224842029dc99ae8b90344a146a5bbd1d4fb5c35), [`2b1240e04858c8ebfb3c33cfc91a76c62c0dcb33`](https://github.com/wso2/identity-apps/commit/2b1240e04858c8ebfb3c33cfc91a76c62c0dcb33)]:
+  - @wso2is/admin.core.v1@2.35.7
+  - @wso2is/admin.groups.v1@2.26.28
+  - @wso2is/admin.applications.v1@2.30.69
+  - @wso2is/admin.connections.v1@2.30.5
+  - @wso2is/admin.extensions.v1@2.35.28
+  - @wso2is/admin.identity-providers.v1@2.26.69
+  - @wso2is/admin.userstores.v1@2.26.28
+
+## 2.26.68
+
+### Patch Changes
+
+- [#7258](https://github.com/wso2/identity-apps/pull/7258) [`403d351f2cb978fc4e2c02d49160af509a50a112`](https://github.com/wso2/identity-apps/commit/403d351f2cb978fc4e2c02d49160af509a50a112) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Revert pnpm version back to v8.7.4
+
+- Updated dependencies [[`403d351f2cb978fc4e2c02d49160af509a50a112`](https://github.com/wso2/identity-apps/commit/403d351f2cb978fc4e2c02d49160af509a50a112)]:
+  - @wso2is/admin.identity-providers.v1@2.26.68
+  - @wso2is/admin.applications.v1@2.30.68
+  - @wso2is/admin.connections.v1@2.30.4
+  - @wso2is/admin.extensions.v1@2.35.27
+  - @wso2is/admin.userstores.v1@2.26.27
+  - @wso2is/admin.groups.v1@2.26.27
+  - @wso2is/admin.core.v1@2.35.6
+
+## 2.26.67
+
+### Patch Changes
+
+- Updated dependencies [[`bbb1d924701c0538df5248a581147062581d98eb`](https://github.com/wso2/identity-apps/commit/bbb1d924701c0538df5248a581147062581d98eb)]:
+  - @wso2is/admin.applications.v1@2.30.67
+  - @wso2is/admin.connections.v1@2.30.3
+  - @wso2is/admin.core.v1@2.35.5
+  - @wso2is/admin.extensions.v1@2.35.26
+  - @wso2is/admin.groups.v1@2.26.26
+  - @wso2is/admin.identity-providers.v1@2.26.67
+  - @wso2is/admin.userstores.v1@2.26.26
+
 ## 2.26.66
 
 ### Patch Changes
