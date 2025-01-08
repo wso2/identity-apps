@@ -27,9 +27,6 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS_MSG" %>
-<%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
-<%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
-<%@ page import="org.wso2.carbon.identity.base.IdentityRuntimeException" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.identity.core.URLBuilderException" %>
@@ -762,7 +759,7 @@
                             <div class="field external-link-container text-small">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                         "Already.have.an.account")%>
-                                <a href="<%= StringEscapeUtils.escapeHtml4(backToUrl) %>">
+                                <a href="<%=backToUrl%>">
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Sign.in")%>
                                 </a>
                             </div>
