@@ -240,10 +240,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const oneTimePassword: string = user[userConfig.userProfileSchema]?.oneTimePassword;
     const isCurrentUserAdmin: boolean = user?.roles?.some((role: RolesMemberInterface) =>
         role.display === administratorConfig.adminRoleName) ?? false;
-    const [ expandMultiAttributeAccordion, setExpandMultiAttributeAccordion ] = useState<Record<string, boolean>>({
-        [EMAIL_ADDRESSES_ATTRIBUTE]: false,
-        [MOBILE_NUMBERS_ATTRIBUTE]: false
-    });
     const [ isFormStale, setIsFormStale ] = useState<boolean>(false);
     const [ isMultipleEmailAndMobileNumberEnabled, setIsMultipleEmailAndMobileNumberEnabled ] =
         useState<boolean>(false);
@@ -1933,7 +1929,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             attributeValueList.unshift(primaryAttributeValue);
         }
         const showAccordion: boolean = attributeValueList.length >= 1;
-        const accordionLabelValue: string = showAccordion ? attributeValueList[0] : "";
 
         const showVerifiedPopup = (value: string): boolean => {
             return verificationEnabled &&
@@ -2024,43 +2019,39 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     }
                 />
                 <div hidden={ !showAccordion }>
-                    <Accordion
+                    <TableContainer
+                        component={ Paper }
                         elevation={ 0 }
-                        className="multi-valued-accordion"
                         data-componentid={ `${testId}-profile-form-${schema.name}-accordion` }
-                        expanded={ true }
-                        defaultExpanded
                     >
-                        <AccordionDetails className="accordion-details">
-                            <TableContainer component={ Paper } elevation={ 0 }>
-                                <Table
-                                    className="multi-value-table"
-                                    size="small"
-                                    aria-label="multi-attribute value table"
-                                >
-                                    <TableBody>
-                                        { attributeValueList?.map(
-                                            (value: string, index: number) => (
-                                                <TableRow key={ index } className="multi-value-table-data-row">
-                                                    <TableCell align="left">
-                                                        <div className="table-c1">
-                                                            <label
-                                                                className={ `c1-value ${
-                                                                    schema.name
+                        <Table
+                            className="multi-value-table"
+                            size="small"
+                            aria-label="multi-attribute value table"
+                        >
+                            <TableBody>
+                                { attributeValueList?.map(
+                                    (value: string, index: number) => (
+                                        <TableRow key={ index } className="multi-value-table-data-row">
+                                            <TableCell align="left">
+                                                <div className="table-c1">
+                                                    <label
+                                                        className={ `c1-value ${
+                                                            schema.name
                                                                     === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
                                                                         get("MOBILE_NUMBERS")
-                                                                        ? "mobile-label"
-                                                                        : null}`
-                                                                }
-                                                                data-componentid={
-                                                                    `${testId}-profile-form-${schema.name}` +
+                                                                ? "mobile-label"
+                                                                : null}`
+                                                        }
+                                                        data-componentid={
+                                                            `${testId}-profile-form-${schema.name}` +
                                                                     `-value-${index}`
-                                                                }
-                                                            >
-                                                                { value }
-                                                            </label>
-                                                            {
-                                                                showVerifiedPopup(value)
+                                                        }
+                                                    >
+                                                        { value }
+                                                    </label>
+                                                    {
+                                                        showVerifiedPopup(value)
                                                                 && (
                                                                     <div
                                                                         className="verified-icon"
@@ -2085,9 +2076,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                         />
                                                                     </div>
                                                                 )
-                                                            }
-                                                            {
-                                                                showPrimaryPopup(value)
+                                                    }
+                                                    {
+                                                        showPrimaryPopup(value)
                                                                 && (
                                                                     <div
                                                                         data-componentid={
@@ -2101,72 +2092,70 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                                         />
                                                                     </div>
                                                                 )
-                                                            }
-                                                        </div>
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        <div className="table-c2">
-                                                            { showVerifyButton(value) && (
-                                                                <OxygenButton
-                                                                    variant="text"
-                                                                    size="small"
-                                                                    onClick={ () => handleVerify(schema, value) }
-                                                                    data-componentid={
-                                                                        `${testId}-profile-form` +
+                                                    }
+                                                </div>
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                <div className="table-c2">
+                                                    { showVerifyButton(value) && (
+                                                        <OxygenButton
+                                                            variant="text"
+                                                            size="small"
+                                                            onClick={ () => handleVerify(schema, value) }
+                                                            data-componentid={
+                                                                `${testId}-profile-form` +
                                                                         `-${schema.name}-verify-button-${index}`
-                                                                    }
-                                                                    disabled={ isSubmitting || isReadOnly }
-                                                                >
-                                                                    { t("common:verify") }
-                                                                </OxygenButton>
-                                                            ) }
-                                                            { showMakePrimaryButton(value) && (
-                                                                <OxygenButton
-                                                                    variant="text"
-                                                                    size="small"
-                                                                    className="primary-btn"
-                                                                    onClick={ () => handleMakePrimary(schema, value) }
-                                                                    data-componentid={
-                                                                        `${testId}-profile-form` +
+                                                            }
+                                                            disabled={ isSubmitting || isReadOnly }
+                                                        >
+                                                            { t("common:verify") }
+                                                        </OxygenButton>
+                                                    ) }
+                                                    { showMakePrimaryButton(value) && (
+                                                        <OxygenButton
+                                                            variant="text"
+                                                            size="small"
+                                                            className="primary-btn"
+                                                            onClick={ () => handleMakePrimary(schema, value) }
+                                                            data-componentid={
+                                                                `${testId}-profile-form` +
                                                                         `-${schema.name}-make-primary-button-${index}`
-                                                                    }
-                                                                    disabled={ isSubmitting || isReadOnly }
-                                                                >
-                                                                    { t("common:makePrimary") }
-                                                                </OxygenButton>
-                                                            ) }
-                                                            <IconButton
-                                                                size="small"
-                                                                hidden={ !showDeleteButton(value) }
-                                                                onClick={ () => {
-                                                                    setSelectedAttributeInfo({ schema, value });
-                                                                    setShowMultiValuedItemDeleteConfirmationModal(true);
-                                                                } }
-                                                                data-componentid={
-                                                                    `${testId}-profile-form` +
+                                                            }
+                                                            disabled={ isSubmitting || isReadOnly }
+                                                        >
+                                                            { t("common:makePrimary") }
+                                                        </OxygenButton>
+                                                    ) }
+                                                    <IconButton
+                                                        size="small"
+                                                        hidden={ !showDeleteButton(value) }
+                                                        onClick={ () => {
+                                                            setSelectedAttributeInfo({ schema, value });
+                                                            setShowMultiValuedItemDeleteConfirmationModal(true);
+                                                        } }
+                                                        data-componentid={
+                                                            `${testId}-profile-form` +
                                                                     `-${schema.name}-delete-button-${index}`
-                                                                }
-                                                                disabled={ isSubmitting || isReadOnly }
-                                                            >
-                                                                <Popup
-                                                                    trigger={ (
-                                                                        <Icon name="trash alternate" />
-                                                                    ) }
-                                                                    header={ t("common:delete") }
-                                                                    size="tiny"
-                                                                    inverted
-                                                                />
-                                                            </IconButton>
-                                                        </div>
-                                                    </TableCell>
-                                                </TableRow>
-                                            )
-                                        ) }
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        </AccordionDetails>
-                    </Accordion>
+                                                        }
+                                                        disabled={ isSubmitting || isReadOnly }
+                                                    >
+                                                        <Popup
+                                                            trigger={ (
+                                                                <Icon name="trash alternate" />
+                                                            ) }
+                                                            header={ t("common:delete") }
+                                                            size="tiny"
+                                                            inverted
+                                                        />
+                                                    </IconButton>
+                                                </div>
+                                            </TableCell>
+                                        </TableRow>
+                                    )
+                                ) }
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                 </div>
             </div>
         );
