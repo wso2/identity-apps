@@ -2014,8 +2014,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 {
                     attributeValueList.length < 1
                         ? generatePlaceholderLink(schema, fieldName)
-                        : (
-                            <Select
+                        : attributeValueList.length > 1
+                            ? ( <Select
                                 className="multi-attribute-dropdown"
                                 value={ attributeValueList[0] }
                                 disableUnderline
@@ -2084,8 +2084,62 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                                         </MenuItem>
                                     )
                                 ) }
-                            </Select>
-                        )
+                            </Select> )
+                            : (
+                                <div className="dropdown-row">
+                                    <Typography
+                                        className={ `dropdown-label ${
+                                            schema.name === MOBILE_NUMBERS_ATTRIBUTE
+                                                ? "mobile-label"
+                                                : null}`
+                                        }
+                                        data-componentid={ `${testId}-readonly-section-
+                                                        ${schema.name.replace(".", "-")}-value`
+                                        }
+                                    >
+                                        { attributeValueList[0] }
+                                    </Typography>
+                                    {
+                                        showPendingEmailPopup(attributeValueList[0])
+                                        && (
+                                            <div
+                                                className="verified-icon"
+                                                data-componentid={ `${testId}-readonly-section-
+                                                    ${schema.name.replace(".", "-")}-pending-email-icon` }
+                                            >
+                                                { generatePendingEmailPopup() }
+                                            </div>
+                                        )
+                                    }
+                                    {
+                                        showVerifiedPopup(attributeValueList[0])
+                                        && (
+                                            <div
+                                                className="verified-icon"
+                                                data-componentid={ `${testId}-readonly-section-
+                                                    ${schema.name.replace(".", "-")}-verified-icon` }
+                                            >
+                                                { generateVerifiedPopup() }
+                                            </div>
+                                        )
+                                    }
+                                    {
+                                        showPrimaryChip(attributeValueList[0])
+                                        && (
+                                            <div
+                                                className="verified-icon"
+                                                data-componentid={ `${testId}-readonly-section-
+                                                        ${schema.name.replace(".", "-")}-primary-icon` }
+                                            >
+                                                <Chip
+                                                    label={ t("common:primary") }
+                                                    size="small"
+                                                />
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                            )
                 }
             </>
         );
