@@ -172,7 +172,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
             const readWriteStores: UserstoreListResponseInterface[] = await Promise.all(response.data?.map(
                 async (store: UserstoreListResponseInterface) => {
-                    const isReadWrite: boolean = await isUserStoreReadWrite(store.id);
+                    const isReadWrite: boolean = await isUserStoreReadWrite(store?.id);
 
                     return isReadWrite ? store : null;
                 }));

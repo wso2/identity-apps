@@ -213,7 +213,7 @@ export const EditAdditionalPropertiesLocalClaims:
                             />
                         </Grid.Column>
                     </Grid.Row>
-                    { !isSubOrganization && (
+                    { !isSubOrganization() && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 6 }>
                                 <Show

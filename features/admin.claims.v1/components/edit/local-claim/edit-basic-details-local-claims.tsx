@@ -580,7 +580,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 label={ t("claims:local.forms.uniquenessScope.label") }
                                 data-componentid={ `${ testId }-form-uniqueness-scope-dropdown` }
                                 hint={ t("claims:local.forms.uniquenessScopeHint") }
-                                disabled={ isSubOrganization }
+                                disabled={ isSubOrganization() }
                                 options={ [
                                     {
                                         text: t("claims:local.forms.uniquenessScope.options.none"),
@@ -776,7 +776,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             )
                     }
                     {
-                        !hideSpecialClaims && !isSubOrganization &&
+                        !hideSpecialClaims && !isSubOrganization() &&
                         (
                             <Show
                                 when={ featureConfig?.attributeDialects?.scopes?.update }
