@@ -16,16 +16,12 @@
   ~ under the License.
 --%>
 
-<%@ page import="org.apache.commons.lang.StringUtils" %>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.authenticator.emailotp.EmailOTPAuthenticatorConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="java.net.URLDecoder" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="static java.util.Base64.getDecoder" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 <%@ include file="includes/localize.jsp" %>
@@ -41,10 +37,7 @@
     String queryString = request.getQueryString();
 
     String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
-    String actualError = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
     String authenticationFailed = "false";
-    boolean isErrorFallbackLocale = !userLocale.toLanguageTag().equals("en_US");
-
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         authenticationFailed = "true";
@@ -54,8 +47,7 @@
 
             if (errorMessage.equalsIgnoreCase("cancelled.on.app")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.uaepass.cancelled");
-            } else if (isErrorFallbackLocale) {
-                actualError = errorMessage;
+            } else {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
             }
         }
@@ -64,106 +56,78 @@
 
 <%-- Data for the layout from the page --%>
 <%
-    layoutData.put("isResponsePage", true);
-    layoutData.put("isErrorResponse", true);
+    layoutData.put("containerSize", "medium");
 %>
 
-<html>
-    <head>
-        <%-- header --%>
+<html lang="en-US">
+<head>
+    <%-- header --%>
+    <%
+        File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
+        if (headerFile.exists()) {
+    %>
+    <jsp:include page="extensions/header.jsp"/>
+    <% } else { %>
+    <jsp:include page="includes/header.jsp"/>
+    <% } %>
+
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.min.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="login-portal layout email-otp-portal-layout">
+<layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+    <layout:component componentName="ProductHeader">
+        <%-- product-title --%>
         <%
-            File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-            if (headerFile.exists()) {
+            File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+            if (productTitleFile.exists()) {
         %>
-        <jsp:include page="extensions/header.jsp"/>
+        <jsp:include page="extensions/product-title.jsp"/>
         <% } else { %>
-        <jsp:include page="includes/header.jsp"/>
+        <jsp:include page="includes/product-title.jsp"/>
         <% } %>
-
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.min.js"></script>
-        <script src="js/respond.min.js"></script>
-        <![endif]-->
-    </head>
-    <body class="login-portal layout sms-otp-portal-layout">
-
-        <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-            <layout:component componentName="ProductHeader">
-                <%-- product-title --%>
-                <%
-                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                    if (productTitleFile.exists()) {
-                %>
-                    <jsp:include page="extensions/product-title.jsp"/>
-                <% } else { %>
-                    <jsp:include page="includes/product-title.jsp"/>
-                <% } %>
-            </layout:component>
-            <layout:component componentName="MainSection">
-                <div class="ui orange attached segment mt-3">
-                    <h3 class="ui header text-center slogan-message mt-3 mb-6">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.uaepass.title")%>
-                    </h3>
-                    <%
-                        if ("true".equals(authenticationFailed)) {
-                    %>
-                        <p class="portal-tagline-description">
-                            <%=Encode.forHtmlContent(errorMessage)%>
-                        </p>
-                        <div class="ui divider hidden"></div>
-                    <% } %>
-                </div>
-                <div class="ui bottom attached warning message">
-                    <p class="text-left mt-0">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
-                        <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
-                            <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
-                        </a> 
-                    <%
-                        if (config.getServletContext().getResource("extensions/error-tracking-reference.jsp") != null) {
-                    %>
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
-                        </p>
-                        <div class="ui divider hidden"></div>
-                        <jsp:include page="extensions/error-tracking-reference.jsp">
-                            <jsp:param name="logError" value="<%=isErrorFallbackLocale%>"/>
-                            <jsp:param name="errorCode" value="<%=actualError%>"/>
-                            <jsp:param name="error" value="<%=actualError%>"/>
-                        </jsp:include>
-                    <%
-                        } else {
-                    %>
-                        </p>
-                    <%
-                        }
-                    %>
-                    <div class="ui divider hidden"></div>
-                </div>
-            </layout:component>
-            <layout:component componentName="ProductFooter">
-                <%-- product-footer --%>
-                <%
-                    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-                    if (productFooterFile.exists()) {
-                %>
-                <jsp:include page="extensions/product-footer.jsp"/>
-                <% } else { %>
-                <jsp:include page="includes/product-footer.jsp"/>
-                <% } %>
-            </layout:component>
-            <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
-                <jsp:include page="${pathOfDynamicComponent}" />
-            </layout:dynamicComponent>
-        </layout:main>
-
-        <%-- footer --%>
+    </layout:component>
+    <layout:component componentName="MainSection">
+        <div class="ui segment">
+                <%-- page content --%>
+            <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.uaepass.title")%>
+            </h2>
+            <div class="ui divider hidden"></div>
+            <%
+                if ("true".equals(authenticationFailed)) {
+            %>
+            <div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%>
+            </div>
+            <% } %>
+        </div>
+    </layout:component>
+    <layout:component componentName="ProductFooter">
+        <%-- product-footer --%>
         <%
-            File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-            if (footerFile.exists()) {
+            File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+            if (productFooterFile.exists()) {
         %>
-        <jsp:include page="extensions/footer.jsp"/>
+        <jsp:include page="extensions/product-footer.jsp"/>
         <% } else { %>
-        <jsp:include page="includes/footer.jsp"/>
+        <jsp:include page="includes/product-footer.jsp"/>
         <% } %>
-    </body>
+    </layout:component>
+    <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+        <jsp:include page="${pathOfDynamicComponent}" />
+    </layout:dynamicComponent>
+</layout:main>
+
+<%-- footer --%>
+<%
+    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+    if (footerFile.exists()) {
+%>
+<jsp:include page="extensions/footer.jsp"/>
+<% } else { %>
+<jsp:include page="includes/footer.jsp"/>
+<% } %>
+</body>
 </html>
