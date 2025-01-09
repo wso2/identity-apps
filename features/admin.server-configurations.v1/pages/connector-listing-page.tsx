@@ -90,7 +90,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     );
 
     const predefinedCategories: any = useMemo(() => {
-        const originalConnectors: Array<any> = GovernanceConnectorUtils.getPredefinedConnectorCategories();
+        const originalConnectors: Array<any> = GovernanceConnectorUtils.getCombinedPredefinedConnectorCategories();
         const refinedConnectorCategories: Array<any> = [];
 
         const isOrganizationDiscoveryEnabled: boolean = featureConfig?.organizationDiscovery?.enabled
