@@ -61,15 +61,7 @@ import "./script-editor-panel.scss";
 /**
  * Proptypes for the Script editor panel component.
  */
-// export type ScriptEditorPanelPropsInterface = IdentifiableComponentInterface & HTMLAttributes<HTMLDivElement>;
-//I need to add props for script editor ponel, language prop
-
-export interface ScriptEditorPanelPropsInterface extends IdentifiableComponentInterface, HTMLAttributes<HTMLDivElement>{
-    language?: string;
-    hideMinimizeIcon?: boolean;
-    hideText?: boolean;
-    initialValue?: string;
-}
+export type ScriptEditorPanelPropsInterface = IdentifiableComponentInterface & HTMLAttributes<HTMLDivElement>;
 
 const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
     import("@monaco-editor/react" /* webpackChunkName: "MDMonacoEditor" */)
@@ -123,7 +115,7 @@ const MinimizeIcon = ({ width = 16, height = 16 }: { width: number; height: numb
  * @returns Script editor panel component.
  */
 const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterface>): ReactElement => {
-    const { className, "data-componentid": componentId, language, hideMinimizeIcon, hideText, initialValue } = props;
+    const { className, "data-componentid": componentId } = props;
 
     const { t } = useTranslation();
 
@@ -241,25 +233,15 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
         setScriptEditorPanelSizeMode(ScriptEditorPanelSizeModes.Minimized);
     };
 
-    /**
-     * Determine what value to display in the script editor.
-     *
-     * Logic:
-     * - If `hideText` is true, do not display any text (`null`).
-     * - If `initialValue` is provided, use it as the editor's content.
-     * - If `initialValue` is not provided, fallback to `getAdaptiveScript()`.
-     */
-    const displayValue = hideText ? null : (initialValue !== undefined ? initialValue : getAdaptiveScript());
-
     const ScriptEditor: ReactElement = (
         <MonacoEditor
             loading={ null }
             className="script-editor"
             width="100%"
             height="100%"
-            language={ language || "javascript" }
+            language="javascript"
             theme={ editorTheme }
-            value={ displayValue }
+            value={ getAdaptiveScript() }
             options={ {
                 automaticLayout: true
             } }
@@ -305,41 +287,39 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
                             </div>
                             <div className="secret-selection-menu-wrapper">
                                 { secretMgtFeatureConfig?.enabled &&
-hasSecretReadPermissions && (
-                                    <SecretSelectionDropdown
-                                        open={ isSecretSelectionDropdownOpen }
-                                        onClose={ () => setIsSecretSelectionDropdownOpen(false) }
-                                        onOpen={ () => setIsSecretSelectionDropdownOpen(true) }
-                                        onSecretSelect={ (secret: SecretModel) =>
-                                            replaceCodeBlock(secret.secretName) }
-                                    />
-                                ) }
+                                    hasSecretReadPermissions && (
+                                        <SecretSelectionDropdown
+                                            open={ isSecretSelectionDropdownOpen }
+                                            onClose={ () => setIsSecretSelectionDropdownOpen(false) }
+                                            onOpen={ () => setIsSecretSelectionDropdownOpen(true) }
+                                            onSecretSelect={ (secret: SecretModel) =>
+                                                replaceCodeBlock(secret.secretName) }
+                                        />
+                                    ) }
                             </div>
                         </>
                     ) }
-                    { !hideMinimizeIcon && (
-                        <div className="editor-fullscreen">
-                            <Tooltip
-                                title={
-                                    scriptEditorPanelSizeMode === ScriptEditorPanelSizeModes.Minimized
-                                        ? t("common:goFullScreen")
-                                        : t("common:exitFullScreen")
-                                }
-                                data-componentid="editor-fullscreen-toggle-tooltip"
+                    <div className="editor-fullscreen">
+                        <Tooltip
+                            title={
+                                scriptEditorPanelSizeMode === ScriptEditorPanelSizeModes.Minimized
+                                    ? t("common:goFullScreen")
+                                    : t("common:exitFullScreen")
+                            }
+                            data-componentid="editor-fullscreen-toggle-tooltip"
+                        >
+                            <IconButton
+                                size="small"
+                                onClick={ handleScriptEditorPanelSizeChange }
                             >
-                                <IconButton
-                                    size="small"
-                                    onClick={ handleScriptEditorPanelSizeChange }
-                                >
-                                    {
-                                        scriptEditorPanelSizeMode === ScriptEditorPanelSizeModes.Minimized
-                                            ? <MaximizeIcon height={ 16 } width={ 16 } />
-                                            : <MinimizeIcon height={ 16 } width={ 16 } />
-                                    }
-                                </IconButton>
-                            </Tooltip>
-                        </div>
-                    ) }
+                                {
+                                    scriptEditorPanelSizeMode === ScriptEditorPanelSizeModes.Minimized
+                                        ? <MaximizeIcon height={ 16 } width={ 16 } />
+                                        : <MinimizeIcon height={ 16 } width={ 16 } />
+                                }
+                            </IconButton>
+                        </Tooltip>
+                    </div>
                 </div>
             </Toolbar>
         </Box>
