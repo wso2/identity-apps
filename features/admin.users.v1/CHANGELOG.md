@@ -1,5 +1,33 @@
 # @wso2is/admin.users.v1
 
+## 2.29.35
+
+### Patch Changes
+
+- [#7235](https://github.com/wso2/identity-apps/pull/7235) [`c2568dbe95e01427899dbb6c71c6e04d8941e308`](https://github.com/wso2/identity-apps/commit/c2568dbe95e01427899dbb6c71c6e04d8941e308) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Move common i18n extensions in console app to i18n module
+
+- Updated dependencies [[`c2568dbe95e01427899dbb6c71c6e04d8941e308`](https://github.com/wso2/identity-apps/commit/c2568dbe95e01427899dbb6c71c6e04d8941e308), [`f1173193bb885f71c7d25fae5bfd011dfb70d79a`](https://github.com/wso2/identity-apps/commit/f1173193bb885f71c7d25fae5bfd011dfb70d79a)]:
+  - @wso2is/admin.server-configurations.v1@2.32.1
+  - @wso2is/admin.organizations.v1@2.26.76
+  - @wso2is/admin.extensions.v1@2.36.1
+  - @wso2is/admin.claims.v1@2.26.35
+  - @wso2is/admin.groups.v1@2.26.35
+  - @wso2is/admin.roles.v2@2.27.20
+  - @wso2is/admin.users.v1@2.29.35
+  - @wso2is/admin.core.v1@2.35.14
+  - @wso2is/i18n@2.14.6
+  - @wso2is/theme@2.5.1
+  - @wso2is/admin.identity-providers.v1@2.26.76
+  - @wso2is/admin.validation.v1@2.27.14
+  - @wso2is/admin.userstores.v1@2.26.35
+  - @wso2is/admin.authentication.v1@2.25.76
+  - @wso2is/admin.feature-gate.v1@1.4.76
+  - @wso2is/admin.tenants.v1@2.28.50
+  - @wso2is/admin.authorization.v1@2.25.30
+  - @wso2is/react-components@2.8.17
+  - @wso2is/dynamic-forms@2.4.17
+  - @wso2is/form@2.6.10
+
 ## 2.29.34
 
 ### Patch Changes

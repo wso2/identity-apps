@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.5.1
+
+### Patch Changes
+
+- [#7286](https://github.com/wso2/identity-apps/pull/7286) [`f1173193bb885f71c7d25fae5bfd011dfb70d79a`](https://github.com/wso2/identity-apps/commit/f1173193bb885f71c7d25fae5bfd011dfb70d79a) Thanks [@savindi7](https://github.com/savindi7)! - Bump apps
+
 ## 2.5.0
 
 ### Minor Changes
