@@ -52,9 +52,7 @@
         if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
             errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
-            if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
-            } else if (errorMessage.equalsIgnoreCase("cancelledOnApp")) {
+            if (errorMessage.equalsIgnoreCase("cancelled.on.app")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.uaepass.cancelled");
             } else if (isErrorFallbackLocale) {
                 actualError = errorMessage;
