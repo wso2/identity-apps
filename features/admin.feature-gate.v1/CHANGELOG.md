@@ -1,5 +1,15 @@
 # @wso2is/admin.feature-gate.v1
 
+## 1.4.75
+
+### Patch Changes
+
+- Updated dependencies [[`c01fab399c1832cfe7551229f608a8ff1020b7e8`](https://github.com/wso2/identity-apps/commit/c01fab399c1832cfe7551229f608a8ff1020b7e8)]:
+  - @wso2is/core@2.5.5
+  - @wso2is/admin.core.v1@2.35.13
+  - @wso2is/admin.organizations.v1@2.26.75
+  - @wso2is/access-control@3.3.9
+
 ## 1.4.74
 
 ### Patch Changes

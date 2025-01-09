@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.5.5
+
+### Patch Changes
+
+- [#7240](https://github.com/wso2/identity-apps/pull/7240) [`c01fab399c1832cfe7551229f608a8ff1020b7e8`](https://github.com/wso2/identity-apps/commit/c01fab399c1832cfe7551229f608a8ff1020b7e8) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add role create and delete ops to sub orgs
+
 ## 2.5.4
 
 ### Patch Changes
