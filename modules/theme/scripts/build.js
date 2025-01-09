@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,6 @@ const fs = require("fs-extra");
 const lessToJson = require("less-to-json");
 const mergeFiles = require("merge-files");
 const replace = require("replace");
-const rtlcss = require("rtlcss");
 const { Theme } = require("../src/theme");
 
 /**
@@ -148,16 +147,6 @@ const writeFile = (theme, file, content) => {
     log.info(theme + "/" + "theme" + file + " generated.");
 };
 
-/**
- * Generates RTL CSS files using rtlcss.
- *
- * @param {string} ltrCss - LTR CSS content.
- * @returns {string} RTL-compatible CSS content.
- */
-const generateRTLCSS = (ltrCss) => {
-    return rtlcss.process(ltrCss);
-};
-
 /*
  * Copy semantic.js files to each theme to make them self contained
  *
@@ -264,15 +253,10 @@ const generateThemes = () => {
 
         return Theme.compile(themeIndexFile, {}).then((output) => {
             const minifiedOutput = new CleanCSS().minify(output.css);
-            const rtlCSS = generateRTLCSS(output.css);
-            const rtlMinCSS = new CleanCSS().minify(rtlCSS);
-
             const files = {
                 ".css": output.css,
                 ".css.map": output.map,
-                ".min.css": minifiedOutput.styles,
-                ".rtl.css": rtlCSS,
-                ".rtl.min.css": rtlMinCSS.styles
+                ".min.css": minifiedOutput.styles
             };
 
             Object.keys(files).map((key) => {

@@ -20657,9 +20657,6 @@ importers:
       rimraf:
         specifier: ^3.0.2
         version: 3.0.2
-      rtlcss:
-        specifier: ^4.3.0
-        version: 4.3.0
       semantic-ui-css:
         specifier: ^2.4.1
         version: 2.5.0
@@ -46100,17 +46097,6 @@ packages:
   /rsvp@4.8.5:
     resolution: {integrity: sha512-nfMOlASu9OnRJo1mbEk2cz0D56a1MBNrJ7orjRZQG10XDyuvwksKbuXNp6qa+kbn839HwjwhBzhFmdsaEAfauA==}
     engines: {node: 6.* || >= 7.*}
-
-  /rtlcss@4.3.0:
-    resolution: {integrity: sha512-FI+pHEn7Wc4NqKXMXFM+VAYKEj/mRIcW4h24YVwVtyjI+EqGrLc2Hx/Ny0lrZ21cBWU2goLy36eqMcNj3AQJig==}
-    engines: {node: '>=12.0.0'}
-    hasBin: true
-    dependencies:
-      escalade: 3.2.0
-      picocolors: 1.1.1
-      postcss: 8.4.49
-      strip-json-comments: 3.1.1
-    dev: true
 
   /run-async@2.4.1:
     resolution: {integrity: sha512-tvVnVv01b8c1RrA6Ep7JkStj85Guv/YrMcwqYQnwjsAS2cTmmPGBBjAjpCW7RrSodNSoE2/qg9O4bceNvUuDgQ==}
