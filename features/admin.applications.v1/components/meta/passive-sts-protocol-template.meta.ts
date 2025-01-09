@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { ApplicationManagementConstants } from "../../constants";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import {
     ApplicationTemplateInterface,
-    ApplicationTemplateListItemInterface,
-    DefaultProtocolTemplate
-} from "../../models";
+    ApplicationTemplateListItemInterface
+} from "../../models/application";
+import { DefaultProtocolTemplate } from "../../models/application-inbound";
 
 export const PassiveStsProtocolTemplateItem: ApplicationTemplateListItemInterface = {
     authenticationProtocol: "passive-sts",

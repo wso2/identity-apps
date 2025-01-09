@@ -59,5 +59,7 @@ export class OrganizationDiscoveryConstants {
         .set("ORGANIZATION_DISCOVERY_CREATE", "organizationDiscovery.create")
         .set("ORGANIZATION_DISCOVERY_UPDATE", "organizationDiscovery.update")
         .set("ORGANIZATION_DISCOVERY_DELETE", "organizationDiscovery.delete")
-        .set("ORGANIZATION_DISCOVERY_READ", "organizationDiscovery.read");
+        .set("ORGANIZATION_DISCOVERY_READ", "organizationDiscovery.read")
+        .set("ORGANIZATION_DISCOVERY_EMAIL_DOMAIN_FOR_SELF_REG",
+            "organizationDiscovery.emailDomainDiscoveryForSelfReg");
 }

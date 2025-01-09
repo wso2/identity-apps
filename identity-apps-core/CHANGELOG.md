@@ -1,5 +1,132 @@
 # @wso2is/identity-apps-core
 
+## 2.9.1
+
+### Patch Changes
+
+- [#7286](https://github.com/wso2/identity-apps/pull/7286) [`f1173193bb885f71c7d25fae5bfd011dfb70d79a`](https://github.com/wso2/identity-apps/commit/f1173193bb885f71c7d25fae5bfd011dfb70d79a) Thanks [@savindi7](https://github.com/savindi7)! - Bump apps
+
+- Updated dependencies [[`f1173193bb885f71c7d25fae5bfd011dfb70d79a`](https://github.com/wso2/identity-apps/commit/f1173193bb885f71c7d25fae5bfd011dfb70d79a)]:
+  - @wso2is/theme@2.5.1
+
+## 2.9.0
+
+### Minor Changes
+
+- [#7220](https://github.com/wso2/identity-apps/pull/7220) [`664b1ec3c513595cdcc91216af4371dbe70ab996`](https://github.com/wso2/identity-apps/commit/664b1ec3c513595cdcc91216af4371dbe70ab996) Thanks [@savindi7](https://github.com/savindi7)! - Add RTL support.
+
+### Patch Changes
+
+- Updated dependencies [[`664b1ec3c513595cdcc91216af4371dbe70ab996`](https://github.com/wso2/identity-apps/commit/664b1ec3c513595cdcc91216af4371dbe70ab996)]:
+  - @wso2is/theme@2.5.0
+
+## 2.8.14
+
+### Patch Changes
+
+- [#7275](https://github.com/wso2/identity-apps/pull/7275) [`d934324e367ed709486106030b5e4d0200dff4c3`](https://github.com/wso2/identity-apps/commit/d934324e367ed709486106030b5e4d0200dff4c3) Thanks [@KD23243](https://github.com/KD23243)! - Revert callback validation logic
+
+## 2.8.13
+
+### Patch Changes
+
+- [#7263](https://github.com/wso2/identity-apps/pull/7263) [`57cf9b69ddf277e2367b913dbc56a65169c96f4c`](https://github.com/wso2/identity-apps/commit/57cf9b69ddf277e2367b913dbc56a65169c96f4c) Thanks [@KD23243](https://github.com/KD23243)! - Change validation from backToUrl to callback
+
+## 2.8.12
+
+### Patch Changes
+
+- [#7103](https://github.com/wso2/identity-apps/pull/7103) [`b78b82365f002fbe98971a642793058b4ff479d7`](https://github.com/wso2/identity-apps/commit/b78b82365f002fbe98971a642793058b4ff479d7) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Add missing changes from unification
+
+## 2.8.11
+
+### Patch Changes
+
+- [#7250](https://github.com/wso2/identity-apps/pull/7250) [`79a63a6187da0c01415ea5bac2ca2ec2f56ce87a`](https://github.com/wso2/identity-apps/commit/79a63a6187da0c01415ea5bac2ca2ec2f56ce87a) Thanks [@KD23243](https://github.com/KD23243)! - Validate and Sanitize backToUrl in self-registration-username-request.jsp
+
+## 2.8.10
+
+### Patch Changes
+
+- [#7223](https://github.com/wso2/identity-apps/pull/7223) [`1664078748a9b89cbe3b1ac8d41b6c3f718efe9b`](https://github.com/wso2/identity-apps/commit/1664078748a9b89cbe3b1ac8d41b6c3f718efe9b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a null check for the username field value
+
+## 2.8.9
+
+### Patch Changes
+
+- Updated dependencies [[`f0da57190bcbe263e54df65ca04087fb832b70d6`](https://github.com/wso2/identity-apps/commit/f0da57190bcbe263e54df65ca04087fb832b70d6)]:
+  - @wso2is/theme@2.4.6
+
+## 2.8.8
+
+### Patch Changes
+
+- [#7131](https://github.com/wso2/identity-apps/pull/7131) [`3cb1d7e7e2632971ec67647f233b8068016858fd`](https://github.com/wso2/identity-apps/commit/3cb1d7e7e2632971ec67647f233b8068016858fd) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Use getRoleBasicInfoById when checking Administrator role
+
+## 2.8.7
+
+### Patch Changes
+
+- Updated dependencies [[`e698589ee572899b0fa7c4c70407b740d7dbec2d`](https://github.com/wso2/identity-apps/commit/e698589ee572899b0fa7c4c70407b740d7dbec2d)]:
+  - @wso2is/theme@2.4.5
+
+## 2.8.6
+
+### Patch Changes
+
+- [#7191](https://github.com/wso2/identity-apps/pull/7191) [`a0850641919b1060808df7cf193885bb678464b3`](https://github.com/wso2/identity-apps/commit/a0850641919b1060808df7cf193885bb678464b3) Thanks [@Sachin-Mamoru](https://github.com/Sachin-Mamoru)! - Reflect branding in dismiss button of the timeout modal
+
+## 2.8.5
+
+### Patch Changes
+
+- [#7170](https://github.com/wso2/identity-apps/pull/7170) [`a9584e4e2385102a159edc61f0484be1e508bf48`](https://github.com/wso2/identity-apps/commit/a9584e4e2385102a159edc61f0484be1e508bf48) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Invoke new signing function to sign the ALOR cookie
+
+## 2.8.4
+
+### Patch Changes
+
+- [#7083](https://github.com/wso2/identity-apps/pull/7083) [`2bbb19623b7aa832910e23da5baa1829a2ff1281`](https://github.com/wso2/identity-apps/commit/2bbb19623b7aa832910e23da5baa1829a2ff1281) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Support email domain based organization discovery during self-registration.
+
+## 2.8.3
+
+### Patch Changes
+
+- Updated dependencies [[`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897)]:
+  - @wso2is/theme@2.4.4
+
+## 2.8.2
+
+### Patch Changes
+
+- [#6746](https://github.com/wso2/identity-apps/pull/6746) [`b9fd57f731822372db9211ee346627c4ad9de0eb`](https://github.com/wso2/identity-apps/commit/b9fd57f731822372db9211ee346627c4ad9de0eb) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add spotbugs plugin to identity-apps-core
+
+## 2.8.1
+
+### Patch Changes
+
+- [#7130](https://github.com/wso2/identity-apps/pull/7130) [`08669ad434c35921e0a8c502adc2dd37ec600d3c`](https://github.com/wso2/identity-apps/commit/08669ad434c35921e0a8c502adc2dd37ec600d3c) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix incorrect french translations in UI
+
+## 2.8.0
+
+### Minor Changes
+
+- [#7005](https://github.com/wso2/identity-apps/pull/7005) [`825c12b034fa8db01857a10b3fb9ff36314bce1a`](https://github.com/wso2/identity-apps/commit/825c12b034fa8db01857a10b3fb9ff36314bce1a) Thanks [@Malith-19](https://github.com/Malith-19)! - Add the username recovery multiple channel support with branding.
+
+## 2.7.8
+
+### Patch Changes
+
+- Updated dependencies [[`cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453`](https://github.com/wso2/identity-apps/commit/cdd3bfb5452ec094b8ab5f2bffc70015ed9d4453)]:
+  - @wso2is/theme@2.4.3
+
+## 2.7.7
+
+### Patch Changes
+
+- Updated dependencies [[`7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70`](https://github.com/wso2/identity-apps/commit/7ae5f3a133de1f6f82a50a8e93f5bd9ec3079e70)]:
+  - @wso2is/theme@2.4.2
+
 ## 2.7.6
 
 ### Patch Changes

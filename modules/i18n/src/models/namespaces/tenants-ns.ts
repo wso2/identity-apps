@@ -226,6 +226,27 @@ export interface TenantsNS {
         };
     };
     listing: {
+        advancedSearch: {
+            form: {
+                dropdown: {
+                    filterAttributeOptions: {
+                        domain: string;
+                    };
+                };
+                inputs: {
+                    filterAttribute: {
+                        placeholder: string;
+                    };
+                    filterCondition: {
+                        placeholder: string;
+                    };
+                    filterValue: {
+                        placeholder: string;
+                    };
+                };
+            };
+            placeholder: "Search by domain"
+        },
         count: string;
         emptyPlaceholder: {
             actions: {
@@ -234,6 +255,18 @@ export interface TenantsNS {
                 };
                 divider: string;
                 new: {
+                    label: string;
+                };
+            };
+            subtitles: {
+                0: string;
+                1: string;
+            };
+            title: string;
+        };
+        emptySearchResult: {
+            actions: {
+                clearSearchQuery: {
                     label: string;
                 };
             };

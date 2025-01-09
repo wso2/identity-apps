@@ -155,7 +155,11 @@ export interface actionsNS {
                 description: string;
                 message: string;
             };
-            fetch: {
+            fetchById: {
+                description: string;
+                message: string;
+            };
+            fetchByType: {
                 description: string;
                 message: string;
             };
@@ -185,7 +189,11 @@ export interface actionsNS {
                 description: string;
                 message: string;
             };
-            fetch: {
+            fetchById: {
+                description: string;
+                message: string;
+            };
+            fetchByType: {
                 description: string;
                 message: string;
             };

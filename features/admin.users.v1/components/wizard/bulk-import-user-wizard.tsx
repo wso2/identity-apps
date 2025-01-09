@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -61,6 +61,7 @@ import {
     SCIMSchemaExtension
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { StringUtils } from "@wso2is/core/utils";
 import {
     CSVFileStrategy,
     CSVResult,
@@ -178,6 +179,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const dispatch: Dispatch = useDispatch();
+
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ selectedCSVFile, setSelectedCSVFile ] = useState<File>(null);
     const [ userData, setUserData ] = useState<CSVResult>();
@@ -1083,7 +1087,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
                         ? `${selectedUserStore}/${email}`
                         : email,
-                [ userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
+                [ !StringUtils.isEqualCaseInsensitive(userstore, primaryUserStoreDomainName)
                     ? UserManagementConstants.CUSTOMSCHEMA
                     : UserManagementConstants.ENTERPRISESCHEMA
                 ]: {

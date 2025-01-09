@@ -174,13 +174,18 @@ export const branding: BrandingNS = {
         "password-reset-success": "Password Reset Link Sent",
         "sign-up": "Sign Up",
         "sms-otp": "SMS OTP",
-        "totp": "TOTP"
+        "totp": "TOTP",
+        "username-recovery-claim": "Username Recovery Claim",
+        "username-recovery-channel-selection": "Username Recovery Channel Selection",
+        "username-recovery-success": "Username Recovery Success"
     },
     variations: {
         "sms-otp": "SMS OTP",
         "email-link": "Email Link",
         "base": "Base",
-        "multi": "Multi Option"
+        "multi": "Multi Option",
+        "sms": "SMS",
+        "email": "Email"
     },
     ai: {
         banner: {

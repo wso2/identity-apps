@@ -63,6 +63,7 @@ i.icon {
         background-color: white;
         padding: 0px;
         border-radius: 50%;
+        fill: #666666;
     }
 
     &.map-icon {

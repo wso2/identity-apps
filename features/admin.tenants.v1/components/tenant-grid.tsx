@@ -53,8 +53,8 @@ const TenantGrid: FunctionComponent<TenantGridProps> = ({
         tenantList,
         tenantListLimit,
         setTenantListLimit,
-        isTenantListLoading,
-        isInitialRenderingComplete
+        isInitialRenderingComplete,
+        searchQuery
     } = useTenants();
 
     /**
@@ -70,6 +70,10 @@ const TenantGrid: FunctionComponent<TenantGridProps> = ({
         }
 
         if (!tenantList?.totalResults || tenantList.totalResults <= 0) {
+            return false;
+        }
+
+        if (searchQuery) {
             return false;
         }
 
@@ -100,8 +104,6 @@ const TenantGrid: FunctionComponent<TenantGridProps> = ({
             >
                 <WithTenantGridPlaceholders
                     data-componentid={ componentId }
-                    tenantList={ tenantList }
-                    isTenantListLoading={ isTenantListLoading }
                     onAddTenantModalTrigger={ onAddTenantModalTrigger }
                 >
                     { tenantList?.tenants?.map((tenant: Tenant) => (

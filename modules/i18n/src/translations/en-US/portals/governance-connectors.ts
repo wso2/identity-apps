@@ -18,6 +18,12 @@
 
 import { governanceConnectorsNS } from "../../../models";
 
+/**
+ * NOTES: No need to care about the max-len for this file since it's easier to
+ * translate the strings to other languages easily with editor translation tools.
+ */
+/* eslint-disable max-len */
+/* eslint-disable sort-keys */
 export const governanceConnectors: governanceConnectorsNS = {
     goBackLoginAndRegistration: "Go back to login & registration",
     categories: "Categories",
@@ -556,8 +562,8 @@ export const governanceConnectors: governanceConnectorsNS = {
                     friendlyName: "User Attribute Change Verification",
                     properties: {
                         userClaimUpdateEmailEnableVerification: {
-                            hint: "Trigger a verification notification when user's email address is updated.",
-                            label: "Enable user email verification on update"
+                            hint: "Trigger verification notifications for user's email addresses.",
+                            label: "Enable user email verification"
                         },
                         userClaimUpdateEmailVerificationCodeExpiryTime: {
                             hint: "Validity time of the email confirmation link in minutes.",
@@ -568,8 +574,8 @@ export const governanceConnectors: governanceConnectorsNS = {
                             label: "Enable user email notification on update"
                         },
                         userClaimUpdateMobileNumberEnableVerification: {
-                            hint: "Trigger a verification SMS OTP when user's mobile number is updated.",
-                            label: "Enable user mobile number verification on update"
+                            hint: "Trigger verification SMS OTP for user's mobile numbers.",
+                            label: "Enable user mobile number verification"
                         },
                         userClaimUpdateMobileNumberVerificationCodeExpiryTime: {
                             hint: "Validity time of the mobile number confirmation OTP in minutes.",
@@ -611,6 +617,13 @@ export const governanceConnectors: governanceConnectorsNS = {
         },
         wsFederationConfiguration: {
             description: "Configure WS-Federation protocol for your applications."
+        },
+        internalNotificationSending: {
+            categoryTitle: "Notification Settings",
+            connector: {
+                description: "Manage notification sending internally.",
+                title: "Internal Notification Sending"
+            }
         }
     },
     disabled: "Disabled",
@@ -667,5 +680,4 @@ export const governanceConnectors: governanceConnectorsNS = {
         }
     },
     pageSubHeading: "Configure and manage {{ name }}."
-
-}
+};

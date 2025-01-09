@@ -230,6 +230,27 @@ export const tenants: TenantsNS = {
         }
     },
     listing: {
+        advancedSearch: {
+            form: {
+                dropdown: {
+                    filterAttributeOptions: {
+                        domain: "Domain"
+                    }
+                },
+                inputs: {
+                    filterAttribute: {
+                        placeholder: "E.g. Domain."
+                    },
+                    filterCondition: {
+                        placeholder: "E.g. Starts with etc."
+                    },
+                    filterValue: {
+                        placeholder: "Enter value to search"
+                    }
+                }
+            },
+            placeholder: "Search by domain"
+        },
         count: "Showing {{results}} out of {{totalResults}}",
         emptyPlaceholder: {
             actions: {
@@ -246,6 +267,18 @@ export const tenants: TenantsNS = {
                 1: "Start with creating your first root organization. or configure system settings that applies to all the root organizations."
             },
             title: "No groups assigned to the role."
+        },
+        emptySearchResult: {
+            actions: {
+                clearSearchQuery: {
+                    label: "Clear search query"
+                }
+            },
+            subtitles: {
+                0: "We couldn't find any results for '{{ searchQuery }}'",
+                1: "Please try a different search term."
+            },
+            title: "No results found"
         },
         item: {
             actions: {

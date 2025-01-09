@@ -22,17 +22,17 @@ import {
     getApplicationDetails,
     getInboundProtocolConfig,
     useApplicationList
-} from "@wso2is/admin.applications.v1/api";
+} from "@wso2is/admin.applications.v1/api/application";
 import TryItCreateWizard from "@wso2is/admin.applications.v1/components/try-it/try-it-create-wizard";
 import {
     MinimalAppCreateWizard
 } from "@wso2is/admin.applications.v1/components/wizard/minimal-application-create-wizard";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import TryItApplicationConstants from "@wso2is/admin.applications.v1/constants/try-it-constants";
 import {
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
-} from "@wso2is/admin.applications.v1/models";
+} from "@wso2is/admin.applications.v1/models/application";
 import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
 import getTryItClientId from "@wso2is/admin.applications.v1/utils/get-try-it-client-id";
 import {
@@ -288,7 +288,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                         </Heading>
                     </div>
                     <Text muted>
-                        { t("extensions:common.quickStart.sections.addSocialLogin.description") }
+                        { t("console:common.quickStart.sections.addSocialLogin.description") }
                     </Text>
                 </Card.Content>
                 <Card.Content style={ { borderTop: "none" } } className="illustration-container">
@@ -448,7 +448,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                                     </Placeholder.Header>
                                 </Placeholder>
                             )
-                            : t("extensions:common.quickStart.greeting.heading", {
+                            : t("console:common.quickStart.greeting.heading", {
                                 username: isPrivilegedUser ? username : resolveUserDisplayName(profileInfo)
                             })
                     }

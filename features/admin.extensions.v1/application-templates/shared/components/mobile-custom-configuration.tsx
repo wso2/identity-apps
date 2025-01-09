@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { OIDCApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models";
+import { OIDCApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
 import { AppState, EventPublisher } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";

@@ -800,6 +800,12 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     ariaLabel: "Enable assertion encryption",
                     hint: "Specify if SAMLAssertion element is encrypted",
                     label: "Enable assertion encryption"
+                },
+                authnReqProviderName: {
+                    hint: "The human-readable name of the requester.",
+                    label: "Authentication Request Provider Name",
+                    placeholder: "Enter authentication request provider name",
+                    ariaLabel: "Authentication Request Provider Name"
                 }
             },
             smsOTP: {
@@ -882,7 +888,10 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 hint: "A URL for the image of the connection for display purposes. If not provided" +
                     " a generated thumbnail will be displayed. Recommended size is 200x200 pixels.",
                 label: "Logo",
-                placeholder: "https://myapp-resources.io/my_app_image.png"
+                placeholder: "https://myapp-resources.io/my_app_image.png",
+                validations: {
+                    invalid: "This is not a valid image URL"
+                }
             },
             issuer: {
                 hint: "A unique issuer value of the trusted token issuer.",

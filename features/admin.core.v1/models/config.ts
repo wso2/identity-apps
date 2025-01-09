@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,9 +20,9 @@ import { ResponseMode, Storage } from "@asgardeo/auth-react";
 import { ActionsResourceEndpointsInterface } from "@wso2is/admin.actions.v1/models/endpoints";
 import { ApplicationsTemplatesEndpointsInterface } from "@wso2is/admin.application-templates.v1/models/endpoints";
 import {
-    ApplicationTemplateLoadingStrategies,
-    ApplicationsResourceEndpointsInterface
-} from "@wso2is/admin.applications.v1/models";
+    ApplicationTemplateLoadingStrategies
+} from "@wso2is/admin.applications.v1/models/application";
+import { ApplicationsResourceEndpointsInterface } from "@wso2is/admin.applications.v1/models/endpoints";
 import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.branding.v1/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
@@ -251,9 +251,17 @@ export interface FeatureConfigInterface {
      */
     residentOutboundProvisioning?: FeatureAccessConfigInterface;
     /**
+     * Rule based password expiry feature
+     */
+    ruleBasedPasswordExpiry?: FeatureAccessConfigInterface;
+    /**
      * Connection management feature.
      */
     connections?: ConnectionConfigInterface;
+    /**
+     * Notification sending feature.
+     */
+    internalNotificationSending?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -359,6 +367,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Should dialects addition be allowed.
      */
     isDialectAddingEnabled?: boolean;
+    /**
+     * Flag to check if the claims uniqueness validation is enabled.
+     */
+    isClaimUniquenessValidationEnabled?: boolean;
     /**
      * Flag to check if the `OAuth.EnableClientSecretHash` is enabled in the `identity.xml`.
      */
@@ -478,6 +490,24 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Config to check whether consent is required for trusted apps.
      */
     isTrustedAppConsentRequired?: boolean;
+    /**
+     * Config to check whether the multiple emails and mobile numbers per user feature is enabled.
+     */
+    isMultipleEmailsAndMobileNumbersEnabled?: boolean;
+    /**
+     * Password policy configs.
+     */
+    passwordPolicyConfigs: PasswordPolicyConfigsInterface;
+}
+
+/**
+ * Password policy configs interface.
+ */
+interface PasswordPolicyConfigsInterface {
+    /**
+     * Maximum password length.
+     */
+    maxPasswordAllowedLength: number;
 }
 
 /**

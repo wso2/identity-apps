@@ -393,6 +393,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                     learnMore: undefined
                 }
             },
+            administrators: {
+                learnMore: undefined
+            },
             attributes: {
                 attributes: {
                     learnMore: undefined

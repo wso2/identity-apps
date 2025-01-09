@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,9 +22,10 @@ import ListItemText from "@mui/material/ListItemText";
 import Alert from "@oxygen-ui/react/Alert";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
-import { ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models";
-import { history, store } from "@wso2is/admin.core.v1";
+import { ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models/application";
+import { OrganizationType, history, store } from "@wso2is/admin.core.v1";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Link } from "@wso2is/react-components";
@@ -42,7 +43,7 @@ import React, {
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { DropdownProps } from "semantic-ui-react";
-import { useRolesList } from "../../api/roles";
+import useGetRolesList from "../../api/use-get-roles-list";
 import { RoleAudienceTypes, RoleConstants } from "../../constants";
 import { CreateRoleFormData } from "../../models";
 
@@ -109,7 +110,10 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         data: rolesList,
         isLoading: isRolesListLoading,
         isValidating: isRolesListValidating
-    } = useRolesList(undefined, undefined, roleNameSearchQuery, "users,groups,permissions,associatedApplications");
+    } = useGetRolesList(undefined, undefined, roleNameSearchQuery, "users,groups,permissions,associatedApplications");
+
+    const { organizationType } = useGetCurrentOrganizationType();
+    const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
 
     useEffect(() => {
         if (applicationListFetchRequestError) {
@@ -367,12 +371,20 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                     ? (
                         <Alert severity="info">
                             {
-                                roleAudience === RoleAudienceTypes.ORGANIZATION
-                                    ? t("roles:addRoleWizard.forms.roleBasicDetails.notes" +
-                                        ".orgNote")
-                                    : t("roles:addRoleWizard.forms.roleBasicDetails.notes" +
-                                        ".appNote")
+                                !isSubOrg ? (
+                                    roleAudience === RoleAudienceTypes.ORGANIZATION
+                                        ? t("roles:addRoleWizard.forms.roleBasicDetails.notes" +
+                                            ".orgNote")
+                                        : t("roles:addRoleWizard.forms.roleBasicDetails.notes" +
+                                            ".appNote")
                                 // TODO: need to add a learn more for this.
+                                ) : (
+                                    roleAudience === RoleAudienceTypes.ORGANIZATION
+                                        ? t("roles:addRoleWizard.forms.roleBasicDetails.notes.subOrganization" +
+                                            ".orgNote")
+                                        : t("roles:addRoleWizard.forms.roleBasicDetails.notes.subOrganization" +
+                                            ".appNote")
+                                )
                             }
                         </Alert>
                     ) : (

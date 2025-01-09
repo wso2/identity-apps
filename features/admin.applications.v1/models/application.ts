@@ -26,7 +26,7 @@ import {
     SAML2ConfigurationInterface,
     WSTrustConfigurationInterface
 } from "./application-inbound";
-import { TemplateContentInterface } from "../data/application-templates";
+import { TemplateContentInterface } from "../data/application-templates/application-templates-config";
 
 /**
  *  Captures the basic details in the applications.

@@ -48,6 +48,49 @@
 <%-- Include tenant context --%>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
+<%!
+    /**
+     * UsernameRecoveryStage represents the two steps of recovery in the UsernameRecovery V2.
+     */
+    public enum UsernameRecoveryStage {
+        INITIATE("INITIATE"),
+        NOTIFY("NOTIFY");
+
+        private final String value;
+
+        UsernameRecoveryStage(String value) {
+            
+            this.value = value;
+        }
+
+        /**
+         * Returns the string value of the enum.
+         */
+        public String getValue() {
+
+            return value;
+        }
+
+        /**
+         * Override the toString method of the object class.
+         */
+        @Override
+        public String toString() {
+
+            return value;
+        }
+
+        /**
+         * Compares enum with string based on it's value.
+         * @return boolean whether the passed string equals the value of the enum.
+         */
+        public boolean equalsValue(String otherValue) {
+
+            return this.value.equals(otherValue);
+        }
+    }
+%>
+
 <%
     File usernameResolverFile = new File(getServletContext().getRealPath("extensions/username-resolver.jsp"));
     if (usernameResolverFile.exists()) {
@@ -129,57 +172,151 @@
     }
 
     if (isUsernameRecovery) {
-        // Username Recovery Scenario
+        // Username recovery scenario.
+        String recoveryStage = request.getAttribute("recoveryStage") != null 
+                    ? (String) request.getAttribute("recoveryStage") 
+                    : Encode.forJava(request.getParameter("recoveryStage"));
+
         if (StringUtils.isBlank(tenantDomain)) {
             tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
         }
 
-        List<Claim> claims;
-        UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
-        try {
-            claims = usernameRecoveryApi.getClaimsForUsernameRecovery(tenantDomain, true);
-        } catch (ApiException e) {
-            IdentityManagementEndpointUtil.addErrorInformation(request, e);
-            if (!StringUtils.isBlank(username)) {
-                request.setAttribute("username", username);
+        if (UsernameRecoveryStage.INITIATE.equalsValue(recoveryStage)) {
+            
+            // Separate the contact to mobile or email.
+            String contact = Encode.forJava(request.getParameter("contact"));
+            if (contact.matches(IdentityManagementEndpointConstants.UserInfoRecovery.MOBILE_CLAIM_REGEX)) {
+                request.setAttribute(IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM, contact);
+            } else {
+                request.setAttribute(IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM, contact);
             }
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-            return;
-        }
+            
 
-        List<UserClaim> claimDTOList = new ArrayList<UserClaim>();
+            List<Claim> claims;
+            UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
+            RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
+            RecoveryInitRequest recoveryInitRequest = new RecoveryInitRequest();
 
-        for (Claim claimDTO : claims) {
-            if (StringUtils.isNotBlank(request.getParameter(claimDTO.getUri()))) {
-                UserClaim userClaim = new UserClaim();
-                userClaim.setUri(claimDTO.getUri());
-                userClaim.setValue(request.getParameter(claimDTO.getUri()).trim());
-                claimDTOList.add(userClaim);
-            }
-        }
-
-        try {
-            Map<String, String> requestHeaders = new HashedMap();
-            if (request.getParameter("g-recaptcha-response") != null) {
-                requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
-            }
-
-            usernameRecoveryApi.recoverUsernamePost(claimDTOList, tenantDomain, null, requestHeaders);
-            request.setAttribute("callback", callback);
-            request.setAttribute("tenantDomain", tenantDomain);
-            request.getRequestDispatcher("username-recovery-complete.jsp").forward(request, response);
-        } catch (ApiException e) {
-            if (e.getCode() == 204) {
-                request.setAttribute("error", true);
-                request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                        "No.valid.user.found"));
-                request.getRequestDispatcher("recoveraccountrouter.do").forward(request, response);
+            try {
+                claims = usernameRecoveryApi.getClaimsForUsernameRecovery(tenantDomain, true);
+            } catch (ApiException e) {
+                IdentityManagementEndpointUtil.addErrorInformation(request, e);
+                if (!StringUtils.isBlank(username)) {
+                    request.setAttribute("username", username);
+                }
+                request.getRequestDispatcher("error.jsp").forward(request, response);
                 return;
             }
 
-            IdentityManagementEndpointUtil.addErrorInformation(request, e);
-            request.getRequestDispatcher("recoveraccountrouter.do").forward(request, response);
+            List<UserClaim> claimDTOList = new ArrayList<UserClaim>();
+
+            for (Claim claimDTO : claims) {
+
+                // Check if the claim is present in the request attributes or parameters.
+                String claimValue = (String) request.getAttribute(claimDTO.getUri());
+
+                if (claimValue == null && request.getParameter(claimDTO.getUri()) != null) {
+                    claimValue = Encode.forJava(request.getParameter(claimDTO.getUri()).toString().trim());
+                }
+
+                // If the claim value is present (either from parameters or attributes), add it.
+                if (StringUtils.isNotBlank(claimValue)) {
+                    UserClaim userClaim = new UserClaim();
+                    userClaim.setUri(claimDTO.getUri());
+                    userClaim.setValue(claimValue);
+                    claimDTOList.add(userClaim);
+                }
+            }
+            recoveryInitRequest.claims(claimDTOList);
+
+            try {
+                Map<String, String> requestHeaders = new HashedMap();
+                if (request.getParameter("g-recaptcha-response") != null) {
+                    requestHeaders.put("g-recaptcha-response", Encode.forJava(request.getParameter("g-recaptcha-response")));
+                }
+
+                request.setAttribute("callback", callback);
+                request.setAttribute("tenantDomain", tenantDomain);
+                request.setAttribute("isUserFound", true);
+
+                List<AccountRecoveryType> initiateUsernameRecoveryResponse = 
+                            recoveryApiV2.initiateUsernameRecovery(recoveryInitRequest, tenantDomain, requestHeaders);
+
+                if (initiateUsernameRecoveryResponse == null || initiateUsernameRecoveryResponse.isEmpty()) {
+                    request.setAttribute("isUserFound", false);
+                    request.getRequestDispatcher("channelselection.do").forward(request, response);
+                    return;
+                }
+
+                request.setAttribute("recoveryCode", initiateUsernameRecoveryResponse.get(0).getChannelInfo().getRecoveryCode());
+
+                List<RecoveryChannel> firstMatchChannels = initiateUsernameRecoveryResponse.get(0).getChannelInfo().getChannels();
+                request.setAttribute("channels", firstMatchChannels);
+
+                request.getRequestDispatcher("channelselection.do").forward(request, response);
+                return;
+            
+            } catch (ApiException e) {
+                IdentityManagementEndpointUtil.addErrorInformation(request, e);
+                request.getRequestDispatcher("recoveraccountrouter.do").forward(request, response);
+                return;
+            }
+            
+        } else if (UsernameRecoveryStage.NOTIFY.equalsValue(recoveryStage)) {
+            RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
+            String recoveryCode = request.getAttribute("recoveryCode") != null 
+                        ? (String) request.getAttribute("recoveryCode") 
+                        : Encode.forJava(request.getParameter("recoveryCode")); 
+
+            String usernameRecoveryOption = request.getAttribute("usernameRecoveryOption") != null 
+                        ? (String) request.getAttribute("usernameRecoveryOption") 
+                        : Encode.forJava(request.getParameter("usernameRecoveryOption"));
+
+            String isUserFoundParam = request.getParameter("isUserFound");
+            Boolean isUserFound = (isUserFoundParam != null) 
+                        ? Boolean.parseBoolean(isUserFoundParam) 
+                        : IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("isUserFound"));
+
+            String recoveryChannelType = null;
+            String recoveryChannelId = null;
+            
+            // Extract the recovery channel name and id from the recovery option.
+            if (usernameRecoveryOption != null) {
+                String[] parts = usernameRecoveryOption.split(":");
+                recoveryChannelId = parts[0];
+                recoveryChannelType = parts[1];
+            }
+            
+            request.setAttribute("recoveryChannelType", recoveryChannelType);
+ 
+            // Sending the notification if we only found a user.
+            if (isUserFound){
+                RecoveryRequest recoveryRequest = new RecoveryRequest();
+                recoveryRequest.setRecoveryCode(recoveryCode);
+                recoveryRequest.setChannelId(recoveryChannelId);
+
+                Map<String, String> requestHeaders = new HashedMap();
+                if (request.getParameter("g-recaptcha-response") != null) {
+                    requestHeaders.put("g-recaptcha-response", Encode.forJava(request.getParameter("g-recaptcha-response")));
+                }
+
+                try{
+                    recoveryApiV2.recoverUsername(recoveryRequest, tenantDomain, requestHeaders);
+                    
+                } catch (ApiException e) {
+                    IdentityManagementEndpointUtil.addErrorInformation(request, e);
+                    request.getRequestDispatcher("recoveraccountrouter.do").forward(request, response);
+                    return;
+                }
+            }
+            
+            request.getRequestDispatcher("username-recovery-complete.jsp").forward(request, response);
             return;
+
+        } else {
+            request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                    "Invalid.username.recovery.stage"));
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
 
     } else if (isPasswordRecoveryWithClaimsNotify) {

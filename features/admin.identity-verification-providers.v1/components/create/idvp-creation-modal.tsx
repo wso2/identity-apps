@@ -104,7 +104,6 @@ const IdVPCreationModal: FunctionComponent<IdVPCreationModalPropsInterface> = ({
             claims: fetchedTemplateData.payload.claims,
             configProperties: configPropertiesInitialValues,
             description: fetchedTemplateData.payload.description,
-            image: fetchedTemplateData.payload.image,
             isEnabled: true,
             templateId: selectedTemplate?.id,
             templateVersion: selectedTemplate?.version
@@ -132,7 +131,6 @@ const IdVPCreationModal: FunctionComponent<IdVPCreationModalPropsInterface> = ({
             claims: values.claims as IdVPClaimsInterface[],
             configProperties,
             description: values.description as string,
-            image: values.image as string,
             isEnabled: true,
             name: values.name as string,
             type: values.templateId as string

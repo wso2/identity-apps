@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -45,7 +45,7 @@ export interface UserBasicInterface {
     /**
      * ID of the user.
      */
-    id: string;
+    id?: string;
     /**
      * Username of the user.
      */
@@ -297,6 +297,9 @@ export interface AccountConfigSettingsInterface {
     accountDisable: string;
     accountLock: string;
     forcePasswordReset: string;
+    isEmailVerificationEnabled?: string;
+    isMobileVerificationEnabled?: string;
+    isMobileVerificationByPrivilegeUserEnabled?: string;
 }
 
 /**
@@ -391,6 +394,14 @@ export interface PatchUserAddOpInterface {
         users: { value: string }[]
     }
 }
+
+/**
+ * Interface for the user patch operation value.
+ */
+export type PatchUserOperationValue = Record<string, string
+    | Record<string, string | string[]>
+    | Array<string>
+    | Array<Record<string, string>>>;
 
 /**
  * Enum for the multiple invites modes.

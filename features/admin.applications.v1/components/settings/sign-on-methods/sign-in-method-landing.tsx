@@ -28,7 +28,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Segment } from "semantic-ui-react";
 import { getAuthenticatorIcons } from "../../../configs/ui";
-import { LoginFlowTypes } from "../../../models";
+import { LoginFlowTypes } from "../../../models/application";
 
 /**
  * Prop-types for the sign in methods landing component.

@@ -467,7 +467,11 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                                 onClick={ () => setIsDropDownOpen(!isDropDownOpen) }
                             >
                                 <p className="organization-breadcrumb-label">
-                                    { t("organizations:switching.switchLabel") }
+                                    { organizationType === OrganizationType.SUPER_ORGANIZATION ||
+                                    organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION
+                                        ? t("organizations:switching.switchLabel")
+                                        : t("organizations:switching.switchLabelAlt")
+                                    }
                                 </p>
                                 <Breadcrumb className="organization-breadcrumb-main">
                                     <CloneIcon size={ 14 } />

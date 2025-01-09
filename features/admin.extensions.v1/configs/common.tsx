@@ -18,7 +18,7 @@
 
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants";
-import { RemoteUserStoreConstants } from "@wso2is/admin.remote-userstores.v1/constants";
+import { RemoteUserStoreConstants } from "@wso2is/admin.remote-userstores.v1/constants/remote-user-stores-constants";
 import { RouteInterface } from "@wso2is/core/models";
 import { lazy } from "react";
 import { CommonConfig } from "./models";
@@ -66,7 +66,7 @@ export const commonConfig: CommonConfig = {
                     },
                     {
                         component: lazy(() =>
-                            import("@wso2is/admin.remote-userstores.v1/pages/remote-customer-user-store-create-page")
+                            import("@wso2is/admin.remote-userstores.v1/pages/remote-user-store-create-page")
                         ),
                         icon: {
                             icon: getSidePanelIcons().childIcon

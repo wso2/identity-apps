@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,14 +19,17 @@
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import {
     AppConstants,
+    AppState,
     FeatureConfigInterface,
     UIConstants,
     getEmptyPlaceholderIllustrations,
     history
 } from "@wso2is/admin.core.v1";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { LoadableComponentInterface, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { StringUtils } from "@wso2is/core/utils";
 import {
     AnimatedAvatar,
     AppAvatar,
@@ -41,6 +44,7 @@ import {
 import moment, { Moment } from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { GroupConstants } from "../constants";
 import { GroupsInterface } from "../models";
@@ -142,6 +146,9 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
 
     const { t } = useTranslation();
 
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
+
     const [ showGroupDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedGroup, setCurrentDeletedGroup ] = useState<GroupsInterface>();
 
@@ -178,7 +185,9 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 <>
                     <Label
                         data-testid={ `${ testId }-group-${ displayName }-label` }
-                        content={ "Primary" }
+                        content={ StringUtils.isEqualCaseInsensitive(primaryUserStoreDomainName, PRIMARY_USERSTORE)
+                            ? t("console:manage.features.users.userstores.userstoreOptions.primary")
+                            : primaryUserStoreDomainName }
                         size="mini"
                         color="teal"
                         className={ "primary-label" }
@@ -315,7 +324,10 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 key: "lastModified",
                 render: (group: GroupsInterface): ReactNode => {
                     const now: Moment = moment(new Date());
-                    const receivedDate: Moment = moment(group.meta.created);
+                    const receivedDate: Moment = moment(group.meta.lastModified ?
+                        group.meta.lastModified :
+                        group.meta.created
+                    );
 
                     return t("console:common.dateTime.humanizedDateString", {
                         date: moment.duration(now.diff(receivedDate)).humanize()

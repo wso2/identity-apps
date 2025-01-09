@@ -1,5 +1,137 @@
 # @wso2is/i18n
 
+## 2.14.6
+
+### Patch Changes
+
+- [#7235](https://github.com/wso2/identity-apps/pull/7235) [`c2568dbe95e01427899dbb6c71c6e04d8941e308`](https://github.com/wso2/identity-apps/commit/c2568dbe95e01427899dbb6c71c6e04d8941e308) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Move common i18n extensions in console app to i18n module
+
+## 2.14.5
+
+### Patch Changes
+
+- [#7240](https://github.com/wso2/identity-apps/pull/7240) [`c01fab399c1832cfe7551229f608a8ff1020b7e8`](https://github.com/wso2/identity-apps/commit/c01fab399c1832cfe7551229f608a8ff1020b7e8) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add role create and delete ops to sub orgs
+
+- Updated dependencies [[`c01fab399c1832cfe7551229f608a8ff1020b7e8`](https://github.com/wso2/identity-apps/commit/c01fab399c1832cfe7551229f608a8ff1020b7e8)]:
+  - @wso2is/core@2.5.5
+
+## 2.14.4
+
+### Patch Changes
+
+- Updated dependencies [[`398c39ec452d460994a3a0a6425115678538e49b`](https://github.com/wso2/identity-apps/commit/398c39ec452d460994a3a0a6425115678538e49b)]:
+  - @wso2is/core@2.5.4
+
+## 2.14.3
+
+### Patch Changes
+
+- Updated dependencies [[`97aae1b9168c49e72cd544ded82d53c8fa16fff0`](https://github.com/wso2/identity-apps/commit/97aae1b9168c49e72cd544ded82d53c8fa16fff0)]:
+  - @wso2is/core@2.5.3
+
+## 2.14.2
+
+### Patch Changes
+
+- [#6440](https://github.com/wso2/identity-apps/pull/6440) [`f0da57190bcbe263e54df65ca04087fb832b70d6`](https://github.com/wso2/identity-apps/commit/f0da57190bcbe263e54df65ca04087fb832b70d6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add i18n strings for IDP logo field placeholder and invalid image URL warning
+
+## 2.14.1
+
+### Patch Changes
+
+- [#7227](https://github.com/wso2/identity-apps/pull/7227) [`8110b4503bc622997af4942727afa5ef65245689`](https://github.com/wso2/identity-apps/commit/8110b4503bc622997af4942727afa5ef65245689) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Reposition internal notification sending feature
+
+* [#7185](https://github.com/wso2/identity-apps/pull/7185) [`0057877859bdf3d91475cf3d1865382a88a1e9e7`](https://github.com/wso2/identity-apps/commit/0057877859bdf3d91475cf3d1865382a88a1e9e7) Thanks [@Malith-19](https://github.com/Malith-19)! - Add the passwordMaxAllowed length config for password length values validation.
+
+* Updated dependencies [[`0057877859bdf3d91475cf3d1865382a88a1e9e7`](https://github.com/wso2/identity-apps/commit/0057877859bdf3d91475cf3d1865382a88a1e9e7)]:
+  - @wso2is/core@2.5.2
+
+## 2.14.0
+
+### Minor Changes
+
+- [#7225](https://github.com/wso2/identity-apps/pull/7225) [`2840ab6f606b818ad0a1b0427dd88bfce4be986f`](https://github.com/wso2/identity-apps/commit/2840ab6f606b818ad0a1b0427dd88bfce4be986f) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Add authentication request provider name config to set the ProviderName in SAML2 outbound requests
+
+## 2.13.4
+
+### Patch Changes
+
+- [#7106](https://github.com/wso2/identity-apps/pull/7106) [`1d03b454bd2dcd03ea3c9af5fb78a7320e7b47aa`](https://github.com/wso2/identity-apps/commit/1d03b454bd2dcd03ea3c9af5fb78a7320e7b47aa) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add support for claim-wise uniqueness validation
+
+- Updated dependencies [[`1d03b454bd2dcd03ea3c9af5fb78a7320e7b47aa`](https://github.com/wso2/identity-apps/commit/1d03b454bd2dcd03ea3c9af5fb78a7320e7b47aa)]:
+  - @wso2is/core@2.5.1
+
+## 2.13.3
+
+### Patch Changes
+
+- [#7179](https://github.com/wso2/identity-apps/pull/7179) [`ffd11318ba4fa76ecb54bd0228466c2f0ad3cd7c`](https://github.com/wso2/identity-apps/commit/ffd11318ba4fa76ecb54bd0228466c2f0ad3cd7c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - [feat] introduce new remote user store impl - show read groups field based on deployment config
+
+## 2.13.2
+
+### Patch Changes
+
+- [#7084](https://github.com/wso2/identity-apps/pull/7084) [`615188993e920b2df3321bad91e7659f9db5b79f`](https://github.com/wso2/identity-apps/commit/615188993e920b2df3321bad91e7659f9db5b79f) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Improve email domain discovery page to incorporate new configuration for enabling email domain discovery for self-registration.
+
+## 2.13.1
+
+### Patch Changes
+
+- [#7168](https://github.com/wso2/identity-apps/pull/7168) [`eb2b27a9d56bec6e126f908339f151cab80e0ad5`](https://github.com/wso2/identity-apps/commit/eb2b27a9d56bec6e126f908339f151cab80e0ad5) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add getActionByActionId api to actions ui
+
+## 2.13.0
+
+### Minor Changes
+
+- [#7099](https://github.com/wso2/identity-apps/pull/7099) [`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add remote user stores translations
+
+### Patch Changes
+
+- Updated dependencies [[`9bc415558bc0d26e345b2167799852bccddfb897`](https://github.com/wso2/identity-apps/commit/9bc415558bc0d26e345b2167799852bccddfb897)]:
+  - @wso2is/core@2.5.0
+
+## 2.12.4
+
+### Patch Changes
+
+- [#7159](https://github.com/wso2/identity-apps/pull/7159) [`21a3569af8546401645c85f8f07f06a59ceac8a5`](https://github.com/wso2/identity-apps/commit/21a3569af8546401645c85f8f07f06a59ceac8a5) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger changeset for https://github.com/wso2/identity-apps/pull/7157
+
+* [#7157](https://github.com/wso2/identity-apps/pull/7157) [`996eb0f85c0b24e6193e18a316f607a8c82f8406`](https://github.com/wso2/identity-apps/commit/996eb0f85c0b24e6193e18a316f607a8c82f8406) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update text in user profile lock reason
+
+## 2.12.3
+
+### Patch Changes
+
+- [#6583](https://github.com/wso2/identity-apps/pull/6583) [`ce35db51c7bbf9fc894b71ecffd52d20413a4dd9`](https://github.com/wso2/identity-apps/commit/ce35db51c7bbf9fc894b71ecffd52d20413a4dd9) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add UI support for multiple email and mobile numbers per user
+
+- Updated dependencies [[`ce35db51c7bbf9fc894b71ecffd52d20413a4dd9`](https://github.com/wso2/identity-apps/commit/ce35db51c7bbf9fc894b71ecffd52d20413a4dd9)]:
+  - @wso2is/core@2.4.3
+
+## 2.12.2
+
+### Patch Changes
+
+- Updated dependencies [[`10f5bf644f973552f3c3d155fda410b6e071f147`](https://github.com/wso2/identity-apps/commit/10f5bf644f973552f3c3d155fda410b6e071f147)]:
+  - @wso2is/core@2.4.2
+
+## 2.12.1
+
+### Patch Changes
+
+- [#7124](https://github.com/wso2/identity-apps/pull/7124) [`8773370130811defa922868d08c4f1ac1e006eda`](https://github.com/wso2/identity-apps/commit/8773370130811defa922868d08c4f1ac1e006eda) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Introduce enable for user store config in attribute mappings
+
+## 2.12.0
+
+### Minor Changes
+
+- [#7005](https://github.com/wso2/identity-apps/pull/7005) [`825c12b034fa8db01857a10b3fb9ff36314bce1a`](https://github.com/wso2/identity-apps/commit/825c12b034fa8db01857a10b3fb9ff36314bce1a) Thanks [@Malith-19](https://github.com/Malith-19)! - Add the username recovery multiple channel support with branding.
+
+## 2.11.0
+
+### Minor Changes
+
+- [#7120](https://github.com/wso2/identity-apps/pull/7120) [`7e2588d91b8c20927219c6e6fa36daf87a18a0f6`](https://github.com/wso2/identity-apps/commit/7e2588d91b8c20927219c6e6fa36daf87a18a0f6) Thanks [@brionmario](https://github.com/brionmario)! - Add search capabilities to Tenant listing UI
+
 ## 2.10.6
 
 ### Patch Changes

@@ -33,7 +33,7 @@ import { ExtensionTemplateListInterface, ResourceTypes } from "../models/templat
 const useGetExtensionTemplates = <
     Data = ExtensionTemplateListInterface[],
     Error = RequestErrorInterface
->(type: ResourceTypes, shouldFetch?: boolean): RequestResultInterface<Data, Error> => {
+>(type: ResourceTypes, shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
@@ -55,7 +55,7 @@ const useGetExtensionTemplates = <
     return {
         data,
         error,
-        isLoading: !error && !data,
+        isLoading: shouldFetch && !error && !data,
         isValidating,
         mutate
     };

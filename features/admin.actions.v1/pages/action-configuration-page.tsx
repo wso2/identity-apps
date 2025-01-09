@@ -44,6 +44,7 @@ import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Grid } from "semantic-ui-react";
 import changeActionStatus from "../api/change-action-status";
 import deleteAction from "../api/delete-action";
+import useGetActionById from "../api/use-get-action-by-id";
 import useGetActionsByType from "../api/use-get-actions-by-type";
 import ActionConfigForm from "../components/action-config-form";
 import { ActionsConstants } from "../constants/actions-constants";
@@ -97,20 +98,29 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
         mutate: mutateActions
     } = useGetActionsByType(actionTypeApiPath);
 
-    const isLoading: boolean = isActionsLoading || !actions || !Array.isArray(actions);
+    const actionId: string = useMemo(() => actions?.[0]?.id || null, [ actions ]);
+
+    const {
+        data: action,
+        error: actionFetchRequestError,
+        isLoading: isActionLoading,
+        mutate: mutateAction
+    } = useGetActionById(actionTypeApiPath, actionId);
+
+    const isLoading: boolean = isActionsLoading || !actions || !Array.isArray(actions) || isActionLoading;
 
     const actionInitialValues: ActionConfigFormPropertyInterface = useMemo(() => {
-        if (actions) {
+        if (action) {
             return {
-                authenticationType: actions[0]?.endpoint?.authentication?.type.toString(),
-                endpointUri: actions[0]?.endpoint?.uri,
-                id: actions[0]?.id,
-                name: actions[0]?.name
+                authenticationType: action?.endpoint?.authentication?.type.toString(),
+                endpointUri: action?.endpoint?.uri,
+                id: action?.id,
+                name: action?.name
             };
         } else {
             return null;
         }
-    }, [ actions ]);
+    }, [ action ]);
 
     useEffect(() => {
         if (actions?.length >= 1) {
@@ -122,7 +132,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     }, [ actions ]);
 
     /**
-     * The following useEffect is used to handle if any error occurs while fetching the Action.
+     * The following useEffect is used to handle if any error occurs while fetching Actions by Type.
      */
     useEffect(() => {
         if (isActionsLoading || !actionsFetchRequestError) {
@@ -132,22 +142,50 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
         if (actionsFetchRequestError.response?.data?.description) {
             dispatch(
                 addAlert<AlertInterface>({
-                    description: t("actions:notification.error.fetch.description",
+                    description: t("actions:notification.error.fetchByType.description",
                         { description: actionsFetchRequestError.response.data.description }),
                     level: AlertLevels.ERROR,
-                    message: t("actions:notification.error.fetch.message")
+                    message: t("actions:notification.error.fetchByType.message")
                 })
             );
         } else {
             dispatch(
                 addAlert<AlertInterface>({
-                    description: t("actions:notification.genericError.fetch.description"),
+                    description: t("actions:notification.genericError.fetchByType.description"),
                     level: AlertLevels.ERROR,
-                    message: t("actions:notification.genericError.fetch.message")
+                    message: t("actions:notification.genericError.fetchByType.message")
                 })
             );
         }
     }, [ isActionsLoading, actionsFetchRequestError ]);
+
+    /**
+     * The following useEffect is used to handle if any error occurs while fetching the Action by Id.
+     */
+    useEffect(() => {
+        if (isActionLoading || !actionFetchRequestError) {
+            return;
+        }
+
+        if (actionFetchRequestError.response?.data?.description) {
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: t("actions:notification.error.fetchById.description",
+                        { description: actionFetchRequestError.response.data.description }),
+                    level: AlertLevels.ERROR,
+                    message: t("actions:notification.error.fetchById.message")
+                })
+            );
+        } else {
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: t("actions:notification.genericError.fetchById.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("actions:notification.genericError.fetchById.message")
+                })
+            );
+        }
+    }, [ isActionLoading, actionFetchRequestError ]);
 
     /**
      * Handles the back button click event.
@@ -258,7 +296,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                     handleError(error, toggleOperation);
                 })
                 .finally(() => {
-                    mutateActions();
+                    mutateAction();
                     setIsSubmitting(false);
                 });
         };

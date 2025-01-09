@@ -86,8 +86,11 @@ const TenantProvider = ({
     const [ disablingTenant, setDisablingTenant ] = useState<Tenant>(null);
     const [ isTenantDeleteRequestLoading, setIsTenantDeleteRequestLoading ] = useState<boolean>(false);
     const [ isTenantStatusUpdateRequestLoading, setIsTenantStatusUpdateRequestLoading ] = useState<boolean>(false);
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
+    const [ searchQueryClearTrigger, setSearchQueryClearTrigger ] = useState<boolean>(false);
 
     const { data: tenantList, isLoading: isTenantListLoading, mutate: mutateTenantList } = useGetTenants({
+        filter: searchQuery,
         limit: tenantListLimit,
         offset: 0,
         sortBy: "domainName",
@@ -218,6 +221,10 @@ const TenantProvider = ({
                 isInitialRenderingComplete,
                 isTenantListLoading,
                 mutateTenantList,
+                searchQuery,
+                searchQueryClearTrigger,
+                setSearchQuery,
+                setSearchQueryClearTrigger,
                 setTenantListLimit,
                 tenantList,
                 tenantListLimit

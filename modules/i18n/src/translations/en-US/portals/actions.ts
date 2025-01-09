@@ -162,13 +162,17 @@ export const actions: actionsNS = {
                 description: "{{description}}",
                 message: "Error deleting the action."
             },
-            fetch: {
+            fetchById: {
                 description: "{{description}}",
-                message: "Error fetching the action."
+                message: "Error retrieving the action."
+            },
+            fetchByType: {
+                description: "{{description}}",
+                message: "Error retrieving actions."
             },
             typesFetch: {
                 description: "{{description}}",
-                message: "Error fetching the action types."
+                message: "Error retrieving the action types."
             },
             update: {
                 description: "{{description}}",
@@ -192,12 +196,16 @@ export const actions: actionsNS = {
                 description: "Couldn't delete the action.",
                 message: "Something went wrong."
             },
-            fetch: {
-                description: "Couldn't fetch the action.",
+            fetchById: {
+                description: "Couldn't retrieve the action.",
+                message: "Something went wrong."
+            },
+            fetchByType: {
+                description: "Couldn't retrieve actions.",
                 message: "Something went wrong."
             },
             typesFetch: {
-                description: "Couldn't fetch the action types.",
+                description: "Couldn't retrieve the action types.",
                 message: "Something went wrong."
             },
             update: {

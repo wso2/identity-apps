@@ -349,37 +349,40 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
             <Divider hidden />
 
-            { attributeConfig.attributeMappings.showDangerZone && (
-                <Grid>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column width={ 16 }>
-                            <Show
-                                when={ featureConfig?.oidcScopes?.scopes?.delete }
-                            >
-                                <DangerZoneGroup
-                                    sectionHeader={ t("common:dangerZone") }
-                                    data-testid={ `${ testId }-danger-zone-group` }
+            {
+                attributeConfig.attributeMappings.showDangerZone
+                && !ClaimManagementConstants.SYSTEM_DIALECTS.includes(dialect?.id)
+                && (
+                    <Grid>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column width={ 16 }>
+                                <Show
+                                    when={ featureConfig?.oidcScopes?.scopes?.delete }
                                 >
-                                    <DangerZone
-                                        actionTitle={ t("claims:dialects." +
-                                            "dangerZone.actionTitle", {
-                                            type: resolveType(attributeType, true, true)
-                                        }) }
-                                        header={ t("claims:dialects.dangerZone.header", {
-                                            type: resolveType(attributeType, true)
-                                        }) }
-                                        subheader={ t("claims:dialects.dangerZone.subheader", {
-                                            type: resolveType(attributeType)
-                                        }) }
-                                        onActionClick={ () => setConfirmDelete(true) }
-                                        data-testid={ `${ testId }-dialect-delete-danger-zone` }
-                                    />
-                                </DangerZoneGroup>
-                            </Show>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            ) }
+                                    <DangerZoneGroup
+                                        sectionHeader={ t("common:dangerZone") }
+                                        data-testid={ `${ testId }-danger-zone-group` }
+                                    >
+                                        <DangerZone
+                                            actionTitle={ t("claims:dialects." +
+                                                "dangerZone.actionTitle", {
+                                                type: resolveType(attributeType, true, true)
+                                            }) }
+                                            header={ t("claims:dialects.dangerZone.header", {
+                                                type: resolveType(attributeType, true)
+                                            }) }
+                                            subheader={ t("claims:dialects.dangerZone.subheader", {
+                                                type: resolveType(attributeType)
+                                            }) }
+                                            onActionClick={ () => setConfirmDelete(true) }
+                                            data-testid={ `${ testId }-dialect-delete-danger-zone` }
+                                        />
+                                    </DangerZoneGroup>
+                                </Show>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                ) }
             { attributeConfig.attributeMappings.showDangerZone && confirmDelete && deleteConfirmation() }
         </>
     );

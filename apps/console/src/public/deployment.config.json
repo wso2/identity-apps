@@ -367,7 +367,6 @@
                     "read": [
                         "internal_application_mgt_view",
                         "internal_claim_meta_view",
-                        "internal_extensions_view",
                         "internal_idp_view",
                         "internal_role_mgt_view",
                         "internal_userstore_view"
@@ -723,6 +722,23 @@
                 "enabled": false,
                 "scopes": {}
             },
+            "internalNotificationSending": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
+                    "read": [
+                        "internal_governance_view"
+                    ],
+                    "update": [
+                        "internal_governance_update"
+                    ]
+                }
+            },
             "loginAndRegistration": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -733,9 +749,7 @@
                         "console:loginAndRegistration"
                     ],
                     "read": [
-                        "internal_governance_view",
-                        "internal_group_mgt_view",
-                        "internal_role_mgt_view"
+                        "internal_governance_view"
                     ],
                     "update": [
                         "internal_config_update",
@@ -921,6 +935,25 @@
                     ],
                     "update": [
                         "internal_application_mgt_update"
+                    ]
+                }
+            },
+            "ruleBasedPasswordExpiry": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [
+                        "internal_governance_view",
+                        "internal_group_mgt_view",
+                        "internal_role_mgt_view"
+                    ],
+                    "update": [
+                        "internal_config_update",
+                        "internal_governance_update",
+                        "internal_validation_rule_mgt_update"
                     ]
                 }
             },
@@ -1235,6 +1268,7 @@
                 "enabled": true
             }
         },
+        "isClaimUniquenessValidationEnabled": false,
         "isClientSecretHashEnabled": false,
         "isCookieConsentBannerEnabled": true,
         "isCustomClaimMappingEnabled": true,
@@ -1248,6 +1282,7 @@
         "isHeaderAvatarLabelAllowed": false,
         "isLeftNavigationCategorized": true,
         "isMarketingConsentBannerEnabled": false,
+        "isMultipleEmailsAndMobileNumbersEnabled": false,
         "isPasswordInputValidationEnabled": true,
         "isRequestPathAuthenticationEnabled": false,
         "isSAASDeployment": false,
@@ -1260,6 +1295,9 @@
             "roleMapping": false
         },
         "listAllAttributeDialects": true,
+        "passwordPolicyConfigs": {
+            "maxPasswordAllowedLength": 64
+        },
         "privacyPolicyConfigs": {},
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {
