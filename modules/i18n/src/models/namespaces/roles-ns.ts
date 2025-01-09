@@ -72,9 +72,13 @@ export interface rolesNS {
                     };
                 };
                 notes: {
-                    orgNote: string;
                     appNote: string;
                     cannotCreateRole: string;
+                    orgNote: string;
+                    subOrganization: {
+                        appNote: string;
+                        orgNote: string;
+                    }
                 };
             };
             rolePermission: {
@@ -357,6 +361,9 @@ export interface rolesNS {
             };
             audience: string;
         };
+        labels: {
+            shared: string;
+        }
         confirmations: {
             deleteItem: {
                 assertionHint: string;
