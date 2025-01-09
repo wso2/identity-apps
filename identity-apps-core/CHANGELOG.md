@@ -1,5 +1,16 @@
 # @wso2is/identity-apps-core
 
+## 2.9.0
+
+### Minor Changes
+
+- [#7220](https://github.com/wso2/identity-apps/pull/7220) [`664b1ec3c513595cdcc91216af4371dbe70ab996`](https://github.com/wso2/identity-apps/commit/664b1ec3c513595cdcc91216af4371dbe70ab996) Thanks [@savindi7](https://github.com/savindi7)! - Add RTL support.
+
+### Patch Changes
+
+- Updated dependencies [[`664b1ec3c513595cdcc91216af4371dbe70ab996`](https://github.com/wso2/identity-apps/commit/664b1ec3c513595cdcc91216af4371dbe70ab996)]:
+  - @wso2is/theme@2.5.0
+
 ## 2.8.14
 
 ### Patch Changes

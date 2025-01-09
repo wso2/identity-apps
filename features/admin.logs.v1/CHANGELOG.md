@@ -1,5 +1,14 @@
 # @wso2is/admin.logs.v1
 
+## 1.5.75
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.8.15
+  - @wso2is/admin.core.v1@2.35.12
+  - @wso2is/form@2.6.8
+
 ## 1.5.74
 
 ### Patch Changes
