@@ -2009,140 +2009,87 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             return value === primaryAttributeValue;
         };
 
-        return (
-            <>
-                {
-                    attributeValueList.length < 1
-                        ? generatePlaceholderLink(schema, fieldName)
-                        : attributeValueList.length > 1
-                            ? ( <Select
-                                className="multi-attribute-dropdown"
-                                value={ attributeValueList[0] }
-                                disableUnderline
-                                variant="standard"
-                                data-componentid={ `${testId}-${schema.name.replace(".", "-")}-readonly-dropdown` }
+        const renderSingleMenuItem = (value: string, index: number): JSX.Element => {
+            return (
+                <div className="dropdown-row">
+                    <Typography
+                        className={ `dropdown-label ${schema.name === MOBILE_NUMBERS_ATTRIBUTE
+                            ? "mobile-label"
+                            : null}`
+                        }
+                        data-componentid={ `${testId}-readonly-section-${schema.name.replace(".", "-")}-value-${index}`
+                        }
+                    >
+                        { value }
+                    </Typography>
+                    {
+                        showPendingEmailPopup(value)
+                        && (
+                            <div
+                                className="verified-icon"
+                                data-componentid={ `${testId}-readonly-section-${schema.name.replace(".", "-")}` +
+                                    `-pending-email-icon-${index}` }
                             >
-                                { attributeValueList?.map(
-                                    (value: string, index: number) => (
-                                        <MenuItem key={ index } value={ value } className="read-only-menu-item">
-                                            <div className="dropdown-row">
-                                                <Typography
-                                                    className={ `dropdown-label ${
-                                                        schema.name === MOBILE_NUMBERS_ATTRIBUTE
-                                                            ? "mobile-label"
-                                                            : null}`
-                                                    }
-                                                    data-componentid={ `${testId}-readonly-section-
-                                                        ${schema.name.replace(".", "-")}-value-${index}`
-                                                    }
-                                                >
-                                                    { value }
-                                                </Typography>
-                                                {
-                                                    showPendingEmailPopup(value)
-                                                    && (
-                                                        <div
-                                                            className="verified-icon"
-                                                            data-componentid={ `${testId}-readonly-section-
-                                                                ${schema.name.replace(".", "-")}-pending-email-icon
-                                                                -${index}` }
-                                                        >
-                                                            { generatePendingEmailPopup() }
-                                                        </div>
-                                                    )
-                                                }
-                                                {
-                                                    showVerifiedPopup(value)
-                                                    && (
-                                                        <div
-                                                            className="verified-icon"
-                                                            data-componentid={ `${testId}-readonly-section-
-                                                                ${schema.name.replace(".", "-")}-verified-icon
-                                                                -${index}` }
-                                                        >
-                                                            { generateVerifiedPopup() }
-                                                        </div>
-                                                    )
-                                                }
-                                                {
-                                                    showPrimaryChip(value)
-                                                    && (
-                                                        <div
-                                                            className="verified-icon"
-                                                            data-componentid={ `${testId}-readonly-section-
-                                                                ${schema.name.replace(".", "-")}-primary-icon
-                                                                -${index}` }
-                                                        >
-                                                            <Chip
-                                                                label={ t("common:primary") }
-                                                                size="small"
-                                                            />
-                                                        </div>
-                                                    )
-                                                }
-                                            </div>
-                                        </MenuItem>
-                                    )
-                                ) }
-                            </Select> )
-                            : (
-                                <div className="dropdown-row">
-                                    <Typography
-                                        className={ `dropdown-label ${
-                                            schema.name === MOBILE_NUMBERS_ATTRIBUTE
-                                                ? "mobile-label"
-                                                : null}`
-                                        }
-                                        data-componentid={ `${testId}-readonly-section-
-                                                        ${schema.name.replace(".", "-")}-value`
-                                        }
-                                    >
-                                        { attributeValueList[0] }
-                                    </Typography>
-                                    {
-                                        showPendingEmailPopup(attributeValueList[0])
-                                        && (
-                                            <div
-                                                className="verified-icon"
-                                                data-componentid={ `${testId}-readonly-section-
-                                                    ${schema.name.replace(".", "-")}-pending-email-icon` }
-                                            >
-                                                { generatePendingEmailPopup() }
-                                            </div>
-                                        )
-                                    }
-                                    {
-                                        showVerifiedPopup(attributeValueList[0])
-                                        && (
-                                            <div
-                                                className="verified-icon"
-                                                data-componentid={ `${testId}-readonly-section-
-                                                    ${schema.name.replace(".", "-")}-verified-icon` }
-                                            >
-                                                { generateVerifiedPopup() }
-                                            </div>
-                                        )
-                                    }
-                                    {
-                                        showPrimaryChip(attributeValueList[0])
-                                        && (
-                                            <div
-                                                className="verified-icon"
-                                                data-componentid={ `${testId}-readonly-section-
-                                                        ${schema.name.replace(".", "-")}-primary-icon` }
-                                            >
-                                                <Chip
-                                                    label={ t("common:primary") }
-                                                    size="small"
-                                                />
-                                            </div>
-                                        )
-                                    }
-                                </div>
-                            )
-                }
-            </>
-        );
+                                { generatePendingEmailPopup() }
+                            </div>
+                        )
+                    }
+                    {
+                        showVerifiedPopup(value)
+                        && (
+                            <div
+                                className="verified-icon"
+                                data-componentid={ `${testId}-readonly-section-${schema.name.replace(".", "-")}` +
+                                    `-verified-icon-${index}` }
+                            >
+                                { generateVerifiedPopup() }
+                            </div>
+                        )
+                    }
+                    {
+                        showPrimaryChip(value)
+                        && (
+                            <div
+                                className="verified-icon"
+                                data-componentid={ `${testId}-readonly-section-${schema.name.replace(".", "-")}` +
+                                    `-primary-icon-${index}` }
+                            >
+                                <Chip
+                                    label={ t("common:primary") }
+                                    size="small"
+                                />
+                            </div>
+                        )
+                    }
+                </div>
+            );
+        };
+
+        if (attributeValueList.length < 1) {
+            return generatePlaceholderLink(schema, fieldName);
+        }
+
+        if (attributeValueList.length > 1) {
+            return (
+                <Select
+                    className="multi-attribute-dropdown"
+                    value={ attributeValueList[0] }
+                    disableUnderline
+                    variant="standard"
+                    data-componentid={ `${testId}-${schema.name.replace(".", "-")}-readonly-dropdown` }
+                >
+                    { attributeValueList?.map(
+                        (value: string, index: number) => (
+                            <MenuItem key={ index } value={ value } className="read-only-menu-item">
+                                { renderSingleMenuItem(value, index) }
+                            </MenuItem>
+                        )
+                    ) }
+                </Select>
+            );
+        }
+
+        return renderSingleMenuItem(attributeValueList[0], 0);
     };
 
     const generatePlaceholderLink = (schema: ProfileSchema, fieldName: string): JSX.Element => {
