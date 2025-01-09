@@ -408,7 +408,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                         <DocumentationLink
                             link={ getLink("develop.emailCustomization.learnMore") }
                         >
-                            { t("console:common.learnMore") }
+                            { t("common:learnMore") }
                         </DocumentationLink>
                     </> )
                 }

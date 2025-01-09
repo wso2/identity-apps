@@ -307,7 +307,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                 <DocumentationLink
                                     link={ getLink("develop.applications.roles.learnMore") }
                                 >
-                                    { t("console:common.learnMore") }
+                                    { t("common:learnMore") }
                                 </DocumentationLink>
                             </Heading>
                         </Grid.Column>

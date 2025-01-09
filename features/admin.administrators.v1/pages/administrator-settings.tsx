@@ -203,7 +203,7 @@ export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = 
                     <DocumentationLink
                         link={ getLink("manage.users.collaboratorAccounts.adminSettingsLearnMore") }
                     >
-                        { t("console:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </>
             ) }

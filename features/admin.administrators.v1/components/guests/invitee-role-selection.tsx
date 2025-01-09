@@ -147,7 +147,7 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
                     <DocumentationLink
                         link={ getLink("manage.users.collaboratorAccounts.roles.learnMore") }
                     >
-                        { t("console:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </Heading>
             </Modal.Header>

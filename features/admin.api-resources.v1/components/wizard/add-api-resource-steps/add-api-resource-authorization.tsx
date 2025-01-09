@@ -101,7 +101,7 @@ export const AddAPIResourceAuthorization: FunctionComponent<AddAPIResourceAuthor
                         <DocumentationLink
                             link={ getLink("develop.apiResources.addAPIResource.rbacInfoBox.learnMore") }
                         >
-                            { t("console:common.learnMore") }
+                            { t("common:learnMore") }
                         </DocumentationLink>
                     </>)
                 }
@@ -123,7 +123,7 @@ export const AddAPIResourceAuthorization: FunctionComponent<AddAPIResourceAuthor
                         <DocumentationLink
                             link={ getLink("develop.apiResources.addAPIResource.requiredAuthorization.learnMore") }
                         >
-                            { t("console:common.learnMore") }
+                            { t("common:learnMore") }
                         </DocumentationLink>
                     </>)
                 }

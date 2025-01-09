@@ -392,7 +392,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return (<>
                     { t("extensions:manage.serverConfigurations.accountSecurity.loginAttemptSecurity.subHeading") }
                     <DocumentationLink link={ getLink("manage.loginSecurity.loginAttempts.learnMore") }>
-                        { t("console:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </>);
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
@@ -402,7 +402,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                         <div style={ { whiteSpace: "pre-line" } }>
                             { t("extensions:manage.serverConfigurations.accountRecovery.passwordRecovery.subHeading") }
                             <DocumentationLink link={ getLink("manage.accountRecovery.passwordRecovery.learnMore") }>
-                                { t("console:common.learnMore") }
+                                { t("common:learnMore") }
                             </DocumentationLink>
                         </div>
                     );
@@ -410,7 +410,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return (<>
                     { t("extensions:manage.serverConfigurations.accountSecurity.botDetection.subHeading") }
                     <DocumentationLink link={ getLink("manage.loginSecurity.botDetection.learnMore") }>
-                        { t("console:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </>);
             case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
@@ -428,7 +428,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                             <strong>user</strong> account in the organization.
                         </Trans>
                         <DocumentationLink link={ getLink("manage.selfRegistration.learnMore") }>
-                            { t("console:common.learnMore") }
+                            { t("common:learnMore") }
                         </DocumentationLink>
                     </>
                 );

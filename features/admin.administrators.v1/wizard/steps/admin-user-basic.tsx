@@ -519,7 +519,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                                                     <DocumentationLink
                                                         link={ getLink("manage.users.newCollaboratorUser.learnMore") }
                                                     >
-                                                        { t("console:common.learnMore") }
+                                                        { t("common:learnMore") }
                                                     </DocumentationLink>
                                                 </Hint>
                                             </Grid.Column>

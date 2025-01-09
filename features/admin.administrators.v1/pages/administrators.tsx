@@ -1582,7 +1582,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                     <DocumentationLink
                         link={ getLink("manage.users.collaboratorAccounts.learnMore") }
                     >
-                        { t("console:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </>
             ) }

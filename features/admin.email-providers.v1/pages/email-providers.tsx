@@ -392,7 +392,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                     <DocumentationLink
                         link={ getLink("develop.emailProviders.learnMore") }
                     >
-                        { t("console:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </div>
             </div>

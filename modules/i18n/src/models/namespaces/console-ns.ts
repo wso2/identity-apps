@@ -119,7 +119,6 @@ export interface ConsoleNS {
             };
             helpDropdownLink: string;
         };
-        learnMore: string;
         modals: {
             editAvatarModal: {
                 description: string;

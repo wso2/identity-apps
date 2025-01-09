@@ -127,7 +127,6 @@ export const console: ConsoleNS = {
             },
             helpDropdownLink: "Get Help"
         },
-        learnMore: "Learn More",
         modals: {
             editAvatarModal: {
                 content: {

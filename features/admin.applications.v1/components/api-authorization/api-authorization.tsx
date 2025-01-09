@@ -315,7 +315,7 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
                                 <DocumentationLink
                                     link={ getLink("develop.applications.apiAuthorization.learnMore") }
                                 >
-                                    { t("console:common.learnMore") }
+                                    { t("common:learnMore") }
                                 </DocumentationLink>
                             </Heading>
                         </Grid.Column>
