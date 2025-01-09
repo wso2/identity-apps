@@ -63,12 +63,20 @@ export interface ConsoleNS {
             };
             resultsIndicator: string;
         };
+        community: string;
         cookieConsent: {
             content: string;
             confirmButton: string;
         };
         dateTime: {
             humanizedDateString: string;
+        };
+        dropdown: {
+            footer: {
+                privacyPolicy: string;
+                cookiePolicy: string;
+                termsOfService: string;
+            }
         };
         header: {
             appSwitch: {
@@ -98,6 +106,18 @@ export interface ConsoleNS {
                     description: string;
                 };
             };
+        };
+        help: {
+            communityLinks: {
+                discord: string;
+                stackOverflow: string;
+            };
+            docSiteLink: string;
+            helpCenterLink: {
+                title: string;
+                subtitle: string;
+            };
+            helpDropdownLink: string;
         };
         modals: {
             editAvatarModal: {
@@ -333,14 +353,68 @@ export interface ConsoleNS {
                 };
             };
         };
-        validations: {
-            inSecureURL: {
+        quickStart: {
+            greeting: {
+                alternativeHeading: string;
                 heading: string;
-                description: string;
+                subHeading: string;
             };
-            unrecognizedURL: {
-                heading: string;
-                description: string;
+            sections: {
+                addSocialLogin: {
+                    actions: {
+                        setup: string;
+                        view: string;
+                    };
+                    description: string;
+                    heading: string;
+                };
+                integrateApps: {
+                    actions: {
+                        create: string;
+                        manage: string;
+                        view: string;
+                    };
+                    capabilities: {
+                        sso: string;
+                        mfa: string;
+                        social: string;
+                    };
+                    description: string;
+                    heading: string;
+                };
+                learn: {
+                    actions: {
+                        view: string;
+                    };
+                    description: string;
+                    heading: string;
+                };
+                manageUsers: {
+                    actions: {
+                        create: string;
+                        manage: string;
+                        view: string;
+                    };
+                    capabilities: {
+                        collaborators: string;
+                        customers: string;
+                        groups: string;
+                    };
+                    description: string;
+                    heading: string;
+                };
+                asgardeoTryIt: {
+                    errorMessages: {
+                        appCreateGeneric: {
+                            message: string;
+                            description: string;
+                        };
+                        appCreateDuplicate: {
+                            message: string;
+                            description: string;
+                        };
+                    }
+                }
             };
         };
         sidePanel: {
@@ -354,6 +428,17 @@ export interface ConsoleNS {
             branding: string;
             tenants: string;
         };
+        validations: {
+            inSecureURL: {
+                heading: string;
+                description: string;
+            };
+            unrecognizedURL: {
+                heading: string;
+                description: string;
+            };
+        };
+        upgrade: string;
     };
     develop: {
         features: {

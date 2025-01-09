@@ -261,7 +261,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                     <DocumentationLink
                         link={ getLink("develop.apiResources.learnMore") }
                     >
-                        { t("extensions:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </>
             ) : (
