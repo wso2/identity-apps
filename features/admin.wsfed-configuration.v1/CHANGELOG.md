@@ -1,5 +1,12 @@
 # @wso2is/admin.wsfed-configuration.v1
 
+## 2.25.79
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.35.17
+
 ## 2.25.78
 
 ### Patch Changes

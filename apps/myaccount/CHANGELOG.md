@@ -1,5 +1,17 @@
 # @wso2is/myaccount
 
+## 2.13.58
+
+### Patch Changes
+
+- [#7277](https://github.com/wso2/identity-apps/pull/7277) [`c1394df22ae507e372f5b7e091be2dceb581d5e0`](https://github.com/wso2/identity-apps/commit/c1394df22ae507e372f5b7e091be2dceb581d5e0) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Improve multi email and mobile UI
+
+* [#7278](https://github.com/wso2/identity-apps/pull/7278) [`dc905cbbb85b59b2c0a88c3f3044192b2548c3ed`](https://github.com/wso2/identity-apps/commit/dc905cbbb85b59b2c0a88c3f3044192b2548c3ed) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Fix change password failure for suborg users via myaccount
+
+* Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.79
+  - @wso2is/common.branding.v1@2.25.52
+
 ## 2.13.57
 
 ### Patch Changes
