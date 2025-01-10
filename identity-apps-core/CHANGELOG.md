@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.9.2
+
+### Patch Changes
+
+- [#7030](https://github.com/wso2/identity-apps/pull/7030) [`d8ac25af8c462eac2d2bb5c949f32996ad83a000`](https://github.com/wso2/identity-apps/commit/d8ac25af8c462eac2d2bb5c949f32996ad83a000) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Remove unnecessary org qualified callback url regex for portal apps
+
 ## 2.9.1
 
 ### Patch Changes
