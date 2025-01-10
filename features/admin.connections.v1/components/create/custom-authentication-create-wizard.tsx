@@ -19,7 +19,6 @@
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@oxygen-ui/react/Box";
 import Divider from "@oxygen-ui/react/Divider";
-import Grid from "@oxygen-ui/react/Grid";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
@@ -70,7 +69,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon, Grid as SemanticGrid } from "semantic-ui-react";
 import { createConnection, useGetConnectionTemplate } from "../../api/connections";
-import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/ui";
+import { getConnectionWizardStepIcons } from "../../configs/ui";
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import { LocalAuthenticatorConstants } from "../../constants/local-authenticator-constants";
 import {
@@ -78,14 +77,13 @@ import {
     AuthenticationType,
     AuthenticationTypeDropdownOption,
     ConnectionInterface,
-    ConnectionTemplateInterface,
     CustomAuthenticationCreateWizardGeneralFormValuesInterface,
     EndpointConfigFormPropertyInterface,
     EndpointInterface,
     GenericConnectionCreateWizardPropsInterface,
 } from "../../models/connection";
 import "./custom-authentication-create-wizard.scss";
-import { DropDownItemInterface } from "@wso2is/form/src";
+import { ConnectionsManagementUtils } from "../../utils/connection-utils";
 
 /**
  * Proptypes for the custom authenticator
@@ -104,7 +102,7 @@ interface CustomAuthenticationCreateWizardProps extends
  * CONFIGURATION - Includes the external endpoint configuration details.
  */
 enum WizardSteps {
-    AUTHENTICATION_TYPE = "Authentication Type",
+    AUTHENTICATION_TYPE = "Authentication Type", // TODO: update the authentication type image
     GENERAL_SETTINGS = "General Settings",
     CONFIGURATION = "Configuration"
 }
@@ -146,8 +144,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         onWizardClose,
         onIDPCreate,
         title,
-        subTitle,
-        template,
+        subTitle
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -164,7 +161,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
     const [ isShowSecret2, setIsShowSecret2 ] = useState(false);
     const [ isAuthenticationCreateState, setIsAuthenticationCreateState ] = useState<boolean>(true);
     const [ isAuthenticationUpdateState, setIsAuthenticationUpdateState ] = useState<boolean>(false);
-    const [ isLoading, setIsLoading ] = useState<boolean>(false);
+    // const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
     const [ selectedAuthenticationType, setSelectedAuthenticationType ] = useState<string>();
     // const [ selectedEndpointAuthType, setSelectedEndpointAuthType ] = useState<string>();
@@ -313,7 +310,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         // customAuthenticator.endpoint.uri = values?.uri?.toString();
 
         // TODO: update the image
-        customAuthenticator.image = "assets/images/logos/expert.svg";
+        // customAuthenticator.image = "assets/images/icons/trusted-token-issuer.svg";
 
         setIsSubmitting(true);
 
@@ -409,7 +406,8 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
     useEffect (() => {
     }, [ selectedAuthenticationType ]);
 
-    const handleDropdownChange = (data) => { // TODO: [Immediate] make type safe
+    const handleDropdownChange = (event, data) => { // TODO: [Immediate] make type safe
+        console.log("Data: " + data);
         setSelectedAuthenticationType(data.value);
     };
 
@@ -599,6 +597,8 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
 
     const renderEndpointAuthPropertyFields = (): ReactElement => {
 
+        console.log("selectedAuthenticationType: " + selectedAuthenticationType);
+
         switch (selectedAuthenticationType) {
             case AuthenticationType.NONE:
                 break;
@@ -729,82 +729,96 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
             } }
         >
             <div className="sub-template-selection">
-                <label className="sub-templates-label">Select the authentication type you are implementing</label>
-                <Grid
-                    container
-                    spacing={ { md: 3, xs: 2 } }
-                    columns={ { md: 9, sm: 8, xs: 4 } }
-                >
-                    <Grid xs={ 2 } sm={ 4 } md={ 9 }>
-                        <SelectionCard
-                            inline
-                            image={ getConnectionIcons().oidc }
-                            size="medium"
-                            className="sub-template-selection-card"
-                            header={ <strong>External (Federated) User Authentication</strong> }
-                            selected={ selectedAuthenticator === "external" }
-                            onClick={ () => setSelectedAuthenticator("external") }
-                            imageSize="x30"
-                            imageOptions={ {
-                                relaxed: true,
-                                square: false,
-                                width: "auto"
-                            } }
-                            contentTopBorder={ false }
-                            showTooltips={ true }
-                            data-componentid={ `${ componentId }-form-wizard-external-custom-authentication-
-                            selection-card` }
-                        />
-                        <SelectionCard
-                            inline
-                            image={ getConnectionIcons().saml }
-                            size="small"
-                            className="sub-template-selection-card"
-                            style={ { marginTop: "0" } }
-                            header={ <strong>Internal User Authentication</strong> }
-                            selected={ selectedAuthenticator === "internal" }
-                            onClick={ () => setSelectedAuthenticator("internal") }
-                            imageSize="x30"
-                            imageOptions={ {
-                                relaxed: true,
-                                square: false,
-                                width: "auto"
-                            } }
-                            showTooltips={ true }
-                            disabled={ false }
-                            overlay={ renderDimmerOverlay() }
-                            contentTopBorder={ false }
-                            renderDisabledItemsAsGrayscale={ false }
-                            overlayOpacity={ 0.6 }
-                            data-componentid={ `${ componentId }-form-wizard-internal-custom-authentication-
-                            selection-card` }
-                        />
-                        <SelectionCard
-                            inline
-                            image={ getConnectionIcons().saml }
-                            size="default"
-                            className="sub-template-selection-card"
-                            style={ { marginTop: "0" } }
-                            header={ <strong>2FA Authentication</strong> }
-                            selected={ selectedAuthenticator === "two-factor" }
-                            onClick={ () => setSelectedAuthenticator("two-factor") }
-                            imageSize="x30"
-                            imageOptions={ {
-                                relaxed: true,
-                                square: false,
-                                width: "auto"
-                            } }
-                            showTooltips={ true }
-                            disabled={ false }
-                            overlay={ renderDimmerOverlay() }
-                            contentTopBorder={ false }
-                            renderDisabledItemsAsGrayscale={ false }
-                            overlayOpacity={ 0.6 }
-                            data-componentid={ `${ componentId }-form-wizard-two-factor-custom-authentication-
-                            selection-card` }
-                        />
-                    </Grid>
-                </Grid>
+                <label>Select the authentication type you are implementing</label>
+                <div className="sub-template-selection-container">
+                    <SelectionCard
+                        className="sub-template-selection-card"
+                        centered={ true }
+                        image={
+                            ConnectionsManagementUtils.resolveConnectionResourcePath("",
+                                "assets/images/icons/external-authentication-icon.svg")
+                        }
+                        header={ (<div>
+                                    External (Federated) User Authentication
+                        </div>) }
+                        description={
+                            (<div>
+                                <p className="main-description">Authenticate and provision federated users.</p>
+                                <p>Eg: Social Login, Enterprise IdP</p>
+                            </div>)
+                        }
+                        contentTopBorder={ false }
+                        selected={ selectedAuthenticator === "external" }
+                        onClick={ () => setSelectedAuthenticator("external") }
+                        imageSize="x60"
+                        imageOptions={ {
+                            relaxed: "very",
+                            square: false,
+                            width: "auto"
+                        } }
+                        showTooltips={ true }
+                        overlay={ renderDimmerOverlay() }
+                        overlayOpacity={ 0.6 }
+                        data-componentid={ `${ componentId }-form-wizard-external-custom-authentication-
+                        selection-card` }
+                    />
+                    <SelectionCard
+                        className="sub-template-selection-card"
+                        centered={ true }
+                        image={
+                            ConnectionsManagementUtils.resolveConnectionResourcePath("",
+                                "assets/images/icons/internal-user-authentication-icon.svg")
+                        }
+                        header={ (<div>
+                            Internal User Authentication
+                        </div>) }
+                        description={
+                            (<div>
+                                <p className="main-description">
+                                    Collect identifier and authenticate user accounts managed in the organization.
+                                </p>
+                                <p>Eg: Username & Password, Email OTP</p>
+                            </div>)
+                        }
+                        selected={ selectedAuthenticator === "internal" }
+                        onClick={ () => setSelectedAuthenticator("internal") }
+                        imageSize="x60"
+                        showTooltips={ true }
+                        contentTopBorder={ false }
+                        overlay={ renderDimmerOverlay() }
+                        overlayOpacity={ 0.6 }
+                        data-componentid={ `${ componentId }-form-wizard-internal-custom-authentication-
+                        selection-card` }
+                    />
+                    <SelectionCard
+                        className="sub-template-selection-card"
+                        centered={ true }
+                        image={
+                            ConnectionsManagementUtils.resolveConnectionResourcePath("",
+                                "assets/images/icons/two-factor-custom-authentication-icon.svg")
+                        }
+                        header={ (<div>
+                            2FA Authentication
+                        </div>) }
+                        description={
+                            (<div>
+                                <p className="main-description">
+                                    Only verify users in a second or later step in the login flow.
+                                </p>
+                                <p>Eg: TOTP</p>
+                            </div>)
+                        }
+                        selected={ selectedAuthenticator === "two-factor" }
+                        onClick={ () => setSelectedAuthenticator("two-factor") }
+                        imageSize="x60"
+                        showTooltips={ true }
+                        overlay={ renderDimmerOverlay() }
+                        overlayOpacity={ 0.6 }
+                        contentTopBorder={ false }
+                        data-componentid={ `${ componentId }-form-wizard-two-factor-custom-authentication-
+                        selection-card` }
+                    />
+                </div>
             </div>
         </WizardPage>
     );
@@ -859,13 +873,15 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
     );
 
     // Final Page
+    // TODO: remove border of the emphasized segment?
     const configurationsPage = () => (
         <WizardPage
             validate={ validateForm }
         >
             <EmphasizedSegment
-                class="wizard-wrapper"
+                className="form-wrapper"
                 bordered={ false }
+                emphasized={ true }
                 padded={ "very" }
                 data-componentid={ `${ componentId }-section` }
             >
@@ -916,112 +932,6 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         </WizardPage>
     );
 
-    // ### Here the configurationsPage is written with FinalForm
-    //   const configurationsPage = () => (
-    //     <FinalForm
-    //         onSubmit={ (values: EndpointConfigFormPropertyInterface, form: any) => {
-    //             handleSubmit(values, form.getState().dirtyFields); }
-    //         }
-    //         validate={ validateForm }
-    //         // initialValues={ endpointInitialValues }
-    //         render={ ({ handleSubmit, form }: FormRenderProps) => (
-    //             <form onSubmit={ handleSubmit }>
-    //                 <EmphasizedSegment
-    //                     className="form-wrapper"
-    //                     padded={ "very" }
-    //                     data-componentid={ `${ componentId }-section` }
-    //                 >
-    //                     <div className="form-container with-max-width">
-    //                         { renderFormFields() }
-    //                         { !isLoading && (
-    //                             <Button
-    //                                 size="medium"
-    //                                 variant="contained"
-    //                                 onClick={ handleSubmit }
-    //                                 className={ "button-container" }
-    //                                 data-componentid={ `${ componentId }-primary-button` }
-    //                                 loading={ isSubmitting }
-    //                                 disabled={ getFieldDisabledStatus() }
-    //                             >
-    //                                 {
-    //                                     isAuthenticationCreateState
-    //                                         ? t("actions:buttons.create")
-    //                                         : t("actions:buttons.update")
-    //                                 }
-    //                             </Button>
-    //                         ) }
-    //                     </div>
-    //                 </EmphasizedSegment>
-    //                 <FormSpy
-    //                     subscription={ { values: true } }
-    //                 >
-    //                     { ({ values }: { values: EndpointConfigFormPropertyInterface }) => {
-    //                         if (!isAuthenticationUpdateState) {
-    //                             form.change("authenticationType",
-    //                                 endpointInitialValues?.authenticationType);
-    //                             switch (authenticationType) {
-    //                                 case AuthenticationType.BASIC:
-    //                                     delete values.usernameAuthProperty;
-    //                                     delete values.passwordAuthProperty;
-
-    //                                     break;
-    //                                 case AuthenticationType.BEARER:
-    //                                     delete values.accessTokenAuthProperty;
-
-    //                                     break;
-    //                                 case AuthenticationType.API_KEY:
-    //                                     delete values.headerAuthProperty;
-    //                                     delete values.valueAuthProperty;
-
-    //                                     break;
-    //                                 default:
-    //                                     break;
-    //                             }
-    //                         }
-
-    //                         // Clear inputs of property field values of other authentication types.
-    //                         switch (authenticationType) {
-    //                             case AuthenticationType.BASIC:
-    //                                 delete values.accessTokenAuthProperty;
-    //                                 delete values.headerAuthProperty;
-    //                                 delete values.valueAuthProperty;
-
-    //                                 break;
-    //                             case AuthenticationType.BEARER:
-    //                                 delete values.usernameAuthProperty;
-    //                                 delete values.passwordAuthProperty;
-    //                                 delete values.headerAuthProperty;
-    //                                 delete values.valueAuthProperty;
-
-    //                                 break;
-    //                             case AuthenticationType.API_KEY:
-    //                                 delete values.usernameAuthProperty;
-    //                                 delete values.passwordAuthProperty;
-    //                                 delete values.accessTokenAuthProperty;
-
-    //                                 break;
-    //                             case AuthenticationType.NONE:
-    //                                 delete values.usernameAuthProperty;
-    //                                 delete values.passwordAuthProperty;
-    //                                 delete values.headerAuthProperty;
-    //                                 delete values.valueAuthProperty;
-    //                                 delete values.accessTokenAuthProperty;
-
-    //                                 break;
-    //                             default:
-
-    //                                 break;
-    //                         }
-
-    //                         return null;
-    //                     } }
-    //                 </FormSpy>
-    //             </form>
-    //         ) }
-    //     >
-    //     </FinalForm>
-    // );
-
     // Resolvers
 
     const resolveWizardPages = (): Array<ReactElement> => {
@@ -1032,35 +942,29 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         ];
     };
 
+    const WizardHelpPanel = (): ReactElement => {
+        // TODO: check if there is a better way to access the field input label "Identifier"
+        return (
+            <div >
+                <Heading as="h5"> Identifier </Heading>
+                <p>
+                We recommend using a URI as the identifier, but you do not need to make the URI
+                publicly available since WSO2 Identity Server will not access your API.
+                WSO2 Identity Server will use this identifier value as the audience(aud)
+                claim in the issued JWT tokens.
+                    <strong> This field should be unique; once created, it is not editable. </strong>
+                </p>
+            </div>
+        );
+    };
+
+
     // TODO: need to update
     const resolveHelpPanel = () => {
 
         const SECOND_STEP: number = 1;
 
         if (currentWizardStep !== SECOND_STEP) return null;
-
-        // Return null when `showHelpPanel` is false or `samlHelp`
-        // or `oidcHelp` is not defined in `selectedTemplate` object.
-
-        const subTemplate: ConnectionTemplateInterface = cloneDeep(template.subTemplates.find(
-            ({ id }: { id: string }) => {
-                return id === (selectedAuthenticator === "external"
-                    ? "external-custom-authentication"
-                    : selectedAuthenticator === "internal"
-                        ? "internal-custom-authentication"
-                        : "two-factor-custom-authentication"
-                );
-            }
-        ));
-
-        // TODO: update this with correct wizard helps
-        if (!subTemplate?.content?.wizardHelp) return null;
-
-        // let { wizardHelp: WizardHelp } = subTemplate?.content;
-
-        // if (selectedAuthenticator === "external" && selectedSamlConfigMode === "file") {
-        //     WizardHelp = subTemplate.content.fileBasedHelpPanel;
-        // }
 
         return (
             <ModalWithSidePanel.SidePanel>
@@ -1073,7 +977,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
                     <Suspense fallback={ <ContentLoader/> }>
-                        {/* <WizardHelp data-componentid={ `${ componentId }-modal-side-panel-help-content` }/> */}
+                        <WizardHelpPanel/>
                     </Suspense>
                 </ModalWithSidePanel.Content>
             </ModalWithSidePanel.SidePanel>
@@ -1124,7 +1028,10 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                     data-componentid={ `${ componentId }-modal-header` }>
                     <div className={ "display-flex" }>
                         <GenericIcon
-                            icon={ getConnectionIcons().enterprise }
+                            icon={
+                                ConnectionsManagementUtils.resolveConnectionResourcePath("",
+                                    "assets/images/logos/custom-authentication.svg")
+                            }
                             size="x30"
                             transparent
                             spaced={ "right" }
@@ -1237,7 +1144,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                     </SemanticGrid>
                 </ModalWithSidePanel.Actions>
             </ModalWithSidePanel.MainPanel>
-            { resolveHelpPanel() }
+            { (resolveHelpPanel()) }
         </ModalWithSidePanel>
     );
 
