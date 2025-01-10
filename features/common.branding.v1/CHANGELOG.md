@@ -1,5 +1,13 @@
 # @wso2is/common.branding.v1
 
+## 2.25.50
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.35.15
+  - @wso2is/admin.organizations.v1@2.26.77
+
 ## 2.25.49
 
 ### Patch Changes
