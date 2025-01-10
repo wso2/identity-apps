@@ -1,5 +1,18 @@
 # @wso2is/identity-apps-core
 
+## 2.10.0
+
+### Minor Changes
+
+- [#7292](https://github.com/wso2/identity-apps/pull/7292) [`cd827d04f98a519804f1f9996a1dc3a831278df1`](https://github.com/wso2/identity-apps/commit/cd827d04f98a519804f1f9996a1dc3a831278df1) Thanks [@savindi7](https://github.com/savindi7)! - Add RTL support for Authentication and Recovery portals.
+
+### Patch Changes
+
+- [#7293](https://github.com/wso2/identity-apps/pull/7293) [`22de328e49a00d5ce9cdb9bb24a703f867ea1998`](https://github.com/wso2/identity-apps/commit/22de328e49a00d5ce9cdb9bb24a703f867ea1998) Thanks [@sumedhe](https://github.com/sumedhe)! - Fix tenant null issue in self registration flow
+
+- Updated dependencies [[`cd827d04f98a519804f1f9996a1dc3a831278df1`](https://github.com/wso2/identity-apps/commit/cd827d04f98a519804f1f9996a1dc3a831278df1)]:
+  - @wso2is/theme@2.6.0
+
 ## 2.9.2
 
 ### Patch Changes
