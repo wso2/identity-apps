@@ -813,7 +813,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             t("applications:forms.inboundSAML.sections" +
                                                 ".requestValidation.fields.signatureValidation.validations.empty")
                                         }
-                                        disabled={ !isCertAvailableForEncrypt }
+                                        disabled={ !isCertAvailableForEncrypt
+                                            && !isSignatureValidationCertificateAliasEnabled }
                                         type="checkbox"
                                         listen={
                                             (values: Map<string, FormValue>) => {
