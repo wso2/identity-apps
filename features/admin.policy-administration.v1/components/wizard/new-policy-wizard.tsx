@@ -16,7 +16,6 @@
  * under the License.
  */
 import Box from "@oxygen-ui/react/Box";
-import ScriptEditorPanel from "@wso2is/admin.authentication-flow-builder.v1/components/script-editor-panel/script-editor-panel";
 import { getCertificateIllustrations } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { FilePicker, LinkButton, PickerResult, XMLFileStrategy } from "@wso2is/react-components";
@@ -33,6 +32,7 @@ import DialogActions from "@oxygen-ui/react/DialogActions";
 import Stack from "@oxygen-ui/react/Stack";
 import Button from "@oxygen-ui/react/Button";
 import Dialog from "@oxygen-ui/react/Dialog";
+import  PolicyEditor  from "../policy-editor/policy-editor";
 
 
 interface NewPolicyWizardPropsInterface extends IdentifiableComponentInterface {
@@ -101,7 +101,7 @@ export const NewPolicyWizard: FunctionComponent<NewPolicyWizardPropsInterface> =
                     emptyFileError={ false }
                     scriptEditor={
                         (<Box className={ "policy-editor" }>
-                            <ScriptEditorPanel language="xml" hideMinimizeIcon={ true } hideText={ true } />
+                            <PolicyEditor/>
                         </Box>)
                     }
                 />

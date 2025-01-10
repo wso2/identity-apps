@@ -45,6 +45,8 @@ import EditPolicyAlgorithmModal from "../components/edit-policy-algorithm/edit-p
 import "./policy-administration-page-layout.scss";
 import { useGetAlgorithm } from "../api/useGetAlgorithm";
 import { useGetPolicies } from "../api/useGetPolicies";
+import InfiniteScroll from "react-infinite-scroll-component";
+import {PolicyInterface, PolicyListInterface} from "../models/policies";
 
 
 interface AlgorithmOption {
@@ -71,8 +73,16 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
+    const [ showAlgorithmModal, setShowAlgorithmModal ] = useState<boolean>(false);
+    const [ showWizard, setShowWizard ] = useState<boolean>(false);
+    const [ isAlgorithmLoading, setIsAlgorithmLoading  ] = useState<boolean>(false);
+    const [ selectedAlgorithm, setSelectedAlgorithm ] = useState<AlgorithmOption>();
+    const [ pageInactive, setPageInactive ] = useState<number>(0);
+    const [ hasMoreInactivePolicies, setHasMoreInactivePolicies ] = useState<boolean>(true);
+    const [ inactivePolicies, setInactivePolicies ] = useState<PolicyInterface[]>([]);
 
-    const { data: inactivePolicyArray, isLoading: isLoadingInactivePolicies, error: inactivePolicyError } = useGetPolicies(true, 0, false, "*", "ALL");
+
+    const { data: inactivePolicyArray, isLoading: isLoadingInactivePolicies, error: inactivePolicyError, mutate: mutateInactivePolicy } = useGetPolicies(true, pageInactive, false, "*", "ALL");
     const { data: activePolicyArray, isLoading: isLoadingActivePolicies, error: activePolicyError } = useGetPolicies(true, 0, true, "*", "ALL");
 
     const { data: algorithm, isLoading } = useGetAlgorithm();
@@ -105,14 +115,27 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
         }
     }, [ algorithm ]);
 
+    useEffect(() => {
+        if (!inactivePolicyArray) {
+            return;
+        }
+
+        if (inactivePolicyArray.policySet?.length) {
+            setInactivePolicies((prev: PolicyInterface[]) => [
+                ...prev,
+                ...inactivePolicyArray.policySet.filter((p) => p !== null)
+            ]);
+        }
+
+        if ((pageInactive + 1) >= (inactivePolicyArray.numberOfPages ?? 1)) {
+            setHasMoreInactivePolicies(false);
+        }
+
+    }, [ inactivePolicyArray ]);
 
 
-    const { generateComponentId, node, setNode } = useDnD();
 
-    const [ showAlgorithmModal, setShowAlgorithmModal ] = useState<boolean>(false);
-    const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ isAlgorithmLoading, setIsAlgorithmLoading  ] = useState<boolean>(false);
-    const [ selectedAlgorithm, setSelectedAlgorithm ] = useState<AlgorithmOption>();
+
 
     const handleListFilter = (query: string): void => {
 
@@ -121,32 +144,12 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
 
 
     const handleDrop = (targetContainerId: string) => {
-        if (!node || node.containerId === targetContainerId) {
-            return;
-        }
 
-        const { containerId: sourceContainerId, item } = node;
-
-        // setContainerData((prev) => {
-        //     const sourceItems = prev[sourceContainerId].filter(
-        //         (i) => i.id !== item.id
-        //     );
-        //     const targetItems = [ ...prev[targetContainerId], item ];
-        //
-        //     return {
-        //         ...prev,
-        //         [sourceContainerId]: sourceItems,
-        //         [targetContainerId]: targetItems
-        //     };
-        // });
-
-        // Clear the node state after drop
-        setNode(null);
     };
 
 
     const activePolicies = activePolicyArray?.policySet?.filter((policy) => policy !== null) || [];
-    const inactivePolicies = inactivePolicyArray?.policySet?.filter((policy) => policy !== null) || [];
+    // const inactivePoliciess = inactivePolicyArray?.policySet?.filter((policy) => policy !== null) || [];
 
 
 
@@ -175,6 +178,10 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
             </PageLayout>
         );
     }
+
+    const fetchMoreInactivePolicies = (): void => {
+        setPageInactive((prevPage: number) => prevPage + 1);
+    };
 
 
 
@@ -254,7 +261,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                 <Grid xs={ 6 }>
                     <DnDProvider>
                         <Typography variant="h5" className="policy-list-header">Active Policies</Typography>
-                        <Card className="policy-list-card">
+                        <Card id={ "active-policy-list-container" } className="policy-list-card">
                             <CardContent>
                                 <PolicyList
                                     containerId="1"
@@ -268,14 +275,27 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                 </Grid>
                 <Grid  xs={ 6 }>
                     <Typography variant="h5" className="policy-list-header">In-Active Policies</Typography>
-                    <Card className="policy-list-card">
-                        <CardContent>
-                            <PolicyList
-                                containerId="2"
-                                policies={ inactivePolicies } // Use your inactive policies array
-                                isDraggable={ false } // Non-draggable
-                            />
-                        </CardContent>
+                    <Card id={ "inactive-policy-list-container" } className="policy-list-card">
+                        <InfiniteScroll
+                            next={ fetchMoreInactivePolicies }
+                            hasMore={ hasMoreInactivePolicies }
+                            loader={
+                                <div style={ { textAlign: "center" } }>
+                                    <CircularProgress />
+                                </div>
+                            }
+                            dataLength={ inactivePolicies.length }
+                            scrollableTarget={ "inactive-policy-list-container" }
+                            style={ { overflow: "unset" } }
+                        >
+                            <CardContent>
+                                <PolicyList
+                                    containerId="2"
+                                    policies={ inactivePolicies } // Use your inactive policies array
+                                    isDraggable={ false } // Non-draggable
+                                />
+                            </CardContent>
+                        </InfiniteScroll>
                     </Card>
                 </Grid>
             </Grid>

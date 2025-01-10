@@ -74,7 +74,7 @@ export const createPolicy = (
  * @returns A promise containing the updated policy data.
  */
 export const updatePolicy = (
-    policyData: PolicyInterface
+    policyData: Partial<PolicyInterface>
 ): Promise<any> => {
 
     const requestConfig: RequestConfigInterface = {

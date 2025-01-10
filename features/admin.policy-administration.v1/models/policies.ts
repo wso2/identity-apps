@@ -20,7 +20,7 @@ export interface AttributeDTO {
     attributeValue: string;
     attributeDataType: string;
     attributeId: string;
-    category: string;
+    attributeCategory: string;
 }
 
 export interface PolicyInterface {

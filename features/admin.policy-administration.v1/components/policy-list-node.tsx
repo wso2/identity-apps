@@ -20,15 +20,18 @@ import CardContent from "@oxygen-ui/react/CardContent";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import { addAlert } from "@wso2is/core/store";
+import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps, SyntheticEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { Popup } from "../../../modules/react-components/src";
 import { PolicyInterface } from "../models/policies";
-import kebabCase from "lodash-es/kebabCase";
 import "./policy-list-node.scss";
-
-
+import { deletePolicy } from "../api/entitlement-policies";
 
 
 /**
@@ -49,13 +52,36 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
     policy,
     ...rest
 }: PolicyListDraggableNodePropsInterface): ReactElement => {
+    const { t } = useTranslation();
+
+    const dispatch: Dispatch = useDispatch();
 
     const handleEdit = (policyId: string) => {
         history.push(`${AppConstants.getPaths().get("EDIT_POLICY").replace(":id", kebabCase(policyId))}`);
     };
 
     const handleDelete = () => {
-        console.log("Delete button clicked");
+        deletePolicy(policy.policyId).then(() => {
+            dispatch(addAlert({
+                description: "The policy has been deleted successfully",
+                level: AlertLevels.SUCCESS,
+                message: "Update successful"
+            }));
+        }
+        ).catch(() => {
+            dispatch(addAlert({
+                description: t("idvp:create.notifications.create.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("idvp:create.notifications.create.genericError.message")
+            }));
+        });
+    };
+
+
+
+
+    const handleActivate = () => {
+        console.log("Activate button clicked");
     };
 
     return (
@@ -66,7 +92,7 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
                         <Popup
                             trigger={ (
                                 <Icon
-                                    onClick={ handleDelete }
+                                    onClick={ handleActivate }
                                     data-componentid={ `${componentId}-edit-button` }
                                     className="list-icon"
                                     size="massive"
