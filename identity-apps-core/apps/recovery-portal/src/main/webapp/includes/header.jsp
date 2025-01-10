@@ -20,6 +20,8 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
+<%@ page import="java.io.BufferedReader" %>
+<%@ page import="java.io.FileReader" %>
 
 <%-- Localization --%>
 <jsp:directive.include file="localize.jsp" />
@@ -33,14 +35,80 @@
 <!-- Extract the name of the stylesheet-->
 <%
     String themeName = "wso2is";
-    File themeDir = new File(request.getSession().getServletContext().getRealPath("/")
-        + "/" + "libs/themes/" + themeName + "/");
-    String[] fileNames = themeDir.list();
-    String themeFileName = "";
+    String language = "en_US";
+    Cookie[] userCookies = request.getCookies();
 
-    for(String file: fileNames) {
-        if(file.endsWith("min.css")) {
-            themeFileName = file;
+    if (userCookies != null) {
+        for (Cookie cookie : userCookies) {
+            if ("ui_lang".equals(cookie.getName())) {
+                language = cookie.getValue();
+
+                break;
+            }
+        }
+    }
+
+    String filePath = application.getRealPath("/") + "/WEB-INF/classes/LanguageOptions.properties";
+    Map<String, String> languageDirectionMap = new HashMap<>();
+
+    try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
+        String line;
+
+        while ((line = bufferedReader.readLine()) != null) {
+            line = line.trim();
+
+            if (!line.startsWith("#") && !line.isEmpty()) {
+                String[] keyValue = line.split("=");
+
+                if (keyValue.length == 2) {
+                    String[] keyParts = keyValue[0].split("\\.");
+                    String languageCode = keyParts[keyParts.length - 1];
+                    String[] valueParts = keyValue[1].split(",");
+
+                    if (valueParts.length >= 3) {
+                        String direction = valueParts[2].trim();
+                        languageDirectionMap.put(languageCode, direction);
+                    } else {
+                        languageDirectionMap.put(languageCode, "ltr");
+                    }
+                }
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    String direction = languageDirectionMap.getOrDefault(language, "ltr");
+
+    File themeDir = new File(request.getSession().getServletContext().getRealPath("/") + "libs/themes/" + themeName + "/");
+    String themeFileName = "";
+    String[] fileNames = null;
+
+    if (themeDir.exists() && themeDir.isDirectory()) {
+        fileNames = themeDir.list();
+
+        if (fileNames != null) {
+            for (String file : fileNames) {
+                if (direction.equals("rtl") && file.endsWith(".rtl.min.css")) {
+                    themeFileName = file;
+
+                    break;
+                } else if (direction.equals("ltr") && !file.contains(".rtl") && file.endsWith(".min.css")) {
+                    themeFileName = file;
+
+                    break;
+                }
+            }
+        }
+    }
+
+    if (themeFileName.isEmpty() && fileNames != null) {
+        for (String file : fileNames) {
+            if (file.endsWith(".min.css") && !file.contains(".rtl")) {
+                themeFileName = file;
+
+                break;
+            }
         }
     }
 %>
@@ -96,3 +164,10 @@
 <%
     }
 %>
+
+<script type="text/javascript">
+    const direction = "<%= direction %>";
+    if (direction) {
+        document.documentElement.setAttribute("dir", direction);
+    }
+</script>
