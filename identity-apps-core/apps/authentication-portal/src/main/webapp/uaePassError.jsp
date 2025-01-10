@@ -36,7 +36,7 @@
     request.getSession().invalidate();
     String queryString = request.getQueryString();
 
-    String errorMessage = i18n(resourceBundle, "error.retry");
+    String errorMessage = i18n(resourceBundle, customText, "error.retry");
     String authenticationFailed = "false";
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
@@ -46,9 +46,9 @@
             errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
             if (errorMessage.equalsIgnoreCase("cancelled.on.app")) {
-                errorMessage = i18n(resourceBundle, "error.uaepass.cancelled");
+                errorMessage = i18n(resourceBundle, customText, "error.uaepass.cancelled");
             } else {
-                errorMessage = i18n(resourceBundle, "error.retry");
+                errorMessage = i18n(resourceBundle, customText, "error.retry");
             }
         }
     }
@@ -93,7 +93,7 @@
     <layout:component componentName="MainSection">
         <div class="ui segment">
                 <%-- page content --%>
-            <h2><%=i18n(resourceBundle, "error.uaepass.title")%>
+            <h2><%=i18n(resourceBundle, customText, "error.uaepass.title")%>
             </h2>
             <div class="ui divider hidden"></div>
             <%
