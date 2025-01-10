@@ -1,5 +1,27 @@
 # @wso2is/admin.users.v1
 
+## 2.29.38
+
+### Patch Changes
+
+- [#7277](https://github.com/wso2/identity-apps/pull/7277) [`c1394df22ae507e372f5b7e091be2dceb581d5e0`](https://github.com/wso2/identity-apps/commit/c1394df22ae507e372f5b7e091be2dceb581d5e0) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Improve multi email and mobile UI
+
+- Updated dependencies [[`c1394df22ae507e372f5b7e091be2dceb581d5e0`](https://github.com/wso2/identity-apps/commit/c1394df22ae507e372f5b7e091be2dceb581d5e0)]:
+  - @wso2is/admin.users.v1@2.29.38
+  - @wso2is/admin.authentication.v1@2.25.79
+  - @wso2is/admin.claims.v1@2.26.38
+  - @wso2is/admin.core.v1@2.35.17
+  - @wso2is/admin.extensions.v1@2.36.4
+  - @wso2is/admin.groups.v1@2.26.38
+  - @wso2is/admin.organizations.v1@2.26.79
+  - @wso2is/admin.roles.v2@2.27.23
+  - @wso2is/admin.server-configurations.v1@2.32.4
+  - @wso2is/admin.tenants.v1@2.28.53
+  - @wso2is/admin.validation.v1@2.27.17
+  - @wso2is/admin.identity-providers.v1@2.26.79
+  - @wso2is/admin.feature-gate.v1@1.4.79
+  - @wso2is/admin.userstores.v1@2.26.38
+
 ## 2.29.37
 
 ### Patch Changes
