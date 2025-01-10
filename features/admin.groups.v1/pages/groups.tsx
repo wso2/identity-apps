@@ -56,7 +56,7 @@ import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } fro
 import { deleteGroupById, useGroupList } from "../api";
 import { GroupList } from "../components";
 import { CreateGroupWizard } from "../components/wizard/create-group-wizard";
-import { GroupsInterface, WizardStepsFormTypes } from "../models";
+import { GroupsInterface, WizardStepsFormTypes } from "../models/groups";
 
 const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
     {

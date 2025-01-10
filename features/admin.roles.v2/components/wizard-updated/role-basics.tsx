@@ -45,7 +45,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { DropdownProps } from "semantic-ui-react";
 import useGetRolesList from "../../api/use-get-roles-list";
 import { RoleAudienceTypes, RoleConstants } from "../../constants";
-import { CreateRoleFormData } from "../../models";
+import { CreateRoleFormData } from "../../models/roles";
 
 const FORM_ID: string = "add-role-basics-form";
 

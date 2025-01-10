@@ -28,7 +28,7 @@ import {
     BasicRoleInterface,
     PatchRoleDataInterface,
     RolesV2Interface
-} from "@wso2is/admin.roles.v2/models";
+} from "@wso2is/admin.roles.v2/models/roles";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models";
 import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
@@ -59,7 +59,7 @@ import {
     WizardStateInterface,
     WizardStepInterface,
     WizardStepsFormTypes
-} from "../../models";
+} from "../../models/groups";
 
 /**
  * Interface which captures create group props.
