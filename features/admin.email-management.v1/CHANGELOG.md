@@ -1,5 +1,14 @@
 # @wso2is/admin.email-management.v1
 
+## 2.25.81
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.27.54
+  - @wso2is/admin.core.v1@2.35.19
+  - @wso2is/common.branding.v1@2.25.54
+
 ## 2.25.80
 
 ### Patch Changes
