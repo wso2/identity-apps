@@ -25,11 +25,11 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { addAlert } from "@wso2is/core/store";
 import kebabCase from "lodash-es/kebabCase";
-import React, { FunctionComponent, HTMLAttributes, ReactElement, SVGProps, SyntheticEvent } from "react";
+import React, { FunctionComponent, HTMLAttributes, ReactElement} from "react";
 import { useTranslation } from "react-i18next";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { Popup } from "../../../modules/react-components/src";
-import { PolicyInterface } from "../models/policies";
+import {PolicyInterface} from "../models/policies";
 import "./policy-list-node.scss";
 import { deletePolicy } from "../api/entitlement-policies";
 
@@ -44,12 +44,16 @@ export interface PolicyListDraggableNodePropsInterface
      * The node that is being dragged.
      */
     policy: PolicyInterface;
+    mutateInactivePolicyList?: () => void;
+    setInactivePolicies?: React.Dispatch<React.SetStateAction<PolicyInterface[]>>;
 }
 
 const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> = ({
     "data-componentid": componentId = "policy-list--node",
     id,
     policy,
+    mutateInactivePolicyList,
+    setInactivePolicies,
     ...rest
 }: PolicyListDraggableNodePropsInterface): ReactElement => {
     const { t } = useTranslation();
@@ -60,22 +64,29 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
         history.push(`${AppConstants.getPaths().get("EDIT_POLICY").replace(":id", kebabCase(policyId))}`);
     };
 
-    const handleDelete = () => {
-        deletePolicy(policy.policyId).then(() => {
+    const handleDelete = async (): Promise<void> => {
+        try {
+            await deletePolicy(policy.policyId);
+            setInactivePolicies([]);
+
             dispatch(addAlert({
                 description: "The policy has been deleted successfully",
                 level: AlertLevels.SUCCESS,
                 message: "Update successful"
             }));
-        }
-        ).catch(() => {
+
+            mutateInactivePolicyList();
+
+        } catch (error) {
+            // Dispatch the error alert.
             dispatch(addAlert({
-                description: t("idvp:create.notifications.create.genericError.description"),
+                description: "An error occurred while deleting the policy",
                 level: AlertLevels.ERROR,
-                message: t("idvp:create.notifications.create.genericError.message")
+                message: "Delete error"
             }));
-        });
+        }
     };
+
 
 
 

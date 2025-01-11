@@ -18,13 +18,15 @@
 
 import {
     AsgardeoSPAClient,
-    HttpClientInstance
+    HttpClientInstance, HttpError, HttpRequestConfig, HttpResponse
 } from "@asgardeo/auth-react";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosResponse } from "axios";
+import {AxiosError, AxiosRequestConfig, AxiosResponse} from "axios";
 import { PolicyInterface } from "../models/policies";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+
 
 /**
  * Get an axios instance.
@@ -110,7 +112,7 @@ export const updatePolicy = (
  */
 export const deletePolicy = (policyId: string): Promise<AxiosResponse> => {
 
-    const requestConfig: RequestConfigInterface = {
+    const requestConfig: HttpRequestConfig = {
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
@@ -120,13 +122,14 @@ export const deletePolicy = (policyId: string): Promise<AxiosResponse> => {
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 204) {
+        .then((response: HttpResponse) => {
+            if (response.status !== 200 && response.status !== 204) {
                 return Promise.reject(new Error("Failed to delete the policy."));
             }
 
-            return Promise.resolve(response);
-        }).catch((error: AxiosError) => {
+            return Promise.resolve(response?.data);
+        })
+        .catch((error: HttpError) => {
             return Promise.reject(error);
         });
 };

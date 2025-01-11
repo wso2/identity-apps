@@ -293,6 +293,8 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                                     containerId="2"
                                     policies={ inactivePolicies } // Use your inactive policies array
                                     isDraggable={ false } // Non-draggable
+                                    mutateInactivePolicyList={ mutateInactivePolicy }
+                                    setInactivePolicies={ setInactivePolicies }
                                 />
                             </CardContent>
                         </InfiniteScroll>

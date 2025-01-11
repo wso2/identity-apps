@@ -32,6 +32,8 @@ interface PolicyListProps extends IdentifiableComponentInterface {
     policies?: PolicyInterface[]; // Use PolicyInterface[]
     containerId: string;
     isDraggable?: boolean; // Add a prop to control drag functionality
+    mutateInactivePolicyList?: () => void;
+    setInactivePolicies?: React.Dispatch<React.SetStateAction<PolicyInterface[]>>;
 }
 
 
@@ -39,6 +41,7 @@ interface PolicyListProps extends IdentifiableComponentInterface {
 export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
     onDrop,
     policies = [],
+    mutateInactivePolicyList, setInactivePolicies,
     containerId,
     isDraggable = true // Default to draggable
 }: PolicyListProps): ReactElement => {
@@ -86,6 +89,8 @@ export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
                     key={ policy.policyId }
                     policy={ policy }
                     data-componentid={ generateComponentId() }
+                    mutateInactivePolicyList={ mutateInactivePolicyList }
+                    setInactivePolicies={ setInactivePolicies }
                 />
             )) }
         </div>
