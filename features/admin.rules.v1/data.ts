@@ -16,72 +16,79 @@
  * under the License.
  */
 
-import { RuleComponentMetaDataInterface, RuleInterface } from "./models/rules";
+import { ConditionExpressionsMetaDataInterface, RuleExecutionMetaDataInterface } from "./models/meta";
+import { RuleExecuteCollectionInterface, RuleInterface } from "./models/rules";
 
-export const sampleRules: RuleInterface[] = [
-    {
-        conditions: [
-            {
-                condition: "AND",
-                expressions: [
-                    {
-                        field: "application",
-                        id: "8cbe103e-4c86-4021-91e4-83c37effe893a9267753",
-                        operator: "equals",
-                        order: 0,
-                        value: "c90293c7-3fc1-465e-a946"
-                    }
-                ],
-                id: "c90293c7-3fc1-465e-a946-adab6170e2fcdc",
-                order: 0
-            },
-            {
-                condition: "AND",
-                expressions: [
-                    {
-                        field: "grantType",
-                        id: "8cbe103e-4c86-4021-91e4-83dsfc37fe89ee3a9",
-                        operator: "equals",
-                        order: 0,
-                        value: "authorization_code"
-                    }
-                ],
-                id: "c90293c7-3fc1-465e-a946-adab6170e2dc443",
-                order: 0
-            },
-            {
-                condition: "OR",
-                expressions: [
-                    {
-                        field: "grantType",
-                        id: "8cbe103e-4c86-4021-91e4-83cdsf37fe893a9",
-                        operator: "notEquals",
-                        order: 0,
-                        value: "client_credentials"
-                    }
-                ],
-                id: "c90293c7-3fc1-465e-a946-adab6170e2dc",
-                order: 0
-            },
-            {
-                condition: "OR",
-                expressions: [
-                    {
-                        field: "application",
-                        id: "8cbe103e-4c86-4021-91e4-83c3fdsff437fe893a9",
-                        operator: "equals",
-                        order: 0,
-                        value: "8cbe103e-4c86-4021"
-                    }
-                ],
-                id: "c90293c7-3fc1-465e-a946-adab61e3270e2dc",
-                order: 0
-            }
-        ],
-        execution: "totp",
-        id: "e9a500d4-12dd-4b87-ad7c-9efdacf8a2a5"
-    }
-];
+export const sampleRuleExecuteInstance: RuleInterface = {
+    condition: "OR",
+    execution: "totp",
+    id: "e9a500d4-12dd-4b87-ad7c-9efdacf8a2a5",
+    rules: [
+        {
+            condition: "AND",
+            expressions: [
+                {
+                    field: "groups",
+                    id: "2cf9e8cc-1f28-4ae5-ac18-06a5c144db6b",
+                    operator: "equal",
+                    order: 1,
+                    value: "employee"
+                },
+                {
+                    field: "roles",
+                    id: "8cbe103e-4c86-4021-91e4-83c37fe893a9",
+                    operator: "equal",
+                    order: 2,
+                    value: "staff"
+                }
+            ],
+            id: "c90293c7-3fc1-465e-a946-adab6170e2dc",
+            order: 1
+        },
+        {
+            condition: "AND",
+            expressions: [
+                {
+                    field: "groups",
+                    id: "2f20d40f-f1a8-4ffc-bd88-6040592495fc",
+                    operator: "equal",
+                    order: 1,
+                    value: "guest"
+                }
+            ],
+            id: "b21cbf6c-985f-47fc-ba88-dfbbed7a38d0",
+            order: 2
+        }
+    ]
+};
+
+export const sampleRuleExecuteInstances: RuleExecuteCollectionInterface = {
+    fallbackExecution: "end",
+    rules: [
+        sampleRuleExecuteInstance,
+        {
+            condition: "OR",
+            execution: "email_otp",
+            id: "e9a500d4-12dd-4b87-ad7cfr-9efdsdacf8a2a6",
+            rules: [
+                {
+                    condition: "AND",
+                    expressions: [
+                        {
+                            field: "groups",
+                            id: "2cf9e8cc-1f28-4ae5-ac18-06a5dfc144db6b",
+                            operator: "equal",
+                            order: 1,
+                            value: "employee"
+                        }
+                    ],
+                    id: "c90293c7-3fc1-465e-a946-adab6170fge2dc",
+                    order: 1
+                }
+            ]
+        }
+    ]
+};
 
 export const sampleApplicationList: any = {
     applications: [
@@ -110,19 +117,30 @@ export const sampleApplicationList: any = {
     totalResults: 2
 };
 
-// TODO: Replace this with the actual data from the API.
-export const sampleExecutionsList: any = [
-    {
-        displayName: "Show TOTP",
-        value: "dc2bf156-008e-4cdws2-afb1"
-    },
-    {
-        displayName: "Rule",
-        value: "dc2bf156-008e-4cd2-afb1sa"
-    }
-];
+export const sampleRuleExecutionMeta: RuleExecutionMetaDataInterface = {
+    executions: [
+        {
+            displayName: "TOTP",
+            name: "totp"
+        },
+        {
+            displayName: "Email OTP",
+            name: "email_otp"
+        }
+    ],
+    fallbackExecutions: [
+        {
+            displayName: "Error",
+            name: "error"
+        },
+        {
+            displayName: "End",
+            name: "end"
+        }
+    ]
+};
 
-export const sampleExpressionsMeta: RuleComponentMetaDataInterface = [
+export const sampleExpressionsMeta: ConditionExpressionsMetaDataInterface = [
     {
         field: {
             displayName: "application",
@@ -130,12 +148,12 @@ export const sampleExpressionsMeta: RuleComponentMetaDataInterface = [
         },
         operators: [
             {
-                displayName: "= Equals",
-                name: "equals"
+                displayName: "equal",
+                name: "equal"
             },
             {
-                displayName: "!= Not equals",
-                name: "notEquals"
+                displayName: "not equal",
+                name: "notEqual"
             }
         ],
         value: {
@@ -159,17 +177,77 @@ export const sampleExpressionsMeta: RuleComponentMetaDataInterface = [
     },
     {
         field: {
+            displayName: "groups",
+            name: "groups"
+        },
+        operators: [
+            {
+                displayName: "equal",
+                name: "equal"
+            },
+            {
+                displayName: "not equal",
+                name: "notEqual"
+            }
+        ],
+        value: {
+            inputType: "options",
+            valueType: "string",
+            values: [
+                {
+                    displayName: "employee",
+                    name: "employee"
+                },
+                {
+                    displayName: "guest",
+                    name: "guest"
+                }
+            ]
+        }
+    },
+    {
+        field: {
+            displayName: "roles",
+            name: "roles"
+        },
+        operators: [
+            {
+                displayName: "equal",
+                name: "equal"
+            },
+            {
+                displayName: "not equal",
+                name: "notEqual"
+            }
+        ],
+        value: {
+            inputType: "options",
+            valueType: "string",
+            values: [
+                {
+                    displayName: "staff",
+                    name: "staff"
+                },
+                {
+                    displayName: "admin",
+                    name: "admin"
+                }
+            ]
+        }
+    },
+    {
+        field: {
             displayName: "grant type",
             name: "grantType"
         },
         operators: [
             {
-                displayName: "= Equals",
-                name: "equals"
+                displayName: "equal",
+                name: "equal"
             },
             {
-                displayName: "!= Not equals",
-                name: "notEquals"
+                displayName: "not equal",
+                name: "notEqual"
             }
         ],
         value: {

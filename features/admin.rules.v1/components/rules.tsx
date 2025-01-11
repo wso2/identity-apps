@@ -32,6 +32,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import RuleConditions from "./rule-conditions";
 import { useRulesContext } from "../hooks/use-rules-context";
+import { ListDataInterface } from "../models/meta";
 import { RuleInterface } from "../models/rules";
 import "./rules.scss";
 
@@ -40,26 +41,33 @@ import "./rules.scss";
  */
 export interface RulesPropsInterface extends IdentifiableComponentInterface {
     /**
-     * Multiple rules flag.
+     * Is multiple rules flag.
      */
-    multipleRules: boolean;
+    isMultipleRules: boolean;
 }
 
 /**
- * Rules component to render.
+ * Rules execution component to render.
  *
  * @param props - Props injected to the component.
  * @returns Rule component.
  */
-const Rules: FunctionComponent<RulesPropsInterface> = ({
+const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
     ["data-componentid"]: componentId = "rules-render-component",
-    multipleRules = false
+    isMultipleRules = false
 }: RulesPropsInterface): ReactElement => {
-    const { rulesInstance, conditionsMeta, addNewRule, removeRule, updateRuleExecution } = useRulesContext();
+    const {
+        ruleExecuteCollection,
+        ruleExecutionsMeta,
+        addNewRule,
+        removeRule,
+        updateRulesFallbackExecution,
+        updateRuleExecution
+    } = useRulesContext();
 
     return (
         <div className="rules-component" data-componentid={ componentId }>
-            { multipleRules && (
+            { isMultipleRules && (
                 <Box sx={ { mb: 2 } }>
                     <Button
                         size="small"
@@ -72,66 +80,98 @@ const Rules: FunctionComponent<RulesPropsInterface> = ({
                     </Button>
                 </Box>
             ) }
-            { rulesInstance?.map((ruleInstance: RuleInterface, index: number) => (
+            { ruleExecuteCollection?.rules?.map(
+                (rule: RuleInterface, index: number) => (
+                    <Card
+                        sx={ {
+                            mb: 2,
+                            position: "relative"
+                        } }
+                        key={ index }
+                    >
+                        <Grid container alignItems="center">
+                            <Grid>
+                                <Typography variant="body2">Execute</Typography>
+                            </Grid>
+                            { ruleExecutionsMeta?.executions ? (
+                                <Grid>
+                                    <FormControl sx={ { m: 1, minWidth: 120 } } size="small">
+                                        <Select
+                                            value={ rule.execution }
+                                            onChange={ (event: SelectChangeEvent) =>
+                                                updateRuleExecution(event, rule.id)
+                                            }
+                                        >
+                                            { ruleExecutionsMeta?.executions?.map((item: any, index: number) => (
+                                                <MenuItem
+                                                    value={ item.name }
+                                                    key={ `${rule.id}-${index}` }
+                                                >
+                                                    { item.displayName }
+                                                </MenuItem>
+                                            )) }
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                            ) : (
+                                <Grid>&nbsp;</Grid>
+                            ) }
+                            <Grid>
+                                <Typography variant="body2">If</Typography>
+                            </Grid>
+                        </Grid>
+                        <RuleConditions rule={ rule } />
+                        { ruleExecuteCollection?.rules?.length > 1 && (
+                            <Fab
+                                color="error"
+                                aria-label="delete"
+                                size="small"
+                                className="delete-button"
+                                sx={ {
+                                    position: "absolute",
+                                    right: 14,
+                                    top: 14
+                                } }
+                                onClick={ () => removeRule(rule.id) }
+                            >
+                                <DeleteIcon className="delete-button-icon" />
+                            </Fab>
+                        ) }
+                    </Card>
+                )
+            ) }
+            { isMultipleRules && (
                 <Card
                     sx={ {
                         mb: 2,
                         position: "relative"
                     } }
-                    key={ index }
                 >
                     <Grid container alignItems="center">
                         <Grid>
-                            <Typography variant="body2">Execute</Typography>
+                            <Typography variant="body2">Else Execute</Typography>
                         </Grid>
-                        { ruleInstance.execution ? (
-                            <Grid>
-                                <FormControl sx={ { m: 1, minWidth: 120 } } size="small">
-                                    <Select
-                                        value={ ruleInstance.execution }
-                                        onChange={ (e: SelectChangeEvent) => updateRuleExecution(e, ruleInstance.id) }
-                                    >
-                                        { conditionsMeta?.map((item: any, index: number) => (
-                                            <MenuItem value={ item.value } key={ `${ruleInstance.id}-${index}` }>
+                        <Grid>
+                            <FormControl sx={ { m: 1, minWidth: 120 } } size="small">
+                                <Select
+                                    value={ ruleExecuteCollection?.fallbackExecution }
+                                    onChange={ (event: SelectChangeEvent) => updateRulesFallbackExecution(event) }
+                                >
+                                    { ruleExecutionsMeta?.fallbackExecutions?.map(
+                                        (item: ListDataInterface, index: number) => (
+                                            <MenuItem value={ item.name } key={ `${index}` }>
                                                 { item.displayName }
                                             </MenuItem>
-                                        )) }
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-                        ) : (
-                            <Grid>&nbsp;</Grid>
-                        ) }
-                        <Grid>
-                            <Typography variant="body2">If</Typography>
+                                        )
+                                    ) }
+                                </Select>
+                            </FormControl>
                         </Grid>
                     </Grid>
-                    <RuleConditions
-                        data-componentid={ componentId }
-                        ruleId={ ruleInstance.id }
-                        conditions={ ruleInstance.conditions }
-                        conditionRemovable={ ruleInstance.conditions?.length > 1 }
-                    />
-                    { rulesInstance?.length > 1 && (
-                        <Fab
-                            color="error"
-                            aria-label="delete"
-                            size="small"
-                            className="delete-button"
-                            sx={ {
-                                position: "absolute",
-                                right: 14,
-                                top: 14
-                            } }
-                            onClick={ () => removeRule(ruleInstance.id) }
-                        >
-                            <DeleteIcon className="delete-button-icon" />
-                        </Fab>
-                    ) }
                 </Card>
-            )) }
+            ) }
         </div>
     );
 };
 
-export default Rules;
+export default RuleExecutionComponent;
