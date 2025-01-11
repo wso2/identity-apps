@@ -21,21 +21,21 @@ import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Alert from "@oxygen-ui/react/Alert";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { PageLayout } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement } from "react";
+import lowerCase from "lodash-es/lowerCase";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "./edit-policy.scss";
+import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
+import { Dispatch } from "redux";
 import { updatePolicy } from "../api/entitlement-policies";
 import { useGetPolicy } from "../api/useGetPolicy";
 import startCase from "lodash-es/startCase";
-import lowerCase from "lodash-es/lowerCase";
-import { addAlert } from "@wso2is/core/store";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
-import {PolicyInterface} from "../models/policies";
 import PolicyEditor from "../components/policy-editor/policy-editor";
+import {PolicyInterface} from "../models/policies";
 
 
 
@@ -55,6 +55,7 @@ const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
     const dispatch: Dispatch = useDispatch();
 
     const shouldFetchPolicy: boolean = !isEmpty(policyId);
+    const [ updatedPolicyScript, setUpdatedPolicyScript ] = useState<string | undefined>();
 
     /**
      * Converts kebab-case to snake_case.
@@ -90,7 +91,7 @@ const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
         const updatedPolicy: Partial<PolicyInterface> = {
             active: policy.active,
             attributeDTOs: [],
-            policy: policy.policy,
+            policy: updatedPolicyScript,
             policyEditorData: policy.policyEditorData,
             policyId: policy.policyId,
             policyIdReferences: policy.policyIdReferences,
@@ -149,7 +150,11 @@ const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
             { /* Render Policy Script Editor only if policy data is available */ }
             { !isLoading && !error && policy && (
                 <Box className="script-editor">
-                    <PolicyEditor />
+                    <PolicyEditor
+                        policyScript ={ policy.policy }
+                        data-componentid={ `${componentId}-policy-editor` }
+                        onScriptChange={ (updatedScript: string) => setUpdatedPolicyScript(updatedScript) }
+                    />
                 </Box>
             ) }
 

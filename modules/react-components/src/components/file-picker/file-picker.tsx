@@ -183,7 +183,6 @@ export const FilePicker: FC<FilePickerProps> = (props: FilePickerPropsAlias): Re
         file: initialFile,
         pastedContent: initialPastedContent,
         normalizeStateOnRemoveOperations,
-        secondaryButton,
         scriptEditor,
         emptyFileError,
         emptyFileErrorMsg,

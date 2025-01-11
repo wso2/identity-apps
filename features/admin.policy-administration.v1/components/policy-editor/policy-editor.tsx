@@ -50,11 +50,16 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { ScriptEditorPanelSizeModes, SupportedEditorThemes } from "../../models/policy-editor";
 import "./policy-editor.scss";
+import { formatXML } from "../../utils/utils";
 
 /**
- * Proptypes for the Script editor panel component.
+ * Proptypes for the policy editor panel component.
  */
-export type ScriptEditorPanelPropsInterface = IdentifiableComponentInterface & HTMLAttributes<HTMLDivElement>;
+
+export interface PolicyEditorProps extends IdentifiableComponentInterface, HTMLAttributes<HTMLDivElement> {
+    policyScript: string;
+    onScriptChange: (updatedScript: string) => void;
+}
 
 const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
     import("@monaco-editor/react" /* webpackChunkName: "MDMonacoEditor" */)
@@ -107,8 +112,8 @@ const MinimizeIcon = ({ width = 16, height = 16 }: { width: number; height: numb
  * @param props - Props injected to the component.
  * @returns Script editor panel component.
  */
-const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterface>): ReactElement => {
-    const { className, "data-componentid": componentId } = props;
+const ScriptEditorPanel = (props: PropsWithChildren<PolicyEditorProps>): ReactElement => {
+    const { className, "data-componentid": componentId, policyScript, onScriptChange } = props;
 
     const { t } = useTranslation();
 
@@ -153,19 +158,6 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
         [ monacoEditorRef ]
     );
 
-    /**
-     * Callback function to handle changes in the script editor.
-     *
-     * @param value - The new value of the script editor.
-     */
-    // const handleScriptChange: (value: string) => void = useCallback(
-    //     (value: string): void => {
-    //         updateAuthenticationSequence({
-    //             script: value
-    //         });
-    //     },
-    //     [ updateAuthenticationSequence ]
-    // );
 
     /**
      * Function to replace a code block in the Monaco editor.
@@ -214,11 +206,11 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
             height="100%"
             language="xml"
             theme={ editorTheme }
-            value={ null }
+            value={ formatXML(policyScript) }
             options={ {
                 automaticLayout: true
             } }
-            // onChange={ handleScriptChange }
+            onChange={ (newValue: string) => onScriptChange(newValue || "") }
             onMount={ handleEditorOnMount }
             data-componentid={ `${componentId}-code-editor` }
         />

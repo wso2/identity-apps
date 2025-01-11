@@ -23,9 +23,8 @@ import {
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import {AxiosError, AxiosRequestConfig, AxiosResponse} from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { PolicyInterface } from "../models/policies";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 
 
 /**
@@ -46,7 +45,7 @@ export const createPolicy = (
     policyData: PolicyInterface
 ): Promise<AxiosResponse<PolicyInterface>> => {
 
-    const requestConfig: RequestConfigInterface = {
+    const requestConfig: HttpRequestConfig = {
         data: policyData,
         headers: {
             "Accept": "*/*",
@@ -57,14 +56,14 @@ export const createPolicy = (
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 201) {
+        .then((response: HttpResponse) => {
+            if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to create the policy."));
             }
 
-            return Promise.resolve(response);
+            return Promise.resolve(response?.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: HttpError) => {
             return Promise.reject(error);
         });
 };

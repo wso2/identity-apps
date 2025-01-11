@@ -17,22 +17,61 @@
  */
 
 export const formatXML = (xml: string): string => {
-    const PADDING: string = " ".repeat(4); // Customize the indentation.
+    if (!xml || typeof xml !== "string") {
+        console.warn("Invalid XML input for formatting.");
+        return xml || "";
+    }
+
+    const PADDING: string = " ".repeat(4); // Indentation level
     const regex: RegExp = /(>)(<)(\/*)/g;
-    const formatted: string = xml.replace(regex, "$1\n$2$3");
-    let pad: number = 0;
 
-    return formatted
-        .split("\n")
-        .map((line: string) => {
-            if (line.match(/<\/\w/)) pad -= 1;
+    try {
+        // Add line breaks between tags
+        const formatted = xml.replace(regex, "$1\n$2$3");
 
-            const indent: string = PADDING.repeat(pad);
-            const formattedLine: string = `${indent}${line}`;
+        // Detect if already formatted (basic check for line breaks and indentation)
+        const alreadyFormatted = formatted.split("\n").some((line) => line.startsWith(PADDING));
 
-            if (line.match(/<\w[^>]*[^/]>.*$/)) pad += 1;
+        if (alreadyFormatted) {
+            return xml; // Return unmodified if already formatted
+        }
 
-            return formattedLine;
-        })
-        .join("\n");
+        let pad = 0;
+
+        return formatted
+            .split("\n")
+            .map((line: string) => {
+                if (line.match(/<\/\w/)) pad -= 1;
+
+                const indent = PADDING.repeat(Math.max(pad, 0));
+                const formattedLine = `${indent}${line}`;
+
+                if (line.match(/<\w[^>]*[^/]>.*$/)) pad += 1;
+
+                return formattedLine;
+            })
+            .join("\n");
+    } catch (error) {
+        console.error("Error formatting XML:", error);
+        return xml; // Return raw XML in case of errors
+    }
 };
+
+export const unformatXML = (xml: string): string => {
+    if (!xml || typeof xml !== "string") {
+        console.warn("Invalid XML input for unformatting.");
+        return xml || "";
+    }
+
+    try {
+        // Remove all line breaks, tabs, and excessive spaces
+        return xml
+            .replace(/>\s+</g, "><") // Remove spaces between tags
+            .replace(/\s{2,}/g, " ") // Replace multiple spaces with a single space
+            .trim(); // Remove leading/trailing spaces
+    } catch (error) {
+        console.error("Error unformatting XML:", error);
+        return xml; // Return the original XML if unformatting fails
+    }
+};
+

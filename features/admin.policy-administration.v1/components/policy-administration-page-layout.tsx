@@ -308,6 +308,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                         data-componentid="group-mgt-create-group-wizard"
                         open={ showWizard }
                         closeWizard={ () => setShowWizard(false) }
+                        mutateInactivityList={ mutateInactivePolicy }
                     />
                 )
             }
