@@ -136,7 +136,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         onSubmit,
         readOnly,
         isSubmitting,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId = "saml-authenticator-settings-form"
     } = props;
 
     const disabledFeatures: string[] = useSelector((state: AppState) =>
@@ -1079,13 +1079,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         </Form>
     );
 
-};
-
-/**
- * Default properties for {@link SamlAuthenticatorSettingsForm}
- */
-SamlAuthenticatorSettingsForm.defaultProps = {
-    "data-testid": "saml-authenticator-settings-form"
 };
 
 const SectionRow: FunctionComponent<PropsWithChildren<{ width?: SemanticWIDTHS }>> = (
