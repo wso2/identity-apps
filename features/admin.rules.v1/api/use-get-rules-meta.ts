@@ -23,7 +23,7 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { RuleComponentMetaDataInterface } from "../models/rules";
+import { ConditionExpressionsMetaDataInterface } from "../models/meta";
 
 /**
  * Hook to get the rules meta data.
@@ -38,7 +38,7 @@ import { RuleComponentMetaDataInterface } from "../models/rules";
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetRulesMeta = <Data = RuleComponentMetaDataInterface, Error = RequestErrorInterface>(
+const useGetRulesMeta = <Data = ConditionExpressionsMetaDataInterface, Error = RequestErrorInterface>(
     flow: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {

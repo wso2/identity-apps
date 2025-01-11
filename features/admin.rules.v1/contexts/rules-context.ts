@@ -18,26 +18,27 @@
 
 import { SelectChangeEvent } from "@mui/material";
 import { createContext } from "react";
-import { ConditionTypes, ExpressionFieldTypes, RuleComponentMetaDataInterface, RuleInterface } from "../models/rules";
+import { ConditionExpressionsMetaDataInterface, RuleExecutionMetaDataInterface } from "../models/meta";
+import { AdjoiningOperatorTypes, ExpressionFieldTypes, RuleExecuteCollectionInterface } from "../models/rules";
 
 /**
  * Interface for the RulesContext.
  */
 export interface RulesContextInterface {
     /**
-     * Rules instance.
+     * Rules execute instances.
      */
-    rulesInstance: RuleInterface[];
+    ruleExecuteCollection: RuleExecuteCollectionInterface;
 
     /**
-     * Conditions meta.
+     * Rule executions meta.
      */
-    conditionsMeta: any;
+    ruleExecutionsMeta: RuleExecutionMetaDataInterface;
 
     /**
-     * Condition expressions meta.
+     * Rule condition expressions meta.
      */
-    conditionExpressionsMeta: RuleComponentMetaDataInterface;
+    conditionExpressionsMeta: ConditionExpressionsMetaDataInterface;
 
     /**
      * Method to add a new rule.
@@ -50,27 +51,37 @@ export interface RulesContextInterface {
     removeRule: (id: string) => void;
 
     /**
-     * Method to add a new rule condition.
+     * Method to add a new rule condition expression.
      */
-    addNewRuleCondition: (ruleId: string, previousConditionInstanceId: string, conditionType: ConditionTypes) => void;
+    addNewRuleConditionExpression: (
+        ruleId: string,
+        conditionId: string,
+        conditionType: AdjoiningOperatorTypes,
+        previousExpressionId?: string,
+    ) => void;
 
     /**
-     * Method to remove a rule condition.
+     * Method to remove a rule condition expression.
      */
-    removeRuleCondition: (ruleId: string, conditionId: string) => void;
+    removeRuleConditionExpression: (ruleId: string, expressionId: string) => void;
 
     /**
-     * Method to update the rule execution type.
+     * Method to update the rule execution.
      */
     updateRuleExecution: (event: SelectChangeEvent, id: string) => void;
 
     /**
+     * Method to update the rules fallback execution.
+     */
+    updateRulesFallbackExecution: (event: SelectChangeEvent) => void;
+
+    /**
      * Method to update the rule condition expression value.
      */
-    updateRuleConditionExpression: (
+    updateConditionExpression: (
         changedValue: string,
         ruleId: string,
-        conidtionId: string,
+        conditionId: string,
         expressionId: string,
         fieldName: ExpressionFieldTypes
     ) => void;
@@ -79,8 +90,9 @@ export interface RulesContextInterface {
 /**
  * Create the context
  */
-const RulesContext: React.Context<RulesContextInterface | undefined> =
-    createContext<RulesContextInterface | undefined>(undefined);
+const RulesContext: React.Context<RulesContextInterface | undefined> = createContext<RulesContextInterface | undefined>(
+    undefined
+);
 
 RulesContext.displayName = "RulesContext";
 

@@ -20,14 +20,15 @@ import { SelectChangeEvent } from "@mui/material";
 import React, { ReactNode, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import RulesContext from "../contexts/rules-context";
+import { ConditionExpressionsMetaDataInterface, RuleExecutionMetaDataInterface } from "../models/meta";
 import {
-    ConditionTypes,
+    AdjoiningOperatorTypes,
+    ConditionExpressionInterface,
+    ConditionExpressionsInterface,
     ExpressionFieldTypes,
-    ExpressionInterface,
-    RuleComponentMetaDataInterface,
-    RuleExecutionMetaDataInterface,
-    ConditionTypes,
-    ExpressionInterface
+    RuleConditionInterface,
+    RuleExecuteCollectionInterface,
+    RuleInterface
 } from "../models/rules";
 import { v4 as uuidv4 } from "uuid";
 
@@ -95,108 +96,106 @@ interface RulesContextInterface {
 const RulesContext = createContext<RulesContextInterface | undefined>(undefined);
 
 // Refference to hold the latest context value
-const RuleContextRef = { ruleInstance: undefined as RuleInterface[] | undefined };
+const RuleContextRef: { ruleInstance: RuleExecuteCollectionInterface | undefined } = {
+    ruleInstance: undefined
+};
 
 /**
  * Method to get the context value
  * 
  * @returns RuleInstanceData
  */
-export const getRuleContextValue = () => RuleContextRef.ruleInstance;
-
-/**
- * Custom hook for accessing the context
- * 
- * @returns RulesComponent context
- */
-export const useRulesContext = (): RulesContextInterface => {
-    const context = useContext(RulesContext);
-
-    if (!context) {
-        throw new Error("useRulesContext must be used within a RulesProvider");
-    }
-
-    return context;
-};
+export const getRuleInstanceValue = () => Object.freeze(RuleContextRef.ruleInstance);
 
 /**
  * Provider for the RulesContext
  * 
  * @param children - ReactNode
- * @param metaData - RuleComponentMetaDataInterface
- * @param initialData - RuleInterface[] | null
+ * @param conditionExpressionsMetaData - ConditionExpressionsMetaDataInterface
+ * @param initialData - RuleExecutionInterface
+ * @param ruleExecutionsMetaData - RuleExecutionMetaDataInterface
  * @returns RulesProvider
  */
 export const RulesProvider = ({
     children,
-    metaData,
     initialData,
-    ruleExecutions
+    conditionExpressionsMetaData,
+    ruleExecutionMetaData
 }: {
     children: ReactNode;
-    metaData: RuleComponentMetaDataInterface;
-    initialData: RuleInterface[] | [];
-    ruleExecutions: RuleExecutionMetaDataInterface;
+    conditionExpressionsMetaData: ConditionExpressionsMetaDataInterface;
+    initialData: RuleExecuteCollectionInterface;
+    ruleExecutionMetaData: RuleExecutionMetaDataInterface;
 }) => {
-    const [ rulesInstance, setRuleInstance ] = useState<RuleInterface[] | []>(initialData);
 
-    const conditionsMeta = ruleExecutions ?? [];
-    const conditionExpressionsMeta = metaData ?? [];
+    const [ ruleComponentInstance, setRuleComponentInstance ] =
+        useState<RuleExecuteCollectionInterface>(initialData ?? undefined);
+
+    const ruleComponentInstanceConditionExpressionsMeta: ConditionExpressionsMetaDataInterface | undefined =
+        conditionExpressionsMetaData ?? undefined;
+    const ruleComponentInstanceExecutionsMeta: RuleExecutionMetaDataInterface | undefined =
+        ruleExecutionMetaData ?? undefined;
+
 
     // Update the ref whenever the context value changes
-    RuleContextRef.ruleInstance = rulesInstance;
+    RuleContextRef.ruleInstance = ruleComponentInstance;
 
-    const getNewRuleInstanceConditionExpression = (): ExpressionInterface => {
-        const newRuleConditionExpressionUUID: string = uuidv4();
-
+    /**
+     * Method to get a new rule expression.
+     *
+     * @returns Rule Expression
+     */
+    const getNewConditionExpressionInstance = (): ConditionExpressionInterface => {
         return {
-            field: metaData?.[0]?.field?.name,
-            id: newRuleConditionExpressionUUID,
-            operator: metaData?.[0]?.operators?.[0]?.name,
+            field: conditionExpressionsMetaData?.[0]?.field?.name,
+            id: uuidv4(),
+            operator: conditionExpressionsMetaData?.[0]?.operators?.[0]?.name,
             order: 0,
             value: ""
         };
     };
 
     /**
-     * Method to create a new rule instance condition.
-     * 
-     * @param condition 
-     * @returns 
+     * Method to get a new rule.
+     *
+     * @param condition - AdjoiningOperatorTypes
+     * @returns Rule
      */
-    const getNewRuleInstanceCondition = (
-        condition: ConditionTypes,
+    const getNewRuleConditionInstance = (
+        condition: AdjoiningOperatorTypes,
         orderIndex: number = 0
-    ): RuleConditionsInterface => {
-        const newRuleConditionUUID: string = uuidv4();
-
+    ): RuleConditionInterface => {
         return {
             condition: condition,
-            expressions: [ getNewRuleInstanceConditionExpression() ],
-            id: newRuleConditionUUID,
+            expressions: [ getNewConditionExpressionInstance() ],
+            id: uuidv4(),
             order: orderIndex
         };
     };
     
     /**
-     * Method to create a new rule instance.
-     * 
-     * @returns RuleInterface
+     * Method to get a new rule execute instance.
+     *
+     * @returns Rule Execute Instance
      */
     const getNewRuleInstance = (): RuleInterface => {
-        const newRuleUUID: string = uuidv4();
-
         return {
-            conditions: [ getNewRuleInstanceCondition(ConditionTypes.And) ],
-            execution: conditionsMeta?.[0]?.value,
-            id: newRuleUUID
+            condition: AdjoiningOperatorTypes.Or,
+            id: uuidv4(),
+            rules: [ getNewRuleConditionInstance(AdjoiningOperatorTypes.And) ]
         };
     };
 
     useEffect(() => {
-        // If the initial data is not provided, create a new instance.
+        // If the initial data is not provided, add a new rule execution.
         if (!initialData) {
-            setRuleInstance([getNewRuleInstance()]);
+            setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
+                return {
+                    ...prev,
+                    fallbackExecution: ruleExecutionMetaData?.fallbackExecutions?.[0]?.name,
+                    rules: [ getNewRuleInstance() ]
+                };
+            });
         }
     }, []);
 
@@ -206,8 +205,8 @@ export const RulesProvider = ({
     const handleAddNewRule = () => {
         const newRuleInstance: RuleInterface = getNewRuleInstance();
 
-        setRuleInstance((prev: RuleInterface[]) => {
-            return [...prev, newRuleInstance];
+        setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
+            return { ...prev, rules: [ ...prev.rules, newRuleInstance ] };
         });
     };
 
@@ -217,167 +216,224 @@ export const RulesProvider = ({
      * @param id - string
      */
     const handleRemoveRule = (id: string) => {
-        setRuleInstance((prev: RuleInterface[]) => {
-            return prev.filter((rule) => rule?.id !== id);
+        setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
+            return {
+                ...prev,
+                rules: prev.rules?.filter(
+                    (ruleExecution: RuleInterface) => ruleExecution?.id !== id)
+            };
         });
     };
 
     /**
-     * Method to remove a rule condition instance.
-     * 
+     * Method to update a rule execution.
+     *
+     * @param event - SelectChangeEvent
      * @param id - string
      */
     const handleRuleExecutionTypeChange = (event: SelectChangeEvent, id: string) => {
         const changedValue: string = event.target.value as string;
 
-        setRuleInstance((prev: RuleInterface[]) => {
-            return prev.map((rule) => {
-                if (rule.id === id) {
-                    return { ...rule, execution: changedValue };
-                }
+        setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
+            return {
+                ...prev,
+                rules: prev.rules?.map((ruleExecution: RuleInterface) => {
+                    if (ruleExecution.id === id) {
+                        return { ...ruleExecution, execution: changedValue };
+                    }
 
-                return rule;
-            });
+                    return ruleExecution;
+                })
+            };
         });
     };
 
     /**
-     * Method to update the rule condition expression value.
-     * 
+     * Method to update a rules default execution.
+     *
+     * @param event - SelectChangeEvent
+     */
+    const handleRulesFallbackExecutionTypeChange = (event: SelectChangeEvent) => {
+        const changedValue: string = event.target.value as string;
+
+        setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
+            return { ...prev, fallbackExecution: changedValue };
+        });
+    };
+
+    /**
+     * Method to update the rule expression value.
+     *
      * @param event - SelectChangeEvent | React.ChangeEvent
-     * @param ruleId - string
+     * @param ruleExecutionId - string
      * @param conditionId - string
      * @param expressionId - string
      * @param fieldName - ExpressionFieldTypes
      */
-    const handleRuleConditionExpressionValueChange = (
+    const handleConditionExpressionValueChange = (
         changedValue: string,
         ruleId: string,
         conditionId: string,
         expressionId: string,
         fieldName: ExpressionFieldTypes
     ) => {
-        setRuleInstance((prev: RuleInterface[]) => {
-            return prev.map((rule: RuleInterface) => {
-                if (rule.id === ruleId) {
-                    return {
-                        ...rule,
-                        conditions: rule.conditions.map((condition) => {
-                            if (condition.id === conditionId) {
-                                return {
-                                    ...condition,
-                                    expressions: condition.expressions.map((expression: ExpressionInterface) => {
-                                        if (expression.id === expressionId) {
-                                            return {
-                                                ...expression,
-                                                [fieldName]: changedValue
-                                            };
-                                        }
+        setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
+            return {
+                ...prev,
+                rules: prev.rules?.map((rule: RuleInterface) => {
+                    if (rule.id === ruleId) {
+                        return {
+                            ...rule,
+                            rules: rule.rules?.map((condition: RuleConditionInterface) => {
+                                // Handle undefined or empty rules
+                                if (!condition) return condition;
 
-                                        return expression;
-                                    })
-                                };
-                            }
-                            return condition;
-                        }),
-                    };
-                }
-                return rule;
-            });
-        });
-    };
+                                if (condition.id === conditionId) {
 
-    /**
-     * Method to add a new rule condition.
-     * 
-     * @param ruleId - string
-     * @param previousConditionId - string
-     * @param conditionType - ConditionTypes
-     */
-    const handleAddRuleCondition = (ruleId: string, previousConditionId: string, conditionType: ConditionTypes) => {
-        setRuleInstance((prev: RuleInterface[]) => {
-            return prev.map((rule) => {
-                if (rule.id === ruleId) {
-                    // Clone conditions to avoid mutating the original state
-                    const updatedConditions = [...rule.conditions];
-                
-                    // Find the index of the item with the matching id
-                    const index: number = updatedConditions.findIndex(
-                        (condition: RuleConditionsInterface) => condition.id === previousConditionId
-                    );
+                                    return {
+                                        ...condition,
+                                        expressions: condition.expressions.map(
+                                            (expression: ConditionExpressionInterface) => {
+                                                if (expression.id === expressionId) {
+                                                    return {
+                                                        ...expression,
+                                                        [fieldName]: changedValue
+                                                    };
+                                                }
 
-                    if (index === -1) {
-                        return rule;
-                    }
-                
-                    // Insert the new condition after the matched condition
-                    updatedConditions.splice(index + 1, 0, getNewRuleInstanceCondition(conditionType, index + 1));
-
-                    return {
-                        ...rule,
-                        conditions: updatedConditions
-                    };
-                }
-                return rule;
-            });
-        });
-    };
-
-    /**
-     * Method to remove a rule condition.
-     * 
-     * @param ruleId - string
-     * @param conditionId - string
-     */
-    const handleRemoveRuleCondition = (ruleId: string, conditionId: string) => {
-        setRuleInstance((prev: RuleInterface[]) => {
-            return prev.map((rule) => {
-                if (rule.id === ruleId) {
-                    // Clone conditions to avoid mutating the original state
-                    const updatedConditions: RuleConditionsInterface[] = rule.conditions.filter(
-                        (condition: RuleConditionsInterface, index: number) => {
-                            // Skip the condition that is being removed
-                            if (condition.id === conditionId) {
-                                const nextCondition = 
-                                    rule.conditions[index + 1];
-        
-                                // Handle special case where "OR" is followed by "AND"
-                                if (condition.condition === "OR" && nextCondition?.condition === "AND") {
-
-                                    nextCondition.condition = "OR";
+                                                return expression;
+                                            }
+                                        )
+                                    };
                                 }
 
-                                return false; // Exclude the removed condition
-                            }
+                                return condition;
+                            })
+                        };
+                    }
 
-                            return true; // Keep other conditions
-                        }
-                    );
-    
-                    return {
-                        ...rule,
-                        conditions: updatedConditions
-                    };
-                }
-    
-                return rule;
-            });
+                    return rule;
+                })
+            };
+        });
+    };
+
+
+    /**
+     * Method to add a new condition expression.
+     *
+     * @param ruleId - string
+     * @param conditionId - string
+     * @param expressionType - AdjoiningOperatorTypes
+     * @param previousExpressionId - string
+     */
+    const handleAddConditionExpression = (
+        ruleId: string,
+        conditionId: string,
+        expressionType: AdjoiningOperatorTypes,
+        previousExpressionId?: string
+    ) => {
+        setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
+            return {
+                ...prev,
+                rules: prev.rules?.map((rule: RuleInterface) => {
+                    if (rule.id === ruleId) {
+                        return {
+                            ...rule,
+                            rules: rule.rules?.flatMap((condition: RuleConditionInterface) => {
+                                if (expressionType === AdjoiningOperatorTypes.Or) {
+                                    if (condition.id === conditionId) {
+                                        // Insert new condition after the matched condition
+                                        return [
+                                            condition,
+                                            getNewRuleConditionInstance(AdjoiningOperatorTypes.And)
+                                        ];
+                                    }
+
+                                    return [ condition ];
+                                } else {
+                                    return {
+                                        ...condition,
+                                        expressions: condition.expressions.flatMap(
+                                            (expression: ConditionExpressionInterface) => {
+                                                if (expression.id === previousExpressionId) {
+                                                    // Insert new expression after the matched expression
+                                                    return [
+                                                        expression,
+                                                        getNewConditionExpressionInstance()
+                                                    ];
+                                                }
+
+                                                return [ expression ];
+                                            }
+                                        )
+                                    };
+                                }
+                            })
+                        };
+                    }
+
+                    return rule;
+                })
+            };
+        });
+    };
+
+    /**
+     * Method to remove a condition expression.
+     *
+     * @param ruleId - string
+     * @param expressionId - string
+     */
+    const handleRemoveConditionExpression = (ruleId: string, expressionId: string) => {
+        setRuleComponentInstance((prev: RuleExecuteCollectionInterface) => {
+            return {
+                ...prev,
+                rules: prev.rules?.map((rule: RuleInterface) => {
+                    if (rule.id === ruleId) {
+                        return {
+                            ...rule,
+                            rules: rule.rules?.flatMap((condition: RuleConditionInterface) => {
+                                // Remove the expression if it matches
+                                const updatedExpressions: ConditionExpressionsInterface = condition.expressions.filter(
+                                    (expression: ConditionExpressionInterface) => expression.id !== expressionId
+                                );
+
+                                // If there are no expressions left, remove the condition
+                                if (updatedExpressions.length === 0) {
+                                    return [];
+                                }
+
+                                return [
+                                    {
+                                        ...condition,
+                                        expressions: updatedExpressions
+                                    }
+                                ];
+                            })
+                        };
+                    }
+
+                    return rule;
+                })
+            };
         });
     };
 
     return (
         <RulesContext.Provider
-            value={{
-                rulesInstance: rulesInstance,
-                conditionsMeta: conditionsMeta,
-                conditionExpressionsMeta: conditionExpressionsMeta,
+            value={ {
                 addNewRule: handleAddNewRule,
+                addNewRuleConditionExpression: handleAddConditionExpression,
+                conditionExpressionsMeta: ruleComponentInstanceConditionExpressionsMeta,
                 removeRule: handleRemoveRule,
-                addNewRuleCondition: handleAddRuleCondition,
-                removeRuleCondition: handleRemoveRuleCondition,
+                removeRuleConditionExpression: handleRemoveConditionExpression,
+                ruleExecuteCollection: ruleComponentInstance,
+                ruleExecutionsMeta: ruleComponentInstanceExecutionsMeta,
+                updateConditionExpression: handleConditionExpressionValueChange,
                 updateRuleExecution: handleRuleExecutionTypeChange,
-                updateRuleConditionExpression: handleRuleConditionExpressionValueChange
-            }}
+                updateRulesFallbackExecution: handleRulesFallbackExecutionTypeChange
+            } }
         >
             {children}
         </RulesContext.Provider>

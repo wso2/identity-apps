@@ -17,32 +17,9 @@
  */
 
 /**
- * Enum to represent the rule executions.
- */
-export enum RuleExecutions {
-    PreIssueAccessToken = "PreIssueAccessToken",
-    PrePasswordUpdate = "prePasswordUpdate",
-    PreProfileUpdate = "preProfileUpdate",
-    PreLogin = "preLogin",
-    PostLogin = "postLogin",
-    InLogin = "inLogin",
-    PreRegistration = "preRegistration",
-    InRegistration = "inRegistration",
-    InPasswordExpiry = "inPasswordExpiry"
-}
-
-/**
- * Interface to represent the rule execution meta data.
- */
-export interface RuleExecutionMetaDataInterface {
-    id: string
-    name: string
-}
-
-/**
  * Enum to represent the rule condition types.
  */
-export enum ConditionTypes {
+export enum AdjoiningOperatorTypes {
     And = "AND",
     Or = "OR"
 }
@@ -57,9 +34,9 @@ export enum ExpressionFieldTypes {
 }
 
 /**
- * Enum to represent the rule expression operators.
+ * Interface to represent the condition expression data.
  */
-export interface ExpressionInterface {
+export interface ConditionExpressionInterface {
     id: string;
     field: string;
     operator: string;
@@ -68,77 +45,44 @@ export interface ExpressionInterface {
 }
 
 /**
- * Interface to represent the rule conditions.
+ * Interface to represent the condition expressions data.
  */
-export interface RuleConditionsInterface {
+export type ConditionExpressionsInterface = ConditionExpressionInterface[];
+
+/**
+ * Interface to represent the rule condition data.
+ */
+export interface RuleConditionInterface {
     id: string;
     condition: string;
     order: number;
-    expressions: ExpressionInterface[];
+    expressions: ConditionExpressionsInterface;
 }
 
 /**
- * Interface to represent the rule instance.
+ * Interface to represent the rule conditions data.
+ */
+export type RuleConditionsInterface = RuleConditionInterface[];
+
+/**
+ * Interface to represent the rule data.
  */
 export interface RuleInterface {
+    condition: string;
     id: string;
-    execution?: string
-    conditions: RuleConditionsInterface[];
+    rules: RuleConditionsInterface;
+    execution?: string;
 }
 
 /**
- * Interface to represent the rule component data.
+ * Interface to represent the rules data.
  */
-export interface RuleComponentDataInterface {
-    id: string;
-    type: string;
-    name: string;
-    description: string;
-    status: string,
-    endpoint: {
-        uri: string,
-        authentication: {
-            type: string
-        }
-    },
-    rules: RuleInterface[];
-}
+export type RulesInterface = RuleInterface[];
 
 /**
- * Interface to represent the value of a rule component.
+ * Interface to represent the rules execution data.
  */
-export interface RuleComponentExpressionValueInterface {
-    inputType: string;
-    valueType: string;
-    valueReferenceAttribute?: string;
-    valueDisplayAttribute?: string;
-    links?: {
-        href: string;
-        method: string;
-        rel: string;
-    }[];
-    values?: {
-        name: string;
-        displayName: string;
-    }[];
+export interface RuleExecuteCollectionInterface {
+    fallbackExecution?: string;
+    rules: RulesInterface;
 }
-
-/**
- * Interface to represent the rule component meta.
- */
-export interface RuleComponentMetaInterface {
-    field: {
-        name: string,
-        displayName: string
-    },
-    operators: {
-        name: string,
-        displayName: string
-    }[],
-    value: RuleComponentExpressionValueInterface;
-}
-
-/**
- * Interface to represent the rule component meta data.
- */
-export type RuleComponentMetaDataInterface = RuleComponentMetaInterface[];
