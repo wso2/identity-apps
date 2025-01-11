@@ -1,5 +1,25 @@
 # @wso2is/admin.roles.v2
 
+## 2.27.26
+
+### Patch Changes
+
+- [#7295](https://github.com/wso2/identity-apps/pull/7295) [`6380a4e6899b0659684c143dd475c48ba7668a50`](https://github.com/wso2/identity-apps/commit/6380a4e6899b0659684c143dd475c48ba7668a50) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Remove shared apps from the role creation wizard
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.82
+  - @wso2is/admin.connections.v1@2.30.18
+  - @wso2is/admin.core.v1@2.35.20
+  - @wso2is/admin.extensions.v1@2.36.7
+  - @wso2is/admin.groups.v1@2.26.41
+  - @wso2is/admin.identity-providers.v1@2.26.82
+  - @wso2is/admin.organizations.v1@2.26.82
+  - @wso2is/admin.users.v1@2.29.41
+  - @wso2is/admin.remote-userstores.v1@1.7.38
+  - @wso2is/admin.api-resources.v2@2.25.82
+  - @wso2is/admin.server-configurations.v1@2.32.7
+  - @wso2is/admin.userstores.v1@2.26.41
+
 ## 2.27.25
 
 ### Patch Changes
