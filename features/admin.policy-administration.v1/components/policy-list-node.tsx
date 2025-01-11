@@ -72,7 +72,7 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
             dispatch(addAlert({
                 description: "The policy has been deleted successfully",
                 level: AlertLevels.SUCCESS,
-                message: "Update successful"
+                message: "Delete successful"
             }));
 
             mutateInactivePolicyList();
