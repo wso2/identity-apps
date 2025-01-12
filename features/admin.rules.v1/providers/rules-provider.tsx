@@ -60,18 +60,27 @@ export const RulesProvider = ({
 }: {
     children: ReactNode;
     conditionExpressionsMetaData: ConditionExpressionsMetaDataInterface;
-    initialData: RuleExecuteCollectionInterface;
+    initialData: RuleExecuteCollectionInterface | RuleInterface;
     ruleExecutionMetaData: RuleExecutionMetaDataInterface;
 }) => {
+    let RuleExecutionData: any = initialData;
+
+    // Check if initialData is a single rule object and if it doesn't have fallbackExecution
+    // transform it to a collection
+    if (RuleExecutionData && !RuleExecutionData?.fallbackExecution) {
+        RuleExecutionData = {
+            fallbackExecution: "",
+            rules: [ RuleExecutionData ]
+        };
+    }
 
     const [ ruleComponentInstance, setRuleComponentInstance ] =
-        useState<RuleExecuteCollectionInterface>(initialData ?? undefined);
+        useState<RuleExecuteCollectionInterface>(RuleExecutionData ?? undefined);
 
     const ruleComponentInstanceConditionExpressionsMeta: ConditionExpressionsMetaDataInterface | undefined =
         conditionExpressionsMetaData ?? undefined;
     const ruleComponentInstanceExecutionsMeta: RuleExecutionMetaDataInterface | undefined =
         ruleExecutionMetaData ?? undefined;
-
 
     // Update the ref whenever the context value changes
     RuleContextRef.ruleInstance = ruleComponentInstance;
