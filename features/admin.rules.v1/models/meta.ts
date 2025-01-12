@@ -30,7 +30,7 @@ export interface ListDataInterface {
 export interface LinkInterface {
     href: string;
     method: string;
-    rel: string;
+    rel: "values" | "filter";
 }
 
 /**
