@@ -250,7 +250,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             AuthRedirectUrl: findPropVal<string>({ defaultValue: authorizedRedirectURL, key: "AuthRedirectUrl" }),
             AuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "AuthnContextClassRef" }),
             AuthnContextComparisonLevel: findPropVal<string>({ defaultValue: "", key: "AuthnContextComparisonLevel" }),
-            samlAuthnRequestProviderName: findPropVal<string>({ defaultValue: "", key: "samlAuthnRequestProviderName" }),
             CustomAuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "CustomAuthnContextClassRef" }),
             DigestAlgorithm: findPropVal<string>({ defaultValue: "SHA256", key: "DigestAlgorithm" }),
             ForceAuthentication: findPropVal<string>({ defaultValue: "string", key: "ForceAuthentication" }),
@@ -293,6 +292,8 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 defaultValue: "string",
                 key: "ResponseAuthnContextClassRef"
             }),
+            samlAuthnRequestProviderName: findPropVal<string>({ defaultValue: "", 
+                key: "samlAuthnRequestProviderName" }),
             SPEntityId: findPropVal<string>({ defaultValue: "", key: "SPEntityId" }),
             SSOUrl: findPropVal<string>({ defaultValue: "", key: "SSOUrl" }),
             SignatureAlgorithm: findPropVal<string>({ defaultValue: "RSA with SHA256", key: "SignatureAlgorithm" }),
