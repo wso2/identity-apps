@@ -292,8 +292,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 defaultValue: "string",
                 key: "ResponseAuthnContextClassRef"
             }),
-            samlAuthnRequestProviderName: findPropVal<string>({ defaultValue: "", 
-                key: "samlAuthnRequestProviderName" }),
             SPEntityId: findPropVal<string>({ defaultValue: "", key: "SPEntityId" }),
             SSOUrl: findPropVal<string>({ defaultValue: "", key: "SSOUrl" }),
             SignatureAlgorithm: findPropVal<string>({ defaultValue: "RSA with SHA256", key: "SignatureAlgorithm" }),
@@ -301,8 +299,11 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             /**
              * https://github.com/wso2/product-is/issues/17004
              */
-            isAssertionSigned: findPropVal<boolean>({ defaultValue: false, key: "isAssertionSigned" })
-
+            isAssertionSigned: findPropVal<boolean>({ defaultValue: false, key: "isAssertionSigned" }),
+            samlAuthnRequestProviderName: findPropVal<string>({
+                defaultValue: "",
+                key: "samlAuthnRequestProviderName"
+            })
         } as SamlPropertiesInterface;
 
     }, []);
