@@ -801,7 +801,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     hint: "Specify if SAMLAssertion element is encrypted",
                     label: "Enable assertion encryption"
                 },
-                authnReqProviderName: {
+                samlAuthnRequestProviderName: {
                     hint: "The human-readable name of the requester.",
                     label: "Authentication Request Provider Name",
                     placeholder: "Enter authentication request provider name",

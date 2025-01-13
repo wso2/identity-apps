@@ -812,7 +812,7 @@ export interface AuthenticationProviderNS {
                     placeholder: string;
                     ariaLabel: string;
                 };
-                authnReqProviderName: {
+                samlAuthnRequestProviderName: {
                     hint: string;
                     label: string;
                     placeholder: string;
