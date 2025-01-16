@@ -211,6 +211,10 @@ export interface ProfileSchemaInterface {
      */
     excludedUserStores?: string;
     /**
+     * Shared profile attribute value resolving method.
+     */
+    sharedProfileValueResolvingMethod?: string;
+    /**
      * Schema attribute profiles
      */
     profiles?: {

@@ -212,6 +212,11 @@ export class ClaimManagementConstants {
      * Claim property name for uniqueness validation scope.
      */
     public static readonly UNIQUENESS_SCOPE_PROPERTY_NAME: string = "uniquenessScope";
+    /**
+     * Claim property name for shared profile value resolving method.
+     */
+    public static readonly SHARED_PROFILE_VALUE_RESOLVING_METHOD_PROPERTY_NAME: string =
+        "sharedProfileValueResolvingMethod";
 
     /**
      * List of restricted property keys that cannot be used in claim properties.

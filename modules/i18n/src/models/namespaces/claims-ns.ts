@@ -470,6 +470,15 @@ export interface ClaimsNS {
                     invalidName: string;
                 };
             };
+            sharedProfileValueResolvingMethod: {
+                label: string;
+                hint: string;
+                options: {
+                    fromOrigin: string;
+                    fromSharedProfile: string;
+                    fromFirstFoundInHierarchy: string;
+                };
+            }
             uniquenessScope: {
                 label: string;
                 options: {
