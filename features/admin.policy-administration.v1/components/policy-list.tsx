@@ -18,12 +18,11 @@
 import {
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
-import { DraggableNode, DroppableContainer, GetDragItemProps, useDnD  } from "@wso2is/dnd";
-import React, { ReactElement, useState } from "react";
-
+import { DroppableContainer, GetDragItemProps, useDnD  } from "@wso2is/dnd";
+import React, { ReactElement } from "react";
 import PolicyListDraggableNode from "./policy-list-draggable-node";
 import PolicyListNode from "./policy-list-node";
-import {  PolicyInterface, PolicyListInterface } from "../models/policies";
+import {  PolicyInterface } from "../models/policies";
 import "./policy-list.scss";
 
 
@@ -33,7 +32,10 @@ interface PolicyListProps extends IdentifiableComponentInterface {
     containerId: string;
     isDraggable?: boolean; // Add a prop to control drag functionality
     mutateInactivePolicyList?: () => void;
+    mutateActivePolicyList?: () => void;
     setInactivePolicies?: React.Dispatch<React.SetStateAction<PolicyInterface[]>>;
+    setPageInactive?: React.Dispatch<React.SetStateAction<number>>;
+    setHasMoreInactivePolicies?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 
@@ -42,6 +44,9 @@ export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
     onDrop,
     policies = [],
     mutateInactivePolicyList, setInactivePolicies,
+    setPageInactive,
+    setHasMoreInactivePolicies,
+    mutateActivePolicyList,
     containerId,
     isDraggable = true // Default to draggable
 }: PolicyListProps): ReactElement => {
@@ -59,7 +64,7 @@ export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
                 nodes: PolicyInterface[];
                 getDragItemProps: GetDragItemProps;
             }) =>
-                nodes.map((policy: PolicyInterface, index) => {
+                nodes.map((policy: PolicyInterface, index: number) => {
                     const {
                         className: dragItemClassName,
                         ...otherDragItemProps
@@ -74,6 +79,12 @@ export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
                             <PolicyListDraggableNode
                                 policy={ policy }
                                 data-componentid={ generateComponentId() }
+                                mutateActivePolicyList={ mutateActivePolicyList }
+                                mutateInactivePolicyList={ mutateInactivePolicyList }
+                                setPageInactive={ setPageInactive }
+                                setInactivePolicies={ setInactivePolicies }
+                                setHasMoreInactivePolicies={ setHasMoreInactivePolicies }
+
                             />
                         </div>
                     );
@@ -84,13 +95,16 @@ export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
 
     const renderStaticList = () => (
         <div className="policy-inactive-list">
-            { policies.map((policy) => (
+            { policies.map((policy: PolicyInterface) => (
                 <PolicyListNode
                     key={ policy.policyId }
                     policy={ policy }
                     data-componentid={ generateComponentId() }
                     mutateInactivePolicyList={ mutateInactivePolicyList }
+                    mutateActivePolicyList={ mutateActivePolicyList }
                     setInactivePolicies={ setInactivePolicies }
+                    setPageInactive={ setPageInactive }
+                    setHasMoreInactivePolicies={ setHasMoreInactivePolicies }
                 />
             )) }
         </div>

@@ -16,23 +16,23 @@
  * under the License.
  */
 import Box from "@oxygen-ui/react/Box";
+import Button from "@oxygen-ui/react/Button";
+import Dialog from "@oxygen-ui/react/Dialog";
+import DialogActions from "@oxygen-ui/react/DialogActions";
+import DialogContent from "@oxygen-ui/react/DialogContent";
+import DialogTitle from "@oxygen-ui/react/DialogTitle";
+import Stack from "@oxygen-ui/react/Stack";
+import Typography from "@oxygen-ui/react/Typography/Typography";
 import { getCertificateIllustrations } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FilePicker, PickerResult, XMLFileStrategy } from "@wso2is/react-components";
-import React, { FunctionComponent, MouseEvent, ReactElement, useMemo, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import "./new-policy-wizard.scss";
-import DialogTitle from "@oxygen-ui/react/DialogTitle";
-import Typography from "@oxygen-ui/react/Typography/Typography";
-import DialogContent from "@oxygen-ui/react/DialogContent";
-import DialogActions from "@oxygen-ui/react/DialogActions";
-import Stack from "@oxygen-ui/react/Stack";
-import Button from "@oxygen-ui/react/Button";
-import Dialog from "@oxygen-ui/react/Dialog";
 import { createPolicy } from "../../api/entitlement-policies";
 import { PolicyInterface } from "../../models/policies";
 import { unformatXML } from "../../utils/utils";

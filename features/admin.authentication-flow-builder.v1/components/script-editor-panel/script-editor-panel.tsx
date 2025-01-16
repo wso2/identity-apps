@@ -288,14 +288,14 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
                             <div className="secret-selection-menu-wrapper">
                                 { secretMgtFeatureConfig?.enabled &&
                                     hasSecretReadPermissions && (
-                                        <SecretSelectionDropdown
-                                            open={ isSecretSelectionDropdownOpen }
-                                            onClose={ () => setIsSecretSelectionDropdownOpen(false) }
-                                            onOpen={ () => setIsSecretSelectionDropdownOpen(true) }
-                                            onSecretSelect={ (secret: SecretModel) =>
-                                                replaceCodeBlock(secret.secretName) }
-                                        />
-                                    ) }
+                                    <SecretSelectionDropdown
+                                        open={ isSecretSelectionDropdownOpen }
+                                        onClose={ () => setIsSecretSelectionDropdownOpen(false) }
+                                        onOpen={ () => setIsSecretSelectionDropdownOpen(true) }
+                                        onSecretSelect={ (secret: SecretModel) =>
+                                            replaceCodeBlock(secret.secretName) }
+                                    />
+                                ) }
                             </div>
                         </>
                     ) }

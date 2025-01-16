@@ -45,14 +45,14 @@ export const useGetAlgorithm = <Data = AlgorithmResponseInterface, Error = Reque
     };
 
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null, {
+    const { data, error, isValidating, mutate, isLoading } = useRequest<Data, Error>(shouldFetch ? requestConfig : null, {
         shouldRetryOnError: false
     });
 
     return {
         data,
         error,
-        isLoading: !error && !data,
+        isLoading,
         isValidating,
         mutate
     };

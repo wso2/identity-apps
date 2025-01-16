@@ -15,8 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
-
+import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
@@ -29,19 +28,13 @@ import Select from "@oxygen-ui/react/Select";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography/Typography";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { useTranslation } from "react-i18next";
 import "./edit-policy-algorithm.scss";
 import { addAlert } from "@wso2is/core/store";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { updateAlgorithm } from "../../api/updateAlgorithm";
-import { PolicyAlgorithmRequestInterface } from "../../models/policies";
-
-interface AlgorithmOption {
-    value: number;
-    label: string;
-    description: string;
-}
+import { AlgorithmOption, PolicyAlgorithmRequestInterface } from "../../models/policies";
 
 interface EditPolicyAlgorithmProps extends IdentifiableComponentInterface{
     closeModal: () => void;
@@ -49,11 +42,13 @@ interface EditPolicyAlgorithmProps extends IdentifiableComponentInterface{
     selectedAlgorithm: AlgorithmOption;
     setSelectedAlgorithm: (algorithm: AlgorithmOption) => void;
     algorithmOptions : AlgorithmOption[];
+    mutateAlgorithm: () => void;
 }
 
 const EditPolicyAlgorithm: FunctionComponent<EditPolicyAlgorithmProps> = (
     props : EditPolicyAlgorithmProps): ReactElement => {
-    const { closeModal, [ "data-componentid" ]: componentId, open, selectedAlgorithm, setSelectedAlgorithm, algorithmOptions } = props;
+    const { closeModal, [ "data-componentid" ]: componentId, open, selectedAlgorithm, setSelectedAlgorithm, mutateAlgorithm,
+        algorithmOptions } = props;
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
@@ -66,7 +61,7 @@ const EditPolicyAlgorithm: FunctionComponent<EditPolicyAlgorithmProps> = (
         setSelectedAlgorithm(selectedAlgorithm);
     };
 
-    const selectedOption = algorithmOptions.find(option => option.value === selectedAlgorithm.value);
+    const selectedOption: AlgorithmOption = algorithmOptions.find(option => option.value === selectedAlgorithm.value);
 
     const handleUpdate = () => {
         const data: PolicyAlgorithmRequestInterface = {
@@ -81,6 +76,7 @@ const EditPolicyAlgorithm: FunctionComponent<EditPolicyAlgorithmProps> = (
                 message: "Update successful"
             }));
 
+            mutateAlgorithm();
             closeModal();
         }) . catch ( () => {
 
@@ -89,7 +85,6 @@ const EditPolicyAlgorithm: FunctionComponent<EditPolicyAlgorithmProps> = (
                 level: AlertLevels.ERROR,
                 message: t("idvp:create.notifications.create.genericError.message")
             }));
-            console.log("Error updating the policy combining algorithm");
         });
     };
 
@@ -110,7 +105,11 @@ const EditPolicyAlgorithm: FunctionComponent<EditPolicyAlgorithmProps> = (
                 <Typography variant="body1">
                     { t("policyAdministration:policyAlgorithm.actionText") }
                 </Typography>
-                <Select value={ selectedAlgorithm.value } onChange={ handleSelectChange } className="algorithm-dropdown">
+                <Select
+                    value={ selectedAlgorithm.value }
+                    onChange={ handleSelectChange }
+                    className="algorithm-dropdown"
+                >
                     { algorithmOptions.map((option: AlgorithmOption) => (
                         <MenuItem key={ option.value } value={ option.value }>
                             { option.label }

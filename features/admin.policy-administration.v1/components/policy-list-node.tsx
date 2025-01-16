@@ -21,18 +21,17 @@ import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import { addAlert } from "@wso2is/core/store";
 import kebabCase from "lodash-es/kebabCase";
-import React, { FunctionComponent, HTMLAttributes, ReactElement} from "react";
+import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Form, Grid, Icon, List } from "semantic-ui-react";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import { Icon } from "semantic-ui-react";
 import { Popup } from "../../../modules/react-components/src";
-import {PolicyInterface} from "../models/policies";
+import { deletePolicy, publishPolicy } from "../api/entitlement-policies";
+import { PolicyInterface } from "../models/policies";
 import "./policy-list-node.scss";
-import { deletePolicy } from "../api/entitlement-policies";
-
 
 /**
  * Props interface of {@link PolicyListDraggableNode}
@@ -46,6 +45,9 @@ export interface PolicyListDraggableNodePropsInterface
     policy: PolicyInterface;
     mutateInactivePolicyList?: () => void;
     setInactivePolicies?: React.Dispatch<React.SetStateAction<PolicyInterface[]>>;
+    setPageInactive: React.Dispatch<React.SetStateAction<number>>;
+    setHasMoreInactivePolicies: React.Dispatch<React.SetStateAction<boolean>>;
+    mutateActivePolicyList?: () => void;
 }
 
 const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> = ({
@@ -54,6 +56,9 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
     policy,
     mutateInactivePolicyList,
     setInactivePolicies,
+    setPageInactive,
+    setHasMoreInactivePolicies,
+    mutateActivePolicyList,
     ...rest
 }: PolicyListDraggableNodePropsInterface): ReactElement => {
     const { t } = useTranslation();
@@ -67,6 +72,9 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
     const handleDelete = async (): Promise<void> => {
         try {
             await deletePolicy(policy.policyId);
+
+            setPageInactive(0);
+            setHasMoreInactivePolicies(true);
             setInactivePolicies([]);
 
             dispatch(addAlert({
@@ -91,8 +99,30 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
 
 
 
-    const handleActivate = () => {
-        console.log("Activate button clicked");
+    const handleActivate = async () : Promise<void> => {
+        try{
+            await publishPolicy({
+                action: "CREATE",
+                enable: true,
+                order: 0,
+                policyIds: [ `${policy.policyId}` ],
+                subscriberIds: [ "PDP Subscriber" ]
+            });
+
+            setPageInactive(0);
+            setHasMoreInactivePolicies(true);
+            setInactivePolicies([]);
+
+            mutateActivePolicyList();
+            mutateInactivePolicyList();
+
+        } catch ( error ) {
+            dispatch(addAlert({
+                description: "An error occurred while activating the policy",
+                level: AlertLevels.ERROR,
+                message: "Activation error"
+            }));
+        }
     };
 
     return (

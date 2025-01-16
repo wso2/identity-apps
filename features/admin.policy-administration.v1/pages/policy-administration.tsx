@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,10 +26,10 @@ import PolicyAdministrationPageLayout from "../components/policy-administration-
 type PolicyAdministrationPageProps = IdentifiableComponentInterface;
 
 /**
- * Landing page for the Tenants feature.
+ * Landing page for the Policy Administration feature.
  *
  * @param props - Props injected to the component.
- * @returns Tenant listing page component.
+ * @returns Policy Administration page component.
  */
 const PolicyAdministrationPage: FunctionComponent<PolicyAdministrationPageProps> = ({
     ["data-componentid"]: componentId = "policy-administration-page"

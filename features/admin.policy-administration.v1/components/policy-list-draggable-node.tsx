@@ -17,24 +17,22 @@
  */
 import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
-import CardHeader from "@oxygen-ui/react/CardHeader";
-import IconButton from "@oxygen-ui/react/IconButton";
-import { EllipsisVerticalIcon }  from "@oxygen-ui/react-icons";
 import Stack from "@oxygen-ui/react/Stack";
-import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
+import { EllipsisVerticalIcon }  from "@oxygen-ui/react-icons";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { DraggableNode } from "@wso2is/dnd";
-import React, {FunctionComponent, HTMLAttributes, ReactElement, SVGProps, SyntheticEvent} from "react";
-import { Form, Grid, Icon, List } from "semantic-ui-react";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import kebabCase from "lodash-es/kebabCase";
+import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import { Icon } from "semantic-ui-react";
 import "./policy-list-draggable-node.scss";
 import { Popup } from "../../../modules/react-components/src";
+import { deletePolicy, publishPolicy } from "../api/entitlement-policies";
 import { PolicyInterface } from "../models/policies";
-
-
-
-
 
 /**
  * Props interface of {@link PolicyListDraggableNode}
@@ -46,21 +44,93 @@ export interface PolicyListDraggableNodePropsInterface
      * The node that is being dragged.
      */
     policy: PolicyInterface;
+    mutateActivePolicyList?: () => void;
+    mutateInactivePolicyList?: () => void;
+    setInactivePolicies?: React.Dispatch<React.SetStateAction<PolicyInterface[]>>;
+    setPageInactive: React.Dispatch<React.SetStateAction<number>>;
+    setHasMoreInactivePolicies: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInterface> = ({
     "data-componentid": componentId = "policy-list-draggable-node",
     id,
     policy,
+    mutateActivePolicyList,
+    mutateInactivePolicyList,
+    setInactivePolicies,
+    setPageInactive,
+    setHasMoreInactivePolicies,
     ...rest
 }: PolicyListDraggableNodePropsInterface): ReactElement => {
+    const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
 
-    const handleEdit = () => {
-        history.push(AppConstants.getPaths().get("EDIT_POLICY"));
+
+    const handleEdit = (policyId: string) => {
+        history.push(`${AppConstants.getPaths().get("EDIT_POLICY").replace(":id", kebabCase(policyId))}`);
     };
 
-    const handleDelete = () => {
-        console.log("Delete button clicked");
+    const handleDelete = async (): Promise<void> => {
+        try {
+            await publishPolicy({
+                action: "DELETE",
+                enable: true,
+                order: 0,
+                policyIds: [ `${policy.policyId}` ],
+                subscriberIds: [ "PDP Subscriber" ]
+            });
+            await deletePolicy(policy.policyId);
+
+            dispatch(addAlert({
+                description: "The policy has been deleted successfully",
+                level: AlertLevels.SUCCESS,
+                message: "Delete successful"
+            }));
+
+            mutateActivePolicyList();
+            mutateInactivePolicyList();
+
+        } catch (error) {
+            // Dispatch the error alert.
+            dispatch(addAlert({
+                description: "An error occurred while deleting the policy",
+                level: AlertLevels.ERROR,
+                message: "Delete error"
+            }));
+        }
+    };
+
+    const handleDeactivate = async (): Promise<void> => {
+        try {
+            await publishPolicy({
+                action: "DELETE",
+                enable: true,
+                order: 0,
+                policyIds: [ `${policy.policyId}` ],
+                subscriberIds: [ "PDP Subscriber" ]
+            });
+
+            dispatch(addAlert({
+                description: "The policy has been deactivated successfully",
+                level: AlertLevels.SUCCESS,
+                message: "Deactivation successful"
+            }));
+
+            setPageInactive(0);
+            setHasMoreInactivePolicies(true);
+            setInactivePolicies([]);
+
+            mutateActivePolicyList();
+            mutateInactivePolicyList();
+
+        } catch (error) {
+            dispatch(addAlert({
+                description: "An error occurred while deactivating the policy",
+                level: AlertLevels.ERROR,
+                message: "Deactivation error"
+            }));
+
+        }
     };
 
     return (
@@ -77,7 +147,7 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                             trigger={ (
                                 <Icon
                                     link={ true }
-                                    onClick={ handleEdit }
+                                    onClick={ () => handleEdit(policy.policyId) }
                                     data-componentid={ `${componentId}-edit-button` }
                                     className="list-icon"
                                     size="small"
@@ -107,7 +177,7 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                         <Popup
                             trigger={ (
                                 <Icon
-                                    onClick={ handleDelete }
+                                    onClick={ handleDeactivate }
                                     data-componentid={ `${componentId}-edit-button` }
                                     className="list-icon"
                                     size="massive"

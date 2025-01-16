@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { DiffOnMount, Monaco, MonacoDiffEditor } from "@monaco-editor/react";
+import { DiffOnMount, MonacoDiffEditor } from "@monaco-editor/react";
 import Modal from "@mui/material/Modal";
 import Box from "@oxygen-ui/react/Box";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
@@ -107,12 +107,12 @@ const MinimizeIcon = ({ width = 16, height = 16 }: { width: number; height: numb
 );
 
 /**
- * Script editor panel component.
+ * Policy editor panel component.
  *
  * @param props - Props injected to the component.
- * @returns Script editor panel component.
+ * @returns Policy editor panel component.
  */
-const ScriptEditorPanel = (props: PropsWithChildren<PolicyEditorProps>): ReactElement => {
+const PolicyEditorPanel = (props: PropsWithChildren<PolicyEditorProps>): ReactElement => {
     const { className, "data-componentid": componentId, policyScript, onScriptChange } = props;
 
     const { t } = useTranslation();
@@ -302,8 +302,8 @@ const ScriptEditorPanel = (props: PropsWithChildren<PolicyEditorProps>): ReactEl
 /**
  * Default props for the script editor panel component.
  */
-ScriptEditorPanel.defaultProps = {
+PolicyEditorPanel.defaultProps = {
     "data-componentid": "policy-editor"
 };
 
-export default ScriptEditorPanel;
+export default PolicyEditorPanel;

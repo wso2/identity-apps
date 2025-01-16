@@ -1,5 +1,5 @@
 /**
- * Copyright (c) {{year}}, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,10 +15,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
-import Alert from "@oxygen-ui/react/Alert";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -28,14 +28,14 @@ import lowerCase from "lodash-es/lowerCase";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "./edit-policy.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { updatePolicy } from "../api/entitlement-policies";
 import { useGetPolicy } from "../api/useGetPolicy";
 import startCase from "lodash-es/startCase";
 import PolicyEditor from "../components/policy-editor/policy-editor";
-import {PolicyInterface} from "../models/policies";
+import { PolicyInterface } from "../models/policies";
 
 
 
