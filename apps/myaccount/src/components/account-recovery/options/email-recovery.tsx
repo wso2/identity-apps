@@ -135,7 +135,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                     }
                 ]
                 : [ emailAddress ],
-            [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+            [ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]: {
                 "verifyEmail": true
             }
         };

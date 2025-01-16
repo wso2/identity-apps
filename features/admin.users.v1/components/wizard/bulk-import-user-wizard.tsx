@@ -1087,7 +1087,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         : email,
                 [ userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
                     ? userSchemaURI
-                    : ProfileConstants.SCIM2_ENT_USER_SCHEMA
+                    : ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA
                 ]: {
                     askPassword: "true"
                 }

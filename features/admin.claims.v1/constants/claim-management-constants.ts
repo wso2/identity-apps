@@ -162,6 +162,12 @@ export class ClaimManagementConstants {
                 uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
             },
             {
+                attributeButtonText: "claims:external.pageLayout.edit.attributeMappingPrimaryAction" ,
+                isAttributeButtonEnabled: true,
+                name: "System Schema",
+                uri: "urn:scim:wso2:schema"
+            },
+            {
                 attributeButtonText: "",
                 isAttributeButtonEnabled: true,
                 name: "Core 1.0 Schema",

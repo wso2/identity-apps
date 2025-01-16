@@ -700,7 +700,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 if (values.get(formName)) {
                     value = {
                         ...value,
-                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                        [ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]: {
                             "verifyEmail": true
                         }
                     };
@@ -742,7 +742,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 if (primaryValue) {
                     value = {
                         ...value,
-                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                        [ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]: {
                             "verifyEmail": true
                         }
                     };

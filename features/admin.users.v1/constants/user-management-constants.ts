@@ -113,9 +113,9 @@ export class UserManagementConstants {
      * @defaultValue
      */
     public static readonly SCIM2_ATTRIBUTES_DICTIONARY: Map<string, string> = new Map<string, string>()
-        .set("ACCOUNT_LOCKED", SCIMConfigs.scimEnterpriseUserClaimUri.accountLocked)
-        .set("ACCOUNT_DISABLED", SCIMConfigs.scimEnterpriseUserClaimUri.accountDisabled)
-        .set("ONETIME_PASSWORD", SCIMConfigs.scimEnterpriseUserClaimUri.oneTimePassword);
+        .set("ACCOUNT_LOCKED", SCIMConfigs.scimSystemUserClaimUri.accountLocked)
+        .set("ACCOUNT_DISABLED", SCIMConfigs.scimSystemUserClaimUri.accountDisabled)
+        .set("ONETIME_PASSWORD", SCIMConfigs.scimSystemUserClaimUri.oneTimePassword);
 
     public static readonly ROLES: string = "roles";
     public static readonly GROUPS: string = "groups";
