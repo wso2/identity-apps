@@ -39,7 +39,7 @@
         "@babel/polyfill": "^7.0.0",
         "@mui/material": "^5.13.0",
         "@mui/system": "^5.12.3",
-        "@oxygen-ui/react": "^2.0.0",
+        "@oxygen-ui/react": "^2.2.0",
         "@oxygen-ui/react-icons": "^2.0.0",
         "@wso2is/access-control": "^3.3.7",
         "@wso2is/admin.organizations.v1": "^2.26.68",

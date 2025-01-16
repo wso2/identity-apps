@@ -14,7 +14,7 @@
         "@mui/material": "^5.13.0",
         "@mui/system": "^5.12.3",
         "@mui/utils": "^5.12.3",
-        "@oxygen-ui/react": "^2.0.0",
+        "@oxygen-ui/react": "^2.2.0",
         "@oxygen-ui/react-icons": "^2.0.0",
         "@wso2is/core": "^2.5.3",
         "@wso2is/react-components": "^2.8.13",
