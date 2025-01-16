@@ -20,13 +20,13 @@ import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
 
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
+import { DnDProvider  } from "@oxygen-ui/react/dnd";
 import Grid from "@oxygen-ui/react/Grid";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { GearIcon } from "@oxygen-ui/react-icons";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { DnDProvider  } from "@wso2is/dnd";
 import {
     DocumentationLink,
     PageLayout,

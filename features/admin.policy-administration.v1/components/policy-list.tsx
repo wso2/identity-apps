@@ -15,14 +15,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { DroppableContainer, GetDragItemProps, useDnD  } from "@oxygen-ui/react/dnd";
 import {
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
-import { DroppableContainer, GetDragItemProps, useDnD  } from "@wso2is/dnd";
 import React, { ReactElement } from "react";
 import PolicyListDraggableNode from "./policy-list-draggable-node";
 import PolicyListNode from "./policy-list-node";
-import {  PolicyInterface } from "../models/policies";
+import { PolicyInterface } from "../models/policies";
 import "./policy-list.scss";
 
 
@@ -53,44 +53,45 @@ export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
     const { generateComponentId } = useDnD();
 
     const renderDraggableList = () => (
-        <DroppableContainer<PolicyInterface>
-            nodes={ policies }
-            onDrop={ () => onDrop?.(containerId) }
-        >
-            { ({
-                nodes,
-                getDragItemProps
-            }: {
-                nodes: PolicyInterface[];
-                getDragItemProps: GetDragItemProps;
-            }) =>
-                nodes.map((policy: PolicyInterface, index: number) => {
-                    const {
-                        className: dragItemClassName,
-                        ...otherDragItemProps
-                    } = getDragItemProps(index);
+        // <DroppableContainer<PolicyInterface>
+        //     nodes={ policies }
+        //     onDrop={ () => onDrop?.(containerId) }
+        // >
+        //     { ({
+        //         nodes,
+        //         getDragItemProps
+        //     }: {
+        //         nodes: PolicyInterface[];
+        //         getDragItemProps: GetDragItemProps;
+        //     }) =>
+        //         nodes.map((policy: PolicyInterface, index: number) => {
+        //             const {
+        //                 className: dragItemClassName,
+        //                 ...otherDragItemProps
+        //             } = getDragItemProps(index);
 
-                    return (
-                        <div
-                            key={ policy.policyId }
-                            className={ dragItemClassName }
-                            { ...otherDragItemProps }
-                        >
-                            <PolicyListDraggableNode
-                                policy={ policy }
-                                data-componentid={ generateComponentId() }
-                                mutateActivePolicyList={ mutateActivePolicyList }
-                                mutateInactivePolicyList={ mutateInactivePolicyList }
-                                setPageInactive={ setPageInactive }
-                                setInactivePolicies={ setInactivePolicies }
-                                setHasMoreInactivePolicies={ setHasMoreInactivePolicies }
+        //             return (
+        //                 <div
+        //                     key={ policy.policyId }
+        //                     className={ dragItemClassName }
+        //                     { ...otherDragItemProps }
+        //                 >
+        //                     <PolicyListDraggableNode
+        //                         policy={ policy }
+        //                         data-componentid={ generateComponentId() }
+        //                         mutateActivePolicyList={ mutateActivePolicyList }
+        //                         mutateInactivePolicyList={ mutateInactivePolicyList }
+        //                         setPageInactive={ setPageInactive }
+        //                         setInactivePolicies={ setInactivePolicies }
+        //                         setHasMoreInactivePolicies={ setHasMoreInactivePolicies }
 
-                            />
-                        </div>
-                    );
-                })
-            }
-        </DroppableContainer>
+        //                     />
+        //                 </div>
+        //             );
+        //         })
+        //     }
+        // </DroppableContainer>
+        <div></div>
     );
 
     const renderStaticList = () => (

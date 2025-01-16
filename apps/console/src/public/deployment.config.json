@@ -887,7 +887,7 @@
             },
             "policyAdministration":{
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "scopes": {
                     "create": [],
                     "delete": [],

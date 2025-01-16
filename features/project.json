@@ -5,7 +5,6 @@
     "implicitDependencies": [
         "access-control",
         "core",
-        "dnd",
         "form",
         "forms",
         "i18n",

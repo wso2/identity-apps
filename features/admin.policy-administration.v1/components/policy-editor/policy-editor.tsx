@@ -27,7 +27,7 @@ import Select from "@oxygen-ui/react/Select";
 import Toolbar from "@oxygen-ui/react/Toolbar";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
 import { IdentifiableComponentInterface, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import classNames from "classnames";
