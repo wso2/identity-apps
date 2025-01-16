@@ -46,15 +46,8 @@ import "./policy-administration-page-layout.scss";
 import { useGetAlgorithm } from "../api/useGetAlgorithm";
 import { useGetPolicies } from "../api/useGetPolicies";
 import InfiniteScroll from "react-infinite-scroll-component";
-import {PolicyInterface, PolicyListInterface} from "../models/policies";
-
-
-interface AlgorithmOption {
-    value: number;
-    label: string;
-    description: string;
-}
-
+import { AlgorithmOption, PolicyInterface } from "../models/policies";
+import { algorithmOptions } from "../utils/policy-algorithms";
 
 /**
  * Props interface of {@link PolicyAdministrationPageLayout}
@@ -82,26 +75,28 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
     const [ inactivePolicies, setInactivePolicies ] = useState<PolicyInterface[]>([]);
 
 
-    const { data: inactivePolicyArray, isLoading: isLoadingInactivePolicies, error: inactivePolicyError, mutate: mutateInactivePolicy } = useGetPolicies(true, pageInactive, false, "*", "ALL");
-    const { data: activePolicyArray, isLoading: isLoadingActivePolicies, error: activePolicyError } = useGetPolicies(true, 0, true, "*", "ALL");
+    const {
+        data: inactivePolicyArray,
+        isLoading: isLoadingInactivePolicies,
+        error: inactivePolicyError,
+        mutate: mutateInactivePolicy
+    } = useGetPolicies(true, pageInactive, false, "*", "ALL");
 
-    const { data: algorithm, isLoading } = useGetAlgorithm();
+    const {
+        data: activePolicyArray,
+        isLoading: isLoadingActivePolicies,
+        error: activePolicyError,
+        mutate: mutateActivePolicy
+    } = useGetPolicies(true, 0, true, "*", "ALL");
+
+    const {
+        data: algorithm,
+        isLoading: isLoadingAlgorithm,
+        error: getAlgorithmError,
+        mutate: mutateAlgorithm
+    } = useGetAlgorithm();
 
 
-    const algorithmOptions: AlgorithmOption[] = [
-        {
-            description: "The deny overrides combining algorithm is intended for those cases where a deny decision" +
-                " should have priority over a permit decision.",
-            label: "deny-overrides",
-            value: 1
-        },
-        {
-            description: "The permit overrides combining algorithm is intended for those cases where a permit " +
-                "decision should have priority over a deny decision.",
-            label: "permit-overrides",
-            value: 2
-        }
-    ];
 
     useEffect(() => {
         if (algorithm) {
@@ -120,10 +115,12 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
             return;
         }
 
-        if (inactivePolicyArray.policySet?.length) {
-            setInactivePolicies((prev: PolicyInterface[]) => [
+        if (pageInactive === 0) {
+            setInactivePolicies(inactivePolicyArray.policySet?.filter((p) => p !== null) || []);
+        } else {
+            setInactivePolicies((prev) => [
                 ...prev,
-                ...inactivePolicyArray.policySet.filter((p) => p !== null)
+                ...(inactivePolicyArray.policySet?.filter((p) => p !== null) || [])
             ]);
         }
 
@@ -134,6 +131,11 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
     }, [ inactivePolicyArray ]);
 
 
+    useEffect(() => {
+        setPageInactive(0);
+        setHasMoreInactivePolicies(true);
+        setInactivePolicies([]);
+    }, []);
 
 
 
@@ -156,9 +158,9 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
     if (isLoadingActivePolicies || isLoadingInactivePolicies) {
         return (
             <PageLayout
-                pageTitle={t("policyAdministration:title")}
-                title={t("policyAdministration:title")}
-                description={t("policyAdministration:subtitle")}
+                pageTitle={ t("policyAdministration:title") }
+                title={ t("policyAdministration:title") }
+                description={ t("policyAdministration:subtitle") }
                 className="policy-administration-page"
             >
                 <CircularProgress />
@@ -169,12 +171,12 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
     if (activePolicyError || inactivePolicyError) {
         return (
             <PageLayout
-                pageTitle={t("policyAdministration:title")}
-                title={t("policyAdministration:title")}
-                description={t("policyAdministration:subtitle")}
+                pageTitle={ t("policyAdministration:title") }
+                title={ t("policyAdministration:title") }
+                description={ t("policyAdministration:subtitle") }
                 className="policy-administration-page"
             >
-                <Typography>{t("common:errorLoadingData")}</Typography>
+                <Typography>{ t("common:errorLoadingData") }</Typography>
             </PageLayout>
         );
     }
@@ -280,9 +282,9 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                             next={ fetchMoreInactivePolicies }
                             hasMore={ hasMoreInactivePolicies }
                             loader={
-                                <div style={ { textAlign: "center" } }>
+                                (<div style={ { textAlign: "center" } }>
                                     <CircularProgress />
-                                </div>
+                                </div>)
                             }
                             dataLength={ inactivePolicies.length }
                             scrollableTarget={ "inactive-policy-list-container" }
@@ -295,6 +297,8 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                                     isDraggable={ false } // Non-draggable
                                     mutateInactivePolicyList={ mutateInactivePolicy }
                                     setInactivePolicies={ setInactivePolicies }
+                                    setPageInactive={ setPageInactive }
+                                    setHasMoreInactivePolicies={ setHasMoreInactivePolicies }
                                 />
                             </CardContent>
                         </InfiniteScroll>

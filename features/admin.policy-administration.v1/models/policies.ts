@@ -50,3 +50,9 @@ export interface PolicyAlgorithmRequestInterface {
 }
 
 export type AlgorithmResponseInterface = string;
+
+export interface AlgorithmOption {
+    value: number;
+    label: string;
+    description: string;
+}
