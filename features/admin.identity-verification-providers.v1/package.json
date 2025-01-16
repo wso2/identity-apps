@@ -19,7 +19,7 @@
         "@mui/system": "^5.12.3",
         "@mui/utils": "^5.12.3",
         "@oxygen-ui/react": "^2.2.0",
-        "@oxygen-ui/react-icons": "^2.0.0",
+        "@oxygen-ui/react-icons": "^2.2.0",
         "@wso2is/access-control": "^3.3.9",
         "@wso2is/admin.claims.v1": "^2.26.41",
         "@wso2is/admin.connections.v1": "^2.30.18",
