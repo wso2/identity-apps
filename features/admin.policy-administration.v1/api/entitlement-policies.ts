@@ -24,7 +24,7 @@ import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request"
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { PolicyInterface } from "../models/policies";
+import { PolicyInterface, PublishPolicyDataInterface } from "../models/policies";
 
 
 /**
@@ -127,6 +127,39 @@ export const deletePolicy = (policyId: string): Promise<AxiosResponse> => {
             }
 
             return Promise.resolve(response?.data);
+        })
+        .catch((error: HttpError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Function to publish (create) a policy using the given request data.
+ *
+ * @param requestData - The data needed to publish the policy.
+ * @returns A promise containing the response or an error.
+ */
+export const publishPolicy = (
+    requestData: PublishPolicyDataInterface
+): Promise<AxiosResponse<any>> => {
+
+    const requestConfig: HttpRequestConfig = {
+        data: requestData,
+        headers: {
+            "Accept": "*/*",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.entitlementPolicyPublishApi
+    };
+
+    return httpClient(requestConfig)
+        .then((response: HttpResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to publish the policy."));
+            }
+
+            return Promise.resolve(response.data);
         })
         .catch((error: HttpError) => {
             return Promise.reject(error);

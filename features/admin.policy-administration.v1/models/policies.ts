@@ -56,3 +56,11 @@ export interface AlgorithmOption {
     label: string;
     description: string;
 }
+
+export interface PublishPolicyDataInterface {
+    policyIds: string[];
+    subscriberIds: string[];
+    action: string;
+    enable: boolean;
+    order: number;
+}
