@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/branding-preference-provider";
 import { AppState, FeatureConfigInterface, I18nConstants } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -75,7 +75,6 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     const [ selectedEmailTemplate, setSelectedEmailTemplate ] = useState<EmailTemplate>();
     const [ currentEmailTemplate, setCurrentEmailTemplate ] = useState<EmailTemplate>();
     const [ showReplicatePreviousTemplateModal, setShowReplicatePreviousTemplateModal ] = useState(false);
-    const [ showUpdateTemplateFromRootOrgModal, setShowUpdateTemplateFromRootOrgModal ] = useState(false);
     const [ isTemplateNotAvailable, setIsTemplateNotAvailable ] = useState(false);
 
     const emailTemplates: Record<string, string>[] = useSelector(
@@ -91,26 +90,26 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const hasUsersUpdateEmailTemplatesPermissions: boolean = useRequiredScopes(
-        emailTemplatesFeatureConfig?.scopes?.update
-    );
-
-    const hasUsersCreateEmailTemplatesPermissions: boolean = useRequiredScopes(
-        emailTemplatesFeatureConfig?.scopes?.create
-    );
-
     const isReadOnly: boolean = useMemo(() => {
         return !isFeatureEnabled(
             emailTemplatesFeatureConfig,
             EmailManagementConstants.FEATURE_DICTIONARY.get("EMAIL_TEMPLATES_UPDATE")
-        ) || !hasUsersUpdateEmailTemplatesPermissions;
+        ) || !hasRequiredScopes(
+            emailTemplatesFeatureConfig,
+            emailTemplatesFeatureConfig?.scopes?.update,
+            allowedScopes
+        );
     }, [ emailTemplatesFeatureConfig, allowedScopes ]);
 
     const hasEmailTemplateCreatePermissions: boolean = useMemo(() => {
         return isFeatureEnabled(
             emailTemplatesFeatureConfig,
             EmailManagementConstants.FEATURE_DICTIONARY.get("EMAIL_TEMPLATES_CREATE")
-        ) && hasUsersCreateEmailTemplatesPermissions;
+        ) && hasRequiredScopes(
+            emailTemplatesFeatureConfig,
+            emailTemplatesFeatureConfig?.scopes?.create,
+            allowedScopes
+        );
     }, [ emailTemplatesFeatureConfig, allowedScopes ]);
 
     const {
@@ -207,9 +206,6 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
             } else {
                 setCurrentEmailTemplate(undefined);
             }
-            setShowUpdateTemplateFromRootOrgModal(true);
-
-            return;
         }
 
         if (emailTemplateError.response.data.description) {
@@ -349,10 +345,6 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         setShowReplicatePreviousTemplateModal(false);
     };
 
-    const alertUpdateTemplateFromRootOrg = () => {
-        setShowUpdateTemplateFromRootOrgModal(false);
-    };
-
     const resolveTabPanes = ():  TabProps[ "panes" ] => {
         const panes: TabProps [ "panes" ] = [];
 
@@ -408,7 +400,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                         <DocumentationLink
                             link={ getLink("develop.emailCustomization.learnMore") }
                         >
-                            { t("common:learnMore") }
+                            { t("extensions:common.learnMore") }
                         </DocumentationLink>
                     </> )
                 }
@@ -470,33 +462,6 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                     >
                         { t("extensions:develop.emailTemplates.modal.replicateContent.message") }
                     </ConfirmationModal.Message>
-                </ConfirmationModal>
-
-                <ConfirmationModal
-                    type="info"
-                    open={ showUpdateTemplateFromRootOrgModal }
-                    primaryAction={ t("common:okay") }
-                    onPrimaryActionClick={ (): void => alertUpdateTemplateFromRootOrg() }
-                    data-componentid={ `${ componentId }-update-template-from-root-org-modal` }
-                    closeOnDimmerClick={ true }
-                >
-                    <ConfirmationModal.Header
-                        data-componentid={ `${ componentId }-update-template-from-root-org-modal-header` }
-                    >
-                        { t("extensions:develop.emailTemplates.modal.updateFromRootOrg.header") }
-                    </ConfirmationModal.Header>
-                    <ConfirmationModal.Message
-                        attached
-                        info
-                        data-componentid={ `${ componentId }-update-template-from-root-org-modal-message` }
-                    >
-                        { t("extensions:develop.emailTemplates.modal.updateFromRootOrg.message") }
-                    </ConfirmationModal.Message>
-                    <ConfirmationModal.Content
-                        data-testid={ `${ componentId }-update-template-from-root-org-modal-content` }
-                    >
-                        { t("extensions:develop.emailTemplates.modal.updateFromRootOrg.content") }
-                    </ConfirmationModal.Content>
                 </ConfirmationModal>
             </PageLayout>
         </BrandingPreferenceProvider>

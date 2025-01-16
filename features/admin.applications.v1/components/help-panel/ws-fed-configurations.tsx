@@ -27,7 +27,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Form, Grid } from "semantic-ui-react";
 import { getHelpPanelIcons } from "../../configs/ui";
-import { WSFederationApplicationConfigurationInterface } from "../../models/application";
+import { WSFederationApplicationConfigurationInterface } from "../../models";
 
 /**
  * Proptypes for the WS Federation application configurations component.

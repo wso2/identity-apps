@@ -81,6 +81,15 @@ export interface IdentityProviderConfig {
     };
     utils: {
         hideIdentityClaimAttributes?: (authenticatorId: string) => boolean;
+        /**
+         * This config will be cleaned up via https://github.com/wso2/identity-apps/pull/6440.
+         *
+         * If returned `false` it will hide both uri mapping for role and
+         * external mappings component entirely.
+         * @param authenticatorId - Authenticator id.
+         * @returns enabled or not.
+         */
+        hideLogoInputFieldInIdPGeneralSettingsForm: (authenticatorId: string) => boolean;
     };
     templates: {
         apple: boolean;

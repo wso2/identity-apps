@@ -20,8 +20,8 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { ApplicationInterface } from "../../models/application";
-import { ApplicationShareForm } from "../forms/share-application-form";
+import { ApplicationInterface } from "../../models";
+import { ApplicationShareForm } from "../forms";
 
 /**
  * Proptypes for the shared access component.

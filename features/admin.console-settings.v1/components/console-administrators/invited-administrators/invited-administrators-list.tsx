@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,6 +28,7 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { deleteParentOrgInvite } from "@wso2is/admin.users.v1/components/guests/api/invite";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { UserInviteInterface } from "@wso2is/admin.users.v1/models";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models";
 import {
     AlertLevels,
@@ -97,8 +98,6 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
 
     const dispatch: Dispatch = useDispatch();
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -106,7 +105,7 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ showInviteNewAdministratorModal, setShowInviteNewAdministratorModal ] = useState<boolean>(false);
     const [ loading, setLoading ] = useState(false);
-    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(primaryUserStoreDomainName);
+    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(PRIMARY_USERSTORE.toLocaleLowerCase());
 
     const {
         invitedAdministrators,
@@ -249,7 +248,7 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
                         selection
                         options={ availableUserStores }
                         onChange={ handleSelectedUserStoreChange }
-                        defaultValue={ primaryUserStoreDomainName }
+                        defaultValue={ PRIMARY_USERSTORE.toLocaleLowerCase() }
                     />) : null
             }
             topActionPanelExtension={ (

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { DropDownItemInterface, SupportedFileTypes } from "@wso2is/form";
+import { SupportedFileTypes } from "@wso2is/form";
 
 /**
  * Interface to define a dynamic form.
@@ -121,16 +121,6 @@ export interface DynamicFilePickerFieldInterface extends DynamicFieldInterface {
 }
 
 /**
- * Data types required to render the dynamic dropdown field.
- */
-export interface DynamicDropdownFieldInterface extends DynamicFieldInterface {
-    /**
-     * File type to be used in the FilePicker component.
-     */
-    options: DropDownItemInterface[];
-}
-
-/**
  * Interface for the handlers of dynamic fields.
  */
 export interface DynamicFieldHandlerInterface {
@@ -167,11 +157,7 @@ export enum DynamicInputFieldTypes {
     /**
      * File picker field.
      */
-    FILE = "file",
-    /**
-     * Dropdown field.
-     */
-    SELECT = "select"
+    FILE = "file"
 }
 
 /**

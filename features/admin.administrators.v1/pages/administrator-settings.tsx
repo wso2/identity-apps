@@ -29,7 +29,7 @@ import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Icon, Message } from "semantic-ui-react";
 import { updateOrganizationConfigV2 } from "../api/updateOrganizationConfigV2";
 import { useOrganizationConfigV2 } from "../api/useOrganizationConfigV2";
-import { AdministratorConstants } from "../constants/users";
+import { AdministratorConstants } from "../constants";
 import { OrganizationInterface, UseOrganizationConfigType } from "../models/organization";
 
 /**
@@ -203,7 +203,7 @@ export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = 
                     <DocumentationLink
                         link={ getLink("manage.users.collaboratorAccounts.adminSettingsLearnMore") }
                     >
-                        { t("common:learnMore") }
+                        { t("extensions:common.learnMore") }
                     </DocumentationLink>
                 </>
             ) }

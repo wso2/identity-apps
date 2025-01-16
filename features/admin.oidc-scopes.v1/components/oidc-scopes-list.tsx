@@ -16,15 +16,16 @@
  * under the License.
  */
 
-import { Show, useRequiredScopes } from "@wso2is/access-control";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
+import { Show } from "@wso2is/access-control";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
 import {
     AppConstants,
+    AppState,
     FeatureConfigInterface,
     getEmptyPlaceholderIllustrations,
     history
 } from "@wso2is/admin.core.v1";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     LoadableComponentInterface,
@@ -48,7 +49,7 @@ import {
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { deleteOIDCScope } from "../api";
@@ -146,11 +147,10 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
 
     const dispatch: Dispatch = useDispatch();
 
-    const hasApplicationDeletePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.delete);
-    const hasOidcScopesUpdatePermissions: boolean = useRequiredScopes(featureConfig?.oidcScopes?.scopes?.update);
-
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingScope, setDeletingScope ] = useState<OIDCScopesListInterface>(undefined);
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     /**
      * Redirects to the OIDC scope edit page when the edit button is clicked.
@@ -271,22 +271,25 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                     featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
                 icon: (): SemanticICONS =>
-                    hasOidcScopesUpdatePermissions
+                    hasRequiredScopes(
+                        featureConfig?.oidcScopes, featureConfig?.oidcScopes?.scopes?.update, allowedScopes)
                         ? "pencil alternate"
                         : "eye",
                 onClick: (e: SyntheticEvent, scope: OIDCScopesListInterface): void =>
                     handleOIDCScopesEdit(scope?.name),
-                popupText: (): string =>
-                    hasOidcScopesUpdatePermissions
-                        ? t("common:edit")
-                        : t("common:view"),
+                popupText: (): string => hasRequiredScopes(
+                    featureConfig?.oidcScopes, featureConfig?.oidcScopes?.scopes?.update, allowedScopes)
+                    ? t("common:edit")
+                    : t("common:view"),
                 renderer: "semantic-icon"
             }
         ];
 
         actions.push({
             hidden: (item: TableDataInterface<OIDCScopesListInterface>): boolean => {
-                return !hasApplicationDeletePermissions
+                return !hasRequiredScopes(
+                    featureConfig?.applications,
+                    featureConfig?.applications?.scopes?.delete, allowedScopes)
                     || item.name === OIDCScopesManagementConstants.OPEN_ID_SCOPE
                     || OIDCScopesManagementConstants.OIDC_READONLY_SCOPES.includes(item.name);
             },

@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { getApplicationList } from "@wso2is/admin.applications.v1/api/application";
+import { getApplicationList } from "@wso2is/admin.applications.v1/api";
 import { ApplicationList } from "@wso2is/admin.applications.v1/components/application-list";
-import { ApplicationListInterface } from "@wso2is/admin.applications.v1/models/application";
+import { ApplicationListInterface } from "@wso2is/admin.applications.v1/models";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components";
 import {
     VerticalStepper,

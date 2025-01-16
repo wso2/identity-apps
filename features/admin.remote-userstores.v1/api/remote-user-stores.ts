@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,10 +19,9 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
-import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { GenerateTokenResponseInterface, RegenerateTokenRequestPayloadInterface } from "../models/remote-user-stores";
+import { RegenerateTokenInterface } from "../models";
 
 /**
  * The error code that is returned when there is no item in the list.
@@ -50,7 +49,7 @@ export const getAgentConnections = (userStoreId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.onPremUserStoreAgentConnection }/${userStoreId}`
+        url: `${ store.getState().config.endpoints.userStoreAgentConnection }/${userStoreId}`
     };
 
     return httpClient(requestConfig)
@@ -71,24 +70,11 @@ export const getAgentConnections = (userStoreId: string): Promise<any> => {
 /**
  * Disconnect an agent connection.
  *
- * @param userStoreId - User store ID.
- * @param agentConnectionId - Agent connection ID.
- * @param userStoreManager - User store manager type.
- * @returns response for disconnecting agent connection.
+ * @param userStoreId - User store ID
+ * @param agentConnectionId - Agent connection ID
+ * @returns response for disconnecting agent connection
  */
-export const disconnectAgentConnection = (
-    userStoreId: string,
-    agentConnectionId: string,
-    userStoreManager: RemoteUserStoreManagerType
-): Promise<any> => {
-    const url: string = userStoreManager === RemoteUserStoreManagerType.RemoteUserStoreManager
-        ? `${
-            store.getState().config.endpoints.remoteUserStoreAgentConnection
-        }/${userStoreId}/agent/${agentConnectionId}`
-        : `${
-            store.getState().config.endpoints.onPremUserStoreAgentConnection
-        }/${userStoreId}/agent/${agentConnectionId}`;
-
+export const disconnectAgentConnection = (userStoreId: string, agentConnectionId: string): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
@@ -96,7 +82,7 @@ export const disconnectAgentConnection = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url
+        url: `${ store.getState().config.endpoints.userStoreAgentConnection }/${userStoreId}/agent/${agentConnectionId}`
     };
 
     return httpClient(requestConfig)
@@ -117,27 +103,19 @@ export const disconnectAgentConnection = (
 /**
  * Generate access token for the agent.
  *
- * @param userStoreId - User store ID.
- * @param userStoreManager - User store manager type.
+ * @param data - User store ID.
  * @returns response.
  */
-export const generateToken = (
-    userStoreId: string,
-    userStoreManager: RemoteUserStoreManagerType
-): Promise<GenerateTokenResponseInterface> => {
-    const url: string = userStoreManager === RemoteUserStoreManagerType.RemoteUserStoreManager
-        ? `${store.getState().config.endpoints.remoteUserStoreAgentToken}/${userStoreId}`
-        : store.getState().config.endpoints.onPremUserStoreAgentToken;
-
+export const generateToken = (data: { userStoreId: string }): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
-        data: userStoreManager === RemoteUserStoreManagerType.RemoteUserStoreManager ? {} : { userStoreId },
+        data,
         headers: {
             Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url
+        url: `${ store.getState().config.endpoints.userStoreAgentToken }`
     };
 
     return httpClient(requestConfig)
@@ -158,34 +136,19 @@ export const generateToken = (
 /**
  * Regenerate access token for the agent.
  *
- * @param existingTokenId - Existing token ID.
- * @param userStoreId - User store ID.
- * @param userStoreManager - User store manager type.
+ * @param data - Agent token details
  * @returns response.
  */
-export const regenerateToken = (
-    existingTokenId: string,
-    userStoreId: string,
-    userStoreManager: RemoteUserStoreManagerType
-): Promise<GenerateTokenResponseInterface> => {
-    const url: string = userStoreManager === RemoteUserStoreManagerType.RemoteUserStoreManager
-        ? `${store.getState().config.endpoints.remoteUserStoreAgentToken}/${userStoreId}/regenerate`
-        : `${ store.getState().config.endpoints.onPremUserStoreAgentToken }/regenerate`;
-
-    const payload: RegenerateTokenRequestPayloadInterface = userStoreManager ===
-        RemoteUserStoreManagerType.RemoteUserStoreManager
-        ? { existingTokenId }
-        : { existingTokenId, userStoreId };
-
+export const regenerateToken = (data: RegenerateTokenInterface): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
-        data: payload,
+        data,
         headers: {
             Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url
+        url: `${ store.getState().config.endpoints.userStoreAgentToken }/regenerate`
     };
 
     return httpClient(requestConfig)

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,10 +19,10 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { ServerConstants } from "@wso2is/admin.server.v1/constants/server";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import TenantConstants from "../../constants/tenant-constants";
 import { AdminAdvisoryBannerConfigurationInterface } from "../../models/system-settings/admin-advisory";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
@@ -52,7 +52,7 @@ const updateAdminAdvisoryBannerConfiguration = (
             if (response.status !== 200) {
                 if (response.status === 400) {
                     throw new IdentityAppsApiException(
-                        TenantConstants.ADMIN_ADVISORY_BANNER_CONFIGS_INVALID_INPUT_ERROR,
+                        ServerConstants.ADMIN_ADVISORY_BANNER_CONFIGS_INVALID_INPUT_ERROR,
                         null,
                         response.status,
                         response.request,
@@ -62,7 +62,7 @@ const updateAdminAdvisoryBannerConfiguration = (
                 }
 
                 throw new IdentityAppsApiException(
-                    TenantConstants.ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR,
+                    ServerConstants.ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR,
                     null,
                     response.status,
                     response.request,
@@ -75,7 +75,7 @@ const updateAdminAdvisoryBannerConfiguration = (
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                TenantConstants.ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR,
+                ServerConstants.ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR,
                 error.stack,
                 error.code,
                 error.request,

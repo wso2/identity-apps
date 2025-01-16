@@ -135,15 +135,32 @@ public class AppPortalUtils {
             throw new IdentityOAuthAdminException("Server encountered an error while building callback URL with " +
                 "placeholders for the server URL", e);
         }
-        if (SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
-            callbackUrl = "regexp=(" + callbackUrl
-                + "|" + callbackUrl.replace(portalPath, "/t/carbon.super" + portalPath)
-                + "|" + callbackUrl.replace(portalPath, "/t/carbon.super/o/(.*)" + portalPath)
-                + ")";
+        if (CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
+            if (SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
+                if (StringUtils.equals(CONSOLE_APP, applicationName) &&
+                    AppsCommonDataHolder.getInstance().isOrganizationManagementEnabled()) {
+                    callbackUrl = "regexp=(" + callbackUrl
+                        + "|" + callbackUrl.replace(portalPath, "/t/(.*)" + portalPath)
+                        + "|" + callbackUrl.replace(portalPath, "/o/(.*)" + portalPath)
+                        + ")";
+                } else {
+                    callbackUrl = "regexp=(" + callbackUrl
+                        + "|" + callbackUrl.replace(portalPath, "/t/(.*)" + portalPath)
+                        + ")";
+                }
+            }
         } else {
-            callbackUrl = "regexp=(" + callbackUrl.replace(portalPath, "/t/(.*)" + portalPath)
-                + "|" + callbackUrl.replace(portalPath, "/t/(.*)/o/(.*)" + portalPath)
-                + ")";
+            if (SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
+                callbackUrl = "regexp=(" + callbackUrl
+                    + "|" + callbackUrl.replace(portalPath, "/o/(.*)" + portalPath)
+                    + "|" + callbackUrl.replace(portalPath, "/t/carbon.super" + portalPath)
+                    + "|" + callbackUrl.replace(portalPath, "/t/carbon.super/o/(.*)" + portalPath)
+                    + ")";
+            } else {
+                callbackUrl = "regexp=(" + callbackUrl.replace(portalPath, "/t/(.*)" + portalPath)
+                    + "|" + callbackUrl.replace(portalPath, "/t/(.*)/o/(.*)" + portalPath)
+                    + ")";
+            }
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
         oAuthConsumerAppDTO.setBypassClientCredentials(true);

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,6 @@ import Grid from "@oxygen-ui/react/Grid";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
-import { AppState } from "@wso2is/admin.core.v1";
 import { updateResources } from "@wso2is/admin.core.v1/api/bulk-operations";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
@@ -46,7 +45,6 @@ import {
 } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { AlertLevels, IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { StringUtils } from "@wso2is/core/utils";
 import { EmphasizedSegment, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
@@ -61,7 +59,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import { AutoCompleteRenderOption } from "./edit-role-common/auto-complete-render-option";
@@ -88,9 +86,6 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ userSearchValue, setUserSearchValue ] = useState<string>(undefined);
     const [ isUserSearchLoading, setUserSearchLoading ] = useState<boolean>(false);
@@ -163,9 +158,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const isUserBelongToSelectedUserStore = (user: UserBasicInterface, userStoreName: string) => {
         const userNameChunks: string[] = user.userName.split("/");
 
-        return (userNameChunks.length === 1 &&
-            StringUtils.isEqualCaseInsensitive(userStoreName, primaryUserStoreDomainName))
-        || (userNameChunks.length === 2 && StringUtils.isEqualCaseInsensitive(userNameChunks[0], userStoreName));
+        return (userNameChunks.length === 1 && userStoreName === "PRIMARY")
+        || (userNameChunks.length === 2 && userNameChunks[0] === userStoreName?.toUpperCase());
     };
 
     useEffect(() => {
@@ -325,10 +319,8 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         }).filter((user: RolesMemberInterface) => {
             const userNameChunks: string[] = user.display.split("/");
 
-            return (userNameChunks.length === 1 &&
-                StringUtils.isEqualCaseInsensitive(selectedUserStoreDomainName, primaryUserStoreDomainName))
-            || (userNameChunks.length === 2 &&
-                StringUtils.isEqualCaseInsensitive(userNameChunks[0], selectedUserStoreDomainName));
+            return (userNameChunks.length === 1 && selectedUserStoreDomainName === "PRIMARY")
+            || (userNameChunks.length === 2 && userNameChunks[0] === selectedUserStoreDomainName.toUpperCase());
         }) ?? [];
 
 

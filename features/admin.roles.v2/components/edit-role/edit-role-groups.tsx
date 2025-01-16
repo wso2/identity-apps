@@ -24,7 +24,7 @@ import {
 import {
     PatchGroupAddOpInterface,
     PatchGroupRemoveOpInterface
-} from "@wso2is/admin.groups.v1/models/groups";
+} from "@wso2is/admin.groups.v1";
 import { useIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
 import { IdentityProviderInterface, StrictIdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models";
 import { AlertLevels, IdentifiableComponentInterface, RoleGroupsInterface } from "@wso2is/core/models";

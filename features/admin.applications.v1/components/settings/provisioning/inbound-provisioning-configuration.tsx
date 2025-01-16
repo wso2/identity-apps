@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
 import { AppState, AuthenticatorAccordion, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading } from "@wso2is/react-components";
@@ -29,9 +29,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Grid } from "semantic-ui-react";
-import { updateApplicationConfigurations } from "../../../api/application";
-import { ProvisioningConfigurationInterface, SimpleUserStoreListItemInterface } from "../../../models/application";
-import { ProvisioningConfigurationsForm } from "../../forms/provisioning-configuration-form";
+import { updateApplicationConfigurations } from "../../../api";
+import { ProvisioningConfigurationInterface, SimpleUserStoreListItemInterface } from "../../../models";
+import { ProvisioningConfigurationsForm } from "../../forms";
 
 /**
  *  Inbound Provisioning Configurations for the Application.
@@ -84,12 +84,10 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
     const { t } = useTranslation();
     const { isSuperOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
-    const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
-
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ userStore, setUserStore ] = useState<SimpleUserStoreListItemInterface[]>([]);
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -158,8 +156,8 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
         const userstore: SimpleUserStoreListItemInterface[] = [];
 
         userstore.push({
-            id: primaryUserStoreDomainName,
-            name: primaryUserStoreDomainName
+            id: "PRIMARY",
+            name: "PRIMARY"
         });
         if (isSuperOrganization()) {
             getUserStoreList().then((response: AxiosResponse) => {
@@ -197,7 +195,9 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
                                                 useStoreList={ userStore }
                                                 readOnly={
                                                     readOnly
-                                                    || !hasApplicationUpdatePermissions
+                                                    || !hasRequiredScopes(featureConfig?.applications,
+                                                        featureConfig?.applications?.scopes?.update,
+                                                        allowedScopes)
                                                 }
                                                 data-testid={ `${ testId }-form` }
                                                 isSubmitting={ isSubmitting }

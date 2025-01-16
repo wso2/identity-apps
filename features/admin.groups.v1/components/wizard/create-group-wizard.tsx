@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,18 +17,25 @@
  */
 
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
-import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "@wso2is/admin.core.v1";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
-import { updateRole } from "@wso2is/admin.roles.v2/api";
-import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
+import { getOrganizationRoles } from "@wso2is/admin.organizations.v1/api";
+import { OrganizationRoleManagementConstants } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import {
+    GenericOrganization,
+    OrganizationRoleListItemInterface,
+    OrganizationRoleListResponseInterface
+} from "@wso2is/admin.organizations.v1/models";
+import { getRolesList, updateRole } from "@wso2is/admin.roles.v2/api";
 import { RoleConstants } from "@wso2is/admin.roles.v2/constants";
 import {
     BasicRoleInterface,
     PatchRoleDataInterface,
-    RolesV2Interface
-} from "@wso2is/admin.roles.v2/models/roles";
+    RolesV2Interface,
+    RolesV2ResponseInterface
+} from "@wso2is/admin.roles.v2/models";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models";
 import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
@@ -42,7 +49,6 @@ import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import intersection from "lodash-es/intersection";
-import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -59,7 +65,7 @@ import {
     WizardStateInterface,
     WizardStepInterface,
     WizardStepsFormTypes
-} from "../../models/groups";
+} from "../../models";
 
 /**
  * Interface which captures create group props.
@@ -106,10 +112,8 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { isFirstLevelOrganization } = useGetCurrentOrganizationType();
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
-
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitRoleList, setSubmitRoleList ] = useTrigger();
@@ -119,8 +123,9 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>(undefined);
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>(
-        commonConfig?.primaryUserstoreOnly ? primaryUserStoreDomainName : CONSUMER_USERSTORE);
+        commonConfig?.primaryUserstoreOnly ? PRIMARY_USERSTORE : CONSUMER_USERSTORE);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ roleList, setRoleList ] = useState<RolesInterface[] | OrganizationRoleListItemInterface[]>([]);
     const [ isWizardActionDisabled, setIsWizardActionDisabled ] = useState<boolean>(true);
     const [ selectedRoleId, setSelectedRoleId ] = useState<string>();
     const [ isRoleSelected, setRoleSelection ] = useState<boolean>(false);
@@ -130,6 +135,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
     const userRoleFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRoles);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
     const isEditingSystemRolesAllowed: boolean =
         useSelector((state: AppState) => state?.config?.ui?.isSystemRolesEditAllowed);
 
@@ -146,40 +152,6 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const {
-        data: filteredApplicationList,
-        error: applicationListError
-    } = useApplicationList(null, null, null, "name eq Console");
-
-    const consoleId: string = filteredApplicationList?.applications[0]?.id;
-
-    const {
-        data: fetchedRoleList,
-        error: rolesListError
-    } = useGetRolesList(
-        100,
-        null,
-        `audience.value ne ${consoleId}`,
-        "users,groups,permissions,associatedApplications",
-        !isEmpty(consoleId)
-    );
-
-    /**
-     * Process the fetched role list.
-     */
-    const roleList: RolesInterface[] = useMemo(() => {
-        if (fetchedRoleList?.Resources) {
-            if (isEditingSystemRolesAllowed) {
-                return fetchedRoleList.Resources;
-            }
-
-            // Filter out the system roles.
-            return fetchedRoleList.Resources.filter((role: RolesV2Interface) => !role.meta.systemRole);
-        }
-
-        return [];
-    }, [ fetchedRoleList ]);
-
     useEffect(() => {
         if (!isRoleReadOnly) {
             setWizardSteps(filterSteps([
@@ -195,20 +167,34 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
 
             setSubmitStep(WizardStepsFormTypes.BASIC_DETAILS);
         }
-    }, []);
 
-    /**
-     * Handle the role list fetch error.
-     */
-    useEffect(() => {
-        if (applicationListError || rolesListError) {
-            dispatch(addAlert({
-                description: t("roles:notifications.fetchRoles.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("roles:notifications.fetchRoles.genericError.message")
-            }));
+        if (roleList?.length < 1) {
+            if (isFirstLevelOrganization()) {
+                getRolesList(null)
+                    .then((response: AxiosResponse<RolesV2ResponseInterface>) => {
+                        const systemRolesFilteredRolesList: RolesV2Interface[] =
+                            isEditingSystemRolesAllowed
+                                ? response?.data?.Resources
+                                : response?.data?.Resources?.filter((role: RolesV2Interface) => !role.meta.systemRole);
+
+                        setRoleList(systemRolesFilteredRolesList);
+                    });
+            } else {
+                getOrganizationRoles(currentOrganization.id, null, 100, null)
+                    .then((response: OrganizationRoleListResponseInterface) => {
+                        if (!response.Resources) {
+                            return;
+                        }
+
+                        const roles: OrganizationRoleListItemInterface[] = response.Resources
+                            .filter((role: OrganizationRoleListItemInterface) =>
+                                role.displayName !== OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME);
+
+                        setRoleList(roles);
+                    });
+            }
         }
-    }, [ applicationListError, rolesListError ]);
+    }, []);
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -531,7 +517,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
                         <AssignRoles
                             triggerSubmit={ submitRoleList }
                             onSubmit={ (values: any) => handleWizardSubmit(values, WizardStepsFormTypes.ROLE_LIST) }
-                            initialValues={ { roleList: roleList ?? [] } }
+                            initialValues={ { roleList: roleList } }
                             handleSetRoleId={ (roleId: string) => handleRoleIdSet(roleId) }
                         />
                     )

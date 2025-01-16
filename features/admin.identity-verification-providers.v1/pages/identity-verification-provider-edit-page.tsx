@@ -17,9 +17,7 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -104,9 +102,6 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
         featureConfig?.identityVerificationProviders?.scopes?.update);
     const hasIdVPDeletePermissions: boolean = useRequiredScopes(
         featureConfig?.identityVerificationProviders?.scopes?.delete);
-
-    const { UIConfig } = useUIConfig();
-    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     /**
      * Handles the IdVP fetch error.
@@ -229,7 +224,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
                 <AppAvatar
                     hoverable={ false }
                     name={ name }
-                    image={ ConnectionsManagementUtils.resolveConnectionResourcePath(connectionResourcesUrl, image) }
+                    image={ image }
                     size="tiny"
                 />
             );
@@ -319,7 +314,7 @@ const IdentityVerificationProviderEditPage: FunctionComponent<IDVPEditPagePropsI
         >
             {
                 <EditIdentityVerificationProvider
-                    identityVerificationProvider={ { ...fetchedIdVP } }
+                    identityVerificationProvider={ fetchedIdVP }
                     isLoading={
                         isIdVPFetchRequestLoading
                         || isMetadataFetchRequestLoading

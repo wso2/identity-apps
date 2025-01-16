@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,7 +24,7 @@ import {
     useCheckFeatureStatus,
     useRequiredScopes
 } from "@wso2is/access-control";
-import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
+import { useApplicationList } from "@wso2is/admin.applications.v1/api";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -64,6 +64,7 @@ import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { getUserStores } from "@wso2is/admin.userstores.v1/api";
 import {
     CONSUMER_USERSTORE,
+    PRIMARY_USERSTORE,
     UserStoreManagementConstants
 } from "@wso2is/admin.userstores.v1/constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
@@ -101,12 +102,11 @@ import {
     TabProps
 } from "semantic-ui-react";
 import { useOrganizationConfigV2 } from "../api/useOrganizationConfigV2";
-import { GuestUsersList } from "../components/guests/guest-users-list";
-import { OnboardedGuestUsersList } from "../components/guests/onboarded-guest-user-list";
-import { AdministratorConstants } from "../constants/users";
+import { GuestUsersList, OnboardedGuestUsersList } from "../components";
+import { AdministratorConstants } from "../constants";
 import { UseOrganizationConfigType } from "../models/organization";
 import { isAdminUser, isOwner } from "../utils/administrators";
-import { AddAdministratorWizard } from "../wizard/add-administrator-wizard";
+import { AddAdministratorWizard } from "../wizard";
 
 /**
  * Props for the Users page.
@@ -160,8 +160,6 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
     const authUserTenants: TenantInfo[] = useSelector((state: AppState) => state?.auth?.tenants);
     const guestUserFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
         state.config.ui.features.guestUser);
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
 
     const hasGuestUserCreatePermissions: boolean = useRequiredScopes(
         guestUserFeatureConfig?.scopes?.create
@@ -252,7 +250,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                 : searchQuery
         ),
         null,
-        primaryUserStoreDomainName,
+        PRIMARY_USERSTORE,
         excludedAttributes,
         !administratorConfig.enableAdminInvite || invitationStatusOption === InvitationStatus.ACCEPTED
     );
@@ -1582,7 +1580,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                     <DocumentationLink
                         link={ getLink("manage.users.collaboratorAccounts.learnMore") }
                     >
-                        { t("common:learnMore") }
+                        { t("extensions:common.learnMore") }
                     </DocumentationLink>
                 </>
             ) }

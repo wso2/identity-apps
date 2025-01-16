@@ -90,7 +90,6 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
     const [ selectedIdp, setSelectedIdp ] = useState<string>();
     const [ isBlockingChecked, setIsBlockingChecked ] = useState<boolean>(initialValues?.blocking ?? false);
     const [ isRulesChecked, setIsRulesChecked ] = useState<boolean>(initialValues?.rules ?? false);
-    const [ isJITChecked, setIsJITChecked ] = useState<boolean>(initialValues?.jit);
     const [ connector, setConnector ] = useState<string>(initialValues?.connector);
 
     useEffect(() => {
@@ -188,7 +187,6 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
             blocking: isBlockingChecked,
             connector: connector,
             idp: idpName,
-            jit: isJITChecked,
             rules: isRulesChecked
         };
     };
@@ -326,33 +324,6 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                         <Hint>
                             { t("applications:forms.outboundProvisioning.fields.blocking" +
                                 ".hint") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } computer={ 10 }>
-                        <Field
-                            name="jit"
-                            required={ false }
-                            type="checkbox"
-                            children={ [
-                                {
-                                    label: t("applications:forms.outboundProvisioning" +
-                                        ".fields.jit.label"),
-                                    value: "jit"
-                                }
-                            ] }
-                            value={ initialValues?.jit ? [ "jit" ] : [] }
-                            listen={
-                                (values: Map<string, FormValue>) => {
-                                    setIsJITChecked(values.get("jit").includes("jit"));
-                                }
-                            }
-                            readOnly={ isReadOnly }
-                            data-testid={ `${ componentId }-jit-checkbox` }
-                        />
-                        <Hint>
-                            { t("applications:forms.outboundProvisioning.fields.jit.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

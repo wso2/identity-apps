@@ -16,9 +16,7 @@
  * under the License.
  */
 
-import {
-    ApplicationTemplatesConfigInterface
-} from "@wso2is/admin.applications.v1/data/application-templates/application-templates-config";
+import { ApplicationTemplatesConfigInterface } from "@wso2is/admin.applications.v1/data/application-templates";
 import {
     IdentityProviderTemplatesConfigInterface
 } from "@wso2is/admin.identity-providers.v1/data/identity-provider-templates";

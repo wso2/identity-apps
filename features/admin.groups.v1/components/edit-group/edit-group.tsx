@@ -30,7 +30,7 @@ import { EditGroupRoles } from "./edit-group-roles";
 import { GroupUsersList } from "./edit-group-users";
 import { GroupConstants } from "../../constants";
 import useGroupManagement from "../../hooks/use-group-management";
-import { GroupsInterface } from "../../models/groups";
+import { GroupsInterface } from "../../models";
 
 /**
  * Captures props needed for edit group component

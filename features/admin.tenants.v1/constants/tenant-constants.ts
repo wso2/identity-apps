@@ -64,12 +64,6 @@ export default class TenantConstants {
     public static readonly TENANT_OWNER_UPDATE_ERROR: string =
         "An error occurred while updating the tenant owner's details.";
 
-    public static readonly ADMIN_ADVISORY_BANNER_CONFIGS_INVALID_INPUT_ERROR: string = "An invalid input value " +
-		"in the request.";
-
-    public static readonly ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred " +
-		"while updating the admin advisory banner configurations.";
-
     public static readonly FEATURE_DICTIONARY: {
         ADD_TENANTS_FROM_DROPDOWN: string;
         MAKING_TENANTS_DEFAULT: string;

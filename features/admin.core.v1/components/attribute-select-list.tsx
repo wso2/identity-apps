@@ -16,9 +16,7 @@
  * under the License.
  */
 
-import {
-    ExtendedExternalClaimInterface
-} from "@wso2is/admin.applications.v1/components/settings/attribute-management/attribute-settings";
+import { ExtendedExternalClaimInterface } from "@wso2is/admin.applications.v1/components/settings";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
 import sortBy from "lodash-es/sortBy";
@@ -55,23 +53,20 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
 
     const { t } = useTranslation();
 
-    const init: React.MutableRefObject<boolean> = useRef(true);
-    const initCheck: React.MutableRefObject<boolean> = useRef(true);
+    const init = useRef(true);
+    const initCheck = useRef(true);
 
     const requestedComparator = (selectedList: ExtendedExternalClaimInterface[]) => {
-        const filteredSelectedList: ExtendedExternalClaimInterface[] =
-            selectedList.filter((item: ExtendedExternalClaimInterface) => !!item);
+        const filteredSelectedList = selectedList.filter(item => !!item);
 
         return (claim: ExtendedExternalClaimInterface): number => {
-            return (filteredSelectedList?.findIndex(
-                (item: ExtendedExternalClaimInterface) => item.id === claim.id) >= 0
-            ) ? -1 : 1;
+            return (filteredSelectedList?.findIndex(item => item.id === claim.id) >= 0) ? -1 : 1;
         };
     };
 
     useEffect(() => {
         if (selectedExternalClaims.length > 0) {
-            const sortedClaims: ExtendedExternalClaimInterface[] = sortBy(
+            const sortedClaims = sortBy(
                 union([ ...selectedExternalClaims ], [ ...availableExternalClaims ]),
                 requestedComparator(selectedExternalClaims), "localClaimDisplayName"
             );
@@ -80,9 +75,8 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
             setFilterTempAvailableClaims(sortedClaims);
             setTempSelectedClaims(selectedExternalClaims);
         } else {
-            const sortedClaims: ExtendedExternalClaimInterface[] =
-                sortBy(availableExternalClaims, requestedComparator([]),
-                    "localClaimDisplayName");
+            const sortedClaims = sortBy(availableExternalClaims, requestedComparator([]),
+                "localClaimDisplayName");
 
             setTempAvailableClaims(sortedClaims);
             setFilterTempAvailableClaims(sortedClaims);
@@ -134,8 +128,8 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
      * The following method handles the onChange event of the
      * checkbox field of an unassigned item.
      */
-    const handleUnassignedItemCheckboxChange = (claim: ExtendedExternalClaimInterface) => {
-        const checkedRoles: ExtendedExternalClaimInterface[] = [ ...tempSelectedClaims ];
+    const handleUnassignedItemCheckboxChange = (claim) => {
+        const checkedRoles = [ ...tempSelectedClaims ];
 
         if (checkedRoles?.includes(claim)) {
             checkedRoles.splice(checkedRoles.indexOf(claim), 1);
@@ -148,16 +142,14 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
     };
 
     // search operation for available claims
-    const searchTempAvailable = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const changeValue: string = event.target.value;
+    const searchTempAvailable = (event) => {
+        const changeValue = event.target.value;
 
         if (changeValue.length > 0) {
-            const displayNameFilterClaims: ExtendedExternalClaimInterface[] =
-                tempAvailableClaims.filter((item: ExtendedExternalClaimInterface) =>
-                    (item.localClaimDisplayName ?? "").toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
-            const uriFilterClaims: ExtendedExternalClaimInterface[] =
-                tempAvailableClaims.filter((item: ExtendedExternalClaimInterface) =>
-                    (item.claimURI ?? "").toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+            const displayNameFilterClaims = tempAvailableClaims.filter((item) =>
+                (item.localClaimDisplayName ?? "").toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+            const uriFilterClaims = tempAvailableClaims.filter((item) =>
+                (item.claimURI ?? "").toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
 
             setFilterTempAvailableClaims(sortBy(union(displayNameFilterClaims, uriFilterClaims),
                 requestedComparator(tempSelectedClaims), "localClaimDisplayName"));
@@ -198,7 +190,7 @@ export const AttributeSelectList: FunctionComponent<AttributeSelectListPropsInte
                 emptyPlaceholderDefaultContent={ t("transferList:list."
                             + "emptyPlaceholders.default") }
             >
-                { filterTempAvailableClaims?.map((claim: ExtendedExternalClaimInterface, index: number) => {
+                { filterTempAvailableClaims?.map((claim, index) => {
                     return (
                         <TransferListItem
                             handleItemChange={ () => handleUnassignedItemCheckboxChange(claim) }

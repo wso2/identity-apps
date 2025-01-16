@@ -78,7 +78,6 @@ export interface ServerConfigurationConfig {
     ) => PasswordExpiryInterface;
     processPasswordExpirySubmitData: (data: ValidationFormInterface) => Promise<any>;
     processPasswordPoliciesSubmitData: (data: ValidationFormInterface, isLegacy: boolean) => Promise<void>;
-    getConnectorCategoryExtension: () => Array<any>;
 }
 
 export interface PasswordHistoryCountInterface extends ValidationFormInterface {

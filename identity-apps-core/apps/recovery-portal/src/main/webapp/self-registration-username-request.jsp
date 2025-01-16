@@ -46,8 +46,6 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ConfiguredAuthenticatorsRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityProviderDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityProviderDataRetrievalClientException" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.OrganizationDiscoveryConfigDataRetrievalClient" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.OrganizationDiscoveryConfigDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
@@ -125,9 +123,6 @@
     boolean isEmailUsernameEnabled = MultitenantUtils.isEmailUserName();
     boolean hideUsernameFieldWhenEmailAsUsernameIsEnabled = Boolean.parseBoolean(config.getServletContext().getInitParameter(
         "HideUsernameWhenEmailAsUsernameEnabled"));
-    OrganizationDiscoveryConfigDataRetrievalClient orgDiscoveryConfigRetrievalClient = new OrganizationDiscoveryConfigDataRetrievalClient();
-    Map<String, String> discoveryConfig;
-    String discoveredUsername = request.getParameter("discoveredUsername");
 
     String[] missingClaimList = new String[0];
     String[] missingClaimDisplayName = new String[0];
@@ -197,28 +192,13 @@
     boolean isLocal = false;
     boolean isFederated = false;
     boolean isBasic = false;
-    boolean isSSOLoginAuthenticatorConfigured = false;
-    boolean emailDomainDiscoveryEnabled = false;
-    boolean emailDomainBasedSelfSignupEnabled = false;
+    boolean isSSOLoginTheOnlyAuthenticatorConfigured = false;
     // Enable basic account creation flow if there are no authenticators configured.
     if (configuredAuthenticators == null) {
         isBasic = true;
     }
-
     JSONArray localAuthenticators = new JSONArray();
     JSONArray federatedAuthenticators = new JSONArray();
-
-    try {
-        discoveryConfig = orgDiscoveryConfigRetrievalClient.getDiscoveryConfiguration(tenantDomain);
-    } catch (OrganizationDiscoveryConfigDataRetrievalClientException e) {
-        discoveryConfig = null;
-    }
-
-    if (discoveryConfig != null) {
-        emailDomainDiscoveryEnabled = Boolean.parseBoolean(discoveryConfig.get("emailDomain.enable"));
-        emailDomainBasedSelfSignupEnabled = Boolean.parseBoolean(discoveryConfig.get("emailDomainBasedSelfSignup.enable"));
-    }
-
     if (configuredAuthenticators != null) {
         for ( int index = 0; index < configuredAuthenticators.length(); index++) {
             JSONObject step = (JSONObject)configuredAuthenticators.get(index);
@@ -236,24 +216,16 @@
             }
             if (stepId == 1) {
                 federatedAuthenticators = (JSONArray)step.get("federatedAuthenticators");
-
-                    for (int i = 0; i < federatedAuthenticators.length(); i++) {
-                        JSONObject jsonObject = federatedAuthenticators.getJSONObject(i);
-                        if (SSO_AUTHENTICATOR.equals(jsonObject.getString("type"))) {
-                            if (!emailDomainBasedSelfSignupEnabled) {
-                                federatedAuthenticators.remove(i);
-                            } else {
-                                isSSOLoginAuthenticatorConfigured = true;
-                            }
-                            break;
-                        }
-                    }
-
                 if (federatedAuthenticators.length() > 0) {
                     isFederated = true;
                 }
             }
         }
+    }
+    if (isFederated && federatedAuthenticators.length() == 1) {
+        JSONObject onlyAvailableFederatedAuthenticator = (JSONObject) federatedAuthenticators.get(0);
+        String authenticatorType = (String) onlyAvailableFederatedAuthenticator.get("type");
+        isSSOLoginTheOnlyAuthenticatorConfigured = authenticatorType.equals(SSO_AUTHENTICATOR);
     }
 
     if (request.getParameter(Constants.MISSING_CLAIMS) != null) {
@@ -483,7 +455,7 @@
                                     "Enter.your.username.here")%>
                             </label>
                             <input id="username" name="username" type="text" required
-                                <% if(skipSignUpEnableCheck && StringUtils.isNotBlank(username)) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
+                                <% if(skipSignUpEnableCheck) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
                         </div>
                         <% if (isSaaSApp) { %>
                         <p class="ui tiny compact info message">
@@ -658,7 +630,7 @@
                         </div>
                     </div>
                     <br>
-                    <% } else {
+                    <% } else if (!StringUtils.equals(type, SSO_AUTHENTICATOR)) {
 
                         String logoPath = imageURL;
                         if (!imageURL.isEmpty() && imageURL.contains("/")) {
@@ -767,7 +739,7 @@
                                 <input
                                     type="text"
                                     id="alphanumericUsernameUserInput"
-                                    value="<%=discoveredUsername != null ? Encode.forHtmlAttribute(discoveredUsername) : ""%>"
+                                    value=""
                                     name="usernameInput"
                                     tabindex="1"
                                     placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.your.username")%>"
@@ -809,7 +781,7 @@
                                 <input
                                     type="email"
                                     id="usernameUserInput"
-                                    value="<%=discoveredUsername != null ? Encode.forHtmlAttribute(discoveredUsername) : ""%>"
+                                    value=""
                                     name="http://wso2.org/claims/emailaddress"
                                     tabindex="1"
                                     placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.your.email")%>"
@@ -1564,6 +1536,7 @@
             // Dynamically render the configured authenticators.
             var hasFederated = false;
             var isBasicForm = true;
+            var isSSOLoginTheOnlyAuthenticatorConfigured = <%=isSSOLoginTheOnlyAuthenticatorConfigured%>;
             try {
                 var hasFederated = JSON.parse(<%=isFederated%>);
                 var isBasicForm = JSON.parse(<%=isBasic%>);
@@ -1571,21 +1544,9 @@
                 // Do nothing.
             }
 
-            var isSSOLoginAuthenticatorConfigured = JSON.parse(<%=isSSOLoginAuthenticatorConfigured%>);
-            var emailDomainDiscoveryEnabled = JSON.parse(<%=emailDomainDiscoveryEnabled%>);
-            var emailDomainBasedSelfSignupEnabled = JSON.parse(<%=emailDomainBasedSelfSignupEnabled%>);
-
-            if (isSSOLoginAuthenticatorConfigured && emailDomainDiscoveryEnabled && emailDomainBasedSelfSignupEnabled) {
-                var params = new URLSearchParams({
-                    idp: 'SSO',
-                    authenticator: 'OrganizationAuthenticator',
-                    sessionDataKey: "<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>",
-                    isSelfRegistration: 'true'
-                });
-                document.location = "<%=commonauthURL%>?" + params.toString();
-            } else if(hasFederated){
-                    $("#continue-with-email").show();
-                    $("#federated-authenticators").show();
+            if (hasFederated & !isSSOLoginTheOnlyAuthenticatorConfigured) {
+                $("#continue-with-email").show();
+                $("#federated-authenticators").show();
             } else {
                 $("#continue-with-email").hide();
                 $("#federated-authenticators").hide();

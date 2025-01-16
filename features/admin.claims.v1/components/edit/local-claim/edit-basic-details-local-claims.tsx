@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,9 +16,8 @@
  * under the License.
  */
 
-import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import {
@@ -32,16 +31,15 @@ import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
     Claim,
     ExternalClaim,
     ProfileSchemaInterface,
-    TestableComponentInterface,
-    UniquenessScope
+    TestableComponentInterface
 } from "@wso2is/core/models";
-import { Property } from "@wso2is/core/src/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import {
@@ -127,19 +125,15 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const hasAttributeUpdatePermissions: boolean = useRequiredScopes(featureConfig?.attributeDialects?.scopes?.update);
     const [ hideSpecialClaims, setHideSpecialClaims ] = useState<boolean>(true);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
     const [ accountVerificationEnabled, setAccountVerificationEnabled ] = useState<boolean>(false);
     const [ selfRegistrationEnabled, setSelfRegistrationEnabledEnabled ] = useState<boolean>(false);
-    const [ isSystemClaim, setIsSystemClaim ] = useState<boolean>(false);
 
     const { t } = useTranslation();
 
     const { data: validationData } = useValidationConfigData();
-
-    const { UIConfig } = useUIConfig();
 
     /**
      * Get username configuration.
@@ -190,13 +184,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         else {
             setHideSpecialClaims(true);
         }
-
-        setIsSystemClaim(
-            claim?.properties?.some((property: Property) =>
-                property.key === ClaimManagementConstants.SYSTEM_CLAIM_PROPERTY_NAME
-                && property.value === "true"
-            )
-        );
     }, [ claim, usernameConfig ]);
 
     useEffect(() => {
@@ -331,7 +318,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         if (hideSpecialClaims) {
             return true;
         } else {
-            return !hasAttributeUpdatePermissions;
+            return !hasRequiredScopes(
+                featureConfig?.attributeDialects, featureConfig?.attributeDialects?.scopes?.update, allowedScopes);
         }
     }, [ featureConfig, allowedScopes, hideSpecialClaims ]);
 
@@ -442,8 +430,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             regEx:  values?.regularExpression !== undefined ? values.regularExpression?.toString() : claim?.regEx,
             required: values?.required !== undefined && !values?.readOnly ? !!values.required : false,
             supportedByDefault: values?.supportedByDefault !== undefined
-                ? !!values.supportedByDefault : claim?.supportedByDefault,
-            uniquenessScope: values?.uniquenessScope as UniquenessScope || UniquenessScope.NONE
+                ? !!values.supportedByDefault : claim?.supportedByDefault
         };
 
         setIsSubmitting(true);
@@ -565,34 +552,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 minLength={ ClaimManagementConstants.REGEX_FIELD_MIN_LENGTH }
                                 hint={ t("claims:local.forms.regExHint") }
                                 readOnly={ isReadOnly }
-                            />
-                        )
-                    }
-                    {
-                        claim && UIConfig?.isClaimUniquenessValidationEnabled
-                            && !hideSpecialClaims
-                            && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI) && (
-                            <Field.Dropdown
-                                ariaLabel="uniqueness-scope-dropdown"
-                                name={ ClaimManagementConstants.UNIQUENESS_SCOPE_PROPERTY_NAME }
-                                label={ t("claims:local.forms.uniquenessScope.label") }
-                                data-componentid={ `${ testId }-form-uniqueness-scope-dropdown` }
-                                hint={ t("claims:local.forms.uniquenessScopeHint") }
-                                options={ [
-                                    {
-                                        text: t("claims:local.forms.uniquenessScope.options.none"),
-                                        value: UniquenessScope.NONE
-                                    },
-                                    {
-                                        text: t("claims:local.forms.uniquenessScope.options.withinUserstore"),
-                                        value: UniquenessScope.WITHIN_USERSTORE
-                                    },
-                                    {
-                                        text: t("claims:local.forms.uniquenessScope.options.acrossUserstores"),
-                                        value: UniquenessScope.ACROSS_USERSTORES
-                                    }
-                                ] }
-                                value={ claim?.uniquenessScope || UniquenessScope.NONE }
                             />
                         )
                     }
@@ -799,7 +758,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
                 && !hideSpecialClaims
                 && claim.claimURI !== ClaimManagementConstants.EMAIL_CLAIM_URI
-                && !isSystemClaim
                 && (
                     <Show
                         when={ featureConfig?.attributeDialects?.scopes?.delete }

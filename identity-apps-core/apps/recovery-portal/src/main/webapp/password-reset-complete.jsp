@@ -44,7 +44,6 @@
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="javax.servlet.http.Cookie" %>
 <%@ page import="java.util.Base64" %>
 <%@ page import="org.wso2.carbon.core.util.SignatureUtil" %>
@@ -227,7 +226,7 @@
 
                 JSONObject cookieValueInJson = new JSONObject();
                 cookieValueInJson.put("content", content);
-                String signature = Base64.getEncoder().encodeToString(IdentityUtil.signWithTenantKey(content, tenantDomain));
+                String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(content));
                 cookieValueInJson.put("signature", signature);
                 String cookieValue = Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes());
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,11 @@
  * under the License.
  */
 
-import { AppState, getEmptyPlaceholderIllustrations, updateResources } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations, updateResources } from "@wso2is/admin.core.v1";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { useGroupList } from "@wso2is/admin.groups.v1/api";
-import { GroupsInterface, GroupsMemberInterface } from "@wso2is/admin.groups.v1/models/groups";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { GroupsInterface, GroupsMemberInterface } from "@wso2is/admin.groups.v1/models";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "@wso2is/admin.roles.v2/constants";
 import {
     AlertInterface,
     AlertLevels,
@@ -29,7 +28,6 @@ import {
     RolesMemberInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { StringUtils } from "@wso2is/core/utils";
 import {
     ContentLoader,
     EmphasizedSegment,
@@ -48,7 +46,7 @@ import forEachRight from "lodash-es/forEachRight";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FormEvent, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import {
     Button,
@@ -90,9 +88,6 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         handleUserUpdate,
         isReadOnly
     } = props;
-
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
 
     const { t } = useTranslation();
 
@@ -423,9 +418,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
         let item: ItemTypeLabelPropsInterface = {
             labelColor: "olive",
-            labelText: StringUtils.isEqualCaseInsensitive(primaryUserStoreDomainName, PRIMARY_USERSTORE)
-                ? t("console:manage.features.users.userstores.userstoreOptions.primary")
-                : primaryUserStoreDomainName
+            labelText: PRIMARY_DOMAIN
         };
 
         if (userGroup[0] !== APPLICATION_DOMAIN &&
@@ -578,13 +571,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                         {
                                             userGroup?.length === 1
                                                 ? (<Label color="olive">
-                                                    {
-                                                        StringUtils.isEqualCaseInsensitive(
-                                                            primaryUserStoreDomainName, PRIMARY_USERSTORE)
-                                                            ? t("console:manage.features.users.userstores" +
-                                                                ".userstoreOptions.primary")
-                                                            : primaryUserStoreDomainName
-                                                    }
+                                                    { PRIMARY_DOMAIN }
                                                 </Label>)
                                                 : (<Label color="olive">
                                                     { userGroup[0] }

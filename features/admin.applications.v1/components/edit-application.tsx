@@ -62,18 +62,20 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, Form, Grid, Menu, TabProps } from "semantic-ui-react";
-import { InboundProtocolsMeta } from "./meta/inbound-protocols.meta";
+import { InboundProtocolsMeta } from "./meta";
 import MyAccountOverview from "./my-account/my-account-overview";
-import { AccessConfiguration } from "./settings/access-configuration";
-import { AdvancedSettings } from "./settings/advanced-settings";
-import { AttributeSettings } from "./settings/attribute-management/attribute-settings";
-import { GeneralApplicationSettings } from "./settings/general-application-settings";
+import {
+    AccessConfiguration,
+    AdvancedSettings,
+    AttributeSettings,
+    GeneralApplicationSettings,
+    ProvisioningSettings,
+    SharedAccess,
+    SignOnMethods
+} from "./settings";
 import { Info } from "./settings/info";
-import { ProvisioningSettings } from "./settings/provisioning/provisioning-settings";
-import { SharedAccess } from "./settings/shared-access";
-import { SignOnMethods } from "./settings/sign-on-methods/sign-on-methods";
-import { disableApplication, getInboundProtocolConfig } from "../api/application";
-import { ApplicationManagementConstants } from "../constants/application-management";
+import { disableApplication, getInboundProtocolConfig } from "../api";
+import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
@@ -81,15 +83,13 @@ import {
     ApplicationTabTypes,
     ApplicationTemplateIdTypes,
     ApplicationTemplateInterface,
+    AuthProtocolMetaListItemInterface,
     InboundProtocolListItemInterface,
     OIDCApplicationConfigurationInterface,
-    SAMLApplicationConfigurationInterface
-} from "../models/application";
-import {
-    AuthProtocolMetaListItemInterface,
     OIDCDataInterface,
+    SAMLApplicationConfigurationInterface,
     SupportedAuthProtocolTypes
-} from "../models/application-inbound";
+} from "../models";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 
 /**

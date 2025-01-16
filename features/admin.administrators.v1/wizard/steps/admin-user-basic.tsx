@@ -18,7 +18,7 @@
 
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
 import {
     AppState,
     SharedUserStoreUtils,
@@ -57,8 +57,8 @@ import React, { FormEvent, ReactElement, useCallback, useEffect, useMemo, useSta
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, DropdownProps, Grid, Header } from "semantic-ui-react";
-import { AdministratorConstants } from "../../constants/users";
-import { InternalAdminFormDataInterface } from "../../models/invite";
+import { AdministratorConstants } from "../../constants";
+import { InternalAdminFormDataInterface } from "../../models";
 import { isAdminUser, isCollaboratorUser } from "../../utils/administrators";
 
 /**
@@ -519,7 +519,7 @@ export const AddAdminUserBasic: React.FunctionComponent<AddAdminUserBasicProps> 
                                                     <DocumentationLink
                                                         link={ getLink("manage.users.newCollaboratorUser.learnMore") }
                                                     >
-                                                        { t("common:learnMore") }
+                                                        { t("extensions:common.learnMore") }
                                                     </DocumentationLink>
                                                 </Hint>
                                             </Grid.Column>

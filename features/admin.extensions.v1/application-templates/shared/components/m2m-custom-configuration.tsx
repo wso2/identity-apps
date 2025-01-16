@@ -17,11 +17,11 @@
  */
 
 import useSubscribedAPIResources  from "@wso2is/admin.applications.v1/api/use-subscribed-api-resources";
+import { OIDCApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models";
 import {
     AuthorizedAPIListItemInterface,
     AuthorizedPermissionListItemInterface
 } from "@wso2is/admin.applications.v1/models/api-authorization";
-import { OIDCApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
 import { AppState, history } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";

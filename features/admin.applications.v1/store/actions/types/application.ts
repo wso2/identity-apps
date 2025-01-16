@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,10 +18,9 @@
 
 import {
     ApplicationTemplateListItemInterface,
-    OIDCApplicationConfigurationInterface,
-    SAMLApplicationConfigurationInterface
-} from "../../../models/application";
-import { AuthProtocolMetaListItemInterface, OIDCMetadataInterface } from "../../../models/application-inbound";
+    AuthProtocolMetaListItemInterface, OIDCApplicationConfigurationInterface,
+    OIDCMetadataInterface, SAMLApplicationConfigurationInterface
+} from "../../../models";
 
 /**
  * Enum for application action types.

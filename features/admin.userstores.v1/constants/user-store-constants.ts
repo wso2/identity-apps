@@ -53,8 +53,7 @@ export class UserStoreManagementConstants {
      * Set of keys used to enable/disable features.
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
-        .set("USER_STORE_REMOTE", "userStores.type.remote")
-        .set("USER_STORE_PRIMARY", "PRIMARY");
+        .set("USER_STORE_REMOTE", "userStores.type.remote");
 }
 
 /**
@@ -225,12 +224,3 @@ export enum UserStoreTypes {
 export const REMOTE_USER_STORE_TYPES: string[] = [
     "WSOutboundUserStoreManager", "AsgardeoBusinessUserStoreManager"
 ];
-
-/**
- * Enum for user store manager types.
- */
-export enum RemoteUserStoreManagerType {
-    WSOutboundUserStoreManager = "WSOutboundUserStoreManager",
-    RemoteUserStoreManager = "RemoteUserStoreManager",
-    AsgardeoBusinessUserStoreManager = "AsgardeoBusinessUserStoreManager"
-}

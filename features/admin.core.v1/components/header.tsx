@@ -88,11 +88,14 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
         (state: AppState) => state.config.deployment.accountApp.tenantQualifiedPath
     );
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const organizationFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state.config.ui.features.organizations);
     const gettingStartedFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state.config.ui.features.gettingStarted);
     const scopes: string = useSelector((state: AppState) => state.auth.allowedScopes);
     const userOrganizationID: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
 
+    const hasOrganizationReadPermission: boolean =useRequiredScopes(organizationFeatureConfig?.scopes?.read);
     const hasGettingStartedViewPermission: boolean = useRequiredScopes(
         gettingStartedFeatureConfig?.scopes?.feature
     );
@@ -147,8 +150,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
         (organizationType === OrganizationType.SUPER_ORGANIZATION ||
             organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
             organizationType === OrganizationType.SUBORGANIZATION ||
-            organizationConfigs.showSwitcherInTenants)
-    ), [ tenantDomain, organizationType, scopes ]);
+            organizationConfigs.showSwitcherInTenants) && hasOrganizationReadPermission
+    ), [ tenantDomain, hasOrganizationReadPermission, organizationType, scopes ]);
 
     const resolveUsername = (): string => {
         if (profileInfo?.name?.givenName) {
@@ -176,7 +179,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                 startIcon={ <DocsIcon /> }
                 data-testid="dev-doc-site-link"
             >
-                { I18n.instance.t("console:common.help.docSiteLink") as ReactNode }
+                { I18n.instance.t("extensions:common.help.docSiteLink") as ReactNode }
             </Button>
         ),
         (window["AppUtils"].getConfig().extensions.getHelp) && (
@@ -188,7 +191,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                     className="oxygen-user-dropdown-button"
                     onClick={ handleHelpMenuClick }
                 >
-                    { I18n.instance.t("console:common.help.helpDropdownLink") as ReactNode }
+                    { I18n.instance.t("extensions:common.help.helpDropdownLink") as ReactNode }
                 </Button>
                 <Menu
                     open={ openHelpMenu }
@@ -219,7 +222,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                                         primary={
                                             (
                                                 <span className="contact-support-title">
-                                                    { t("console:common.help.helpCenterLink.title") }
+                                                    { t("extensions:common.help.helpCenterLink.title") }
                                                     <Chip
                                                         icon={ <DiamondIcon /> }
                                                         label={ t(FeatureStatusLabel.PREMIUM) }
@@ -231,7 +234,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                                         secondary={
                                             (
                                                 <Typography className="contact-support-subtitle" variant="inherit">
-                                                    { t("console:common.help.helpCenterLink.subtitle",
+                                                    { t("extensions:common.help.helpCenterLink.subtitle",
                                                         { productName }) }
                                                 </Typography>
                                             )
@@ -254,7 +257,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                                 <ListItemIcon className="get-help-icon">
                                     <DiscordIcon />
                                 </ListItemIcon>
-                                <ListItemText primary={ t("console:common.help.communityLinks.discord") } />
+                                <ListItemText primary={ t("extensions:common.help.communityLinks.discord") } />
                             </>
                         </MenuItem>
                     ) }
@@ -271,7 +274,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                                 <ListItemIcon className="get-help-icon">
                                     <StackOverflowIcon />
                                 </ListItemIcon>
-                                <ListItemText primary={ t("console:common.help.communityLinks.stackOverflow") } />
+                                <ListItemText primary={ t("extensions:common.help.communityLinks.stackOverflow") } />
                             </>
                         </MenuItem>
                     ) }
@@ -291,7 +294,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                         startIcon={ <DiamondIcon /> }
                     >
                         <span className="header-upgrade-btn-text">
-                            { I18n.instance.t("console:common.upgrade") as ReactNode }
+                            { I18n.instance.t("extensions:common.upgrade") as ReactNode }
                         </span>
                     </Button>
                 </a>
@@ -363,14 +366,14 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                             target="_blank"
                             rel="noreferrer"
                         >
-                            { I18n.instance.t("console:common.dropdown.footer.privacyPolicy") as string }
+                            { I18n.instance.t("extensions:common.dropdown.footer.privacyPolicy") as string }
                         </Link>
                         <Link
                             variant="body3"
                             href={ getLink("common.cookiePolicy") }
                             target="_blank"
                             rel="noreferrer">
-                            { I18n.instance.t("console:common.dropdown.footer.cookiePolicy") as string }
+                            { I18n.instance.t("extensions:common.dropdown.footer.cookiePolicy") as string }
                         </Link>
                         <Link
                             variant="body3"
@@ -378,7 +381,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (props: HeaderPro
                             target="_blank"
                             rel="noreferrer"
                         >
-                            { I18n.instance.t("console:common.dropdown.footer.termsOfService") as string }
+                            { I18n.instance.t("extensions:common.dropdown.footer.termsOfService") as string }
                         </Link>
                     </Box>
                 ],

@@ -41,7 +41,7 @@ export const pages: pagesNS = {
     },
     emailDomainDiscovery: {
         subTitle: "Configure email domain discovery for organizations.",
-        title: "Organization Discovery"
+        title: "Email Domain Discovery"
     },
     emailLocaleAdd: {
         backButton: "Go back to {{name}} template",

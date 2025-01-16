@@ -339,10 +339,10 @@ const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
                     ApplicationManagementConstants.ERROR_CODE_APPLICATION_ALREADY_EXISTS) {
                     closeWizard();
                     dispatch(addAlert({
-                        description: t("console:common.quickStart.sections.asgardeoTryIt.errorMessages." +
+                        description: t("extensions:common.quickStart.sections.asgardeoTryIt.errorMessages." +
                             "appCreateDuplicate.description", { productName }),
                         level: AlertLevels.ERROR,
-                        message: t("console:common.quickStart.sections.asgardeoTryIt.errorMessages." +
+                        message: t("extensions:common.quickStart.sections.asgardeoTryIt.errorMessages." +
                             "appCreateDuplicate.message")
                     }));
 
@@ -350,10 +350,10 @@ const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
                 } else {
                     closeWizard();
                     dispatch(addAlert({
-                        description: t("console:common.quickStart.sections.asgardeoTryIt.errorMessages." +
+                        description: t("extensions:common.quickStart.sections.asgardeoTryIt.errorMessages." +
                             "appCreateGeneric.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:common.quickStart.sections.asgardeoTryIt.errorMessages." +
+                        message: t("extensions:common.quickStart.sections.asgardeoTryIt.errorMessages." +
                             "appCreateGeneric.message")
                     }));
 

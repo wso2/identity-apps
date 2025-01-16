@@ -16,6 +16,6 @@
  * under the License.
  */
 
-export { default as RemoteUserStoreCreatePage } from "./pages/remote-user-store-create-page";
+export { default as RemoteCustomerUserStoreCreatePage } from "./pages/remote-customer-user-store-create-page";
 export { default as RemoteUserStoreEditPage } from "./pages/remote-user-store-edit-page";
 export { default as RemoteUserStoresPage } from "./pages/remote-user-stores-page";

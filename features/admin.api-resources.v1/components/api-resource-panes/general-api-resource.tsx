@@ -43,7 +43,7 @@ import {
     APIResourcePanesCommonPropsInterface,
     GeneralErrorAPIResourceInterface,
     GeneralUpdateAPIResourceInterface
-} from "../../models/api-resources";
+} from "../../models";
 
 /**
  * Prop-types for the API resources page component.

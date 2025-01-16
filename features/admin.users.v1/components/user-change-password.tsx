@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "@wso2is/admin.core.v1";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1";
@@ -24,7 +23,10 @@ import {
     ConnectorPropertyInterface,
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1";
-import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import {
+    PRIMARY_USERSTORE,
+    USERSTORE_REGEX_PROPERTIES
+} from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { ProfileConstants } from "@wso2is/core/constants";
@@ -119,8 +121,6 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
 
     const hasLoginAndRegistrationFeaturePermissions: boolean = useRequiredScopes(
         featureConfig?.loginAndRegistration?.scopes?.feature
@@ -145,7 +145,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
     useEffect(() => {
         setPasswordRegExLoading(true);
         const userNameComponents: string[] = user?.userName?.split("/");
-        const userStore: string = userNameComponents?.length > 1 ? userNameComponents[0] : primaryUserStoreDomainName;
+        const userStore: string = userNameComponents?.length > 1 ? userNameComponents[0] : PRIMARY_USERSTORE;
 
         SharedUserStoreUtils.getUserStoreRegEx(userStore, USERSTORE_REGEX_PROPERTIES.PasswordRegEx)
             .then((response: string) => {

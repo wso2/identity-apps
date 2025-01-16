@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
 import {
     AppConstants,
     AppState,
@@ -24,6 +23,7 @@ import {
 } from "@wso2is/admin.core.v1";
 import { history } from "@wso2is/admin.core.v1/helpers";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
@@ -45,6 +45,7 @@ import React, {
     MutableRefObject,
     ReactElement,
     useEffect,
+    useMemo,
     useRef ,
     useState
 } from "react";
@@ -81,12 +82,16 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes : string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const pageContextRef : MutableRefObject<HTMLElement> = useRef(null);
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
 
-    const hasEmailTemplatesReadPermissions: boolean =  useRequiredScopes(featureConfig?.emailTemplates?.scopes?.read);
-    const hasEmailProviderUpdatePermissions: boolean = useRequiredScopes(featureConfig?.emailProviders?.scopes?.update);
+    const isReadOnly : boolean = useMemo(() => !hasRequiredScopes(
+        featureConfig?.emailProviders,
+        featureConfig?.emailProviders?.scopes?.update,
+        allowedScopes
+    ), [ featureConfig, allowedScopes ]);
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
@@ -392,7 +397,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                     <DocumentationLink
                         link={ getLink("develop.emailProviders.learnMore") }
                     >
-                        { t("common:learnMore") }
+                        { t("extensions:common.learnMore") }
                     </DocumentationLink>
                 </div>
             </div>
@@ -444,7 +449,8 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
             } }
             action={
                 featureConfig.emailProviders?.enabled &&
-                hasEmailTemplatesReadPermissions &&
+                hasRequiredScopes(featureConfig?.emailTemplates, featureConfig?.emailTemplates?.scopes?.read,
+                    allowedScopes) &&
                 (
                     <SecondaryButton
                         onClick={ goToEmailTemplates }
@@ -532,7 +538,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                 ) }
                                                                 required={ true }
                                                                 value={ emailProviderConfig?.smtpServerHost }
-                                                                readOnly={ !hasEmailProviderUpdatePermissions }
+                                                                readOnly={ isReadOnly }
                                                                 maxLength={ EmailProviderConstants
                                                                     .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                                                 minLength={ EmailProviderConstants
@@ -566,7 +572,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                 ) }
                                                                 required={ true }
                                                                 value={ emailProviderConfig?.smtpPort }
-                                                                readOnly={ !hasEmailProviderUpdatePermissions }
+                                                                readOnly={ isReadOnly }
                                                                 maxLength={ EmailProviderConstants
                                                                     .EMAIL_PROVIDER_SERVER_PORT_MAX_LENGTH }
                                                                 minLength={ EmailProviderConstants
@@ -593,7 +599,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                     ".fromAddress.hint") }
                                                                 required={ true }
                                                                 value={ emailProviderConfig?.fromAddress }
-                                                                readOnly={ !hasEmailProviderUpdatePermissions }
+                                                                readOnly={ isReadOnly }
                                                                 maxLength={ EmailProviderConstants
                                                                     .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                                                 minLength={ EmailProviderConstants
@@ -618,7 +624,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                 ".replyToAddress.hint") }
                                                                 required={ true }
                                                                 value={ emailProviderConfig?.replyToAddress }
-                                                                readOnly={ !hasEmailProviderUpdatePermissions }
+                                                                readOnly={ isReadOnly }
                                                                 maxLength={ EmailProviderConstants
                                                                     .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                                                 minLength={ EmailProviderConstants
@@ -647,7 +653,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                     ".userName.hint") }
                                                                 required={ true }
                                                                 value={ emailProviderConfig?.userName }
-                                                                readOnly={ !hasEmailProviderUpdatePermissions }
+                                                                readOnly={ isReadOnly }
                                                                 maxLength={ EmailProviderConstants
                                                                     .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                                                 minLength={ EmailProviderConstants
@@ -673,7 +679,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                     ".password.hint") }
                                                                 required={ true }
                                                                 value={ emailProviderConfig?.password }
-                                                                readOnly={ !hasEmailProviderUpdatePermissions }
+                                                                readOnly={ isReadOnly }
                                                                 maxLength={ EmailProviderConstants
                                                                     .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                                                 minLength={ EmailProviderConstants
@@ -700,7 +706,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                 ".displayName.hint") }
                                                                 required={ true }
                                                                 value={ emailProviderConfig?.displayName }
-                                                                readOnly={ !hasEmailProviderUpdatePermissions }
+                                                                readOnly={ isReadOnly }
                                                                 maxLength={ EmailProviderConstants
                                                                     .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                                                 minLength={ EmailProviderConstants
@@ -714,7 +720,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                 </Grid>
                                             </Form>
                                             {
-                                                hasEmailProviderUpdatePermissions && (
+                                                !isReadOnly && (
                                                     <>
                                                         <Divider hidden />
                                                         <Grid.Row columns={ 1 } className="mt-6">
@@ -743,7 +749,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                 }
                             </EmphasizedSegment>
                             {
-                                hasEmailProviderUpdatePermissions && !isEmailProviderConfigFetchRequestLoading && (
+                                !isReadOnly && !isEmailProviderConfigFetchRequestLoading && (
                                     <>
                                         <Divider hidden />
                                         <DangerZoneGroup

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ApplicationsResourceEndpointsInterface } from "../models/endpoints";
+import { ApplicationsResourceEndpointsInterface } from "../models";
 
 /**
  * Get the resource endpoints for the Application Management feature.

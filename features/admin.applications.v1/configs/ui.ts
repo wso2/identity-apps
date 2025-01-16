@@ -147,7 +147,7 @@ import WSTrustLogo from "../../themes/default/assets/images/protocols/ws-trust.p
 import { ReactComponent as JWTLogo } from "../../themes/default/assets/images/technologies/jwt-logo.svg";
 import { ReactComponent as AppleLogo } from "../../themes/default/assets/images/third-party/apple-logo.svg";
 import { ReactComponent as MicrosoftLogo } from "../../themes/default/assets/images/third-party/microsoft-logo.svg";
-import { SupportedAuthProtocolTypes } from "../models/application-inbound";
+import { SupportedAuthProtocolTypes } from "../models";
 
 export const getInboundProtocolLogos = (): {
     general: FunctionComponent<SVGProps<SVGSVGElement>>;

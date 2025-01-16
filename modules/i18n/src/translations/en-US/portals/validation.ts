@@ -81,7 +81,7 @@ export const validation: validationNS = {
         consecutiveChrMismatch: "Number of consecutive characters should be less than tha minimum " +
             "length of the password.",
         invalidConfig: "Unable to create password with the above configurations.",
-        maxLimitError: "The maximum length cannot be more than {{maxPasswordValue}}.",
+        maxLimitError: "The maximum length cannot be more than 30.",
         minLimitError: "The minimum length cannot be less than 8.",
         minMaxMismatch: "Minimum length should be less than maximum length.",
         uniqueChrMismatch: "Number of unique characters should be less than tha minimum length of " +

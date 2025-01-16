@@ -16,19 +16,17 @@
  * under the License.
  */
 
-import { updateApplicationDetails, updateAuthProtocolConfig } from "@wso2is/admin.applications.v1/api/application";
+import { updateApplicationDetails, updateAuthProtocolConfig } from "@wso2is/admin.applications.v1/api";
 import {
     ApplicationInterface,
-    MainApplicationInterface
-} from "@wso2is/admin.applications.v1/models/application";
-import {
+    MainApplicationInterface,
     OIDCDataInterface,
     PassiveStsConfigurationInterface,
     SAML2ConfigurationInterface,
     SAML2ServiceProviderInterface,
     SupportedAuthProtocolTypes,
     WSTrustConfigurationInterface
-} from "@wso2is/admin.applications.v1/models/application-inbound";
+} from "@wso2is/admin.applications.v1/models";
 import { TemplateDynamicForm } from "@wso2is/admin.template-core.v1/components/template-dynamic-form";
 import { DynamicFieldInterface } from "@wso2is/admin.template-core.v1/models/dynamic-fields";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";

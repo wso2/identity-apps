@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,31 +16,40 @@
  * under the License.
  */
 
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
-import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
-import useGetUserStoreDetails from "@wso2is/admin.userstores.v1/api/use-get-user-store-details";
+import { URLFragmentTypes } from "@wso2is/admin.applications.v1/models";
+import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { getAType, getAUserStore } from "@wso2is/admin.userstores.v1/api/user-stores";
 import { getDatabaseAvatarGraphic } from "@wso2is/admin.userstores.v1/configs/ui";
-import { DISABLED, RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
-import { UserStoreProperty } from "@wso2is/admin.userstores.v1/models/user-stores";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { DISABLED } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import {
+    CategorizedProperties,
+    UserStore,
+    UserStoreProperty,
+    UserstoreType
+} from "@wso2is/admin.userstores.v1/models/user-stores";
+import { reOrganizeProperties } from "@wso2is/admin.userstores.v1/utils/userstore-utils";
+import { IdentityAppsError } from "@wso2is/core/errors";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { GenericIcon, Popup, ResourceTab, ResourceTabPaneInterface, TabPageLayout } from "@wso2is/react-components";
+import { GenericIcon, Popup, ResourceTab, TabPageLayout } from "@wso2is/react-components";
+import delay from "lodash-es/delay";
+import inRange from "lodash-es/inRange";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { Icon } from "semantic-ui-react";
-import { ConfigurationSettings } from "../components/edit/userstore-configuration-settings";
-import { UserStoreGeneralSettings } from "../components/edit/userstore-general-settings";
-import { SetupGuideTab } from "../components/edit/userstore-setup-guide";
-import { RemoteUserStoreEditTabIDs } from "../constants/ui-constants";
+import { Icon, TabProps } from "semantic-ui-react";
+import { getAgentConnections } from "../api";
+import { AttributeMappings, SetupGuideTab, UserStoreGeneralSettings } from "../components";
+import { RemoteUserStoreConstants } from "../constants";
+import { AgentConnectionInterface } from "../models";
 
 /**
  * Props for the Remote user store edit page.
  */
-type RemoteUserStoreEditPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps;
+interface RemoteUserStoreEditPageInterface extends TestableComponentInterface, RouteComponentProps { }
 
 /**
  * This renders the userstore edit page.
@@ -49,151 +58,214 @@ type RemoteUserStoreEditPagePropsInterface = IdentifiableComponentInterface & Ro
  *
  * @returns The Remote User Store edit page.
  */
-const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPagePropsInterface> = (
-    {
-        match,
-        ["data-componentid"]: componentId = "remote-user-store-edit-page"
-    }: RemoteUserStoreEditPagePropsInterface
+const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPageInterface> = (
+    props: RemoteUserStoreEditPageInterface
 ): ReactElement => {
+
+    const { match, [ "data-testid" ]: testId } = props;
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const userStoreId: string = match.params[ "id" ]?.split( "#" )[ 0 ];
-    const remoteUserStoreFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.userStores
-    );
-    const hasUserStoreUpdatePermission: boolean = useRequiredScopes(
-        remoteUserStoreFeatureConfig?.scopes?.update
-    );
+    const userStoreId: string = match.params[ "id" ];
 
+    const [ userStore, setUserStore ] = useState<UserStore>(null);
+    const [ userStoreType, setUserStoreType ] = useState<UserstoreType>(null);
+    const [ userStoreProperties, setUserStoreProperties ] = useState<CategorizedProperties>(null);
+    const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
+    const [ defaultActiveIndex ] = useState<number>(undefined);
+    const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
     const [ disabled, setDisabled ] = useState<string>("");
+    const [ isUserStoreLoading, setIsUserStoreLoading ] = useState<boolean>(false);
+    const [ isAgentConnectionsRequestLoading, setIsAgentConnectionsRequestLoading ] = useState<boolean>(false);
+    const [ , setAgentConnections ] = useState<AgentConnectionInterface[]>([]);
 
-    const {
-        data: userStoreDetails,
-        isLoading: isUserStoreDetailsRequestLoading,
-        error: userStoreDetailsRequestError,
-        remainingRetryCount: userStoreDetailsRequestRemainingRetryCount,
-        mutate: mutateUserStoreDetails
-    } = useGetUserStoreDetails(userStoreId, !isEmpty(userStoreId));
+    useEffect(() => {
+        if (window.location.hash) {
+            return;
+        }
+        getUserStore();
+    }, []);
 
-    const userStoreManager: RemoteUserStoreManagerType = userStoreDetails?.typeName as RemoteUserStoreManagerType;
+    // Set the preloaders until user store connections are loaded
+    useEffect(() => {
+        setIsAgentConnectionsRequestLoading(true);
+        getAgentConnections(userStoreId)
+            .then((response: AgentConnectionInterface[]) => {
+                setAgentConnections(response.filter((connection: AgentConnectionInterface) => connection?.agent));
+            })
+            .finally(() => {
+                setIsAgentConnectionsRequestLoading(false);
+            });
+    }, [ userStoreId ]);
+
+    useEffect(() => {
+
+        if (!window.location.hash) {
+            return;
+        }
+
+        if (!userStore) {
+
+            setIsUserStoreLoading(true);
+
+            delay(() => {
+                getUserStore();
+                setIsUserStoreLoading(false);
+            }, 12000);
+        }
+
+    }, [ userStore ]);
+
+    useEffect(() => {
+        getAType(RemoteUserStoreConstants.OUTBOUND_USER_STORE_TYPE_ID, null)
+            .then((response: UserstoreType) => {
+                setUserStoreType(response);
+            });
+    }, []);
+
+    useEffect(() => {
+        if (userStoreType) {
+            setUserStoreProperties(reOrganizeProperties(userStoreType?.properties, userStore?.properties));
+        }
+    }, [ userStoreType ]);
+
+    useEffect(() => {
+        if (userStore) {
+            setDisabled(userStore?.properties?.find(
+                (property: UserStoreProperty) => property.name === DISABLED)?.value);
+        }
+    }, [ userStore ]);
 
     /**
-     * Handles the user store details request error.
+     * Called when the URL fragment updates.
      */
-    useEffect(() => {
-        if (userStoreDetailsRequestError) {
-            // Since user store creation can be delayed,
-            // 404 error is ignored until the maximum retry count is reached.
-            if (userStoreDetailsRequestError.response?.status === 404
-                && userStoreDetailsRequestRemainingRetryCount > 0) {
+    useEffect( () => {
+
+        if(totalTabs === undefined || window.location.hash.includes(URLFragmentTypes.VIEW) ||
+            isEmpty(window.location.hash)) {
+
+            if (isEmpty(window.location.hash)) {
+                handleActiveTabIndexChange(1);
+
                 return;
             }
 
-            dispatch(addAlert(
-                {
-                    description: t("userstores:notifications.fetchUserstores.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("userstores:notifications.fetchUserstores.genericError.message")
+            if (totalTabs === undefined || isEmpty(window.location.hash)) {
+                return;
+            }
+
+            const urlFragment: string[] = window.location.hash.split("#" + URLFragmentTypes.TAB_INDEX);
+
+            if (urlFragment.length === 2 && isEmpty(urlFragment[0]) && /^\d+$/.test(urlFragment[1])) {
+
+                const tabIndex: number = parseInt(urlFragment[1], 10);
+
+                if (inRange(tabIndex, 0, totalTabs)) {
+                    if (tabIndex === activeTabIndex) {
+                        return;
+                    }
+                    handleActiveTabIndexChange(tabIndex);
+                } else {
+                    // Change the tab index to defaultActiveIndex for invalid URL fragments.
+                    handleDefaultTabIndexChange(defaultActiveIndex);
                 }
-            ));
+            } else {
+                // Change the tab index to defaultActiveIndex for invalid URL fragments.
+                handleDefaultTabIndexChange(defaultActiveIndex);
+            }
         }
-    }, [ userStoreDetailsRequestError ]);
+    }, [ window.location.hash, totalTabs ]);
 
-    useEffect(() => {
-        if (userStoreDetails) {
-            setDisabled(userStoreDetails?.properties?.find(
-                (property: UserStoreProperty) => property.name === DISABLED)?.value);
-        }
-    }, [ userStoreDetails ]);
+    /**
+     * Handles the activeTabIndex change.
+     *
+     * @param tabIndex - Active tab index.
+     */
+    const handleActiveTabIndexChange = (tabIndex:number): void => {
 
-    const isUserStoreDisabled: boolean = disabled === "true";
-
-    const onUserStoreUpdated = (): void => {
-        // Mutate the user store details with a delay as the user store update operation is async
-        // and can be delayed.
-        setTimeout(() => {
-            mutateUserStoreDetails();
-        }, 3000);
+        history.push({
+            hash: `#${ URLFragmentTypes.TAB_INDEX }${ tabIndex }`,
+            pathname: window.location.pathname
+        });
+        setActiveTabIndex(tabIndex);
     };
 
     /**
-     * The tab panes.
+     * Handles the defaultActiveIndex change.
      */
-    const panes: ResourceTabPaneInterface[] = [
+    const handleDefaultTabIndexChange = (defaultActiveIndex: number): void => {
+        handleActiveTabIndexChange(defaultActiveIndex);
+    };
+
+    /**
+     * Handles the tab change.
+     *
+     * @param e - Click event.
+     * @param data - Tab properties.
+     */
+    const handleTabChange = (e: SyntheticEvent, data: TabProps): void => {
+        handleActiveTabIndexChange(data.activeIndex as number);
+        getUserStore();
+    };
+
+    /**
+     * Fetches the user store by its id
+     */
+    const getUserStore = () => {
+        getAUserStore(userStoreId).then((response: UserStore) => {
+            setUserStore(response);
+            //TODO: Add interface for error
+        }).catch((error: IdentityAppsError ) => {
+            dispatch(addAlert(
+                {
+                    description: error?.description
+                        || t("userstores:notifications.fetchUserstores.genericError" +
+                            ".description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                        || t("userstores:notifications.fetchUserstores.genericError" +
+                            ".message")
+                }
+            ));
+        });
+    };
+
+    /**
+     * The tab panes
+     */
+    const panes: TabProps [ "panes" ] = [
         {
-            "data-tabid": RemoteUserStoreEditTabIDs.GUIDE,
-            menuItem: t("remoteUserStores:pages.edit.tabs.guide"),
+            menuItem: "Setup Guide",
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <SetupGuideTab
-                        isUserStoreLoading={ isUserStoreDetailsRequestLoading }
-                        userStoreId={ userStoreId }
-                        userStoreManager={ userStoreManager }
-                        isUserStoreDisabled={ isUserStoreDisabled }
-                    />
+                    <SetupGuideTab isUserStoreLoading={ isUserStoreLoading } userStoreId={ userStoreId } />
                 </ResourceTab.Pane>
             )
         },
         {
-            "data-tabid": RemoteUserStoreEditTabIDs.GENERAL,
-            menuItem: t("remoteUserStores:pages.edit.tabs.general"),
+            menuItem: "General",
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserStoreGeneralSettings
-                        isDisabled={ isUserStoreDisabled }
-                        userStore={ userStoreDetails }
+                        userStoreProperties={ userStoreProperties }
+                        isDisabled={ disabled }
+                        userStore={ userStore }
                         userStoreId={ userStoreId }
-                        userStoreManager={ userStoreManager }
                         handleUserStoreDisabled={ (value: string) => setDisabled(value) }
-                        isReadOnly={ !hasUserStoreUpdatePermission }
                     />
                 </ResourceTab.Pane>
             )
         },
         {
-            "data-tabid": RemoteUserStoreEditTabIDs.CONFIGURATIONS,
-            menuItem: t("remoteUserStores:pages.edit.tabs.configurations"),
+            menuItem: "Attribute Mappings",
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <ConfigurationSettings
-                        userStore={ userStoreDetails }
-                        userStoreId={ userStoreId }
-                        userStoreManager={ userStoreManager }
-                        isLoading={ isUserStoreDetailsRequestLoading }
-                        isReadOnly={ !hasUserStoreUpdatePermission }
-                        onUpdate={ onUserStoreUpdated }
-                        isUserStoreDisabled={ isUserStoreDisabled }
-                    />
+                    <AttributeMappings userStore={ userStore } userStoreId={ userStoreId } />
                 </ResourceTab.Pane>
             )
         }
     ];
-
-    /**
-     * Renders the status icon based on the user store active status.
-     *
-     * @returns Status icon.
-     */
-    const renderStatusIcon = (): ReactElement => {
-        const _isDisabled: boolean = disabled === "true";
-
-        return (
-            <Popup
-                trigger={ (
-                    <Icon
-                        className="mr-2 ml-0 vertical-aligned-baseline"
-                        size="small"
-                        name="circle"
-                        color={ _isDisabled ? "red" : "green" }
-                    />
-                ) }
-                content={ _isDisabled ? t("common:disabled") : t("common:enabled") }
-                inverted
-            />
-        );
-    };
 
     return (
         <TabPageLayout
@@ -211,8 +283,38 @@ const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPagePropsInt
             title={
                 (
                     <>
-                        { renderStatusIcon() }
-                        { userStoreDetails?.name }
+                        {
+                            disabled === "false"
+                                ? (
+                                    <Popup
+                                        trigger={ (
+                                            <Icon
+                                                className="mr-2 ml-0 vertical-aligned-baseline"
+                                                size="small"
+                                                name="circle"
+                                                color="green"
+                                            />
+                                        ) }
+                                        content={ t("common:enabled") }
+                                        inverted
+                                    />
+                                )
+                                : (
+                                    <Popup
+                                        trigger={ (
+                                            <Icon
+                                                className="mr-2 ml-0 vertical-aligned-baseline"
+                                                size="small"
+                                                name="circle"
+                                                color="orange"
+                                            />
+                                        ) }
+                                        content={ t("common:disabled") }
+                                        inverted
+                                    />
+                                )
+                        }
+                        { userStore?.name }
                     </>
                 )
             }
@@ -224,20 +326,27 @@ const RemoteUserStoreEditPage: FunctionComponent<RemoteUserStoreEditPagePropsInt
             } }
             titleTextAlign="left"
             bottomMargin={ false }
-            isLoading={ isUserStoreDetailsRequestLoading || !userStoreDetails }
-            data-componentid={ `${ componentId }-layout` }
-            className="remote-user-store-edit-page"
+            isLoading={ isUserStoreLoading || isAgentConnectionsRequestLoading }
+            data-testid={ `${ testId }-page-layout` }
         >
             <ResourceTab
                 className="remote-user-store-edit-section"
                 panes={ panes }
-                data-componentid={ `${ componentId }-tabs` }
-                defaultActiveTab={ RemoteUserStoreEditTabIDs.GENERAL }
-                isLoading={ isUserStoreDetailsRequestLoading || !userStoreDetails }
-                controlTabRedirectionInternally
+                onTabChange={ handleTabChange }
+                data-testid={ `${ testId }-tabs` }
+                onInitialize={ ({ panesLength }: { panesLength: number; }) => {
+                    setTotalTabs(panesLength);
+                } }
+                activeIndex= { activeTabIndex }
+                defaultActiveIndex={ defaultActiveIndex }
             />
         </TabPageLayout>
     );
 };
 
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
 export default RemoteUserStoreEditPage;

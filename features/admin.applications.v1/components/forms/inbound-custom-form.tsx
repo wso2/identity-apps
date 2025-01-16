@@ -29,22 +29,18 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, DropdownProps, Grid } from "semantic-ui-react";
-import { ApplicationManagementConstants } from "../../constants/application-management";
+import { ApplicationManagementConstants } from "../../constants";
 import {
     CertificateInterface,
-    CertificateTypeInterface
-} from "../../models/application";
-import {
+    CertificateTypeInterface,
     CustomInboundProtocolConfigurationInterface,
     CustomInboundProtocolMetaDataInterface,
     CustomInboundProtocolPropertyInterface,
     CustomTypeEnum,
     PropertyModelInterface,
     SubmitFormCustomPropertiesInterface
-} from "../../models/application-inbound";
-
-
-import { CertificateFormFieldModal } from "../modals/certificate-form-field-modal";
+} from "../../models";
+import { CertificateFormFieldModal } from "../modals";
 
 /**
  * Proptypes for the inbound custom protocol form component.

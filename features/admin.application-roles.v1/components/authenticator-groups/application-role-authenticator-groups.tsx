@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { getApplicationDetails } from "@wso2is/admin.applications.v1/api/application";
+import { getApplicationDetails } from "@wso2is/admin.applications.v1/api";
 import {
     AuthenticatorInterface as ApplicationAuthenticatorInterface,
     ApplicationInterface,
     AuthenticationStepInterface
-} from "@wso2is/admin.applications.v1/models/application";
+} from "@wso2is/admin.applications.v1/models";
 import {
     AuthenticatorInterface,
     AuthenticatorTypes

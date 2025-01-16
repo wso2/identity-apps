@@ -23,16 +23,16 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { ActionBasicResponseInterface } from "../models/actions";
+import { ActionResponseInterface } from "../models/actions";
 
 /**
- * Hook to get the actions configurations by action type.
+ * Hook to get the action configurations.
  *
  * @param actionType - Type of the action.
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetActionsByType = <Data = ActionBasicResponseInterface[], Error = RequestErrorInterface>
+const useGetActionsByType = <Data = ActionResponseInterface[], Error = RequestErrorInterface>
     (actionType: string, shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {

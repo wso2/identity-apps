@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1";
 import { AlertInterface, AlertLevels, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { updateRoleDetails } from "../../api/roles";
+import { PRIMARY_DOMAIN } from "../../constants/role-constants";
 import { CreateRoleMemberInterface, PatchRoleDataInterface } from "../../models/roles";
 import { AddRoleUsers } from "../wizard/role-user-assign";
 
@@ -40,9 +40,6 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
     const { t } = useTranslation();
     const dispatch: Dispatch<any> = useDispatch();
 
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
-
     const {
         roleObject,
         onRoleUpdate,
@@ -58,7 +55,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
         if (roleName.indexOf("/") !== -1) {
             setCurrentUserStore(roleName.split("/")[0]);
         } else {
-            setCurrentUserStore(primaryUserStoreDomainName);
+            setCurrentUserStore(PRIMARY_DOMAIN);
         }
     }, [ currentUserStore, roleObject ]);
 

@@ -17,11 +17,6 @@
  */
 import { userNS } from "../../../models";
 
-/**
- * NOTE: No need to care about the max-len for this file since it's easier to
- * translate the strings to other languages easily with editor translation tools.
- */
-/* eslint-disable max-len */
 export const user: userNS = {
     deleteJITUser: {
         confirmationModal: {
@@ -367,23 +362,17 @@ export const user: userNS = {
     },
     profile: {
         accountLockReason: {
-            adminInitiated: "The account has been manually locked by an administrator.",
-            default: "The account is locked.",
-            maxAttemptsExceeded: "The account is locked due to multiple failed login attempts.",
+            adminInitiated: "The account has been manually locked by an administrator and requires " +
+                "administrator intervention.",
+            default: "The account is locked and requires intervention to unlock.",
+            maxAttemptsExceeded: "The account is locked due to multiple failed login attempts and will " +
+                "require intervention to unlock.",
             pendingAdminForcedUserPasswordReset: "The account is locked until the user completes an " +
                 "administrator-initiated password reset.",
             pendingAskPassword: "The account is locked until the user creates a password via the setup email sent.",
             pendingEmailVerification: "The account is locked and requires email verification from the " +
                 "user to be activated.",
             pendingSelfRegistration: "The account is locked pending user verification via the self-registration email."
-        },
-        confirmationModals: {
-            deleteAttributeConfirmation: {
-                assertionHint: "Please confirm your action.",
-                content: "This action is irreversible and will permanently delete the {{attributeDisplayName}}.",
-                description: "If you delete this {{attributeDisplayName}}, it will be permanently removed from the user profile.",
-                heading: "Are you sure?"
-            }
         },
         fields: {
             createdDate: "Created Date",
@@ -589,34 +578,6 @@ export const user: userNS = {
                 success: {
                     description: "The required user profile details were successfully updated.",
                     message: "User profile updated successfully"
-                }
-            },
-            verifyEmail: {
-                error: {
-                    description: "{{description}}",
-                    message: "An error occurred while sending the verification email."
-                },
-                genericError: {
-                    description: "An error occurred while sending the verification email.",
-                    message: "Something went wrong"
-                },
-                success: {
-                    description: "The verification email was sent successfully.",
-                    message: "Verification email sent successfully"
-                }
-            },
-            verifyMobile: {
-                error: {
-                    description: "{{description}}",
-                    message: "An error occurred while sending the verification code."
-                },
-                genericError: {
-                    description: "An error occurred while sending the verification code.",
-                    message: "Something went wrong"
-                },
-                success: {
-                    description: "The verification code was sent successfully.",
-                    message: "Verification code sent successfully"
                 }
             }
         },

@@ -55,7 +55,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
-import { ApplicationManagementConstants } from "../../../../constants/application-management";
+import { ApplicationManagementConstants } from "../../../../constants";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface,
@@ -63,7 +63,7 @@ import {
     AuthenticatorInterface,
     LoginFlowTypes,
     additionalSpProperty
-} from "../../../../models/application";
+} from "../../../../models";
 import { AdaptiveScriptUtils } from "../../../../utils/adaptive-script-utils";
 import { SignInMethodCustomization } from "../sign-in-method-customization";
 import { SignInMethodLanding } from "../sign-in-method-landing";

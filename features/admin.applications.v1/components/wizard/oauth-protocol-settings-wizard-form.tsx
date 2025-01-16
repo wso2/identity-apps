@@ -28,21 +28,19 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { getAuthProtocolMetadata } from "../../api/application";
-import { ApplicationManagementConstants } from "../../constants/application-management";
+import { getAuthProtocolMetadata } from "../../api";
+import { ApplicationManagementConstants } from "../../constants";
 import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
 import {
     ApplicationTemplateIdTypes,
     ApplicationTemplateListItemInterface,
-    MainApplicationInterface
-} from "../../models/application";
-import {
     DefaultProtocolTemplate,
     GrantTypeInterface,
     GrantTypeMetaDataInterface,
+    MainApplicationInterface,
     OIDCMetadataInterface
-} from "../../models/application-inbound";
+} from "../../models";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.

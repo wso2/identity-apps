@@ -17,17 +17,17 @@
  */
 
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
-import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
+import { useApplicationList } from "@wso2is/admin.applications.v1/api";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
 import { AppState, UserBasicInterface } from "@wso2is/admin.core.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
-import { updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
-import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
+import { updateRoleDetails, useRolesList } from "@wso2is/admin.roles.v2/api/roles";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { sendInvite, useUsersList } from "@wso2is/admin.users.v1/api";
 import { getUserWizardStepIcons } from "@wso2is/admin.users.v1/configs/ui";
 import { AdminAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserInviteInterface } from "@wso2is/admin.users.v1/models";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -50,8 +50,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { AddAdminUserBasic } from "./steps/admin-user-basic";
-import { InternalAdminFormDataInterface } from "../models/invite";
+import {
+    AddAdminUserBasic
+} from "./steps/admin-user-basic";
+import { InternalAdminFormDataInterface } from "../models";
 import { isAdminUser } from "../utils/administrators";
 
 interface AddUserWizardPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
@@ -122,8 +124,6 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
         useSelector((state: AppState) => state?.config?.ui?.features?.administrators);
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.consoleSettings);
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
 
@@ -153,7 +153,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
         0,
         searchQuery,
         null,
-        primaryUserStoreDomainName,
+        PRIMARY_USERSTORE,
         excludedAttributes,
         !!searchQuery
     );
@@ -191,7 +191,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
     const {
         data: rolesList,
         error: rolesListFetchRequestError
-    } = useGetRolesList(
+    } = useRolesList(
         null,
         null,
         roleSearchFilter,

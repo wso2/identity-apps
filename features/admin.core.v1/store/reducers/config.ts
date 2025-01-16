@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -253,7 +253,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                     enabled: false
                 }
             },
-            isClaimUniquenessValidationEnabled: undefined,
             isClientSecretHashEnabled: undefined,
             isCookieConsentBannerEnabled: undefined,
             isCustomClaimMappingEnabled: undefined,
@@ -271,8 +270,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isSignatureValidationCertificateAliasEnabled: undefined,
             isTrustedAppConsentRequired: undefined,
             listAllAttributeDialects: undefined,
-            passwordPolicyConfigs: null,
-            primaryUserStoreDomainName: "",
             privacyPolicyConfigs: null,
             productName: "",
             productVersionConfig: null,

@@ -29,10 +29,10 @@ import { Dispatch } from "redux";
 import { DropdownProps, Grid, Modal, ModalProps, PaginationProps } from "semantic-ui-react";
 import { useApplicationList } from "../api/application";
 import { ApplicationList } from "../components/application-list";
+import { ApplicationManagementConstants } from "../constants/application-management";
 import {
     ApplicationListInterface,
-    ApplicationListItemInterface,
-    ApplicationTemplateIdTypes
+    ApplicationListItemInterface
 } from "../models/application";
 
 /**
@@ -82,7 +82,7 @@ const ApplicationSelectionModal: FunctionComponent<ApplicationSelectionModalInte
         data: applicationList,
         isLoading: isApplicationListFetchRequestLoading,
         error: applicationListFetchRequestError
-    } = useApplicationList("clientId,templateId", listItemLimit, listOffset, null, true, true);
+    } = useApplicationList("clientId", listItemLimit, listOffset, null);
 
     /**
      * Handles the application list fetch request error.
@@ -93,7 +93,9 @@ const ApplicationSelectionModal: FunctionComponent<ApplicationSelectionModalInte
             return;
         }
 
-        if (applicationListFetchRequestError?.response?.data?.description) {
+        if (applicationListFetchRequestError?.response
+                && applicationListFetchRequestError?.response?.data
+                && applicationListFetchRequestError?.response?.data?.description) {
             dispatch(addAlert({
                 description: applicationListFetchRequestError.response.data.description,
                 level: AlertLevels.ERROR,
@@ -145,7 +147,9 @@ const ApplicationSelectionModal: FunctionComponent<ApplicationSelectionModalInte
             // Remove the system apps from the application list.
             if (!UIConfig?.legacyMode?.applicationListSystemApps) {
                 appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
-                    item.templateId !== ApplicationTemplateIdTypes.M2M_APPLICATION);
+                    !ApplicationManagementConstants.SYSTEM_APPS.includes(item.name)
+                        && !ApplicationManagementConstants.DEFAULT_APPS.includes(item.name)
+                );
                 appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
                 appList.totalResults = appList.totalResults -
                         (applicationList.applications.length - appList.applications.length);

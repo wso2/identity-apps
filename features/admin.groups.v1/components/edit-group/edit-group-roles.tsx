@@ -28,7 +28,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
-import { GroupsInterface } from "../../models/groups";
+import { GroupsInterface } from "../../models";
 import "./edit-group-roles.scss";
 
 interface EditGroupRolesPropsInterface extends IdentifiableComponentInterface {

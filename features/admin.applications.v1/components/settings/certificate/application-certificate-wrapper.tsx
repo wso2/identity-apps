@@ -33,9 +33,9 @@ import {
     ApplicationInterface,
     ApplicationTemplateIdTypes,
     CertificateInterface,
-    CertificateTypeInterface
-} from "../../../models/application";
-import { SupportedAuthProtocolTypes } from "../../../models/application-inbound";
+    CertificateTypeInterface,
+    SupportedAuthProtocolTypes
+} from "../../../models";
 
 /**
  * Proptypes for the application wrapper certificate component.

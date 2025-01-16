@@ -20,7 +20,7 @@ import {
     ApplicationInterface,
     ApplicationTemplateInterface,
     URLFragmentTypes
-} from "@wso2is/admin.applications.v1/models/application";
+} from "@wso2is/admin.applications.v1/models";
 import { history } from "@wso2is/admin.core.v1";
 import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";

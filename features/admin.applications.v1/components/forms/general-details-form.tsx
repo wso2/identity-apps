@@ -42,9 +42,9 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { useMyAccountStatus } from "../../api/application";
-import { ApplicationManagementConstants } from "../../constants/application-management";
-import { ApplicationInterface } from "../../models/application";
+import { useMyAccountStatus } from "../../api";
+import { ApplicationManagementConstants } from "../../constants";
+import { ApplicationInterface } from "../../models";
 
 /**
  * Proptypes for the applications general details form component.

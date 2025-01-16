@@ -97,9 +97,6 @@ const serverConfigurationConfig: ServerConfigurationConfig = {
     ],
     dynamicConnectors: true,
     extendedConnectors: [],
-    getConnectorCategoryExtension: () : Array<any> => {
-        return [];
-    },
     intendSettings: false,
     passwordExpiryComponent: (
         componentId: string,

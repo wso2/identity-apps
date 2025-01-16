@@ -25,7 +25,7 @@ import org.wso2.carbon.identity.organization.management.service.util.Organizatio
 import org.wso2.carbon.identity.role.v2.mgt.core.exception.IdentityRoleManagementException;
 import org.wso2.carbon.identity.role.v2.mgt.core.listener.AbstractRoleManagementListener;
 import org.wso2.carbon.identity.role.v2.mgt.core.model.Permission;
-import org.wso2.carbon.identity.role.v2.mgt.core.model.RoleBasicInfo;
+import org.wso2.carbon.identity.role.v2.mgt.core.model.Role;
 import org.wso2.carbon.user.api.UserStoreException;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreManager;
@@ -150,8 +150,7 @@ public class AppPortalRoleManagementListener extends AbstractRoleManagementListe
 
     private boolean isAdministratorRole(String roleId, String tenantDomain) throws IdentityRoleManagementException {
 
-        RoleBasicInfo role = AppsCommonDataHolder.getInstance().getRoleManagementServiceV2().getRoleBasicInfoById(
-            roleId, tenantDomain);
+        Role role = AppsCommonDataHolder.getInstance().getRoleManagementServiceV2().getRole(roleId, tenantDomain);
 
         return role != null && StringUtils.equalsIgnoreCase(ADMINISTRATOR, role.getName())
             && StringUtils.equalsIgnoreCase(APPLICATION, role.getAudience())

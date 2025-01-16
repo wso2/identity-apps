@@ -37,9 +37,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { deleteAPIResource } from "../api/api-resources";
-import { APIResourcesConstants } from "../constants/api-resources-constants";
-import { APIResourceInterface } from "../models/api-resources";
+import { deleteAPIResource } from "../api";
+import { APIResourcesConstants } from "../constants";
+import { APIResourceInterface } from "../models";
 import { APIResourceUtils } from "../utils/api-resource-utils";
 
 /**

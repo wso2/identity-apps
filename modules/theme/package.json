@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/theme",
-    "version": "2.6.0",
+    "version": "2.4.3",
     "description": "Theme for web components of WSO2 Identity Server Webapps.",
     "keywords": [
         "WSO2",
@@ -51,7 +51,6 @@
         "rc-tree": "^4.0.0-beta.2",
         "replace": "^1.1.5",
         "rimraf": "^3.0.2",
-        "rtlcss": "^4.3.0",
         "semantic-ui-css": "^2.4.1",
         "semantic-ui-less": "^2.4.1",
         "ts-jest": "^29.1.2",

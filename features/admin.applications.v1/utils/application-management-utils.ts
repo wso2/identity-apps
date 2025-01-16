@@ -29,32 +29,30 @@ import {
     getAvailableInboundProtocols,
     getOIDCApplicationConfigurations,
     getSAMLApplicationConfigurations
-} from "../api/application";
+} from "../api";
 import {
     SAMLConfigurationDisplayNames,
     SupportedAuthProtocolTypeDescriptions,
     SupportedAuthProtocolTypeDisplayNames
-} from "../components/meta/inbound-protocols.meta";
-import { ApplicationManagementConstants } from "../constants/application-management";
+} from "../components/meta";
+import { ApplicationManagementConstants } from "../constants";
 import {
     ApplicationListItemInterface,
-    SAMLApplicationConfigurationInterface,
-    additionalSpProperty,
-    emptySAMLAppConfiguration
-} from "../models/application";
-import {
     AuthProtocolMetaListItemInterface,
+    SAMLApplicationConfigurationInterface,
     SAMLConfigModes,
     SupportedAuthProtocolTypes,
-    SupportedCustomAuthProtocolTypes
-} from "../models/application-inbound";
+    SupportedCustomAuthProtocolTypes,
+    additionalSpProperty,
+    emptySAMLAppConfiguration
+} from "../models";
 import {
     checkAvailableCustomInboundAuthProtocolMeta,
     setAvailableCustomInboundAuthProtocolMeta,
     setAvailableInboundAuthProtocolMeta,
     setOIDCApplicationConfigs,
     setSAMLApplicationConfigs
-} from "../store/actions/application";
+} from "../store";
 
 /**
  * Utility class for application(service provider) operations.

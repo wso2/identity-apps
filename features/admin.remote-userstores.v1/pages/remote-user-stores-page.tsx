@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,7 +35,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { PaginationProps } from "semantic-ui-react";
-import { RemoteUserStoreConstants } from "../constants/remote-user-stores-constants";
+import { RemoteUserStoreConstants } from "../constants";
 
 /**
  * Props for the Userstore page.
@@ -188,7 +188,7 @@ const RemoteUserStoresPage: FunctionComponent<RemoteUserStoresPagePropsInterface
                     <DocumentationLink
                         link={ getLink("manage.userStores.userStoresList.learnMore") }
                     >
-                        { t("common:learnMore") }
+                        { t("extensions:common.learnMore") }
                     </DocumentationLink>
                 </>
             ) }

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { SAMLApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
+import { SAMLApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models";
 import { AppState, EventPublisher } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {

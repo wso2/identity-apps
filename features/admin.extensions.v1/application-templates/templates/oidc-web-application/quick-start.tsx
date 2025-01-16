@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { getApplicationList } from "@wso2is/admin.applications.v1/api/application";
+import { getApplicationList } from "@wso2is/admin.applications.v1/api";
 import {
     ApplicationInterface,
     ApplicationListInterface,
     ApplicationTemplateInterface,
     URLFragmentTypes
-} from "@wso2is/admin.applications.v1/models/application";
+} from "@wso2is/admin.applications.v1/models";
 import { history } from "@wso2is/admin.core.v1";
 import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";

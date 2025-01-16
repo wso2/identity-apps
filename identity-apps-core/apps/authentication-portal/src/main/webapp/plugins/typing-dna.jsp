@@ -29,12 +29,12 @@
 
 <script>
     var typingdna = new TypingDNA();
-    typingdna.addTarget("usernameUserInput");
+    typingdna.addTarget("username");
     typingdna.addTarget("password");
 
     $(document).ready(function(){
-        document.getElementById("sign-in-button").addEventListener("click", getTypingPatterns);
-        document.getElementById("usernameUserInput").setAttribute("autocomplete", "off");
+        document.getElementById("loginForm").addEventListener("submit",getTypingPatterns);
+        document.getElementById("username").setAttribute("autocomplete", "off");
     });
 
     function getTypingPatterns() {

@@ -37,11 +37,6 @@ export interface OrganizationDiscoveryAttributeDataInterface {
     attributes: OrganizationDiscoveryAttributesInterface[];
 }
 
-export interface OrganizationDiscoveryResponseInterface {
-    isOrganizationDiscoveryEnabled: boolean;
-    isEmailDomainBasedSelfRegistrationEnabled: boolean;
-}
-
 export interface OrganizationLinkInterface {
     href: string;
     rel: string;
@@ -82,7 +77,7 @@ export interface OrganizationAttributesInterface {
 
 export interface OrganizationDiscoveryConfigPropertyInterface {
     key: string;
-    value: string;
+    value: boolean;
 }
 
 export interface OrganizationDiscoveryAttributesInterface {

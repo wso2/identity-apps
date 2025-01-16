@@ -35,12 +35,11 @@ import moment from "moment";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { AddApplicationCertificateWizard } from "./add-certificate-wizard";
-import { updateApplicationDetails } from "../../../api/application";
-import { ApplicationInterface, CertificateTypeInterface } from "../../../models/application";
-import { CertificateFormFieldModal } from "../../modals/certificate-form-field-modal";
+import { updateApplicationDetails } from "../../../api";
+import { ApplicationInterface, CertificateTypeInterface } from "../../../models";
+import { CertificateFormFieldModal } from "../../modals";
 
 /**
  * Proptypes for the Application certificate list component.
@@ -85,7 +84,7 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
     } = props;
 
     const { t } = useTranslation();
-    const dispatch: Dispatch = useDispatch();
+    const dispatch = useDispatch();
 
     const [ certificates, setCertificates ] = useState<DisplayCertificate[]>(null);
     const [ certificateModal, setCertificateModal ] = useState<boolean>(false);
@@ -130,7 +129,7 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
 
     const deleteCertificate = async (): Promise<void> => {
 
-        const EMPTY_STRING: string = "";
+        const EMPTY_STRING = "";
 
         setOngoingDeleteRequest(true);
         updatePEMValue(EMPTY_STRING);
@@ -222,7 +221,7 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
         let icon: SemanticICONS;
         let iconColor: SemanticCOLORS;
 
-        const expiryDate: moment.Moment = moment(validTill);
+        const expiryDate = moment(validTill);
 
         const validity: CertificateValidity = CertificateManagementUtils
             .determineCertificateValidityState({
@@ -327,7 +326,7 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
                                     } }
                                 >
                                     {
-                                        certificates?.map((certificate: DisplayCertificate, index: number) => (
+                                        certificates?.map((certificate, index) => (
                                             <ResourceListItem
                                                 key={ index }
                                                 actionsColumnWidth={ 3 }

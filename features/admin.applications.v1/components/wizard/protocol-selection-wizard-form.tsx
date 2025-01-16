@@ -31,10 +31,12 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Card } from "semantic-ui-react";
 import { getInboundProtocolLogos } from "../../configs/ui";
-import { ApplicationTemplateListItemInterface } from "../../models/application";
-import { AuthProtocolMetaListItemInterface } from "../../models/application-inbound";
+import {
+    ApplicationTemplateListItemInterface,
+    AuthProtocolMetaListItemInterface
+} from "../../models";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
-import { InboundProtocolsMeta } from "../meta/inbound-protocols.meta";
+import { InboundProtocolsMeta } from "../meta";
 
 /**
  * Proptypes for the protocol selection wizard form component.

@@ -22,13 +22,13 @@ import {
     ProvisioningInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import flatten from "lodash-es/flatten";
-import { ApplicationManagementConstants } from "../constants/application-management";
+import { ApplicationManagementConstants } from "../constants";
 import {
     AuthenticationStepInterface,
     AuthenticatorInterface,
     FederatedConflictWithSMSOTPArgsInterface,
     FederatedConflictWithSMSOTPReturnValueInterface
-} from "../models/application";
+} from "../models";
 
 /**
  * Utility class for Sign In Method.

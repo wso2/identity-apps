@@ -25,7 +25,7 @@ import {
     ProvisioningConfigurationInterface,
     ProvisioningFormDataInterface,
     SimpleUserStoreListItemInterface
-} from "../../models/application";
+} from "../../models";
 
 /**
  *  Provisioning Configurations for the Application.

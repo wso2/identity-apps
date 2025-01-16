@@ -36,17 +36,15 @@ import {
     ApplicationInterface,
     CertificateInterface,
     CertificateTypeInterface,
-    SAMLApplicationConfigurationInterface
-} from "../../models/application";
-import {
     LogoutMethods,
     MetadataPropertyInterface,
     SAML2BindingTypes,
     SAML2ServiceProviderInterface,
+    SAMLApplicationConfigurationInterface,
     SAMLMetaDataInterface,
     SupportedAuthProtocolTypes
-} from "../../models/application-inbound";
-import { ApplicationCertificateWrapper } from "../settings/certificate/application-certificate-wrapper";
+} from "../../models";
+import { ApplicationCertificateWrapper } from "../settings/certificate";
 
 interface InboundSAMLFormPropsInterface extends TestableComponentInterface {
     onUpdate: (id: string) => void;
@@ -813,8 +811,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             t("applications:forms.inboundSAML.sections" +
                                                 ".requestValidation.fields.signatureValidation.validations.empty")
                                         }
-                                        disabled={ !isCertAvailableForEncrypt
-                                            && !isSignatureValidationCertificateAliasEnabled }
+                                        disabled={ !isCertAvailableForEncrypt }
                                         type="checkbox"
                                         listen={
                                             (values: Map<string, FormValue>) => {
@@ -883,10 +880,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             }
 
                             { /*Response/Assertion Signing*/ }
-                            <Grid.Row
-                                columns={ 2 }
-                                data-componentid="application-edit-inbound-saml-form-sign-saml-responses-header"
-                            >
+                            <Grid.Row columns={ 2 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Divider/>
                                     <Divider hidden/>
@@ -896,43 +890,42 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         { t("applications:forms.inboundSAML.sections" +
                                             ".responseSigning.heading") }
                                     </Heading>
+                                    <Divider hidden/>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Field
+                                            ref={ responseSigning }
+                                            name="responseSigning"
+                                            label=""
+                                            required={ false }
+                                            requiredErrorMessage="this is needed"
+                                            type="checkbox"
+                                            value={ initialValues?.responseSigning.enabled ? [ "enabled" ] : [] }
+                                            listen={
+                                                (values: Map<string, FormValue>) => {
+                                                    setSignSAMLResponsesEnabled(
+                                                        values.get("responseSigning").includes("enabled")
+                                                    );
+                                                }
+                                            }
+                                            children={ [
+                                                {
+                                                    label: t("applications:forms.inboundSAML" +
+                                                        ".sections.responseSigning.fields.responseSigning.label"),
+                                                    value: "enabled"
+                                                }
+                                            ] }
+                                            readOnly={ readOnly }
+                                            data-testid={ `${ testId }-response-signing-checkbox` }
+                                        />
+                                        <Hint>
+                                            { t("applications:forms.inboundSAML.sections" +
+                                                ".responseSigning.fields.responseSigning.hint",
+                                            { productName: config.ui.productName }) }
+                                        </Hint>
+                                    </Grid.Column>
                                 </Grid.Column>
                             </Grid.Row>
-                            <Grid.Row data-componentid="application-edit-inbound-saml-form-sign-saml-responses">
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Field
-                                        ref={ responseSigning }
-                                        name="responseSigning"
-                                        label=""
-                                        required={ false }
-                                        requiredErrorMessage="this is needed"
-                                        type="checkbox"
-                                        value={ initialValues?.responseSigning.enabled ? [ "enabled" ] : [] }
-                                        listen={
-                                            (values: Map<string, FormValue>) => {
-                                                setSignSAMLResponsesEnabled(
-                                                    values.get("responseSigning").includes("enabled")
-                                                );
-                                            }
-                                        }
-                                        children={ [
-                                            {
-                                                label: t("applications:forms.inboundSAML" +
-                                                    ".sections.responseSigning.fields.responseSigning.label"),
-                                                value: "enabled"
-                                            }
-                                        ] }
-                                        readOnly={ readOnly }
-                                        data-testid={ `${ testId }-response-signing-checkbox` }
-                                    />
-                                    <Hint>
-                                        { t("applications:forms.inboundSAML.sections" +
-                                            ".responseSigning.fields.responseSigning.hint",
-                                        { productName: config.ui.productName }) }
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row data-componentid="application-edit-inbound-saml-form-sign-digest-algorithm">
+                            <Grid.Row>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Field
                                         ref={ digestAlgorithm }
@@ -956,10 +949,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     />
                                 </Grid.Column>
                             </Grid.Row>
-                            <Grid.Row
-                                columns={ 1 }
-                                data-componentid="application-edit-inbound-saml-form-sign-algorithm"
-                            >
+                            <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Field
                                         ref={ signingAlgorithm }
@@ -1127,13 +1117,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         { t("applications:forms.inboundSAML.sections.assertion" +
                                             ".heading") }
                                     </Heading>
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row
-                                columns={ 1 }
-                                data-componentid="application-edit-inbound-saml-form-name-id-format"
-                            >
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Divider hidden/>
                                     <Field
                                         ref={ nameIdFormat }
                                         label={
@@ -1366,10 +1350,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     </Hint>
                                 </Grid.Column>
                             </Grid.Row>
-                            <Grid.Row
-                                columns={ 1 }
-                                data-componentid="application-edit-inbound-saml-form-assertion-encryption-algorithm"
-                            >
+                            <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Field
                                         ref={ assertionEncryptionAlgorithm }
@@ -1396,10 +1377,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     />
                                 </Grid.Column>
                             </Grid.Row>
-                            <Grid.Row
-                                columns={ 1 }
-                                data-componentid="application-edit-inbound-saml-form-key-encryption-algorithm"
-                            >
+                            <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Field
                                         ref={ keyEncryptionAlgorithm }
@@ -1426,10 +1404,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     />
                                 </Grid.Column>
                             </Grid.Row>
-                            <Grid.Row
-                                columns={ 2 }
-                                data-componentid="application-edit-inbound-saml-form-attribute-profile-heading"
-                            >
+                            <Grid.Row columns={ 2 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Divider/>
                                     <Divider hidden/>
@@ -1439,13 +1414,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         { t("applications:forms.inboundSAML.sections" +
                                             ".attributeProfile.heading") }
                                     </Heading>
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row
-                                columns={ 1 }
-                                data-componentid="application-edit-inbound-saml-form-enable-attribute-profile"
-                            >
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Divider hidden/>
                                     <Field
                                         ref={ attributeProfile }
                                         name="attributeProfile"
@@ -1525,10 +1494,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             }
 
                             { /*Single Logout Profile*/ }
-                            <Grid.Row
-                                columns={ 2 }
-                                data-componentid="application-edit-inbound-saml-form-slo-heading"
-                            >
+                            <Grid.Row columns={ 2 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Divider/>
                                     <Divider hidden/>
@@ -1538,13 +1504,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         { t("applications:forms.inboundSAML.sections" +
                                             ".sloProfile.heading") }
                                     </Heading>
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row
-                                columns={ 1 }
-                                data-componentid="application-edit-inbound-saml-form-enable-slo"
-                            >
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Divider hidden/>
                                     <Field
                                         ref={ singleLogoutProfile }
                                         name="singleLogoutProfile"
@@ -1583,10 +1543,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     </Hint>
                                 </Grid.Column>
                             </Grid.Row>
-                            <Grid.Row
-                                columns={ 1 }
-                                data-componentid="application-edit-inbound-saml-form-slo-logout-method"
-                            >
+                            <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Field
                                         ref={ logoutMethod }
@@ -1633,10 +1590,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     />
                                 </Grid.Column>
                             </Grid.Row>
-                            <Grid.Row
-                                columns={ 1 }
-                                data-componentid="application-edit-inbound-saml-form-slo-logout-response-url"
-                            >
+                            <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Field
                                         ref={ singleLogoutResponseUrl }
@@ -1685,10 +1639,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     </Hint>
                                 </Grid.Column>
                             </Grid.Row>
-                            <Grid.Row
-                                columns={ 1 }
-                                data-componentid="application-edit-inbound-saml-form-slo-logout-request-url"
-                            >
+                            <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Field
                                         ref={ singleLogoutRequestUrl }
@@ -1737,22 +1688,13 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     </Hint>
                                 </Grid.Column>
                             </Grid.Row>
-                            <Grid.Row
-                                columns={ 1 }
-                                data-componentid="application-edit-inbound-saml-form-idp-initiated-slo-heading"
-                            >
+                            <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Heading as="h6" disabled={ !isSingleLogoutProfileEnabled }>
                                         { t("applications:forms.inboundSAML.sections" +
                                             ".idpInitiatedSLO.heading") }
                                     </Heading>
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row
-                                columns={ 1 }
-                                data-componentid="application-edit-inbound-saml-form-enable-idp-initiated-slo"
-                            >
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Divider hidden/>
                                     <Field
                                         ref={ idpInitiatedSingleLogout }
                                         name="idpInitiatedSingleLogout"
@@ -1792,91 +1734,82 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Grid.Column>
                             </Grid.Row>
                             <div ref={ returnToURL }></div>
-                            <Grid.Row
-                                columns={ 1 }
-                                data-componentid="application-edit-inbound-saml-form-slo-return-to-urls"
-                            >
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <URLInput
-                                        urlState={ returnToURLS }
-                                        setURLState={ (url: string) => {
-                                            setReturnToURLS(url);
+                            <URLInput
+                                urlState={ returnToURLS }
+                                setURLState={ (url: string) => {
+                                    setReturnToURLS(url);
 
-                                            if (initialValues
-                                                ?.singleLogoutProfile
-                                                ?.idpInitiatedSingleLogout?.returnToUrls?.toString() !== url) {
-                                                setIsFormStale(true);
-                                            }
-                                        } }
-                                        labelName={
-                                            t("applications:forms.inboundSAML.sections" +
-                                                ".idpInitiatedSLO.fields.returnToURLs.label")
-                                        }
-                                        value={
-                                            initialValues?.singleLogoutProfile.idpInitiatedSingleLogout
-                                                .returnToUrls.toString()
-                                        }
-                                        placeholder={
-                                            t("applications:forms.inboundSAML.sections" +
-                                                ".idpInitiatedSLO.fields.returnToURLs.placeholder")
-                                        }
-                                        validationErrorMsg={
-                                            t("applications:forms.inboundSAML.sections" +
-                                                ".idpInitiatedSLO.fields.returnToURLs.validations.invalid")
-                                        }
-                                        validation={ (value: string) => {
+                                    if (initialValues
+                                        ?.singleLogoutProfile
+                                        ?.idpInitiatedSingleLogout?.returnToUrls?.toString() !== url) {
+                                        setIsFormStale(true);
+                                    }
+                                } }
+                                labelName={
+                                    t("applications:forms.inboundSAML.sections" +
+                                        ".idpInitiatedSLO.fields.returnToURLs.label")
+                                }
+                                value={
+                                    initialValues?.singleLogoutProfile.idpInitiatedSingleLogout.returnToUrls.toString()
+                                }
+                                placeholder={
+                                    t("applications:forms.inboundSAML.sections" +
+                                        ".idpInitiatedSLO.fields.returnToURLs.placeholder")
+                                }
+                                validationErrorMsg={
+                                    t("applications:forms.inboundSAML.sections" +
+                                        ".idpInitiatedSLO.fields.returnToURLs.validations.invalid")
+                                }
+                                validation={ (value: string) => {
 
-                                            let label: ReactElement = null;
+                                    let label: ReactElement = null;
 
-                                            if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
-                                                label = (
-                                                    <Label basic color="orange" className="mt-2">
-                                                        { t("console:common.validations.unrecognizedURL.description") }
-                                                    </Label>
-                                                );
-                                            }
+                                    if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                        label = (
+                                            <Label basic color="orange" className="mt-2">
+                                                { t("console:common.validations.unrecognizedURL.description") }
+                                            </Label>
+                                        );
+                                    }
 
-                                            if (!URLUtils.isMobileDeepLink(value)) {
-                                                return false;
-                                            }
+                                    if (!URLUtils.isMobileDeepLink(value)) {
+                                        return false;
+                                    }
 
-                                            setReturnToURLsErrorLabel(label);
+                                    setReturnToURLsErrorLabel(label);
 
-                                            return true;
-                                        } }
-                                        showError={ returnToURLSError }
-                                        setShowError={ setReturnToURLSError }
-                                        disabled={ !isIdpInitiatedSingleLogoutEnabled || !isSingleLogoutProfileEnabled }
-                                        readOnly={ readOnly }
-                                        addURLTooltip={ t("common:addURL") }
-                                        duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                                        data-testid={ `${ testId }-return-to-urls-input` }
-                                        showPredictions={ false }
-                                        customLabel={ returnToURLsErrorLabel }
-                                        popupHeaderPositive={ t("applications:URLInput.withLabel."
-                                            + "positive.header") }
-                                        popupHeaderNegative={ t("applications:URLInput.withLabel."
-                                            + "negative.header") }
-                                        popupContentPositive={ t("applications:URLInput.withLabel."
-                                            + "positive.content", { productName: config.ui.productName }) }
-                                        popupContentNegative={ t("applications:URLInput.withLabel."
-                                            + "negative.content", { productName: config.ui.productName }) }
-                                        popupDetailedContentPositive={ t("applications:URLInput."
-                                            + "withLabel.positive.detailedContent.0") }
-                                        popupDetailedContentNegative={ t("applications:URLInput."
-                                            + "withLabel.negative.detailedContent.0") }
-                                        insecureURLDescription={
-                                            t("console:common.validations.inSecureURL.description") }
-                                        showLessContent={ t("common:showLess") }
-                                        showMoreContent={ t("common:showMore") }
-                                    />
-                                    <Hint disabled={ !isSingleLogoutProfileEnabled }>
-                                        { t("applications:forms.inboundSAML.sections" +
-                                            ".idpInitiatedSLO.fields.returnToURLs.hint")
-                                        }
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
+                                    return true;
+                                } }
+                                showError={ returnToURLSError }
+                                setShowError={ setReturnToURLSError }
+                                disabled={ !isIdpInitiatedSingleLogoutEnabled || !isSingleLogoutProfileEnabled }
+                                readOnly={ readOnly }
+                                addURLTooltip={ t("common:addURL") }
+                                duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                                data-testid={ `${ testId }-return-to-urls-input` }
+                                showPredictions={ false }
+                                customLabel={ returnToURLsErrorLabel }
+                                popupHeaderPositive={ t("applications:URLInput.withLabel."
+                                    + "positive.header") }
+                                popupHeaderNegative={ t("applications:URLInput.withLabel."
+                                    + "negative.header") }
+                                popupContentPositive={ t("applications:URLInput.withLabel."
+                                    + "positive.content", { productName: config.ui.productName }) }
+                                popupContentNegative={ t("applications:URLInput.withLabel."
+                                    + "negative.content", { productName: config.ui.productName }) }
+                                popupDetailedContentPositive={ t("applications:URLInput."
+                                    + "withLabel.positive.detailedContent.0") }
+                                popupDetailedContentNegative={ t("applications:URLInput."
+                                    + "withLabel.negative.detailedContent.0") }
+                                insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
+                                showLessContent={ t("common:showLess") }
+                                showMoreContent={ t("common:showMore") }
+                            />
+                            <Hint disabled={ !isSingleLogoutProfileEnabled }>
+                                { t("applications:forms.inboundSAML.sections" +
+                                    ".idpInitiatedSLO.fields.returnToURLs.hint")
+                                }
+                            </Hint>
 
                             { /* Assertion Query/Request Profile */ }
                             {

@@ -24,7 +24,7 @@ import { DocumentationLink, Message, useDocumentation } from "@wso2is/react-comp
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AuthorizationAPIResourceInterface } from "../../../models/api-resources";
+import { AuthorizationAPIResourceInterface } from "../../../models";
 
 /**
  * Prop-types for the add API resources wizard authorization component.
@@ -101,7 +101,7 @@ export const AddAPIResourceAuthorization: FunctionComponent<AddAPIResourceAuthor
                         <DocumentationLink
                             link={ getLink("develop.apiResources.addAPIResource.rbacInfoBox.learnMore") }
                         >
-                            { t("common:learnMore") }
+                            { t("extensions:common.learnMore") }
                         </DocumentationLink>
                     </>)
                 }
@@ -123,7 +123,7 @@ export const AddAPIResourceAuthorization: FunctionComponent<AddAPIResourceAuthor
                         <DocumentationLink
                             link={ getLink("develop.apiResources.addAPIResource.requiredAuthorization.learnMore") }
                         >
-                            { t("common:learnMore") }
+                            { t("extensions:common.learnMore") }
                         </DocumentationLink>
                     </>)
                 }

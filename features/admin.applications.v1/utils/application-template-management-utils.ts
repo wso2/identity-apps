@@ -28,11 +28,8 @@ import isObject from "lodash-es/isObject";
 import startCase  from "lodash-es/startCase";
 import {
     getApplicationTemplateList
-} from "../api/application";
-import {
-    TemplateConfigInterface,
-    getApplicationTemplatesConfig
-} from "../data/application-templates/application-templates-config";
+} from "../api";
+import { TemplateConfigInterface, getApplicationTemplatesConfig } from "../data/application-templates";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
@@ -40,8 +37,8 @@ import {
     ApplicationTemplateGroupInterface,
     ApplicationTemplateInterface,
     ApplicationTemplateListInterface
-} from "../models/application";
-import { setApplicationTemplates } from "../store/actions/application";
+} from "../models";
+import { setApplicationTemplates } from "../store";
 
 /**
  * Utility class for Application Templates related operations.

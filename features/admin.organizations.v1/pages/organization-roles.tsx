@@ -25,7 +25,7 @@ import {
     UIConstants,
     history
 } from "@wso2is/admin.core.v1";
-import { CreateGroupMemberInterface } from "@wso2is/admin.groups.v1/models/groups";
+import { CreateGroupMemberInterface } from "@wso2is/admin.groups.v1/models";
 import { CreateRoleInterface, CreateRoleMemberInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";

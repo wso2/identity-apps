@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,7 +22,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState 
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
 import { getInboundProtocolLogos } from "../../configs/ui";
-import { SubmitFormCustomPropertiesInterface, SupportedAuthProtocolTypes } from "../../models/application-inbound";
+import { SubmitFormCustomPropertiesInterface, SupportedAuthProtocolTypes } from "../../models";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 
 /**

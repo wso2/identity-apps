@@ -301,14 +301,13 @@
         loginContextRequestUrl += "&tenantDomain=" + tenantDomain;
     }
 
-    String t = request.getParameter("t");
-    String ut = request.getParameter("ut");
-
+    String t = Encode.forUriComponent(request.getParameter("t"));
+    String ut = Encode.forUriComponent(request.getParameter("ut"));
     if (StringUtils.isNotBlank(t)) {
-        loginContextRequestUrl += "&t=" + Encode.forUriComponent(t);
+        loginContextRequestUrl += "&t=" + t;
     }
     if (StringUtils.isNotBlank(ut)) {
-        loginContextRequestUrl += "&ut=" + Encode.forUriComponent(ut);
+        loginContextRequestUrl += "&ut=" + ut;
     }
 
     if (StringUtils.isNotBlank(usernameIdentifier)) {
@@ -1271,12 +1270,6 @@
     <script src="util/string-utils.js"></script>
 
     <script>
-
-        <% if (Boolean.parseBoolean(request.getParameter("isSelfRegistration"))) { %>
-                $(".ui.segment").hide();
-                window.location = "<%=getRegistrationUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING))%>";
-        <% } %>
-
         function onMoment(notification) {
             displayGoogleSignIn(notification.isNotDisplayed() || notification.isSkippedMoment());
 

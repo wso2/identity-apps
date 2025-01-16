@@ -28,13 +28,13 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods, RoleListInterface, RolesInterface } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { RoleAudienceTypes } from "../constants/role-constants";
-import { APIResourceInterface, APIResourceListInterface, AuthorizedAPIListItemInterface } from "../models/apiResources";
 import {
     CreateRoleInterface,
     PatchRoleDataInterface,
     RolesV2ResponseInterface,
     SearchRoleInterface
-} from "../models/roles";
+} from "../models";
+import { APIResourceInterface, APIResourceListInterface, AuthorizedAPIListItemInterface } from "../models/apiResources";
 
 /**
  * Initialize an axios Http client.
@@ -480,6 +480,56 @@ export const getRolesList = (domain: string, filter?: string): Promise<RoleListI
                 error.response,
                 error.config);
         });
+};
+
+/**
+ * Hook to get the retrieve the list of groups that are currently in the system.
+ *
+ * @param count - Number of records to fetch.
+ * @param startIndex - Index of the first record to fetch.
+ * @param filter - Search filter.
+ * @param shouldFetch - Should fetch the data.
+ * @returns The object containing the roles list.
+ */
+export const useRolesList = <Data = RoleListInterface, Error = RequestErrorInterface>(
+    count?: number,
+    startIndex?: number,
+    filter?: string,
+    excludedAttributes?: string,
+    shouldFetch: boolean = true
+): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params: {
+            count,
+            excludedAttributes,
+            filter,
+            startIndex
+        },
+        url: store.getState().config.endpoints.rolesV2
+    };
+
+    const {
+        data,
+        error,
+        isValidating,
+        mutate,
+        response
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
+
+    return {
+        data,
+        error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate,
+        response
+    };
 };
 
 /**

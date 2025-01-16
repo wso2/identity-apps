@@ -400,8 +400,10 @@ export class AppConstants {
             [ "CONSOLE_ROLES_EDIT", `${AppConstants.getAdminViewBasePath()}/settings/roles/:id` ],
             [ "WSFED_CONFIGURATION",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/wsfed-configuration` ],
+            [ "SERVER",
+                `${AppConstants.getAdminViewBasePath()}/server` ],
             [ "INTERNAL_NOTIFICATION_SENDING",
-                `${AppConstants.getAdminViewBasePath()}/login-and-registration/internal-notification-sending` ],
+                `${AppConstants.getAdminViewBasePath()}/server/internal-notification-sending` ],
             [ "OUTBOUND_PROVISIONING_SETTINGS",
                 `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ],
             [ "IMPERSONATION", `${AppConstants.getAdminViewBasePath()}/login-and-registration/impersonation` ],
@@ -483,8 +485,7 @@ export class AppConstants {
         "smsTemplates",
         "governanceConnectors",
         "branding",
-        "consoleSettings",
-        "apiResources"
+        "consoleSettings"
     ];
 
     /**
@@ -510,6 +511,7 @@ export class AppConstants {
     public static readonly SUPER_ADMIN_ONLY_ROUTES: string[] = [
         "admin-session-advisory-banner-edit",
         "remote-logging",
+        "internal-notification-sending",
         "server"
     ];
 

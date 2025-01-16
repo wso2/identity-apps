@@ -17,7 +17,7 @@
  */
 
 import { AuthenticatedUserInfo } from "@asgardeo/auth-react";
-import { applicationReducer } from "@wso2is/admin.applications.v1/store/reducers/application";
+import { applicationReducer } from "@wso2is/admin.applications.v1/store";
 import { commonAuthenticateReducerInitialState } from "@wso2is/admin.authentication.v1/store";
 import { identityProviderReducer } from "@wso2is/admin.identity-providers.v1/store";
 import {

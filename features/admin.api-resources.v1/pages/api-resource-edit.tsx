@@ -27,9 +27,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
-import { useAPIResourceDetails } from "../api/api-resources";
-import { EditAPIResource } from "../components/edit-api-resource";
-import { APIResourcesConstants } from "../constants/api-resources-constants";
+import { useAPIResourceDetails } from "../api";
+import { EditAPIResource } from "../components";
+import { APIResourcesConstants } from "../constants";
 import { APIResourceUtils } from "../utils/api-resource-utils";
 
 /**

@@ -58,7 +58,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Grid, Header, Button as SemButton } from "semantic-ui-react";
-import { SAMLSelectionLanding } from "./protocols/saml-selection-landing";
+import { SAMLSelectionLanding } from "./protocols";
 import {
     deleteProtocol,
     getAuthProtocolMetadata,
@@ -66,10 +66,10 @@ import {
     revokeClientSecret,
     updateApplicationDetails,
     updateAuthProtocolConfig
-} from "../../api/application";
+} from "../../api";
 import { useGetApplication } from "../../api/use-get-application";
 import { getInboundProtocolLogos } from "../../configs/ui";
-import { ApplicationManagementConstants } from "../../constants/application-management";
+import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import CustomProtocolApplicationTemplate from
@@ -78,9 +78,8 @@ import {
     ApplicationInterface,
     ApplicationTemplateIdTypes,
     ApplicationTemplateListItemInterface,
-    CertificateInterface
-} from "../../models/application";
-import {
+    AuthProtocolMetaInterface,
+    CertificateInterface,
     OIDCDataInterface,
     OIDCMetadataInterface,
     SAML2ConfigurationInterface,
@@ -88,12 +87,11 @@ import {
     SupportedAuthProtocolMetaTypes,
     SupportedAuthProtocolTypes,
     SupportedCustomAuthProtocolTypes
-} from "../../models/application-inbound";
-import { AuthProtocolMetaInterface } from "../../models/reducer-state";
-import { setAuthProtocolMeta } from "../../store/actions/application";
+} from "../../models";
+import { setAuthProtocolMeta } from "../../store";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
-import { InboundFormFactory } from "../forms/inbound-form-factory";
-import { ApplicationCreateWizard } from "../wizard/application-create-wizard";
+import { InboundFormFactory } from "../forms";
+import { ApplicationCreateWizard } from "../wizard";
 
 /**
  * Prop-types for the applications settings component.

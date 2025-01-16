@@ -31,9 +31,9 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { OutboundProvisioningWizardIdpForm } from "./outbound-provisioining-idp-wizard-form";
-import { updateApplicationConfigurations } from "../../api/application";
+import { updateApplicationConfigurations } from "../../api";
 import { getApplicationWizardStepIcons } from "../../configs/ui";
-import { ApplicationInterface, OutboundProvisioningConfigurationInterface } from "../../models/application";
+import { ApplicationInterface, OutboundProvisioningConfigurationInterface } from "../../models";
 
 /**
  * Interface for the outbound provisioning IDP create wizard props.

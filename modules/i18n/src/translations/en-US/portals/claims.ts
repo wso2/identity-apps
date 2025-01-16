@@ -394,11 +394,6 @@ export const claims: ClaimsNS = {
     local: {
         additionalProperties: {
             hint: "Use when writing an extension using current attributes",
-            isUniqueDeprecationMessage: {
-                uniquenessDisabled: "The 'isUnique' property is deprecated.",
-                uniquenessEnabled: "The 'isUnique' property is deprecated. Please use " +
-                    "<1>Uniqueness Validation</1> option to configure attribute uniqueness."
-            },
             key: "Name",
             keyRequiredErrorMessage: "Enter a name",
             value: "Value",
@@ -499,21 +494,10 @@ export const claims: ClaimsNS = {
                 "you need to disable account verification for your organization.",
             supportedByDefault: {
                 label: "Display this attribute on the user's profile"
-            },
-            uniquenessScope: {
-                label: "Uniqueness Validation",
-                options: {
-                    acrossUserstores: "Across User Stores",
-                    none: "None",
-                    withinUserstore: "Within User Store"
-                }
-            },
-            uniquenessScopeHint: "Select the scope to validate the uniqueness of the attribute value."
+            }
         },
         mappedAttributes: {
-            enableForUserStore: "Enable for this user store",
-            hint: "Enter the attribute from the respective user stores that will be mapped to this attribute.",
-            mappedAttributeName: "Mapped Attribute Name"
+            hint: "Enter the attribute from each user store that you want to map to this attribute."
         },
         notifications: {
             addLocalClaim: {
@@ -587,7 +571,7 @@ export const claims: ClaimsNS = {
                 tabs: {
                     additionalProperties: "Additional Properties",
                     general: "General",
-                    mappedAttributes: "Attribute Mappings"
+                    mappedAttributes: "Mapped Attributes"
                 }
             },
             local: {

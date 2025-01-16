@@ -22,7 +22,7 @@ import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/adminis
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { updateGroupDetails, useGroupList } from "@wso2is/admin.groups.v1/api";
-import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
+import { GroupsInterface } from "@wso2is/admin.groups.v1/models";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getAUserStore, useUserStores } from "@wso2is/admin.userstores.v1/api";
 import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
@@ -1090,7 +1090,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                     floated="right"
                                     onClick={ navigateToNext }
                                     loading={ isBasicDetailsLoading }
-                                    disabled = { isBasicDetailsLoading }
                                 >
                                     { currentWizardStep === wizardSteps.length - 2
                                         ? t("user:modals.addUserWizard.buttons.saveAndContinue")

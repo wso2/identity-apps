@@ -26,9 +26,9 @@ import FormGroup from "@oxygen-ui/react/FormGroup";
 import Radio from "@oxygen-ui/react/Radio";
 import TextField from "@oxygen-ui/react/TextField";
 import { useRequiredScopes } from "@wso2is/access-control";
-import { updateApplicationDetails } from "@wso2is/admin.applications.v1/api/application";
+import { updateApplicationDetails } from "@wso2is/admin.applications.v1/api";
 import { useGetApplication } from "@wso2is/admin.applications.v1/api/use-get-application";
-import { ApplicationInterface } from "@wso2is/admin.applications.v1/models/application";
+import { ApplicationInterface } from "@wso2is/admin.applications.v1/models";
 import { OrganizationType } from "@wso2is/admin.core.v1";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
@@ -307,7 +307,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                 <DocumentationLink
                                     link={ getLink("develop.applications.roles.learnMore") }
                                 >
-                                    { t("common:learnMore") }
+                                    { t("extensions:common.learnMore") }
                                 </DocumentationLink>
                             </Heading>
                         </Grid.Column>
@@ -486,7 +486,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             </EmphasizedSegment>
             <ConfirmationModal
                 onClose={ (): void => {
-                    setTempRoleAudience(roleAudience);
+                    setTempRoleAudience(undefined);
                     setShowSwitchAudienceWarning(false);
                 } }
                 type="negative"
@@ -497,7 +497,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ (): void => {
-                    setTempRoleAudience(roleAudience);
+                    setTempRoleAudience(undefined);
                     setShowSwitchAudienceWarning(false);
                 } }
                 onPrimaryActionClick={ (): void => {

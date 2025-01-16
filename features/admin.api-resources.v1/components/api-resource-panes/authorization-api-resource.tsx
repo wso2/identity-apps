@@ -29,7 +29,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import {
     APIResourcePanesCommonPropsInterface
-} from "../../models/api-resources";
+} from "../../models";
 
 /**
  * Prop-types for the Authorization part of the edit API Resource page component.
@@ -81,7 +81,7 @@ export const AuthorizationAPIResource: FunctionComponent<AuthorizationAPIResourc
                                                 link={ getLink("develop.apiResources.addAPIResource." +
                                                     "requiredAuthorization.learnMore") }
                                             >
-                                                { t("common:learnMore") }
+                                                { t("extensions:common.learnMore") }
                                             </DocumentationLink>
                                         </>)
                                     }

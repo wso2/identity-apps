@@ -16,9 +16,7 @@
  * under the License.
  */
 
-import {
-    DropdownOptionsInterface
-} from "@wso2is/admin.applications.v1/components/settings/attribute-management/attribute-settings";
+import { DropdownOptionsInterface } from "@wso2is/admin.applications.v1/components/settings";
 import { getExternalClaims } from "@wso2is/admin.claims.v1/api";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";

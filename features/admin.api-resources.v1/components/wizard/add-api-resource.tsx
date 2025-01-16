@@ -27,19 +27,17 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { AddAPIResourceAuthorization  } from "./add-api-resource-steps/add-api-resource-authorization";
-import { AddAPIResourceBasic  } from "./add-api-resource-steps/add-api-resource-basic";
-import { AddAPIResourcePermissions } from "./add-api-resource-steps/add-api-resource-permissions";
-import { createAPIResource } from "../../api/api-resources";
-import { getAPIResourceWizardStepIcons } from "../../configs/ui";
-import { APIResourcesConstants } from "../../constants/api-resources-constants";
+import { AddAPIResourceAuthorization, AddAPIResourceBasic, AddAPIResourcePermissions } from "./add-api-resource-steps";
+import { createAPIResource } from "../../api";
+import { getAPIResourceWizardStepIcons } from "../../configs";
+import { APIResourcesConstants } from "../../constants";
 import {
     APIResourceInterface,
     APIResourcePermissionInterface,
     APIResourceWizardStepInterface,
     AddAPIResourceWizardStepsFormTypes,
     BasicAPIResourceInterface
-} from "../../models/api-resources";
+} from "../../models";
 
 interface AddAPIResourcePropsInterface extends IdentifiableComponentInterface {
     /**

@@ -70,7 +70,7 @@ import {
     ClaimConfigurationInterface,
     ClaimMappingInterface,
     RequestedClaimConfigurationInterface
-} from "../../../models/application";
+} from "../../../models";
 import { ApplicationManagementUtils } from "../../../utils/application-management-utils";
 
 interface AttributeSelectionOIDCPropsInterface extends TestableComponentInterface, IdentifiableComponentInterface {

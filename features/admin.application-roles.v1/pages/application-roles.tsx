@@ -16,10 +16,8 @@
  * under the License.
  */
 
-import { getApplicationList } from "@wso2is/admin.applications.v1/api/application";
-import {
-    ApplicationListInterface, ApplicationListItemInterface
-} from "@wso2is/admin.applications.v1/models/application";
+import { getApplicationList } from "@wso2is/admin.applications.v1/api";
+import { ApplicationListInterface, ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models";
 import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

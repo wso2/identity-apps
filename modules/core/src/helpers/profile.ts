@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,8 +17,8 @@
  */
 
 import isEmpty from "lodash-es/isEmpty";
+import { UserstoreConstants } from "../constants";
 import { AuthReducerStateInterface, MultiValueAttributeInterface, ProfileInfoInterface } from "../models";
-import { StringUtils } from "../utils";
 
 /**
  * Resolves the user's display name.
@@ -29,14 +29,14 @@ import { StringUtils } from "../utils";
  * @returns Resolved display name.
  */
 export const resolveUserDisplayName = (
-    profileInfo: ProfileInfoInterface,
+    profileInfo: ProfileInfoInterface, 
     authState?: AuthReducerStateInterface,
     fallback: string = null
 ): string => {
 
     if (profileInfo.name && (profileInfo.name.givenName || profileInfo.name.familyName)) {
-        const givenName: string = isEmpty(profileInfo.name.givenName) ? "" : profileInfo.name.givenName + " ";
-        const familyName: string = isEmpty(profileInfo.name.familyName) ? "" : profileInfo.name.familyName;
+        const givenName = isEmpty(profileInfo.name.givenName) ? "" : profileInfo.name.givenName + " ";
+        const familyName = isEmpty(profileInfo.name.familyName) ? "" : profileInfo.name.familyName;
 
         return givenName + familyName;
     } else if (profileInfo.userName) {
@@ -58,17 +58,12 @@ export const resolveUserDisplayName = (
  *
  * @param username - Username of the user.
  * @param userStoreDomain - User store domain of the user.
- * @param primaryUserStoreDomainName - Domain name of the primary user store.
  * @returns resolved username
  */
-export const resolveUsername = (
-    username: string,
-    userStoreDomain: string,
-    primaryUserStoreDomainName: string
-): string => {
+export const resolveUsername = (username: string, userStoreDomain: string): string => {
 
-    // check if the user store is primary.
-    if (StringUtils.isEqualCaseInsensitive(userStoreDomain, primaryUserStoreDomainName)) {
+    // check if the user store is `PRIMARY`.
+    if (userStoreDomain === UserstoreConstants.PRIMARY_USER_STORE) {
         return username;
     }
 
@@ -82,19 +77,18 @@ export const resolveUsername = (
  * user store prefixed to their username.
  *
  * @param username - Username of the user with user store embedded.
- * @param primaryUserStoreDomainName - Domain name of the primary user store.
  * @returns resolved user store embedded username
  */
-export const resolveUserStoreEmbeddedUsername = (username: string, primaryUserStoreDomainName: string): string => {
+export const resolveUserStoreEmbeddedUsername = (username: string): string => {
 
-    const parts: string[] = username.split("/");
+    const parts = username.split("/");
 
     if (parts.length === 1) {
         return username;
     }
 
-    // check if the user store is primary.
-    if (StringUtils.isEqualCaseInsensitive(parts[0], primaryUserStoreDomainName)) {
+    // check if the user store is `PRIMARY`.
+    if (parts[0] === UserstoreConstants.PRIMARY_USER_STORE) {
         return parts[1];
     }
 
@@ -130,7 +124,7 @@ export const resolveUserEmails = (emails: (string | MultiValueAttributeInterface
 export const getUserNameWithoutDomain = (userNameWithDomain: string): string => {
 
     if (userNameWithDomain.indexOf("/") > -1) {
-        const fragments: string[] = userNameWithDomain.split("/");
+        const fragments = userNameWithDomain.split("/");
 
         if (fragments?.length > 1) {
             return fragments[1];
@@ -144,16 +138,15 @@ export const getUserNameWithoutDomain = (userNameWithDomain: string): string => 
  * Get the user's userstore as a string.
  *
  * @param username - Username.
- * @param primaryUserStoreDomainName - Domain name of the primary user store.
  * @returns Userstore as a string.
  */
-export const resolveUserstore = (username: string, primaryUserStoreDomainName: string): string => {
+export const resolveUserstore = (username: string): string => {
 
-    const userNameSegments: string[] = username.split("/");
+    const userNameSegments = username.split("/");
 
     if (userNameSegments.length > 1) {
         return userNameSegments[0];
     } else {
-        return primaryUserStoreDomainName;
+        return UserstoreConstants.PRIMARY_USER_STORE;
     }
 };

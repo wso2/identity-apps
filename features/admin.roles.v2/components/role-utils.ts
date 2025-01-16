@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,22 +16,22 @@
  * under the License.
  */
 
-import { PermissionObject, TreeNode } from "../models/permission";
+import { PermissionObject, TreeNode } from "../models";
 
 /**
   * A Util method to create an array of permission object with heirarchy.
-  *
+  * 
   * @param permissioObject - Permission Object
   * @param pathComponents - Permission Path Array
   * @param permissionTreeArray - Permission Tree array for reference
-  *
-  * @returns Permission array with tree structure
+  * 
+  * @returns {TreeNode[]} - Permission array with tree structure
   */
 export const generatePermissionTree = (permissioObject: PermissionObject, pathComponents: string[],
     permissionTreeArray: TreeNode[]): TreeNode[] => {
 
-    const component: string = pathComponents.shift();
-    let permissionComponent: TreeNode = permissionTreeArray.find((permission: TreeNode) => {
+    const component = pathComponents.shift();
+    let permissionComponent = permissionTreeArray.find((permission: TreeNode) => {
         return permission.name === component;
     });
 
@@ -44,8 +44,8 @@ export const generatePermissionTree = (permissioObject: PermissionObject, pathCo
         permissionTreeArray.push(permissionComponent);
     }
 
-    if (pathComponents.length) {
-        generatePermissionTree(permissioObject, pathComponents,
+    if (pathComponents.length) { 
+        generatePermissionTree(permissioObject, pathComponents, 
             permissionComponent.children || (permissionComponent.children = []));
     }
 

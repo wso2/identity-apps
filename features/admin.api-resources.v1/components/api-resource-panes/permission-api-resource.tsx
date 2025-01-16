@@ -34,8 +34,8 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Input } from "semantic-ui-react";
 import { PermissionListAPIResource } from "./permission-list-api-resource";
-import { APIResourcePanesCommonPropsInterface, APIResourcePermissionInterface } from "../../models/api-resources";
-import { AddAPIResourcePermission } from "../wizard/add-api-resource-permission";
+import { APIResourcePanesCommonPropsInterface, APIResourcePermissionInterface } from "../../models";
+import { AddAPIResourcePermission } from "../wizard";
 
 /**
  * Prop-types for the API resources page component.

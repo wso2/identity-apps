@@ -812,12 +812,6 @@ export interface AuthenticationProviderNS {
                     placeholder: string;
                     ariaLabel: string;
                 };
-                authnReqProviderName: {
-                    hint: string;
-                    label: string;
-                    placeholder: string;
-                    ariaLabel: string;
-                };
             };
         };
         outboundConnectorAccordion: {
@@ -868,9 +862,6 @@ export interface AuthenticationProviderNS {
                 hint: string;
                 label: string;
                 placeholder: string;
-                validations: {
-                    invalid: string;
-                }
             };
         };
         jitProvisioning: {

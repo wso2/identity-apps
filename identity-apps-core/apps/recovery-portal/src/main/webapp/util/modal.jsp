@@ -48,7 +48,7 @@
         </div>
     </div>
     <div class="actions">
-        <div class="ui secondary deny button" id="asg-modal-0-dismiss-button">
+        <div class="ui deny button" id="asg-modal-0-dismiss-button">
             ${param.cancel_button_text}
         </div>
         <c:if test="${not empty param.action_button_text}">

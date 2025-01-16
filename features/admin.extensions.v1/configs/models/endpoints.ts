@@ -21,21 +21,14 @@
  */
 export interface ExtendedFeatureResourceEndpointsInterface {
     /**
-     * On-prem user store agent connection API endpoint.
+     * Remote user store agent connection API endpoint.
      */
-    onPremUserStoreAgentConnection: string;
+    userStoreAgentConnection: string;
     /**
-     * On-prem user store agent token API endpoint.
+     * Remote user store agent token API endpoint.
      */
-    onPremUserStoreAgentToken: string;
-    /**
-     * On-prem user store agent connection API endpoint.
-     */
-    remoteUserStoreAgentConnection: string;
-    /**
-     * On-prem user store agent token API endpoint.
-     */
-    remoteUserStoreAgentToken: string;
+    userStoreAgentToken: string;
+
     /**
      * Get the resource endpoints for the Invitation Management feature.
      */

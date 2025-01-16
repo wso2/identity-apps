@@ -15,15 +15,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { updateAuthProtocolConfig } from "@wso2is/admin.applications.v1/api/application";
+import { updateAuthProtocolConfig } from "@wso2is/admin.applications.v1/api";
 import {
     ApplicationInterface,
-    ApplicationTemplateInterface
-} from "@wso2is/admin.applications.v1/models/application";
-import {
+    ApplicationTemplateInterface,
     OIDCDataInterface,
     SupportedAuthProtocolTypes
-} from "@wso2is/admin.applications.v1/models/application-inbound";
+} from "@wso2is/admin.applications.v1/models";
 import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
 import {
     VerticalStepper,

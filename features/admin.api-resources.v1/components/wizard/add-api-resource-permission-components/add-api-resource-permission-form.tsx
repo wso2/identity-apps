@@ -23,9 +23,9 @@ import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { getAPIResourcePermissions } from "../../../api/api-resources";
-import { APIResourcesConstants } from "../../../constants/api-resources-constants";
-import { APIResourcePermissionInterface } from "../../../models/api-resources";
+import { getAPIResourcePermissions } from "../../../api";
+import { APIResourcesConstants } from "../../../constants";
+import { APIResourcePermissionInterface } from "../../../models";
 
 /**
  * Prop-types for the API resources page component.

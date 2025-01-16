@@ -439,10 +439,6 @@ export interface ClaimsNS {
         };
         additionalProperties: {
             hint: string;
-            isUniqueDeprecationMessage: {
-                uniquenessDisabled: string;
-                uniquenessEnabled: string;
-            };
             key: string;
             value: string;
             keyRequiredErrorMessage: string;
@@ -470,15 +466,6 @@ export interface ClaimsNS {
                     invalidName: string;
                 };
             };
-            uniquenessScope: {
-                label: string;
-                options: {
-                    acrossUserstores: string;
-                    none: string;
-                    withinUserstore: string;
-                };
-            };
-            uniquenessScopeHint: string;
             nameHint: string;
             description: {
                 label: string;
@@ -524,8 +511,6 @@ export interface ClaimsNS {
         };
         mappedAttributes: {
             hint: string;
-            mappedAttributeName: string;
-            enableForUserStore: string;
         };
     };
     list: {

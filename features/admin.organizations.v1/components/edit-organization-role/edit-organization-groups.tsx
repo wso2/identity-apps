@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,8 +18,7 @@
 
 import { AppState, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
 import { getGroupList } from "@wso2is/admin.groups.v1/api";
-import { GroupListInterface, GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { GroupListInterface, GroupsInterface } from "@wso2is/admin.groups.v1/models";
 import {
     AlertLevels,
     RoleGroupsInterface,
@@ -27,7 +26,6 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { StringUtils } from "@wso2is/core/utils";
 import {
     ContentLoader,
     EmphasizedSegment,
@@ -61,7 +59,7 @@ import {
     Table
 } from "semantic-ui-react";
 import { patchOrganizationRoleDetails } from "../../api";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../constants";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../constants";
 import {
     OrganizationResponseInterface,
     OrganizationRoleInterface,
@@ -115,8 +113,6 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization
     );
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
 
     useEffect(() => {
         if (!(role)) {
@@ -404,9 +400,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
 
         let item: ItemTypeLabelPropsInterface = {
             labelColor: "olive",
-            labelText: StringUtils.isEqualCaseInsensitive(primaryUserStoreDomainName, PRIMARY_USERSTORE)
-                ? t("console:manage.features.users.userstores.userstoreOptions.primary")
-                : primaryUserStoreDomainName
+            labelText: PRIMARY_DOMAIN
         };
 
         if (userGroup[0] !== APPLICATION_DOMAIN &&
@@ -596,13 +590,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                             userGroup?.length === 1
                                                 ? (
                                                     <Label color="olive">
-                                                        {
-                                                            StringUtils.isEqualCaseInsensitive(
-                                                                primaryUserStoreDomainName, PRIMARY_USERSTORE)
-                                                                ? t("console:manage.features.users.userstores" +
-                                                                    ".userstoreOptions.primary")
-                                                                : primaryUserStoreDomainName
-                                                        }
+                                                        { PRIMARY_DOMAIN }
                                                     </Label>
                                                 )
                                                 : (

@@ -664,12 +664,5 @@ export interface governanceConnectorsNS {
         wsFederationConfiguration: {
             description: string;
         };
-        internalNotificationSending: {
-            categoryTitle: string;
-            connector: {
-                title: string;
-                description: string;
-            }
-        }
     };
 }

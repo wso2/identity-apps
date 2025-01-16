@@ -49,29 +49,28 @@ import {
     getApplicationTemplateData,
     getAuthProtocolMetadata,
     updateAuthProtocolConfig
-} from "../../api/application";
+} from "../../api";
 import { getApplicationWizardStepIcons } from "../../configs/ui";
-import { ApplicationManagementConstants } from "../../constants/application-management";
+import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationTemplateInterface,
     ApplicationTemplateListItemInterface,
-    MainApplicationInterface,
-    URLFragmentTypes,
-    emptyApplication
-} from "../../models/application";
-import {
     CustomInboundProtocolMetaDataInterface,
     DefaultProtocolTemplate,
+    MainApplicationInterface,
     OIDCDataInterface,
     SAML2ConfigurationInterface,
-    SupportedAuthProtocolTypes
-
-} from "../../models/application-inbound";
-import { OAuthProtocolTemplate } from "../meta/oauth-protocol-template.meta";
-import { PassiveStsProtocolTemplate } from "../meta/passive-sts-protocol-template.meta";
-import { SAMLProtocolTemplate } from "../meta/saml-protocol-template.meta";
+    SupportedAuthProtocolTypes,
+    URLFragmentTypes,
+    emptyApplication
+} from "../../models";
+import {
+    OAuthProtocolTemplate,
+    PassiveStsProtocolTemplate,
+    SAMLProtocolTemplate
+} from "../meta";
 
 /**
  * Proptypes for the application creation wizard component.

@@ -78,7 +78,7 @@ const OrgInsightsPage: FunctionComponent = () => {
                     <DocumentationLink
                         link={ getLink("manage.insights.learnMore") }
                     >
-                        { t("common:learnMore") }
+                        { t("extensions:common.learnMore") }
                     </DocumentationLink>
                 </>
             ) }

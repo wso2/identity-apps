@@ -116,7 +116,7 @@
         },
         "isCookieConsentBannerEnabled": true,
         "isHeaderAvatarLabelAllowed": true,
-        "isMultipleEmailsAndMobileNumbersEnabled": true,
+        "isMultipleEmailsAndMobileNumbersEnabled": false,
         "isPasswordInputValidationEnabled": true,
         "isProfileUsernameReadonly": true,
         "privacyPolicyConfigs": {},

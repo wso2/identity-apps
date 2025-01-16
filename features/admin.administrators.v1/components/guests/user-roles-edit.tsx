@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import {
     AppState,
     FeatureConfigInterface,
@@ -27,6 +27,7 @@ import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/cons
 import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1/models";
 import { UserRolePermissions } from "@wso2is/admin.users.v1/components/user-role-permissions";
 import { RolePermissions } from "@wso2is/admin.users.v1/components/wizard/user-role-permissions";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -108,7 +109,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     const { getLink } = useDocumentation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const hasUserUpdatePermissions: boolean = useRequiredScopes(featureConfig?.users?.scopes?.update);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ showAddNewRoleModal, setAddNewRoleModalView ] = useState(false);
     const [ roleList, setRoleList ] = useState<RolesInterface[]>([]);
@@ -695,8 +696,9 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                 { t("user:updateUser.roles.editRoles.heading") }
                                             </Heading>
                                             <Heading subHeading ellipsis as="h6">
-                                                { !hasUserUpdatePermissions
-                                                    || (user?.userName === realmConfigs?.adminUser
+                                                { !hasRequiredScopes(featureConfig?.users,
+                                                    featureConfig?.users?.scopes?.update,
+                                                    allowedScopes) || (user?.userName === realmConfigs?.adminUser
                                                     && authenticatedUser !== user?.userName)
                                                     ? (
                                                         <>
@@ -712,7 +714,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                                 link={ getLink("manage.users.collaboratorAccounts." +
                                                                     "roles.learnMore") }
                                                             >
-                                                                { t("common:learnMore") }
+                                                                { t("extensions:common.learnMore") }
                                                             </DocumentationLink>
                                                         </>
                                                     )
@@ -757,7 +759,12 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                                                     "modal-unselected-roles"
                                                                                 }
                                                                                 readOnly={
-                                                                                    !hasUserUpdatePermissions
+                                                                                    !hasRequiredScopes(
+                                                                                        featureConfig?.users,
+                                                                                        featureConfig?.users
+                                                                                            ?.scopes?.update,
+                                                                                        allowedScopes
+                                                                                    )
                                                                                     || ( user?.userName
                                                                                             === realmConfigs?.adminUser
                                                                                         && authenticatedUser
@@ -778,7 +785,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             ) }
                                         </Grid.Column>
                                     </Grid.Row>
-                                    { !hasUserUpdatePermissions || (user?.userName === realmConfigs?.adminUser
+                                    { !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update,
+                                        allowedScopes) || (user?.userName === realmConfigs?.adminUser
                                         && authenticatedUser !== user?.userName) && (
                                         <Grid.Row>
                                             <Grid.Column>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,21 +16,20 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1";
 import { SharedUserStoreConstants } from "@wso2is/admin.core.v1/constants";
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { StringUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { DropdownItemProps, Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { searchRoleList } from "../../api/roles";
+import {
+    PRIMARY_DOMAIN
+} from "../../constants/role-constants";
 import { CreateRoleFormData, SearchRoleInterface } from "../../models/roles";
 
 /**
@@ -61,12 +60,9 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
     const { t } = useTranslation();
 
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
-
     const [ isRoleNamePatternValid, setIsRoleNamePatternValid ] = useState<boolean>(true);
     const [ , setUserStoresList ] = useState([]);
-    const [ userStore ] = useState<string>(primaryUserStoreDomainName);
+    const [ userStore ] = useState<string>(SharedUserStoreConstants.PRIMARY_USER_STORE);
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
 
     useEffect(() => {
@@ -81,7 +77,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const validateRoleNamePattern = async (roleName: string): Promise<void> => {
         let userStoreRegEx: string = "";
 
-        if (!StringUtils.isEqualCaseInsensitive(userStore, primaryUserStoreDomainName)) {
+        if (userStore !== PRIMARY_DOMAIN) {
             await SharedUserStoreUtils.getUserStoreRegEx(
                 userStore,
                 SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx
@@ -103,10 +99,8 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         const storeOptions: DropdownItemProps[] = [
             {
                 key: -1,
-                text: StringUtils.isEqualCaseInsensitive(primaryUserStoreDomainName, PRIMARY_USERSTORE)
-                    ? t("console:manage.features.users.userstores.userstoreOptions.primary")
-                    : primaryUserStoreDomainName,
-                value: primaryUserStoreDomainName
+                text: "Primary",
+                value: "primary"
             }
         ];
         let storeOption: DropdownItemProps = {

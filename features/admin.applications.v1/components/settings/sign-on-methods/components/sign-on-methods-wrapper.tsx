@@ -27,7 +27,7 @@ import { SignOnMethodsCore } from "./sign-on-methods-core";
 import {
     ApplicationInterface,
     AuthenticationSequenceInterface
-} from "../../../../models/application";
+} from "../../../../models";
 
 /**
  * Proptypes for the sign on methods component.

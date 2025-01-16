@@ -164,26 +164,6 @@ export interface organizationDiscoveryNS {
                 message: string;
             };
         };
-        enableEmailDomainBasedSelfRegistration: {
-            error: {
-                description: string;
-                message: string;
-            };
-            success: {
-                description: string;
-                message: string;
-            };
-        };
-        disableEmailDomainBasedSelfRegistration: {
-            error: {
-                description: string;
-                message: string;
-            };
-            success: {
-                description: string;
-                message: string;
-            };
-        };
     };
     placeholders: {
         emptyList: {
@@ -191,11 +171,6 @@ export interface organizationDiscoveryNS {
             title: string;
             subtitles: string;
         };
-    };
-    selfRegistration: {
-        label: string;
-        labelHint: string;
-        message: string;
     };
     title: string;
 }

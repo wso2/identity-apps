@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
 import { AppConstants, history } from "@wso2is/admin.core.v1";
 import { updateValidationConfigData, useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import {

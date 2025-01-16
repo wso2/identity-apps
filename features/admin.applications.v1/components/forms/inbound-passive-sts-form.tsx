@@ -27,14 +27,12 @@ import { Button, Grid } from "semantic-ui-react";
 import {
     ApplicationInterface,
     CertificateInterface,
-    CertificateTypeInterface
-} from "../../models/application";
-import {
+    CertificateTypeInterface,
     PassiveStsConfigurationInterface,
     SupportedAuthProtocolTypes
-} from "../../models/application-inbound";
-import { CertificateFormFieldModal } from "../modals/certificate-form-field-modal";
-import { ApplicationCertificateWrapper } from "../settings/certificate/application-certificate-wrapper";
+} from "../../models";
+import { CertificateFormFieldModal } from "../modals";
+import { ApplicationCertificateWrapper } from "../settings/certificate";
 
 /**
  * Proptypes for the inbound Passive Sts form component.

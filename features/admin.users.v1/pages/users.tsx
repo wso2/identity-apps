@@ -46,7 +46,6 @@ import {
     useServerConfigs
 } from "@wso2is/admin.server-configurations.v1";
 import { useUserStores } from "@wso2is/admin.userstores.v1/api";
-import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
 import {
     UserStoreItem,
     UserStoreListItem,
@@ -265,7 +264,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
                         if (!isDisabled) {
                             const storeOption: UserStoreItem = {
-                                disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,
                                 key: index,
                                 text: store.name,
                                 value: store.name
@@ -1022,7 +1020,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     <DocumentationLink
                         link={ getLink("manage.users.learnMore") }
                     >
-                        { t("common:learnMore") }
+                        { t("extensions:common.learnMore") }
                     </DocumentationLink>
                 </>
             ) }

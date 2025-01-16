@@ -58,7 +58,6 @@
 <%@ page import="java.io.UnsupportedEncodingException" %>
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
-<jsp:directive.include file="plugins/basicauth-extensions.jsp"/>
 
 <script>
     function goBack() {

@@ -109,10 +109,6 @@ interface BrandingPreferenceTabsInterface extends IdentifiableComponentInterface
      * On preview resize callback.
      */
     onPreviewResize: (width: number) => void;
-    /**
-     * Name of the application
-     */
-    appName?: string;
 }
 
 /**
@@ -134,7 +130,6 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
         isSplitView,
         isUpdating,
         readOnly,
-        appName,
         onSubmit,
         onLayoutChange,
         onPreviewResize
@@ -280,7 +275,6 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                         onLayoutChange(values);
                     } }
                     readOnly={ readOnly }
-                    appName={ appName }
                     data-componentid="branding-preference-design-form"
                 />
             </Segment>

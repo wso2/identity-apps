@@ -28,15 +28,7 @@ export interface AgentConnectionInterface {
     }
 }
 
-export interface RegenerateTokenRequestPayloadInterface {
+export interface RegenerateTokenInterface {
     existingTokenId: string;
-    userStoreId?: string;
+    userStoreId: string;
 }
-
-/**
- * Type of generate token response.
- */
-export interface GenerateTokenResponseInterface {
-    tokenId: string;
-    token: string;
-};

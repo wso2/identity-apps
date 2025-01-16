@@ -178,9 +178,6 @@
                 {% endfor %}
                 {% endif %}
         },
-        {% if user_store.properties.DomainName is defined %}
-        "primaryUserStoreDomainName": "{{ user_store.properties.DomainName }}",
-        {% endif %}
         {% if identity_mgt.user_claim_update.enable_multiple_emails_and_mobile_numbers is defined %}
         "isMultipleEmailsAndMobileNumbersEnabled": {{ identity_mgt.user_claim_update.enable_multiple_emails_and_mobile_numbers }},
         {% endif %}

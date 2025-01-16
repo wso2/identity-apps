@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { RolesResourceEndpointsInterface } from "../models/endpoints";
+import { RolesResourceEndpointsInterface } from "../models";
 
 /**
  * Get the resource endpoints for the Role Management feature.

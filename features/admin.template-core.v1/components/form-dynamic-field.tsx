@@ -18,24 +18,15 @@
 
 import { getCertificateIllustrations } from "@wso2is/admin.core.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import {
-    CheckboxFieldAdapter,
-    FilePickerAdapter,
-    FinalFormField,
-    FormApi,
-    SelectFieldAdapter,
-    TextFieldAdapter
-} from "@wso2is/form";
+import { CheckboxFieldAdapter, FilePickerAdapter, FinalFormField, FormApi, TextFieldAdapter } from "@wso2is/form";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Icon } from "semantic-ui-react";
 import {
-    DynamicDropdownFieldInterface,
     DynamicFieldInterface,
     DynamicFilePickerFieldInterface,
     DynamicInputFieldTypes
 } from "../models/dynamic-fields";
-import "./form-dynamic-field.scss";
 
 /**
  * Prop types for the dynamic input fields.
@@ -147,38 +138,6 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                             ) : null
                         }
                     />
-                );
-            case DynamicInputFieldTypes.SELECT:
-                return (
-                    <div className="dynamic-template-selection-field">
-                        <FinalFormField
-                            fullWidth
-                            FormControlProps={ {
-                                margin: "dense"
-                            } }
-                            MenuProps={ {
-                                className: "dynamic-template-selection-field-dropdown"
-                            } }
-                            aria-label={ field?.["aria-label"] }
-                            data-componentid={ field?.dataComponentId }
-                            name={ field?.name }
-                            type={ "dropdown" }
-                            displayEmpty={ true }
-                            label={ field?.label }
-                            placeholder={ field?.placeholder }
-                            component={ SelectFieldAdapter }
-                            readOnly={ readOnly || field?.readOnly }
-                            required={ field?.required }
-                            options={ (field as DynamicDropdownFieldInterface)?.options }
-                            helperText={
-                                field?.helperText ? (
-                                    <Hint compact>
-                                        { field?.helperText }
-                                    </Hint>
-                                ) : null
-                            }
-                        />
-                    </div>
                 );
             case DynamicInputFieldTypes.FILE:
                 return (

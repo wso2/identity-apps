@@ -24,7 +24,7 @@ import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Card, Divider, Grid } from "semantic-ui-react";
 import { getSAMLModeIcons } from "../../../configs/ui";
-import { SAMLConfigModes } from "../../../models/application-inbound";
+import { SAMLConfigModes } from "../../../models";
 import { ApplicationManagementUtils } from "../../../utils/application-management-utils";
 
 /**

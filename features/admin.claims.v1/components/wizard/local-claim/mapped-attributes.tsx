@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,7 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 import { AppState } from "@wso2is/admin.core.v1";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
@@ -66,8 +65,6 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
 
     const [ userStore, setUserStore ] = useState<UserStoreListItem[]>([]);
     const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
 
     const { t } = useTranslation();
 
@@ -78,8 +75,8 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
             userstore.push({
                 description: "",
                 enabled: true,
-                id: primaryUserStoreDomainName,
-                name: primaryUserStoreDomainName,
+                id: "PRIMARY",
+                name: "PRIMARY",
                 self: ""
             });
         }

@@ -687,12 +687,7 @@ const getThemeConfigs = (theme: string) => {
         theme
     );
     const files: string[] = fs.readdirSync(THEME_DIR);
-
-    const ltrFiles: string[] = files.filter(
-        (file: string) => !file.includes(".rtl.") && file.endsWith(".min.css")
-    );
-
-    const file: string = ltrFiles.length > 0 ? ltrFiles[0] : null;
+    const file: string = files ? files.filter((file: string) => file.endsWith(".min.css"))[0] : null;
 
     return {
         styleSheetHash: file ? file.split(".")[1] : null

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,6 +24,8 @@ export class UserstoreConstants {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
+     *
+     * @hideconstructor
      */
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
@@ -31,12 +33,24 @@ export class UserstoreConstants {
     // API errors
     public static readonly USERSTORES_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR: string = "Received an invalid " +
         "status code while retrieving userstores.";
-
     public static readonly USERSTORES_FETCH_REQUEST_ERROR: string = "An error occurred while fetching the " +
         "userstores.";
 
     /**
+     * Primary user store identifier.
+     *
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly PRIMARY_USER_STORE: string = "PRIMARY";
+
+    /**
      * Customer user store identifier.
+     *
+     * @constant
+     * @type {string}
+     * @default
      */
     public static readonly CUSTOMER_USER_STORE_MAPPING: string = "Customer";
 }

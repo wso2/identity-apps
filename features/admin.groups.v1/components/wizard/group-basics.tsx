@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppState, SharedUserStoreConstants, SharedUserStoreUtils, UserStoreDetails } from "@wso2is/admin.core.v1";
+import { SharedUserStoreConstants, SharedUserStoreUtils, UserStoreDetails } from "@wso2is/admin.core.v1";
 import { groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { RootOnlyComponent } from "@wso2is/admin.organizations.v1/components/root-only-component";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -25,17 +25,15 @@ import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/consta
 import { UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
 import { AlertLevels, IdentifiableComponentInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { StringUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Code, Hint } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, Grid, GridColumn, GridRow } from "semantic-ui-react";
-import { searchGroupList } from "../../api";
-import { CreateGroupFormData, SearchGroupInterface } from "../../models/groups";
+import { CreateGroupFormData, SearchGroupInterface, searchGroupList } from "../..";
 
 /**
  * Interface to capture group basics props.
@@ -65,9 +63,6 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
@@ -105,7 +100,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
         let userStoreRegEx: string = "";
 
-        if (userStore && !StringUtils.isEqualCaseInsensitive(userStore, primaryUserStoreDomainName)) {
+        if (userStore && userStore !== SharedUserStoreConstants.PRIMARY_USER_STORE.toLocaleLowerCase()) {
             await SharedUserStoreUtils.getUserStoreRegEx(userStore,
                 SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
                 .then((response: string) => {

@@ -108,18 +108,7 @@ export class ClaimManagementConstants {
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE_USER"),
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"),
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM_SCHEMAS_CORE")
-    ];
-
-    public static readonly SYSTEM_DIALECTS: string[] = [
-        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OPENID_NET"),
-        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("LOCAL"),
-        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OIDC"),
-        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE"),
-        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_CORE_USER"),
-        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_ENT_USER"),
-        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM_SCHEMAS_CORE"),
-        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP")
-    ];
+    ]
 
     public static readonly CUSTOM_MAPPING: string = SCIMConfigs.custom;
 
@@ -186,57 +175,22 @@ export class ClaimManagementConstants {
     public static readonly APPLICATION_ROLES_CLAIM_URI: string = "http://wso2.org/claims/applicationRoles";
     public static readonly LOCATION_CLAIM_URI: string = "http://wso2.org/claims/location";
     public static readonly EMAIL_CLAIM_URI: string = "http://wso2.org/claims/emailaddress";
-    public static readonly EMAIL_ADDRESSES_CLAIM_URI: string = "http://wso2.org/claims/emailAddresses";
-    public static readonly VERIFIED_EMAIL_ADDRESSES_CLAIM_URI: string = "http://wso2.org/claims/verifiedEmailAddresses";
     public static readonly MOBILE_CLAIM_URI: string = "http://wso2.org/claims/mobile";
-    public static readonly MOBILE_NUMBERS_CLAIM_URI: string = "http://wso2.org/claims/mobileNumbers";
-    public static readonly VERIFIED_MOBILE_NUMBERS_CLAIM_URI: string = "http://wso2.org/claims/verifiedMobileNumbers";
 
     public static readonly GROUPS_CLAIM_NAME: string = "groups";
     public static readonly ROLES_CLAIM_NAME: string = "roles";
     public static readonly APPLICATION_ROLES_CLAIM_NAME: string = "application_roles";
 
     public static readonly EMPTY_STRING: string = "";
-    public static readonly EXCLUDED_USER_STORES_CLAIM_PROPERTY: string = "ExcludedUserStores";
-
-    public static readonly USER_STORE_CONFIG_SUPPORTED_CLAIMS: string[] = [
-        ClaimManagementConstants.EMAIL_ADDRESSES_CLAIM_URI,
-        ClaimManagementConstants.VERIFIED_EMAIL_ADDRESSES_CLAIM_URI,
-        ClaimManagementConstants.MOBILE_NUMBERS_CLAIM_URI,
-        ClaimManagementConstants.VERIFIED_MOBILE_NUMBERS_CLAIM_URI
-    ];
-
-    public static readonly SYSTEM_CLAIM_PROPERTY_NAME: string = "isSystemClaim";
-
-    /**
-     * Claim property name for uniqueness validation scope.
-     */
-    public static readonly UNIQUENESS_SCOPE_PROPERTY_NAME: string = "uniquenessScope";
-
-    /**
-     * List of restricted property keys that cannot be used in claim properties.
-     */
-    public static readonly RESTRICTED_PROPERTY_KEYS: string[] = [ "isUnique" ];
 
     /**
      * The error code that is returned when there is no item in the list
      */
-    public static readonly RESOURCE_NOT_FOUND_ERROR_CODE: string = "CMT-50017";
+     public static readonly RESOURCE_NOT_FOUND_ERROR_CODE: string = "CMT-50017";
 
-    /**
+     /**
      * The character length of the regex field.
      */
-    public static readonly REGEX_FIELD_MAX_LENGTH: number = 255;
-    public static readonly REGEX_FIELD_MIN_LENGTH: number = 3;
-}
-
-/**
- * Unique identifiers for claim edit tabs.
- *
- * @readonly
- */
-export enum ClaimTabIDs {
-    GENERAL = "general",
-    ATTRIBUTE_MAPPINGS = "attribute-mappings",
-    ADDITIONAL_PROPERTIES = "additional-properties"
+     public static readonly REGEX_FIELD_MAX_LENGTH: number = 255;
+     public static readonly REGEX_FIELD_MIN_LENGTH: number = 3;
 }

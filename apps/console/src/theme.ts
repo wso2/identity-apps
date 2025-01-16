@@ -110,28 +110,6 @@ const Theme: OxygenTheme = extendTheme({
                     fontFamily: "Gilmer, sans-serif"
                 }
             }
-        },
-        MuiStepConnector: {
-            styleOverrides: {
-                root: {
-                    marginLeft: "16px"
-                }
-            }
-        },
-        MuiStepContent: {
-            styleOverrides: {
-                root: {
-                    marginLeft: "16px"
-                }
-            }
-        },
-        MuiStepIcon: {
-            styleOverrides: {
-                root: {
-                    height: "30px",
-                    width: "30px"
-                }
-            }
         }
     },
     customComponents: {

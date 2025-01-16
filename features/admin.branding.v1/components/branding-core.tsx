@@ -746,7 +746,6 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                 onPreviewResize={ (width: number): void => {
                     setCurrentWidth(width);
                 } }
-                appName= { resolvedName }
             />
             <ConfirmationModal
                 onClose={ (): void => setShowBrandingPublishStatusConfirmationModal(false) }

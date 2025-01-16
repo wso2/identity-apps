@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { GroupsResourceEndpointsInterface } from "../models/endpoints";
+import { GroupsResourceEndpointsInterface } from "../models";
 
 /**
  * Get the resource endpoints for the Group Management feature.
  *
- * @param serverHost - Server Host.
- * @returns the resource endpoints
+ * @param {string} serverHost - Server Host.
+ * @return {GroupsResourceEndpointsInterface}
  */
 export const getGroupsResourceEndpoints = (serverHost: string): GroupsResourceEndpointsInterface => {
     return {

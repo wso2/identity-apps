@@ -27,7 +27,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import { ApplicationManagementConstants } from "../constants/application-management";
+import { ApplicationManagementConstants } from "../constants";
 import {
     AdaptiveAuthTemplateCategoryListItemInterface,
     AdaptiveAuthTemplatesListInterface,
@@ -36,17 +36,15 @@ import {
     ApplicationListInterface,
     ApplicationTemplateInterface,
     ApplicationTemplateListInterface,
+    AuthProtocolMetaListItemInterface,
     MainApplicationInterface,
     MyAccountPortalStatusInterface,
     OIDCApplicationConfigurationInterface,
-    SAMLApplicationConfigurationInterface
-} from "../models/application";
-import {
-    AuthProtocolMetaListItemInterface,
     OIDCDataInterface,
-    SupportedAuthProtocolTypes
-} from "../models/application-inbound";
-import { UpdateClaimConfiguration  } from "../models/endpoints";
+    SAMLApplicationConfigurationInterface,
+    SupportedAuthProtocolTypes,
+    UpdateClaimConfiguration
+} from "../models";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 
 /**

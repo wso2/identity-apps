@@ -47,7 +47,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch as ReduxDispatch } from "redux";
 import { Header, Segment } from "semantic-ui-react";
 import { GroupBasics } from "./group-basics";
-import { GroupsMemberInterface } from "../../models/groups";
+import { GroupsMemberInterface } from "../../models";
 
 /**
  * Proptypes for the application consents list component.

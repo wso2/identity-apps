@@ -21,14 +21,14 @@ import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
-} from "@wso2is/admin.applications.v1/components/settings/attribute-management/attribute-settings";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
+} from "@wso2is/admin.applications.v1/components/settings";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
 import {
     ApplicationInterface,
     ApplicationTabTypes,
+    SupportedAuthProtocolTypes,
     additionalSpProperty
-} from "@wso2is/admin.applications.v1/models/application";
-import { SupportedAuthProtocolTypes } from "@wso2is/admin.applications.v1/models/application-inbound";
+} from "@wso2is/admin.applications.v1/models";
 import getTryItClientId from "@wso2is/admin.applications.v1/utils/get-try-it-client-id";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1";

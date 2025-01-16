@@ -27,12 +27,10 @@ import { InboundWSTrustForm } from "./inbound-ws-trust-form";
 import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
-    CertificateInterface
-} from "../../models/application";
-import {
+    CertificateInterface,
     SAMLConfigModes,
     SupportedAuthProtocolTypes
-} from "../../models/application-inbound";
+} from "../../models";
 
 /**
  * Proptypes for the inbound form factory component.

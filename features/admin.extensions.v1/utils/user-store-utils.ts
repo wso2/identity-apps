@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,6 @@
 import { getAUserStore } from "@wso2is/admin.core.v1/api";
 import { SharedUserStoreConstants } from "@wso2is/admin.core.v1/constants";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
 import { AxiosResponse } from "axios";
 
@@ -27,6 +26,8 @@ import { AxiosResponse } from "axios";
  * Utility class for common user store operations.
  */
 export class UserStoreUtils {
+
+    private static primaryUserStore:string = "PRIMARY";
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -73,10 +74,7 @@ export class UserStoreUtils {
         const ids: string[] = await UserStoreUtils.getUserStoreIds(userstores) as string[];
         const readOnlyUserStores: string[] = [];
 
-        const primaryUserStoreDomainName: string = window[ "AppUtils" ]
-            ?.getConfig()?.ui?.primaryUserStoreDomainName?.toUpperCase() ?? PRIMARY_USERSTORE;
-
-        readOnlyUserStores.push(primaryUserStoreDomainName);
+        readOnlyUserStores.push(UserStoreUtils.primaryUserStore);
 
         ids.forEach((id: string) => {
             getAUserStore(id)

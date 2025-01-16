@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -36,6 +36,7 @@ import {
 import { getUserDetails, updateUserInfo } from "@wso2is/admin.users.v1/api/users";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
+import { UserstoreConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
 import {
@@ -53,8 +54,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { Icon } from "semantic-ui-react";
-import { EditGuestUser } from "../components/guests/edit-guest-user";
-import { AdministratorConstants } from "../constants/users";
+import { EditGuestUser } from "../components";
+import { AdministratorConstants } from "../constants";
 
 /**
  * Admin User Edit page.
@@ -69,8 +70,6 @@ const AdministratorEditPage = (): ReactElement => {
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ user, setUserProfile ] = useState<ProfileInfoInterface>(emptyProfileInfo);
     const [ isUserDetailsRequestLoading, setIsUserDetailsRequestLoading ] = useState<boolean>(false);
@@ -93,7 +92,7 @@ const AdministratorEditPage = (): ReactElement => {
 
         const userStore: string = user?.userName?.split("/").length > 1
             ? user?.userName?.split("/")[ 0 ]
-            : primaryUserStoreDomainName;
+            : UserstoreConstants.PRIMARY_USER_STORE;
 
         if (!isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
             || readOnlyUserStoresList?.includes(userStore?.toString())

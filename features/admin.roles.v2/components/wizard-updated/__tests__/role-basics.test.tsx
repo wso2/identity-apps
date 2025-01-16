@@ -26,9 +26,6 @@ jest.mock("@wso2is/admin.applications.v1/api/application", () => ({
             applications: [
                 {
                     "access": "WRITE",
-                    "advancedConfigurations": {
-                        "fragment": false
-                    },
                     "associatedRoles": {
                         "allowedAudience": "ORGANIZATION"
                     },

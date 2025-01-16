@@ -18,7 +18,7 @@
 
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
-import { AssociatedRolesInterface } from "@wso2is/admin.roles.v2/models/roles";
+import { AssociatedRolesInterface } from "@wso2is/admin.roles.v2/models";
 import { LinkInterface } from "@wso2is/core/models";
 import {
     OIDCDataInterface,
@@ -26,7 +26,7 @@ import {
     SAML2ConfigurationInterface,
     WSTrustConfigurationInterface
 } from "./application-inbound";
-import { TemplateContentInterface } from "../data/application-templates/application-templates-config";
+import { TemplateContentInterface } from "../data/application-templates";
 
 /**
  *  Captures the basic details in the applications.

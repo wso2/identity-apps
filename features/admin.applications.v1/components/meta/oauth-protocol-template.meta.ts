@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,16 +16,13 @@
  * under the License.
  */
 
-import { ApplicationManagementConstants } from "../../constants/application-management";
 import {
     ApplicationTemplateInterface,
-    ApplicationTemplateListItemInterface
-} from "../../models/application";
-
-import {
+    ApplicationTemplateListItemInterface,
     DefaultProtocolTemplate,
     State
-} from "../../models/application-inbound";
+} from "../../models";
+import {ApplicationManagementConstants} from "../../constants";
 
 export const OAuthProtocolTemplateItem: ApplicationTemplateListItemInterface = {
     authenticationProtocol: "oidc",

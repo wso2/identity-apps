@@ -20,7 +20,7 @@ import useRequest, { RequestErrorInterface, RequestResultInterface } from "@wso2
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosRequestConfig } from "axios";
-import { OIDCDataInterface } from "../models/application-inbound";
+import { OIDCDataInterface } from "../models";
 
 /**
  * Hook to get the protocol configurations of an application.

@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
 import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
 import { AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -97,6 +97,7 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
     const [ hideAuthorizeAPIResourceButton, setHideAuthorizeAPIResourceButton ] = useState<boolean>(true);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const path: string[] = history.location.pathname.split("/");
     const appId: string = path[path.length - 1].split("#")[0];
@@ -180,13 +181,21 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
         }
     }, [ isUpdateData ]);
 
-    const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
+    /**
+     * Check scopes available for update API resources.
+     *
+     * @returns `true` if scopes are available for update API resources.
+     */
+    const isScopesAvailableForUpdate = (): boolean => {
+        return hasRequiredScopes(featureConfig?.applications,
+            featureConfig?.applications?.scopes?.update, allowedScopes);
+    };
 
     /**
      * Set hide authorize API resource button.
      */
     useEffect(() => {
-        const isScopesAvailable: boolean = hasApplicationUpdatePermissions;
+        const isScopesAvailable: boolean = isScopesAvailableForUpdate();
         const hideAuthorizeAPIResourceButton: boolean = !isScopesAvailable
            || allAPIResourcesListData?.apiResources?.length === 0
            || subscribedAPIResourcesListData?.length === 0;
@@ -315,7 +324,7 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
                                 <DocumentationLink
                                     link={ getLink("develop.applications.apiAuthorization.learnMore") }
                                 >
-                                    { t("common:learnMore") }
+                                    { t("extensions:common.learnMore") }
                                 </DocumentationLink>
                             </Heading>
                         </Grid.Column>
@@ -348,7 +357,7 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
                     subscribedAPIResourcesListData={ subscribedAPIResourcesListData }
                     subscribedAPIResourcesFetchRequestError=
                         { subscribedAPIResourcesFetchRequestError }
-                    isScopesAvailableForUpdate={ hasApplicationUpdatePermissions }
+                    isScopesAvailableForUpdate={ isScopesAvailableForUpdate() }
                     isShownPlaceholder={ isShownPlaceholder }
                     setRemoveSubscribedAPIResource={ setRemoveSubscribedAPIResource }
                     bulkChangeAllAuthorizedScopes={ bulkChangeAllAuthorizedScopes }

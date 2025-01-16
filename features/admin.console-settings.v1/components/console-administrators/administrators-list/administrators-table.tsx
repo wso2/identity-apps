@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,6 @@
  */
 
 import Chip from "@oxygen-ui/react/Chip";
-import { useRequiredScopes } from "@wso2is/access-control";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -32,7 +31,8 @@ import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { UserListInterface } from "@wso2is/admin.users.v1/models";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
-import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
+import { UserstoreConstants } from "@wso2is/core/constants";
+import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
@@ -171,12 +171,8 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
         return state?.config?.ui?.features?.users;
     });
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
-
-    const hasUserUpdatePermission: boolean = useRequiredScopes(featureConfig?.scopes?.update);
-    const hasUserDeletePermission: boolean = useRequiredScopes(featureConfig?.scopes?.delete);
 
     /**
      * Resolves data table columns.
@@ -342,10 +338,10 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                 icon: (user: UserBasicInterface): SemanticICONS => {
                     const userStore: string = user?.userName?.split("/").length > 1
                         ? user?.userName?.split("/")[0]
-                        : primaryUserStoreDomainName;
+                        : "PRIMARY";
 
                     return (
-                        !hasUserUpdatePermission
+                        !hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes)
                     || !isFeatureEnabled(featureConfig,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString()))
@@ -359,10 +355,10 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                 popupText: (user: UserBasicInterface): string => {
                     const userStore: string = user?.userName?.split("/").length > 1
                         ? user?.userName?.split("/")[0]
-                        : primaryUserStoreDomainName;
+                        : "PRIMARY";
 
                     return (
-                        !hasUserUpdatePermission
+                        !hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes)
                     || !isFeatureEnabled(featureConfig,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString()))
@@ -378,12 +374,12 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
             hidden: (user: UserBasicInterface): boolean => {
                 const userStore: string = user?.userName?.split("/").length > 1
                     ? user?.userName?.split("/")[0]
-                    : primaryUserStoreDomainName;
+                    : UserstoreConstants.PRIMARY_USER_STORE;
 
                 return !isFeatureEnabled(featureConfig,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
                     || isPrivilegedUser
-                    || !hasUserDeletePermission
+                    || !hasRequiredScopes(featureConfig, featureConfig?.scopes?.delete, allowedScopes)
                     || readOnlyUserStores?.includes(userStore.toString())
                     || (getUserNameWithoutDomain(user?.userName) === serverConfigs?.realmConfig?.adminUser &&
                             !isSubOrganization())

@@ -245,7 +245,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         <DocumentationLink
                             link={ getLink("manage.userStores.attributeMappings.learnMore") }
                         >
-                            { t("common:learnMore") }
+                            { t("extensions:common.learnMore") }
                         </DocumentationLink>
                     </>
                 ) }

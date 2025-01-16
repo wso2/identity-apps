@@ -21,7 +21,7 @@ import CustomApplicationTemplate from
     "@wso2is/admin.applications.v1/data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationTemplateListItemInterface
-} from "@wso2is/admin.applications.v1/models/application";
+} from "@wso2is/admin.applications.v1/models";
 import {
     ApplicationTemplateManagementUtils
 } from "@wso2is/admin.applications.v1/utils/application-template-management-utils";

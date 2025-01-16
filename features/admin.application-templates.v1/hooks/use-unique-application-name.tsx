@@ -16,10 +16,8 @@
  * under the License.
  */
 
-import { getApplicationList } from "@wso2is/admin.applications.v1/api/application";
-import {
-    ApplicationListInterface, ApplicationListItemInterface
-} from "@wso2is/admin.applications.v1/models/application";
+import { getApplicationList } from "@wso2is/admin.applications.v1/api";
+import { ApplicationListInterface, ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models";
 import set from "lodash-es/set";
 import { MutableRefObject, useRef } from "react";
 

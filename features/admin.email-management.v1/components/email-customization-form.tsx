@@ -175,7 +175,7 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                                             <DocumentationLink
                                                 link={ getLink("develop.emailCustomization.form.emailBody.learnMore") }
                                             >
-                                                { t("common:learnMore") }
+                                                { t("extensions:common.learnMore") }
                                             </DocumentationLink>
                                         </>
                                     ) }

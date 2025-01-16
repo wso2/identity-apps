@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { getApplicationList } from "@wso2is/admin.applications.v1/api/application";
+import { getApplicationList } from "@wso2is/admin.applications.v1/api";
 import {
     ApplicationInterface,
     ApplicationListInterface,
     InboundProtocolListItemInterface,
     URLFragmentTypes
-} from "@wso2is/admin.applications.v1/models/application";
+} from "@wso2is/admin.applications.v1/models";
 import { EventPublisher, history } from "@wso2is/admin.core.v1";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -30,7 +30,6 @@ import { GenericIcon, GenericIconProps, Heading, PageHeader } from "@wso2is/reac
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import { Card, Grid, Radio } from "semantic-ui-react";
 import { QuickStartModes } from "../models";
 
@@ -54,8 +53,8 @@ const QUICK_START_TAB_INDEX: number = 0;
  * Quick start pane overview Component.
  * TODO: Add localization support. (https://github.com/wso2-enterprise/asgardeo-product/issues/209)
  *
- * @param props - Props injected to the component.
- * @returns Quick start pane overview Component.
+ * @param {QuickStartPanelOverviewPropsInterface} props - Props injected to the component.
+ * @return {React.ReactElement}
  */
 export const QuickStartPanelOverview: FunctionComponent<QuickStartPanelOverviewPropsInterface> = (
     props: QuickStartPanelOverviewPropsInterface
@@ -72,7 +71,7 @@ export const QuickStartPanelOverview: FunctionComponent<QuickStartPanelOverviewP
 
     const { t } = useTranslation();
 
-    const dispatch: Dispatch = useDispatch();
+    const dispatch = useDispatch();
 
     const [ appList, setAppList ] = useState<ApplicationListInterface>(undefined);
 
@@ -82,11 +81,11 @@ export const QuickStartPanelOverview: FunctionComponent<QuickStartPanelOverviewP
 
     useEffect(() => {
         getApplicationList(null, null, null)
-            .then((response: ApplicationListInterface) => {
+            .then((response) => {
                 setAppList(response);
 
             })
-            .catch((error: any) => {
+            .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,

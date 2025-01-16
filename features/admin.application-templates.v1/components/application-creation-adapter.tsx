@@ -18,8 +18,8 @@
 
 import { MinimalAppCreateWizard } from
     "@wso2is/admin.applications.v1/components/wizard/minimal-application-create-wizard";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
-import { ApplicationTemplateListItemInterface } from "@wso2is/admin.applications.v1/models/application";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
+import { ApplicationTemplateListItemInterface } from "@wso2is/admin.applications.v1/models";
 import { ApplicationTemplateManagementUtils } from
     "@wso2is/admin.applications.v1/utils/application-template-management-utils";
 import { AppState } from "@wso2is/admin.core.v1";

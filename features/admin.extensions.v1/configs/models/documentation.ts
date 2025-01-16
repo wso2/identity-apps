@@ -26,13 +26,6 @@ interface AccountRecoveryDocumentationLinksInterface {
 }
 
 /**
- * Interface for the administrators documentation structure.
- */
-interface AdministratorsDocumentationLinksInterface {
-    learnMore: string;
-}
-
-/**
  * Interface for the login security section documentation structure.
  */
 interface LoginSecurityDocumentationLinksInterface {
@@ -623,10 +616,6 @@ export interface DocumentationLinksExtensionInterface {
          * Documentation links for account recovery elements.
          */
         accountRecovery: AccountRecoveryDocumentationLinksInterface;
-        /**
-         * Documentation links for console administrator section elements.
-         */
-        administrators: AdministratorsDocumentationLinksInterface;
         /**
          * Documentation links for login security elements.
          */

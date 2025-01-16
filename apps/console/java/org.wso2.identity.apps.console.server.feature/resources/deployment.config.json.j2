@@ -207,9 +207,6 @@
         {% if console.ui.show_app_switch_button is defined %}
         "showAppSwitchButton": {{ console.ui.show_app_switch_button }},
         {% endif %}
-        {% if identity_mgt.user_claim_update.enable_multiple_emails_and_mobile_numbers is defined %}
-        "isMultipleEmailsAndMobileNumbersEnabled": {{ identity_mgt.user_claim_update.enable_multiple_emails_and_mobile_numbers }},
-        {% endif %}
         "features": {
             {% if console.extensions.features is defined %}
             {% for name, feature in console.extensions.features.items() %}
@@ -267,37 +264,6 @@
                         "read": [],
                         "update": [],
                         "delete": []
-                    {% endif %}
-                }
-            },
-            {% endif %}
-            {% if console.internal_notification_sending is defined %}
-            "internalNotificationSending": {
-                "disabledFeatures": [
-                    {% if console.internal_notification_sending.disabled_features is defined %}
-                    {% for feature in console.internal_notification_sending.disabled_features %}
-                    "{{ feature }}"{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% endif %}
-                ],
-                "enabled": {% if console.internal_notification_sending.enabled is defined %} {{ console.internal_notification_sending.enabled }},
-                {% else %} true,
-                {% endif %}
-                "scopes": {
-                    {% if console.internal_notification_sending.scopes is defined %}
-                    {% for operation, scopes in console.internal_notification_sending.scopes.items() %}
-                    "{{ operation }}": [
-                        {% for scope in scopes %}
-                            "{{ scope }}"{{ "," if not loop.last }}
-                        {% endfor %}
-                    ]{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% else %}
-                        "create": [],
-                        "read": [],
-                        "update": [],
-                        "delete": [],
-                        "feature": []
                     {% endif %}
                 }
             },
@@ -1012,36 +978,6 @@
                 }
             },
             {% endif %}
-            {% if console.policyAdministration is defined %}
-            "policyAdministration": {
-                "disabledFeatures": [
-                    {% if console.policyAdministration.disabled_features is defined %}
-                    {% for feature in console.policyAdministration.disabled_features %}
-                    "{{ feature }}"{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% endif %}
-                ],
-                "enabled": {% if console.policyAdministration.enabled is defined %} {{ console.policyAdministration.enabled }},
-                {% else %} true,
-                {% endif %}
-                "scopes": {
-                    {% if console.policyAdministration.scopes is defined %}
-                    {% for operation, scopes in console.policyAdministration.scopes.items() %}
-                    "{{ operation }}": [
-                        {% for scope in scopes %}
-                            "{{ scope }}"{{ "," if not loop.last }}
-                        {% endfor %}
-                    ]{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% else %}
-                        "create": [],
-                        "read": [],
-                        "update": [],
-                        "delete": []
-                    {% endif %}
-                }
-            },
-            {% endif %}
             {% if console.identity_providers is defined %}
             "identityProviders": {
                 "disabledFeatures": [
@@ -1363,37 +1299,6 @@
                     {% endfor %}
                     {% endif %}
                 ]
-            },
-            {% endif %}
-            {% if console.rule_based_password_expiry is defined %}
-            "ruleBasedPasswordExpiry": {
-                "disabledFeatures": [
-                    {% if console.rule_based_password_expiry.disabled_features is defined %}
-                    {% for feature in console.rule_based_password_expiry.disabled_features %}
-                    "{{ feature }}"{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% endif %}
-                ],
-                "enabled": {% if console.rule_based_password_expiry.enabled is defined %} {{ console.rule_based_password_expiry.enabled }},
-                {% else %} true,
-                {% endif %}
-                "scopes": {
-                    {% if console.rule_based_password_expiry.scopes is defined %}
-                    {% for operation, scopes in console.rule_based_password_expiry.scopes.items() %}
-                    "{{ operation }}": [
-                        {% for scope in scopes %}
-                            "{{ scope }}"{{ "," if not loop.last }}
-                        {% endfor %}
-                    ]{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% else %}
-                        "create": [],
-                        "read": [],
-                        "feature": [],
-                        "update": [],
-                        "delete": []
-                    {% endif %}
-                }
             },
             {% endif %}
             {% if console.server is defined %}
@@ -1848,9 +1753,6 @@
                 {% endfor %}
             {% endif %}
         ],
-        {% if user_store.properties.DomainName is defined %}
-        "primaryUserStoreDomainName": "{{ user_store.properties.DomainName }}",
-        {% endif %}
         "hiddenUserStores": [
             {% if console.ui.hidden_user_stores is defined %}
                 {% for value in console.ui.hidden_user_stores %}
@@ -1896,9 +1798,6 @@
         {% if console.ui.is_marketing_consent_banner_enabled is defined %}
         "isMarketingConsentBannerEnabled": {{ console.ui.is_marketing_consent_banner_enabled }},
         {% endif %}
-        {% if identity_mgt.user_claim_update.uniqueness.enable is defined %}
-        "isClaimUniquenessValidationEnabled": {{ identity_mgt.user_claim_update.uniqueness.enable }},
-        {% endif %}
         {% if oauth.hash_tokens_and_secrets is defined %}
         "isClientSecretHashEnabled": {{ oauth.hash_tokens_and_secrets }},
         {% endif %}
@@ -1942,13 +1841,6 @@
         {% else %}
         "isPasswordInputValidationEnabled": true,
         {% endif %}
-        "passwordPolicyConfigs": {
-            {% if identity_mgt.password_policy.max_password_allowed_length is defined %}
-            "maxPasswordAllowedLength": {{ identity_mgt.password_policy.max_password_allowed_length }}
-            {% else %}
-            "maxPasswordAllowedLength": 64
-            {% endif %}
-        },
         "isSignatureValidationCertificateAliasEnabled": {{ console.applications.ui.certificate_alias_enabled }},
         "listAllAttributeDialects": {{ console.list_all_attribute_dialects }},
         {% if console.enable_identity_claims is defined %}

@@ -23,12 +23,11 @@ import { CopyIcon } from "@oxygen-ui/react-icons";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
-import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
+import { PageLayout } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement
 } from "react";
-import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import ConsoleSettingsTabs from "../components/console-settings-tabs";
 import ConsoleSettingsProvider from "../providers/console-settings-provider";
@@ -52,25 +51,12 @@ const ConsoleSettingsPage: FunctionComponent<ConsoleSettingsPageInterface> = (
 
     const consoleUrl: string = useSelector((state: AppState) => state?.config?.deployment?.clientHost);
 
-    const { t } = useTranslation();
-    const { getLink } = useDocumentation();
-
     return (
         <ConsoleSettingsProvider>
             <PageLayout
                 pageTitle={ "Console Settings" }
                 title={ "Console Settings" }
-                description={ (<>
-                Configure settings related to your Console
-                    <DocumentationLink
-                        link={
-                            getLink("manage.administrators.learnMore")
-                        }
-                        showEmptyLink={ false }
-                    >
-                        { t("common:learnMore") }
-                    </DocumentationLink>
-                </>) }
+                description={ "Configure settings related to your Console" }
                 data-componentid={ `${ componentId }-page-layout` }
                 action={ (
                     <TextField

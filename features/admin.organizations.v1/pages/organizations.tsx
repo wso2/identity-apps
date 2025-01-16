@@ -17,7 +17,7 @@
  */
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -527,7 +527,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         <DocumentationLink
                             link={ getLink("manage.organizations.learnMore") }
                         >
-                            { t("common:learnMore") }
+                            { t("extensions:common.learnMore") }
                         </DocumentationLink>
                     </>
                 ) }

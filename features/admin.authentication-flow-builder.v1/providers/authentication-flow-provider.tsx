@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { useGetAdaptiveAuthTemplates } from "@wso2is/admin.applications.v1/api/application";
+import { useGetAdaptiveAuthTemplates } from "@wso2is/admin.applications.v1/api";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import {
     ApplicationInterface,
