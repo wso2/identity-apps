@@ -494,7 +494,6 @@ export const claims: ClaimsNS = {
                 required: "Required",
                 requiredHint: "If selected, the user must specify a value for this attribute in the profile.",
                 selfRegistration: "Self-Registration"
-
             },
             readOnly: {
                 label: "Make this attribute read-only on the user's profile"
