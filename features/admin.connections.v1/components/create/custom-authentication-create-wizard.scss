@@ -16,8 +16,8 @@
  * under the License.
  */
 
- .form-wrapper {
-    .form-container {
+ .wizard-wrapper {
+    .wizard-container {
         margin-top: 0px;
         margin-bottom: 0px;
     }
@@ -121,6 +121,10 @@
                     margin-bottom: 15px;
                     white-space: normal;
                 }
+            }
+
+            .card-image-container {
+                height: 10px;
             }
         }
         .sub-template-selection-card:first-child {

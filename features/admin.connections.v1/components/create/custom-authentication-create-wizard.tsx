@@ -20,8 +20,6 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@oxygen-ui/react/Box";
 import Divider from "@oxygen-ui/react/Divider";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
-import Skeleton from "@oxygen-ui/react/Skeleton";
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppState, EventPublisher } from "@wso2is/admin.core.v1";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components";
 import { IdentityAppsError } from "@wso2is/core/errors";
@@ -102,7 +100,7 @@ interface CustomAuthenticationCreateWizardProps extends
  * CONFIGURATION - Includes the external endpoint configuration details.
  */
 enum WizardSteps {
-    AUTHENTICATION_TYPE = "Authentication Type", // TODO: update the authentication type image
+    AUTHENTICATION_TYPE = "Authentication Type", // TODO: update the authentication type step icon
     GENERAL_SETTINGS = "General Settings",
     CONFIGURATION = "Configuration"
 }
@@ -112,24 +110,6 @@ interface WizardStepInterface {
     title: string;
     submitCallback: any;
     name: WizardSteps;
-}
-
-/**
- * Prop types for the endpoint configuration form component.
- */
-interface EndpointConfigFormInterface extends IdentifiableComponentInterface {
-    /**
-     * Endpoint's initial values.
-     */
-    initialValues: EndpointConfigFormInterface;
-    /**
-     * Flag for loading state.
-     */
-    isLoading?: boolean;
-    /**
-     * Specifies action creation state.
-     */
-    isCreateFormState: boolean;
 }
 
 type AvailableCustomAuthentications = "external" | "internal" | "two-factor";
@@ -144,7 +124,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         onWizardClose,
         onIDPCreate,
         title,
-        subTitle
+        subTitle,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -172,11 +152,6 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
-
-    const endpointFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state.config.ui.features.actions);
-    const hasActionUpdatePermissions: boolean = useRequiredScopes(endpointFeatureConfig?.scopes?.update);
-    const hasActionCreatePermissions: boolean = useRequiredScopes(endpointFeatureConfig?.scopes?.create);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -211,57 +186,6 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
             identifier: EMPTY_STRING
         }), []);
 
-    // TODO: [Immediate] use the API to get initial endpoint details
-    // const {
-    //     data: action,
-    //     error: actionFetchRequestError,
-    //     isLoading: isActionLoading,
-    //     mutate: mutateAction
-    // } = useGetActionById(actionTypeApiPath, actionId);
-
-    // const endpointInitialValues: EndpointConfigFormInterface = useMemo(() => {
-    //     return {
-    //         authenticationType: action?.endpoint?.authentication?.type.toString(),
-    //         endpointUri: action?.endpoint?.uri,
-    //         id: action?.id,
-    //         name: action?.name
-    //     };
-    // }, [action]); // TODO: add dep
-
-    const endpointInitialValues: EndpointConfigFormPropertyInterface = useMemo(() => {
-        return {
-            authenticationType: "",
-            endpointUri: "",
-            id: ""
-        };
-    }, []);
-
-    /**
-     * The following useEffect is used to set the current Action Authentication Type.
-     */
-    useEffect(() => {
-        if (!initialValues?.identifier) {
-            setIsAuthenticationCreateState(true);
-        } else {
-            // setAuthenticationType(endpointInitialValues.authenticationType as AuthenticationType);
-            setIsAuthenticationUpdateState(false);
-        }
-    }, [ initialValues ]);
-
-    const renderInputAdornmentOfSecret = (showSecret: boolean, onClick: () => void): ReactElement => (
-        <InputAdornment position="end">
-            <Icon
-                link={ true }
-                className="list-icon reset-field-to-default-adornment"
-                size="small"
-                color="grey"
-                name={ !showSecret ? "eye" : "eye slash" }
-                data-componentid={ `${ componentId }-authentication-property-secret1-view-button` }
-                onClick={ onClick }
-            />
-        </InputAdornment>
-    );
-
     const getWizardSteps: () => WizardStepInterface[] = () => {
         return [
             {
@@ -282,6 +206,20 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         ] as WizardStepInterface[];
     };
 
+    const renderInputAdornmentOfSecret = (showSecret: boolean, onClick: () => void): ReactElement => (
+        <InputAdornment position="end">
+            <Icon
+                link={ true }
+                className="list-icon reset-field-to-default-adornment"
+                size="small"
+                color="grey"
+                name={ !showSecret ? "eye" : "eye slash" }
+                data-componentid={ `${ componentId }-authentication-property-secret1-view-button` }
+                onClick={ onClick }
+            />
+        </InputAdornment>
+    );
+
     const renderDimmerOverlay = (): ReactNode => {
         return (
             <Backdrop open={ true }>
@@ -290,7 +228,8 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         );
     };
 
-    // TODO: update this method
+    // NOTE: This method is still under development.
+    // TODO: Update method with correct API configurations and endpoint auth details.
     /**
      * @param values - form values
      * @param form - form instance
@@ -306,15 +245,12 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         // Populate user entered values
         customAuthenticator.name = values?.identifier?.toString();
         customAuthenticator.displayName = values?.displayName?.toString();
-        // TODO: [Immediate] add endpoint details here
+        // TODO: Add endpoint details
         // customAuthenticator.endpoint.uri = values?.uri?.toString();
-
-        // TODO: update the image
-        // customAuthenticator.image = "assets/images/icons/trusted-token-issuer.svg";
 
         setIsSubmitting(true);
 
-        // TODO: [Immediate] API integrations
+        // TODO: Update API integration
         createConnection(customAuthenticator)
             .then((response: AxiosResponse<ConnectionInterface>) => {
                 eventPublisher.publish("connections-finish-adding-connection", {
@@ -403,209 +339,22 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
 
     };
 
-    useEffect (() => {
-    }, [ selectedAuthenticationType ]);
-
-    const handleDropdownChange = (event, data) => { // TODO: [Immediate] make type safe
-        console.log("Data: " + data);
+    /**
+     * This method handles endpoint authentication type dropdown changes.
+     * @param event event associated with the dropdown change.
+     * @param data data changed by the event
+     */
+    const handleDropdownChange = (event, data) => { // TODO: Make type safe
         setSelectedAuthenticationType(data.value);
     };
 
-    const validateForm = (values: EndpointConfigFormPropertyInterface):
-    Partial<EndpointConfigFormPropertyInterface> => { const error: Partial<EndpointConfigFormPropertyInterface> = {};
-
-
-        // TODO: use local - and update with proper local
-        if (!values?.endpointUri) {
-            error.endpointUri = "Empty endpoint URI";
-        }
-        if (URLUtils.isURLValid(values?.endpointUri)) {
-            if (!(URLUtils.isHttpsUrl(values?.endpointUri))) {
-                error.endpointUri = t("actions:fields.endpoint.validations.notHttps");
-            }
-        } else {
-            error.endpointUri = t("actions:fields.endpoint.validations.invalidUrl");
-        }
-
-        if (!selectedAuthenticationType) {
-            error.authenticationType = t("actions:fields.authenticationType.validations.empty");
-        }
-
-        const apiKeyHeaderRegex: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9-.]+$/;
-
-        switch (authenticationType) {
-            case AuthenticationType.BASIC:
-                if (isAuthenticationCreateState || isAuthenticationUpdateState ||
-                    values?.usernameAuthProperty || values?.passwordAuthProperty) {
-                    if (!values?.usernameAuthProperty) {
-                        error.usernameAuthProperty = t("actions:fields.authentication." +
-                            "types.basic.properties.username.validations.empty");
-                    }
-                    if (!values?.passwordAuthProperty) {
-                        error.passwordAuthProperty = t("actions:fields.authentication." +
-                            "types.basic.properties.password.validations.empty");
-                    }
-                }
-
-                break;
-            case AuthenticationType.BEARER:
-                if (isAuthenticationCreateState || isAuthenticationUpdateState) {
-                    if (!values?.accessTokenAuthProperty) {
-                        error.accessTokenAuthProperty = t("actions:fields.authentication." +
-                        "types.bearer.properties.accessToken.validations.empty");
-                    }
-                }
-
-                break;
-            case AuthenticationType.API_KEY:
-                if (isAuthenticationCreateState || isAuthenticationUpdateState||
-                    values?.headerAuthProperty || values?.valueAuthProperty) {
-                    if (!values?.headerAuthProperty) {
-                        error.headerAuthProperty = t("actions:fields.authentication." +
-                            "types.apiKey.properties.header.validations.empty");
-                    }
-                    if (!apiKeyHeaderRegex.test(values?.headerAuthProperty)) {
-                        error.headerAuthProperty = t("actions:fields.authentication." +
-                            "types.apiKey.properties.header.validations.invalid");
-                    }
-                    if (!values?.valueAuthProperty) {
-                        error.valueAuthProperty = t("actions:fields.authentication." +
-                            "types.apiKey.properties.value.validations.empty");
-                    }
-                }
-
-                break;
-            default:
-                break;
-        }
-
-        return error;
-    };
-
-    const handleSubmit = (
-        values: EndpointConfigFormPropertyInterface,
-        changedFields: EndpointConfigFormPropertyInterface) =>
-    {
-        const authProperties: Partial<AuthenticationPropertiesInterface> = {};
-
-        if (isAuthenticationCreateState || isAuthenticationUpdateState) {
-            switch (authenticationType) {
-                case AuthenticationType.BASIC:
-                    authProperties.username = values.usernameAuthProperty;
-                    authProperties.password = values.passwordAuthProperty;
-
-                    break;
-                case AuthenticationType.BEARER:
-                    authProperties.accessToken = values.accessTokenAuthProperty;
-
-                    break;
-                case AuthenticationType.API_KEY:
-                    authProperties.header = values.headerAuthProperty;
-                    authProperties.value = values.valueAuthProperty;
-
-                    break;
-                case AuthenticationType.NONE:
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        if (isAuthenticationCreateState) {
-            const endpoint: EndpointInterface ={
-                authentication: {
-                    properties: authProperties,
-                    type: authenticationType
-                },
-                uri: values.endpointUri
-            };
-
-            setIsSubmitting(true);
-            // TODO: [ Immediate ] add creation API
-
-            // createAction(actionTypeApiPath, actionValues)
-            //     .then(() => {
-            //         handleSuccess(ActionsConstants.CREATE);
-            //         mutateActions();
-            //     })
-            //     .catch((error: AxiosError) => {
-            //         handleError(error, ActionsConstants.CREATE);
-            //     })
-            //     .finally(() => {
-            //         setIsSubmitting(false);
-            //     });
-        } else {
-            // Update endpoint details
-            const endpoint: EndpointInterface = {
-                authentication: isAuthenticationUpdateState ? {
-                    properties: authProperties,
-                    type: authenticationType
-                } : undefined,
-                uri: changedFields?.endpointUri ? values.endpointUri : undefined
-            };
-
-            setIsSubmitting(true);
-            // TODO: [ Immediate ] add creation API
-
-            // updateAction(actionTypeApiPath, initialValues.id, updatingValues)
-            //     .then(() => {
-            //         handleSuccess(ActionsConstants.UPDATE);
-            //         setIsAuthenticationUpdateFormState(false);
-            //         mutateAction();
-            //     })
-            //     .catch((error: AxiosError) => {
-            //         handleError(error, ActionsConstants.UPDATE);
-            //     })
-            //     .finally(() => {
-            //         setIsSubmitting(false);
-            //     });
-        }
-    };
-
-    /**
-     * This is called when the Change Authentication button is pressed.
-     */
-    const handleAuthenticationChange = (): void => {
-        setIsAuthenticationUpdateState(true);
-    };
-
-    /**
-     * This is called when the cancel button is pressed.
-     */
-    const handleAuthenticationChangeCancel = (): void => {
-        setAuthenticationType(endpointInitialValues?.authenticationType as AuthenticationType);
-        setIsAuthenticationUpdateState(false);
-    };
-
-
-    const getFieldDisabledStatus = (): boolean => {
-        if (isAuthenticationCreateState) {
-            return !hasActionCreatePermissions;
-        } else {
-            return !hasActionUpdatePermissions;
-        }
-    };
-
-    const renderLoadingPlaceholders = (): ReactElement => (
-        <Box className="placeholder-box">
-            <Skeleton variant="rectangular" height={ 7 } width="30%" />
-            <Skeleton variant="rectangular" height={ 28 } />
-            <Skeleton variant="rectangular" height={ 7 } width="90%" />
-            <Skeleton variant="rectangular" height={ 7 } />
-        </Box>
-    );
-
     const renderEndpointAuthPropertyFields = (): ReactElement => {
-
-        console.log("selectedAuthenticationType: " + selectedAuthenticationType);
-
         switch (selectedAuthenticationType) {
             case AuthenticationType.NONE:
                 break;
-            case AuthenticationType.BASIC: // TODO: [Immediate] check inputType
+            case AuthenticationType.BASIC:
                 return (
                     <>
-                        {/* { showAuthSecretsHint() } */}
                         <Field.Input
                             ariaLabel="username"
                             className="addon-field-wrapper"
@@ -649,7 +398,6 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
             case AuthenticationType.BEARER:
                 return (
                     <>
-                        {/* { showAuthSecretsHint() } */}
                         <Field.Input
                             ariaLabel="accessToken"
                             className="addon-field-wrapper"
@@ -674,7 +422,6 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
             case AuthenticationType.API_KEY:
                 return (
                     <>
-                        {/* { showAuthSecretsHint() } */}
                         <Field.Input
                             ariaLabel="header"
                             className="addon-field-wrapper"
@@ -720,6 +467,71 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         }
     };
 
+    const validateEndpointConfigs = (values: EndpointConfigFormPropertyInterface):
+    Partial<EndpointConfigFormPropertyInterface> => { const error: Partial<EndpointConfigFormPropertyInterface> = {};
+
+        if (!values?.endpointUri) {
+            error.endpointUri = "Empty endpoint URI";
+        }
+        if (URLUtils.isURLValid(values?.endpointUri)) {
+            if (!(URLUtils.isHttpsUrl(values?.endpointUri))) {
+                error.endpointUri = "The entered URL is not HTTPS. Please add a valid URL.";
+            }
+        } else {
+            error.endpointUri = "Please enter a valid URL.";
+        }
+
+        if (!selectedAuthenticationType) {
+            error.authenticationType = "Endpoint is a required field.";
+        }
+
+        const apiKeyHeaderRegex: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9-.]+$/;
+
+        switch (authenticationType) {
+            case AuthenticationType.BASIC:
+                if (isAuthenticationCreateState || isAuthenticationUpdateState ||
+                    values?.usernameAuthProperty || values?.passwordAuthProperty) {
+                    if (!values?.usernameAuthProperty) {
+                        error.usernameAuthProperty = "Username is a required field.";
+                    }
+                    if (!values?.passwordAuthProperty) {
+                        error.passwordAuthProperty ="Password is a required field.";
+                    }
+                }
+
+                break;
+            case AuthenticationType.BEARER:
+                if (isAuthenticationCreateState || isAuthenticationUpdateState) {
+                    if (!values?.accessTokenAuthProperty) {
+                        error.accessTokenAuthProperty = "Access Token is a required field.";
+                    }
+                }
+
+                break;
+            case AuthenticationType.API_KEY:
+                if (isAuthenticationCreateState || isAuthenticationUpdateState||
+                    values?.headerAuthProperty || values?.valueAuthProperty) {
+                    if (!values?.headerAuthProperty) {
+                        error.headerAuthProperty = "Header is a required field.";
+                    }
+                    if (!apiKeyHeaderRegex.test(values?.headerAuthProperty)) {
+                        error.headerAuthProperty = "Please choose a valid header name that" +
+                        "adheres to the given guidelines.";
+                    }
+                    if (!values?.valueAuthProperty) {
+                        error.valueAuthProperty = "Value is a required field.";
+                    }
+                }
+
+                break;
+            default:
+                break;
+        }
+
+        return error;
+    };
+
+    // Wizard Step 1
     const wizardCommonFirstPage = () => (
         <WizardPage
             validate={ () => {
@@ -823,17 +635,17 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         </WizardPage>
     );
 
-    // TODO: check max and min len of two fields
+    // Wizard Step 2
     const generalSettingsPage = () => (
         <WizardPage
             validate={ (values: CustomAuthenticationCreateWizardGeneralFormValuesInterface) => {
                 const errors: FormErrors = {};
 
                 if (!FormValidation.identifier(values.identifier)) {
-                    errors.identifier = "Invalid Identifier"; // TODO: local message
+                    errors.identifier = "Invalid Identifier";
                 }
                 if (!FormValidation.isValidResourceName(values.displayName)) {
-                    errors.displayName = "Invalid Display Name"; // TODO: local message
+                    errors.displayName = "Invalid Display Name";
                 }
 
                 setNextShouldBeDisabled(ifFieldsHave(errors));
@@ -872,14 +684,14 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         </WizardPage>
     );
 
-    // Final Page
-    // TODO: remove border of the emphasized segment?
+    // Wizard Step 3
+    // Should we remove the border of the emphasized segment?
     const configurationsPage = () => (
         <WizardPage
-            validate={ validateForm }
+            validate={ validateEndpointConfigs }
         >
             <EmphasizedSegment
-                className="form-wrapper"
+                className="wizard-wrapper"
                 bordered={ false }
                 emphasized={ true }
                 padded={ "very" }
@@ -932,6 +744,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         </WizardPage>
     );
 
+
     // Resolvers
 
     const resolveWizardPages = (): Array<ReactElement> => {
@@ -942,8 +755,15 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         ];
     };
 
+    // TODO: move this to i18n?
+    /**
+     * Wizard help panel content is defined here since there is not metadata.json associated with custom authenticators.
+     * Currently the help panel content is extracted only from the metadata.json file and a separate effort
+     * needs to be in place to improve this.
+     *
+     * @returns help panel.
+     */
     const WizardHelpPanel = (): ReactElement => {
-        // TODO: check if there is a better way to access the field input label "Identifier"
         return (
             <div >
                 <Heading as="h5"> Identifier </Heading>
@@ -958,9 +778,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         );
     };
 
-
-    // TODO: need to update
-    const resolveHelpPanel = () => {
+    const resolveWizardHelpPanel = () => {
 
         const SECOND_STEP: number = 1;
 
@@ -971,9 +789,6 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                 <ModalWithSidePanel.Header
                     data-componentid={ `${ componentId }-modal-side-panel-header` }
                     className="wizard-header help-panel-header muted">
-                    <div className="help-panel-header-text">
-                        Help
-                    </div>
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
                     <Suspense fallback={ <ContentLoader/> }>
@@ -985,44 +800,19 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
 
     };
 
-    // TODO: need to update
-    const resolveDocumentationLink = (): ReactElement => {
-        let docLink: string = undefined;
-
-        if (selectedAuthenticator === "external") {
-            docLink = getLink("develop.connections.newConnection.enterprise.samlLearnMore");
-        }
-
-        if (selectedAuthenticator === "internal") {
-            docLink = getLink("develop.connections.newConnection.enterprise.oidcLearnMore");
-        }
-
-        if (selectedAuthenticator === "two-factor") {
-            docLink = getLink("develop.connections.newConnection.enterprise.oidcLearnMore");
-        }
-
-        return (
-            <DocumentationLink
-                link={ docLink }
-            >
-                { t("common:learnMore") }
-            </DocumentationLink>
-        );
-    };
-
-    // Start: Modal
+    // Final modal
+    // TODO: Update documentation links.
     return (
         <ModalWithSidePanel
             isLoading={ isConnectionTemplateFetchRequestLoading }
             open={ true }
-            className="wizard identity-provider-create-wizard" // TODO: update the class
+            className="wizard identity-provider-create-wizard"
             dimmer="blurring"
             onClose={ onWizardClose }
             closeOnDimmerClick={ false }
             closeOnEscape
             data-componentid={ `${ componentId }-modal` }>
             <ModalWithSidePanel.MainPanel>
-                { /*Modal header*/ }
                 <ModalWithSidePanel.Header
                     className="wizard-header"
                     data-componentid={ `${ componentId }-modal-header` }>
@@ -1041,13 +831,12 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                             { subTitle && (
                                 <Heading as="h6">
                                     { subTitle }
-                                    { resolveDocumentationLink() }
+                                    {/* { resolveDocumentationLink() } */}
                                 </Heading>
                             ) }
                         </div>
                     </div>
                 </ModalWithSidePanel.Header>
-                { /*Modal body content*/ }
                 <React.Fragment>
                     <ModalWithSidePanel.Content
                         className="steps-container"
@@ -1079,7 +868,6 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                         </Wizard2>
                     </ModalWithSidePanel.Content>
                 </React.Fragment>
-                { /*Modal actions*/ }
                 <ModalWithSidePanel.Actions
                     data-componentid={ `${ componentId }-modal-actions` }
                 >
@@ -1144,15 +932,14 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                     </SemanticGrid>
                 </ModalWithSidePanel.Actions>
             </ModalWithSidePanel.MainPanel>
-            { (resolveHelpPanel()) }
+            { (resolveWizardHelpPanel()) }
         </ModalWithSidePanel>
     );
 
 };
 
 /**
- * Default props for the custom authenticator
- * creation wizard.
+ * Default props for the custom authenticator create wizard.
  */
 CustomAuthenticationCreateWizard.defaultProps = {
     currentStep: 0,
@@ -1163,9 +950,6 @@ CustomAuthenticationCreateWizard.defaultProps = {
 // General constants
 const EMPTY_STRING: string = "";
 
-// Validation Functions.
-// FIXME: These will be removed in the future when
-//        form module validation gets to a stable state.
 
 /**
  * Given a {@link FormErrors} object, it will check whether
@@ -1177,30 +961,4 @@ const EMPTY_STRING: string = "";
  */
 const ifFieldsHave = (errors: FormErrors): boolean => {
     return !Object.keys(errors).every((k: any) => !errors[ k ]);
-};
-
-const required = (value: any) => {
-    if (!value) {
-        return "This is a required field";
-    }
-
-    return undefined;
-};
-
-const length = (minMax: MinMax) => (value: string) => {
-    if (!value && minMax.min > 0) {
-        return "You cannot leave this blank";
-    }
-    if (value?.length > minMax.max) {
-        return `Cannot exceed more than ${ minMax.max } characters.`;
-    }
-    if (value?.length < minMax.min) {
-        return `Should have at least ${ minMax.min } characters.`;
-    }
-
-    return undefined;
-};
-
-const isUrl = (value: string) => {
-    return FormValidation.url(value) ? undefined : "This value is invalid.";
 };
