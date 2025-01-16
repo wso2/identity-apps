@@ -210,7 +210,8 @@ export class Config {
                 I18nConstants.APPLICATION_TEMPLATES_NAMESPACE,
                 I18nConstants.ACTIONS_NAMESPACE,
                 I18nConstants.TENANTS_NAMESPACE,
-                I18nConstants.REMOTE_USER_STORES_NAMESPACE
+                I18nConstants.REMOTE_USER_STORES_NAMESPACE,
+                I18nConstants.CUSTOM_AUTHENTICATION_NAMESPACE
             ],
             preload: []
         };

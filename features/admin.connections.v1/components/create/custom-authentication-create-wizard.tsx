@@ -181,17 +181,17 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
             {
                 icon: getConnectionWizardStepIcons().general,
                 name: WizardSteps.AUTHENTICATION_TYPE,
-                title: "Authentication Type"
+                title: t("customAuthentication:fields.createWizard.authenticationTypeStep.title")
             },
             {
                 icon: getConnectionWizardStepIcons().authenticatorSettings,
                 name: WizardSteps.GENERAL_SETTINGS,
-                title: "General Settings"
+                title: t("customAuthentication:fields.createWizard.generalSettingsStep.title")
             },
             {
                 icon: getConnectionWizardStepIcons().general,
                 name: WizardSteps.CONFIGURATION,
-                title: "Configuration"
+                title: t("customAuthentication:fields.createWizard.configurationsStep.title")
             }
         ] as WizardStepInterface[];
     };
@@ -291,10 +291,11 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                 if (error?.response.status === 500 &&
                     error.response?.data.code === "IDP-65002") {
                     setAlert({
-                        description: "You are trying to add a provider with an existing Identity" + // TODO: update this
-                            " Provider Entity ID or a Service Provider Entity ID.",
+                        description: t("authenticationProvider:notifications." +
+                            "addIDP.serverError.description"),
                         level: AlertLevels.ERROR,
-                        message: "There's a Conflicting Entity"
+                        message: t("authenticationProvider:notifications." +
+                            "addIDP.serverError.message")
                     });
                     setTimeout(() => setAlert(undefined), 8000);
 
@@ -349,8 +350,10 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                             ariaLabel="username"
                             className="addon-field-wrapper"
                             name="usernameAuthProperty"
-                            label={ "Username" }
-                            placeholder={ "Username" }
+                            label={ t("customAuthentication:fields.createWizard.configurationsStep." +
+                                "authenticationTypeDropdown.authProperties.username.label") }
+                            placeholder={ t("customAuthentication:fields.createWizard.configurationsStep." +
+                                "authenticationTypeDropdown.authProperties.username.placeholder") }
                             inputType="name"
                             type={ isShowSecret1 ? "text" : "password" }
                             InputProps={ {
@@ -367,8 +370,10 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                         <Field.Input
                             ariaLabel="password"
                             className="addon-field-wrapper"
-                            label={ "Password" }
-                            placeholder={ "Password" }
+                            label={ t("customAuthentication:fields.createWizard.configurationsStep." +
+                                "authenticationTypeDropdown.authProperties.password.label") }
+                            placeholder={ t("customAuthentication:fields.createWizard.configurationsStep." +
+                                "authenticationTypeDropdown.authProperties.password.placeholder") }
                             name="passwordAuthProperty"
                             inputType="password"
                             type={ isShowSecret2 ? "text" : "password" }
@@ -399,8 +404,10 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                                     isShowSecret1,
                                     () => setIsShowSecret1(!isShowSecret1))
                             } }
-                            label={ "Access token" }
-                            placeholder={ "Access Token" }
+                            label={ t("customAuthentication:fields.createWizard.configurationsStep." +
+                                "authenticationTypeDropdown.authProperties.accessToken.label") }
+                            placeholder={ t("customAuthentication:fields.createWizard.configurationsStep." +
+                                "authenticationTypeDropdown.authProperties.accessToken.placeholder") }
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
@@ -418,8 +425,10 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                             name="headerAuthProperty"
                             inputType="text"
                             type={ "text" }
-                            label={ "Header" }
-                            placeholder={ "Header" }
+                            label={ t("customAuthentication:fields.createWizard.configurationsStep." +
+                                "authenticationTypeDropdown.authProperties.header.label") }
+                            placeholder={ t("customAuthentication:fields.createWizard.configurationsStep." +
+                                "authenticationTypeDropdown.authProperties.header.placeholder") }
                             helperText={ (
                                 <Hint className="hint" compact>
                                     Hint
@@ -442,8 +451,10 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                                     isShowSecret2,
                                     () => setIsShowSecret2(!isShowSecret2))
                             } }
-                            label={ "Value" }
-                            placeholder={ "Value" }
+                            label={ t("customAuthentication:fields.createWizard.configurationsStep." +
+                                "authenticationTypeDropdown.authProperties.value.label") }
+                            placeholder={ t("customAuthentication:fields.createWizard.configurationsStep." +
+                                "authenticationTypeDropdown.authProperties.value.placeholder") }
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
@@ -461,18 +472,22 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
     Partial<EndpointConfigFormPropertyInterface> => { const error: Partial<EndpointConfigFormPropertyInterface> = {};
 
         if (!values?.endpointUri) {
-            error.endpointUri = "Empty endpoint URI";
+            error.endpointUri = t("customAuthentication:fields.createWizard.configurationsStep." +
+                "endpoint.validations.empty");
         }
         if (URLUtils.isURLValid(values?.endpointUri)) {
             if (!(URLUtils.isHttpsUrl(values?.endpointUri))) {
-                error.endpointUri = "The entered URL is not HTTPS. Please add a valid URL.";
+                error.endpointUri = t("customAuthentication:fields.createWizard.configurationsStep." +
+                    "endpoint.validations.invalid");
             }
         } else {
-            error.endpointUri = "Please enter a valid URL.";
+            error.endpointUri = t("customAuthentication:fields.createWizard.configurationsStep." +
+                "endpoint.validations.general");
         }
 
         if (!authenticationType) {
-            error.authenticationType = "Endpoint is a required field.";
+            error.authenticationType = t("customAuthentication:fields.createWizard.configurationsStep." +
+                "authenticationTypeDropdown.validations.required");
         }
 
         const apiKeyHeaderRegex: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9-.]+$/;
@@ -481,31 +496,36 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
             case AuthenticationType.BASIC:
                 if (values?.usernameAuthProperty || values?.passwordAuthProperty) {
                     if (!values?.usernameAuthProperty) {
-                        error.usernameAuthProperty = "Username is a required field.";
+                        error.usernameAuthProperty = t("customAuthentication:fields.createWizard.configurationsStep." +
+                            "authenticationTypeDropdown.authProperties.username.validations.required");
                     }
                     if (!values?.passwordAuthProperty) {
-                        error.passwordAuthProperty ="Password is a required field.";
+                        error.passwordAuthProperty = t("customAuthentication:fields.createWizard.configurationsStep." +
+                            "authenticationTypeDropdown.authProperties.password.validations.required");
                     }
                 }
 
                 break;
             case AuthenticationType.BEARER:
                 if (!values?.accessTokenAuthProperty) {
-                    error.accessTokenAuthProperty = "Access Token is a required field.";
+                    error.accessTokenAuthProperty = t("customAuthentication:fields.createWizard.configurationsStep." +
+                        "authenticationTypeDropdown.authProperties.accessToken.validations.required");
                 }
 
                 break;
             case AuthenticationType.API_KEY:
                 if (values?.headerAuthProperty || values?.valueAuthProperty) {
                     if (!values?.headerAuthProperty) {
-                        error.headerAuthProperty = "Header is a required field.";
+                        error.headerAuthProperty = t("customAuthentication:fields.createWizard.configurationsStep." +
+                            "authenticationTypeDropdown.authProperties.header.validations.required");
                     }
                     if (!apiKeyHeaderRegex.test(values?.headerAuthProperty)) {
-                        error.headerAuthProperty = "Please choose a valid header name that" +
-                        "adheres to the given guidelines.";
+                        error.headerAuthProperty = t("customAuthentication:fields.createWizard.configurationsStep." +
+                            "authenticationTypeDropdown.authProperties.header.validations.invalid");
                     }
                     if (!values?.valueAuthProperty) {
-                        error.valueAuthProperty = "Value is a required field.";
+                        error.valueAuthProperty = t("customAuthentication:fields.createWizard.configurationsStep." +
+                            "authenticationTypeDropdown.authProperties.value.validations.required");
                     }
                 }
 
@@ -527,7 +547,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
             } }
         >
             <div className="sub-template-selection">
-                <label>Select the authentication type you are implementing</label>
+                <label>{ t("customAuthentication:fields.createWizard.authenticationTypeStep.label") }</label>
                 <div className="sub-template-selection-container">
                     <SelectionCard
                         className="sub-template-selection-card"
@@ -537,12 +557,15 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                                 "assets/images/icons/external-authentication-icon.svg")
                         }
                         header={ (<div>
-                                    External (Federated) User Authentication
+                            { t("customAuthentication:fields.createWizard.authenticationTypeStep." +
+                                        "externalAuthenticationCard.header") }
                         </div>) }
                         description={
                             (<div>
-                                <p className="main-description">Authenticate and provision federated users.</p>
-                                <p>Eg: Social Login, Enterprise IdP</p>
+                                <p className="main-description">{ t("customAuthentication:fields.createWizard." +
+                                    "authenticationTypeStep.externalAuthenticationCard.mainDescription") }</p>
+                                <p className="examples">{ t("customAuthentication:fields.createWizard." +
+                                    "authenticationTypeStep.externalAuthenticationCard.examples") }</p>
                             </div>)
                         }
                         contentTopBorder={ false }
@@ -568,14 +591,15 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                                 "assets/images/icons/internal-user-authentication-icon.svg")
                         }
                         header={ (<div>
-                            Internal User Authentication
+                            { t("customAuthentication:fields.createWizard.authenticationTypeStep." +
+                                        "internalUserAuthenticationCard.header") }
                         </div>) }
                         description={
                             (<div>
-                                <p className="main-description">
-                                    Collect identifier and authenticate user accounts managed in the organization.
-                                </p>
-                                <p>Eg: Username & Password, Email OTP</p>
+                                <p className="main-description">{ t("customAuthentication:fields.createWizard." +
+                                    "authenticationTypeStep.internalUserAuthenticationCard.mainDescription") }</p>
+                                <p className="examples">{ t("customAuthentication:fields.createWizard." +
+                                    "authenticationTypeStep.internalUserAuthenticationCard.examples") }</p>
                             </div>)
                         }
                         selected={ selectedAuthenticator === "internal" }
@@ -596,14 +620,15 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                                 "assets/images/icons/two-factor-custom-authentication-icon.svg")
                         }
                         header={ (<div>
-                            2FA Authentication
+                            { t("customAuthentication:fields.createWizard.authenticationTypeStep." +
+                                        "twoFactorAuthenticationCard.header") }
                         </div>) }
                         description={
                             (<div>
-                                <p className="main-description">
-                                    Only verify users in a second or later step in the login flow.
-                                </p>
-                                <p>Eg: TOTP</p>
+                                <p className="main-description">{ t("customAuthentication:fields.createWizard." +
+                                    "authenticationTypeStep.twoFactorAuthenticationCard.mainDescription") }</p>
+                                <p className="examples">{ t("customAuthentication:fields.createWizard." +
+                                    "authenticationTypeStep.twoFactorAuthenticationCard.examples") }</p>
                             </div>)
                         }
                         selected={ selectedAuthenticator === "two-factor" }
@@ -628,11 +653,12 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                 const errors: FormErrors = {};
 
                 if (!FormValidation.identifier(values.identifier)) {
-                    errors.identifier = "Invalid Identifier";
+                    errors.identifier = t("customAuthentication:fields.createWizard.generalSettingsStep." +
+                        "identifier.validations.invalid");
                 }
                 if (!FormValidation.isValidResourceName(values.displayName)) {
-                    errors.displayName = "Invalid Display Name";
-                }
+                    errors.displayName = t("customAuthentication:fields.createWizard.generalSettingsStep." +
+                        "displayName.validations.invalid");                }
 
                 setNextShouldBeDisabled(ifFieldsHave(errors));
 
@@ -644,8 +670,8 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                 className="addon-field-wrapper"
                 inputType="identifier"
                 name="identifier"
-                label={ "Identifier" }
-                placeholder={ "ABC_authenticator" }
+                label={ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.label") }
+                placeholder={ t("customAuthentication:fields.createWizard.generalSettingsStep.identifier.placeholder") }
                 initialValue={ initialValues.identifier }
                 required={ true }
                 maxLength={ 100 }
@@ -658,8 +684,9 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                 className="addon-field-wrapper"
                 inputType="resource_name"
                 name="displayName"
-                label={ "Display name" }
-                placeholder={ "ABC Authenticator" }
+                label={ t("customAuthentication:fields.createWizard.generalSettingsStep.displayName.label") }
+                placeholder={ t("customAuthentication:fields.createWizard.generalSettingsStep.displayName." +
+                    "placeholder") }
                 initialValue={ initialValues.displayName }
                 required={ true }
                 maxLength={ 100 }
@@ -671,7 +698,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
     );
 
     // Wizard Step 3
-    // Should we remove the border of the emphasized segment?
+    // How to remove the border of the emphasized segment?
     const configurationsPage = () => (
         <WizardPage
             validate={ validateEndpointConfigs }
@@ -688,9 +715,10 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                     className="addon-field-wrapper"
                     inputType="url"
                     name="endpointUri"
-                    label={ "Endpoint" }
-                    placeholder={ "https://abc.external.authenticator/authenticate" }
-                    hint="The URL of the configured external endpoint to integrate with the authenticator"
+                    label={ t("customAuthentication:fields.createWizard.configurationsStep.endpoint.label") }
+                    placeholder={ t("customAuthentication:fields.createWizard.configurationsStep.endpoint." +
+                        "placeholder") }
+                    hint={ t("customAuthentication:fields.createWizard.configurationsStep.endpoint.hint") }
                     required={ true }
                     maxLength={ 100 }
                     minLength={ 0 }
@@ -705,9 +733,12 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                     <Field.Dropdown
                         ariaLabel="authenticationType"
                         name="authenticationType"
-                        label={ "Authentication Scheme" }
-                        placeholder = { "Select Authentication Type" }
-                        hint="Once added, these secrets will not be displayed. You will only be able to reset them."
+                        label={ t("customAuthentication:fields.createWizard.configurationsStep." +
+                            "authenticationTypeDropdown.label") }
+                        placeholder = { t("customAuthentication:fields.createWizard.configurationsStep." +
+                            "authenticationTypeDropdown.placeholder") }
+                        hint={ t("customAuthentication:fields.createWizard.configurationsStep." +
+                            "authenticationTypeDropdown.hint") }
                         required={ true }
                         value={ authenticationType }
                         options={
@@ -731,8 +762,6 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
     );
 
 
-    // Resolvers
-
     const resolveWizardPages = (): Array<ReactElement> => {
         return [
             wizardCommonFirstPage(),
@@ -741,7 +770,6 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         ];
     };
 
-    // TODO: move this to i18n?
     /**
      * Wizard help panel content is defined here since there is not metadata.json associated with custom authenticators.
      * Currently the help panel content is extracted only from the metadata.json file and a separate effort
@@ -752,13 +780,13 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
     const WizardHelpPanel = (): ReactElement => {
         return (
             <div >
-                <Heading as="h5"> Identifier </Heading>
+                <Heading as="h5"> { t("customAuthentication:fields.createWizard.helpPanel." +
+                    "hint.header") } </Heading>
                 <p>
-                We recommend using a URI as the identifier, but you do not need to make the URI
-                publicly available since WSO2 Identity Server will not access your API.
-                WSO2 Identity Server will use this identifier value as the audience(aud)
-                claim in the issued JWT tokens.
-                    <strong> This field should be unique; once created, it is not editable. </strong>
+                    { t("customAuthentication:fields.createWizard.helpPanel.hint.description") }
+                    <strong>
+                        { t("customAuthentication:fields.createWizard.helpPanel.hint.warning") }
+                    </strong>
                 </p>
             </div>
         );

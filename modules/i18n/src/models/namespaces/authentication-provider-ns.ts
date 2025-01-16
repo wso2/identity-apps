@@ -1316,6 +1316,10 @@ export interface AuthenticationProviderNS {
                 message: string;
                 description: string;
             };
+            serverError: {
+                message: string;
+                description: string;
+            }
             success: {
                 message: string;
                 description: string;

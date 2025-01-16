@@ -64,4 +64,4 @@ export * from "./actions-ns";
 export * from "./tenants-ns";
 export * from "./sms-templates-ns";
 export * from "./remote-user-stores-ns";
-export * from "./custom-auth-connection-ns";
+export * from "./custom-authentication-ns";

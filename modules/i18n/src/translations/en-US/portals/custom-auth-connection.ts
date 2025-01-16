@@ -16,27 +16,117 @@
  * under the License.
  */
 
-import { customAuthConnectionNS } from "../../../models";
+import { customAuthenticationNS } from "../../../models";
 
-export const customAuthentication: customAuthConnectionNS = {
+export const customAuthentication: customAuthenticationNS = {
     fields: {
         createWizard: {
             authenticationTypeStep: {
-                cardExternalAuthentication: {
+                externalAuthenticationCard: {
                     examples: "Eg: Social Login, Enterprise IdP",
                     header: "External (Federated) User Authentication",
                     mainDescription: "Authenticate and provision federated users."
                 },
-                cardInternalUserAuthentication: {
+                internalUserAuthenticationCard: {
                     examples: "Eg: Username & Password, Email OTP",
                     header: "Internal User Authentication",
                     mainDescription: "Collect identifier and authenticate user accounts managed in the organization."
                 },
                 label: "Select the authentication type you are implementing",
-                twoFactorAuthentication: {
+                title: "Authentication Type",
+                twoFactorAuthenticationCard: {
                     examples: "Eg: TOTP",
                     header: "2FA Authentication",
                     mainDescription: "Only verify users in a second or later step in the login flow."
+                }
+            },
+            configurationsStep: {
+                authenticationTypeDropdown: {
+                    authProperties: {
+                        accessToken: {
+                            label: "Access token",
+                            placeholder: "Access Token",
+                            validations: {
+                                required: "Access Token is a required field."
+                            }
+                        },
+                        header: {
+                            label: "Header",
+                            placeholder: "Header",
+                            validations: {
+                                invalid: "Please choose a valid header name that adheres to the given guidelines.",
+                                required: "Header is a required field."
+                            }
+                        },
+                        password: {
+                            label: "Password",
+                            placeholder: "Password",
+                            validations: {
+                                required: "Password is a required field."
+                            }
+                        },
+                        username: {
+                            label: "Username",
+                            placeholder: "Username",
+                            validations: {
+                                required: "Username is a required field."
+                            }
+                        },
+                        value: {
+                            label: "Value",
+                            placeholder: "Value",
+                            validations: {
+                                required: "Value is a required field."
+                            }
+                        }
+                    },
+                    hint: "Once added, these secrets will not be displayed. You will only be able to reset them.",
+                    label: "Authentication Scheme",
+                    placeholder: "Select Authentication Type",
+                    validations: {
+                        required: "Authentication Type is a required field."
+                    }
+                },
+                endpoint: {
+                    hint: "The URL of the configured external endpoint to integrate with the authenticator",
+                    label: "Endpoint",
+                    placeholder: "https://abc.external.authenticator/authenticate",
+                    validations: {
+                        empty: "Empty endpoint URI",
+                        general: "Please enter a valid URL.",
+                        invalid: "The entered URL is not HTTPS. Please add a valid URL."
+                    }
+                },
+                title: "Configuration"
+            },
+            generalSettingsStep: {
+                displayName: {
+                    hint: "",
+                    label: "Identifier",
+                    placeholder: "ABC Authenticator",
+                    validations: {
+                        empty: "",
+                        invalid: "Invalid Display Name"
+                    }
+                },
+                identifier: {
+                    hint: "",
+                    label: "Identifier",
+                    placeholder: "ABC_authenticator",
+                    validations: {
+                        empty: "",
+                        invalid: "Invalid Identifier"
+                    }
+                },
+                title: "General Settings"
+            },
+            helpPanel: {
+                hint: {
+                    description: "We recommend using a URI as the identifier, but you do not need to make the URI" +
+                    "publicly available since WSO2 Identity Server will not access your API. WSO2 Identity Server" +
+                    "will use this identifier value as the audience(aud) claim in the issued JWT tokens.",
+                    header: "Identifier",
+                    warning: "This field should be unique; once created, it is not editable. "
                 }
             }
         }

@@ -277,6 +277,12 @@ export class I18nConstants {
     public static readonly REMOTE_USER_STORES_NAMESPACE: string = I18nModuleConstants.REMOTE_USER_STORES_NAMESPACE;
 
     /**
+     * Remote User Stores namespace.
+     */
+    public static readonly CUSTOM_AUTHENTICATION_NAMESPACE: string = I18nModuleConstants.
+        CUSTOM_AUTHENTICATION_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      */
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
@@ -327,7 +333,8 @@ export class I18nConstants {
         [ I18nConstants.IMPERSONATION_CONFIGURATION_NAMESPACE, "portals" ],
         [ I18nConstants.ACTIONS_NAMESPACE, "portals" ],
         [ I18nConstants.TENANTS_NAMESPACE, "portals" ],
-        [ I18nConstants.REMOTE_USER_STORES_NAMESPACE, "portals" ]
+        [ I18nConstants.REMOTE_USER_STORES_NAMESPACE, "portals" ],
+        [ I18nConstants.CUSTOM_AUTHENTICATION_NAMESPACE, "portals" ]
     ]);
 
     /**
