@@ -272,10 +272,15 @@ export class I18nConstants {
     public static readonly TENANTS_NAMESPACE: string = I18nModuleConstants.TENANTS_NAMESPACE;
 
     /**
+     * Remote User Stores namespace.
+     */
+    public static readonly REMOTE_USER_STORES_NAMESPACE: string = I18nModuleConstants.REMOTE_USER_STORES_NAMESPACE;
+
+
+    /**
      * Policy Administration namespace.
      */
-    public static readonly POLICY_ADMINISTRATION_NAMESPACE: string =
-        I18nModuleConstants.POLICY_ADMINISTRATION_NAMESPACE;
+    public static readonly POLICY_ADMINISTRATION_NAMESPACE: string = I18nModuleConstants.POLICY_ADMINISTRATION_NAMESPACE;
 
     /**
      * Locations of the I18n namespaces.
@@ -328,7 +333,8 @@ export class I18nConstants {
         [ I18nConstants.IMPERSONATION_CONFIGURATION_NAMESPACE, "portals" ],
         [ I18nConstants.ACTIONS_NAMESPACE, "portals" ],
         [ I18nConstants.TENANTS_NAMESPACE, "portals" ],
-        [ I18nConstants.POLICY_ADMINISTRATION_NAMESPACE, "portals" ]
+        [ I18nConstants.POLICY_ADMINISTRATION_NAMESPACE, "portals" ],
+        [ I18nConstants.REMOTE_USER_STORES_NAMESPACE, "portals" ]
     ]);
 
     /**

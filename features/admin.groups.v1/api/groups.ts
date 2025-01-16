@@ -31,7 +31,7 @@ import {
     GroupsInterface,
     PatchGroupDataInterface,
     SearchGroupInterface
-} from "../models";
+} from "../models/groups";
 
 /**
  * Initialize an axios Http client.

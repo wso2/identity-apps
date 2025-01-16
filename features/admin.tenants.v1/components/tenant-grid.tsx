@@ -53,7 +53,8 @@ const TenantGrid: FunctionComponent<TenantGridProps> = ({
         tenantList,
         tenantListLimit,
         setTenantListLimit,
-        isInitialRenderingComplete
+        isInitialRenderingComplete,
+        searchQuery
     } = useTenants();
 
     /**
@@ -69,6 +70,10 @@ const TenantGrid: FunctionComponent<TenantGridProps> = ({
         }
 
         if (!tenantList?.totalResults || tenantList.totalResults <= 0) {
+            return false;
+        }
+
+        if (searchQuery) {
             return false;
         }
 

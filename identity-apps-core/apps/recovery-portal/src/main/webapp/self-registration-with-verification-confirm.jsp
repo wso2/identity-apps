@@ -38,7 +38,7 @@
 <%@ page import="javax.ws.rs.HttpMethod" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
-<%@ page import="org.wso2.carbon.core.util.SignatureUtil" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="javax.servlet.http.Cookie" %>
 <%@ page import="java.util.Base64" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
@@ -162,7 +162,7 @@
 
             JSONObject cookieValueInJson = new JSONObject();
             cookieValueInJson.put("content", content);
-            String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(content));
+            String signature = Base64.getEncoder().encodeToString(IdentityUtil.signWithTenantKey(content, user.getTenantDomain()));
             cookieValueInJson.put("signature", signature);
             String cookieValue = Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes());
 

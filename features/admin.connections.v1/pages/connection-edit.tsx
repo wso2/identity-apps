@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
 import {
     AppConstants,
     AppState,
@@ -28,6 +29,8 @@ import {
     AuthenticatorExtensionsConfigInterface,
     identityProviderConfig
 } from "@wso2is/admin.extensions.v1/configs";
+import { ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
+import ExtensionTemplatesProvider from "@wso2is/admin.template-core.v1/provider/extension-templates-provider";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -148,6 +151,12 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
 
     const isReadOnly: boolean = !(useRequiredScopes(featureConfig?.identityProviders?.scopes?.update));
     const { getLink } = useDocumentation();
+
+    const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.applications
+    );
+
+    const hasApplicationTemplateViewPermissions: boolean = useRequiredScopes(applicationsFeatureConfig?.scopes?.read);
 
     /**
      *  Group the connection templates.
@@ -734,76 +743,82 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
     };
 
     return (
-        <TabPageLayout
-            pageTitle="Edit Connection"
-            isLoading={ isConnectorDetailsFetchRequestLoading }
-            loadingStateOptions={ {
-                count: 5,
-                imageType: "square"
-            } }
-            title={ resolveConnectorName(connector) }
-            contentTopMargin={ true }
-            description={ resolveConnectorDescription(connector) }
-            image={ resolveConnectorImage(connector) }
-            backButton={ {
-                "data-testid": `${ testId }-page-back-button`,
-                onClick: handleBackButtonClick,
-                text: t("console:develop.pages.authenticationProviderTemplate.backButton")
-            } }
-            titleTextAlign="left"
-            bottomMargin={ false }
-            data-testid={ `${ testId }-page-layout` }
+        <ExtensionTemplatesProvider
+            shouldFetch={ hasApplicationTemplateViewPermissions }
+            resourceType={ ResourceTypes.APPLICATIONS }
+            categories={ ApplicationTemplateConstants.SUPPORTED_CATEGORIES_INFO }
         >
-            {
-                ConnectionsManagementUtils.isConnectorIdentityProvider(connector)
-                    ? (
-                        <EditConnection
-                            connectionSettingsMetaData={ connectionSettings }
-                            identityProvider={ connector }
-                            isLoading={
-                                isConnectorDetailsFetchRequestLoading ||
-                                isConnectorMetaDataFetchRequestLoading
-                            }
-                            onDelete={ handleIdentityProviderDelete }
-                            onUpdate={ handleIdentityProviderUpdate }
-                            isGoogle={
-                                (identityProviderTemplate?.name === undefined)
-                                    ? undefined
-                                    : identityProviderTemplate.name === SupportedQuickStartTemplateTypes.GOOGLE
-                            }
-                            isSaml={
-                                (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
-                                    ? undefined
-                                    : (connector?.federatedAuthenticators?.defaultAuthenticatorId
-                                        === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID)
-                            }
-                            isOidc={
-                                (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
-                                    ? undefined
-                                    : (connector.federatedAuthenticators.defaultAuthenticatorId
-                                        === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID)
-                            }
-                            data-testid={ testId }
-                            template={ identityProviderTemplate }
-                            type={ identityProviderTemplate?.id }
-                            isReadOnly={ isReadOnly }
-                            isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
-                            setIsAutomaticTabRedirectionEnabled={ setIsAutomaticTabRedirectionEnabled }
-                            tabIdentifier={ tabIdentifier }
-                        />
-                    )
-                    : (
-                        <EditMultiFactorAuthenticator
-                            authenticator={ connector }
-                            isLoading={ isConnectorDetailsFetchRequestLoading }
-                            onDelete={ handleIdentityProviderDelete }
-                            onUpdate={ handleMultiFactorAuthenticatorUpdate }
-                            type={ connector?.id }
-                            isReadOnly={ isReadOnly }
-                        />
-                    )
-            }
-        </TabPageLayout>
+            <TabPageLayout
+                pageTitle="Edit Connection"
+                isLoading={ isConnectorDetailsFetchRequestLoading }
+                loadingStateOptions={ {
+                    count: 5,
+                    imageType: "square"
+                } }
+                title={ resolveConnectorName(connector) }
+                contentTopMargin={ true }
+                description={ resolveConnectorDescription(connector) }
+                image={ resolveConnectorImage(connector) }
+                backButton={ {
+                    "data-testid": `${ testId }-page-back-button`,
+                    onClick: handleBackButtonClick,
+                    text: t("console:develop.pages.authenticationProviderTemplate.backButton")
+                } }
+                titleTextAlign="left"
+                bottomMargin={ false }
+                data-testid={ `${ testId }-page-layout` }
+            >
+                {
+                    ConnectionsManagementUtils.isConnectorIdentityProvider(connector)
+                        ? (
+                            <EditConnection
+                                connectionSettingsMetaData={ connectionSettings }
+                                identityProvider={ connector }
+                                isLoading={
+                                    isConnectorDetailsFetchRequestLoading ||
+                                    isConnectorMetaDataFetchRequestLoading
+                                }
+                                onDelete={ handleIdentityProviderDelete }
+                                onUpdate={ handleIdentityProviderUpdate }
+                                isGoogle={
+                                    (identityProviderTemplate?.name === undefined)
+                                        ? undefined
+                                        : identityProviderTemplate.name === SupportedQuickStartTemplateTypes.GOOGLE
+                                }
+                                isSaml={
+                                    (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
+                                        ? undefined
+                                        : (connector?.federatedAuthenticators?.defaultAuthenticatorId
+                                            === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID)
+                                }
+                                isOidc={
+                                    (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
+                                        ? undefined
+                                        : (connector.federatedAuthenticators.defaultAuthenticatorId
+                                            === FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID)
+                                }
+                                data-testid={ testId }
+                                template={ identityProviderTemplate }
+                                type={ identityProviderTemplate?.id }
+                                isReadOnly={ isReadOnly }
+                                isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
+                                setIsAutomaticTabRedirectionEnabled={ setIsAutomaticTabRedirectionEnabled }
+                                tabIdentifier={ tabIdentifier }
+                            />
+                        )
+                        : (
+                            <EditMultiFactorAuthenticator
+                                authenticator={ connector }
+                                isLoading={ isConnectorDetailsFetchRequestLoading }
+                                onDelete={ handleIdentityProviderDelete }
+                                onUpdate={ handleMultiFactorAuthenticatorUpdate }
+                                type={ connector?.id }
+                                isReadOnly={ isReadOnly }
+                            />
+                        )
+                }
+            </TabPageLayout>
+        </ExtensionTemplatesProvider>
     );
 };
 

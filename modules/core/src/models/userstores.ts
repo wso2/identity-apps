@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,12 @@
  * under the License.
  */
 
+/**
+ * Userstore list response interface.
+ *
+ * @deprecated - This interface will be removed in the future. Use the interface from admin.userstores.v1.models.
+ * https://github.com/wso2-enterprise/asgardeo-product/issues/27546
+ */
 export interface UserstoreListResponseInterface {
     /**
      * base64 url encoded value of domain name.
@@ -34,17 +40,24 @@ export interface UserstoreListResponseInterface {
     description: string;
     /**
      * Location of the created/updated resource.
-     * example: /t/{tenant-domain}/api/server/v1/userstores/SkRCQy1TRUNPTkRBUlk
+     * example: /t/\{tenant-domain\}/api/server/v1/userstores/SkRCQy1TRUNPTkRBUlk
      */
     self: string;
     /**
      * Requested configured user store property for the set.
      */
     properties: UserstorePropertiesResponseInterface[];
+    /**
+     * Name of the user store manager.
+     */
+    typeName?: string;
 }
 
 /**
  * Available User Store Properties interface.
+ *
+ * * @deprecated - This interface will be removed in the future. Use the interface from admin.userstores.v1.models.
+ * https://github.com/wso2-enterprise/asgardeo-product/issues/27546
  */
 export interface UserstorePropertiesResponseInterface {
     /**

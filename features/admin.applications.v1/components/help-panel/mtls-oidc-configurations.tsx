@@ -24,7 +24,7 @@ import { Grid } from "semantic-ui-react";
 import { getHelpPanelIcons } from "../../configs/ui";
 import {
     OIDCApplicationConfigurationInterface
-} from "../../models";
+} from "../../models/application";
 
 /**
  * Proptypes for the OIDC application configurations component.

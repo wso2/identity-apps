@@ -25,10 +25,12 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { AuthorizationAPIResource, GeneralAPIResource, PermissionAPIResource } from "./api-resource-panes";
-import { updateAPIResource } from "../api";
-import { APIResourcesConstants } from "../constants";
-import { APIResourceInterface, UpdatedAPIResourceInterface } from "../models";
+import { AuthorizationAPIResource } from "./api-resource-panes/authorization-api-resource";
+import { GeneralAPIResource } from "./api-resource-panes/general-api-resource";
+import { PermissionAPIResource } from "./api-resource-panes/permission-api-resource";
+import { updateAPIResource } from "../api/api-resources";
+import { APIResourcesConstants } from "../constants/api-resources-constants";
+import { APIResourceInterface, UpdatedAPIResourceInterface } from "../models/api-resources";
 
 /**
  * Prop-types for the API resources page component.

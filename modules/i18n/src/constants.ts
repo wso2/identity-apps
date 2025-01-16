@@ -338,4 +338,9 @@ export class I18nModuleConstants {
      * Policy Administration namespace.
      */
     public static readonly POLICY_ADMINISTRATION_NAMESPACE: string = "policyAdministration";
+
+    /**
+     * Remote User Stores namespace.
+     */
+    public static readonly REMOTE_USER_STORES_NAMESPACE: string = "remoteUserStores";
 }

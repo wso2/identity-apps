@@ -18,7 +18,7 @@
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import useSWR, { SWRConfiguration, SWRResponse } from "swr";
+import useSWR, { BareFetcher, Revalidator, RevalidatorOptions, SWRConfiguration, SWRResponse } from "swr";
 import { FetcherResponse } from "swr/dist/_internal";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
@@ -96,6 +96,18 @@ export interface SWRConfig<Data = unknown, Error = unknown>
     attachToken?: boolean,
     fallbackData?: Data
 }
+
+export type BareFetcherInterface = BareFetcher;
+
+/**
+ * Schema for the revalidator.
+ */
+export type RevalidatorInterface = Revalidator;
+
+/**
+ * Schema for the revalidator options.
+ */
+export type RevalidatorOptionsInterface = RevalidatorOptions;
 
 const globalConfig: SWRConfiguration = {};
 

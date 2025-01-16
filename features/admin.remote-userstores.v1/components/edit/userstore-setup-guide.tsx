@@ -16,40 +16,48 @@
  * under the License.
  */
 
+import Skeleton from "@oxygen-ui/react/Skeleton";
 import {
     VerticalStepper,
     VerticalStepperStepInterface
 } from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
-import { TestableComponentInterface } from "@wso2is/core/models";
-import {
-    CodeEditor,
-    ContentLoader,
-    CopyInputField,
-    DocumentationLink,
-    EmphasizedSegment,
-    Heading,
-    Message,
-    Text,
-    useDocumentation
-} from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
-import { Button, Divider, Grid, Icon } from "semantic-ui-react";
-import { generateToken, getAgentConnections } from "../../api";
-import { AgentConnectionInterface } from "../../models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { EmphasizedSegment, Heading } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { Divider, Grid } from "semantic-ui-react";
+import AttributeMappingsStep from "./setup-guide/attribute-mapping-step";
+import ConfigureStep from "./setup-guide/configure-step";
+import GenerateTokenStep from "./setup-guide/generate-token-step";
+import OnPremDownloadAgentStep from "./setup-guide/on-prem/download-step";
+import OnPremRunAgentStep from "./setup-guide/on-prem/run-step";
+import RemoteDownloadAgentStep, { AgentDownloadInfoInterface } from "./setup-guide/remote/download-step";
+import RemoteRunAgentStep from "./setup-guide/remote/run-step";
+import "./userstore-setup-guide.scss";
 
 /**
  * Props for the remote customer user store page.
  */
-interface SetupGuideTabPropsInterface extends TestableComponentInterface {
+interface SetupGuideTabPropsInterface extends IdentifiableComponentInterface {
     /**
      * User store ID
      */
     userStoreId: string;
     /**
+     * User store manager type.
+     */
+    userStoreManager: RemoteUserStoreManagerType;
+    /**
      * Flag to check if the user store is created.
      */
     isUserStoreLoading: boolean;
+    /**
+     * Whether the user store is disabled.
+     */
+    isUserStoreDisabled: boolean;
 }
 
 /**
@@ -58,328 +66,109 @@ interface SetupGuideTabPropsInterface extends TestableComponentInterface {
 export const SetupGuideTab: FunctionComponent<SetupGuideTabPropsInterface> = (
     props: SetupGuideTabPropsInterface
 ): ReactElement => {
-
     const {
         isUserStoreLoading,
         userStoreId,
-        [ "data-testid" ]: testId
+        userStoreManager,
+        isUserStoreDisabled,
+        ["data-componentid"]: testId = "user-store-setup-guide"
     } = props;
 
-    const { getLink } = useDocumentation();
-
-    const [ isTokenGenerated, setIsTokenGenerated ] = useState<boolean>(false);
-    const [ isConnectionTested, setIsConnectionTested ] = useState<boolean>(false);
-    const [ connectionStatus, setConnectionStatus ] = useState<boolean>(undefined);
-    const [ isAgentConnectionsRequestLoading, setIsAgentConnectionsRequestLoading ] = useState<boolean>(false);
-    const [ accessToken, setAccessToken ] = useState<string>("");
     const { t } = useTranslation();
 
-    useEffect(() => {
-        if (accessToken) {
-            setIsTokenGenerated(true);
-        }
-    }, [ accessToken ]);
+    // Read the agent download URLs from the deployment config.
+    const agentDownloadURLs: {
+        onPrem: string;
+        remote: {
+            linux: AgentDownloadInfoInterface;
+            linuxArm: AgentDownloadInfoInterface;
+            mac: AgentDownloadInfoInterface;
+            windows: AgentDownloadInfoInterface;
+        };
+    } = useSelector((state: AppState) => state.config?.deployment?.extensions?.userStoreAgentUrls);
 
-    useEffect(() => {
-        if (!isConnectionTested) {
-            return;
-        }
-
-        if (isConnectionTested) {
-            fetchAgentConnectionList();
-        }
-    }, [ isConnectionTested ]);
-
-    useEffect(() => {
-        if (!connectionStatus) {
-            setIsConnectionTested(false);
-        }
-    }, [ connectionStatus ]);
-
-    /**
-     * The following function handles fetching the agent connections.
-     */
-    const fetchAgentConnectionList = () => {
-        setIsAgentConnectionsRequestLoading(true);
-        getAgentConnections(userStoreId)
-            .then((response: any) => {
-                response.map((connection: AgentConnectionInterface) => {
-                    if (connection.agent && connection.connected) {
-                        setConnectionStatus(connection.connected);
-
-                        return;
-                    }
-                });
-            })
-            .finally(() => {
-                setIsAgentConnectionsRequestLoading(false);
-            });
-    };
-
-    /**
-     * The following function handles generating the token.
-     */
-    const handleGenerateToken = () => {
-
-        const userStoreID: string = userStoreId.split("#")[0];
-        const data: any = { userStoreId: userStoreID };
-
-        generateToken(data)
-            .then((response: any) => {
-                setAccessToken(response.token);
-            });
-    };
-
-    /**
-     * The following function renders the download agent step.
-     */
-    const resolveDownloadAgentStep = () => (
-        <>
-            <Text>
-                Download and unzip the user store agent.
-            </Text>
-            <Button
-                basic
-                color="orange"
-                onClick={ () => {
-                    window.open(
-                        window["AppUtils"].getConfig().extensions.userStoreAgentUrl, "_blank",
-                        "noopener, noreferrer"
-                    );
-                } }
-            >
-                Download the agent
-                <Icon name="download" className="ml-3" />
-            </Button>
-        </>
-    );
-
-    /**
-     * The following function renders the token generation step.
-     */
-    const resolveGenerateTokenStep = () => {
-        if (isTokenGenerated) {
-            return (
-                <>
-                    <Message
-                        content="Make sure to note down the installation token as it will be required when
-                                running the user store agent. You won’t be able to see it again!"
-                        type="warning"
-                    />
-                    <label>
-                        Installation token
-                    </label>
-                    <CopyInputField
-                        value={ accessToken ? accessToken : "" }
-                        data-testid={ `${ testId }-client-secret-readonly-input` }
-                    />
-                </>
-            );
-        } else {
-            return (
-                <>
-                    <Text>
-                        Generate a new installation token which will require when you try to connect your remote user
-                        store through the user store agent.
-                    </Text>
-                    <Button color="orange" basic onClick={ handleGenerateToken }>
-                        Generate token
-                    </Button>
-                </>
-            );
-        }
-    };
-
-    /**
-     * The following function renders configuring user store properties step.
-     */
-    const resolveConfigureUserStoreStep = () => (
-        <>
-            <Text>
-                { t("extensions:manage.features.userStores.edit." +
-                    "setupGuide.steps.configureProperties.description") }
-            </Text>
-            <Divider hidden />
-            <Text weight="500">
-                <Trans
-                    i18nKey={
-                        "extensions:manage.features.userStores.edit." +
-                        "setupGuide.steps.configureProperties.docsDescription"
-                    }
-                >
-                   See the
-                    <DocumentationLink
-                        link={ getLink("manage.userStores.userStoreProperties.learnMore") }>
-                        Asgardeo documentation
-                    </DocumentationLink> for more details on configuring the user store agent.
-                </Trans>
-            </Text>
-        </>
-    );
-
-    /**
-     * The following function renders the Run agent step.
-     */
-    const resolveRunAgentStep = () => (
-        <>
-            <Text>
-                Execute one of the following commands based on your operating system. Enter
-                the installation token on prompt.
-            </Text>
-            <Divider hidden/>
-            <strong>
-                On Linux/Mac OS
-            </strong>
-            <CodeEditor
-                oneLiner
-                readOnly
-                withClipboardCopy
-                language="javascript"
-                sourceCode="sh wso2agent.sh"
-            />
-            <Divider hidden/>
-            <strong>
-                On Windows
-            </strong>
-            <CodeEditor
-                oneLiner
-                readOnly
-                withClipboardCopy
-                language="javascript"
-                sourceCode="wso2agent.bat  -- run"
-            />
-            <Divider hidden/>
-            { resolveConnectionSection() }
-        </>
-    );
-
-    /**
-     * The following function renders the check connection section.
-     */
-    const resolveConnectionSection = () => (
-        <>
-            <Text>
-                Once the user store agent is connected successfully the message <strong>Agent successfully connected to
-                Asgardeo</strong> will be displayed in the terminal.
-            </Text>
-            {
-                !isAgentConnectionsRequestLoading && isConnectionTested
-                    ? (
-                        connectionStatus !== undefined && connectionStatus
-                            ? (
-                                <Button basic color="green">
-                                    <Icon name="check" color="green"/>
-                                    Successfully Connected
-                                </Button>
-                            ) : (
-                                <>
-                                    <Message
-                                        type="error"
-                                        content={
-                                            (<>
-                                                { t("extensions:manage.features.userStores.edit." +
-                                                    "setupGuide.steps.tryAgain.info") }
-                                                <Button
-                                                    floated="right"
-                                                    inline
-                                                    basic
-                                                    color="orange"
-                                                    loading={ isAgentConnectionsRequestLoading }
-                                                    onClick={ () => fetchAgentConnectionList() }
-                                                >
-                                                    Try Again
-                                                </Button>
-                                            </>)
-                                        }
-                                    />
-                                </>
-                            )
-                    )
-                    : (
-                        <Button
-                            basic
-                            color="orange"
-                            loading={ isAgentConnectionsRequestLoading }
-                            onClick={ () => setIsConnectionTested(true) }
-                        >
-                            Check Connections
-                        </Button>
-                    )
-            }
-            <Divider hidden/>
-            <Message
-                type="warning"
-                header="What's Next?"
-                content="Update the attribute mappings according to remote user store type that you connected.
-                Make sure to review the mapped attributes otherwise it may cause errors in the user listings."
-            />
-        </>
-    );
+    // Deprecated onPrem agent URL will be used as a fallback.
+    const deprecatedOnPremAgentURL: string = useSelector(
+        (state: AppState) => state.config?.deployment?.extensions?.userStoreAgentUrl);
 
     const setupGuideSteps: VerticalStepperStepInterface[] = [
         {
-            stepContent: resolveDownloadAgentStep(),
-            stepTitle: "Download the agent"
+            stepContent:
+                userStoreManager === RemoteUserStoreManagerType.RemoteUserStoreManager ? (
+                    <RemoteDownloadAgentStep downloadURLs={ agentDownloadURLs?.remote } />
+                ) : (
+                    <OnPremDownloadAgentStep downloadURL={ agentDownloadURLs?.onPrem ?? deprecatedOnPremAgentURL } />
+                ),
+            stepTitle: t("remoteUserStores:pages.edit.guide.steps.download.heading")
         },
         {
-            stepContent: resolveConfigureUserStoreStep(),
-            stepTitle: "Configure the agent"
+            stepContent: <ConfigureStep docLinkKey="manage.userStores.userStoreProperties.learnMore" />,
+            stepTitle: t("remoteUserStores:pages.edit.guide.steps.configure.heading")
         },
         {
-            stepContent: resolveGenerateTokenStep(),
-            stepTitle: "Generate new token"
+            stepContent: (
+                <GenerateTokenStep
+                    userStoreManager={ userStoreManager }
+                    userStoreID={ userStoreId }
+                    isUserStoreDisabled={ isUserStoreDisabled }
+                />
+            ),
+            stepTitle: t("remoteUserStores:pages.edit.guide.steps.token.heading")
         },
         {
-            stepContent: resolveRunAgentStep(),
-            stepTitle: "Run the agent"
+            stepContent:
+                userStoreManager === RemoteUserStoreManagerType.RemoteUserStoreManager ? (
+                    <RemoteRunAgentStep userStoreId={ userStoreId } userStoreManager={ userStoreManager } />
+                ) : (
+                    <OnPremRunAgentStep userStoreId={ userStoreId } userStoreManager={ userStoreManager } />
+                ),
+            stepTitle: t("remoteUserStores:pages.edit.guide.steps.run.heading")
+        },
+        {
+            stepContent: <AttributeMappingsStep />,
+            stepTitle: t("remoteUserStores:pages.edit.guide.steps.attributeMapping.heading")
         }
     ];
 
-    return (
-        <>
-            {
-                !isUserStoreLoading
-                    ? (
-                        <EmphasizedSegment padded="very">
-                            <Heading as="h3">
-                                Connect the remote user store
-                                <Heading subHeading as="h6">
-                                    Follow the steps given below to configure the user store agent,
-                                    which connects the remote user store to Asgardeo
-                                </Heading>
-                            </Heading>
-                            <Divider hidden/>
-                            <Grid>
-                                <Grid.Row>
-                                    <Grid.Column width={ 16 } >
-                                        <Grid>
-                                            <Grid.Row>
-                                                <Grid.Column width={ 10 } >
-                                                    <VerticalStepper
-                                                        alwaysOpen={ true }
-                                                        isSidePanelOpen={ false }
-                                                        stepContent={ setupGuideSteps }
-                                                        isNextEnabled={ true }
-                                                        data-testid={ `${ testId }-vertical-stepper` }
-                                                    />
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                        </Grid>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </EmphasizedSegment>
-                    ) : (
-                        <ContentLoader/>
-                    )
-            }
-        </>
-    );
-};
+    if (isUserStoreLoading) {
+        return (
+            <EmphasizedSegment padded="very">
+                <Skeleton component="h1" width={ "50%" } />
+                <Skeleton />
+                <Skeleton />
+                <Skeleton />
+            </EmphasizedSegment>
+        );
+    }
 
-/**
- * Default props for the component.
- */
-SetupGuideTab.defaultProps = {
-    "data-testid": "user-store-setup-guide"
+    return (
+        <EmphasizedSegment padded="very" className="userstore-setup-guide">
+            <Heading as="h3">
+                { t("remoteUserStores:pages.edit.guide.heading") }
+                <Heading subHeading as="h6">
+                    { t("remoteUserStores:pages.edit.guide.subHeading") }
+                </Heading>
+            </Heading>
+            <Divider hidden />
+            <Grid>
+                <Grid.Row>
+                    <Grid.Column width={ 16 }>
+                        <Grid>
+                            <Grid.Row>
+                                <Grid.Column width={ 10 }>
+                                    <VerticalStepper
+                                        alwaysOpen={ true }
+                                        isSidePanelOpen={ false }
+                                        stepContent={ setupGuideSteps }
+                                        isNextEnabled={ true }
+                                        data-testid={ `${testId}-vertical-stepper` }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </EmphasizedSegment>
+    );
 };
