@@ -1,5 +1,159 @@
 # @wso2is/admin.application-roles.v1
 
+## 2.26.82
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.82
+  - @wso2is/admin.connections.v1@2.30.18
+  - @wso2is/admin.core.v1@2.35.20
+  - @wso2is/admin.extensions.v1@2.36.7
+  - @wso2is/admin.groups.v1@2.26.41
+  - @wso2is/admin.identity-providers.v1@2.26.82
+  - @wso2is/admin.userstores.v1@2.26.41
+
+## 2.26.81
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.81
+  - @wso2is/admin.connections.v1@2.30.17
+  - @wso2is/admin.core.v1@2.35.19
+  - @wso2is/admin.extensions.v1@2.36.6
+  - @wso2is/admin.groups.v1@2.26.40
+  - @wso2is/admin.identity-providers.v1@2.26.81
+  - @wso2is/admin.userstores.v1@2.26.40
+
+## 2.26.80
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.connections.v1@2.30.16
+  - @wso2is/admin.extensions.v1@2.36.5
+  - @wso2is/admin.groups.v1@2.26.39
+  - @wso2is/admin.identity-providers.v1@2.26.80
+  - @wso2is/admin.userstores.v1@2.26.39
+  - @wso2is/react-components@2.8.18
+  - @wso2is/admin.applications.v1@2.30.80
+  - @wso2is/admin.core.v1@2.35.18
+
+## 2.26.79
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.79
+  - @wso2is/admin.core.v1@2.35.17
+  - @wso2is/admin.extensions.v1@2.36.4
+  - @wso2is/admin.groups.v1@2.26.38
+  - @wso2is/admin.connections.v1@2.30.15
+  - @wso2is/admin.identity-providers.v1@2.26.79
+  - @wso2is/admin.userstores.v1@2.26.38
+
+## 2.26.78
+
+### Patch Changes
+
+- Updated dependencies [[`e7d200f21f5a9d6113dba7959b07a0b96bc8d118`](https://github.com/wso2/identity-apps/commit/e7d200f21f5a9d6113dba7959b07a0b96bc8d118)]:
+  - @wso2is/admin.applications.v1@2.30.78
+  - @wso2is/admin.groups.v1@2.26.37
+  - @wso2is/admin.core.v1@2.35.16
+  - @wso2is/admin.connections.v1@2.30.14
+  - @wso2is/admin.extensions.v1@2.36.3
+  - @wso2is/admin.identity-providers.v1@2.26.78
+  - @wso2is/admin.userstores.v1@2.26.37
+
+## 2.26.77
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.30.77
+  - @wso2is/admin.connections.v1@2.30.13
+  - @wso2is/admin.core.v1@2.35.15
+  - @wso2is/admin.extensions.v1@2.36.2
+  - @wso2is/admin.groups.v1@2.26.36
+  - @wso2is/admin.identity-providers.v1@2.26.77
+  - @wso2is/admin.userstores.v1@2.26.36
+
+## 2.26.76
+
+### Patch Changes
+
+- Updated dependencies [[`c2568dbe95e01427899dbb6c71c6e04d8941e308`](https://github.com/wso2/identity-apps/commit/c2568dbe95e01427899dbb6c71c6e04d8941e308)]:
+  - @wso2is/admin.applications.v1@2.30.76
+  - @wso2is/admin.extensions.v1@2.36.1
+  - @wso2is/admin.groups.v1@2.26.35
+  - @wso2is/admin.core.v1@2.35.14
+  - @wso2is/admin.identity-providers.v1@2.26.76
+  - @wso2is/admin.userstores.v1@2.26.35
+  - @wso2is/admin.connections.v1@2.30.12
+  - @wso2is/react-components@2.8.17
+
+## 2.26.75
+
+### Patch Changes
+
+- Updated dependencies [[`721be7bcde74a5db48fd4ee981e336e37d35ab00`](https://github.com/wso2/identity-apps/commit/721be7bcde74a5db48fd4ee981e336e37d35ab00), [`c01fab399c1832cfe7551229f608a8ff1020b7e8`](https://github.com/wso2/identity-apps/commit/c01fab399c1832cfe7551229f608a8ff1020b7e8)]:
+  - @wso2is/admin.extensions.v1@2.36.0
+  - @wso2is/core@2.5.5
+  - @wso2is/admin.applications.v1@2.30.75
+  - @wso2is/admin.core.v1@2.35.13
+  - @wso2is/admin.identity-providers.v1@2.26.75
+  - @wso2is/admin.connections.v1@2.30.11
+  - @wso2is/admin.groups.v1@2.26.34
+  - @wso2is/admin.userstores.v1@2.26.34
+  - @wso2is/access-control@3.3.9
+  - @wso2is/react-components@2.8.16
+
+## 2.26.74
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.connections.v1@2.30.10
+  - @wso2is/admin.extensions.v1@2.35.33
+  - @wso2is/admin.groups.v1@2.26.33
+  - @wso2is/admin.identity-providers.v1@2.26.74
+  - @wso2is/admin.userstores.v1@2.26.33
+  - @wso2is/react-components@2.8.15
+  - @wso2is/admin.applications.v1@2.30.74
+  - @wso2is/admin.core.v1@2.35.12
+
+## 2.26.73
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.extensions.v1@2.35.32
+  - @wso2is/admin.applications.v1@2.30.73
+  - @wso2is/admin.connections.v1@2.30.9
+  - @wso2is/admin.core.v1@2.35.11
+  - @wso2is/admin.groups.v1@2.26.32
+  - @wso2is/admin.identity-providers.v1@2.26.73
+  - @wso2is/admin.userstores.v1@2.26.32
+
+## 2.26.72
+
+### Patch Changes
+
+- [#7239](https://github.com/wso2/identity-apps/pull/7239) [`398c39ec452d460994a3a0a6425115678538e49b`](https://github.com/wso2/identity-apps/commit/398c39ec452d460994a3a0a6425115678538e49b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the option to modify the primary user store domain name in console and myaccount apps
+
+- Updated dependencies [[`398c39ec452d460994a3a0a6425115678538e49b`](https://github.com/wso2/identity-apps/commit/398c39ec452d460994a3a0a6425115678538e49b)]:
+  - @wso2is/admin.applications.v1@2.30.72
+  - @wso2is/admin.connections.v1@2.30.8
+  - @wso2is/admin.extensions.v1@2.35.31
+  - @wso2is/admin.groups.v1@2.26.31
+  - @wso2is/react-components@2.8.14
+  - @wso2is/admin.core.v1@2.35.10
+  - @wso2is/core@2.5.4
+  - @wso2is/admin.identity-providers.v1@2.26.72
+  - @wso2is/admin.userstores.v1@2.26.31
+  - @wso2is/access-control@3.3.8
+
 ## 2.26.71
 
 ### Patch Changes

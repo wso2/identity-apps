@@ -1,5 +1,56 @@
 # @wso2is/identity-apps-core
 
+## 2.10.0
+
+### Minor Changes
+
+- [#7292](https://github.com/wso2/identity-apps/pull/7292) [`cd827d04f98a519804f1f9996a1dc3a831278df1`](https://github.com/wso2/identity-apps/commit/cd827d04f98a519804f1f9996a1dc3a831278df1) Thanks [@savindi7](https://github.com/savindi7)! - Add RTL support for Authentication and Recovery portals.
+
+### Patch Changes
+
+- [#7293](https://github.com/wso2/identity-apps/pull/7293) [`22de328e49a00d5ce9cdb9bb24a703f867ea1998`](https://github.com/wso2/identity-apps/commit/22de328e49a00d5ce9cdb9bb24a703f867ea1998) Thanks [@sumedhe](https://github.com/sumedhe)! - Fix tenant null issue in self registration flow
+
+- Updated dependencies [[`cd827d04f98a519804f1f9996a1dc3a831278df1`](https://github.com/wso2/identity-apps/commit/cd827d04f98a519804f1f9996a1dc3a831278df1)]:
+  - @wso2is/theme@2.6.0
+
+## 2.9.2
+
+### Patch Changes
+
+- [#7030](https://github.com/wso2/identity-apps/pull/7030) [`d8ac25af8c462eac2d2bb5c949f32996ad83a000`](https://github.com/wso2/identity-apps/commit/d8ac25af8c462eac2d2bb5c949f32996ad83a000) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Remove unnecessary org qualified callback url regex for portal apps
+
+## 2.9.1
+
+### Patch Changes
+
+- [#7286](https://github.com/wso2/identity-apps/pull/7286) [`f1173193bb885f71c7d25fae5bfd011dfb70d79a`](https://github.com/wso2/identity-apps/commit/f1173193bb885f71c7d25fae5bfd011dfb70d79a) Thanks [@savindi7](https://github.com/savindi7)! - Bump apps
+
+- Updated dependencies [[`f1173193bb885f71c7d25fae5bfd011dfb70d79a`](https://github.com/wso2/identity-apps/commit/f1173193bb885f71c7d25fae5bfd011dfb70d79a)]:
+  - @wso2is/theme@2.5.1
+
+## 2.9.0
+
+### Minor Changes
+
+- [#7220](https://github.com/wso2/identity-apps/pull/7220) [`664b1ec3c513595cdcc91216af4371dbe70ab996`](https://github.com/wso2/identity-apps/commit/664b1ec3c513595cdcc91216af4371dbe70ab996) Thanks [@savindi7](https://github.com/savindi7)! - Add RTL support.
+
+### Patch Changes
+
+- Updated dependencies [[`664b1ec3c513595cdcc91216af4371dbe70ab996`](https://github.com/wso2/identity-apps/commit/664b1ec3c513595cdcc91216af4371dbe70ab996)]:
+  - @wso2is/theme@2.5.0
+
+## 2.8.14
+
+### Patch Changes
+
+- [#7275](https://github.com/wso2/identity-apps/pull/7275) [`d934324e367ed709486106030b5e4d0200dff4c3`](https://github.com/wso2/identity-apps/commit/d934324e367ed709486106030b5e4d0200dff4c3) Thanks [@KD23243](https://github.com/KD23243)! - Revert callback validation logic
+
+## 2.8.13
+
+### Patch Changes
+
+- [#7263](https://github.com/wso2/identity-apps/pull/7263) [`57cf9b69ddf277e2367b913dbc56a65169c96f4c`](https://github.com/wso2/identity-apps/commit/57cf9b69ddf277e2367b913dbc56a65169c96f4c) Thanks [@KD23243](https://github.com/KD23243)! - Change validation from backToUrl to callback
+
 ## 2.8.12
 
 ### Patch Changes

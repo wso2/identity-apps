@@ -1022,7 +1022,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     <DocumentationLink
                         link={ getLink("manage.users.learnMore") }
                     >
-                        { t("extensions:common.learnMore") }
+                        { t("common:learnMore") }
                     </DocumentationLink>
                 </>
             ) }

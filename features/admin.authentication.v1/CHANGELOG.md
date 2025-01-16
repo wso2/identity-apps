@@ -1,5 +1,137 @@
 # @wso2is/admin.authentication.v1
 
+## 2.25.82
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.35.20
+  - @wso2is/admin.extensions.v1@2.36.7
+  - @wso2is/admin.organizations.v1@2.26.82
+  - @wso2is/admin.users.v1@2.29.41
+  - @wso2is/admin.userstores.v1@2.26.41
+
+## 2.25.81
+
+### Patch Changes
+
+- Updated dependencies [[`d18c7c8d774be7063e00ab9ccfd8edb65b77ff13`](https://github.com/wso2/identity-apps/commit/d18c7c8d774be7063e00ab9ccfd8edb65b77ff13)]:
+  - @wso2is/admin.organizations.v1@2.26.81
+  - @wso2is/admin.core.v1@2.35.19
+  - @wso2is/admin.extensions.v1@2.36.6
+  - @wso2is/admin.users.v1@2.29.40
+  - @wso2is/admin.userstores.v1@2.26.40
+
+## 2.25.80
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.authorization.v1@2.25.32
+  - @wso2is/admin.extensions.v1@2.36.5
+  - @wso2is/admin.organizations.v1@2.26.80
+  - @wso2is/admin.users.v1@2.29.39
+  - @wso2is/admin.userstores.v1@2.26.39
+  - @wso2is/admin.core.v1@2.35.18
+
+## 2.25.79
+
+### Patch Changes
+
+- Updated dependencies [[`c1394df22ae507e372f5b7e091be2dceb581d5e0`](https://github.com/wso2/identity-apps/commit/c1394df22ae507e372f5b7e091be2dceb581d5e0)]:
+  - @wso2is/admin.users.v1@2.29.38
+  - @wso2is/admin.core.v1@2.35.17
+  - @wso2is/admin.extensions.v1@2.36.4
+  - @wso2is/admin.organizations.v1@2.26.79
+  - @wso2is/admin.userstores.v1@2.26.38
+
+## 2.25.78
+
+### Patch Changes
+
+- Updated dependencies [[`e7d200f21f5a9d6113dba7959b07a0b96bc8d118`](https://github.com/wso2/identity-apps/commit/e7d200f21f5a9d6113dba7959b07a0b96bc8d118)]:
+  - @wso2is/admin.users.v1@2.29.37
+  - @wso2is/admin.core.v1@2.35.16
+  - @wso2is/admin.extensions.v1@2.36.3
+  - @wso2is/admin.organizations.v1@2.26.78
+  - @wso2is/admin.userstores.v1@2.26.37
+  - @wso2is/admin.authorization.v1@2.25.31
+
+## 2.25.77
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.35.15
+  - @wso2is/admin.extensions.v1@2.36.2
+  - @wso2is/admin.organizations.v1@2.26.77
+  - @wso2is/admin.users.v1@2.29.36
+  - @wso2is/admin.userstores.v1@2.26.36
+
+## 2.25.76
+
+### Patch Changes
+
+- Updated dependencies [[`c2568dbe95e01427899dbb6c71c6e04d8941e308`](https://github.com/wso2/identity-apps/commit/c2568dbe95e01427899dbb6c71c6e04d8941e308)]:
+  - @wso2is/admin.organizations.v1@2.26.76
+  - @wso2is/admin.extensions.v1@2.36.1
+  - @wso2is/admin.users.v1@2.29.35
+  - @wso2is/admin.core.v1@2.35.14
+  - @wso2is/i18n@2.14.6
+  - @wso2is/admin.userstores.v1@2.26.35
+  - @wso2is/admin.authorization.v1@2.25.30
+
+## 2.25.75
+
+### Patch Changes
+
+- Updated dependencies [[`721be7bcde74a5db48fd4ee981e336e37d35ab00`](https://github.com/wso2/identity-apps/commit/721be7bcde74a5db48fd4ee981e336e37d35ab00), [`c01fab399c1832cfe7551229f608a8ff1020b7e8`](https://github.com/wso2/identity-apps/commit/c01fab399c1832cfe7551229f608a8ff1020b7e8)]:
+  - @wso2is/admin.extensions.v1@2.36.0
+  - @wso2is/core@2.5.5
+  - @wso2is/i18n@2.14.5
+  - @wso2is/admin.core.v1@2.35.13
+  - @wso2is/admin.users.v1@2.29.34
+  - @wso2is/admin.organizations.v1@2.26.75
+  - @wso2is/admin.userstores.v1@2.26.34
+  - @wso2is/admin.authorization.v1@2.25.29
+
+## 2.25.74
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.authorization.v1@2.25.28
+  - @wso2is/admin.extensions.v1@2.35.33
+  - @wso2is/admin.organizations.v1@2.26.74
+  - @wso2is/admin.users.v1@2.29.33
+  - @wso2is/admin.userstores.v1@2.26.33
+  - @wso2is/admin.core.v1@2.35.12
+
+## 2.25.73
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.extensions.v1@2.35.32
+  - @wso2is/admin.core.v1@2.35.11
+  - @wso2is/admin.organizations.v1@2.26.73
+  - @wso2is/admin.users.v1@2.29.32
+  - @wso2is/admin.userstores.v1@2.26.32
+
+## 2.25.72
+
+### Patch Changes
+
+- Updated dependencies [[`398c39ec452d460994a3a0a6425115678538e49b`](https://github.com/wso2/identity-apps/commit/398c39ec452d460994a3a0a6425115678538e49b)]:
+  - @wso2is/admin.organizations.v1@2.26.72
+  - @wso2is/admin.extensions.v1@2.35.31
+  - @wso2is/admin.users.v1@2.29.31
+  - @wso2is/admin.core.v1@2.35.10
+  - @wso2is/core@2.5.4
+  - @wso2is/admin.userstores.v1@2.26.31
+  - @wso2is/admin.authorization.v1@2.25.27
+  - @wso2is/i18n@2.14.4
+
 ## 2.25.71
 
 ### Patch Changes

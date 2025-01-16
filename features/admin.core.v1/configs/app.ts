@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -29,7 +29,7 @@ import { getConnectionResourceEndpoints } from "@wso2is/admin.connections.v1";
 import { getEmailTemplatesResourceEndpoints } from "@wso2is/admin.email-templates.v1";
 import { getExtendedFeatureResourceEndpoints } from "@wso2is/admin.extensions.v1/configs/endpoints";
 import { getFeatureGateResourceEndpoints } from "@wso2is/admin.feature-gate.v1/configs/endpoints";
-import { getGroupsResourceEndpoints } from "@wso2is/admin.groups.v1";
+import { getGroupsResourceEndpoints } from "@wso2is/admin.groups.v1/configs/endpoints";
 import { getIDVPResourceEndpoints } from "@wso2is/admin.identity-verification-providers.v1/configs/endpoints";
 import { getScopesResourceEndpoints } from "@wso2is/admin.oidc-scopes.v1";
 import { getInsightsResourceEndpoints } from "@wso2is/admin.org-insights.v1/config/org-insights";
@@ -44,6 +44,7 @@ import { getExtensionTemplatesEndpoints } from "@wso2is/admin.template-core.v1/c
 import { getTenantResourceEndpoints } from "@wso2is/admin.tenants.v1/configs/endpoints";
 import { getUsersResourceEndpoints } from "@wso2is/admin.users.v1/configs/endpoints";
 import { getUserstoreResourceEndpoints } from "@wso2is/admin.userstores.v1/configs/endpoints";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { getValidationServiceEndpoints } from "@wso2is/admin.validation.v1/configs";
 import { getApprovalsResourceEndpoints } from "@wso2is/admin.workflow-approvals.v1";
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
@@ -347,6 +348,8 @@ export class Config {
             legacyMode: window[ "AppUtils" ]?.getConfig()?.ui?.legacyMode,
             listAllAttributeDialects: window[ "AppUtils" ]?.getConfig()?.ui?.listAllAttributeDialects,
             passwordPolicyConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.passwordPolicyConfigs,
+            primaryUserStoreDomainName: window[ "AppUtils" ]?.getConfig()?.ui?.primaryUserStoreDomainName?.toUpperCase()
+                ?? PRIMARY_USERSTORE,
             privacyPolicyConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.privacyPolicyConfigs,
             productName: window[ "AppUtils" ]?.getConfig()?.ui?.productName,
             productVersionConfig: window[ "AppUtils" ]?.getConfig()?.ui?.productVersionConfig,

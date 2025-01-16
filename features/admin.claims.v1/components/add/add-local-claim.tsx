@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -98,6 +98,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
     const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
     const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ firstStep, setFirstStep ] = useTrigger();
     const [ secondStep, setSecondStep ] = useTrigger();
@@ -328,7 +330,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
             tempData.attributeMapping = [
                 {
                     mappedAttribute: tempData.claimURI.split("/").pop(),
-                    userstore: "PRIMARY"
+                    userstore: primaryUserStoreDomainName
                 }
             ];
             handleSubmit(tempData, customMappings, !!skipSCIM?.current);
@@ -351,7 +353,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
         if (!attributeConfig.localAttributes.createWizard.showPrimaryUserStore) {
             tempData.attributeMapping.push({
                 mappedAttribute: tempData.claimURI.split("/").pop(),
-                userstore: "PRIMARY"
+                userstore: primaryUserStoreDomainName
             });
         }
 

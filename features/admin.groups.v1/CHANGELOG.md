@@ -1,5 +1,188 @@
 # @wso2is/admin.groups.v1
 
+## 2.26.41
+
+### Patch Changes
+
+- Updated dependencies [[`6380a4e6899b0659684c143dd475c48ba7668a50`](https://github.com/wso2/identity-apps/commit/6380a4e6899b0659684c143dd475c48ba7668a50)]:
+  - @wso2is/admin.roles.v2@2.27.26
+  - @wso2is/admin.applications.v1@2.30.82
+  - @wso2is/admin.core.v1@2.35.20
+  - @wso2is/admin.extensions.v1@2.36.7
+  - @wso2is/admin.organizations.v1@2.26.82
+  - @wso2is/admin.users.v1@2.29.41
+  - @wso2is/admin.userstores.v1@2.26.41
+
+## 2.26.40
+
+### Patch Changes
+
+- Updated dependencies [[`d18c7c8d774be7063e00ab9ccfd8edb65b77ff13`](https://github.com/wso2/identity-apps/commit/d18c7c8d774be7063e00ab9ccfd8edb65b77ff13)]:
+  - @wso2is/admin.organizations.v1@2.26.81
+  - @wso2is/admin.applications.v1@2.30.81
+  - @wso2is/admin.core.v1@2.35.19
+  - @wso2is/admin.extensions.v1@2.36.6
+  - @wso2is/admin.roles.v2@2.27.25
+  - @wso2is/admin.users.v1@2.29.40
+  - @wso2is/admin.userstores.v1@2.26.40
+
+## 2.26.39
+
+### Patch Changes
+
+- Updated dependencies [[`cd827d04f98a519804f1f9996a1dc3a831278df1`](https://github.com/wso2/identity-apps/commit/cd827d04f98a519804f1f9996a1dc3a831278df1)]:
+  - @wso2is/theme@2.6.0
+  - @wso2is/admin.authorization.v1@2.25.32
+  - @wso2is/admin.extensions.v1@2.36.5
+  - @wso2is/admin.organizations.v1@2.26.80
+  - @wso2is/admin.roles.v2@2.27.24
+  - @wso2is/admin.users.v1@2.29.39
+  - @wso2is/admin.userstores.v1@2.26.39
+  - @wso2is/react-components@2.8.18
+  - @wso2is/admin.applications.v1@2.30.80
+  - @wso2is/admin.core.v1@2.35.18
+  - @wso2is/dynamic-forms@2.4.18
+  - @wso2is/form@2.6.11
+
+## 2.26.38
+
+### Patch Changes
+
+- Updated dependencies [[`c1394df22ae507e372f5b7e091be2dceb581d5e0`](https://github.com/wso2/identity-apps/commit/c1394df22ae507e372f5b7e091be2dceb581d5e0)]:
+  - @wso2is/admin.users.v1@2.29.38
+  - @wso2is/admin.applications.v1@2.30.79
+  - @wso2is/admin.core.v1@2.35.17
+  - @wso2is/admin.extensions.v1@2.36.4
+  - @wso2is/admin.organizations.v1@2.26.79
+  - @wso2is/admin.roles.v2@2.27.23
+  - @wso2is/admin.userstores.v1@2.26.38
+
+## 2.26.37
+
+### Patch Changes
+
+- [#7236](https://github.com/wso2/identity-apps/pull/7236) [`e7d200f21f5a9d6113dba7959b07a0b96bc8d118`](https://github.com/wso2/identity-apps/commit/e7d200f21f5a9d6113dba7959b07a0b96bc8d118) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix some circular dependencies
+
+- Updated dependencies [[`e7d200f21f5a9d6113dba7959b07a0b96bc8d118`](https://github.com/wso2/identity-apps/commit/e7d200f21f5a9d6113dba7959b07a0b96bc8d118)]:
+  - @wso2is/admin.applications.v1@2.30.78
+  - @wso2is/admin.roles.v2@2.27.22
+  - @wso2is/admin.users.v1@2.29.37
+  - @wso2is/admin.core.v1@2.35.16
+  - @wso2is/forms@2.3.10
+  - @wso2is/admin.extensions.v1@2.36.3
+  - @wso2is/admin.organizations.v1@2.26.78
+  - @wso2is/admin.userstores.v1@2.26.37
+  - @wso2is/admin.authorization.v1@2.25.31
+
+## 2.26.36
+
+### Patch Changes
+
+- Updated dependencies [[`cbe2f57e1804353fda6f7c3d49a09cfddb3bea69`](https://github.com/wso2/identity-apps/commit/cbe2f57e1804353fda6f7c3d49a09cfddb3bea69)]:
+  - @wso2is/admin.roles.v2@2.27.21
+  - @wso2is/admin.applications.v1@2.30.77
+  - @wso2is/admin.core.v1@2.35.15
+  - @wso2is/admin.extensions.v1@2.36.2
+  - @wso2is/admin.organizations.v1@2.26.77
+  - @wso2is/admin.users.v1@2.29.36
+  - @wso2is/admin.userstores.v1@2.26.36
+
+## 2.26.35
+
+### Patch Changes
+
+- [#7235](https://github.com/wso2/identity-apps/pull/7235) [`c2568dbe95e01427899dbb6c71c6e04d8941e308`](https://github.com/wso2/identity-apps/commit/c2568dbe95e01427899dbb6c71c6e04d8941e308) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Move common i18n extensions in console app to i18n module
+
+- Updated dependencies [[`c2568dbe95e01427899dbb6c71c6e04d8941e308`](https://github.com/wso2/identity-apps/commit/c2568dbe95e01427899dbb6c71c6e04d8941e308), [`f1173193bb885f71c7d25fae5bfd011dfb70d79a`](https://github.com/wso2/identity-apps/commit/f1173193bb885f71c7d25fae5bfd011dfb70d79a)]:
+  - @wso2is/admin.organizations.v1@2.26.76
+  - @wso2is/admin.applications.v1@2.30.76
+  - @wso2is/admin.extensions.v1@2.36.1
+  - @wso2is/admin.roles.v2@2.27.20
+  - @wso2is/admin.users.v1@2.29.35
+  - @wso2is/admin.core.v1@2.35.14
+  - @wso2is/i18n@2.14.6
+  - @wso2is/theme@2.5.1
+  - @wso2is/admin.userstores.v1@2.26.35
+  - @wso2is/admin.authorization.v1@2.25.30
+  - @wso2is/react-components@2.8.17
+  - @wso2is/dynamic-forms@2.4.17
+  - @wso2is/form@2.6.10
+
+## 2.26.34
+
+### Patch Changes
+
+- Updated dependencies [[`721be7bcde74a5db48fd4ee981e336e37d35ab00`](https://github.com/wso2/identity-apps/commit/721be7bcde74a5db48fd4ee981e336e37d35ab00), [`c01fab399c1832cfe7551229f608a8ff1020b7e8`](https://github.com/wso2/identity-apps/commit/c01fab399c1832cfe7551229f608a8ff1020b7e8)]:
+  - @wso2is/admin.extensions.v1@2.36.0
+  - @wso2is/admin.roles.v2@2.27.19
+  - @wso2is/core@2.5.5
+  - @wso2is/i18n@2.14.5
+  - @wso2is/admin.applications.v1@2.30.75
+  - @wso2is/admin.core.v1@2.35.13
+  - @wso2is/admin.users.v1@2.29.34
+  - @wso2is/admin.organizations.v1@2.26.75
+  - @wso2is/admin.userstores.v1@2.26.34
+  - @wso2is/admin.authorization.v1@2.25.29
+  - @wso2is/access-control@3.3.9
+  - @wso2is/dynamic-forms@2.4.16
+  - @wso2is/form@2.6.9
+  - @wso2is/forms@2.3.9
+  - @wso2is/react-components@2.8.16
+
+## 2.26.33
+
+### Patch Changes
+
+- Updated dependencies [[`664b1ec3c513595cdcc91216af4371dbe70ab996`](https://github.com/wso2/identity-apps/commit/664b1ec3c513595cdcc91216af4371dbe70ab996)]:
+  - @wso2is/theme@2.5.0
+  - @wso2is/admin.authorization.v1@2.25.28
+  - @wso2is/admin.extensions.v1@2.35.33
+  - @wso2is/admin.organizations.v1@2.26.74
+  - @wso2is/admin.roles.v2@2.27.18
+  - @wso2is/admin.users.v1@2.29.33
+  - @wso2is/admin.userstores.v1@2.26.33
+  - @wso2is/react-components@2.8.15
+  - @wso2is/admin.applications.v1@2.30.74
+  - @wso2is/admin.core.v1@2.35.12
+  - @wso2is/dynamic-forms@2.4.15
+  - @wso2is/form@2.6.8
+
+## 2.26.32
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.extensions.v1@2.35.32
+  - @wso2is/admin.applications.v1@2.30.73
+  - @wso2is/admin.core.v1@2.35.11
+  - @wso2is/admin.organizations.v1@2.26.73
+  - @wso2is/admin.roles.v2@2.27.17
+  - @wso2is/admin.users.v1@2.29.32
+  - @wso2is/admin.userstores.v1@2.26.32
+
+## 2.26.31
+
+### Patch Changes
+
+- [#7239](https://github.com/wso2/identity-apps/pull/7239) [`398c39ec452d460994a3a0a6425115678538e49b`](https://github.com/wso2/identity-apps/commit/398c39ec452d460994a3a0a6425115678538e49b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the option to modify the primary user store domain name in console and myaccount apps
+
+- Updated dependencies [[`398c39ec452d460994a3a0a6425115678538e49b`](https://github.com/wso2/identity-apps/commit/398c39ec452d460994a3a0a6425115678538e49b)]:
+  - @wso2is/admin.organizations.v1@2.26.72
+  - @wso2is/admin.applications.v1@2.30.72
+  - @wso2is/admin.extensions.v1@2.35.31
+  - @wso2is/react-components@2.8.14
+  - @wso2is/admin.roles.v2@2.27.16
+  - @wso2is/admin.users.v1@2.29.31
+  - @wso2is/admin.core.v1@2.35.10
+  - @wso2is/core@2.5.4
+  - @wso2is/admin.userstores.v1@2.26.31
+  - @wso2is/admin.authorization.v1@2.25.27
+  - @wso2is/dynamic-forms@2.4.14
+  - @wso2is/form@2.6.7
+  - @wso2is/access-control@3.3.8
+  - @wso2is/forms@2.3.8
+  - @wso2is/i18n@2.14.4
+
 ## 2.26.30
 
 ### Patch Changes

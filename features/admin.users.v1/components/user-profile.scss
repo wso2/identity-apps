@@ -16,75 +16,48 @@
  * under the License.
  */
 
-.multi-valued-accordion {
-    .accordion-summary {
-        display: flex;
-        padding: 0px 12px 0px 8px;
-        flex-wrap: nowrap;
-        align-items: center; 
-        gap: 4px;
-        border-radius: 8px;
-
-        .accordion-label {
-            margin: 0 0 0 8px;
-            flex-shrink: 0;
-            padding-right: 4px;
-            min-width: 250px; 
-
-            &.mobile-label {
-                min-width: 150px; 
-            }
+ .multi-value-table {
+    .multi-value-table-data-row {
+        &:last-child td, &:last-child th {
+            border: none;
         }
 
-        .verified-icon, .primary-icon {
+        .table-c1 {
+            display: flex;
+            flex-wrap: nowrap;
             align-items: center;
-            padding: 0 4px;
-        }
-    }
-
-    .accordion-details {
-        border-radius: 8px;
-        .multi-value-table {
-            .multi-value-table-data-row {
-                &:last-child td, &:last-child th {
-                    border: none;
+            font-size: 1rem;
+            padding: 0.2em 0;
+    
+            .c1-value{
+                margin-bottom: 0;
+                flex-shrink: 0;
+                padding-right: 12px;
+                min-width: 250px; 
+    
+                &.mobile-label {
+                    min-width: 150px; 
                 }
             }
-
-            .table-c1 {
-                display: flex;
-                flex-wrap: nowrap;
+    
+            .verified-icon, .primary-icon {
                 align-items: center;
-                font-size: 1rem;
-
-                .c1-value{
-                    margin-bottom: 0;
-                    flex-shrink: 0;
-                    padding-right: 12px;
-                    min-width: 250px; 
-
-                    &.mobile-label {
-                        min-width: 150px; 
-                    }
-                }
-
-                .verified-icon, .primary-icon {
-                    align-items: center;
-                    padding: 0 4px;
-                }
-            }
-
-            .table-c2 {
-                display: flex;
-                flex-wrap: nowrap;
-                align-items: center;
-                justify-content: flex-end;
-                gap: 4px;
+                padding: 0 4px;
             }
         }
-    }
+    
+        .table-c2 {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 4px;
+            padding: 0.2em 0;
 
-    .MuiAccordionDetails-root {
-        padding: 0px;
+            .text-btn {
+                padding: 0px;
+                white-space: nowrap;
+            }
+        }
     }
 }

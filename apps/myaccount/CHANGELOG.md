@@ -1,5 +1,123 @@
 # @wso2is/myaccount
 
+## 2.14.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.82
+  - @wso2is/common.branding.v1@2.25.55
+
+## 2.14.1
+
+### Patch Changes
+
+- Updated dependencies [[`d18c7c8d774be7063e00ab9ccfd8edb65b77ff13`](https://github.com/wso2/identity-apps/commit/d18c7c8d774be7063e00ab9ccfd8edb65b77ff13)]:
+  - @wso2is/admin.organizations.v1@2.26.81
+  - @wso2is/common.branding.v1@2.25.54
+
+## 2.14.0
+
+### Minor Changes
+
+- [#7292](https://github.com/wso2/identity-apps/pull/7292) [`cd827d04f98a519804f1f9996a1dc3a831278df1`](https://github.com/wso2/identity-apps/commit/cd827d04f98a519804f1f9996a1dc3a831278df1) Thanks [@savindi7](https://github.com/savindi7)! - Add RTL support for Authentication and Recovery portals.
+
+### Patch Changes
+
+- Updated dependencies [[`cd827d04f98a519804f1f9996a1dc3a831278df1`](https://github.com/wso2/identity-apps/commit/cd827d04f98a519804f1f9996a1dc3a831278df1)]:
+  - @wso2is/theme@2.6.0
+  - @wso2is/admin.organizations.v1@2.26.80
+  - @wso2is/react-components@2.8.18
+  - @wso2is/common.branding.v1@2.25.53
+
+## 2.13.58
+
+### Patch Changes
+
+- [#7277](https://github.com/wso2/identity-apps/pull/7277) [`c1394df22ae507e372f5b7e091be2dceb581d5e0`](https://github.com/wso2/identity-apps/commit/c1394df22ae507e372f5b7e091be2dceb581d5e0) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Improve multi email and mobile UI
+
+* [#7278](https://github.com/wso2/identity-apps/pull/7278) [`dc905cbbb85b59b2c0a88c3f3044192b2548c3ed`](https://github.com/wso2/identity-apps/commit/dc905cbbb85b59b2c0a88c3f3044192b2548c3ed) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Fix change password failure for suborg users via myaccount
+
+* Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.79
+  - @wso2is/common.branding.v1@2.25.52
+
+## 2.13.57
+
+### Patch Changes
+
+- Updated dependencies [[`e7d200f21f5a9d6113dba7959b07a0b96bc8d118`](https://github.com/wso2/identity-apps/commit/e7d200f21f5a9d6113dba7959b07a0b96bc8d118)]:
+  - @wso2is/forms@2.3.10
+  - @wso2is/admin.organizations.v1@2.26.78
+  - @wso2is/common.branding.v1@2.25.51
+
+## 2.13.56
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.77
+  - @wso2is/common.branding.v1@2.25.50
+
+## 2.13.55
+
+### Patch Changes
+
+- [#7286](https://github.com/wso2/identity-apps/pull/7286) [`f1173193bb885f71c7d25fae5bfd011dfb70d79a`](https://github.com/wso2/identity-apps/commit/f1173193bb885f71c7d25fae5bfd011dfb70d79a) Thanks [@savindi7](https://github.com/savindi7)! - Bump apps
+
+- Updated dependencies [[`c2568dbe95e01427899dbb6c71c6e04d8941e308`](https://github.com/wso2/identity-apps/commit/c2568dbe95e01427899dbb6c71c6e04d8941e308), [`f1173193bb885f71c7d25fae5bfd011dfb70d79a`](https://github.com/wso2/identity-apps/commit/f1173193bb885f71c7d25fae5bfd011dfb70d79a)]:
+  - @wso2is/admin.organizations.v1@2.26.76
+  - @wso2is/i18n@2.14.6
+  - @wso2is/theme@2.5.1
+  - @wso2is/common.branding.v1@2.25.49
+  - @wso2is/react-components@2.8.17
+
+## 2.13.54
+
+### Patch Changes
+
+- Updated dependencies [[`c01fab399c1832cfe7551229f608a8ff1020b7e8`](https://github.com/wso2/identity-apps/commit/c01fab399c1832cfe7551229f608a8ff1020b7e8)]:
+  - @wso2is/core@2.5.5
+  - @wso2is/i18n@2.14.5
+  - @wso2is/admin.organizations.v1@2.26.75
+  - @wso2is/common.branding.v1@2.25.48
+  - @wso2is/access-control@3.3.9
+  - @wso2is/forms@2.3.9
+  - @wso2is/react-components@2.8.16
+
+## 2.13.53
+
+### Patch Changes
+
+- Updated dependencies [[`664b1ec3c513595cdcc91216af4371dbe70ab996`](https://github.com/wso2/identity-apps/commit/664b1ec3c513595cdcc91216af4371dbe70ab996)]:
+  - @wso2is/theme@2.5.0
+  - @wso2is/admin.organizations.v1@2.26.74
+  - @wso2is/react-components@2.8.15
+  - @wso2is/common.branding.v1@2.25.47
+
+## 2.13.52
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.organizations.v1@2.26.73
+  - @wso2is/common.branding.v1@2.25.46
+
+## 2.13.51
+
+### Patch Changes
+
+- [#7239](https://github.com/wso2/identity-apps/pull/7239) [`398c39ec452d460994a3a0a6425115678538e49b`](https://github.com/wso2/identity-apps/commit/398c39ec452d460994a3a0a6425115678538e49b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the option to modify the primary user store domain name in console and myaccount apps
+
+- Updated dependencies [[`398c39ec452d460994a3a0a6425115678538e49b`](https://github.com/wso2/identity-apps/commit/398c39ec452d460994a3a0a6425115678538e49b)]:
+  - @wso2is/admin.organizations.v1@2.26.72
+  - @wso2is/react-components@2.8.14
+  - @wso2is/core@2.5.4
+  - @wso2is/common.branding.v1@2.25.45
+  - @wso2is/access-control@3.3.8
+  - @wso2is/forms@2.3.8
+  - @wso2is/i18n@2.14.4
+
 ## 2.13.50
 
 ### Patch Changes

@@ -1,5 +1,42 @@
 # @wso2is/dynamic-forms
 
+## 2.4.18
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.8.18
+
+## 2.4.17
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.8.17
+
+## 2.4.16
+
+### Patch Changes
+
+- Updated dependencies [[`c01fab399c1832cfe7551229f608a8ff1020b7e8`](https://github.com/wso2/identity-apps/commit/c01fab399c1832cfe7551229f608a8ff1020b7e8)]:
+  - @wso2is/core@2.5.5
+  - @wso2is/react-components@2.8.16
+
+## 2.4.15
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.8.15
+
+## 2.4.14
+
+### Patch Changes
+
+- Updated dependencies [[`398c39ec452d460994a3a0a6425115678538e49b`](https://github.com/wso2/identity-apps/commit/398c39ec452d460994a3a0a6425115678538e49b)]:
+  - @wso2is/react-components@2.8.14
+  - @wso2is/core@2.5.4
+
 ## 2.4.13
 
 ### Patch Changes

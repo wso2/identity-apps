@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -67,6 +67,9 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -326,7 +329,7 @@ const ApplicationRoleGroups = (props: ApplicationRoleGroupsProps): ReactElement 
                 id: "type",
                 key: "type",
                 render: (group: ApplicationRoleGroupInterface): ReactNode => {
-                    const grpName: string = resolveUserstore(group.name);
+                    const grpName: string = resolveUserstore(group.name, primaryUserStoreDomainName);
 
                     if (grpName === CONSUMER_USERSTORE) {
                         return CONSUMER_USERSTORE;

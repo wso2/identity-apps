@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,7 @@ import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.bran
 import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
 import { ConnectionResourceEndpointsInterface } from "@wso2is/admin.connections.v1";
-import { GroupsResourceEndpointsInterface } from "@wso2is/admin.groups.v1";
+import { GroupsResourceEndpointsInterface } from "@wso2is/admin.groups.v1/models/endpoints";
 import { ScopesResourceEndpointsInterface } from "@wso2is/admin.oidc-scopes.v1";
 import { OrganizationResourceEndpointsInterface } from "@wso2is/admin.organizations.v1/models";
 import { RolesResourceEndpointsInterface } from "@wso2is/admin.roles.v2/models/endpoints";

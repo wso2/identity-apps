@@ -1,5 +1,27 @@
 # @wso2is/i18n
 
+## 2.14.6
+
+### Patch Changes
+
+- [#7235](https://github.com/wso2/identity-apps/pull/7235) [`c2568dbe95e01427899dbb6c71c6e04d8941e308`](https://github.com/wso2/identity-apps/commit/c2568dbe95e01427899dbb6c71c6e04d8941e308) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Move common i18n extensions in console app to i18n module
+
+## 2.14.5
+
+### Patch Changes
+
+- [#7240](https://github.com/wso2/identity-apps/pull/7240) [`c01fab399c1832cfe7551229f608a8ff1020b7e8`](https://github.com/wso2/identity-apps/commit/c01fab399c1832cfe7551229f608a8ff1020b7e8) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add role create and delete ops to sub orgs
+
+- Updated dependencies [[`c01fab399c1832cfe7551229f608a8ff1020b7e8`](https://github.com/wso2/identity-apps/commit/c01fab399c1832cfe7551229f608a8ff1020b7e8)]:
+  - @wso2is/core@2.5.5
+
+## 2.14.4
+
+### Patch Changes
+
+- Updated dependencies [[`398c39ec452d460994a3a0a6425115678538e49b`](https://github.com/wso2/identity-apps/commit/398c39ec452d460994a3a0a6425115678538e49b)]:
+  - @wso2is/core@2.5.4
+
 ## 2.14.3
 
 ### Patch Changes

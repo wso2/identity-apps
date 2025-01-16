@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,7 +28,7 @@ import {
     BasicRoleInterface,
     PatchRoleDataInterface,
     RolesV2Interface
-} from "@wso2is/admin.roles.v2/models";
+} from "@wso2is/admin.roles.v2/models/roles";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models";
 import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
@@ -59,7 +59,7 @@ import {
     WizardStateInterface,
     WizardStepInterface,
     WizardStepsFormTypes
-} from "../../models";
+} from "../../models/groups";
 
 /**
  * Interface which captures create group props.
@@ -108,6 +108,9 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
     const dispatch: Dispatch = useDispatch();
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
+
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitRoleList, setSubmitRoleList ] = useTrigger();
 
@@ -116,7 +119,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>(undefined);
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>(
-        commonConfig?.primaryUserstoreOnly ? PRIMARY_USERSTORE : CONSUMER_USERSTORE);
+        commonConfig?.primaryUserstoreOnly ? primaryUserStoreDomainName : CONSUMER_USERSTORE);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isWizardActionDisabled, setIsWizardActionDisabled ] = useState<boolean>(true);
     const [ selectedRoleId, setSelectedRoleId ] = useState<string>();
