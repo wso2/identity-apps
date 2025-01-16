@@ -20,7 +20,7 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@oxygen-ui/react/Box";
 import Divider from "@oxygen-ui/react/Divider";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
-import { AppState, EventPublisher } from "@wso2is/admin.core.v1";
+import { EventPublisher } from "@wso2is/admin.core.v1";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -33,7 +33,6 @@ import {
 } from "@wso2is/form";
 import {
     ContentLoader,
-    DocumentationLink,
     EmphasizedSegment,
     GenericIcon,
     Heading,
@@ -42,7 +41,6 @@ import {
     PrimaryButton,
     SelectionCard,
     Steps,
-    useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -63,22 +61,20 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Icon, Grid as SemanticGrid } from "semantic-ui-react";
+import { DropdownProps, Icon, Grid as SemanticGrid } from "semantic-ui-react";
 import { createConnection, useGetConnectionTemplate } from "../../api/connections";
 import { getConnectionWizardStepIcons } from "../../configs/ui";
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import { LocalAuthenticatorConstants } from "../../constants/local-authenticator-constants";
 import {
-    AuthenticationPropertiesInterface,
     AuthenticationType,
     AuthenticationTypeDropdownOption,
     ConnectionInterface,
     CustomAuthenticationCreateWizardGeneralFormValuesInterface,
     EndpointConfigFormPropertyInterface,
-    EndpointInterface,
-    GenericConnectionCreateWizardPropsInterface,
+    GenericConnectionCreateWizardPropsInterface
 } from "../../models/connection";
 import "./custom-authentication-create-wizard.scss";
 import { ConnectionsManagementUtils } from "../../utils/connection-utils";
@@ -113,7 +109,6 @@ interface WizardStepInterface {
 }
 
 type AvailableCustomAuthentications = "external" | "internal" | "two-factor";
-type MinMax = { min: number; max: number };
 type FormErrors = { [ key: string ]: string };
 
 export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWizardProps> = (
@@ -139,19 +134,14 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isShowSecret1, setIsShowSecret1 ] = useState(false);
     const [ isShowSecret2, setIsShowSecret2 ] = useState(false);
-    const [ isAuthenticationCreateState, setIsAuthenticationCreateState ] = useState<boolean>(true);
-    const [ isAuthenticationUpdateState, setIsAuthenticationUpdateState ] = useState<boolean>(false);
     // const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
-    const [ selectedAuthenticationType, setSelectedAuthenticationType ] = useState<string>();
-    // const [ selectedEndpointAuthType, setSelectedEndpointAuthType ] = useState<string>();
 
     // Dynamic UI state
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
-    const { getLink } = useDocumentation();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -178,7 +168,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
         setSelectedTemplateId(templateId);
     }, [ selectedAuthenticator ]);
 
-    const initialValues: { NameIDType: string, RequestMethod: string, 
+    const initialValues: { NameIDType: string, RequestMethod: string,
         identifier: string, displayName: string } = useMemo(() => ({
             NameIDType: "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
             RequestMethod: "post",
@@ -341,15 +331,15 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
 
     /**
      * This method handles endpoint authentication type dropdown changes.
-     * @param event event associated with the dropdown change.
-     * @param data data changed by the event
+     * @param event - event associated with the dropdown change.
+     * @param data - data changed by the event
      */
-    const handleDropdownChange = (event, data) => { // TODO: Make type safe
-        setSelectedAuthenticationType(data.value);
+    const handleDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+        setAuthenticationType(data.value as AuthenticationType);
     };
 
     const renderEndpointAuthPropertyFields = (): ReactElement => {
-        switch (selectedAuthenticationType) {
+        switch (authenticationType) {
             case AuthenticationType.NONE:
                 break;
             case AuthenticationType.BASIC:
@@ -481,7 +471,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
             error.endpointUri = "Please enter a valid URL.";
         }
 
-        if (!selectedAuthenticationType) {
+        if (!authenticationType) {
             error.authenticationType = "Endpoint is a required field.";
         }
 
@@ -489,8 +479,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
 
         switch (authenticationType) {
             case AuthenticationType.BASIC:
-                if (isAuthenticationCreateState || isAuthenticationUpdateState ||
-                    values?.usernameAuthProperty || values?.passwordAuthProperty) {
+                if (values?.usernameAuthProperty || values?.passwordAuthProperty) {
                     if (!values?.usernameAuthProperty) {
                         error.usernameAuthProperty = "Username is a required field.";
                     }
@@ -501,16 +490,13 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
 
                 break;
             case AuthenticationType.BEARER:
-                if (isAuthenticationCreateState || isAuthenticationUpdateState) {
-                    if (!values?.accessTokenAuthProperty) {
-                        error.accessTokenAuthProperty = "Access Token is a required field.";
-                    }
+                if (!values?.accessTokenAuthProperty) {
+                    error.accessTokenAuthProperty = "Access Token is a required field.";
                 }
 
                 break;
             case AuthenticationType.API_KEY:
-                if (isAuthenticationCreateState || isAuthenticationUpdateState||
-                    values?.headerAuthProperty || values?.valueAuthProperty) {
+                if (values?.headerAuthProperty || values?.valueAuthProperty) {
                     if (!values?.headerAuthProperty) {
                         error.headerAuthProperty = "Header is a required field.";
                     }
@@ -723,7 +709,7 @@ export const CustomAuthenticationCreateWizard: FC<CustomAuthenticationCreateWiza
                         placeholder = { "Select Authentication Type" }
                         hint="Once added, these secrets will not be displayed. You will only be able to reset them."
                         required={ true }
-                        value={ selectedAuthenticationType }
+                        value={ authenticationType }
                         options={
                             [ ...LocalAuthenticatorConstants.AUTH_TYPES.map(
                                 (option: AuthenticationTypeDropdownOption) => ({
