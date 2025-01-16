@@ -63,4 +63,5 @@ export * from "./impersonation";
 export * from "./actions";
 export * from "./tenants";
 export * from "./sms-templates";
+export * from "./remote-user-stores";
 export * from "./policy-administration";

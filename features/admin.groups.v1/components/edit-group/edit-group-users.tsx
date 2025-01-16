@@ -52,7 +52,7 @@ import { Dispatch } from "redux";
 import { Divider, DropdownProps, Header, Icon, PaginationProps, SemanticICONS } from "semantic-ui-react";
 import { AddGroupUserModal } from "./add-group-user-modal";
 import { updateGroupDetails } from "../../api";
-import { CreateGroupMemberInterface, GroupsInterface, PatchGroupDataInterface } from "../../models";
+import { CreateGroupMemberInterface, GroupsInterface, PatchGroupDataInterface } from "../../models/groups";
 import "./edit-group-users.scss";
 
 /**

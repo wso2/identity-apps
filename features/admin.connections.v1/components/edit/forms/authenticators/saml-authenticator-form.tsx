@@ -39,6 +39,7 @@ import {
 import {
     DEFAULT_NAME_ID_FORMAT,
     DEFAULT_PROTOCOL_BINDING,
+    IDENTITY_PROVIDER_AUTHENTICATION_REQUEST_PROVIDER_NAME_LENGTH,
     IDENTITY_PROVIDER_AUTHORIZED_REDIRECT_URL_LENGTH,
     IDENTITY_PROVIDER_ENTITY_ID_LENGTH,
     LOGOUT_URL_LENGTH,
@@ -112,7 +113,10 @@ export interface SamlPropertiesInterface {
     attributeConsumingServiceIndex?: string;
     AuthnContextComparisonLevel?: string;
     IsAssertionEncrypted?: boolean;
+    IncludeCert?: boolean;
+    IncludeNameIDPolicy?:boolean;
     AuthnContextClassRef?: string;
+    AuthnReqProviderName?: string;
 }
 
 const FORM_ID: string = "saml-authenticator-form";
@@ -239,10 +243,17 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
 
         return {
             ArtifactResolveUrl: findPropVal<string>({ defaultValue: "", key: "ArtifactResolveUrl" }),
+            AttributeConsumingServiceIndex: findPropVal<string>({
+                defaultValue: "",
+                key: "AttributeConsumingServiceIndex"
+            }),
             AuthRedirectUrl: findPropVal<string>({ defaultValue: authorizedRedirectURL, key: "AuthRedirectUrl" }),
             AuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "AuthnContextClassRef" }),
             AuthnContextComparisonLevel: findPropVal<string>({ defaultValue: "", key: "AuthnContextComparisonLevel" }),
+            AuthnReqProviderName: findPropVal<string>({ defaultValue: "", key: "AuthnReqProviderName" }),
+            CustomAuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "CustomAuthnContextClassRef" }),
             DigestAlgorithm: findPropVal<string>({ defaultValue: "SHA256", key: "DigestAlgorithm" }),
+            ForceAuthentication: findPropVal<string>({ defaultValue: "string", key: "ForceAuthentication" }),
             ISArtifactBindingEnabled:  findPropVal<boolean>({ defaultValue: false, key: "ISArtifactBindingEnabled" }),
             /**
              * https://github.com/wso2/product-is/issues/17004
@@ -254,13 +265,16 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             ISArtifactResponseSigned: findPropVal<string>({ defaultValue: "string", key: "ISArtifactResponseSigned" }),
             ISAuthnReqSigned: findPropVal<boolean>({ defaultValue: false, key: "ISAuthnReqSigned" }),
             IdPEntityId: findPropVal<string>({ defaultValue: "", key: "IdPEntityId" }),
+            IncludeAuthnContext: findPropVal<string>({ defaultValue: "string", key: "IncludeAuthnContext" }),
+            IncludeCert : findPropVal<boolean>({ defaultValue: false, key: "IncludeCert" }),
+            IncludeNameIDPolicy: findPropVal<boolean>({ defaultValue: false, key: "IncludeNameIDPolicy" }),
             IncludeProtocolBinding: findPropVal<boolean>({ defaultValue: false, key: "IncludeProtocolBinding" }),
-            IsAssertionEncrypted: findPropVal<boolean>({ defaultValue: false, key: "IsAssertionEncrypted" }),
             /**
              * `IsAuthnRespSigned` is by default set to true when creating the SAML IdP so,
              * always the value will be true. Keeping this here to indicate for the user and
              * to enable this if requirements gets changed.
              */
+            IsAssertionEncrypted: findPropVal<boolean>({ defaultValue: false, key: "IsAssertionEncrypted" }),
             IsAuthnRespSigned: findPropVal<boolean>({ defaultValue: false, key: "IsAuthnRespSigned" }),
             IsLogoutEnabled: findPropVal<boolean>({ defaultValue: false, key: "IsLogoutEnabled" }),
             IsLogoutReqSigned: findPropVal<boolean>({ defaultValue: false, key: "IsLogoutReqSigned" }),
@@ -275,11 +289,14 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 defaultValue: findMeta({ key: "RequestMethod" })?.defaultValue ?? DEFAULT_PROTOCOL_BINDING,
                 key: "RequestMethod"
             }),
+            ResponseAuthnContextClassRef: findPropVal<string>({
+                defaultValue: "string",
+                key: "ResponseAuthnContextClassRef"
+            }),
             SPEntityId: findPropVal<string>({ defaultValue: "", key: "SPEntityId" }),
             SSOUrl: findPropVal<string>({ defaultValue: "", key: "SSOUrl" }),
             SignatureAlgorithm: findPropVal<string>({ defaultValue: "RSA with SHA256", key: "SignatureAlgorithm" }),
             commonAuthQueryParams: findPropVal<string>({ defaultValue: "", key: "commonAuthQueryParams" }),
-            customAuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "CustomAuthnContextClassRef" }),
             /**
              * https://github.com/wso2/product-is/issues/17004
              */
@@ -300,6 +317,8 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         setIsArtifactBindingEnabled(initialFormValues.ISArtifactBindingEnabled);
         setFormValues({ ...initialFormValues });
         setIsEnableAssetionEncryption(initialFormValues.IsAssertionEncrypted);
+        setIncludeNameIDPolicy(initialFormValues.IncludeNameIDPolicy);
+        setIncludeCert(initialFormValues.IncludeCert);
 
         const initiallySelectedAuthnContextClasses: DropdownChild[] = initialFormValues.AuthnContextClassRef?.split(",")
             .map(
@@ -844,7 +863,8 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             <Field.Dropdown
                                 required={ false }
                                 name="AuthnContextComparisonLevel"
-                                defaultValue={ initialFormValues?.AuthnContextComparisonLevel }
+                                value={ formValues?.AuthnContextComparisonLevel }
+                                defaultValue={ formValues?.AuthnContextComparisonLevel }
                                 placeholder={ t(`${ I18N_TARGET_KEY }.authContextComparisonLevel.placeholder`) }
                                 ariaLabel={ t(`${ I18N_TARGET_KEY }.authContextComparisonLevel.ariaLabel`) }
                                 data-testid={ `${ testId }-authContextComparisonLevel-field` }
@@ -939,6 +959,25 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             label={ t(`${ I18N_TARGET_KEY }.commonAuthQueryParams.label`) }
                             ariaLabel={ t(`${ I18N_TARGET_KEY }.commonAuthQueryParams.ariaLabel`) }
                             name="commonAuthQueryParams"
+                            readOnly={ readOnly }
+                        />
+                    </SectionRow>
+                    <SectionRow>
+                        <Field.Input
+                            name="AuthnReqProviderName"
+                            value={ formValues?.AuthnReqProviderName }
+                            inputType="default"
+                            placeholder={ t(`${ I18N_TARGET_KEY }.authnReqProviderName.placeholder`) }
+                            ariaLabel={ t(`${ I18N_TARGET_KEY }.authnReqProviderName.ariaLabel`) }
+                            data-testid={ `${ testId }-authnReqProviderName-field` }
+                            label={ (
+                                <FormInputLabel htmlFor="AuthnReqProviderName">
+                                    { t(`${ I18N_TARGET_KEY }.authnReqProviderName.label`) }
+                                </FormInputLabel>
+                            ) }
+                            maxLength={ IDENTITY_PROVIDER_AUTHENTICATION_REQUEST_PROVIDER_NAME_LENGTH.max }
+                            minLength={ IDENTITY_PROVIDER_AUTHENTICATION_REQUEST_PROVIDER_NAME_LENGTH.min }
+                            hint={ t(`${ I18N_TARGET_KEY }.authnReqProviderName.hint`) }
                             readOnly={ readOnly }
                         />
                     </SectionRow>

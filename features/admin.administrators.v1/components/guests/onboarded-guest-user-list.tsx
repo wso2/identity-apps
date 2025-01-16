@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
+import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import {
     AppState,
     FeatureConfigInterface,
@@ -42,9 +42,8 @@ import {
     UserListInterface
 } from "@wso2is/admin.users.v1/models";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
-import { UserstoreConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -68,7 +67,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
-import { AdministratorConstants } from "../../constants";
+import { AdministratorConstants } from "../../constants/users";
 
 /**
  * Prop types for the onboarded collaborator users list component.
@@ -185,6 +184,9 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
+    const hasUserUpdatePermissions: boolean = useRequiredScopes(featureConfig?.users?.scopes?.update);
+    const hasUserDeletePermissions: boolean = useRequiredScopes(featureConfig?.users?.scopes?.delete);
+
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface | UserRoleInterface>(undefined);
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
@@ -192,8 +194,9 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
     const [ loading, setLoading ] = useState(false);
 
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
@@ -488,10 +491,10 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                 icon: (user: UserBasicInterface): SemanticICONS => {
                     const userStore: string = user?.userName?.split("/").length > 1
                         ? user?.userName?.split("/")[0]
-                        : "PRIMARY";
+                        : primaryUserStoreDomainName;
 
                     return (
-                        !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+                        !hasUserUpdatePermissions
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
@@ -505,10 +508,10 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                 popupText: (user: UserBasicInterface): string => {
                     const userStore: string = user?.userName?.split("/").length > 1
                         ? user?.userName?.split("/")[0]
-                        : "PRIMARY";
+                        : primaryUserStoreDomainName;
 
                     return (
-                        !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+                        !hasUserUpdatePermissions
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
@@ -525,12 +528,12 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
             hidden: (user: UserBasicInterface): boolean => {
                 const userStore: string = user?.userName?.split("/").length > 1
                     ? user?.userName?.split("/")[0]
-                    : UserstoreConstants.PRIMARY_USER_STORE;
+                    : primaryUserStoreDomainName;
 
                 return !isFeatureEnabled(featureConfig?.users,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
                     || isPrivilegedUser
-                    || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)
+                    || !hasUserDeletePermissions
                     || readOnlyUserStores?.includes(userStore.toString())
                     || (adminType === AdminAccountTypes.EXTERNAL
                     && (getUserNameWithoutDomain(user?.userName) === realmConfigs?.adminUser

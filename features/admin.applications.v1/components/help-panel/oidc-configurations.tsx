@@ -28,11 +28,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Form, Grid } from "semantic-ui-react";
 import { getHelpPanelIcons } from "../../configs/ui";
-import { ApplicationManagementConstants } from "../../constants";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import {
-    OIDCApplicationConfigurationInterface,
-    OIDCEndpointsInterface
-} from "../../models";
+    OIDCApplicationConfigurationInterface
+} from "../../models/application";
+import { OIDCEndpointsInterface } from "../../models/application-inbound";
 
 /**
  * Get an identity client instance.

@@ -25,6 +25,8 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "@wso2is/admin.core.v1";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -88,6 +90,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const {
         data: apiResourcesListData,
@@ -252,9 +255,18 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
             }
             pageTitle={ t("extensions:develop.apiResource.pageHeader.title") }
             title={ t("extensions:develop.apiResource.pageHeader.title") }
-            description={ (
+            description={ organizationType !== OrganizationType.SUBORGANIZATION ? (
                 <>
                     { t("extensions:develop.apiResource.pageHeader.description") }
+                    <DocumentationLink
+                        link={ getLink("develop.apiResources.learnMore") }
+                    >
+                        { t("common:learnMore") }
+                    </DocumentationLink>
+                </>
+            ) : (
+                <>
+                    { t("extensions:develop.apiResource.pageHeader.subOrgDescription") }
                     <DocumentationLink
                         link={ getLink("develop.apiResources.learnMore") }
                     >
@@ -267,48 +279,53 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
             headingColumnWidth="11"
             actionColumnWidth="5"
         >
-            <EmphasizedSegment
-                onClick={ () => {
-                    history.push(APIResourcesConstants.getPaths().get("API_RESOURCES_CATEGORY")
-                        .replace(":categoryId", APIResourceType.MANAGEMENT));
-                } }
-                className="clickable"
-                data-componentid={ `${ componentId }-management-api-container` }
-            >
-                <List>
-                    <List.Item>
-                        <Grid container direction="row" xs={ 12 } alignItems="center">
-                            <Grid xs={ 10 } alignContent="center">
-                                <GenericIcon
-                                    verticalAlign="middle"
-                                    fill="primary"
-                                    transparent
-                                    icon={ <BuildingGearIcon size="medium" /> }
-                                    spaced="right"
-                                    floated="left"
-                                    className="mt-1"
-                                />
-                                <List.Header>
-                                    { t("extensions:develop.apiResource.managementAPI.header") }
-                                </List.Header>
-                                <List.Description>
-                                    { t("extensions:develop.apiResource.managementAPI.description") }
-                                </List.Description>
-                            </Grid>
-                            <Grid xs={ 2 }>
-                                <GenericIcon
-                                    verticalAlign="middle"
-                                    fill="primary"
-                                    transparent
-                                    icon={ <ChevronRightIcon /> }
-                                    spaced="right"
-                                    floated="right"
-                                />
-                            </Grid>
-                        </Grid>
-                    </List.Item>
-                </List>
-            </EmphasizedSegment>
+            {
+                organizationType !== OrganizationType.SUBORGANIZATION &&
+                (
+                    <EmphasizedSegment
+                        onClick={ () => {
+                            history.push(APIResourcesConstants.getPaths().get("API_RESOURCES_CATEGORY")
+                                .replace(":categoryId", APIResourceType.MANAGEMENT));
+                        } }
+                        className="clickable"
+                        data-componentid={ `${ componentId }-management-api-container` }
+                    >
+                        <List>
+                            <List.Item>
+                                <Grid container direction="row" xs={ 12 } alignItems="center">
+                                    <Grid xs={ 10 } alignContent="center">
+                                        <GenericIcon
+                                            verticalAlign="middle"
+                                            fill="primary"
+                                            transparent
+                                            icon={ <BuildingGearIcon size="medium" /> }
+                                            spaced="right"
+                                            floated="left"
+                                            className="mt-1"
+                                        />
+                                        <List.Header>
+                                            { t("extensions:develop.apiResource.managementAPI.header") }
+                                        </List.Header>
+                                        <List.Description>
+                                            { t("extensions:develop.apiResource.managementAPI.description") }
+                                        </List.Description>
+                                    </Grid>
+                                    <Grid xs={ 2 }>
+                                        <GenericIcon
+                                            verticalAlign="middle"
+                                            fill="primary"
+                                            transparent
+                                            icon={ <ChevronRightIcon /> }
+                                            spaced="right"
+                                            floated="right"
+                                        />
+                                    </Grid>
+                                </Grid>
+                            </List.Item>
+                        </List>
+                    </EmphasizedSegment>
+                )
+            }
             <EmphasizedSegment
                 onClick={ () => {
                     history.push(APIResourcesConstants.getPaths().get("API_RESOURCES_CATEGORY")

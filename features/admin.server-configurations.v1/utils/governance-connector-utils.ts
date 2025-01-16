@@ -17,6 +17,7 @@
  */
 
 import { AppConstants, store } from "@wso2is/admin.core.v1";
+import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
@@ -123,7 +124,8 @@ export class GovernanceConnectorUtils {
                     properties: [
                         "EmailVerification.Enable", // Enable user email verification
                         "EmailVerification.LockOnCreation", // Enable account lock on creation
-                        "EmailVerification.Notification.InternallyManage", // Manage notifications sending internally
+                        // eslint-disable-next-line max-len
+                        ServerConfigurationsConstants.EMAIL_VERIFICATION_NOTIFICATIONS_INTERNALLY_MANAGED, // Manage notifications sending internally
                         "EmailVerification.ExpiryTime", // Email verification code expiry time
                         "EmailVerification.AskPassword.ExpiryTime", // Username recoveryAsk password code expiry time
                         "EmailVerification.AskPassword.PasswordGenerator",
@@ -171,6 +173,24 @@ export class GovernanceConnectorUtils {
                 });
 
                 return connector;
+            }
+        });
+    }
+
+    public static getCombinedPredefinedConnectorCategories(): Array<any> {
+
+        return this.getPredefinedConnectorCategories().map((category: any) => {
+
+            const additionalConnectors: any = serverConfigurationConfig.getConnectorCategoryExtension()
+                .find((el: any) => el.id === category.id);
+
+            if (additionalConnectors) {
+                return {
+                    ...category,
+                    connectors: [ ...category.connectors, ...additionalConnectors.connectors ]
+                };
+            } else {
+                return category;
             }
         });
     }
@@ -401,6 +421,24 @@ export class GovernanceConnectorUtils {
                 displayOrder: 0,
                 id: ServerConfigurationsConstants.PROVISIONING_SETTINGS_CATEGORY_ID,
                 title: "Provisioning Settings"
+            },
+            {
+                connectors: [
+                    {
+                        description: I18n.instance.t(
+                            "governanceConnectors:connectorCategories.internalNotificationSending.connector.description"
+                        ),
+                        header: I18n.instance.t(
+                            "governanceConnectors:connectorCategories.internalNotificationSending.connector.title"),
+                        id: ServerConfigurationsConstants.NOTIFICATION_SETTINGS_CONNECTOR_ID,
+                        route: AppConstants.getPaths().get("INTERNAL_NOTIFICATION_SENDING"),
+                        testId: "internal-notification-settings-card"
+                    }
+                ],
+                displayOrder: 0,
+                id: ServerConfigurationsConstants.NOTIFICATION_SETTINGS_CATEGORY_ID,
+                title: I18n.instance
+                    .t("governanceConnectors:connectorCategories.internalNotificationSending.categoryTitle")
             }
         ];
     }

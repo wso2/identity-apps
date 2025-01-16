@@ -31,7 +31,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { ApplicationManagementConstants } from "../../constants";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import SinglePageApplication
@@ -40,8 +40,10 @@ import {
     InboundProtocolListItemInterface,
     OIDCApplicationConfigurationInterface,
     SAMLApplicationConfigurationInterface
-} from "../../models";
-import { MTLSOIDCConfigurations, OIDCConfigurations, SAMLConfigurations } from "../help-panel";
+} from "../../models/application";
+import { MTLSOIDCConfigurations } from "../help-panel/mtls-oidc-configurations";
+import { OIDCConfigurations } from "../help-panel/oidc-configurations";
+import { SAMLConfigurations } from "../help-panel/saml-configurations";
 import { WSFederationConfigurations } from "../help-panel/ws-fed-configurations";
 
 /**

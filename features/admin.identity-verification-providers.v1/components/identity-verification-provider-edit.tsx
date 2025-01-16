@@ -106,6 +106,8 @@ export const EditIdentityVerificationProvider: FunctionComponent<EditIdentityVer
                 return defaultValues;
             }, {} as Record<string, unknown>);
 
+        delete identityVerificationProvider.image;
+
         return {
             ...identityVerificationProvider,
             configProperties: configPropertiesInitialValues

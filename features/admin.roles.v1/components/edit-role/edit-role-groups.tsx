@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getEmptyPlaceholderIllustrations, updateResources } from "@wso2is/admin.core.v1";
+import { AppState, getEmptyPlaceholderIllustrations, updateResources } from "@wso2is/admin.core.v1";
 import { getGroupList } from "@wso2is/admin.groups.v1/api";
 import {
     GroupListInterface,
@@ -25,6 +25,7 @@ import {
     PatchGroupOpInterface,
     PatchGroupRemoveOpInterface
 } from "@wso2is/admin.groups.v1/models";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import {
     AlertLevels,
     RoleGroupsInterface,
@@ -32,6 +33,7 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { StringUtils } from "@wso2is/core/utils";
 import {
     ContentLoader,
     EmphasizedSegment,
@@ -52,7 +54,7 @@ import forEachRight from "lodash-es/forEachRight";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import {
     Button,
@@ -64,7 +66,7 @@ import {
     Modal,
     Table
 } from "semantic-ui-react";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../constants/role-constants";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../constants/role-constants";
 
 interface RoleGroupsPropsInterface extends TestableComponentInterface {
     /**
@@ -93,6 +95,9 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
+        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ showAddNewRoleModal, setAddNewRoleModalView ] = useState(false);
     const [ groupList, setGroupList ] = useState<GroupsInterface[]>([]);
@@ -456,7 +461,9 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
 
         let item: ItemTypeLabelPropsInterface = {
             labelColor: "olive",
-            labelText: PRIMARY_DOMAIN
+            labelText: StringUtils.isEqualCaseInsensitive(primaryUserStoreDomainName, PRIMARY_USERSTORE)
+                ? t("console:manage.features.users.userstores.userstoreOptions.primary")
+                : primaryUserStoreDomainName
         };
 
         if (userGroup[0] !== APPLICATION_DOMAIN &&
@@ -646,7 +653,13 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                             userGroup?.length === 1
                                                 ? (
                                                     <Label color="olive">
-                                                        { PRIMARY_DOMAIN }
+                                                        {
+                                                            StringUtils.isEqualCaseInsensitive(
+                                                                primaryUserStoreDomainName, PRIMARY_USERSTORE)
+                                                                ? t("console:manage.features.users.userstores" +
+                                                                    ".userstoreOptions.primary")
+                                                                : primaryUserStoreDomainName
+                                                        }
                                                     </Label>
                                                 )
                                                 : (

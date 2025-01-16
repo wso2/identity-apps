@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,20 +24,17 @@ export class SharedUserStoreConstants {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
 
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
 
-    public static readonly PRIMARY_USER_STORE = "Primary";
-    public static readonly READONLY_USER_STORE = "ReadOnly";
+    public static readonly READONLY_USER_STORE: string = "ReadOnly";
 
     /**
      * Primary user store property values
      */
-    public static readonly PRIMARY_USERSTORE_PROPERTY_VALUES = {
+    public static readonly PRIMARY_USERSTORE_PROPERTY_VALUES: { [ key: string ]: string } = {
         PasswordJavaScriptRegEx: "^[\\S]{5,30}$",
         RolenameJavaScriptRegEx: "^[\\S]{3,30}$",
         UsernameJavaScriptRegEx: "^[\\S]{3,30}$"
@@ -46,9 +43,9 @@ export class SharedUserStoreConstants {
     /**
      * User store regEx properties
      */
-    public static readonly USERSTORE_REGEX_PROPERTIES = {
+    public static readonly USERSTORE_REGEX_PROPERTIES: { [ key: string ]: string } = {
         PasswordRegEx: "PasswordJavaScriptRegEx",
         RolenameRegEx: "RolenameJavaScriptRegEx",
         UsernameRegEx: "UsernameJavaScriptRegEx"
-    }
+    };
 }

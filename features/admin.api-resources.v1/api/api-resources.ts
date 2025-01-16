@@ -25,9 +25,9 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { APIResourcesConstants } from "../constants";
+import { APIResourcesConstants } from "../constants/api-resources-constants";
 import { APIResourceInterface, APIResourcePermissionInterface, APIResourcesListInterface,
-    UpdatedAPIResourceInterface } from "../models";
+    UpdatedAPIResourceInterface } from "../models/api-resources";
 
 /**
  * Get an axios instance.

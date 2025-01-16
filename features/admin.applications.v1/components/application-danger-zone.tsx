@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import {
     AppConstants,
     AppState,
@@ -26,7 +26,6 @@ import {
     history
 } from "@wso2is/admin.core.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
@@ -34,7 +33,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { deleteApplication } from "../api";
+import { deleteApplication } from "../api/application";
 
 /**
  * Prop types of the  ApplicationDangerZone component.
@@ -81,7 +80,8 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
+
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
@@ -151,8 +151,7 @@ export const ApplicationDangerZoneComponent: FunctionComponent<ApplicationDanger
      * @returns DangerZoneGroup element.
      */
     const resolveDangerActions = (): ReactElement => {
-        if (!hasRequiredScopes(
-            featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)) {
+        if (!hasApplicationUpdatePermissions) {
             return null;
         }
 

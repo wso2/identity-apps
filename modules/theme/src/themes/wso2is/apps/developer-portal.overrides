@@ -1537,7 +1537,7 @@ TODO : Move values to separate variables and cleanup styles.
             box-shadow: none;
 
             .ui.divided.list>.item {
-                padding: 5px 15px 20px !important;
+                padding: 20px 15px 20px !important;
             }
         }
     }
