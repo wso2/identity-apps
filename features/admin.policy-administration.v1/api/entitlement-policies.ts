@@ -26,7 +26,6 @@ import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { PolicyInterface, PublishPolicyDataInterface } from "../models/policies";
 
-
 /**
  * Get an axios instance.
  *
