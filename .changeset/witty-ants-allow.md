@@ -4,7 +4,7 @@
 "@wso2is/admin.alternative-login-identifier.v1": patch
 "@wso2is/admin.authentication-flow-builder.v1": patch
 "@wso2is/admin.organization-discovery.v1": patch
-"@wso2is/admin.policy-administration.v1": patch
+"@wso2is/admin.policy-administration.v1": major
 "@wso2is/admin.server-configurations.v1": patch
 "@wso2is/admin.saml2-configuration.v1": patch
 "@wso2is/admin.username-validation.v1": patch
