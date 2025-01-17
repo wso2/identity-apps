@@ -55,7 +55,6 @@ import { formatXML } from "../../utils/utils";
 /**
  * Proptypes for the policy editor panel component.
  */
-
 export interface PolicyEditorProps extends IdentifiableComponentInterface, HTMLAttributes<HTMLDivElement> {
     policyScript: string;
     onScriptChange: (updatedScript: string) => void;
