@@ -280,8 +280,8 @@ export class ServerConfigurationsConstants {
     public static readonly ACCOUNT_LOCK_TIME_INCREMENT_FACTOR: string = "account.lock.handler.login.fail.timeout.ratio";
     public static readonly ACCOUNT_LOCK_INTERNAL_NOTIFICATION_MANAGEMENT: string =
         "account.lock.handler.notification.manageInternally";
-    public static readonly ACCOUNT_LOCK_TIME_DEFAULT: string = "5";
 
+    public static readonly ACCOUNT_LOCK_TIME_DEFAULT: string = "5";
     public static readonly NOTIFY_USER_ON_ACCOUNT_LOCK_INCREMENT: string =
         "account.lock.handler.notification.notifyOnLockIncrement";
 

@@ -3095,7 +3095,7 @@ export interface Extensions {
                     };
                     info: string;
                     connectorDescription: string;
-                    accountLockDurationHeading: String;
+                    accountLockDurationHeading: string;
                     heading: string;
                     notification: {
                         error: NotificationItem;

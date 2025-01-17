@@ -172,10 +172,10 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                 } else if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_TIME) {
                     resolvedInitialValues = {
                         ...resolvedInitialValues,
-                        accountLockTime: parseInt(property.value) === 0 ? 
-                            ServerConfigurationsConstants.ACCOUNT_LOCK_TIME_DEFAULT : property.value 
+                        accountLockTime: parseInt(property.value) === 0 ?
+                            ServerConfigurationsConstants.ACCOUNT_LOCK_TIME_DEFAULT : property.value
                     };
-                    setLockDuration(parseInt(property.value) === 0 ? 
+                    setLockDuration(parseInt(property.value) === 0 ?
                         ServerConfigurationsConstants.ACCOUNT_LOCK_TIME_DEFAULT : property.value );
                     setEnableIndefiniteUserLockduration(parseInt(property.value) === 0);
                 } else if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_TIME_INCREMENT_FACTOR) {
@@ -211,10 +211,10 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                 ? values.maxFailedAttempts
                 : initialConnectorValues?.maxFailedAttempts,
             "account.lock.handler.Time": enableIndefiniteUserLockduration
-            ? 0
-            : (values.accountLockTime !== undefined
-                ? values.accountLockTime
-                : initialConnectorValues?.accountLockTime),
+                ? 0
+                : (values.accountLockTime !== undefined
+                    ? values.accountLockTime
+                    : initialConnectorValues?.accountLockTime),
             "account.lock.handler.login.fail.timeout.ratio": values.accountLockIncrementFactor !== undefined
                 ? values.accountLockIncrementFactor
                 : initialConnectorValues?.accountLockIncrementFactor,
@@ -356,17 +356,17 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                     <br />
                     { enableIndefiniteUserLockduration 
                         ? `User tries to login with an incorrect password ${toInteger(maxAttempts) === 1 ? "once" 
-                        : `in ${maxAttempts} consecutive attempts`}. User account will be locked indefinitely until 
+                            : `in ${maxAttempts} consecutive attempts`}. User account will be locked indefinitely until 
                         the account is manually unlocked by an admin.`: `User tries to login with an incorrect 
                         password ${toInteger(maxAttempts) === 1? "once" : `in ${maxAttempts} consecutive attempts`}. 
                         User account will be locked for ${lockDuration} ${toInteger(lockDuration) === 1 ? "minute" : 
-                        "minutes"}.`
-                    }  
-                    {!enableIndefiniteUserLockduration ? sampleInfoAccordion() : null}`
+                "minutes"}.`
+                    }
+                    { !enableIndefiniteUserLockduration ? sampleInfoAccordion() : null }`
                 </p>
             </Message>
         );
-    }
+    };
 
     /**
      * Renders accordion with example configuration information.

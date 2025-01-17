@@ -3760,7 +3760,7 @@ export const extensions: Extensions = {
                                 label: "Notify user when lock time is increased"
                             },
                             lockAccountForSpecifiedTime: {
-                                label: "Lock account for a specified duration",
+                                label: "Lock account for a specified duration"
                             },
                             lockAccountindefiniteTime: {
                                 label: "Lock account indefinitely"
