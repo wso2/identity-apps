@@ -84,7 +84,6 @@ const EditPolicyAlgorithm: FunctionComponent<EditPolicyAlgorithmProps> = (
             mutateAlgorithm();
             closeModal();
         }).catch( () => {
-
             dispatch(addAlert({
                 description: t("idvp:create.notifications.create.genericError.description"),
                 level: AlertLevels.ERROR,
