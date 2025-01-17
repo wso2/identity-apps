@@ -175,7 +175,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                     <Heading as="h6" compact>
                         <Trans
                             i18nKey={
-                                "extensions:console.application.quickStart" +
+                                "applications:quickStart" +
                                 ".spa.customConfig.protocolConfig"
                             }
                         >
@@ -215,7 +215,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("extensions:console.application.quickStart" +
+                                            t("applications:quickStart" +
                                             ".twa.oidc.customConfig.clientSecret")
                                         }
                                         <Hint className="mt-0 mb-0" popup>
@@ -234,7 +234,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("extensions:console.application.quickStart" +
+                                            t("applications:quickStart" +
                                                 ".m2m.customConfig.tokenEndpoint")
                                         }
                                         <Hint className="mt-0 mb-0" popup>
@@ -285,7 +285,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("extensions:console.application.quickStart" +
+                                            t("applications:quickStart" +
                                               ".m2m.customConfig.tokenRequest")
                                         }
                                         <Hint className="mt-0 mb-0" popup>
@@ -355,7 +355,7 @@ export const M2MCustomConfiguration: FC<M2MCustomConfigurationPropsInterface> = 
                         className="spa-config-accordion-title"
                     >
                         <Heading as="h5">
-                            { t("extensions:console.application.quickStart.m2m.customConfig.configurations") }
+                            { t("applications:quickStart.m2m.customConfig.configurations") }
                         </Heading>
                     </SegmentedAccordion.Title>
                     <SegmentedAccordion.Content

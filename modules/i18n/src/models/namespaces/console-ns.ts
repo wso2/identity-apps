@@ -119,6 +119,26 @@ export interface ConsoleNS {
             };
             helpDropdownLink: string;
         };
+        marketingConsent: {
+            heading: string;
+            description: string;
+            actions: {
+                subscribe: string;
+                decline: string;
+            },
+            notifications: {
+                errors: {
+                    fetch: {
+                        message: string;
+                        description: string;
+                    };
+                    update: {
+                        message: string;
+                        description: string;
+                    };
+                };
+            };
+        };
         modals: {
             editAvatarModal: {
                 description: string;

@@ -16,6 +16,60 @@
  * under the License.
  */
 export interface ApplicationsNS {
+    quickStart: {
+        addUserOption: {
+            description: string;
+            hint: string;
+            message: string;
+        },
+        spa: {
+            customConfig: {
+                heading:  string;
+                anySPATechnology: string;
+                configurations: string;
+                protocolConfig: string;
+                clientId: string;
+                baseUrl: string;
+                redirectUrl: string;
+                scope: string;
+                serverEndpoints: string;
+            },
+            techSelection: {
+                heading: string;
+            }
+        },
+        technologySelectionWrapper: {
+            subHeading: string;
+            otherTechnology: string;
+        },
+        twa: {
+            common: {
+                orAnyTechnology: string;
+            },
+            oidc: {
+                customConfig: {
+                    clientSecret: string;
+                    heading: string;
+                }
+            },
+            saml: {
+                customConfig: {
+                    heading: string;
+                    issuer: string;
+                    acsUrl: string;
+                    idpEntityId: string;
+                    idpUrl: string;
+                }
+            }
+        };
+        m2m: {
+            customConfig: {
+                tokenEndpoint: string;
+                tokenRequest: string;
+                configurations: string;
+            }
+        }
+    };
     URLInput: {
         withLabel: {
             positive: {

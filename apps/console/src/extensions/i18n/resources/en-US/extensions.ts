@@ -27,73 +27,6 @@ import { Extensions } from "../../models";
 /* eslint-disable sort-keys */
 export const extensions: Extensions = {
     console: {
-        application: {
-            quickStart: {
-                addUserOption: {
-                    description: "You need a <1>user account</1> to log in to the application.",
-                    hint:
-                        "If you don’t already have a user account, click the below button to create one. " +
-                        "Alternatively, go to <1>User Management > Users</1><3></3> and create users.",
-                    message:
-                        "If you do not already have a user account, contact your organization " +
-                        "administrator."
-                },
-                spa: {
-                    customConfig: {
-                        heading: "You can implement login using <1>Authorization Code flow with PKCE</1> " +
-                            "with Asgardeo for any SPA technology.",
-                        anySPATechnology: "or any SPA Technology",
-                        configurations: "Configurations",
-                        protocolConfig: "Use the following configurations to integrate your application with Asgardeo. " +
-                            "For more details on configurations, go to the <1>Protocol</1> tab.",
-                        clientId: "Client ID",
-                        baseUrl: "Base URL",
-                        redirectUrl: "Redirect URL",
-                        scope: "Scope",
-                        serverEndpoints: "Details on the server endpoints are available in the <1>Info</1> tab."
-                    },
-                    techSelection: {
-                        heading: "Use the SDKs curated by Asgardeo and 3rd party integrations."
-                    }
-                },
-                technologySelectionWrapper: {
-                    subHeading:
-                        "Use the <1>server endpoint " +
-                        "details</1> and start integrating your own app or read through our <3>documentation</3> " +
-                        "to learn  more.",
-                    otherTechnology: "or any mobile technology"
-                },
-                twa: {
-                    common: {
-                        orAnyTechnology: "or any technology"
-                    },
-                    oidc: {
-                        customConfig: {
-                            clientSecret: "Client Secret",
-                            heading: "You can implement login using <1>Authorization Code flow</1> " +
-                                "with Asgardeo for any traditional web application."
-                        }
-                    },
-                    saml: {
-                        customConfig: {
-                            heading: "Discover <1>SAML configurations</1> to integrate Asgardeo with" +
-                                " any traditional web application.",
-                            issuer: "Issuer",
-                            acsUrl: "Assertion Consumer Service URL",
-                            idpEntityId: "IdP Entity ID",
-                            idpUrl: "IdP URL"
-                        }
-                    }
-                },
-                m2m: {
-                    customConfig: {
-                        tokenEndpoint: "Token Endpoint",
-                        tokenRequest: "Token Request",
-                        configurations: "Configurations"
-                    }
-                }
-            }
-        },
         applicationRoles: {
             assign: "Assign",
             assignGroupWizard: {
@@ -331,43 +264,11 @@ export const extensions: Extensions = {
                 searchByName: "Search by name"
             }
         },
-        marketingConsent: {
-            heading: "Let's stay in touch!",
-            description: "Subscribe to get the latest news and product updates straight to your inbox.",
-            actions: {
-                subscribe: "Subscribe",
-                decline: "Don't show this again"
-            },
-            notifications: {
-                errors: {
-                    fetch: {
-                        message: "Something went wrong",
-                        description: "Something went wrong when getting user consent data"
-                    },
-                    update: {
-                        message: "Something went wrong",
-                        description: "Something went wrong when updating user consent"
-                    }
-                }
-            }
-        },
         organizationInfo: {
-            heading: "Organization Info",
-            subHeading: "View information related to your organization.",
-            orgId: {
-                label: "Organization ID",
-                heading: "Organization ID",
-                subHeading: "The following organization ID will be useful for you to implement and configure the Asgardeo manangement REST APIs of " +
-                    "organizations."
-            },
             notifications: {
                 getConfiguration: {
                     error: {
                         description: "Error occurred while retrieving organization information",
-                        message: "An error occurred"
-                    },
-                    genericError: {
-                        description: "An error occurred while retrieving organization information.",
                         message: "An error occurred"
                     }
                 }

@@ -131,7 +131,7 @@ export const TraditionalOIDCWebApplicationCustomConfiguration: FC<TWAOIDCCustomC
                     <Heading as="h6" compact>
                         <Trans
                             i18nKey={
-                                "extensions:console.application.quickStart" +
+                                "applications:quickStart" +
                                 ".spa.customConfig.protocolConfig"
                             }
                         >
@@ -153,7 +153,7 @@ export const TraditionalOIDCWebApplicationCustomConfiguration: FC<TWAOIDCCustomC
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("extensions:console.application.quickStart" +
+                                            t("applications:quickStart" +
                                             ".spa.customConfig.clientId")
                                         }
                                     </label>
@@ -165,7 +165,7 @@ export const TraditionalOIDCWebApplicationCustomConfiguration: FC<TWAOIDCCustomC
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("extensions:console.application.quickStart" +
+                                            t("applications:quickStart" +
                                             ".twa.oidc.customConfig.clientSecret")
                                         }
                                     </label>
@@ -178,7 +178,7 @@ export const TraditionalOIDCWebApplicationCustomConfiguration: FC<TWAOIDCCustomC
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("extensions:console.application.quickStart" +
+                                            t("applications:quickStart" +
                                             ".spa.customConfig.redirectUrl")
                                         }
                                     </label>
@@ -190,7 +190,7 @@ export const TraditionalOIDCWebApplicationCustomConfiguration: FC<TWAOIDCCustomC
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("extensions:console.application.quickStart" +
+                                            t("applications:quickStart" +
                                             ".spa.customConfig.scope")
                                         }
                                     </label>
@@ -207,7 +207,7 @@ export const TraditionalOIDCWebApplicationCustomConfiguration: FC<TWAOIDCCustomC
                     <Heading as="h6" compact>
                         <Trans
                             i18nKey={
-                                "extensions:console.application.quickStart" +
+                                "applications:quickStart" +
                                 ".spa.customConfig.serverEndpoints"
                             }
                         >
@@ -234,7 +234,7 @@ export const TraditionalOIDCWebApplicationCustomConfiguration: FC<TWAOIDCCustomC
                 <Text muted>
                     <Trans
                         i18nKey={
-                            "extensions:console.application.quickStart" +
+                            "applications:quickStart" +
                             ".twa.oidc.customConfig.heading"
                         }
                     >
@@ -271,7 +271,7 @@ export const TraditionalOIDCWebApplicationCustomConfiguration: FC<TWAOIDCCustomC
                     )) }
                 </div>
                 <div>
-                    { t("extensions:console.application.quickStart.twa.common.orAnyTechnology") }
+                    { t("applications:quickStart.twa.common.orAnyTechnology") }
                 </div>
             </Card.Content>
             <Card.Content>
@@ -286,7 +286,7 @@ export const TraditionalOIDCWebApplicationCustomConfiguration: FC<TWAOIDCCustomC
                         className="spa-config-accordion-title"
                     >
                         <Heading as="h5">
-                            { t("extensions:console.application.quickStart.spa.customConfig.configurations") }
+                            { t("applications:quickStart.spa.customConfig.configurations") }
                         </Heading>
                     </SegmentedAccordion.Title>
                     <SegmentedAccordion.Content

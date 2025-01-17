@@ -21,62 +21,6 @@ import { FormAttributes, Notification, NotificationItem } from "@wso2is/i18n";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Extensions {
     console: {
-        application: {
-            quickStart: {
-                technologySelectionWrapper: {
-                    subHeading: string;
-                    otherTechnology: string;
-                };
-                addUserOption: {
-                    description: string;
-                    hint: string;
-                    message: string;
-                };
-                spa: {
-                    customConfig: {
-                        heading: string;
-                        anySPATechnology: string;
-                        configurations: string;
-                        protocolConfig: string;
-                        serverEndpoints: string;
-                        clientId: string;
-                        baseUrl: string;
-                        redirectUrl: string;
-                        scope: string;
-                    };
-                    techSelection: {
-                        heading: string;
-                    };
-                };
-                twa: {
-                    common: {
-                        orAnyTechnology: string;
-                    };
-                    oidc: {
-                        customConfig: {
-                            heading: string;
-                            clientSecret: string;
-                        };
-                    };
-                    saml: {
-                        customConfig: {
-                            heading: string;
-                            issuer: string;
-                            acsUrl: string;
-                            idpEntityId: string;
-                            idpUrl: string;
-                        };
-                    };
-                };
-                m2m: {
-                    customConfig: {
-                        tokenEndpoint: string;
-                        tokenRequest: string;
-                        configurations: string;
-                    };
-                }
-            };
-        };
         applicationRoles: {
             assign: string;
             assignGroupWizard: {
@@ -202,34 +146,7 @@ export interface Extensions {
                 searchByName: string;
             };
         };
-        marketingConsent: {
-            heading: string;
-            description: string;
-            actions: {
-                subscribe: string;
-                decline: string;
-            },
-            notifications: {
-                errors: {
-                    fetch: {
-                        message: string;
-                        description: string;
-                    };
-                    update: {
-                        message: string;
-                        description: string;
-                    };
-                };
-            };
-        };
         organizationInfo: {
-            heading: string;
-            subHeading: string;
-            orgId: {
-                label: string;
-                heading: string;
-                subHeading: string;
-            };
             notifications: {
                 getConfiguration: Notification;
             }

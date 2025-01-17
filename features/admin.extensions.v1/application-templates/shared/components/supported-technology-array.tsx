@@ -99,7 +99,7 @@ export const SupportedTechnologyArray: FC<SupportedTechnologyArrayPropsInterface
                     && (
                         <Text className="mt-2">
                             {
-                                t("extensions:console.application.quickStart" +
+                                t("applications:quickStart" +
                                 ".technologySelectionWrapper.otherTechnology")
                             }
                         </Text>
@@ -110,7 +110,7 @@ export const SupportedTechnologyArray: FC<SupportedTechnologyArrayPropsInterface
                 <Heading as="h6" textAlign="center" compact className={ isMobileAppQuickstart ? "mt-3" : "mt-0" }>
                     <Trans
                         i18nKey={
-                            "extensions:console.application.quickStart" +
+                            "applications:quickStart" +
                             ".technologySelectionWrapper.subHeading"
                         }
                     >

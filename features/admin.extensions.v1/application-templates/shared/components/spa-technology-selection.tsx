@@ -71,7 +71,7 @@ export const SPATechnologySelection: <T>(
         >
             <Card.Content textAlign="center">
                 <Text muted>
-                    { t("extensions:console.application.quickStart.spa.techSelection.heading") }
+                    { t("applications:quickStart.spa.techSelection.heading") }
                 </Text>
             </Card.Content>
             <Divider hidden/>

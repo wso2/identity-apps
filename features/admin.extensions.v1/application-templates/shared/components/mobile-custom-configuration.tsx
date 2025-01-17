@@ -143,7 +143,7 @@ export const MobileCustomConfiguration: FC<MobileCustomConfigurationPropsInterfa
                     <Heading as="h6" compact>
                         <Trans
                             i18nKey={
-                                "extensions:console.application.quickStart" +
+                                "applications:quickStart" +
                                 ".spa.customConfig.protocolConfig"
                             }
                         >
@@ -301,7 +301,7 @@ export const MobileCustomConfiguration: FC<MobileCustomConfigurationPropsInterfa
                     <Heading as="h6" compact>
                         <Trans
                             i18nKey={
-                                "extensions:console.application.quickStart" +
+                                "applications:quickStart" +
                                 ".spa.customConfig.serverEndpoints"
                             }
                         >
@@ -382,7 +382,7 @@ export const MobileCustomConfiguration: FC<MobileCustomConfigurationPropsInterfa
                         className="spa-config-accordion-title"
                     >
                         <Heading as="h5">
-                            { t("extensions:console.application.quickStart.spa.customConfig.configurations") }
+                            { t("applications:quickStart.spa.customConfig.configurations") }
                         </Heading>
                     </SegmentedAccordion.Title>
                     <SegmentedAccordion.Content
