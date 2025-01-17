@@ -122,7 +122,6 @@ const EditPolicyAlgorithm: FunctionComponent<EditPolicyAlgorithmProps> = (
                 <Alert severity="info" className="algorithm-description">
                     { selectedOption?.description }
                 </Alert>
-
             </DialogContent>
             <DialogActions>
                 <Box>
