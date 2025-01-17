@@ -1,0 +1,27 @@
+.policy-algorithm-btn {
+    padding: 1px 16px;
+    .algorithm-txt {
+        margin-left: 4px;
+    }
+}
+
+.policy-list-card {
+    background-color: transparent;
+    padding: 0;
+}
+
+#active-policy-list-container{
+    height: 60vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#inactive-policy-list-container{
+    height: 60vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.policy-list-header {
+    margin-bottom: 15px;
+}

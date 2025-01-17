@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.10.1
+
+### Patch Changes
+
+- [#7303](https://github.com/wso2/identity-apps/pull/7303) [`27e635a2d54c78228e63fde1360b68a8d03a0b10`](https://github.com/wso2/identity-apps/commit/27e635a2d54c78228e63fde1360b68a8d03a0b10) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Fix input field value retention issue in self-registration form
+
 ## 2.10.0
 
 ### Minor Changes
