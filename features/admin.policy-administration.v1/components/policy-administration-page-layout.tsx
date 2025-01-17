@@ -95,8 +95,6 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
         mutate: mutateAlgorithm
     } = useGetAlgorithm();
 
-
-
     useEffect(() => {
         if (algorithm) {
             const selectedAlgorithm: AlgorithmOption =
