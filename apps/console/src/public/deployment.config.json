@@ -891,6 +891,7 @@
                 "scopes": {
                     "create": [],
                     "delete": [],
+                    "feature": [],
                     "read": [],
                     "update": []
                 }
