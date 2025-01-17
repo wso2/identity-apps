@@ -1,5 +1,19 @@
 # @wso2is/admin.home.v1
 
+## 1.6.83
+
+### Patch Changes
+
+- [#7306](https://github.com/wso2/identity-apps/pull/7306) [`f9db643943377216b8525a183f3ad4855a3bd4af`](https://github.com/wso2/identity-apps/commit/f9db643943377216b8525a183f3ad4855a3bd4af) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update oxygen-ui to 2.2.0
+
+- Updated dependencies [[`647e28cd3e4ba79e2d016cbbcd343c007a487a7f`](https://github.com/wso2/identity-apps/commit/647e28cd3e4ba79e2d016cbbcd343c007a487a7f), [`f9db643943377216b8525a183f3ad4855a3bd4af`](https://github.com/wso2/identity-apps/commit/f9db643943377216b8525a183f3ad4855a3bd4af), [`afd3f3bb5aae4dab8dc85ea58fb529af057e9095`](https://github.com/wso2/identity-apps/commit/afd3f3bb5aae4dab8dc85ea58fb529af057e9095)]:
+  - @wso2is/admin.applications.v1@2.30.83
+  - @wso2is/admin.organizations.v1@2.26.83
+  - @wso2is/admin.feature-gate.v1@1.4.83
+  - @wso2is/admin.extensions.v1@2.36.8
+  - @wso2is/react-components@2.8.19
+  - @wso2is/admin.core.v1@2.35.21
+
 ## 1.6.82
 
 ### Patch Changes
