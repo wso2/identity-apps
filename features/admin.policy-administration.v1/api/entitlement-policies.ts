@@ -144,7 +144,7 @@ export const publishPolicy = (
     const requestConfig: HttpRequestConfig = {
         data: requestData,
         headers: {
-            "Accept": "*/*",
+            "Accept": "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
