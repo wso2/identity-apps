@@ -53,45 +53,44 @@ export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
     const { generateComponentId } = useDnD();
 
     const renderDraggableList = () => (
-        // <DroppableContainer<PolicyInterface>
-        //     nodes={ policies }
-        //     onDrop={ () => onDrop?.(containerId) }
-        // >
-        //     { ({
-        //         nodes,
-        //         getDragItemProps
-        //     }: {
-        //         nodes: PolicyInterface[];
-        //         getDragItemProps: GetDragItemProps;
-        //     }) =>
-        //         nodes.map((policy: PolicyInterface, index: number) => {
-        //             const {
-        //                 className: dragItemClassName,
-        //                 ...otherDragItemProps
-        //             } = getDragItemProps(index);
+        <DroppableContainer<PolicyInterface>
+            nodes={ policies }
+            onDrop={ () => onDrop?.(containerId) }
+        >
+            { ({
+                nodes,
+                getDragItemProps
+            }: {
+                nodes: PolicyInterface[];
+                getDragItemProps: GetDragItemProps;
+            }) =>
+                nodes.map((policy: PolicyInterface, index: number) => {
+                    const {
+                        className: dragItemClassName,
+                        ...otherDragItemProps
+                    } = getDragItemProps(index);
 
-        //             return (
-        //                 <div
-        //                     key={ policy.policyId }
-        //                     className={ dragItemClassName }
-        //                     { ...otherDragItemProps }
-        //                 >
-        //                     <PolicyListDraggableNode
-        //                         policy={ policy }
-        //                         data-componentid={ generateComponentId() }
-        //                         mutateActivePolicyList={ mutateActivePolicyList }
-        //                         mutateInactivePolicyList={ mutateInactivePolicyList }
-        //                         setPageInactive={ setPageInactive }
-        //                         setInactivePolicies={ setInactivePolicies }
-        //                         setHasMoreInactivePolicies={ setHasMoreInactivePolicies }
+                    return (
+                        <div
+                            key={ policy.policyId }
+                            className={ dragItemClassName }
+                            { ...otherDragItemProps }
+                        >
+                            <PolicyListDraggableNode
+                                policy={ policy }
+                                data-componentid={ generateComponentId() }
+                                mutateActivePolicyList={ mutateActivePolicyList }
+                                mutateInactivePolicyList={ mutateInactivePolicyList }
+                                setPageInactive={ setPageInactive }
+                                setInactivePolicies={ setInactivePolicies }
+                                setHasMoreInactivePolicies={ setHasMoreInactivePolicies }
 
-        //                     />
-        //                 </div>
-        //             );
-        //         })
-        //     }
-        // </DroppableContainer>
-        <div></div>
+                            />
+                        </div>
+                    );
+                })
+            }
+        </DroppableContainer>
     );
 
     const renderStaticList = () => (
