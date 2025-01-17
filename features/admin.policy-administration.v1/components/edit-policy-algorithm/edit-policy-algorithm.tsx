@@ -48,8 +48,15 @@ interface EditPolicyAlgorithmProps extends IdentifiableComponentInterface{
 
 const EditPolicyAlgorithm: FunctionComponent<EditPolicyAlgorithmProps> = (
     props : EditPolicyAlgorithmProps): ReactElement => {
-    const { closeModal, [ "data-componentid" ]: componentId, open, selectedAlgorithm, setSelectedAlgorithm, mutateAlgorithm,
-        algorithmOptions } = props;
+    const {
+        closeModal,
+        open,
+        selectedAlgorithm,
+        setSelectedAlgorithm,
+        mutateAlgorithm,
+        algorithmOptions,
+        [ "data-componentid" ]: componentId
+    } = props;
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
