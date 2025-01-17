@@ -22,7 +22,7 @@
     }
 
     .account-lock-duration-option {
-        margin-bottom: 15px;
+        margin-bottom: 15px !important;
     }
 
     .account-lock-time {
@@ -32,6 +32,5 @@
     form > div > div:nth-child(6),
         div:nth-child(7),
         div:nth-child(8) {
-        margin-left: 50px;
     }
 }
