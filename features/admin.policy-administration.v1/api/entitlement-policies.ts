@@ -26,9 +26,8 @@ import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { PolicyInterface, PublishPolicyDataInterface } from "../models/policies";
 
-
 /**
- * Get an axios instance.
+ * Get an HTTP client instance.
  *
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
@@ -48,7 +47,7 @@ export const createPolicy = (
     const requestConfig: HttpRequestConfig = {
         data: policyData,
         headers: {
-            "Accept": "*/*",
+            "Accept": "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -165,4 +164,3 @@ export const publishPolicy = (
             return Promise.reject(error);
         });
 };
-
