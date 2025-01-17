@@ -582,7 +582,7 @@ importers:
         specifier: ^2.26.82
         version: link:../../features/admin.organizations.v1
       '@wso2is/admin.policy-administration.v1':
-        specifier: ^1.0.0
+        specifier: ^0.0.0
         version: link:../../features/admin.policy-administration.v1
       '@wso2is/admin.private-key-jwt.v1':
         specifier: ^2.25.82
@@ -6033,7 +6033,7 @@ importers:
         specifier: ^2.26.82
         version: link:../admin.organizations.v1
       '@wso2is/admin.policy-administration.v1':
-        specifier: workspace:^
+        specifier: ^0.0.0
         version: link:../admin.policy-administration.v1
       '@wso2is/admin.private-key-jwt.v1':
         specifier: ^2.25.82

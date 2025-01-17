@@ -312,7 +312,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                     </DnDProvider>
                 </Grid>
                 <Grid  xs={ 6 }>
-                    <Typography variant="h5" className="policy-list-header">In-Active Policies</Typography>
+                    <Typography variant="h5" className="policy-list-header">Inactive Policies</Typography>
                     <Card id={ "inactive-policy-list-container" } className="policy-list-card">
                         <InfiniteScroll
                             next={ fetchMoreInactivePolicies }
