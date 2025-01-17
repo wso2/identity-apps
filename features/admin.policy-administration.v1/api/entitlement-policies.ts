@@ -79,7 +79,7 @@ export const updatePolicy = (
     const requestConfig: RequestConfigInterface = {
         data: policyData,
         headers: {
-            Accept: "*/*",
+            Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
