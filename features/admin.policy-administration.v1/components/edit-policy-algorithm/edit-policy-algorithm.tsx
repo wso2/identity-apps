@@ -53,8 +53,6 @@ const EditPolicyAlgorithm: FunctionComponent<EditPolicyAlgorithmProps> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-
-
     const handleSelectChange = (event) => {
 
         const selectedAlgorithm: AlgorithmOption = algorithmOptions.find((option: AlgorithmOption) => option.value === event.target.value);
