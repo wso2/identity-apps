@@ -204,8 +204,6 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
         setPageInactive((prevPage: number) => prevPage + 1);
     };
 
-
-
     return (
         <PageLayout
             pageTitle={ "Policy Administration" }
