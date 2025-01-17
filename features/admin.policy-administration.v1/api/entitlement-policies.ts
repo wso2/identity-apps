@@ -28,7 +28,6 @@ import { PolicyInterface, PublishPolicyDataInterface } from "../models/policies"
 
 /**
  * Get an HTTP client instance.
- *
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
     AsgardeoSPAClient.getInstance()
