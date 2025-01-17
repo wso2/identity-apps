@@ -28,7 +28,6 @@ import { PolicyInterface, PublishPolicyDataInterface } from "../models/policies"
 
 /**
  * Get an HTTP client instance.
- *
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
     AsgardeoSPAClient.getInstance()
@@ -80,7 +79,7 @@ export const updatePolicy = (
     const requestConfig: RequestConfigInterface = {
         data: policyData,
         headers: {
-            Accept: "*/*",
+            Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
@@ -145,7 +144,7 @@ export const publishPolicy = (
     const requestConfig: HttpRequestConfig = {
         data: requestData,
         headers: {
-            "Accept": "*/*",
+            "Accept": "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,

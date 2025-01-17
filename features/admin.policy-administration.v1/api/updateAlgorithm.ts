@@ -38,7 +38,8 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * @param policyCombiningAlgorithm - The policy combining algorithm to be updated.
  */
 export const updateAlgorithm = (
-    policyCombiningAlgorithm: PolicyAlgorithmRequestInterface) : Promise<any> => {
+    policyCombiningAlgorithm: PolicyAlgorithmRequestInterface
+) : Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         data: policyCombiningAlgorithm,
         headers: {
