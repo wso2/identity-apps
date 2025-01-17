@@ -1,8 +1,8 @@
 {
     "private": true,
     "name": "@wso2is/admin.policy-administration.v1",
-    "version": "1.0.0",
-    "description": "WSO2 Identity Server Console",
+    "version": "0.0.0",
+    "description": "WSO2 Identity Server Console - Policy Administration Connector UI",
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
