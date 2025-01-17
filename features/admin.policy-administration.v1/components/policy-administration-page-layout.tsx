@@ -294,7 +294,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                                 <CardContent>
                                     <PolicyList
                                         containerId="1"
-                                        policies={ activePolicies } // Use your active policies array
+                                        policies={ activePolicies }
                                         isDraggable={ true }
                                         mutateInactivePolicyList={ mutateInactivePolicy }
                                         mutateActivePolicyList={ mutateActivePolicy }
