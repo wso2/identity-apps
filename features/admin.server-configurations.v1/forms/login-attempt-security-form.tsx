@@ -355,11 +355,11 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                     <strong>Note : </strong> The following example is based on the above configurations.<br />
                     <br />
                     { enableIndefiniteUserLockduration 
-                        ? `User tries to login with an incorrect password ${toInteger(maxAttempts) === 1 ? "once" 
+                        ? `User tries to login with an incorrect password ${toInteger(maxAttempts) === 1 ? "once"
                             : `in ${maxAttempts} consecutive attempts`}. User account will be locked indefinitely until 
                         the account is manually unlocked by an admin.`: `User tries to login with an incorrect 
                         password ${toInteger(maxAttempts) === 1? "once" : `in ${maxAttempts} consecutive attempts`}. 
-                        User account will be locked for ${lockDuration} ${toInteger(lockDuration) === 1 ? "minute" : 
+                        User account will be locked for ${lockDuration} ${toInteger(lockDuration) === 1 ? "minute" :
                 "minutes"}.`
                     }
                     { !enableIndefiniteUserLockduration ? sampleInfoAccordion() : null }`
@@ -597,7 +597,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                             "loginAttemptSecurity.form.fields.accountLockIncrementFactor.hint")
                     }
                 </Hint>
-                <Field.Radio 
+                <Field.Radio
                     className="account-lock-duration-option"
                     key="1"
                     name="lockAccountForSpecifiedTime"
