@@ -150,6 +150,9 @@ export interface FilePickerProps extends IdentifiableComponentInterface {
      * Secondary button.
      */
     secondaryButton?: string;
+    /**
+     * Script editor.
+     */
     scriptEditor?: React.ReactNode;
 }
 
