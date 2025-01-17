@@ -147,9 +147,8 @@ export interface FilePickerProps extends IdentifiableComponentInterface {
      */
     emptyFileErrorMsg?: string;
     /**
-     * Secondary button.
+     * Provide a custom script editor for the paste tab.
      */
-    secondaryButton?: string;
     scriptEditor?: React.ReactNode;
 }
 
