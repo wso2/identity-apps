@@ -193,7 +193,6 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                 </Stack>
             </CardContent>
         </Card>
-
     );
 };
 
