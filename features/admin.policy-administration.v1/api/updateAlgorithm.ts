@@ -24,7 +24,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { PolicyAlgorithmRequestInterface } from "../models/policies";
 
 /**
- * Get an axios instance.
+ * Get an httpClient instance.
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
