@@ -170,7 +170,6 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
         // TODO: Add search functionality here
     };
 
-
     if (isLoadingActivePolicies || isLoadingInactivePolicies) {
         return (
             <PageLayout
