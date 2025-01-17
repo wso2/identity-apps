@@ -323,7 +323,7 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                                 <PolicyList
                                     containerId="2"
                                     policies={ inactivePolicies }
-                                    isDraggable={ false } // Non-draggable
+                                    isDraggable={ false }
                                     mutateInactivePolicyList={ mutateInactivePolicy }
                                     setInactivePolicies={ setInactivePolicies }
                                     setPageInactive={ setPageInactive }
