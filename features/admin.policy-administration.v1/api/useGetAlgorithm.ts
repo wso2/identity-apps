@@ -43,7 +43,6 @@ export const useGetAlgorithm = <Data = AlgorithmResponseInterface, Error = Reque
         url: `${store.getState().config.endpoints.entitlementPolicyCombiningAlgorithmApi}`
     };
 
-
     const { data, error, isValidating, mutate, isLoading } = useRequest<Data, Error>(shouldFetch ? requestConfig : null, {
         shouldRetryOnError: false
     });
