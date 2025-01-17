@@ -34,6 +34,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 
 /**
  * Function to update the policy combining algorithm.
+ *
  * @param policyCombiningAlgorithm - The policy combining algorithm to be updated.
  */
 export const updateAlgorithm = (
