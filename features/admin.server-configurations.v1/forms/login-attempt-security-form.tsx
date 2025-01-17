@@ -354,7 +354,7 @@ export const LoginAttemptSecurityConfigurationFrom: FunctionComponent<
                 <p>
                     <strong>Note : </strong> The following example is based on the above configurations.<br />
                     <br />
-                    { enableIndefiniteUserLockduration 
+                    { enableIndefiniteUserLockduration
                         ? `User tries to login with an incorrect password ${toInteger(maxAttempts) === 1 ? "once"
                             : `in ${maxAttempts} consecutive attempts`}. User account will be locked indefinitely until 
                         the account is manually unlocked by an admin.`: `User tries to login with an incorrect 
