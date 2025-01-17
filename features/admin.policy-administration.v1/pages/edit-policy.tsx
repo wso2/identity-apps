@@ -33,7 +33,7 @@ import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { updatePolicy } from "../api/entitlement-policies";
-import { useGetPolicy } from "../api/useGetPolicy";
+import { useGetPolicy } from "../api/use-get-policy";
 import startCase from "lodash-es/startCase";
 import PolicyEditor from "../components/policy-editor/policy-editor";
 import { PolicyInterface } from "../models/policies";

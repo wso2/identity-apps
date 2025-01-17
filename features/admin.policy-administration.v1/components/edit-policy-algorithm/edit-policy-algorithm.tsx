@@ -34,7 +34,7 @@ import { addAlert } from "@wso2is/core/store";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { updateAlgorithm } from "../../api/updateAlgorithm";
+import { updateAlgorithm } from "../../api/update-algorithm";
 import { AlgorithmOption, PolicyAlgorithmRequestInterface } from "../../models/policies";
 
 interface EditPolicyAlgorithmProps extends IdentifiableComponentInterface{
