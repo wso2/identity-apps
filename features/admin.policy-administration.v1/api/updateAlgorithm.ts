@@ -31,7 +31,6 @@ import { PolicyAlgorithmRequestInterface } from "../models/policies";
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
-    .bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Function to update the policy combining algorithm.
